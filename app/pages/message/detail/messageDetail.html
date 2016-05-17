@@ -1,0 +1,21 @@
+<ion-view view-title="消息列表">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button" ng-click="goBack()">左侧按钮</button>
+    </div>
+    <h1 class="title">消息列表</h1>
+    <div class="buttons">
+      <button class="button">右侧按钮</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+      <ion-list>
+        <ion-item >
+          {{message.user}}<br>
+          {{message.content}}
+        </ion-item>
+      </ion-list>
+    </ion-list>
+  </ion-content>
+</ion-view>

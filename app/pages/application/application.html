@@ -1,0 +1,25 @@
+<ion-view view-title="应用">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button" ng-click="">左侧按钮</button>
+    </div>
+    <h1 class="title">应用</h1>
+    <div class="buttons">
+      <button class="button">反馈</button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="mainApplication">
+    <div class="appRegion">
+      <div class="appTitle">个人办公</div>
+
+      <div class="appArea" ng-repeat="appItem in officeApp">
+        <div class="appList">
+          <div class="appItem" ng-click="goPage(appItem)">
+            <img src="{{appItem.imageUrl}}"/>
+            <div class="appText">{{appItem.appName}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

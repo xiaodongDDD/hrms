@@ -1,0 +1,23 @@
+<ion-view view-title="消息">
+  <!--<ion-header-bar align-title="left" class="bar-stable">
+    <div class="buttons">
+      <button class="button" ng-click="">左侧按钮</button>
+    </div>
+    <h1 class="title">消息</h1>
+    <div class="buttons">
+      <button class="button">右侧按钮</button>
+    </div>
+  </ion-header-bar>-->
+  <ion-content>
+    <ion-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
+    </ion-refresher>
+    <ion-list>
+      <ion-list ng-repeat="message in messageList">
+        <ion-item ng-click="talk(message)">
+          {{message.user}}<br>
+          {{message.content}}
+        </ion-item>
+      </ion-list>
+    </ion-list>
+  </ion-content>
+</ion-view>
