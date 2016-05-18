@@ -1,29 +1,66 @@
-$applicationColor:  white !default;
+$applicationColor: white !default;
 
-.mainApplication{
-  .header{
+.mainApplication {
+  .header {
     background: $applicationColor;
   }
 
-  .appRegion{
+  .appRegion {
 
-    .appTitle{
+    .appTitle {
 
+      padding-left: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      height:22px;
+      line-height: 22px;
+
+      &.office{
+        border-left: 4px solid #4A90E2;
+        color: #4A90E2;
+      }
+
+      &.project{
+        border-left: 4px solid #F99D32;
+        color: #F99D32;
+      }
+
+      &.employee{
+        border-left: 4px solid #5CB281;
+        color: #5CB281;
+      }
     }
-    .appArea{
 
-      .appList{
-        height: 150px;
-        width: 100%;
-        .appItem{
-          width: 25%;
-          float: left;
-          img{
-            height: 100px;
-            width: 100px;
-            margin-left: auto;
-            margin-right: auto;
+    .appArea {
+
+       width: 100%;
+       height: 200px;
+
+      .appList {
+        height: 95px;
+        width: 25%;
+        float: left;
+        border-right: 1px solid #DBDBDB;
+        border-bottom: 1px solid #DBDBDB;
+        background: white;
+
+        .appItem {
+          margin-top: 10px;
+          height: 60px;
+          width: 60px;
+          margin-left: auto;
+          margin-right: auto;
+
+          img {
+            height: 60px;
+            width: 60px;
           }
+        }
+
+        .appText {
+          text-align: center;
+          font-size: 10px;
         }
       }
 

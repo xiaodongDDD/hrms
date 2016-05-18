@@ -18,8 +18,9 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var nano = require('gulp-cssnano');
-var runSequence = require('run-sequence');
+var runSequence = require('gulp-run-sequence');
 var sourcemaps = require('gulp-sourcemaps');
+var clean = require('gulp-clean');
 var notify = require('gulp-notify');//提示信息
 var gulpNgConfig = require('gulp-ng-config');//提示信息
 
@@ -28,7 +29,12 @@ var htmlFilePath = ['app/pages/**/*.html','app/pages/**/**/*.html'];
 
 // Clean Task
 gulp.task('clean', function () {
-    del(['www/build/*','www/lib/*','app/scripts/baseConfig.js']);
+  return gulp.src(['www/build/*','www/lib/*','app/scripts/baseConfig.js']);
+});
+
+gulp.task('clean-code', function () {
+  return gulp.src(['www/build/css/*','www/build/pages/*','www/build/img/*','www/build/app.bundle.js','www/build/app.bundle.min.js']).pipe(clean());
+  //del(['www/build/css/*','www/build/pages/*','www/build/img/*','www/build/app.bundle.js','www/build/app.bundle.min.js']);
 });
 
 // Lint Task
@@ -173,8 +179,12 @@ gulp.task('watch', function () {
     gulp.watch(['src/**/*'], ["copy-dev"]);
 });
 
+gulp.task('rebuild-dev', function (callback) {
+  runSequence('clean-code', ['copy-img','sass' , 'scripts', 'html'], callback);
+});
+
 gulp.task('build-dev', function (callback) {
-    runSequence('copy-dev', ['lint','copy-lib' ,'sass' , 'scripts', 'html'], callback);
+  runSequence('copy-dev', ['lint','config-dev','copy-lib' ,'sass' , 'scripts', 'html'], callback);
 });
 
 gulp.task('build-prod', function (callback) {

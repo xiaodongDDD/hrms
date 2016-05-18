@@ -40,27 +40,99 @@ angular.module('applicationModule')
           destUrl: "",
         },
         {
-          appName: "timesheet填写",
+          appName: "Timesheet填写",
+          imageUrl: "build/img/application/timesheet@3x.png",
+          destUrl: "",
+        },{
+          appName: "Timesheet填写",
           imageUrl: "build/img/application/timesheet@3x.png",
           destUrl: "",
         },
         {
-          appName: "timesheet审批",
+          appName: "Timesheet审批",
           imageUrl: "build/img/application/timesheetExamine@3x.png",
+          destUrl: "",
+        },
+        {
+          appName: "",
+          imageUrl: "",
           destUrl: "",
         }
       ];
 
       //项目门户
-      $scope.projectApp = {};
+      $scope.projectApp = [
+        {
+          appName: "机票预定",
+          imageUrl: "build/img/application/flightBooking@3x.png",
+          destUrl: "",
+        },
+        {
+          appName: "代办事项",
+          imageUrl: "build/img/application/flightBooking@3x.png",
+          destUrl: "",
+        },
+        {
+          appName: "报销单查询",
+          imageUrl: "build/img/application/flightBooking@3x.png",
+          destUrl: "",
+        },
+        {
+          appName: "首款查询",
+          imageUrl: "build/img/application/flightBooking@3x.png",
+          destUrl: "",
+        },
+        {
+          appName: "外勤汇报",
+          imageUrl: "build/img/application/flightBooking@3x.png",
+          destUrl: "",
+        },
+        {
+          appName: "",
+          imageUrl: "",
+          destUrl: "",
+        },
+        {
+          appName: "",
+          imageUrl: "",
+          destUrl: "",
+        },
+        {
+          appName: "",
+          imageUrl: "",
+          destUrl: "",
+        }
+      ];
 
       //员工社区
-      $scope.employeeApp = {};
-
-      $scope.goPage = function(appItem){
-        if(baseConfig.debug){
-          console.log("appItem " + appItem);
+      $scope.employeeApp = [
+        {
+          appName: "在线培训",
+          imageUrl: "build/img/application/flightBooking@3x.png",
+          destUrl: "",
+        },
+        {
+          appName: "知识门户",
+          imageUrl: "build/img/application/flightBooking@3x.png",
+          destUrl: "",
+        },
+        {
+          appName: "新闻",
+          imageUrl: "build/img/application/flightBooking@3x.png",
+          destUrl: "",
+        },
+        {
+          appName: "分享社区",
+          imageUrl: "build/img/application/flightBooking@3x.png",
+          destUrl: "",
         }
+      ];
+
+      $scope.goPage = function (appItem) {
+        if (baseConfig.debug) {
+          console.log("appItem " + angular.toJson(appItem));
+        }
+        $state.go("appItem.destUrl");
       };
 
       console.log('applicationCtrl.enter');
