@@ -29,7 +29,7 @@ var htmlFilePath = ['app/pages/**/*.html','app/pages/**/**/*.html'];
 
 // Clean Task
 gulp.task('clean', function () {
-  return gulp.src(['www/build/*','www/lib/*','app/scripts/baseConfig.js']);
+  return gulp.src(['www/build/*','www/lib/*','app/scripts/baseConfig.js']).pipe(clean());
 });
 
 gulp.task('clean-code', function () {
