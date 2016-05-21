@@ -35,6 +35,7 @@ var messageModule = angular.module('messageModule', []);
 var contactModule = angular.module('contactModule', []);
 var applicationModule = angular.module('applicationModule', []);
 var myInfoModule = angular.module('myInfoModule', []);
+var tsApproveModule = angular.module('tsApproveModule', []);
 
 angular.module('myApp', [
   'ionic',
@@ -45,7 +46,8 @@ angular.module('myApp', [
   'contactModule',
   'applicationModule',
   'myInfoModule',
-  'utilModule'
+  'utilModule',
+  'tsApproveModule'
 ]);
 
 angular.module('myApp')
@@ -90,7 +92,7 @@ angular.module('myApp')
       $ionicConfigProvider.platform.android.views.transition('android');
 
       $stateProvider
-      // setup an abstract state for the tabs directive
+        // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
           abstract: true,
@@ -160,6 +162,25 @@ angular.module('myApp')
           url: '/guide',
           templateUrl: 'build/pages/login/login.html',
           controller: 'loginCtrl'
+        })
+
+        .state('tab.tsApproveList', {
+          url: 'application/tsApproveList',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timeSheet-approve/list/tsApproveList.html',
+              controller: 'tsApproveListCtrl'
+            }
+          }
+        })
+        .state('tab.tsApproveDetail', {
+          url: 'application/tsApproveDetail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timeSheet-approve/detail/tsApproveDetail.html',
+              controller: 'tsApproveDetailCtrl'
+            }
+          }
         });
 
       // if none of the above states are matched, use this as the fallback
@@ -220,6 +241,11 @@ angular.module('applicationModule')
         {
           appName: "Timesheet审批",
           imageUrl: "build/img/application/timesheetExamine@3x.png",
+          destUrl: "tab.tsApproveList",
+        },
+        {
+          appName: "",
+          imageUrl: "",
           destUrl: "",
         }
       ];
@@ -296,7 +322,7 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log("appItem " + angular.toJson(appItem));
         }
-        $state.go("appItem.destUrl");
+        $state.go(appItem.destUrl);
       };
 
       console.log('applicationCtrl.enter');
@@ -328,6 +354,35 @@ angular.module('contactModule')
 
       $scope.$on('$destroy', function (e) {
         console.log('contactCtrl.$destroy');
+      });
+    }]);
+
+/**
+<<<<<<< HEAD
+=======
+ * Created by gusenlin on 16/5/16.
+ */
+angular.module('loginModule')
+
+  .controller('guideCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+
+      console.log('loginCtrl.enter');
+
+      $scope.toLogin = function () {
+        console.log("跳过导航页到登陆页");
+        $state.go("login");
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('guideCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('guideCtrl.$destroy');
       });
     }]);
 
@@ -411,6 +466,146 @@ angular.module('loginModule')
 
 /**
  * Created by gusenlin on 16/4/24.
+ */
+angular.module('messageModule')
+
+  .controller('messageCtrl', [
+    '$scope',
+    '$state',
+    '$timeout',
+    function ($scope,
+              $state,
+              $timeout) {
+
+      $scope.messageList = [
+        {
+          user: "模版1",
+          content: "内容1"
+        },
+        {
+          user: "模版2",
+          content: "内容2"
+        },
+        {
+          user: "模版3",
+          content: "内容3"
+        },
+        {
+          user: "模版4",
+          content: "内容4"
+        },
+        {
+          user: "模版5",
+          content: "内容5"
+        },
+        {
+          user: "模版6",
+          content: "内容6"
+        },
+        {
+          user: "模版7",
+          content: "内容7"
+        },
+        {
+          user: "模版8",
+          content: "内容8"
+        },
+        {
+          user: "模版9",
+          content: "内容9"
+        },
+        {
+          user: "模版10",
+          content: "内容10"
+        }
+      ];
+
+      $scope.talk = function (message) {
+        console.log('$scope.talk');
+        $state.go("tab.messageDetail", {message: message});
+      };
+
+      $scope.refresh = function(){
+        $timeout(function(){
+          $scope.$broadcast("scroll.refreshComplete");
+        },2000);
+      };
+
+      console.log('messageCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('messageCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('messageCtrl.$destroy');
+      });
+
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('myInfoModule')
+
+  .controller('myInfoCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+
+      console.log('myInfoCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('myInfoCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('myInfoCtrl.$destroy');
+      });
+    }]);
+
+/**
+>>>>>>> daiwen-1.0.0
+ * Created by gusenlin on 16/4/24.
+ */
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('messageModule')
+
+  .controller('messageDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicHistory',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicHistory) {
+
+      var message = $stateParams.message;
+      console.log('message : ' + angular.toJson(message));
+
+      $scope.message = message;
+
+      $scope.goBack = function(){
+        $ionicHistory.goBack();
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('messageDetailCtrl.$ionicView.enter');
+      });
+      console.log('messageDetailCtrl.enter');
+
+      $scope.$on('$destroy', function (e) {
+        console.log('messageDetailCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by wolf on 2016/5/21. (_wen.dai_)
  */
 angular.module('myInfoModule')
 
@@ -501,36 +696,56 @@ angular.module('loginModule')
       });
     }]);
 
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('messageModule')
+'use strict';
+//应用-timeSheet审批模块-详情
+tsApproveModule.controller('tsApproveDetailCtrl', [
+  '$scope',
+  '$state',
+  'baseConfig',
+  '$ionicHistory',
+  function ($scope,
+            $state,
+            baseConfig,
+            $ionicHistory) {
 
-  .controller('messageDetailCtrl', [
+    $scope.$on('$ionicView.enter', function (e) {
+      console.log('tsApproveListCtrl.$ionicView.enter');
+    });
+
+    $scope.$on('$destroy', function (e) {
+      console.log('tsApproveListCtrl.$destroy');
+    });
+  }]);
+
+
+/**
+ * Created by wolf on 2016/5/19.
+ * @author: wen.dai@hand-china.com
+ *
+ */
+'use strict';
+//应用-timeSheet审批模块-列表
+angular.module('tsApproveModule')
+  .controller('tsApproveListCtrl', [
     '$scope',
     '$state',
-    '$stateParams',
+    'baseConfig',
     '$ionicHistory',
     function ($scope,
               $state,
-              $stateParams,
+              baseConfig,
               $ionicHistory) {
 
-      var message = $stateParams.message;
-      console.log('message : ' + angular.toJson(message));
-
-      $scope.message = message;
-
-      $scope.goBack = function(){
-        $ionicHistory.goBack();
+      $scope.goApproveDetail = function () {
+          $state.go('tab.tsApproveDetail');
       };
 
       $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageDetailCtrl.$ionicView.enter');
+        console.log('tsApproveListCtrl.$ionicView.enter');
       });
-      console.log('messageDetailCtrl.enter');
 
       $scope.$on('$destroy', function (e) {
-        console.log('messageDetailCtrl.$destroy');
+        console.log('tsApproveListCtrl.$destroy');
       });
+
     }]);

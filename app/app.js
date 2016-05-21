@@ -10,6 +10,7 @@ var messageModule = angular.module('messageModule', []);
 var contactModule = angular.module('contactModule', []);
 var applicationModule = angular.module('applicationModule', []);
 var myInfoModule = angular.module('myInfoModule', []);
+var tsApproveModule = angular.module('tsApproveModule', []);
 
 angular.module('myApp', [
   'ionic',
@@ -20,7 +21,8 @@ angular.module('myApp', [
   'contactModule',
   'applicationModule',
   'myInfoModule',
-  'utilModule'
+  'utilModule',
+  'tsApproveModule'
 ]);
 
 angular.module('myApp')
@@ -65,7 +67,7 @@ angular.module('myApp')
       $ionicConfigProvider.platform.android.views.transition('android');
 
       $stateProvider
-      // setup an abstract state for the tabs directive
+        // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
           abstract: true,
@@ -135,6 +137,25 @@ angular.module('myApp')
           url: '/guide',
           templateUrl: 'build/pages/login/login.html',
           controller: 'loginCtrl'
+        })
+
+        .state('tab.tsApproveList', {
+          url: 'application/tsApproveList',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timeSheet-approve/list/tsApproveList.html',
+              controller: 'tsApproveListCtrl'
+            }
+          }
+        })
+        .state('tab.tsApproveDetail', {
+          url: 'application/tsApproveDetail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timeSheet-approve/detail/tsApproveDetail.html',
+              controller: 'tsApproveDetailCtrl'
+            }
+          }
         });
 
       // if none of the above states are matched, use this as the fallback

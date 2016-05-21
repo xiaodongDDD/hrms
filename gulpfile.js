@@ -33,7 +33,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('clean-code', function () {
-  return gulp.src(['www/build/css/*','www/build/pages/*','www/build/img/*','www/build/app.bundle.js','www/build/app.bundle.min.js']).pipe(clean());
+  return gulp.src(['www/build/css/**/*.css','www/build/pages/*','www/build/img/*','www/build/app.bundle.js','www/build/app.bundle.min.js']).pipe(clean());
   //del(['www/build/css/*','www/build/pages/*','www/build/img/*','www/build/app.bundle.js','www/build/app.bundle.min.js']);
 });
 
@@ -101,7 +101,7 @@ gulp.task('copy-img-tabs', function() {
     .pipe(gulp.dest('www/build/img/tabs'));
 });
 gulp.task('copy-img-application', function() {
-  return gulp.src('app/img/application/*.*')
+  return gulp.src('app/img/application/**/**/*.*')
     .pipe(gulp.dest('www/build/img/application'));
 });
 gulp.task('copy-img', ['copy-img-all', 'copy-img-tabs','copy-img-application']);
@@ -110,7 +110,7 @@ gulp.task('copy-lib', ['copy-css-lib', 'copy-js-lib','copy-font-lib','copy-ng-co
 
 // Compile Sass
 gulp.task('sass', function() {
-    return gulp.src('app/theme/*.scss')
+    return gulp.src(['app/theme/*.scss'])
         .pipe(sass())
         .pipe(gulp.dest('www/build/css'));
 });
@@ -176,7 +176,8 @@ gulp.task('copy-prod', function () {
 
 // Watch Files For Changes
 gulp.task('watch', function () {
-    gulp.watch(['src/**/*'], ["copy-dev"]);
+    gulp.watch(['app/**/*'], ["rebuild-dev"]);
+    console.log("----have file change -----");
 });
 
 gulp.task('rebuild-dev', function (callback) {
