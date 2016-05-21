@@ -1,7 +1,6 @@
 /**
  * Created by gusenlin on 16/5/16.
  */
-'use strict';
 //注册请求过滤器
 angular.module('utilModule',[]).factory('httpRequestHeader', function () {
   var interceptor = {
