@@ -30,6 +30,33 @@
     background-size: 29%;
   }
 
+  .tab-item.activated  {
+    .message-off {
+      background-image: url("../img/tabs/message-f@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 29%;
+    }
+    .application-off {
+      background-image: url("../img/tabs/application-F@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 26%;
+    }
+    .contact-off {
+      background-image: url("../img/tabs/contact-B@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 26%;
+    }
+    .mine-off {
+      background-image: url("../img/tabs/mine-B@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 30%;
+    }
+  }
+
   .application-on {
     background-image: url("../img/tabs/application-F@3x.png");
     background-repeat: no-repeat;

@@ -52,11 +52,6 @@ angular.module('applicationModule')
           appName: "Timesheet审批",
           imageUrl: "build/img/application/timesheetExamine@3x.png",
           destUrl: "",
-        },
-        {
-          appName: "",
-          imageUrl: "",
-          destUrl: "",
         }
       ];
 

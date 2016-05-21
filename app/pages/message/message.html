@@ -1,23 +1,117 @@
-<ion-view view-title="消息">
-  <!--<ion-header-bar align-title="left" class="bar-stable">
-    <div class="buttons">
-      <button class="button" ng-click="">左侧按钮</button>
+<ion-view view-title="消息" class="message-list">
+  <ion-header-bar align-title="left" class="bar-stable">
+    <div class="message-search">
+      <div class="message-button">
+        <i class="ion-ios-search search-i"></i>
+      </div>
+      <input name="" placeholder="搜索">
     </div>
-    <h1 class="title">消息</h1>
-    <div class="buttons">
-      <button class="button">右侧按钮</button>
-    </div>
-  </ion-header-bar>-->
+  </ion-header-bar>
   <ion-content>
     <ion-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </ion-refresher>
-    <ion-list>
-      <ion-list ng-repeat="message in messageList">
-        <ion-item ng-click="talk(message)">
-          {{message.user}}<br>
-          {{message.content}}
-        </ion-item>
-      </ion-list>
-    </ion-list>
+
+    <div class="message-item">
+      <div class="message-introduce">
+        <img class="message-has-logo" src="build/img/application/profile@3x.png">
+
+        </img>
+        <div class="message-title">石顺</div>
+      </div>
+      <div class="message-date">
+        2015月20号
+      </div>
+      <div class="message-content">
+        <div class="message-text">
+          HRMS v2.0版本来了
+        </div>
+        <div class="message-qty">
+          2
+        </div>
+      </div>
+    </div>
+
+    <div class="message-item">
+      <div class="message-introduce">
+        <img class="message-has-logo" src="build/img/application/profile@3x.png">
+
+        </img>
+        <div class="message-title">石顺</div>
+      </div>
+      <div class="message-date">
+        2015月20号
+      </div>
+      <div class="message-content">
+        <div class="message-text">
+          HRMS v2.0版本来了
+        </div>
+        <div class="message-qty">
+          2
+        </div>
+      </div>
+    </div>
+
+    <div class="message-item">
+      <div class="message-introduce">
+        <div class="message-mult-logo">
+          <img class="message-image1" src="build/img/application/profile@3x.png">
+          <img class="message-image2" src="build/img/application/profile-2@3x.png">
+        </div>
+        <div class="message-title">讨论组</div>
+      </div>
+      <div class="message-date">
+        2015月20号
+      </div>
+      <div class="message-content">
+        <div class="message-text">
+          HRMS v2.0版本来了
+        </div>
+        <div class="message-qty">
+          2
+        </div>
+      </div>
+    </div>
+
+
+    <div class="message-item">
+      <div class="message-introduce">
+        <div class="message-logo blue">
+          MYF
+        </div>
+        <div class="message-title">马云飞</div>
+      </div>
+      <div class="message-date">
+        2015月20号
+      </div>
+      <div class="message-content">
+        <div class="message-text">
+          HRMS v2.0版本来了
+        </div>
+        <div class="message-qty">
+          2
+        </div>
+      </div>
+    </div>
+
+
+    <div class="message-item">
+      <div class="message-introduce">
+        <div class="message-logo red">
+          GSL
+        </div>
+        <div class="message-title">顾森林</div>
+      </div>
+      <div class="message-date">
+        2015月20号
+      </div>
+      <div class="message-content">
+        <div class="message-text">
+          HRMS v2.0版本来了
+        </div>
+        <div class="message-qty">
+          2
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

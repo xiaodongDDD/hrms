@@ -234,6 +234,128 @@
   /*margin-left: 16%;*/
   /*margin-top: 50px;*/ }
 
+.message-list .message-search {
+  width: 84%;
+  margin-left: 8%;
+  background: white;
+  height: 25px;
+  color: gray;
+  margin-top: 5px;
+  padding-left: 15px;
+  border-radius: 15px;
+  padding-top: 2px; }
+  .message-list .message-search .message-button {
+    float: left;
+    width: 8%;
+    margin-top: 1px;
+    font-size: 18px; }
+  .message-list .message-search input {
+    float: left;
+    width: 85%;
+    border: none; }
+
+.message-list .message-item {
+  position: relative;
+  margin-top: 10px;
+  width: 100%;
+  height: 105px;
+  padding-right: 15px;
+  border-bottom: 1px solid #e5e5e5; }
+  .message-list .message-item .message-introduce {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: 68px;
+    width: 180px;
+    padding: 9px;
+    background-image: url("../img/name@3x.png");
+    background-size: cover;
+    z-index: 99; }
+    .message-list .message-item .message-introduce .message-logo {
+      width: 51px;
+      height: 51px;
+      line-height: 51px;
+      text-align: center;
+      float: left;
+      border-radius: 25px;
+      font-size: 16px; }
+      .message-list .message-item .message-introduce .message-logo.red {
+        border: 1px solid #dd1144; }
+      .message-list .message-item .message-introduce .message-logo.blue {
+        border: 1px solid #4b8bf4; }
+    .message-list .message-item .message-introduce .message-has-logo {
+      width: 51px;
+      height: 51px;
+      line-height: 51px;
+      text-align: center;
+      float: left;
+      border-radius: 25px;
+      font-size: 16px; }
+    .message-list .message-item .message-introduce .message-mult-logo {
+      width: 51px;
+      height: 51px;
+      line-height: 51px;
+      text-align: center;
+      float: left;
+      border-radius: 25px;
+      font-size: 16px;
+      position: relative; }
+      .message-list .message-item .message-introduce .message-mult-logo .message-image1 {
+        width: 34px;
+        height: 34px;
+        position: absolute;
+        top: 10px;
+        left: 0px;
+        border-radius: 17px; }
+      .message-list .message-item .message-introduce .message-mult-logo .message-image2 {
+        width: 34px;
+        height: 34px;
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        border-radius: 17px; }
+    .message-list .message-item .message-introduce .message-title {
+      float: left;
+      padding-left: 25px;
+      height: 20px;
+      width: 70px;
+      margin-top: -5px;
+      font-size: 15px; }
+  .message-list .message-item .message-date {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    height: 25px;
+    width: 100px;
+    text-align: right;
+    font-size: 11px;
+    color: #9B9B9B; }
+  .message-list .message-item .message-content {
+    position: absolute;
+    top: 30px;
+    left: 15px;
+    height: 65px;
+    width: 92%;
+    padding-top: 20px;
+    border-right: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    border-left: 1px solid #e5e5e5;
+    border-top: 1px solid #fafafa;
+    z-index: 10;
+    box-shadow: 3px 3px 5px #eeeeee; }
+    .message-list .message-item .message-content .message-text {
+      padding-left: 60px;
+      width: 85%;
+      float: left;
+      color: #9B9B9B; }
+    .message-list .message-item .message-content .message-qty {
+      width: 10%;
+      float: left;
+      border-radius: 8px;
+      background: #285AA0;
+      color: white;
+      text-align: center; }
+
 .navigateHrms .slider-item {
   margin: 0 auto;
   width: 100%;
@@ -273,6 +395,30 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 29%; }
+
+.tabs-icon-top .tab-item.activated .message-off {
+  background-image: url("../img/tabs/message-f@3x.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 29%; }
+
+.tabs-icon-top .tab-item.activated .application-off {
+  background-image: url("../img/tabs/application-F@3x.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26%; }
+
+.tabs-icon-top .tab-item.activated .contact-off {
+  background-image: url("../img/tabs/contact-B@3x.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 26%; }
+
+.tabs-icon-top .tab-item.activated .mine-off {
+  background-image: url("../img/tabs/mine-B@3x.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30%; }
 
 .tabs-icon-top .application-on {
   background-image: url("../img/tabs/application-F@3x.png");

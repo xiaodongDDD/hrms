@@ -24,7 +24,7 @@ var clean = require('gulp-clean');
 var notify = require('gulp-notify');//提示信息
 var gulpNgConfig = require('gulp-ng-config');//提示信息
 
-var jsFilePath = ['app/scripts/*.js','app/scripts/*/*.js','app/app.js','app/pages/**/*.js','app/pages/**/**/*.js'];
+var jsFilePath = ['app/scripts/*.js','app/scripts/filter/*.js','app/app.js','app/pages/**/*.js','app/pages/**/**/*.js'];
 var htmlFilePath = ['app/pages/**/*.html','app/pages/**/**/*.html'];
 
 // Clean Task

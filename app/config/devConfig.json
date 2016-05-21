@@ -3,6 +3,7 @@
     "debug": false,
     "isMobilePlatform": false,
     "clearTable": true,
+    "nativeScreenFlag":false,
     "basePath": "http://wechat.hand-china.com/hmbms_hand/api",
     "currentVersion": "2.0.0",
     "url": "",

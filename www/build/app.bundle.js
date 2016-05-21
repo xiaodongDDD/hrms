@@ -1,9 +1,10 @@
 angular.module("baseConfig", [])
-.constant("baseConfig", {"debug":false,"isMobilePlatform":false,"clearTable":true,"basePath":"http://wechat.hand-china.com/hmbms_hand/api","currentVersion":"2.0.0","url":"","pkgIdentifier":"","versionName":"此版本为UAT测试环境 2.0.0","appEnvironment":"UAT"});
+.constant("baseConfig", {"debug":false,"isMobilePlatform":false,"clearTable":true,"nativeScreenFlag":false,"basePath":"http://wechat.hand-china.com/hmbms_hand/api","currentVersion":"2.0.0","url":"","pkgIdentifier":"","versionName":"此版本为UAT测试环境 2.0.0","appEnvironment":"UAT"});
 
 /**
  * Created by gusenlin on 16/5/16.
  */
+'use strict';
 //注册请求过滤器
 angular.module('utilModule',[]).factory('httpRequestHeader', function () {
   var interceptor = {
@@ -220,11 +221,6 @@ angular.module('applicationModule')
           appName: "Timesheet审批",
           imageUrl: "build/img/application/timesheetExamine@3x.png",
           destUrl: "",
-        },
-        {
-          appName: "",
-          imageUrl: "",
-          destUrl: "",
         }
       ];
 
@@ -336,134 +332,6 @@ angular.module('contactModule')
     }]);
 
 /**
- * Created by gusenlin on 16/5/16.
- */
-angular.module('loginModule')
-
-  .controller('guideCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-
-      console.log('loginCtrl.enter');
-
-      $scope.toLogin = function () {
-        console.log("跳过导航页到登陆页");
-        $state.go("login");
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('guideCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('guideCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('messageModule')
-
-  .controller('messageCtrl', [
-    '$scope',
-    '$state',
-    '$timeout',
-    function ($scope,
-              $state,
-              $timeout) {
-
-      $scope.messageList = [
-        {
-          user: "模版1",
-          content: "内容1"
-        },
-        {
-          user: "模版2",
-          content: "内容2"
-        },
-        {
-          user: "模版3",
-          content: "内容3"
-        },
-        {
-          user: "模版4",
-          content: "内容4"
-        },
-        {
-          user: "模版5",
-          content: "内容5"
-        },
-        {
-          user: "模版6",
-          content: "内容6"
-        },
-        {
-          user: "模版7",
-          content: "内容7"
-        },
-        {
-          user: "模版8",
-          content: "内容8"
-        },
-        {
-          user: "模版9",
-          content: "内容9"
-        },
-        {
-          user: "模版10",
-          content: "内容10"
-        }
-      ];
-
-      $scope.talk = function (message) {
-        console.log('$scope.talk');
-        $state.go("tab.messageDetail", {message: message});
-      };
-
-      $scope.refresh = function(){
-        $timeout(function(){
-          $scope.$broadcast("scroll.refreshComplete");
-        },2000);
-      };
-
-      console.log('messageCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageCtrl.$destroy');
-      });
-
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('myInfoModule')
-
-  .controller('myInfoCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-
-      console.log('myInfoCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('myInfoCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('myInfoCtrl.$destroy');
-      });
-    }]);
-
-/**
  * Created by gusenlin on 16/4/24.
  */
 angular.module('loginModule')
@@ -544,6 +412,94 @@ angular.module('loginModule')
 /**
  * Created by gusenlin on 16/4/24.
  */
+angular.module('myInfoModule')
+
+  .controller('myInfoCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+
+      console.log('myInfoCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('myInfoCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('myInfoCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('messageModule')
+
+  .controller('messageCtrl', [
+    '$scope',
+    '$state',
+    '$timeout',
+    function ($scope,
+              $state,
+              $timeout) {
+
+      $scope.messageList = [
+      ];
+
+      $scope.talk = function (message) {
+        console.log('$scope.talk');
+        $state.go("tab.messageDetail", {message: message});
+      };
+
+      $scope.refresh = function(){
+        $timeout(function(){
+          $scope.$broadcast("scroll.refreshComplete");
+        },2000);
+      };
+
+      console.log('messageCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('messageCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('messageCtrl.$destroy');
+      });
+
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+
+/**
+ * Created by gusenlin on 16/5/16.
+ */
+angular.module('loginModule')
+
+  .controller('guideCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+
+      console.log('loginCtrl.enter');
+
+      $scope.toLogin = function () {
+        console.log("跳过导航页到登陆页");
+        $state.go("login");
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('guideCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('guideCtrl.$destroy');
+      });
+    }]);
 
 /**
  * Created by gusenlin on 16/4/24.
