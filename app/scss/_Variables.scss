@@ -1,0 +1,78 @@
+/**
+* 基础字体大小
+*/
+$font-size-small: 14px !default;
+$font-size: 15px !default;
+$font-size-big: 17px !default;
+$color-base: white !default;
+//下面是列表的常用色
+//突出色
+$color-text-key: #24559C !default;
+//主色
+$color-text-main: #9B9B9B !default;
+//副色
+$color-text-assistant: #4A4A4A !default;
+
+/**
+* 背景色
+*/
+.hrms-pancel-corlor {
+  background: #f8f8f8;
+}
+
+/*
+* 导航栏 bar
+*/
+
+//背景
+.bar {
+  &.bar-stable {
+    border-color: #b2b2b2;
+    //background-color: #f8f8f8;
+    //background-image: linear-gradient(0deg, #b2b2b2, #b2b2b2 50%, transparent 50%);
+    color: $color-base;
+    background-image: url("../img/NaviBar@3x.png");
+    background-size: cover;
+  }
+}
+
+//标题
+.bar {
+  &.bar-stable {
+    .title {
+      color: $color-base;
+      font-size: $font-size-big;
+    }
+  }
+}
+
+//导航栏按钮
+.bar {
+  .buttons {
+    .button {
+      color: $color-base;
+      font-size: $font-size-big;
+    }
+  }
+}
+
+//导航栏返回按钮文字位置微调整
+.backButtonText {
+  padding-left: 2px;
+  padding-top: 1px;
+}
+
+//导航栏右侧按钮字体调整
+.barRightButton {
+  font-size: 16/17*$font-size-big;
+  padding-right: 5px;
+}
+
+//绝对位置调整mixin
+@mixin positionAdjust($marTop:26px,$right:8%,$font:$font-size-small,$color:$color-text-main) {
+  position: absolute;
+  margin-top: $marTop;
+  right: $right;
+  font-size: $font;
+  color: $color;
+}

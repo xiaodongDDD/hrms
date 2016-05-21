@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .mainApplication .header {
   background: white; }
 
@@ -40,6 +41,205 @@
     .mainApplication .appRegion .appArea .appList .appText {
       text-align: center;
       font-size: 10px; }
+
+/**
+* 基础字体大小
+*/
+/**
+* 背景色
+*/
+.hrms-pancel-corlor {
+  background: #f8f8f8; }
+
+/*
+* 导航栏 bar
+*/
+.bar.bar-stable {
+  border-color: #b2b2b2;
+  color: white;
+  background-image: url("../img/NaviBar@3x.png");
+  background-size: cover; }
+
+.bar.bar-stable .title {
+  color: white;
+  font-size: 17px; }
+
+.bar .buttons .button {
+  color: white;
+  font-size: 17px; }
+
+.backButtonText {
+  padding-left: 2px;
+  padding-top: 1px; }
+
+.barRightButton {
+  font-size: 16px;
+  padding-right: 5px; }
+
+.tsListBg {
+  border-color: #b2b2b2;
+  color: white;
+  background-image: url("./../img/application/tsApprove/list/BG@3x.png");
+  background-size: cover;
+  padding-top: 100px;
+  width: 100%; }
+
+.approveLsHead {
+  position: fixed;
+  z-index: 100;
+  height: 100px;
+  width: 100%; }
+  .approveLsHead .aeFirstHead {
+    height: 44px; }
+    .approveLsHead .aeFirstHead .backButton {
+      font-size: 30px;
+      margin-left: -10px;
+      color: white;
+      min-height: 35px; }
+    .approveLsHead .aeFirstHead .backText {
+      font-size: 17px;
+      position: fixed;
+      padding-left: 5px; }
+    .approveLsHead .aeFirstHead .actionButton {
+      right: 5px;
+      position: absolute;
+      color: white;
+      min-height: 35px;
+      font-size: 16px; }
+  .approveLsHead .aeSecondHead {
+    height: 56px; }
+    .approveLsHead .aeSecondHead .bgInput {
+      background-color: white;
+      margin-top: 1.2%;
+      margin-left: 13.3%;
+      width: 73.4%;
+      height: 70%;
+      border-radius: 20px; }
+      .approveLsHead .aeSecondHead .bgInput .calendarIcon {
+        background-image: url("./../img/application/tsApprove/list/calender@3x.png");
+        background-repeat: no-repeat;
+        background-position: 15px 0px;
+        background-size: 27px 27px;
+        margin-left: 15px;
+        padding-left: 50px;
+        min-height: 35px; }
+        .approveLsHead .aeSecondHead .bgInput .calendarIcon .calendarText {
+          color: #26579E;
+          font-size: 14px;
+          position: fixed;
+          margin-top: -6%; }
+      .approveLsHead .aeSecondHead .bgInput .calendarEndDate {
+        color: #F99D32;
+        font-size: 14px;
+        padding-top: 6px;
+        padding-left: 52px; }
+    .approveLsHead .aeSecondHead .connectBlock {
+      background-image: url("./../img/application/tsApprove/list/Rectangle-2@3x.png");
+      background-repeat: no-repeat;
+      background-size: 25px 13px;
+      margin-left: 46.6%;
+      height: 13px; }
+
+.tsListTitle {
+  font-size: 17px;
+  text-align: center;
+  color: white;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  margin-top: -27px; }
+
+.approveListItem {
+  margin-bottom: 5px;
+  padding-left: 10px;
+  height: 101px;
+  width: 92%;
+  margin-left: 4%;
+  background-color: white;
+  border-radius: 0 0 30px 0;
+  border: none;
+  box-shadow: 0px 2px 3px rgba(155, 155, 155, 0.23); }
+  .approveListItem .firContent {
+    font-size: 14px;
+    color: #24559C;
+    padding-top: 10px; }
+    .approveListItem .firContent .name {
+      font-size: 17px; }
+    .approveListItem .firContent .jobNumber {
+      padding-left: 15px; }
+    .approveListItem .firContent .city {
+      padding-left: 20px; }
+    .approveListItem .firContent .flyBack {
+      padding-left: 30px; }
+    .approveListItem .firContent .flyIcon {
+      background-image: url("./../img/application/tsApprove/list/flyback@3x.png");
+      background-repeat: no-repeat;
+      background-size: 15px 15px;
+      margin-left: 10px;
+      width: 20px;
+      height: 15px; }
+    .approveListItem .firContent .flyNumber {
+      font-size: 15px;
+      color: #d2d2d2; }
+  .approveListItem .SecContent {
+    font-size: 14px;
+    color: #9B9B9B;
+    padding-top: 10px; }
+    .approveListItem .SecContent .name {
+      color: #4A4A4A; }
+    .approveListItem .SecContent .number {
+      padding-left: 35px; }
+    .approveListItem .SecContent .numberIcon {
+      background-image: url("./../img/application/tsApprove/list/accounting@3x.png");
+      background-repeat: no-repeat;
+      background-size: 14px 14px;
+      background-position: 0 2px;
+      margin-left: 10%;
+      width: 20px;
+      height: 16px; }
+  .approveListItem .arrowItem {
+    height: 21px;
+    width: 21px;
+    background-image: url("./../img/application/tsApprove/list/BackArrow-1@3x.png");
+    background-size: cover;
+    position: absolute;
+    right: 10%;
+    margin-top: -18px; }
+
+.footBar {
+  height: 50px;
+  background-color: white; }
+  .footBar .buttons {
+    position: absolute;
+    right: 6%; }
+    .footBar .buttons .filterIcon {
+      background-image: url("./../img/application/tsApprove/list/screen@3x.png");
+      background-repeat: no-repeat;
+      background-size: 26px 26px;
+      background-position: 15px 0px;
+      margin-left: 5px;
+      padding-left: 50px;
+      min-height: 35px; }
+    .footBar .buttons .filterText {
+      position: absolute;
+      margin-top: 26px;
+      right: 59%;
+      font-size: 14px;
+      color: #9B9B9B; }
+    .footBar .buttons .timeIcon {
+      background-image: url("./../img/application/tsApprove/list/reorder@3x.png");
+      background-repeat: no-repeat;
+      background-size: 26px 26px;
+      background-position: 15px 0px;
+      margin-left: 5px;
+      padding-left: 50px;
+      min-height: 35px; }
+    .footBar .buttons .timeText {
+      position: absolute;
+      margin-top: 26px;
+      right: 8%;
+      font-size: 14px;
+      color: #9B9B9B; }
 
 .input-label-login {
   display: table;
@@ -250,18 +450,6 @@
   border: none;
   border-radius: 10px; }
 
-.hrms-pancel-corlor {
-  background: #f8f8f8; }
-
-.bar.bar-stable {
-  border-color: #b2b2b2;
-  color: white;
-  background-image: url("../img/NaviBar@3x.png");
-  background-size: cover; }
-
-.bar.bar-stable .title {
-  color: white; }
-
 .tabs-icon-top .message-on {
   background-image: url("../img/tabs/message-f@3x.png");
   background-repeat: no-repeat;
@@ -309,3 +497,37 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 30%; }
+
+/**
+* 基础字体大小
+*/
+/**
+* 背景色
+*/
+.hrms-pancel-corlor {
+  background: #f8f8f8; }
+
+/*
+* 导航栏 bar
+*/
+.bar.bar-stable {
+  border-color: #b2b2b2;
+  color: white;
+  background-image: url("../img/NaviBar@3x.png");
+  background-size: cover; }
+
+.bar.bar-stable .title {
+  color: white;
+  font-size: 17px; }
+
+.bar .buttons .button {
+  color: white;
+  font-size: 17px; }
+
+.backButtonText {
+  padding-left: 2px;
+  padding-top: 1px; }
+
+.barRightButton {
+  font-size: 16px;
+  padding-right: 5px; }

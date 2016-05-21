@@ -1,0 +1,58 @@
+<ion-view view-title="Timesheet审批">
+  <div class="approveLsHead">
+    <div class="row aeFirstHead">
+      <button class="button button-clear backButton"
+              ng-click="$ionicGoBack()">
+        <i class="ion-ios-arrow-left"></i>
+        <span class="backText">返回</span>
+      </button>
+      <button class="button button-clear actionButton">
+        操作
+      </button>
+    </div>
+    <div class="tsListTitle">Timesheet审批</div>
+    <div class="aeSecondHead">
+      <div class="row bgInput">
+        <button class="button button-clear calendarIcon">
+          <span class="calendarText">日历</span>
+        </button>
+        <span class="calendarEndDate">截止日期: 5月21日</span>
+      </div>
+      <div class="connectBlock">
+      </div>
+    </div>
+  </div>
+  <ion-content class="tsListBg">
+    <div class="approveListItem" ng-repeat="i in ['1','2','3','4','5','6','7','8','9']"
+         ng-click="goApproveDetail()">
+      <div class="row firContent">
+        <span class="name">成志维</span>
+        <span class="jobNumber">4040</span>
+        <span class="city">上海</span>
+        <span class="flyBack">flyback:</span>
+        <span class="flyIcon"></span>
+        <span class="flyNumber">x 1</span>
+      </div>
+      <div class="row SecContent">
+        <span class="name">补助:</span>
+        <span class="number">0*2</span>
+        <span class="numberIcon"></span>
+      </div>
+      <div class="arrowItem"></div>
+      <div class="row SecContent">
+        <span class="name">项目:</span>
+        <span class="number">汉得内部项目-无项目</span>
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar class="footBar">
+    <div class="buttons">
+      <button class="button button-clear filterIcon">
+      </button>
+      <div class="filterText">筛选</div>
+      <button class="button button-clear timeIcon">
+      </button>
+      <div class="timeText">时间</div>
+    </div>
+  </ion-footer-bar>
+</ion-view>

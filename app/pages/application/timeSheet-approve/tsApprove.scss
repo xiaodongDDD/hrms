@@ -1,0 +1,197 @@
+@import "../scss/_Variables.scss";
+
+//审批列表背景
+.tsListBg {
+  border-color: #b2b2b2;
+  color: $color-base;
+  background-image: url("./../img/application/tsApprove/list/BG@3x.png");
+  background-size: cover;
+  padding-top: 100px;
+  width: 100%;
+}
+
+.approveLsHead {
+  position: fixed;
+  z-index: 100;
+  height: 100px;
+  width: 100%;
+  .aeFirstHead {
+    height: 44px;
+    .backButton {
+      font-size: 2*$font-size;
+      margin-left: -10px;
+      color: $color-base;
+      min-height: 35px;
+    }
+    .backText {
+      font-size: $font-size-big;
+      position: fixed;
+      padding-left: 5px;
+    }
+    .actionButton {
+      right: 5px;
+      position: absolute;
+      color: $color-base;
+      min-height: 35px;
+      font-size: 16/17*$font-size-big;
+    }
+  }
+  .aeSecondHead {
+    height: 56px;
+    .bgInput {
+      background-color: $color-base;
+      margin-top: 1.2%;
+      margin-left: 13.3%;
+      width: 73.4%;
+      height: 70%;
+      border-radius: 20px;
+      .calendarIcon {
+        background-image: url("./../img/application/tsApprove/list/calender@3x.png");
+        background-repeat: no-repeat;
+        background-position: 15px 0px;
+        background-size: 27px 27px;
+        margin-left: 15px;
+        padding-left: 50px;
+        min-height: 35px;
+        .calendarText {
+          color: #26579E;
+          font-size: $font-size-small;
+          position: fixed;
+          margin-top: -6%;
+        }
+      }
+      .calendarEndDate {
+        color: #F99D32;
+        font-size: $font-size-small;
+        padding-top: 6px;
+        padding-left: 52px;
+
+      }
+    }
+    .connectBlock {
+      background-image: url("./../img/application/tsApprove/list/Rectangle-2@3x.png");
+      background-repeat: no-repeat;
+      background-size: 25px 13px;
+      margin-left: 46.6%;
+      height: 13px;
+    }
+  }
+}
+
+.tsListTitle {
+  font-size: $font-size-big;
+  text-align: center;
+  color: $color-base;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  margin-top: -27px;
+}
+
+//列表
+.approveListItem {
+  margin-bottom: 5px;
+  padding-left: 10px;
+  height: 101px;
+  width: 92%;
+  margin-left: 4%;
+  background-color: $color-base;
+  border-radius: 0 0 30px 0;
+  border: none;
+  box-shadow: 0px 2px 3px rgba(155, 155, 155, 0.23);
+  .firContent {
+    font-size: $font-size-small;
+    color: $color-text-key;
+    padding-top: 10px;
+    .name {
+      font-size: $font-size-big;
+    }
+    .jobNumber {
+      padding-left: 15px;
+    }
+    .city {
+      padding-left: 20px;
+    }
+    .flyBack {
+      padding-left: 30px;
+    }
+    .flyIcon {
+      background-image: url("./../img/application/tsApprove/list/flyback@3x.png");
+      background-repeat: no-repeat;
+      background-size: 15px 15px;
+      margin-left: 10px;
+      width: 20px;
+      height: 15px;
+    }
+    .flyNumber {
+      font-size: $font-size;
+      color: #d2d2d2;
+    }
+  }
+  .SecContent {
+    font-size: $font-size-small;
+    color: $color-text-main;
+    padding-top: 10px;
+    .name {
+      color: $color-text-assistant;
+    }
+    .number {
+      padding-left: 35px;
+    }
+    .numberIcon {
+      background-image: url("./../img/application/tsApprove/list/accounting@3x.png");
+      background-repeat: no-repeat;
+      background-size: 14px 14px;
+      background-position: 0 2px;
+      margin-left: 10%;
+      width: 20px;
+      height: 16px;
+    }
+  }
+  .arrowItem {
+    height: 21px;
+    width: 21px;
+    background-image: url("./../img/application/tsApprove/list/BackArrow-1@3x.png");
+    background-size: cover;
+    position: absolute;
+    right: 10%;
+    margin-top: -18px;
+  }
+}
+
+//list page
+.footBar {
+  height: 50px;
+  background-color: $color-base;
+  .buttons {
+    position: absolute;
+    right: 6%;
+    .filterIcon {
+      background-image: url("./../img/application/tsApprove/list/screen@3x.png");
+      background-repeat: no-repeat;
+      background-size: 26px 26px;
+      background-position: 15px 0px;
+      margin-left: 5px;
+      padding-left: 50px;
+      min-height: 35px;
+    }
+    .filterText{
+      @include positionAdjust(26px,59%);
+    }
+    .timeIcon {
+      background-image: url("./../img/application/tsApprove/list/reorder@3x.png");
+      background-repeat: no-repeat;
+      background-size: 26px 26px;
+      background-position: 15px 0px;
+      margin-left: 5px;
+      padding-left: 50px;
+      min-height: 35px;
+    }
+    .timeText {
+      @include positionAdjust(26px,8%);
+    }
+  }
+}
+
+.aeDetailHead{
+}

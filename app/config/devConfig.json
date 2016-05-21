@@ -1,6 +1,6 @@
 {
   "baseConfig": {
-    "debug": false,
+    "debug": true,
     "isMobilePlatform": false,
     "clearTable": true,
     "basePath": "http://wechat.hand-china.com/hmbms_hand/api",

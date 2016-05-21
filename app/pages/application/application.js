@@ -51,7 +51,7 @@ angular.module('applicationModule')
         {
           appName: "Timesheet审批",
           imageUrl: "build/img/application/timesheetExamine@3x.png",
-          destUrl: "",
+          destUrl: "tab.tsApproveList",
         },
         {
           appName: "",
@@ -132,7 +132,7 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log("appItem " + angular.toJson(appItem));
         }
-        $state.go("appItem.destUrl");
+        $state.go(appItem.destUrl);
       };
 
       console.log('applicationCtrl.enter');

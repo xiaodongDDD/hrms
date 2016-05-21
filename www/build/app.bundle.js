@@ -34,6 +34,7 @@ var messageModule = angular.module('messageModule', []);
 var contactModule = angular.module('contactModule', []);
 var applicationModule = angular.module('applicationModule', []);
 var myInfoModule = angular.module('myInfoModule', []);
+var tsApproveModule = angular.module('tsApproveModule', []);
 
 angular.module('myApp', [
   'ionic',
@@ -44,7 +45,8 @@ angular.module('myApp', [
   'contactModule',
   'applicationModule',
   'myInfoModule',
-  'utilModule'
+  'utilModule',
+  'tsApproveModule'
 ]);
 
 angular.module('myApp')
@@ -89,7 +91,7 @@ angular.module('myApp')
       $ionicConfigProvider.platform.android.views.transition('android');
 
       $stateProvider
-      // setup an abstract state for the tabs directive
+        // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
           abstract: true,
@@ -159,6 +161,25 @@ angular.module('myApp')
           url: '/guide',
           templateUrl: 'build/pages/login/login.html',
           controller: 'loginCtrl'
+        })
+
+        .state('tab.tsApproveList', {
+          url: 'application/tsApproveList',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timeSheet-approve/list/tsApproveList.html',
+              controller: 'tsApproveListCtrl'
+            }
+          }
+        })
+        .state('tab.tsApproveDetail', {
+          url: 'application/tsApproveDetail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timeSheet-approve/detail/tsApproveDetail.html',
+              controller: 'tsApproveDetailCtrl'
+            }
+          }
         });
 
       // if none of the above states are matched, use this as the fallback
@@ -219,7 +240,7 @@ angular.module('applicationModule')
         {
           appName: "Timesheet审批",
           imageUrl: "build/img/application/timesheetExamine@3x.png",
-          destUrl: "",
+          destUrl: "tab.tsApproveList",
         },
         {
           appName: "",
@@ -300,7 +321,7 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log("appItem " + angular.toJson(appItem));
         }
-        $state.go("appItem.destUrl");
+        $state.go(appItem.destUrl);
       };
 
       console.log('applicationCtrl.enter');
@@ -359,6 +380,84 @@ angular.module('loginModule')
 
       $scope.$on('$destroy', function (e) {
         console.log('guideCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('loginModule')
+
+  .controller('loginCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicLoading',
+    '$http',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicLoading,
+              $http) {
+
+      $scope.loginData = {};
+      $scope.currentVersionNum = baseConfig.currentVersion;
+
+      console.log('loginCtrl.enter');
+
+      $scope.savePassword = function () {
+        $scope.checkbox_savePwd = !$scope.checkbox_savePwd;//取反 记住密码框的状态
+        console.log("此时密码框的状态为 :", angular.toJson($scope.checkbox_savePwd));
+        if ($scope.loginData.password !== "") {
+          if ($scope.checkbox_savePwd === true) {
+            window.localStorage.password = $scope.loginData.password;
+          } else {
+            window.localStorage.password = "";
+          }
+        }
+      };
+
+      $scope.doLogin = function () {
+        window.localStorage.empno = $scope.loginData.username;
+        if ($scope.checkbox_savePwd) {
+          window.localStorage.password = $scope.loginData.password;
+        } else {
+          window.localStorage.password = "";
+        }
+        $ionicLoading.show({
+          template: 'Loading...'
+        });
+
+        var url = baseConfig.basePath + "/appLogin/user_login/login";
+        var params = '{"params":{"p_user_name":"' + $scope.loginData.username +
+          '","p_password":"' + $scope.loginData.password + '"}}';
+
+        $http.post(url, params).success(function (result) {
+          $ionicLoading.hide();
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+
+          if (result.con_status == "S") {
+            window.localStorage.token = result.pre_token + result.token_key;
+            window.localStorage.empno = $scope.loginData.username;
+            $state.go("tab.message");
+          }
+
+        }).error(function (response, status) {
+          $ionicLoading.hide();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(response));
+          }
+        });
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('loginCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('loginCtrl.$destroy');
       });
     }]);
 
@@ -466,84 +565,6 @@ angular.module('myInfoModule')
 /**
  * Created by gusenlin on 16/4/24.
  */
-angular.module('loginModule')
-
-  .controller('loginCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    '$ionicLoading',
-    '$http',
-    function ($scope,
-              $state,
-              baseConfig,
-              $ionicLoading,
-              $http) {
-
-      $scope.loginData = {};
-      $scope.currentVersionNum = baseConfig.currentVersion;
-
-      console.log('loginCtrl.enter');
-
-      $scope.savePassword = function () {
-        $scope.checkbox_savePwd = !$scope.checkbox_savePwd;//取反 记住密码框的状态
-        console.log("此时密码框的状态为 :", angular.toJson($scope.checkbox_savePwd));
-        if ($scope.loginData.password !== "") {
-          if ($scope.checkbox_savePwd === true) {
-            window.localStorage.password = $scope.loginData.password;
-          } else {
-            window.localStorage.password = "";
-          }
-        }
-      };
-
-      $scope.doLogin = function () {
-        window.localStorage.empno = $scope.loginData.username;
-        if ($scope.checkbox_savePwd) {
-          window.localStorage.password = $scope.loginData.password;
-        } else {
-          window.localStorage.password = "";
-        }
-        $ionicLoading.show({
-          template: 'Loading...'
-        });
-
-        var url = baseConfig.basePath + "/appLogin/user_login/login";
-        var params = '{"params":{"p_user_name":"' + $scope.loginData.username +
-          '","p_password":"' + $scope.loginData.password + '"}}';
-
-        $http.post(url, params).success(function (result) {
-          $ionicLoading.hide();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-
-          if (result.con_status == "S") {
-            window.localStorage.token = result.pre_token + result.token_key;
-            window.localStorage.empno = $scope.loginData.username;
-            $state.go("tab.message");
-          }
-
-        }).error(function (response, status) {
-          $ionicLoading.hide();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(response));
-          }
-        });
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('loginCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('loginCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
 
 /**
  * Created by gusenlin on 16/4/24.
@@ -577,4 +598,61 @@ angular.module('messageModule')
       $scope.$on('$destroy', function (e) {
         console.log('messageDetailCtrl.$destroy');
       });
+    }]);
+
+/**
+ * Created by wolf on 2016/5/21. (_wen.dai_)
+ */
+'use strict';
+//应用-timeSheet审批模块-详情
+tsApproveModule.controller('tsApproveDetailCtrl', [
+  '$scope',
+  '$state',
+  'baseConfig',
+  '$ionicHistory',
+  function ($scope,
+            $state,
+            baseConfig,
+            $ionicHistory) {
+
+    $scope.$on('$ionicView.enter', function (e) {
+      console.log('tsApproveListCtrl.$ionicView.enter');
+    });
+
+    $scope.$on('$destroy', function (e) {
+      console.log('tsApproveListCtrl.$destroy');
+    });
+  }]);
+
+
+/**
+ * Created by wolf on 2016/5/19.
+ * @author: wen.dai@hand-china.com
+ *
+ */
+'use strict';
+//应用-timeSheet审批模块-列表
+angular.module('tsApproveModule')
+  .controller('tsApproveListCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicHistory) {
+
+      $scope.goApproveDetail = function () {
+          $state.go('tab.tsApproveDetail');
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('tsApproveListCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('tsApproveListCtrl.$destroy');
+      });
+
     }]);
