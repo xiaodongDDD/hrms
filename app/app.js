@@ -5,13 +5,6 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var loginModule = angular.module('loginModule', []);
-var messageModule = angular.module('messageModule', []);
-var contactModule = angular.module('contactModule', []);
-var applicationModule = angular.module('applicationModule', []);
-var myInfoModule = angular.module('myInfoModule', []);
-var tsApproveModule = angular.module('tsApproveModule', []);
-
 angular.module('myApp', [
   'ionic',
   'ngCordova',
@@ -22,7 +15,8 @@ angular.module('myApp', [
   'applicationModule',
   'myInfoModule',
   'utilModule',
-  'tsApproveModule'
+  'tsApproveModule',
+  'HmsModule'
 ]);
 
 angular.module('myApp')
