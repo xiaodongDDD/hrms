@@ -1,5 +1,3 @@
-@import "../scss/_Variables.scss";
-
 //审批列表背景
 .tsListBg {
   border-color: #b2b2b2;
@@ -10,11 +8,27 @@
   width: 100%;
 }
 
-.approveLsHead {
+//火箭图标
+.rocketIcon {
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  z-index: 100;
+  top: 68%;
+  right: 2%;
+  background-image: url("./../img/application/tsApprove/list/rocketTop@3x.png");
+  background-size: cover;
+}
+
+.tsApproveLsHead {
   position: fixed;
   z-index: 100;
   height: 100px;
   width: 100%;
+  background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
+  background: -o-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2); /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2); /* Firefox 3.6 - 15 */
+  background: linear-gradient(top, #17468F, #3D7BC4, #6EA5D2); /* 标准的语法 */
   .aeFirstHead {
     height: 44px;
     .backButton {
@@ -89,7 +103,7 @@
 }
 
 //列表
-.approveListItem {
+.tsApproveListItem {
   margin-bottom: 5px;
   padding-left: 10px;
   height: 101px;
@@ -175,8 +189,8 @@
       padding-left: 50px;
       min-height: 35px;
     }
-    .filterText{
-      @include positionAdjust(26px,59%);
+    .filterText {
+      @include positionAdjust(26px, 59%);
     }
     .timeIcon {
       background-image: url("./../img/application/tsApprove/list/reorder@3x.png");
@@ -188,10 +202,132 @@
       min-height: 35px;
     }
     .timeText {
-      @include positionAdjust(26px,8%);
+      @include positionAdjust(26px, 8%);
     }
   }
 }
 
-.aeDetailHead{
+.aeDetailHead {
+  height: 92px;
+  width: 100%;
+  background-color: #f8f8f8;
+  margin-top: 44px;
+  padding-top: 12px;
+  z-index: 100;
+  position: fixed;
+  .aeDetailHeadContent {
+    background-color: $color-base;
+    height: 64px;
+    border-radius: 0 0 30px 0;
+    color: $color-text-assistant;
+    font-size: $font-size-small;
+    padding-left: 15px;
+    box-shadow: 0 2px 4px rgba(155, 155, 155, 0.23);
+    .contentText {
+      padding-top: 10px;
+    }
+  }
+}
+
+.ts-ae-detail-item {
+  background-color: white;
+  color: $color-text-main;
+  font-size: $font-size-small;
+  .aeItemsHead {
+    height: 30px;
+    color: #26579E;
+    margin-top: 92px;
+    font-size: 16/17*$font-size-big;
+    padding-left: 5.3%;
+    .itemWidth {
+      width: 18%;
+      text-align: center;
+    }
+  }
+
+  .liner-ts-ae-detail {
+    height: 2px;
+    width: 100%;
+    margin-left: 4%;
+    background: -webkit-linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF); /* Firefox 3.6 - 15 */
+    background: linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF); /* 标准的语法 */
+  }
+
+  .ts-approve-detail-item {
+    height: 81px;
+    width: 100%;
+    .aeItemHead {
+      padding-top: 20px;
+      padding-left: 4.3%;
+      color: $color-text-main;
+      .itemWidth {
+        width: 18%;
+        text-align: center;
+      }
+      .descripText {
+        width: 28%;
+        position: absolute;
+        color: $color-text-assistant;
+      }
+    }
+    .item-date {
+      padding-left: 10%;
+      margin-top: 10px;
+    }
+    .itemBottomliner {
+      border-bottom: 1px solid #d2d2d2;
+      margin-left: 10%;
+      margin-top: 6px;
+    }
+  }
+
+  .selecetIcon {
+    @if true {
+      background-image: url("./../img/application/tsApprove/detail/selected@3x.png");
+    } @else {
+      background-image: url("./../img/application/tsApprove/detail/Oval@3x.png");
+    }
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    position: absolute;
+    left: 4.5%;
+    width: 14px;
+    height: 14px;
+    margin-top: -48px;
+  }
+
+  .noIcon {
+    background-image: url("./../img/application/tsApprove/detail/no@3x.png");
+    background-repeat: no-repeat;
+    background-size: 11px 11px;
+    background-position: 54% 3px;
+  }
+  .yesIcon {
+    background-image: url("./../img/application/tsApprove/detail/yes@3x.png");
+    background-repeat: no-repeat;
+    background-size: 15px 11px;
+    background-position: 55% 3px;
+  }
+}
+
+.ts-buttonLeft {
+  font-size: 16/17*$font-size-big !important;
+  color: #26579E !important;
+  left: 15px;
+  position: fixed;
+}
+
+.ts-buttonCenter {
+  font-size: 16/17*$font-size-big !important;
+  color: #ECAF38 !important;
+  margin-left: 51%;
+}
+
+.ts-buttonRight {
+  font-size: 16/17*$font-size-big !important;
+  color: #B95756 !important;
+  right: 15px;
+  position: fixed;
 }
