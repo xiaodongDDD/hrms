@@ -1,13 +1,13 @@
 <ion-view view-title="Timesheet审批">
-  <div class="approveLsHead">
+  <div class="tsApproveLsHead">
     <div class="row aeFirstHead">
       <button class="button button-clear backButton"
               ng-click="$ionicGoBack()">
-        <i class="ion-ios-arrow-left"></i>
+        <i class="ion-ios-arrow-back"></i>
         <span class="backText">返回</span>
       </button>
-      <button class="button button-clear actionButton">
-        操作
+      <button class="button button-clear actionButton" ng-click="doSelectAction()" ng-cloak>
+        {{actionName}}
       </button>
     </div>
     <div class="tsListTitle">Timesheet审批</div>
@@ -18,12 +18,13 @@
         </button>
         <span class="calendarEndDate">截止日期: 5月21日</span>
       </div>
-      <div class="connectBlock">
+      <div class="connectBlock" ng-if="showConnectBlock">
       </div>
     </div>
   </div>
-  <ion-content class="tsListBg">
-    <div class="approveListItem" ng-repeat="i in ['1','2','3','4','5','6','7','8','9']"
+  <ion-content class="tsListBg" has-bouncing="true" on-scroll="watchScroll()" on-drag="onDrag()" on-drag-up="onDragUp()"
+               scrollbar-y="false">
+    <div id="tsApproveList" class="tsApproveListItem" ng-repeat="i in ['1','2','3','4','5','6','7','8','9']"
          ng-click="goApproveDetail()">
       <div class="row firContent">
         <span class="name">成志维</span>
@@ -36,23 +37,30 @@
       <div class="row SecContent">
         <span class="name">补助:</span>
         <span class="number">0*2</span>
-        <span class="numberIcon"></span>
+        <span class="numberIcon" ng-click="getAttentionInfo($event)"></span>
       </div>
-      <div class="arrowItem"></div>
+      <div class="arrowItem" ng-if="showDetailArrow"></div>
       <div class="row SecContent">
         <span class="name">项目:</span>
         <span class="number">汉得内部项目-无项目</span>
       </div>
     </div>
   </ion-content>
+  <div class="rocketIcon" ng-if="showRocket" ng-click="goTsLsTop()"></div>
   <ion-footer-bar class="footBar">
     <div class="buttons">
-      <button class="button button-clear filterIcon">
+      <button class="button button-clear filterIcon" ng-click="filterTsInfo()">
       </button>
-      <div class="filterText">筛选</div>
+      <div class="filterText" ng-click="filterTsInfo()">筛选</div>
       <button class="button button-clear timeIcon">
       </button>
       <div class="timeText">时间</div>
     </div>
   </ion-footer-bar>
+  <footer-select
+    ng-if="false"
+    select-all-item="selectAllList()"
+    pass-through="passThroughListItem()"
+    refuse="refuseListItem()">
+  </footer-select>
 </ion-view>
