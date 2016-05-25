@@ -13,6 +13,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
             baseConfig,
             $ionicHistory) {
 
+    var log = console.warn.bind(console);
     $scope.$on('$ionicView.enter', function (e) {
       console.log('tsApproveListCtrl.$ionicView.enter');
     });
@@ -20,5 +21,15 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
     $scope.$on('$destroy', function (e) {
       console.log('tsApproveListCtrl.$destroy');
     });
+
+    $scope.selectAllDetail = function () { //全选
+      log("selectAllDetail");
+    };
+    $scope.passThroughDetailItem = function () { //通过
+      log("passThroughDetailItem");
+    };
+    $scope.refuseDetailItem = function () { //拒绝
+      log("refuseDetailItem");
+    };
   }]);
 

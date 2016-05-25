@@ -45,17 +45,9 @@
       </div>
     </div>
   </ion-content>
-  <ion-footer-bar class="footBar">
-    <div class="row buttons">
-      <button class="button button-clear ts-buttonLeft">
-        全选
-      </button>
-      <button class="button button-clear ts-buttonCenter">
-        通过
-      </button>
-      <button class="button button-clear ts-buttonRight">
-        拒绝
-      </button>
-    </div>
-  </ion-footer-bar>
+  <footer-select
+    select-all-item="selectAllDetail()"
+    pass-through="passThroughDetailItem()"
+    refuse="refuseDetailItem()">
+  </footer-select>
 </ion-view>

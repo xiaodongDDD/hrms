@@ -34,6 +34,11 @@ $color-text-assistant: #4A4A4A !default;
     background-image: url("../img/NaviBar@3x.png");
     background-size: cover;
   }
+  &.bar-modal {
+    height: 40px;
+    background-color: #26579E;
+    font-size: 16/17*$font-size-big;
+  }
 }
 
 //标题
@@ -68,11 +73,3 @@ $color-text-assistant: #4A4A4A !default;
   padding-right: 5px;
 }
 
-//绝对位置调整mixin
-@mixin positionAdjust($marTop:26px,$right:8%,$font:$font-size-small,$color:$color-text-main) {
-  position: absolute;
-  margin-top: $marTop;
-  right: $right;
-  font-size: $font;
-  color: $color;
-}
