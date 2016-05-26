@@ -1,0 +1,35 @@
+<ion-modal-view class="ts-filter-modal">
+  <ion-header-bar align-title="center" class="bar-modal">
+    <div class="buttons">
+      <button class="button button-clear" ng-click="tsFilterModal.hide()">取消</button>
+    </div>
+    <h1 class="title" style="color: white;">清空筛选</h1>
+
+    <div class="buttons">
+      <button class="button button-clear" ng-click="tsFilterModal.hide()">确定</button>
+    </div>
+  </ion-header-bar>
+  <ion-content overflow-scroll="true" style="overflow: hidden">
+    <div class="row ts-filter-input">
+      <div class="filterText">全部
+        <i class="ion-checkmark-round" style="padding-left: 8%"></i>
+      </div>
+      <input type="search" class="filterInput" placeholder="搜索"/>
+    </div>
+    <div class="row filterItemsRow">
+      <div class="selectItems">
+        <div class="projectName">
+          项目名称
+        </div>
+        <div class="personSelect">
+          人员选择
+        </div>
+      </div>
+      <ion-scroll class="itemsBg">
+        <div class="itemsDetail" ng-repeat="i in ['1','2','3','4','5','6','7','8','9','1'] track by $index">
+            汉得内部项目--hrms2.0
+        </div>
+      </ion-scroll>
+    </div>
+  </ion-content>
+</ion-modal-view>

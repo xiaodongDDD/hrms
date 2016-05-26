@@ -24,8 +24,11 @@ var clean = require('gulp-clean');
 var notify = require('gulp-notify');//提示信息
 var gulpNgConfig = require('gulp-ng-config');//提示信息
 
-var jsFilePath = ['app/scripts/*.js','app/scripts/filter/*.js','app/app.js','app/pages/**/*.js','app/pages/**/**/*.js'];
-var htmlFilePath = ['app/pages/**/*.html','app/pages/**/**/*.html'];
+var jsFilePath = ['app/scripts/*.js','app/scripts/*/*.js','app/app.js','app/pages/**/*.js','app/pages/**/**/*.js','app/pages/**/**/**/*.js'];
+var htmlFilePath = ['app/pages/**/*.html','app/pages/**/**/*.html','app/pages/**/**/**/*.html'];
+var libFilePath = ['app/lib/**/*.*','app/lib/**/**/*.*','app/lib/**/**/**/*.*'];
+var imgFilePath = ['app/img/**/*.png','app/img/**/**/*.png','app/img/**/**/**/*.png'];
+
 
 // Clean Task
 gulp.task('clean', function () {
@@ -61,52 +64,22 @@ gulp.task('rootHtml', function(){
 
 gulp.task('html', [/*'rootHtml',*/ 'pagesHtml']);
 
-// Copy Ionic Lib
-gulp.task('copy-css-lib', function() {
-  return gulp.src('app/lib/ionic/css/ionic.css')
-    .pipe(gulp.dest('www/build/lib/ionic/css'));
+// Copy JavaScript Lib
+gulp.task('copy-libs', function(){
+  return gulp.src(libFilePath)
+    .pipe(useref({noAssets:true}, lazypipe().pipe(sourcemaps.init, { loadMaps: true })))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('www/build/lib'));
 });
 
-gulp.task('copy-js-lib', function() {
-  return gulp.src('app/lib/ionic/js/ionic.bundle.js')
-    .pipe(gulp.dest('www/build/lib/ionic/js'));
-});
-
-gulp.task('copy-font-lib', function() {
-  return gulp.src('app/lib/ionic/fonts/*.*')
-    .pipe(gulp.dest('www/build/lib/ionic/fonts'));
-});
-
-gulp.task('copy-ng-cordova-lib', function() {
-  return gulp.src('app/lib/ngCordova/dist/ng-cordova.js')
-    .pipe(gulp.dest('www/build/lib/ngCordova/dist'));
-});
-
-gulp.task('copy-cryptojs-lib-components', function() {
-  return gulp.src('app/lib/cryptojslib/components/*.js')
-    .pipe(gulp.dest('www/build/lib/cryptojslib/components'));
-});
-
-gulp.task('copy-cryptojs-lib-rollups', function() {
-  return gulp.src('app/lib/cryptojslib/rollups/*.js')
-    .pipe(gulp.dest('www/build/lib/cryptojslib/rollups'));
-});
-
-gulp.task('copy-img-all', function() {
-  return gulp.src('app/img/*.*')
+//Copy Image File
+gulp.task('copy-img', function() {
+  return gulp.src(imgFilePath)
     .pipe(gulp.dest('www/build/img'));
 });
-gulp.task('copy-img-tabs', function() {
-  return gulp.src('app/img/tabs/*.*')
-    .pipe(gulp.dest('www/build/img/tabs'));
-});
-gulp.task('copy-img-application', function() {
-  return gulp.src('app/img/application/**/**/*.*')
-    .pipe(gulp.dest('www/build/img/application'));
-});
-gulp.task('copy-img', ['copy-img-all', 'copy-img-tabs','copy-img-application']);
 
-gulp.task('copy-lib', ['copy-css-lib', 'copy-js-lib','copy-font-lib','copy-ng-cordova-lib','copy-cryptojs-lib-components','copy-cryptojs-lib-rollups','copy-img']);
+gulp.task('copy-lib', ['copy-libs','copy-img']);
+
 
 // Compile Sass
 gulp.task('sass', function() {
@@ -185,7 +158,7 @@ gulp.task('rebuild-dev', function (callback) {
 });
 
 gulp.task('build-dev', function (callback) {
-  runSequence('copy-dev', ['lint','config-dev','copy-lib' ,'sass' , 'scripts', 'html'], callback);
+  runSequence('config-dev', ['lint','copy-lib' ,'sass' , 'scripts', 'html'], callback);
 });
 
 gulp.task('build-prod', function (callback) {
