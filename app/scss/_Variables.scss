@@ -47,6 +47,8 @@ $color-text-assistant: #4A4A4A !default;
     .title {
       color: $color-base;
       font-size: $font-size-big;
+      left: 0px !important;
+      right: 0px !important;
     }
   }
 }
@@ -62,13 +64,13 @@ $color-text-assistant: #4A4A4A !default;
 }
 
 //导航栏返回按钮文字位置微调整
-.backButtonText {
+.back-button-text {
   padding-left: 2px;
   padding-top: 1px;
 }
 
 //导航栏右侧按钮字体调整
-.barRightButton {
+.bar-right-button {
   font-size: 16/17*$font-size-big;
   padding-right: 5px;
 }

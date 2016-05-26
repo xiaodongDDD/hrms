@@ -1,5 +1,5 @@
 //绝对位置调整mixin
-@mixin positionAdjust($marTop:26px,$right:8%,$font:$font-size-small,$color:$color-text-main) {
+@mixin position-adjust($marTop:26px,$right:8%,$font:$font-size-small,$color:$color-text-main) {
   position: absolute;
   margin-top: $marTop;
   right: $right;

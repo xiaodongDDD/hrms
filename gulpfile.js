@@ -67,8 +67,8 @@ gulp.task('html', [/*'rootHtml',*/ 'pagesHtml']);
 // Copy JavaScript Lib
 gulp.task('copy-libs', function(){
   return gulp.src(libFilePath)
-    .pipe(useref({noAssets:true}, lazypipe().pipe(sourcemaps.init, { loadMaps: true })))
-    .pipe(sourcemaps.write('.'))
+    //.pipe(useref({noAssets:true}, lazypipe().pipe(sourcemaps.init, { loadMaps: true })))
+    //.pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('www/build/lib'));
 });
 
@@ -158,11 +158,11 @@ gulp.task('rebuild-dev', function (callback) {
 });
 
 gulp.task('build-dev', function (callback) {
-  runSequence('config-dev', ['lint','copy-lib' ,'sass' , 'scripts', 'html'], callback);
+runSequence('config-dev', ['lint','copy-lib' ,'sass' , 'scripts', 'html'], callback);
 });
 
 gulp.task('build-prod', function (callback) {
-    runSequence('copy-prod', ['lint', 'copy-lib','sass', 'scripts', 'html'], callback);
+  runSequence('copy-prod', ['lint', 'copy-lib','sass', 'scripts', 'html'], callback);
 });
 
 // Default Task
