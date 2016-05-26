@@ -135,7 +135,7 @@ angular.module('tsApproveModule')
         $ionicScrollDelegate.scrollTop();
       };
 
-      $ionicModal.fromTemplateUrl('build/pages/application/timeSheet-approve/modal/ts-filter-modal.html', { //筛选modal
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
         scope: $scope
       }).then(function (modal) {
         $scope.tsFilterModal = modal;
