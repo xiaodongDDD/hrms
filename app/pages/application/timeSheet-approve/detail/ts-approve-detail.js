@@ -54,10 +54,12 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
       if ($scope.detailActionName == "操作") {
         $scope.detailActionName = "取消";
         $scope.showActionBar = true;
+        angular.element('#tsApproveItem').css('paddingLeft','6%');
       } else if ($scope.detailActionName == "取消") {
         $scope.detailActionName = "操作";
         $scope.showActionBar = false;
         __initSelectArray('undoSelectAll');
+        angular.element('#tsApproveItem').css('paddingLeft','0');
         warn(angular.toJson($scope.selectArray, true));
       }
     };

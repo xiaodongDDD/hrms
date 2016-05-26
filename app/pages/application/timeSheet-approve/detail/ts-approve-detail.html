@@ -20,16 +20,16 @@
     </div>
   </div>
   <ion-content class="hrms-pancel-corlor" scrollbar-y="false">
-    <div class="ts-ae-detail-item">
+    <div class="ts-ae-detail-item" id="tsApproveItem">
       <div class="row ae-items-head">
         <span class="item-width">差补</span>
         <span class="item-width">津贴</span>
         <span class="item-width">机票</span>
         <span class="item-width">计费</span>
-        <span class="item-width" style="width: 28%">说明</span>
+        <span class="item-width" style="width: 40%;">说明</span>
       </div>
       <div class="liner-ts-ae-detail"></div>
-      <div class="ts-approve-detail-item" ng-repeat="i in detailInfoArray" ng-click="selectItem($index)">
+      <div id="approveDetailItem" class="ts-approve-detail-item" ng-repeat="i in detailInfoArray" ng-click="selectItem($index)">
         <div class="row ae-item-head">
           <span class="item-width">0</span>
           <span class="item-width">0</span>

@@ -86,14 +86,17 @@ angular.module('tsApproveModule')
       $scope.watchScroll = function () { //滚动内容时执行的method
         position = $ionicScrollDelegate.getScrollPosition().top;
         $scope.$apply(function () {
-          if (position >= -5 && position < 0) {
-            //connectBlock.style.width = '25px';
-            //angular.element('#connect-block').addClass('connect-block-1');
-          } else if (position >= -12 && position < -5) {
-            //angular.element('#connect-block').addClass('connect-block-2');
-          } else if (position >= -19 && position < -12) {
-            //angular.element('#connect-block').addClass('connect-block-3');
-            //angular.element('#connect-block').addClass('ng-hide');
+          //if (position >= -5 && position < 0) {
+          //  //connectBlock.style.width = '25px';
+          //  //angular.element('#connect-block').addClass('connect-block-1');
+          //} else if (position >= -12 && position < -5) {
+          //  //angular.element('#connect-block').addClass('connect-block-2');
+          //} else if (position >= -19 && position < -12) {
+          //  //angular.element('#connect-block').addClass('connect-block-3');
+          //  //angular.element('#connect-block').addClass('ng-hide');
+          //}
+          if(position < 0) {
+            $scope.showConnectBlock = false;
           } else if (position >= 0 && position < 400) { //在顶部时显示连接块
             //angular.element('#connect-block').addClass('connect-block');
             $scope.showRocket = false;
