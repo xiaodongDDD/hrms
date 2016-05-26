@@ -37,7 +37,7 @@ angular.module('applicationModule')
         {
           appName: "假期管理",
           imageUrl: "build/img/application/holidayManage@3x.png",
-          destUrl: "",
+          destUrl: "tab.time-off-manage",
         },
         {
           appName: "Timesheet填写",
