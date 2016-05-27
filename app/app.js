@@ -137,7 +137,7 @@ angular.module('myApp')
           url: 'application/tsApproveList',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/timeSheet-approve/list/tsApproveList.html',
+              templateUrl: 'build/pages/application/timesheet-approve/list/ts-approve-list.html',
               controller: 'tsApproveListCtrl'
             }
           }
@@ -146,7 +146,7 @@ angular.module('myApp')
           url: 'application/tsApproveDetail',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/timeSheet-approve/detail/tsApproveDetail.html',
+              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
               controller: 'tsApproveDetailCtrl'
             }
           }

@@ -1,26 +1,26 @@
 //审批列表背景
-.tsListBg {
+.ts-list-bg {
   border-color: #b2b2b2;
   color: $color-base;
-  background-image: url("./../img/application/tsApprove/list/BG@3x.png");
+  background-image: url("./../img/application/timesheet-approve/list/BG@3x.png");
   background-size: cover;
   padding-top: 100px;
   width: 100%;
 }
 
 //火箭图标
-.rocketIcon {
+.rocket-icon {
   width: 42px;
   height: 42px;
   position: absolute;
   z-index: 100;
   top: 68%;
   right: 2%;
-  background-image: url("./../img/application/tsApprove/list/rocketTop@3x.png");
+  background-image: url("./../img/application/timesheet-approve/list/rocketTop@3x.png");
   background-size: cover;
 }
 
-.tsApproveLsHead {
+.custom-head {
   position: fixed;
   z-index: 100;
   height: 100px;
@@ -29,20 +29,20 @@
   background: -o-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2); /* Opera 11.1 - 12.0 */
   background: -moz-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2); /* Firefox 3.6 - 15 */
   background: linear-gradient(top, #17468F, #3D7BC4, #6EA5D2); /* 标准的语法 */
-  .aeFirstHead {
+  .custom-first-head {
     height: 44px;
-    .backButton {
+    .back-button {
       font-size: 2*$font-size;
       margin-left: -10px;
       color: $color-base;
       min-height: 35px;
     }
-    .backText {
+    .back-text {
       font-size: $font-size-big;
       position: fixed;
       padding-left: 5px;
     }
-    .actionButton {
+    .action-button {
       right: 5px;
       position: absolute;
       color: $color-base;
@@ -50,49 +50,69 @@
       font-size: 16/17*$font-size-big;
     }
   }
-  .aeSecondHead {
+  .custom-second-head {
     height: 56px;
-    .bgInput {
+    .bg-input {
       background-color: $color-base;
       margin-top: 1.2%;
       margin-left: 13.3%;
       width: 73.4%;
       height: 70%;
       border-radius: 20px;
-      .calendarIcon {
-        background-image: url("./../img/application/tsApprove/list/calender@3x.png");
-        background-repeat: no-repeat;
-        background-position: 15px 0px;
-        background-size: 27px 27px;
+      .calendar-icon {
+        background-image: url("./../img/application/timesheet-approve/list/calender@3x.png");
+        @include image-background(no-repeat, 15px 0px, 27px 27px);
         margin-left: 15px;
         padding-left: 50px;
         min-height: 35px;
-        .calendarText {
+        .calendar-text {
           color: #26579E;
           font-size: $font-size-small;
           position: fixed;
           margin-top: -6%;
         }
       }
-      .calendarEndDate {
+      .calendar-end-date {
         color: #F99D32;
         font-size: $font-size-small;
         padding-top: 6px;
         padding-left: 52px;
-
       }
     }
-    .connectBlock {
-      background-image: url("./../img/application/tsApprove/list/Rectangle-2@3x.png");
+    .connect-block {
+      background-image: url("./../img/application/timesheet-approve/list/Rectangle-2@3x.png");
       background-repeat: no-repeat;
       background-size: 25px 13px;
       margin-left: 46.6%;
       height: 13px;
     }
+    /* 下面的是测试代码
+    */
+    //.connect-block-1 {
+    //  background-image: url("./../img/application/timesheet-approve/list/Rectangle-2@3x.png");
+    //  background-repeat: no-repeat;
+    //  background-size: 20px 19px;
+    //  margin-left: 47.6%;
+    //  height: 19px;
+    //}
+    //.connect-block-2 {
+    //  background-image: url("./../img/application/timesheet-approve/list/Rectangle-2@3x.png");
+    //  background-repeat: no-repeat;
+    //  background-size: 15px 24px;
+    //  margin-left: 48.6%;
+    //  height: 24px;
+    //}
+    //.connect-block-3 {
+    //  background-image: url("./../img/application/timesheet-approve/list/Rectangle-2@3x.png");
+    //  background-repeat: no-repeat;
+    //  background-size: 10px 29px;
+    //  margin-left: 49.6%;
+    //  height: 29px;
+    //}
   }
 }
 
-.tsListTitle {
+.ts-list-title {
   font-size: $font-size-big;
   text-align: center;
   color: $color-base;
@@ -102,8 +122,19 @@
   margin-top: -27px;
 }
 
+/*这个是条目选择时候-选中和不选中图标的处理*/
+@mixin ts-select-action($left:4.5%,$marginTop:-48px) {
+  background-repeat: no-repeat;
+  background-size: 14px 14px;
+  position: absolute;
+  left: $left;
+  width: 14px;
+  height: 14px;
+  margin-top: $marginTop;
+}
+
 //列表
-.tsApproveListItem {
+.ts-approve-list-item {
   margin-bottom: 5px;
   padding-left: 10px;
   height: 101px;
@@ -113,36 +144,36 @@
   border-radius: 0 0 30px 0;
   border: none;
   box-shadow: 0px 2px 3px rgba(155, 155, 155, 0.23);
-  .firContent {
+  .first-content {
     font-size: $font-size-small;
     color: $color-text-key;
     padding-top: 10px;
     .name {
       font-size: $font-size-big;
     }
-    .jobNumber {
+    .job-number {
       padding-left: 15px;
     }
     .city {
       padding-left: 20px;
     }
-    .flyBack {
+    .fly-back {
       padding-left: 30px;
     }
-    .flyIcon {
-      background-image: url("./../img/application/tsApprove/list/flyback@3x.png");
+    .fly-icon {
+      background-image: url("./../img/application/timesheet-approve/list/flyback@3x.png");
       background-repeat: no-repeat;
       background-size: 15px 15px;
       margin-left: 10px;
       width: 20px;
       height: 15px;
     }
-    .flyNumber {
+    .fly-number {
       font-size: $font-size;
       color: #d2d2d2;
     }
   }
-  .SecContent {
+  .second-content {
     font-size: $font-size-small;
     color: $color-text-main;
     padding-top: 10px;
@@ -152,58 +183,61 @@
     .number {
       padding-left: 35px;
     }
-    .numberIcon {
-      background-image: url("./../img/application/tsApprove/list/charging@3x.png");
-      background-repeat: no-repeat;
-      background-size: 14px 14px;
-      background-position: 0 2px;
+    .number-icon {
+      background-image: url("./../img/application/timesheet-approve/list/attention-s@3x.png");
+      @include image-background(no-repeat, 14px 14px, 0 2px);
       margin-left: 10%;
-      width: 20px;
-      height: 16px;
+      width: 40px;
+      height: 40px;
+      position: absolute
     }
   }
-  .arrowItem {
+  .arrow-item {
     height: 21px;
     width: 21px;
-    background-image: url("./../img/application/tsApprove/list/BackArrow-1@3x.png");
+    background-image: url("./../img/application/timesheet-approve/list/BackArrow-1@3x.png");
     background-size: cover;
     position: absolute;
     right: 10%;
     margin-top: -21px
   }
+  .select-list-ts {
+    background-image: url("./../img/application/timesheet-approve/detail/selected@3x.png");
+    @include ts-select-action(7.5%, -23px);
+  }
+  .un-select-list-ts {
+    background-image: url("./../img/application/timesheet-approve/detail/Oval@3x.png");
+    @include ts-select-action(7.5%, -23px);
+  }
 }
 
 //list page
-.footBar {
+.foot-bar {
   height: 50px;
   bottom: 49px;
   background-color: $color-base;
   .buttons {
     position: absolute;
     right: 6%;
-    .filterIcon {
-      background-image: url("./../img/application/tsApprove/list/screen@3x.png");
-      background-repeat: no-repeat;
-      background-size: 26px 26px;
-      background-position: 15px 0px;
+    .filter-icon {
+      background-image: url("./../img/application/timesheet-approve/list/screen@3x.png");
+      @include image-background(no-repeat, 26px 26px, 15px 0px);
       margin-left: 5px;
       padding-left: 50px;
       min-height: 35px;
     }
-    .filterText {
-      @include positionAdjust(26px, 59%);
+    .filter-text {
+      @include position-adjust(26px, 59%);
     }
-    .timeIcon {
-      background-image: url("./../img/application/tsApprove/list/reorder@3x.png");
-      background-repeat: no-repeat;
-      background-size: 26px 26px;
-      background-position: 15px 0px;
+    .time-icon {
+      background-image: url("./../img/application/timesheet-approve/list/reorder@3x.png");
+      @include image-background(no-repeat, 26px 26px, 15px 0px);
       margin-left: 5px;
       padding-left: 50px;
       min-height: 35px;
     }
-    .timeText {
-      @include positionAdjust(26px, 8%);
+    .time-text {
+      @include position-adjust(26px, 8%);
     }
   }
 }
@@ -228,45 +262,44 @@
 
 .ts-filter-input {
   height: 45px;
-  .filterText {
+  .filter-text {
     width: 28.3%;
     text-align: left;
     padding-left: 4%;
     margin-top: 5px;
   }
-  .filterInput {
+  .filter-input {
     height: 25px;
     border-radius: 40px;
     border: 1px solid rgba(151, 151, 151, 0.28);
     width: 57.6%;
     font-size: $font-size-small;
     background-color: $color-base;
-    background-image: url('./../img/application/tsApprove/list/search.png');
-    background-repeat: no-repeat;
-    background-position: 9px 7px;
-    background-size: 13px 14px;
+    background-image: url('./../img/application/timesheet-approve/list/search.png');
+    @include image-background(no-repeat, 9px 7px, 13px 14px);
     padding-left: 28px;
   }
 }
 
-.filterItemsRow {
+.filter-items-row {
   padding: 0px;
   padding-left: 1%;
   margin: 0px;
   height: 100%;
-  .selectItems {
+  .select-items {
     width: 28.3%;
     text-align: left;
     padding-left: 4%;
     background-color: #fafafa;
-    .projectName {
+    .project-name {
       background-color: $color-base;
+      color: #4A4A4A;
       margin-left: -20%;
       padding-left: 20%;
       height: 67px;
       padding-top: 24px;
     }
-    .personSelect {
+    .person-select {
       background-color: #fafafa;
       height: 67px;
       padding-top: 24px;
@@ -274,13 +307,21 @@
       padding-left: 20%;
       border-bottom: 2px solid rgba(210, 210, 210, 0.5);
     }
+    .active-select {
+      background-color: $color-base;
+      color: #4A4A4A;
+    }
+    .active-off {
+      background-color: #fafafa;
+      color: $color-text-main;
+    }
   }
-  .itemsBg {
+  .items-bg {
     background-color: $color-base;
     width: 72%;
     overflow-y: hidden;
     height: 55%;
-    .itemsDetail {
+    .items-detail {
       border-bottom: 1px solid #d2d2d2;
       height: 40px;
       padding-top: 10px;
@@ -289,7 +330,7 @@
   }
 }
 
-.aeDetailHead {
+.ae-detail-head {
   height: 92px;
   width: 100%;
   background-color: #f8f8f8;
@@ -297,7 +338,7 @@
   padding-top: 12px;
   z-index: 100;
   position: fixed;
-  .aeDetailHeadContent {
+  .ae-detail-head-content {
     background-color: $color-base;
     height: 64px;
     border-radius: 0 0 30px 0;
@@ -305,7 +346,7 @@
     font-size: $font-size-small;
     padding-left: 15px;
     box-shadow: 0 2px 4px rgba(155, 155, 155, 0.23);
-    .contentText {
+    .content-text {
       padding-top: 10px;
     }
   }
@@ -315,14 +356,13 @@
   background-color: white;
   color: $color-text-main;
   font-size: $font-size-small;
-  .aeItemsHead {
+  .ae-items-head {
     height: 30px;
     color: #26579E;
     margin-top: 92px;
     font-size: 16/17*$font-size-big;
-    padding-left: 5.3%;
-    .itemWidth {
-      width: 18%;
+    .item-width {
+      width: 17%;
       text-align: center;
     }
   }
@@ -339,17 +379,19 @@
 
   .ts-approve-detail-item {
     height: 81px;
-    width: 100%;
-    .aeItemHead {
+    width: 96%;
+    margin-left: -4%;
+    .ae-item-head {
       padding-top: 20px;
-      padding-left: 4.3%;
+      margin-left: 1%;
       color: $color-text-main;
-      .itemWidth {
-        width: 18%;
+      .item-width {
+        width: 17.5%;
+        padding-left: 5px;
         text-align: center;
       }
-      .descripText {
-        width: 28%;
+      .descrip-text {
+        width: 35%;
         position: absolute;
         color: $color-text-assistant;
       }
@@ -358,56 +400,46 @@
       padding-left: 10%;
       margin-top: 10px;
     }
-    .itemBottomliner {
+    .item-bottom-liner {
       border-bottom: 1px solid #d2d2d2;
-      margin-left: 10%;
+      margin-left: 8%;
       margin-top: 6px;
+      width: 110%;
     }
   }
 
-  .selecetIcon {
-    @if true {
-      background-image: url("./../img/application/tsApprove/detail/selected@3x.png");
-    } @else {
-      background-image: url("./../img/application/tsApprove/detail/Oval@3x.png");
-    }
-    background-repeat: no-repeat;
-    background-size: 14px 14px;
-    position: absolute;
-    left: 4.5%;
-    width: 14px;
-    height: 14px;
-    margin-top: -48px;
+  .select-icon {
+    background-image: url("./../img/application/timesheet-approve/detail/selected@3x.png");
+    @include ts-select-action();
   }
-
-  .noIcon {
-    background-image: url("./../img/application/tsApprove/detail/no@3x.png");
-    background-repeat: no-repeat;
-    background-size: 11px 11px;
-    background-position: 54% 3px;
+  .un-select-icon {
+    background-image: url("./../img/application/timesheet-approve/detail/Oval@3x.png");
+    @include ts-select-action();
   }
-  .yesIcon {
-    background-image: url("./../img/application/tsApprove/detail/yes@3x.png");
-    background-repeat: no-repeat;
-    background-size: 15px 11px;
-    background-position: 55% 3px;
+  .no-icon {
+    background-image: url("./../img/application/timesheet-approve/detail/no@3x.png");
+    @include image-background(no-repeat, 11px 11px, 53% 3px);
+  }
+  .yes-icon {
+    background-image: url("./../img/application/timesheet-approve/detail/yes@3x.png");
+    @include image-background(no-repeat, 15px 11px, 46% 3px);
   }
 }
 
-.ts-buttonLeft {
+.ts-button-left {
   font-size: 16/17*$font-size-big !important;
   color: #26579E !important;
   left: 15px;
   position: fixed;
 }
 
-.ts-buttonCenter {
+.ts-button-center {
   font-size: 16/17*$font-size-big !important;
   color: #ECAF38 !important;
   margin-left: 51%;
 }
 
-.ts-buttonRight {
+.ts-button-right {
   font-size: 16/17*$font-size-big !important;
   color: #B95756 !important;
   right: 15px;
@@ -426,10 +458,8 @@
 }
 
 .warn-attention-icon {
-  background-image: url("./../img/application/tsApprove/list/attention-s@3x.png");
-  background-repeat: no-repeat;
-  background-size: 20px 20px;
-  background-position-x: 10%;
+  background-image: url("./../img/application/timesheet-approve/list/attention-s@3x.png");
+  @include image-background(no-repeat, 20px 20px, 10% 0px);
   text-align: center;
   height: 20px;
   color: #B95756;
@@ -437,20 +467,18 @@
 }
 
 .warn-cancel-icon {
-  background-image: url("./../img/application/tsApprove/list/cancel@3x.png");
-  background-repeat: no-repeat;
-  background-size: 24px 24px;
-  background-position: center;
+  background-image: url("./../img/application/timesheet-approve/list/cancel@3x.png");
+  @include image-background(no-repeat, 24px 24px, center);
   text-align: center;
   height: 24px;
 }
 
 //自定义popup的样式
 .popup-container {
-  .popup{
+  .popup {
     width: 64%;
     height: 12.1%;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 80px;
     background-color: rgba(255, 255, 255, 0.8);
   }

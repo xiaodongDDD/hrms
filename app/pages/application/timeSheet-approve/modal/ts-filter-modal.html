@@ -10,24 +10,25 @@
     </div>
   </ion-header-bar>
   <ion-content overflow-scroll="true" style="overflow: hidden">
-    <div class="row ts-filter-input">
-      <div class="filterText">全部
+    <div class="row ts-filter-input" ng-if="false">
+      <div class="filter-text">全部
         <i class="ion-checkmark-round" style="padding-left: 8%"></i>
       </div>
-      <input type="search" class="filterInput" placeholder="搜索"/>
+      <input type="search" class="filter-input" placeholder="搜索"/>
     </div>
-    <div class="row filterItemsRow">
-      <div class="selectItems">
-        <div class="projectName">
+    <div class="row filter-items-row">
+      <div class="select-items">
+        <div id="project-name" class="project-name" ng-click="selectScreening('projectName')">
           项目名称
         </div>
-        <div class="personSelect">
+        <div id="person-select" class="person-select" ng-click="selectScreening('personSelect')">
           人员选择
         </div>
       </div>
-      <ion-scroll class="itemsBg">
-        <div class="itemsDetail" ng-repeat="i in ['1','2','3','4','5','6','7','8','9','1'] track by $index">
-            汉得内部项目--hrms2.0
+      <ion-scroll class="items-bg">
+        <div class="items-detail" ng-repeat="i in ['1','2','3','4','5','6','7'] track by $index"
+             ng-click="selectFilterItem()">
+          汉得内部项目--hrms2.0
         </div>
       </ion-scroll>
     </div>

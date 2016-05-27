@@ -156,11 +156,11 @@ gulp.task('rebuild-dev', function (callback) {
 });
 
 gulp.task('build-dev', function (callback) {
-  runSequence('config-dev', ['lint','copy-lib' ,'sass' , 'scripts', 'html'], callback);
+runSequence('config-dev', ['lint','copy-lib' ,'sass' , 'scripts', 'html'], callback);
 });
 
 gulp.task('build-prod', function (callback) {
-    runSequence('copy-prod', ['lint', 'copy-lib','sass', 'scripts', 'html'], callback);
+  runSequence('copy-prod', ['lint', 'copy-lib','sass', 'scripts', 'html'], callback);
 });
 
 // Default Task

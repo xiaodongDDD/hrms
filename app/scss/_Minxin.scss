@@ -1,8 +1,15 @@
 //绝对位置调整mixin
-@mixin positionAdjust($marTop:26px,$right:8%,$font:$font-size-small,$color:$color-text-main) {
+@mixin position-adjust($marTop:26px,$right:8%,$font:$font-size-small,$color:$color-text-main) {
   position: absolute;
   margin-top: $marTop;
   right: $right;
   font-size: $font;
   color: $color;
+}
+
+//div 背景设置调整用(--image-)
+@mixin image-background($bg-repeat:no-repeat,$bg-size:13px 14px,$bg-position:9px 7px) {
+  background-repeat: $bg-repeat;
+  background-size: $bg-size;
+  background-position: $bg-position;
 }
