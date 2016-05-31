@@ -1,0 +1,17 @@
+.father {
+  text-align: center;
+  width: 200px;
+  height: 200px;
+  background: red;
+  vertical-align: middle;
+  -moz-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  .children {
+    width: 100px;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #4cd964;
+  }
+}
