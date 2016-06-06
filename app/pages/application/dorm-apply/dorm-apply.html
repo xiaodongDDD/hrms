@@ -1,0 +1,50 @@
+<ion-view view-title="住宿申请" class="main-dorm-apply">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">住宿申请</h1>
+    <div class="buttons">
+      <button class="button button-icon" ng-click="">
+        <img class="question-icon" src="build/img/application/dorm-apply/help.png" />
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="content-style">
+    <button class="button button-block create-button" ng-click="">
+      <div class="row create-button-row-plugin">
+        <img src="build/img/application/dorm-apply/create.png" class="create-button-span">
+        <label class="create-button-text">新建住宿申请</label>
+      </div>
+    </button>
+    <div class="space"></div>
+    <label class="history-title">个人历史住宿申请</label>
+    <ion-list>
+      <ion-item class="item-appearance">
+        <div class="row first-row">
+          <label class="stuff">员工:</label>
+          <label class="stuffname">徐方泽(4040)</label>
+          <label class="roomnum">房间号(400)</label>
+          <label class="roomtype">单人间</label>
+        </div>
+        <div class="row second-row">
+          <label class="move-in">入住日期:</label>
+          <label class="move-in-date">2016-04-28</label>
+        </div>
+        <div class="row second-row">
+          <label class="move-out">退房日期:</label>
+          <label class="move-out-date">2016-06-10</label>
+          <label class="totaldays">入住天数:</label>
+          <label class="totaldays-num">90天</label>
+        </div>
+        <div class="row second-row">
+          <label class="leftdays">剩余天数</label>
+          <label class="leftdays-num">3天</label>
+        </div>
+        <img src="build/img/application/dorm-apply/checkin.png" class="bottom-pic"/>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

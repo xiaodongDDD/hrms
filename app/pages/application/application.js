@@ -40,9 +40,9 @@ angular.module('applicationModule')
           destUrl: "tab.time-off-manage",
         },
         {
-          appName: "Timesheet填写",
-          imageUrl: "build/img/application/timesheet@3x.png",
-          destUrl: "tab.timesheet",
+          appName: "住宿申请",
+          imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
+          destUrl: "tab.dorm-apply"
         },{
           appName: "Timesheet填写",
           imageUrl: "build/img/application/timesheet@3x.png",

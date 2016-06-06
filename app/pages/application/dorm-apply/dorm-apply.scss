@@ -1,0 +1,142 @@
+.main-dorm-apply{
+  .question-icon{
+    width: 24px;
+    height: 24px;
+    margin-top: 5px;
+  }
+  .content-style{
+    background-color: #fafafa;
+  }
+  .create-button{
+    width: 92%;
+    height: 45px;
+    background-color: #ffffff;
+    line-height: 45px;
+    padding: 0px;
+    margin: 0px;
+    border-radius: 45px;
+    margin-left:4%;
+    margin-top: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
+    opacity: 1;
+  }
+  .button.activated{
+    opacity: 0.6;
+  }
+  .create-button-row-plugin{
+    padding: 0px;
+    margin: 0px;
+    height: 45px
+  }
+  .create-button-span{
+    width: 34px;
+    height: 34px;
+    margin-left: 27.2%;
+    margin-top: 7px;
+  }
+  .create-button-text{
+    color: #3964a4;
+    font-size: 1rem;
+    margin-left: 15px;
+    margin-top: 12px;
+  }
+  .space{
+    width: 100%;
+    height: 15px;
+    background-color: transparent;
+  }
+  .history-title{
+    font-size: 1rem;
+    color: #9b9b9b;
+    margin-left: 4%;
+  }
+  .item-appearance{
+    margin: 0px;
+    padding: 0px;
+    width: 92%;
+    height: 128px;
+    margin-top: 15px;
+    margin-left: 4%;
+    border: none;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
+    border-bottom-right-radius: 30px;
+  }
+  .first-row{
+    margin: 0px;
+    padding: 0px;
+    height: 20px;
+    margin-top: 10px;
+  }
+  .second-row{
+    margin: 0px;
+    padding: 0px;
+    height: 18px;
+    margin-top: 9px;
+  }
+  .stuff{
+    font-size: 0.9375rem;
+    color: #3964a4;
+    margin-left: 10px;
+  }
+  .stuffname{
+    font-size: 0.9375rem;
+    color: #3964a4;
+    margin-left: 5px;
+  }
+  .roomnum{
+    font-size: 0.9375rem;
+    color: #f99d32;
+    margin-left: 27px;
+  }
+  .roomtype{
+    font-size: 0.9375rem;
+    color: #f99d32;
+  }
+  .move-in{
+    font-size: 0.8125rem;
+    color: #4a4a4a;margin-left: 10px;
+  }
+  .move-in-date{
+    font-size: 0.8125rem;
+    color: #9b9b9b;
+    margin-left: 5px;
+  }
+  .move-out{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    margin-left: 10px;
+  }
+  .move-out-date{
+    font-size: 0.8125rem;
+    color: #9b9b9b;
+    margin-left: 5px;
+  }
+  .totaldays{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    margin-left: 10px
+  }
+  .totaldays-num{
+    font-size: 0.8125rem;
+    color: #9b9b9b;
+    margin-left: 5px;
+  }
+  .leftdays{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    margin-left: 10px;
+  }
+  .leftdays-num{
+    font-size: 0.8125rem;
+    color: #b95756;
+    margin-left: 5px;
+  }
+  .bottom-pic{
+    width: 59px;
+    height: 59px;
+    position: absolute;
+    right: 1px;
+    top: 70px;
+  }
+}
+
