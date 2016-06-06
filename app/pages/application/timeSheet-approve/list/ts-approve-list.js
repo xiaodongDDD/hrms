@@ -5,6 +5,20 @@
  */
 'use strict';
 //应用-timeSheet审批模块-列表
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.tsApproveList', {
+          url: 'application/tsApproveList',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet-approve/list/ts-approve-list.html',
+              controller: 'tsApproveListCtrl'
+            }
+          }
+        })
+    }]);
 angular.module('tsApproveModule')
   .controller('tsApproveListCtrl', [
     '$scope',
@@ -135,7 +149,7 @@ angular.module('tsApproveModule')
 
       $scope.goTsLsTop = function () { //返回列表顶部
         angular.element('#rocket').addClass('ng-hide');
-        $ionicScrollDelegate.scrollTop();
+        $ionicScrollDelegate.scrollTop(true);
       };
 
       $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal

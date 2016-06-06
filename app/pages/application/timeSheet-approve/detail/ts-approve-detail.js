@@ -3,6 +3,20 @@
  */
 'use strict';
 //应用-timeSheet审批模块-详情
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.tsApproveDetail', {
+          url: 'application/tsApproveDetail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
+              controller: 'tsApproveDetailCtrl'
+            }
+          }
+        })
+    }]);
 tsApproveModule.controller('tsApproveDetailCtrl', [
   '$scope',
   '$state',
