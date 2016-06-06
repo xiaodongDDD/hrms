@@ -67,8 +67,6 @@ gulp.task('html', [/*'rootHtml',*/ 'pagesHtml']);
 // Copy JavaScript Lib
 gulp.task('copy-libs', function(){
   return gulp.src(libFilePath)
-    //.pipe(useref({noAssets:true}, lazypipe().pipe(sourcemaps.init, { loadMaps: true })))
-    //.pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('www/build/lib'));
 });
 

@@ -1,4 +1,5 @@
 <ion-view view-title="Timesheet审批">
+
   <!--<div class="custom-head">-->
   <!--<div class="row custom-first-head">-->
   <!--<button class="button button-clear back-button"-->
@@ -22,6 +23,7 @@
   <!--</div>-->
   <!--</div>-->
   <!--</div>-->
+
   <custom-head-bar action-name="操作" custom-title="Timesheet审批" go-back-page="$ionicGoBack()" do-action="doSelectAction()">
     <div class="custom-second-head">
       <div class="row bg-input">
@@ -34,7 +36,6 @@
       </div>
     </div>
   </custom-head-bar>
-
   <ion-content class="ts-list-bg" has-bouncing="true" on-scroll="watchScroll()" on-drag="onDrag()"
                on-drag-up="onDragUp()"
                scrollbar-y="false">
@@ -82,3 +83,4 @@
     refuse="refuseListItem()">
   </footer-select>
 </ion-view>
+
