@@ -1,0 +1,42 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "com.handmobile.cordovaplugin.hotpatch": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        },
+        "cordova-plugin-crosswalk-webview": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+        }
+    },
+    "dependent_plugins": {}
+}

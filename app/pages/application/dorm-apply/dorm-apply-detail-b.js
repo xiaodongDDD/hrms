@@ -27,20 +27,20 @@ angular.module('applicationModule')
               baseConfig,
               $ionicHistory,
               dormApplyTypeService) {
-      var applyType=dormApplyTypeService.getInfo();
-      $scope.checkIn=false;//审批中状态标志位
-      $scope.checkOut=false;//已拒绝状态标识位
-      $scope.buttonText=""//按钮上显示的文字
-      if(applyType == "checkIn"){//已入住
-        $scope.checkIn=true;
-        $scope.checkOut=false;
-        $scope.buttonText="续住";
-      }else if(applyType == "checkOut"){//已退房
-        $scope.checkIn=false;
-        $scope.checkOut=true;
-        $scope.buttonText="再次预定";
+      var applyType = dormApplyTypeService.getInfo();
+      $scope.checkIn = false;//审批中状态标志位
+      $scope.checkOut = false;//已拒绝状态标识位
+      $scope.buttonText = ""//按钮上显示的文字
+      if (applyType == "checkIn") {//已入住
+        $scope.checkIn = true;
+        $scope.checkOut = false;
+        $scope.buttonText = "续住";
+      } else if (applyType == "checkOut") {//已退房
+        $scope.checkIn = false;
+        $scope.checkOut = true;
+        $scope.buttonText = "再次预定";
       }
-      $scope.goBack=function(){
+      $scope.goBack = function () {
         $ionicHistory.goBack();
       };
 
