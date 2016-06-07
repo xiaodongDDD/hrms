@@ -7,13 +7,13 @@
     </div>
     <h1 class="title">住宿申请</h1>
     <div class="buttons">
-      <button class="button button-icon" ng-click="">
+      <button class="button button-icon" ng-click="showDescription()">
         <img class="question-icon" src="build/img/application/dorm-apply/help.png" />
       </button>
     </div>
   </ion-header-bar>
   <ion-content class="content-style">
-    <button class="button button-block create-button" ng-click="">
+    <button class="button button-block create-button" ng-click="createNewDormApply()">
       <div class="row create-button-row-plugin">
         <img src="build/img/application/dorm-apply/create.png" class="create-button-span">
         <label class="create-button-text">新建住宿申请</label>
@@ -22,7 +22,7 @@
     <div class="space"></div>
     <label class="history-title">个人历史住宿申请</label>
     <ion-list>
-      <ion-item class="item-appearance">
+      <ion-item class="item-appearance" ng-repeat="x in items" ng-click="viewApplyDetail($index)">
         <div class="row first-row">
           <label class="stuff">员工:</label>
           <label class="stuffname">徐方泽(4040)</label>
@@ -40,11 +40,74 @@
           <label class="totaldays-num">90天</label>
         </div>
         <div class="row second-row">
-          <label class="leftdays">剩余天数</label>
-          <label class="leftdays-num">3天</label>
+          <label class="leftdays" ng-show="judgeApplyType(x)">剩余天数</label>
+          <label class="leftdays-num" ng-show="judgeApplyType(x)">3天</label>
         </div>
-        <img src="build/img/application/dorm-apply/checkin.png" class="bottom-pic"/>
+        <img ng-show="x.modeCheckIn" src="build/img/application/dorm-apply/little-stamp-checkin.png" class="bottom-pic"/>
+        <img ng-show="x.modeCheckOut" src="build/img/application/dorm-apply/little-stamp-checkout.png" class="bottom-pic"/>
+        <img ng-show="x.modeApproving" src="build/img/application/dorm-apply/little-stamp-approving.png" class="bottom-pic"/>
+        <img ng-show="x.modeRejected" src="build/img/application/dorm-apply/little-stamp-rejected.png" class="bottom-pic"/>
       </ion-item>
     </ion-list>
   </ion-content>
+  <div class="black-page" ng-show="descriptionAppearance">
+    <div class="black-head">
+      <button class="button button-icon cancel-button" ng-click="hideDescription()">
+        <img class="cancel-button-image" src="build/img/application/dorm-apply/cancel-opacity.png"/>
+      </button>
+    </div>
+    <ion-scroll has-bouncing="false" class="scroll-height">
+    <div class="flank">
+      <p class="paper-write">
+        一、 申请、续住与退房<br><br>
+
+        1、宿舍申请<br>
+        1.1员工住宿须至HRMS系统进行申请，方法如下：<br>
+        1）申请路径：HRMS－个人申请－宿舍申请。<br>
+        2）住宿申请分为“新入住申请”和“续住申请”，新入住申请提前7天开放预订，续住申请提前10天开放预订。<br>
+        3）系统预订成功本人需在入住当天至宿管处办理入住手续并领取房卡。<br>
+        4）预订成功的员工，房间将保留至次日凌晨2点，逾期未入住系统自动释放该资源，仍需入住需重新申请。<br>
+        5）当选定的住宿周期内没有可用宿舍资源时，可以选择“允惠住宿申请”。<br>
+        6）批量入职的培训生（如3月班、7月班）由HR根据统计的人数提前冻结相应的宿舍资源。<br>
+        1.2由于宿舍资源有限，公司优先安排培训生住宿，其余人员根据不同入住类型分为：<br>
+        1.2.1常驻申请<br>
+        1）长期在青浦园区办公并且入职年限在3年以下的员工可以进行常驻申请。<br>
+        2）3年以下员工一次申请最长180天，仅可选择四人间；<br>
+        1.2.2项目申请<br>
+        1）一次申请最长不超过90天，仅可进行一次续住申请。<br>
+        2）项目入住需选择所在项目，不可选择内部项目。<br>
+        3）3年以下员工仅可选择四人间。<br>
+        1.2.3临时申请<br>
+        1）一次申请不超过2天。<br>
+        2）3年以下员工仅可选择4人间，3年以上员工可选择单人间亦可选择4人间。<br>
+        1.2.4加班申请<br>
+        1）宿舍将固定40个床位供加班员工申请，其中单人间床位20个，4人间床位20个。<br>
+        2）3年以下员工仅可申请4人间，3年以上员工可选择单人间亦可选择4人间。<br>
+        2、续住<br>
+        2.1 为方便在住员工能够选择到已经在住房间，续住申请较新入住申请提前3天开放，需要续住的员工请及时申请。由于自身原因没有及时申请导致房间被其他员工预定的，请重新在系统中选择房间。<br>
+        2.2 项目申请需要进行续住的，申请时系统默认上次所选择的项目和房间号，如需重新选择项目或房间号，请进行新入住申请。<br>
+        2.3 项目申请仅可进行一次续住申请，请合理安排时间。如仍需入住请进行新入住申请。<br>
+        2.4 临时申请与加班申请请不要多次连续申请，否则有可能被拉入系统黑名单。<br>
+        3、退房<br>
+        3.1 以下2种情况下需要办理退房：<br>
+        1）宿舍申请到期后无需续住的；<br>
+        2）宿舍未到期，但提前离开宿舍的；<br>
+        3.2 退房时如宿管不在可将房卡投入退卡箱内，宿管收到房卡后在系统中进行退房处理。<br>
+        3.3 退房时请勿留下私人物品，宿管在收到房卡之后将默认宿舍内已无私人物品。如有需要，私人物品可以暂存宿舍楼寄存柜内，寄存柜一次申请有效期3个月，贵重物品请自行妥善保管，公司对寄存柜内的物品丢失不作赔偿。<br>
+        3.4 宿舍到期无需续住的如未在当天归还房卡（即退房），次日中午12点系统将自动释放该资源，且邮件告知该员工，未归还的房卡将于下月工资中扣除50元补卡费。<br>
+        3.5 退房时，除实际未入住的情况外，宿管员将检查房间设施是否完好，房间设施损坏的须按照原价进行赔偿。<br>
+        3.6 离职人员须在离职日起三天内搬离宿舍。<br>
+
+        二、 宿舍管理原则<br><br>
+
+        所有人员入住均采取收费原则，收费标准为：单人间160元/人/天；四人间60元/人/天。费用计入员工或项目所在部门，物业部门将每月提供月报表和每年年底提供年报表给部门，每年部门产生的所有 住宿费用统一计入部门管理成本进行结算。<br>
+        预订成功的员工如因改变行程不再入住的，请至系统中进行取消处理。<br>
+        宿舍到期未进行续住申请亦未退房，次日中午12点系统将自动释放该资源，且邮件通知该员工，未归还的房卡将于下月工资中扣除50元补卡费。<br>
+        系统根据入住资格自动限定员工可申请的住宿类型，所有宿舍资源采取公开预订的原则，不再经物业的审批，但物业部门具有管理职责，所有在住员工必须服从物业部门管理，对于违反宿 舍管理规定的员工物业部门有权拒绝其入住。<br>
+        任何员工公司均不保证预订成功一定可以入住，特殊情况下物业部门有权根据宿舍资源的实际情况做出相应调整，但物业部门应提前告知员工。<br>
+      </p>
+    </div>
+    <div class="scroll-bottom-line"></div>
+    </ion-scroll>
+  </div>
 </ion-view>
