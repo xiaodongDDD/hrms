@@ -1,11 +1,18 @@
+$timesheet-bule: #24559C !default;
+$timesheet-green: #A2DED0 !default;
+$timesheet-purple: #913D88 !default;
+$timesheet-red: #E08283 !default;
+
+
 .timesheet {
   background: $global-background;
   .calendar-month {
     margin-top: 8px;
     height: 40px;
     width: 100%;
-    z-index: 20;
+    z-index: 100;
     margin-bottom: -5px;
+    position: relative;
 
     .month-item {
       height: 40px;
@@ -19,7 +26,7 @@
       background-position: center;
       font-size: 16px;
       font-weight: bold;
-      color: #0c60ee;
+      color: $timesheet-bule;
     }
   }
 
@@ -52,8 +59,8 @@
         height: 35px;
         line-height: 35px;
         text-align: center;
-        color: #8f8f8f;
-        font-size: 18px;
+        color: #9B9B9B;
+        font-size: 16px;
       }
     }
 
@@ -68,13 +75,13 @@
           background: #eeeeee;
         }
         &.approve {
-          color: red;
+          color: $timesheet-red;
         }
         &.reject {
-          color: #000088;
+          color: $timesheet-purple;
         }
         &.attendance {
-          color: green;
+          color: $timesheet-green;
         }
         &.blank {
 
@@ -87,8 +94,8 @@
           margin-right: auto;
           border-radius: 14px;
           text-align: center;
-          font-size: 16px;
-          color: #8f8f8f;
+          font-size: 20px;
+          color: #9B9B9B;
 
           &.approve {
             background: url("../img/application/timesheet/selected-R@3x.png");
@@ -97,7 +104,10 @@
             background-position: center;
           }
           &.reject {
-
+            background: url("../img/application/timesheet/selected-P@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
           }
           &.attendance {
             background: url("../img/application/timesheet/selected-G@3x.png");
@@ -190,7 +200,7 @@
     .allowance-title {
       height: 20px;
       line-height: 20px;
-      border-left: 2px solid #0c60ee;
+      border-left: 2px solid $timesheet-bule;
       padding-left: 5px;
       color: #8f8f8f;
       font-size:16px;
@@ -205,10 +215,10 @@
       }
 
       .allowance-status {
-        color: #5CB281;
+        color: $timesheet-green;
       }
       .allowance-cash {
-        color: #0c60ee;
+        color: $timesheet-bule;
         text-align: right;
       }
       .allowance-project {
@@ -227,7 +237,7 @@
           border-radius: 10px;
           box-shadow: 0px 0px 8px #e8e8e8;
           text-align: center;
-          color: #0c60ee;
+          color: $timesheet-bule;
         }
 
         .allowance-dashed {
