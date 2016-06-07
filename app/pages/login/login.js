@@ -39,32 +39,32 @@ angular.module('loginModule')
         } else {
           window.localStorage.password = "";
         }
-        $ionicLoading.show({
-          template: 'Loading...'
-        });
+        //$ionicLoading.show({
+        //  template: 'Loading...'
+        //});
 
         var url = baseConfig.basePath + "/appLogin/user_login/login";
         var params = '{"params":{"p_user_name":"' + $scope.loginData.username +
           '","p_password":"' + $scope.loginData.password + '"}}';
 
-        $http.post(url, params).success(function (result) {
-          $ionicLoading.hide();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
+        //$http.post(url, params).success(function (result) {
+        //  $ionicLoading.hide();
+        //  if (baseConfig.debug) {
+        //    console.log("result success " + angular.toJson(result));
+        //  }
 
-          if (result.con_status == "S") {
-            window.localStorage.token = result.pre_token + result.token_key;
-            window.localStorage.empno = $scope.loginData.username;
+          //if (result.con_status == "S") {
+          //  window.localStorage.token = result.pre_token + result.token_key;
+          //  window.localStorage.empno = $scope.loginData.username;
             $state.go("tab.message");
-          }
+          //}
 
-        }).error(function (response, status) {
-          $ionicLoading.hide();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(response));
-          }
-        });
+        //}).error(function (response, status) {
+        //  $ionicLoading.hide();
+        //  if (baseConfig.debug) {
+        //    console.log("response error " + angular.toJson(response));
+        //  }
+        //});
       };
 
       $scope.$on('$ionicView.enter', function (e) {
