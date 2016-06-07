@@ -128,31 +128,12 @@ angular.module('myApp')
         })
 
         .state('login', {
-          url: '/guide',
+          url: '/login',
           templateUrl: 'build/pages/login/login.html',
           controller: 'loginCtrl'
-        })
-
-        .state('tab.tsApproveList', {
-          url: 'application/tsApproveList',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/list/ts-approve-list.html',
-              controller: 'tsApproveListCtrl'
-            }
-          }
-        })
-        .state('tab.tsApproveDetail', {
-          url: 'application/tsApproveDetail',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
-              controller: 'tsApproveDetailCtrl'
-            }
-          }
         });
 
       // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/guide');
+      $urlRouterProvider.otherwise('/login');
 
     }]);
