@@ -544,67 +544,20 @@
       font-size: 1.0625rem;
     }
   }
-  .dorm-apply-detail-a{
-    .has-header{
-      top: 106px;
-    }
-    .scroll-content{
-      top: 106px;
-    }
-    .tall-header{
-      width: 100%;
-      height: 106px;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      z-index: 100;
-      background-size: cover;
-    }
-    .bar-tall-bottom{
-      width: 100%;
-      height: 62px;
-      position: absolute;
-      top: 44px;
-      left: 0px;
-      z-index: 999;
-      background-color: transparent;
-    }
-    .time-line-row{
+  .dorm-apply-detail-a {
+    .time-line-row {
       padding: 0px;
       margin: 0px;
       height: 24px;
       width: 78.7%;
+      margin-top: 10px;
       margin-left: 10.7%;
     }
   }
 }
 .platform-ios{
-  .dorm-apply-detail-a{
-    .has-header{
-      top: 126px;
-    }
-    .scroll-content{
-      top: 126px;
-    }
-    .tall-header{
-      width: 100%;
-      height: 126px;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      z-index: 100;
-      background-size: cover;
-    }
-    .bar-tall-bottom{
-      width: 100%;
-      height: 82px;
-      position: absolute;
-      top: 44px;
-      left: 0px;
-      z-index: 999;
-      background-color: transparent;
-    }
-    .time-line-row{
+  .dorm-apply-detail-a {
+    .time-line-row {
       padding: 0px;
       margin: 0px;
       height: 24px;
@@ -615,6 +568,30 @@
   }
 }
 .dorm-apply-detail-a{//住宿详情界面(已申请，已拒绝)
+  .has-header{
+    top: 126px;
+  }
+  .scroll-content{
+    top: 126px;
+  }
+  .tall-header{
+    width: 100%;
+    height: 126px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+    background-size: cover;
+  }
+  .bar-tall-bottom{
+    width: 100%;
+    height: 82px;
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    z-index: 999;
+    background-color: transparent;
+  }
   .title-color{
     color: #ffffff;
     font-size: 1.0625rem;
@@ -825,59 +802,41 @@
 }
 .platform-android{
   .dorm-apply-detail-b{
-    .scroll-content{
-      top: 193px;
-    }
-    .tall-header{
-      width: 100%;
-      height: 193px;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      z-index: 100;
-    }
-    .bar-tall-bottom{
-      width: 100%;
-      height: 149px;
-      position: absolute;
-      top: 44px;
-      left: 0px;
-      z-index: 200;
-      background-color: transparent;
-    }
+
   }
 }
 .platform-ios{
   .dorm-apply-detail-b{
-    .scroll-content{
-      top: 213px;
-    }
-    .tall-header{
-      width: 100%;
-      height: 213px;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      z-index: 100;
-    }
-    .bar-tall-bottom{
-      width: 100%;
-      height: 169px;
-      position: absolute;
-      top: 44px;
-      left: 0px;
-      z-index: 200;
-      background-color: transparent;
-    }
+
   }
 }
 .dorm-apply-detail-b{//住宿详情界面(已入住，已退房)
   .has-header{
-    top: 0px;
+    top: 213px;
   }
   .title-color{
     color: #ffffff;
     font-size: 1.0625rem;
+  }
+  .scroll-content{
+    top: 213px;
+  }
+  .tall-header{
+    width: 100%;
+    height: 213px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+  }
+  .bar-tall-bottom{
+    width: 100%;
+    height: 169px;
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    z-index: 200;
+    background-color: transparent;
   }
   .bar-tall-header{
     background-color: transparent;
