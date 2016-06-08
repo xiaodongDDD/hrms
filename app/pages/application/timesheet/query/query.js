@@ -17,7 +17,6 @@ angular.module('myApp')
     }]);
 
 angular.module('applicationModule')
-
   .controller('TimeSheetQueryCtrl', [
     '$scope',
     '$state',
@@ -25,12 +24,16 @@ angular.module('applicationModule')
     '$ionicHistory',
     '$timeout',
     '$ionicScrollDelegate',
+    'TimeSheetService',
+    'hmsHttp',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
               $timeout,
-              $ionicScrollDelegate) {
+              $ionicScrollDelegate,
+              TimeSheetService,
+              hmsHttp) {
 
       $scope.calendar = [];
       var currentTimeSheetPosition = true;
@@ -63,66 +66,116 @@ angular.module('applicationModule')
 
       init();
 
-      $scope.scrollToFixScreen = function(){
-        if(currentTimeSheetPosition){
-          $ionicScrollDelegate.scrollTo(0,450,true);
+      $scope.scrollToFixScreen = function () {
+        if (currentTimeSheetPosition) {
+          $ionicScrollDelegate.scrollTo(0, 400, true);
           currentTimeSheetPosition = false;
-        }else{
-          $ionicScrollDelegate.scrollTo(0,0,true);
+        } else {
+          $ionicScrollDelegate.scrollTo(0, 0, true);
           currentTimeSheetPosition = true;
         }
       };
 
-      $scope.getTimeSheet = function(){
-        init();
-        $scope.loadingDataFlag = true;
-
-        $timeout(function(){
-          $scope.calendar = [];
-          for (i = 0; i < 5; i++) {
+      var fetchData = function (result) {
+        var timesheetArray = result.timesheet;
+        var seq = 0;
+        $scope.calendar = [];
+        for (i = 0; i < 5; i++) {
+          var week = {
+            week: i,
+            list: []
+          };
+          for (j = 0; j < 7; j++) {
+            var item;
             var style_outline = 'each-day';
             var style_color = 'day-item';
             var money = '';
             var project = '';
-            if (i == 0) {
-              style_outline = 'each-day approve';
-              style_color = 'day-item approve';
-              money = '120';
-              project = 'Hrms2.0'
-            } else if (i == 1) {
-              style_outline = 'each-day reject';
-              style_color = 'day-item reject';
-              money = '120';
-              project = '如新App'
-            } else if (i == 2) {
-              style_outline = 'each-day attendance';
-              style_color = 'day-item attendance';
-              money = '40';
-              project = '移动内部'
-            }
-            var week = {
-              week: i,
-              list: []
-            };
-            for (j = 0; j < 7; j++) {
-              var item = {
-                day: i + "" + j,
+            var lockFlag = false;
+
+            if (timesheetArray[seq]) {
+              if (timesheetArray[seq].lockflag == '0') {
+                lockFlag = false;
+              } else {
+                lockFlag = true;
+              }
+              if (timesheetArray[seq].status == 'Empty') {
+                style_outline = 'each-day';
+                style_color = 'day-item';
+              } else if (timesheetArray[seq].status == 'Draft') {
+                style_outline = 'each-day attendance';
+                style_color = 'day-item attendance';
+              } else if (timesheetArray[seq].status == 'Approved') {
+                style_outline = 'each-day approve';
+                style_color = 'day-item approve';
+              } else if (timesheetArray[seq].status == 'Rejected') {
+                style_outline = 'each-day reject';
+                style_color = 'day-item reject';
+              }
+              item = {
+                day: timesheetArray[seq].day.replace('0', ''),
+                style_outline: style_outline,
+                style_color: style_color,
+                money: timesheetArray[seq].allowance,
+                project: timesheetArray[seq].proj,
+                each_day : timesheetArray[seq].each_day,
+                lockFlag: lockFlag
+              };
+            } else {
+              item = {
+                day: '',
                 style_outline: style_outline,
                 style_color: style_color,
                 money: money,
-                project: project
+                project: project,
+                each_day: '',
+                lockFlag: lockFlag
               };
-              week.list.push(item);
             }
-            $scope.calendar.push(week);
+
+            week.list.push(item);
+
+            seq = seq + 1;
           }
+          $scope.calendar.push(week);
+        }
+      }
+
+      var fetchCalendar = function (month) {
+        init();
+        $scope.loadingDataFlag = true;
+
+        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_month": month + "",
+            "p_offset": 1
+          }
+        };
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          fetchData(result);
           $scope.loadingDataFlag = false;
           $scope.$apply();
-        },1500);
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function (response, status) {
+          $scope.loadingDataFlag = false;
+          $scope.$apply();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(response));
+          }
+        });
       };
 
+      fetchCalendar('201511');
 
-      $scope.getTimeSheet();
+      $scope.getTimeSheet = function (month) {
+        fetchCalendar(month);
+      };
+
 
       $scope.goBack = function () {
         $ionicHistory.$ionicGoBack();
@@ -130,17 +183,51 @@ angular.module('applicationModule')
 
       if (baseConfig.debug) {
         console.log('applicationCtrl.enter');
-      };
+      }
+      ;
 
       $scope.$on('$ionicView.enter', function (e) {
         if (baseConfig.debug) {
           console.log('applicationCtrl.$ionicView.enter');
-        };
+        }
+        ;
       });
 
       $scope.$on('$destroy', function (e) {
         if (baseConfig.debug) {
           console.log('applicationCtrl.$destroy');
-        };
+        }
+        ;
       });
-    }]);
+    }])
+
+  .service('TimeSheetService', [
+    'baseConfig',
+    'hmsHttp',
+    function (baseConfig,
+              hmsHttp) {
+      this.fetchCalendar = function () {
+
+        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_month": '201511',
+            "p_offset": 1
+          }
+        };
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function (response, status) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(response));
+          }
+        });
+      };
+    }])
+;

@@ -5,6 +5,7 @@
     "clearTable": true,
     "nativeScreenFlag":false,
     "basePath": "http://wechat.hand-china.com/hmbms_hand/api",
+    "businessPath": "http://wechat.hand-china.com/hmbms_hand/api/dataEngine",
     "currentVersion": "2.0.0",
     "url": "",
     "pkgIdentifier": "",

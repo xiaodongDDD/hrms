@@ -7,12 +7,21 @@ angular.module('messageModule')
     '$scope',
     '$state',
     '$timeout',
+    '$ionicPlatform',
     function ($scope,
               $state,
-              $timeout) {
+              $timeout,
+              $ionicPlatform) {
 
       $scope.messageList = [
       ];
+
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleLightContent();
+        }
+      });
 
       $scope.talk = function (message) {
         console.log('$scope.talk');

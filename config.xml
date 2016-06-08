@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.hand.china.tabTemplate" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>tabTemplate</name>
+<widget id="com.hand-china.hrms" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>汉得移动</name>
     <description>
-        Ionic Tab Template.
+        汉得移动
     </description>
-    <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
+    <author email="senlin.gu@hand-china.com" href="http://example.com.com/">
+      顾森林
     </author>
     <content src="index.html" />
     <access origin="*" />

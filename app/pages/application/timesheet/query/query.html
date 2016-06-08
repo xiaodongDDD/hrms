@@ -17,19 +17,19 @@
     <!--<hmsslidecalendar>
     </hmsslidecalendar>-->
     <div class="calendar-month">
-      <div class="month-item" ng-click="getTimeSheet()">
+      <div class="month-item" ng-click="getTimeSheet('201501')">
         3月
       </div>
-      <div class="month-item" ng-click="getTimeSheet()">
+      <div class="month-item" ng-click="getTimeSheet('201502')">
         4月
       </div>
-      <div class="month-item" ng-click="getTimeSheet()">
+      <div class="month-item" ng-click="getTimeSheet('201503')">
         5月
       </div>
-      <div class="month-item" ng-click="getTimeSheet()">
+      <div class="month-item" ng-click="getTimeSheet('201504')">
         6月
       </div>
-      <div class="month-item" ng-click="getTimeSheet()">
+      <div class="month-item" ng-click="getTimeSheet('201411')">
         7月
       </div>
     </div>
@@ -62,7 +62,7 @@
       </div>
       <div class="calendar-week" ng-repeat="weak in calendar">
         <a class="{{day.style_color}}" ng-repeat="day in weak.list">
-          <div class="lock-item">
+          <div class="lock-item" ng-if="day.lockFlag">
           </div>
           <div class="{{day.style_outline}}">{{day.day}}</div>
           <div class="money">{{day.money}}</div>
