@@ -1,7 +1,12 @@
 /**
- * Created by gusenlin on 16/5/16.
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
  */
-//注册请求过滤器
 angular.module('utilModule').factory('httpRequestHeader', function () {
   var interceptor = {
     'request': function (config) {
