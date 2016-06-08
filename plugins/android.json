@@ -7,9 +7,6 @@
         "files": {}
     },
     "installed_plugins": {
-        "com.handmobile.cordovaplugin.hotpatch": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
-        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.hand.china.tabTemplate"
         },
