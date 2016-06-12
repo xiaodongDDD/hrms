@@ -192,7 +192,6 @@ angular.module('applicationModule')
         hmsHttp.post(url, params).success(function (result) {
           fetchData(result);
           $scope.loadingDataFlag = false;
-          $scope.$apply();
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }

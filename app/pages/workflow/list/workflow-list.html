@@ -23,7 +23,15 @@
     </div>
   </ion-header-bar >
   <ion-content class="has-daiwen-bar">
-    <hms-workflow-list ng-repeat="item in list"
+    <ion-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
+    </ion-refresher>
+    <div class="hms-hide-content" ng-if="fetchDataFlag">
+      <div class="content">获取代办事项数据中</div>
+      <div class="hide-icon">
+        <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
+      </div>
+    </div>
+    <hms-workflow-list ng-if="!fetchDataFlag&&!pullRefreshDataFlag" ng-repeat="item in list"
                        workflow-title='item.title1'
                        workflow-icon='item.icon'
                        workflow-type='item.type'
