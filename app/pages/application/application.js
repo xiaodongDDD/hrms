@@ -65,7 +65,7 @@ angular.module('applicationModule')
         {
           appName: "代办事项",
           imageUrl: "build/img/application/flightBooking@3x.png",
-          destUrl: "",
+          destUrl: "tab.workflow-list",
         },
         {
           appName: "报销单查询",

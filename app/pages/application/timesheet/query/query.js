@@ -64,7 +64,42 @@ angular.module('applicationModule')
         }
       }
 
+      test = function () {
+
+        var url = baseConfig.businessPath + "/wfl_timesheet_view/get_timesheet_list";
+        var params = {
+          "params": {
+            "p_employee_number": "4040",
+            "p_start_date": "2015-11-01",
+            "p_end_date": "2015-11-01",
+            "p_project_name": "",
+            "p_project_id": "",
+            "p_project_person_number": "",
+            "p_page": "1",
+            "p_line_number": "5"
+          }
+        };
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function (response, status) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(response));
+          }
+        });
+      };
+
+      test();
+
       init();
+
+      $scope.writeTimesheet = function (day) {
+        $state.go('tab.timesheet-write', {day: day});
+      }
 
       $scope.scrollToFixScreen = function () {
         if (currentTimeSheetPosition) {
@@ -118,7 +153,7 @@ angular.module('applicationModule')
                 style_color: style_color,
                 money: timesheetArray[seq].allowance,
                 project: timesheetArray[seq].proj,
-                each_day : timesheetArray[seq].each_day,
+                each_day: timesheetArray[seq].each_day,
                 lockFlag: lockFlag
               };
             } else {
@@ -204,8 +239,10 @@ angular.module('applicationModule')
   .service('TimeSheetService', [
     'baseConfig',
     'hmsHttp',
+    'hmsPopup',
     function (baseConfig,
-              hmsHttp) {
+              hmsHttp,
+              hmsPopup) {
       this.fetchCalendar = function () {
 
         var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
@@ -229,5 +266,16 @@ angular.module('applicationModule')
           }
         });
       };
-    }])
-;
+
+      this.fetchEachDay = function (callback) {
+        var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
+        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': '20151013' + ""}};
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('获取状态错误,请检查');
+        });
+      }
+    }]);
