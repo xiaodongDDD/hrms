@@ -18,6 +18,13 @@
         <label class="room-type-label" ng-bind="defaultRoomType"></label>
       </ion-item>
     </div>
+    <!--项目id选择-->
+    <div class="row apply-type-row" ng-show="showProjectItem">
+      <ion-item class="project-item" ng-click="chooseProjectName()">
+        <label class="project-type-label" ng-bind="defaultProjectInfo.projectName"></label>
+        <img src="build/img/application/dorm-apply/arrow-gray.png" class="project-type-icon"/>
+      </ion-item>
+    </div>
     <!--入驻日期与结束日期-->
     <div class="row data-row">
       <div class="col col-40 col-start">
