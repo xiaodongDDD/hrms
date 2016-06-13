@@ -1,0 +1,54 @@
+<ion-view view-title="审批详情">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">审批详情</h1>
+
+    <div class="buttons">
+      <button class="button button-clear" ng-click="dealDetailInfo()">
+        <span class="bar-right-button" ng-cloak>{{detailActionName}}</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <div class="ae-detail-head">
+    <div class="ae-detail-head-content">
+      <div class="content-text">成志维　4040　上海　正式</div>
+      <div class="content-text">汉得内部项目-移动内部开发-1</div>
+    </div>
+  </div>
+  <ion-content class="hrms-pancel-corlor" scrollbar-y="false">
+    <div class="ts-ae-detail-item" id="tsApproveItem">
+      <div class="row ae-items-head">
+        <span class="item-width">差补</span>
+        <span class="item-width">津贴</span>
+        <span class="item-width">机票</span>
+        <span class="item-width">计费</span>
+        <span class="item-width" style="width: 40%;">说明</span>
+      </div>
+      <div class="liner-ts-ae-detail"></div>
+      <div id="approveDetailItem" class="ts-approve-detail-item" ng-repeat="i in detailInfoArray" ng-click="selectItem($index)">
+        <div class="row ae-item-head">
+          <span class="item-width">0</span>
+          <span class="item-width">0</span>
+          <span class="item-width no-icon"></span>
+          <span class="item-width yes-icon"></span>
+          <span class="item-width descrip-text">工作流自动填写</span>
+        </div>
+        <div class="item-date">
+          2016-09-16 星期日
+        </div>
+        <div class="item-bottom-liner"></div>
+        <div ng-if="showActionBar" ng-class={"select-icon":selectArray[$index],"un-select-icon":!selectArray[$index]}></div>
+      </div>
+    </div>
+  </ion-content>
+  <footer-select
+    ng-if="showActionBar"
+    select-all-item="selectAllDetail()"
+    pass-through="passThroughDetailItem()"
+    refuse="refuseDetailItem()">
+  </footer-select>
+</ion-view>
