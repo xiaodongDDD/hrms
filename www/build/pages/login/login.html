@@ -1,0 +1,37 @@
+<ion-view class="login">
+  <ion-content>
+    <div class="login-up">
+      <div class="login-logo">
+      </div>
+      <div class="login-title"></div>
+    </div>
+
+    <div class="login-form">
+      <div class="login-input-item">
+        <div class="login-input-user"></div>
+        <input type="text" placeholder="用户名" ng-model="loginData.username" class="login-input-text">
+        <div class="login-input-clear" ng-click="clearUser()"></div>
+      </div>
+      <div class="login-input-item">
+        <div class="login-input-passwd">
+        </div>
+        <input type="password" placeholder="密码" ng-model="loginData.password" class="login-input-text">
+        <div class="login-input-clear" ng-click="clearPassword()"></div>
+      </div>
+      <div class="login-remember-passwd">
+        <div class="login-remember-text">记住密码</div>
+        <div class="login-remember-checkbox">
+          <label class="toggle toggle-positive">
+            <input type="checkbox" ng-checked="checkboxSavePwd" ng-click="savePassword()">
+            <div class="track" style="height: 24px;width: 40px;margin-top: 5px;border: none;">
+              <div class="handle" style="height: 22px;width: 22px;top: 11px;border: none;"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <a class="login-button" ng-click="doLogin()">登录</a>
+      <div class="login-version">{{currentVersionNum}}</div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,108 @@
+<ion-view view-title="新建住宿申请" class="new-dorm-apply">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">新建住宿申请</h1>
+  </ion-header-bar>
+  <ion-content class="content-style">
+    <!--常驻申请与单人间-->
+    <div class="row apply-type-row">
+      <ion-item class="apply-item" ng-click="chooseApplyType()">
+        <label class="apply-type-label" ng-bind="defaultApplyType"></label>
+        <img src="build/img/application/dorm-apply/arrow-yellow.png" class="apply-type-icon"/>
+      </ion-item>
+      <ion-item class="room-apply-item" ng-click="chooseRoomType()">
+        <label class="room-type-label" ng-bind="defaultRoomType"></label>
+      </ion-item>
+    </div>
+    <!--项目id选择-->
+    <div class="row apply-type-row" ng-show="showProjectItem">
+      <ion-item class="project-item" ng-click="chooseProjectName()">
+        <label class="project-type-label" ng-bind="defaultProjectInfo.projectName"></label>
+        <img src="build/img/application/dorm-apply/arrow-gray.png" class="project-type-icon"/>
+      </ion-item>
+    </div>
+    <!--入驻日期与结束日期-->
+    <div class="row data-row">
+      <div class="col col-40 col-start">
+       <div class="row thin-row-or-col">
+         <label class="start-date-label">入住日期</label>
+       </div>
+       <div class="row month-row">
+         <div class="col thin-row-or-col">
+           <div class="row thin-row-or-col">
+            <label class="month-label">05月</label>
+           </div>
+           <div class="row thin-row-or-col">
+             <label class="weekday-label">周四</label>
+           </div>
+         </div>
+         <div class="col thin-row-or-col">
+           <label class="day-label"><strong>26</strong></label>
+         </div>
+       </div>
+      </div>
+      <div class="col col-20 thin-row-or-col">
+       <div class="row center-row">
+         <div class="up-line"></div>
+       </div>
+       <div class="row center-row">
+         <button class="button button-block circle-button" ng-click="chooseDays()">
+           <p ng-show="showNumButton">1天</p>
+           <img ng-hide="showNumButton" class="fork-pic" src="build/img/application/dorm-apply/cancel.png"/>
+         </button>
+       </div>
+       <div class="row center-row">
+         <div class="bottom-line"></div>
+       </div>
+      </div>
+      <div class="col col-40 col-start" ng-show="showNumButton">
+        <!--日期选择-->
+        <div class="row thin-row-or-col">
+          <label class="start-date-label">结束日期</label>
+        </div>
+        <div class="row month-row">
+          <div class="col thin-row-or-col">
+            <div class="row thin-row-or-col">
+              <label class="month-label">05月</label>
+            </div>
+            <div class="row thin-row-or-col">
+              <label class="weekday-label">周四</label>
+            </div>
+          </div>
+          <div class="col thin-row-or-col">
+            <label class="day-label"><strong>26</strong></label>
+          </div>
+        </div>
+      </div>
+      <div class="col col-40 col-end" ng-hide="showNumButton">
+        <!--天数选择-->
+        <div class="row center-row">
+          <button class="button button-block month-days-first"><strong>30天</strong></button>
+        </div>
+        <div class="row center-row">
+          <button class="button button-block month-days-second"><strong>60天</strong></button>
+        </div>
+        <div class="row center-row">
+          <button class="button button-block month-days-second"><strong>90天</strong></button>
+        </div>
+      </div>
+    </div>
+    <!--楼层与房间号-->
+    <ion-item class="room-item">
+      <div class="row room-row">
+        <label class="room-label">楼层:</label>
+        <input type="text" class="floor-input" placeholder="全部楼层" ng-model="inputinfo.floornum"/>
+      </div>
+      <div class="row room-row">
+        <label class="room-label">房间号:</label>
+        <input type="text" class="roomnum-input" placeholder="任意房间" ng-model="inputinfo.roomnum"/>
+      </div>
+    </ion-item>
+    <!--住宿查询-->
+    <button class="button button-block search-button" ng-click="searchVacantRoom()">住宿查询</button>
+  </ion-content>
+</ion-view>
