@@ -9,14 +9,16 @@
 
     <div class="buttons">
       <button class="button button-clear" ng-click="dealDetailInfo()">
-        <span class="bar-right-button" ng-cloak>{{detailActionName}}</span>
+        <span class="bar-right-button" ng-cloak="">{{detailActionName}}</span>
       </button>
     </div>
   </ion-header-bar>
   <div class="ae-detail-head">
     <div class="ae-detail-head-content">
-      <div class="content-text">成志维　4040　上海　正式</div>
-      <div class="content-text">汉得内部项目-移动内部开发-1</div>
+      <div class="content-text" ng-cloak>
+        {{detailInfoArray.employee_name}}　{{detailInfoArray.employee_number}}　{{detailInfoArray.base_address}}　{{detailInfoArray.employee_status}}
+      </div>
+      <div class="content-text" ng-cloak>{{detailInfoArray.project_name}}</div>
     </div>
   </div>
   <ion-content class="hrms-pancel-corlor" scrollbar-y="false">
@@ -29,19 +31,23 @@
         <span class="item-width" style="width: 40%;">说明</span>
       </div>
       <div class="liner-ts-ae-detail"></div>
-      <div id="approveDetailItem" class="ts-approve-detail-item" ng-repeat="i in detailInfoArray" ng-click="selectItem($index)">
+      <div id="approveDetailItem" class="ts-approve-detail-item" ng-repeat="i in detailInfoArray.subsidy_list"
+           ng-click="selectItem($index)">
         <div class="row ae-item-head">
-          <span class="item-width">0</span>
-          <span class="item-width">0</span>
-          <span class="item-width no-icon"></span>
-          <span class="item-width yes-icon"></span>
-          <span class="item-width descrip-text">工作流自动填写</span>
+          <span class="item-width" ng-bind="i.travel_money"></span>
+          <span class="item-width" ng-bind="i.subsidy_money"></span>
+          <span class="item-width no-icon" ng-if="i.fly_back_status == 'N'"></span>
+          <span class="item-width yes-icon" ng-if="i.fly_back_status == 'Y'"></span>
+          <span class="item-width no-icon" ng-if="i.charging_status == 'N'"></span>
+          <span class="item-width yes-icon" ng-if="i.charging_status == 'Y'"></span>
+          <span class="item-width descrip-text" ng-bind="i.instruction"></span>
         </div>
-        <div class="item-date">
-          2016-09-16 星期日
+        <div class="item-date" ng-cloak>
+          {{i.create_date | weekDay}}
         </div>
         <div class="item-bottom-liner"></div>
-        <div ng-if="showActionBar" ng-class={"select-icon":selectArray[$index],"un-select-icon":!selectArray[$index]}></div>
+        <div ng-if="showActionBar"
+             ng-class={"select-icon":selectArray[$index],"un-select-icon":!selectArray[$index]}></div>
       </div>
     </div>
   </ion-content>

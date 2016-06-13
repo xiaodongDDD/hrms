@@ -28,36 +28,68 @@ angular.module('tsApproveModule')
     '$ionicScrollDelegate',
     '$ionicPopup',
     '$timeout',
+    'TsApproveListService',
+    'hmsPopup',
     function ($scope,
               $state,
               baseConfig,
               $ionicModal,
               $ionicScrollDelegate,
               $ionicPopup,
-              $timeout) {
+              $timeout,
+              TsApproveListService,
+              hmsPopup) {
       /**
        * initial var section
        */
       {
-        var warn = console.warn.bind(console);
-        $scope.showRocket = false; //默认不显示小火箭
-        $scope.showConnectBlock = true; //默认显示连接块
+        $scope.showProjectName = true; //默认显示项目名称
+        $scope.showRocket = false; //默认不显示小火箭image
+        $scope.showConnectBlock = false; //默认不显示连接块
         $scope.showDetailArrow = true; //默认显示向右的箭头--go list detail
         var clickSelectAll = false; //默认没有点击全选
         $scope.actionName = "操作";
         $scope.selectArray = [];
-        $scope.listInfoArray = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        $scope.isClickedProject = []; //控制电机选择条目的样式(modal-filter)
+        $scope.listInfoArray = {};
         var position = ""; //记录滚动条的位置
         var selectItem = []; //初始化点击全部条目为false
-        //var connectBlock = document.getElementById('#connect-block');
+        var tsLsUrl = baseConfig.businessPath + "/wfl_timesheet_view/get_timesheet_list";
+        var tsListParams = {
+          "params": {
+            "p_employee_number": window.localStorage.empno, //参考angularjs的localStorange--
+            "p_start_date": "20160406",
+            "p_end_date": "",
+            "p_project_name": "",
+            "p_project_id": "",
+            "p_project_person_number": "",
+            "p_page": "1",
+            "p_line_number": "7"
+          }
+        };
+        var currentDay = new Date().getDate();
+        if (currentDay < 10) {
+          tsListParams.params.p_end_date = getLastMonthDate(new Date());
+        } else if (currentDay > 10 && currentDay < 20) {
+          tsListParams.params.p_end_date = getCurrentDate(new Date());
+        } else if (currentDay > 20) {
+          tsListParams.params.p_end_date = getCurrentMonthLastDate(new Date());
+        }
       }
 
+      /**
+       * 立即执行 拉取数据的代码
+       */
+      (function () {
+        hmsPopup.showLoading('加载中...');
+        $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams);
+      })();
+
       $scope.$on('$ionicView.enter', function (e) {
-        console.log('tsApproveListCtrl.$ionicView.enter');
       });
 
       $scope.$on('$destroy', function (e) {
-        console.log('tsApproveListCtrl.$destroy');
+        log('tsApproveListCtrl.$destroy');
       });
 
       function __initSelectArray(selectParam) { //初始化选择按钮
@@ -100,19 +132,9 @@ angular.module('tsApproveModule')
       $scope.watchScroll = function () { //滚动内容时执行的method
         position = $ionicScrollDelegate.getScrollPosition().top;
         $scope.$apply(function () {
-          //if (position >= -5 && position < 0) {
-          //  //connectBlock.style.width = '25px';
-          //  //angular.element('#connect-block').addClass('connect-block-1');
-          //} else if (position >= -12 && position < -5) {
-          //  //angular.element('#connect-block').addClass('connect-block-2');
-          //} else if (position >= -19 && position < -12) {
-          //  //angular.element('#connect-block').addClass('connect-block-3');
-          //  //angular.element('#connect-block').addClass('ng-hide');
-          //}
-          if(position < 0) {
+          if (position < 0) {
             $scope.showConnectBlock = false;
           } else if (position >= 0 && position < 400) { //在顶部时显示连接块
-            //angular.element('#connect-block').addClass('connect-block');
             $scope.showRocket = false;
             $scope.showConnectBlock = true;
           } else if (position >= 400) {
@@ -120,21 +142,19 @@ angular.module('tsApproveModule')
           } else {
           }
         });
-        warn(position);
       };
 
-      $scope.tsListrefresh = function () { //下拉刷新
+      $scope.tsListRefresh = function () { //下拉刷新
         $timeout(function () {
-          //$scope.showConnectBlock = true;
-          //angular.element('#connect-block').removeClass("connect-block connect-block-3 ng-hide connect-block-1");
           $scope.$broadcast("scroll.refreshComplete");
         }, 1000);
       };
 
-      $scope.getAttentionInfo = function (e) {
+      $scope.getAttentionInfo = function (e, newWarnList) {
         e.stopPropagation(); //阻止事件冒泡
+        warn(newWarnList);
         $ionicPopup.show({
-          template: '<div class="warn-attention-icon">BASE地与项目一致</div>',
+          template: '<div class="warn-attention-icon">' + newWarnList[0].description + '</div>',
           scope: $scope,
           buttons: [
             {
@@ -162,9 +182,16 @@ angular.module('tsApproveModule')
         $scope.tsFilterModal.show();
       };
 
-      $scope.goApproveDetail = function (index) {
+      $scope.goApproveDetail = function (index, newEmployeeNumber, newProjectId, newStartDate, newEndDate) {
         if ($scope.showDetailArrow) {
-          $state.go('tab.tsApproveDetail');
+          warn(newStartDate, newEndDate);
+          $state.go('tab.tsApproveDetail', {
+              'employeeNumber': newEmployeeNumber,
+              'projectId': newProjectId,
+              'startDate': newStartDate,
+              'endDate': newEndDate
+            }
+          );
         } else {
           selectItem[index] = !selectItem[index];
           if (selectItem[index]) {
@@ -197,17 +224,163 @@ angular.module('tsApproveModule')
        */
       $scope.selectScreening = function (selectParam) {
         if (selectParam == 'projectName') {
+          $scope.showProjectName = true;
           angular.element('#project-name').addClass('active-select');
           angular.element('#project-name').removeClass('active-off');
           angular.element('#person-select').removeClass('active-select');
         } else if (selectParam == 'personSelect') {
+          $scope.showProjectName = false;
           angular.element('#person-select').addClass('active-select');
           angular.element('#project-name').addClass('active-off');
         }
       };
 
-      $scope.selectFilterItem = function () { //点击单个条目时的响应方法
-
+      $scope.selectFilterItem = function (newName, index) { //点击modal单个条目时的响应方法
+        if (newName === 'projectName') {
+          $scope.isClickedProject = [];
+          $scope.isClickedProject[index] = true;
+        } else if (newName === 'personSelect') {
+          $scope.isClickedPerson = [];
+          $scope.isClickedPerson[index] = true;
+        }
       };
 
+      function __initModal() { //初始化modal的样式
+        $scope.tsFilterModal.hide();
+        $scope.showProjectName = true;
+        $scope.isClickedProject = [];
+        $scope.isClickedPerson = [];
+        angular.element('#project-name').addClass('active-select');
+        angular.element('#project-name').removeClass('active-off');
+        angular.element('#person-select').removeClass('active-select');
+      };
+
+      $scope.cancelFilter = function () { //取消按钮
+        __initModal();
+      };
+
+      $scope.confirmFilter = function () { //确定按钮
+        __initModal();
+      };
+
+      $scope.clearFilterParams = function () { //响应清空筛选的点击
+        $scope.isClickedProject = [];
+        $scope.isClickedPerson = [];
+      };
+    }])
+/**
+ * @params:
+ *  1:scope  //controller的作用域
+ *  2:url //请求地址
+ *  3:params //请求的参数
+ *  4: refurbishParam //控制下拉刷线的参数
+ *  5:busy //用于控制下拉刷新的flag
+ *  6:totalNumber //获取的数据总数
+ *  7:projectList //项目列表
+ *  8:employeeList //人员列表
+ *  9:listArray //数据列表
+ */
+  .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup',
+    function (hmsHttp, baseConfig, hmsPopup) {
+      var TsApproveListService = function (scope, requestUrl, requestSearchParams, refurbishParam) {
+        var _self = this;
+        _self.scope = scope;
+        _self.url = requestUrl;
+        _self.params = {};
+        _self.params = requestSearchParams;
+        _self.refurbishParam = refurbishParam;
+        _self.busy = false;
+        _self.totalNumber = 0;
+        _self.listArray = [];
+        _self.projectList = [];
+        _self.employeeList = [];
+        if (_self.refurbishParam === 'clickRefreshEvent') {
+          _self.scope.$broadcast('scroll.infiniteScrollComplete');
+        }
+
+        hmsHttp.post(_self.url, _self.params).success(function (response) {
+          try {
+            if (hmsHttp.isSuccessfull(response.status)) {
+              var tsResult = response.timesheet_approve_response;
+              if (baseConfig.debug) {
+                warn('hi,create a new factory!!' + '\n' + jsonFormat());
+              }
+              _self.totalNumber = response.count;
+              try {
+                _self.listArray = _self.listArray.concat(tsResult.result_list);
+                _self.projectList = _self.projectList.concat(tsResult.project_list);
+                _self.employeeList = _self.employeeList.concat(tsResult.project_person_list);
+              } catch (e) {
+                _self.listArray = [];
+                _self.projectList = [];
+                _self.employeeList = [];
+              }
+              if (response.count == 0) {
+                _self.busy = false;
+                _self.listArray = [];
+              } else if (response.count <= 5) {
+                _self.busy = false;
+              } else {
+                _self.busy = true;
+              }
+              _self.scope.$broadcast('scroll.refreshComplete');
+              _self.scope.$broadcast('scroll.infiniteScrollComplete');
+            } else {
+              if (response.status === 'E' || response.status == 'e') {
+                hmsPopup.showPopup("提示", "<div style='text-align: center'>没有相关数据!</div>");
+              } else {
+                hmsPopup.showPopup("提示", "<div style='text-align: center'>网络异常,请稍后重试!</div>");
+              }
+              _self.scope.$broadcast('scroll.refreshComplete');
+              _self.scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+            hmsPopup.hideLoading();
+          } catch (e) {
+          }
+
+        }.bind(_self)).error(function (error) {
+          _self.params.p_line_number = 1;
+          _self.busy = false;
+          hmsPopup.hideLoading();
+          _self.scope.$broadcast('scroll.refreshComplete');
+          _self.scope.$broadcast('scroll.infiniteScrollComplete');
+          hmsPopup.showPopup("提示", "<div style='text-align: center'>服务请求异常,请检查网络连接和输入参数后重新操作!</div>");
+        }.bind(_self));
+      };
+      TsApproveListService.prototype.nextPage = function () {
+        var _self = this;
+        if (baseConfig.debug) {
+          console.log('enter next page!');
+        }
+        if (!_self.busy) {
+          return;
+        }
+        if (_self.busy) {
+          if (_self.refurbishParam === 'clickRefreshEvent') {
+            _self.refurbishParam = '';
+            _self.scope.$broadcast('scroll.infiniteScrollComplete');
+            return;
+          }
+        }
+        _self.busy = true;
+        _self.params.p_line_number++;
+        hmsHttp.post(_self.url, _self.params).success(function (response) {
+          try {
+            if (hmsHttp.isSuccessfull(response.status)) {
+              _self.scope.$broadcast('scroll.infiniteScrollComplete');
+            } else {
+              _self.scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+          } catch (e) {
+          }
+
+        }.bind(_self)).error(function (error) {
+          _self.params.p_line_number = 1;
+          _self.scope.$broadcast('scroll.infiniteScrollComplete');
+          _self.busy = false;
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup("提示", "<div style='text-align: center'>网络异常,请稍后重试!</div>");
+        }.bind(_self));
+      };
+      return TsApproveListService;
     }]);

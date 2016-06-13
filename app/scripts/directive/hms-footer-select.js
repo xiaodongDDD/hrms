@@ -11,8 +11,6 @@ HmsModule.directive("footerSelect", function () {
   return {
     restrict: "E",        // 指令是一个元素(并非属性)
     scope: {              // 设置指令对于的scope
-      //name: "@",        // name 值传递(字符串，单向绑定)
-      //amount: "=",      // amount 引用传递(双向绑定)
       selectAllItem: "&", // 全选操作--应用表达式
       passThrough: "&",   // 通过操作--应用表达式
       refuse: "&"         // 拒绝操作--应用表达式
@@ -41,9 +39,9 @@ HmsModule.directive("customHeadBar", function () {
   return {
     restrict: "E",        // 指令是一个元素(并非属性)
     scope: {              // 设置指令对于的scope
-      actionName: "@",        // actionName 值传递(字符串，单向绑定)
-      customTitle: "@",
-      //amount: "=",      // amount 引用传递(双向绑定)
+      actionName: "@",    // actionName 值传递(字符串，单向绑定)
+      //test:"=",         // 引用传递--双向绑定
+      customTitle: "@",   //
       goBackPage: "&", // 返回
       doAction: "&"   //
     },

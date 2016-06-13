@@ -78,3 +78,9 @@ $global-background: #f8f8f8 !default;
   padding-right: 5px;
 }
 
+//自定义按钮点击的样式
+.button.activated{
+  opacity: 0.6;
+  transform: scale(0.95,0.95);
+  -webkit-transform: scale(0.95,0.95);
+}
