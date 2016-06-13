@@ -7,35 +7,32 @@
         "files": {}
     },
     "installed_plugins": {
-        "com.handmobile.cordovaplugin.hotpatch": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
-        },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-crosswalk-webview": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.hand.china.tabTemplate"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         }
     },
     "dependent_plugins": {}

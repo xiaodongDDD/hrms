@@ -61,7 +61,7 @@
         </div>
       </div>
       <div class="calendar-week" ng-repeat="weak in calendar">
-        <a class="{{day.style_color}}" ng-repeat="day in weak.list">
+        <a class="{{day.style_color}}" ng-repeat="day in weak.list" ng-click="writeTimesheet(day)">
           <div class="lock-item" ng-if="day.lockFlag">
           </div>
           <div class="{{day.style_outline}}">{{day.day}}</div>

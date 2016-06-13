@@ -18,6 +18,13 @@
         <label class="room-type-label" ng-bind="defaultRoomType"></label>
       </ion-item>
     </div>
+    <!--项目id选择-->
+    <div class="row apply-type-row" ng-show="showProjectItem">
+      <ion-item class="project-item" ng-click="chooseProjectName()">
+        <label class="project-type-label" ng-bind="defaultProjectInfo.projectName"></label>
+        <img src="build/img/application/dorm-apply/arrow-gray.png" class="project-type-icon"/>
+      </ion-item>
+    </div>
     <!--入驻日期与结束日期-->
     <div class="row data-row">
       <div class="col col-40 col-start">
@@ -88,11 +95,11 @@
     <ion-item class="room-item">
       <div class="row room-row">
         <label class="room-label">楼层:</label>
-        <input type="text" class="floor-input" placeholder="全部楼层"/>
+        <input type="text" class="floor-input" placeholder="全部楼层" ng-model="inputinfo.floornum"/>
       </div>
       <div class="row room-row">
         <label class="room-label">房间号:</label>
-        <input type="text" class="roomnum-input" placeholder="任意房间"/>
+        <input type="text" class="roomnum-input" placeholder="任意房间" ng-model="inputinfo.roomnum"/>
       </div>
     </ion-item>
     <!--住宿查询-->

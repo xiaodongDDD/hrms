@@ -1,0 +1,115 @@
+<ion-view view-title="TimeSheet填写" class="timesheet-write">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <div class="title">
+      <div>TimeSheet填写</div>
+      <div>{{timesheetDetail.currentDay}}</div>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <div class="hms-input-list">
+      <a class="hms-input-item" ng-click="showProjectModal()">
+        <div class="row no-padding ">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/project@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content">
+            {{timesheetDetail.currentProject.project_name}}
+          </div>
+          <div class="col col-10 no-padding hms-input-link">
+            <div class="hms-input-link-img"></div>
+          </div>
+        </div>
+      </a>
+
+      <a class="hms-input-item" ng-click="showAddressModal()">
+        <div class="row no-padding ">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/location@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content">
+            {{timesheetDetail.currentAddress.address_name}}
+          </div>
+          <div class="col col-10 no-padding hms-input-link">
+            <div class="hms-input-link-img"></div>
+          </div>
+        </div>
+      </a>
+
+      <a class="hms-input-item">
+        <div class="row no-padding ">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/approver@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content">
+            {{timesheetDetail.approver}}
+          </div>
+        </div>
+      </a>
+
+      <a class="hms-input-item" ng-click="showFlybackModal()">
+        <div class="row no-padding ">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/flyback@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content">
+            {{timesheetDetail.currentFlyback.fly_name}}
+          </div>
+          <div class="col col-10 no-padding hms-input-link">
+            <div class="hms-input-link-img"></div>
+          </div>
+        </div>
+      </a>
+
+      <div class="hms-input-item">
+        <div class="row no-padding">
+          <div class="col col-15 no-padding checkbox-font-size"
+               ng-click="checkBoxChanged(timesheetDetail.travelingAllowance,'travelingAllowance')">
+            补助
+          </div>
+          <div class="col col-10 no-padding checkbox-size"
+               ng-click="checkBoxChanged(timesheetDetail.travelingAllowance,'travelingAllowance')">
+            <i class="{{timesheetDetail.travelingAllowance.style}}"></i>
+          </div>
+          <div class="col col-15 no-padding checkbox-font-size"
+               ng-click="checkBoxChanged(timesheetDetail.normalAllowance,'normalAllowance')">
+            津贴
+          </div>
+          <div class="col col-10 no-padding checkbox-size"
+               ng-click="checkBoxChanged(timesheetDetail.normalAllowance,'normalAllowance')">
+            <i class="{{timesheetDetail.normalAllowance.style}}"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="hms-input-item" ng-click="checkBoxChanged(timesheetDetail.charging,'charging')">
+        <div class="row no-padding">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/charging@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content">
+            <div class="row no-padding">
+              <div class="col col-15 no-padding">
+                计费
+              </div>
+              <div class="col col-10 no-padding checkbox-size">
+                <i class="{{timesheetDetail.charging.style}}"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <textarea class="hms-textarea" type="text" placeholder="描述" ng-modal="timesheetDetail.description">
+      </textarea>
+
+    </div>
+
+    <a class="timesheet-write-button" type="submit" ng-click="submitTimesheet(timesheetDetail)">提交
+    </a>
+  </ion-content>
+</ion-view>

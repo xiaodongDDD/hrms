@@ -9,22 +9,26 @@ angular.module('loginModule')
     'baseConfig',
     '$ionicLoading',
     '$http',
+    '$timeout',
+    '$ionicHistory',
     'hmsPopup',
     function ($scope,
               $state,
               baseConfig,
               $ionicLoading,
               $http,
+              $timeout,
+              $ionicHistory,
               hmsPopup) {
 
       $scope.loginData = {};
       $scope.currentVersionNum = baseConfig.versionName;
 
-      if(window.localStorage.empno){
+      if (window.localStorage.empno) {
         $scope.loginData.username = window.localStorage.empno;
       }
 
-      if(!window.localStorage.checkboxSavePwd){
+      if (!window.localStorage.checkboxSavePwd) {
         $scope.checkboxSavePwd = true;
         window.localStorage.checkboxSavePwd = "true";
       }
@@ -112,6 +116,11 @@ angular.module('loginModule')
         if (baseConfig.debug) {
           console.log('loginCtrl.$ionicView.enter');
         }
+
+        $timeout(function () {
+          $ionicHistory.clearCache();
+          $ionicHistory.clearHistory();
+        }, 400);
       });
 
       $scope.$on('$destroy', function (e) {

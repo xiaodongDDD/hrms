@@ -1,0 +1,16 @@
+.my-info{
+  .logout{
+    height: 44px;
+    line-height: 44px;
+    width: 100%;
+    display: block;
+    background: red;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    &.activated{
+      background: #E08283;
+    }
+  }
+}

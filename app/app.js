@@ -63,7 +63,8 @@ angular.module('myApp')
         .state('tab', {
           url: '/tab',
           abstract: true,
-          templateUrl: 'build/pages/tab/tabs.html'
+          templateUrl: 'build/pages/tab/tabs.html',
+          controller: 'TabsCtrl'
         })
 
         // Each tab has its own nav history stack:
@@ -132,6 +133,12 @@ angular.module('myApp')
         });
 
       // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/login');
+      if(window.localStorage.token&&window.localStorage.token!=""){
+        $urlRouterProvider.otherwise('/tab/message');
+        //$urlRouterProvider.otherwise('/login');
+      }else{
+        $urlRouterProvider.otherwise('/login');
+      }
+
 
     }]);
