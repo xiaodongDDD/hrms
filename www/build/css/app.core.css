@@ -40,6 +40,11 @@
   font-size: 16px;
   padding-right: 5px; }
 
+.button.activated {
+  opacity: 0.6;
+  transform: scale(0.95, 0.95);
+  -webkit-transform: scale(0.95, 0.95); }
+
 /*!
 Animate.css - http://daneden.me/animate
 Version - 3.4.0
@@ -2638,7 +2643,8 @@ Copyright (c) 2015 Daniel Eden
   background-image: url("./../img/application/timesheet-approve/list/BG@3x.png");
   background-size: cover;
   padding-top: 100px;
-  width: 100%; }
+  width: 100%;
+  height: 100%; }
 
 .rocket-icon {
   width: 42px;
@@ -2666,13 +2672,15 @@ Copyright (c) 2015 Daniel Eden
     height: 44px; }
     .custom-head .custom-first-head .back-button {
       font-size: 30px;
-      margin-left: -10px;
       color: white;
-      min-height: 35px; }
+      min-height: 35px;
+      margin-left: -35px;
+      width: 100px; }
     .custom-head .custom-first-head .back-text {
       font-size: 17px;
       position: fixed;
-      padding-left: 5px; }
+      padding-left: 5px;
+      margin-top: -1px; }
     .custom-head .custom-first-head .action-button {
       right: 5px;
       position: absolute;
@@ -2680,9 +2688,7 @@ Copyright (c) 2015 Daniel Eden
       min-height: 35px;
       font-size: 16px; }
   .custom-head .custom-second-head {
-    height: 56px;
-    /* 下面的是测试代码
-    */ }
+    height: 56px; }
     .custom-head .custom-second-head .bg-input {
       background-color: white;
       margin-top: 1.2%;
@@ -2729,7 +2735,7 @@ Copyright (c) 2015 Daniel Eden
 .ts-approve-list-item {
   margin-bottom: 5px;
   padding-left: 10px;
-  height: 101px;
+  min-height: 101px;
   width: 92%;
   margin-left: 4%;
   background-color: white;
@@ -2775,6 +2781,10 @@ Copyright (c) 2015 Daniel Eden
       width: 40px;
       height: 40px;
       position: absolute; }
+    .ts-approve-list-item .second-content .number-icon.activated {
+      opacity: 0.6;
+      transform: scale(1.1, 1.1);
+      -webkit-transform: scale(1.1, 1.1); }
   .ts-approve-list-item .arrow-item {
     height: 21px;
     width: 21px;
@@ -2801,6 +2811,19 @@ Copyright (c) 2015 Daniel Eden
     width: 14px;
     height: 14px;
     margin-top: -23px; }
+
+.ts-approve-list-item.activated {
+  opacity: 0.6; }
+
+.ts-approve-list-item.ng-enter {
+  -webkit-animation: zoomInUp 0.5s;
+  animation: zoomInUp .5s; }
+
+.ts-approve-list-item.ng-enter-stagger {
+  -webkit-animation-delay: 150ms;
+  animation-delay: 150ms;
+  -webkit-animation-duration: 0ms;
+  animation-duration: 0ms; }
 
 .foot-bar {
   height: 50px;
@@ -2907,12 +2930,14 @@ Copyright (c) 2015 Daniel Eden
     background-color: white;
     width: 72%;
     overflow-y: hidden;
-    height: 55%; }
+    height: 65%; }
     .filter-items-row .items-bg .items-detail {
       border-bottom: 1px solid #d2d2d2;
-      height: 40px;
+      min-height: 40px;
       padding-top: 10px;
       margin-left: 10px; }
+    .filter-items-row .items-bg .select-item-color {
+      color: #26579E; }
 
 .ae-detail-head {
   height: 92px;
