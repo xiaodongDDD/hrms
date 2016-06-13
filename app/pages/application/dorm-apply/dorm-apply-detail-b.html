@@ -17,13 +17,13 @@
       <div class="row image-row">
         <img src="build/img/application/dorm-apply/back-hand.png" class="figure-image"/>
       </div>
-      <label class="roomnum-figure">房间号508</label>
+      <label class="roomnum-figure">房间号{{applyInfo.roomNumber}}</label>
       <div class="row card-row" style="margin-top: 10px;">
         <div class="col no-padding-or-margin put-left">
           <label class="left-label">入住时间:</label>
         </div>
         <div class="col no-padding-or-margin put-right">
-          <label class="right-label">2016-04-27</label>
+          <label class="right-label">{{applyInfo.checkinDate}}</label>
         </div>
       </div>
       <div class="row card-row">
@@ -31,7 +31,7 @@
           <label class="left-label">结束时间:</label>
         </div>
         <div class="col no-padding-or-margin put-right">
-          <label class="right-label">2016-05-27</label>
+          <label class="right-label">{{applyInfo.checkoutDate}}</label>
         </div>
       </div>
       <div class="room-label-shelter">
@@ -42,7 +42,7 @@
           <label class="left-label">申请类型:</label>
         </div>
         <div class="col no-padding-or-margin put-right">
-          <label class="right-label">常驻申请</label>
+          <label class="right-label">{{applyInfo.applyType}}</label>
         </div>
       </div>
       <div class="row card-row">
@@ -50,7 +50,7 @@
           <label class="left-label">楼层:</label>
         </div>
         <div class="col no-padding-or-margin put-right">
-          <label class="right-label">4楼</label>
+          <label class="right-label">{{applyInfo.floorNumber}}</label>
         </div>
       </div>
       <div class="row card-row" style="border: none">
@@ -58,11 +58,11 @@
           <label class="left-label">房间类型:</label>
         </div>
         <div class="col no-padding-or-margin put-right">
-          <label class="right-label">单人间</label>
+          <label class="right-label">{{applyInfo.roomType}}</label>
         </div>
       </div>
       <div class="cut-line"></div>
-      <button class="button button-block confirm-button" ng-click="">{{buttonText}}</button>
+      <button class="button button-block confirm-button" ng-click="renewContract()">{{buttonText}}</button>
     </ion-item>
     <img src="build/img/application/dorm-apply/big-stamp-checkin.png" class="image-stamp" ng-show="checkIn"/>
     <img src="build/img/application/dorm-apply/big-stamp-checkout.png" class="image-stamp" ng-show="checkOut"/>
