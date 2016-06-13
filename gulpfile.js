@@ -25,7 +25,7 @@ var notify = require('gulp-notify');//提示信息
 var gulpNgConfig = require('gulp-ng-config');//提示信息
 
 var jsFilePath = ['app/scripts/*.js','app/scripts/*/*.js','app/app.js','app/pages/**/*.js','app/pages/**/**/*.js','app/pages/**/**/**/*.js'];
-var htmlFilePath = ['app/pages/**/*.html','app/pages/**/**/*.html','app/pages/**/**/**/*.html'];
+var htmlFilePath = ['app/pages/**/*.html','app/pages/**/**/*.html','app/pages/**/**/**/*.html','app/pages/**/**/**/**/*.html'];
 var libFilePath = ['app/lib/**/*.*','app/lib/**/**/*.*','app/lib/**/**/**/*.*'];
 var imgFilePath = ['app/img/**/*.png','app/img/**/**/*.png','app/img/**/**/**/*.png'];
 
@@ -67,8 +67,6 @@ gulp.task('html', [/*'rootHtml',*/ 'pagesHtml']);
 // Copy JavaScript Lib
 gulp.task('copy-libs', function(){
   return gulp.src(libFilePath)
-    //.pipe(useref({noAssets:true}, lazypipe().pipe(sourcemaps.init, { loadMaps: true })))
-    //.pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('www/build/lib'));
 });
 

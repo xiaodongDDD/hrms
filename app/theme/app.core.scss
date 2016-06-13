@@ -8,9 +8,16 @@
 
 @import "../scss/_Variables.scss";
 @import "../scss/_Minxin.scss";
+@import "../scss/animate.scss";
+@import "../scss/loading.scss";
 @import "../pages/application/application";
 @import "../pages/application/time-off-manage/time-off-manage.scss";
 @import "../pages/application/timesheet-approve/ts-approve";
+@import "../pages/application/dorm-apply/dorm-apply.scss";
+@import "../pages/application/timesheet/query/query";
+@import "../pages/application/timesheet/write/write";
+@import "../pages/application/timesheet/timesheet";
+@import "../pages/workflow/list/list";
 @import "../pages/contact/contact";
 @import "../pages/login/login";
 @import "../pages/message/message";

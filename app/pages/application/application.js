@@ -40,13 +40,13 @@ angular.module('applicationModule')
           destUrl: "tab.time-off-manage",
         },
         {
-          appName: "Timesheet填写",
-          imageUrl: "build/img/application/timesheet@3x.png",
-          destUrl: "tab.timesheet",
+          appName: "住宿申请",
+          imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
+          destUrl: "tab.dorm-apply"
         },{
           appName: "Timesheet填写",
           imageUrl: "build/img/application/timesheet@3x.png",
-          destUrl: "",
+          destUrl: "tab.timesheet",
         },
         {
           appName: "Timesheet审批",
@@ -65,7 +65,7 @@ angular.module('applicationModule')
         {
           appName: "代办事项",
           imageUrl: "build/img/application/flightBooking@3x.png",
-          destUrl: "",
+          destUrl: "tab.workflow-list",
         },
         {
           appName: "报销单查询",

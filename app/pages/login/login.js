@@ -9,22 +9,48 @@ angular.module('loginModule')
     'baseConfig',
     '$ionicLoading',
     '$http',
+    '$timeout',
+    '$ionicHistory',
+    'hmsPopup',
     function ($scope,
               $state,
               baseConfig,
               $ionicLoading,
-              $http) {
+              $http,
+              $timeout,
+              $ionicHistory,
+              hmsPopup) {
 
       $scope.loginData = {};
-      $scope.currentVersionNum = baseConfig.currentVersion;
+      $scope.currentVersionNum = baseConfig.versionName;
 
-      console.log('loginCtrl.enter');
+      if (window.localStorage.empno) {
+        $scope.loginData.username = window.localStorage.empno;
+      }
+
+      if (!window.localStorage.checkboxSavePwd) {
+        $scope.checkboxSavePwd = true;
+        window.localStorage.checkboxSavePwd = "true";
+      }
+
+      if (window.localStorage.checkboxSavePwd == "true") {
+        $scope.checkboxSavePwd = true;
+        $scope.loginData.password = window.localStorage.password;
+      } else {
+        $scope.checkboxSavePwd = false;
+      }
+
+      if (baseConfig.debug) {
+        console.log('loginCtrl.enter');
+      }
 
       $scope.savePassword = function () {
-        $scope.checkbox_savePwd = !$scope.checkbox_savePwd;//取反 记住密码框的状态
-        console.log("此时密码框的状态为 :", angular.toJson($scope.checkbox_savePwd));
+        $scope.checkboxSavePwd = !$scope.checkboxSavePwd;//取反 记住密码框的状态
+        if (baseConfig.debug) {
+          console.log("此时密码框的状态为 :", angular.toJson($scope.checkboxSavePwd));
+        }
         if ($scope.loginData.password !== "") {
-          if ($scope.checkbox_savePwd === true) {
+          if ($scope.checkboxSavePwd === true) {
             window.localStorage.password = $scope.loginData.password;
           } else {
             window.localStorage.password = "";
@@ -32,35 +58,54 @@ angular.module('loginModule')
         }
       };
 
+      $scope.clearUser = function () {
+        $scope.loginData.username = '';
+      }
+      $scope.clearPassword = function () {
+        $scope.loginData.password = '';
+      }
+
+      //login
       $scope.doLogin = function () {
         window.localStorage.empno = $scope.loginData.username;
-        if ($scope.checkbox_savePwd) {
+        if ($scope.checkboxSavePwd) {
           window.localStorage.password = $scope.loginData.password;
         } else {
           window.localStorage.password = "";
         }
-        $ionicLoading.show({
-          template: 'Loading...'
-        });
+
+        if (!$scope.loginData.username || $scope.loginData.username == '') {
+          hmsPopup.showPopup('用户名不能为空');
+          return;
+        }
+        if (!$scope.loginData.password || $scope.loginData.password == '') {
+          hmsPopup.showPopup('密码不能为空');
+          return;
+        }
 
         var url = baseConfig.basePath + "/appLogin/user_login/login";
-        var params = '{"params":{"p_user_name":"' + $scope.loginData.username +
-          '","p_password":"' + $scope.loginData.password + '"}}';
-
+        var params = {
+          "params": {
+            "p_user_name": +$scope.loginData.username,
+            "p_password": $scope.loginData.password
+          }
+        };
+        hmsPopup.showLoading('登陆中...');
         $http.post(url, params).success(function (result) {
-          $ionicLoading.hide();
+          hmsPopup.hideLoading();
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }
-
-          if (result.con_status == "S") {
+          if (!result.status && result.con_status == 'S') {
             window.localStorage.token = result.pre_token + result.token_key;
             window.localStorage.empno = $scope.loginData.username;
+            window.localStorage.checkboxSavePwd = $scope.checkboxSavePwd;
             $state.go("tab.message");
+          } else {
+            hmsPopup.showPopup('登陆失败,可能是密码不对!');
           }
-
         }).error(function (response, status) {
-          $ionicLoading.hide();
+          hmsPopup.hideLoading();
           if (baseConfig.debug) {
             console.log("response error " + angular.toJson(response));
           }
@@ -68,10 +113,19 @@ angular.module('loginModule')
       };
 
       $scope.$on('$ionicView.enter', function (e) {
-        console.log('loginCtrl.$ionicView.enter');
+        if (baseConfig.debug) {
+          console.log('loginCtrl.$ionicView.enter');
+        }
+
+        $timeout(function () {
+          $ionicHistory.clearCache();
+          $ionicHistory.clearHistory();
+        }, 400);
       });
 
       $scope.$on('$destroy', function (e) {
-        console.log('loginCtrl.$destroy');
+        if (baseConfig.debug) {
+          console.log('loginCtrl.$destroy');
+        }
       });
     }]);

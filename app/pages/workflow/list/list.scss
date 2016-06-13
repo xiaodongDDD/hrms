@@ -1,0 +1,108 @@
+$workflow-bule: #2A5BA1;
+$workflow-bule-content: #24559C;
+$workflow-black: #4A4A4A;
+$workflow-gray: #9B9B9B;
+$workflow-gray-line: #D2D2D2;
+
+.workflow {
+  .has-daiwen-bar{
+    bottom:60px;
+  }
+  background: #fafafa;
+  .workflow-filter {
+    padding-top: 7px;
+    width: 160px;
+    height: 44px;
+    margin-left: auto;
+    margin-right: auto;
+    .to-do-list {
+      float: left;
+      width: 76px;
+      height: 29px;
+      line-height: 29px;
+      border-bottom-left-radius: 15px;
+      border-top-left-radius: 15px;
+      background: white;
+      font-size: 13px;
+      color: $workflow-bule;
+    }
+    .done-list {
+      border: 1px solid white;
+      float: left;
+      width: 76px;
+      height: 29px;
+      line-height: 29px;
+      border-bottom-right-radius: 15px;
+      border-top-right-radius: 15px;
+      background: $workflow-bule;
+      font-size: 13px;
+      color: white;
+    }
+  }
+}
+
+.workflow-list {
+  display: block;
+  background: white;
+  position: relative;
+  margin-top: 10px;
+  margin-left: 18px;
+  margin-right: 5px;
+  border-bottom-right-radius: 25px;
+  box-shadow: 0px 0px 4px $workflow-gray-line;
+
+  &.activated {
+    background: #f8f8f8;
+  }
+
+  .color-title {
+    color: $workflow-bule-content;
+  }
+  .color-type {
+    font-weight: bold;
+    font-size: 14px;
+    color: $workflow-black;
+  }
+  .color-content {
+    font-size: 14px;
+    color: $workflow-gray;
+  }
+
+  .no-padding {
+    padding: 0;
+    margin: 0;
+  }
+
+  .workflow-list-logo {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    padding: 4px;
+    background: white;
+    position: absolute;
+    top: -5px;
+    left: -12px;
+    img {
+      height: 42px;
+      width: 42px;
+    }
+  }
+
+  .workflow-list-header {
+    margin-left: 55px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 2px dotted $workflow-gray-line;
+    color: $workflow-bule-content;
+  }
+  .workflow-list-content {
+    padding: 12px;
+    .workflow-list-select {
+      img {
+        float: right;
+        width: 21px;
+        height: 21px;
+      }
+    }
+  }
+}

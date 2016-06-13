@@ -27,13 +27,11 @@ angular.module('myApp')
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
         cordova.plugins.Keyboard.disableScroll(true);
-
       }
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
-
     });
   });
 
@@ -65,7 +63,8 @@ angular.module('myApp')
         .state('tab', {
           url: '/tab',
           abstract: true,
-          templateUrl: 'build/pages/tab/tabs.html'
+          templateUrl: 'build/pages/tab/tabs.html',
+          controller: 'TabsCtrl'
         })
 
         // Each tab has its own nav history stack:
@@ -128,31 +127,18 @@ angular.module('myApp')
         })
 
         .state('login', {
-          url: '/guide',
+          url: '/login',
           templateUrl: 'build/pages/login/login.html',
           controller: 'loginCtrl'
-        })
-
-        .state('tab.tsApproveList', {
-          url: 'application/tsApproveList',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/list/ts-approve-list.html',
-              controller: 'tsApproveListCtrl'
-            }
-          }
-        })
-        .state('tab.tsApproveDetail', {
-          url: 'application/tsApproveDetail',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
-              controller: 'tsApproveDetailCtrl'
-            }
-          }
         });
 
       // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/guide');
+      if(window.localStorage.token&&window.localStorage.token!=""){
+        $urlRouterProvider.otherwise('/tab/message');
+        //$urlRouterProvider.otherwise('/login');
+      }else{
+        $urlRouterProvider.otherwise('/login');
+      }
+
 
     }]);

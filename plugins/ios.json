@@ -1,0 +1,39 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        },
+        "cordova-plugin-crosswalk-webview": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        }
+    },
+    "dependent_plugins": {}
+}

@@ -61,7 +61,7 @@
       border-radius: 20px;
       .calendar-icon {
         background-image: url("./../img/application/timesheet-approve/list/calender@3x.png");
-        @include image-background(no-repeat, 15px 0px, 27px 27px);
+        @include image-background(no-repeat, 27px 27px,15px 0px);
         margin-left: 15px;
         padding-left: 50px;
         min-height: 35px;
@@ -82,9 +82,10 @@
     .connect-block {
       background-image: url("./../img/application/timesheet-approve/list/Rectangle-2@3x.png");
       background-repeat: no-repeat;
-      background-size: 25px 13px;
+      background-size: 25px 15px;
       margin-left: 46.6%;
-      height: 13px;
+      margin-top: -1px;
+      height: 15px;
     }
     /* 下面的是测试代码
     */

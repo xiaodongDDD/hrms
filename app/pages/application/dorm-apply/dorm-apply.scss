@@ -1,0 +1,1149 @@
+.platform-android{
+  .main-dorm-apply{
+    .cancel-button-image{
+      width: 30px;
+      height: 30px;
+      margin-top: 5px;
+    }
+  }
+}
+.platform-ios{
+  .main-dorm-apply{
+    .cancel-button-image{
+      width: 30px;
+      height: 30px;
+      margin-top: 18px;
+    }
+  }
+}
+.main-dorm-apply{//住宿申请界面
+  .clear-back{
+
+  }
+  .blur-back{
+    -webkit-filter: blur(5px);
+    filter: blur(5px);
+  }
+  .question-icon{
+    width: 24px;
+    height: 24px;
+    margin-top: 5px;
+  }
+  .content-style{
+    background-color: #fafafa;
+  }
+  .create-button{
+    width: 92%;
+    height: 45px;
+    background-color: #ffffff;
+    line-height: 45px;
+    padding: 0px;
+    margin: 0px;
+    border-radius: 45px;
+    margin-left:4%;
+    margin-top: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
+    opacity: 1;
+    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+  }
+  .button.activated{
+    opacity: 0.6;
+    transform: scale(0.95,0.95);
+    -webkit-transform: scale(0.95,0.95);
+  }
+  .create-button-row-plugin{
+    padding: 0px;
+    margin: 0px;
+    height: 45px
+  }
+  .create-button-span{
+    width: 34px;
+    height: 34px;
+    margin-left: 27.2%;
+    margin-top: 7px;
+  }
+  .create-button-text{
+    color: #3964a4;
+    font-size: 1rem;
+    margin-left: 15px;
+    margin-top: 12px;
+  }
+  .space{
+    width: 100%;
+    height: 15px;
+    background-color: transparent;
+  }
+  .history-title{
+    font-size: 1rem;
+    color: #9b9b9b;
+    margin-left: 4%;
+  }
+  .item-appearance{
+    opacity: 1;
+    margin: 0px;
+    padding: 0px;
+    width: 92%;
+    height: 128px;
+    margin-top: 15px;
+    margin-left: 4%;
+    border: none;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    border-bottom-right-radius: 30px;
+  }
+  .item-appearance.ng-enter{
+    //-webkit-animation: flipInX 0.4s;
+    //animation: flipInX .4s;
+    //-webkit-animation: flipInY 0.4s;
+    //animation: flipInY .4s;
+    //-webkit-animation: fadeInUp 0.5s;
+    //animation: fadeInUp .5s;
+    -webkit-animation: zoomInUp 0.5s;
+    animation: zoomInUp .5s;
+    //-webkit-animation: lightSpeedIn 0.4s;
+    //animation: lightSpeedIn .4s;
+    //-webkit-animation: rotateInUpLeft 0.4s;
+    //animation: rotateInUpLeft .4s;
+  }
+  .item-appearance.ng-enter-stagger{
+    -webkit-animation-delay: 150ms;
+    animation-delay: 150ms;
+    -webkit-animation-duration: 0ms;
+    animation-duration: 0ms;
+  }
+  .item.activated{
+    background-color: #ffffff;
+    opacity: 0.4;
+    //-webkit-filter: blur(2px);
+    //filter: blur(2px);
+  }
+  .first-row{
+    margin: 0px;
+    padding: 0px;
+    height: 20px;
+    margin-top: 10px;
+  }
+  .second-row{
+    margin: 0px;
+    padding: 0px;
+    height: 18px;
+    margin-top: 9px;
+  }
+  .stuff{
+    font-size: 0.9375rem;
+    color: #3964a4;
+    margin-left: 10px;
+  }
+  .stuffname{
+    font-size: 0.9375rem;
+    color: #3964a4;
+    margin-left: 5px;
+  }
+  .roomnum{
+    font-size: 0.9375rem;
+    color: #f99d32;
+    margin-left: 27px;
+  }
+  .roomtype{
+    font-size: 0.9375rem;
+    color: #f99d32;
+  }
+  .move-in{
+    font-size: 0.8125rem;
+    color: #4a4a4a;margin-left: 10px;
+  }
+  .move-in-date{
+    font-size: 0.8125rem;
+    color: #9b9b9b;
+    margin-left: 5px;
+  }
+  .move-out{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    margin-left: 10px;
+  }
+  .move-out-date{
+    font-size: 0.8125rem;
+    color: #9b9b9b;
+    margin-left: 5px;
+  }
+  .totaldays{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    margin-left: 10px
+  }
+  .totaldays-num{
+    font-size: 0.8125rem;
+    color: #9b9b9b;
+    margin-left: 5px;
+  }
+  .leftdays{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    margin-left: 10px;
+  }
+  .leftdays-num{
+    font-size: 0.8125rem;
+    color: #b95756;
+    margin-left: 5px;
+  }
+  .bottom-pic{
+    width: 59px;
+    height: 59px;
+    position: absolute;
+    right: 1px;
+    top: 70px;
+  }
+  .black-page{//说明页
+    position: fixed;
+    top: 0px;
+    left: 0;
+    z-index: 200;
+    width: 100%;
+    height:100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .black-page.ng-hide-remove{
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn .5s;
+  }
+  .black-head{
+    width: 100%;
+    height: 60px;
+  }
+  .cancel-button{
+    padding: 0px;
+    margin: 0px;
+    width: 55px;
+    position: absolute;
+    top: 5px;
+    border: none;
+    right: 5px;
+  }
+  .scroll-height{
+    width: 100%;
+    height: 100%;
+  }
+  .flank{
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .paper-write{
+    font-size: 1rem;
+    color: #ffffff;
+    line-height: 1.7rem;
+  }
+  .scroll-bottom-line{
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+  }
+}
+.new-dorm-apply{//新建住宿申请界面
+  .content-style{
+    background-color: #fafafa;
+  }
+  .button.activated{
+    opacity: 0.6;
+    transform: scale(0.95,0.95);
+    -webkit-transform: scale(0.95,0.95);
+  }
+  .apply-item{
+    opacity: 1;
+    margin: 0px;
+    padding-top: 13px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;border: none;
+    width: 62.13%;height: 100%;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15);
+  }
+  .apply-type-row{
+    padding: 0px;
+    margin: 0px;
+    margin-top: 4px;
+    margin-left: 1.3%;
+    width: 97.4%;
+    height: 49px;
+  }
+  .apply-type-label{
+    font-size: 1.0625rem;
+    color: #24559c;
+    margin-left: 20px;
+  }
+  .apply-type-icon{
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    top: 16px;
+    right: 15px;
+  }
+  .room-type-label{
+    font-size: 1.0625rem;
+    color: #24559c;
+    margin-left: 32.8%;
+  }
+  .room-apply-item{
+    opacity: 1;
+    margin:0px;
+    padding-top: 13px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    border: none;
+    width: 38%;
+    height: 100%;
+    background-color: #ffffff;
+    margin-left: 1.3%;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+  }
+  .project-item{
+       opacity: 1;
+       margin: 0px;
+       padding-top: 14px;
+       padding-left: 20px;
+       padding-right: 30px;
+       padding-bottom: 0px;border: none;
+       width: 100%;height: 100%;
+       background-color: #ffffff;
+       box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15);
+     }
+  .project-type-label{
+    font-size: 0.9375rem;
+    color: #24559c;
+    width: 95%;
+  }
+  .project-type-icon{
+    width: 9px;
+    height: 14px;
+    position: absolute;
+    top: 19px;
+    right: 10px;
+  }
+  .data-row{
+    padding: 0px;
+    width: 97.3%;
+    height: 110px;
+    margin-left: 1.3%;
+    margin-top: 5px;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15);
+  }
+  .item.activated{
+    opacity: 0.6;
+  }
+  .search-button{
+    opacity:1;
+    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+    height: 50px;
+    line-height: 50px;
+    width: 91.5%;
+    margin-left: 4.25%;
+    margin-top: 30px;
+    border-radius: 20px;
+    background-color: #f99d32;
+    font-size: 1rem;
+    color: #ffffff;
+  }
+  .col-start{
+    padding-top: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+  }
+  .thin-row-or-col{
+    margin: 0px;
+    padding: 0px;
+  }
+  .start-date-label{
+    color: #bfbfbf;
+    font-size: 0.875rem;
+    width: 100%;
+    text-align: center;
+    margin-left: 8%;
+  }
+  .month-row{
+    margin: 0px;
+    padding: 0px;
+    margin-top: 15px;
+  }
+  .month-label{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    width: 100%;
+    line-height: 0.9rem;
+    width: 100%;
+    text-align: right;
+    letter-spacing: -1px;
+  }
+  .weekday-label{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    width: 100%;
+    line-height:0.7rem;
+    text-align: right;
+  }
+  .day-label{
+    font-size: 2.1rem;
+    color: #4a4a4a;
+    line-height:1.5rem;
+  }
+  .center-row{
+    padding: 0px;
+    margin: 0px;
+    text-align: center
+  }
+  .up-line{
+    width: 2px;
+    height: 25px;
+    background-color: #d2d2d2;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .circle-button{
+    width: 50px;
+    height: 50px;
+    border: none;
+    margin: 0px;
+    line-height: 50px;
+    border-radius: 50%;
+    background-color: #f3f3f3;
+    margin-top: 5px;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 3.1rem;
+    color: #24559c;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .fork-pic{
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+  }
+  .bottom-line{
+    width: 2px;
+    height: 25px;
+    background-color: #d2d2d2;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .col-end{
+    padding-top: 15px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    margin: 0px
+  }
+  .month-days-first{
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    width: 100%;
+    min-height: 20px;
+    line-height: 20px;
+    color: #4a4a4a;
+    font-size: 1.5rem;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border: none
+  }
+  .month-days-second{
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    width: 100%;
+    min-height: 20px;
+    line-height: 20px;
+    color: #4a4a4a;
+    font-size: 1.5rem;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    border: none;
+  }
+  .room-item{
+    padding: 0px;
+    margin: 0px;
+    width: 97.3%;
+    height: 85px;
+    margin-left: 1.3%;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15);
+  }
+  .room-row{
+    padding: 0px;
+    margin: 0px;
+    border-bottom: solid 1px #d2d2d2;
+    margin-left: 20px;
+    height: 42px;
+  }
+  .room-label{
+    font-size: 1rem;
+    color: #4a4a4a;
+    margin-top: 10px
+  }
+  .floor-input{
+    color: #d2d2d2;
+    font-size: 1em;
+    background-color: transparent;
+    width: 120px;
+    height: 24px;
+    line-height: normal;
+    text-align: right;
+    position: absolute;
+    top: 9px;
+    right: 10px
+  }
+  .roomnum-input{
+    color: #d2d2d2;
+    font-size: 1em;
+    background-color: transparent;
+    width: 120px;
+    height: 24px;
+    line-height: normal;
+    text-align: right;
+    position: absolute;
+    top: 49px;
+    right: 10px
+  }
+}
+.new-dorm-apply-modal{//新建住宿申请下的申请类型modal样式
+  position: absolute;
+  top: 60%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .header-color{
+    background-color: #ffffff;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none;
+  }
+  .change-line{
+    width: 100%;
+    height: 1px;
+    background:-webkit-linear-gradient(right,#3D7BC4,#17468F,#3D7BC4);
+  }
+  .back-color {
+    background-color: #ffffff;
+  }
+  .list{
+    border: none;
+  }
+  .apply-item{
+    width: 94%;
+    margin-left: 3%;
+    color:#9b9b9b;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2
+  }
+}
+.new-dorm-apply-room-modal{//新建住宿申请下的房间类型modal样式
+  position: absolute;
+  top: 72%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .back-color {
+    background-color: #fff;
+  }
+  .header-color{
+    background-color: #ffffff;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none;
+  }
+  .change-line{
+    width: 100%;
+    height: 1px;
+    background:-webkit-linear-gradient(right,#3D7BC4,#17468F,#3D7BC4);
+  }
+  .list{
+    border: none;
+  }
+  .room-item{
+    width: 94%;
+    margin-left: 3%;
+    color:#9b9b9b;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2
+  }
+}
+.new-dorm-apply-project-modal {//新建住宿申请下的申请类型modal样式
+  position: absolute;
+  top: 60%;
+  bottom: 0%;
+  min-height: 180px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .header-color{
+    background-color: #ffffff;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none;
+  }
+  .change-line{
+    width: 100%;
+    height: 1px;
+    background:-webkit-linear-gradient(right,#3D7BC4,#17468F,#3D7BC4);
+  }
+  .back-color {
+    background-color: #ffffff;
+  }
+  .list{
+    border: none;
+  }
+  .project-item{
+    width: 94%;
+    margin-left: 3%;
+    color:#9b9b9b;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2
+  }
+}
+.platform-android{
+  .bar{
+    .title{
+      font-size: 1.0625rem;
+    }
+  }
+  .dorm-apply-detail-a {
+    .time-line-row {
+      padding: 0px;
+      margin: 0px;
+      height: 24px;
+      width: 78.7%;
+      margin-top: 10px;
+      margin-left: 10.7%;
+    }
+  }
+}
+.platform-ios{
+  .dorm-apply-detail-a {
+    .time-line-row {
+      padding: 0px;
+      margin: 0px;
+      height: 24px;
+      width: 78.7%;
+      margin-top: 20px;
+      margin-left: 10.7%;
+    }
+  }
+}
+.dorm-apply-detail-a{//住宿详情界面(已申请，已拒绝)
+  .has-header{
+    top: 126px;
+  }
+  .scroll-content{
+    top: 126px;
+  }
+  .tall-header{
+    width: 100%;
+    height: 126px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+    background-size: cover;
+  }
+  .bar-tall-bottom{
+    width: 100%;
+    height: 82px;
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    z-index: 999;
+    background-color: transparent;
+  }
+  .title-color{
+    color: #ffffff;
+    font-size: 1.0625rem;
+  }
+  .bar-tall-header{
+    background-color: transparent;
+    background-size:100% 0px;
+  }
+  .time-line-circle-done{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border:3px solid #b7cde7;
+  }
+  .time-line-circle-undone{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #799ecd;
+    border:5px solid #cad9eb;
+  }
+  .left-circle{
+    margin-right: auto;
+    margin-top: 2px;
+  }
+  .center-circle{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2px;
+  }
+  .right-circle{
+    margin-left: auto;
+    margin-top: 2px;
+  }
+  .time-line-description-row{
+    padding: 0px;
+    margin: 0px;
+    height: 36px;
+    width: 86%;
+    margin-left: 7%;
+  }
+  .time-line-up-row{
+    height: 16px;
+    text-align: center
+  }
+  .time-line-left-up-label{
+    font-size: 0.75rem;
+    color: #ffffff;
+    margin-right: auto;
+  }
+  .time-line-dowm-row{
+    height: 20px;
+    text-align: center;
+  }
+  .time-line-left-down-label{
+    font-size: 0.75rem;
+    color: #ffffff;
+    margin-left: 6px;
+    margin-right: auto;
+  }
+  .time-line-center-up-label{
+    font-size: 0.75rem;
+    color: #ffffff;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .time-line-center-down-label{
+    font-size: 0.75rem;
+    color: #ffffff;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .time-line-right-up-label{
+    font-size: 0.75rem;
+    color: #ffffff;
+    margin-left: auto;
+  }
+  .time-line-right-down-label{
+    font-size: 0.75rem;
+    color: #ffffff;
+    margin-left: auto;
+    margin-right: 6px;
+  }
+  .horizontal-line{
+    width: 82%;
+    height: 1px;
+    margin-top: 11px;
+    background-color: rgba(255,255,255,0.4);
+  }
+  .horizontal-line-half{
+    width: 41%;
+    height: 1px;
+    margin-top: 11px;
+    background-color: rgba(255,255,255,0.4);
+  }
+  .content-style{
+    background-color: #fafafa;
+  }
+  .no-padding-or-margin{
+    padding: 0px;
+    margin: 0px;
+  }
+  .apply-card{
+    padding: 0px;
+    margin: 0px;
+    width: 92%;
+    height:425px;
+    margin-left: 4%;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.18);
+    margin-top: 30px;
+  }
+  .image-row{
+    padding: 0px;
+    margin: 0px;
+    height: 108px;
+    width: 100%;
+    margin-top: 18px;
+  }
+  .figure-image{
+    width: 100%;
+    height: 100%;
+  }
+  .roomnum-figure{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    position: absolute;
+    top:21px;
+    left: 30%;
+  }
+  .card-row{
+    padding: 0px;
+    margin: 0px;
+    height: 35px;
+    width: 97%;
+    margin-left: 3%;
+    border-bottom: 1px solid #d2d2d2;
+  }
+  .put-left{
+    text-align: left
+  }
+  .put-right{
+    text-align: right
+  }
+  .left-label{
+    font-size: 1rem;
+    color: #4a4a4a;
+    margin-left: 5px;
+    line-height: 2.1rem;
+  }
+  .right-label{
+    font-size: 1rem;
+    color: #9b9b9b;
+    margin-right: 10px;
+    line-height: 2.1rem;
+  }
+  .cut-line{
+    width: 100%;
+    height: 1px;
+    border: 1px dashed #d2d2d2;
+  }
+  .real-line{
+    width: 100%;
+    height: 0.5px;
+    background-color: #d2d2d2;
+  }
+  .room-label-shelter{
+    width: 78px;
+    height: 26px;
+    margin-top: 11px;
+    background-color: #ecf0f1;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  .room-label{
+    color:#24559c;
+    font-size: 0.875em;
+    margin-left: 16px;
+    line-height: 1.6rem;
+  }
+  .image-stamp{
+    height: 76px;
+    width: 76px;
+    position: absolute;
+    top: -20px;
+    right: 2.6%;
+    z-index: 999;
+  }
+  .confirm-button{
+    opacity: 1;
+    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+    padding: 0px;
+    margin: 0px;
+    width: 56%;
+    min-height: 30px;
+    line-height: 30px;
+    margin-left: 22%;
+    margin-top: 24px;
+    background-color: #ffffff;
+    color: #b95756;
+    border: 1px solid #B95756;
+    font-size: 1rem;
+    border-radius: 20px;
+  }
+  .button.activated{
+    opacity: 0.5;
+    transform: scale(0.95,0.95);
+    -webkit-transform: scale(0.95,0.95);
+  }
+}
+.platform-android{
+  .dorm-apply-detail-b{
+
+  }
+}
+.platform-ios{
+  .dorm-apply-detail-b{
+
+  }
+}
+.dorm-apply-detail-b{//住宿详情界面(已入住，已退房)
+  .has-header{
+    top: 213px;
+  }
+  .title-color{
+    color: #ffffff;
+    font-size: 1.0625rem;
+  }
+  .scroll-content{
+    top: 213px;
+  }
+  .tall-header{
+    width: 100%;
+    height: 213px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+  }
+  .bar-tall-bottom{
+    width: 100%;
+    height: 169px;
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    z-index: 200;
+    background-color: transparent;
+  }
+  .bar-tall-header{
+    background-color: transparent;
+    background-size:100% 0px;
+  }
+  .content-style{
+    background-color: #fafafa;
+  }
+  .apply-card{
+    padding: 0px;
+    margin: 0px;
+    width: 92%;
+    height:425px;
+    margin-left: 4%;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.18);
+    margin-top: 22px;
+  }
+  .image-row{
+    padding: 0px;
+    margin: 0px;
+    height: 108px;
+    width: 100%;
+    margin-top: 18px;
+  }
+  .figure-image{
+    width: 100%;
+    height: 100%;
+  }
+  .roomnum-figure{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    position: absolute;
+    top:21px;
+    left: 30%;
+  }
+  .card-row{
+    padding: 0px;
+    margin: 0px;
+    height: 35px;
+    width: 97%;
+    margin-left: 3%;
+    border-bottom: 1px solid #d2d2d2;
+  }
+  .put-left{
+    text-align: left
+  }
+  .put-right{
+    text-align: right
+  }
+  .left-label{
+    font-size: 1rem;
+    color: #4a4a4a;
+    margin-left: 5px;
+    line-height: 2.1rem;
+  }
+  .right-label{
+    font-size: 1rem;
+    color: #9b9b9b;
+    margin-right: 10px;
+    line-height: 2.1rem;
+  }
+  .cut-line{
+    width: 100%;
+    height: 1px;
+    border: 1px dashed #d2d2d2;
+  }
+  .room-label-shelter{
+    width: 78px;
+    height: 26px;
+    margin-top: 11px;
+    background-color: #ecf0f1;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  .room-label{
+    color:#24559c;
+    font-size: 0.875em;
+    margin-left: 16px;
+    line-height: 1.6rem;
+  }
+  .image-stamp{
+    height: 76px;
+    width: 76px;
+    position: absolute;
+    top: -20px;
+    right: 2.6%;
+    z-index: 999;
+  }
+  .confirm-button{
+    opacity: 1;
+    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+    padding: 0px;
+    margin: 0px;
+    width: 56%;
+    min-height: 30px;
+    line-height: 30px;
+    margin-left: 22%;
+    margin-top: 24px;
+    background-color: #ffffff;
+    color: #24559c;
+    border: 1px solid #24559c;
+    font-size: 1rem;
+    border-radius: 20px;
+  }
+  .button.activated{
+    opacity: 0.5;
+    transform: scale(0.95,0.95);
+    -webkit-transform: scale(0.95,0.95);
+  }
+}
+.dorm-apply-vacant-room{//住宿查询
+  .content-style{
+    background-color: #fafafa;
+  }
+  .list-back{
+    background-color: #ffffff;
+  }
+  .item-appearance{
+    padding: 0px;
+    margin: 0px;
+    height: 72px;
+    border: none;
+    border-bottom:1px solid #f0f0f0;
+  }
+  .item-appearance.ng-enter{
+    //-webkit-animation: flipInX 0.4s;
+    //animation: flipInX .4s;
+    //-webkit-animation: flipInY 0.4s;
+    //animation: flipInY .4s;
+    //-webkit-animation: fadeInUp 0.4s;
+    //animation: fadeInUp .4s;
+    //-webkit-animation: zoomInUp 0.4s;
+    //animation: zoomInUp .4s;
+    //-webkit-animation: lightSpeedIn 0.4s;
+    //animation: lightSpeedIn .4s;
+    -webkit-animation: rotateInUpLeft 0.4s;
+    animation: rotateInUpLeft .4s;
+  }
+  .item-appearance.ng-enter-stagger{
+    -webkit-animation-delay: 120ms;
+    animation-delay: 120ms;
+    -webkit-animation-duration: 0ms;
+    animation-duration: 0ms;
+  }
+  .outer-row{
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+  }
+  .left-col{
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+  }
+  .left-col-label{
+    font-size: 1.6875rem;
+    color: #9b9b9b;
+    opacity: 0.3;
+    line-height: 4.5rem;
+  }
+ .thin{
+   padding: 0px;
+   margin: 0px;
+ }
+  .right-col-up-row{
+    padding: 0px;
+    margin: 0px;
+    height: 24px;
+    margin-top: 15px;
+  }
+  .right-col-up-row-label{
+    font-size: 0.9375rem;
+    color: #24559c;
+  }
+  .right-col-down-row{
+    padding: 0px;
+    margin: 0px;
+    height: 20px;
+  }
+  .right-col-down-row-label1{
+    font-size: 0.8125rem;
+    color: #9b9b9b;
+  }
+  .right-col-down-row-label2{
+    font-size: 0.8125rem;
+    color: #9b9b9b;margin-left: 10px;
+  }
+  .apply-button{
+    opacity: 1;
+    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+    position: absolute;
+    top:23px;
+    right: 15px;
+    padding: 0px;
+    margin: 0px;
+    min-height: 24px;
+    line-height: 24px;
+    width: 56px;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.2);
+    background-color: #ffffff;
+    color:#f99d32;
+    font-size: 0.9375rem;
+    border-radius: 20px;
+  }
+  .button.activated{
+    opacity: 0.5;
+    transform: scale(0.95,0.95);
+    -webkit-transform: scale(0.95,0.95);
+  }
+}
