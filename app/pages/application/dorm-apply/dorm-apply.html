@@ -1,5 +1,5 @@
 <ion-view view-title="住宿申请" class="main-dorm-apply">
-  <ion-header-bar align-title="center" class="bar-stable">
+  <ion-header-bar align-title="center" ng-class="{'bar-stable blur-back':descriptionAppearance,'bar-stable clear-back':!descriptionAppearance}">
     <div class="buttons">
       <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
         <span class="back-button-text">返回</span>
@@ -12,7 +12,7 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content class="content-style">
+  <ion-content delegate-handle="dormScroll" ng-class="{'content-style blur-back':descriptionAppearance,'content-style clear-back':!descriptionAppearance}">
     <button class="button button-block create-button" ng-click="createNewDormApply()">
       <div class="row create-button-row-plugin">
         <img src="build/img/application/dorm-apply/create.png" class="create-button-span">
@@ -25,23 +25,23 @@
       <ion-item class="item-appearance" ng-repeat="x in items" ng-click="viewApplyDetail($index)">
         <div class="row first-row">
           <label class="stuff">员工:</label>
-          <label class="stuffname">徐方泽(4040)</label>
-          <label class="roomnum">房间号(400)</label>
-          <label class="roomtype">单人间</label>
+          <label class="stuffname">{{x.employee_name}}({{x.employee_number}})</label>
+          <label class="roomnum">房间号({{x.room_number}})</label>
+          <label class="roomtype">{{x.room_type}}</label>
         </div>
         <div class="row second-row">
           <label class="move-in">入住日期:</label>
-          <label class="move-in-date">2016-04-28</label>
+          <label class="move-in-date">{{x.checkin_date}}</label>
         </div>
         <div class="row second-row">
           <label class="move-out">退房日期:</label>
-          <label class="move-out-date">2016-06-10</label>
+          <label class="move-out-date">{{x.checkout_date}}</label>
           <label class="totaldays">入住天数:</label>
-          <label class="totaldays-num">90天</label>
+          <label class="totaldays-num">{{x.checkin_days}}天</label>
         </div>
         <div class="row second-row">
           <label class="leftdays" ng-show="judgeApplyType(x)">剩余天数</label>
-          <label class="leftdays-num" ng-show="judgeApplyType(x)">3天</label>
+          <label class="leftdays-num" ng-show="judgeApplyType(x)">{{x.left_days}}天</label>
         </div>
         <img ng-show="x.modeCheckIn" src="build/img/application/dorm-apply/little-stamp-checkin.png" class="bottom-pic"/>
         <img ng-show="x.modeCheckOut" src="build/img/application/dorm-apply/little-stamp-checkout.png" class="bottom-pic"/>
