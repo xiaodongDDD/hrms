@@ -22,11 +22,17 @@ angular.module('applicationModule')
     'baseConfig',
     '$ionicHistory',
     '$ionicModal',
+    'hmsHttp',
+    'hmsPopup',
+    'dormApplySearchResultService',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
-              $ionicModal) {
+              $ionicModal,
+              hmsHttp,
+              hmsPopup,
+              dormApplySearchResultService) {
       $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-apply-type.html', {//定义modal
         scope: $scope
       }).then(function (modal1) {
@@ -42,6 +48,10 @@ angular.module('applicationModule')
       $scope.applytype=["常驻申请","加班申请","临时申请","项目申请"];//项目申请选项
       $scope.roomtype=["单人间","四人间"];//房间申请
       $scope.showNumButton=true;//显示数字按钮，隐藏图片按钮
+      $scope.inputinfo={
+        floornum:"",//输入楼层号
+        roomnum:""//输入房间号
+      }
       $scope.goBack=function(){//返回按钮
         $ionicHistory.goBack();
       };
@@ -71,6 +81,44 @@ angular.module('applicationModule')
       };
 
       $scope.searchVacantRoom=function(){//查询空闲房间
-        $state.go("tab.dorm-apply-vacant-room");
+        var url=baseConfig.businessPath+"/wfl_apply_room/query_free_room_list";
+        var param={
+          "params": {
+            p_employee_number: window.localStorage.empno,
+            p_check_in_date:"20160615",
+            p_check_out_date:"20160820",
+            p_apply_type:$scope.defaultApplyType,
+            p_room_type:$scope.defaultRoomType,
+            p_room_number:$scope.inputinfo.roomnum,
+            p_floor_number:$scope.inputinfo.floornum
+          }
+        };
+        hmsPopup.showLoading('请稍候');
+        hmsHttp.post(url,param).success(function(result){
+          var message=result.message;
+          hmsPopup.hideLoading();
+          if( result.status=="S" && result.result.length>0 ) {
+            var resultlist = result.result;//查询结果列表
+            var info = {//要放入到service中的信息
+              applyType: param.params.p_apply_type,
+              checkinDate: param.params.p_check_in_date,
+              checkoutDate: param.params.p_check_out_date,
+              result: resultlist
+            }
+            dormApplySearchResultService.putInfo(info);//查询结果放入service中
+            $state.go("tab.dorm-apply-vacant-room");
+          }else if(result.status=="E"){
+             hmsPopup.showShortCenterToast(message);
+          }
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function(error,status){
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(error));
+          }
+        });
+
       };
     }]);

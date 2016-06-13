@@ -13,3 +13,14 @@ angular.module('applicationModule')
     }
   }
 })
+.factory('dormApplySearchResultService',function(){//空闲可申请房间查询结果放入service中
+    var info='';
+    return{
+      getInfo:function(){
+        return info;
+      },
+      putInfo:function(param){
+        info=param;
+      }
+    }
+})
