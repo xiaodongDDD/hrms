@@ -46,7 +46,7 @@ angular.module('applicationModule')
       }else if($scope.applyInfo.status == "已拒绝"){
         $scope.approving=false;
         $scope.rejected=true;
-        $scope.approvedResult="已拒绝";
+        $scope.approvedResult='已拒绝';
       }
       $scope.goBack=function(){//返回上一界面
         $ionicHistory.goBack();
