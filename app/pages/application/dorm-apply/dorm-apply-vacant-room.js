@@ -1,6 +1,7 @@
 /**
  * Created by LeonChan on 2016/6/7.
  */
+'use strict';
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
@@ -12,6 +13,11 @@ angular.module('myApp')
               templateUrl: 'build/pages/application/dorm-apply/dorm-apply-vacant-room.html',
               controller: 'DormApplyVacantRoomCtrl'
             }
+          },
+          params:{
+            dormApplySearchResult:'',
+            projectId:'',
+            applyType:''
           }
         })
     }]);
@@ -22,21 +28,23 @@ angular.module('applicationModule')
     '$state',
     'baseConfig',
     '$ionicHistory',
-    'dormApplySearchResultService',
     'hmsHttp',
     'hmsPopup',
     '$timeout',
+    '$stateParams',
     function ($scope,
               $rootScope,
               $state,
               baseConfig,
               $ionicHistory,
-              dormApplySearchResultService,
               hmsHttp,
               hmsPopup,
-              $timeout) {
+              $timeout,
+              $stateParams) {
 
-     var resultInfo=dormApplySearchResultService.getInfo();//从service中拿到查询界面得到的查询结果
+     var resultInfo=$stateParams.dormApplySearchResult;//从$stateParams中拿到查询界面得到的查询结果
+     var projectId=$stateParams.projectId;//从$stateParams中拿到项目id，如果不是项目类型就不用
+     var applyType=$stateParams.applyType;//从$satteParams中拿到申请类型
      $scope.roomlist=resultInfo.result;
      $scope.goBack=function(){//返回上一界面
        $ionicHistory.goBack();
@@ -46,6 +54,7 @@ angular.module('applicationModule')
        var param={
          "params": {
            p_employee_number:window.localStorage.empno,
+           p_pro_id:"",
            p_checkin_date:resultInfo.checkinDate,
            p_checkout_date:resultInfo.checkoutDate,
            p_room_number:$scope.roomlist[num].room_number,
@@ -54,6 +63,9 @@ angular.module('applicationModule')
            p_reason:""
          }
        };
+       if(applyType=='项目申请'){
+         param.params.p_pro_id=projectId;
+       }
        hmsPopup.showLoading('请稍候');
        hmsHttp.post(url,param).success(function(result){
          hmsPopup.hideLoading();
@@ -73,4 +85,4 @@ angular.module('applicationModule')
          }
        });
      };
-    }])
+    }]);

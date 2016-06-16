@@ -1,6 +1,7 @@
 /**
  * Created by LeonChan on 2016/5/27.
  */
+'use strict';
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
@@ -22,7 +23,6 @@ angular.module('applicationModule')
     '$state',
     'baseConfig',
     '$ionicHistory',
-    'dormApplyTypeService',
     'hmsHttp',
     'hmsPopup',
     '$ionicScrollDelegate',
@@ -32,7 +32,6 @@ angular.module('applicationModule')
               $state,
               baseConfig,
               $ionicHistory,
-              dormApplyTypeService,
               hmsHttp,
               hmsPopup,
               $ionicScrollDelegate,
@@ -55,30 +54,39 @@ angular.module('applicationModule')
             console.log("result success " + angular.toJson(result));
           }
           $scope.items = result.result;
-          var i = 0;
-          for (i; i < $scope.items.length; i++) {//处理显示某种小戳图片
-            if ($scope.items[i].apply_status == "已入住") {
-              $scope.items[i].modeCheckIn = true;
-              $scope.items[i].modeCheckOut = false;
-              $scope.items[i].modeApproving = false;
-              $scope.items[i].modeRejected = false;
-            } else if ($scope.items[i].apply_status == "已退房") {
-              $scope.items[i].modeCheckIn = false;
-              $scope.items[i].modeCheckOut = true;
-              $scope.items[i].modeApproving = false;
-              $scope.items[i].modeRejected = false;
-            } else if ($scope.items[i].apply_status == "审批中") {
-              $scope.items[i].modeCheckIn = false;
-              $scope.items[i].modeCheckOut = false;
-              $scope.items[i].modeApproving = true;
-              $scope.items[i].modeRejected = false;
-            } else if ($scope.items[i].apply_status == "已拒绝") {
-              $scope.items[i].modeCheckIn = false;
-              $scope.items[i].modeCheckOut = false;
-              $scope.items[i].modeApproving = false;
-              $scope.items[i].modeRejected = true;
+          angular.forEach($scope.items,function(data,index,array){
+            if(array[index].apply_status=='已入住'){
+               array[index].modeCheckIn=true;
+               array[index].modeCheckOut=false;
+               array[index].modeApproving=false;
+               array[index].modeRejected=false;
+               array[index].modeCheckingIn=false;
+            }else if(array[index].apply_status=='已退房'){
+               array[index].modeCheckIn=false;
+               array[index].modeCheckOut=true;
+               array[index].modeApproving=false;
+               array[index].modeRejected=false;
+               array[index].modeCheckingIn=false;
+            }else if(array[index].apply_status=='审批中'){
+              array[index].modeCheckIn=false;
+              array[index].modeCheckOut=false;
+              array[index].modeApproving=true;
+              array[index].modeRejected=false;
+              array[index].modeCheckingIn=false;
+            }else if(array[index].apply_status=='已拒绝'){
+              array[index].modeCheckIn=false;
+              array[index].modeCheckOut=false;
+              array[index].modeApproving=false;
+              array[index].modeRejected=true;
+              array[index].modeCheckingIn=false;
+            }else if(array[index].apply_status=='未入住'){
+              array[index].modeCheckIn=false;
+              array[index].modeCheckOut=false;
+              array[index].modeApproving=false;
+              array[index].modeRejected=false;
+              array[index].modeCheckingIn=true;
             }
-          }
+          });
         }).error(function (error, status) {
           hmsPopup.hideLoading();
           if (baseConfig.debug) {
@@ -105,21 +113,25 @@ angular.module('applicationModule')
           roomNumber:info.room_number,//房间号
           roomType:info.room_type,//房间类型
           bedNumber:info.bed_number,//床位
-          applyId:info.apply_id//申请id
+          applyId:info.apply_id,//申请id
+          projectId:info.project_id//项目id
         };
-        dormApplyTypeService.putInfo(param);//将申请状态存储在service中
-        if (param.status == "已入住" || param.status == "已退房") {
-          $state.go("tab.dorm-apply-detail-b");
-        } else if (param.status == "审批中" || param.status == "已拒绝") {
-          $state.go("tab.dorm-apply-detail-a");
+        if (param.status == '已入住' || param.status == '已退房') {
+          $state.go("tab.dorm-apply-detail-b",{
+            'dormApplyDetailInfo':param
+          });
+        } else if (param.status == '审批中' || param.status == '已拒绝' || param.status == '未入住') {
+          $state.go("tab.dorm-apply-detail-a",{
+            'dormApplyDetailInfo':param
+          });
         }
       };
 
       $scope.judgeApplyType = function (param) {//通过判断申请类型是否显示剩余天数字段
         var internalParam = param.apply_status;
-        if (internalParam == "已入住" || internalParam == "已退房") {
+        if (internalParam == '已入住' || internalParam == '已退房' || internalParam == '未入住') {
           return true;
-        } else if (internalParam == "审批中" || internalParam == "已拒绝") {
+        } else if (internalParam == '审批中' || internalParam == '已拒绝') {
           return false;
         }
       };
