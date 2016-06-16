@@ -1,11 +1,11 @@
 <ion-view view-title="TimeSheet" class="timesheet">
-    <ion-header-bar align-title="center" class="bar-stable">
-      <div class="buttons">
-        <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
-          <span class="back-text">返回</span>
-        </button>
-      </div>
-      <h1 class="title">TimeSheet</h1>
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">TimeSheet</h1>
 
     <div class="buttons">
       <button class="button button-clear">
@@ -16,22 +16,49 @@
   <ion-content overflow-scroll="true" style="overflow: hidden" delegate-handle="timeSheetHandle">
     <!--<hmsslidecalendar>
     </hmsslidecalendar>-->
+
     <div class="calendar-month">
-      <div class="month-item" ng-click="getTimeSheet('201501')">
-        3月
-      </div>
-      <div class="month-item" ng-click="getTimeSheet('201502')">
-        4月
-      </div>
-      <div class="month-item" ng-click="getTimeSheet('201503')">
-        5月
-      </div>
-      <div class="month-item" ng-click="getTimeSheet('201504')">
-        6月
-      </div>
-      <div class="month-item" ng-click="getTimeSheet('201411')">
-        7月
-      </div>
+      <ion-scroll class="scroll-view ionic-scroll" direction="xy" scrollbar-y="true"
+                  style="overflow-x: hidden;height:50px;">
+        <div style="height: 40px;width: 720px; ">
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            1月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            2月
+          </div>
+          <div class="month-item selected" ng-click="getTimeSheet('201501')">
+            3月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            4月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            5月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            6月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            7月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            8月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            9月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            10月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            11月
+          </div>
+          <div class="month-item" ng-click="getTimeSheet('201501')">
+            12月
+          </div>
+        </div>
+      </ion-scroll>
     </div>
     <div class="calendar-day">
       <div class="calendar-lock-screen" ng-if="loadingDataFlag">

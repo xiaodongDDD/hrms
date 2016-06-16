@@ -168,7 +168,7 @@ angular.module('HmsModule')
        );
        */
       this.confirm = function (message, title, onConfirm) {
-        if (!ROOTCONFIG.isMobilePlatform) {
+        if (!baseConfig.nativeScreenFlag) {
           var confirmPopup = $ionicPopup.confirm({
             title: (angular.isDefined(title) ? title : "提示"),
             template: message,

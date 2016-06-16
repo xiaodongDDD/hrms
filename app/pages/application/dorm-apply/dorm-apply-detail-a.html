@@ -27,7 +27,7 @@
      <div class="col no-padding-or-margin">
        <div class="row no-padding-or-margin">
         <div class="horizontal-line"></div>
-        <div class="right-circle" ng-class="{'time-line-circle-undone':approving,'time-line-circle-done':rejected}"></div><!--右圆-->
+        <div class="right-circle" ng-class="{'time-line-circle-undone':approving,'time-line-circle-done':rejected || checkingin}"></div><!--右圆-->
        </div>
      </div>
    </div>
@@ -108,10 +108,11 @@
           <label class="right-label">{{applyInfo.roomType}}</label>
         </div>
       </div>
-      <div ng-class="{'cut-line':approving,'real-line':rejected}"></div>
+      <div ng-class="{'cut-line':approving,'real-line':rejected || checkingin}"></div>
       <button class="button button-block confirm-button" ng-click="cancelApply()" ng-show="approving">取消申请</button>
     </ion-item>
     <img src="build/img/application/dorm-apply/big-stamp-approving.png" class="image-stamp" ng-show="approving"/>
     <img src="build/img/application/dorm-apply/big-stamp-rejected.png" class="image-stamp" ng-show="rejected"/>
+    <img src="build/img/application/dorm-apply/big-stamp-checkingin.png" class="image-stamp" ng-show="checkingin"/>
   </ion-content>
 </ion-view>
