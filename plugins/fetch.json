@@ -6,5 +6,14 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "com.handmobile.cordovaplugin.hotpatch": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
