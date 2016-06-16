@@ -27,17 +27,17 @@
       </div>
       <ion-scroll class="items-bg">
         <div id="projectName{{$index}}" class="items-detail" ng-show="showProjectName"
-             ng-repeat="i in listInfoArray.projectList track by $index"
+             ng-repeat="i in projectList track by $index"
              ng-class="{'select-item-color':isClickedProject[$index]}"
              ng-cloak
-             ng-click="selectFilterItem('projectName',$index)">
+             ng-click="selectFilterItem('projectName',$index,i.project_id)">
           {{i.project_name}}
         </div>
         <div id="personSelect{{$index}}" class="items-detail" ng-hide="showProjectName"
-             ng-repeat="i in listInfoArray.employeeList track by $index"
+             ng-repeat="i in personList track by $index"
              ng-class="{'select-item-color':isClickedPerson[$index]}"
              ng-cloak
-             ng-click="selectFilterItem('personSelect',$index)">
+             ng-click="selectFilterItem('personSelect',$index,i.employee_number)">
           {{i.employee_name}}
         </div>
       </ion-scroll>

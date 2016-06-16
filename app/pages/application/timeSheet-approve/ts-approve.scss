@@ -228,7 +228,7 @@
       min-height: 35px;
     }
     .filter-text {
-      @include position-adjust(26px, 59%);
+      @include position-adjust(26px, 18%);
     }
     .time-icon {
       background-image: url("./../img/application/timesheet-approve/list/reorder@3x.png");
@@ -331,6 +331,12 @@
     .select-item-color {
       color: #26579E;
     }
+  }
+}
+
+.ts-end-date-modal {
+  .ts-end-date-item {
+    color: #26579E;
   }
 }
 

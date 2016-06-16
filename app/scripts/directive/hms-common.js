@@ -30,3 +30,27 @@ HmsModule.directive('hideTabs', function($rootScope) {
     }
   };
 });
+
+/**
+ * @description:loading tag
+ *
+ */
+HmsModule.directive('hmsLoading', function($rootScope) {
+  return {
+    restrict: 'E',
+    template: '<div class="hms-hide-content">'+
+    '<div class="content">数据加载中...</div>'+
+    '<div class="hide-icon">'+
+    '<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>'+
+    '</div>'+
+    '</div>',
+    replace: true, //使用模板替换原始标记
+    transclude: false,    // 不复制原始HTML内容
+    controller: ["$scope", function ($scope) {
+    }],
+    link: function (scope, element, attrs, controller) {
+    }
+  };
+});
+
+

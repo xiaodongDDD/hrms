@@ -43,7 +43,7 @@ angular.module('HmsModule')
         $log.debug(postName + " paramter " + angular.toJson(paramter));
         var post = $http.post(url, paramter).success(function (response) {
           $log.debug(postName + " success");
-          $log.debug(postName + " response " + angular.toJson(response));
+          //$log.debug(postName + " response " + angular.toJson(response));
           $log.debug(postName + " End!");
         }).error(function (response, status) {
           $log.debug(postName + " error");

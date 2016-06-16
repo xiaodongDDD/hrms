@@ -6,21 +6,22 @@
         <button class="button button-clear calendar-icon">
           <span class="calendar-text">日历</span>
         </button>
-        <span class="calendar-end-date">截止日期: 5月21日</span>
+        <span class="calendar-end-date" ng-click="selectEndDate()">截止日期: {{endApproveDate}}</span>
       </div>
-      <div id="connect-block" class="connect-block" ng-show="showConnectBlock">
+      <div id="connect-block" class="connect-block" ng-show="showConnectBlock&&listInfoArray.listArray.length != 0">
       </div>
     </div>
   </custom-head-bar>
   <ion-content class="ts-list-bg" has-bouncing="true" on-scroll="watchScroll()" on-drag="onDrag()"
                on-drag-up="onDragUp()"
                scrollbar-y="false">
+    <hms-loading ng-if="listInfoArray.loading"></hms-loading>
     <ion-refresher on-refresh="tsListRefresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </ion-refresher>
     <div id="tsApproveList" class="ts-approve-list-item" ng-repeat="i in listInfoArray.listArray"
          ng-click="goApproveDetail($index,i.employee_number,i.project_id,i.start_date,i.end_date)">
       <div class="row first-content">
-        <span class="name" ng-bind="i.employee_name"></span>
+        <span class="name" ng-bind="i.employee_name">{{$index}}</span>
         <span class="job-number" ng-bind="i.employee_number"></span>
         <span class="city" ng-bind="i.base_address"></span>
         <span class="fly-back">flyback:</span>
@@ -40,8 +41,9 @@
         <span class="number" ng-bind="i.project_name"></span>
       </div>
     </div>
-    <ion-infinite-scroll ng-if="listInfoArray.busy" on-infinite="listInfoArray.nextPage()"
-                         distance="1%"></ion-infinite-scroll>
+    <ion-infinite-scroll ng-show="listInfoArray.busy" on-infinite="listInfoArray.nextPage()"
+                         distance="1%">
+    </ion-infinite-scroll>
   </ion-content>
   <div id="rocket" class="rocket-icon" ng-if="showRocket" ng-click="goTsLsTop()"></div>
   <ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="showDetailArrow">
@@ -49,16 +51,18 @@
       <button class="button button-clear filter-icon" ng-click="filterTsInfo()">
       </button>
       <div class="filter-text" ng-click="filterTsInfo()">筛选</div>
-      <button class="button button-clear time-icon">
-      </button>
-      <div class="time-text">时间</div>
+      <!--<button class="button button-clear time-icon">-->
+      <!--</button>-->
+      <!--<div class="time-text">时间</div>-->
     </div>
   </ion-footer-bar>
   <footer-select
+    style="bottom: 0px;"
     ng-if="!showDetailArrow"
     select-all-item="selectAllList()"
     pass-through="passThroughListItem()"
     refuse="refuseListItem()"
   </footer-select>
+
 </ion-view>
 

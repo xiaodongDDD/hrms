@@ -58,23 +58,37 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
           "p_project_id": $stateParams.projectId
         }
       };
-    }
-    hmsPopup.showLoading('记载中...');
-    hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
-      hmsPopup.hideLoading();
-      if (hmsHttp.isSuccessfull(response.status)) {
-        $scope.detailInfoArray = response.timesheet_approve_detail_response;
-      } else {
-        if (response.status === 'E' || response.status == 'e') {
-          hmsPopup.showPopup("提示", "<div style='text-align: center'>没有相关数据!</div>");
-        } else {
-          hmsPopup.showPopup("提示", "<div style='text-align: center'>网络异常,请稍后重试!</div>");
+      var tsActionUrl = baseConfig.businessPath + "/wfl_timesheet_view/timesheet_approve";
+      var tsActionParams = { //审批拒绝/通过的参数
+        "params": {
+          "p_approve_flag": "AGREE",
+          "p_employee_number": window.localStorage.empno,
+          "p_param_json": ''
         }
-      }
-    }).error(function (response, status) {
-      hmsPopup.hideLoading();
-      hmsPopup.showPopup("提示", "<div style='text-align: center'>服务请求异常,请检查网络连接和输入参数后重新操作!</div>");
-    });
+      };
+      var approveList = { //审批拒绝/通过的子对象
+        "approve_list": []
+      };
+    }
+    hmsPopup.showLoading('加载中...');
+    function getData() {
+      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          $scope.detailInfoArray = response.timesheet_approve_detail_response;
+        } else {
+          if (response.status === 'E' || response.status == 'e') {
+            hmsPopup.showShortCenterToast("没有相关数据!");
+          } else {
+            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+          }
+        }
+      }).error(function (response, status) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
+      });
+    };
+    getData();
 
     $scope.$on('$ionicView.enter', function (e) {
       warn('tsApproveListCtrl.$ionicView.enter');
@@ -111,16 +125,35 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         $scope.showActionBar = false;
         __initSelectArray('undoSelectAll');
         angular.element('#tsApproveItem').css('paddingLeft', '0');
-        warn(angular.toJson($scope.selectArray, true));
+        tsActionParams = { //审批拒绝/通过的参数
+          "params": {
+            "p_approve_flag": "AGREE",
+            "p_employee_number": window.localStorage.empno,
+            "p_param_json": ''
+          }
+        };
+        approveList = {
+          "approve_list": []
+        };
       }
     };
 
-    $scope.selectItem = function (index) { //单击选中条目的响应method
+    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
       selectItem[index] = !selectItem[index];
+      var approve = {
+        "p_project_id": $scope.detailInfoArray.project_id,
+        "p_project_person_number": $scope.detailInfoArray.employee_number,
+        "p_start_date": "",
+        "p_end_date": "",
+        "p_record_id": ""
+      };
       if (selectItem[index]) {
         $scope.selectArray[index] = true;
+        approve.p_record_id = newLineNumber;
+        approveList.approve_list[index] = approve;
       } else {
         $scope.selectArray[index] = false;
+        approveList.approve_list.splice(index, 1, 'delete');
       }
     };
 
@@ -128,17 +161,78 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
       clickSelectAll = !clickSelectAll;
       if (clickSelectAll) {
         __initSelectArray('selectedAll');
+        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
+          var approve = {
+            "p_project_id": $scope.detailInfoArray.project_id,
+            "p_project_person_number": $scope.detailInfoArray.employee_number,
+            "p_start_date": "",
+            "p_end_date": "",
+            "p_record_id": ""
+          };
+          approve.p_record_id = $scope.listInfoArray.subsidy_list[i].line_number;
+          approveList.approve_list.push(approve);
+        }
       } else {
         __initSelectArray('undoSelectAll');
+        approveList.approve_list = [];
+      }
+    };
+
+    function deleteSuperfluous() {
+      for (var i = 0; i < approveList.approve_list.length; i++) {
+        if (approveList.approve_list[i] === 'delete') {
+          approveList.approve_list.splice(i, 1);
+          i--;
+        }
       }
     };
 
     $scope.passThroughDetailItem = function () { //通过
-      warn("passThroughDetailItem");
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "AGREE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('审批成功！');
+        } else {
+          hmsPopup.showShortCenterToast('审批失败！');
+        }
+        $scope.dealDetailInfo();
+        hmsPopup.showLoading('加载中...');
+        getData();
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        hmsPopup.showLoading('加载中...');
+        getData();
+      });
     };
 
     $scope.refuseDetailItem = function () { //拒绝
-      warn("refuseDetailItem");
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "REFUSE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('拒绝成功！');
+        } else {
+          hmsPopup.showShortCenterToast('拒绝失败！');
+        }
+        $scope.dealDetailInfo();
+        hmsPopup.showLoading('加载中...');
+        getData();
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        hmsPopup.showLoading('加载中...');
+        getData();
+      });
     };
   }]);
 
