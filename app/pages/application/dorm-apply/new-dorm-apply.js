@@ -1,6 +1,7 @@
 /**
  * Created by LeonChan on 2016/5/30.
  */
+'use strict';
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
@@ -24,15 +25,13 @@ angular.module('applicationModule')
     '$ionicModal',
     'hmsHttp',
     'hmsPopup',
-    'dormApplySearchResultService',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
               $ionicModal,
               hmsHttp,
-              hmsPopup,
-              dormApplySearchResultService) {
+              hmsPopup) {
       $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-apply-type.html', {//定义modal
         scope: $scope
       }).then(function (modal1) {
@@ -48,11 +47,11 @@ angular.module('applicationModule')
       }).then(function (modal3) {
         $scope.chooseProjectPopup = modal3;
       });//初始化选择房间类型的modal
-      $scope.defaultApplyType="常驻申请";//默认申请类型
-      $scope.defaultRoomType="单人间";//默认房间类型
+      $scope.defaultApplyType='常驻申请';//默认申请类型
+      $scope.defaultRoomType='单人间';//默认房间类型
       $scope.defaultProjectInfo={
-        projectName:"",//项目名称
-        projectId:""//项目ID
+        projectName:'',//项目名称
+        projectId:''//项目ID
       };//默认项目名称
       $scope.showProjectItem=false;//显示选择项目的入口
       $scope.applytype=["常驻申请","加班申请","临时申请","项目申请"];//项目申请选项
@@ -62,7 +61,7 @@ angular.module('applicationModule')
       $scope.inputinfo={
         floornum:"",//输入楼层号
         roomnum:""//输入房间号
-      }
+      };
       var url=baseConfig.businessPath+"/wfl_apply_room/query_project_list";
       var param={
         "params": {
@@ -80,8 +79,8 @@ angular.module('applicationModule')
             $scope.defaultProjectInfo.projectId=$scope.projectlist[0].project_id;
             console.log(angular.toJson($scope.defaultProjectInfo));
           }else if($scope.projectlist.length==0){//如果查出项目列表的长度为0的话，则自动把默认变为无
-            $scope.defaultProjectInfo.projectName="无";
-            $scope.defaultProjectInfo.projectId="";
+            $scope.defaultProjectInfo.projectName='无';
+            $scope.defaultProjectInfo.projectId='';
           }
         }
         if (baseConfig.debug) {
@@ -107,7 +106,7 @@ angular.module('applicationModule')
 
       $scope.chooseProjectName=function(){//显示项目名称列表modal
         if($scope.projectlist.length==0){
-          hmsPopup.showShortCenterToast("项目列表为空，请更改申请类型");//项目列表为空时
+          hmsPopup.showShortCenterToast('项目列表为空，请更改申请类型');//项目列表为空时
         }else if($scope.projectlist.length>0){
           $scope.chooseProjectPopup.show();
         }
@@ -115,9 +114,9 @@ angular.module('applicationModule')
 
       $scope.finishChoosingApplyType=function(param){//选择完成申请类型
         $scope.defaultApplyType=param;
-        if($scope.defaultApplyType=="项目申请"){
+        if($scope.defaultApplyType=='项目申请'){
           $scope.showProjectItem=true;
-        }else if($scope.defaultApplyType!="项目申请"){
+        }else if($scope.defaultApplyType!='项目申请'){
           $scope.showProjectItem=false;
         }
         $scope.chooseTypePopup.hide();
@@ -135,30 +134,30 @@ angular.module('applicationModule')
       };
 
       $scope.chooseDays=function(){//选择入住天数以及取消入住天数
-        if($scope.defaultApplyType=="常驻申请"){
+        if($scope.defaultApplyType=='常驻申请'){
           $scope.showNumButton=!$scope.showNumButton;
         }
       };
 
       $scope.searchVacantRoom=function(){//查询空闲房间
-        if($scope.defaultProjectInfo.projectName=="无" && $scope.defaultApplyType=="项目申请"){//项目申请类型，当项目列表为空时，不能查询房间
-          hmsPopup.showShortCenterToast("项目列表为空，请更改申请类型");
+        if($scope.defaultProjectInfo.projectName=='无' && $scope.defaultApplyType=='项目申请'){//项目申请类型，当项目列表为空时，不能查询房间
+          hmsPopup.showShortCenterToast('项目列表为空，请更改申请类型');
         }else{
           var url = baseConfig.businessPath + "/wfl_apply_room/query_free_room_list";
           var param = {
             "params": {
               p_employee_number: window.localStorage.empno,
               p_check_in_date: "20160615",
-              p_check_out_date: "20160820",
+              p_check_out_date: "20160720",
               p_apply_type: $scope.defaultApplyType,
               p_room_type: $scope.defaultRoomType,
               p_room_number: $scope.inputinfo.roomnum,
               p_floor_number: $scope.inputinfo.floornum,
-              p_project_id:""
+              p_pro_id:""
             }
           };
-          if($scope.defaultApplyType=="项目申请"){
-           param.params.p_project_id=$scope.defaultProjectInfo.projectId;
+          if($scope.defaultApplyType=='项目申请'){
+           param.params.p_pro_id=$scope.defaultProjectInfo.projectId;
           }
           hmsPopup.showLoading('请稍候');
           hmsHttp.post(url, param).success(function (result) {
@@ -172,8 +171,11 @@ angular.module('applicationModule')
                 checkoutDate: param.params.p_check_out_date,
                 result: resultlist
               };
-              dormApplySearchResultService.putInfo(info);//查询结果放入service中
-              $state.go("tab.dorm-apply-vacant-room");
+              $state.go("tab.dorm-apply-vacant-room",{
+                'dormApplySearchResult':info,
+                'projectId':$scope.defaultProjectInfo.projectId,
+                'applyType':$scope.defaultApplyType
+              });
             } else if (result.status == "E") {
               hmsPopup.showShortCenterToast(message);
             }
