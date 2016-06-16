@@ -2391,6 +2391,89 @@ Copyright (c) 2015 Daniel Eden
 .mainApplication .header {
   background: white; }
 
+.mainApplication .hms-animated {
+  -webkit-animation-duration: 0.6s;
+  animation-duration: .6s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both; }
+
+@-webkit-keyframes open {
+  from, 20%, 40%, 60%, 80%, to {
+    -webkit-animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
+    animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84); }
+  from {
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg); }
+  90% {
+    transform: rotateY(85deg);
+    -webkit-transform: rotateY(85deg); }
+  to {
+    transform: rotateY(75deg);
+    -webkit-transform: rotateY(75deg); } }
+
+@keyframes open {
+  from, 20%, 40%, 60%, 85%, to {
+    -webkit-animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
+    animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84); }
+  from {
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg); }
+  90% {
+    transform: rotateY(85deg);
+    -webkit-transform: rotateY(85deg); }
+  to {
+    transform: rotateY(75deg);
+    -webkit-transform: rotateY(75deg); } }
+
+@-webkit-keyframes leave {
+  from {
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg); }
+  95% {
+    transform: rotateY(-85deg);
+    -webkit-transform: rotateY(-85deg); }
+  to {
+    transform: rotateY(-75deg);
+    -webkit-transform: rotateY(-75deg); } }
+
+@keyframes leave {
+  from, 20%, 40%, 60%, 85%, to {
+    -webkit-animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
+    animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84); }
+  from {
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg); }
+  90% {
+    transform: rotateY(-85deg);
+    -webkit-transform: rotateY(-85deg); }
+  to {
+    transform: rotateY(-75deg);
+    -webkit-transform: rotateY(-75deg); } }
+
+.mainApplication .application-outer {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  perspective: 300;
+  -webkit-perspective: 300;
+  /* Safari and Chrome */ }
+  .mainApplication .application-outer .application-left {
+    width: 50%;
+    left: 0;
+    position: absolute;
+    transform-origin: left; }
+    .mainApplication .application-outer .application-left.start {
+      -webkit-animation-name: open;
+      animation-name: open; }
+  .mainApplication .application-outer .application-right {
+    width: 50%;
+    right: 0;
+    position: absolute;
+    transform-origin: right; }
+    .mainApplication .application-outer .application-right.start {
+      -webkit-animation-name: leave;
+      animation-name: leave; }
+
 .mainApplication .appRegion .appTitle {
   padding-left: 10px;
   margin-top: 10px;
@@ -2410,10 +2493,10 @@ Copyright (c) 2015 Daniel Eden
 
 .mainApplication .appRegion .appArea {
   width: 100%;
-  height: 200px; }
+  height: 95px; }
   .mainApplication .appRegion .appArea .appList {
     height: 95px;
-    width: 25%;
+    width: 50%;
     float: left;
     border-right: 1px solid #DBDBDB;
     border-bottom: 1px solid #DBDBDB;
@@ -4452,32 +4535,41 @@ Copyright (c) 2015 Daniel Eden
   .workflow .has-daiwen-bar {
     bottom: 60px; }
   .workflow .workflow-filter {
+    display: block;
     padding-top: 7px;
     width: 160px;
     height: 44px;
     margin-left: auto;
     margin-right: auto; }
+    .workflow .workflow-filter .selected {
+      background: #2A5BA1;
+      color: white; }
+    .workflow .workflow-filter .no-selected {
+      background: white;
+      color: #2A5BA1; }
+      .workflow .workflow-filter .no-selected.activated {
+        background: #64ACFF;
+        color: white; }
     .workflow .workflow-filter .to-do-list {
+      border: 1px solid white;
       float: left;
       width: 76px;
       height: 29px;
       line-height: 29px;
       border-bottom-left-radius: 15px;
       border-top-left-radius: 15px;
-      background: white;
-      font-size: 13px;
-      color: #2A5BA1; }
+      font-size: 13px; }
     .workflow .workflow-filter .done-list {
-      border: 1px solid white;
+      border-top: 1px solid white;
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
       float: left;
       width: 76px;
       height: 29px;
       line-height: 29px;
       border-bottom-right-radius: 15px;
       border-top-right-radius: 15px;
-      background: #2A5BA1;
-      font-size: 13px;
-      color: white; }
+      font-size: 13px; }
 
 .workflow-list {
   display: block;
@@ -4776,9 +4868,6 @@ Copyright (c) 2015 Daniel Eden
 .platform-android .my-info .shrink-image {
   height: 148px;
   width: 100%;
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
   z-index: 100; }
 
 .platform-android .my-info .content-style {
@@ -4817,9 +4906,6 @@ Copyright (c) 2015 Daniel Eden
 .platform-ios .my-info .shrink-image {
   height: 168px;
   width: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   z-index: 100; }
 
 .platform-ios .my-info .content-style {

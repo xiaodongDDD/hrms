@@ -3,9 +3,6 @@
     .shrink-image{//头部的可伸缩头像背景
       height: 148px;
       width: 100%;
-      background-size: 100% 100%;
-      background-position: center;
-      background-repeat: no-repeat;
       z-index: 100;
     }
     .content-style{
@@ -48,9 +45,6 @@
     .shrink-image{//头部的可伸缩头像背景
       height: 168px;
       width: 100%;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
       z-index: 100;
     }
     .content-style{
