@@ -18,7 +18,13 @@ angular.module('myInfoModule')
       $scope.logout = function(){
         window.localStorage.token = "";
         window.localStorage.password = "";
+        window.localStorage.timesheetAuto="";
+        window.localStorage.messagePush="";
         $state.go('login');
+      }
+
+      $scope.setup=function(){
+        $state.go('tab.setup');
       }
 
       $scope.$on('$ionicView.enter', function (e) {

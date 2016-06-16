@@ -1,6 +1,7 @@
 /**
  * Created by LeonChan on 2016/5/31.
  */
+'use strict';
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
@@ -12,6 +13,9 @@ angular.module('myApp')
               templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-a.html',
               controller: 'DormApplyDetailFirstCtrl'
             }
+          },
+          params:{
+            dormApplyDetailInfo:''
           }
         })
     }]);
@@ -21,32 +25,40 @@ angular.module('applicationModule')
     '$state',
     'baseConfig',
     '$ionicHistory',
-    'dormApplyTypeService',
     'hmsHttp',
     'hmsPopup',
     '$rootScope',
     '$timeout',
+    '$stateParams',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
-              dormApplyTypeService,
               hmsHttp,
               hmsPopup,
               $rootScope,
-              $timeout) {
-      $scope.applyInfo=dormApplyTypeService.getInfo();
+              $timeout,
+              $stateParams) {
+      $scope.applyInfo=$stateParams.dormApplyDetailInfo;
       $scope.approving=false;//审批中状态标志位
       $scope.rejected=false;//已拒绝状态标识位
+      $scope.checkingin=false;//未入住状态标识位
       $scope.approvedResult="";
-      if($scope.applyInfo.status == "审批中"){
+      if($scope.applyInfo.status == '审批中'){
         $scope.approving=true;
         $scope.rejected=false;
+        $scope.checkingin=false;
         $scope.approvedResult="";
-      }else if($scope.applyInfo.status == "已拒绝"){
+      }else if($scope.applyInfo.status == '已拒绝'){
         $scope.approving=false;
         $scope.rejected=true;
-        $scope.approvedResult="已拒绝";
+        $scope.checkingin=false;
+        $scope.approvedResult='已拒绝';
+      }else if($scope.applyInfo.status == '未入住'){
+        $scope.approving=false;
+        $scope.rejected=false;
+        $scope.checkingin=true;
+        $scope.approvedResult="已通过";
       }
       $scope.goBack=function(){//返回上一界面
         $ionicHistory.goBack();

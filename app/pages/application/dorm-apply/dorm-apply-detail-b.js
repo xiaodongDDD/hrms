@@ -1,6 +1,7 @@
 /**
  * Created by LeonChan on 2016/6/4.
  */
+'use strict';
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
@@ -12,6 +13,9 @@ angular.module('myApp')
               templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-b.html',
               controller: 'DormApplyDetailSecondCtrl'
             }
+          },
+          params:{
+            dormApplyDetailInfo:''
           }
         })
     }]);
@@ -21,32 +25,32 @@ angular.module('applicationModule')
     '$state',
     'baseConfig',
     '$ionicHistory',
-    'dormApplyTypeService',
     'hmsHttp',
     'hmsPopup',
     '$rootScope',
     '$timeout',
+    '$stateParams',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
-              dormApplyTypeService,
               hmsHttp,
               hmsPopup,
               $rootScope,
-              $timeout) {
-      $scope.applyInfo = dormApplyTypeService.getInfo();
+              $timeout,
+              $stateParams) {
+      $scope.applyInfo = $stateParams.dormApplyDetailInfo;
       $scope.checkIn = false;//审批中状态标志位
       $scope.checkOut = false;//已拒绝状态标识位
-      $scope.buttonText = ""//按钮上显示的文字
-      if ($scope.applyInfo.status == "已入住") {//已入住
+      $scope.buttonText = '';//按钮上显示的文字
+      if ($scope.applyInfo.status == '已入住') {//已入住
         $scope.checkIn = true;
         $scope.checkOut = false;
-        $scope.buttonText = "续住";
-      } else if ($scope.applyInfo.status == "已退房") {//已退房
+        $scope.buttonText = '续住';
+      } else if ($scope.applyInfo.status == '已退房') {//已退房
         $scope.checkIn = false;
         $scope.checkOut = true;
-        $scope.buttonText = "再次预定";
+        $scope.buttonText = '再次预定';
       }
       $scope.goBack = function () {//返回上一界面
         $ionicHistory.goBack();
@@ -57,6 +61,7 @@ angular.module('applicationModule')
         var param={
           "params": {
             p_employee_number:window.localStorage.empno,
+            p_pro_id:"",
             p_checkin_date:"20160815",
             p_checkout_date:"20160920",
             p_room_number:$scope.applyInfo.roomNumber,
@@ -65,6 +70,9 @@ angular.module('applicationModule')
             p_reason:""
           }
         };
+        if($scope.applyInfo.applyType=='项目申请'){
+          param.params.p_pro_id=$scope.applyInfo.projectId;
+        }
         hmsPopup.showLoading('请稍候');
         hmsHttp.post(url,param).success(function(result){
           hmsPopup.hideLoading();
