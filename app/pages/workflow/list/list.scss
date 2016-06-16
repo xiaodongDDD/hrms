@@ -10,33 +10,45 @@ $workflow-gray-line: #D2D2D2;
   }
   background: #fafafa;
   .workflow-filter {
+    display: block;
     padding-top: 7px;
     width: 160px;
     height: 44px;
     margin-left: auto;
     margin-right: auto;
+    .selected{
+      background: $workflow-bule;
+      color: white;
+    }
+    .no-selected{
+      background: white;
+      color: $workflow-bule;
+      &.activated{
+        background: #64ACFF;
+        color: white;
+      }
+    }
     .to-do-list {
+      border: 1px solid white;
       float: left;
       width: 76px;
       height: 29px;
       line-height: 29px;
       border-bottom-left-radius: 15px;
       border-top-left-radius: 15px;
-      background: white;
       font-size: 13px;
-      color: $workflow-bule;
     }
     .done-list {
-      border: 1px solid white;
+      border-top: 1px solid white;
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
       float: left;
       width: 76px;
       height: 29px;
       line-height: 29px;
       border-bottom-right-radius: 15px;
       border-top-right-radius: 15px;
-      background: $workflow-bule;
       font-size: 13px;
-      color: white;
     }
   }
 }
