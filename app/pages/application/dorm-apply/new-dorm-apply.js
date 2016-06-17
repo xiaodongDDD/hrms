@@ -147,8 +147,8 @@ angular.module('applicationModule')
           var param = {
             "params": {
               p_employee_number: window.localStorage.empno,
-              p_check_in_date: "20160615",
-              p_check_out_date: "20160720",
+              p_check_in_date: "2016-06-22",
+              p_check_out_date: "2016-08-20",
               p_apply_type: $scope.defaultApplyType,
               p_room_type: $scope.defaultRoomType,
               p_room_number: $scope.inputinfo.roomnum,

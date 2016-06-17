@@ -9,10 +9,35 @@
       <h1 class="title title-color">住宿详情</h1>
     </ion-header-bar>
     <div class="bar-tall-bottom">
-
+      <div class="row circle-row">
+        <div class="col col-33 time-off-col"></div>
+        <div class="col col-33 time-off-col">
+        <div class="row no-space">
+          <div class="circle-wrap">
+            <div class="hrms-circle">
+               <div class="shelter left">
+                 <div id="left_ball" class="circle left-circle dorm-apply-style-circle"></div>
+               </div>
+            <div class="shelter right">
+                 <div id="right_ball" class="circle right-circle dorm-apply-style-circle"></div>
+            </div>
+             <label class="up-title" style="width: 100%">剩余</label>
+             <label class="center-title dorm-apply-style" style="width: 100%">{{leftDays}}天</label>
+            </div>
+           </div>
+        </div>
+        <div class="row circle-label-row1">
+          <label class="circle-label">住宿时间</label>
+        </div>
+        <div class="row circle-label-row2">
+          <label class="circle-label">剩余时间：{{leftDays}}天</label>
+        </div>
+       </div>
+       <div class="col col-33 time-off-col"></div>
+      </div>
     </div>
   </div>
-  <ion-content class="content-style" style="top: 213px">
+  <ion-content class="content-style" circle-rotate="left_ball,right_ball" style="top: 213px">
     <ion-item class="apply-card">
       <div class="row image-row">
         <img src="build/img/application/dorm-apply/back-hand.png" class="figure-image"/>

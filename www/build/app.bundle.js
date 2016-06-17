@@ -62,6 +62,53 @@ HmsModule.directive('hideTabs', function($rootScope) {
       });
     }
   }
+}).directive('circleRotate', function($timeout) {
+    return {
+      restrict: 'A',
+      link: function($scope, $scroller, $attr) {
+        var params=$attr.circleRotate;
+        var domsId=params.split(',');
+        var leftball=document.getElementById(domsId[0]);
+        var rightball=document.getElementById(domsId[1]);
+        var calculation=$scope.leftDays/$scope.totalDays;
+        if(calculation<=0.5){//剩余天数大于总天数的一半
+           leftball.style.transition="all 0.3s linear";
+           leftball.style.webkitTransition="all 0.3s linear";
+           rightball.style.transition="all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+           rightball.style.webkitTransition="all 0.3s ease-out";
+        }else if(calculation>0.5){//剩余天数不到入住天数的一半
+           leftball.style.transition="all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+           leftball.style.webkitTransition="all 0.3s ease-out 0.3s";
+           rightball.style.transition="all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+           rightball.style.webkitTransition="all 0.3s ease-in";
+        }
+          leftball.style.webkitTransform = "rotate(-135deg)";
+          leftball.style.transform = "rotate(-135deg)";
+          rightball.style.webkitTransform = "rotate(-135deg)";
+          rightball.style.transform = "rotate(-135deg)";
+          $timeout(function(){//定时器中决定两个圆的终止角度
+            var angle=0;
+            if(calculation<=0.5){
+              angle=360*calculation;
+              angle=angle-135;
+              //console.log("角度："+angle);
+              leftball.style.webkitTransform = "rotate(-135deg)";
+              leftball.style.transform = "rotate(-135deg)";
+              rightball.style.webkitTransform = "rotate("+angle+"deg)";
+              rightball.style.transform = "rotate("+angle+"deg)";
+            }else if(calculation>0.5){
+              calculation=calculation-0.5;
+              angle=360*calculation;
+              angle=angle-135;
+              //console.log("角度："+angle);
+              leftball.style.webkitTransform = "rotate("+angle+"deg)";
+              leftball.style.transform = "rotate("+angle+"deg)";
+              rightball.style.webkitTransform = "rotate(45deg)";
+              rightball.style.transform = "rotate(45deg)";
+            }
+          },500);
+      }
+    }
 });
 
 /**
@@ -1420,27 +1467,6 @@ angular.module('applicationModule')
     }]);
 
 /**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('contactModule')
-
-  .controller('contactCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-      console.log('contactCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('contactCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('contactCtrl.$destroy');
-      });
-    }]);
-
-/**
  * Created by gusenlin on 16/5/16.
  */
 angular.module('loginModule')
@@ -1464,6 +1490,27 @@ angular.module('loginModule')
 
       $scope.$on('$destroy', function (e) {
         console.log('guideCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('contactModule')
+
+  .controller('contactCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+      console.log('contactCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('contactCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('contactCtrl.$destroy');
       });
     }]);
 
@@ -1648,6 +1695,39 @@ angular.module('messageModule')
     }]);
 
 /**
+ * Created by LeonChan on 2016/6/17.
+ */
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.feedback', {
+          url: '/feedback',
+          views: {
+            'tab-myInfo': {
+              templateUrl: 'build/pages/myInfo/feedback.html',
+              controller: 'FeedbackCtrl'
+            }
+          }
+        })
+    }]);
+angular.module('myInfoModule')
+  .controller('FeedbackCtrl', [
+    '$scope',
+    'baseConfig',
+    '$ionicHistory',
+    function ($scope,
+              baseConfig,
+              $ionicHistory) {
+
+      $scope.goBack=function(){//返回按钮
+        $ionicHistory.goBack();
+      }
+
+    }])
+
+/**
  * Created by gusenlin on 16/4/24.
  */
 angular.module('myInfoModule')
@@ -1664,7 +1744,7 @@ angular.module('myInfoModule')
         console.log('myInfoCtrl.enter');
       }
 
-      $scope.logout = function(){
+      $scope.logout = function(){//注销登录
         window.localStorage.token = "";
         window.localStorage.password = "";
         window.localStorage.timesheetAuto="";
@@ -1672,8 +1752,12 @@ angular.module('myInfoModule')
         $state.go('login');
       }
 
-      $scope.setup=function(){
+      $scope.setup=function(){//进入设置界面
         $state.go('tab.setup');
+      }
+
+      $scope.feedback=function(){//进入反馈界面
+        $state.go('tab.feedback');
       }
 
       $scope.$on('$ionicView.enter', function (e) {
@@ -1960,6 +2044,54 @@ angular.module('applicationModule')
       $scope.checkIn = false;//审批中状态标志位
       $scope.checkOut = false;//已拒绝状态标识位
       $scope.buttonText = '';//按钮上显示的文字
+      $scope.leftDays=$scope.applyInfo.leftDays;//剩余天数
+      $scope.totalDays=parseInt($scope.applyInfo.checkinDays);
+////////////
+//      var childDays=parseInt($scope.leftDays);//计算圆旋转角度的剩余天数
+//      var motherDays=parseInt($scope.applyInfo.checkinDays);//计算圆旋转角度的入住天数
+//      var calculation=childDays/motherDays;//分子除以分母
+//      //console.log(calculation);
+//      //JS圆环动画
+//      var leftball=document.getElementById('left_ball');//拿到左半圆DOM
+//      var rightball=document.getElementById('right_ball');//拿到右半圆DOM
+//      if(calculation<=0.5){//剩余天数大于总天数的一半
+//        leftball.style.transition="all 0.3s linear";
+//        leftball.style.webkitTransition="all 0.3s linear";
+//        rightball.style.transition="all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+//        rightball.style.webkitTransition="all 0.3s ease-out";
+//      }else if(calculation>0.5){//剩余天数不到入住天数的一半
+//        leftball.style.transition="all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+//        leftball.style.webkitTransition="all 0.3s ease-out 0.3s";
+//        rightball.style.transition="all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+//        rightball.style.webkitTransition="all 0.3s ease-in";
+//      }
+//      leftball.style.webkitTransform = "rotate(-135deg)";
+//      leftball.style.transform = "rotate(-135deg)";
+//      rightball.style.webkitTransform = "rotate(-135deg)";
+//      rightball.style.transform = "rotate(-135deg)";
+      //定时器中决定两个圆的终止角度
+      //$timeout(function(){
+      //  var angle=0;
+      //  if(calculation<=0.5){
+      //    angle=360*calculation;
+      //    angle=angle-135;
+      //    //console.log("角度："+angle);
+      //    leftball.style.webkitTransform = "rotate(-135deg)";
+      //    leftball.style.transform = "rotate(-135deg)";
+      //    rightball.style.webkitTransform = "rotate("+angle+"deg)";
+      //    rightball.style.transform = "rotate("+angle+"deg)";
+      //  }else if(calculation>0.5){
+      //    calculation=calculation-0.5;
+      //    angle=360*calculation;
+      //    angle=angle-135;
+      //    //console.log("角度："+angle);
+      //    leftball.style.webkitTransform = "rotate("+angle+"deg)";
+      //    leftball.style.transform = "rotate("+angle+"deg)";
+      //    rightball.style.webkitTransform = "rotate(45deg)";
+      //    rightball.style.transform = "rotate(45deg)";
+      //  }
+      //},500);
+
       if ($scope.applyInfo.status == '已入住') {//已入住
         $scope.checkIn = true;
         $scope.checkOut = false;
@@ -1969,6 +2101,7 @@ angular.module('applicationModule')
         $scope.checkOut = true;
         $scope.buttonText = '再次预定';
       }
+
       $scope.goBack = function () {//返回上一界面
         $ionicHistory.goBack();
       };
@@ -1979,8 +2112,8 @@ angular.module('applicationModule')
           "params": {
             p_employee_number:window.localStorage.empno,
             p_pro_id:"",
-            p_checkin_date:"20160815",
-            p_checkout_date:"20160920",
+            p_checkin_date:"2016-08-15",
+            p_checkout_date:"2016-09-20",
             p_room_number:$scope.applyInfo.roomNumber,
             p_bed_number:$scope.applyInfo.bedNumber,
             p_apply_type:$scope.applyInfo.applyType,
@@ -2217,7 +2350,9 @@ angular.module('applicationModule')
           roomType:info.room_type,//房间类型
           bedNumber:info.bed_number,//床位
           applyId:info.apply_id,//申请id
-          projectId:info.project_id//项目id
+          projectId:info.project_id,//项目id
+          checkinDays:info.checkin_days,//入住天数
+          leftDays:info.left_days//剩余天数
         };
         if (param.status == '已入住' || param.status == '已退房') {
           $state.go("tab.dorm-apply-detail-b",{
@@ -2407,8 +2542,8 @@ angular.module('applicationModule')
           var param = {
             "params": {
               p_employee_number: window.localStorage.empno,
-              p_check_in_date: "20160615",
-              p_check_out_date: "20160720",
+              p_check_in_date: "2016-06-22",
+              p_check_out_date: "2016-08-20",
               p_apply_type: $scope.defaultApplyType,
               p_room_type: $scope.defaultRoomType,
               p_room_number: $scope.inputinfo.roomnum,
@@ -3219,151 +3354,6 @@ angular.module('applicationModule')
     }]);
 
 /**
- * Created by wolf on 2016/5/21. (_wen.dai_)
- */
-'use strict';
-//应用-timeSheet审批模块-详情
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.tsApproveDetail', {
-          url: 'application/tsApproveDetail',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
-              controller: 'tsApproveDetailCtrl'
-            }
-          },
-          params: {
-            'employeeNumber': "",
-            'projectId': "",
-            'startDate': "",
-            'endDate': ""
-          }
-        })
-    }]);
-tsApproveModule.controller('tsApproveDetailCtrl', [
-  '$scope',
-  '$state',
-  'baseConfig',
-  '$ionicHistory',
-  '$stateParams',
-  'hmsHttp',
-  'hmsPopup',
-  function ($scope,
-            $state,
-            baseConfig,
-            $ionicHistory,
-            $stateParams,
-            hmsHttp,
-            hmsPopup) {
-
-    /**
-     * init var section
-     */
-    {
-      var selectItem = []; //初始化点击全部条目为false
-      var clickSelectAll = false; //默认没有点击全选
-      $scope.detailActionName = "操作";
-      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
-      $scope.detailInfoArray = {}; //用于接收列表对应数据object
-      $scope.selectArray = [];
-      var tsApproveDetailUrl = baseConfig.businessPath + "/wfl_timesheet_view/query_timesheet_approve_list";
-      var tsApproveDetailParams = {
-        "params": {
-          "p_employee_number": $stateParams.employeeNumber,
-          "p_start_date": $stateParams.startDate.toString().replace(/-/g, ""),
-          "p_end_date": $stateParams.endDate.toString().replace(/-/g, ""),
-          "p_project_id": $stateParams.projectId
-        }
-      };
-    }
-    hmsPopup.showLoading('记载中...');
-    hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
-      hmsPopup.hideLoading();
-      if (hmsHttp.isSuccessfull(response.status)) {
-        $scope.detailInfoArray = response.timesheet_approve_detail_response;
-      } else {
-        if (response.status === 'E' || response.status == 'e') {
-          hmsPopup.showPopup("提示", "<div style='text-align: center'>没有相关数据!</div>");
-        } else {
-          hmsPopup.showPopup("提示", "<div style='text-align: center'>网络异常,请稍后重试!</div>");
-        }
-      }
-    }).error(function (response, status) {
-      hmsPopup.hideLoading();
-      hmsPopup.showPopup("提示", "<div style='text-align: center'>服务请求异常,请检查网络连接和输入参数后重新操作!</div>");
-    });
-
-    $scope.$on('$ionicView.enter', function (e) {
-      warn('tsApproveListCtrl.$ionicView.enter');
-    });
-
-    $scope.$on('$destroy', function (e) {
-      warn('tsApproveListCtrl.$destroy');
-    });
-
-
-    function __initSelectArray(selectParam) { //初始化选择按钮
-      //先初始化数据操作--
-      $scope.selectArray = [];
-      selectItem = [];
-      angular.forEach($scope.detailInfoArray, function (data, index) {
-        if ('undoSelectAll' == selectParam) {
-          $scope.selectArray.push(false);
-          selectItem.push(false);
-        } else if ('selectedAll' == selectParam) {
-          $scope.selectArray.push(true);
-          selectItem.push(true);
-        }
-      });
-    };
-    __initSelectArray('undoSelectAll');
-
-    $scope.dealDetailInfo = function () {
-      if ($scope.detailActionName == "操作") {
-        $scope.detailActionName = "取消";
-        $scope.showActionBar = true;
-        angular.element('#tsApproveItem').css('paddingLeft', '6%');
-      } else if ($scope.detailActionName == "取消") {
-        $scope.detailActionName = "操作";
-        $scope.showActionBar = false;
-        __initSelectArray('undoSelectAll');
-        angular.element('#tsApproveItem').css('paddingLeft', '0');
-        warn(angular.toJson($scope.selectArray, true));
-      }
-    };
-
-    $scope.selectItem = function (index) { //单击选中条目的响应method
-      selectItem[index] = !selectItem[index];
-      if (selectItem[index]) {
-        $scope.selectArray[index] = true;
-      } else {
-        $scope.selectArray[index] = false;
-      }
-    };
-
-    $scope.selectAllDetail = function () { //全选
-      clickSelectAll = !clickSelectAll;
-      if (clickSelectAll) {
-        __initSelectArray('selectedAll');
-      } else {
-        __initSelectArray('undoSelectAll');
-      }
-    };
-
-    $scope.passThroughDetailItem = function () { //通过
-      warn("passThroughDetailItem");
-    };
-
-    $scope.refuseDetailItem = function () { //拒绝
-      warn("refuseDetailItem");
-    };
-  }]);
-
-
-/**
  * Created by wolf on 2016/5/19.
  * @author: wen.dai@hand-china.com
  *
@@ -3749,3 +3739,148 @@ angular.module('tsApproveModule')
       };
       return TsApproveListService;
     }]);
+
+/**
+ * Created by wolf on 2016/5/21. (_wen.dai_)
+ */
+'use strict';
+//应用-timeSheet审批模块-详情
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.tsApproveDetail', {
+          url: 'application/tsApproveDetail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
+              controller: 'tsApproveDetailCtrl'
+            }
+          },
+          params: {
+            'employeeNumber': "",
+            'projectId': "",
+            'startDate': "",
+            'endDate': ""
+          }
+        })
+    }]);
+tsApproveModule.controller('tsApproveDetailCtrl', [
+  '$scope',
+  '$state',
+  'baseConfig',
+  '$ionicHistory',
+  '$stateParams',
+  'hmsHttp',
+  'hmsPopup',
+  function ($scope,
+            $state,
+            baseConfig,
+            $ionicHistory,
+            $stateParams,
+            hmsHttp,
+            hmsPopup) {
+
+    /**
+     * init var section
+     */
+    {
+      var selectItem = []; //初始化点击全部条目为false
+      var clickSelectAll = false; //默认没有点击全选
+      $scope.detailActionName = "操作";
+      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
+      $scope.detailInfoArray = {}; //用于接收列表对应数据object
+      $scope.selectArray = [];
+      var tsApproveDetailUrl = baseConfig.businessPath + "/wfl_timesheet_view/query_timesheet_approve_list";
+      var tsApproveDetailParams = {
+        "params": {
+          "p_employee_number": $stateParams.employeeNumber,
+          "p_start_date": $stateParams.startDate.toString().replace(/-/g, ""),
+          "p_end_date": $stateParams.endDate.toString().replace(/-/g, ""),
+          "p_project_id": $stateParams.projectId
+        }
+      };
+    }
+    hmsPopup.showLoading('记载中...');
+    hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
+      hmsPopup.hideLoading();
+      if (hmsHttp.isSuccessfull(response.status)) {
+        $scope.detailInfoArray = response.timesheet_approve_detail_response;
+      } else {
+        if (response.status === 'E' || response.status == 'e') {
+          hmsPopup.showPopup("提示", "<div style='text-align: center'>没有相关数据!</div>");
+        } else {
+          hmsPopup.showPopup("提示", "<div style='text-align: center'>网络异常,请稍后重试!</div>");
+        }
+      }
+    }).error(function (response, status) {
+      hmsPopup.hideLoading();
+      hmsPopup.showPopup("提示", "<div style='text-align: center'>服务请求异常,请检查网络连接和输入参数后重新操作!</div>");
+    });
+
+    $scope.$on('$ionicView.enter', function (e) {
+      warn('tsApproveListCtrl.$ionicView.enter');
+    });
+
+    $scope.$on('$destroy', function (e) {
+      warn('tsApproveListCtrl.$destroy');
+    });
+
+
+    function __initSelectArray(selectParam) { //初始化选择按钮
+      //先初始化数据操作--
+      $scope.selectArray = [];
+      selectItem = [];
+      angular.forEach($scope.detailInfoArray, function (data, index) {
+        if ('undoSelectAll' == selectParam) {
+          $scope.selectArray.push(false);
+          selectItem.push(false);
+        } else if ('selectedAll' == selectParam) {
+          $scope.selectArray.push(true);
+          selectItem.push(true);
+        }
+      });
+    };
+    __initSelectArray('undoSelectAll');
+
+    $scope.dealDetailInfo = function () {
+      if ($scope.detailActionName == "操作") {
+        $scope.detailActionName = "取消";
+        $scope.showActionBar = true;
+        angular.element('#tsApproveItem').css('paddingLeft', '6%');
+      } else if ($scope.detailActionName == "取消") {
+        $scope.detailActionName = "操作";
+        $scope.showActionBar = false;
+        __initSelectArray('undoSelectAll');
+        angular.element('#tsApproveItem').css('paddingLeft', '0');
+        warn(angular.toJson($scope.selectArray, true));
+      }
+    };
+
+    $scope.selectItem = function (index) { //单击选中条目的响应method
+      selectItem[index] = !selectItem[index];
+      if (selectItem[index]) {
+        $scope.selectArray[index] = true;
+      } else {
+        $scope.selectArray[index] = false;
+      }
+    };
+
+    $scope.selectAllDetail = function () { //全选
+      clickSelectAll = !clickSelectAll;
+      if (clickSelectAll) {
+        __initSelectArray('selectedAll');
+      } else {
+        __initSelectArray('undoSelectAll');
+      }
+    };
+
+    $scope.passThroughDetailItem = function () { //通过
+      warn("passThroughDetailItem");
+    };
+
+    $scope.refuseDetailItem = function () { //拒绝
+      warn("refuseDetailItem");
+    };
+  }]);
+

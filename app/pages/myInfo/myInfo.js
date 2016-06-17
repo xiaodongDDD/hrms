@@ -15,7 +15,7 @@ angular.module('myInfoModule')
         console.log('myInfoCtrl.enter');
       }
 
-      $scope.logout = function(){
+      $scope.logout = function(){//注销登录
         window.localStorage.token = "";
         window.localStorage.password = "";
         window.localStorage.timesheetAuto="";
@@ -23,8 +23,12 @@ angular.module('myInfoModule')
         $state.go('login');
       }
 
-      $scope.setup=function(){
+      $scope.setup=function(){//进入设置界面
         $state.go('tab.setup');
+      }
+
+      $scope.feedback=function(){//进入反馈界面
+        $state.go('tab.feedback');
       }
 
       $scope.$on('$ionicView.enter', function (e) {
