@@ -26,4 +26,11 @@ angular.module('applicationModule')
     function ($scope,
               $state,
               baseConfig,
-              $ionicHistory) {}]);
+              $ionicHistory) {
+      $scope.paidHolidayLeftDays=20;//带薪年假剩余天数-蓝
+      $scope.paidHolidayTotalDays=90;//带薪年假总天数
+      $scope.paidSickLeftDays=50;//病假剩余天数-绿
+      $scope.paidSickTotalDays=90;//病假总天数
+      $scope.extPaidHolidayLeftDays=45;//橙色的剩余天数
+      $scope.extPaidHolidayTotalDays=90;//橙色的总天数
+    }]);

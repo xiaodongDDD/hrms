@@ -19,10 +19,10 @@
         <div class="circle-warp">
           <div class="hrms-circle">
             <div class="shelter left">
-              <div class="circle left-circle paid-holiday"></div>
+              <div id="blc" class="circle left-circle paid-holiday"></div>
             </div>
             <div class="shelter right">
-              <div class="circle right-circle paid-holiday"></div>
+              <div id="brc" class="circle right-circle paid-holiday"></div>
             </div>
             <span class="up-title">剩余</span>
             <span class="center-title paid-holiday">4天</span>
@@ -38,10 +38,10 @@
         <div class="circle-warp">
           <div class="hrms-circle">
             <div class="shelter left">
-              <div class="circle left-circle paid-sick-leave"></div>
+              <div id="glc" class="circle left-circle paid-sick-leave"></div>
             </div>
             <div class="shelter right">
-              <div class="circle right-circle paid-sick-leave"></div>
+              <div id="grc" class="circle right-circle paid-sick-leave"></div>
             </div>
             <span class="up-title">剩余</span>
             <span class="center-title paid-sick-leave">4天</span>
@@ -57,10 +57,10 @@
         <div class="circle-warp">
           <div class="hrms-circle">
             <div class="shelter left">
-              <div class="circle left-circle ext-paid-holiday"></div>
+              <div id="olc" class="circle left-circle ext-paid-holiday"></div>
             </div>
             <div class="shelter right">
-              <div class="circle right-circle ext-paid-holiday"></div>
+              <div id="orc" class="circle right-circle ext-paid-holiday"></div>
             </div>
             <span class="up-title">剩余</span>
             <span class="center-title ext-paid-holiday">4天</span>
@@ -75,7 +75,7 @@
     </div>
   </div>
 
-  <ion-content style="top: 180px">
+  <ion-content style="top: 180px" circle-rotate="time-off-manage,blc,brc,glc,grc,olc,orc">
 
     <div style="font-size: 16px;margin-left: 1.3%;margin-top: 8px;margin-bottom: 8px;color: #3964A4">休假记录</div>
 

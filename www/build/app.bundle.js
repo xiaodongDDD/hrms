@@ -14,6 +14,72 @@ var myInfoModule = angular.module('myInfoModule', []);
 var tsApproveModule = angular.module('tsApproveModule', []);
 
 /**
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
+ */
+angular.module('utilModule').factory('httpRequestHeader', function () {
+  var interceptor = {
+    'request': function (config) {
+      if (window.localStorage.token && window.localStorage.empno) {
+        var timestamp = new Date().getTime();
+        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
+        config.headers.timestamp = timestamp;
+        config.headers.token     = token;
+        config.headers.loginName = window.localStorage.empno;
+      }
+      return config;
+    }
+  };
+
+  return interceptor;
+});
+
+/**
+ * Created by wolf on 2016/6/13. (_wen.dai_)
+ */
+"use strict";
+//根据日期获取星期
+HmsModule.filter('weekDay', function () {
+  return function (data) {
+    if (data == "") {
+      return data;
+    } else {
+      var d = new Date(data);
+      var day = d.getDay();
+      switch (day) {
+        case  0:
+          data = data + "　" + "星期天";
+          break;
+        case  1:
+          data = data + "　" + "星期一";
+          break;
+        case  2:
+          data = data + "　" + "星期二";
+          break;
+        case  3:
+          data = data + "　" + "星期三";
+          break;
+        case  4:
+          data = data + "　" + "星期四";
+          break;
+        case  5:
+          data = data + "　" + "星期五";
+          break;
+        case  6:
+          data = data + "　" + "星期六";
+          break;
+      }
+      return data;
+    }
+  }
+});
+
+/**
  * @ngdoc directive
  * @name hideTabs
  * @module utilModule
@@ -68,45 +134,162 @@ HmsModule.directive('hideTabs', function($rootScope) {
       link: function($scope, $scroller, $attr) {
         var params=$attr.circleRotate;
         var domsId=params.split(',');
-        var leftball=document.getElementById(domsId[0]);
-        var rightball=document.getElementById(domsId[1]);
-        var calculation=$scope.leftDays/$scope.totalDays;
-        if(calculation<=0.5){//剩余天数大于总天数的一半
-           leftball.style.transition="all 0.3s linear";
-           leftball.style.webkitTransition="all 0.3s linear";
-           rightball.style.transition="all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-           rightball.style.webkitTransition="all 0.3s ease-out";
-        }else if(calculation>0.5){//剩余天数不到入住天数的一半
-           leftball.style.transition="all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-           leftball.style.webkitTransition="all 0.3s ease-out 0.3s";
-           rightball.style.transition="all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-           rightball.style.webkitTransition="all 0.3s ease-in";
-        }
+        console.log(domsId);
+        if(domsId[0]=="dorm-apply") {
+          var leftball = document.getElementById(domsId[1]);
+          var rightball = document.getElementById(domsId[2]);
+          var calculation = $scope.leftDays / $scope.totalDays;
+          if (calculation <= 0.5) {//剩余天数大于总天数的一半
+            leftball.style.transition = "all 0.3s linear";
+            leftball.style.webkitTransition = "all 0.3s linear";
+            rightball.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball.style.webkitTransition = "all 0.3s ease-out";
+          } else if (calculation > 0.5) {//剩余天数不到入住天数的一半
+            leftball.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+            leftball.style.webkitTransition = "all 0.3s ease-out 0.3s";
+            rightball.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball.style.webkitTransition = "all 0.3s ease-in";
+          }
           leftball.style.webkitTransform = "rotate(-135deg)";
           leftball.style.transform = "rotate(-135deg)";
           rightball.style.webkitTransform = "rotate(-135deg)";
           rightball.style.transform = "rotate(-135deg)";
-          $timeout(function(){//定时器中决定两个圆的终止角度
-            var angle=0;
-            if(calculation<=0.5){
-              angle=360*calculation;
-              angle=angle-135;
+          $timeout(function () {//定时器中决定两个圆的终止角度
+            var angle = 0;
+            if (calculation <= 0.5) {
+              angle = 360 * calculation;
+              angle = angle - 135;
               //console.log("角度："+angle);
               leftball.style.webkitTransform = "rotate(-135deg)";
               leftball.style.transform = "rotate(-135deg)";
-              rightball.style.webkitTransform = "rotate("+angle+"deg)";
-              rightball.style.transform = "rotate("+angle+"deg)";
-            }else if(calculation>0.5){
-              calculation=calculation-0.5;
-              angle=360*calculation;
-              angle=angle-135;
+              rightball.style.webkitTransform = "rotate(" + angle + "deg)";
+              rightball.style.transform = "rotate(" + angle + "deg)";
+            } else if (calculation > 0.5) {
+              calculation = calculation - 0.5;
+              angle = 360 * calculation;
+              angle = angle - 135;
               //console.log("角度："+angle);
-              leftball.style.webkitTransform = "rotate("+angle+"deg)";
-              leftball.style.transform = "rotate("+angle+"deg)";
+              leftball.style.webkitTransform = "rotate(" + angle + "deg)";
+              leftball.style.transform = "rotate(" + angle + "deg)";
               rightball.style.webkitTransform = "rotate(45deg)";
               rightball.style.transform = "rotate(45deg)";
             }
-          },500);
+          }, 500);
+        }else if(domsId[0]=="time-off-manage"){
+          var leftball1 = document.getElementById(domsId[1]);
+          var rightball1 = document.getElementById(domsId[2]);
+          var leftball2 = document.getElementById(domsId[3]);
+          var rightball2 = document.getElementById(domsId[4]);
+          var leftball3 = document.getElementById(domsId[5]);
+          var rightball3 = document.getElementById(domsId[6]);
+          var calculation1 = $scope.paidHolidayLeftDays / $scope.paidHolidayTotalDays;
+          var calculation2 = $scope.paidSickLeftDays / $scope.paidSickTotalDays;
+          var calculation3 = $scope.extPaidHolidayLeftDays / $scope.extPaidHolidayTotalDays;
+          if (calculation1 <= 0.5) {//剩余天数大于总天数的一半
+            leftball1.style.transition = "all 0.3s linear";
+            leftball1.style.webkitTransition = "all 0.3s linear";
+            rightball1.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball1.style.webkitTransition = "all 0.3s ease-out";
+          } else if (calculation1 > 0.5) {//剩余天数不到入住天数的一半
+            leftball1.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+            leftball1.style.webkitTransition = "all 0.3s ease-out 0.3s";
+            rightball1.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball1.style.webkitTransition = "all 0.3s ease-in";
+          }
+          if (calculation2 <= 0.5) {//剩余天数大于总天数的一半
+            leftball2.style.transition = "all 0.3s linear";
+            leftball2.style.webkitTransition = "all 0.3s linear";
+            rightball2.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball2.style.webkitTransition = "all 0.3s ease-out";
+          } else if (calculation2 > 0.5) {//剩余天数不到入住天数的一半
+            leftball2.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+            leftball2.style.webkitTransition = "all 0.3s ease-out 0.3s";
+            rightball2.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball2.style.webkitTransition = "all 0.3s ease-in";
+          }
+          if (calculation3 <= 0.5) {//剩余天数大于总天数的一半
+            leftball3.style.transition = "all 0.3s linear";
+            leftball3.style.webkitTransition = "all 0.3s linear";
+            rightball3.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball3.style.webkitTransition = "all 0.3s ease-out";
+          } else if (calculation3 > 0.5) {//剩余天数不到入住天数的一半
+            leftball3.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+            leftball3.style.webkitTransition = "all 0.3s ease-out 0.3s";
+            rightball3.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball3.style.webkitTransition = "all 0.3s ease-in";
+          }
+          leftball1.style.webkitTransform = "rotate(-135deg)";
+          leftball1.style.transform = "rotate(-135deg)";
+          rightball1.style.webkitTransform = "rotate(-135deg)";
+          rightball1.style.transform = "rotate(-135deg)";
+          leftball2.style.webkitTransform = "rotate(-135deg)";
+          leftball2.style.transform = "rotate(-135deg)";
+          rightball2.style.webkitTransform = "rotate(-135deg)";
+          rightball2.style.transform = "rotate(-135deg)";
+          leftball3.style.webkitTransform = "rotate(-135deg)";
+          leftball3.style.transform = "rotate(-135deg)";
+          rightball3.style.webkitTransform = "rotate(-135deg)";
+          rightball3.style.transform = "rotate(-135deg)";
+          $timeout(function () {//定时器中决定两个圆的终止角度
+            var angle1 = 0;
+            var angle2 = 0;
+            var angle3 = 0;
+            if (calculation1 <= 0.5) {
+              angle1 = 360 * calculation1;
+              angle1 = angle1 - 135;
+              //console.log("角度："+angle);
+              leftball1.style.webkitTransform = "rotate(-135deg)";
+              leftball1.style.transform = "rotate(-135deg)";
+              rightball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
+              rightball1.style.transform = "rotate(" + angle1 + "deg)";
+            } else if (calculation1 > 0.5) {
+              calculation1 = calculation1 - 0.5;
+              angle1 = 360 * calculation1;
+              angle1 = angle1 - 135;
+              //console.log("角度："+angle);
+              leftball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
+              leftball1.style.transform = "rotate(" + angle1 + "deg)";
+              rightball1.style.webkitTransform = "rotate(45deg)";
+              rightball1.style.transform = "rotate(45deg)";
+            }
+            if (calculation2 <= 0.5) {
+              angle2 = 360 * calculation2;
+              angle2 = angle2 - 135;
+              //console.log("角度："+angle);
+              leftball2.style.webkitTransform = "rotate(-135deg)";
+              leftball2.style.transform = "rotate(-135deg)";
+              rightball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
+              rightball2.style.transform = "rotate(" + angle2 + "deg)";
+            } else if (calculation2 > 0.5) {
+              calculation2 = calculation2 - 0.5;
+              angle2 = 360 * calculation2;
+              angle2 = angle2 - 135;
+              //console.log("角度："+angle);
+              leftball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
+              leftball2.style.transform = "rotate(" + angle2 + "deg)";
+              rightball2.style.webkitTransform = "rotate(45deg)";
+              rightball2.style.transform = "rotate(45deg)";
+            }
+            if (calculation3 <= 0.5) {
+              angle3 = 360 * calculation3;
+              angle3 = angle3 - 135;
+              //console.log("角度："+angle);
+              leftball3.style.webkitTransform = "rotate(-135deg)";
+              leftball3.style.transform = "rotate(-135deg)";
+              rightball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
+              rightball3.style.transform = "rotate(" + angle3 + "deg)";
+            } else if (calculation3 > 0.5) {
+              calculation3 = calculation3 - 0.5;
+              angle3 = 360 * calculation3;
+              angle3 = angle3 - 135;
+              //console.log("角度："+angle);
+              leftball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
+              leftball3.style.transform = "rotate(" + angle3 + "deg)";
+              rightball3.style.webkitTransform = "rotate(45deg)";
+              rightball3.style.transform = "rotate(45deg)";
+            }
+          }, 500);
+        }
       }
     }
 });
@@ -472,72 +655,6 @@ angular.module('HmsModule')
       }
     };
   })*/
-
-/**
- * @ngdoc interceptor
- * @name httpRequestHeader
- * @module utilModule
- * @description
- * This is the http interceptor
- * @author
- * gusenlin
- */
-angular.module('utilModule').factory('httpRequestHeader', function () {
-  var interceptor = {
-    'request': function (config) {
-      if (window.localStorage.token && window.localStorage.empno) {
-        var timestamp = new Date().getTime();
-        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
-        config.headers.timestamp = timestamp;
-        config.headers.token     = token;
-        config.headers.loginName = window.localStorage.empno;
-      }
-      return config;
-    }
-  };
-
-  return interceptor;
-});
-
-/**
- * Created by wolf on 2016/6/13. (_wen.dai_)
- */
-"use strict";
-//根据日期获取星期
-HmsModule.filter('weekDay', function () {
-  return function (data) {
-    if (data == "") {
-      return data;
-    } else {
-      var d = new Date(data);
-      var day = d.getDay();
-      switch (day) {
-        case  0:
-          data = data + "　" + "星期天";
-          break;
-        case  1:
-          data = data + "　" + "星期一";
-          break;
-        case  2:
-          data = data + "　" + "星期二";
-          break;
-        case  3:
-          data = data + "　" + "星期三";
-          break;
-        case  4:
-          data = data + "　" + "星期四";
-          break;
-        case  5:
-          data = data + "　" + "星期五";
-          break;
-        case  6:
-          data = data + "　" + "星期六";
-          break;
-      }
-      return data;
-    }
-  }
-});
 
 /**
  * Created by wolf on 2016/6/12.
@@ -1561,6 +1678,27 @@ angular.module('applicationModule')
     }]);
 
 /**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('contactModule')
+
+  .controller('contactCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+      console.log('contactCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('contactCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('contactCtrl.$destroy');
+      });
+    }]);
+
+/**
  * Created by gusenlin on 16/5/16.
  */
 angular.module('loginModule')
@@ -1584,27 +1722,6 @@ angular.module('loginModule')
 
       $scope.$on('$destroy', function (e) {
         console.log('guideCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('contactModule')
-
-  .controller('contactCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-      console.log('contactCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('contactCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('contactCtrl.$destroy');
       });
     }]);
 
@@ -2709,7 +2826,14 @@ angular.module('applicationModule')
     function ($scope,
               $state,
               baseConfig,
-              $ionicHistory) {}]);
+              $ionicHistory) {
+      $scope.paidHolidayLeftDays=20;//带薪年假剩余天数-蓝
+      $scope.paidHolidayTotalDays=90;//带薪年假总天数
+      $scope.paidSickLeftDays=50;//病假剩余天数-绿
+      $scope.paidSickTotalDays=90;//病假总天数
+      $scope.extPaidHolidayLeftDays=45;//橙色的剩余天数
+      $scope.extPaidHolidayTotalDays=90;//橙色的总天数
+    }]);
 
 /**
  * Created by gusenlin on 16/4/24.
@@ -3448,7 +3572,6 @@ angular.module('applicationModule')
     }]);
 
 /**
-<<<<<<< HEAD
  * Created by wolf on 2016/5/21. (_wen.dai_)
  */
 'use strict';
@@ -3706,8 +3829,6 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
 
 
 /**
-=======
->>>>>>> Feature/t0016
  * Created by wolf on 2016/5/19.
  * @author: wen.dai@hand-china.com
  *
@@ -4274,148 +4395,3 @@ angular.module('tsApproveModule')
       };
       return TsApproveListService;
     }]);
-
-/**
- * Created by wolf on 2016/5/21. (_wen.dai_)
- */
-'use strict';
-//应用-timeSheet审批模块-详情
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.tsApproveDetail', {
-          url: 'application/tsApproveDetail',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
-              controller: 'tsApproveDetailCtrl'
-            }
-          },
-          params: {
-            'employeeNumber': "",
-            'projectId': "",
-            'startDate': "",
-            'endDate': ""
-          }
-        })
-    }]);
-tsApproveModule.controller('tsApproveDetailCtrl', [
-  '$scope',
-  '$state',
-  'baseConfig',
-  '$ionicHistory',
-  '$stateParams',
-  'hmsHttp',
-  'hmsPopup',
-  function ($scope,
-            $state,
-            baseConfig,
-            $ionicHistory,
-            $stateParams,
-            hmsHttp,
-            hmsPopup) {
-
-    /**
-     * init var section
-     */
-    {
-      var selectItem = []; //初始化点击全部条目为false
-      var clickSelectAll = false; //默认没有点击全选
-      $scope.detailActionName = "操作";
-      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
-      $scope.detailInfoArray = {}; //用于接收列表对应数据object
-      $scope.selectArray = [];
-      var tsApproveDetailUrl = baseConfig.businessPath + "/wfl_timesheet_view/query_timesheet_approve_list";
-      var tsApproveDetailParams = {
-        "params": {
-          "p_employee_number": $stateParams.employeeNumber,
-          "p_start_date": $stateParams.startDate.toString().replace(/-/g, ""),
-          "p_end_date": $stateParams.endDate.toString().replace(/-/g, ""),
-          "p_project_id": $stateParams.projectId
-        }
-      };
-    }
-    hmsPopup.showLoading('记载中...');
-    hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
-      hmsPopup.hideLoading();
-      if (hmsHttp.isSuccessfull(response.status)) {
-        $scope.detailInfoArray = response.timesheet_approve_detail_response;
-      } else {
-        if (response.status === 'E' || response.status == 'e') {
-          hmsPopup.showPopup("提示", "<div style='text-align: center'>没有相关数据!</div>");
-        } else {
-          hmsPopup.showPopup("提示", "<div style='text-align: center'>网络异常,请稍后重试!</div>");
-        }
-      }
-    }).error(function (response, status) {
-      hmsPopup.hideLoading();
-      hmsPopup.showPopup("提示", "<div style='text-align: center'>服务请求异常,请检查网络连接和输入参数后重新操作!</div>");
-    });
-
-    $scope.$on('$ionicView.enter', function (e) {
-      warn('tsApproveListCtrl.$ionicView.enter');
-    });
-
-    $scope.$on('$destroy', function (e) {
-      warn('tsApproveListCtrl.$destroy');
-    });
-
-
-    function __initSelectArray(selectParam) { //初始化选择按钮
-      //先初始化数据操作--
-      $scope.selectArray = [];
-      selectItem = [];
-      angular.forEach($scope.detailInfoArray, function (data, index) {
-        if ('undoSelectAll' == selectParam) {
-          $scope.selectArray.push(false);
-          selectItem.push(false);
-        } else if ('selectedAll' == selectParam) {
-          $scope.selectArray.push(true);
-          selectItem.push(true);
-        }
-      });
-    };
-    __initSelectArray('undoSelectAll');
-
-    $scope.dealDetailInfo = function () {
-      if ($scope.detailActionName == "操作") {
-        $scope.detailActionName = "取消";
-        $scope.showActionBar = true;
-        angular.element('#tsApproveItem').css('paddingLeft', '6%');
-      } else if ($scope.detailActionName == "取消") {
-        $scope.detailActionName = "操作";
-        $scope.showActionBar = false;
-        __initSelectArray('undoSelectAll');
-        angular.element('#tsApproveItem').css('paddingLeft', '0');
-        warn(angular.toJson($scope.selectArray, true));
-      }
-    };
-
-    $scope.selectItem = function (index) { //单击选中条目的响应method
-      selectItem[index] = !selectItem[index];
-      if (selectItem[index]) {
-        $scope.selectArray[index] = true;
-      } else {
-        $scope.selectArray[index] = false;
-      }
-    };
-
-    $scope.selectAllDetail = function () { //全选
-      clickSelectAll = !clickSelectAll;
-      if (clickSelectAll) {
-        __initSelectArray('selectedAll');
-      } else {
-        __initSelectArray('undoSelectAll');
-      }
-    };
-
-    $scope.passThroughDetailItem = function () { //通过
-      warn("passThroughDetailItem");
-    };
-
-    $scope.refuseDetailItem = function () { //拒绝
-      warn("refuseDetailItem");
-    };
-  }]);
-
