@@ -224,6 +224,9 @@ angular.module('tsApproveModule')
       };
 
       $scope.getAttentionInfo = function (e, newWarnList) {
+        if (!$scope.showDetailArrow) {
+          return;
+        }
         e.stopPropagation(); //阻止事件冒泡
         warn(newWarnList);
         $ionicPopup.show({
@@ -322,6 +325,10 @@ angular.module('tsApproveModule')
         }
       };
       $scope.passThroughListItem = function () { //通过
+        if (approveList.approve_list.length === 0) {
+          hmsPopup.showShortCenterToast('请先选择操作项！');
+          return;
+        }
         deleteSuperfluous();
         tsActionParams.params.p_approve_flag = "AGREE";
         tsActionParams.params.p_param_json = JSON.stringify(approveList);
@@ -334,16 +341,24 @@ angular.module('tsApproveModule')
             hmsPopup.showShortCenterToast('审批失败！');
           }
           $scope.doSelectAction();
-          $scope.tsListRefresh();
+          $timeout(function () {
+            $scope.tsListRefresh();
+          }, 1500);
         }).error(function (e) {
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
           $scope.doSelectAction();
-          $scope.tsListRefresh();
+          $timeout(function () {
+            $scope.tsListRefresh();
+          }, 1500);
         });
       };
 
       $scope.refuseListItem = function () { //拒绝
+        if (approveList.approve_list.length === 0) {
+          hmsPopup.showShortCenterToast('请先选择操作项！');
+          return;
+        }
         deleteSuperfluous();
         tsActionParams.params.p_approve_flag = "REFUSE";
         tsActionParams.params.p_param_json = JSON.stringify(approveList);
@@ -356,12 +371,16 @@ angular.module('tsApproveModule')
             hmsPopup.showShortCenterToast('拒绝失败！');
           }
           $scope.doSelectAction();
-          $scope.tsListRefresh();
+          $timeout(function () {
+            $scope.tsListRefresh();
+          }, 1500);
         }).error(function (e) {
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
           $scope.doSelectAction();
-          $scope.tsListRefresh();
+          $timeout(function () {
+            $scope.tsListRefresh();
+          }, 1500);
         });
       };
 

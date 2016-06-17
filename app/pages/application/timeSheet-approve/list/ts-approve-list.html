@@ -4,9 +4,11 @@
     <div class="custom-second-head">
       <div class="row bg-input">
         <button class="button button-clear calendar-icon">
-          <span class="calendar-text">日历</span>
         </button>
-        <span class="calendar-end-date" ng-click="selectEndDate()">截止日期: {{endApproveDate}}</span>
+        <span class="calendar-end-date">
+          <span class="ts-approve-calendar-text">日历</span>
+          <span ng-click="selectEndDate()">截止日期: {{endApproveDate}}</span>
+        </span>
       </div>
       <div id="connect-block" class="connect-block" ng-show="showConnectBlock&&listInfoArray.listArray.length != 0">
       </div>
@@ -21,24 +23,24 @@
     <div id="tsApproveList" class="ts-approve-list-item" ng-repeat="i in listInfoArray.listArray"
          ng-click="goApproveDetail($index,i.employee_number,i.project_id,i.start_date,i.end_date)">
       <div class="row first-content">
-        <span class="name" ng-bind="i.employee_name">{{$index}}</span>
-        <span class="job-number" ng-bind="i.employee_number"></span>
-        <span class="city" ng-bind="i.base_address"></span>
-        <span class="fly-back">flyback:</span>
-        <span class="fly-icon"></span>
-        <span class="fly-number" ng-cloak>x {{i.fly_back}}</span>
+        <div class="name" ng-bind="i.employee_name">{{$index}}</div>
+        <div class="job-number" ng-bind="i.employee_number"></div>
+        <div class="city" ng-bind="i.base_address"></div>
+        <div class="fly-back">flyback:</div>
+        <div class="fly-icon"></div>
+        <div class="fly-number" ng-cloak>x {{i.fly_back}}</div>
       </div>
       <div class="row second-content">
-        <span class="name">补助:</span>
-        <span class="number" ng-cloak>0*{{i.subsidy_list.length}}</span>
-        <span class="number-icon" ng-click="getAttentionInfo($event,i.warn_list)" ng-if="i.warn_list.length >=1"></span>
+        <div class="name">补助:</div>
+        <div class="number" ng-cloak>0*{{i.subsidy_list.length}}</div>
+        <div class="number-icon" ng-click="getAttentionInfo($event,i.warn_list)" ng-if="i.warn_list.length >=1"></div>
       </div>
       <div ng-class={"select-list-ts":selectArray[$index],"un-select-list-ts":!selectArray[$index]}
            ng-if="!showDetailArrow"></div>
       <div class="arrow-item" ng-if="showDetailArrow"></div>
       <div class="row second-content">
-        <span class="name">项目:</span>
-        <span class="number" ng-bind="i.project_name"></span>
+        <div class="name">项目:</div>
+        <div class="number" ng-bind="i.project_name"></div>
       </div>
     </div>
     <ion-infinite-scroll ng-show="listInfoArray.busy" on-infinite="listInfoArray.nextPage()"

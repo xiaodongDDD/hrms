@@ -45,7 +45,7 @@ HmsModule.directive("customHeadBar", function () {
       goBackPage: "&", // 返回
       doAction: "&"   //
     },
-    template: '<div class="custom-head">' +
+    template: '<div class="custom-head custom-head-background">' +
     '<div class="row custom-first-head">' +
     '<button class="button button-clear back-button" ng-click="goBackPage()">' +
     '<i class="ion-ios-arrow-back"></i>' +

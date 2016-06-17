@@ -2739,18 +2739,41 @@ Copyright (c) 2015 Daniel Eden
   background-image: url("./../img/application/timesheet-approve/list/rocketTop@3x.png");
   background-size: cover; }
 
+@media screen and (max-width: 320px) and (min-width: 300px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #7caed5);
+    background: linear-gradient(top, #17468F, #3D7BC4, #7caed5);
+    /* 标准的语法 */ } }
+
+@media screen and (max-width: 350px) and (min-width: 321px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #7aadd5);
+    background: linear-gradient(top, #17468F, #3D7BC4, #7aadd5);
+    /* 标准的语法 */ } }
+
+@media screen and (max-width: 389px) and (min-width: 351px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
+    background: linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
+    /* 标准的语法 */ } }
+
+@media screen and (max-width: 401px) and (min-width: 390px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #65a1cf);
+    background: linear-gradient(top, #17468F, #3D7BC4, #65a1cf);
+    /* 标准的语法 */ } }
+
+@media screen and (min-width: 402px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #5f9dcd);
+    background: linear-gradient(top, #17468F, #3D7BC4, #5f9dcd);
+    /* 标准的语法 */ } }
+
 .custom-head {
   position: fixed;
   z-index: 100;
   height: 100px;
-  width: 100%;
-  background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
-  background: -o-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
-  /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
-  /* Firefox 3.6 - 15 */
-  background: linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
-  /* 标准的语法 */ }
+  width: 100%; }
   .custom-head .custom-first-head {
     height: 44px; }
     .custom-head .custom-first-head .back-button {
@@ -2784,19 +2807,13 @@ Copyright (c) 2015 Daniel Eden
         background-repeat: no-repeat;
         background-size: 27px 27px;
         background-position: 15px 0px;
-        margin-left: 15px;
-        padding-left: 50px;
+        padding-left: 45px;
         min-height: 35px; }
-        .custom-head .custom-second-head .bg-input .calendar-icon .calendar-text {
-          color: #26579E;
-          font-size: 14px;
-          position: fixed;
-          margin-top: -6%; }
       .custom-head .custom-second-head .bg-input .calendar-end-date {
         color: #F99D32;
         font-size: 14px;
         padding-top: 6px;
-        padding-left: 52px; }
+        width: 100%; }
     .custom-head .custom-second-head .connect-block {
       background-image: url("./../img/application/timesheet-approve/list/Rectangle-2@3x.png");
       background-repeat: no-repeat;
@@ -2804,6 +2821,24 @@ Copyright (c) 2015 Daniel Eden
       margin-left: 46.6%;
       margin-top: -1px;
       height: 15px; }
+
+@media screen and (max-width: 320px) and (min-width: 300px) {
+  .ts-approve-calendar-text {
+    color: #26579E;
+    font-size: 14px;
+    padding-right: 4%; } }
+
+@media screen and (max-width: 390px) and (min-width: 321px) {
+  .ts-approve-calendar-text {
+    color: #26579E;
+    font-size: 14px;
+    padding-right: 15%; } }
+
+@media screen and (min-width: 391px) {
+  .ts-approve-calendar-text {
+    color: #26579E;
+    font-size: 14px;
+    padding-right: 27%; } }
 
 .ts-list-title {
   font-size: 17px;
@@ -2826,6 +2861,9 @@ Copyright (c) 2015 Daniel Eden
   border: none;
   box-shadow: 0px 2px 3px rgba(155, 155, 155, 0.23); }
   .ts-approve-list-item .first-content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 14px;
     color: #24559C;
     padding-top: 10px; }
@@ -2852,9 +2890,10 @@ Copyright (c) 2015 Daniel Eden
     color: #9B9B9B;
     padding-top: 10px; }
     .ts-approve-list-item .second-content .name {
-      color: #4A4A4A; }
+      color: #4A4A4A;
+      width: 13%; }
     .ts-approve-list-item .second-content .number {
-      padding-left: 35px; }
+      padding-left: 5px; }
     .ts-approve-list-item .second-content .number-icon {
       background-image: url("./../img/application/timesheet-approve/list/attention-s@3x.png");
       background-repeat: no-repeat;
@@ -2926,7 +2965,7 @@ Copyright (c) 2015 Daniel Eden
     .foot-bar .buttons .filter-text {
       position: absolute;
       margin-top: 26px;
-      right: 59%;
+      right: 18%;
       font-size: 14px;
       color: #9B9B9B; }
     .foot-bar .buttons .time-icon {
@@ -3022,6 +3061,9 @@ Copyright (c) 2015 Daniel Eden
     .filter-items-row .items-bg .select-item-color {
       color: #26579E; }
 
+.ts-end-date-modal .ts-end-date-item {
+  color: #26579E; }
+
 .ae-detail-head {
   height: 92px;
   width: 100%;
@@ -3059,10 +3101,6 @@ Copyright (c) 2015 Daniel Eden
     margin-left: 4%;
     background: -webkit-linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF);
     /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF);
-    /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF);
-    /* Firefox 3.6 - 15 */
     background: linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF);
     /* 标准的语法 */ }
   .ts-ae-detail-item .ts-approve-detail-item {
@@ -4266,21 +4304,28 @@ Copyright (c) 2015 Daniel Eden
     height: 40px;
     width: 100%;
     z-index: 100;
-    margin-bottom: -6px;
-    position: relative; }
+    position: relative;
+    margin-bottom: -7px; }
+    .timesheet .calendar-month .ion-scroll, .timesheet .calendar-month table, .timesheet .calendar-month tbody, .timesheet .calendar-month tr, .timesheet .calendar-month td {
+      position: relative;
+      padding: 0;
+      margin: 0;
+      height: 50px; }
     .timesheet .calendar-month .month-item {
       height: 40px;
       text-align: center;
-      width: 20%;
-      padding: 5px;
+      width: 60px;
       float: left;
-      background: url("../img/application/timesheet/Group@3x.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
+      padding: 5px;
       font-size: 16px;
       font-weight: bold;
-      color: #24559C; }
+      color: #9B9B9B; }
+      .timesheet .calendar-month .month-item.selected {
+        background: url("../img/application/timesheet/Group@3x.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: #24559C; }
   .timesheet .calendar-day {
     margin: 5px;
     padding: 5px;

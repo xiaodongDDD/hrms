@@ -32,7 +32,7 @@
       </div>
       <div class="liner-ts-ae-detail"></div>
       <div id="approveDetailItem" class="ts-approve-detail-item" ng-repeat="i in detailInfoArray.subsidy_list"
-           ng-click="selectItem($index)">
+           ng-click="selectItem($index,i.line_number)">
         <div class="row ae-item-head">
           <span class="item-width" ng-bind="i.travel_money"></span>
           <span class="item-width" ng-bind="i.subsidy_money"></span>
@@ -50,6 +50,7 @@
              ng-class={"select-icon":selectArray[$index],"un-select-icon":!selectArray[$index]}></div>
       </div>
     </div>
+
   </ion-content>
   <footer-select
     ng-if="showActionBar"

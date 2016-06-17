@@ -31,13 +31,15 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
   '$stateParams',
   'hmsHttp',
   'hmsPopup',
+  '$timeout',
   function ($scope,
             $state,
             baseConfig,
             $ionicHistory,
             $stateParams,
             hmsHttp,
-            hmsPopup) {
+            hmsPopup,
+            $timeout) {
 
     /**
      * init var section
@@ -53,8 +55,8 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
       var tsApproveDetailParams = {
         "params": {
           "p_employee_number": $stateParams.employeeNumber,
-          "p_start_date": $stateParams.startDate.toString().replace(/-/g, ""),
-          "p_end_date": $stateParams.endDate.toString().replace(/-/g, ""),
+          "p_start_date": $stateParams.startDate.toString(),
+          "p_end_date": $stateParams.endDate.toString(),
           "p_project_id": $stateParams.projectId
         }
       };
@@ -188,6 +190,10 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
     };
 
     $scope.passThroughDetailItem = function () { //通过
+      if(approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
       deleteSuperfluous();
       tsActionParams.params.p_approve_flag = "AGREE";
       tsActionParams.params.p_param_json = JSON.stringify(approveList);
@@ -200,18 +206,26 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
           hmsPopup.showShortCenterToast('审批失败！');
         }
         $scope.dealDetailInfo();
-        hmsPopup.showLoading('加载中...');
-        getData();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        },1500);
       }).error(function (e) {
         hmsPopup.hideLoading();
         hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
         $scope.dealDetailInfo();
-        hmsPopup.showLoading('加载中...');
-        getData();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        },1500);
       });
     };
 
     $scope.refuseDetailItem = function () { //拒绝
+      if(approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
       deleteSuperfluous();
       tsActionParams.params.p_approve_flag = "REFUSE";
       tsActionParams.params.p_param_json = JSON.stringify(approveList);
@@ -219,19 +233,23 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
       hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
         hmsPopup.hideLoading();
         if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('拒绝成功！');
+          hmsPopup.showShortCenterToast('操作成功！');
         } else {
           hmsPopup.showShortCenterToast('拒绝失败！');
         }
         $scope.dealDetailInfo();
-        hmsPopup.showLoading('加载中...');
-        getData();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        },1500);
       }).error(function (e) {
         hmsPopup.hideLoading();
         hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
         $scope.dealDetailInfo();
-        hmsPopup.showLoading('加载中...');
-        getData();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        },1500);
       });
     };
   }]);
