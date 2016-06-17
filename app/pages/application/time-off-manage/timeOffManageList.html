@@ -75,61 +75,28 @@
     </div>
   </div>
 
-  <ion-content style="top: 180px" circle-rotate="time-off-manage,blc,brc,glc,grc,olc,orc">
+  <ion-content class="time-off-content">
 
-    <div style="font-size: 16px;margin-left: 1.3%;margin-top: 8px;margin-bottom: 8px;color: #3964A4">休假记录</div>
-
-    <!-- class="time-off-manage-list"!-->
+    <div class="time-off-list">休假记录</div>
     <div>
-
-      <!--class="time-off-manage-item"!-->
-      <div class="row" style="margin-left: 1.3%;margin-bottom: 15px;padding: 0px;
-                              height: 109px;width: 97.4%;border-top: 1px solid #F8F8F8;
-                              border-radius: 5px;box-shadow: 0px 3px 5px rgba(0,0,0,0.18);">
-        <img class="col col-33"
-             style="padding:0px; border-radius:5px 0px 0px 5px;
-                    border-left: 3px solid #3964A4;
-                    width: 116px;height: 109px;"
+      <div class="row time-off-item">
+        <img class="col col-33 time-off-item-left paid-holiday"
              src='build/img/application/time-off-manage/vacation@3x.png'>
 
-        <div class="col" style="margin-left: 2%">
-          <div style="font-size: 14px;padding-top: 5px;padding-bottom: 10px;color: #3964A4">带薪年假</div>
-          <div style="font-size: 14px;color: #9B9B9B">2016-05-04 8:30</div>
-          <div style="font-size: 14px;color: #9B9B9B">至</div>
-          <div style="font-size: 14px;color: #9B9B9B">2016-05-05 17:50</div>
+        <div class="col time-off-item-middle">
+          <div class="item-off-item-title paid-holiday">带薪年假</div>
+          <div class="item-off-item-text">2016-05-04 8:30</div>
+          <div class="item-off-item-text">至</div>
+          <div class="item-off-item-text">2016-05-05 17:50</div>
         </div>
 
-        <div class="col col-20 col-center" style="text-align: center;">
-          <div style="height: 46px; width: 46px; line-height: 46px; display: inline-block; font-size: 16px; color: #3964A4;
-                      border-radius:50%; box-shadow: 0px 0px 5px rgba(0,0,0,0.50);">2天
+        <div class="col col-20 col-center time-off-item-right">
+          <div class="time-circle paid-holiday">2天
           </div>
+          <div class="approve-status approved">已审批</div>
         </div>
-
       </div>
 
-      <div class="row" style="margin-left: 1.3%;margin-bottom: 15px;padding: 0px;
-                              height: 109px;width: 97.4%;border-top: 1px solid #F8F8F8;
-                              border-radius: 5px;box-shadow: 0px 3px 5px rgba(0,0,0,0.18);">
-        <img class="col col-33"
-             style="padding:0px; border-radius:5px 0 0 5px;
-                    border-left: 3px solid #417505;
-                    width: 116px;height: 109px;"
-             src='build/img/application/time-off-manage/sick-leave@3x.png'>
-
-        <div class="col" style="margin-left: 2%">
-          <div style="font-size: 14px;padding-top: 5px;padding-bottom: 10px;color: #417505">带薪病假</div>
-          <div style="font-size: 14px;color: #9B9B9B">2016-05-04 8:30</div>
-          <div style="font-size: 14px;color: #9B9B9B">至</div>
-          <div style="font-size: 14px;color: #9B9B9B">2016-05-05 17:50</div>
-        </div>
-
-        <div class="col col-20 col-center" style="text-align: center;">
-          <div style="height: 46px; width: 46px; line-height: 46px; display: inline-block; font-size: 16px; color: #417505;
-                      border-radius:50%; box-shadow: 0px 0px 5px rgba(0,0,0,0.50);">2天
-          </div>
-        </div>
-
-      </div>
     </div>
   </ion-content>
 </ion-view>
