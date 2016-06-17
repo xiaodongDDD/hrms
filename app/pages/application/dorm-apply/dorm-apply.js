@@ -114,7 +114,9 @@ angular.module('applicationModule')
           roomType:info.room_type,//房间类型
           bedNumber:info.bed_number,//床位
           applyId:info.apply_id,//申请id
-          projectId:info.project_id//项目id
+          projectId:info.project_id,//项目id
+          checkinDays:info.checkin_days,//入住天数
+          leftDays:info.left_days//剩余天数
         };
         if (param.status == '已入住' || param.status == '已退房') {
           $state.go("tab.dorm-apply-detail-b",{

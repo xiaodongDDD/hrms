@@ -1045,6 +1045,115 @@
     transform: scale(0.95,0.95);
     -webkit-transform: scale(0.95,0.95);
   }
+  .hrms-circle{
+    position: absolute;;
+    width: 82px;
+    height: 82px;
+  }
+  .time-off-col {
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+  }
+  .circle-wrap{
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    height: 84px;
+    width: 84px;
+  }
+  .hrms-circle .up-title{
+    position:absolute;
+    height: 20px;
+    width: 78px;
+    top: 20px;
+    font-size: 0.9375rem;
+    text-align: center;
+    color: #9B9B9B
+  }
+  .hrms-circle .center-title{
+     position:absolute;
+     height: 24px;
+     width: 78px;
+     top: 40px;
+     font-size: 1.125rem;
+     text-align: center;
+     &.dorm-apply-style{
+       color: #b95756;
+     }
+   }
+  .hrms-circle .shelter{
+    position: absolute;
+    width: 41px;
+    height: 82px;
+    top: 0px;
+    overflow: hidden;
+  }
+
+  .hrms-circle .left{
+    left: 0px;
+  }
+
+  .hrms-circle .right{
+    right: 0px;
+  }
+
+  .hrms-circle .circle{
+    position: absolute;
+    width: 82px;
+    height: 82px;
+    top: 0px;
+    border-radius: 50%;
+    background: #ffffff;
+    border:6px solid transparent;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.50);
+  }
+
+  .hrms-circle .left-circle.dorm-apply-style-circle{
+    border-bottom:6px solid #b95756;
+    border-left:6px solid #b95756;
+    left: 0px;
+    -webkit-transform : rotate(-135deg);
+    transform : rotate(-135deg);
+  }
+  .hrms-circle .right-circle.dorm-apply-style-circle{
+    border-top:6px solid #b95756;
+    border-right:6px solid #b95756;
+    right: 0px;
+    -webkit-transform : rotate(-135deg);
+    transform : rotate(-135deg);
+  }
+  .circle-label{
+    color:#ffffff;
+    font-size: 0.75rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .circle-row{
+    padding: 0px;
+    margin: 0px;
+    height: 116px;
+    width: 100%;
+    margin-top: 18px;
+  }
+  .no-space{
+    padding: 0px;
+    margin: 0px;
+  }
+  .circle-label-row1{
+    padding: 0px;
+    margin: 0px;
+    margin-top: 8px;
+    height:15px;
+    text-align: center;
+  }
+  .circle-label-row2{
+    padding: 0px;
+    margin: 0px;
+    height: 15px;
+    text-align: center;
+    margin-top: 3px;
+  }
 }
 .dorm-apply-vacant-room{//住宿查询
   .content-style{

@@ -13,7 +13,7 @@ import java.util.zip.ZipEntry;
 
 import org.apache.cordova.CordovaWebView;
 
-import com.hand.download.R;
+import com.handchina.hrmsnew.R;
 
 import android.R.bool;
 import android.app.ProgressDialog;
@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 public class DownLoadTask extends AsyncTask<String, String, Boolean>{
     private final static int TIME_OUT = 30 * 1000;
-	
+
     private Context mContext;
     private CordovaWebView mWebView;
     private ProgressDialog mProgressDialog;
@@ -45,11 +45,11 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
 		}
 	};
 
-	public  DownLoadTask(Context context,CordovaWebView webView) 
+	public  DownLoadTask(Context context,CordovaWebView webView)
 	{
 		mContext = context;
 		mWebView = webView;
-		
+
 		mProgressDialog = new ProgressDialog(mContext);
 //		mProgressDialog.setTitle("升级文件下载");
 //		mProgressDialog.setMessage("文件下载中，请稍候...");
@@ -58,20 +58,20 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
 		mProgressDialog.setMax(100);
 		mProgressDialog.setCancelable(false);
 		mProgressDialog.show();
-		
+
 		mProgressDialog.setOnKeyListener(onKeyListener);
 		mProgressDialog.setContentView(R.layout.alterlayout);
 		mProgressBar = (MyProgressBar) mProgressDialog.findViewById(R.id.progressBar1);
 		mProgressBar.setProgress(0);
 		mPercent =(TextView)mProgressDialog.findViewById(R.id.tv_percent);
 	}
-	
-	
+
+
 	@Override
 	protected Boolean doInBackground(String... params) {
 		if(params[0] !=null){
 			String  url = params[0];
-			
+
 			try {
                 HttpURLConnection connection = null;
 				URL u = new URL(url);
@@ -81,7 +81,7 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(TIME_OUT);
                 connection.connect();
-                
+
                 int lenghtOfFile = connection.getContentLength();
                 InputStream input = new BufferedInputStream(
                 		connection.getInputStream());
@@ -98,12 +98,12 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
                 output.flush();
                 output.close();
                 input.close();
-                
+
                 mContext.deleteFile("www");
                 ZipUtil.UnZipFolder(mContext.getFileStreamPath("www.zip").toString(), mContext.getFilesDir().toString().concat("/"));
 
 
-                
+
 			} catch (MalformedURLException e) {
 
 				e.printStackTrace();
@@ -116,16 +116,16 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
 				e.printStackTrace();
 				return  false;
 			}
-			
-			
-			
-			
+
+
+
+
 		}else {
-			
+
 			return false;
 		}
-		
-		
+
+
 		return true;
 	}
     @Override
@@ -137,47 +137,47 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
         mPercentString =values[0]+"%";
         mHandler.sendEmptyMessage(100);
     }
-    
-    
+
+
 	@Override
 	protected void onPostExecute(Boolean result) {
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
-		
+
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
         	mProgressDialog.dismiss();
         }
-        
+
 		if(true){
 			mWebView.clearHistory();
 	        mWebView.loadUrlIntoView("file://".concat(mContext.getFilesDir().getPath()).concat("/www/index.html") ,false);
-	        
-	        new Handler().postDelayed(new Runnable(){    
-	            public void run() {    
+
+	        new Handler().postDelayed(new Runnable(){
+	            public void run() {
 	        		mWebView.clearHistory();
-	            }    
+	            }
 	         }, 1000);
 		}else {
-			
-			
-			
+
+
+
 		}
 
 	}
-	
-	
+
+
 	///////////////////
 	 private OnKeyListener onKeyListener = new OnKeyListener() {
 		   @Override
 	        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
 	            if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
 	            	mProgressDialog.dismiss();
-	            	
+
 	            }
 	            return false;
 	        }
 	    };
-	
-	   
+
+
 
 }

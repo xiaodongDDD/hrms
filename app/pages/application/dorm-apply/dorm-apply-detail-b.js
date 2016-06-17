@@ -43,6 +43,54 @@ angular.module('applicationModule')
       $scope.checkIn = false;//审批中状态标志位
       $scope.checkOut = false;//已拒绝状态标识位
       $scope.buttonText = '';//按钮上显示的文字
+      $scope.leftDays=$scope.applyInfo.leftDays;//剩余天数
+      $scope.totalDays=parseInt($scope.applyInfo.checkinDays);
+////////////
+//      var childDays=parseInt($scope.leftDays);//计算圆旋转角度的剩余天数
+//      var motherDays=parseInt($scope.applyInfo.checkinDays);//计算圆旋转角度的入住天数
+//      var calculation=childDays/motherDays;//分子除以分母
+//      //console.log(calculation);
+//      //JS圆环动画
+//      var leftball=document.getElementById('left_ball');//拿到左半圆DOM
+//      var rightball=document.getElementById('right_ball');//拿到右半圆DOM
+//      if(calculation<=0.5){//剩余天数大于总天数的一半
+//        leftball.style.transition="all 0.3s linear";
+//        leftball.style.webkitTransition="all 0.3s linear";
+//        rightball.style.transition="all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+//        rightball.style.webkitTransition="all 0.3s ease-out";
+//      }else if(calculation>0.5){//剩余天数不到入住天数的一半
+//        leftball.style.transition="all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+//        leftball.style.webkitTransition="all 0.3s ease-out 0.3s";
+//        rightball.style.transition="all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+//        rightball.style.webkitTransition="all 0.3s ease-in";
+//      }
+//      leftball.style.webkitTransform = "rotate(-135deg)";
+//      leftball.style.transform = "rotate(-135deg)";
+//      rightball.style.webkitTransform = "rotate(-135deg)";
+//      rightball.style.transform = "rotate(-135deg)";
+      //定时器中决定两个圆的终止角度
+      //$timeout(function(){
+      //  var angle=0;
+      //  if(calculation<=0.5){
+      //    angle=360*calculation;
+      //    angle=angle-135;
+      //    //console.log("角度："+angle);
+      //    leftball.style.webkitTransform = "rotate(-135deg)";
+      //    leftball.style.transform = "rotate(-135deg)";
+      //    rightball.style.webkitTransform = "rotate("+angle+"deg)";
+      //    rightball.style.transform = "rotate("+angle+"deg)";
+      //  }else if(calculation>0.5){
+      //    calculation=calculation-0.5;
+      //    angle=360*calculation;
+      //    angle=angle-135;
+      //    //console.log("角度："+angle);
+      //    leftball.style.webkitTransform = "rotate("+angle+"deg)";
+      //    leftball.style.transform = "rotate("+angle+"deg)";
+      //    rightball.style.webkitTransform = "rotate(45deg)";
+      //    rightball.style.transform = "rotate(45deg)";
+      //  }
+      //},500);
+
       if ($scope.applyInfo.status == '已入住') {//已入住
         $scope.checkIn = true;
         $scope.checkOut = false;
@@ -52,6 +100,7 @@ angular.module('applicationModule')
         $scope.checkOut = true;
         $scope.buttonText = '再次预定';
       }
+
       $scope.goBack = function () {//返回上一界面
         $ionicHistory.goBack();
       };
@@ -62,8 +111,8 @@ angular.module('applicationModule')
           "params": {
             p_employee_number:window.localStorage.empno,
             p_pro_id:"",
-            p_checkin_date:"20160815",
-            p_checkout_date:"20160920",
+            p_checkin_date:"2016-08-15",
+            p_checkout_date:"2016-09-20",
             p_room_number:$scope.applyInfo.roomNumber,
             p_bed_number:$scope.applyInfo.bedNumber,
             p_apply_type:$scope.applyInfo.applyType,
