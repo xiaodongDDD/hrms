@@ -47,11 +47,11 @@ $applicationColor: white !default;
       -webkit-transform: rotateY(85deg);
     }
 
-    to {
+    to { 
       transform: rotateY(75deg);
       -webkit-transform: rotateY(75deg);
-    }
-  }
+    } 
+  } 
 
   @-webkit-keyframes leave {
     from {

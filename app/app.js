@@ -17,7 +17,7 @@ angular.module('myApp', [
   'utilModule',
   'tsApproveModule',
   'HmsModule'
-]);
+]); 
 
 angular.module('myApp')
   .run(function ($ionicPlatform) {
