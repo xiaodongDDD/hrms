@@ -25,12 +25,12 @@
               <div class="circle right-circle paid-holiday"></div>
             </div>
             <span class="up-title">剩余</span>
-            <span class="center-title paid-holiday">{{timeOffRecord.timeOffHeader.paidHoliday}}天</span>
+            <span class="center-title paid-holiday">{{timeOffHeader.paidHoliday}}天</span>
           </div>
         </div>
         <div >
           <span class="bottom-title">带薪年假</span>
-          <span class="bottom-title">已用天数{{timeOffRecord.timeOffHeader.usedPaidHoliday}}天</span>
+          <span class="bottom-title">已用天数{{timeOffHeader.usedPaidHoliday}}天</span>
         </div>
       </div>
 
@@ -44,12 +44,12 @@
               <div class="circle right-circle paid-sick-leave"></div>
             </div>
             <span class="up-title">剩余</span>
-            <span class="center-title paid-sick-leave">{{timeOffRecord.timeOffHeader.paidSickLeave}}天</span>
+            <span class="center-title paid-sick-leave">{{timeOffHeader.paidSickLeave}}天</span>
           </div>
         </div>
         <div >
           <span class="bottom-title">带薪年假</span>
-          <span class="bottom-title">已用天数{{timeOffRecord.timeOffHeader.paidSickLeave}}天</span>
+          <span class="bottom-title">已用天数{{timeOffHeader.paidSickLeave}}天</span>
         </div>
       </div>
 
@@ -63,36 +63,36 @@
               <div class="circle right-circle ext-paid-holiday"></div>
             </div>
             <span class="up-title">剩余</span>
-            <span class="center-title ext-paid-holiday">{{timeOffRecord.timeOffHeader.extPaidHoliday}}天</span>
+            <span class="center-title ext-paid-holiday">{{timeOffHeader.extPaidHoliday}}天</span>
           </div>
         </div>
         <div >
           <span class="bottom-title">带薪年假</span>
-          <span class="bottom-title">已用天数{{timeOffRecord.timeOffHeader.usedExtPaidHoliday}}天</span>
+          <span class="bottom-title">已用天数{{timeOffHeader.usedExtPaidHoliday}}天</span>
         </div>
       </div>
 
     </div>
   </div>
 
-  <ion-content class="time-off-content">
+<ion-content class="time-off-content">
 
-    <div class="time-off-list-title">休假记录</div>
-    <div class="row time-off-item" ng-repeat="item in timeOffRecord.timeOffHistoryList">
+  <div class="time-off-list-title">休假记录</div>
+  <div class="row time-off-item" ng-repeat="item in timeOffHistoryList">
 
-      <img class="col col-33 time-off-item-left paid-holiday" src="{{item.holidayIcon}}"}>
+    <img class="col col-33 time-off-item-left paid-holiday" src="{{item.holidayIcon}}"}>
 
-      <div class="col time-off-item-middle">
-        <div class="item-off-item-title {{item.timeOffTypeCode}}">{{item.timeOffTypeMean}}</div>
-        <div class="item-off-item-text">{{item.datetimeFrom}}</div>
-        <div class="item-off-item-text">至</div>
-        <div class="item-off-item-text">{{item.datetimeTo}}</div>
-      </div>
-
-      <div class="col col-20 col-center time-off-item-right">
-        <div class="time-circle paid-holiday">{{item.timeLeave}}</div>
-        <div class="approve-status approved">{{item.approveStatusMeaning}}</div>
-      </div>
+    <div class="col time-off-item-middle">
+      <div class="item-off-item-title {{item.timeOffTypeCode}}">{{item.timeOffTypeMeaning}}</div>
+      <div class="item-off-item-text">{{item.datetimeFrom}}</div>
+      <div class="item-off-item-text">至</div>
+      <div class="item-off-item-text">{{item.datetimeTo}}</div>
     </div>
-  </ion-content>
+
+    <div class="col col-25 col-center time-off-item-right">
+      <div class="time-circle paid-holiday">{{item.timeLeave}}</div>
+      <div class="approve-status approved">{{item.approveStatusMeaning}}</div>
+    </div>
+  </div>
+</ion-content>
 </ion-view>
