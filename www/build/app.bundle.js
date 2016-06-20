@@ -14,6 +14,72 @@ var myInfoModule = angular.module('myInfoModule', []);
 var tsApproveModule = angular.module('tsApproveModule', []);
 
 /**
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
+ */
+angular.module('utilModule').factory('httpRequestHeader', function () {
+  var interceptor = {
+    'request': function (config) {
+      if (window.localStorage.token && window.localStorage.empno) {
+        var timestamp = new Date().getTime();
+        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
+        config.headers.timestamp = timestamp;
+        config.headers.token     = token;
+        config.headers.loginName = window.localStorage.empno;
+      }
+      return config;
+    }
+  };
+
+  return interceptor;
+});
+
+/**
+ * Created by wolf on 2016/6/13. (_wen.dai_)
+ */
+"use strict";
+//根据日期获取星期
+HmsModule.filter('weekDay', function () {
+  return function (data) {
+    if (data == "") {
+      return data;
+    } else {
+      var d = new Date(data);
+      var day = d.getDay();
+      switch (day) {
+        case  0:
+          data = data + "　" + "星期天";
+          break;
+        case  1:
+          data = data + "　" + "星期一";
+          break;
+        case  2:
+          data = data + "　" + "星期二";
+          break;
+        case  3:
+          data = data + "　" + "星期三";
+          break;
+        case  4:
+          data = data + "　" + "星期四";
+          break;
+        case  5:
+          data = data + "　" + "星期五";
+          break;
+        case  6:
+          data = data + "　" + "星期六";
+          break;
+      }
+      return data;
+    }
+  }
+});
+
+/**
  * @ngdoc directive
  * @name hideTabs
  * @module utilModule
@@ -586,72 +652,6 @@ angular.module('HmsModule')
       }
     };
   })*/
-
-/**
- * @ngdoc interceptor
- * @name httpRequestHeader
- * @module utilModule
- * @description
- * This is the http interceptor
- * @author
- * gusenlin
- */
-angular.module('utilModule').factory('httpRequestHeader', function () {
-  var interceptor = {
-    'request': function (config) {
-      if (window.localStorage.token && window.localStorage.empno) {
-        var timestamp = new Date().getTime();
-        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
-        config.headers.timestamp = timestamp;
-        config.headers.token     = token;
-        config.headers.loginName = window.localStorage.empno;
-      }
-      return config;
-    }
-  };
-
-  return interceptor;
-});
-
-/**
- * Created by wolf on 2016/6/13. (_wen.dai_)
- */
-"use strict";
-//根据日期获取星期
-HmsModule.filter('weekDay', function () {
-  return function (data) {
-    if (data == "") {
-      return data;
-    } else {
-      var d = new Date(data);
-      var day = d.getDay();
-      switch (day) {
-        case  0:
-          data = data + "　" + "星期天";
-          break;
-        case  1:
-          data = data + "　" + "星期一";
-          break;
-        case  2:
-          data = data + "　" + "星期二";
-          break;
-        case  3:
-          data = data + "　" + "星期三";
-          break;
-        case  4:
-          data = data + "　" + "星期四";
-          break;
-        case  5:
-          data = data + "　" + "星期五";
-          break;
-        case  6:
-          data = data + "　" + "星期六";
-          break;
-      }
-      return data;
-    }
-  }
-});
 
 /**
  * Created by wolf on 2016/6/12.
@@ -1748,6 +1748,54 @@ angular.module('loginModule')
 /**
  * Created by gusenlin on 16/4/24.
  */
+angular.module('messageModule')
+
+  .controller('messageCtrl', [
+    '$scope',
+    '$state',
+    '$timeout',
+    '$ionicPlatform',
+    function ($scope,
+              $state,
+              $timeout,
+              $ionicPlatform) {
+
+      $scope.messageList = [
+      ];
+
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleLightContent();
+        }
+      });
+
+      $scope.talk = function (message) {
+        console.log('$scope.talk');
+        $state.go("tab.messageDetail", {message: message});
+      };
+
+      $scope.refresh = function(){
+        $timeout(function(){
+          $scope.$broadcast("scroll.refreshComplete");
+        },2000);
+      };
+
+      console.log('messageCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('messageCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('messageCtrl.$destroy');
+      });
+
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
 angular.module('loginModule')
 
   .controller('loginCtrl', [
@@ -1884,54 +1932,6 @@ angular.module('loginModule')
           console.log('loginCtrl.$destroy');
         }
       });
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('messageModule')
-
-  .controller('messageCtrl', [
-    '$scope',
-    '$state',
-    '$timeout',
-    '$ionicPlatform',
-    function ($scope,
-              $state,
-              $timeout,
-              $ionicPlatform) {
-
-      $scope.messageList = [
-      ];
-
-      //将页面的导航bar设置成白色
-      $ionicPlatform.ready(function () {
-        if (window.StatusBar) {
-          StatusBar.styleLightContent();
-        }
-      });
-
-      $scope.talk = function (message) {
-        console.log('$scope.talk');
-        $state.go("tab.messageDetail", {message: message});
-      };
-
-      $scope.refresh = function(){
-        $timeout(function(){
-          $scope.$broadcast("scroll.refreshComplete");
-        },2000);
-      };
-
-      console.log('messageCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageCtrl.$destroy');
-      });
-
     }]);
 
 /**
@@ -2227,6 +2227,79 @@ angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$
       }
     });
   }]);
+
+/**
+ * Created by shishun on 16/5/22.
+ */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.time-off-manage', {
+          url: '/time-off-manage',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/time-off-manage/time-off-manage-list.html',
+              controller: 'TimeOffManageCtrl'
+            }
+          }
+        })
+    }]);
+
+angular.module('applicationModule')
+
+  .controller('TimeOffManageCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicHistory) {
+
+      $scope.timeOffRecord ={
+        timeOffHeader : {
+          userId                 : 2201,
+          paidHoliday            : 10,
+          paidSickLeave          : 10,
+          extPaidHoliday         : 20,
+          usedPaidHoliday        : 5,
+          usedPaidSickLeave      : 2,
+          usedExtPaidHoliday     : 0
+        },
+        timeOffHistoryList      : [
+          {
+            holidayIcon          : '',
+            timeOffTypeCode      : 'paid-holiday',
+            timeOffTypeMeaning   : '带薪年假',
+            datetimeFrom         : '2016-6-16',
+            datetimeTo           : '2016-6-18',
+            timeLeave            : 2,
+            approveStatusCode    : 'APPROVED',
+            approveStatusMeaning : 'APPROVED',
+            applyReason          : '陪老婆去迪斯尼玩',
+            reason_image         : [
+              {
+                image_url1       : '',
+                image_url2       : '',
+                image_url3       : '',
+                image_url4       : '',
+                image_url5       : '',
+                image_url6       : '',
+                image_url7       : '',
+                image_url8       : '',
+                image_url9       : '',
+              }
+            ]
+          }
+        ]
+      };
+      $scope.timeOffCreate = function(){
+
+      }
+
+    }]);
 
 /**
  * Created by LeonChan on 2016/5/31.
@@ -3101,79 +3174,6 @@ angular.module('applicationModule')
           });
         }
       };
-    }]);
-
-/**
- * Created by shishun on 16/5/22.
- */
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.time-off-manage', {
-          url: '/time-off-manage',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/time-off-manage/time-off-manage-list.html',
-              controller: 'TimeOffManageCtrl'
-            }
-          }
-        })
-    }]);
-
-angular.module('applicationModule')
-
-  .controller('TimeOffManageCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    function ($scope,
-              $state,
-              baseConfig,
-              $ionicHistory) {
-
-      $scope.timeOffRecord ={
-        timeOffHeader : {
-          userId                 : 2201,
-          paidHoliday            : 10,
-          paidSickLeave          : 10,
-          extPaidHoliday         : 20,
-          usedPaidHoliday        : 5,
-          usedPaidSickLeave      : 2,
-          usedExtPaidHoliday     : 0
-        },
-        timeOffHistoryList      : [
-          {
-            holidayIcon          : '',
-            timeOffTypeCode      : 'paid-holiday',
-            timeOffTypeMeaning   : '带薪年假',
-            datetimeFrom         : '2016-6-16',
-            datetimeTo           : '2016-6-18',
-            timeLeave            : 2,
-            approveStatusCode    : 'APPROVED',
-            approveStatusMeaning : 'APPROVED',
-            applyReason          : '陪老婆去迪斯尼玩',
-            reason_image         : [
-              {
-                image_url1       : '',
-                image_url2       : '',
-                image_url3       : '',
-                image_url4       : '',
-                image_url5       : '',
-                image_url6       : '',
-                image_url7       : '',
-                image_url8       : '',
-                image_url9       : '',
-              }
-            ]
-          }
-        ]
-      };
-      $scope.timeOffCreate = function(){
-
-      }
-
     }]);
 
 /**
