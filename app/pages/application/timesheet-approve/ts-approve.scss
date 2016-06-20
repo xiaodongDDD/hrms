@@ -1,0 +1,564 @@
+//审批列表背景
+.ts-list-bg {
+  border-color: #b2b2b2;
+  color: $color-base;
+  background-image: url("./../img/application/timesheet-approve/list/BG@3x.png");
+  background-size: cover;
+  padding-top: 100px;
+  width: 100%;
+  height: 100%;
+}
+
+//火箭图标
+.rocket-icon {
+  width: 42px;
+  height: 42px;
+  position: absolute;
+  z-index: 100;
+  top: 68%;
+  right: 2%;
+  background-image: url("./../img/application/timesheet-approve/list/rocketTop@3x.png");
+  background-size: cover;
+}
+
+@media screen and (max-width: 320px) and (min-width: 300px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #7caed5);
+    background: linear-gradient(top, #17468F, #3D7BC4, #7caed5); /* 标准的语法 */
+  }
+}
+
+@media screen and (max-width: 350px) and (min-width: 321px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #7aadd5);
+    background: linear-gradient(top, #17468F, #3D7BC4, #7aadd5); /* 标准的语法 */
+  }
+}
+
+@media screen and (max-width: 389px) and (min-width: 351px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
+    background: linear-gradient(top, #17468F, #3D7BC4, #6EA5D2); /* 标准的语法 */
+  }
+}
+
+@media screen and (max-width: 401px) and (min-width: 390px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #65a1cf);
+    background: linear-gradient(top, #17468F, #3D7BC4, #65a1cf); /* 标准的语法 */
+  }
+}
+@media screen and (min-width: 402px) {
+  .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #5f9dcd);
+    background: linear-gradient(top, #17468F, #3D7BC4, #5f9dcd); /* 标准的语法 */
+  }
+}
+.custom-head {
+  position: fixed;
+  z-index: 100;
+  height: 100px;
+  width: 100%;
+  .custom-first-head {
+    height: 44px;
+    .back-button {
+      font-size: 2*$font-size;
+      color: $color-base;
+      min-height: 35px;
+      margin-left: -35px;
+      width: 100px;
+    }
+    .back-text {
+      font-size: $font-size-big;
+      position: fixed;
+      padding-left: 5px;
+      margin-top: -1px;
+    }
+    .action-button {
+      right: 5px;
+      position: absolute;
+      color: $color-base;
+      min-height: 35px;
+      font-size: 16/17*$font-size-big;
+    }
+  }
+  .custom-second-head {
+    height: 56px;
+    .bg-input {
+      background-color: $color-base;
+      margin-top: 1.2%;
+      margin-left: 13.3%;
+      width: 73.4%;
+      height: 70%;
+      border-radius: 20px;
+      .calendar-icon {
+        background-image: url("./../img/application/timesheet-approve/list/calender@3x.png");
+        @include image-background(no-repeat, 27px 27px, 15px 0px);
+        padding-left: 45px;
+        min-height: 35px;
+      }
+      .calendar-end-date {
+        color: #F99D32;
+        font-size: $font-size-small;
+        padding-top: 6px;
+        width: 100%;
+      }
+    }
+    .connect-block {
+      background-image: url("./../img/application/timesheet-approve/list/Rectangle-2@3x.png");
+      background-repeat: no-repeat;
+      background-size: 25px 15px;
+      margin-left: 46.6%;
+      margin-top: -1px;
+      height: 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 320px) and (min-width: 300px) {
+  .ts-approve-calendar-text {
+    color: #26579E;
+    font-size: $font-size-small;
+    padding-right: 4%;
+  }
+}
+
+@media screen and (max-width: 390px) and (min-width: 321px) {
+  .ts-approve-calendar-text {
+    color: #26579E;
+    font-size: $font-size-small;
+    padding-right: 15%;
+  }
+}
+
+@media screen and (min-width: 391px) {
+  .ts-approve-calendar-text {
+    color: #26579E;
+    font-size: $font-size-small;
+    padding-right: 27%;
+  }
+}
+
+.ts-list-title {
+  font-size: $font-size-big;
+  text-align: center;
+  color: $color-base;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  margin-top: -27px;
+}
+
+/*这个是条目选择时候-选中和不选中图标的处理*/
+@mixin ts-select-action($left:4.5%,$marginTop:-48px) {
+  background-repeat: no-repeat;
+  background-size: 14px 14px;
+  position: absolute;
+  left: $left;
+  width: 14px;
+  height: 14px;
+  margin-top: $marginTop;
+}
+
+//列表
+.ts-approve-list-item {
+  margin-bottom: 5px;
+  padding-left: 10px;
+  min-height: 101px;
+  width: 92%;
+  margin-left: 4%;
+  background-color: $color-base;
+  border-radius: 0 0 30px 0;
+  border: none;
+  box-shadow: 0px 2px 3px rgba(155, 155, 155, 0.23);
+  .first-content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: $font-size-small;
+    color: $color-text-key;
+    padding-top: 10px;
+    .name {
+      font-size: $font-size-big;
+    }
+    .job-number {
+      padding-left: 15px;
+    }
+    .city {
+      padding-left: 20px;
+    }
+    .fly-back {
+      padding-left: 30px;
+    }
+    .fly-icon {
+      background-image: url("./../img/application/timesheet-approve/list/flyback@3x.png");
+      background-repeat: no-repeat;
+      background-size: 15px 15px;
+      margin-left: 10px;
+      width: 20px;
+      height: 15px;
+    }
+    .fly-number {
+      font-size: $font-size;
+      color: #d2d2d2;
+    }
+  }
+  .second-content {
+    font-size: $font-size-small;
+    color: $color-text-main;
+    padding-top: 10px;
+    .name {
+      color: $color-text-assistant;
+      width: 13%;
+    }
+    .number {
+      padding-left: 5px;
+    }
+    .number-icon {
+      background-image: url("./../img/application/timesheet-approve/list/attention-s@3x.png");
+      @include image-background(no-repeat, 14px 14px, 0 2px);
+      margin-left: 10%;
+      width: 40px;
+      height: 40px;
+      position: absolute
+    }
+    .number-icon.activated {
+      opacity: 0.6;
+      transform: scale(1.1, 1.1);
+      -webkit-transform: scale(1.1, 1.1);
+    }
+  }
+
+  .arrow-item {
+    height: 21px;
+    width: 21px;
+    background-image: url("./../img/application/timesheet-approve/list/BackArrow-1@3x.png");
+    background-size: cover;
+    position: absolute;
+    right: 10%;
+    margin-top: -21px
+  }
+  .select-list-ts {
+    background-image: url("./../img/application/timesheet-approve/detail/selected@3x.png");
+    @include ts-select-action(7.5%, -23px);
+  }
+  .un-select-list-ts {
+    background-image: url("./../img/application/timesheet-approve/detail/Oval@3x.png");
+    @include ts-select-action(7.5%, -23px);
+  }
+}
+
+.ts-approve-list-item.activated {
+  opacity: 0.6;
+}
+
+.ts-approve-list-item.ng-enter {
+  -webkit-animation: zoomInUp 0.5s;
+  animation: zoomInUp .5s;
+}
+
+.ts-approve-list-item.ng-enter-stagger {
+  -webkit-animation-delay: 150ms;
+  animation-delay: 150ms;
+  -webkit-animation-duration: 0ms;
+  animation-duration: 0ms;
+}
+
+//list page
+.foot-bar {
+  height: 50px;
+  bottom: 49px;
+  background-color: $color-base;
+  .buttons {
+    position: absolute;
+    right: 6%;
+    .filter-icon {
+      background-image: url("./../img/application/timesheet-approve/list/screen@3x.png");
+      @include image-background(no-repeat, 26px 26px, 15px 0px);
+      margin-left: 5px;
+      padding-left: 50px;
+      min-height: 35px;
+    }
+    .filter-text {
+      @include position-adjust(26px, 18%);
+    }
+    .time-icon {
+      background-image: url("./../img/application/timesheet-approve/list/reorder@3x.png");
+      @include image-background(no-repeat, 26px 26px, 15px 0px);
+      margin-left: 5px;
+      padding-left: 50px;
+      min-height: 35px;
+    }
+    .time-text {
+      @include position-adjust(26px, 8%);
+    }
+  }
+}
+
+//列表的modal-筛选
+.ts-filter-modal {
+  color: $color-text-main;
+  font-size: 16/17*$font-size-big;
+  .modal-height {
+    height: 40px !important;
+  }
+  .modal-button-margin {
+    margin-top: 0px !important;
+  }
+  &.modal {
+    display: block;
+    position: absolute;
+    top: 34%;
+    z-index: 10;
+    overflow: hidden;
+    width: 100%;
+    background-color: #fafafa;
+    -webkit-border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
+  }
+}
+
+.ts-filter-input {
+  height: 45px;
+  .filter-text {
+    width: 28.3%;
+    text-align: left;
+    padding-left: 4%;
+    margin-top: 5px;
+  }
+  .filter-input {
+    height: 25px;
+    border-radius: 40px;
+    border: 1px solid rgba(151, 151, 151, 0.28);
+    width: 57.6%;
+    font-size: $font-size-small;
+    background-color: $color-base;
+    background-image: url('./../img/application/timesheet-approve/list/search.png');
+    @include image-background(no-repeat, 9px 7px, 13px 14px);
+    padding-left: 28px;
+  }
+}
+
+.filter-items-row {
+  padding: 0px;
+  padding-left: 1%;
+  margin: 0px;
+  height: 100%;
+  .select-items {
+    width: 28.3%;
+    text-align: left;
+    padding-left: 4%;
+    background-color: #fafafa;
+    .project-name {
+      background-color: $color-base;
+      color: #4A4A4A;
+      margin-left: -20%;
+      padding-left: 20%;
+      height: 67px;
+      padding-top: 24px;
+    }
+    .person-select {
+      background-color: #fafafa;
+      height: 67px;
+      padding-top: 24px;
+      margin-left: -20%;
+      padding-left: 20%;
+      border-bottom: 2px solid rgba(210, 210, 210, 0.5);
+    }
+    .active-select {
+      background-color: $color-base;
+      color: #4A4A4A;
+    }
+    .active-off {
+      background-color: #fafafa;
+      color: $color-text-main;
+    }
+  }
+  .items-bg {
+    background-color: $color-base;
+    width: 72%;
+    overflow-y: hidden;
+    height: 65%;
+    .items-detail {
+      border-bottom: 1px solid #d2d2d2;
+      min-height: 40px;
+      padding-top: 10px;
+      margin-left: 10px;
+    }
+    .select-item-color {
+      color: #26579E;
+    }
+  }
+}
+
+.ts-end-date-modal {
+  .ts-end-date-item {
+    color: #26579E;
+  }
+}
+
+.ae-detail-head {
+  height: 92px;
+  width: 100%;
+  background-color: #f8f8f8;
+  margin-top: 44px;
+  padding-top: 12px;
+  z-index: 100;
+  position: fixed;
+  .ae-detail-head-content {
+    background-color: $color-base;
+    height: 64px;
+    border-radius: 0 0 30px 0;
+    color: $color-text-assistant;
+    font-size: $font-size-small;
+    padding-left: 15px;
+    box-shadow: 0 2px 4px rgba(155, 155, 155, 0.23);
+    .content-text {
+      padding-top: 10px;
+    }
+  }
+}
+
+.ts-ae-detail-item {
+  background-color: white;
+  color: $color-text-main;
+  font-size: $font-size-small;
+  .ae-items-head {
+    height: 30px;
+    color: #26579E;
+    margin-top: 92px;
+    font-size: 16/17*$font-size-big;
+    .item-width {
+      width: 17%;
+      text-align: center;
+    }
+  }
+
+  .liner-ts-ae-detail {
+    height: 2px;
+    width: 100%;
+    margin-left: 4%;
+    background: -webkit-linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF); /* Safari 5.1 - 6.0 */
+    background: linear-gradient(left, #64ACFF, #538ACA, #3D7BC4, #64ACFF); /* 标准的语法 */
+  }
+
+  .ts-approve-detail-item {
+    height: 81px;
+    width: 96%;
+    margin-left: -4%;
+    .ae-item-head {
+      padding-top: 20px;
+      margin-left: 1%;
+      color: $color-text-main;
+      .item-width {
+        width: 17.5%;
+        padding-left: 5px;
+        text-align: center;
+      }
+      .descrip-text {
+        width: 35%;
+        position: absolute;
+        color: $color-text-assistant;
+      }
+    }
+    .item-date {
+      padding-left: 10%;
+      margin-top: 10px;
+    }
+    .item-bottom-liner {
+      border-bottom: 1px solid #d2d2d2;
+      margin-left: 8%;
+      margin-top: 6px;
+      width: 110%;
+    }
+  }
+
+  .select-icon {
+    background-image: url("./../img/application/timesheet-approve/detail/selected@3x.png");
+    @include ts-select-action();
+  }
+  .un-select-icon {
+    background-image: url("./../img/application/timesheet-approve/detail/Oval@3x.png");
+    @include ts-select-action();
+  }
+  .no-icon {
+    background-image: url("./../img/application/timesheet-approve/detail/no@3x.png");
+    @include image-background(no-repeat, 11px 11px, 53% 3px);
+  }
+  .yes-icon {
+    background-image: url("./../img/application/timesheet-approve/detail/yes@3x.png");
+    @include image-background(no-repeat, 15px 11px, 46% 3px);
+  }
+}
+
+.ts-button-left {
+  font-size: 16/17*$font-size-big !important;
+  color: #26579E !important;
+  left: 15px;
+  position: fixed;
+}
+
+.ts-button-center {
+  font-size: 16/17*$font-size-big !important;
+  color: #ECAF38 !important;
+  margin-left: 51%;
+}
+
+.ts-button-right {
+  font-size: 16/17*$font-size-big !important;
+  color: #B95756 !important;
+  right: 15px;
+  position: fixed;
+}
+
+//改变modal的backdrop的z-index值 from 11 to 10
+.modal-backdrop, .modal-backdrop-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.18);
+}
+
+.warn-attention-icon {
+  background-image: url("./../img/application/timesheet-approve/list/attention-s@3x.png");
+  @include image-background(no-repeat, 20px 20px, 10% 0px);
+  text-align: center;
+  height: 20px;
+  color: #B95756;
+  padding-top: 1px;
+}
+
+.warn-cancel-icon {
+  background-image: url("./../img/application/timesheet-approve/list/cancel@3x.png");
+  @include image-background(no-repeat, 24px 24px, center);
+  text-align: center;
+  height: 24px;
+}
+
+//自定义popup的样式
+.popup-container {
+  .popup {
+    width: 64%;
+    height: 12.1%;
+    border-radius: 5px;
+    margin-bottom: 80px;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  .popup-head {
+    padding: 0;
+    border: none;
+    text-align: center;
+  }
+  .popup-body {
+    padding: 10px;
+    overflow: hidden;
+  }
+  .popup-buttons {
+    padding: 0px;
+    min-height: 44px;
+  }
+}
