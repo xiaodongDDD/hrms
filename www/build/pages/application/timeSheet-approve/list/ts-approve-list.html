@@ -7,7 +7,7 @@
         </button>
         <span class="calendar-end-date">
           <span class="ts-approve-calendar-text">日历</span>
-          <span ng-click="selectEndDate()">截止日期: {{endApproveDate}}</span>
+          <span ng-click="selectEndDate($event)" ng-cloak>截止日期: {{endApproveDate}}</span>
         </span>
       </div>
       <div id="connect-block" class="connect-block" ng-show="showConnectBlock&&listInfoArray.listArray.length != 0">
@@ -65,6 +65,15 @@
     pass-through="passThroughListItem()"
     refuse="refuseListItem()"
   </footer-select>
-
 </ion-view>
+<script id="endDate.html" type="text/ng-template">
+  <ion-popover-view class="light-bg end-date-pop-container transform-popover">
+    <div id="popover-date{{$index}}" class="padding row end-date-container" ng-repeat="i in endDateList">
+      <span class="col col-center end-date-info"
+            ng-click="selectEndDateItem(i.dateCode,i.dateValue,$index)"
+            ng-class="{'ts-end-date-item':selectEndItem[$index]}"
+            ng-bind="i.dateValue"></span>
+    </div>
+  </ion-popover-view>
+</script>
 

@@ -31,7 +31,6 @@ HmsModule.directive("footerSelect", function () {
   }
 });
 
-
 /**
  * 自定义head头
  */

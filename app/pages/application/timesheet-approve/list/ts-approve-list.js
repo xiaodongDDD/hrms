@@ -32,6 +32,7 @@ angular.module('tsApproveModule')
     'hmsPopup',
     'hmsHttp',
     'ApproveDetailService',
+    '$ionicPopover',
     function ($scope,
               $state,
               baseConfig,
@@ -42,14 +43,15 @@ angular.module('tsApproveModule')
               TsApproveListService,
               hmsPopup,
               hmsHttp,
-              ApproveDetailService) {
+              ApproveDetailService,
+              $ionicPopover) {
       /**
        * initial var section
        */
       {
-        if(ionic.Platform.isIOS()) {
-          angular.element('.custom-head').css('paddingTop','10px');
-          angular.element('.ts-list-bg').css('paddingTop','110px');
+        if (ionic.Platform.isIOS()) {
+          angular.element('.custom-head').css('paddingTop', '10px');
+          angular.element('.ts-list-bg').css('paddingTop', '110px');
         }
         $scope.showProjectName = true; //默认显示项目名称
         $scope.showRocket = false; //默认不显示小火箭image
@@ -77,9 +79,9 @@ angular.module('tsApproveModule')
         }];
         var position = ""; //记录滚动条的位置
         var selectItem = []; //初始化点击全部条目为false
-        var tsLsUrl = baseConfig.businessPath + "/wfl_timesheet_view/get_timesheet_list";
-        var tsProjectPersonListUrl = baseConfig.businessPath + "/wfl_timesheet_view/get_project_person_list";
-        var tsActionUrl = baseConfig.businessPath + "/wfl_timesheet_view/timesheet_approve";
+        var tsLsUrl = baseConfig.businessPath + "/api_timesheet/get_timesheet_list";
+        var tsProjectPersonListUrl = baseConfig.businessPath + "/api_timesheet/get_project_person_list";
+        var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
         var tsListParams = { //获取列表的参数
           "params": {
             "p_employee_number": window.localStorage.empno, //参考angularjs的localStorange--
@@ -185,9 +187,21 @@ angular.module('tsApproveModule')
       }).then(function (modal) {
         $scope.dateModal = modal;
       });
-      $scope.selectEndDate = function () { //显示截止日期列表界面
+
+      $ionicPopover.fromTemplateUrl("endDate.html", {
+        scope: $scope
+      }).then(function (popover) {
+        $scope.endDatePopover = popover;
+      });
+
+      $scope.selectEndDate = function ($event) { //显示截止日期列表界面
         tsListParams.params.p_end_date = $scope.endApproveDate;
-        $scope.dateModal.show();
+        if (ionic.Platform.isIOS()) {
+          $scope.endDatePopover.show($event);
+          angular.element('#popover-date2').css('borderBottom', '0px');
+        } else {
+          $scope.dateModal.show();
+        }
       };
       $scope.selectEndDateItem = function (newEndDateCode, newEndDateValue, newIndex) { //选择不同的截止日期
         $scope.selectEndItem = [];
@@ -196,7 +210,11 @@ angular.module('tsApproveModule')
         tsListParams.params.p_page = 1;
         tsListParams.params.p_end_date = newEndDateCode;
         $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
-        $scope.dateModal.hide();
+        if (ionic.Platform.isIOS()) {
+          $scope.endDatePopover.hide();
+        } else {
+          $scope.dateModal.hide();
+        }
       };
 
       $scope.cancelDateModal = function () { //取消date modal
@@ -402,12 +420,12 @@ angular.module('tsApproveModule')
       $scope.selectScreening = function (selectParam) {
         if (selectParam == 'projectName') {
           $scope.showProjectName = true;
-          angular.element('#project-name').css({'backgroundColor':'white','color':'#4A4A4A'});
-          angular.element('#person-select').css({'backgroundColor':'#fafafa','color':'#9b9b9b'});
+          angular.element('#project-name').css({'backgroundColor': 'white', 'color': '#4A4A4A'});
+          angular.element('#person-select').css({'backgroundColor': '#fafafa', 'color': '#9b9b9b'});
         } else if (selectParam == 'personSelect') {
           $scope.showProjectName = false;
-          angular.element('#person-select').css({'backgroundColor':'white','color':'#4A4A4A'});
-          angular.element('#project-name').css({'backgroundColor':'#fafafa','color':'#9b9b9b'});
+          angular.element('#person-select').css({'backgroundColor': 'white', 'color': '#4A4A4A'});
+          angular.element('#project-name').css({'backgroundColor': '#fafafa', 'color': '#9b9b9b'});
         }
       };
 
