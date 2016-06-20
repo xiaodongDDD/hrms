@@ -26,6 +26,7 @@ angular.module('myApp')
 angular.module('applicationModule')
   .controller('TimeSheetWriteCtrl', [
     '$scope',
+    '$rootScope',
     '$state',
     '$stateParams',
     '$ionicModal',
@@ -35,6 +36,7 @@ angular.module('applicationModule')
     'TimeSheetService',
     'hmsPopup',
     function ($scope,
+              $rootScope,
               $state,
               $stateParams,
               $ionicModal,
@@ -325,7 +327,7 @@ angular.module('applicationModule')
           hmsPopup.hideLoading();
           if (result.status == 'S') {
             hmsPopup.showPopup('提交Timesheet成功');
-            $scope.$broadcast('refreshTimesheet', 'parent');
+            $rootScope.$broadcast('refreshTimesheet', 'parent');
             $ionicHistory.goBack();
           } else {
             hmsPopup.showPopup('提交Timesheet错误,错误原因为');

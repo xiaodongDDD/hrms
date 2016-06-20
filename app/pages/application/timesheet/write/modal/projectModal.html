@@ -11,7 +11,7 @@
   </ion-header-bar>
   <ion-content class="project-modal">
     <ion-list>
-      <ion-item ng-repeat="project in projectList">
+      <ion-item ng-repeat="project in projectList" ng-click="selectProject(project)">
         {{project.project_name}}
       </ion-item>
     </ion-list>

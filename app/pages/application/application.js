@@ -137,6 +137,29 @@ angular.module('applicationModule')
               imageUrl: "build/img/application/flightBooking@3x.png",
               destUrl: "",
             }]
+        },
+        {
+          list: [
+            {
+              appName: "在线培训",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "知识门户",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "新闻",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "分享社区",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            }]
         }
       ];
 

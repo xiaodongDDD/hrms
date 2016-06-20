@@ -24,7 +24,6 @@ angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$
       if (statename === 'tab.message' || statename === 'tab.application' ||
         statename === 'tab.contact' || statename === 'tab.myInfo') {
         $scope.hideTabs = false;
-        $scope.$apply();
       }
     });
   }]);

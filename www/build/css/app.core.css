@@ -390,8 +390,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -416,8 +416,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -2763,6 +2763,7 @@ Copyright (c) 2015 Daniel Eden
           color: #25569D; }
         .time-off-content .time-off-item .time-off-item-right .approve-status.rejected {
           color: #F99D32; }
+<<<<<<< HEAD
 
 .ts-list-bg {
   border-color: #b2b2b2;
@@ -2924,6 +2925,8 @@ Copyright (c) 2015 Daniel Eden
   .popover {
     width: 360px;
     margin-left: -180px; } }
+=======
+>>>>>>> senlin
 
 .ts-end-date-modal .ts-end-date-item {
   color: #17468F; }
@@ -3404,6 +3407,18 @@ Copyright (c) 2015 Daniel Eden
   right: 15px;
   position: fixed; }
 
+<<<<<<< HEAD
+=======
+/*.modal-backdrop, .modal-backdrop-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.18);
+}*/
+>>>>>>> senlin
 .warn-attention-icon {
   background-image: url("./../img/application/timesheet-approve/list/attention-s@3x.png");
   background-repeat: no-repeat;
@@ -4915,6 +4930,195 @@ Copyright (c) 2015 Daniel Eden
   width: 100%;
   background: #4cd964; }
 
+.workflow-detail {
+  background: url("../img/workflow/BG@3x.png");
+  background-size: cover;
+  background-repeat: no-repeat; }
+  .workflow-detail .hms-workflow-history {
+    width: 100%;
+    height: 136px;
+    position: relative;
+    padding-top: 10px; }
+    .workflow-detail .hms-workflow-history .history-slide {
+      z-index: 99;
+      position: absolute;
+      left: -15px;
+      top: 17px;
+      padding-right: 15px;
+      width: 42px;
+      height: 82px;
+      line-height: 82px;
+      text-align: right;
+      background: white;
+      border-top-right-radius: 41px;
+      border-bottom-right-radius: 41px;
+      opacity: 0.6;
+      color: #F5A623;
+      font-size: 24px;
+      font-weight: bold; }
+    .workflow-detail .hms-workflow-history .history-content {
+      padding-left: 15px;
+      padding-right: 15px;
+      height: 136px;
+      color: white; }
+      .workflow-detail .hms-workflow-history .history-content ion-scroll {
+        width: 720px; }
+      .workflow-detail .hms-workflow-history .history-content .history-item {
+        float: left;
+        width: 100px;
+        height: 136px;
+        text-align: center; }
+        .workflow-detail .hms-workflow-history .history-content .history-item .history-item-time-line {
+          height: 24px;
+          font-size: 10px;
+          line-height: 12px;
+          width: 60px;
+          margin-left: auto;
+          margin-right: auto; }
+        .workflow-detail .hms-workflow-history .history-content .history-item .history-item-node-icon {
+          height: 29px;
+          width: 29px;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 12px;
+          margin-bottom: 12px; }
+          .workflow-detail .hms-workflow-history .history-content .history-item .history-item-node-icon img {
+            height: 29px;
+            width: 29px; }
+        .workflow-detail .hms-workflow-history .history-content .history-item .history-item-node-name {
+          height: 14px;
+          font-size: 12px; }
+        .workflow-detail .hms-workflow-history .history-content .history-item .history-item-employee {
+          height: 14px;
+          font-size: 12px; }
+  .workflow-detail .hms-workflow-array {
+    margin: 5px;
+    background: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px; }
+    .workflow-detail .hms-workflow-array .hms-singal-array-header {
+      height: 43px;
+      color: #205098; }
+      .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-name {
+        float: left;
+        height: 43px;
+        font-size: 16px;
+        line-height: 43px;
+        background: #ECF0F1;
+        padding-left: 14px;
+        padding-right: 14px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px; }
+      .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-operation {
+        float: right;
+        height: 43px;
+        width: 35px;
+        font-size: 20px;
+        line-height: 43px; }
+    .workflow-detail .hms-workflow-array .hms-singal-array-content {
+      padding-left: 12px; }
+      .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-line {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        line-height: 18px;
+        width: 100%;
+        border-bottom: 1px solid #D2D2D2;
+        padding-right: 15px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-line .hms-singal-array-key {
+          float: left;
+          width: 40%;
+          color: #4A4A4A;
+          font-size: 16px; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-line .hms-singal-array-value {
+          float: left;
+          width: 60%;
+          text-align: right;
+          color: #9B9B9B;
+          font-size: 16px; }
+  .workflow-detail .hms-workflow-submit {
+    width: 100%;
+    height: 44px;
+    position: absolute;
+    bottom: 0;
+    background: white; }
+    .workflow-detail .hms-workflow-submit .hms-workflow-reject {
+      width: 25%;
+      height: 44px;
+      line-height: 44px;
+      padding-left: 20px;
+      float: left;
+      color: #B95756;
+      font-size: 16px; }
+    .workflow-detail .hms-workflow-submit .hms-workflow-back {
+      width: 25%;
+      float: left;
+      height: 44px;
+      text-align: right;
+      color: #4C5665;
+      line-height: 44px;
+      padding-right: 20px;
+      font-size: 16px; }
+    .workflow-detail .hms-workflow-submit .hms-workflow-other {
+      width: 50%;
+      height: 84px;
+      margin-top: -30px;
+      float: left; }
+      .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function {
+        border-radius: 20px;
+        background: white;
+        box-shadow: 0px 0px 8px #cbcbcb;
+        width: 147px;
+        height: 44px;
+        margin-left: auto;
+        margin-right: auto; }
+        .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-approve {
+          width: 50%;
+          height: 44px;
+          padding: 8px;
+          padding-left: 15px;
+          padding-right: 15px;
+          float: left; }
+          .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-approve img {
+            width: 27px;
+            height: 27px; }
+        .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-transmit {
+          float: left;
+          width: 50%;
+          height: 44px;
+          padding: 8px;
+          padding-left: 15px;
+          padding-right: 15px; }
+          .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-transmit img {
+            float: right;
+            width: 27px;
+            height: 27px; }
+      .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-other-alias {
+        height: 40px;
+        width: 147px;
+        height: 30px;
+        line-height: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 18px;
+        padding-right: 18px; }
+        .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-other-alias .hms-work-approve-alias {
+          float: left;
+          width: 50%;
+          height: 30px;
+          text-align: left; }
+        .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-other-alias .hms-work-transmit-alias {
+          float: right;
+          width: 50%;
+          height: 30px;
+          text-align: right; }
+
 .workflow {
   background: #fafafa; }
   .workflow .has-daiwen-bar {
@@ -5624,74 +5828,79 @@ Copyright (c) 2015 Daniel Eden
   border: none;
   border-radius: 10px; }
 
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active,
+ion-tabs.tabs-color-active-positive .tab-item.active,
+ion-tabs.tabs-color-active-positive .tab-item.activated {
+  color: #1D4D95; }
+
 .tabs-icon-top .message-on {
   background-image: url("../img/tabs/message-f@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .message-off {
   background-image: url("../img/tabs/message-G@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .tab-item.activated .message-off {
   background-image: url("../img/tabs/message-f@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .tab-item.activated .application-off {
   background-image: url("../img/tabs/application-F@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .tab-item.activated .contact-off {
   background-image: url("../img/tabs/contact-B@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .tab-item.activated .mine-off {
   background-image: url("../img/tabs/mine-B@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .application-on {
   background-image: url("../img/tabs/application-F@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .application-off {
   background-image: url("../img/tabs/application-G@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .contact-on {
   background-image: url("../img/tabs/contact-B@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .contact-off {
   background-image: url("../img/tabs/contact-G@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .mine-on {
   background-image: url("../img/tabs/mine-B@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .mine-off {
   background-image: url("../img/tabs/mine-G@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }

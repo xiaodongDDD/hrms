@@ -48,16 +48,19 @@ angular.module('applicationModule')
         console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
       }
 
-      $scope.templateOne = {};
+      $scope.historyList = [];
+      $scope.singalArrayList = [];
+      $scope.multipleArrayList = [];
 
+      //var
       var success = function (result) {
         if(baseConfig.debug){
           console.log('getWorkflowDetail.result ' + angular.toJson(result));
         }
         if(result.status == 'S'){
-          if(result.workflow_data && result.workflow_data.details[0] && result.workflow_data.details[0].detail){
-            $scope.templateOne = result.workflow_data.details[0].detail;
-          }
+          $scope.historyList = result.history;
+          $scope.singalArrayList = result.workflow_data.details;
+          $scope.multipleArrayList = result.workflow_data.lines;
         }
       }
       WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
