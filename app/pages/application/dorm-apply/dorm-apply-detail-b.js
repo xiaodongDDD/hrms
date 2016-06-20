@@ -106,7 +106,7 @@ angular.module('applicationModule')
       };
 
       $scope.renewContract=function(){//续住
-        var url=baseConfig.businessPath+"/wfl_apply_room/overstay_apply_room";
+        var url=baseConfig.businessPath+"/api_apply_room/overstay_apply_room";
         var param={
           "params": {
             p_employee_number:window.localStorage.empno,

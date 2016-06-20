@@ -16,6 +16,9 @@
         "cordova-plugin-crosswalk-webview": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
+        "cordova-plugin-datepicker": {
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
+        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },

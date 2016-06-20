@@ -28,22 +28,24 @@
     <!--入驻日期与结束日期-->
     <div class="row data-row">
       <div class="col col-40 col-start">
+       <ion-item class="calendar-item" ng-click="chooseStartDate()">
        <div class="row thin-row-or-col">
          <label class="start-date-label">入住日期</label>
        </div>
        <div class="row month-row">
          <div class="col thin-row-or-col">
            <div class="row thin-row-or-col">
-            <label class="month-label">05月</label>
+            <label class="month-label">{{startDate.month}}月</label>
            </div>
            <div class="row thin-row-or-col">
-             <label class="weekday-label">周四</label>
+             <label class="weekday-label">{{startDate.weekday}}</label>
            </div>
          </div>
          <div class="col thin-row-or-col">
-           <label class="day-label"><strong>26</strong></label>
+           <label class="day-label"><strong>{{startDate.day}}</strong></label>
          </div>
        </div>
+      </ion-item>
       </div>
       <div class="col col-20 thin-row-or-col">
        <div class="row center-row">
@@ -51,7 +53,7 @@
        </div>
        <div class="row center-row">
          <button class="button button-block circle-button" ng-click="chooseDays()">
-           <p ng-show="showNumButton">1天</p>
+           <p ng-show="showNumButton">天数</p>
            <img ng-hide="showNumButton" class="fork-pic" src="build/img/application/dorm-apply/cancel.png"/>
          </button>
        </div>
@@ -61,33 +63,35 @@
       </div>
       <div class="col col-40 col-start" ng-show="showNumButton">
         <!--日期选择-->
+        <ion-item class="calendar-item" ng-click="chooseEndDate()">
         <div class="row thin-row-or-col">
           <label class="start-date-label">结束日期</label>
         </div>
         <div class="row month-row">
           <div class="col thin-row-or-col">
             <div class="row thin-row-or-col">
-              <label class="month-label">05月</label>
+              <label class="month-label">{{endDate.month}}月</label>
             </div>
             <div class="row thin-row-or-col">
-              <label class="weekday-label">周四</label>
+              <label class="weekday-label">{{endDate.weekday}}</label>
             </div>
           </div>
           <div class="col thin-row-or-col">
-            <label class="day-label"><strong>26</strong></label>
+            <label class="day-label"><strong>{{endDate.day}}</strong></label>
           </div>
         </div>
+       </ion-item>
       </div>
       <div class="col col-40 col-end" ng-hide="showNumButton">
         <!--天数选择-->
         <div class="row center-row">
-          <button class="button button-block month-days-first"><strong>30天</strong></button>
+          <button class="button button-block month-days-first" ng-click="chooseLongDays(30)"><strong>30天</strong></button>
         </div>
         <div class="row center-row">
-          <button class="button button-block month-days-second"><strong>60天</strong></button>
+          <button class="button button-block month-days-second" ng-click="chooseLongDays(60)"><strong>60天</strong></button>
         </div>
         <div class="row center-row">
-          <button class="button button-block month-days-second"><strong>90天</strong></button>
+          <button class="button button-block month-days-second" ng-click="chooseLongDays(90)"><strong>90天</strong></button>
         </div>
       </div>
     </div>

@@ -25,13 +25,15 @@ angular.module('applicationModule')
     '$ionicModal',
     'hmsHttp',
     'hmsPopup',
+    '$cordovaDatePicker',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
               $ionicModal,
               hmsHttp,
-              hmsPopup) {
+              hmsPopup,
+              $cordovaDatePicker) {
       $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-apply-type.html', {//定义modal
         scope: $scope
       }).then(function (modal1) {
@@ -62,7 +64,47 @@ angular.module('applicationModule')
         floornum:"",//输入楼层号
         roomnum:""//输入房间号
       };
-      var url=baseConfig.businessPath+"/wfl_apply_room/query_project_list";
+      var todayDate = new Date();//今天日期
+      var weekday=todayDate.getDay();
+      var month=todayDate.getMonth()+1;
+      var day=todayDate.getDate();
+      $scope.startDate={//开始日期
+        year:todayDate.getFullYear(),
+        month:"",
+        day:"",
+        weekday:""
+      };
+      $scope.endDate={//结束日期
+        year:"",
+        month:"",
+        day:"",
+        weekday:""
+      };
+      if(weekday==0){
+        $scope.startDate.weekday="周日";
+      }else if(weekday==1){
+        $scope.startDate.weekday="周一";
+      }else if(weekday==2){
+        $scope.startDate.weekday="周二";
+      }else if(weekday==3){
+        $scope.startDate.weekday="周三";
+      }else if(weekday==4){
+        $scope.startDate.weekday="周四";
+      }else if(weekday==5){
+        $scope.startDate.weekday="周五";
+      }else if(weekday==6){
+        $scope.startDate.weekday="周六";
+      }
+      if(month<10){
+        month="0"+month;
+      }
+      if(day<10){
+        day="0"+day;
+      }
+      $scope.startDate.month=month;
+      $scope.startDate.day=day;
+      refreshEndDate(1);//结束日期默认比开始晚1天
+      var url=baseConfig.businessPath+"/api_apply_room/query_project_list";
       var param={
         "params": {
           p_employee_number:window.localStorage.empno//工号
@@ -92,8 +134,146 @@ angular.module('applicationModule')
           console.log("response error " + angular.toJson(error));
         }
       });
+
+      function refreshEndDate(num){//选择30,60,90后刷新结束日期
+        var myDate=$scope.startDate;
+        var todayDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var tomorrowDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var tomorrowYear="";
+        var tomorrowDay="";
+        var tomorrowMonth="";
+        var tomorrowWeekDay="";
+        num=parseInt(num);
+        tomorrowDate.setDate(todayDate.getDate()+num);
+        tomorrowYear=tomorrowDate.getFullYear();
+        tomorrowDay=tomorrowDate.getDate();
+        tomorrowMonth=tomorrowDate.getMonth()+1;
+        tomorrowWeekDay=tomorrowDate.getDay();
+        if(tomorrowWeekDay==0){
+          $scope.endDate.weekday="周日";
+        }else if(tomorrowWeekDay==1){
+          $scope.endDate.weekday="周一";
+        }else if(tomorrowWeekDay==2){
+          $scope.endDate.weekday="周二";
+        }else if(tomorrowWeekDay==3){
+          $scope.endDate.weekday="周三";
+        }else if(tomorrowWeekDay==4){
+          $scope.endDate.weekday="周四";
+        }else if(tomorrowWeekDay==5){
+          $scope.endDate.weekday="周五";
+        }else if(tomorrowWeekDay==6){
+          $scope.endDate.weekday="周六";
+        }
+        if(tomorrowMonth<10){
+          tomorrowMonth="0"+tomorrowMonth;
+        }
+        if(tomorrowDay<10){
+          tomorrowDay="0"+tomorrowDay;
+        }
+        $scope.endDate.year=tomorrowYear;
+        $scope.endDate.month=tomorrowMonth;
+        $scope.endDate.day=tomorrowDay;
+      };
+
       $scope.goBack=function(){//返回按钮
         $ionicHistory.goBack();
+      };
+
+      $scope.chooseStartDate=function(){//选择开始日期
+        var myDate=$scope.startDate;
+        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var options={
+          date: previousDate,
+          mode: 'date',
+          titleText:'请选择入住日期',
+          okText:'确定',
+          cancelText:'取消',
+          doneButtonLabel:'确认',
+          cancelButtonLabel:'取消',
+          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+          locale:"zh_cn"
+        }
+        $cordovaDatePicker.show(options).then(function(date){
+          var month=date.getMonth()+1;
+          var day=date.getDate();
+          var weekday=date.getDay();
+          if(weekday==0){
+            $scope.startDate.weekday="周日";
+          }else if(weekday==1){
+            $scope.startDate.weekday="周一";
+          }else if(weekday==2){
+            $scope.startDate.weekday="周二";
+          }else if(weekday==3){
+            $scope.startDate.weekday="周三";
+          }else if(weekday==4){
+            $scope.startDate.weekday="周四";
+          }else if(weekday==5){
+            $scope.startDate.weekday="周五";
+          }else if(weekday==6){
+            $scope.startDate.weekday="周六";
+          }
+          if(month<10){
+            month="0"+month;
+          }
+          if(day<10){
+            day="0"+day;
+          }
+          $scope.startDate.year=date.getFullYear();
+          $scope.startDate.month=month;
+          $scope.startDate.day=day;
+          $scope.$apply();
+        });
+      };
+
+      $scope.chooseEndDate=function() {//选择结束
+        var myDate=$scope.endDate;
+        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var options={
+          date: previousDate,
+          mode: 'date',
+          titleText:'请选择结束日期',
+          okText:'确定',
+          cancelText:'取消',
+          doneButtonLabel:'确认',
+          cancelButtonLabel:'取消',
+          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK,
+          locale:"zh_cn"
+        }
+        $cordovaDatePicker.show(options).then(function(date){
+          var month=date.getMonth()+1;
+          var day=date.getDate();
+          var weekday=date.getDay();
+          if(weekday==0){
+            $scope.endDate.weekday="周日";
+          }else if(weekday==1){
+            $scope.endDate.weekday="周一";
+          }else if(weekday==2){
+            $scope.endDate.weekday="周二";
+          }else if(weekday==3){
+            $scope.endDate.weekday="周三";
+          }else if(weekday==4){
+            $scope.endDate.weekday="周四";
+          }else if(weekday==5){
+            $scope.endDate.weekday="周五";
+          }else if(weekday==6){
+            $scope.endDate.weekday="周六";
+          }
+          if(month<10){
+            month="0"+month;
+          }
+          if(day<10){
+            day="0"+day;
+          }
+          $scope.endDate.year=date.getFullYear();
+          $scope.endDate.month=month;
+          $scope.endDate.day=day;
+          $scope.$apply();
+        });
+      };
+
+      $scope.chooseLongDays=function(num){//选择30,60,90天的点击事件
+        refreshEndDate(num);
+        $scope.showNumButton=true;
       };
 
       $scope.chooseApplyType=function(){//显示申请类型modal
@@ -140,15 +320,27 @@ angular.module('applicationModule')
       };
 
       $scope.searchVacantRoom=function(){//查询空闲房间
+        var startYear=$scope.startDate.year;//开始日期年份
+        var startMonth=$scope.startDate.month;//开始日期月份
+        var startDay=$scope.startDate.day;//开始日期
+        var endYear=$scope.endDate.year;//结束日期年份
+        var endMonth=$scope.endDate.month;//结束日期月份
+        var endDay=$scope.endDate.day;//结束日期
+        startMonth=parseInt(startMonth);
+        startDay=parseInt(startDay);
+        endMonth=parseInt(endMonth);
+        endDay=parseInt(endDay);
         if($scope.defaultProjectInfo.projectName=='无' && $scope.defaultApplyType=='项目申请'){//项目申请类型，当项目列表为空时，不能查询房间
           hmsPopup.showShortCenterToast('项目列表为空，请更改申请类型');
+        }else if( (startYear>endYear) ||((startYear==endYear)&&(startMonth>endMonth)) || ((startYear==endYear)&&(startMonth==endMonth)&&(startDay>endDay))){
+          hmsPopup.showShortCenterToast('入住日期不能晚于结束日期');
         }else{
-          var url = baseConfig.businessPath + "/wfl_apply_room/query_free_room_list";
+          var url = baseConfig.businessPath + "/api_apply_room/query_free_room_list";
           var param = {
             "params": {
               p_employee_number: window.localStorage.empno,
-              p_check_in_date: "2016-06-22",
-              p_check_out_date: "2016-08-20",
+              p_check_in_date: $scope.startDate.year+"-"+$scope.startDate.month+"-"+$scope.startDate.day,
+              p_check_out_date: $scope.endDate.year+"-"+$scope.endDate.month+"-"+$scope.endDate.day,
               p_apply_type: $scope.defaultApplyType,
               p_room_type: $scope.defaultRoomType,
               p_room_number: $scope.inputinfo.roomnum,
