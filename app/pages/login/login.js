@@ -21,6 +21,13 @@ angular.module('loginModule')
               $ionicHistory,
               hmsPopup) {
 
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleDefault();
+        }
+      });
+
       $scope.loginData = {};
       $scope.currentVersionNum = baseConfig.versionName;
 
