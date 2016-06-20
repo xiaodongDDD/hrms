@@ -16,12 +16,21 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-crosswalk-webview": {
+    "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-crosswalk-webview"
+            "id": "cordova-plugin-whitelist"
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-splashscreen": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-splashscreen"
+        },
+        "is_top_level": true,
+        "variables": {}
+
     }
 }

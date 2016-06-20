@@ -44,7 +44,211 @@ HmsModule.directive('hideTabs', function($rootScope) {
       });
     }
   };
+})
+.directive('elasticImage', function($ionicScrollDelegate) {
+  return {
+    restrict: 'A',
+    link: function($scope, $scroller, $attr) {
+      var image = document.getElementById($attr.elasticImage);
+      var imageHeight = image.offsetHeight;
+      $scroller.bind('scroll', function(e) {
+        var scrollTop = e.detail.scrollTop;
+
+        var newImageHeight = imageHeight - scrollTop;
+        if (newImageHeight < 0) {
+          newImageHeight = 0;
+        }
+        image.style.height = newImageHeight + 'px';
+      });
+    }
+  }
+}).directive('circleRotate', function($timeout) {
+  return {
+    restrict: 'A',
+    link: function($scope, $scroller, $attr) {
+      var params=$attr.circleRotate;
+      var domsId=params.split(',');
+      console.log(domsId);
+      if(domsId[0]=="dorm-apply") {
+        var leftball = document.getElementById(domsId[1]);
+        var rightball = document.getElementById(domsId[2]);
+        var calculation = $scope.leftDays / $scope.totalDays;
+        if (calculation <= 0.5) {//剩余天数大于总天数的一半
+          leftball.style.transition = "all 0.3s linear";
+          leftball.style.webkitTransition = "all 0.3s linear";
+          rightball.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+          rightball.style.webkitTransition = "all 0.3s ease-out";
+        } else if (calculation > 0.5) {//剩余天数不到入住天数的一半
+          leftball.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+          leftball.style.webkitTransition = "all 0.3s ease-out 0.3s";
+          rightball.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+          rightball.style.webkitTransition = "all 0.3s ease-in";
+        }
+        leftball.style.webkitTransform = "rotate(-135deg)";
+        leftball.style.transform = "rotate(-135deg)";
+        rightball.style.webkitTransform = "rotate(-135deg)";
+        rightball.style.transform = "rotate(-135deg)";
+        $timeout(function () {//定时器中决定两个圆的终止角度
+          var angle = 0;
+          if (calculation <= 0.5) {
+            angle = 360 * calculation;
+            angle = angle - 135;
+            //console.log("角度："+angle);
+            leftball.style.webkitTransform = "rotate(-135deg)";
+            leftball.style.transform = "rotate(-135deg)";
+            rightball.style.webkitTransform = "rotate(" + angle + "deg)";
+            rightball.style.transform = "rotate(" + angle + "deg)";
+          } else if (calculation > 0.5) {
+            calculation = calculation - 0.5;
+            angle = 360 * calculation;
+            angle = angle - 135;
+            //console.log("角度："+angle);
+            leftball.style.webkitTransform = "rotate(" + angle + "deg)";
+            leftball.style.transform = "rotate(" + angle + "deg)";
+            rightball.style.webkitTransform = "rotate(45deg)";
+            rightball.style.transform = "rotate(45deg)";
+          }
+        }, 500);
+      }else if(domsId[0]=="time-off-manage"){
+        var leftball1 = document.getElementById(domsId[1]);
+        var rightball1 = document.getElementById(domsId[2]);
+        var leftball2 = document.getElementById(domsId[3]);
+        var rightball2 = document.getElementById(domsId[4]);
+        var leftball3 = document.getElementById(domsId[5]);
+        var rightball3 = document.getElementById(domsId[6]);
+        var calculation1 = $scope.paidHolidayLeftDays / $scope.paidHolidayTotalDays;
+        var calculation2 = $scope.paidSickLeftDays / $scope.paidSickTotalDays;
+        var calculation3 = $scope.extPaidHolidayLeftDays / $scope.extPaidHolidayTotalDays;
+        if (calculation1 <= 0.5) {//剩余天数大于总天数的一半
+          leftball1.style.transition = "all 0.3s linear";
+          leftball1.style.webkitTransition = "all 0.3s linear";
+          rightball1.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+          rightball1.style.webkitTransition = "all 0.3s ease-out";
+        } else if (calculation1 > 0.5) {//剩余天数不到入住天数的一半
+          leftball1.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+          leftball1.style.webkitTransition = "all 0.3s ease-out 0.3s";
+          rightball1.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+          rightball1.style.webkitTransition = "all 0.3s ease-in";
+        }
+        if (calculation2 <= 0.5) {//剩余天数大于总天数的一半
+          leftball2.style.transition = "all 0.3s linear";
+          leftball2.style.webkitTransition = "all 0.3s linear";
+          rightball2.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+          rightball2.style.webkitTransition = "all 0.3s ease-out";
+        } else if (calculation2 > 0.5) {//剩余天数不到入住天数的一半
+          leftball2.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+          leftball2.style.webkitTransition = "all 0.3s ease-out 0.3s";
+          rightball2.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+          rightball2.style.webkitTransition = "all 0.3s ease-in";
+        }
+        if (calculation3 <= 0.5) {//剩余天数大于总天数的一半
+          leftball3.style.transition = "all 0.3s linear";
+          leftball3.style.webkitTransition = "all 0.3s linear";
+          rightball3.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+          rightball3.style.webkitTransition = "all 0.3s ease-out";
+        } else if (calculation3 > 0.5) {//剩余天数不到入住天数的一半
+          leftball3.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+          leftball3.style.webkitTransition = "all 0.3s ease-out 0.3s";
+          rightball3.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+          rightball3.style.webkitTransition = "all 0.3s ease-in";
+        }
+        leftball1.style.webkitTransform = "rotate(-135deg)";
+        leftball1.style.transform = "rotate(-135deg)";
+        rightball1.style.webkitTransform = "rotate(-135deg)";
+        rightball1.style.transform = "rotate(-135deg)";
+        leftball2.style.webkitTransform = "rotate(-135deg)";
+        leftball2.style.transform = "rotate(-135deg)";
+        rightball2.style.webkitTransform = "rotate(-135deg)";
+        rightball2.style.transform = "rotate(-135deg)";
+        leftball3.style.webkitTransform = "rotate(-135deg)";
+        leftball3.style.transform = "rotate(-135deg)";
+        rightball3.style.webkitTransform = "rotate(-135deg)";
+        rightball3.style.transform = "rotate(-135deg)";
+        $timeout(function () {//定时器中决定两个圆的终止角度
+          var angle1 = 0;
+          var angle2 = 0;
+          var angle3 = 0;
+          if (calculation1 <= 0.5) {
+            angle1 = 360 * calculation1;
+            angle1 = angle1 - 135;
+            //console.log("角度："+angle);
+            leftball1.style.webkitTransform = "rotate(-135deg)";
+            leftball1.style.transform = "rotate(-135deg)";
+            rightball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
+            rightball1.style.transform = "rotate(" + angle1 + "deg)";
+          } else if (calculation1 > 0.5) {
+            calculation1 = calculation1 - 0.5;
+            angle1 = 360 * calculation1;
+            angle1 = angle1 - 135;
+            //console.log("角度："+angle);
+            leftball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
+            leftball1.style.transform = "rotate(" + angle1 + "deg)";
+            rightball1.style.webkitTransform = "rotate(45deg)";
+            rightball1.style.transform = "rotate(45deg)";
+          }
+          if (calculation2 <= 0.5) {
+            angle2 = 360 * calculation2;
+            angle2 = angle2 - 135;
+            //console.log("角度："+angle);
+            leftball2.style.webkitTransform = "rotate(-135deg)";
+            leftball2.style.transform = "rotate(-135deg)";
+            rightball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
+            rightball2.style.transform = "rotate(" + angle2 + "deg)";
+          } else if (calculation2 > 0.5) {
+            calculation2 = calculation2 - 0.5;
+            angle2 = 360 * calculation2;
+            angle2 = angle2 - 135;
+            //console.log("角度："+angle);
+            leftball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
+            leftball2.style.transform = "rotate(" + angle2 + "deg)";
+            rightball2.style.webkitTransform = "rotate(45deg)";
+            rightball2.style.transform = "rotate(45deg)";
+          }
+          if (calculation3 <= 0.5) {
+            angle3 = 360 * calculation3;
+            angle3 = angle3 - 135;
+            //console.log("角度："+angle);
+            leftball3.style.webkitTransform = "rotate(-135deg)";
+            leftball3.style.transform = "rotate(-135deg)";
+            rightball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
+            rightball3.style.transform = "rotate(" + angle3 + "deg)";
+          } else if (calculation3 > 0.5) {
+            calculation3 = calculation3 - 0.5;
+            angle3 = 360 * calculation3;
+            angle3 = angle3 - 135;
+            //console.log("角度："+angle);
+            leftball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
+            leftball3.style.transform = "rotate(" + angle3 + "deg)";
+            rightball3.style.webkitTransform = "rotate(45deg)";
+            rightball3.style.transform = "rotate(45deg)";
+          }
+        }, 500);
+      }
+    }
+  }
 });
+/**
+ * @description:loading tag
+ *
+ */
+HmsModule.directive('hmsLoading', function($rootScope) {
+  return {
+    restrict: 'E',
+    template: '<div class="hms-hide-content">'+
+    '<div class="content">数据加载中...</div>'+
+    '<div class="hide-icon">'+
+    '<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>'+
+    '</div>'+
+    '</div>',
+    replace: true, //使用模板替换原始标记
+    transclude: false,    // 不复制原始HTML内容
+    controller: ["$scope", function ($scope) {
+    }],
+    link: function (scope, element, attrs, controller) {
+    }
+  };
+});
+
 
 /**
  * Created by wolf on 2016/5/23.
@@ -1303,6 +1507,27 @@ angular.module('myApp')
 /**
  * Created by gusenlin on 16/4/24.
  */
+angular.module('contactModule')
+
+  .controller('contactCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+      console.log('contactCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('contactCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('contactCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
 //应用模块
 angular.module('applicationModule')
 
@@ -1494,27 +1719,6 @@ angular.module('applicationModule')
     }]);
 
 /**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('contactModule')
-
-  .controller('contactCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-      console.log('contactCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('contactCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('contactCtrl.$destroy');
-      });
-    }]);
-
-/**
  * Created by gusenlin on 16/5/16.
  */
 angular.module('loginModule')
@@ -1554,6 +1758,7 @@ angular.module('loginModule')
     '$http',
     '$timeout',
     '$ionicHistory',
+    '$ionicPlatform',
     'hmsPopup',
     function ($scope,
               $state,
@@ -1562,6 +1767,7 @@ angular.module('loginModule')
               $http,
               $timeout,
               $ionicHistory,
+              $ionicPlatform,
               hmsPopup) {
 
       //将页面的导航bar设置成白色
@@ -1789,6 +1995,45 @@ angular.module('myInfoModule')
     }])
 
 /**
+ * Created by LeonChan on 2016/6/20.
+ */
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.my-info-detail', {
+          url: '/my-info-detail',
+          views: {
+            'tab-myInfo': {
+              templateUrl: 'build/pages/myInfo/my-info-detail.html',
+              controller: 'MyInfoDetailCtrl'
+            }
+          }
+        })
+    }]);
+angular.module('myInfoModule')
+  .controller('MyInfoDetailCtrl', [
+    '$scope',
+    'baseConfig',
+    '$ionicHistory',
+    'hmsHttp',
+    'hmsPopup',
+    function ($scope,
+              baseConfig,
+              $ionicHistory,
+              hmsHttp,
+              hmsPopup) {
+
+      $scope.goBack=function(){//返回按钮
+        $ionicHistory.goBack();
+      }
+
+
+
+    }])
+
+/**
  * Created by gusenlin on 16/4/24.
  */
 angular.module('myInfoModule')
@@ -1797,14 +2042,29 @@ angular.module('myInfoModule')
     '$scope',
     '$state',
     'baseConfig',
+    'hmsHttp',
+    'hmsPopup',
     function ($scope,
               $state,
-              baseConfig) {
+              baseConfig,
+              hmsHttp,
+              hmsPopup) {
 
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
       }
 
+      //var url=baseConfig.businessPath + "/get_empinfo/get_emp_detail";//获取用户信息
+      //var param={
+      //   "params":{
+      //     "p_emp_code":window.localStorage.empno
+      //   }
+      //};
+      //hmsHttp.post(url,param).success(function (result) {
+      //  console.log(angular.toJson(result));
+      //}).error(function(err,status){
+      //
+      //});
       $scope.logout = function(){//注销登录
         window.localStorage.token = "";
         window.localStorage.password = "";
@@ -1822,7 +2082,7 @@ angular.module('myInfoModule')
       };
 
       $scope.checkMyInfo=function(){//进入查看我的信息界面
-
+        $state.go('tab.my-info-detail');
       };
 
       $scope.$on('$ionicView.enter', function (e) {
@@ -2035,7 +2295,7 @@ angular.module('applicationModule')
         $ionicHistory.goBack();
       };
       $scope.cancelApply=function(){//取消申请
-        var url=baseConfig.businessPath+"/wfl_apply_room/cancel_application";
+        var url=baseConfig.businessPath+"/api_apply_room/cancel_application";
         var param={
           "params": {
             p_apply_id:$scope.applyInfo.applyId,//用申请id取消申请
@@ -2171,7 +2431,7 @@ angular.module('applicationModule')
       };
 
       $scope.renewContract=function(){//续住
-        var url=baseConfig.businessPath+"/wfl_apply_room/overstay_apply_room";
+        var url=baseConfig.businessPath+"/api_apply_room/overstay_apply_room";
         var param={
           "params": {
             p_employee_number:window.localStorage.empno,
@@ -2261,7 +2521,7 @@ angular.module('applicationModule')
        $ionicHistory.goBack();
      };
      $scope.applyRoom=function(num){
-       var url=baseConfig.businessPath+"/wfl_apply_room/apply_room";
+       var url=baseConfig.businessPath+"/api_apply_room/apply_room";
        var param={
          "params": {
            p_employee_number:window.localStorage.empno,
@@ -2341,7 +2601,7 @@ angular.module('applicationModule')
       searchHistoryApplyListAutomatically();//自动获取历史申请数据
       function searchHistoryApplyListAutomatically() {
         $scope.items=[];
-        var url = baseConfig.businessPath + "/wfl_apply_room/query_room_history_list";
+        var url = baseConfig.businessPath + "/api_apply_room/query_room_history_list";
         var param = {
           "params": {
             p_employee_number: window.localStorage.empno
@@ -2484,13 +2744,15 @@ angular.module('applicationModule')
     '$ionicModal',
     'hmsHttp',
     'hmsPopup',
+    '$cordovaDatePicker',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
               $ionicModal,
               hmsHttp,
-              hmsPopup) {
+              hmsPopup,
+              $cordovaDatePicker) {
       $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-apply-type.html', {//定义modal
         scope: $scope
       }).then(function (modal1) {
@@ -2521,7 +2783,47 @@ angular.module('applicationModule')
         floornum:"",//输入楼层号
         roomnum:""//输入房间号
       };
-      var url=baseConfig.businessPath+"/wfl_apply_room/query_project_list";
+      var todayDate = new Date();//今天日期
+      var weekday=todayDate.getDay();
+      var month=todayDate.getMonth()+1;
+      var day=todayDate.getDate();
+      $scope.startDate={//开始日期
+        year:todayDate.getFullYear(),
+        month:"",
+        day:"",
+        weekday:""
+      };
+      $scope.endDate={//结束日期
+        year:"",
+        month:"",
+        day:"",
+        weekday:""
+      };
+      if(weekday==0){
+        $scope.startDate.weekday="周日";
+      }else if(weekday==1){
+        $scope.startDate.weekday="周一";
+      }else if(weekday==2){
+        $scope.startDate.weekday="周二";
+      }else if(weekday==3){
+        $scope.startDate.weekday="周三";
+      }else if(weekday==4){
+        $scope.startDate.weekday="周四";
+      }else if(weekday==5){
+        $scope.startDate.weekday="周五";
+      }else if(weekday==6){
+        $scope.startDate.weekday="周六";
+      }
+      if(month<10){
+        month="0"+month;
+      }
+      if(day<10){
+        day="0"+day;
+      }
+      $scope.startDate.month=month;
+      $scope.startDate.day=day;
+      refreshEndDate(1);//结束日期默认比开始晚1天
+      var url=baseConfig.businessPath+"/api_apply_room/query_project_list";
       var param={
         "params": {
           p_employee_number:window.localStorage.empno//工号
@@ -2551,8 +2853,146 @@ angular.module('applicationModule')
           console.log("response error " + angular.toJson(error));
         }
       });
+
+      function refreshEndDate(num){//选择30,60,90后刷新结束日期
+        var myDate=$scope.startDate;
+        var todayDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var tomorrowDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var tomorrowYear="";
+        var tomorrowDay="";
+        var tomorrowMonth="";
+        var tomorrowWeekDay="";
+        num=parseInt(num);
+        tomorrowDate.setDate(todayDate.getDate()+num);
+        tomorrowYear=tomorrowDate.getFullYear();
+        tomorrowDay=tomorrowDate.getDate();
+        tomorrowMonth=tomorrowDate.getMonth()+1;
+        tomorrowWeekDay=tomorrowDate.getDay();
+        if(tomorrowWeekDay==0){
+          $scope.endDate.weekday="周日";
+        }else if(tomorrowWeekDay==1){
+          $scope.endDate.weekday="周一";
+        }else if(tomorrowWeekDay==2){
+          $scope.endDate.weekday="周二";
+        }else if(tomorrowWeekDay==3){
+          $scope.endDate.weekday="周三";
+        }else if(tomorrowWeekDay==4){
+          $scope.endDate.weekday="周四";
+        }else if(tomorrowWeekDay==5){
+          $scope.endDate.weekday="周五";
+        }else if(tomorrowWeekDay==6){
+          $scope.endDate.weekday="周六";
+        }
+        if(tomorrowMonth<10){
+          tomorrowMonth="0"+tomorrowMonth;
+        }
+        if(tomorrowDay<10){
+          tomorrowDay="0"+tomorrowDay;
+        }
+        $scope.endDate.year=tomorrowYear;
+        $scope.endDate.month=tomorrowMonth;
+        $scope.endDate.day=tomorrowDay;
+      };
+
       $scope.goBack=function(){//返回按钮
         $ionicHistory.goBack();
+      };
+
+      $scope.chooseStartDate=function(){//选择开始日期
+        var myDate=$scope.startDate;
+        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var options={
+          date: previousDate,
+          mode: 'date',
+          titleText:'请选择入住日期',
+          okText:'确定',
+          cancelText:'取消',
+          doneButtonLabel:'确认',
+          cancelButtonLabel:'取消',
+          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+          locale:"zh_cn"
+        }
+        $cordovaDatePicker.show(options).then(function(date){
+          var month=date.getMonth()+1;
+          var day=date.getDate();
+          var weekday=date.getDay();
+          if(weekday==0){
+            $scope.startDate.weekday="周日";
+          }else if(weekday==1){
+            $scope.startDate.weekday="周一";
+          }else if(weekday==2){
+            $scope.startDate.weekday="周二";
+          }else if(weekday==3){
+            $scope.startDate.weekday="周三";
+          }else if(weekday==4){
+            $scope.startDate.weekday="周四";
+          }else if(weekday==5){
+            $scope.startDate.weekday="周五";
+          }else if(weekday==6){
+            $scope.startDate.weekday="周六";
+          }
+          if(month<10){
+            month="0"+month;
+          }
+          if(day<10){
+            day="0"+day;
+          }
+          $scope.startDate.year=date.getFullYear();
+          $scope.startDate.month=month;
+          $scope.startDate.day=day;
+          $scope.$apply();
+        });
+      };
+
+      $scope.chooseEndDate=function() {//选择结束
+        var myDate=$scope.endDate;
+        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var options={
+          date: previousDate,
+          mode: 'date',
+          titleText:'请选择结束日期',
+          okText:'确定',
+          cancelText:'取消',
+          doneButtonLabel:'确认',
+          cancelButtonLabel:'取消',
+          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK,
+          locale:"zh_cn"
+        }
+        $cordovaDatePicker.show(options).then(function(date){
+          var month=date.getMonth()+1;
+          var day=date.getDate();
+          var weekday=date.getDay();
+          if(weekday==0){
+            $scope.endDate.weekday="周日";
+          }else if(weekday==1){
+            $scope.endDate.weekday="周一";
+          }else if(weekday==2){
+            $scope.endDate.weekday="周二";
+          }else if(weekday==3){
+            $scope.endDate.weekday="周三";
+          }else if(weekday==4){
+            $scope.endDate.weekday="周四";
+          }else if(weekday==5){
+            $scope.endDate.weekday="周五";
+          }else if(weekday==6){
+            $scope.endDate.weekday="周六";
+          }
+          if(month<10){
+            month="0"+month;
+          }
+          if(day<10){
+            day="0"+day;
+          }
+          $scope.endDate.year=date.getFullYear();
+          $scope.endDate.month=month;
+          $scope.endDate.day=day;
+          $scope.$apply();
+        });
+      };
+
+      $scope.chooseLongDays=function(num){//选择30,60,90天的点击事件
+        refreshEndDate(num);
+        $scope.showNumButton=true;
       };
 
       $scope.chooseApplyType=function(){//显示申请类型modal
@@ -2599,15 +3039,27 @@ angular.module('applicationModule')
       };
 
       $scope.searchVacantRoom=function(){//查询空闲房间
+        var startYear=$scope.startDate.year;//开始日期年份
+        var startMonth=$scope.startDate.month;//开始日期月份
+        var startDay=$scope.startDate.day;//开始日期
+        var endYear=$scope.endDate.year;//结束日期年份
+        var endMonth=$scope.endDate.month;//结束日期月份
+        var endDay=$scope.endDate.day;//结束日期
+        startMonth=parseInt(startMonth);
+        startDay=parseInt(startDay);
+        endMonth=parseInt(endMonth);
+        endDay=parseInt(endDay);
         if($scope.defaultProjectInfo.projectName=='无' && $scope.defaultApplyType=='项目申请'){//项目申请类型，当项目列表为空时，不能查询房间
           hmsPopup.showShortCenterToast('项目列表为空，请更改申请类型');
+        }else if( (startYear>endYear) ||((startYear==endYear)&&(startMonth>endMonth)) || ((startYear==endYear)&&(startMonth==endMonth)&&(startDay>endDay))){
+          hmsPopup.showShortCenterToast('入住日期不能晚于结束日期');
         }else{
-          var url = baseConfig.businessPath + "/wfl_apply_room/query_free_room_list";
+          var url = baseConfig.businessPath + "/api_apply_room/query_free_room_list";
           var param = {
             "params": {
               p_employee_number: window.localStorage.empno,
-              p_check_in_date: "2016-06-22",
-              p_check_out_date: "2016-08-20",
+              p_check_in_date: $scope.startDate.year+"-"+$scope.startDate.month+"-"+$scope.startDate.day,
+              p_check_out_date: $scope.endDate.year+"-"+$scope.endDate.month+"-"+$scope.endDate.day,
               p_apply_type: $scope.defaultApplyType,
               p_room_type: $scope.defaultRoomType,
               p_room_number: $scope.inputinfo.roomnum,
@@ -2756,6 +3208,74 @@ angular.module('messageModule')
       $scope.$on('$destroy', function (e) {
         console.log('messageDetailCtrl.$destroy');
       });
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.workflow-detail', {
+          url: '/workflow-detail',
+          params: {detail: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/workflow/detail/detail.html',
+              controller: 'WorkFLowDetailCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('WorkFLowDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    'WorkFLowListService',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup,
+              WorkFLowListService) {
+      var detail = $stateParams.detail;
+      if(baseConfig.debug){
+        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
+      }
+
+      $scope.historyList = [];
+      $scope.singalArrayList = [];
+      $scope.multipleArrayList = [];
+
+      //var
+      var success = function (result) {
+        if(baseConfig.debug){
+          console.log('getWorkflowDetail.result ' + angular.toJson(result));
+        }
+        if(result.status == 'S'){
+          $scope.historyList = result.history;
+          $scope.singalArrayList = result.workflow_data.details;
+          $scope.multipleArrayList = result.workflow_data.lines;
+        }
+      }
+      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
     }]);
 
 angular.module('myApp')
@@ -3002,74 +3522,6 @@ angular.module('applicationModule')
         }).error(function (data) {
         });
       };
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.workflow-detail', {
-          url: '/workflow-detail',
-          params: {detail: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/detail/detail.html',
-              controller: 'WorkFLowDetailCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
-      var detail = $stateParams.detail;
-      if(baseConfig.debug){
-        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
-      }
-
-      $scope.historyList = [];
-      $scope.singalArrayList = [];
-      $scope.multipleArrayList = [];
-
-      //var
-      var success = function (result) {
-        if(baseConfig.debug){
-          console.log('getWorkflowDetail.result ' + angular.toJson(result));
-        }
-        if(result.status == 'S'){
-          $scope.historyList = result.history;
-          $scope.singalArrayList = result.workflow_data.details;
-          $scope.multipleArrayList = result.workflow_data.lines;
-        }
-      }
-      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
     }]);
 
 /**
@@ -4078,6 +4530,7 @@ angular.module('tsApproveModule')
     'hmsHttp',
     'ApproveDetailService',
     '$ionicPopover',
+    '$cordovaDatePicker',
     function ($scope,
               $state,
               baseConfig,
@@ -4089,7 +4542,8 @@ angular.module('tsApproveModule')
               hmsPopup,
               hmsHttp,
               ApproveDetailService,
-              $ionicPopover) {
+              $ionicPopover,
+              $cordovaDatePicker) {
       /**
        * initial var section
        */
@@ -4247,6 +4701,53 @@ angular.module('tsApproveModule')
         } else {
           $scope.dateModal.show();
         }
+      };
+
+
+      $scope.chooseStartDate = function () {//选择开始日期
+        var myDate = $scope.startDate = new Date();
+        var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+        var options = {
+          date: previousDate,
+          mode: 'date',
+          titleText: '请选择截止日期',
+          okText: '确定',
+          cancelText: '取消',
+          doneButtonLabel: '确认',
+          cancelButtonLabel: '取消',
+          androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+          locale: "zh_cn"
+        }
+        $cordovaDatePicker.show(options).then(function (date) {
+          var month = date.getMonth() + 1;
+          var day = date.getDate();
+          var weekday = date.getDay();
+          if (weekday == 0) {
+            $scope.startDate.weekday = "周日";
+          } else if (weekday == 1) {
+            $scope.startDate.weekday = "周一";
+          } else if (weekday == 2) {
+            $scope.startDate.weekday = "周二";
+          } else if (weekday == 3) {
+            $scope.startDate.weekday = "周三";
+          } else if (weekday == 4) {
+            $scope.startDate.weekday = "周四";
+          } else if (weekday == 5) {
+            $scope.startDate.weekday = "周五";
+          } else if (weekday == 6) {
+            $scope.startDate.weekday = "周六";
+          }
+          if (month < 10) {
+            month = "0" + month;
+          }
+          if (day < 10) {
+            day = "0" + day;
+          }
+          $scope.startDate.year = date.getFullYear();
+          $scope.startDate.month = month;
+          $scope.startDate.day = day;
+          $scope.$apply();
+        });
       };
       $scope.selectEndDateItem = function (newEndDateCode, newEndDateValue, newIndex) { //选择不同的截止日期
         $scope.selectEndItem = [];
