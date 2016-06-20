@@ -14,200 +14,6 @@ var myInfoModule = angular.module('myInfoModule', []);
 var tsApproveModule = angular.module('tsApproveModule', []);
 
 /**
- * @ngdoc interceptor
- * @name httpRequestHeader
- * @module utilModule
- * @description
- * This is the http interceptor
- * @author
- * gusenlin
- */
-angular.module('utilModule').factory('httpRequestHeader', function () {
-  var interceptor = {
-    'request': function (config) {
-      if (window.localStorage.token && window.localStorage.empno) {
-        var timestamp = new Date().getTime();
-        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
-        config.headers.timestamp = timestamp;
-        config.headers.token     = token;
-        config.headers.loginName = window.localStorage.empno;
-      }
-      return config;
-    }
-  };
-
-  return interceptor;
-});
-
-/**
- * Created by wolf on 2016/6/13. (_wen.dai_)
- */
-"use strict";
-//根据日期获取星期
-HmsModule.filter('weekDay', function () {
-  return function (data) {
-    if (data == "") {
-      return data;
-    } else {
-      var d = new Date(data);
-      var day = d.getDay();
-      switch (day) {
-        case  0:
-          data = data + "　" + "星期天";
-          break;
-        case  1:
-          data = data + "　" + "星期一";
-          break;
-        case  2:
-          data = data + "　" + "星期二";
-          break;
-        case  3:
-          data = data + "　" + "星期三";
-          break;
-        case  4:
-          data = data + "　" + "星期四";
-          break;
-        case  5:
-          data = data + "　" + "星期五";
-          break;
-        case  6:
-          data = data + "　" + "星期六";
-          break;
-      }
-      return data;
-    }
-  }
-});
-
-/**
- * Created by wolf on 2016/6/12.
- * @author:wen.dai@hand-china.com
- */
-
-'use strict';
-
-/**
- * 打印--console--level
- */
-var log = console.log.bind(console);
-var warn = console.warn.bind(console);
-var error = console.error.bind(console);
-
-//格式化json
-function jsonFormat(newParam) {
-  var Json = angular.toJson(newParam, true);
-  return Json;
-};
-
-//获取当前的年月日 日期
-function getCurrentDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth() + 1;     //月
-  var day = now.getDate();            //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myCurrentDate = (year.toString() + month.toString() + day.toString());
-  return myCurrentDate;
-};
-
-//获取上个月的月末
-function getLastMonthDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth();     //月
-  var newDate = new Date(year, month, 1);
-  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
-  return myLastMonthDate;
-};
-
-//获取当前月的月末
-function getCurrentMonthLastDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth() + 1;     //月
-  var newDate = new Date(year, month, 1);
-  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
-  return myCurrentMonthLastDate;
-};
-
-//获取月和日
-function getMonthDay(newDate) {
-  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
-  return newMonthDay;
-};
-
-/**
- ​ *  下面是去重的3个写法
- ​ *  @1：最常规
- ​ *  @2：思路好，但是性能差点
- ​ *  @3：更好的
- ​ */
-
-//@1:
-function unique_normal(arr) {
-  var ret = [];
-  for (var i = 0; i < arr.length; i++) {
-    var item = arr[i];
-    if (ret.indexOf(item) === -1) {
-      ret.push(item);
-    }
-  }
-  return ret;
-};
-
-//@2:
-var indexOf = [].indexOf ?
-  function (arr, item) {
-    return arr.indexOf(item);
-  } :
-  function indexOf(arr, item) {
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i] === item) {
-        return i;
-      }
-    }
-    return -1;
-  };
-
-function unique(arr) {
-  var ret = [];
-  for (var i = 0; i < arr.length; i++) {
-    var item = arr[i];
-    if (indexOf(ret, item) === -1) {
-      ret.push(item);
-    }
-  }
-  return ret;
-};
-
-//@3: 支持数组子条目为对象的去重
-function unique_better(arr, newitem) {
-  var ret = [];
-  var hash = {};
-  for (var i = 0; i < arr.length; i++) {
-    if (typeof(arr[i]) == 'object') {
-      var item = arr[i][newitem];
-    } else {
-      var item = arr[i];
-    }
-    var item1 = arr[i]
-    var key = typeof(item) + item;
-    if (hash[key] !== 1) {
-      ret.push(item1);
-      hash[key] = 1;
-    }
-  }
-  return ret;
-};
-
-/**
  * @ngdoc directive
  * @name hideTabs
  * @module utilModule
@@ -576,6 +382,200 @@ angular.module('HmsModule')
       }
     };
   })*/
+
+/**
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
+ */
+angular.module('utilModule').factory('httpRequestHeader', function () {
+  var interceptor = {
+    'request': function (config) {
+      if (window.localStorage.token && window.localStorage.empno) {
+        var timestamp = new Date().getTime();
+        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
+        config.headers.timestamp = timestamp;
+        config.headers.token     = token;
+        config.headers.loginName = window.localStorage.empno;
+      }
+      return config;
+    }
+  };
+
+  return interceptor;
+});
+
+/**
+ * Created by wolf on 2016/6/13. (_wen.dai_)
+ */
+"use strict";
+//根据日期获取星期
+HmsModule.filter('weekDay', function () {
+  return function (data) {
+    if (data == "") {
+      return data;
+    } else {
+      var d = new Date(data);
+      var day = d.getDay();
+      switch (day) {
+        case  0:
+          data = data + "　" + "星期天";
+          break;
+        case  1:
+          data = data + "　" + "星期一";
+          break;
+        case  2:
+          data = data + "　" + "星期二";
+          break;
+        case  3:
+          data = data + "　" + "星期三";
+          break;
+        case  4:
+          data = data + "　" + "星期四";
+          break;
+        case  5:
+          data = data + "　" + "星期五";
+          break;
+        case  6:
+          data = data + "　" + "星期六";
+          break;
+      }
+      return data;
+    }
+  }
+});
+
+/**
+ * Created by wolf on 2016/6/12.
+ * @author:wen.dai@hand-china.com
+ */
+
+'use strict';
+
+/**
+ * 打印--console--level
+ */
+var log = console.log.bind(console);
+var warn = console.warn.bind(console);
+var error = console.error.bind(console);
+
+//格式化json
+function jsonFormat(newParam) {
+  var Json = angular.toJson(newParam, true);
+  return Json;
+};
+
+//获取当前的年月日 日期
+function getCurrentDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth() + 1;     //月
+  var day = now.getDate();            //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myCurrentDate = (year.toString() + month.toString() + day.toString());
+  return myCurrentDate;
+};
+
+//获取上个月的月末
+function getLastMonthDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth();     //月
+  var newDate = new Date(year, month, 1);
+  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
+  return myLastMonthDate;
+};
+
+//获取当前月的月末
+function getCurrentMonthLastDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth() + 1;     //月
+  var newDate = new Date(year, month, 1);
+  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
+  return myCurrentMonthLastDate;
+};
+
+//获取月和日
+function getMonthDay(newDate) {
+  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
+  return newMonthDay;
+};
+
+/**
+ ​ *  下面是去重的3个写法
+ ​ *  @1：最常规
+ ​ *  @2：思路好，但是性能差点
+ ​ *  @3：更好的
+ ​ */
+
+//@1:
+function unique_normal(arr) {
+  var ret = [];
+  for (var i = 0; i < arr.length; i++) {
+    var item = arr[i];
+    if (ret.indexOf(item) === -1) {
+      ret.push(item);
+    }
+  }
+  return ret;
+};
+
+//@2:
+var indexOf = [].indexOf ?
+  function (arr, item) {
+    return arr.indexOf(item);
+  } :
+  function indexOf(arr, item) {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === item) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+function unique(arr) {
+  var ret = [];
+  for (var i = 0; i < arr.length; i++) {
+    var item = arr[i];
+    if (indexOf(ret, item) === -1) {
+      ret.push(item);
+    }
+  }
+  return ret;
+};
+
+//@3: 支持数组子条目为对象的去重
+function unique_better(arr, newitem) {
+  var ret = [];
+  var hash = {};
+  for (var i = 0; i < arr.length; i++) {
+    if (typeof(arr[i]) == 'object') {
+      var item = arr[i][newitem];
+    } else {
+      var item = arr[i];
+    }
+    var item1 = arr[i]
+    var key = typeof(item) + item;
+    if (hash[key] !== 1) {
+      ret.push(item1);
+      hash[key] = 1;
+    }
+  }
+  return ret;
+};
 
 /**
  * Created by gusenlin on 16/5/21.
@@ -1544,6 +1544,145 @@ angular.module('loginModule')
 /**
  * Created by gusenlin on 16/4/24.
  */
+angular.module('loginModule')
+
+  .controller('loginCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicLoading',
+    '$http',
+    '$timeout',
+    '$ionicHistory',
+    'hmsPopup',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicLoading,
+              $http,
+              $timeout,
+              $ionicHistory,
+              hmsPopup) {
+
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleDefault();
+        }
+      });
+
+      $scope.loginData = {};
+      $scope.currentVersionNum = baseConfig.versionName;
+
+      if (window.localStorage.empno) {
+        $scope.loginData.username = window.localStorage.empno;
+      }
+
+      if (!window.localStorage.checkboxSavePwd) {
+        $scope.checkboxSavePwd = true;
+        window.localStorage.checkboxSavePwd = "true";
+      }
+
+      if (window.localStorage.checkboxSavePwd == "true") {
+        $scope.checkboxSavePwd = true;
+        $scope.loginData.password = window.localStorage.password;
+      } else {
+        $scope.checkboxSavePwd = false;
+      }
+
+      if (baseConfig.debug) {
+        console.log('loginCtrl.enter');
+      }
+
+      $scope.savePassword = function () {
+        $scope.checkboxSavePwd = !$scope.checkboxSavePwd;//取反 记住密码框的状态
+        if (baseConfig.debug) {
+          console.log("此时密码框的状态为 :", angular.toJson($scope.checkboxSavePwd));
+        }
+        if ($scope.loginData.password !== "") {
+          if ($scope.checkboxSavePwd === true) {
+            window.localStorage.password = $scope.loginData.password;
+          } else {
+            window.localStorage.password = "";
+          }
+        }
+      };
+
+      $scope.clearUser = function () {
+        $scope.loginData.username = '';
+      }
+      $scope.clearPassword = function () {
+        $scope.loginData.password = '';
+      }
+
+      //login
+      $scope.doLogin = function () {
+        window.localStorage.empno = $scope.loginData.username;
+        if ($scope.checkboxSavePwd) {
+          window.localStorage.password = $scope.loginData.password;
+        } else {
+          window.localStorage.password = "";
+        }
+
+        if (!$scope.loginData.username || $scope.loginData.username == '') {
+          hmsPopup.showPopup('用户名不能为空');
+          return;
+        }
+        if (!$scope.loginData.password || $scope.loginData.password == '') {
+          hmsPopup.showPopup('密码不能为空');
+          return;
+        }
+
+        var url = baseConfig.basePath + "/appLogin/user_login/login";
+        var params = {
+          "params": {
+            "p_user_name": +$scope.loginData.username,
+            "p_password": $scope.loginData.password
+          }
+        };
+        hmsPopup.showLoading('登陆中...');
+        $http.post(url, params).success(function (result) {
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+          if (!result.status && result.con_status == 'S') {
+            window.localStorage.token = result.pre_token + result.token_key;
+            window.localStorage.empno = $scope.loginData.username;
+            window.localStorage.checkboxSavePwd = $scope.checkboxSavePwd;
+            $state.go("tab.message");
+          } else {
+            hmsPopup.showPopup('登陆失败,可能是密码不对!');
+          }
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(response));
+          }
+        });
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        if (baseConfig.debug) {
+          console.log('loginCtrl.$ionicView.enter');
+        }
+
+        $timeout(function () {
+          $ionicHistory.clearCache();
+          $ionicHistory.clearHistory();
+        }, 400);
+      });
+
+      $scope.$on('$destroy', function (e) {
+        if (baseConfig.debug) {
+          console.log('loginCtrl.$destroy');
+        }
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
 angular.module('messageModule')
 
   .controller('messageCtrl', [
@@ -1882,145 +2021,6 @@ angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$
       }
     });
   }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('loginModule')
-
-  .controller('loginCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    '$ionicLoading',
-    '$http',
-    '$timeout',
-    '$ionicHistory',
-    'hmsPopup',
-    function ($scope,
-              $state,
-              baseConfig,
-              $ionicLoading,
-              $http,
-              $timeout,
-              $ionicHistory,
-              hmsPopup) {
-
-      //将页面的导航bar设置成白色
-      $ionicPlatform.ready(function () {
-        if (window.StatusBar) {
-          StatusBar.styleDefault();
-        }
-      });
-
-      $scope.loginData = {};
-      $scope.currentVersionNum = baseConfig.versionName;
-
-      if (window.localStorage.empno) {
-        $scope.loginData.username = window.localStorage.empno;
-      }
-
-      if (!window.localStorage.checkboxSavePwd) {
-        $scope.checkboxSavePwd = true;
-        window.localStorage.checkboxSavePwd = "true";
-      }
-
-      if (window.localStorage.checkboxSavePwd == "true") {
-        $scope.checkboxSavePwd = true;
-        $scope.loginData.password = window.localStorage.password;
-      } else {
-        $scope.checkboxSavePwd = false;
-      }
-
-      if (baseConfig.debug) {
-        console.log('loginCtrl.enter');
-      }
-
-      $scope.savePassword = function () {
-        $scope.checkboxSavePwd = !$scope.checkboxSavePwd;//取反 记住密码框的状态
-        if (baseConfig.debug) {
-          console.log("此时密码框的状态为 :", angular.toJson($scope.checkboxSavePwd));
-        }
-        if ($scope.loginData.password !== "") {
-          if ($scope.checkboxSavePwd === true) {
-            window.localStorage.password = $scope.loginData.password;
-          } else {
-            window.localStorage.password = "";
-          }
-        }
-      };
-
-      $scope.clearUser = function () {
-        $scope.loginData.username = '';
-      }
-      $scope.clearPassword = function () {
-        $scope.loginData.password = '';
-      }
-
-      //login
-      $scope.doLogin = function () {
-        window.localStorage.empno = $scope.loginData.username;
-        if ($scope.checkboxSavePwd) {
-          window.localStorage.password = $scope.loginData.password;
-        } else {
-          window.localStorage.password = "";
-        }
-
-        if (!$scope.loginData.username || $scope.loginData.username == '') {
-          hmsPopup.showPopup('用户名不能为空');
-          return;
-        }
-        if (!$scope.loginData.password || $scope.loginData.password == '') {
-          hmsPopup.showPopup('密码不能为空');
-          return;
-        }
-
-        var url = baseConfig.basePath + "/appLogin/user_login/login";
-        var params = {
-          "params": {
-            "p_user_name": +$scope.loginData.username,
-            "p_password": $scope.loginData.password
-          }
-        };
-        hmsPopup.showLoading('登陆中...');
-        $http.post(url, params).success(function (result) {
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-          if (!result.status && result.con_status == 'S') {
-            window.localStorage.token = result.pre_token + result.token_key;
-            window.localStorage.empno = $scope.loginData.username;
-            window.localStorage.checkboxSavePwd = $scope.checkboxSavePwd;
-            $state.go("tab.message");
-          } else {
-            hmsPopup.showPopup('登陆失败,可能是密码不对!');
-          }
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(response));
-          }
-        });
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        if (baseConfig.debug) {
-          console.log('loginCtrl.$ionicView.enter');
-        }
-
-        $timeout(function () {
-          $ionicHistory.clearCache();
-          $ionicHistory.clearHistory();
-        }, 400);
-      });
-
-      $scope.$on('$destroy', function (e) {
-        if (baseConfig.debug) {
-          console.log('loginCtrl.$destroy');
-        }
-      });
-    }]);
 
 /**
  * Created by LeonChan on 2016/5/31.
@@ -3008,6 +3008,74 @@ angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
+        .state('tab.workflow-detail', {
+          url: '/workflow-detail',
+          params: {detail: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/workflow/detail/detail.html',
+              controller: 'WorkFLowDetailCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('WorkFLowDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    'WorkFLowListService',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup,
+              WorkFLowListService) {
+      var detail = $stateParams.detail;
+      if(baseConfig.debug){
+        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
+      }
+
+      $scope.historyList = [];
+      $scope.singalArrayList = [];
+      $scope.multipleArrayList = [];
+
+      //var
+      var success = function (result) {
+        if(baseConfig.debug){
+          console.log('getWorkflowDetail.result ' + angular.toJson(result));
+        }
+        if(result.status == 'S'){
+          $scope.historyList = result.history;
+          $scope.singalArrayList = result.workflow_data.details;
+          $scope.multipleArrayList = result.workflow_data.lines;
+        }
+      }
+      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
         .state('tab.workflow-list', {
           url: '/workflow-list',
           params: {day: {}},
@@ -3248,74 +3316,6 @@ angular.module('applicationModule')
         }).error(function (data) {
         });
       };
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.workflow-detail', {
-          url: '/workflow-detail',
-          params: {detail: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/detail/detail.html',
-              controller: 'WorkFLowDetailCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
-      var detail = $stateParams.detail;
-      if(baseConfig.debug){
-        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
-      }
-
-      $scope.historyList = [];
-      $scope.singalArrayList = [];
-      $scope.multipleArrayList = [];
-
-      //var
-      var success = function (result) {
-        if(baseConfig.debug){
-          console.log('getWorkflowDetail.result ' + angular.toJson(result));
-        }
-        if(result.status == 'S'){
-          $scope.historyList = result.history;
-          $scope.singalArrayList = result.workflow_data.details;
-          $scope.multipleArrayList = result.workflow_data.lines;
-        }
-      }
-      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
     }]);
 
 /**
