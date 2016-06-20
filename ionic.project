@@ -1,4 +1,11 @@
 {
   "name": "Hrms",
-  "app_id": "com.hand-china.hrms"
+  "app_id": "com.hand-china.hrms",
+  "browsers": [
+    {
+      "platform": "android",
+      "browser": "crosswalk",
+      "version": "12.41.296.5"
+    }
+  ]
 }

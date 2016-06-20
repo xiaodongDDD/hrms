@@ -65,7 +65,7 @@ angular.module('applicationModule')
         $ionicHistory.goBack();
       };
       $scope.cancelApply=function(){//取消申请
-        var url=baseConfig.businessPath+"/wfl_apply_room/cancel_application";
+        var url=baseConfig.businessPath+"/api_apply_room/cancel_application";
         var param={
           "params": {
             p_apply_id:$scope.applyInfo.applyId,//用申请id取消申请

@@ -7,14 +7,29 @@ angular.module('myInfoModule')
     '$scope',
     '$state',
     'baseConfig',
+    'hmsHttp',
+    'hmsPopup',
     function ($scope,
               $state,
-              baseConfig) {
+              baseConfig,
+              hmsHttp,
+              hmsPopup) {
 
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
       }
 
+      //var url=baseConfig.businessPath + "/get_empinfo/get_emp_detail";//获取用户信息
+      //var param={
+      //   "params":{
+      //     "p_emp_code":window.localStorage.empno
+      //   }
+      //};
+      //hmsHttp.post(url,param).success(function (result) {
+      //  console.log(angular.toJson(result));
+      //}).error(function(err,status){
+      //
+      //});
       $scope.logout = function(){//注销登录
         window.localStorage.token = "";
         window.localStorage.password = "";
@@ -32,7 +47,7 @@ angular.module('myInfoModule')
       };
 
       $scope.checkMyInfo=function(){//进入查看我的信息界面
-
+        $state.go('tab.my-info-detail');
       };
 
       $scope.$on('$ionicView.enter', function (e) {

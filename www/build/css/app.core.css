@@ -2764,6 +2764,9 @@ Copyright (c) 2015 Daniel Eden
         .time-off-content .time-off-item .time-off-item-right .approve-status.rejected {
           color: #F99D32; }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> leon/002
 
 .ts-list-bg {
   border-color: #b2b2b2;
@@ -3747,6 +3750,13 @@ Copyright (c) 2015 Daniel Eden
   background-color: #ffffff;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15); }
 
+.new-dorm-apply .calendar-item {
+  width: 100%;
+  height: 90px;
+  margin: 0px;
+  padding: 0px;
+  border: none; }
+
 .new-dorm-apply .project-type-label {
   font-size: 0.9375rem;
   color: #24559c;
@@ -3769,9 +3779,13 @@ Copyright (c) 2015 Daniel Eden
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15); }
 
 .new-dorm-apply .item.activated {
-  opacity: 0.6; }
+  opacity: 0.4;
+  background-color: #ffffff; }
 
 .new-dorm-apply .search-button {
+  margin: 0px;
+  padding: 0px;
+  border: none;
   opacity: 1;
   transform: scale(1, 1);
   -webkit-transform: scale(1, 1);
@@ -3851,7 +3865,7 @@ Copyright (c) 2015 Daniel Eden
   background-color: #f3f3f3;
   margin-top: 5px;
   text-align: center;
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 3.1rem;
   color: #24559c;
   margin-left: auto;
@@ -5482,15 +5496,16 @@ Copyright (c) 2015 Daniel Eden
   margin-top: 15px; }
 
 .platform-android .my-info .setup-button {
-  position: absolute;
-  top: 0px;
+  position: fixed;
+  top: -148px;
   right: 5px;
   border: none;
   margin: 0px;
   padding: 0px;
   width: 40px;
   min-height: 40px;
-  line-height: 40px; }
+  line-height: 40px;
+  z-index: 999; }
 
 .platform-ios .my-info .shrink-image {
   height: 168px;
@@ -5521,14 +5536,15 @@ Copyright (c) 2015 Daniel Eden
 
 .platform-ios .my-info .setup-button {
   position: absolute;
-  top: 20px;
+  top: -148px;
   right: 5px;
   border: none;
   margin: 0px;
   padding: 0px;
   width: 40px;
   min-height: 40px;
-  line-height: 40px; }
+  line-height: 40px;
+  z-index: 999; }
 
 .my-info {
   background-color: #fafafa; }
@@ -5811,6 +5827,128 @@ Copyright (c) 2015 Daniel Eden
   height: 150px;
   padding: 10px 15px;
   font-size: 0.875rem; }
+
+.my-info-detail .content-style {
+  background-color: #fafafa; }
+
+.my-info-detail .info-card-item1 {
+  margin: 0px;
+  padding: 0px;
+  width: 97%;
+  height: 210px;
+  margin-left: 1.5%;
+  margin-top: 24px;
+  box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
+  border: none;
+  border-radius: 5px; }
+
+.my-info-detail .info-card-item2 {
+  margin: 0px;
+  padding: 0px;
+  width: 97%;
+  height: 175px;
+  margin-left: 1.5%;
+  margin-top: 8px;
+  box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
+  border: none; }
+
+.my-info-detail .info-card-item3 {
+  margin: 0px;
+  padding: 0px;
+  width: 97%;
+  height: 140px;
+  margin-left: 1.5%;
+  margin-top: 8px;
+  box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
+  border: none; }
+
+.my-info-detail .info-card-item4 {
+  margin: 0px;
+  padding: 0px;
+  width: 97%;
+  height: 70px;
+  margin-left: 1.5%;
+  margin-top: 8px;
+  box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
+  border: none; }
+
+.my-info-detail .card-row-with-bottom {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  height: 35px;
+  margin-left: 15px;
+  border-bottom: 1px solid #e8e8e8; }
+
+.my-info-detail .card-row-without-bottom {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  height: 35px;
+  margin-left: 15px; }
+
+.my-info-detail .normal-col {
+  padding: 0px;
+  margin: 0px;
+  margin-top: 8px; }
+
+.my-info-detail .left-label {
+  font-size: 0.9375rem;
+  color: #4a4a4a; }
+
+.my-info-detail .right-label {
+  font-size: 0.9375rem;
+  color: #9b9b9b; }
+
+.my-info-detail .portrait-shelter {
+  position: absolute;
+  top: -18px;
+  right: 22px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 5px solid #ffffff;
+  background-color: #ffffff;
+  z-index: 999; }
+
+.my-info-detail .portrait-icon {
+  width: 40px;
+  height: 40px; }
+
+.my-info-detail .no-space {
+  margin: 0px;
+  padding: 0px; }
+
+.my-info-detail .left-icon-label {
+  font-size: 0.9375rem;
+  color: #4a4a4a;
+  margin-left: 8px; }
+
+.my-info-detail .right-icon-label {
+  font-size: 0.9375rem;
+  color: #9b9b9b;
+  margin-top: 10px;
+  padding-right: 20px; }
+
+.my-info-detail .icon-shelter {
+  width: 16px;
+  height: 16px; }
+
+.my-info-detail .mail-img {
+  width: 14px;
+  height: 11px; }
+
+.my-info-detail .base-img {
+  width: 14px;
+  height: 16px; }
+
+.my-info-detail .social-img {
+  width: 14px;
+  height: 14px; }
+
+.my-info-detail .phone-img {
+  width: 14px;
+  height: 13px; }
 
 .navigateHrms .slider-item {
   margin: 0 auto;

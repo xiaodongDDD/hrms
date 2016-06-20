@@ -50,7 +50,7 @@ angular.module('applicationModule')
        $ionicHistory.goBack();
      };
      $scope.applyRoom=function(num){
-       var url=baseConfig.businessPath+"/wfl_apply_room/apply_room";
+       var url=baseConfig.businessPath+"/api_apply_room/apply_room";
        var param={
          "params": {
            p_employee_number:window.localStorage.empno,
