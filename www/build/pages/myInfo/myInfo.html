@@ -2,7 +2,7 @@
   <div id="portrait-image" class="shrink-image" style="background: url('build/img/myInfo/background.png');background-size: 100% 100%;background-position: center;background-repeat: no-repeat;">
   </div>
   <ion-content class="content-style" has-bouncing="true" elastic-image="portrait-image">
-    <ion-item class="header-item">
+    <ion-item class="header-item" ng-click="checkMyInfo()">
       <div class="header-item-image-row">
         <img src="build/img/myInfo/portrait.png" class="header-image"/>
       </div>
@@ -42,21 +42,21 @@
     </ion-item>
     <div class="colorful-part">
       <ion-item class="login-item" ng-click="">
-      <div class="row login-item-row">
-        <div class="login-icon-shelter">
-         <img src="build/img/myInfo/mode.png" class="login-icon"/>
+        <div class="row login-item-row">
+          <div class="login-icon-shelter">
+            <img src="build/img/myInfo/mode.png" class="login-icon"/>
+          </div>
+          <label class="login-label">登录方式</label>
         </div>
-        <label class="login-label">登录方式</label>
-      </div>
         <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
       </ion-item>
       <ion-item class="feedback-item" ng-click="feedback()">
-      <div class="row feedback-item-row">
-        <div class="login-icon-shelter">
-          <img src="build/img/myInfo/feedback.png" class="feedback-icon"/>
+        <div class="row feedback-item-row">
+          <div class="login-icon-shelter">
+            <img src="build/img/myInfo/feedback.png" class="feedback-icon"/>
+          </div>
+          <label class="login-label">意见反馈</label>
         </div>
-        <label class="login-label">意见反馈</label>
-      </div>
         <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
       </ion-item>
     </div>

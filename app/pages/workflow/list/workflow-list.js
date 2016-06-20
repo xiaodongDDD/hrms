@@ -47,7 +47,7 @@ angular.module('applicationModule')
       $scope.list = [];
       $scope.fetchDataFlag = true;
       $scope.pullRefreshDataFlag = false;
-
+      $scope.showDetailArrow = true;
       $scope.listStatus = {
         todo: {
           selected: true
@@ -106,7 +106,9 @@ angular.module('applicationModule')
               node: workflowNode,
               nodeValue: data.current_node,
               submit: workflowPerson,
-              submitPerson: data.employee_name
+              submitPerson: data.employee_name,
+              workflowId:data.workflow_id,
+              instanceId:data.instance_id
             };
             $scope.list.push(item);
           });
@@ -126,7 +128,7 @@ angular.module('applicationModule')
         }
         $timeout(function () {
           WorkFLowListService.getTodoList('N', success, error);
-        }, 2000);
+        }, 1000);
       };
 
       var getDoneList = function (pullRefresh) {
@@ -148,7 +150,9 @@ angular.module('applicationModule')
               node: workflowNode,
               nodeValue: data.status_name,
               submit: workflowPerson,
-              submitPerson: data.created_by_name
+              submitPerson: data.created_by_name,
+              workflowId:data.workflow_id,
+              instanceId:data.instance_id
             };
             $scope.list.push(item);
           });
@@ -168,10 +172,14 @@ angular.module('applicationModule')
         }
         $timeout(function () {
           WorkFLowListService.getTodoList('Y', success, error);
-        }, 2000);
+        }, 1000);
       };
 
       getTodoList(false);
+
+      $scope.enterWorkflowDetail = function (detail) {
+        $state.go('tab.workflow-detail', {"detail": detail})
+      }
 
       $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
         scope: $scope
@@ -217,5 +225,21 @@ angular.module('applicationModule')
           hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
           error(response);
         });
-      }
+      };
+
+      this.getWorkflowDetail = function (success,workflowId, recordId, submitFlag) {
+        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
+        var params = {
+          "params": {
+            "p_workflow_id": workflowId,
+            "p_instance_id": recordId,
+            "p_employee_code": window.localStorage.empno,
+            "p_submit_flag": submitFlag
+          }
+        };
+        hmsHttp.post(url, params).success(function (data) {
+          success(data);
+        }).error(function (data) {
+        });
+      };
     }]);
