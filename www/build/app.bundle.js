@@ -14,72 +14,6 @@ var myInfoModule = angular.module('myInfoModule', []);
 var tsApproveModule = angular.module('tsApproveModule', []);
 
 /**
- * @ngdoc interceptor
- * @name httpRequestHeader
- * @module utilModule
- * @description
- * This is the http interceptor
- * @author
- * gusenlin
- */
-angular.module('utilModule').factory('httpRequestHeader', function () {
-  var interceptor = {
-    'request': function (config) {
-      if (window.localStorage.token && window.localStorage.empno) {
-        var timestamp = new Date().getTime();
-        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
-        config.headers.timestamp = timestamp;
-        config.headers.token     = token;
-        config.headers.loginName = window.localStorage.empno;
-      }
-      return config;
-    }
-  };
-
-  return interceptor;
-});
-
-/**
- * Created by wolf on 2016/6/13. (_wen.dai_)
- */
-"use strict";
-//根据日期获取星期
-HmsModule.filter('weekDay', function () {
-  return function (data) {
-    if (data == "") {
-      return data;
-    } else {
-      var d = new Date(data);
-      var day = d.getDay();
-      switch (day) {
-        case  0:
-          data = data + "　" + "星期天";
-          break;
-        case  1:
-          data = data + "　" + "星期一";
-          break;
-        case  2:
-          data = data + "　" + "星期二";
-          break;
-        case  3:
-          data = data + "　" + "星期三";
-          break;
-        case  4:
-          data = data + "　" + "星期四";
-          break;
-        case  5:
-          data = data + "　" + "星期五";
-          break;
-        case  6:
-          data = data + "　" + "星期六";
-          break;
-      }
-      return data;
-    }
-  }
-});
-
-/**
  * @ngdoc directive
  * @name hideTabs
  * @module utilModule
@@ -110,213 +44,7 @@ HmsModule.directive('hideTabs', function($rootScope) {
       });
     }
   };
-})
-  .directive('elasticImage', function($ionicScrollDelegate) {
-  return {
-    restrict: 'A',
-    link: function($scope, $scroller, $attr) {
-      var image = document.getElementById($attr.elasticImage);
-      var imageHeight = image.offsetHeight;
-      $scroller.bind('scroll', function(e) {
-        var scrollTop = e.detail.scrollTop;
-
-        var newImageHeight = imageHeight - scrollTop;
-        if (newImageHeight < 0) {
-          newImageHeight = 0;
-        }
-        image.style.height = newImageHeight + 'px';
-      });
-    }
-  }
-}).directive('circleRotate', function($timeout) {
-    return {
-      restrict: 'A',
-      link: function($scope, $scroller, $attr) {
-        var params=$attr.circleRotate;
-        var domsId=params.split(',');
-        console.log(domsId);
-        if(domsId[0]=="dorm-apply") {
-          var leftball = document.getElementById(domsId[1]);
-          var rightball = document.getElementById(domsId[2]);
-          var calculation = $scope.leftDays / $scope.totalDays;
-          if (calculation <= 0.5) {//剩余天数大于总天数的一半
-            leftball.style.transition = "all 0.3s linear";
-            leftball.style.webkitTransition = "all 0.3s linear";
-            rightball.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball.style.webkitTransition = "all 0.3s ease-out";
-          } else if (calculation > 0.5) {//剩余天数不到入住天数的一半
-            leftball.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-            leftball.style.webkitTransition = "all 0.3s ease-out 0.3s";
-            rightball.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball.style.webkitTransition = "all 0.3s ease-in";
-          }
-          leftball.style.webkitTransform = "rotate(-135deg)";
-          leftball.style.transform = "rotate(-135deg)";
-          rightball.style.webkitTransform = "rotate(-135deg)";
-          rightball.style.transform = "rotate(-135deg)";
-          $timeout(function () {//定时器中决定两个圆的终止角度
-            var angle = 0;
-            if (calculation <= 0.5) {
-              angle = 360 * calculation;
-              angle = angle - 135;
-              //console.log("角度："+angle);
-              leftball.style.webkitTransform = "rotate(-135deg)";
-              leftball.style.transform = "rotate(-135deg)";
-              rightball.style.webkitTransform = "rotate(" + angle + "deg)";
-              rightball.style.transform = "rotate(" + angle + "deg)";
-            } else if (calculation > 0.5) {
-              calculation = calculation - 0.5;
-              angle = 360 * calculation;
-              angle = angle - 135;
-              //console.log("角度："+angle);
-              leftball.style.webkitTransform = "rotate(" + angle + "deg)";
-              leftball.style.transform = "rotate(" + angle + "deg)";
-              rightball.style.webkitTransform = "rotate(45deg)";
-              rightball.style.transform = "rotate(45deg)";
-            }
-          }, 500);
-        }else if(domsId[0]=="time-off-manage"){
-          var leftball1 = document.getElementById(domsId[1]);
-          var rightball1 = document.getElementById(domsId[2]);
-          var leftball2 = document.getElementById(domsId[3]);
-          var rightball2 = document.getElementById(domsId[4]);
-          var leftball3 = document.getElementById(domsId[5]);
-          var rightball3 = document.getElementById(domsId[6]);
-          var calculation1 = $scope.paidHolidayLeftDays / $scope.paidHolidayTotalDays;
-          var calculation2 = $scope.paidSickLeftDays / $scope.paidSickTotalDays;
-          var calculation3 = $scope.extPaidHolidayLeftDays / $scope.extPaidHolidayTotalDays;
-          if (calculation1 <= 0.5) {//剩余天数大于总天数的一半
-            leftball1.style.transition = "all 0.3s linear";
-            leftball1.style.webkitTransition = "all 0.3s linear";
-            rightball1.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball1.style.webkitTransition = "all 0.3s ease-out";
-          } else if (calculation1 > 0.5) {//剩余天数不到入住天数的一半
-            leftball1.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-            leftball1.style.webkitTransition = "all 0.3s ease-out 0.3s";
-            rightball1.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball1.style.webkitTransition = "all 0.3s ease-in";
-          }
-          if (calculation2 <= 0.5) {//剩余天数大于总天数的一半
-            leftball2.style.transition = "all 0.3s linear";
-            leftball2.style.webkitTransition = "all 0.3s linear";
-            rightball2.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball2.style.webkitTransition = "all 0.3s ease-out";
-          } else if (calculation2 > 0.5) {//剩余天数不到入住天数的一半
-            leftball2.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-            leftball2.style.webkitTransition = "all 0.3s ease-out 0.3s";
-            rightball2.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball2.style.webkitTransition = "all 0.3s ease-in";
-          }
-          if (calculation3 <= 0.5) {//剩余天数大于总天数的一半
-            leftball3.style.transition = "all 0.3s linear";
-            leftball3.style.webkitTransition = "all 0.3s linear";
-            rightball3.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball3.style.webkitTransition = "all 0.3s ease-out";
-          } else if (calculation3 > 0.5) {//剩余天数不到入住天数的一半
-            leftball3.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-            leftball3.style.webkitTransition = "all 0.3s ease-out 0.3s";
-            rightball3.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball3.style.webkitTransition = "all 0.3s ease-in";
-          }
-          leftball1.style.webkitTransform = "rotate(-135deg)";
-          leftball1.style.transform = "rotate(-135deg)";
-          rightball1.style.webkitTransform = "rotate(-135deg)";
-          rightball1.style.transform = "rotate(-135deg)";
-          leftball2.style.webkitTransform = "rotate(-135deg)";
-          leftball2.style.transform = "rotate(-135deg)";
-          rightball2.style.webkitTransform = "rotate(-135deg)";
-          rightball2.style.transform = "rotate(-135deg)";
-          leftball3.style.webkitTransform = "rotate(-135deg)";
-          leftball3.style.transform = "rotate(-135deg)";
-          rightball3.style.webkitTransform = "rotate(-135deg)";
-          rightball3.style.transform = "rotate(-135deg)";
-          $timeout(function () {//定时器中决定两个圆的终止角度
-            var angle1 = 0;
-            var angle2 = 0;
-            var angle3 = 0;
-            if (calculation1 <= 0.5) {
-              angle1 = 360 * calculation1;
-              angle1 = angle1 - 135;
-              //console.log("角度："+angle);
-              leftball1.style.webkitTransform = "rotate(-135deg)";
-              leftball1.style.transform = "rotate(-135deg)";
-              rightball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
-              rightball1.style.transform = "rotate(" + angle1 + "deg)";
-            } else if (calculation1 > 0.5) {
-              calculation1 = calculation1 - 0.5;
-              angle1 = 360 * calculation1;
-              angle1 = angle1 - 135;
-              //console.log("角度："+angle);
-              leftball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
-              leftball1.style.transform = "rotate(" + angle1 + "deg)";
-              rightball1.style.webkitTransform = "rotate(45deg)";
-              rightball1.style.transform = "rotate(45deg)";
-            }
-            if (calculation2 <= 0.5) {
-              angle2 = 360 * calculation2;
-              angle2 = angle2 - 135;
-              //console.log("角度："+angle);
-              leftball2.style.webkitTransform = "rotate(-135deg)";
-              leftball2.style.transform = "rotate(-135deg)";
-              rightball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
-              rightball2.style.transform = "rotate(" + angle2 + "deg)";
-            } else if (calculation2 > 0.5) {
-              calculation2 = calculation2 - 0.5;
-              angle2 = 360 * calculation2;
-              angle2 = angle2 - 135;
-              //console.log("角度："+angle);
-              leftball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
-              leftball2.style.transform = "rotate(" + angle2 + "deg)";
-              rightball2.style.webkitTransform = "rotate(45deg)";
-              rightball2.style.transform = "rotate(45deg)";
-            }
-            if (calculation3 <= 0.5) {
-              angle3 = 360 * calculation3;
-              angle3 = angle3 - 135;
-              //console.log("角度："+angle);
-              leftball3.style.webkitTransform = "rotate(-135deg)";
-              leftball3.style.transform = "rotate(-135deg)";
-              rightball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
-              rightball3.style.transform = "rotate(" + angle3 + "deg)";
-            } else if (calculation3 > 0.5) {
-              calculation3 = calculation3 - 0.5;
-              angle3 = 360 * calculation3;
-              angle3 = angle3 - 135;
-              //console.log("角度："+angle);
-              leftball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
-              leftball3.style.transform = "rotate(" + angle3 + "deg)";
-              rightball3.style.webkitTransform = "rotate(45deg)";
-              rightball3.style.transform = "rotate(45deg)";
-            }
-          }, 500);
-        }
-      }
-    }
 });
-
-/**
- * @description:loading tag
- *
- */
-HmsModule.directive('hmsLoading', function($rootScope) {
-  return {
-    restrict: 'E',
-    template: '<div class="hms-hide-content">'+
-    '<div class="content">数据加载中...</div>'+
-    '<div class="hide-icon">'+
-    '<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>'+
-    '</div>'+
-    '</div>',
-    replace: true, //使用模板替换原始标记
-    transclude: false,    // 不复制原始HTML内容
-    controller: ["$scope", function ($scope) {
-    }],
-    link: function (scope, element, attrs, controller) {
-    }
-  };
-});
-
-
 
 /**
  * Created by wolf on 2016/5/23.
@@ -657,6 +385,72 @@ angular.module('HmsModule')
   })*/
 
 /**
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
+ */
+angular.module('utilModule').factory('httpRequestHeader', function () {
+  var interceptor = {
+    'request': function (config) {
+      if (window.localStorage.token && window.localStorage.empno) {
+        var timestamp = new Date().getTime();
+        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
+        config.headers.timestamp = timestamp;
+        config.headers.token     = token;
+        config.headers.loginName = window.localStorage.empno;
+      }
+      return config;
+    }
+  };
+
+  return interceptor;
+});
+
+/**
+ * Created by wolf on 2016/6/13. (_wen.dai_)
+ */
+"use strict";
+//根据日期获取星期
+HmsModule.filter('weekDay', function () {
+  return function (data) {
+    if (data == "") {
+      return data;
+    } else {
+      var d = new Date(data);
+      var day = d.getDay();
+      switch (day) {
+        case  0:
+          data = data + "　" + "星期天";
+          break;
+        case  1:
+          data = data + "　" + "星期一";
+          break;
+        case  2:
+          data = data + "　" + "星期二";
+          break;
+        case  3:
+          data = data + "　" + "星期三";
+          break;
+        case  4:
+          data = data + "　" + "星期四";
+          break;
+        case  5:
+          data = data + "　" + "星期五";
+          break;
+        case  6:
+          data = data + "　" + "星期六";
+          break;
+      }
+      return data;
+    }
+  }
+});
+
+/**
  * Created by wolf on 2016/6/12.
  * @author:wen.dai@hand-china.com
  */
@@ -684,7 +478,7 @@ function getCurrentDate(now) {
   var day = now.getDate();            //日
   month = (month < 10 ? "0" + month : month);
   day = (day < 10 ? "0" + day : day);
-  var myCurrentDate = (year.toString() + "-" + month.toString() + "-" + day.toString());
+  var myCurrentDate = (year.toString() + month.toString() + day.toString());
   return myCurrentDate;
 };
 
@@ -697,7 +491,7 @@ function getLastMonthDate(now) {
   var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
   month = (month < 10 ? "0" + month : month);
   day = (day < 10 ? "0" + day : day);
-  var myLastMonthDate = (year.toString() + "-" + month.toString() + "-" + day.toString());
+  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
   return myLastMonthDate;
 };
 
@@ -710,22 +504,22 @@ function getCurrentMonthLastDate(now) {
   var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
   month = (month < 10 ? "0" + month : month);
   day = (day < 10 ? "0" + day : day);
-  var myCurrentMonthLastDate = (year.toString() + "-" + month.toString() + "-" + day.toString());
+  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
   return myCurrentMonthLastDate;
 };
 
 //获取月和日
 function getMonthDay(newDate) {
-  var newMonthDay = newDate.substring(5, 7) + "月" + newDate.substring(8, 10) + "日";
+  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
   return newMonthDay;
 };
 
 /**
- *  下面是去重的3个写法
- *  @1：最常规
- *  @2：思路好，但是性能差点
- *  @3：更好的
- */
+ ​ *  下面是去重的3个写法
+ ​ *  @1：最常规
+ ​ *  @2：思路好，但是性能差点
+ ​ *  @3：更好的
+ ​ */
 
 //@1:
 function unique_normal(arr) {
@@ -2809,7 +2603,7 @@ angular.module('myApp')
           url: '/time-off-manage',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/time-off-manage/timeOffManageList.html',
+              templateUrl: 'build/pages/application/time-off-manage/time-off-manage-list.html',
               controller: 'TimeOffManageCtrl'
             }
           }
@@ -2827,12 +2621,48 @@ angular.module('applicationModule')
               $state,
               baseConfig,
               $ionicHistory) {
-      $scope.paidHolidayLeftDays=20;//带薪年假剩余天数-蓝
-      $scope.paidHolidayTotalDays=90;//带薪年假总天数
-      $scope.paidSickLeftDays=50;//病假剩余天数-绿
-      $scope.paidSickTotalDays=90;//病假总天数
-      $scope.extPaidHolidayLeftDays=45;//橙色的剩余天数
-      $scope.extPaidHolidayTotalDays=90;//橙色的总天数
+
+      $scope.timeOffRecord ={
+        timeOffHeader : {
+          userId                 : 2201,
+          paidHoliday            : 10,
+          paidSickLeave          : 10,
+          extPaidHoliday         : 20,
+          usedPaidHoliday        : 5,
+          usedPaidSickLeave      : 2,
+          usedExtPaidHoliday     : 0
+        },
+        timeOffHistoryList      : [
+          {
+            holidayIcon          : '',
+            timeOffTypeCode      : 'paid-holiday',
+            timeOffTypeMeaning   : '带薪年假',
+            datetimeFrom         : '2016-6-16',
+            datetimeTo           : '2016-6-18',
+            timeLeave            : 2,
+            approveStatusCode    : 'APPROVED',
+            approveStatusMeaning : 'APPROVED',
+            applyReason          : '陪老婆去迪斯尼玩',
+            reason_image         : [
+              {
+                image_url1       : '',
+                image_url2       : '',
+                image_url3       : '',
+                image_url4       : '',
+                image_url5       : '',
+                image_url6       : '',
+                image_url7       : '',
+                image_url8       : '',
+                image_url9       : '',
+              }
+            ]
+          }
+        ]
+      };
+      $scope.timeOffCreate = function(){
+
+      }
+
     }]);
 
 /**
@@ -3605,6 +3435,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
   'hmsHttp',
   'hmsPopup',
   '$timeout',
+  'ApproveDetailService',
   function ($scope,
             $state,
             baseConfig,
@@ -3612,7 +3443,8 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
             $stateParams,
             hmsHttp,
             hmsPopup,
-            $timeout) {
+            $timeout,
+            ApproveDetailService) {
 
     /**
      * init var section
@@ -3624,6 +3456,10 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
       $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
       $scope.detailInfoArray = {}; //用于接收列表对应数据object
       $scope.selectArray = [];
+      if(ionic.Platform.isIOS()) {
+        angular.element('.ae-detail-head').css('marginTop','64px');
+        angular.element('#approveDetailContent').css('top','64px');
+      }
       var tsApproveDetailUrl = baseConfig.businessPath + "/wfl_timesheet_view/query_timesheet_approve_list";
       var tsApproveDetailParams = {
         "params": {
@@ -3645,12 +3481,25 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         "approve_list": []
       };
     }
+
+    $scope.$on('$ionicView.enter', function (e) {
+      ApproveDetailService.setRefreshFlag('');
+    });
+
+    $scope.$on('$destroy', function (e) {
+      warn('tsApproveListCtrl.$destroy');
+    });
+
     hmsPopup.showLoading('加载中...');
     function getData() {
       hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
         hmsPopup.hideLoading();
         if (hmsHttp.isSuccessfull(response.status)) {
           $scope.detailInfoArray = response.timesheet_approve_detail_response;
+          if ($scope.detailInfoArray.subsidy_list.length === 0) {
+            ApproveDetailService.setRefreshFlag('refresh-approve-list');
+            $ionicHistory.goBack();
+          }
         } else {
           if (response.status === 'E' || response.status == 'e') {
             hmsPopup.showShortCenterToast("没有相关数据!");
@@ -3665,20 +3514,11 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
     };
     getData();
 
-    $scope.$on('$ionicView.enter', function (e) {
-      warn('tsApproveListCtrl.$ionicView.enter');
-    });
-
-    $scope.$on('$destroy', function (e) {
-      warn('tsApproveListCtrl.$destroy');
-    });
-
-
     function __initSelectArray(selectParam) { //初始化选择按钮
       //先初始化数据操作--
       $scope.selectArray = [];
       selectItem = [];
-      angular.forEach($scope.detailInfoArray, function (data, index) {
+      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
         if ('undoSelectAll' == selectParam) {
           $scope.selectArray.push(false);
           selectItem.push(false);
@@ -3744,9 +3584,10 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
             "p_end_date": "",
             "p_record_id": ""
           };
-          approve.p_record_id = $scope.listInfoArray.subsidy_list[i].line_number;
+          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
           approveList.approve_list.push(approve);
         }
+        warn(approveList.approve_list);
       } else {
         __initSelectArray('undoSelectAll');
         approveList.approve_list = [];
@@ -3758,12 +3599,15 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         if (approveList.approve_list[i] === 'delete') {
           approveList.approve_list.splice(i, 1);
           i--;
+        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
+          approveList.approve_list.splice(i, 1);
+          i--;
         }
       }
     };
 
     $scope.passThroughDetailItem = function () { //通过
-      if(approveList.approve_list.length === 0) {
+      if (approveList.approve_list.length === 0) {
         hmsPopup.showShortCenterToast('请先选择操作项！');
         return;
       }
@@ -3782,7 +3626,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
           getData();
-        },1500);
+        }, 1000);
       }).error(function (e) {
         hmsPopup.hideLoading();
         hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
@@ -3790,12 +3634,12 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
           getData();
-        },1500);
+        }, 1000);
       });
     };
 
     $scope.refuseDetailItem = function () { //拒绝
-      if(approveList.approve_list.length === 0) {
+      if (approveList.approve_list.length === 0) {
         hmsPopup.showShortCenterToast('请先选择操作项！');
         return;
       }
@@ -3806,7 +3650,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
       hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
         hmsPopup.hideLoading();
         if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('操作成功！');
+          hmsPopup.showShortCenterToast('拒绝成功');
         } else {
           hmsPopup.showShortCenterToast('拒绝失败！');
         }
@@ -3814,7 +3658,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
           getData();
-        },1500);
+        }, 1000);
       }).error(function (e) {
         hmsPopup.hideLoading();
         hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
@@ -3822,10 +3666,20 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
           getData();
-        },1500);
+        }, 1000);
       });
     };
-  }]);
+  }]).service('ApproveDetailService', function () {
+  var flag = ''; //刷新上个列表的标识
+  return {
+    setRefreshFlag: function (newFlag) {
+      flag = newFlag;
+    },
+    getRefreshFlag: function () {
+      return flag;
+    }
+  }
+});
 
 
 /**
@@ -3861,6 +3715,7 @@ angular.module('tsApproveModule')
     'TsApproveListService',
     'hmsPopup',
     'hmsHttp',
+    'ApproveDetailService',
     function ($scope,
               $state,
               baseConfig,
@@ -3870,11 +3725,16 @@ angular.module('tsApproveModule')
               $timeout,
               TsApproveListService,
               hmsPopup,
-              hmsHttp) {
+              hmsHttp,
+              ApproveDetailService) {
       /**
        * initial var section
        */
       {
+        if(ionic.Platform.isIOS()) {
+          angular.element('.custom-head').css('paddingTop','10px');
+          angular.element('.ts-list-bg').css('paddingTop','110px');
+        }
         $scope.showProjectName = true; //默认显示项目名称
         $scope.showRocket = false; //默认不显示小火箭image
         $scope.showConnectBlock = false; //默认不显示连接块
@@ -3927,10 +3787,10 @@ angular.module('tsApproveModule')
           "approve_list": []
         };
         var currentDay = new Date().getDate();
-        if (currentDay < 10) {
+        if (currentDay <= 10) {
           tsListParams.params.p_end_date = getLastMonthDate(new Date());
           $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, "");
-        } else if (currentDay > 10 && currentDay < 20) {
+        } else if (currentDay > 10 && currentDay <= 20) {
           tsListParams.params.p_end_date = getCurrentDate(new Date());
           $scope.endApproveDate = getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, "");
         } else if (currentDay > 20) {
@@ -3956,6 +3816,9 @@ angular.module('tsApproveModule')
       initData();
 
       $scope.$on('$ionicView.enter', function (e) {
+        if (ApproveDetailService.getRefreshFlag() === 'refresh-approve-list') {
+          $scope.tsListRefresh();
+        }
       });
 
       $scope.$on('$destroy', function (e) {
@@ -3966,7 +3829,7 @@ angular.module('tsApproveModule')
         //先初始化数据操作--
         $scope.selectArray = [];
         selectItem = [];
-        angular.forEach($scope.listInfoArray, function (data, index) {
+        angular.forEach($scope.listInfoArray.listArray, function (data, index) {
           if ('undoSelectAll' == selectParam) {
             $scope.selectArray.push(false);
             selectItem.push(false);
@@ -4134,9 +3997,9 @@ angular.module('tsApproveModule')
               "p_record_id": ""
             };
             approve.p_project_id = $scope.listInfoArray.listArray[i].project_id;
-            approve.p_project_person_number = $scope.listInfoArray[i].employee_number;
-            approve.p_start_date = $scope.listInfoArray[i].start_date;
-            approve.p_end_date = $scope.listInfoArray[i].end_date;
+            approve.p_project_person_number = $scope.listInfoArray.listArray[i].employee_number;
+            approve.p_start_date = $scope.listInfoArray.listArray[i].start_date;
+            approve.p_end_date = $scope.listInfoArray.listArray[i].end_date;
             approveList.approve_list.push(approve);
           }
           __initSelectArray('selectedAll');
@@ -4149,6 +4012,9 @@ angular.module('tsApproveModule')
       function deleteSuperfluous() {
         for (var i = 0; i < approveList.approve_list.length; i++) {
           if (approveList.approve_list[i] === 'delete') {
+            approveList.approve_list.splice(i, 1);
+            i--;
+          } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
             approveList.approve_list.splice(i, 1);
             i--;
           }
@@ -4173,14 +4039,14 @@ angular.module('tsApproveModule')
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1500);
+          }, 1000);
         }).error(function (e) {
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1500);
+          }, 1000);
         });
       };
 
@@ -4203,14 +4069,14 @@ angular.module('tsApproveModule')
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1500);
+          }, 1000);
         }).error(function (e) {
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1500);
+          }, 1000);
         });
       };
 
@@ -4220,13 +4086,12 @@ angular.module('tsApproveModule')
       $scope.selectScreening = function (selectParam) {
         if (selectParam == 'projectName') {
           $scope.showProjectName = true;
-          angular.element('#project-name').addClass('active-select');
-          angular.element('#project-name').removeClass('active-off');
-          angular.element('#person-select').removeClass('active-select');
+          angular.element('#project-name').css({'backgroundColor':'white','color':'#4A4A4A'});
+          angular.element('#person-select').css({'backgroundColor':'#fafafa','color':'#9b9b9b'});
         } else if (selectParam == 'personSelect') {
           $scope.showProjectName = false;
-          angular.element('#person-select').addClass('active-select');
-          angular.element('#project-name').addClass('active-off');
+          angular.element('#person-select').css({'backgroundColor':'white','color':'#4A4A4A'});
+          angular.element('#project-name').css({'backgroundColor':'#fafafa','color':'#9b9b9b'});
         }
       };
 

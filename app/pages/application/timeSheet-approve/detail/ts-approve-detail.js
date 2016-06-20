@@ -32,6 +32,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
   'hmsHttp',
   'hmsPopup',
   '$timeout',
+  'ApproveDetailService',
   function ($scope,
             $state,
             baseConfig,
@@ -39,7 +40,8 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
             $stateParams,
             hmsHttp,
             hmsPopup,
-            $timeout) {
+            $timeout,
+            ApproveDetailService) {
 
     /**
      * init var section
@@ -51,6 +53,10 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
       $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
       $scope.detailInfoArray = {}; //用于接收列表对应数据object
       $scope.selectArray = [];
+      if(ionic.Platform.isIOS()) {
+        angular.element('.ae-detail-head').css('marginTop','64px');
+        angular.element('#approveDetailContent').css('top','64px');
+      }
       var tsApproveDetailUrl = baseConfig.businessPath + "/wfl_timesheet_view/query_timesheet_approve_list";
       var tsApproveDetailParams = {
         "params": {
@@ -72,12 +78,25 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         "approve_list": []
       };
     }
+
+    $scope.$on('$ionicView.enter', function (e) {
+      ApproveDetailService.setRefreshFlag('');
+    });
+
+    $scope.$on('$destroy', function (e) {
+      warn('tsApproveListCtrl.$destroy');
+    });
+
     hmsPopup.showLoading('加载中...');
     function getData() {
       hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
         hmsPopup.hideLoading();
         if (hmsHttp.isSuccessfull(response.status)) {
           $scope.detailInfoArray = response.timesheet_approve_detail_response;
+          if ($scope.detailInfoArray.subsidy_list.length === 0) {
+            ApproveDetailService.setRefreshFlag('refresh-approve-list');
+            $ionicHistory.goBack();
+          }
         } else {
           if (response.status === 'E' || response.status == 'e') {
             hmsPopup.showShortCenterToast("没有相关数据!");
@@ -92,20 +111,11 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
     };
     getData();
 
-    $scope.$on('$ionicView.enter', function (e) {
-      warn('tsApproveListCtrl.$ionicView.enter');
-    });
-
-    $scope.$on('$destroy', function (e) {
-      warn('tsApproveListCtrl.$destroy');
-    });
-
-
     function __initSelectArray(selectParam) { //初始化选择按钮
       //先初始化数据操作--
       $scope.selectArray = [];
       selectItem = [];
-      angular.forEach($scope.detailInfoArray, function (data, index) {
+      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
         if ('undoSelectAll' == selectParam) {
           $scope.selectArray.push(false);
           selectItem.push(false);
@@ -171,9 +181,10 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
             "p_end_date": "",
             "p_record_id": ""
           };
-          approve.p_record_id = $scope.listInfoArray.subsidy_list[i].line_number;
+          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
           approveList.approve_list.push(approve);
         }
+        warn(approveList.approve_list);
       } else {
         __initSelectArray('undoSelectAll');
         approveList.approve_list = [];
@@ -185,12 +196,15 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         if (approveList.approve_list[i] === 'delete') {
           approveList.approve_list.splice(i, 1);
           i--;
+        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
+          approveList.approve_list.splice(i, 1);
+          i--;
         }
       }
     };
 
     $scope.passThroughDetailItem = function () { //通过
-      if(approveList.approve_list.length === 0) {
+      if (approveList.approve_list.length === 0) {
         hmsPopup.showShortCenterToast('请先选择操作项！');
         return;
       }
@@ -209,7 +223,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
           getData();
-        },1500);
+        }, 1000);
       }).error(function (e) {
         hmsPopup.hideLoading();
         hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
@@ -217,12 +231,12 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
           getData();
-        },1500);
+        }, 1000);
       });
     };
 
     $scope.refuseDetailItem = function () { //拒绝
-      if(approveList.approve_list.length === 0) {
+      if (approveList.approve_list.length === 0) {
         hmsPopup.showShortCenterToast('请先选择操作项！');
         return;
       }
@@ -233,7 +247,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
       hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
         hmsPopup.hideLoading();
         if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('操作成功！');
+          hmsPopup.showShortCenterToast('拒绝成功');
         } else {
           hmsPopup.showShortCenterToast('拒绝失败！');
         }
@@ -241,7 +255,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
           getData();
-        },1500);
+        }, 1000);
       }).error(function (e) {
         hmsPopup.hideLoading();
         hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
@@ -249,8 +263,18 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
           getData();
-        },1500);
+        }, 1000);
       });
     };
-  }]);
+  }]).service('ApproveDetailService', function () {
+  var flag = ''; //刷新上个列表的标识
+  return {
+    setRefreshFlag: function (newFlag) {
+      flag = newFlag;
+    },
+    getRefreshFlag: function () {
+      return flag;
+    }
+  }
+});
 

@@ -31,6 +31,7 @@ angular.module('tsApproveModule')
     'TsApproveListService',
     'hmsPopup',
     'hmsHttp',
+    'ApproveDetailService',
     function ($scope,
               $state,
               baseConfig,
@@ -40,11 +41,16 @@ angular.module('tsApproveModule')
               $timeout,
               TsApproveListService,
               hmsPopup,
-              hmsHttp) {
+              hmsHttp,
+              ApproveDetailService) {
       /**
        * initial var section
        */
       {
+        if(ionic.Platform.isIOS()) {
+          angular.element('.custom-head').css('paddingTop','10px');
+          angular.element('.ts-list-bg').css('paddingTop','110px');
+        }
         $scope.showProjectName = true; //默认显示项目名称
         $scope.showRocket = false; //默认不显示小火箭image
         $scope.showConnectBlock = false; //默认不显示连接块
@@ -97,10 +103,10 @@ angular.module('tsApproveModule')
           "approve_list": []
         };
         var currentDay = new Date().getDate();
-        if (currentDay < 10) {
+        if (currentDay <= 10) {
           tsListParams.params.p_end_date = getLastMonthDate(new Date());
           $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, "");
-        } else if (currentDay > 10 && currentDay < 20) {
+        } else if (currentDay > 10 && currentDay <= 20) {
           tsListParams.params.p_end_date = getCurrentDate(new Date());
           $scope.endApproveDate = getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, "");
         } else if (currentDay > 20) {
@@ -126,6 +132,9 @@ angular.module('tsApproveModule')
       initData();
 
       $scope.$on('$ionicView.enter', function (e) {
+        if (ApproveDetailService.getRefreshFlag() === 'refresh-approve-list') {
+          $scope.tsListRefresh();
+        }
       });
 
       $scope.$on('$destroy', function (e) {
@@ -136,7 +145,7 @@ angular.module('tsApproveModule')
         //先初始化数据操作--
         $scope.selectArray = [];
         selectItem = [];
-        angular.forEach($scope.listInfoArray, function (data, index) {
+        angular.forEach($scope.listInfoArray.listArray, function (data, index) {
           if ('undoSelectAll' == selectParam) {
             $scope.selectArray.push(false);
             selectItem.push(false);
@@ -304,9 +313,9 @@ angular.module('tsApproveModule')
               "p_record_id": ""
             };
             approve.p_project_id = $scope.listInfoArray.listArray[i].project_id;
-            approve.p_project_person_number = $scope.listInfoArray[i].employee_number;
-            approve.p_start_date = $scope.listInfoArray[i].start_date;
-            approve.p_end_date = $scope.listInfoArray[i].end_date;
+            approve.p_project_person_number = $scope.listInfoArray.listArray[i].employee_number;
+            approve.p_start_date = $scope.listInfoArray.listArray[i].start_date;
+            approve.p_end_date = $scope.listInfoArray.listArray[i].end_date;
             approveList.approve_list.push(approve);
           }
           __initSelectArray('selectedAll');
@@ -319,6 +328,9 @@ angular.module('tsApproveModule')
       function deleteSuperfluous() {
         for (var i = 0; i < approveList.approve_list.length; i++) {
           if (approveList.approve_list[i] === 'delete') {
+            approveList.approve_list.splice(i, 1);
+            i--;
+          } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
             approveList.approve_list.splice(i, 1);
             i--;
           }
@@ -343,14 +355,14 @@ angular.module('tsApproveModule')
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1500);
+          }, 1000);
         }).error(function (e) {
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1500);
+          }, 1000);
         });
       };
 
@@ -373,14 +385,14 @@ angular.module('tsApproveModule')
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1500);
+          }, 1000);
         }).error(function (e) {
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1500);
+          }, 1000);
         });
       };
 
@@ -390,13 +402,12 @@ angular.module('tsApproveModule')
       $scope.selectScreening = function (selectParam) {
         if (selectParam == 'projectName') {
           $scope.showProjectName = true;
-          angular.element('#project-name').addClass('active-select');
-          angular.element('#project-name').removeClass('active-off');
-          angular.element('#person-select').removeClass('active-select');
+          angular.element('#project-name').css({'backgroundColor':'white','color':'#4A4A4A'});
+          angular.element('#person-select').css({'backgroundColor':'#fafafa','color':'#9b9b9b'});
         } else if (selectParam == 'personSelect') {
           $scope.showProjectName = false;
-          angular.element('#person-select').addClass('active-select');
-          angular.element('#project-name').addClass('active-off');
+          angular.element('#person-select').css({'backgroundColor':'white','color':'#4A4A4A'});
+          angular.element('#project-name').css({'backgroundColor':'#fafafa','color':'#9b9b9b'});
         }
       };
 

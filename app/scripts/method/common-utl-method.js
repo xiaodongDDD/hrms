@@ -26,7 +26,7 @@ function getCurrentDate(now) {
   var day = now.getDate();            //日
   month = (month < 10 ? "0" + month : month);
   day = (day < 10 ? "0" + day : day);
-  var myCurrentDate = (year.toString() + "-" + month.toString() + "-" + day.toString());
+  var myCurrentDate = (year.toString() + month.toString() + day.toString());
   return myCurrentDate;
 };
 
@@ -39,7 +39,7 @@ function getLastMonthDate(now) {
   var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
   month = (month < 10 ? "0" + month : month);
   day = (day < 10 ? "0" + day : day);
-  var myLastMonthDate = (year.toString() + "-" + month.toString() + "-" + day.toString());
+  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
   return myLastMonthDate;
 };
 
@@ -52,22 +52,22 @@ function getCurrentMonthLastDate(now) {
   var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
   month = (month < 10 ? "0" + month : month);
   day = (day < 10 ? "0" + day : day);
-  var myCurrentMonthLastDate = (year.toString() + "-" + month.toString() + "-" + day.toString());
+  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
   return myCurrentMonthLastDate;
 };
 
 //获取月和日
 function getMonthDay(newDate) {
-  var newMonthDay = newDate.substring(5, 7) + "月" + newDate.substring(8, 10) + "日";
+  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
   return newMonthDay;
 };
 
 /**
- *  下面是去重的3个写法
- *  @1：最常规
- *  @2：思路好，但是性能差点
- *  @3：更好的
- */
+ ​ *  下面是去重的3个写法
+ ​ *  @1：最常规
+ ​ *  @2：思路好，但是性能差点
+ ​ *  @3：更好的
+ ​ */
 
 //@1:
 function unique_normal(arr) {
