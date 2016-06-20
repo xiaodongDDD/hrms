@@ -11,6 +11,7 @@ angular.module('loginModule')
     '$http',
     '$timeout',
     '$ionicHistory',
+    '$ionicPlatform',
     'hmsPopup',
     function ($scope,
               $state,
@@ -19,6 +20,7 @@ angular.module('loginModule')
               $http,
               $timeout,
               $ionicHistory,
+              $ionicPlatform,
               hmsPopup) {
 
       //将页面的导航bar设置成白色
