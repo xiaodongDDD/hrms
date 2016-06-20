@@ -25,7 +25,7 @@
   border-style: solid;
   border-top: 1px solid transparent;
   border-bottom: 1px solid #ddd;
-  background-image: url("./../img/application/time-off-manage/Bar-L@3x.png");
+  background-image: url("./../img/application/time-off-manage/HeaderBar-Large@3x.png");
   background-size: cover;
   .title {
     display: block;
@@ -224,7 +224,7 @@
   }
   .time-off-item {
     padding: 0px;
-    height: 109px;
+    height: 110px;
     width: 97.4%;
     margin-left: 1.3%;
     margin-bottom: 15px;
@@ -233,18 +233,9 @@
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18);
     .time-off-item-left {
       width: 116px;
-      height: 109px;
+      height: 110px;
       padding: 0px;
       border-radius: 5px 0px 0px 5px;
-      &.paid-holiday {
-        border-left: 3px solid #3964A4;
-      }
-      &.paid-sick-leave {
-        border-left: 3px solid #73BBA2;
-      }
-      &.ext-paid-holiday {
-        border-left: 3px solid #F99D32;
-      }
     }
     .time-off-item-middle {
       margin-left: 2%;
@@ -288,6 +279,7 @@
         }
       }
       .approve-status {
+        margin-top: 5px;
         font-size: 14px;
         &.approved {
           color: #B95756;
