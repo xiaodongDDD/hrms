@@ -12,28 +12,28 @@
       <div class="row circle-row">
         <div class="col col-33 time-off-col"></div>
         <div class="col col-33 time-off-col">
-        <div class="row no-space">
-          <div class="circle-wrap">
-            <div class="hrms-circle">
-               <div class="shelter left">
-                 <div id="left_ball" class="circle left-circle dorm-apply-style-circle"></div>
-               </div>
-            <div class="shelter right">
-                 <div id="right_ball" class="circle right-circle dorm-apply-style-circle"></div>
+          <div class="row no-space">
+            <div class="dorm-circle-wrap">
+              <div class="dorm-hrms-circle">
+                <div class="dorm-shelter left">
+                  <div id="left_ball" class="dorm-circle dorm-left-circle dorm-apply-style-circle"></div>
+                </div>
+                <div class="dorm-shelter right">
+                  <div id="right_ball" class="dorm-circle dorm-right-circle dorm-apply-style-circle"></div>
+                </div>
+                <label class="dorm-up-title" style="width: 100%">剩余</label>
+                <label class="dorm-center-title dorm-apply-style" style="width: 100%">{{leftDays}}天</label>
+              </div>
             </div>
-             <label class="up-title" style="width: 100%">剩余</label>
-             <label class="center-title dorm-apply-style" style="width: 100%">{{leftDays}}天</label>
-            </div>
-           </div>
+          </div>
+          <div class="row circle-label-row1">
+            <label class="circle-label">住宿时间</label>
+          </div>
+          <div class="row circle-label-row2">
+            <label class="circle-label">剩余时间：{{leftDays}}天</label>
+          </div>
         </div>
-        <div class="row circle-label-row1">
-          <label class="circle-label">住宿时间</label>
-        </div>
-        <div class="row circle-label-row2">
-          <label class="circle-label">剩余时间：{{leftDays}}天</label>
-        </div>
-       </div>
-       <div class="col col-33 time-off-col"></div>
+        <div class="col col-33 time-off-col"></div>
       </div>
     </div>
   </div>
