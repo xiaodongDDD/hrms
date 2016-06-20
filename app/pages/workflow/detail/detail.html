@@ -1,55 +1,86 @@
-<ion-view view-title="待办事明细" class="workflow">
-  <ion-header-bar align-title="center" class="bar-stable">
+<ion-view view-title="待办事项明细" class="workflow-detail">
+  <ion-header-bar align-title="center" style="background:none">
     <div class="buttons">
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
         <span class="back-text">返回</span>
       </button>
     </div>
-    <h1 class="title">待办事明细</h1>
+    <h1 class="title" style="color: white">待办事项明细</h1>
     <div class="buttons">
       <button class="button button-clear" style="font-size: 26px">
-        <i class="ion-ios-help-outline"></i>
+        <i class=""></i>
       </button>
     </div>
   </ion-header-bar>
-  <ion-content>
+  <ion-content style="bottom:74px">
     <div class="hms-workflow-history">
-
+      <div class="history-slide">
+        <i class="ion-ios-arrow-right"></i>
+      </div>
+      <div style="margin-top: 48px;width:100%; position: absolute; border-bottom: 1px solid #FAFAFA;"></div>
+      <div class="history-content">
+        <ion-scroll direction="x" scrollbar-x="false" style="width: 500px; height: 136px">
+          <div style="height: 136px;width: 600px;">
+            <div class="history-item" ng-repeat="history in historyList">
+              <div class="history-item-time-line" ng-bind="history.creation_date">
+              </div>
+              <div class="history-item-node-icon">
+                <img src="build/img/workflow/process-O@2x.png"/>
+              </div>
+              <div class="history-item-node-name" ng-bind="history.node_name">
+              </div>
+              <div class="history-item-employee" ng-bind="history.name">
+              </div>
+            </div>
+          </div>
+        </ion-scroll>
+      </div>
     </div>
-    <div class="hms-workflow-array">
-      <div class="hms-array-header">
-        <div class="hms-array-name">
-          明细信息
+
+    <div class="hms-workflow-array" ng-repeat="array in singalArrayList">
+      <div class="hms-singal-array-header">
+        <div class="hms-singal-array-name">
+          <i class="ion-ios-sunny"></i>{{array.detail_title}}&nbsp;
         </div>
-        <div class="hms-array-operation">
+        <div class="hms-singal-array-operation">
           <i class="ion-ios-arrow-up"></i>
         </div>
       </div>
-      <div class="hms-array-content">
-        <div class="hms-array-line" ng-repeat="item in templateOne">
-          <div class="hms-array-key">
-            {{item.item_name}}
+      <div class="hms-singal-array-content">
+        <div class="hms-singal-array-line" ng-repeat="arrayItem in array.detail">
+          <div class="hms-singal-array-key" ng-bind="arrayItem.item_name">
           </div>
-          <div class="hms-array-value">
-            {{item.item_value}}
+          <div class="hms-singal-array-value" ng-bind="arrayItem.item_value">
           </div>
         </div>
       </div>
     </div>
   </ion-content>
 
-  <ion-footer-bar>
-    <div class="buttons">
-      <button class="button" ng-click="selectAll()" style="background:white;color: #F99D32;font-size: 16px">全选</button>
+  <div class="hms-workflow-submit">
+    <div class="hms-workflow-reject">
+      拒绝
     </div>
-    <div class="buttons" ng-click="doSomething()">
-      <button class="button" ng-click="deleteAll()" style="background:white;color: #B95756;font-size: 16px">删除</button>
+    <div class="hms-workflow-other">
+      <div class="hms-workflow-function">
+        <div class="hms-work-approve">
+          <img src="build/img/workflow/deliver@3x.png"/>
+        </div>
+        <div class="hms-work-transmit">
+          <img src="build/img/workflow/approval2@3x.png"/>
+        </div>
+      </div>
+      <div class="hms-workflow-other-alias">
+        <div class="hms-work-approve-alias">
+          审批
+        </div>
+        <div class="hms-work-transmit-alias">
+          转交
+        </div>
+      </div>
     </div>
-    <div class="buttons" ng-click="doSomething()">
-    <button class="button" ng-click="deleteAll()" style="background:white;color: #B95756;font-size: 16px">删除</button>
+    <div class="hms-workflow-back">
+      退回
+    </div>
   </div>
-    <div class="buttons" ng-click="doSomething()">
-      <button class="button" ng-click="deleteAll()" style="background:white;color: #B95756;font-size: 16px">删除</button>
-    </div>
-  </ion-footer-bar>
 </ion-view>

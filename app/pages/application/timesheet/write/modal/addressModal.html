@@ -11,7 +11,7 @@
   </ion-header-bar>
   <ion-content class="address-modal">
     <ion-list>
-      <ion-item ng-repeat="address in addressList">
+      <ion-item ng-repeat="address in addressList" ng-click="selectAddress(address)">
         {{address.address_name}}
       </ion-item>
     </ion-list>

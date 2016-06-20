@@ -128,7 +128,7 @@ angular.module('applicationModule')
         }
         $timeout(function () {
           WorkFLowListService.getTodoList('N', success, error);
-        }, 1000);
+        }, 100);
       };
 
       var getDoneList = function (pullRefresh) {
@@ -172,7 +172,7 @@ angular.module('applicationModule')
         }
         $timeout(function () {
           WorkFLowListService.getTodoList('Y', success, error);
-        }, 1000);
+        }, 100);
       };
 
       getTodoList(false);

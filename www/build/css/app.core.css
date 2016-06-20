@@ -390,8 +390,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -416,8 +416,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -2543,52 +2543,48 @@ Copyright (c) 2015 Daniel Eden
   border-bottom: 1px solid #ddd;
   background-image: url("./../img/application/time-off-manage/Bar-L@3x.png");
   background-size: cover; }
-
-.time-off-header-bar .title {
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 0;
-  overflow: hidden;
-  margin: 0 10px;
-  min-width: 30px;
-  height: 43px;
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 17px;
-  font-weight: 500;
-  line-height: 44px;
-  color: white; }
-
-.time-off-header-bar .buttons {
-  display: inherit; }
-
-.time-off-header-bar .buttons .right-button {
-  position: absolute;
-  top: 0px;
-  right: 5px;
-  color: white;
-  font-size: 17px;
-  min-height: 31px;
-  line-height: 42px;
-  z-index: 1;
-  padding: 0 8px;
-  min-width: initial; }
-
-.time-off-header-bar .buttons .left-button {
-  position: absolute;
-  top: 0px;
-  left: 5px;
-  color: white;
-  font-size: 17px;
-  min-height: 31px;
-  line-height: 42px;
-  z-index: 1;
-  padding: 0 8px;
-  min-width: initial; }
+  .time-off-header-bar .title {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    margin: 0 10px;
+    min-width: 30px;
+    height: 43px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 44px;
+    color: white; }
+  .time-off-header-bar .buttons {
+    display: inherit; }
+    .time-off-header-bar .buttons .right-button {
+      position: absolute;
+      top: 0px;
+      right: 5px;
+      color: white;
+      font-size: 17px;
+      min-height: 31px;
+      line-height: 42px;
+      z-index: 1;
+      padding: 0 8px;
+      min-width: initial; }
+    .time-off-header-bar .buttons .left-button {
+      position: absolute;
+      top: 0px;
+      left: 5px;
+      color: white;
+      font-size: 17px;
+      min-height: 31px;
+      line-height: 42px;
+      z-index: 1;
+      padding: 0 8px;
+      min-width: initial; }
 
 .time-off-sub-header {
   position: absolute;
@@ -2617,84 +2613,156 @@ Copyright (c) 2015 Daniel Eden
   position: absolute;
   width: 82px;
   height: 82px; }
+  .hrms-circle .up-title {
+    position: absolute;
+    height: 20px;
+    width: 82px;
+    top: 20px;
+    display: block;
+    font-size: 15px;
+    color: #9B9B9B; }
+  .hrms-circle .center-title {
+    position: absolute;
+    height: 24px;
+    width: 82px;
+    top: 40px;
+    display: block;
+    font-size: 18px; }
+    .hrms-circle .center-title.paid-holiday {
+      color: #25569D; }
+    .hrms-circle .center-title.paid-sick-leave {
+      color: #417505; }
+    .hrms-circle .center-title.ext-paid-holiday {
+      color: #F99D32; }
+  .hrms-circle .shelter {
+    position: absolute;
+    width: 41px;
+    height: 82px;
+    top: 0px;
+    overflow: hidden; }
+  .hrms-circle .left {
+    left: 0px; }
+  .hrms-circle .right {
+    right: 0px; }
+  .hrms-circle .circle {
+    position: absolute;
+    width: 82px;
+    height: 82px;
+    top: 0px;
+    border-radius: 50%;
+    background: white;
+    border: 6px solid transparent;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg); }
 
-.hrms-circle .up-title {
-  position: absolute;
-  height: 20px;
-  width: 78px;
-  top: 20px;
-  display: block;
-  font-size: 15px;
-  color: #9B9B9B; }
+.hrms-circle .left-circle {
+  left: 0px;
+  -webkit-animation: circle_left 1s linear 1;
+  animation: circle_left 1s linear 1; }
+  .hrms-circle .left-circle.paid-holiday {
+    border-bottom: 6px solid #6BB9F0;
+    border-left: 6px solid #6BB9F0; }
+  .hrms-circle .left-circle.paid-sick-leave {
+    border-bottom: 6px solid #73BBA2;
+    border-left: 6px solid #73BBA2; }
+  .hrms-circle .left-circle.ext-paid-holiday {
+    border-bottom: 6px solid #F99D32;
+    border-left: 6px solid #F99D32; }
 
-.hrms-circle .center-title {
-  position: absolute;
-  height: 24px;
-  width: 78px;
-  top: 40px;
-  display: block;
-  font-size: 18px; }
-  .hrms-circle .center-title.paid-holiday {
-    color: #25569D; }
-  .hrms-circle .center-title.paid-sick-leave {
-    color: #417505; }
-  .hrms-circle .center-title.ext-paid-holiday {
-    color: #F99D32; }
+.hrms-circle .right-circle {
+  right: 0px;
+  -webkit-animation: circle_right 1s linear 1;
+  animation: circle_right 1s linear 1; }
+  .hrms-circle .right-circle.paid-holiday {
+    border-top: 6px solid #6BB9F0;
+    border-right: 6px solid #6BB9F0; }
+  .hrms-circle .right-circle.paid-sick-leave {
+    border-top: 6px solid #73BBA2;
+    border-right: 6px solid #73BBA2; }
+  .hrms-circle .right-circleext-paid-holiday {
+    border-top: 6px solid #F99D32;
+    border-right: 6px solid #F99D32; }
 
-.hrms-circle .shelter {
-  position: absolute;
-  width: 41px;
-  height: 82px;
-  top: 0px;
-  overflow: hidden; }
+@-webkit-keyframes circle_left {
+  0%, 50% {
+    -webkit-transform: rotate(-135deg); }
+  75%, 100% {
+    -webkit-transform: rotate(45deg); } }
 
-.hrms-circle .left {
-  left: 0px; }
+@-webkit-keyframes circle_right {
+  0% {
+    -webkit-transform: rotate(-135deg); }
+  50%, 100% {
+    -webkit-transform: rotate(45deg); } }
 
-.hrms-circle .right {
-  right: 0px; }
-
-.hrms-circle .circle {
-  position: absolute;
-  width: 82px;
-  height: 82px;
-  top: 0px;
-  border-radius: 50%;
-  background: white;
-  border: 6px solid transparent;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg); }
-
-.hrms-circle .left-circle.paid-holiday {
-  border-bottom: 6px solid #6BB9F0;
-  border-left: 6px solid #6BB9F0;
-  left: 0px; }
-
-.hrms-circle .left-circle.paid-sick-leave {
-  border-bottom: 6px solid #73BBA2;
-  border-left: 6px solid #73BBA2;
-  left: 0px; }
-
-.hrms-circle .left-circle.ext-paid-holiday {
-  border-bottom: 6px solid #F99D32;
-  border-left: 6px solid #F99D32;
-  left: 0px; }
-
-.hrms-circle .right-circle.paid-holiday {
-  border-top: 6px solid #6BB9F0;
-  border-right: 6px solid #6BB9F0;
-  right: 0px; }
-
-.hrms-circle .right-circle.paid-sick-leave {
-  border-top: 6px solid #73BBA2;
-  border-right: 6px solid #73BBA2;
-  right: 0px; }
-
-.hrms-circle .right-circle.ext-paid-holiday {
-  border-top: 6px solid #F99D32;
-  border-right: 6px solid #F99D32;
-  right: 0px; }
+.time-off-content {
+  top: 180px; }
+  .time-off-content .time-off-list-title {
+    font-size: 16px;
+    margin-left: 1.3%;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    color: #3964A4; }
+  .time-off-content .time-off-item {
+    padding: 0px;
+    height: 109px;
+    width: 97.4%;
+    margin-left: 1.3%;
+    margin-bottom: 15px;
+    border-top: 1px solid #F8F8F8;
+    border-radius: 5px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18); }
+    .time-off-content .time-off-item .time-off-item-left {
+      width: 116px;
+      height: 109px;
+      padding: 0px;
+      border-radius: 5px 0px 0px 5px; }
+      .time-off-content .time-off-item .time-off-item-left.paid-holiday {
+        border-left: 3px solid #3964A4; }
+      .time-off-content .time-off-item .time-off-item-left.paid-sick-leave {
+        border-left: 3px solid #73BBA2; }
+      .time-off-content .time-off-item .time-off-item-left.ext-paid-holiday {
+        border-left: 3px solid #F99D32; }
+    .time-off-content .time-off-item .time-off-item-middle {
+      margin-left: 2%; }
+      .time-off-content .time-off-item .time-off-item-middle .item-off-item-title {
+        font-size: 14px;
+        padding-top: 5px;
+        padding-bottom: 10px; }
+        .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.paid-holiday {
+          color: #6BB9F0; }
+        .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.paid-sick-leave {
+          color: #73BBA2; }
+        .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.ext-paid-holiday {
+          color: #F99D32; }
+      .time-off-content .time-off-item .time-off-item-middle .item-off-item-text {
+        font-size: 14px;
+        color: #9B9B9B; }
+    .time-off-content .time-off-item .time-off-item-right {
+      text-align: center; }
+      .time-off-content .time-off-item .time-off-item-right .time-circle {
+        height: 46px;
+        width: 46px;
+        line-height: 46px;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 50%;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); }
+        .time-off-content .time-off-item .time-off-item-right .time-circle.paid-holiday {
+          color: #6BB9F0; }
+        .time-off-content .time-off-item .time-off-item-right .time-circle.paid-sick-leave {
+          color: #73BBA2; }
+        .time-off-content .time-off-item .time-off-item-right .time-circle.ext-paid-holiday {
+          color: #F99D32; }
+      .time-off-content .time-off-item .time-off-item-right .approve-status {
+        font-size: 14px; }
+        .time-off-content .time-off-item .time-off-item-right .approve-status.approved {
+          color: #B95756; }
+        .time-off-content .time-off-item .time-off-item-right .approve-status.approving {
+          color: #25569D; }
+        .time-off-content .time-off-item .time-off-item-right .approve-status.rejected {
+          color: #F99D32; }
 
 .ts-list-bg {
   border-color: #b2b2b2;
@@ -3149,15 +3217,15 @@ Copyright (c) 2015 Daniel Eden
   right: 15px;
   position: fixed; }
 
-.modal-backdrop, .modal-backdrop-bg {
+/*.modal-backdrop, .modal-backdrop-bg {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 10;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.18); }
-
+  background-color: rgba(0, 0, 0, 0.18);
+}*/
 .warn-attention-icon {
   background-image: url("./../img/application/timesheet-approve/list/attention-s@3x.png");
   background-repeat: no-repeat;
@@ -4577,6 +4645,18 @@ Copyright (c) 2015 Daniel Eden
           margin: 5px 0px;
           border-bottom: 2px dashed #dddddd; }
 
+.timesheet-write .title-header {
+  width: 100%;
+  height: 28px;
+  line-height: 28px; }
+
+.timesheet-write .title-sub-header {
+  width: 100%;
+  height: 14px;
+  line-height: 14px;
+  font-size: 14px;
+  font-weight: normal; }
+
 .timesheet-write .no-padding {
   margin: 0;
   padding: 0; }
@@ -4654,6 +4734,195 @@ Copyright (c) 2015 Daniel Eden
   height: 200px;
   width: 100%;
   background: #4cd964; }
+
+.workflow-detail {
+  background: url("../img/workflow/BG@3x.png");
+  background-size: cover;
+  background-repeat: no-repeat; }
+  .workflow-detail .hms-workflow-history {
+    width: 100%;
+    height: 136px;
+    position: relative;
+    padding-top: 10px; }
+    .workflow-detail .hms-workflow-history .history-slide {
+      z-index: 99;
+      position: absolute;
+      left: -15px;
+      top: 17px;
+      padding-right: 15px;
+      width: 42px;
+      height: 82px;
+      line-height: 82px;
+      text-align: right;
+      background: white;
+      border-top-right-radius: 41px;
+      border-bottom-right-radius: 41px;
+      opacity: 0.6;
+      color: #F5A623;
+      font-size: 24px;
+      font-weight: bold; }
+    .workflow-detail .hms-workflow-history .history-content {
+      padding-left: 15px;
+      padding-right: 15px;
+      height: 136px;
+      color: white; }
+      .workflow-detail .hms-workflow-history .history-content ion-scroll {
+        width: 720px; }
+      .workflow-detail .hms-workflow-history .history-content .history-item {
+        float: left;
+        width: 100px;
+        height: 136px;
+        text-align: center; }
+        .workflow-detail .hms-workflow-history .history-content .history-item .history-item-time-line {
+          height: 24px;
+          font-size: 10px;
+          line-height: 12px;
+          width: 60px;
+          margin-left: auto;
+          margin-right: auto; }
+        .workflow-detail .hms-workflow-history .history-content .history-item .history-item-node-icon {
+          height: 29px;
+          width: 29px;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 12px;
+          margin-bottom: 12px; }
+          .workflow-detail .hms-workflow-history .history-content .history-item .history-item-node-icon img {
+            height: 29px;
+            width: 29px; }
+        .workflow-detail .hms-workflow-history .history-content .history-item .history-item-node-name {
+          height: 14px;
+          font-size: 12px; }
+        .workflow-detail .hms-workflow-history .history-content .history-item .history-item-employee {
+          height: 14px;
+          font-size: 12px; }
+  .workflow-detail .hms-workflow-array {
+    margin: 5px;
+    background: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px; }
+    .workflow-detail .hms-workflow-array .hms-singal-array-header {
+      height: 43px;
+      color: #205098; }
+      .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-name {
+        float: left;
+        height: 43px;
+        font-size: 16px;
+        line-height: 43px;
+        background: #ECF0F1;
+        padding-left: 14px;
+        padding-right: 14px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px; }
+      .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-operation {
+        float: right;
+        height: 43px;
+        width: 35px;
+        font-size: 20px;
+        line-height: 43px; }
+    .workflow-detail .hms-workflow-array .hms-singal-array-content {
+      padding-left: 12px; }
+      .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-line {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        line-height: 18px;
+        width: 100%;
+        border-bottom: 1px solid #D2D2D2;
+        padding-right: 15px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-line .hms-singal-array-key {
+          float: left;
+          width: 40%;
+          color: #4A4A4A;
+          font-size: 16px; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-line .hms-singal-array-value {
+          float: left;
+          width: 60%;
+          text-align: right;
+          color: #9B9B9B;
+          font-size: 16px; }
+  .workflow-detail .hms-workflow-submit {
+    width: 100%;
+    height: 44px;
+    position: absolute;
+    bottom: 0;
+    background: white; }
+    .workflow-detail .hms-workflow-submit .hms-workflow-reject {
+      width: 25%;
+      height: 44px;
+      line-height: 44px;
+      padding-left: 20px;
+      float: left;
+      color: #B95756;
+      font-size: 16px; }
+    .workflow-detail .hms-workflow-submit .hms-workflow-back {
+      width: 25%;
+      float: left;
+      height: 44px;
+      text-align: right;
+      color: #4C5665;
+      line-height: 44px;
+      padding-right: 20px;
+      font-size: 16px; }
+    .workflow-detail .hms-workflow-submit .hms-workflow-other {
+      width: 50%;
+      height: 84px;
+      margin-top: -30px;
+      float: left; }
+      .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function {
+        border-radius: 20px;
+        background: white;
+        box-shadow: 0px 0px 8px #cbcbcb;
+        width: 147px;
+        height: 44px;
+        margin-left: auto;
+        margin-right: auto; }
+        .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-approve {
+          width: 50%;
+          height: 44px;
+          padding: 8px;
+          padding-left: 15px;
+          padding-right: 15px;
+          float: left; }
+          .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-approve img {
+            width: 27px;
+            height: 27px; }
+        .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-transmit {
+          float: left;
+          width: 50%;
+          height: 44px;
+          padding: 8px;
+          padding-left: 15px;
+          padding-right: 15px; }
+          .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-transmit img {
+            float: right;
+            width: 27px;
+            height: 27px; }
+      .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-other-alias {
+        height: 40px;
+        width: 147px;
+        height: 30px;
+        line-height: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 18px;
+        padding-right: 18px; }
+        .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-other-alias .hms-work-approve-alias {
+          float: left;
+          width: 50%;
+          height: 30px;
+          text-align: left; }
+        .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-other-alias .hms-work-transmit-alias {
+          float: right;
+          width: 50%;
+          height: 30px;
+          text-align: right; }
 
 .workflow {
   background: #fafafa; }
@@ -5285,74 +5554,79 @@ Copyright (c) 2015 Daniel Eden
   border: none;
   border-radius: 10px; }
 
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active,
+ion-tabs.tabs-color-active-positive .tab-item.active,
+ion-tabs.tabs-color-active-positive .tab-item.activated {
+  color: #1D4D95; }
+
 .tabs-icon-top .message-on {
   background-image: url("../img/tabs/message-f@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .message-off {
   background-image: url("../img/tabs/message-G@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .tab-item.activated .message-off {
   background-image: url("../img/tabs/message-f@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .tab-item.activated .application-off {
   background-image: url("../img/tabs/application-F@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .tab-item.activated .contact-off {
   background-image: url("../img/tabs/contact-B@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .tab-item.activated .mine-off {
   background-image: url("../img/tabs/mine-B@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .application-on {
   background-image: url("../img/tabs/application-F@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .application-off {
   background-image: url("../img/tabs/application-G@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .contact-on {
   background-image: url("../img/tabs/contact-B@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .contact-off {
   background-image: url("../img/tabs/contact-G@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 25px; }
+  background-size: 21px; }
 
 .tabs-icon-top .mine-on {
   background-image: url("../img/tabs/mine-B@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }
 
 .tabs-icon-top .mine-off {
   background-image: url("../img/tabs/mine-G@3x.png");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 29px; }
+  background-size: 24px; }

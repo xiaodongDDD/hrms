@@ -1,42 +1,51 @@
+$tab-item-size: 24px;
+$tab-item-small-size: 21px;
+
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active,
+ion-tabs.tabs-color-active-positive .tab-item.active,
+ion-tabs.tabs-color-active-positive .tab-item.activated {
+  color: #1D4D95;
+}
+
 .tabs-icon-top {
   .message-on {
     background-image: url("../img/tabs/message-f@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 29px;
+    background-size: $tab-item-size;
   }
 
   .message-off {
     background-image: url("../img/tabs/message-G@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 29px;
+    background-size: $tab-item-size;
   }
 
-  .tab-item.activated  {
+  .tab-item.activated {
     .message-off {
       background-image: url("../img/tabs/message-f@3x.png");
       background-repeat: no-repeat;
       background-position: center;
-      background-size: 29px;
+      background-size: $tab-item-size;
     }
     .application-off {
       background-image: url("../img/tabs/application-F@3x.png");
       background-repeat: no-repeat;
       background-position: center;
-      background-size: 25px;
+      background-size: $tab-item-small-size;
     }
     .contact-off {
       background-image: url("../img/tabs/contact-B@3x.png");
       background-repeat: no-repeat;
       background-position: center;
-      background-size: 25px;
+      background-size: $tab-item-small-size;
     }
     .mine-off {
       background-image: url("../img/tabs/mine-B@3x.png");
       background-repeat: no-repeat;
       background-position: center;
-      background-size: 29px;
+      background-size: $tab-item-size;
     }
   }
 
@@ -44,41 +53,41 @@
     background-image: url("../img/tabs/application-F@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 25px;
+    background-size: $tab-item-small-size;
   }
 
   .application-off {
     background-image: url("../img/tabs/application-G@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 25px;
+    background-size: $tab-item-small-size;
   }
 
   .contact-on {
     background-image: url("../img/tabs/contact-B@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 25px;
+    background-size: $tab-item-small-size;
   }
 
   .contact-off {
     background-image: url("../img/tabs/contact-G@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 25px;
+    background-size: $tab-item-small-size;
   }
 
   .mine-on {
     background-image: url("../img/tabs/mine-B@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 29px;
+    background-size: $tab-item-size;
   }
 
   .mine-off {
     background-image: url("../img/tabs/mine-G@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 29px;
+    background-size: $tab-item-size;
   }
 }

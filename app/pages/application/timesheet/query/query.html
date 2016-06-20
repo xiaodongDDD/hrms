@@ -18,9 +18,8 @@
     <!--<hmsslidecalendar>
     </hmsslidecalendar>-->
     <div class="calendar-month">
-      <ion-scroll class="scroll-view ionic-scroll" direction="xy" scrollbar-y="true"
-                  style="overflow-x: hidden;height:50px;">
-        <div style="height: 40px;width: 720px; ">
+      <ion-scroll direction="x" scrollbar-x="false" scrollbar-y="false" style="height:50px;">
+        <div style="height: 40px;width: 720px;">
           <div class="month-item" ng-click="getTimeSheet(currentYear,month)"
                ng-repeat="month in monthList" ng-class="{true:'selected',false:''}[month.selected]">
             {{month.value}}月

@@ -1,0 +1,222 @@
+.workflow-detail {
+  background: url("../img/workflow/BG@3x.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  .hms-workflow-history {
+    width: 100%;
+    height: 136px;
+    position: relative;
+    padding-top: 10px;
+    .history-slide {
+      z-index: 99;
+      position: absolute;
+      left: -15px;
+      top: 17px;
+      padding-right: 15px;
+      width: 42px;
+      height: 82px;
+      line-height: 82px;
+      text-align: right;
+      background: white;
+      border-top-right-radius: 41px;
+      border-bottom-right-radius: 41px;
+      opacity: 0.6;
+      color: #F5A623;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .history-content {
+      padding-left: 15px;
+      padding-right: 15px;
+      height: 136px;
+      color: white;
+      ion-scroll {
+        width: 720px;
+      }
+      .history-item {
+        float: left;
+        width: 100px;
+        height: 136px;
+        text-align: center;
+        .history-item-time-line {
+          height: 24px;
+          font-size: 10px;
+          line-height: 12px;
+          width: 60px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .history-item-node-icon {
+          height: 29px;
+          width: 29px;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 12px;
+          margin-bottom: 12px;
+          img {
+            height: 29px;
+            width: 29px;
+          }
+        }
+        .history-item-node-name {
+          height: 14px;
+          font-size: 12px;
+        }
+        .history-item-employee {
+          height: 14px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .hms-workflow-array {
+    margin: 5px;
+    background: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+
+    .hms-singal-array-header {
+      height: 43px;
+      color: #205098;
+      .hms-singal-array-name {
+        float: left;
+        height: 43px;
+        font-size: 16px;
+        line-height: 43px;
+        background: #ECF0F1;
+        padding-left: 14px;
+        padding-right: 14px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+      .hms-singal-array-operation {
+        float: right;
+        height: 43px;
+        width: 35px;
+        font-size: 20px;
+        line-height: 43px;
+      }
+    }
+    .hms-singal-array-content {
+      padding-left: 12px;
+      .hms-singal-array-line {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        line-height: 18px;
+        width: 100%;
+        border-bottom: 1px solid #D2D2D2;
+        padding-right: 15px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex;
+        .hms-singal-array-key {
+          float: left;
+          width: 40%;
+          color: #4A4A4A;
+          font-size: 16px;
+        }
+        .hms-singal-array-value {
+          float: left;
+          width: 60%;
+          text-align: right;
+          color: #9B9B9B;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+  .hms-workflow-submit {
+    width: 100%;
+    height: 44px;
+    position: absolute;
+    bottom: 0;
+    background: white;
+    .hms-workflow-reject {
+      width: 25%;
+      height: 44px;
+      line-height: 44px;
+      padding-left: 20px;
+      float: left;
+      color: #B95756;
+      font-size: 16px;
+    }
+    .hms-workflow-back {
+      width: 25%;
+      float: left;
+      height: 44px;
+      text-align: right;
+      color: #4C5665;
+      line-height: 44px;
+      padding-right: 20px;
+      font-size: 16px;
+    }
+    .hms-workflow-other {
+      width: 50%;
+      height: 84px;
+      margin-top: -30px;
+      float: left;
+      .hms-workflow-function {
+        border-radius: 20px;
+        background: white;
+        box-shadow: 0px 0px 8px #cbcbcb;
+        width: 147px;
+        height: 44px;
+        margin-left: auto;
+        margin-right: auto;
+        .hms-work-approve {
+          width: 50%;
+          height: 44px;
+          padding: 8px;
+          padding-left: 15px;
+          padding-right: 15px;
+          float: left;
+          img {
+            width: 27px;
+            height: 27px;
+          }
+        }
+        .hms-work-transmit {
+          float: left;
+          width: 50%;
+          height: 44px;
+          padding: 8px;
+          padding-left: 15px;
+          padding-right: 15px;
+          img {
+            float: right;
+            width: 27px;
+            height: 27px;
+          }
+        }
+      }
+      .hms-workflow-other-alias {
+        height: 40px;
+        width: 147px;
+        height: 30px;
+        line-height: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 18px;
+        padding-right: 18px;
+        .hms-work-approve-alias {
+          float: left;
+          width: 50%;
+          height: 30px;
+          text-align: left;
+        }
+        .hms-work-transmit-alias {
+          float: right;
+          width: 50%;
+          height: 30px;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
