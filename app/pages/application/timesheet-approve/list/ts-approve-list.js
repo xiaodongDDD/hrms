@@ -33,6 +33,7 @@ angular.module('tsApproveModule')
     'hmsHttp',
     'ApproveDetailService',
     '$ionicPopover',
+    '$cordovaDatePicker',
     function ($scope,
               $state,
               baseConfig,
@@ -44,7 +45,8 @@ angular.module('tsApproveModule')
               hmsPopup,
               hmsHttp,
               ApproveDetailService,
-              $ionicPopover) {
+              $ionicPopover,
+              $cordovaDatePicker) {
       /**
        * initial var section
        */
@@ -202,6 +204,53 @@ angular.module('tsApproveModule')
         } else {
           $scope.dateModal.show();
         }
+      };
+
+
+      $scope.chooseStartDate = function () {//选择开始日期
+        var myDate = $scope.startDate = new Date();
+        var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+        var options = {
+          date: previousDate,
+          mode: 'date',
+          titleText: '请选择截止日期',
+          okText: '确定',
+          cancelText: '取消',
+          doneButtonLabel: '确认',
+          cancelButtonLabel: '取消',
+          androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+          locale: "zh_cn"
+        }
+        $cordovaDatePicker.show(options).then(function (date) {
+          var month = date.getMonth() + 1;
+          var day = date.getDate();
+          var weekday = date.getDay();
+          if (weekday == 0) {
+            $scope.startDate.weekday = "周日";
+          } else if (weekday == 1) {
+            $scope.startDate.weekday = "周一";
+          } else if (weekday == 2) {
+            $scope.startDate.weekday = "周二";
+          } else if (weekday == 3) {
+            $scope.startDate.weekday = "周三";
+          } else if (weekday == 4) {
+            $scope.startDate.weekday = "周四";
+          } else if (weekday == 5) {
+            $scope.startDate.weekday = "周五";
+          } else if (weekday == 6) {
+            $scope.startDate.weekday = "周六";
+          }
+          if (month < 10) {
+            month = "0" + month;
+          }
+          if (day < 10) {
+            day = "0" + day;
+          }
+          $scope.startDate.year = date.getFullYear();
+          $scope.startDate.month = month;
+          $scope.startDate.day = day;
+          $scope.$apply();
+        });
       };
       $scope.selectEndDateItem = function (newEndDateCode, newEndDateValue, newIndex) { //选择不同的截止日期
         $scope.selectEndItem = [];
