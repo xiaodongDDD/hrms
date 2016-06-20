@@ -1,0 +1,55 @@
+<ion-view view-title="待办事明细" class="workflow">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">待办事明细</h1>
+    <div class="buttons">
+      <button class="button button-clear" style="font-size: 26px">
+        <i class="ion-ios-help-outline"></i>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <div class="hms-workflow-history">
+
+    </div>
+    <div class="hms-workflow-array">
+      <div class="hms-array-header">
+        <div class="hms-array-name">
+          明细信息
+        </div>
+        <div class="hms-array-operation">
+          <i class="ion-ios-arrow-up"></i>
+        </div>
+      </div>
+      <div class="hms-array-content">
+        <div class="hms-array-line" ng-repeat="item in templateOne">
+          <div class="hms-array-key">
+            {{item.item_name}}
+          </div>
+          <div class="hms-array-value">
+            {{item.item_value}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+
+  <ion-footer-bar>
+    <div class="buttons">
+      <button class="button" ng-click="selectAll()" style="background:white;color: #F99D32;font-size: 16px">全选</button>
+    </div>
+    <div class="buttons" ng-click="doSomething()">
+      <button class="button" ng-click="deleteAll()" style="background:white;color: #B95756;font-size: 16px">删除</button>
+    </div>
+    <div class="buttons" ng-click="doSomething()">
+    <button class="button" ng-click="deleteAll()" style="background:white;color: #B95756;font-size: 16px">删除</button>
+  </div>
+    <div class="buttons" ng-click="doSomething()">
+      <button class="button" ng-click="deleteAll()" style="background:white;color: #B95756;font-size: 16px">删除</button>
+    </div>
+  </ion-footer-bar>
+</ion-view>
