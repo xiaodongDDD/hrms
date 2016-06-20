@@ -39,7 +39,7 @@
                        workflow-node='item.node'
                        workflow-node-value='item.nodeValue'
                        workflow-submit='item.submit'
-                       workflow-submit-person='item.submitPerson'>
+                       workflow-submit-person='item.submitPerson' ng-click="enterWorkflowDetail(item)">
     </hms-workflow-list>
     <!--<a class="workflow-list" ng-repeat="item in list">
       <div class="workflow-list-logo">
@@ -83,14 +83,14 @@
       </div>
     </a>-->
   </ion-content>
-  <ion-footer-bar class="foot-bar" ng-if="true">
+  <ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="showDetailArrow">
     <div class="buttons">
       <button class="button button-clear filter-icon" ng-click="filterTsInfo()">
       </button>
       <div class="filter-text" ng-click="filterTsInfo()">筛选</div>
-      <button class="button button-clear time-icon">
-      </button>
-      <div class="time-text">时间</div>
+      <!--<button class="button button-clear time-icon">-->
+      <!--</button>-->
+      <!--<div class="time-text">时间</div>-->
     </div>
   </ion-footer-bar>
 </ion-view>

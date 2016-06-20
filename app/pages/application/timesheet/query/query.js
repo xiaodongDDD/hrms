@@ -19,6 +19,7 @@ angular.module('myApp')
 angular.module('applicationModule')
   .controller('TimeSheetQueryCtrl', [
     '$scope',
+    '$rootScope',
     '$state',
     'baseConfig',
     '$ionicHistory',
@@ -27,6 +28,7 @@ angular.module('applicationModule')
     'TimeSheetService',
     'hmsHttp',
     function ($scope,
+              $rootScope,
               $state,
               baseConfig,
               $ionicHistory,
@@ -35,9 +37,53 @@ angular.module('applicationModule')
               TimeSheetService,
               hmsHttp) {
 
-      $scope.calendar = [];
       var currentTimeSheetPosition = true;
+      $scope.calendar = [];
       $scope.loadingDataFlag = true;
+
+      //年表
+      $scope.currentYear = '';
+      $scope.currentMonth = '';
+      //月份列表
+      $scope.monthList = [
+        {"selected": false, value: "1"}, {"selected": false, value: "2"}, {"selected": false, value: "3"},
+        {"selected": false, value: "4"}, {"selected": false, value: "5"}, {"selected": false, value: "6"},
+        {"selected": false, value: "7"}, {"selected": false, value: "8"}, {"selected": false, value: "9"},
+        {"selected": false, value: "10"}, {"selected": false, value: "11"}, {"selected": false, value: "12"}
+      ];
+      //周列表
+      $scope.weekTitleList = [
+        '日', '一', '二', '三', '四', '五', '六'
+      ];
+
+      var formatMonth = function (month) {
+        if (parseInt(month) < 10) {
+          return '0' + month;
+        } else {
+          return '' + month;
+        }
+      };
+
+      var initDate = function () {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        $scope.currentYear = year;
+        $scope.currentMonth = month;
+        angular.forEach($scope.monthList, function (data) {
+          if (data.value === month + '') {
+            data.selected = true;
+            return;
+          }
+        });
+        if (baseConfig.debug) {
+          console.log('initDate.year ' + year);
+          console.log('initDate.month ' + month)
+        }
+
+        var monthParams = year + '' + formatMonth(month);
+        fetchCalendar(monthParams);
+      }
 
       var init = function () {
         $scope.calendar = [];
@@ -62,40 +108,7 @@ angular.module('applicationModule')
           }
           $scope.calendar.push(week);
         }
-      }
-
-      test = function () {
-
-        var url = baseConfig.businessPath + "/wfl_timesheet_view/get_timesheet_list";
-        var params = {
-          "params": {
-            "p_employee_number": "4040",
-            "p_start_date": "2015-11-01",
-            "p_end_date": "2015-11-01",
-            "p_project_name": "",
-            "p_project_id": "",
-            "p_project_person_number": "",
-            "p_page": "1",
-            "p_line_number": "5"
-          }
-        };
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function (response, status) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(response));
-          }
-        });
       };
-
-      test();
-
-      init();
 
       $scope.writeTimesheet = function (day) {
         $state.go('tab.timesheet-write', {day: day});
@@ -176,7 +189,7 @@ angular.module('applicationModule')
         }
       }
 
-      var fetchCalendar = function (month) {
+      var fetchCalendar = function (monthParams) {
         init();
         $scope.loadingDataFlag = true;
 
@@ -184,8 +197,8 @@ angular.module('applicationModule')
         var params = {
           "params": {
             "p_employee": window.localStorage.empno,
-            "p_month": month + "",
-            "p_offset": 1
+            "p_month": monthParams + "",
+            "p_offset": 0
           }
         };
         //hmsPopup.showLoading('获取timesheet数据中...');
@@ -197,41 +210,58 @@ angular.module('applicationModule')
           }
         }).error(function (response, status) {
           $scope.loadingDataFlag = false;
-          $scope.$apply();
           if (baseConfig.debug) {
             console.log("response error " + angular.toJson(response));
           }
         });
       };
 
-      fetchCalendar('201511');
-
-      $scope.getTimeSheet = function (month) {
-        fetchCalendar(month);
+      $scope.getTimeSheet = function (year, month) {
+        angular.forEach($scope.monthList, function (data) {
+          data.selected = false;
+        });
+        month.selected = true;
+        var monthParams = year + '' + formatMonth(month.value);
+        fetchCalendar(monthParams);
       };
 
+      //从服务器获取请求
+      $timeout(
+        function () {
+          initDate();
+        }, 300
+      );
 
       $scope.goBack = function () {
         $ionicHistory.$ionicGoBack();
       };
 
+      $rootScope.$on('refreshTimesheet', function(event,data) {
+        if (baseConfig.debug) {
+          console.log('refreshTimesheet', data);
+        }
+        $timeout(
+          function () {
+            var monthParams = $scope.currentYear  + '' + formatMonth($scope.currentMonth);
+            fetchCalendar(monthParams);
+          }, 300
+        );
+      });
+
       if (baseConfig.debug) {
         console.log('applicationCtrl.enter');
       }
-      ;
 
       $scope.$on('$ionicView.enter', function (e) {
         if (baseConfig.debug) {
           console.log('applicationCtrl.$ionicView.enter');
         }
-        ;
       });
 
       $scope.$on('$destroy', function (e) {
         if (baseConfig.debug) {
           console.log('applicationCtrl.$destroy');
         }
-        ;
       });
     }])
 
@@ -242,14 +272,14 @@ angular.module('applicationModule')
     function (baseConfig,
               hmsHttp,
               hmsPopup) {
-      this.fetchCalendar = function () {
+      this.fetchCalendar = function (monthParams) {
 
         var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
         var params = {
           "params": {
             "p_employee": window.localStorage.empno,
-            "p_month": '201511',
-            "p_offset": 1
+            "p_month": monthParams + "",
+            "p_offset": "0"
           }
         };
         //hmsPopup.showLoading('获取timesheet数据中...');
@@ -266,15 +296,44 @@ angular.module('applicationModule')
         });
       };
 
-      this.fetchEachDay = function (callback) {
+      this.fetchEachDay = function (callback, oneDate) {
         var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
-        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': '20151013' + ""}};
+        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + ""}};
         //hmsPopup.showLoading('获取timesheet数据中...');
         hmsHttp.post(url, params).success(function (result) {
           callback(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取状态错误,请检查');
+          hmsPopup.showPopup('获取状态错误,请检查网络!');
+        });
+      };
+
+      this.fetchProjectDetailInfo = function (callback, oneDate, projectId) {
+        var url = baseConfig.businessPath + "/timesheet_process/project_change"
+        var params = {
+          'params': {
+            'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + "",
+            'p_project_id': projectId + ""
+          }
+        };
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('获取项目信息错误,请检查网络!');
+        });
+      };
+
+      this.submitTimesheet = function (callback,params) {
+        var url = baseConfig.businessPath + "/timesheet_process/save_timesheet1";
+        var params = params;
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
         });
       }
     }]);
