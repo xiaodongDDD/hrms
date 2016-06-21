@@ -65,7 +65,6 @@ angular.module('tsApproveModule')
         $scope.actionName = "操作";
         $scope.selectArray = [];
         $scope.isClickedProject = []; //控制点击选择筛选条目的样式(modal-filter)
-        $scope.selectEndItem = [false, true, false]; //控制点击选择截止日期条目的样式(modal-date)
         $scope.listInfoArray = {};
         $scope.personList = [];
         $scope.projectList = [];
@@ -110,12 +109,15 @@ angular.module('tsApproveModule')
         if (currentDay <= 10) {
           tsListParams.params.p_end_date = getLastMonthDate(new Date());
           $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.selectEndItem = [true, false, false]; //控制点击选择截止日期条目的样式(modal-date)
         } else if (currentDay > 10 && currentDay <= 20) {
           tsListParams.params.p_end_date = getCurrentDate(new Date());
           $scope.endApproveDate = getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.selectEndItem = [false, true, false];
         } else if (currentDay > 20) {
           tsListParams.params.p_end_date = getCurrentMonthLastDate(new Date());
           $scope.endApproveDate = getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.selectEndItem = [false, false, true];
         }
       }
 
@@ -220,7 +222,7 @@ angular.module('tsApproveModule')
           cancelButtonLabel: '取消',
           androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
           locale: "zh_cn"
-        }
+        };
         $cordovaDatePicker.show(options).then(function (date) {
           var month = date.getMonth() + 1;
           var day = date.getDate();
@@ -267,7 +269,7 @@ angular.module('tsApproveModule')
       };
 
       $scope.cancelDateModal = function () { //取消date modal
-        tsListParams.params.p_end_date = $scope.endApproveDate;
+        //tsListParams.params.p_end_date = $scope.endApproveDate;//这个地方有小bug
         $scope.dateModal.hide()
       };
 
@@ -525,11 +527,12 @@ angular.module('tsApproveModule')
  *  1:scope  //controller的作用域
  *  2:url //请求地址
  *  3:params //请求的参数
- *  4: refurbishParam //控制下拉刷线的参数
+ *  4:refurbishParam //控制下拉刷线的参数
  *  5:busy //用于控制下拉刷新的flag
  *  6:totalNumber //获取的数据总数
  *  7:listArray //数据列表
  *  8:loading //数据加载标记
+ *  9:subsidyDaysArray //记录每月的补助天数
  */
   .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup',
     function (hmsHttp, baseConfig, hmsPopup) {
@@ -543,6 +546,7 @@ angular.module('tsApproveModule')
         _self.busy = false;
         _self.totalNumber = 0;
         _self.listArray = [];
+        _self.subsidyDaysArray = [];
         _self.loading = loadingFlag;
         if (_self.refurbishParam === 'clickRefreshEvent') {
           _self.scope.$broadcast('scroll.infiniteScrollComplete');
@@ -559,14 +563,25 @@ angular.module('tsApproveModule')
               _self.totalNumber = response.count;
               try {
                 _self.listArray = _self.listArray.concat(tsResult.result_list);
+                for (var i = 0; i < _self.listArray.length; i++) {
+                  var subsidys = 0;
+                  if (_self.listArray[i].subsidy_list.length == 0) {
+                    _self.subsidyDaysArray.push(subsidys);
+                  } else {
+                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
+                      subsidys = parseInt(subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      _self.subsidyDaysArray.push(subsidys);
+                    }
+                  }
+                }
               } catch (e) {
                 _self.listArray = [];
-                _self.projectList = [];
-                _self.employeeList = [];
+                _self.subsidyDaysArray = [];
               }
               if (response.count == 0) {
                 _self.busy = false;
                 _self.listArray = [];
+                hmsPopup.showShortCenterToast("没有相关数据!");
               } else if (response.count <= 6) {
                 _self.busy = false;
               } else {
@@ -622,6 +637,17 @@ angular.module('tsApproveModule')
               } else {
                 var tsResult = response.timesheet_approve_response;
                 _self.listArray = _self.listArray.concat(tsResult.result_list);
+                for (var i = (_self.params.params.p_page - 1) * 6; i < _self.listArray.length; i++) {
+                  var new_subsidys = 0;
+                  if (_self.listArray[i].subsidy_list.length == 0) {
+                    _self.subsidyDaysArray.push(new_subsidys);
+                  } else {
+                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
+                      new_subsidys = parseInt(new_subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      _self.subsidyDaysArray.push(new_subsidys);
+                    }
+                  }
+                }
               }
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             } else {
