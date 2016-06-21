@@ -57,54 +57,52 @@
     </div>
 
     <div class="allowance-content">
-      <ion-scroll>
-        <div class="allowance-title">
-          已生成津贴状态
-        </div>
-        <div class="allowance-detail" ng-repeat="weak in calendar">
-          <div class="allowance-project-info">
-            <div class="row no-padding">
-              <div class="col col-10 no-padding">
-                <div class="sequence">{{$index + 1}}
-                </div>
-              </div>
-              <div class="col col-90 no-padding allowance-project">
-                移动内部HRMS研发项目
+      <div class="allowance-title">
+        已生成津贴状态
+      </div>
+      <div class="allowance-detail" ng-repeat="weak in calendar">
+        <div class="allowance-project-info">
+          <div class="row no-padding">
+            <div class="col col-10 no-padding">
+              <div class="sequence">{{$index + 1}}
               </div>
             </div>
-            <div class="row no-padding allowance-dotted">
-              <div class="col col-10 no-padding">
-              </div>
-              <div class="col col-20 no-padding">
-                普通津贴
-              </div>
-              <div class="col col-20 no-padding allowance-status">
-                已经审核
-              </div>
-              <div class="col col-50 no-padding">
-                2016-03-01~2016-03-31
-              </div>
+            <div class="col col-90 no-padding allowance-project">
+              移动内部HRMS研发项目
             </div>
-            <div class="allowance-dashed">
-              <div class="line"></div>
+          </div>
+          <div class="row no-padding allowance-dotted">
+            <div class="col col-10 no-padding">
             </div>
-            <div class="row no-padding">
-              <div class="col col-10 no-padding">
+            <div class="col col-20 no-padding">
+              普通津贴
+            </div>
+            <div class="col col-20 no-padding allowance-status">
+              已经审核
+            </div>
+            <div class="col col-50 no-padding">
+              2016-03-01~2016-03-31
+            </div>
+          </div>
+          <div class="allowance-dashed">
+            <div class="line"></div>
+          </div>
+          <div class="row no-padding">
+            <div class="col col-10 no-padding">
 
-              </div>
-              <div class="col col-20 no-padding">
-                金额:40
-              </div>
-              <div class="col col-20 no-padding">
-                天数:6
-              </div>
-              <div class="col col-50 no-padding allowance-cash">
-                ¥240
-              </div>
+            </div>
+            <div class="col col-20 no-padding">
+              金额:40
+            </div>
+            <div class="col col-20 no-padding">
+              天数:6
+            </div>
+            <div class="col col-50 no-padding allowance-cash">
+              ¥240
             </div>
           </div>
         </div>
-      </ion-scroll>
+      </div>
     </div>
   </ion-content>
 </ion-view>
