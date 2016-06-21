@@ -1507,247 +1507,6 @@ angular.module('myApp')
 /**
  * Created by gusenlin on 16/4/24.
  */
-//应用模块
-angular.module('applicationModule')
-
-  .controller('applicationCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    function ($scope,
-              $state,
-              baseConfig) {
-
-      $scope.animationsEnabled = false;
-
-      //个人办公
-      $scope.officeApp = [
-        {
-          list: [
-            {
-              appName: "会议管理",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "个人申请",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "报表分析",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "人事政策",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            }]
-        },
-        {
-          list: [
-            {
-              appName: "假期管理",
-              imageUrl: "build/img/application/holidayManage@3x.png",
-              destUrl: "tab.time-off-manage",
-            }, 
-            {
-              appName: "住宿申请",
-              imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
-              destUrl: "tab.dorm-apply"
-            }, {
-              appName: "Timesheet填写",
-              imageUrl: "build/img/application/timesheet@3x.png",
-              destUrl: "tab.timesheet",
-            },
-            {
-              appName: "Timesheet审批",
-              imageUrl: "build/img/application/timesheetExamine@3x.png",
-              destUrl: "tab.tsApproveList",
-            }
-          ]
-        }];
-
-      //项目门户
-      $scope.projectApp = [
-        {
-          list: [
-            {
-              appName: "机票预定",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "tab.flyback",
-            },
-            {
-              appName: "代办事项",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "tab.workflow-list",
-            },
-            {
-              appName: "报销单查询",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "首款查询",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            }]
-        },
-        {
-          list: [
-            {
-              appName: "外勤汇报",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
-            }]
-        }
-      ];
-
-      //员工社区
-      $scope.employeeApp = [
-        {
-          list: [
-            {
-              appName: "在线培训",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "知识门户",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "新闻",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "分享社区",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            }]
-        },
-        {
-          list: [
-            {
-              appName: "在线培训",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "知识门户",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "新闻",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "分享社区",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            }]
-        }
-      ];
-
-
-      $scope.openSetting = function(){
-        if($scope.animationsEnabled){
-          $scope.animationsEnabled = false;
-        }
-        else{
-          $scope.animationsEnabled = true;
-        }
-      };
-
-      $scope.goPage = function (appItem) {
-        if (baseConfig.debug) {
-          console.log("appItem " + angular.toJson(appItem));
-        }
-        $state.go(appItem.destUrl);
-      };
-
-      console.log('applicationCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('applicationCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('applicationCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('contactModule')
-
-  .controller('contactCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-      console.log('contactCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('contactCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('contactCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/5/16.
- */
-angular.module('loginModule')
-
-  .controller('guideCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-
-      console.log('loginCtrl.enter');
-
-      $scope.toLogin = function () {
-        console.log("跳过导航页到登陆页");
-        $state.go("login");
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('guideCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('guideCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
 angular.module('loginModule')
 
   .controller('loginCtrl', [
@@ -2227,6 +1986,595 @@ angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$
       }
     });
   }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('contactModule')
+
+  .controller('contactCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+      console.log('contactCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('contactCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('contactCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/5/16.
+ */
+angular.module('loginModule')
+
+  .controller('guideCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+
+      console.log('loginCtrl.enter');
+
+      $scope.toLogin = function () {
+        console.log("跳过导航页到登陆页");
+        $state.go("login");
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('guideCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('guideCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+//应用模块
+angular.module('applicationModule')
+
+  .controller('applicationCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    function ($scope,
+              $state,
+              baseConfig) {
+
+      $scope.animationsEnabled = false;
+
+      //个人办公
+      $scope.officeApp = [
+        {
+          list: [
+            {
+              appName: "会议管理",
+              imageUrl: "build/img/application/meetingManage@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "个人申请",
+              imageUrl: "build/img/application/meetingManage@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "报表分析",
+              imageUrl: "build/img/application/meetingManage@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "人事政策",
+              imageUrl: "build/img/application/meetingManage@3x.png",
+              destUrl: "tab.personnel-policy",
+            }]
+        },
+        {
+          list: [
+            {
+              appName: "假期管理",
+              imageUrl: "build/img/application/holidayManage@3x.png",
+              destUrl: "tab.time-off-manage",
+            }, 
+            {
+              appName: "住宿申请",
+              imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
+              destUrl: "tab.dorm-apply"
+            }, {
+              appName: "Timesheet填写",
+              imageUrl: "build/img/application/timesheet@3x.png",
+              destUrl: "tab.timesheet",
+            },
+            {
+              appName: "Timesheet审批",
+              imageUrl: "build/img/application/timesheetExamine@3x.png",
+              destUrl: "tab.tsApproveList",
+            }
+          ]
+        }];
+
+      //项目门户
+      $scope.projectApp = [
+        {
+          list: [
+            {
+              appName: "机票预定",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.flyback",
+            },
+            {
+              appName: "代办事项",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.workflow-list",
+            },
+            {
+              appName: "报销单查询",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "首款查询",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            }]
+        },
+        {
+          list: [
+            {
+              appName: "外勤汇报",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            }]
+        }
+      ];
+
+      //员工社区
+      $scope.employeeApp = [
+        {
+          list: [
+            {
+              appName: "在线培训",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "知识门户",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "新闻",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "分享社区",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            }]
+        },
+        {
+          list: [
+            {
+              appName: "在线培训",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "知识门户",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "新闻",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "分享社区",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            }]
+        }
+      ];
+
+
+      $scope.openSetting = function(){
+        if($scope.animationsEnabled){
+          $scope.animationsEnabled = false;
+        }
+        else{
+          $scope.animationsEnabled = true;
+        }
+      };
+
+      $scope.goPage = function (appItem) {
+        if (baseConfig.debug) {
+          console.log("appItem " + angular.toJson(appItem));
+        }
+        $state.go(appItem.destUrl);
+      };
+
+      console.log('applicationCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('applicationCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('applicationCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('messageModule')
+
+  .controller('messageDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicHistory',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicHistory) {
+
+      var message = $stateParams.message;
+      console.log('message : ' + angular.toJson(message));
+
+      $scope.message = message;
+
+      $scope.goBack = function(){
+        $ionicHistory.goBack();
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('messageDetailCtrl.$ionicView.enter');
+      });
+      console.log('messageDetailCtrl.enter');
+
+      $scope.$on('$destroy', function (e) {
+        console.log('messageDetailCtrl.$destroy');
+      });
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.workflow-detail', {
+          url: '/workflow-detail',
+          params: {detail: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/workflow/detail/detail.html',
+              controller: 'WorkFLowDetailCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('WorkFLowDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    'WorkFLowListService',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup,
+              WorkFLowListService) {
+      var detail = $stateParams.detail;
+      if(baseConfig.debug){
+        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
+      }
+
+      $scope.historyList = [];
+      $scope.singalArrayList = [];
+      $scope.multipleArrayList = [];
+
+      //var
+      var success = function (result) {
+        if(baseConfig.debug){
+          console.log('getWorkflowDetail.result ' + angular.toJson(result));
+        }
+        if(result.status == 'S'){
+          $scope.historyList = result.history;
+          $scope.singalArrayList = result.workflow_data.details;
+          $scope.multipleArrayList = result.workflow_data.lines;
+        }
+      }
+      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.workflow-list', {
+          url: '/workflow-list',
+          params: {day: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/workflow/list/workflow-list.html',
+              controller: 'WorkFLowListCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('WorkFLowListCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    'WorkFLowListService',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup,
+              WorkFLowListService) {
+
+      $scope.list = [];
+      $scope.fetchDataFlag = true;
+      $scope.pullRefreshDataFlag = false;
+      $scope.showDetailArrow = true;
+      $scope.listStatus = {
+        todo: {
+          selected: true
+        },
+        done: {
+          selected: false
+        }
+      };
+
+      var workflowIcon = 'build/img/application/profile@3x.png';
+      var workflowType = '工作流类型';
+      var workflowNode = '当前节点';
+      var workflowPerson = '提交人';
+
+      $scope.fetchTodoList = function () {
+        if ($scope.listStatus.todo.selected) {
+
+        } else {
+          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+            $scope.listStatus.todo.selected = true;
+            $scope.listStatus.done.selected = false;
+            getTodoList(false);
+          }
+        }
+      };
+
+      $scope.fetchDoneList = function () {
+        if ($scope.listStatus.done.selected) {
+
+        } else {
+          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+            $scope.listStatus.done.selected = true;
+            $scope.listStatus.todo.selected = false;
+            getDoneList(false);
+          }
+
+        }
+      };
+
+      var getTodoList = function (pullRefresh) {
+        $scope.list = [];
+        if (pullRefresh) {
+          $scope.fetchDataFlag = false;
+          $scope.pullRefreshDataFlag = true;
+        } else {
+          $scope.fetchDataFlag = true;
+        }
+        var success = function (result) {
+          var list = result.待审批列表;
+          angular.forEach(list, function (data) {
+            var item = {
+              title1: data.workflow_name,
+              icon: workflowIcon,
+              type: workflowType,
+              typeValue: data.workflow_name,
+              node: workflowNode,
+              nodeValue: data.current_node,
+              submit: workflowPerson,
+              submitPerson: data.employee_name,
+              workflowId:data.workflow_id,
+              instanceId:data.instance_id
+            };
+            $scope.list.push(item);
+          });
+          $scope.fetchDataFlag = false;
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+
+        };
+        var error = function (result) {
+          $scope.fetchDataFlag = false;
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+        }
+        $timeout(function () {
+          WorkFLowListService.getTodoList('N', success, error);
+        }, 100);
+      };
+
+      var getDoneList = function (pullRefresh) {
+        $scope.list = [];
+        if (pullRefresh) {
+          $scope.fetchDataFlag = false;
+          $scope.pullRefreshDataFlag = true;
+        } else {
+          $scope.fetchDataFlag = true;
+        }
+        var success = function (result) {
+          var list = result.已审批列表;
+          angular.forEach(list, function (data) {
+            var item = {
+              title1: data.workflow_desc,
+              icon: workflowIcon,
+              type: workflowType,
+              typeValue: data.workflow_desc,
+              node: workflowNode,
+              nodeValue: data.status_name,
+              submit: workflowPerson,
+              submitPerson: data.created_by_name,
+              workflowId:data.workflow_id,
+              instanceId:data.instance_id
+            };
+            $scope.list.push(item);
+          });
+          $scope.fetchDataFlag = false;
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+
+        };
+        var error = function (result) {
+          $scope.fetchDataFlag = false;
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+        }
+        $timeout(function () {
+          WorkFLowListService.getTodoList('Y', success, error);
+        }, 100);
+      };
+
+      getTodoList(false);
+
+      $scope.enterWorkflowDetail = function (detail) {
+        $state.go('tab.workflow-detail', {"detail": detail})
+      }
+
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
+        scope: $scope
+      }).then(function (modal) {
+        $scope.tsFilterModal = modal;
+      });
+
+      $scope.filterTsInfo = function () { //响应筛选按钮的方法
+        $scope.tsFilterModal.show();
+      };
+
+      $scope.refresh = function () {
+        if (!$scope.fetchDataFlag) {
+
+          $scope.list = [];
+          $scope.$apply();
+          $timeout(function () {
+            if ($scope.listStatus.todo.selected) {
+              getTodoList(true);
+            } else {
+              getDoneList(true);
+            }
+          }, 300);
+        } else {
+          $scope.$broadcast('scroll.refreshComplete');
+        }
+      }
+    }])
+
+  .service('WorkFLowListService', ['hmsHttp',
+    'baseConfig',
+    'hmsPopup',
+    function (hmsHttp,
+              baseConfig,
+              hmsPopup) {
+
+      this.getTodoList = function (flag, success, error) {
+        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list";
+        var params = {'params': {'p_employee_code': window.localStorage.empno, 'p_flag': flag + ''}};
+        hmsHttp.post(url, params).success(function (result) {
+          success(result)
+        }).error(function (response, status) {
+          hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+          error(response);
+        });
+      };
+
+      this.getWorkflowDetail = function (success,workflowId, recordId, submitFlag) {
+        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
+        var params = {
+          "params": {
+            "p_workflow_id": workflowId,
+            "p_instance_id": recordId,
+            "p_employee_code": window.localStorage.empno,
+            "p_submit_flag": submitFlag
+          }
+        };
+        hmsHttp.post(url, params).success(function (data) {
+          success(data);
+        }).error(function (data) {
+        });
+      };
+    }]);
 
 /**
  * Created by LeonChan on 2016/5/31.
@@ -3226,6 +3574,44 @@ angular.module("applicationModule")
 }])
 ;
 
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.personnel-policy', {
+          url: '/personnel-policy',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/personnel-policy/personnel-policy.html',
+              controller: 'PersonnelPolicyCtrl'
+            }
+          }
+        })
+    }]);
+
+angular.module('applicationModule')
+  .controller('PersonnelPolicyCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicHistory) {
+
+      $scope.goBack=function(){
+        $ionicHistory.goBack();
+      };
+      $scope.openwin=function($url){
+        //window.open($url,'newwindow','top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
+        window.open("http://www.daxuequan.org/ceshi/"+$url, '_system', 'location=yes');
+        };
+    }]
+);
+
+
+
 /** Author      : joshua.shi
  *
  *  History:
@@ -3400,354 +3786,6 @@ angular.module('applicationModule')
       };
 
       getServeData();
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('messageModule')
-
-  .controller('messageDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicHistory',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicHistory) {
-
-      var message = $stateParams.message;
-      console.log('message : ' + angular.toJson(message));
-
-      $scope.message = message;
-
-      $scope.goBack = function(){
-        $ionicHistory.goBack();
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageDetailCtrl.$ionicView.enter');
-      });
-      console.log('messageDetailCtrl.enter');
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageDetailCtrl.$destroy');
-      });
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.workflow-detail', {
-          url: '/workflow-detail',
-          params: {detail: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/detail/detail.html',
-              controller: 'WorkFLowDetailCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
-      var detail = $stateParams.detail;
-      if(baseConfig.debug){
-        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
-      }
-
-      $scope.historyList = [];
-      $scope.singalArrayList = [];
-      $scope.multipleArrayList = [];
-
-      //var
-      var success = function (result) {
-        if(baseConfig.debug){
-          console.log('getWorkflowDetail.result ' + angular.toJson(result));
-        }
-        if(result.status == 'S'){
-          $scope.historyList = result.history;
-          $scope.singalArrayList = result.workflow_data.details;
-          $scope.multipleArrayList = result.workflow_data.lines;
-        }
-      }
-      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.workflow-list', {
-          url: '/workflow-list',
-          params: {day: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/list/workflow-list.html',
-              controller: 'WorkFLowListCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowListCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
-
-      $scope.list = [];
-      $scope.fetchDataFlag = true;
-      $scope.pullRefreshDataFlag = false;
-      $scope.showDetailArrow = true;
-      $scope.listStatus = {
-        todo: {
-          selected: true
-        },
-        done: {
-          selected: false
-        }
-      };
-
-      var workflowIcon = 'build/img/application/profile@3x.png';
-      var workflowType = '工作流类型';
-      var workflowNode = '当前节点';
-      var workflowPerson = '提交人';
-
-      $scope.fetchTodoList = function () {
-        if ($scope.listStatus.todo.selected) {
-
-        } else {
-          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
-            $scope.listStatus.todo.selected = true;
-            $scope.listStatus.done.selected = false;
-            getTodoList(false);
-          }
-        }
-      };
-
-      $scope.fetchDoneList = function () {
-        if ($scope.listStatus.done.selected) {
-
-        } else {
-          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
-            $scope.listStatus.done.selected = true;
-            $scope.listStatus.todo.selected = false;
-            getDoneList(false);
-          }
-
-        }
-      };
-
-      var getTodoList = function (pullRefresh) {
-        $scope.list = [];
-        if (pullRefresh) {
-          $scope.fetchDataFlag = false;
-          $scope.pullRefreshDataFlag = true;
-        } else {
-          $scope.fetchDataFlag = true;
-        }
-        var success = function (result) {
-          var list = result.待审批列表;
-          angular.forEach(list, function (data) {
-            var item = {
-              title1: data.workflow_name,
-              icon: workflowIcon,
-              type: workflowType,
-              typeValue: data.workflow_name,
-              node: workflowNode,
-              nodeValue: data.current_node,
-              submit: workflowPerson,
-              submitPerson: data.employee_name,
-              workflowId:data.workflow_id,
-              instanceId:data.instance_id
-            };
-            $scope.list.push(item);
-          });
-          $scope.fetchDataFlag = false;
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-
-        };
-        var error = function (result) {
-          $scope.fetchDataFlag = false;
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-        }
-        $timeout(function () {
-          WorkFLowListService.getTodoList('N', success, error);
-        }, 100);
-      };
-
-      var getDoneList = function (pullRefresh) {
-        $scope.list = [];
-        if (pullRefresh) {
-          $scope.fetchDataFlag = false;
-          $scope.pullRefreshDataFlag = true;
-        } else {
-          $scope.fetchDataFlag = true;
-        }
-        var success = function (result) {
-          var list = result.已审批列表;
-          angular.forEach(list, function (data) {
-            var item = {
-              title1: data.workflow_desc,
-              icon: workflowIcon,
-              type: workflowType,
-              typeValue: data.workflow_desc,
-              node: workflowNode,
-              nodeValue: data.status_name,
-              submit: workflowPerson,
-              submitPerson: data.created_by_name,
-              workflowId:data.workflow_id,
-              instanceId:data.instance_id
-            };
-            $scope.list.push(item);
-          });
-          $scope.fetchDataFlag = false;
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-
-        };
-        var error = function (result) {
-          $scope.fetchDataFlag = false;
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-        }
-        $timeout(function () {
-          WorkFLowListService.getTodoList('Y', success, error);
-        }, 100);
-      };
-
-      getTodoList(false);
-
-      $scope.enterWorkflowDetail = function (detail) {
-        $state.go('tab.workflow-detail', {"detail": detail})
-      }
-
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
-        scope: $scope
-      }).then(function (modal) {
-        $scope.tsFilterModal = modal;
-      });
-
-      $scope.filterTsInfo = function () { //响应筛选按钮的方法
-        $scope.tsFilterModal.show();
-      };
-
-      $scope.refresh = function () {
-        if (!$scope.fetchDataFlag) {
-
-          $scope.list = [];
-          $scope.$apply();
-          $timeout(function () {
-            if ($scope.listStatus.todo.selected) {
-              getTodoList(true);
-            } else {
-              getDoneList(true);
-            }
-          }, 300);
-        } else {
-          $scope.$broadcast('scroll.refreshComplete');
-        }
-      }
-    }])
-
-  .service('WorkFLowListService', ['hmsHttp',
-    'baseConfig',
-    'hmsPopup',
-    function (hmsHttp,
-              baseConfig,
-              hmsPopup) {
-
-      this.getTodoList = function (flag, success, error) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list";
-        var params = {'params': {'p_employee_code': window.localStorage.empno, 'p_flag': flag + ''}};
-        hmsHttp.post(url, params).success(function (result) {
-          success(result)
-        }).error(function (response, status) {
-          hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-          error(response);
-        });
-      };
-
-      this.getWorkflowDetail = function (success,workflowId, recordId, submitFlag) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
-        var params = {
-          "params": {
-            "p_workflow_id": workflowId,
-            "p_instance_id": recordId,
-            "p_employee_code": window.localStorage.empno,
-            "p_submit_flag": submitFlag
-          }
-        };
-        hmsHttp.post(url, params).success(function (data) {
-          success(data);
-        }).error(function (data) {
-        });
-      };
     }]);
 
 angular.module('myApp')
@@ -6110,6 +6148,7 @@ angular.module('tsApproveModule')
                   } else {
                     for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
                       subsidys = parseInt(subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      subsidys++;
                       _self.subsidyDaysArray.push(subsidys);
                     }
                   }
@@ -6185,6 +6224,7 @@ angular.module('tsApproveModule')
                   } else {
                     for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
                       new_subsidys = parseInt(new_subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      new_subsidys++;
                       _self.subsidyDaysArray.push(new_subsidys);
                     }
                   }

@@ -36,7 +36,7 @@ angular.module('applicationModule')
             {
               appName: "人事政策",
               imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
+              destUrl: "tab.personnel-policy",
             }]
         },
         {
