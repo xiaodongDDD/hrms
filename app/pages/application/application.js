@@ -45,7 +45,7 @@ angular.module('applicationModule')
               appName: "假期管理",
               imageUrl: "build/img/application/holidayManage@3x.png",
               destUrl: "tab.time-off-manage",
-            },
+            }, 
             {
               appName: "住宿申请",
               imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
@@ -70,7 +70,7 @@ angular.module('applicationModule')
             {
               appName: "机票预定",
               imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
+              destUrl: "tab.flyback",
             },
             {
               appName: "代办事项",

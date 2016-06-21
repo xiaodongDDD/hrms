@@ -1,0 +1,67 @@
+<ion-view view-title="{{viewtitle}}" class="flayback-apply-view">
+
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title" ng-bind="viewtitle"></h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="deleteFB()">
+        删除
+      </button>
+    </div>
+  </ion-header-bar>
+
+  <div class="bar bar-subheader">
+    <div class="row fbSelectproject">
+      <div class="col col-10">
+        <img src="build/img/application/flyback/iconProject.png">
+      </div>
+      <div class="col col-15">项目:</div>
+      <div class="col col-75" ng-click="openProjectList()">
+        <input type="text" ng-readonly="true"
+               required ng-model="flybackHeader.projName"
+               placeholder="--请选择项目--"/>
+      </div>
+    </div>
+  </div>
+  <ion-content>
+    <!--订票信息-->
+    <div class="fbBlock" ng-repeat="fb in flybacklines" ng-click="goDetail(fb,flybacklines.indexOf(fb))">
+      <!--{{$index}}-->
+      <div class="fbLeftblock">
+        <img src="build/img/application/flyback/airplane.png" class="fbImgflight"/>
+      </div>
+      <div class="fbLocation">{{fb.from_place}}</div>
+      <div class="fbMiddleblock">
+        <div class="fbFlightdate">{{fb.flight_date}}</div>
+        <div class="fbImgarrow">
+          <img src="build/img/application/flyback/arrow.png"/>
+        </div>
+        <div class="fbFlight">{{fb.flight_time}}</div>
+      </div>
+      <div class="fbLocation">{{fb.go_place}}</div>
+    </div>
+    <!--添加更多订票信息-->
+    <button class="button button-clear fbaddinfo" ng-click="addFlightInfo()"
+            ng-disabled="(flybackHeader.projCode==''||flybackHeader.projCode<=0) ? 'disabled' :''"
+            ng-show="canEdit">
+      添加更多订票信息
+    </button>
+  </ion-content>
+  <ion-footer-bar align-title="left" class="bar-assertive first"
+                  ng-show="canEdit">
+    <button class="button button-clear" ng-click="save()">保存</button>
+    <div class="fbSeparator"></div>
+    <button class="button button-clear" ng-click="submit()"
+            ng-disabled="flybackHeader.applyId==''||flybacklines.length==0">
+      提交
+    </button>
+  </ion-footer-bar>
+  <ion-footer-bar align-title="left" class="bar-assertive second"
+                  ng-hide="canEdit">
+    <div>——已提交——</div>
+  </ion-footer-bar>
+</ion-view>
