@@ -141,8 +141,6 @@ angular.module('myApp')
       }
 
       if(ionic.Platform.isWebView()){
-        alert(window.sqlitePlugin);
-        alert(window.sqlitePlugin.openDatabase);
         //alert(LocalFileSystem);
           /*window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
             // 获取路径
