@@ -520,17 +520,17 @@ angular.module('tsApproveModule')
         tsListParams.params.p_project_person_number = "";
       };
     }])
-/**
- * @params:
- *  1:scope  //controller的作用域
- *  2:url //请求地址
- *  3:params //请求的参数
- *  4: refurbishParam //控制下拉刷线的参数
- *  5:busy //用于控制下拉刷新的flag
- *  6:totalNumber //获取的数据总数
- *  7:listArray //数据列表
- *  8:loading //数据加载标记
- */
+    /**
+     * @params:
+     *  1:scope  //controller的作用域
+     *  2:url //请求地址
+     *  3:params //请求的参数
+     *  4: refurbishParam //控制下拉刷线的参数
+     *  5:busy //用于控制下拉刷新的flag
+     *  6:totalNumber //获取的数据总数
+     *  7:listArray //数据列表
+     *  8:loading //数据加载标记
+     */
   .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup',
     function (hmsHttp, baseConfig, hmsPopup) {
       var TsApproveListService = function (scope, requestUrl, requestSearchParams, loadingFlag, refurbishParam) {

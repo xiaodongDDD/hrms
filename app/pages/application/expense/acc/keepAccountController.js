@@ -55,14 +55,15 @@ angular.module("applicationModule")
 
 
     $scope.openAccountListPage = function () {
-      $state.go("tab.acc_accountList");
+      alert("未完待续");
+      //$state.go("tab.acc_accountList");
 
     };
 
     $scope.openUploadBatchPage = function () {
       //globalNavigator.pushPage(moduleHtmlPath.ACC+'uploadAccount.html', { animation : 'slide' });
-
-      $state.go("tab.acc_uploadAccount");
+      alert("未完待续");
+      //$state.go("tab.acc_uploadAccount");
 
     };
 
