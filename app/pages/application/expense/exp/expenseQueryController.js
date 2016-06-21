@@ -18,10 +18,10 @@ angular.module("applicationModule")
   .controller('expenseQueryController', [
     '$scope', 'expenseApply', 'dialog', 
     '$http', '$q', '$state', '$ionicLoading', 
-    'hmsHttp', '$ionicPopup', "baseConfig",
+    'hmsHttp', 'hmsPopup', "baseConfig",
     function ($scope, expenseApply, dialog, 
       $http, $q, $state, $ionicLoading, 
-      HttpAppService, $ionicPopup, baseConfig) {
+      HttpAppService, hmsPopup, baseConfig) {
 
     $scope.newPage = 0;
     $scope.isshow = true;
@@ -83,7 +83,7 @@ angular.module("applicationModule")
                 if ($scope.expList[i].descrpt == 'undefined') {
                   $scope.expList[i].descrpt = "";
                 }
-              }
+              } 
               $ionicLoading.hide();
             } else if (response["status"] == "ETOKEN") {// add by ciwei
               dialog.showAlert("E", response["returnMsg"]);
@@ -105,15 +105,11 @@ angular.module("applicationModule")
 
     // add by ciwei
     $scope.showHelp = function () {
-      var alertPopup = $ionicPopup.alert({
-        title: '报销功能使用说明',
-        template: 'Step1：“新建记一笔”，填写待报销记录，保存并上传。' + '<br> ' +
+      var template = 'Step1：“新建记一笔”，填写待报销记录，保存并上传。' + '<br> ' +
         'Step2：在“报销”功能中，创建报销单，选择项目，再选择已经上传的“记一笔”作为报销行信息，保存提交。' + '<br><br> ' +
-        '**“记一笔”保存，是保存在手机本地，只有上传后，才能在报销单处选到。另，如若要卸载app，需先将所有记一笔“上传”，否则会丢失。'
-      });
-      alertPopup.then(function (res) {
-        console.log();
-      });
+        '**“记一笔”保存，是保存在手机本地，只有上传后，才能在报销单处选到。另，如若要卸载app，需先将所有记一笔“上传”，否则会丢失。';
+
+      var alertPopup = hmsPopup.showPopup(template, "报销功能使用说明");
     };
 
     $scope.show = function () {
