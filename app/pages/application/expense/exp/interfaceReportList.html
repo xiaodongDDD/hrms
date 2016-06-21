@@ -1,14 +1,20 @@
-<ion-view view-title="记一笔选择">
-  <!-- add by ciwei begin -->
-  <ion-nav-title>
-    <span>记一笔选择</span>
-  </ion-nav-title>
-  <!-- add by ciwei end-->
-  <ion-nav-buttons side="secondary">
-    <button class="button button-clear" style="color: #3ed9cd;" ng-click="confirmAccounts()">
-      确定
-    </button>
-  </ion-nav-buttons>
+<ion-view view-title="">
+
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title">记一笔选择</h1>
+    <div class="buttons" side="secondary">
+      <button class="button button-clear" style="color: #3ed9cd;" ng-click="confirmAccounts()">
+        确定
+      </button>
+    </div>
+  </ion-header-bar>
+
+
   <ion-content>
     <ion-list>
       <ion-item modifier="tappable" ng-repeat="account in interfaceReportList"

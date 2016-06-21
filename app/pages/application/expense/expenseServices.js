@@ -1,8 +1,7 @@
 /*对话框service*/
 angular.module("applicationModule")
-    .factory('dialog', function ( $ionicPopup) {
+    .factory('dialog', function ( $ionicPopup, baseConfig) {
         var service= {
-
             // 一个提示对话框
             showAlert : function(type,msg) {
                 var title = "";
@@ -16,11 +15,8 @@ angular.module("applicationModule")
                     default :
                         title = "提示";
                         break;
-
                 }
-
                 /***
-                 *
                  * {
                       title: '', // String. The title of the popup.
                       subTitle: '', // String (optional). The sub-title of the popup.
@@ -40,21 +36,19 @@ angular.module("applicationModule")
                     console.log("dialog: "+title+" - "+msg);
                 });
             }
-
         };
         return service;
     });
 
-
 /*结算对象service*/ 
 angular.module("applicationModule")
-    .factory('expenseObject', function ($http,$q, $ionicLoading) {
+    .factory('expenseObject', function ($http,$q, $ionicLoading, baseConfig) {
     var service= {
         businessType:'',
         objectType:'',
         queryUnitList: function (){
             var deferred = $q.defer();
-            $http.get(rootConfig.basePath+"TRP/TRP1130/app_unit_list.svc?companyId=2",{cache:false}).
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_unit_list.svc?companyId=2",{cache:false}).
                 success(function(response) {
                     deferred.resolve(response);
                 }).
@@ -66,41 +60,31 @@ angular.module("applicationModule")
         queryProjectList:function (){
             //showMessage("查询项目列表");
             var deferred = $q.defer();
-
-            var Url = window.localStorage.wsurl + "/expense_account/fetch_expense_proj";
+            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_proj";
             var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
 
             $http.post(Url,PostData).success(function (data){
-
                 deferred.resolve(data);
-
             }).error(function(data) {
                 deferred.reject(data);
-
-                //$ionicLoading.hide();
-
             });
-
             /*
-            $http.get(rootConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
-                success(function(response) {
-                    deferred.resolve(response);
-                }).
-                error(function(response) {
-                    deferred.reject(response);
-                });
-
-                */
-
+                $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
+                    success(function(response) {
+                        deferred.resolve(response);
+                    }).
+                    error(function(response) {
+                        deferred.reject(response);
+                    });
+            */
             //deferred.resolve("ok");
-
             return deferred.promise;
         },
         queryExpenseList:function (projectId, projectCode){
             //showMessage("查询项目列表");
             var deferred = $q.defer();
 
-            var Url = window.localStorage.wsurl + "/expense_account/fetch_expense_types";
+            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_types";
 //            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
 //            '","p_project_code":' + projectCode +
 //            '","p_project_id":' + projectId +'}}';
@@ -117,7 +101,7 @@ angular.module("applicationModule")
             });
 
             /*
-            $http.get(rootConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
                 success(function(response) {
                     deferred.resolve(response);
                 }).

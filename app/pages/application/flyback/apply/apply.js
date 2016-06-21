@@ -1,6 +1,6 @@
 angular.module('myApp')
   .config(['$stateProvider',
-    function ($stateProvider) {
+    function ($stateProvider) { 
       $stateProvider
         .state('tab.flybackApply', {
           url: '/flyback-apply',
@@ -12,7 +12,7 @@ angular.module('myApp')
             }
           }
         });
-    }])
+    }]);
 
 angular.module("applicationModule")
   .controller('FlyBackApplyCtrl', [

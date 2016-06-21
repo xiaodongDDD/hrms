@@ -1,9 +1,22 @@
-/**
- * Created by wuxiaocheng on 15/8/26.
- */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.acc_uploadAccount', {
+          url: '/acc/uploadAccount',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/uploadAccount.html',
+              controller: 'uploadController'
+            }
+          }
+        });
+    }]);
 
-appModuleExpense
-    .controller('uploadController', function ($scope, keepAccount, dialog, $http, $q,$ionicLoading) {
+
+angular.module("applicationModule")
+    .controller('uploadController', function ($scope, keepAccount, dialog, $http, $q,$ionicLoading, baseConfig) {
 
 
     $scope.currentProgress = '批量上传';
@@ -14,7 +27,7 @@ appModuleExpense
         //showMessage(window.localStorage.empno);
     function queryAccountList() {
         var list = [];
-        var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
         var deferred = $q.defer();
         db.transaction(function (tx) {
             var querySql = "select * from MOBILE_EXP_REPORT_LINE t WHERE local_status = 'NEW' AND created_by =? order by creation_date desc, line_id desc ;"
@@ -38,7 +51,7 @@ appModuleExpense
     function queryAccountPhotos(lineId) {
         var list = [];
         //alert("打开数据库...");
-        var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
 
         var deferred = $q.defer();
         db.transaction(function (tx) {
@@ -691,7 +704,7 @@ appModuleExpense
             var line_id = selectedAccounts[i].line_id;
             $http({
                 method: 'POST',
-                url: rootConfig.basePath + "EXP/EXP5030/mobile_exp_report_detail_insert.svc",
+                url: baseConfig.basePath + "EXP/EXP5030/mobile_exp_report_detail_insert.svc",
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function (data) {
                     return  'para=' + JSON.stringify(data);

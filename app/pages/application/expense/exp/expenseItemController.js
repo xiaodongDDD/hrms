@@ -1,8 +1,21 @@
-/**
- * Created by huchaoliagn on 15-5-22.
- * modified by wuxiaocheng on 15-8-27
- */
-appModuleExpense.controller('expenseItemController', function ($scope, $rootScope, keepAccount, expenseApply, $http, $q, $ionicHistory, $ionicLoading) {
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.exp_expenseItemList', {
+          url: '/expense/acc/expenseItemList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/expenseItemList.html',
+              controller: 'expenseItemController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule").controller('expenseItemController', function ($scope, $rootScope, keepAccount, expenseApply, $http, $q, $ionicHistory, $ionicLoading) {
 
   $ionicLoading.show({
     template: "Loading...",

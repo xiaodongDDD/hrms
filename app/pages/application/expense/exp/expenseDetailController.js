@@ -1,9 +1,26 @@
-/**
- * Created by huchaoliang on 15-5-7.
- */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.expenseDetail', {
+          url: '/expenseDetail',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/expenseDetail.html',
+              controller: 'expenseDetailController'
+            }
+          }
+        });
+    }]);
 
-appModuleExpense
-  .controller('expenseDetailController', ['$scope', 'expenseApply', 'keepAccount', 'dialog', 'expenseObject', '$state', '$http', '$ionicLoading', '$q', function ($scope, expenseApply, keepAccount, dialog, expenseObject, $state, $http, $ionicLoading, $q) {
+angular.module("applicationModule")
+  .controller('expenseDetailController', [
+      '$scope', 'expenseApply', 'keepAccount', 'dialog', 
+      'expenseObject', '$state', '$http', '$ionicLoading', 
+      '$q', 'baseConfig', 
+    function ($scope, expenseApply, keepAccount, dialog, expenseObject, 
+      $state, $http, $ionicLoading, $q, baseConfig) {
 
     $scope.isshow=true;
     if(window.localStorage.AlertPage=="" || window.localStorage.AlertPage==undefined )
@@ -176,7 +193,7 @@ appModuleExpense
         template: "正在提交..."
       });
       var expHeaderId = $scope.detailData.expHeaderId;
-      var Url = window.localStorage.wsurl + "/expense_account/submit_expense";
+      var Url = baseConfig.businessPath + "/expense_account/submit_expense";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
       $http.post(Url, PostData).success(function (response) {
         if (response["status"] == "S") {
@@ -249,7 +266,7 @@ appModuleExpense
         var lineId = $scope.detailData.lines[index].lineId;
         var expHeaderId = $scope.detailData.expHeaderId;
         //console.log("+++++++++++++++++++++++++++++" +　lineId);
-        var Url = window.localStorage.wsurl + "/expense_account/delete_expense_line";
+        var Url = baseConfig.businessPath + "/expense_account/delete_expense_line";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '","p_ra_line_id":"' + lineId + '"}}';
 
         $http.post(Url, PostData).success(function (response) {

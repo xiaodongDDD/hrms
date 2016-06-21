@@ -1,8 +1,8 @@
 
 /**
  * Created by huchaoliang on 15-5-15.
- */
-angular.module("applicationModule").controller('attachmentController', function($scope,$q,$http,expenseApply) {
+ */ 
+angular.module("applicationModule").controller('attachmentController', function($scope,$q,$http,expenseApply, baseConfig) {
 
     var page = globalNavigator.getCurrentPage();
     var expLineId= page.options.expLineId;

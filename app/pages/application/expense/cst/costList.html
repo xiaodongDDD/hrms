@@ -8,14 +8,20 @@
   }
 </style>
 <ion-view view-title="预报销费用">
-  <ion-nav-title>
-    <span>报销单列表</span>
-  </ion-nav-title>
-  <ion-nav-buttons side="right">
-    <button class="button button-clear icon-left" ng-click="createCostApply()">
-      <i class="icon ion-plus " style="color: #20CBD3;font-size: 5px;"></i>
-    </button>
-  </ion-nav-buttons>
+
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title" >报销单列表</h1>
+    <div class="buttons">
+      <button class="button button-clear icon-left" ng-click="createCostApply()">
+        <i class="icon ion-plus " style="color: #20CBD3;font-size: 5px;"></i>
+      </button>
+    </div>
+  </ion-header-bar>
 
   <ion-header-bar class="bar-subheader" style="background-color: #20CBD3;">
     <div class="button-bar bar-light" style="width: 60%;margin: 1px auto;">

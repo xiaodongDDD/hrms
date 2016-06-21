@@ -1,9 +1,24 @@
-/**
- * Created by wuxiaocheng on 15/9/14.
- */
 
-appModuleExpense
-  .controller('costListController', function ($scope, $http, $q, dialog, costApply, $state, $ionicLoading) {
+// 费用申请
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.cst_list', {
+          url: '/expense/acc/costList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/cst/costList.html',
+              controller: 'costListController',
+              cache: false
+            }
+          }
+        });
+  }]);
+
+angular.module("applicationModule")
+  .controller('costListController', function ($scope, $http, $q, dialog, costApply, $state, $ionicLoading, baseConfig) {
 
     var statusType = {
       new: "NEW",
@@ -85,7 +100,7 @@ appModuleExpense
 
       var deferred = $q.defer();
 
-      var Url = window.localStorage.wsurl + "/expenses_apply/get_apply_list";
+      var Url = baseConfig.businessPath + "/expenses_apply/get_apply_list";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_status":"' + statusType + '","p_project_id":"' + "" + '"}}';
 
 
@@ -306,7 +321,7 @@ appModuleExpense
       showMessage(fileSystem.name);
 
       //showMessage(keepAccount.tempPhoto.photo_src);
-      var myFolderApp = rootConfig.appRootFile;
+      var myFolderApp = baseConfig.appRootFile;
 
 
       // 数据删除完成 开始删除图片

@@ -1,16 +1,12 @@
-/**
- * Created by wuxiaocheng on 15/8/27.
- */
-
 /*结算对象service*/
 angular.module("applicationModule")
-    .factory('expenseObject', function ($http,$q, $ionicLoading) {
+    .factory('expenseObject', function ($http,$q, $ionicLoading, baseConfig) {
     var service= {
         businessType:'',
         objectType:'',
         queryUnitList: function (){
             var deferred = $q.defer();
-            $http.get(rootConfig.basePath+"TRP/TRP1130/app_unit_list.svc?companyId=2",{cache:false}).
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_unit_list.svc?companyId=2",{cache:false}).
                 success(function(response) {
                     deferred.resolve(response);
                 }).
@@ -23,7 +19,7 @@ angular.module("applicationModule")
             //showMessage("查询项目列表");
             var deferred = $q.defer();
 
-            var Url = window.localStorage.wsurl + "/expense_account/fetch_expense_proj";
+            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_proj";
             var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
 
             $http.post(Url,PostData).success(function (data){
@@ -38,7 +34,7 @@ angular.module("applicationModule")
             });
 
             /*
-            $http.get(rootConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
                 success(function(response) {
                     deferred.resolve(response);
                 }).
@@ -56,7 +52,7 @@ angular.module("applicationModule")
             //showMessage("查询项目列表");
             var deferred = $q.defer();
 
-            var Url = window.localStorage.wsurl + "/expense_account/fetch_expense_types";
+            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_types";
 //            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
 //            '","p_project_code":' + projectCode +
 //            '","p_project_id":' + projectId +'}}';
@@ -73,7 +69,7 @@ angular.module("applicationModule")
             });
 
             /*
-            $http.get(rootConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
                 success(function(response) {
                     deferred.resolve(response);
                 }).

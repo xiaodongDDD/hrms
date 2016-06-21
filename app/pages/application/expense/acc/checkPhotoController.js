@@ -1,12 +1,24 @@
-/**
- * Created by wuxiaocheng on 15/8/26.
- */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.acc_photoDetail', {
+          url: '/acc/photoDetail',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/photoDetail.html',
+              controller: 'checkPhotoController'
+            }
+          }
+        });
+    }]);
 
-appModuleExpense
-    .controller('checkPhotoController', function($scope,keepAccount, dialog,$ionicHistory) {
+angular.module("applicationModule")
+    .controller('checkPhotoController', function($scope,keepAccount, dialog,$ionicHistory, baseConfig) {
 
     $scope.tempPhoto=keepAccount.tempPhoto;
-    $scope.photoPathURL = rootConfig.appRootPath;
+    $scope.photoPathURL = baseConfig.appRootPath;
     $scope.canEdit  =   keepAccount.canEdit;
 
     $scope.back=function(){
@@ -20,9 +32,9 @@ appModuleExpense
 
         showMessage("下砸图片");
 
-        var sourceUrl = rootConfig.appRootPath + keepAccount.tempPhoto.photo_name;
+        var sourceUrl = baseConfig.appRootPath + keepAccount.tempPhoto.photo_name;
         showMessage(sourceUrl);
-        var targetUrl = rootConfig.appRootPath +"temp.jpg";
+        var targetUrl = baseConfig.appRootPath +"temp.jpg";
         showMessage(targetUrl);
 
 
@@ -89,7 +101,7 @@ appModuleExpense
         console.log(fileSystem.name);
         showMessage(fileSystem.name);
         showMessage(keepAccount.tempPhoto.photo_src);
-        var myFolderApp = rootConfig.appRootFile;
+        var myFolderApp = baseConfig.appRootFile;
 
         showMessage(myFolderApp+'/'+keepAccount.tempPhoto.photo_name);
         fileSystem.root.getFile(myFolderApp+'/'+keepAccount.tempPhoto.photo_name, null, onGetFileSuccess, onGetFileError);

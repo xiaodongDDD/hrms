@@ -1,9 +1,19 @@
 <ion-view title="批量上传">
-  <ion-nav-buttons side="right">
-    <button class="button button-clear" ng-click="uploadDataBatch()">
-      上传
-    </button>
-  </ion-nav-buttons>
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title">批量上传</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="uploadDataBatch()">
+        上传
+      </button>
+    </div>
+  </ion-header-bar>
+
+
   <ion-content>
     <ion-list ng-repeat="al in accountList2">
       <div class="item item-divider" style="background-color: #f1f4f4">

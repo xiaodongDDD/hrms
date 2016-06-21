@@ -1,4 +1,14 @@
 <ion-view title="{{title}}">
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title" ng-bind="title"></h1>
+    <div class="buttons">
+    </div>
+  </ion-header-bar>
   <style>
     input {
       background: none;
@@ -25,7 +35,7 @@
         <ion-item class="item list-item-container" style="margin-top: 3px; border: none">
           <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
             <div class="col col-10" style=" padding: 0 5px 0 5px">
-              <div style="margin-top: 9px"><img src="img/money.png"></div>
+              <div style="margin-top: 9px"><img src="build/img/application/expense/money.png"></div>
             </div>
             <div class="col col-40" style=" padding: 0 5px 0 5px">
               <input type="number" class="text-input--underbar width-full" ng-readonly="true"
@@ -48,7 +58,7 @@
         <ion-item class="item list-item-container" style="border: none">
           <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
             <div class="col col-10" style=" padding: 0 5px 0 5px">
-              <div style="margin-top: 10px"><img src="img/amount.png"></div>
+              <div style="margin-top: 10px"><img src="build/img/application/expense/amount.png"></div>
             </div>
             <div class="col col-40" style=" padding: 0 5px 0 5px">
               <input type="number" class="text-input--underbar width-full" ng-readonly="true"
@@ -71,7 +81,7 @@
         <ion-item class="item list-item-container" style="border: none">
           <div class="row" style="width: 94%; margin-left: 3%; padding:0 5px 0 5px">
             <div class="col col-10" style=" padding: 0 5px 0 5px">
-              <div style="margin-top: 9px"><img src="img/billAmount.png"></div>
+              <div style="margin-top: 9px"><img src="build/img/application/expense/billAmount.png"></div>
             </div>
             <div class="col col-90" style=" padding: 0 5px 0 5px">
               <input type="number" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
@@ -87,7 +97,7 @@
         <ion-item class="item list-item-container" style="margin-top: 5px; border: none">
           <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
             <div class="col col-10" style=" padding: 0 5px 0 5px">
-              <div style="margin-top: 10px"><img src="img/expense.png"></div>
+              <div style="margin-top: 10px"><img src="build/img/application/expense/expense.png"></div>
             </div>
             <div class="col col-90" style=" padding: 0 5px 0 5px">
               <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
@@ -100,7 +110,7 @@
         <ion-item class="item list-item-container" style="border: none">
           <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
             <div class="col col-10">
-              <div style="margin-top: 5px"><img src="img/rentApply.png"></div>
+              <div style="margin-top: 5px"><img src="build/img/application/expense/rentApply.png"></div>
             </div>
             <div class="col col-90" style=" padding: 0 5px 0 5px">
               <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
@@ -113,7 +123,7 @@
         <ion-item class="item list-item-container" style="border: none">
           <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
             <div class="col col-10" style=" padding: 0 5px 0 5px">
-              <div style="margin-top: 10px"><img src="img/adress.png"></div>
+              <div style="margin-top: 10px"><img src="build/img/application/expense/adress.png"></div>
             </div>
             <div class="col col-90" style=" padding: 0 5px 0 5px">
               <input type="text" class="text-input--underbar width-full" ng-readonly="true"
@@ -126,7 +136,7 @@
         <ion-item class="item list-item-container" style="border: none">
           <div class="row" style="width: 94%; margin-left: 3%; padding:0 5px 0 5px">
             <div style="padding: 0 5px 0 5px; width: 10%">
-              <div style="margin-top: 10px"><img src="img/date.png"></div>
+              <div style="margin-top: 10px"><img src="build/img/application/expense/date.png"></div>
             </div>
             <div style="padding: 0 5px 0 5px; width: 45%; margin-left: 5px">
               <input type="text" class="text-input--underbar width-full" ng-readonly="true"
@@ -149,7 +159,7 @@
         <ion-item class="item list-item-container" style="border: none; margin-top: 5px">
           <div class="row" style="line-height: 30px; width: 94%; margin-left: 3%; padding:0 5px 0 5px">
             <div class="col col-10" style=" padding: 0 5px 0 5px">
-              <div style="margin-top: 4px"><img src="img/remark.png"></div>
+              <div style="margin-top: 4px"><img src="build/img/application/expense/remark.png"></div>
             </div>
             <div class="col col-90" style="margin-top: 7px; padding: 0 5px 0 5px">
                             <textarea class="textarea textarea--transparent width-full"

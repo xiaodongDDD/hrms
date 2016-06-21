@@ -1,9 +1,25 @@
 /**
  * Created by wuxiaocheng on 15/8/26.
  */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.acc_detail', {
+          url: '/acc/detail',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/accountDetail.html',
+              controller: 'accountDetailController',
+              cache: false
+            }
+          }
+        });
+    }]);
 
-appModuleExpense
-    .controller('accountDetailController', function($scope,keepAccount,expenseApply,expenseObject,dialog,$http,$rootScope,$state, $ionicHistory, $ionicLoading) {
+angular.module("applicationModule")
+    .controller('accountDetailController', function($scope,keepAccount,expenseApply,expenseObject,dialog,$http,$rootScope,$state, $ionicHistory, $ionicLoading, baseConfig) {
 
         $scope.canEdit=keepAccount.canEdit;
         $scope.canUpload=keepAccount.canUpload;
@@ -21,7 +37,7 @@ appModuleExpense
         //showMessage(angular.toJson(keepAccount.data));
 
         $scope.currentProgress = '';
-        $scope.photoPathURL = rootConfig.appRootPath;
+        $scope.photoPathURL = baseConfig.appRootPath;
 
 
 
@@ -968,7 +984,7 @@ appModuleExpense
         showMessage(fileSystem.name);
 
         //showMessage(keepAccount.tempPhoto.photo_src);
-        var myFolderApp = rootConfig.appRootFile;
+        var myFolderApp = baseConfig.appRootFile;
 
 
         // 数据删除完成 开始删除图片

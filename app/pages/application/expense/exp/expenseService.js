@@ -3,12 +3,13 @@
  */
 
 /*报销服务*/
-appModuleExpense.factory('expenseApply', function ($http, $q, $window, $ionicLoading) {
+angular.module("applicationModule")
+.factory('expenseApply', function ($http, $q, $window, $ionicLoading, baseConfig) {
 
   // 上传附件
   function doPostHttp(form, deferred) {
     //showMessage("doPostHttp");
-    $http.post(rootConfig.basePath + 'EXP/EXP5010/exp_upload_line_photos.svc', form, {
+    $http.post(baseConfig.basePath + 'EXP/EXP5010/exp_upload_line_photos.svc', form, {
       transformRequest: angular.identity,
       headers: {'Content-Type': undefined}
     })
@@ -77,7 +78,7 @@ appModuleExpense.factory('expenseApply', function ($http, $q, $window, $ionicLoa
       var deferred = $q.defer();
       console.log(1122);
       var Item = [];
-      var Url = window.localStorage.wsurl + "/expense_account/fetch_expense_detail";
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_detail";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
       $http.post(Url, PostData).success(function (response) {
         //console.log("返回数据：" + angular.toJson(response));
@@ -100,7 +101,7 @@ appModuleExpense.factory('expenseApply', function ($http, $q, $window, $ionicLoa
       else if (queryType == 'submitted') {
         expStatues = 'SUBMIT';
       }
-      var Url = window.localStorage.wsurl + "/expense_account/fetch_expense_list";
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
         + '","p_page_num":"' + "1" + '"}}';
 
@@ -147,7 +148,7 @@ appModuleExpense.factory('expenseApply', function ($http, $q, $window, $ionicLoa
       }
       console.log(linesId);
       var deferred = $q.defer();
-      var Url = window.localStorage.wsurl + "/expense_account/create_expense";
+      var Url = baseConfig.businessPath + "/expense_account/create_expense";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + "" + '","p_description":"'
         + detailData.description + '","p_line":"' + linesId + '"}}';
 
@@ -167,7 +168,7 @@ appModuleExpense.factory('expenseApply', function ($http, $q, $window, $ionicLoa
       var deferred = $q.defer();
       $http({
         method: 'POST',
-        url: rootConfig.basePath + "EXP/EXP5010/app_reimbursement_delete.svc",
+        url: baseConfig.basePath + "EXP/EXP5010/app_reimbursement_delete.svc",
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         transformRequest: function (data) {
 
@@ -191,16 +192,16 @@ appModuleExpense.factory('expenseApply', function ($http, $q, $window, $ionicLoa
       console.log("response:" + "进入");
 
       console.log(angular.toJson(this.data));
-      this.data.userId = rootConfig.user.userId;
+      this.data.userId = window.localStorage.empno;
       var datatemp = {
-        userId: rootConfig.user.userId,
+        userId: window.localStorage.empno,
         expHeaderId: expHeaderIdToSubmit
       };
 
       var deferred = $q.defer();
       $http({
         method: 'POST',
-        url: rootConfig.basePath + 'EXP/EXP5010/exp_reimbursement_hd_submit.svc',
+        url: baseConfig.basePath + 'EXP/EXP5010/exp_reimbursement_hd_submit.svc',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         transformRequest: function (data) {
           return 'para=' + JSON.stringify(data);
@@ -229,8 +230,8 @@ appModuleExpense.factory('expenseApply', function ($http, $q, $window, $ionicLoa
 
     initData: function () {
       this.data = {
-        userId: rootConfig.user.userId,
-        companyId: rootConfig.user.companyId,
+        userId: window.localStorage.empno,
+        companyId: baseConfig.companyId,
         lines: []
       };
     },
@@ -308,7 +309,7 @@ appModuleExpense.factory('expenseApply', function ($http, $q, $window, $ionicLoa
       console.log(linesId);
 
       var deferred = $q.defer();
-      var Url = window.localStorage.wsurl + "/expense_account/create_expense";
+      var Url = baseConfig.businessPath + "/expense_account/create_expense";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + detailData.expHeaderId
         + '","p_description":"' + detailData.description + '","p_line":"' + linesId + '"}}';
       $http.post(Url, PostData).success(function (response) {
@@ -328,7 +329,7 @@ appModuleExpense.factory('expenseApply', function ($http, $q, $window, $ionicLoa
       var deferred = $q.defer();
       $http({
         method: 'POST',
-        url: rootConfig.basePath + 'EXP/EXP5010/app_reimbursement_ln_delete.svc',
+        url: baseConfig.basePath + 'EXP/EXP5010/app_reimbursement_ln_delete.svc',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         transformRequest: function (data) {
           return 'para=' + JSON.stringify(data);

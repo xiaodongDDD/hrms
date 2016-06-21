@@ -7,17 +7,23 @@
   }
 </style>
 <ion-view view-title="记一笔" hide-tabs="true">
-  <ion-nav-view>
-    记一笔
-  </ion-nav-view>
-  <ion-nav-buttons side="right">
-    <button class="button button-clear" ng-click="showHelp()">
-      <i class=" icon ion-ios-information-outline" style="color:#aaaaaa;font-size: 20px;margin-right: 3px;"></i>
-    </button>
-  </ion-nav-buttons>
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title">记一笔</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="showHelp()">
+        <i class=" icon ion-ios-information-outline" style="color:#aaaaaa;font-size: 20px;margin-right: 3px;"></i>
+      </button>
+    </div>
+  </ion-header-bar>
+
   <ion-content>
     <div class="accoutlogo">
-      <img src="img/note.png" style="width: 100%;height: 200px;">
+      <img src="build/img/application/expense/note.png" style="width: 100%;height: 200px;">
     </div>
     <ion-list>
       <ion-item modifier="chevron" class="item-icon-right" ng-click="openCreatePage()"

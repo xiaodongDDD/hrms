@@ -1,17 +1,28 @@
-/**
- * Created by wuxiaocheng on 15/8/26.
- */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.acc_photos', {
+          url: '/acc/photos',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/photos.html',
+              controller: 'photosController'
+            }
+          }
+        });
+    }]);
 
-
-appModuleExpense
-  .controller('photosController', function ($scope, keepAccount, $state, $ionicPopup, $ionicLoading, $ionicActionSheet, dialog) {
+angular.module("applicationModule")
+  .controller('photosController', function ($scope, keepAccount, $state, $ionicPopup, $ionicLoading, $ionicActionSheet, dialog, baseConfig) {
 
     $scope.photos = keepAccount.data.photos;
 
     //showMessage(angular.toJson(keepAccount.data.photos));
-    $scope.serverURL = rootConfig.serverPath;
+    $scope.serverURL = baseConfig.serverPath;
 
-    $scope.photoPathURL = rootConfig.appRootPath;
+    $scope.photoPathURL = baseConfig.appRootPath;
 
 
     $scope.showAlertPhoto = function (photoName) {//点击图片 放大图片
@@ -210,7 +221,7 @@ appModuleExpense
       var n = d.getTime();
       //new file name
       var newFileName = n + ".jpg";
-      var myFolderApp = rootConfig.appRootFile;
+      var myFolderApp = baseConfig.appRootFile;
 
       window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
           //The folder is created if doesn't exist
@@ -274,7 +285,7 @@ appModuleExpense
       showMessage("temp - - " + angular.toJson(keepAccount.tempPhoto));
 
       $scope.tempPhoto = keepAccount.tempPhoto;
-      $scope.photoPathURL = rootConfig.appRootPath;
+      $scope.photoPathURL = baseConfig.appRootPath;
       $scope.canEdit = keepAccount.canEdit;
 
     if($scope.canEdit){
@@ -314,7 +325,7 @@ appModuleExpense
         console.log(fileSystem.name);
         showMessage(fileSystem.name);
         showMessage(keepAccount.tempPhoto.photo_src);
-        var myFolderApp = rootConfig.appRootFile;
+        var myFolderApp = baseConfig.appRootFile;
 
         showMessage(myFolderApp + '/' + keepAccount.tempPhoto.photo_name);
         fileSystem.root.getFile(myFolderApp + '/' + keepAccount.tempPhoto.photo_name, null, onGetFileSuccess, onGetFileError);

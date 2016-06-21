@@ -1,15 +1,27 @@
-/**
- * Created by wuxiaocheng on 15/8/27.
- */
-
-appModuleExpense.controller('expenseTypeController', function($scope,$rootScope,keepAccount,expenseApply,$http,$q,$ionicHistory) {
+// 报销
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.exp_expenseTypeList', {
+          url: '/acc/expenseTypeList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/expenseTypeList.html',
+              controller: 'expenseTypeController'
+            }
+          }
+        });
+    }]);
+angular.module("applicationModule").controller('expenseTypeController', function($scope,$rootScope,keepAccount,expenseApply,$http,$q,$ionicHistory, baseConfig) {
 
     function queryExpenseTypeList(){
-        var companyId=rootConfig.user.companyId;
+        var companyId=baseConfig.user.companyId;
         var deferred = $q.defer();
 
         /*
-        $http.get(rootConfig.basePath+"EXP/expenseTypeList.svc?companyId="+companyId,{cache:false}).
+        $http.get(baseConfig.basePath+"EXP/expenseTypeList.svc?companyId="+companyId,{cache:false}).
             success(function(response, status, headers, config) {
                 deferred.resolve(response);
             }).

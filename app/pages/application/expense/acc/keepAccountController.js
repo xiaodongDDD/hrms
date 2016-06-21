@@ -2,7 +2,39 @@
  * Created by wuxiaocheng on 15/8/26.
  */
 
-appModuleExpense
+// angular.module('myApp')
+//   .config(['$stateProvider',
+//     function ($stateProvider) {
+//       $stateProvider
+//         .state('tab.expense_acc', {
+//           url: '/expense/acc',
+//           params: {},
+//           views: {
+//             'tab-application': {
+//               templateUrl: 'build/pages/application/expense/acc/accounts.html',
+//               controller: 'keepAccountController'
+//             }
+//           }
+//         });
+//     }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.acc_main', {
+          url: '/acc',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/accounts.html',
+              controller: 'keepAccountController'
+            }
+          }
+        });
+    }]);
+     
+angular.module("applicationModule")
   .controller('keepAccountController', function ($scope, keepAccount, $http, $state, $rootScope, $q, $ionicPopup) {
 
     $scope.openCreatePage = function () {

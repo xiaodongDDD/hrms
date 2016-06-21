@@ -14,7 +14,7 @@ angular.module('applicationModule')
 
       $scope.animationsEnabled = false;
 
-      //个人办公
+      //个人办公 
       $scope.officeApp = [
         {
           list: [
@@ -96,19 +96,19 @@ angular.module('applicationModule')
               destUrl: "",
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "记一笔",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.acc_main"
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "报销",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.expense"
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "预报销",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.cst_list"
             }]
         }
       ];

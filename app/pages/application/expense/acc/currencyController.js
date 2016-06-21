@@ -1,16 +1,16 @@
 /**
  * Created by wuxiaocheng on 15/8/26.
  */
-appModuleExpense
-    .controller('currencyController', function($scope,$rootScope,keepAccount,expenseApply,$http,$q,$ionicHistory) {
+angular.module("applicationModule")
+    .controller('currencyController', function($scope,$rootScope,keepAccount,expenseApply,$http,$q,$ionicHistory, baseConfig) {
 
     function queryCurrencyList(){
-        var companyId=rootConfig.user.companyId;
+        var companyId=baseConfig.user.companyId;
         var deferred = $q.defer();
 
 
         /*
-        $http.get(rootConfig.basePath+"EXP/currencyList.svc?companyId="+companyId,{cache:false}).
+        $http.get(baseConfig.basePath+"EXP/currencyList.svc?companyId="+companyId,{cache:false}).
             success(function(response, status, headers, config) {
 
                 //showMessage('test');

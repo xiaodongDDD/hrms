@@ -3,8 +3,8 @@
  */
 
 
-appModuleExpense
-    .factory('keepAccount', function ($http,$q,$window) {
+angular.module("applicationModule")
+    .factory('keepAccount', function ($http,$q,$window, baseConfig) {
 
 
     // 上传附件
@@ -32,7 +32,7 @@ appModuleExpense
     function doPostHttpOnlyData(json, deferred) {
 
 
-        var Url = window.localStorage.wsurl + "/expense_account/create_expense_details";
+        var Url = baseConfig.businessPath + "/expense_account/create_expense_details";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
             '","p_details":' + json +'}}';
 
@@ -58,7 +58,7 @@ appModuleExpense
     
     function deleteAccountItem(timestamp, deferred) {
         console.log("get the timestamp = "+timestamp);
-        var Url = window.localStorage.wsurl + "/expense_account/delete_expense_details";
+        var Url = baseConfig.businessPath + "/expense_account/delete_expense_details";
 //        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
 //            '","p_time_stamp":' + timestamp+'}}';
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_time_stamp":"' + timestamp +  '"}}';
@@ -138,7 +138,7 @@ appModuleExpense
             //请求数据库，查询操作
             var detailData={};
             var deferred=$q.defer();
-            var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
             db.transaction(function(tx) {
                 var querySql="select * from MOBILE_EXP_REPORT_LINE t where t.line_id=?";
                 var para=[lineId];
@@ -218,7 +218,7 @@ appModuleExpense
         queryDetailPhoto: function(lineId) {
             var detailData={};
             var deferred=$q.defer();
-            var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
 
             db.transaction(function(tx) {
                 var photos=[];
@@ -257,7 +257,7 @@ appModuleExpense
             var deferred=$q.defer();
             var data=this.data;
             showMessage('open db');
-            var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
             var lineID;
             db.transaction(function(tx) {
                 // 删除记一笔数据
@@ -302,7 +302,7 @@ appModuleExpense
             var data=this.data;
             var resID;
             showMessage('open db to del lineid'+ line_id);
-            var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
            // var lineID;
             db.transaction(function(tx) {
                 // 删除记一笔数据
@@ -367,7 +367,7 @@ appModuleExpense
 
 
             showMessage("creation_date"+creation_date);
-            var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
             var lineID;
 
 
@@ -572,8 +572,8 @@ appModuleExpense
             //prj_project_cost_type_v 项目报销类型归属，其中'SH'为营销，'RH' 管理费用，'PD'为项目实施，‘DN’为笔记本报销
 
             this.data={
-                //userId:rootConfig.user.userId,
-                //companyId:rootConfig.user.companyId,
+                //userId:baseConfig.user.userId,
+                //companyId:baseConfig.user.companyId,
                 companyId:"",
 
                 created_by:window.localStorage.empno,
@@ -647,7 +647,7 @@ appModuleExpense
             var expense_date_to=getFormatDate(new Date(data.expense_date_to));
 
 
-            var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
             // var lineID;
             var rowsAffacted = 0;
             //showMessage("打开数据库成功");
@@ -844,7 +844,7 @@ appModuleExpense
                 var  count  = 0;
                 for(var i=0;i<photos.length;i++){
                     //这里是异步调用cordova 的文件操作，给form 增加
-                    window.resolveLocalFileSystemURL(rootConfig.appRootPath+photos[i].photo_name, function (fileEntry) {
+                    window.resolveLocalFileSystemURL(baseConfig.appRootPath+photos[i].photo_name, function (fileEntry) {
                         fileEntry.file(function (file) {
                             var reader = new FileReader();
                             reader.onloadend = function (fileReadResult) {
@@ -1096,13 +1096,13 @@ appModuleExpense
              options.mimeType = "image/jpeg";
              var ft = new FileTransfer();
              ft.onprogress = showUploadingProgress;
-             ft.upload(fileURL, encodeURI(rootConfig.basePath+"uploadAttachment.svc?interfaceId="+interfaceId), win, fail, options);
+             ft.upload(fileURL, encodeURI(baseConfig.basePath+"uploadAttachment.svc?interfaceId="+interfaceId), win, fail, options);
 
              return deferred.promise;*/
         },
         updateLocalStatus:function(lineId,status){  //根据lineId 更新本地记一笔的local_status
             var deferred=$q.defer();
-            var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
             db.transaction(function(tx) {
                 var insertSql="UPDATE MOBILE_EXP_REPORT_LINE  "+
                     " SET  local_status = ? " +
@@ -1178,7 +1178,7 @@ appModuleExpense
             showMessage("login");
             var postData = {username: "admin", password: "admin"};
 
-            var url =rootConfig.basePath+"LOGIN/login.svc";
+            var url =baseConfig.basePath+"LOGIN/login.svc";
             console.log('登录请求的地址是:'+url);
 
             $http({

@@ -2,12 +2,12 @@
  * Created by huchaoliang on 15-5-22.
  */
 
-appModuleExpense.controller('reportTypeController', function($scope,keepAccount,$http,$q,expenseApply,travelApply) {
+angular.module("applicationModule").controller('reportTypeController', function($scope,keepAccount,$http,$q,expenseApply,travelApply, baseConfig) {
 
     function queryReportTypeList(){
-        var companyId=rootConfig.user.companyId;
+        var companyId=baseConfig.user.companyId;
         var deferred = $q.defer();
-        $http.get(rootConfig.basePath+"EXP/reimbursementList.svc?companyId="+companyId,{cache:false}).
+        $http.get(baseConfig.basePath+"EXP/reimbursementList.svc?companyId="+companyId,{cache:false}).
             success(function(response, status, headers, config) {
                 deferred.resolve(response);
             }).

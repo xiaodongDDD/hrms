@@ -1,10 +1,23 @@
-/**
- * Created by wuxiaocheng on 15/9/10.
- */
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.cst_costObjectList', {
+          url: '/expense/cst/costObjectList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/cst/costObjectList.html',
+              controller: 'costObjectController'
+            }
+          }
+        });
+    }]);
 
 
-appModuleExpense
-    .controller('costObjectController', function($scope,expenseObject,$ionicHistory,keepAccount, $q, $ionicLoading) {
+angular.module("applicationModule")
+    .controller('costObjectController', function($scope,expenseObject,$ionicHistory,keepAccount, $q, $ionicLoading, baseConfig) {
         function queryCostObjectList(){
             $ionicLoading.show({
                 template: 'Loading...',
@@ -13,7 +26,7 @@ appModuleExpense
             var deferred = $q.defer();
 
             /**
-            $http.get(rootConfig.basePath+"EXP/expenseItemList.svc?expenseTypeId="+expenseTypeId,{cache:false}).
+            $http.get(baseConfig.basePath+"EXP/expenseItemList.svc?expenseTypeId="+expenseTypeId,{cache:false}).
                 success(function(response, status, headers, config) {
                     deferred.resolve(response);
                 }).

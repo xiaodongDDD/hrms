@@ -1,9 +1,27 @@
-/**
- * Created by huchaoliang on 15-6-24.
- */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.expense', {
+          url: '/expenseQueryTabList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/expenseQueryTabList.html',
+              controller: 'expenseQueryController'
+            }
+          }
+        });
+    }]);
 
-appModuleExpense
-  .controller('expenseQueryController', ['$scope', 'expenseApply', 'dialog', '$http', '$q', '$state', '$ionicLoading', 'HttpAppService', '$ionicPopup', function ($scope, expenseApply, dialog, $http, $q, $state, $ionicLoading, HttpAppService, $ionicPopup) {
+angular.module("applicationModule")
+  .controller('expenseQueryController', [
+    '$scope', 'expenseApply', 'dialog', 
+    '$http', '$q', '$state', '$ionicLoading', 
+    'hmsHttp', '$ionicPopup', "baseConfig",
+    function ($scope, expenseApply, dialog, 
+      $http, $q, $state, $ionicLoading, 
+      HttpAppService, $ionicPopup, baseConfig) {
 
     $scope.newPage = 0;
     $scope.isshow = true;
@@ -100,7 +118,7 @@ appModuleExpense
 
     $scope.show = function () {
       $ionicLoading.show({
-        template: 'Loading...'
+        template: 'Loading...' 
       });
     };
     $scope.hide = function () {
@@ -109,12 +127,13 @@ appModuleExpense
     //初始化列表
     function queryList() {
       // $scope.expList.splice(0, $scope.expList.length);
+      // // baseConfig.businessPath   baseConfig.businessPath
       $ionicLoading.show({
         template: "Loading..."
       });
       var expStatues = 'SAVE';
       var deferred = $q.defer();
-      var Url = window.localStorage.wsurl + "/expense_account/fetch_expense_list";
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
         + '","p_page_num":"' + "1" + '"}}';
 
@@ -173,7 +192,7 @@ appModuleExpense
         expStatues = 'SUBMIT';
       }
       //  console.log("queryList");
-      var Url = window.localStorage.wsurl + "/expense_account/fetch_expense_list";
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues + '","p_page_num":"' + $scope.newPage + '"}}';
       $scope.show();
       $http.post(Url, PostData).success(function (response) {
@@ -205,13 +224,11 @@ appModuleExpense
           $ionicLoading.show({template: '没有更多的数据了....', noBackdrop: true, duration: 1000});
           $scope.$broadcast('scroll.infiniteScrollComplete');
         }
-
       }).error(function (data) {
         $scope.isshow = false;
         //$scope.hide();
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $ionicLoading.hide();
-
       });
     }
 
@@ -363,7 +380,7 @@ appModuleExpense
         var deferred = $q.defer();
         var expHeaderId = $scope.expList[index].ra_id;
         console.log(expHeaderId);
-        var Url = window.localStorage.wsurl + "/expense_account/delete_expense";
+        var Url = baseConfig.businessPath + "/expense_account/delete_expense";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
         $http.post(Url, PostData).success(function (response) {
           if (response["status"] == "S") {

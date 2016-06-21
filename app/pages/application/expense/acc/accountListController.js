@@ -1,8 +1,21 @@
-/**
- * Created by wuxiaocheng on 15/8/26.
- */
-appModuleExpense
-  .controller('accountListController', function ($scope, $http, $q, keepAccount, $state, $ionicLoading) {
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.acc_accountList', {
+          url: '/acc/accountList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/accountList.html',
+              controller: 'accountListController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('accountListController', function ($scope, $http, $q, keepAccount, $state, $ionicLoading, baseConfig) {
 
     $scope.shouldShowDelete = true;
 
@@ -11,7 +24,7 @@ appModuleExpense
       //showMessage("查询列表");
       var list = [];
 
-      var db = window.sqlitePlugin.openDatabase({name: rootConfig.dbName, createFromLocation: 1});
+      var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
       var deferred = $q.defer();
       db.transaction(function (tx) {
         var querySql = "select * from MOBILE_EXP_REPORT_LINE where created_by = ? order by creation_date desc, line_id desc";
@@ -241,7 +254,7 @@ appModuleExpense
       //showMessage(fileSystem.name);
 
       //showMessage(keepAccount.tempPhoto.photo_src);
-      var myFolderApp = rootConfig.appRootFile;
+      var myFolderApp = baseConfig.appRootFile;
 
 
       // 数据删除完成 开始删除图片

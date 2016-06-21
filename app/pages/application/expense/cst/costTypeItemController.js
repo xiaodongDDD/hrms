@@ -1,8 +1,21 @@
-/**
- * Created by wuxiaocheng on 15/9/23.
- */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.cst_costTypeItemList', {
+          url: '/expense/cst/costTypeItemList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/cst/costTypeItemList.html',
+              controller: 'costTypeItemController'
+            }
+          }
+        });
+    }]);
 
-appModuleExpense.controller('costTypeItemController', function($scope,$http,$q, costApply,$ionicHistory,$ionicLoading) {
+
+angular.module("applicationModule").controller('costTypeItemController', function($scope,$http,$q, costApply,$ionicHistory,$ionicLoading, baseConfig) {
 
 
     $ionicLoading.show({
@@ -18,7 +31,7 @@ appModuleExpense.controller('costTypeItemController', function($scope,$http,$q, 
 
         //deferred.resolve(keepAccount.expenseItemList);
 
-        var Url = window.localStorage.wsurl + "/expenses_apply/get_typeitme_list";
+        var Url = baseConfig.businessPath + "/expenses_apply/get_typeitme_list";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
 
         console.log(PostData);

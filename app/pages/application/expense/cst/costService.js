@@ -1,10 +1,5 @@
-/**
- * Created by wuxiaocheng on 15/9/10.
- */
-
-
 /* 借款服务 */
-appModuleExpense.factory('costApply', function ($http, $q) {
+angular.module("applicationModule").factory('costApply', function ($http, $q, baseConfig) {
     var service= {
         data:{},
         canEdit:'',
@@ -24,8 +19,8 @@ appModuleExpense.factory('costApply', function ($http, $q) {
             console.log("query detail: "+costApplyId);
 
             /*
-            //$http.get(rootConfig.basePath+"EXP/EXP5020/exp_payment_requisition_query.svc?paymentRequisitionId="+paymentRequisitionId,{cache:false}).
-            $http.get(rootConfig.basePath+"EXP/EXP5020/exp_payment_requisition_query.svc?paymentRequisitionId="+paymentRequisitionId,{cache:false}).
+            //$http.get(baseConfig.basePath+"EXP/EXP5020/exp_payment_requisition_query.svc?paymentRequisitionId="+paymentRequisitionId,{cache:false}).
+            $http.get(baseConfig.basePath+"EXP/EXP5020/exp_payment_requisition_query.svc?paymentRequisitionId="+paymentRequisitionId,{cache:false}).
 
                 success(function(response, status, headers, config) {
                     console.log(response);
@@ -51,10 +46,10 @@ appModuleExpense.factory('costApply', function ($http, $q) {
         },
 
         queryList:function (){
-            var userId      =rootConfig.user.userId;
-            var companyId   =rootConfig.user.companyId;
+            var userId      =baseConfig.user.userId;
+            var companyId   =baseConfig.user.companyId;
             var deferred = $q.defer();
-            $http.get(rootConfig.basePath+'/EXP/EXP5020/exp_payment_requisition_list.svc?userId='+userId+'&companyId='+companyId,{cache:false}).
+            $http.get(baseConfig.basePath+'/EXP/EXP5020/exp_payment_requisition_list.svc?userId='+userId+'&companyId='+companyId,{cache:false}).
                 success(function(response, status, headers, config) {
                     console.log(response);
                     deferred.resolve(response);
@@ -84,7 +79,7 @@ appModuleExpense.factory('costApply', function ($http, $q) {
             var deferred = $q.defer();
             $http({
                 method :'POST',
-                url:rootConfig.basePath+"EXP/EXP5020/app_payment_requisition_delete.svc",
+                url:baseConfig.basePath+"EXP/EXP5020/app_payment_requisition_delete.svc",
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest:function(data) {
 
@@ -111,7 +106,7 @@ appModuleExpense.factory('costApply', function ($http, $q) {
             console.log(angular.toJson(this.data));
 
             console.log("参数准备");
-            var Url = window.localStorage.wsurl + "/expenses_apply/create_expense_apply";
+            var Url = baseConfig.businessPath + "/expenses_apply/create_expense_apply";
 
             this.data.cost_date=getFormatDate(new Date(this.data.cost_date));
             if (this.data.cost_amount == null) {
@@ -160,7 +155,7 @@ appModuleExpense.factory('costApply', function ($http, $q) {
             console.log(angular.toJson(this.data));
 
             console.log("参数准备");
-            var Url = window.localStorage.wsurl + "/expenses_apply/submit_expense_apply";
+            var Url = baseConfig.businessPath + "/expenses_apply/submit_expense_apply";
 
 
 

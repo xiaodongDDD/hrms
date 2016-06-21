@@ -2,7 +2,7 @@
  * Created by Administrator on 15-5-15.
  */
 
-appModuleExpense.controller('checkAttachmentController', function($scope,expenseApply) {
+angular.module("applicationModule").controller('checkAttachmentController', function($scope,expenseApply) {
 
     $scope.tempAttachment=expenseApply.tempAttachment;
 

@@ -1,8 +1,21 @@
-/**
- * Created by huchaoliang on 15-6-8.
- */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.exp_SelectDetail', {
+          url: '/interfaceReportList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/interfaceReportList.html',
+              controller: 'interfaceReportListController'
+            }
+          }
+        });
+    }]);
 
-appModuleExpense.controller('interfaceReportListController', function($scope,keepAccount,$http,$q,expenseApply,dialog,$state,$ionicHistory,$ionicLoading) {
+angular.module("applicationModule")
+.controller('interfaceReportListController', function($scope,keepAccount,$http,$q,expenseApply,dialog,$state,$ionicHistory,$ionicLoading, baseConfig) {
     var Item = [];
     $scope.detailData=expenseApply.data;
     //console.log( $scope.detailData.expenseObject_id);
@@ -19,7 +32,7 @@ appModuleExpense.controller('interfaceReportListController', function($scope,kee
     function interfaceReportList(){
         var deferred = $q.defer();
         var expenseObject_id= expenseApply.data.expenseObject_id;
-        var Url = window.localStorage.wsurl + "/expense_account/fetch_exp_details";
+        var Url = baseConfig.businessPath + "/expense_account/fetch_exp_details";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_id":"' + expenseObject_id + '"}}';
         $http.post(Url,PostData).success(function (response){
             console.log(response);
