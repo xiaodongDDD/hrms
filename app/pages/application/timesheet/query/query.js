@@ -1,6 +1,6 @@
 /**
  * Created by gusenlin on 16/5/22.
- */
+ */ 
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
@@ -21,7 +21,7 @@ angular.module('applicationModule')
     '$scope',
     '$rootScope',
     '$state',
-    'baseConfig',
+    'baseConfig', 
     '$ionicHistory',
     '$timeout',
     '$ionicScrollDelegate',

@@ -1,0 +1,70 @@
+<ion-view view-title="">
+
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title">记一笔选择</h1>
+    <div class="buttons" side="secondary">
+      <button class="button button-clear" style="color: #3ed9cd;" ng-click="confirmAccounts()">
+        确定
+      </button>
+    </div>
+  </ion-header-bar>
+
+
+  <ion-content>
+    <ion-list>
+      <ion-item modifier="tappable" ng-repeat="account in interfaceReportList"
+                style="padding: 0 5px;margin: 0;border-left: 5px solid #3ed9cd">
+        <label style="width: 100%;" class="checkbox checkbox--list-item">
+          <div style="width: 100%">
+
+            <div style="width: 100%;">
+              <div style="float: left;">
+                {{account.dateFrom}}
+              </div>
+              <div style="float: left;position: absolute;left: 28%;">
+                至
+              </div>
+              <div style="float: left;position: absolute;left: 38%;">
+                {{account.dateTo}}
+              </div>
+            </div>
+
+            <br/>
+
+            <div style="width: 100%;position: relative;top: -5px;">
+              <div style="float: left;position: absolute;left: 90%;">
+                <input type="checkbox" ng-model="account.Selected" ng-true-value="'YES'" ng-false-value="'NO'">
+              </div>
+            </div>
+            <br/>
+
+            <div style="width: 100%">
+              <div style="float: left;">
+                {{account.expObject_desc}}
+              </div>
+
+              <div style="float: left;position: absolute;left: 38%;">
+                <i class="icon ion-ios-location" style="color: darkgray;margin-right: 3px;"></i>{{account.place}}
+              </div>
+
+              <div style="float: left;position: absolute;left: 68%;color: #3ed9cd">
+                {{account.amount}}元
+              </div>
+            </div>
+          </div>
+          <div style="width: 100%; white-space: normal; float: left; text-align: left">
+            {{account.memo}}
+          </div>
+
+        </label>
+
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+</ion-view>

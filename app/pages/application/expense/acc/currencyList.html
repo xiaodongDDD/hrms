@@ -1,0 +1,23 @@
+<ion-view title="选择币种" hide-tabs="true">
+  <ion-content>
+    <div>
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" style="width: 96%; margin: 6px auto 6px auto;" placeholder="输入币种" ng-model="search">
+      </label>
+    </div>
+    <ion-list class="airport-list">
+      <ion-item class="airport list-item-container" modifier="tappable"
+                ng-repeat="currency in currencyList | filter:search">
+        <div class="row">
+          <div class="airport-name col" currencyName="{{currency.currencyName}}"
+               currencyCode="{{currency.currencyCode}}"
+               exchangeRate="{{currency.exchangeRate}}" ng-click="selectCurrency($event)">
+            {{currency.currencyCode}}-{{currency.currencyName}}
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
+

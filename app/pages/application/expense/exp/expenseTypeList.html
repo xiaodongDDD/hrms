@@ -1,0 +1,34 @@
+<ion-view title="选择类型" hide-tabs="true">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">选择类型</span>
+      </button>
+    </div> 
+    <h1 class="title"></h1>
+    <div class="buttons">
+    </div>
+  </ion-header-bar>
+
+    <ion-content>
+        <div class="bar bar-header item-input-inset">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text"  style="width: 96%; margin: 6px auto 6px auto;" placeholder="输入类型" ng-model="query">
+            </label>
+        </div>
+
+        <ion-list class="airport-list" >
+            <ion-item class="airport" modifier="tappable" ng-repeat="expenseType in expenseTypeList | filter:query" >
+                <div class="row">
+                    <div class="airport-name col"  expenseTypeId="{{expenseType.expenseTypeId}}" expenseTypeCode="{{expenseType.expenseTypeCode}}"
+                             expenseTypeName="{{expenseType.expenseTypeName}}" ng-click="selectExpenseType($event)">
+                        {{expenseType.expenseTypeName}}
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+
+</ion-view>

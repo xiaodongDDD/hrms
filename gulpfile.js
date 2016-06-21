@@ -23,7 +23,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var clean = require('gulp-clean');
 var notify = require('gulp-notify');//提示信息
 var gulpNgConfig = require('gulp-ng-config');//提示信息
-
+ 
 var jsFilePath = ['app/scripts/*.js','app/scripts/*/*.js','app/app.js','app/pages/**/*.js','app/pages/**/**/*.js','app/pages/**/**/**/*.js'];
 var htmlFilePath = ['app/pages/**/*.html','app/pages/**/**/*.html','app/pages/**/**/**/*.html','app/pages/**/**/**/**/*.html'];
 var libFilePath = ['app/lib/**/*.*','app/lib/**/**/*.*','app/lib/**/**/**/*.*'];

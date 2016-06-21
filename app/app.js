@@ -17,7 +17,7 @@ angular.module('myApp', [
   'utilModule',
   'tsApproveModule',
   'HmsModule'
-]);
+]); 
 
 angular.module('myApp')
   .run(function ($ionicPlatform) {
@@ -36,8 +36,8 @@ angular.module('myApp')
   });
 
 angular.module('myApp')
-  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider',
-    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider', 'baseConfig',
+    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider, baseConfig) {
       // Ionic uses AngularUI Router which uses the concept of states
       // Learn more here: https://github.com/angular-ui/ui-router
       // Set up the various states which the app can be in.
@@ -139,6 +139,80 @@ angular.module('myApp')
       }else{
         $urlRouterProvider.otherwise('/login');
       }
+
+      if(ionic.Platform.isWebView()){
+        //alert(LocalFileSystem);
+          /*window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
+            // 获取路径
+            baseConfig.appRootPath = fileSys.root.toURL() + '/' + baseConfig.appRootFile + '/';
+            //showMessage(baseConfig.appRootPath+' - '+ fileSys.root.toURL() );
+            //The folder is created if doesn't exist
+            fileSys.root.getDirectory(baseConfig.appRootFile, {create: true, exclusive: false},
+              function (directory) {
+              },
+              function (error) {
+                alert(error);
+              });
+          });*/
+
+          //var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+          /*db.transaction(function (tx) {
+            tx.executeSql(' CREATE TABLE IF NOT EXISTS MOBILE_EXP_REPORT_LINE \
+                  (line_id integer primary key AUTOINCREMENT,\
+                  expenseObject_id INTEGER,\
+                  expenseObject_code TEXT,\
+                  expenseObject_desc TEXT,\
+                  expenseObject_type TEXT,\
+                  costObject_id TEXT,\
+                  costObject_desc TEXT,\
+                  expense_type_id INTEGER,  \
+                  expense_type_desc TEXT,   \
+                  expense_item_id INTEGER,\
+                  expense_item_code TEXT,\
+                  expense_item_desc TEXT,\
+                  expense_apply_id TEXT,\
+                  expense_apply_desc TEST,\
+                  expense_price INTEGER,\
+                  expense_quantity INTEGER,\
+                  currency_code TEXT,\
+                  currency_code_desc text,\
+                  invoice_quantity INTEGER,\
+                  exchange_rate INTEGER,\
+                  total_amount INTEGER,\
+                  expense_date_from TEXT,\
+                  expense_date_to TEXT,\
+                  expense_place Text ,\
+                  description TEXT,\
+                  local_status TEXT,\
+                  service_id INTEGER,\
+                  creation_date  TEXT ,\
+                  created_by TEXT,\
+                  timestamp TEXT,\
+                  segment_1 INTEGER,\
+                  segment_2 INTEGER,\
+                  segment_3 INTEGER,\
+                  segment_4 INTEGER,\
+                  segment_5 INTEGER,\
+                  segment_6 TEXT,\
+                  segment_7 TEXT,\
+                  segment_8 TEXT ,\
+                  segment_9 TEXT,\
+                  segment_10 TEXT )'
+            );
+            tx.executeSql('CREATE TABLE IF NOT EXISTS MOBILE_EXP_LINE_PHOTOS (' +
+                'photo_id integer primary key, ' +
+                'line_id integer, ' +
+                'photo_name text,' +
+                'photo_src text,' +
+                'creation_date text,' +
+                'created_by integer)'
+            );
+          }); */
+      }
+
+      
+
+      
 
 
     }]);

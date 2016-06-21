@@ -1,0 +1,49 @@
+<ion-view title="选择项目" class="costProjectItemList-view">
+
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title">选择项目</h1>
+    <div class="buttons">
+    </div>
+  </ion-header-bar>
+
+  <ion-content>
+    <style>
+        .costProjectItemList-view{
+          .airport-list{
+            ion-item:nth-child(1){
+              border-top: 0px;
+            }
+          }
+        }
+    </style>
+    <div class="bar bar-header item-input-inset" style="    border-bottom: 1px solid #dddddd;">
+      <label class="item item-input"  style="border: 0px;">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" style="width: 96%; margin: 6px auto 6px auto;" placeholder="输入项目" ng-model="query">
+      </label>
+    </div>
+
+    <ion-list class="airport-list">
+      <ion-item class="airport list-item-container" modifier="tappable"
+                ng-repeat="costProjectIten in costProjectItenList | filter:query">
+        <div class="row" costProjectId="{{costProjectIten.project_id}}"
+             costProjectName="{{costProjectIten.project_name}}" ng-click="selectCostProjectItem($event)">
+          <div class="airport-name col" costProjectId="{{costProjectIten.project_id}}"
+
+               costProjectCode="{{costProjectIten.project_code}}"
+               costProjectName="{{costProjectIten.project_name}}">
+            {{costProjectIten.project_name}}
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+
+</ion-view>
+

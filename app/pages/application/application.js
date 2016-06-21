@@ -13,8 +13,8 @@ angular.module('applicationModule')
               baseConfig) {
 
       $scope.animationsEnabled = false;
-
-      //个人办公
+      
+      //个人办公 
       $scope.officeApp = [
         {
           list: [
@@ -36,7 +36,7 @@ angular.module('applicationModule')
             {
               appName: "人事政策",
               imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
+              destUrl: "tab.personnel-policy",
             }]
         },
         {
@@ -45,7 +45,7 @@ angular.module('applicationModule')
               appName: "假期管理",
               imageUrl: "build/img/application/holidayManage@3x.png",
               destUrl: "tab.time-off-manage",
-            },
+            }, 
             {
               appName: "住宿申请",
               imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
@@ -70,7 +70,7 @@ angular.module('applicationModule')
             {
               appName: "机票预定",
               imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
+              destUrl: "tab.flyback",
             },
             {
               appName: "代办事项",
@@ -96,19 +96,19 @@ angular.module('applicationModule')
               destUrl: "",
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "记一笔",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.acc_main"
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "报销",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.expense"
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "预报销",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.cst_list"
             }]
         }
       ];
