@@ -32,7 +32,7 @@
       </div>
       <div class="row second-content">
         <div class="name">补助:</div>
-        <div class="number" ng-cloak>0*{{i.subsidy_list.length}}</div>
+        <div class="number" ng-cloak>0*{{listInfoArray.subsidyDaysArray[$index]}}</div>
         <div class="number-icon" ng-click="getAttentionInfo($event,i.warn_list)" ng-if="i.warn_list.length >=1"></div>
       </div>
       <div ng-class={"select-list-ts":selectArray[$index],"un-select-list-ts":!selectArray[$index]}

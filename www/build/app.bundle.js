@@ -1507,68 +1507,39 @@ angular.module('myApp')
 /**
  * Created by gusenlin on 16/4/24.
  */
-//应用模块
-angular.module('applicationModule')
+angular.module('loginModule')
 
-  .controller('applicationCtrl', [
+  .controller('loginCtrl', [
     '$scope',
     '$state',
     'baseConfig',
+    '$ionicLoading',
+    '$http',
+    '$timeout',
+    '$ionicHistory',
+    '$ionicPlatform',
+    'hmsPopup',
     function ($scope,
               $state,
-              baseConfig) {
+              baseConfig,
+              $ionicLoading,
+              $http,
+              $timeout,
+              $ionicHistory,
+              $ionicPlatform,
+              hmsPopup) {
 
-      $scope.animationsEnabled = false;
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleDefault();
+        }
+      });
 
-      //个人办公
-      $scope.officeApp = [
-        {
-          list: [
-            {
-              appName: "会议管理",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "个人申请",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "报表分析",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "人事政策",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            }]
-        },
-        {
-          list: [
-            {
-              appName: "假期管理",
-              imageUrl: "build/img/application/holidayManage@3x.png",
-              destUrl: "tab.time-off-manage",
-            }, 
-            {
-              appName: "住宿申请",
-              imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
-              destUrl: "tab.dorm-apply"
-            }, {
-              appName: "Timesheet填写",
-              imageUrl: "build/img/application/timesheet@3x.png",
-              destUrl: "tab.timesheet",
-            },
-            {
-              appName: "Timesheet审批",
-              imageUrl: "build/img/application/timesheetExamine@3x.png",
-              destUrl: "tab.tsApproveList",
-            }
-          ]
-        }];
+      $scope.loginData = {};
+      $scope.currentVersionNum = baseConfig.versionName;
 
+<<<<<<< HEAD
       //项目门户
       $scope.projectApp = [
         {
@@ -1780,6 +1751,8 @@ angular.module('loginModule')
       $scope.loginData = {};
       $scope.currentVersionNum = baseConfig.versionName;
 
+=======
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
       if (window.localStorage.empno) {
         $scope.loginData.username = window.localStorage.empno;
       }
@@ -1900,6 +1873,7 @@ angular.module('messageModule')
               $state,
               $timeout,
               $ionicPlatform) {
+<<<<<<< HEAD
 
       $scope.messageList = [
       ];
@@ -1965,6 +1939,43 @@ angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$
   }]);
 
 /**
+=======
+
+      $scope.messageList = [
+      ];
+
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleLightContent();
+        }
+      });
+
+      $scope.talk = function (message) {
+        console.log('$scope.talk');
+        $state.go("tab.messageDetail", {message: message});
+      };
+
+      $scope.refresh = function(){
+        $timeout(function(){
+          $scope.$broadcast("scroll.refreshComplete");
+        },2000);
+      };
+
+      console.log('messageCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('messageCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('messageCtrl.$destroy');
+      });
+
+    }]);
+
+/**
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
  * Created by LeonChan on 2016/6/17.
  */
 'use strict';
@@ -2229,1177 +2240,278 @@ angular.module('myInfoModule')
     }]);
 
 /**
+<<<<<<< HEAD
  * Created by LeonChan on 2016/5/31.
+=======
+ * Created by gusenlin on 16/4/24.
  */
-'use strict';
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.dorm-apply-detail-a', {
-          url: '/dorm-apply-detail-a',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-a.html',
-              controller: 'DormApplyDetailFirstCtrl'
-            }
-          },
-          params:{
-            dormApplyDetailInfo:''
-          }
-        })
-    }]);
-angular.module('applicationModule')
-  .controller('DormApplyDetailFirstCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    'hmsHttp',
-    'hmsPopup',
-    '$rootScope',
-    '$timeout',
-    '$stateParams',
-    function ($scope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              hmsHttp,
-              hmsPopup,
-              $rootScope,
-              $timeout,
-              $stateParams) {
-      $scope.applyInfo=$stateParams.dormApplyDetailInfo;
-      $scope.approving=false;//审批中状态标志位
-      $scope.rejected=false;//已拒绝状态标识位
-      $scope.checkingin=false;//未入住状态标识位
-      $scope.approvedResult="";
-      if($scope.applyInfo.status == '审批中'){
-        $scope.approving=true;
-        $scope.rejected=false;
-        $scope.checkingin=false;
-        $scope.approvedResult="";
-      }else if($scope.applyInfo.status == '已拒绝'){
-        $scope.approving=false;
-        $scope.rejected=true;
-        $scope.checkingin=false;
-        $scope.approvedResult='已拒绝';
-      }else if($scope.applyInfo.status == '未入住'){
-        $scope.approving=false;
-        $scope.rejected=false;
-        $scope.checkingin=true;
-        $scope.approvedResult="已通过";
-
+angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$state', 'baseConfig',
+  function ($scope, $rootScope, $state, baseConfig) {
+    $rootScope.$on('$ionicView.beforeEnter', function () {
+      var statename = $state.current.name;
+      if (baseConfig.debug) {
+        console.log('$ionicView.beforeEnter statename ' + statename);
       }
-      $scope.goBack=function(){//返回上一界面
-        $ionicHistory.goBack();
-      };
-      $scope.cancelApply=function(){//取消申请
-        var url=baseConfig.businessPath+"/api_apply_room/cancel_application";
-        var param={
-          "params": {
-            p_apply_id:$scope.applyInfo.applyId,//用申请id取消申请
-            p_employee_number:window.localStorage.empno//工号
-          }
-        };
-        hmsPopup.showLoading('请稍候');
-        hmsHttp.post(url,param).success(function(result){
-          hmsPopup.hideLoading();
-          var message=result.message;
-          hmsPopup.showShortCenterToast(message);//展示接口返回的message
-          if(result.status=="S"){
-              $rootScope.$broadcast("APPLY_CANCELLED");//触发上一界面重新刷新数据
-              $ionicHistory.goBack();//删除申请成功后返回上一界面
-          }
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function(error,status){
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(error));
-          }
-        });
-      };
-    }]);
+      //tabs中存在的主页面不需要隐藏，hidetabs=false
+      if (statename != 'tab.message' && statename != 'tab.application' &&
+        statename != 'tab.contact' && statename != 'tab.myInfo') {
+        $scope.hideTabs = true;
+      }
+    });
+
+    $rootScope.$on('$ionicView.afterEnter', function () {
+      var statename = $state.current.name;
+      if (baseConfig.debug) {
+        console.log('$ionicView.afterEnter statename ' + statename);
+      }
+      //tabs中存在的主页面不需要隐藏，hidetabs=false
+      if (statename === 'tab.message' || statename === 'tab.application' ||
+        statename === 'tab.contact' || statename === 'tab.myInfo') {
+        $scope.hideTabs = false;
+      }
+    });
+  }]);
 
 /**
- * Created by LeonChan on 2016/6/4.
+ * Created by gusenlin on 16/4/24.
  */
-'use strict';
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.dorm-apply-detail-b', {
-          url: '/dorm-apply-detail-b',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-b.html',
-              controller: 'DormApplyDetailSecondCtrl'
-            }
-          },
-          params:{
-            dormApplyDetailInfo:''
-          }
-        })
-    }]);
-angular.module('applicationModule')
-  .controller('DormApplyDetailSecondCtrl', [
+angular.module('contactModule')
+
+  .controller('contactCtrl', [
     '$scope',
     '$state',
-    'baseConfig',
-    '$ionicHistory',
-    'hmsHttp',
-    'hmsPopup',
-    '$rootScope',
-    '$timeout',
-    '$stateParams',
     function ($scope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              hmsHttp,
-              hmsPopup,
-              $rootScope,
-              $timeout,
-              $stateParams) {
-      $scope.applyInfo = $stateParams.dormApplyDetailInfo;
-      $scope.checkIn = false;//审批中状态标志位
-      $scope.checkOut = false;//已拒绝状态标识位
-      $scope.buttonText = '';//按钮上显示的文字
-      $scope.leftDays=$scope.applyInfo.leftDays;//剩余天数
-      $scope.totalDays=parseInt($scope.applyInfo.checkinDays);
-////////////
-//      var childDays=parseInt($scope.leftDays);//计算圆旋转角度的剩余天数
-//      var motherDays=parseInt($scope.applyInfo.checkinDays);//计算圆旋转角度的入住天数
-//      var calculation=childDays/motherDays;//分子除以分母
-//      //console.log(calculation);
-//      //JS圆环动画
-//      var leftball=document.getElementById('left_ball');//拿到左半圆DOM
-//      var rightball=document.getElementById('right_ball');//拿到右半圆DOM
-//      if(calculation<=0.5){//剩余天数大于总天数的一半
-//        leftball.style.transition="all 0.3s linear";
-//        leftball.style.webkitTransition="all 0.3s linear";
-//        rightball.style.transition="all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-//        rightball.style.webkitTransition="all 0.3s ease-out";
-//      }else if(calculation>0.5){//剩余天数不到入住天数的一半
-//        leftball.style.transition="all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-//        leftball.style.webkitTransition="all 0.3s ease-out 0.3s";
-//        rightball.style.transition="all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-//        rightball.style.webkitTransition="all 0.3s ease-in";
-//      }
-//      leftball.style.webkitTransform = "rotate(-135deg)";
-//      leftball.style.transform = "rotate(-135deg)";
-//      rightball.style.webkitTransform = "rotate(-135deg)";
-//      rightball.style.transform = "rotate(-135deg)";
-      //定时器中决定两个圆的终止角度
-      //$timeout(function(){
-      //  var angle=0;
-      //  if(calculation<=0.5){
-      //    angle=360*calculation;
-      //    angle=angle-135;
-      //    //console.log("角度："+angle);
-      //    leftball.style.webkitTransform = "rotate(-135deg)";
-      //    leftball.style.transform = "rotate(-135deg)";
-      //    rightball.style.webkitTransform = "rotate("+angle+"deg)";
-      //    rightball.style.transform = "rotate("+angle+"deg)";
-      //  }else if(calculation>0.5){
-      //    calculation=calculation-0.5;
-      //    angle=360*calculation;
-      //    angle=angle-135;
-      //    //console.log("角度："+angle);
-      //    leftball.style.webkitTransform = "rotate("+angle+"deg)";
-      //    leftball.style.transform = "rotate("+angle+"deg)";
-      //    rightball.style.webkitTransform = "rotate(45deg)";
-      //    rightball.style.transform = "rotate(45deg)";
-      //  }
-      //},500);
+              $state) {
+      console.log('contactCtrl.enter');
 
-      if ($scope.applyInfo.status == '已入住') {//已入住
-        $scope.checkIn = true;
-        $scope.checkOut = false;
-        $scope.buttonText = '续住';
-      } else if ($scope.applyInfo.status == '已退房') {//已退房
-        $scope.checkIn = false;
-        $scope.checkOut = true;
-        $scope.buttonText = '再次预定';
-      }
-
-      $scope.goBack = function () {//返回上一界面
-        $ionicHistory.goBack();
-      };
-
-      $scope.renewContract=function(){//续住
-        var url=baseConfig.businessPath+"/api_apply_room/overstay_apply_room";
-        var param={
-          "params": {
-            p_employee_number:window.localStorage.empno,
-            p_pro_id:"",
-            p_checkin_date:"2016-08-15",
-            p_checkout_date:"2016-09-20",
-            p_room_number:$scope.applyInfo.roomNumber,
-            p_bed_number:$scope.applyInfo.bedNumber,
-            p_apply_type:$scope.applyInfo.applyType,
-            p_reason:""
-          }
-        };
-        if($scope.applyInfo.applyType=='项目申请'){
-          param.params.p_pro_id=$scope.applyInfo.projectId;
-        }
-        hmsPopup.showLoading('请稍候');
-        hmsHttp.post(url,param).success(function(result){
-          hmsPopup.hideLoading();
-          var message=result.message;
-          hmsPopup.showShortCenterToast(message);
-          if(result.status=="S"){
-              $rootScope.$broadcast("APPLY_SUCCESS");//触发上一界面重新刷新数据
-              $ionicHistory.goBack();//删除申请成功后返回上一界面
-          }
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function(error,status){
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(error));
-          }
-        });
-      };
-
-    }]);
-
-/**
- * Created by LeonChan on 2016/6/7.
- */
-'use strict';
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.dorm-apply-vacant-room', {
-          url: '/dorm-apply-vacant-room',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-vacant-room.html',
-              controller: 'DormApplyVacantRoomCtrl'
-            }
-          },
-          params:{
-            dormApplySearchResult:'',
-            projectId:'',
-            applyType:''
-          }
-        })
-    }]);
-angular.module('applicationModule')
-  .controller('DormApplyVacantRoomCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    'hmsHttp',
-    'hmsPopup',
-    '$timeout',
-    '$stateParams',
-    function ($scope,
-              $rootScope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              hmsHttp,
-              hmsPopup,
-              $timeout,
-              $stateParams) {
-
-     var resultInfo=$stateParams.dormApplySearchResult;//从$stateParams中拿到查询界面得到的查询结果
-     var projectId=$stateParams.projectId;//从$stateParams中拿到项目id，如果不是项目类型就不用
-     var applyType=$stateParams.applyType;//从$satteParams中拿到申请类型
-     $scope.roomlist=resultInfo.result;
-     $scope.goBack=function(){//返回上一界面
-       $ionicHistory.goBack();
-     };
-     $scope.applyRoom=function(num){
-       var url=baseConfig.businessPath+"/api_apply_room/apply_room";
-       var param={
-         "params": {
-           p_employee_number:window.localStorage.empno,
-           p_pro_id:"",
-           p_checkin_date:resultInfo.checkinDate,
-           p_checkout_date:resultInfo.checkoutDate,
-           p_room_number:$scope.roomlist[num].room_number,
-           p_bed_number:$scope.roomlist[num].bed_number,
-           p_apply_type:resultInfo.applyType,
-           p_reason:""
-         }
-       };
-       if(applyType=='项目申请'){
-         param.params.p_pro_id=projectId;
-       }
-       hmsPopup.showLoading('请稍候');
-       hmsHttp.post(url,param).success(function(result){
-         hmsPopup.hideLoading();
-         var message=result.message;
-         hmsPopup.showShortCenterToast(message);
-         if(result.status=="S"){//如果申请成功的话
-             $ionicHistory.goBack(-2);//返回住宿申请界面
-             $rootScope.$broadcast("APPLY_SUCCESS");//自动触发刷新历史申请数据
-         }
-         if (baseConfig.debug) {
-           console.log("result success " + angular.toJson(result));
-         }
-       }).error(function(error,status){
-         hmsPopup.hideLoading();
-         if (baseConfig.debug) {
-           console.log("response error " + angular.toJson(error));
-         }
-       });
-     };
-    }]);
-
-/**
- * Created by LeonChan on 2016/5/27.
- */
-'use strict';
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.dorm-apply', {
-          url: '/dorm-apply',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/dorm-apply/dorm-apply.html',
-              controller: 'DormApplyCtrl'
-            }
-          }
-        })
-    }]);
-angular.module('applicationModule')
-  .controller('DormApplyCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    'hmsHttp',
-    'hmsPopup',
-    '$ionicScrollDelegate',
-    '$timeout',
-    function ($scope,
-              $rootScope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              hmsHttp,
-              hmsPopup,
-              $ionicScrollDelegate,
-              $timeout) {
-      $scope.descriptionAppearance = false;
-      $scope.items=[];//历史列表中的数据
-      searchHistoryApplyListAutomatically();//自动获取历史申请数据
-      function searchHistoryApplyListAutomatically() {
-        $scope.items=[];
-        var url = baseConfig.businessPath + "/api_apply_room/query_room_history_list";
-        var param = {
-          "params": {
-            p_employee_number: window.localStorage.empno
-          }
-        };
-        //hmsPopup.showLoading('请稍候');
-        hmsHttp.post(url, param).success(function (result) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-          $scope.items = result.result;
-          angular.forEach($scope.items,function(data,index,array){
-            if(array[index].apply_status=='已入住'){
-               array[index].modeCheckIn=true;
-               array[index].modeCheckOut=false;
-               array[index].modeApproving=false;
-               array[index].modeRejected=false;
-               array[index].modeCheckingIn=false;
-            }else if(array[index].apply_status=='已退房'){
-               array[index].modeCheckIn=false;
-               array[index].modeCheckOut=true;
-               array[index].modeApproving=false;
-               array[index].modeRejected=false;
-               array[index].modeCheckingIn=false;
-            }else if(array[index].apply_status=='审批中'){
-              array[index].modeCheckIn=false;
-              array[index].modeCheckOut=false;
-              array[index].modeApproving=true;
-              array[index].modeRejected=false;
-              array[index].modeCheckingIn=false;
-            }else if(array[index].apply_status=='已拒绝'){
-              array[index].modeCheckIn=false;
-              array[index].modeCheckOut=false;
-              array[index].modeApproving=false;
-              array[index].modeRejected=true;
-              array[index].modeCheckingIn=false;
-            }else if(array[index].apply_status=='未入住'){
-              array[index].modeCheckIn=false;
-              array[index].modeCheckOut=false;
-              array[index].modeApproving=false;
-              array[index].modeRejected=false;
-              array[index].modeCheckingIn=true;
-            }
-          });
-        }).error(function (error, status) {
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(error));
-          }
-        });
-      }
-      $scope.goBack = function () {//返回按钮
-        $ionicHistory.goBack();
-      };
-
-      $scope.createNewDormApply = function () {//跳转到新建申请界面
-        $state.go("tab.new-dorm-apply");
-      };
-
-      $scope.viewApplyDetail = function (num) {//跳转到申请详情界面
-        var info=$scope.items[num];
-        var param={
-          status:info.apply_status,//申请状态
-          checkinDate:info.checkin_date,//入住日期
-          checkoutDate:info.checkout_date,//退房日期
-          applyType:info.apply_type,//申请类型
-          floorNumber:info.floor_number,//楼层
-          roomNumber:info.room_number,//房间号
-          roomType:info.room_type,//房间类型
-          bedNumber:info.bed_number,//床位
-          applyId:info.apply_id,//申请id
-          projectId:info.project_id,//项目id
-          checkinDays:info.checkin_days,//入住天数
-          leftDays:info.left_days//剩余天数
-        };
-        if (param.status == '已入住' || param.status == '已退房') {
-          $state.go("tab.dorm-apply-detail-b",{
-            'dormApplyDetailInfo':param
-          });
-        } else if (param.status == '审批中' || param.status == '已拒绝' || param.status == '未入住') {
-          $state.go("tab.dorm-apply-detail-a",{
-            'dormApplyDetailInfo':param
-          });
-        }
-      };
-
-      $scope.judgeApplyType = function (param) {//通过判断申请类型是否显示剩余天数字段
-        var internalParam = param.apply_status;
-        if (internalParam == '已入住' || internalParam == '已退房' || internalParam == '未入住') {
-          return true;
-        } else if (internalParam == '审批中' || internalParam == '已拒绝') {
-          return false;
-        }
-      };
-      $scope.showDescription = function () {//显示住宿说明
-        $scope.descriptionAppearance = true;
-      };
-      $scope.hideDescription = function () {//隐藏住宿说明
-        $scope.descriptionAppearance = false;
-      };
-      $rootScope.$on("APPLY_SUCCESS",function(){//空房间申请成功时，返回查询界面自动刷新历史申请数据
-        $timeout(function() {
-          $ionicScrollDelegate.$getByHandle('dormScroll').scrollTop(false);
-        },200);
-        searchHistoryApplyListAutomatically();//自动刷新数据
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('contactCtrl.$ionicView.enter');
       });
-      $rootScope.$on("APPLY_CANCELLED",function(){//审批中状态的申请被删除后，返回了这个界面，自动触发刷新数据
-        $timeout(function() {
-          $ionicScrollDelegate.$getByHandle('dormScroll').scrollTop(false);
-        },200);
-        searchHistoryApplyListAutomatically();//自动刷新数据
+
+      $scope.$on('$destroy', function (e) {
+        console.log('contactCtrl.$destroy');
       });
     }]);
 
 /**
- * Created by LeonChan on 2016/5/30.
+ * Created by gusenlin on 16/5/16.
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
  */
-'use strict';
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.new-dorm-apply', {
-          url: '/new-dorm-apply',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/dorm-apply/new-dorm-apply.html',
-              controller: 'NewDormApplyCtrl'
-            }
-          }
-        })
-    }]);
-angular.module('applicationModule')
-  .controller('NewDormApplyCtrl', [
+angular.module('loginModule')
+
+  .controller('guideCtrl', [
     '$scope',
     '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$ionicModal',
-    'hmsHttp',
-    'hmsPopup',
-    '$cordovaDatePicker',
     function ($scope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              $ionicModal,
-              hmsHttp,
-              hmsPopup,
-              $cordovaDatePicker) {
-      $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-apply-type.html', {//定义modal
-        scope: $scope
-      }).then(function (modal1) {
-        $scope.chooseTypePopup = modal1;
-      });//初始化选择申请类型的modal
-      $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-room-type.html', {//定义modal
-        scope: $scope
-      }).then(function (modal2) {
-        $scope.chooseRoomPopup = modal2;
-      });//初始化选择房间类型的modal
-      $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-project-name.html', {//定义modal
-        scope: $scope
-      }).then(function (modal3) {
-        $scope.chooseProjectPopup = modal3;
-      });//初始化选择房间类型的modal
-      $scope.defaultApplyType='常驻申请';//默认申请类型
-      $scope.defaultRoomType='单人间';//默认房间类型
-      $scope.defaultProjectInfo={
-        projectName:'',//项目名称
-        projectId:''//项目ID
-      };//默认项目名称
-      $scope.showProjectItem=false;//显示选择项目的入口
-      $scope.applytype=["常驻申请","加班申请","临时申请","项目申请"];//项目申请选项
-      $scope.roomtype=["单人间","四人间"];//房间申请
-      $scope.projectlist=[];//项目列表
-      $scope.showNumButton=true;//显示数字按钮，隐藏图片按钮
-      $scope.inputinfo={
-        floornum:"",//输入楼层号
-        roomnum:""//输入房间号
+              $state) {
+
+      console.log('loginCtrl.enter');
+
+      $scope.toLogin = function () {
+        console.log("跳过导航页到登陆页");
+        $state.go("login");
       };
-      var todayDate = new Date();//今天日期
-      var weekday=todayDate.getDay();
-      var month=todayDate.getMonth()+1;
-      var day=todayDate.getDate();
-      $scope.startDate={//开始日期
-        year:todayDate.getFullYear(),
-        month:"",
-        day:"",
-        weekday:""
-      };
-      $scope.endDate={//结束日期
-        year:"",
-        month:"",
-        day:"",
-        weekday:""
-      };
-      if(weekday==0){
-        $scope.startDate.weekday="周日";
-      }else if(weekday==1){
-        $scope.startDate.weekday="周一";
-      }else if(weekday==2){
-        $scope.startDate.weekday="周二";
-      }else if(weekday==3){
-        $scope.startDate.weekday="周三";
-      }else if(weekday==4){
-        $scope.startDate.weekday="周四";
-      }else if(weekday==5){
-        $scope.startDate.weekday="周五";
-      }else if(weekday==6){
-        $scope.startDate.weekday="周六";
-      }
-      if(month<10){
-        month="0"+month;
-      }
-      if(day<10){
-        day="0"+day;
-      }
-      $scope.startDate.month=month;
-      $scope.startDate.day=day;
-      refreshEndDate(1);//结束日期默认比开始晚1天
-      var url=baseConfig.businessPath+"/api_apply_room/query_project_list";
-      var param={
-        "params": {
-          p_employee_number:window.localStorage.empno//工号
-        }
-      };
-      hmsPopup.showLoading('请稍候');
-      hmsHttp.post(url,param).success(function(result){//自动获取项目列表信息
-        hmsPopup.hideLoading();
-        if(result.status=="S"){
-          $scope.projectlist=result.result;
-          $scope.projectlist=$scope.projectlist.splice(1,$scope.projectlist.length-1);
-          if($scope.projectlist.length>0){//如果查出结果的项目列表长度大于1的话则抓取第一个
-            $scope.defaultProjectInfo.projectName=$scope.projectlist[0].project_name;
-            $scope.defaultProjectInfo.projectId=$scope.projectlist[0].project_id;
-            console.log(angular.toJson($scope.defaultProjectInfo));
-          }else if($scope.projectlist.length==0){//如果查出项目列表的长度为0的话，则自动把默认变为无
-            $scope.defaultProjectInfo.projectName='无';
-            $scope.defaultProjectInfo.projectId='';
-          }
-        }
-        if (baseConfig.debug) {
-          console.log("result success " + angular.toJson(result));
-        }
-      }).error(function(error){
-        hmsPopup.hideLoading();
-        if (baseConfig.debug) {
-          console.log("response error " + angular.toJson(error));
-        }
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('guideCtrl.$ionicView.enter');
       });
 
-      function refreshEndDate(num){//选择30,60,90后刷新结束日期
-        var myDate=$scope.startDate;
-        var todayDate=new Date(myDate.year,myDate.month-1,myDate.day);
-        var tomorrowDate=new Date(myDate.year,myDate.month-1,myDate.day);
-        var tomorrowYear="";
-        var tomorrowDay="";
-        var tomorrowMonth="";
-        var tomorrowWeekDay="";
-        num=parseInt(num);
-        tomorrowDate.setDate(todayDate.getDate()+num);
-        tomorrowYear=tomorrowDate.getFullYear();
-        tomorrowDay=tomorrowDate.getDate();
-        tomorrowMonth=tomorrowDate.getMonth()+1;
-        tomorrowWeekDay=tomorrowDate.getDay();
-        if(tomorrowWeekDay==0){
-          $scope.endDate.weekday="周日";
-        }else if(tomorrowWeekDay==1){
-          $scope.endDate.weekday="周一";
-        }else if(tomorrowWeekDay==2){
-          $scope.endDate.weekday="周二";
-        }else if(tomorrowWeekDay==3){
-          $scope.endDate.weekday="周三";
-        }else if(tomorrowWeekDay==4){
-          $scope.endDate.weekday="周四";
-        }else if(tomorrowWeekDay==5){
-          $scope.endDate.weekday="周五";
-        }else if(tomorrowWeekDay==6){
-          $scope.endDate.weekday="周六";
-        }
-        if(tomorrowMonth<10){
-          tomorrowMonth="0"+tomorrowMonth;
-        }
-        if(tomorrowDay<10){
-          tomorrowDay="0"+tomorrowDay;
-        }
-        $scope.endDate.year=tomorrowYear;
-        $scope.endDate.month=tomorrowMonth;
-        $scope.endDate.day=tomorrowDay;
-      };
-
-      $scope.goBack=function(){//返回按钮
-        $ionicHistory.goBack();
-      };
-
-      $scope.chooseStartDate=function(){//选择开始日期
-        var myDate=$scope.startDate;
-        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
-        var options={
-          date: previousDate,
-          mode: 'date',
-          titleText:'请选择入住日期',
-          okText:'确定',
-          cancelText:'取消',
-          doneButtonLabel:'确认',
-          cancelButtonLabel:'取消',
-          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
-          locale:"zh_cn"
-        }
-        $cordovaDatePicker.show(options).then(function(date){
-          var month=date.getMonth()+1;
-          var day=date.getDate();
-          var weekday=date.getDay();
-          if(weekday==0){
-            $scope.startDate.weekday="周日";
-          }else if(weekday==1){
-            $scope.startDate.weekday="周一";
-          }else if(weekday==2){
-            $scope.startDate.weekday="周二";
-          }else if(weekday==3){
-            $scope.startDate.weekday="周三";
-          }else if(weekday==4){
-            $scope.startDate.weekday="周四";
-          }else if(weekday==5){
-            $scope.startDate.weekday="周五";
-          }else if(weekday==6){
-            $scope.startDate.weekday="周六";
-          }
-          if(month<10){
-            month="0"+month;
-          }
-          if(day<10){
-            day="0"+day;
-          }
-          $scope.startDate.year=date.getFullYear();
-          $scope.startDate.month=month;
-          $scope.startDate.day=day;
-          $scope.$apply();
-        });
-      };
-
-      $scope.chooseEndDate=function() {//选择结束
-        var myDate=$scope.endDate;
-        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
-        var options={
-          date: previousDate,
-          mode: 'date',
-          titleText:'请选择结束日期',
-          okText:'确定',
-          cancelText:'取消',
-          doneButtonLabel:'确认',
-          cancelButtonLabel:'取消',
-          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK,
-          locale:"zh_cn"
-        }
-        $cordovaDatePicker.show(options).then(function(date){
-          var month=date.getMonth()+1;
-          var day=date.getDate();
-          var weekday=date.getDay();
-          if(weekday==0){
-            $scope.endDate.weekday="周日";
-          }else if(weekday==1){
-            $scope.endDate.weekday="周一";
-          }else if(weekday==2){
-            $scope.endDate.weekday="周二";
-          }else if(weekday==3){
-            $scope.endDate.weekday="周三";
-          }else if(weekday==4){
-            $scope.endDate.weekday="周四";
-          }else if(weekday==5){
-            $scope.endDate.weekday="周五";
-          }else if(weekday==6){
-            $scope.endDate.weekday="周六";
-          }
-          if(month<10){
-            month="0"+month;
-          }
-          if(day<10){
-            day="0"+day;
-          }
-          $scope.endDate.year=date.getFullYear();
-          $scope.endDate.month=month;
-          $scope.endDate.day=day;
-          $scope.$apply();
-        });
-      };
-
-      $scope.chooseLongDays=function(num){//选择30,60,90天的点击事件
-        refreshEndDate(num);
-        $scope.showNumButton=true;
-      };
-
-      $scope.chooseApplyType=function(){//显示申请类型modal
-        $scope.chooseTypePopup.show();
-      };
-
-      $scope.chooseRoomType=function(){//显示房间类型modal
-        $scope.chooseRoomPopup.show();
-      };
-
-      $scope.chooseProjectName=function(){//显示项目名称列表modal
-        if($scope.projectlist.length==0){
-          hmsPopup.showShortCenterToast('项目列表为空，请更改申请类型');//项目列表为空时
-        }else if($scope.projectlist.length>0){
-          $scope.chooseProjectPopup.show();
-        }
-      };
-
-      $scope.finishChoosingApplyType=function(param){//选择完成申请类型
-        $scope.defaultApplyType=param;
-        if($scope.defaultApplyType=='项目申请'){
-          $scope.showProjectItem=true;
-        }else if($scope.defaultApplyType!='项目申请'){
-          $scope.showProjectItem=false;
-        }
-        $scope.chooseTypePopup.hide();
-      };
-
-      $scope.finishChoosingRoomType=function(param){//选择完成房间类型
-        $scope.defaultRoomType=param;
-        $scope.chooseRoomPopup.hide();
-      };
-
-      $scope.finishChoosingProjectName=function(num){
-        $scope.defaultProjectInfo.projectName=$scope.projectlist[num].project_name;
-        $scope.defaultProjectInfo.projectId=$scope.projectlist[num].project_id;
-        $scope.chooseProjectPopup.hide();
-      };
-
-      $scope.chooseDays=function(){//选择入住天数以及取消入住天数
-        if($scope.defaultApplyType=='常驻申请'){
-          $scope.showNumButton=!$scope.showNumButton;
-        }
-      };
-
-      $scope.searchVacantRoom=function(){//查询空闲房间
-        var startYear=$scope.startDate.year;//开始日期年份
-        var startMonth=$scope.startDate.month;//开始日期月份
-        var startDay=$scope.startDate.day;//开始日期
-        var endYear=$scope.endDate.year;//结束日期年份
-        var endMonth=$scope.endDate.month;//结束日期月份
-        var endDay=$scope.endDate.day;//结束日期
-        startMonth=parseInt(startMonth);
-        startDay=parseInt(startDay);
-        endMonth=parseInt(endMonth);
-        endDay=parseInt(endDay);
-        if($scope.defaultProjectInfo.projectName=='无' && $scope.defaultApplyType=='项目申请'){//项目申请类型，当项目列表为空时，不能查询房间
-          hmsPopup.showShortCenterToast('项目列表为空，请更改申请类型');
-        }else if( (startYear>endYear) ||((startYear==endYear)&&(startMonth>endMonth)) || ((startYear==endYear)&&(startMonth==endMonth)&&(startDay>endDay))){
-          hmsPopup.showShortCenterToast('入住日期不能晚于结束日期');
-        }else{
-          var url = baseConfig.businessPath + "/api_apply_room/query_free_room_list";
-          var param = {
-            "params": {
-              p_employee_number: window.localStorage.empno,
-              p_check_in_date: $scope.startDate.year+"-"+$scope.startDate.month+"-"+$scope.startDate.day,
-              p_check_out_date: $scope.endDate.year+"-"+$scope.endDate.month+"-"+$scope.endDate.day,
-              p_apply_type: $scope.defaultApplyType,
-              p_room_type: $scope.defaultRoomType,
-              p_room_number: $scope.inputinfo.roomnum,
-              p_floor_number: $scope.inputinfo.floornum,
-              p_pro_id:""
-            }
-          };
-          if($scope.defaultApplyType=='项目申请'){
-           param.params.p_pro_id=$scope.defaultProjectInfo.projectId;
-          }
-          hmsPopup.showLoading('请稍候');
-          hmsHttp.post(url, param).success(function (result) {
-            var message = result.message;
-            hmsPopup.hideLoading();
-            if (result.status == "S" && result.result.length > 0) {
-              var resultlist = result.result;//查询结果列表
-              var info = {//要放入到service中的信息
-                applyType: param.params.p_apply_type,
-                checkinDate: param.params.p_check_in_date,
-                checkoutDate: param.params.p_check_out_date,
-                result: resultlist
-              };
-              $state.go("tab.dorm-apply-vacant-room",{
-                'dormApplySearchResult':info,
-                'projectId':$scope.defaultProjectInfo.projectId,
-                'applyType':$scope.defaultApplyType
-              });
-            } else if (result.status == "E") {
-              hmsPopup.showShortCenterToast(message);
-            }
-            if (baseConfig.debug) {
-              console.log("result success " + angular.toJson(result));
-            }
-          }).error(function (error, status) {
-            hmsPopup.hideLoading();
-            if (baseConfig.debug) {
-              console.log("response error " + angular.toJson(error));
-            }
-          });
-        }
-      };
+      $scope.$on('$destroy', function (e) {
+        console.log('guideCtrl.$destroy');
+      });
     }]);
 
-angular.module("applicationModule")
-.factory('flaybackService', ['$ionicLoading', function ($ionicLoading) {
-  var projName = "";
-  var projCode = "";
-  var ticketTypeList = [];
-  var routeTypeList = [];
-  var passengerList = [];
-  var passenger = "";
-  var certification = "";
-  var fbLines = [];
-  var pageStatusCreate = {};// var param = {"canEdit": true,"dataSource":"create"}
-  function getFormatDate(date) {
-    var seperator1 = "-";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-      month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-      strDate = "0" + strDate;
-    }
-    return date.getFullYear() + seperator1 + month + seperator1 + strDate;
-  }
-  return {
-    getFormatDate: getFormatDate,
-    getNowFormatDate: function () {
-      var date = new Date();
-      var seperator = "-";
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-      }
-      var currentdate = year + seperator + month + seperator + strDate;
-      return currentdate;
-    },
-    setPageStatusCreate: function (obj) {
-      pageStatusCreate = obj;
-    },
-    getPageStatusCreate: function (obj) {
-      return pageStatusCreate;
-    },
-    setProjName: function (obj) {
-      projName = obj;
-    },
-    getProjName: function (obj) {
-      return projName;
-    },
-    setProjCode: function (obj) {
-      projCode = obj;
-    },
-    getProjCode: function (obj) {
-      return projCode;
-    },
-    setTicketTypeList: function (obj) {
-      ticketTypeList = obj;
-    },
-    getTicketTypeList: function (obj) {
-      return ticketTypeList;
-    },
-    setRouteTypeList: function (obj) {
-      routeTypeList = obj;
-    },
-    getRouteTypeList: function (obj) {
-      return routeTypeList;
-    },
-    setPassengerList: function (obj) {
-      passengerList = obj;
-    },
-    getPassengerList: function (obj) {
-      return passengerList;
-    },
-    setPassenger: function (obj) {
-      passenger = obj;
-    },
-    getPassenger: function (obj) {
-      return passenger;
-    },
-    setCertification: function (obj) {
-      certification = obj;
-    },
-    getCertification: function (obj) {
-      return certification;
-    },
-    addLine: function (obj) {
-      /* var flight_date = getFormatDate(new Date(obj.flight_date));
-       obj.flight_date = flight_date;*/
-      fbLines.push(obj);
-    },
-    updateLine: function (obj, index) {
-      var flight_date = getFormatDate(new Date(obj.flight_date));
-      obj.flight_date = flight_date;
-      fbLines[index] = obj;
-    },
-    getLines: function () {
-      return fbLines;
-    },
-    setLines: function (obj) {
-      fbLines = obj;
-    },
-    /* deleteLine: function (item) {
-     //  fbLines.splice(index, 1);
-     console.log("fbLines.indexOf(item) = " + fbLines.indexOf(item));
-     console.log("fbLines  = " + angular.toJson(fbLines));
-     console.log("item  = " + angular.toJson(item));
-     fbLines.splice(fbLines.indexOf(item), 1);
-     },*/
-    deleteLine: function (index) {
-      fbLines.splice(index, 1);
-    },
-    clearLines: function () {
-      fbLines = [];
-    }
-
-  }
-
-}])
-;
-
-/** Author      : joshua.shi
- *
- *  History:
- *      1.00    2016-4-28   joshua.shi   Creation
+/**
+ * Created by gusenlin on 16/4/24.
  */
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.time-off-manage', {
-          url: '/time-off-manage',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/time-off-manage/time-off-manage-list.html',
-              controller: 'TimeOffManageCtrl'
-            }
-          }
-        })
-    }]);
-
+//应用模块
 angular.module('applicationModule')
 
-  .controller('TimeOffManageCtrl', [
+  .controller('applicationCtrl', [
     '$scope',
     '$state',
     'baseConfig',
-    'hmsHttp',
-    'hmsPopup',
-    '$ionicHistory',
     function ($scope,
               $state,
-              baseConfig,
-              hmsHttp,
-              hmsPopup,
-              $ionicHistory) {
+              baseConfig) {
 
-      $scope.timeOffHeader       ={
-        userId                 : 999,
-        paidHoliday            : 9,
-        paidSickLeave          : 9,
-        extPaidHoliday         : 9,
-        usedPaidHoliday        : 9,
-        usedPaidSickLeave      : 9,
-        usedExtPaidHoliday     : 9
-      };
+      $scope.animationsEnabled = false;
 
-      $scope.timeOffHistoryList  =[
+      //个人办公
+      $scope.officeApp = [
         {
-        holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
-        timeOffType          : 'paid-holiday',
-        timeOffTypeMeaning   : '带薪年假',
-        datetimeFrom         : '2016-6-16',
-        datetimeTo           : '2016-6-18',
-        timeLeave            : '2天',
-        approveStatus        : 'APPROVED',
-        approveStatusMeaning : '已审批',
-        applyReason          : '陪老婆去迪斯尼玩',
-        reason_image         : [
-          {
-            image_url1       : '',
-            image_url2       : '',
-            image_url3       : '',
-            image_url4       : '',
-            image_url5       : '',
-            image_url6       : '',
-            image_url7       : '',
-            image_url8       : '',
-            image_url9       : '',
-          }
-        ]
-      }];
-
-
-      $scope.timeOffCreate = function(){
-
-      }
-
-
-      function getServeData() {
-
-        var requestUrl = baseConfig.businessPath + "/api_holiday/get_holidays_data";
-        var requestParams = {
-          "params": {
-            "p_employee_code": window.localStorage.empno
-          }
-        };
-
-        hmsHttp.post(requestUrl, requestParams).success(function (response) {
-          hmsPopup.hideLoading();
-          if (hmsHttp.isSuccessfull(response.status)) {
-
-            var baseImgUrl = 'build/img/application/time-off-manage/';
-
-            //处理前置结构
-            if(response.result[0]) {
-              var responseData = response.result[0];
-            }else{
-              hmsPopup.showShortCenterToast("服务器返回结构解析错误!");
-              return;
+          list: [
+            {
+              appName: "会议管理",
+              imageUrl: "build/img/application/meetingManage@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "个人申请",
+              imageUrl: "build/img/application/meetingManage@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "报表分析",
+              imageUrl: "build/img/application/meetingManage@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "人事政策",
+              imageUrl: "build/img/application/meetingManage@3x.png",
+              destUrl: "tab.personnel-policy",
+            }]
+        },
+        {
+          list: [
+            {
+              appName: "假期管理",
+              imageUrl: "build/img/application/holidayManage@3x.png",
+              destUrl: "tab.time-off-manage",
+            }, 
+            {
+              appName: "住宿申请",
+              imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
+              destUrl: "tab.dorm-apply"
+            }, {
+              appName: "Timesheet填写",
+              imageUrl: "build/img/application/timesheet@3x.png",
+              destUrl: "tab.timesheet",
+            },
+            {
+              appName: "Timesheet审批",
+              imageUrl: "build/img/application/timesheetExamine@3x.png",
+              destUrl: "tab.tsApproveList",
             }
+          ]
+        }];
 
-            //将获取到的数据绑定到页面
-            //赋值头数据
-            $scope.timeOffHeader.paidHoliday        = responseData.paidHoliday;
-            $scope.timeOffHeader.paidSickLeave      = responseData.paidSickLeave;
-            $scope.timeOffHeader.extPaidHoliday     = responseData.extPaidHoliday;
-            $scope.timeOffHeader.usedPaidHoliday    = responseData.usedPaidHoliday;
-            $scope.timeOffHeader.usedPaidSickLeave  = responseData.usedPaidSickLeave;
-            $scope.timeOffHeader.usedExtPaidHoliday = responseData.usedExtPaidHoliday;
+      //项目门户
+      $scope.projectApp = [
+        {
+          list: [
+            {
+              appName: "机票预定",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.flyback",
+            },
+            {
+              appName: "代办事项",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.workflow-list",
+            },
+            {
+              appName: "报销单查询",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "首款查询",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            }]
+        },
+        {
+          list: [
+            {
+              appName: "外勤汇报",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            }]
+        }
+      ];
 
-            //赋值行数据
-            $scope.timeOffHistoryList  = [];
-            $scope.timeOffHistoryList = responseData.timeOffHistory;
+      //员工社区
+      $scope.employeeApp = [
+        {
+          list: [
+            {
+              appName: "在线培训",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "知识门户",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "新闻",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "分享社区",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            }]
+        },
+        {
+          list: [
+            {
+              appName: "在线培训",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "知识门户",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "新闻",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "分享社区",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "",
+            }]
+        }
+      ];
 
 
-            //1:带薪年假，2,额外福利年假，3:事假，4.带薪病假，5.病假，6.婚嫁，7.产假，8.丧假，9.陪产假
-            angular.forEach($scope.timeOffHistoryList, function (data, index) {
-              if ('1' == data.timeOffType) {
-                data.holidayIcon        = baseImgUrl + 'PaidHoliday@3x.png';
-                data.timeOffTypeMeaning = '带薪年假';
-              } else if ('2' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
-                data.timeOffTypeMeaning  = '额外福利年假';
-              } else if ('3' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'CasualLeave@3x.png';
-                data.timeOffTypeMeaning  = '事假';
-              } else if ('4' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'SickLeave@@3x.png';
-                data.timeOffTypeMeaning  = '带薪病假';
-              } else if ('5' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'SickLeave@3x.png';
-                data.timeOffTypeMeaning  = '病假';
-              } else if ('6' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'HoneyMood@3x.png';
-                data.timeOffTypeMeaning  = '婚嫁';
-              } else if ('7' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'MaternityLeave@3x.png';
-                data.timeOffTypeMeaning  = '产假';
-              } else if ('8' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
-                data.timeOffTypeMeaning  = '丧假';
-              } else if ('9' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'PaternityLeave@3x.png';
-                data.timeOffTypeMeaning  = '陪产假';
-              }
-
-              //1.审批通过：APPROVED,2.审批中：APPROVING,3：审批拒绝：REJECTED,4.草稿：DRAFT
-              if ('APPROVED'         == data.approveStatus) {
-                data.approveStatusMeaning = '审批通过';
-              } else if ('APPROVING' == data.approveStatus) {
-                data.approveStatusMeaning = '审批中';
-              } else if ('REJECTED'  == data.approveStatus) {
-                data.approveStatusMeaning = '审批拒绝';
-              } else if ('DRAFT'     == data.approveStatus) {
-                data.approveStatusMeaning = '草稿';
-              }
-            });
-
-            //$scope.$apply();
-
-          } else {
-            if (response.status === 'E' || response.status == 'e') {
-              hmsPopup.showShortCenterToast("没有相关数据!");
-            } else {
-              hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-            }
-          }
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
-        });
+      $scope.openSetting = function(){
+        if($scope.animationsEnabled){
+          $scope.animationsEnabled = false;
+        }
+        else{
+          $scope.animationsEnabled = true;
+        }
       };
 
-      getServeData();
+      $scope.goPage = function (appItem) {
+        if (baseConfig.debug) {
+          console.log("appItem " + angular.toJson(appItem));
+        }
+        $state.go(appItem.destUrl);
+      };
+
+      console.log('applicationCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('applicationCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('applicationCtrl.$destroy');
+      });
     }]);
 
 /**
@@ -3748,6 +2860,1533 @@ angular.module('applicationModule')
         }).error(function (data) {
         });
       };
+    }]);
+
+/**
+ * Created by LeonChan on 2016/5/31.
+ */
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.dorm-apply-detail-a', {
+          url: '/dorm-apply-detail-a',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-a.html',
+              controller: 'DormApplyDetailFirstCtrl'
+            }
+          },
+          params:{
+            dormApplyDetailInfo:''
+          }
+        })
+    }]);
+angular.module('applicationModule')
+  .controller('DormApplyDetailFirstCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    'hmsHttp',
+    'hmsPopup',
+    '$rootScope',
+    '$timeout',
+    '$stateParams',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              hmsHttp,
+              hmsPopup,
+              $rootScope,
+              $timeout,
+              $stateParams) {
+      $scope.applyInfo=$stateParams.dormApplyDetailInfo;
+      $scope.approving=false;//审批中状态标志位
+      $scope.rejected=false;//已拒绝状态标识位
+      $scope.checkingin=false;//未入住状态标识位
+      $scope.approvedResult="";
+      if($scope.applyInfo.status == '审批中'){
+        $scope.approving=true;
+        $scope.rejected=false;
+        $scope.checkingin=false;
+        $scope.approvedResult="";
+      }else if($scope.applyInfo.status == '已拒绝'){
+        $scope.approving=false;
+        $scope.rejected=true;
+        $scope.checkingin=false;
+        $scope.approvedResult='已拒绝';
+      }else if($scope.applyInfo.status == '未入住'){
+        $scope.approving=false;
+        $scope.rejected=false;
+        $scope.checkingin=true;
+        $scope.approvedResult="已通过";
+
+      }
+      $scope.goBack=function(){//返回上一界面
+        $ionicHistory.goBack();
+      };
+      $scope.cancelApply=function(){//取消申请
+        var url=baseConfig.businessPath+"/api_apply_room/cancel_application";
+        var param={
+          "params": {
+            p_apply_id:$scope.applyInfo.applyId,//用申请id取消申请
+            p_employee_number:window.localStorage.empno//工号
+          }
+        };
+        hmsPopup.showLoading('请稍候');
+        hmsHttp.post(url,param).success(function(result){
+          hmsPopup.hideLoading();
+          var message=result.message;
+          hmsPopup.showShortCenterToast(message);//展示接口返回的message
+          if(result.status=="S"){
+              $rootScope.$broadcast("APPLY_CANCELLED");//触发上一界面重新刷新数据
+              $ionicHistory.goBack();//删除申请成功后返回上一界面
+          }
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function(error,status){
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(error));
+          }
+        });
+      };
+    }]);
+
+/**
+ * Created by LeonChan on 2016/6/4.
+ */
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.dorm-apply-detail-b', {
+          url: '/dorm-apply-detail-b',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-b.html',
+              controller: 'DormApplyDetailSecondCtrl'
+            }
+          },
+          params:{
+            dormApplyDetailInfo:''
+          }
+        })
+    }]);
+angular.module('applicationModule')
+  .controller('DormApplyDetailSecondCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    'hmsHttp',
+    'hmsPopup',
+    '$rootScope',
+    '$timeout',
+    '$stateParams',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              hmsHttp,
+              hmsPopup,
+              $rootScope,
+              $timeout,
+              $stateParams) {
+      $scope.applyInfo = $stateParams.dormApplyDetailInfo;
+      $scope.checkIn = false;//审批中状态标志位
+      $scope.checkOut = false;//已拒绝状态标识位
+      $scope.buttonText = '';//按钮上显示的文字
+      $scope.leftDays=$scope.applyInfo.leftDays;//剩余天数
+      $scope.totalDays=parseInt($scope.applyInfo.checkinDays);
+////////////
+//      var childDays=parseInt($scope.leftDays);//计算圆旋转角度的剩余天数
+//      var motherDays=parseInt($scope.applyInfo.checkinDays);//计算圆旋转角度的入住天数
+//      var calculation=childDays/motherDays;//分子除以分母
+//      //console.log(calculation);
+//      //JS圆环动画
+//      var leftball=document.getElementById('left_ball');//拿到左半圆DOM
+//      var rightball=document.getElementById('right_ball');//拿到右半圆DOM
+//      if(calculation<=0.5){//剩余天数大于总天数的一半
+//        leftball.style.transition="all 0.3s linear";
+//        leftball.style.webkitTransition="all 0.3s linear";
+//        rightball.style.transition="all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+//        rightball.style.webkitTransition="all 0.3s ease-out";
+//      }else if(calculation>0.5){//剩余天数不到入住天数的一半
+//        leftball.style.transition="all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+//        leftball.style.webkitTransition="all 0.3s ease-out 0.3s";
+//        rightball.style.transition="all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+//        rightball.style.webkitTransition="all 0.3s ease-in";
+//      }
+//      leftball.style.webkitTransform = "rotate(-135deg)";
+//      leftball.style.transform = "rotate(-135deg)";
+//      rightball.style.webkitTransform = "rotate(-135deg)";
+//      rightball.style.transform = "rotate(-135deg)";
+      //定时器中决定两个圆的终止角度
+      //$timeout(function(){
+      //  var angle=0;
+      //  if(calculation<=0.5){
+      //    angle=360*calculation;
+      //    angle=angle-135;
+      //    //console.log("角度："+angle);
+      //    leftball.style.webkitTransform = "rotate(-135deg)";
+      //    leftball.style.transform = "rotate(-135deg)";
+      //    rightball.style.webkitTransform = "rotate("+angle+"deg)";
+      //    rightball.style.transform = "rotate("+angle+"deg)";
+      //  }else if(calculation>0.5){
+      //    calculation=calculation-0.5;
+      //    angle=360*calculation;
+      //    angle=angle-135;
+      //    //console.log("角度："+angle);
+      //    leftball.style.webkitTransform = "rotate("+angle+"deg)";
+      //    leftball.style.transform = "rotate("+angle+"deg)";
+      //    rightball.style.webkitTransform = "rotate(45deg)";
+      //    rightball.style.transform = "rotate(45deg)";
+      //  }
+      //},500);
+
+      if ($scope.applyInfo.status == '已入住') {//已入住
+        $scope.checkIn = true;
+        $scope.checkOut = false;
+        $scope.buttonText = '续住';
+      } else if ($scope.applyInfo.status == '已退房') {//已退房
+        $scope.checkIn = false;
+        $scope.checkOut = true;
+        $scope.buttonText = '再次预定';
+      }
+
+      $scope.goBack = function () {//返回上一界面
+        $ionicHistory.goBack();
+      };
+
+      $scope.renewContract=function(){//续住
+        var url=baseConfig.businessPath+"/api_apply_room/overstay_apply_room";
+        var param={
+          "params": {
+            p_employee_number:window.localStorage.empno,
+            p_pro_id:"",
+            p_checkin_date:"2016-08-15",
+            p_checkout_date:"2016-09-20",
+            p_room_number:$scope.applyInfo.roomNumber,
+            p_bed_number:$scope.applyInfo.bedNumber,
+            p_apply_type:$scope.applyInfo.applyType,
+            p_reason:""
+          }
+        };
+        if($scope.applyInfo.applyType=='项目申请'){
+          param.params.p_pro_id=$scope.applyInfo.projectId;
+        }
+        hmsPopup.showLoading('请稍候');
+        hmsHttp.post(url,param).success(function(result){
+          hmsPopup.hideLoading();
+          var message=result.message;
+          hmsPopup.showShortCenterToast(message);
+          if(result.status=="S"){
+              $rootScope.$broadcast("APPLY_SUCCESS");//触发上一界面重新刷新数据
+              $ionicHistory.goBack();//删除申请成功后返回上一界面
+          }
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function(error,status){
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(error));
+          }
+        });
+      };
+
+    }]);
+
+/**
+ * Created by LeonChan on 2016/6/7.
+ */
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.dorm-apply-vacant-room', {
+          url: '/dorm-apply-vacant-room',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-vacant-room.html',
+              controller: 'DormApplyVacantRoomCtrl'
+            }
+          },
+          params:{
+            dormApplySearchResult:'',
+            projectId:'',
+            applyType:''
+          }
+        })
+    }]);
+angular.module('applicationModule')
+  .controller('DormApplyVacantRoomCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    'hmsHttp',
+    'hmsPopup',
+    '$timeout',
+    '$stateParams',
+    function ($scope,
+              $rootScope,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              hmsHttp,
+              hmsPopup,
+              $timeout,
+              $stateParams) {
+
+<<<<<<< HEAD
+angular.module("applicationModule")
+.factory('flaybackService', ['$ionicLoading', function ($ionicLoading) {
+  var projName = "";
+  var projCode = "";
+  var ticketTypeList = [];
+  var routeTypeList = [];
+  var passengerList = [];
+  var passenger = "";
+  var certification = "";
+  var fbLines = [];
+  var pageStatusCreate = {};// var param = {"canEdit": true,"dataSource":"create"}
+  function getFormatDate(date) {
+    var seperator1 = "-";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+      month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+      strDate = "0" + strDate;
+    }
+    return date.getFullYear() + seperator1 + month + seperator1 + strDate;
+  }
+  return {
+    getFormatDate: getFormatDate,
+    getNowFormatDate: function () {
+      var date = new Date();
+      var seperator = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator + month + seperator + strDate;
+      return currentdate;
+    },
+    setPageStatusCreate: function (obj) {
+      pageStatusCreate = obj;
+    },
+    getPageStatusCreate: function (obj) {
+      return pageStatusCreate;
+    },
+    setProjName: function (obj) {
+      projName = obj;
+    },
+    getProjName: function (obj) {
+      return projName;
+    },
+    setProjCode: function (obj) {
+      projCode = obj;
+    },
+    getProjCode: function (obj) {
+      return projCode;
+    },
+    setTicketTypeList: function (obj) {
+      ticketTypeList = obj;
+    },
+    getTicketTypeList: function (obj) {
+      return ticketTypeList;
+    },
+    setRouteTypeList: function (obj) {
+      routeTypeList = obj;
+    },
+    getRouteTypeList: function (obj) {
+      return routeTypeList;
+    },
+    setPassengerList: function (obj) {
+      passengerList = obj;
+    },
+    getPassengerList: function (obj) {
+      return passengerList;
+    },
+    setPassenger: function (obj) {
+      passenger = obj;
+    },
+    getPassenger: function (obj) {
+      return passenger;
+    },
+    setCertification: function (obj) {
+      certification = obj;
+    },
+    getCertification: function (obj) {
+      return certification;
+    },
+    addLine: function (obj) {
+      /* var flight_date = getFormatDate(new Date(obj.flight_date));
+       obj.flight_date = flight_date;*/
+      fbLines.push(obj);
+    },
+    updateLine: function (obj, index) {
+      var flight_date = getFormatDate(new Date(obj.flight_date));
+      obj.flight_date = flight_date;
+      fbLines[index] = obj;
+    },
+    getLines: function () {
+      return fbLines;
+    },
+    setLines: function (obj) {
+      fbLines = obj;
+    },
+    /* deleteLine: function (item) {
+     //  fbLines.splice(index, 1);
+     console.log("fbLines.indexOf(item) = " + fbLines.indexOf(item));
+     console.log("fbLines  = " + angular.toJson(fbLines));
+     console.log("item  = " + angular.toJson(item));
+     fbLines.splice(fbLines.indexOf(item), 1);
+     },*/
+    deleteLine: function (index) {
+      fbLines.splice(index, 1);
+    },
+    clearLines: function () {
+      fbLines = [];
+    }
+
+  }
+
+}])
+;
+
+/** Author      : joshua.shi
+ *
+ *  History:
+ *      1.00    2016-4-28   joshua.shi   Creation
+=======
+     var resultInfo=$stateParams.dormApplySearchResult;//从$stateParams中拿到查询界面得到的查询结果
+     var projectId=$stateParams.projectId;//从$stateParams中拿到项目id，如果不是项目类型就不用
+     var applyType=$stateParams.applyType;//从$satteParams中拿到申请类型
+     $scope.roomlist=resultInfo.result;
+     $scope.goBack=function(){//返回上一界面
+       $ionicHistory.goBack();
+     };
+     $scope.applyRoom=function(num){
+       var url=baseConfig.businessPath+"/api_apply_room/apply_room";
+       var param={
+         "params": {
+           p_employee_number:window.localStorage.empno,
+           p_pro_id:"",
+           p_checkin_date:resultInfo.checkinDate,
+           p_checkout_date:resultInfo.checkoutDate,
+           p_room_number:$scope.roomlist[num].room_number,
+           p_bed_number:$scope.roomlist[num].bed_number,
+           p_apply_type:resultInfo.applyType,
+           p_reason:""
+         }
+       };
+       if(applyType=='项目申请'){
+         param.params.p_pro_id=projectId;
+       }
+       hmsPopup.showLoading('请稍候');
+       hmsHttp.post(url,param).success(function(result){
+         hmsPopup.hideLoading();
+         var message=result.message;
+         hmsPopup.showShortCenterToast(message);
+         if(result.status=="S"){//如果申请成功的话
+             $ionicHistory.goBack(-2);//返回住宿申请界面
+             $rootScope.$broadcast("APPLY_SUCCESS");//自动触发刷新历史申请数据
+         }
+         if (baseConfig.debug) {
+           console.log("result success " + angular.toJson(result));
+         }
+       }).error(function(error,status){
+         hmsPopup.hideLoading();
+         if (baseConfig.debug) {
+           console.log("response error " + angular.toJson(error));
+         }
+       });
+     };
+    }]);
+
+/**
+ * Created by LeonChan on 2016/5/27.
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
+ */
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.dorm-apply', {
+          url: '/dorm-apply',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/dorm-apply/dorm-apply.html',
+              controller: 'DormApplyCtrl'
+            }
+          }
+        })
+    }]);
+angular.module('applicationModule')
+  .controller('DormApplyCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    'hmsHttp',
+    'hmsPopup',
+    '$ionicScrollDelegate',
+    '$timeout',
+    function ($scope,
+              $rootScope,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              hmsHttp,
+              hmsPopup,
+<<<<<<< HEAD
+              $ionicHistory) {
+
+      $scope.timeOffHeader       ={
+        userId                 : 999,
+        paidHoliday            : 9,
+        paidSickLeave          : 9,
+        extPaidHoliday         : 9,
+        usedPaidHoliday        : 9,
+        usedPaidSickLeave      : 9,
+        usedExtPaidHoliday     : 9
+      };
+
+      $scope.timeOffHistoryList  =[
+        {
+        holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
+        timeOffType          : 'paid-holiday',
+        timeOffTypeMeaning   : '带薪年假',
+        datetimeFrom         : '2016-6-16',
+        datetimeTo           : '2016-6-18',
+        timeLeave            : '2天',
+        approveStatus        : 'APPROVED',
+        approveStatusMeaning : '已审批',
+        applyReason          : '陪老婆去迪斯尼玩',
+        reason_image         : [
+          {
+            image_url1       : '',
+            image_url2       : '',
+            image_url3       : '',
+            image_url4       : '',
+            image_url5       : '',
+            image_url6       : '',
+            image_url7       : '',
+            image_url8       : '',
+            image_url9       : '',
+          }
+        ]
+      }];
+
+
+      $scope.timeOffCreate = function(){
+
+      }
+
+
+      function getServeData() {
+
+        var requestUrl = baseConfig.businessPath + "/api_holiday/get_holidays_data";
+        var requestParams = {
+=======
+              $ionicScrollDelegate,
+              $timeout) {
+      $scope.descriptionAppearance = false;
+      $scope.items=[];//历史列表中的数据
+      searchHistoryApplyListAutomatically();//自动获取历史申请数据
+      function searchHistoryApplyListAutomatically() {
+        $scope.items=[];
+        var url = baseConfig.businessPath + "/api_apply_room/query_room_history_list";
+        var param = {
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
+          "params": {
+            p_employee_number: window.localStorage.empno
+          }
+        };
+        //hmsPopup.showLoading('请稍候');
+        hmsHttp.post(url, param).success(function (result) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+          $scope.items = result.result;
+          angular.forEach($scope.items,function(data,index,array){
+            if(array[index].apply_status=='已入住'){
+               array[index].modeCheckIn=true;
+               array[index].modeCheckOut=false;
+               array[index].modeApproving=false;
+               array[index].modeRejected=false;
+               array[index].modeCheckingIn=false;
+            }else if(array[index].apply_status=='已退房'){
+               array[index].modeCheckIn=false;
+               array[index].modeCheckOut=true;
+               array[index].modeApproving=false;
+               array[index].modeRejected=false;
+               array[index].modeCheckingIn=false;
+            }else if(array[index].apply_status=='审批中'){
+              array[index].modeCheckIn=false;
+              array[index].modeCheckOut=false;
+              array[index].modeApproving=true;
+              array[index].modeRejected=false;
+              array[index].modeCheckingIn=false;
+            }else if(array[index].apply_status=='已拒绝'){
+              array[index].modeCheckIn=false;
+              array[index].modeCheckOut=false;
+              array[index].modeApproving=false;
+              array[index].modeRejected=true;
+              array[index].modeCheckingIn=false;
+            }else if(array[index].apply_status=='未入住'){
+              array[index].modeCheckIn=false;
+              array[index].modeCheckOut=false;
+              array[index].modeApproving=false;
+              array[index].modeRejected=false;
+              array[index].modeCheckingIn=true;
+            }
+          });
+        }).error(function (error, status) {
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(error));
+          }
+        });
+      }
+      $scope.goBack = function () {//返回按钮
+        $ionicHistory.goBack();
+      };
+
+      $scope.createNewDormApply = function () {//跳转到新建申请界面
+        $state.go("tab.new-dorm-apply");
+      };
+
+      $scope.viewApplyDetail = function (num) {//跳转到申请详情界面
+        var info=$scope.items[num];
+        var param={
+          status:info.apply_status,//申请状态
+          checkinDate:info.checkin_date,//入住日期
+          checkoutDate:info.checkout_date,//退房日期
+          applyType:info.apply_type,//申请类型
+          floorNumber:info.floor_number,//楼层
+          roomNumber:info.room_number,//房间号
+          roomType:info.room_type,//房间类型
+          bedNumber:info.bed_number,//床位
+          applyId:info.apply_id,//申请id
+          projectId:info.project_id,//项目id
+          checkinDays:info.checkin_days,//入住天数
+          leftDays:info.left_days//剩余天数
+        };
+        if (param.status == '已入住' || param.status == '已退房') {
+          $state.go("tab.dorm-apply-detail-b",{
+            'dormApplyDetailInfo':param
+          });
+        } else if (param.status == '审批中' || param.status == '已拒绝' || param.status == '未入住') {
+          $state.go("tab.dorm-apply-detail-a",{
+            'dormApplyDetailInfo':param
+          });
+        }
+      };
+
+      $scope.judgeApplyType = function (param) {//通过判断申请类型是否显示剩余天数字段
+        var internalParam = param.apply_status;
+        if (internalParam == '已入住' || internalParam == '已退房' || internalParam == '未入住') {
+          return true;
+        } else if (internalParam == '审批中' || internalParam == '已拒绝') {
+          return false;
+        }
+      };
+      $scope.showDescription = function () {//显示住宿说明
+        $scope.descriptionAppearance = true;
+      };
+      $scope.hideDescription = function () {//隐藏住宿说明
+        $scope.descriptionAppearance = false;
+      };
+      $rootScope.$on("APPLY_SUCCESS",function(){//空房间申请成功时，返回查询界面自动刷新历史申请数据
+        $timeout(function() {
+          $ionicScrollDelegate.$getByHandle('dormScroll').scrollTop(false);
+        },200);
+        searchHistoryApplyListAutomatically();//自动刷新数据
+      });
+      $rootScope.$on("APPLY_CANCELLED",function(){//审批中状态的申请被删除后，返回了这个界面，自动触发刷新数据
+        $timeout(function() {
+          $ionicScrollDelegate.$getByHandle('dormScroll').scrollTop(false);
+        },200);
+        searchHistoryApplyListAutomatically();//自动刷新数据
+      });
+    }]);
+
+/**
+<<<<<<< HEAD
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('messageModule')
+
+  .controller('messageDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicHistory',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicHistory) {
+
+      var message = $stateParams.message;
+      console.log('message : ' + angular.toJson(message));
+
+      $scope.message = message;
+
+      $scope.goBack = function(){
+        $ionicHistory.goBack();
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('messageDetailCtrl.$ionicView.enter');
+      });
+      console.log('messageDetailCtrl.enter');
+
+      $scope.$on('$destroy', function (e) {
+        console.log('messageDetailCtrl.$destroy');
+      });
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.workflow-detail', {
+          url: '/workflow-detail',
+          params: {detail: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/workflow/detail/detail.html',
+              controller: 'WorkFLowDetailCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('WorkFLowDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    'WorkFLowListService',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup,
+              WorkFLowListService) {
+      var detail = $stateParams.detail;
+      if(baseConfig.debug){
+        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
+      }
+
+      $scope.historyList = [];
+      $scope.singalArrayList = [];
+      $scope.multipleArrayList = [];
+
+      //var
+      var success = function (result) {
+        if(baseConfig.debug){
+          console.log('getWorkflowDetail.result ' + angular.toJson(result));
+        }
+        if(result.status == 'S'){
+          $scope.historyList = result.history;
+          $scope.singalArrayList = result.workflow_data.details;
+          $scope.multipleArrayList = result.workflow_data.lines;
+        }
+      }
+      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
+    }]);
+
+=======
+ * Created by LeonChan on 2016/5/30.
+ */
+'use strict';
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.new-dorm-apply', {
+          url: '/new-dorm-apply',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/dorm-apply/new-dorm-apply.html',
+              controller: 'NewDormApplyCtrl'
+            }
+          }
+        })
+    }]);
+angular.module('applicationModule')
+  .controller('NewDormApplyCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$ionicModal',
+    'hmsHttp',
+    'hmsPopup',
+    '$cordovaDatePicker',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              $ionicModal,
+              hmsHttp,
+              hmsPopup,
+              $cordovaDatePicker) {
+      $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-apply-type.html', {//定义modal
+        scope: $scope
+      }).then(function (modal1) {
+        $scope.chooseTypePopup = modal1;
+      });//初始化选择申请类型的modal
+      $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-room-type.html', {//定义modal
+        scope: $scope
+      }).then(function (modal2) {
+        $scope.chooseRoomPopup = modal2;
+      });//初始化选择房间类型的modal
+      $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/new-dorm-apply-choose-project-name.html', {//定义modal
+        scope: $scope
+      }).then(function (modal3) {
+        $scope.chooseProjectPopup = modal3;
+      });//初始化选择房间类型的modal
+      $scope.defaultApplyType='常驻申请';//默认申请类型
+      $scope.defaultRoomType='单人间';//默认房间类型
+      $scope.defaultProjectInfo={
+        projectName:'',//项目名称
+        projectId:''//项目ID
+      };//默认项目名称
+      $scope.showProjectItem=false;//显示选择项目的入口
+      $scope.applytype=["常驻申请","加班申请","临时申请","项目申请"];//项目申请选项
+      $scope.roomtype=["单人间","四人间"];//房间申请
+      $scope.projectlist=[];//项目列表
+      $scope.showNumButton=true;//显示数字按钮，隐藏图片按钮
+      $scope.inputinfo={
+        floornum:"",//输入楼层号
+        roomnum:""//输入房间号
+      };
+      var todayDate = new Date();//今天日期
+      var weekday=todayDate.getDay();
+      var month=todayDate.getMonth()+1;
+      var day=todayDate.getDate();
+      $scope.startDate={//开始日期
+        year:todayDate.getFullYear(),
+        month:"",
+        day:"",
+        weekday:""
+      };
+      $scope.endDate={//结束日期
+        year:"",
+        month:"",
+        day:"",
+        weekday:""
+      };
+      if(weekday==0){
+        $scope.startDate.weekday="周日";
+      }else if(weekday==1){
+        $scope.startDate.weekday="周一";
+      }else if(weekday==2){
+        $scope.startDate.weekday="周二";
+      }else if(weekday==3){
+        $scope.startDate.weekday="周三";
+      }else if(weekday==4){
+        $scope.startDate.weekday="周四";
+      }else if(weekday==5){
+        $scope.startDate.weekday="周五";
+      }else if(weekday==6){
+        $scope.startDate.weekday="周六";
+      }
+      if(month<10){
+        month="0"+month;
+      }
+      if(day<10){
+        day="0"+day;
+      }
+      $scope.startDate.month=month;
+      $scope.startDate.day=day;
+      refreshEndDate(1);//结束日期默认比开始晚1天
+      var url=baseConfig.businessPath+"/api_apply_room/query_project_list";
+      var param={
+        "params": {
+          p_employee_number:window.localStorage.empno//工号
+        }
+      };
+      hmsPopup.showLoading('请稍候');
+      hmsHttp.post(url,param).success(function(result){//自动获取项目列表信息
+        hmsPopup.hideLoading();
+        if(result.status=="S"){
+          $scope.projectlist=result.result;
+          $scope.projectlist=$scope.projectlist.splice(1,$scope.projectlist.length-1);
+          if($scope.projectlist.length>0){//如果查出结果的项目列表长度大于1的话则抓取第一个
+            $scope.defaultProjectInfo.projectName=$scope.projectlist[0].project_name;
+            $scope.defaultProjectInfo.projectId=$scope.projectlist[0].project_id;
+            console.log(angular.toJson($scope.defaultProjectInfo));
+          }else if($scope.projectlist.length==0){//如果查出项目列表的长度为0的话，则自动把默认变为无
+            $scope.defaultProjectInfo.projectName='无';
+            $scope.defaultProjectInfo.projectId='';
+          }
+        }
+        if (baseConfig.debug) {
+          console.log("result success " + angular.toJson(result));
+        }
+      }).error(function(error){
+        hmsPopup.hideLoading();
+        if (baseConfig.debug) {
+          console.log("response error " + angular.toJson(error));
+        }
+      });
+
+      function refreshEndDate(num){//选择30,60,90后刷新结束日期
+        var myDate=$scope.startDate;
+        var todayDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var tomorrowDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var tomorrowYear="";
+        var tomorrowDay="";
+        var tomorrowMonth="";
+        var tomorrowWeekDay="";
+        num=parseInt(num);
+        tomorrowDate.setDate(todayDate.getDate()+num);
+        tomorrowYear=tomorrowDate.getFullYear();
+        tomorrowDay=tomorrowDate.getDate();
+        tomorrowMonth=tomorrowDate.getMonth()+1;
+        tomorrowWeekDay=tomorrowDate.getDay();
+        if(tomorrowWeekDay==0){
+          $scope.endDate.weekday="周日";
+        }else if(tomorrowWeekDay==1){
+          $scope.endDate.weekday="周一";
+        }else if(tomorrowWeekDay==2){
+          $scope.endDate.weekday="周二";
+        }else if(tomorrowWeekDay==3){
+          $scope.endDate.weekday="周三";
+        }else if(tomorrowWeekDay==4){
+          $scope.endDate.weekday="周四";
+        }else if(tomorrowWeekDay==5){
+          $scope.endDate.weekday="周五";
+        }else if(tomorrowWeekDay==6){
+          $scope.endDate.weekday="周六";
+        }
+        if(tomorrowMonth<10){
+          tomorrowMonth="0"+tomorrowMonth;
+        }
+        if(tomorrowDay<10){
+          tomorrowDay="0"+tomorrowDay;
+        }
+        $scope.endDate.year=tomorrowYear;
+        $scope.endDate.month=tomorrowMonth;
+        $scope.endDate.day=tomorrowDay;
+      };
+
+      $scope.goBack=function(){//返回按钮
+        $ionicHistory.goBack();
+      };
+
+      $scope.chooseStartDate=function(){//选择开始日期
+        var myDate=$scope.startDate;
+        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var options={
+          date: previousDate,
+          mode: 'date',
+          titleText:'请选择入住日期',
+          okText:'确定',
+          cancelText:'取消',
+          doneButtonLabel:'确认',
+          cancelButtonLabel:'取消',
+          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+          locale:"zh_cn"
+        }
+        $cordovaDatePicker.show(options).then(function(date){
+          var month=date.getMonth()+1;
+          var day=date.getDate();
+          var weekday=date.getDay();
+          if(weekday==0){
+            $scope.startDate.weekday="周日";
+          }else if(weekday==1){
+            $scope.startDate.weekday="周一";
+          }else if(weekday==2){
+            $scope.startDate.weekday="周二";
+          }else if(weekday==3){
+            $scope.startDate.weekday="周三";
+          }else if(weekday==4){
+            $scope.startDate.weekday="周四";
+          }else if(weekday==5){
+            $scope.startDate.weekday="周五";
+          }else if(weekday==6){
+            $scope.startDate.weekday="周六";
+          }
+          if(month<10){
+            month="0"+month;
+          }
+          if(day<10){
+            day="0"+day;
+          }
+          $scope.startDate.year=date.getFullYear();
+          $scope.startDate.month=month;
+          $scope.startDate.day=day;
+          $scope.$apply();
+        });
+      };
+
+      $scope.chooseEndDate=function() {//选择结束
+        var myDate=$scope.endDate;
+        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var options={
+          date: previousDate,
+          mode: 'date',
+          titleText:'请选择结束日期',
+          okText:'确定',
+          cancelText:'取消',
+          doneButtonLabel:'确认',
+          cancelButtonLabel:'取消',
+          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK,
+          locale:"zh_cn"
+        }
+        $cordovaDatePicker.show(options).then(function(date){
+          var month=date.getMonth()+1;
+          var day=date.getDate();
+          var weekday=date.getDay();
+          if(weekday==0){
+            $scope.endDate.weekday="周日";
+          }else if(weekday==1){
+            $scope.endDate.weekday="周一";
+          }else if(weekday==2){
+            $scope.endDate.weekday="周二";
+          }else if(weekday==3){
+            $scope.endDate.weekday="周三";
+          }else if(weekday==4){
+            $scope.endDate.weekday="周四";
+          }else if(weekday==5){
+            $scope.endDate.weekday="周五";
+          }else if(weekday==6){
+            $scope.endDate.weekday="周六";
+          }
+          if(month<10){
+            month="0"+month;
+          }
+          if(day<10){
+            day="0"+day;
+          }
+          $scope.endDate.year=date.getFullYear();
+          $scope.endDate.month=month;
+          $scope.endDate.day=day;
+          $scope.$apply();
+        });
+      };
+
+<<<<<<< HEAD
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.flybackApply', {
+          url: '/flyback-apply',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/apply/apply.html',
+              controller: 'FlyBackApplyCtrl'
+=======
+      $scope.chooseLongDays=function(num){//选择30,60,90天的点击事件
+        refreshEndDate(num);
+        $scope.showNumButton=true;
+      };
+
+      $scope.chooseApplyType=function(){//显示申请类型modal
+        $scope.chooseTypePopup.show();
+      };
+
+      $scope.chooseRoomType=function(){//显示房间类型modal
+        $scope.chooseRoomPopup.show();
+      };
+
+      $scope.chooseProjectName=function(){//显示项目名称列表modal
+        if($scope.projectlist.length==0){
+          hmsPopup.showShortCenterToast('项目列表为空，请更改申请类型');//项目列表为空时
+        }else if($scope.projectlist.length>0){
+          $scope.chooseProjectPopup.show();
+        }
+      };
+
+      $scope.finishChoosingApplyType=function(param){//选择完成申请类型
+        $scope.defaultApplyType=param;
+        if($scope.defaultApplyType=='项目申请'){
+          $scope.showProjectItem=true;
+        }else if($scope.defaultApplyType!='项目申请'){
+          $scope.showProjectItem=false;
+        }
+        $scope.chooseTypePopup.hide();
+      };
+
+      $scope.finishChoosingRoomType=function(param){//选择完成房间类型
+        $scope.defaultRoomType=param;
+        $scope.chooseRoomPopup.hide();
+      };
+
+      $scope.finishChoosingProjectName=function(num){
+        $scope.defaultProjectInfo.projectName=$scope.projectlist[num].project_name;
+        $scope.defaultProjectInfo.projectId=$scope.projectlist[num].project_id;
+        $scope.chooseProjectPopup.hide();
+      };
+
+      $scope.chooseDays=function(){//选择入住天数以及取消入住天数
+        if($scope.defaultApplyType=='常驻申请'){
+          $scope.showNumButton=!$scope.showNumButton;
+        }
+      };
+
+      $scope.searchVacantRoom=function(){//查询空闲房间
+        var startYear=$scope.startDate.year;//开始日期年份
+        var startMonth=$scope.startDate.month;//开始日期月份
+        var startDay=$scope.startDate.day;//开始日期
+        var endYear=$scope.endDate.year;//结束日期年份
+        var endMonth=$scope.endDate.month;//结束日期月份
+        var endDay=$scope.endDate.day;//结束日期
+        startMonth=parseInt(startMonth);
+        startDay=parseInt(startDay);
+        endMonth=parseInt(endMonth);
+        endDay=parseInt(endDay);
+        if($scope.defaultProjectInfo.projectName=='无' && $scope.defaultApplyType=='项目申请'){//项目申请类型，当项目列表为空时，不能查询房间
+          hmsPopup.showShortCenterToast('项目列表为空，请更改申请类型');
+        }else if( (startYear>endYear) ||((startYear==endYear)&&(startMonth>endMonth)) || ((startYear==endYear)&&(startMonth==endMonth)&&(startDay>endDay))){
+          hmsPopup.showShortCenterToast('入住日期不能晚于结束日期');
+        }else{
+          var url = baseConfig.businessPath + "/api_apply_room/query_free_room_list";
+          var param = {
+            "params": {
+              p_employee_number: window.localStorage.empno,
+              p_check_in_date: $scope.startDate.year+"-"+$scope.startDate.month+"-"+$scope.startDate.day,
+              p_check_out_date: $scope.endDate.year+"-"+$scope.endDate.month+"-"+$scope.endDate.day,
+              p_apply_type: $scope.defaultApplyType,
+              p_room_type: $scope.defaultRoomType,
+              p_room_number: $scope.inputinfo.roomnum,
+              p_floor_number: $scope.inputinfo.floornum,
+              p_pro_id:""
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
+            }
+          };
+          if($scope.defaultApplyType=='项目申请'){
+           param.params.p_pro_id=$scope.defaultProjectInfo.projectId;
+          }
+<<<<<<< HEAD
+        });
+    }])
+
+angular.module("applicationModule")
+  .controller('FlyBackApplyCtrl', [
+=======
+          hmsPopup.showLoading('请稍候');
+          hmsHttp.post(url, param).success(function (result) {
+            var message = result.message;
+            hmsPopup.hideLoading();
+            if (result.status == "S" && result.result.length > 0) {
+              var resultlist = result.result;//查询结果列表
+              var info = {//要放入到service中的信息
+                applyType: param.params.p_apply_type,
+                checkinDate: param.params.p_check_in_date,
+                checkoutDate: param.params.p_check_out_date,
+                result: resultlist
+              };
+              $state.go("tab.dorm-apply-vacant-room",{
+                'dormApplySearchResult':info,
+                'projectId':$scope.defaultProjectInfo.projectId,
+                'applyType':$scope.defaultApplyType
+              });
+            } else if (result.status == "E") {
+              hmsPopup.showShortCenterToast(message);
+            }
+            if (baseConfig.debug) {
+              console.log("result success " + angular.toJson(result));
+            }
+          }).error(function (error, status) {
+            hmsPopup.hideLoading();
+            if (baseConfig.debug) {
+              console.log("response error " + angular.toJson(error));
+            }
+          });
+        }
+      };
+    }]);
+
+angular.module("applicationModule")
+.factory('flaybackService', ['$ionicLoading', function ($ionicLoading) {
+  var projName = "";
+  var projCode = "";
+  var ticketTypeList = [];
+  var routeTypeList = [];
+  var passengerList = [];
+  var passenger = "";
+  var certification = "";
+  var fbLines = [];
+  var pageStatusCreate = {};// var param = {"canEdit": true,"dataSource":"create"}
+  function getFormatDate(date) {
+    var seperator1 = "-";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+      month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+      strDate = "0" + strDate;
+    }
+    return date.getFullYear() + seperator1 + month + seperator1 + strDate;
+  }
+  return {
+    getFormatDate: getFormatDate,
+    getNowFormatDate: function () {
+      var date = new Date();
+      var seperator = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator + month + seperator + strDate;
+      return currentdate;
+    },
+    setPageStatusCreate: function (obj) {
+      pageStatusCreate = obj;
+    },
+    getPageStatusCreate: function (obj) {
+      return pageStatusCreate;
+    },
+    setProjName: function (obj) {
+      projName = obj;
+    },
+    getProjName: function (obj) {
+      return projName;
+    },
+    setProjCode: function (obj) {
+      projCode = obj;
+    },
+    getProjCode: function (obj) {
+      return projCode;
+    },
+    setTicketTypeList: function (obj) {
+      ticketTypeList = obj;
+    },
+    getTicketTypeList: function (obj) {
+      return ticketTypeList;
+    },
+    setRouteTypeList: function (obj) {
+      routeTypeList = obj;
+    },
+    getRouteTypeList: function (obj) {
+      return routeTypeList;
+    },
+    setPassengerList: function (obj) {
+      passengerList = obj;
+    },
+    getPassengerList: function (obj) {
+      return passengerList;
+    },
+    setPassenger: function (obj) {
+      passenger = obj;
+    },
+    getPassenger: function (obj) {
+      return passenger;
+    },
+    setCertification: function (obj) {
+      certification = obj;
+    },
+    getCertification: function (obj) {
+      return certification;
+    },
+    addLine: function (obj) {
+      /* var flight_date = getFormatDate(new Date(obj.flight_date));
+       obj.flight_date = flight_date;*/
+      fbLines.push(obj);
+    },
+    updateLine: function (obj, index) {
+      var flight_date = getFormatDate(new Date(obj.flight_date));
+      obj.flight_date = flight_date;
+      fbLines[index] = obj;
+    },
+    getLines: function () {
+      return fbLines;
+    },
+    setLines: function (obj) {
+      fbLines = obj;
+    },
+    /* deleteLine: function (item) {
+     //  fbLines.splice(index, 1);
+     console.log("fbLines.indexOf(item) = " + fbLines.indexOf(item));
+     console.log("fbLines  = " + angular.toJson(fbLines));
+     console.log("item  = " + angular.toJson(item));
+     fbLines.splice(fbLines.indexOf(item), 1);
+     },*/
+    deleteLine: function (index) {
+      fbLines.splice(index, 1);
+    },
+    clearLines: function () {
+      fbLines = [];
+    }
+
+  }
+
+}])
+;
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.personnel-policy', {
+          url: '/personnel-policy',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/personnel-policy/personnel-policy.html',
+              controller: 'PersonnelPolicyCtrl'
+            }
+          }
+        })
+    }]);
+
+angular.module('applicationModule')
+  .controller('PersonnelPolicyCtrl', [
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+<<<<<<< HEAD
+    '$timeout',
+    'hmsHttp',
+    '$ionicModal',
+    'flaybackService',
+=======
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicHistory) {
+
+      $scope.goBack=function(){
+        $ionicHistory.goBack();
+      };
+      $scope.openwin=function($url){
+        //window.open($url,'newwindow','top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
+        window.open("http://www.daxuequan.org/ceshi/"+$url, '_system', 'location=yes');
+        };
+    }]
+);
+
+
+
+/** Author      : joshua.shi
+ *
+ *  History:
+ *      1.00    2016-4-28   joshua.shi   Creation
+ */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.time-off-manage', {
+          url: '/time-off-manage',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/time-off-manage/time-off-manage-list.html',
+              controller: 'TimeOffManageCtrl'
+            }
+          }
+        })
+    }]);
+
+angular.module('applicationModule')
+
+  .controller('TimeOffManageCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    'hmsHttp',
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
+    'hmsPopup',
+    '$ionicHistory',
+    function ($scope,
+              $state,
+              baseConfig,
+              hmsHttp,
+              hmsPopup,
+              $ionicHistory) {
+
+      $scope.timeOffHeader       ={
+        userId                 : 999,
+        paidHoliday            : 9,
+        paidSickLeave          : 9,
+        extPaidHoliday         : 9,
+        usedPaidHoliday        : 9,
+        usedPaidSickLeave      : 9,
+        usedExtPaidHoliday     : 9
+      };
+
+      $scope.timeOffHistoryList  =[
+        {
+        holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
+        timeOffType          : 'paid-holiday',
+        timeOffTypeMeaning   : '带薪年假',
+        datetimeFrom         : '2016-6-16',
+        datetimeTo           : '2016-6-18',
+        timeLeave            : '2天',
+        approveStatus        : 'APPROVED',
+        approveStatusMeaning : '已审批',
+        applyReason          : '陪老婆去迪斯尼玩',
+        reason_image         : [
+          {
+            image_url1       : '',
+            image_url2       : '',
+            image_url3       : '',
+            image_url4       : '',
+            image_url5       : '',
+            image_url6       : '',
+            image_url7       : '',
+            image_url8       : '',
+            image_url9       : '',
+          }
+        ]
+      }];
+
+
+      $scope.timeOffCreate = function(){
+
+      }
+
+
+      function getServeData() {
+
+        var requestUrl = baseConfig.businessPath + "/api_holiday/get_holidays_data";
+        var requestParams = {
+          "params": {
+            "p_employee_code": window.localStorage.empno
+          }
+        };
+
+        hmsHttp.post(requestUrl, requestParams).success(function (response) {
+          hmsPopup.hideLoading();
+          if (hmsHttp.isSuccessfull(response.status)) {
+
+            var baseImgUrl = 'build/img/application/time-off-manage/';
+
+            //处理前置结构
+            if(response.result[0]) {
+              var responseData = response.result[0];
+            }else{
+              hmsPopup.showShortCenterToast("服务器返回结构解析错误!");
+              return;
+            }
+
+            //将获取到的数据绑定到页面
+            //赋值头数据
+            $scope.timeOffHeader.paidHoliday        = responseData.paidHoliday;
+            $scope.timeOffHeader.paidSickLeave      = responseData.paidSickLeave;
+            $scope.timeOffHeader.extPaidHoliday     = responseData.extPaidHoliday;
+            $scope.timeOffHeader.usedPaidHoliday    = responseData.usedPaidHoliday;
+            $scope.timeOffHeader.usedPaidSickLeave  = responseData.usedPaidSickLeave;
+            $scope.timeOffHeader.usedExtPaidHoliday = responseData.usedExtPaidHoliday;
+
+            //赋值行数据
+            $scope.timeOffHistoryList  = [];
+            $scope.timeOffHistoryList = responseData.timeOffHistory;
+
+
+            //1:带薪年假，2,额外福利年假，3:事假，4.带薪病假，5.病假，6.婚嫁，7.产假，8.丧假，9.陪产假
+            angular.forEach($scope.timeOffHistoryList, function (data, index) {
+              if ('1' == data.timeOffType) {
+                data.holidayIcon        = baseImgUrl + 'PaidHoliday@3x.png';
+                data.timeOffTypeMeaning = '带薪年假';
+              } else if ('2' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
+                data.timeOffTypeMeaning  = '额外福利年假';
+              } else if ('3' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'CasualLeave@3x.png';
+                data.timeOffTypeMeaning  = '事假';
+              } else if ('4' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'SickLeave@@3x.png';
+                data.timeOffTypeMeaning  = '带薪病假';
+              } else if ('5' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'SickLeave@3x.png';
+                data.timeOffTypeMeaning  = '病假';
+              } else if ('6' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'HoneyMood@3x.png';
+                data.timeOffTypeMeaning  = '婚嫁';
+              } else if ('7' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'MaternityLeave@3x.png';
+                data.timeOffTypeMeaning  = '产假';
+              } else if ('8' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
+                data.timeOffTypeMeaning  = '丧假';
+              } else if ('9' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'PaternityLeave@3x.png';
+                data.timeOffTypeMeaning  = '陪产假';
+              }
+
+              //1.审批通过：APPROVED,2.审批中：APPROVING,3：审批拒绝：REJECTED,4.草稿：DRAFT
+              if ('APPROVED'         == data.approveStatus) {
+                data.approveStatusMeaning = '审批通过';
+              } else if ('APPROVING' == data.approveStatus) {
+                data.approveStatusMeaning = '审批中';
+              } else if ('REJECTED'  == data.approveStatus) {
+                data.approveStatusMeaning = '审批拒绝';
+              } else if ('DRAFT'     == data.approveStatus) {
+                data.approveStatusMeaning = '草稿';
+              }
+            });
+
+            //$scope.$apply();
+
+          } else {
+            if (response.status === 'E' || response.status == 'e') {
+              hmsPopup.showShortCenterToast("没有相关数据!");
+            } else {
+              hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+            }
+          }
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
+        });
+      };
+
+      getServeData();
     }]);
 
 angular.module('myApp')
@@ -4833,6 +5472,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
           getData();
         }, 1000);
       });
+<<<<<<< HEAD
     };
   }]).service('ApproveDetailService', function () {
   var flag = ''; //刷新上个列表的标识
@@ -4845,6 +5485,69 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
     }
   }
 });
+=======
+    }])
+
+  .service('TimeSheetService', [
+    'baseConfig',
+    'hmsHttp',
+    'hmsPopup',
+    function (baseConfig,
+              hmsHttp,
+              hmsPopup) {
+      this.fetchCalendar = function (monthParams) {
+
+        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_month": monthParams + "",
+            "p_offset": "0"
+          }
+        };
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function (response, status) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(response));
+          }
+        });
+      };
+
+      this.fetchEachDay = function (callback, oneDate) {
+        var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
+        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + ""}};
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('获取状态错误,请检查网络!');
+        });
+      };
+
+      this.fetchProjectDetailInfo = function (callback, oneDate, projectId) {
+        var url = baseConfig.businessPath + "/timesheet_process/project_change"
+        var params = {
+          'params': {
+            'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + "",
+            'p_project_id': projectId + ""
+          }
+        };
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('获取项目信息错误,请检查网络!');
+        });
+      };
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
 
 
 /**
@@ -4868,9 +5571,25 @@ angular.module('myApp')
           }
         });
     }]);
+<<<<<<< HEAD
 angular.module('tsApproveModule')
   .controller('tsApproveListCtrl', [
+=======
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('TimeSheetWriteCtrl', [
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
     '$scope',
+    '$rootScope',
     '$state',
     'baseConfig',
     '$ionicModal',
@@ -4884,6 +5603,7 @@ angular.module('tsApproveModule')
     '$ionicPopover',
     '$cordovaDatePicker',
     function ($scope,
+              $rootScope,
               $state,
               baseConfig,
               $ionicModal,
@@ -4900,9 +5620,62 @@ angular.module('tsApproveModule')
        * initial var section
        */
       {
+<<<<<<< HEAD
         if (ionic.Platform.isIOS()) {
           angular.element('.custom-head').css('paddingTop', '10px');
           angular.element('.ts-list-bg').css('paddingTop', '110px');
+=======
+        currentDay: "",
+        approver: "",
+        currentProject: {},
+        currentAddress: {},
+        currentFlyback: {},
+        travelingAllowance: {flag: false, style: unchecked},
+        normalAllowance: {flag: false, style: unchecked},
+        intCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
+        extCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
+        description: ""
+      };
+
+      if (baseConfig.debug) {
+        console.log('$stateParams.day ' + angular.toJson($stateParams.day));
+      }
+
+      $scope.currentDate = $stateParams.day.each_day;
+
+      //加载项目画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/projectModal.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.projectModal = modal;
+      });
+
+      //加载项目地点画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/addressModal.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.addressModal = modal;
+      });
+
+      //加载机票补贴画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/flybackList.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.flybackModal = modal;
+      });
+
+      $scope.selectAddress = function (address) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.address " + angular.toJson(address));
+        }
+        $scope.timesheetDetail.currentAddress = address;
+        $scope.addressModal.hide();
+      };
+
+      $scope.selectFlyback = function (flyback) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.flyback " + angular.toJson(flyback));
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
         }
         $scope.showProjectName = true; //默认显示项目名称
         $scope.showRocket = false; //默认不显示小火箭image
@@ -5217,6 +5990,7 @@ angular.module('tsApproveModule')
         }
       };
 
+<<<<<<< HEAD
       $scope.selectAllList = function () { //全选
         clickSelectAll = !clickSelectAll;
         if (clickSelectAll) {
@@ -5233,6 +6007,16 @@ angular.module('tsApproveModule')
             approve.p_start_date = $scope.listInfoArray.listArray[i].start_date;
             approve.p_end_date = $scope.listInfoArray.listArray[i].end_date;
             approveList.approve_list.push(approve);
+=======
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            hmsPopup.showPopup('提交Timesheet成功');
+            $rootScope.$broadcast('refreshTimesheet', 'parent');
+            $ionicHistory.goBack();
+          } else {
+            hmsPopup.showPopup('提交Timesheet错误,错误原因为');
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
           }
           __initSelectArray('selectedAll');
         } else {
@@ -5241,6 +6025,7 @@ angular.module('tsApproveModule')
         }
       };
 
+<<<<<<< HEAD
       function deleteSuperfluous() {
         for (var i = 0; i < approveList.approve_list.length; i++) {
           if (approveList.approve_list[i] === 'delete') {
@@ -5324,9 +6109,213 @@ angular.module('tsApproveModule')
           $scope.showProjectName = false;
           angular.element('#person-select').css({'backgroundColor': 'white', 'color': '#4A4A4A'});
           angular.element('#project-name').css({'backgroundColor': '#fafafa', 'color': '#9b9b9b'});
+=======
+      //从服务器获取请求
+      $timeout(
+        function () {
+          hmsPopup.showLoading('获取timesheet明细数据');
+          TimeSheetService.fetchEachDay(fetchEachDay, $scope.currentDate);
+        }
+      );
+    }
+  ])
+;
+
+/**
+ * Created by wolf on 2016/5/21. (_wen.dai_)
+ */
+'use strict';
+//应用-timeSheet审批模块-详情
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.tsApproveDetail', {
+          url: 'application/tsApproveDetail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
+              controller: 'tsApproveDetailCtrl'
+            }
+          },
+          params: {
+            'employeeNumber': "",
+            'projectId': "",
+            'startDate': "",
+            'endDate': ""
+          }
+        })
+    }]);
+tsApproveModule.controller('tsApproveDetailCtrl', [
+  '$scope',
+  '$state',
+  'baseConfig',
+  '$ionicHistory',
+  '$stateParams',
+  'hmsHttp',
+  'hmsPopup',
+  '$timeout',
+  'ApproveDetailService',
+  function ($scope,
+            $state,
+            baseConfig,
+            $ionicHistory,
+            $stateParams,
+            hmsHttp,
+            hmsPopup,
+            $timeout,
+            ApproveDetailService) {
+
+    /**
+     * init var section
+     */
+    {
+      if(ionic.Platform.isIOS()) {
+        angular.element('.ae-detail-head').css('marginTop','64px');
+        angular.element('#approveDetailContent').css('top','64px');
+      }
+      var selectItem = []; //初始化点击全部条目为false
+      var clickSelectAll = false; //默认没有点击全选
+      $scope.detailActionName = "操作";
+      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
+      $scope.detailInfoArray = {}; //用于接收列表对应数据object
+      $scope.selectArray = [];
+      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
+      var tsApproveDetailParams = {
+        "params": {
+          "p_employee_number": $stateParams.employeeNumber,
+          "p_start_date": $stateParams.startDate.toString(),
+          "p_end_date": $stateParams.endDate.toString(),
+          "p_project_id": $stateParams.projectId
         }
       };
+      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
+      var tsActionParams = { //审批拒绝/通过的参数
+        "params": {
+          "p_approve_flag": "AGREE",
+          "p_employee_number": window.localStorage.empno,
+          "p_param_json": ''
+        }
+      };
+      var approveList = { //审批拒绝/通过的子对象
+        "approve_list": []
+      };
+    }
 
+    $scope.$on('$ionicView.enter', function (e) {
+      ApproveDetailService.setRefreshFlag('');
+    });
+
+    $scope.$on('$destroy', function (e) {
+      warn('tsApproveListCtrl.$destroy');
+    });
+
+    hmsPopup.showLoading('加载中...');
+    function getData() {
+      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          $scope.detailInfoArray = response.timesheet_approve_detail_response;
+          if ($scope.detailInfoArray.subsidy_list.length === 0) {
+            ApproveDetailService.setRefreshFlag('refresh-approve-list');
+            $ionicHistory.goBack();
+          }
+        } else {
+          if (response.status === 'E' || response.status == 'e') {
+            hmsPopup.showShortCenterToast("没有相关数据!");
+          } else {
+            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+          }
+        }
+      }).error(function (response, status) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
+      });
+    };
+    getData();
+
+    function __initSelectArray(selectParam) { //初始化选择按钮
+      //先初始化数据操作--
+      $scope.selectArray = [];
+      selectItem = [];
+      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
+        if ('undoSelectAll' == selectParam) {
+          $scope.selectArray.push(false);
+          selectItem.push(false);
+        } else if ('selectedAll' == selectParam) {
+          $scope.selectArray.push(true);
+          selectItem.push(true);
+        }
+      });
+    };
+    __initSelectArray('undoSelectAll');
+
+    $scope.dealDetailInfo = function () {
+      if ($scope.detailActionName == "操作") {
+        $scope.detailActionName = "取消";
+        $scope.showActionBar = true;
+        angular.element('#tsApproveItem').css('paddingLeft', '6%');
+      } else if ($scope.detailActionName == "取消") {
+        $scope.detailActionName = "操作";
+        $scope.showActionBar = false;
+        __initSelectArray('undoSelectAll');
+        angular.element('#tsApproveItem').css('paddingLeft', '0');
+        tsActionParams = { //审批拒绝/通过的参数
+          "params": {
+            "p_approve_flag": "AGREE",
+            "p_employee_number": window.localStorage.empno,
+            "p_param_json": ''
+          }
+        };
+        approveList = {
+          "approve_list": []
+        };
+      }
+    };
+
+    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
+      selectItem[index] = !selectItem[index];
+      var approve = {
+        "p_project_id": $scope.detailInfoArray.project_id,
+        "p_project_person_number": $scope.detailInfoArray.employee_number,
+        "p_start_date": "",
+        "p_end_date": "",
+        "p_record_id": ""
+      };
+      if (selectItem[index]) {
+        $scope.selectArray[index] = true;
+        approve.p_record_id = newLineNumber;
+        approveList.approve_list[index] = approve;
+      } else {
+        $scope.selectArray[index] = false;
+        approveList.approve_list.splice(index, 1, 'delete');
+      }
+    };
+
+    $scope.selectAllDetail = function () { //全选
+      clickSelectAll = !clickSelectAll;
+      if (clickSelectAll) {
+        __initSelectArray('selectedAll');
+        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
+          var approve = {
+            "p_project_id": $scope.detailInfoArray.project_id,
+            "p_project_person_number": $scope.detailInfoArray.employee_number,
+            "p_start_date": "",
+            "p_end_date": "",
+            "p_record_id": ""
+          };
+          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
+          approveList.approve_list.push(approve);
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
+        }
+        warn(approveList.approve_list);
+      } else {
+        __initSelectArray('undoSelectAll');
+        approveList.approve_list = [];
+      }
+    };
+
+<<<<<<< HEAD
       $scope.selectFilterItem = function (newName, index, newId) { //点击modal单个条目时的响应方法
         if (newName === 'projectName') {
           $scope.isClickedProject = [];
@@ -5336,9 +6325,96 @@ angular.module('tsApproveModule')
           $scope.isClickedPerson = [];
           $scope.isClickedPerson[index] = true;
           tsListParams.params.p_project_person_number = newId;
+=======
+    function deleteSuperfluous() {
+      for (var i = 0; i < approveList.approve_list.length; i++) {
+        if (approveList.approve_list[i] === 'delete') {
+          approveList.approve_list.splice(i, 1);
+          i--;
+        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
+          approveList.approve_list.splice(i, 1);
+          i--;
         }
-      };
+      }
+    };
 
+    $scope.passThroughDetailItem = function () { //通过
+      if (approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "AGREE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('审批成功！');
+        } else {
+          hmsPopup.showShortCenterToast('审批失败！');
+        }
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      });
+    };
+
+    $scope.refuseDetailItem = function () { //拒绝
+      if (approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "REFUSE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('拒绝成功');
+        } else {
+          hmsPopup.showShortCenterToast('拒绝失败！');
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
+        }
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      });
+    };
+  }]).service('ApproveDetailService', function () {
+  var flag = ''; //刷新上个列表的标识
+  return {
+    setRefreshFlag: function (newFlag) {
+      flag = newFlag;
+    },
+    getRefreshFlag: function () {
+      return flag;
+    }
+  }
+});
+
+<<<<<<< HEAD
       function __initModal() { //初始化modal的样式
         $scope.tsFilterModal.hide();
         $scope.showProjectName = true;
@@ -5347,12 +6423,289 @@ angular.module('tsApproveModule')
         angular.element('#project-name').addClass('active-select');
         angular.element('#project-name').removeClass('active-off');
         angular.element('#person-select').removeClass('active-select');
-      };
+=======
 
+/**
+ * Created by wolf on 2016/5/19.
+ * @author: wen.dai@hand-china.com
+ *
+ */
+'use strict';
+//应用-timeSheet审批模块-列表
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.tsApproveList', {
+          url: 'application/tsApproveList',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet-approve/list/ts-approve-list.html',
+              controller: 'tsApproveListCtrl'
+            }
+          }
+        });
+    }]);
+angular.module('tsApproveModule')
+  .controller('tsApproveListCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicModal',
+    '$ionicScrollDelegate',
+    '$ionicPopup',
+    '$timeout',
+    'TsApproveListService',
+    'hmsPopup',
+    'hmsHttp',
+    'ApproveDetailService',
+    '$ionicPopover',
+    '$cordovaDatePicker',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicModal,
+              $ionicScrollDelegate,
+              $ionicPopup,
+              $timeout,
+              TsApproveListService,
+              hmsPopup,
+              hmsHttp,
+              ApproveDetailService,
+              $ionicPopover,
+              $cordovaDatePicker) {
+      /**
+       * initial var section
+       */
+      {
+        if (ionic.Platform.isIOS()) {
+          angular.element('.custom-head').css('paddingTop', '10px');
+          angular.element('.ts-list-bg').css('paddingTop', '110px');
+        }
+        $scope.showProjectName = true; //默认显示项目名称
+        $scope.showRocket = false; //默认不显示小火箭image
+        $scope.showConnectBlock = false; //默认不显示连接块
+        $scope.showDetailArrow = true; //默认显示向右的箭头--go list detail
+        $scope.showLsLoading = false; //loading默认不显示
+        var clickSelectAll = false; //默认没有点击全选
+        $scope.endApproveDate = "";
+        $scope.actionName = "操作";
+        $scope.selectArray = [];
+        $scope.isClickedProject = []; //控制点击选择筛选条目的样式(modal-filter)
+        $scope.listInfoArray = {};
+        $scope.personList = [];
+        $scope.projectList = [];
+        $scope.endDateList = [{//记录常用的三个截止日期
+          dateValue: getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, ""),
+          dateCode: getLastMonthDate(new Date())
+        }, {
+          dateValue: getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, ""),
+          dateCode: getCurrentDate(new Date())
+        }, {
+          dateValue: getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, ""),
+          dateCode: getCurrentMonthLastDate(new Date())
+        }];
+        var position = ""; //记录滚动条的位置
+        var selectItem = []; //初始化点击全部条目为false
+        var tsLsUrl = baseConfig.businessPath + "/api_timesheet/get_timesheet_list";
+        var tsProjectPersonListUrl = baseConfig.businessPath + "/api_timesheet/get_project_person_list";
+        var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
+        var tsListParams = { //获取列表的参数
+          "params": {
+            "p_employee_number": window.localStorage.empno, //参考angularjs的localStorange--
+            "p_start_date": "",
+            "p_end_date": "",
+            "p_project_name": "",
+            "p_project_id": "",
+            "p_project_person_number": "",
+            "p_page": 1,
+            "p_page_size": 6
+          }
+        };
+        var tsActionParams = { //审批拒绝/通过的参数
+          "params": {
+            "p_approve_flag": "AGREE",
+            "p_employee_number": window.localStorage.empno,
+            "p_param_json": ''
+          }
+        };
+        var approveList = { //审批拒绝/通过的子对象
+          "approve_list": []
+        };
+        var currentDay = new Date().getDate();
+        if (currentDay <= 10) {
+          tsListParams.params.p_end_date = getLastMonthDate(new Date());
+          $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.selectEndItem = [true, false, false]; //控制点击选择截止日期条目的样式(modal-date)
+        } else if (currentDay > 10 && currentDay <= 20) {
+          tsListParams.params.p_end_date = getCurrentDate(new Date());
+          $scope.endApproveDate = getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.selectEndItem = [false, true, false];
+        } else if (currentDay > 20) {
+          tsListParams.params.p_end_date = getCurrentMonthLastDate(new Date());
+          $scope.endApproveDate = getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.selectEndItem = [false, false, true];
+        }
+      }
+
+      /**
+       * 立即执行 拉取数据的代码
+       */
+      function initData() {
+        $scope.showLsLoading = true;
+        hmsHttp.post(tsProjectPersonListUrl, tsListParams).success(function (response) {
+          if (hmsHttp.isSuccessfull(response.status)) {
+            $scope.personList = unique_better(response.project_person_list, 'employee_number');
+            $scope.projectList = unique_better(response.project_list, 'project_id');
+          }
+        }).error(function (e) {
+        });
+        $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
+      };
+      initData();
+
+<<<<<<< HEAD
       $scope.cancelFilter = function () { //取消按钮
         tsListParams.params.p_project_id = "";
         tsListParams.params.p_project_person_number = "";
         __initModal();
+=======
+      $scope.$on('$ionicView.enter', function (e) {
+        if (ApproveDetailService.getRefreshFlag() === 'refresh-approve-list') {
+          $scope.tsListRefresh();
+        }
+      });
+
+      $scope.$on('$destroy', function (e) {
+        log('tsApproveListCtrl.$destroy');
+      });
+
+      function __initSelectArray(selectParam) { //初始化选择按钮
+        //先初始化数据操作--
+        $scope.selectArray = [];
+        selectItem = [];
+        angular.forEach($scope.listInfoArray.listArray, function (data, index) {
+          if ('undoSelectAll' == selectParam) {
+            $scope.selectArray.push(false);
+            selectItem.push(false);
+          } else if ('selectedAll' == selectParam) {
+            $scope.selectArray.push(true);
+            selectItem.push(true);
+          }
+        });
+      };
+      __initSelectArray('undoSelectAll');
+
+      $scope.doSelectAction = function () { //header 右上角显示操作按钮
+        if ($scope.actionName == "操作") {
+          $scope.actionName = "取消";
+          $scope.showDetailArrow = false;
+          angular.element('.ts-approve-list-item').css("paddingLeft", "10%");
+        } else if ($scope.actionName == "取消") {
+          $scope.actionName = "操作";
+          $scope.showDetailArrow = true;
+          angular.element('.ts-approve-list-item').css("paddingLeft", "10px");
+          tsActionParams = { //审批拒绝/通过的参数
+            "params": {
+              "p_approve_flag": "AGREE",
+              "p_employee_number": window.localStorage.empno,
+              "p_param_json": ''
+            }
+          };
+          approveList = {
+            "approve_list": []
+          };
+          __initSelectArray('undoSelectAll');
+        }
+      };
+
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-date-modal.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.dateModal = modal;
+      });
+
+      $ionicPopover.fromTemplateUrl("endDate.html", {
+        scope: $scope
+      }).then(function (popover) {
+        $scope.endDatePopover = popover;
+      });
+
+      $scope.selectEndDate = function ($event) { //显示截止日期列表界面
+        tsListParams.params.p_end_date = $scope.endApproveDate;
+        if (ionic.Platform.isIOS()) {
+          $scope.endDatePopover.show($event);
+          angular.element('#popover-date2').css('borderBottom', '0px');
+        } else {
+          $scope.dateModal.show();
+        }
+      };
+
+
+      $scope.chooseStartDate = function () {//选择开始日期
+        var myDate = $scope.startDate = new Date();
+        var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+        var options = {
+          date: previousDate,
+          mode: 'date',
+          titleText: '请选择截止日期',
+          okText: '确定',
+          cancelText: '取消',
+          doneButtonLabel: '确认',
+          cancelButtonLabel: '取消',
+          androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+          locale: "zh_cn"
+        };
+        $cordovaDatePicker.show(options).then(function (date) {
+          var month = date.getMonth() + 1;
+          var day = date.getDate();
+          var weekday = date.getDay();
+          if (weekday == 0) {
+            $scope.startDate.weekday = "周日";
+          } else if (weekday == 1) {
+            $scope.startDate.weekday = "周一";
+          } else if (weekday == 2) {
+            $scope.startDate.weekday = "周二";
+          } else if (weekday == 3) {
+            $scope.startDate.weekday = "周三";
+          } else if (weekday == 4) {
+            $scope.startDate.weekday = "周四";
+          } else if (weekday == 5) {
+            $scope.startDate.weekday = "周五";
+          } else if (weekday == 6) {
+            $scope.startDate.weekday = "周六";
+          }
+          if (month < 10) {
+            month = "0" + month;
+          }
+          if (day < 10) {
+            day = "0" + day;
+          }
+          $scope.startDate.year = date.getFullYear();
+          $scope.startDate.month = month;
+          $scope.startDate.day = day;
+          $scope.$apply();
+        });
+      };
+      $scope.selectEndDateItem = function (newEndDateCode, newEndDateValue, newIndex) { //选择不同的截止日期
+        $scope.selectEndItem = [];
+        $scope.selectEndItem[newIndex] = true;
+        $scope.endApproveDate = newEndDateValue;
+        tsListParams.params.p_page = 1;
+        tsListParams.params.p_end_date = newEndDateCode;
+        $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
+        if (ionic.Platform.isIOS()) {
+          $scope.endDatePopover.hide();
+        } else {
+          $scope.dateModal.hide();
+        }
+      };
+
+      $scope.cancelDateModal = function () { //取消date modal
+        //tsListParams.params.p_end_date = $scope.endApproveDate;//这个地方有小bug
+        $scope.dateModal.hide()
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
       };
 
       $scope.confirmFilter = function () { //确定按钮
@@ -5730,10 +7083,42 @@ angular.module('applicationModule')
       $scope.goBack = function () {
         $ionicHistory.$ionicGoBack();
       };
+<<<<<<< HEAD
 
       $rootScope.$on('refreshTimesheet', function(event,data) {
         if (baseConfig.debug) {
           console.log('refreshTimesheet', data);
+=======
+    }])
+/**
+ * @params:
+ *  1:scope  //controller的作用域
+ *  2:url //请求地址
+ *  3:params //请求的参数
+ *  4:refurbishParam //控制下拉刷线的参数
+ *  5:busy //用于控制下拉刷新的flag
+ *  6:totalNumber //获取的数据总数
+ *  7:listArray //数据列表
+ *  8:loading //数据加载标记
+ *  9:subsidyDaysArray //记录每月的补助天数
+ */
+  .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup',
+    function (hmsHttp, baseConfig, hmsPopup) {
+      var TsApproveListService = function (scope, requestUrl, requestSearchParams, loadingFlag, refurbishParam) {
+        var _self = this;
+        _self.scope = scope;
+        _self.url = requestUrl;
+        _self.params = {};
+        _self.params = requestSearchParams;
+        _self.refurbishParam = refurbishParam;
+        _self.busy = false;
+        _self.totalNumber = 0;
+        _self.listArray = [];
+        _self.subsidyDaysArray = [];
+        _self.loading = loadingFlag;
+        if (_self.refurbishParam === 'clickRefreshEvent') {
+          _self.scope.$broadcast('scroll.infiniteScrollComplete');
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
         }
         $timeout(
           function () {
@@ -5743,6 +7128,7 @@ angular.module('applicationModule')
         );
       });
 
+<<<<<<< HEAD
       if (baseConfig.debug) {
         console.log('applicationCtrl.enter');
       }
@@ -5844,6 +7230,56 @@ angular.module('myApp')
             'tab-application': {
               templateUrl: 'build/pages/application/timesheet/write/write.html',
               controller: 'TimeSheetWriteCtrl'
+=======
+        hmsHttp.post(_self.url, _self.params).success(function (response) {
+          _self.loading = false;
+          try {
+            if (hmsHttp.isSuccessfull(response.status)) {
+              var tsResult = response.timesheet_approve_response;
+              if (baseConfig.debug) {
+                warn('hi,create a new factory!!' + '\n' + jsonFormat());
+              }
+              _self.totalNumber = response.count;
+              try {
+                _self.listArray = _self.listArray.concat(tsResult.result_list);
+                for (var i = 0; i < _self.listArray.length; i++) {
+                  var subsidys = 0;
+                  if (_self.listArray[i].subsidy_list.length == 0) {
+                    subsidys++;
+                    _self.subsidyDaysArray.push(subsidys);
+                  } else {
+                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
+                      subsidys = parseInt(subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      subsidys++;
+                      _self.subsidyDaysArray.push(subsidys);
+                    }
+                  }
+                }
+              } catch (e) {
+                _self.listArray = [];
+                _self.subsidyDaysArray = [];
+              }
+              if (response.count == 0) {
+                _self.busy = false;
+                _self.listArray = [];
+                hmsPopup.showShortCenterToast("没有相关数据!");
+              } else if (response.count <= 6) {
+                _self.busy = false;
+              } else {
+                _self.busy = true;
+              }
+              _self.scope.$broadcast('scroll.refreshComplete');
+              _self.scope.$broadcast('scroll.infiniteScrollComplete');
+            } else {
+              _self.busy = false;
+              if (response.status === 'E' || response.status == 'e') {
+                hmsPopup.showShortCenterToast("没有相关数据!");
+              } else {
+                hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+              }
+              _self.scope.$broadcast('scroll.refreshComplete');
+              _self.scope.$broadcast('scroll.infiniteScrollComplete');
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
             }
           }
         });
@@ -5953,6 +7389,7 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log("selectAddress.project " + angular.toJson(project));
         }
+<<<<<<< HEAD
         $scope.timesheetDetail.currentProject = project;
         $scope.projectModal.hide();
 
@@ -5966,6 +7403,34 @@ angular.module('applicationModule')
             $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
             if (result.projaddress[0]) {
               $scope.timesheetDetail.currentAddress = result.projaddress[0];
+=======
+        _self.busy = true;
+        _self.params.params.p_page++;
+        hmsHttp.post(_self.url, _self.params).success(function (response) {
+          try {
+            if (hmsHttp.isSuccessfull(response.status)) {
+              if (angular.isUndefined(response.timesheet_approve_response.result_list)) {
+                _self.busy = false;
+                hmsPopup.showShortCenterToast("数据已经加载完毕!");
+              } else {
+                var tsResult = response.timesheet_approve_response;
+                _self.listArray = _self.listArray.concat(tsResult.result_list);
+                for (var i = (_self.params.params.p_page - 1) * 6; i < _self.listArray.length; i++) {
+                  var new_subsidys = 0;
+                  if (_self.listArray[i].subsidy_list.length == 0) {
+                    new_subsidys++;
+                    _self.subsidyDaysArray.push(new_subsidys);
+                  } else {
+                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
+                      new_subsidys = parseInt(new_subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      new_subsidys++;
+                      _self.subsidyDaysArray.push(new_subsidys);
+                    }
+                  }
+                }
+              }
+              _self.scope.$broadcast('scroll.infiniteScrollComplete');
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
             } else {
               $scope.timesheetDetail.currentAddress = {"selected_flag": "Y", "address_id": "0", "address_name": "缺省地点"};
             }
@@ -5983,6 +7448,7 @@ angular.module('applicationModule')
           TimeSheetService.fetchProjectDetailInfo(success, $scope.currentDate, project.project_id)
         });
       };
+<<<<<<< HEAD
 
       $scope.showProjectModal = function () {
         $scope.projectModal.show();
@@ -6182,3 +7648,7 @@ angular.module('applicationModule')
     }
   ])
 ;
+=======
+      return TsApproveListService;
+    }]);
+>>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353

@@ -1,4 +1,15 @@
 {
-  "name": "application-name",
-  "version": "2.0.1"
+  "baseConfig": {
+    "debug": false,
+    "isMobilePlatform": true,
+    "clearTable": true,
+    "nativeScreenFlag":true,
+    "basePath": "http://mobile-app.hand-china.com/hmbms_hand/api",
+    "businessPath": "http://wechat.hand-china.com/hmbms_hand/api/dataEngine",
+    "currentVersion": "2.0.0",
+    "url": "",
+    "pkgIdentifier": "",
+    "versionName": "此版本为PROD 2.0.0",
+    "appEnvironment": "PROD"
+  }
 }
