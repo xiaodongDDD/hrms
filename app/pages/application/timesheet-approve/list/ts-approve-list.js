@@ -566,10 +566,12 @@ angular.module('tsApproveModule')
                 for (var i = 0; i < _self.listArray.length; i++) {
                   var subsidys = 0;
                   if (_self.listArray[i].subsidy_list.length == 0) {
+                    subsidys++;
                     _self.subsidyDaysArray.push(subsidys);
                   } else {
                     for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
                       subsidys = parseInt(subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      subsidys++;
                       _self.subsidyDaysArray.push(subsidys);
                     }
                   }
@@ -640,10 +642,12 @@ angular.module('tsApproveModule')
                 for (var i = (_self.params.params.p_page - 1) * 6; i < _self.listArray.length; i++) {
                   var new_subsidys = 0;
                   if (_self.listArray[i].subsidy_list.length == 0) {
+                    new_subsidys++;
                     _self.subsidyDaysArray.push(new_subsidys);
                   } else {
                     for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
                       new_subsidys = parseInt(new_subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      new_subsidys++;
                       _self.subsidyDaysArray.push(new_subsidys);
                     }
                   }
