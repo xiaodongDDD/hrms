@@ -1,0 +1,33 @@
+<ion-view title="图像列表">
+
+  <ons-template id="photoSourceList.html">
+    <ons-dialog var="photoSourceDialog" cancelable ng-controller="photosController">
+      <ons-list>
+        <ons-list-item modifier="tappable" ng-click="selectPhotoSource('Cemera')">
+          拍照
+        </ons-list-item>
+        <ons-list-item modifier="tappable" ng-click="selectPhotoSource('PhotoLibary')">
+          相册
+        </ons-list-item>
+        <ons-list-item modifier="tappable" ng-click="selectPhotoSource('Cancel')">
+          取消
+        </ons-list-item>
+      </ons-list>
+    </ons-dialog>
+  </ons-template>
+
+  <ion-content>
+    <div ng-repeat="photo in  photos" ng-click="showConfirmPhoto($index)"
+         style="float: left ; margin-left: 12px; margin-top: 12px">
+      <img ng-src="{{photoPathURL+photo.photo_name}}"
+           style="display:inline-block ;width: 100px; height: 100px; border: solid 1px #000000;">
+    </div>
+    <div ng-click="addPicture()">
+      <img src="build/img/application/expense/cemera.png" style="width: 100px; height: 100px; margin-left: 12px; margin-top: 12px">
+    </div>
+
+  </ion-content>
+
+</ion-view>
+
+

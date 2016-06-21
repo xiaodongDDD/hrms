@@ -1,6 +1,6 @@
 /**
  * Created by gusenlin on 16/5/21.
- */
+ */ 
 angular.module('HmsModule')
   .factory('hmsHttp', ['$log', '$http', 'hmsPopup', function ($log, $http, hmsPopup) {
     var serivieName = "HmsHttp";

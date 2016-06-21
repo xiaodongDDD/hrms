@@ -1,0 +1,79 @@
+<ion-view title="批量上传">
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title">批量上传</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="uploadDataBatch()">
+        上传
+      </button>
+    </div>
+  </ion-header-bar>
+
+
+  <ion-content>
+    <ion-list ng-repeat="al in accountList2">
+      <div class="item item-divider" style="background-color: #f1f4f4">
+        <div style="width: 6px;height: 6px;background-color: #3ed9cd;float: left;margin-top: 5px;"></div>
+        <div class="title" style="float: left;margin-left: 5px;">{{al.time}}</div>
+      </div>
+
+      <ion-item modifier="tappable" class="item item-checkbox" ng-repeat="account in al.list"
+                style="border-left: 5px solid #4cd1c1;padding: 15px 15px ;margin: 0px 0px; white-space: normal">
+
+        <div style="width: 100%;" ng-click="account.upLoadSelected = !account.upLoadSelected">
+
+          <div style="width: 100%;float: left">
+            {{account.expenseObject_desc}}
+          </div>
+          <br/>
+
+          <div style="width: 100%;float: left" class="desc">
+            <div style="float: left;">
+              {{account.expense_date_from}}
+            </div>
+            <div style="float: left;position: absolute;left: 31%;">
+              至
+            </div>
+            <div style="float: left;position: absolute;left: 40%;">
+              {{account.expense_date_to}}
+            </div>
+            <div style="float: left;position: absolute;left: 90%;"
+                 ng-click="account.upLoadSelected = !account.upLoadSelected">
+              <input style="width: 20px;height: 20px;" ng-checked="account.upLoadSelected" class="list-item-left"
+                     type="checkbox" ng-model="account.upLoadSelected">
+
+            </div>
+          </div>
+
+          <br/>
+
+          <div style="width: 100%;float: none" class="name">
+            <div style="float: left;">
+              {{account.expense_item_desc}}
+            </div>
+
+            <div style="float: left;position: absolute;left: 40%;" class="location">
+              <i class="icon ion-ios-location" style="color: darkgray;padding: 0;margin-right: 1px;"></i>
+              <span class="fa fa-map-marker">{{account.expense_place}}</span>
+            </div>
+
+            <div style="float: left;position: absolute;left: 65%;color: #3ed9cd">
+              {{account.total_amount.toFixed(2)}}元
+            </div>
+          </div>
+
+          <br/>
+
+          <div style="width: 100%;">
+            <sapn>{{account.description}}</sapn>
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+</ion-view>

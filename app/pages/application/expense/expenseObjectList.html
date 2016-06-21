@@ -1,0 +1,47 @@
+<ion-view title="选择项目" class="expenseObjectList-view">
+   <ion-header-bar align-title="center" class="bar-stable">
+      <div class="buttons"> 
+        <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+          <span class="back-text">返回</span>
+        </button>
+      </div> 
+      <h1 class="title">选择项目</h1>
+      <div class="buttons">
+      </div>
+    </ion-header-bar>
+
+  <ion-content>
+    <div class="bar bar-header item-input-inset" style="border-bottom: 1px solid #dddddd;">
+      <label class="item item-input" style="border: 0px;width: 100%;">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" style="width: 96%; margin: 6px auto 6px auto;" placeholder="输入项目" ng-model="query">
+      </label>
+    </div>
+    <style>
+      .expenseObjectList-view .list-item-container:nth-child(1){
+        border-top: 0px;
+      }
+    </style>
+    <ion-list class="airport-list">
+      <ion-item class="airport list-item-container" modifier="tappable"
+                ng-repeat="project in projectList  | filter:query">
+        <div class="row" expenseObject_id="{{project.expenseObject_id}}"
+             expenseObject_code="{{project.expenseObject_code}}"
+             expenseObject_desc="{{project.expenseObject_desc}}">
+          <div style="white-space: normal; line-height: 25px" class="airport-name col"
+               expenseObject_id="{{project.expenseObject_id}}"
+               expenseObject_code="{{project.expenseObject_code}}"
+               expenseObject_desc="{{project.expenseObject_desc}}"
+               expenseObject_type="{{project.expenseObject_type}}"
+               expenseItemList_index="{{project.expenseItemList_index}}"
+               ng-click="selectExpenseObject($event)">
+            {{project.expenseObject_desc}}
+          </div>
+        </div>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+
+</ion-view>
+

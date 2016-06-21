@@ -1,0 +1,76 @@
+<style>
+  .accoutlogo {
+    background: #4FCCC6;
+    text-align: center;
+    vertical-align: middle;
+    height: 200px;
+  }
+</style>
+<ion-view view-title="记一笔" hide-tabs="true">
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title">记一笔</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="showHelp()">
+        <i class=" icon ion-ios-information-outline" style="color:#aaaaaa;font-size: 20px;margin-right: 3px;"></i>
+      </button>
+    </div>
+  </ion-header-bar>
+
+  <ion-content>
+    <div class="accoutlogo">
+      <img src="build/img/application/expense/note.png" style="width: 100%;height: 200px;">
+    </div>
+    <ion-list>
+      <ion-item modifier="chevron" class="item-icon-right" ng-click="openCreatePage()"
+                style="border-left: 5px solid #4cd1c1">
+        <div class="list-item-left">
+          <i class="ion-compose" style="font-size: 20px;color:#4cd1c1"></i>
+        </div>
+        <div class="list-item-right">
+          <div class="list-item-content">
+
+            <div class="name">新建记一笔</div>
+          </div>
+        </div>
+        <i class="icon ion-ios-arrow-right" style="font-size: 25px;color: #D5D5D5;"></i>
+      </ion-item>
+
+      <ion-item modifier="chevron" class="item-icon-right"
+                ng-click="openAccountListPage()" style="border-left: 5px solid #fcab53">
+        <div class="list-item-left">
+          <i class="ion-map" style="font-size: 20px;color: #fcab53;"></i>
+
+        </div>
+        <div class="list-item-right">
+          <div class="list-item-content">
+            <div class="name">记一笔查询</div>
+          </div>
+        </div>
+
+        <i class="icon ion-ios-arrow-right" style="font-size: 25px;color: #D5D5D5;"></i>
+
+      </ion-item>
+
+      <ion-item modifier="chevron" class="item-icon-right" ng-click="openUploadBatchPage()"
+                style="border-left: 5px solid #4cd1c1">
+        <div class="list-item-left">
+          <i class="ion-share" style="font-size: 20px;color: #4cd1c1"></i>
+
+        </div>
+        <div class="list-item-right">
+          <div class="list-item-content">
+            <div class="name">批量上传</div>
+          </div>
+        </div>
+
+        <i class="icon ion-ios-arrow-right" style="font-size: 25px;color: #D5D5D5;"></i>
+
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
