@@ -13,7 +13,7 @@ angular.module('applicationModule')
               baseConfig) {
 
       $scope.animationsEnabled = false;
-
+      
       //个人办公 
       $scope.officeApp = [
         {

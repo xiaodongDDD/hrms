@@ -7,38 +7,50 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.handmobile.cordovaplugin.hotpatch": {
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
+        },
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
+        },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-crosswalk-webview": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
+        },
+        "cordova-plugin-datepicker": {
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
+        },
+        "cordova-sqlite-storage": {
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.hand-china.hrmsnew"
-        },
-        "com.handmobile.cordovaplugin.hotpatch": {
-            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
         }
     },
     "dependent_plugins": {}

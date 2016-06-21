@@ -15,7 +15,7 @@ angular.module('myApp')
     }]);
 
 angular.module("applicationModule")
-  .controller('photosController', function ($scope, keepAccount, $state, $ionicPopup, $ionicLoading, $ionicActionSheet, dialog, baseConfig) {
+  .controller('photosController', function ($scope, keepAccount, $state, $ionicPopup, $ionicLoading, $ionicActionSheet, dialog, baseConfig, hmsPopup) {
 
     $scope.photos = keepAccount.data.photos;
 

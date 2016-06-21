@@ -1,4 +1,4 @@
-<ion-view title="选择项目">
+<ion-view title="选择项目" class="expenseObjectList-view">
    <ion-header-bar align-title="center" class="bar-stable">
       <div class="buttons"> 
         <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
@@ -11,13 +11,17 @@
     </ion-header-bar>
 
   <ion-content>
-    <div class="bar bar-header item-input-inset">
-      <label class="item item-input">
+    <div class="bar bar-header item-input-inset" style="border-bottom: 1px solid #dddddd;">
+      <label class="item item-input" style="border: 0px;width: 100%;">
         <i class="icon ion-search placeholder-icon"></i>
         <input type="text" style="width: 96%; margin: 6px auto 6px auto;" placeholder="输入项目" ng-model="query">
       </label>
     </div>
-
+    <style>
+      .expenseObjectList-view .list-item-container:nth-child(1){
+        border-top: 0px;
+      }
+    </style>
     <ion-list class="airport-list">
       <ion-item class="airport list-item-container" modifier="tappable"
                 ng-repeat="project in projectList  | filter:query">
