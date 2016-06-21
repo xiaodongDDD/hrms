@@ -1,0 +1,122 @@
+<ion-view view-title="报销申请"  hide-nav-bar="navBar">
+  <img src="img/example@3x.png" style="position: absolute;z-index: 20;width: 100%;
+            height: 100%;" ng-click="hide()"  ng-show="isshow"/>
+  <ion-nav-title style="background: none">
+    <span>报销申请</span>
+  </ion-nav-title>
+  <ion-content>
+    <form name="detailForm">
+      <ion-list>
+        <ion-item class="item list-item-container" style="border-left: 5px solid #fcb177">
+          <div class="row">
+            <div class="col col-20">
+              <label>申请编号:</label>
+            </div>
+            <div class="col col-80">
+              <input style="background: none;" type="text" class="text-input--underbar width-full" ng-readonly="true"
+                     ng-change="valueChange()" ng-model="detailData.expHeaderId">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container" style="border-left: 5px solid #b2d3d8">
+          <div class="row">
+            <div class="col col-20">
+              <label>项目名称:</label>
+            </div>
+            <div class="col col-80">
+              <input style="background: none;" type="text" class="text-input--underbar width-full" required
+                     ng-readonly="true"
+                     ng-click="openExpenseObjectList()" ng-change="valueChange()"
+                     ng-model="detailData.expenseObject_desc">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container" style="border-left: 5px solid #767c92">
+          <div class="row">
+            <div class="col col-20">
+              <label>总金额:</label>
+            </div>
+            <div class="col col-80">
+              <input style="background: none;" type="number" class="text-input--underbar width-full" ng-readonly="true"
+                     ng-model="detailData.sum">
+            </div>
+          </div>
+        </ion-item>
+        <ion-item class="item list-item-container" style="border-left: 5px solid #a7e2c2">
+          <div class="row" style="line-height: 30px">
+            <div class="col col-20">
+              <label>描述:</label>
+
+            </div>
+
+            <div class="col col-80">
+                              <textarea style="background: none;height: 80px;margin-top: 10px;"
+                                        class="textarea textarea--transparent width-full" ng-readonly="!canEdit"
+                                        ng-change="valueChange()"
+                                        ng-model="detailData.description">
+                              </textarea>
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item style="background-color: #1cd4c6;color:white;text-align: center;height: 50px;padding-top: 15px;"
+                  class="item-icon-right"
+                  ng-click="openSelectDetail()">
+          从记一笔选择
+          <i class="icon ion-ios-arrow-right"></i>
+        </ion-item>
+
+        <ion-item modifier="chevron" class="item-area" ng-click="openReportLines($index)"
+                  ng-repeat="item in detailData.lines">
+          <div style="width: 100%;font-size: 14px;">
+            <div style="width: 100%">
+              <div style="float: left;">
+                <i class="icon ion-ios-calendar-outline" style="color: grey;margin-right: 5px;"></i>{{item.dateFrom}}
+              </div>
+              <div style="float: left;position: absolute;left:36%;">
+                至
+              </div>
+              <div style="float: left;position: absolute;left:45%;">
+                {{item.dateTo}}
+              </div>
+            </div>
+            <br/>
+
+            <div style="width: 100%;">
+              <div style="float: left">
+                {{item.expObject_desc}}
+              </div>
+              <dvi style="float: left;position: absolute;left:45%;">
+                <i class="icon ion-social-yen-outline" style="color: grey;margin-right: 5px;"></i>{{item.amount}}元
+              </dvi>
+            </div>
+            <div style="width: 100%; white-space: normal; float: left">
+              {{item.memo}}
+            </div>
+          </div>
+          <ion-option-button class="button-assertive" ng-click="removeLine(canEdit,$index)">
+            删除
+          </ion-option-button>
+        </ion-item>
+
+        <div class="button-area" ng-class="{invisible:expenseDetail.local_status=='UPLOADED'}">
+          <div class="row">
+            <div class="col-45 col-offset-3">
+              <button style="background-color: #3ed9cd" class="button button-block" ng-click="saveData()"
+                      ng-disabled="!canEdit" ng-show="detailForm.$valid">保 存
+              </button>
+
+            </div>
+            <div class="col-45 col-offset-5">
+              <button style="background-color: #3ed9cd" class="button button-block " ng-click="submitData()"
+                      ng-disabled="(!canUpload) ||(!canEdit)" ng-show="detailForm.$valid">提 交
+              </button>
+            </div>
+          </div>
+        </div>
+      </ion-list>
+    </form>
+  </ion-content>
+</ion-view>

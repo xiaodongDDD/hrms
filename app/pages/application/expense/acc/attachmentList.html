@@ -1,0 +1,81 @@
+<ion-view title="记一笔列表">
+    <ion-nav-bar class="bar-stable">
+        <ion-nav-back-button>
+            back
+        </ion-nav-back-button>
+    </ion-nav-bar>
+
+    <ion-content>
+
+        <ion-list>
+            <ion-item modifier="chevron" class="list-item-container" ng-click="openCreatePage()">
+                <div class="list-item-left">
+                    <img src="img/ionic.png" class="avator">
+                </div>
+                <div class="list-item-right">
+                    <div class="list-item-content">
+                        <div class="name">新建记一笔</div>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item modifier="chevron" class="list-item-container"
+                      ng-click="globalNavigator.pushPage('html/acc/accountList.html', { animation : 'slide' });">
+                <div class="list-item-left">
+                    <img src="img/ionic.png" class="avator">
+                </div>
+                <div class="list-item-right">
+                    <div class="list-item-content">
+                        <div class="name">记一笔查询</div>
+                    </div>
+                </div>
+            </ion-item>
+
+            <ion-item modifier="chevron" class="list-item-container" ng-click="openUploadBatchPage()">
+                <div class="list-item-left">
+                    <img src="img/ionic.png" class="avator">
+                </div>
+                <div class="list-item-right">
+                    <div class="list-item-content">
+                        <div class="name">批量上传</div>
+                    </div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
+
+
+
+
+<ons-page ng-controller="photosController" on-device-backbutton="globalNavigator.popPage()">
+    <ons-toolbar>
+        <div class="left">
+            <ons-back-button>Back</ons-back-button>
+        </div>
+        <div class="center">记一笔</div>
+        <div class="right"><ons-toolbar-button  ng-click="getPhoto()">拍照</ons-toolbar-button></div>
+    </ons-toolbar>
+
+
+    <a target="_self" href="{{serverURL}}/atm_download.svc?attachment_id=119&table_name=MOBILE_EXP_REPORT_DETAIL&table_pk_value=42"
+       title="handCalendar.css">
+        <div  style="float: left ; width: 20%;height:20%;margin-left: 10%; margin-top: 2%">
+            <img src="{{serverURL}}/atm_download.svc?attachment_id=117&table_name=EXP_REIMBURSEMENT_LN&table_pk_value=159" style="width: 100%;height: 100%;border: solid 1px #000000;">hand.jpg
+        </div>
+    </a>
+
+    <a target="_self" href="http://10.211.130.245:8080/bts/atm_download.svc?attachment_id=119&table_name=MOBILE_EXP_REPORT_DETAIL&table_pk_value=42"
+       title="handCalendar.css">
+        <div  style="float: left ; width: 20%;height:20%;margin-left: 10%; margin-top: 2%">
+            <img src="http://10.211.130.245:8080/bts/atm_download.svc?attachment_id=119&table_name=MOBILE_EXP_REPORT_DETAIL&table_pk_value=42" style="width: 100%;height: 100%;border: solid 1px #000000;">hand.jpg
+        </div>
+    </a>
+
+    <a target="_self" href="http://10.211.130.245:8080/bts/atm_download.svc?attachment_id=117&table_name=EXP_REIMBURSEMENT_LN&table_pk_value=159"
+       title="handCalendar.css">
+        <div  style="float: left ; width: 20%;height:20%;margin-left: 10%; margin-top: 2%">
+            <img src="img/logo.png" style="width: 100%;height: 100%;border: solid 1px #000000;">hand.jpg
+        </div>
+    </a>
+</ons-page>

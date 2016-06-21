@@ -1,0 +1,30 @@
+<ion-view titile="图片明细">
+
+    <ion-content>
+        <div  >
+            <img ng-src="{{photoPathURL+tempPhoto.photo_name}}" style="width: 90%;height: 85%;border: solid 1px #000000;margin-right: 5%;margin-left: 5%;margin-top:20px ">
+        </div>
+
+
+
+
+        <div class=" button-area">
+            <div class="row">
+                <div class="col" width="3px"></div>
+                <div class="col">
+                    <button class="button button-stable"  ng-click="back()" >返  回</button>
+                </div>
+                <div class="col" width="1%"></div>
+                <div class="col">
+                    <buuton class="button button-stable " ng-disabled="!canEdit" ng-click="removePhoto()" >删  除</buuton>
+                </div>
+                <div class="col" width="3px"></div>
+            </div>
+        </div>
+
+    </ion-content>
+
+
+
+
+</ion-view>

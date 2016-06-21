@@ -1,0 +1,238 @@
+<ion-view title="{{title}}" hide-tabs="true">
+  <ion-nav-buttons side="right">
+    <div style="width: 40px; height: 40px; margin-top: 10px; text-align: center" ng-click="addPicture()"
+         ng-controller="photosController" ng-show="canEdit">
+      <img src="img/takePhoto.png">
+    </div>
+  </ion-nav-buttons>
+
+  <style>
+    input {
+      background: none;
+    }
+
+    .popup-container .popup {
+      width: 85%;
+    }
+  </style>
+
+  <form name="detailForm">
+    <ion-content class="detail" style="background-color: #E5E5E5">
+      <ion-list>
+        <ion-item style="padding: 0; border: none; white-space: normal">
+          <div ng-controller="photosController" style="background-color: white;">
+            <div ng-repeat="photo in photos" on-hold="showConfirmPhoto($index)"
+                 ng-click="showAlertPhoto(photo.photo_name)"
+                 style="width: 20%; text-align: center; float: left; margin-top: 10px">
+              <img ng-src="{{photoPathURL+photo.photo_name}}"
+                   style="display:inline-block; width: 60px; height: 60px; border: solid 1px #F8F8F8;">
+            </div>
+            <div ng-show="canEdit">
+              <div ng-hide="accountDetail.photos.length==0">
+                <img src="img/cemera.png" ng-click="addPicture()"
+                     style="width: 60px; height: 60px; margin-top: 10px; margin-left: 2%">
+              </div>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item style="padding: 0; border: none">
+          <div class="item totolAmount">
+            <div class="row">
+              <div class="col" style="width: 95%; height: 30px; line-height: 5px; background-color: #5B93E8;">
+                <label style="color: white;font-size: 15px;"><span>总金额：</span><span
+                  style="margin-left: 10px;margin-right: 5px;">CNY</span></label>
+                <label style="color: white"
+                       ng-class="{invisible:accountDetail.expense_price==NULL||accountDetail.expense_quantity==NULL||accountDetail.exchange_rate==NULL}">
+                  {{(accountDetail.expense_price*accountDetail.expense_quantity*accountDetail.exchange_rate).toFixed(2)}}</label>
+                <input type="text" style="display: none" ng-readonly="true" ng-change="valueChange()"
+                       ng-model="accountDetail.photos.length">
+              </div>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+
+      <ion-list>
+        <ion-item class="item list-item-container" style="margin-top: 3px; border: none">
+          <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
+            <div class="col col-10" style=" padding: 0 5px 0 5px">
+              <div style="margin-top: 9px"><img src="img/money.png"></div>
+            </div>
+            <div class="col col-40" style=" padding: 0 5px 0 5px">
+              <input type="number" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     ng-change="valueChange()" required ng-model="accountDetail.expense_price"
+                     style="background: none; font-size: 13px;" placeholder="金额">
+            </div>
+            <div class="col col-10" style=" padding: 0 5px 0 5px">
+              <label>
+                <div style="color: #AAAAAA; font-size: 13px">币种：</div>
+              </label>
+            </div>
+            <div class="col col-40 " style=" padding: 0 5px 0 5px" ng-click="openCurrencyList()">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     required ng-model="accountDetail.currency_code_desc"
+                     style="background: none; font-size: 13px; color: #AAAAAA; margin-left: 5px">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container" style="border: none">
+          <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
+            <div class="col col-10" style=" padding: 0 5px 0 5px">
+              <div style="margin-top: 10px"><img src="img/amount.png"></div>
+            </div>
+            <div class="col col-40" style=" padding: 0 5px 0 5px">
+              <input type="number" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     ng-change="valueChange()" required ng-model="accountDetail.expense_quantity"
+                     style="background: none; font-size: 13px;" placeholder="数量">
+            </div>
+            <div class="col col-10" style=" padding: 0 5px 0 5px">
+              <label>
+                <div style="color: #AAAAAA; font-size: 13px">汇率：</div>
+              </label>
+            </div>
+            <div class="col col-40" style=" padding: 0 5px 0 5px">
+              <input type="number" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     required ng-model="accountDetail.exchange_rate"
+                     style="background: none; font-size: 13px; color: #AAAAAA; margin-left: 5px">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container" style="border: none">
+          <div class="row" style="width: 94%; margin-left: 3%; padding:0 5px 0 5px">
+            <div class="col col-10" style=" padding: 0 5px 0 5px">
+              <div style="margin-top: 9px"><img src="img/billAmount.png"></div>
+            </div>
+            <div class="col col-90" style=" padding: 0 5px 0 5px">
+              <input type="number" class="text-input--underbar width-full" ng-readonly="false" ng-change="valueChange()"
+                     ng-model="accountDetail.invoice_quantity" style="background: none; font-size: 13px;"
+                     placeholder="发票数量">
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item class="item list-item-container" style="margin-top: 5px; border: none">
+          <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
+            <div class="col col-10" style=" padding: 0 5px 0 5px">
+              <div style="margin-top: 10px"><img src="img/projectName.png"></div>
+            </div>
+            <div class="col col-90" style=" padding: 0 5px 0 5px" ng-click="openExpenseObjectList()">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     required ng-model="accountDetail.expenseObject_desc" style="background: none; font-size: 13px;"
+                     placeholder="项目名称">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container" style="border: none">
+          <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
+            <div class="col col-10" style=" padding: 0 5px 0 5px">
+              <div style="margin-top: 10px"><img src="img/expense.png"></div>
+            </div>
+            <div class="col col-90" style=" padding: 0 5px 0 5px" ng-click="openExpenseItemList()">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     required ng-model="accountDetail.expense_item_desc" style="background: none; font-size: 13px"
+                     placeholder="费用类型">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container" style="border: none">
+          <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
+            <div class="col col-10">
+              <div style="margin-top: 5px"><img src="img/rentApply.png"></div>
+            </div>
+            <div class="col col-90" style=" padding: 0 5px 0 5px" ng-click="openCostObjectList()">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     ng-model="accountDetail.costObject_desc" style="background: none; font-size: 13px"
+                     placeholder="租房或预报销申请">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container" style="border: none">
+          <div class="row" style="width: 94%; border-bottom: 1px solid #f0f0f0; margin-left: 3%; padding:0 5px 0 5px">
+            <div class="col col-10" style=" padding: 0 5px 0 5px">
+              <div style="margin-top: 10px"><img src="img/adress.png"></div>
+            </div>
+            <div class="col col-90" style=" padding: 0 5px 0 5px">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     ng-change="valueChange()" required ng-model="accountDetail.expense_place"
+                     style="background: none; font-size: 13px" placeholder="地点">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container" style="border: none">
+          <div class="row" style="width: 94%; margin-left: 3%; padding:0 5px 0 5px">
+            <div style="padding: 0 5px 0 5px; width: 10%">
+              <div style="margin-top: 10px"><img src="img/date.png"></div>
+            </div>
+            <div style="padding: 0 5px 0 5px; width: 45%; margin-left: 5px">
+              <input type="date" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     required ng-change="valueChange()" ng-model="accountDetail.expense_date_from"
+                     style="background: none;font-size: 13px; width: 100%">
+            </div>
+            <div style="padding: 0 5px 0 5px;">
+              <div style="color: #AAAAAA; font-size: 13px; margin-top: 10px; margin-left: -250%">--</div>
+            </div>
+            <div style=" padding: 0 5px 0 5px; width: 45%">
+              <input type="date" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     required ng-change="valueChange()" ng-model="accountDetail.expense_date_to"
+                     style="background: none;font-size: 13px">
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item class="item list-item-container" style="border: none; margin-top: 5px">
+          <div class="row" style="line-height: 30px; width: 94%; margin-left: 3%; padding:0 5px 0 5px">
+            <div class="col col-10" style=" padding: 0 5px 0 5px">
+              <div style="margin-top: 4px"><img src="img/remark.png"></div>
+            </div>
+            <div class="col col-90" style="margin-top: 7px; padding: 0 5px 0 5px">
+                            <textarea class="textarea textarea--transparent width-full"
+                                      style="height: 60px; font-size: 13px; background-color: #f8f8f8; margin-bottom: 10px"
+                                      ng-readonly="!canEdit" ng-change="valueChange()"
+                                      ng-model="accountDetail.description" placeholder="备注">
+                            </textarea>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item style="padding: 0px; border: none; margin-top: 20px">
+          <div ng-class="{invisible:accountDetail.local_status=='UPLOADED'}">
+            <div class="row"
+                 style="padding: 0px;height: 44px;text-align: center;line-height: 40px;color: white; background-color: #E5E5E5">
+              <div style="width: 47%; margin-left: 2%">
+                <button class="button button-stable" ng-show="true" ng-disabled="false || (!detailForm.$valid)"
+                        ng-click="saveData()"
+                        style="width:100%; height: 40px; color: white; font-size: 17px; background-color: #F9A453">保 存
+                </button>
+              </div>
+              <div style="width: 47%; margin-left: 2%">
+                <button class="button button-stable " ng-show="true" ng-disabled="(!canUpload) || (!detailForm.$valid )"
+                        ng-click="uploadDataTest()"
+                        style="width:100%; height: 40px; color: white; font-size: 17px; background-color: #3E7DCA">上 传
+                </button>
+              </div>
+            </div>
+          </div>
+          <div ng-class="{invisible:accountDetail.local_status!='UPLOADED'}">
+            <p style="color: red ;text-align: center;"><strong>已上传</strong></p>
+          </div>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </form>
+</ion-view>

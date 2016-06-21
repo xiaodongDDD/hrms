@@ -1,0 +1,99 @@
+<ion-view title="记一笔列表">
+
+  <style>
+    .uploaded {
+      color: red;
+    }
+
+    .new {
+      color: green;
+    }
+  </style>
+  <ion-content>
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+    <ion-list ng-repeat="account in accountList">
+      <div class="item item-divider" style="background-color: #f1f4f4">
+        <div style="width: 6px;height: 6px;background-color: #3ed9cd;float: left;margin-top: 5px;"></div>
+        <div class="title" style="float: left;margin-left: 5px;">{{account.time}}</div>
+      </div>
+      <ion-item modifier="chevron" class="item-icon-right" ng-repeat="a in account.list"
+                style="border-left: 5px solid #4cd1c1;  white-space: normal">
+        <div style="display: inline" ng-click="openDetail($event)" lineId="{{a.line_id}}" status="{{a.local_status}}"
+             timestamp="{{a.timestamp}}">
+
+          <div style="width: 100%;" lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+
+            <div style="width: 100%;" lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+              <div style="width: 100%;float: none" class="desc" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                   timestamp="{{a.timestamp}}">
+                <div style="float: left;" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                     timestamp="{{a.timestamp}}">
+                  {{a.expense_date_from}}
+                </div>
+                <div style="float: left;position: absolute;left: 32%;" lineId="{{a.line_id}}"
+                     status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                  至
+                </div>
+                <div style="float: left;position: absolute;left: 42%;" lineId="{{a.line_id}}"
+                     status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                  {{a.expense_date_to}}
+                </div>
+              </div>
+              <br/>
+
+              <div style="position: absolute;left: 70%;" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                   timestamp="{{a.timestamp}}" align="center"
+                   ng-class="{'uploaded':a.local_status=='UPLOADED','new':a.local_status=='NEW'}">
+                {{a.local_status}}
+              </div>
+              <br/>
+
+              <div style="width: 100%;float: none" class="name" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                   timestamp="{{a.timestamp}}">
+                <div style="float: left;">
+                  {{a.expense_type_desc}}{{a.expense_item_desc}}
+                </div>
+
+                <div style="float: left;position: absolute;left: 49%;margin-top: 2px" class="location"
+                     lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                  <i class="icon ion-ios-location"
+                     style="color: darkgray;font-size: 15px;width: 15px;height: 15px;padding: 0;margin-right: 1px;;"></i>
+                </div>
+
+                <div style="float: left;position: absolute;left: 45%;" class="location" lineId="{{a.line_id}}"
+                     status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                  <div class="fa fa-map-marker" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                       timestamp="{{a.timestamp}}">{{a.expense_place}}
+                  </div>
+                </div>
+
+                <div style="float: left;position: absolute;left: 65%;color: #3ed9cd" lineId="{{a.line_id}}"
+                     status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                  {{a.total_amount.toFixed(2)}}元
+                </div>
+              </div>
+              <!--新增描述字段-->
+              <br/>
+
+              <div style="width: 100%;float: none;" class="description" lineId="{{a.line_id}}"
+                   status="{{a.local_status}}">
+                <div style="float: left; white-space: normal">
+                  {{a.description}}
+                </div>
+              </div>
+
+            </div>
+            <br/>
+          </div>
+        </div>
+
+        <i class="icon ion-ios-arrow-right" style="font-size: 25px;color: #D5D5D5;"></i>
+        <ion-option-button class="button-assertive" ng-click="removeData($event)" lineId="{{a.line_id}}"
+                           timestamp="{{a.timestamp}}">删除
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+
+</ion-view>

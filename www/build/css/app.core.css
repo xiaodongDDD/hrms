@@ -4930,7 +4930,95 @@ Copyright (c) 2015 Daniel Eden
   width: 100%;
   background: #4cd964; }
 
-<<<<<<< HEAD
+.workflow {
+  background: #fafafa; }
+  .workflow .has-daiwen-bar {
+    bottom: 60px; }
+  .workflow .workflow-filter {
+    display: block;
+    padding-top: 7px;
+    width: 160px;
+    height: 44px;
+    margin-left: auto;
+    margin-right: auto; }
+    .workflow .workflow-filter .selected {
+      background: #2A5BA1;
+      color: white; }
+    .workflow .workflow-filter .no-selected {
+      background: white;
+      color: #2A5BA1; }
+      .workflow .workflow-filter .no-selected.activated {
+        background: #64ACFF;
+        color: white; }
+    .workflow .workflow-filter .to-do-list {
+      border: 1px solid white;
+      float: left;
+      width: 76px;
+      height: 29px;
+      line-height: 29px;
+      border-bottom-left-radius: 15px;
+      border-top-left-radius: 15px;
+      font-size: 13px; }
+    .workflow .workflow-filter .done-list {
+      border-top: 1px solid white;
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
+      float: left;
+      width: 76px;
+      height: 29px;
+      line-height: 29px;
+      border-bottom-right-radius: 15px;
+      border-top-right-radius: 15px;
+      font-size: 13px; }
+
+.workflow-list {
+  display: block;
+  background: white;
+  position: relative;
+  margin-top: 10px;
+  margin-left: 18px;
+  margin-right: 5px;
+  border-bottom-right-radius: 25px;
+  box-shadow: 0px 0px 4px #D2D2D2; }
+  .workflow-list.activated {
+    background: #f8f8f8; }
+  .workflow-list .color-title {
+    color: #24559C; }
+  .workflow-list .color-type {
+    font-weight: bold;
+    font-size: 14px;
+    color: #4A4A4A; }
+  .workflow-list .color-content {
+    font-size: 14px;
+    color: #9B9B9B; }
+  .workflow-list .no-padding {
+    padding: 0;
+    margin: 0; }
+  .workflow-list .workflow-list-logo {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    padding: 4px;
+    background: white;
+    position: absolute;
+    top: -5px;
+    left: -12px; }
+    .workflow-list .workflow-list-logo img {
+      height: 42px;
+      width: 42px; }
+  .workflow-list .workflow-list-header {
+    margin-left: 55px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 2px dotted #D2D2D2;
+    color: #24559C; }
+  .workflow-list .workflow-list-content {
+    padding: 12px; }
+    .workflow-list .workflow-list-content .workflow-list-select img {
+      float: right;
+      width: 21px;
+      height: 21px; }
+
 .workflow-detail {
   background: url("../img/workflow/BG@3x.png");
   background-size: cover;
@@ -5119,7 +5207,7 @@ Copyright (c) 2015 Daniel Eden
           width: 50%;
           height: 30px;
           text-align: right; }
-=======
+
 .flayback-apply-view .fbSelectproject, .flyback-apply-project-model .fbSelectproject {
   background-color: #5D6182;
   color: #FFFFFF;
@@ -5660,96 +5748,6 @@ Copyright (c) 2015 Daniel Eden
 #departmentModal .input-right.activated {
   background-color: #eee;
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
->>>>>>> xbr
-
-.workflow {
-  background: #fafafa; }
-  .workflow .has-daiwen-bar {
-    bottom: 60px; }
-  .workflow .workflow-filter {
-    display: block;
-    padding-top: 7px;
-    width: 160px;
-    height: 44px;
-    margin-left: auto;
-    margin-right: auto; }
-    .workflow .workflow-filter .selected {
-      background: #2A5BA1;
-      color: white; }
-    .workflow .workflow-filter .no-selected {
-      background: white;
-      color: #2A5BA1; }
-      .workflow .workflow-filter .no-selected.activated {
-        background: #64ACFF;
-        color: white; }
-    .workflow .workflow-filter .to-do-list {
-      border: 1px solid white;
-      float: left;
-      width: 76px;
-      height: 29px;
-      line-height: 29px;
-      border-bottom-left-radius: 15px;
-      border-top-left-radius: 15px;
-      font-size: 13px; }
-    .workflow .workflow-filter .done-list {
-      border-top: 1px solid white;
-      border-bottom: 1px solid white;
-      border-right: 1px solid white;
-      float: left;
-      width: 76px;
-      height: 29px;
-      line-height: 29px;
-      border-bottom-right-radius: 15px;
-      border-top-right-radius: 15px;
-      font-size: 13px; }
-
-.workflow-list {
-  display: block;
-  background: white;
-  position: relative;
-  margin-top: 10px;
-  margin-left: 18px;
-  margin-right: 5px;
-  border-bottom-right-radius: 25px;
-  box-shadow: 0px 0px 4px #D2D2D2; }
-  .workflow-list.activated {
-    background: #f8f8f8; }
-  .workflow-list .color-title {
-    color: #24559C; }
-  .workflow-list .color-type {
-    font-weight: bold;
-    font-size: 14px;
-    color: #4A4A4A; }
-  .workflow-list .color-content {
-    font-size: 14px;
-    color: #9B9B9B; }
-  .workflow-list .no-padding {
-    padding: 0;
-    margin: 0; }
-  .workflow-list .workflow-list-logo {
-    height: 50px;
-    width: 50px;
-    border-radius: 25px;
-    padding: 4px;
-    background: white;
-    position: absolute;
-    top: -5px;
-    left: -12px; }
-    .workflow-list .workflow-list-logo img {
-      height: 42px;
-      width: 42px; }
-  .workflow-list .workflow-list-header {
-    margin-left: 55px;
-    height: 40px;
-    line-height: 40px;
-    border-bottom: 2px dotted #D2D2D2;
-    color: #24559C; }
-  .workflow-list .workflow-list-content {
-    padding: 12px; }
-    .workflow-list .workflow-list-content .workflow-list-select img {
-      float: right;
-      width: 21px;
-      height: 21px; }
 
 .father {
   text-align: center;
