@@ -1,15 +1,15 @@
-<ion-modal-view id="departmentModal" style="top: 0;" class="flyback-query-select-model">
-  <ion-header-bar class="bar-stable">
-    <button class="button button-clear" ng-click="closeModal()" style="color: #333">返回
+<ion-modal-view id="departmentModal" class="flyback-query-select-model">
+  <ion-header-bar class="bar-stable xbr-header-bar">
+    <button class="button button-clear" ng-click="closeModal()">返回
     </button>
     <h1 class="title">项目选择</h1>
-    <button class="button button-clear" ng-click="clearChoose()" style="color: #333">清选
+    <button class="button button-clear" ng-click="clearChoose()">清选
     </button>
   </ion-header-bar>
-  <ion-header-bar class="bar-subheader" style="background-color:#f8f8f8;">
+  <ion-header-bar class="bar-subheader">
     <div>
-      <div class="input-left" style="width: 10%;"><i class="ion-ios-search"></i></div>
-      <div style="width: 90%;float:left;">
+      <div class="input-left"><i class="ion-ios-search"></i></div>
+      <div class="xbr-center">
         <input class="input-search" placeholder="输入项目名称" ng-model="param.filter"/>
       </div>
     </div>

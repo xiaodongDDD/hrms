@@ -12,17 +12,16 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content overflow-scroll="true" style="overflow: hidden" delegate-handle="timeSheetHandle">
+  
+  <ion-content overflow-scroll="true" delegate-handle="timeSheetHandle">
     <div class="fbnav-img" >
-      <img src="build/img/application/flyback/fbnav.png" style="width: 100%;">
+      <img src="build/img/application/flyback/fbnav.png">
     </div>
     <div class="fbnav-button-block">
-      <div ng-click="createFlightBook()" class="ion-plus-round fbnav-button"
-           style="margin-top: 30px;background-color: #FFBE00;">
+      <div ng-click="createFlightBook()" class="ion-plus-round fbnav-button">
         &nbsp; &nbsp;新建机票申请
       </div>
-      <div ng-click="queryFlightBook()" class="ion-ios-search-strong fbnav-button"
-           style="margin-top: 10px;background-color: #FF9B00;">
+      <div ng-click="queryFlightBook()" class="ion-ios-search-strong fbnav-button">
         &nbsp; &nbsp;机票申请查询
       </div>
     </div> 

@@ -29,3 +29,23 @@
     font-size: 16px;
   }
 }
+.flyback-main-view{
+  ion-content{
+    overflow: hidden;
+  }
+  .fbnav-img{
+    img{
+        width: 100%;
+    }
+  }
+  .fbnav-button-block{
+    div:nth-child(1){
+      margin-top: 30px;
+      background-color: #FFBE00;
+    }
+    div:nth-child(2){
+      margin-top: 10px;
+      background-color: #FF9B00;
+    }
+  }
+}

@@ -127,3 +127,99 @@
     float: left;
   }
 }
+
+.flyback-detail-select-model{
+  .ion-ios-arrow-back{
+    color:#aaaaaa;
+    font-size: 20px;
+    margin-right: 3px;
+  }
+}
+.flyback-detail-view{
+  ion-content{
+    background-color: #ececec;
+    .ion-ios-calendar-outline{
+      font-size:20px; color: white;text-overflow:ellipsis;
+    }
+    .fb-item-select.a{
+      width:80%;
+      input{
+        background: none;
+        font-size: 13px;
+      }
+    }
+    .xbr-arrow{
+      position: fixed;
+      width:60px;
+      height:20px;
+      padding-left:16px;
+      margin-top: -12px;
+      background-color: #FFFFFF;
+      color:#FFFFFF;
+      img{
+        height: 20px;
+      }
+    }
+    .xbr-more-info{
+      height:40px;
+      line-height: 40px;
+      color:#878787;
+      text-align:center;
+      font-size:14px;
+      margin-top: -8px;
+    }
+    .fb-area.xbr1{
+      label:nth-child(1){
+        background: none;
+        font-size: 13px;
+        margin-left:10px;
+      }
+      label:nth-child(2){
+        input{
+          background: none;
+          font-size: 13px;
+          margin-left:10px;
+        }
+      }
+      label:nth-child(3){
+        input{
+          background: none;
+          font-size: 13px;
+          margin-left:10px;
+        }
+      }
+    }
+    .fb-item-input2.xbr2-other{
+        #ticketonly{
+          margin-left:14px
+        }
+    }
+    .fb-area.xbr3{
+      textarea{
+        width:100%;
+      }
+    }
+    .xbr4{
+      background-color: #5B607A;
+      colog:#FFFFFF;
+      border:none;
+      height:45px;
+      line-height:45px;
+      button{
+        width:100%;
+        float:left;
+        height:45px;
+        line-height:45px;
+      }
+    }
+    .ion-ios-location{
+        color: #11c1f3;
+      }
+      .ion-flag{
+        color:#ff3b30;
+      }
+      .text-input--underbar.width-full{
+        width: 100%
+      }
+  }
+}
