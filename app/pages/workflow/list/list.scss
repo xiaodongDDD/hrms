@@ -53,6 +53,19 @@ $workflow-gray-line: #D2D2D2;
   }
 }
 
+.workflow-list.ng-enter {
+  -webkit-animation: fadeIn 0.5s;
+  animation: fadeIn .5s;
+}
+
+.workflow-list.ng-enter-stagger {
+  -webkit-animation-delay: 150ms;
+  animation-delay: 150ms;
+  /* override to make sure it's not inherited from other styles */
+  -webkit-animation-duration: 0;
+  animation-duration: 0;
+}
+
 .workflow-list {
   display: block;
   background: white;
@@ -103,7 +116,6 @@ $workflow-gray-line: #D2D2D2;
   .workflow-list-header {
     margin-left: 55px;
     height: 40px;
-    line-height: 40px;
     border-bottom: 2px dotted $workflow-gray-line;
     color: $workflow-bule-content;
   }

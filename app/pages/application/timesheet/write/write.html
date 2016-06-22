@@ -109,7 +109,7 @@
 
     </div>
 
-    <a class="timesheet-write-button" type="submit" ng-click="submitTimesheet(timesheetDetail)">提交
+    <a class="timesheet-write-button" type="submit" ng-click="submitTimesheet(timesheetDetail)" ng-if="!lockFlag">提交
     </a>
   </ion-content>
 </ion-view>

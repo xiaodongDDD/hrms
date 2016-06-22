@@ -2,6 +2,9 @@
   background: url("../img/workflow/BG@3x.png");
   background-size: cover;
   background-repeat: no-repeat;
+  .detail-has-footer{
+    bottom: 80px;
+  }
   .hms-workflow-history {
     width: 100%;
     height: 136px;
@@ -71,7 +74,7 @@
   }
 
   .hms-workflow-array {
-    margin: 5px;
+    margin: 5px 5px 10px 5px;
     background: white;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -91,12 +94,30 @@
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
       }
+      .hms-singal-array-link{
+        float: left;
+        height: 43px;
+        line-height: 43px;
+        font-size: 14px;
+        .hms-array-selector{
+          padding-left: 10px;
+          color: #205098;
+          &.no-activated,&.activated{
+            color:#999999;
+          }
+        }
+        .selector-large{
+          font-size: 20px;
+          font-weight: bold;
+        }
+      }
       .hms-singal-array-operation {
         float: right;
         height: 43px;
         width: 35px;
         font-size: 20px;
         line-height: 43px;
+        font-weight: bold;
       }
     }
     .hms-singal-array-content {
@@ -133,14 +154,14 @@
 
   .hms-workflow-submit {
     width: 100%;
-    height: 44px;
+    height: 50px;
     position: absolute;
     bottom: 0;
     background: white;
     .hms-workflow-reject {
       width: 25%;
-      height: 44px;
-      line-height: 44px;
+      height: 50px;
+      line-height: 50px;
       padding-left: 20px;
       float: left;
       color: #B95756;
@@ -149,10 +170,10 @@
     .hms-workflow-back {
       width: 25%;
       float: left;
-      height: 44px;
+      height: 50px;
       text-align: right;
       color: #4C5665;
-      line-height: 44px;
+      line-height: 50px;
       padding-right: 20px;
       font-size: 16px;
     }
