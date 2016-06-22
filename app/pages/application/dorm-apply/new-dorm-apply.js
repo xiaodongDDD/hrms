@@ -192,7 +192,7 @@ angular.module('applicationModule')
           cancelButtonLabel:'取消',
           androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
           locale:"zh_cn"
-        }
+        };
         $cordovaDatePicker.show(options).then(function(date){
           var month=date.getMonth()+1;
           var day=date.getDate();
@@ -238,7 +238,7 @@ angular.module('applicationModule')
           cancelButtonLabel:'取消',
           androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK,
           locale:"zh_cn"
-        }
+        };
         $cordovaDatePicker.show(options).then(function(date){
           var month=date.getMonth()+1;
           var day=date.getDate();
@@ -376,6 +376,7 @@ angular.module('applicationModule')
             }
           }).error(function (error, status) {
             hmsPopup.hideLoading();
+            hmsPopup.showShortCenterToast("网络连接出错");
             if (baseConfig.debug) {
               console.log("response error " + angular.toJson(error));
             }

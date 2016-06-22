@@ -134,8 +134,8 @@ angular.module('myApp')
 
       // if none of the above states are matched, use this as the fallback
       if(window.localStorage.token&&window.localStorage.token!=""){
-        $urlRouterProvider.otherwise('/tab/message');
-        //$urlRouterProvider.otherwise('/login');
+        //$urlRouterProvider.otherwise('/tab/message');
+        $urlRouterProvider.otherwise('/login');
       }else{
         $urlRouterProvider.otherwise('/login');
       }

@@ -43,7 +43,7 @@
         <img src="build/img/application/dorm-apply/back-hand.png" class="figure-image"/>
       </div>
       <label class="roomnum-figure">房间号{{applyInfo.roomNumber}}</label>
-      <div class="row card-row" style="margin-top: 10px;">
+      <div class="row card-row" style="margin-top: 10px;" ng-hide="allowApply">
         <div class="col no-padding-or-margin put-left">
           <label class="left-label">入住时间:</label>
         </div>
@@ -51,12 +51,32 @@
           <label class="right-label">{{applyInfo.checkinDate}}</label>
         </div>
       </div>
-      <div class="row card-row">
+      <div class="row card-row" ng-hide="allowApply">
         <div class="col no-padding-or-margin put-left">
           <label class="left-label">结束时间:</label>
         </div>
         <div class="col no-padding-or-margin put-right">
           <label class="right-label">{{applyInfo.checkoutDate}}</label>
+        </div>
+      </div>
+      <div class="row card-row" style="margin-top: 10px;" ng-show="allowApply">
+        <div class="col no-padding-or-margin put-left">
+          <label class="left-label">请选择入住时间:</label>
+        </div>
+        <div class="col no-padding-or-margin put-right">
+         <ion-item class="calendar-item" ng-click="chooseStartDate()">
+           <label class="right-label-could-click" ng-bind="formatStartDate()"></label>
+         </ion-item>
+        </div>
+      </div>
+      <div class="row card-row" ng-show="allowApply">
+        <div class="col no-padding-or-margin put-left">
+          <label class="left-label">请选择结束时间:</label>
+        </div>
+        <div class="col no-padding-or-margin put-right">
+          <ion-item class="calendar-item" ng-click="chooseEndDate()">
+             <label class="right-label-could-click" ng-bind="formatEndDate()"></label>
+          </ion-item>
         </div>
       </div>
       <div class="room-label-shelter">
