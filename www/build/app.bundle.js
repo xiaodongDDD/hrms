@@ -1,5 +1,5 @@
 angular.module("baseConfig", [])
-.constant("baseConfig", {"debug":true,"isMobilePlatform":false,"clearTable":true,"nativeScreenFlag":false,"basePath":"http://wechat.hand-china.com/hmbms_hand/api","businessPath":"http://wechat.hand-china.com/hmbms_hand/api/dataEngine","currentVersion":"2.0.0","url":"","pkgIdentifier":"","versionName":"此版本为dev测试环境 2.0.0","appEnvironment":"UAT","dbName":"my_hrms.db","appRootFile":"helloCordova","appRootPath":""});
+.constant("baseConfig", {"debug":true,"isMobilePlatform":false,"clearTable":true,"nativeScreenFlag":false,"basePath":"http://wechat.hand-china.com/hmbms_hand/api","businessPath":"http://wechat.hand-china.com/hmbms_hand/api/dataEngine","currentVersion":"2.0.0","url":"","pkgIdentifier":"","versionName":"此版本为dev测试环境 2.0.0","appEnvironment":"UAT"});
 
 /**
  * Created by gusenlin on 16/5/22.
@@ -12,6 +12,72 @@ var contactModule = angular.module('contactModule', []);
 var applicationModule = angular.module('applicationModule', []);
 var myInfoModule = angular.module('myInfoModule', []);
 var tsApproveModule = angular.module('tsApproveModule', []);
+
+/**
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
+ */
+angular.module('utilModule').factory('httpRequestHeader', function () {
+  var interceptor = {
+    'request': function (config) {
+      if (window.localStorage.token && window.localStorage.empno) {
+        var timestamp = new Date().getTime();
+        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
+        config.headers.timestamp = timestamp;
+        config.headers.token     = token;
+        config.headers.loginName = window.localStorage.empno;
+      }
+      return config;
+    }
+  };
+
+  return interceptor;
+});
+
+/**
+ * Created by wolf on 2016/6/13. (_wen.dai_)
+ */
+"use strict";
+//根据日期获取星期
+HmsModule.filter('weekDay', function () {
+  return function (data) {
+    if (data == "") {
+      return data;
+    } else {
+      var d = new Date(data);
+      var day = d.getDay();
+      switch (day) {
+        case  0:
+          data = data + "　" + "星期天";
+          break;
+        case  1:
+          data = data + "　" + "星期一";
+          break;
+        case  2:
+          data = data + "　" + "星期二";
+          break;
+        case  3:
+          data = data + "　" + "星期三";
+          break;
+        case  4:
+          data = data + "　" + "星期四";
+          break;
+        case  5:
+          data = data + "　" + "星期五";
+          break;
+        case  6:
+          data = data + "　" + "星期六";
+          break;
+      }
+      return data;
+    }
+  }
+});
 
 /**
  * @ngdoc directive
@@ -234,7 +300,7 @@ HmsModule.directive('hideTabs', function($rootScope) {
 HmsModule.directive('hmsLoading', function($rootScope) {
   return {
     restrict: 'E',
-    template: '<div class="hms-hide-content">'+
+    template: '<div class="hms-hide-small-content">'+
     '<div class="content">数据加载中...</div>'+
     '<div class="hide-icon">'+
     '<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>'+
@@ -337,14 +403,12 @@ HmsModule.directive('hmsWorkflowList', function () {
       submit: '=workflowSubmit',
       submitPerson: '=workflowSubmitPerson'
     },
-    /*template : '<div>'
-     + '<div class="title" ng-click="toggle()">{{title}}</div>'
-     + '<div class="body" ng-show="showMe" ng-transclude></div>'
-     + '</div>', */
 
     template: '<a class="workflow-list">' +
-    '<div class="workflow-list-logo"><img src="{{icon}}"/>' +
-    '</div><div class="workflow-list-header">{{title}}</div>' +
+    '<div class="workflow-list-logo">' +
+    '<img src="{{icon}}"/>' +
+    '</div>' +
+    '<div class="workflow-list-header">{{title}}</div>' +
     '<div class="workflow-list-content">' +
     '<div class="row no-padding">' +
     '<div class="col col-90 no-padding">' +
@@ -586,72 +650,6 @@ angular.module('HmsModule')
       }
     };
   })*/
-
-/**
- * @ngdoc interceptor
- * @name httpRequestHeader
- * @module utilModule
- * @description
- * This is the http interceptor
- * @author
- * gusenlin
- */
-angular.module('utilModule').factory('httpRequestHeader', function () {
-  var interceptor = {
-    'request': function (config) {
-      if (window.localStorage.token && window.localStorage.empno) {
-        var timestamp = new Date().getTime();
-        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
-        config.headers.timestamp = timestamp;
-        config.headers.token     = token;
-        config.headers.loginName = window.localStorage.empno;
-      }
-      return config;
-    }
-  };
-
-  return interceptor;
-});
-
-/**
- * Created by wolf on 2016/6/13. (_wen.dai_)
- */
-"use strict";
-//根据日期获取星期
-HmsModule.filter('weekDay', function () {
-  return function (data) {
-    if (data == "") {
-      return data;
-    } else {
-      var d = new Date(data);
-      var day = d.getDay();
-      switch (day) {
-        case  0:
-          data = data + "　" + "星期天";
-          break;
-        case  1:
-          data = data + "　" + "星期一";
-          break;
-        case  2:
-          data = data + "　" + "星期二";
-          break;
-        case  3:
-          data = data + "　" + "星期三";
-          break;
-        case  4:
-          data = data + "　" + "星期四";
-          break;
-        case  5:
-          data = data + "　" + "星期五";
-          break;
-        case  6:
-          data = data + "　" + "星期六";
-          break;
-      }
-      return data;
-    }
-  }
-});
 
 /**
  * Created by wolf on 2016/6/12.
@@ -1395,43 +1393,6 @@ angular.module('myApp')
       }
     });
   });
-<<<<<<< HEAD
-
-angular.module('myApp')
-  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider',
-    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider) {
-      // Ionic uses AngularUI Router which uses the concept of states
-      // Learn more here: https://github.com/angular-ui/ui-router
-      // Set up the various states which the app can be in.
-      // Each state's controller can be found in controllers.js
-
-      $httpProvider.interceptors.push('httpRequestHeader');//注册过滤器
-      $ionicConfigProvider.platform.ios.tabs.style('standard');
-      $ionicConfigProvider.platform.ios.tabs.position('bottom');
-      $ionicConfigProvider.platform.android.tabs.style('standard');
-      $ionicConfigProvider.platform.android.tabs.position('standard');
-
-      $ionicConfigProvider.platform.ios.navBar.alignTitle('center');
-      $ionicConfigProvider.platform.android.navBar.alignTitle('center');
-
-      //$ionicConfigProvider.platform.ios.backButton.previousTitleText('').icon('ion-ios-arrow-thin-left');
-      $ionicConfigProvider.platform.android.backButton.previousTitleText('').icon('ion-android-arrow-back');
-
-      $ionicConfigProvider.platform.ios.views.transition('ios');
-      $ionicConfigProvider.platform.android.views.transition('android');
-
-      $stateProvider
-        // setup an abstract state for the tabs directive
-        .state('tab', {
-          url: '/tab',
-          abstract: true,
-          templateUrl: 'build/pages/tab/tabs.html',
-          controller: 'TabsCtrl'
-        })
-
-        // Each tab has its own nav history stack:
-
-=======
 
 angular.module('myApp')
   .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider', 'baseConfig',
@@ -1467,7 +1428,6 @@ angular.module('myApp')
 
         // Each tab has its own nav history stack:
 
->>>>>>> xbr
         .state('tab.message', {
           url: '/message',
           views: {
@@ -1540,8 +1500,6 @@ angular.module('myApp')
       }
 
       if(ionic.Platform.isWebView()){
-        alert(window.sqlitePlugin);
-        alert(window.sqlitePlugin.openDatabase);
         //alert(LocalFileSystem);
           /*window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
             // 获取路径
@@ -1621,39 +1579,17 @@ angular.module('myApp')
 /**
  * Created by gusenlin on 16/4/24.
  */
-angular.module('loginModule')
+//应用模块
+angular.module('applicationModule')
 
-  .controller('loginCtrl', [
+  .controller('applicationCtrl', [
     '$scope',
     '$state',
     'baseConfig',
-    '$ionicLoading',
-    '$http',
-    '$timeout',
-    '$ionicHistory',
-    '$ionicPlatform',
-    'hmsPopup',
     function ($scope,
               $state,
-              baseConfig,
-              $ionicLoading,
-              $http,
-              $timeout,
-              $ionicHistory,
-              $ionicPlatform,
-              hmsPopup) {
+              baseConfig) {
 
-<<<<<<< HEAD
-      //将页面的导航bar设置成白色
-      $ionicPlatform.ready(function () {
-        if (window.StatusBar) {
-          StatusBar.styleDefault();
-        }
-      });
-
-      $scope.loginData = {};
-      $scope.currentVersionNum = baseConfig.versionName;
-=======
       $scope.animationsEnabled = false;
       
       //个人办公 
@@ -1678,7 +1614,7 @@ angular.module('loginModule')
             {
               appName: "人事政策",
               imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
+              destUrl: "tab.personnel-policy",
             }]
         },
         {
@@ -1704,9 +1640,7 @@ angular.module('loginModule')
             }
           ]
         }];
->>>>>>> xbr
 
-<<<<<<< HEAD
       //项目门户
       $scope.projectApp = [
         {
@@ -1836,22 +1770,15 @@ angular.module('loginModule')
     }]);
 
 /**
- * Created by gusenlin on 16/5/16.
+ * Created by gusenlin on 16/4/24.
  */
-<<<<<<< HEAD
 angular.module('contactModule')
 
   .controller('contactCtrl', [
-=======
-angular.module('loginModule')
-
-  .controller('guideCtrl', [
->>>>>>> xbr
     '$scope',
     '$state',
     function ($scope,
               $state) {
-<<<<<<< HEAD
       console.log('contactCtrl.enter');
 
       $scope.$on('$ionicView.enter', function (e) {
@@ -1881,16 +1808,6 @@ angular.module('loginModule')
         $state.go("login");
       };
 
-=======
-
-      console.log('loginCtrl.enter');
-
-      $scope.toLogin = function () {
-        console.log("跳过导航页到登陆页");
-        $state.go("login");
-      };
-
->>>>>>> xbr
       $scope.$on('$ionicView.enter', function (e) {
         console.log('guideCtrl.$ionicView.enter');
       });
@@ -1903,37 +1820,49 @@ angular.module('loginModule')
 /**
  * Created by gusenlin on 16/4/24.
  */
-<<<<<<< HEAD
-angular.module('loginModule')
+angular.module('messageModule')
 
-  .controller('loginCtrl', [
+  .controller('messageCtrl', [
     '$scope',
     '$state',
-    'baseConfig',
-    '$ionicLoading',
-    '$http',
     '$timeout',
-    '$ionicHistory',
     '$ionicPlatform',
-    'hmsPopup',
     function ($scope,
-=======
-angular.module('contactModule')
+              $state,
+              $timeout,
+              $ionicPlatform) {
 
-  .controller('contactCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-      console.log('contactCtrl.enter');
+      $scope.messageList = [
+      ];
+
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleLightContent();
+        }
+      });
+
+      $scope.talk = function (message) {
+        console.log('$scope.talk');
+        $state.go("tab.messageDetail", {message: message});
+      };
+
+      $scope.refresh = function(){
+        $timeout(function(){
+          $scope.$broadcast("scroll.refreshComplete");
+        },2000);
+      };
+
+      console.log('messageCtrl.enter');
 
       $scope.$on('$ionicView.enter', function (e) {
-        console.log('contactCtrl.$ionicView.enter');
+        console.log('messageCtrl.$ionicView.enter');
       });
 
       $scope.$on('$destroy', function (e) {
-        console.log('contactCtrl.$destroy');
+        console.log('messageCtrl.$destroy');
       });
+
     }]);
 
 /**
@@ -1952,7 +1881,6 @@ angular.module('loginModule')
     '$ionicPlatform',
     'hmsPopup',
     function ($scope,
->>>>>>> xbr
               $state,
               baseConfig,
               $ionicLoading,
@@ -1972,8 +1900,6 @@ angular.module('loginModule')
       $scope.loginData = {};
       $scope.currentVersionNum = baseConfig.versionName;
 
-=======
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
       if (window.localStorage.empno) {
         $scope.loginData.username = window.localStorage.empno;
       }
@@ -2083,56 +2009,6 @@ angular.module('loginModule')
 /**
  * Created by gusenlin on 16/4/24.
  */
-angular.module('messageModule')
-
-  .controller('messageCtrl', [
-    '$scope',
-    '$state',
-    '$timeout',
-    '$ionicPlatform',
-    function ($scope,
-              $state,
-              $timeout,
-              $ionicPlatform) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-      $scope.messageList = [
-      ];
-
-      //将页面的导航bar设置成白色
-      $ionicPlatform.ready(function () {
-        if (window.StatusBar) {
-          StatusBar.styleLightContent();
-        }
-      });
-
-      $scope.talk = function (message) {
-        console.log('$scope.talk');
-        $state.go("tab.messageDetail", {message: message});
-      };
-
-      $scope.refresh = function(){
-        $timeout(function(){
-          $scope.$broadcast("scroll.refreshComplete");
-        },2000);
-      };
-
-      console.log('messageCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageCtrl.$destroy');
-      });
-
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
 angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$state', 'baseConfig',
   function ($scope, $rootScope, $state, baseConfig) {
     $rootScope.$on('$ionicView.beforeEnter', function () {
@@ -2161,80 +2037,6 @@ angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$
   }]);
 
 /**
-=======
-
-      $scope.messageList = [
-      ];
-
-      //将页面的导航bar设置成白色
-      $ionicPlatform.ready(function () {
-        if (window.StatusBar) {
-          StatusBar.styleLightContent();
-        }
-      });
-
-      $scope.talk = function (message) {
-        console.log('$scope.talk');
-        $state.go("tab.messageDetail", {message: message});
-      };
-
-      $scope.refresh = function(){
-        $timeout(function(){
-          $scope.$broadcast("scroll.refreshComplete");
-        },2000);
-      };
-
-      console.log('messageCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageCtrl.$destroy');
-      });
-
-    }]);
-
-/**
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-=======
-
-      $scope.messageList = [
-      ];
-
-      //将页面的导航bar设置成白色
-      $ionicPlatform.ready(function () {
-        if (window.StatusBar) {
-          StatusBar.styleLightContent();
-        }
-      });
-
-      $scope.talk = function (message) {
-        console.log('$scope.talk');
-        $state.go("tab.messageDetail", {message: message});
-      };
-
-      $scope.refresh = function(){
-        $timeout(function(){
-          $scope.$broadcast("scroll.refreshComplete");
-        },2000);
-      };
-
-      console.log('messageCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageCtrl.$destroy');
-      });
-
-    }]);
-
-/**
->>>>>>> xbr
  * Created by LeonChan on 2016/6/17.
  */
 'use strict';
@@ -2498,924 +2300,6 @@ angular.module('myInfoModule')
 
     }]);
 
-/**
-<<<<<<< HEAD
-<<<<<<< HEAD
- * Created by LeonChan on 2016/5/31.
-=======
-=======
->>>>>>> xbr
- * Created by gusenlin on 16/4/24.
- */
-angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$state', 'baseConfig',
-  function ($scope, $rootScope, $state, baseConfig) {
-    $rootScope.$on('$ionicView.beforeEnter', function () {
-      var statename = $state.current.name;
-      if (baseConfig.debug) {
-        console.log('$ionicView.beforeEnter statename ' + statename);
-      }
-      //tabs中存在的主页面不需要隐藏，hidetabs=false
-      if (statename != 'tab.message' && statename != 'tab.application' &&
-        statename != 'tab.contact' && statename != 'tab.myInfo') {
-        $scope.hideTabs = true;
-      }
-    });
-
-    $rootScope.$on('$ionicView.afterEnter', function () {
-      var statename = $state.current.name;
-      if (baseConfig.debug) {
-        console.log('$ionicView.afterEnter statename ' + statename);
-      }
-      //tabs中存在的主页面不需要隐藏，hidetabs=false
-      if (statename === 'tab.message' || statename === 'tab.application' ||
-        statename === 'tab.contact' || statename === 'tab.myInfo') {
-        $scope.hideTabs = false;
-      }
-    });
-  }]);
-
-/**
-<<<<<<< HEAD
- * Created by gusenlin on 16/4/24.
- */
-angular.module('contactModule')
-
-  .controller('contactCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-      console.log('contactCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('contactCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('contactCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/5/16.
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
- */
-angular.module('loginModule')
-
-  .controller('guideCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-
-      console.log('loginCtrl.enter');
-
-      $scope.toLogin = function () {
-        console.log("跳过导航页到登陆页");
-        $state.go("login");
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('guideCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('guideCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
-=======
- * Created by LeonChan on 2016/5/31.
->>>>>>> xbr
- */
-//应用模块
-angular.module('applicationModule')
-
-  .controller('applicationCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    function ($scope,
-              $state,
-              baseConfig) {
-
-      $scope.animationsEnabled = false;
-
-      //个人办公
-      $scope.officeApp = [
-        {
-          list: [
-            {
-              appName: "会议管理",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "个人申请",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "报表分析",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "人事政策",
-              imageUrl: "build/img/application/meetingManage@3x.png",
-              destUrl: "tab.personnel-policy",
-            }]
-        },
-        {
-          list: [
-            {
-              appName: "假期管理",
-              imageUrl: "build/img/application/holidayManage@3x.png",
-              destUrl: "tab.time-off-manage",
-            }, 
-            {
-              appName: "住宿申请",
-              imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
-              destUrl: "tab.dorm-apply"
-            }, {
-              appName: "Timesheet填写",
-              imageUrl: "build/img/application/timesheet@3x.png",
-              destUrl: "tab.timesheet",
-            },
-            {
-              appName: "Timesheet审批",
-              imageUrl: "build/img/application/timesheetExamine@3x.png",
-              destUrl: "tab.tsApproveList",
-            }
-          ]
-        }];
-
-      //项目门户
-      $scope.projectApp = [
-        {
-          list: [
-            {
-              appName: "机票预定",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "tab.flyback",
-            },
-            {
-              appName: "代办事项",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "tab.workflow-list",
-            },
-            {
-              appName: "报销单查询",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "首款查询",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            }]
-        },
-        {
-          list: [
-            {
-              appName: "外勤汇报",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
-            }]
-        }
-      ];
-
-      //员工社区
-      $scope.employeeApp = [
-        {
-          list: [
-            {
-              appName: "在线培训",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "知识门户",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "新闻",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "分享社区",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            }]
-        },
-        {
-          list: [
-            {
-              appName: "在线培训",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "知识门户",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "新闻",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            },
-            {
-              appName: "分享社区",
-              imageUrl: "build/img/application/flightBooking@3x.png",
-              destUrl: "",
-            }]
-        }
-      ];
-
-
-      $scope.openSetting = function(){
-        if($scope.animationsEnabled){
-          $scope.animationsEnabled = false;
-        }
-        else{
-          $scope.animationsEnabled = true;
-        }
-      };
-
-      $scope.goPage = function (appItem) {
-        if (baseConfig.debug) {
-          console.log("appItem " + angular.toJson(appItem));
-        }
-        $state.go(appItem.destUrl);
-      };
-
-      console.log('applicationCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('applicationCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('applicationCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('messageModule')
-
-  .controller('messageDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicHistory',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicHistory) {
-
-      var message = $stateParams.message;
-      console.log('message : ' + angular.toJson(message));
-
-      $scope.message = message;
-
-      $scope.goBack = function(){
-        $ionicHistory.goBack();
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageDetailCtrl.$ionicView.enter');
-      });
-      console.log('messageDetailCtrl.enter');
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageDetailCtrl.$destroy');
-      });
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.workflow-detail', {
-          url: '/workflow-detail',
-          params: {detail: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/detail/detail.html',
-              controller: 'WorkFLowDetailCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
-      var detail = $stateParams.detail;
-      if(baseConfig.debug){
-        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
-      }
-
-      $scope.historyList = [];
-      $scope.singalArrayList = [];
-      $scope.multipleArrayList = [];
-
-      //var
-      var success = function (result) {
-        if(baseConfig.debug){
-          console.log('getWorkflowDetail.result ' + angular.toJson(result));
-        }
-        if(result.status == 'S'){
-          $scope.historyList = result.history;
-          $scope.singalArrayList = result.workflow_data.details;
-          $scope.multipleArrayList = result.workflow_data.lines;
-        }
-      }
-      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.workflow-list', {
-          url: '/workflow-list',
-          params: {day: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/list/workflow-list.html',
-              controller: 'WorkFLowListCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowListCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
-
-      $scope.list = [];
-      $scope.fetchDataFlag = true;
-      $scope.pullRefreshDataFlag = false;
-      $scope.showDetailArrow = true;
-      $scope.listStatus = {
-        todo: {
-          selected: true
-        },
-        done: {
-          selected: false
-        }
-      };
-
-      var workflowIcon = 'build/img/application/profile@3x.png';
-      var workflowType = '工作流类型';
-      var workflowNode = '当前节点';
-      var workflowPerson = '提交人';
-
-      $scope.fetchTodoList = function () {
-        if ($scope.listStatus.todo.selected) {
-
-        } else {
-          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
-            $scope.listStatus.todo.selected = true;
-            $scope.listStatus.done.selected = false;
-            getTodoList(false);
-          }
-        }
-      };
-
-      $scope.fetchDoneList = function () {
-        if ($scope.listStatus.done.selected) {
-
-        } else {
-          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
-            $scope.listStatus.done.selected = true;
-            $scope.listStatus.todo.selected = false;
-            getDoneList(false);
-          }
-
-        }
-      };
-
-      var getTodoList = function (pullRefresh) {
-        $scope.list = [];
-        if (pullRefresh) {
-          $scope.fetchDataFlag = false;
-          $scope.pullRefreshDataFlag = true;
-        } else {
-          $scope.fetchDataFlag = true;
-        }
-        var success = function (result) {
-          var list = result.待审批列表;
-          angular.forEach(list, function (data) {
-            var item = {
-              title1: data.workflow_name,
-              icon: workflowIcon,
-              type: workflowType,
-              typeValue: data.workflow_name,
-              node: workflowNode,
-              nodeValue: data.current_node,
-              submit: workflowPerson,
-              submitPerson: data.employee_name,
-              workflowId:data.workflow_id,
-              instanceId:data.instance_id
-            };
-            $scope.list.push(item);
-          });
-          $scope.fetchDataFlag = false;
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-
-        };
-        var error = function (result) {
-          $scope.fetchDataFlag = false;
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-        }
-        $timeout(function () {
-          WorkFLowListService.getTodoList('N', success, error);
-        }, 100);
-      };
-
-      var getDoneList = function (pullRefresh) {
-        $scope.list = [];
-        if (pullRefresh) {
-          $scope.fetchDataFlag = false;
-          $scope.pullRefreshDataFlag = true;
-        } else {
-          $scope.fetchDataFlag = true;
-        }
-        var success = function (result) {
-          var list = result.已审批列表;
-          angular.forEach(list, function (data) {
-            var item = {
-              title1: data.workflow_desc,
-              icon: workflowIcon,
-              type: workflowType,
-              typeValue: data.workflow_desc,
-              node: workflowNode,
-              nodeValue: data.status_name,
-              submit: workflowPerson,
-              submitPerson: data.created_by_name,
-              workflowId:data.workflow_id,
-              instanceId:data.instance_id
-            };
-            $scope.list.push(item);
-          });
-          $scope.fetchDataFlag = false;
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-
-        };
-        var error = function (result) {
-          $scope.fetchDataFlag = false;
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-        }
-        $timeout(function () {
-          WorkFLowListService.getTodoList('Y', success, error);
-        }, 100);
-      };
-
-      getTodoList(false);
-
-      $scope.enterWorkflowDetail = function (detail) {
-        $state.go('tab.workflow-detail', {"detail": detail})
-      }
-
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
-        scope: $scope
-      }).then(function (modal) {
-        $scope.tsFilterModal = modal;
-      });
-
-      $scope.filterTsInfo = function () { //响应筛选按钮的方法
-        $scope.tsFilterModal.show();
-      };
-
-      $scope.refresh = function () {
-        if (!$scope.fetchDataFlag) {
-
-          $scope.list = [];
-          $scope.$apply();
-          $timeout(function () {
-            if ($scope.listStatus.todo.selected) {
-              getTodoList(true);
-            } else {
-              getDoneList(true);
-            }
-          }, 300);
-        } else {
-          $scope.$broadcast('scroll.refreshComplete');
-        }
-      }
-    }])
-
-  .service('WorkFLowListService', ['hmsHttp',
-    'baseConfig',
-    'hmsPopup',
-    function (hmsHttp,
-              baseConfig,
-              hmsPopup) {
-
-      this.getTodoList = function (flag, success, error) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list";
-        var params = {'params': {'p_employee_code': window.localStorage.empno, 'p_flag': flag + ''}};
-        hmsHttp.post(url, params).success(function (result) {
-          success(result)
-        }).error(function (response, status) {
-          hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-          error(response);
-        });
-      };
-
-      this.getWorkflowDetail = function (success,workflowId, recordId, submitFlag) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
-        var params = {
-          "params": {
-            "p_workflow_id": workflowId,
-            "p_instance_id": recordId,
-            "p_employee_code": window.localStorage.empno,
-            "p_submit_flag": submitFlag
-          }
-        };
-        hmsHttp.post(url, params).success(function (data) {
-          success(data);
-        }).error(function (data) {
-        });
-      };
-    }]);
-
-/**
- * Created by LeonChan on 2016/5/31.
- */
-'use strict';
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.dorm-apply-detail-a', {
-          url: '/dorm-apply-detail-a',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-a.html',
-              controller: 'DormApplyDetailFirstCtrl'
-            }
-          },
-          params:{
-            dormApplyDetailInfo:''
-          }
-        })
-    }]);
-angular.module('applicationModule')
-  .controller('DormApplyDetailFirstCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    'hmsHttp',
-    'hmsPopup',
-    '$rootScope',
-    '$timeout',
-    '$stateParams',
-    function ($scope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              hmsHttp,
-              hmsPopup,
-              $rootScope,
-              $timeout,
-              $stateParams) {
-      $scope.applyInfo=$stateParams.dormApplyDetailInfo;
-      $scope.approving=false;//审批中状态标志位
-      $scope.rejected=false;//已拒绝状态标识位
-      $scope.checkingin=false;//未入住状态标识位
-      $scope.approvedResult="";
-      if($scope.applyInfo.status == '审批中'){
-        $scope.approving=true;
-        $scope.rejected=false;
-        $scope.checkingin=false;
-        $scope.approvedResult="";
-      }else if($scope.applyInfo.status == '已拒绝'){
-        $scope.approving=false;
-        $scope.rejected=true;
-        $scope.checkingin=false;
-        $scope.approvedResult='已拒绝';
-      }else if($scope.applyInfo.status == '未入住'){
-        $scope.approving=false;
-        $scope.rejected=false;
-        $scope.checkingin=true;
-        $scope.approvedResult="已通过";
-
-      }
-      $scope.goBack=function(){//返回上一界面
-        $ionicHistory.goBack();
-      };
-      $scope.cancelApply=function(){//取消申请
-        var url=baseConfig.businessPath+"/api_apply_room/cancel_application";
-        var param={
-          "params": {
-            p_apply_id:$scope.applyInfo.applyId,//用申请id取消申请
-            p_employee_number:window.localStorage.empno//工号
-          }
-        };
-        hmsPopup.showLoading('请稍候');
-        hmsHttp.post(url,param).success(function(result){
-          hmsPopup.hideLoading();
-          var message=result.message;
-          hmsPopup.showShortCenterToast(message);//展示接口返回的message
-          if(result.status=="S"){
-              $rootScope.$broadcast("APPLY_CANCELLED");//触发上一界面重新刷新数据
-              $ionicHistory.goBack();//删除申请成功后返回上一界面
-          }
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function(error,status){
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(error));
-          }
-        });
-      };
-    }]);
-
-/**
- * Created by LeonChan on 2016/6/4.
- */
-'use strict';
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.dorm-apply-detail-b', {
-          url: '/dorm-apply-detail-b',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-b.html',
-              controller: 'DormApplyDetailSecondCtrl'
-            }
-          },
-          params:{
-            dormApplyDetailInfo:''
-          }
-        })
-    }]);
-angular.module('applicationModule')
-  .controller('DormApplyDetailSecondCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    'hmsHttp',
-    'hmsPopup',
-    '$rootScope',
-    '$timeout',
-    '$stateParams',
-    function ($scope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              hmsHttp,
-              hmsPopup,
-              $rootScope,
-              $timeout,
-              $stateParams) {
-      $scope.applyInfo = $stateParams.dormApplyDetailInfo;
-      $scope.checkIn = false;//审批中状态标志位
-      $scope.checkOut = false;//已拒绝状态标识位
-      $scope.buttonText = '';//按钮上显示的文字
-      $scope.leftDays=$scope.applyInfo.leftDays;//剩余天数
-      $scope.totalDays=parseInt($scope.applyInfo.checkinDays);
-////////////
-//      var childDays=parseInt($scope.leftDays);//计算圆旋转角度的剩余天数
-//      var motherDays=parseInt($scope.applyInfo.checkinDays);//计算圆旋转角度的入住天数
-//      var calculation=childDays/motherDays;//分子除以分母
-//      //console.log(calculation);
-//      //JS圆环动画
-//      var leftball=document.getElementById('left_ball');//拿到左半圆DOM
-//      var rightball=document.getElementById('right_ball');//拿到右半圆DOM
-//      if(calculation<=0.5){//剩余天数大于总天数的一半
-//        leftball.style.transition="all 0.3s linear";
-//        leftball.style.webkitTransition="all 0.3s linear";
-//        rightball.style.transition="all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-//        rightball.style.webkitTransition="all 0.3s ease-out";
-//      }else if(calculation>0.5){//剩余天数不到入住天数的一半
-//        leftball.style.transition="all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-//        leftball.style.webkitTransition="all 0.3s ease-out 0.3s";
-//        rightball.style.transition="all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-//        rightball.style.webkitTransition="all 0.3s ease-in";
-//      }
-//      leftball.style.webkitTransform = "rotate(-135deg)";
-//      leftball.style.transform = "rotate(-135deg)";
-//      rightball.style.webkitTransform = "rotate(-135deg)";
-//      rightball.style.transform = "rotate(-135deg)";
-      //定时器中决定两个圆的终止角度
-      //$timeout(function(){
-      //  var angle=0;
-      //  if(calculation<=0.5){
-      //    angle=360*calculation;
-      //    angle=angle-135;
-      //    //console.log("角度："+angle);
-      //    leftball.style.webkitTransform = "rotate(-135deg)";
-      //    leftball.style.transform = "rotate(-135deg)";
-      //    rightball.style.webkitTransform = "rotate("+angle+"deg)";
-      //    rightball.style.transform = "rotate("+angle+"deg)";
-      //  }else if(calculation>0.5){
-      //    calculation=calculation-0.5;
-      //    angle=360*calculation;
-      //    angle=angle-135;
-      //    //console.log("角度："+angle);
-      //    leftball.style.webkitTransform = "rotate("+angle+"deg)";
-      //    leftball.style.transform = "rotate("+angle+"deg)";
-      //    rightball.style.webkitTransform = "rotate(45deg)";
-      //    rightball.style.transform = "rotate(45deg)";
-      //  }
-      //},500);
-
-      if ($scope.applyInfo.status == '已入住') {//已入住
-        $scope.checkIn = true;
-        $scope.checkOut = false;
-        $scope.buttonText = '续住';
-      } else if ($scope.applyInfo.status == '已退房') {//已退房
-        $scope.checkIn = false;
-        $scope.checkOut = true;
-        $scope.buttonText = '再次预定';
-      }
-
-      $scope.goBack = function () {//返回上一界面
-        $ionicHistory.goBack();
-      };
-
-      $scope.renewContract=function(){//续住
-        var url=baseConfig.businessPath+"/api_apply_room/overstay_apply_room";
-        var param={
-          "params": {
-            p_employee_number:window.localStorage.empno,
-            p_pro_id:"",
-            p_checkin_date:"2016-08-15",
-            p_checkout_date:"2016-09-20",
-            p_room_number:$scope.applyInfo.roomNumber,
-            p_bed_number:$scope.applyInfo.bedNumber,
-            p_apply_type:$scope.applyInfo.applyType,
-            p_reason:""
-          }
-        };
-        if($scope.applyInfo.applyType=='项目申请'){
-          param.params.p_pro_id=$scope.applyInfo.projectId;
-        }
-        hmsPopup.showLoading('请稍候');
-        hmsHttp.post(url,param).success(function(result){
-          hmsPopup.hideLoading();
-          var message=result.message;
-          hmsPopup.showShortCenterToast(message);
-          if(result.status=="S"){
-              $rootScope.$broadcast("APPLY_SUCCESS");//触发上一界面重新刷新数据
-              $ionicHistory.goBack();//删除申请成功后返回上一界面
-          }
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function(error,status){
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(error));
-          }
-        });
-      };
-
-    }]);
-
-<<<<<<< HEAD
-/**
- * Created by LeonChan on 2016/6/7.
- */
-'use strict';
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.dorm-apply-vacant-room', {
-          url: '/dorm-apply-vacant-room',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-vacant-room.html',
-              controller: 'DormApplyVacantRoomCtrl'
-            }
-          },
-          params:{
-            dormApplySearchResult:'',
-            projectId:'',
-            applyType:''
-          }
-        })
-    }]);
-angular.module('applicationModule')
-  .controller('DormApplyVacantRoomCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    'hmsHttp',
-    'hmsPopup',
-    '$timeout',
-    '$stateParams',
-    function ($scope,
-              $rootScope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              hmsHttp,
-              hmsPopup,
-              $timeout,
-              $stateParams) {
-
-<<<<<<< HEAD
-=======
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) { 
@@ -3902,135 +2786,291 @@ angular.module("applicationModule")
     };
     return service;
 });
->>>>>>> xbr
-angular.module("applicationModule")
-.factory('flaybackService', ['$ionicLoading', function ($ionicLoading) {
-  var projName = "";
-  var projCode = "";
-  var ticketTypeList = [];
-  var routeTypeList = [];
-  var passengerList = [];
-  var passenger = "";
-  var certification = "";
-  var fbLines = [];
-  var pageStatusCreate = {};// var param = {"canEdit": true,"dataSource":"create"}
-  function getFormatDate(date) {
-    var seperator1 = "-";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-      month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-      strDate = "0" + strDate;
-    }
-    return date.getFullYear() + seperator1 + month + seperator1 + strDate;
-  }
-  return {
-    getFormatDate: getFormatDate,
-    getNowFormatDate: function () {
-      var date = new Date();
-      var seperator = "-";
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
+/**
+ * Created by LeonChan on 2016/5/31.
+ */
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.dorm-apply-detail-a', {
+          url: '/dorm-apply-detail-a',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-a.html',
+              controller: 'DormApplyDetailFirstCtrl'
+            }
+          },
+          params:{
+            dormApplyDetailInfo:''
+          }
+        })
+    }]);
+angular.module('applicationModule')
+  .controller('DormApplyDetailFirstCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    'hmsHttp',
+    'hmsPopup',
+    '$rootScope',
+    '$timeout',
+    '$stateParams',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              hmsHttp,
+              hmsPopup,
+              $rootScope,
+              $timeout,
+              $stateParams) {
+      $scope.applyInfo=$stateParams.dormApplyDetailInfo;
+      $scope.approving=false;//审批中状态标志位
+      $scope.rejected=false;//已拒绝状态标识位
+      $scope.checkingin=false;//未入住状态标识位
+      $scope.approvedResult="";
+      if($scope.applyInfo.status == '审批中'){
+        $scope.approving=true;
+        $scope.rejected=false;
+        $scope.checkingin=false;
+        $scope.approvedResult="";
+      }else if($scope.applyInfo.status == '已拒绝'){
+        $scope.approving=false;
+        $scope.rejected=true;
+        $scope.checkingin=false;
+        $scope.approvedResult='已拒绝';
+      }else if($scope.applyInfo.status == '未入住'){
+        $scope.approving=false;
+        $scope.rejected=false;
+        $scope.checkingin=true;
+        $scope.approvedResult="已通过";
+
       }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
+      $scope.goBack=function(){//返回上一界面
+        $ionicHistory.goBack();
+      };
+      $scope.cancelApply=function(){//取消申请
+        var url=baseConfig.businessPath+"/api_apply_room/cancel_application";
+        var param={
+          "params": {
+            p_apply_id:$scope.applyInfo.applyId,//用申请id取消申请
+            p_employee_number:window.localStorage.empno//工号
+          }
+        };
+        hmsPopup.showLoading('请稍候');
+        hmsHttp.post(url,param).success(function(result){
+          hmsPopup.hideLoading();
+          var message=result.message;
+          hmsPopup.showShortCenterToast(message);//展示接口返回的message
+          if(result.status=="S"){
+              $rootScope.$broadcast("APPLY_CANCELLED");//触发上一界面重新刷新数据
+              $ionicHistory.goBack();//删除申请成功后返回上一界面
+          }
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function(error,status){
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(error));
+          }
+        });
+      };
+    }]);
+
+/**
+ * Created by LeonChan on 2016/6/4.
+ */
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.dorm-apply-detail-b', {
+          url: '/dorm-apply-detail-b',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-detail-b.html',
+              controller: 'DormApplyDetailSecondCtrl'
+            }
+          },
+          params:{
+            dormApplyDetailInfo:''
+          }
+        })
+    }]);
+angular.module('applicationModule')
+  .controller('DormApplyDetailSecondCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    'hmsHttp',
+    'hmsPopup',
+    '$rootScope',
+    '$timeout',
+    '$stateParams',
+    function ($scope,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              hmsHttp,
+              hmsPopup,
+              $rootScope,
+              $timeout,
+              $stateParams) {
+      $scope.applyInfo = $stateParams.dormApplyDetailInfo;
+      $scope.checkIn = false;//审批中状态标志位
+      $scope.checkOut = false;//已拒绝状态标识位
+      $scope.buttonText = '';//按钮上显示的文字
+      $scope.leftDays=$scope.applyInfo.leftDays;//剩余天数
+      $scope.totalDays=parseInt($scope.applyInfo.checkinDays);
+////////////
+//      var childDays=parseInt($scope.leftDays);//计算圆旋转角度的剩余天数
+//      var motherDays=parseInt($scope.applyInfo.checkinDays);//计算圆旋转角度的入住天数
+//      var calculation=childDays/motherDays;//分子除以分母
+//      //console.log(calculation);
+//      //JS圆环动画
+//      var leftball=document.getElementById('left_ball');//拿到左半圆DOM
+//      var rightball=document.getElementById('right_ball');//拿到右半圆DOM
+//      if(calculation<=0.5){//剩余天数大于总天数的一半
+//        leftball.style.transition="all 0.3s linear";
+//        leftball.style.webkitTransition="all 0.3s linear";
+//        rightball.style.transition="all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+//        rightball.style.webkitTransition="all 0.3s ease-out";
+//      }else if(calculation>0.5){//剩余天数不到入住天数的一半
+//        leftball.style.transition="all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+//        leftball.style.webkitTransition="all 0.3s ease-out 0.3s";
+//        rightball.style.transition="all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+//        rightball.style.webkitTransition="all 0.3s ease-in";
+//      }
+//      leftball.style.webkitTransform = "rotate(-135deg)";
+//      leftball.style.transform = "rotate(-135deg)";
+//      rightball.style.webkitTransform = "rotate(-135deg)";
+//      rightball.style.transform = "rotate(-135deg)";
+      //定时器中决定两个圆的终止角度
+      //$timeout(function(){
+      //  var angle=0;
+      //  if(calculation<=0.5){
+      //    angle=360*calculation;
+      //    angle=angle-135;
+      //    //console.log("角度："+angle);
+      //    leftball.style.webkitTransform = "rotate(-135deg)";
+      //    leftball.style.transform = "rotate(-135deg)";
+      //    rightball.style.webkitTransform = "rotate("+angle+"deg)";
+      //    rightball.style.transform = "rotate("+angle+"deg)";
+      //  }else if(calculation>0.5){
+      //    calculation=calculation-0.5;
+      //    angle=360*calculation;
+      //    angle=angle-135;
+      //    //console.log("角度："+angle);
+      //    leftball.style.webkitTransform = "rotate("+angle+"deg)";
+      //    leftball.style.transform = "rotate("+angle+"deg)";
+      //    rightball.style.webkitTransform = "rotate(45deg)";
+      //    rightball.style.transform = "rotate(45deg)";
+      //  }
+      //},500);
+
+      if ($scope.applyInfo.status == '已入住') {//已入住
+        $scope.checkIn = true;
+        $scope.checkOut = false;
+        $scope.buttonText = '续住';
+      } else if ($scope.applyInfo.status == '已退房') {//已退房
+        $scope.checkIn = false;
+        $scope.checkOut = true;
+        $scope.buttonText = '再次预定';
       }
-      var currentdate = year + seperator + month + seperator + strDate;
-      return currentdate;
-    },
-    setPageStatusCreate: function (obj) {
-      pageStatusCreate = obj;
-    },
-    getPageStatusCreate: function (obj) {
-      return pageStatusCreate;
-    },
-    setProjName: function (obj) {
-      projName = obj;
-    },
-    getProjName: function (obj) {
-      return projName;
-    },
-    setProjCode: function (obj) {
-      projCode = obj;
-    },
-    getProjCode: function (obj) {
-      return projCode;
-    },
-    setTicketTypeList: function (obj) {
-      ticketTypeList = obj;
-    },
-    getTicketTypeList: function (obj) {
-      return ticketTypeList;
-    },
-    setRouteTypeList: function (obj) {
-      routeTypeList = obj;
-    },
-    getRouteTypeList: function (obj) {
-      return routeTypeList;
-    },
-    setPassengerList: function (obj) {
-      passengerList = obj;
-    },
-    getPassengerList: function (obj) {
-      return passengerList;
-    },
-    setPassenger: function (obj) {
-      passenger = obj;
-    },
-    getPassenger: function (obj) {
-      return passenger;
-    },
-    setCertification: function (obj) {
-      certification = obj;
-    },
-    getCertification: function (obj) {
-      return certification;
-    },
-    addLine: function (obj) {
-      /* var flight_date = getFormatDate(new Date(obj.flight_date));
-       obj.flight_date = flight_date;*/
-      fbLines.push(obj);
-    },
-    updateLine: function (obj, index) {
-      var flight_date = getFormatDate(new Date(obj.flight_date));
-      obj.flight_date = flight_date;
-      fbLines[index] = obj;
-    },
-    getLines: function () {
-      return fbLines;
-    },
-    setLines: function (obj) {
-      fbLines = obj;
-    },
-    /* deleteLine: function (item) {
-     //  fbLines.splice(index, 1);
-     console.log("fbLines.indexOf(item) = " + fbLines.indexOf(item));
-     console.log("fbLines  = " + angular.toJson(fbLines));
-     console.log("item  = " + angular.toJson(item));
-     fbLines.splice(fbLines.indexOf(item), 1);
-     },*/
-    deleteLine: function (index) {
-      fbLines.splice(index, 1);
-    },
-    clearLines: function () {
-      fbLines = [];
-    }
 
-  }
+      $scope.goBack = function () {//返回上一界面
+        $ionicHistory.goBack();
+      };
 
-}])
-;
+      $scope.renewContract=function(){//续住
+        var url=baseConfig.businessPath+"/api_apply_room/overstay_apply_room";
+        var param={
+          "params": {
+            p_employee_number:window.localStorage.empno,
+            p_pro_id:"",
+            p_checkin_date:"2016-08-15",
+            p_checkout_date:"2016-09-20",
+            p_room_number:$scope.applyInfo.roomNumber,
+            p_bed_number:$scope.applyInfo.bedNumber,
+            p_apply_type:$scope.applyInfo.applyType,
+            p_reason:""
+          }
+        };
+        if($scope.applyInfo.applyType=='项目申请'){
+          param.params.p_pro_id=$scope.applyInfo.projectId;
+        }
+        hmsPopup.showLoading('请稍候');
+        hmsHttp.post(url,param).success(function(result){
+          hmsPopup.hideLoading();
+          var message=result.message;
+          hmsPopup.showShortCenterToast(message);
+          if(result.status=="S"){
+              $rootScope.$broadcast("APPLY_SUCCESS");//触发上一界面重新刷新数据
+              $ionicHistory.goBack();//删除申请成功后返回上一界面
+          }
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function(error,status){
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(error));
+          }
+        });
+      };
 
-/** Author      : joshua.shi
- *
- *  History:
- *      1.00    2016-4-28   joshua.shi   Creation
-=======
+    }]);
+
+/**
+ * Created by LeonChan on 2016/6/7.
+ */
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.dorm-apply-vacant-room', {
+          url: '/dorm-apply-vacant-room',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/dorm-apply/dorm-apply-vacant-room.html',
+              controller: 'DormApplyVacantRoomCtrl'
+            }
+          },
+          params:{
+            dormApplySearchResult:'',
+            projectId:'',
+            applyType:''
+          }
+        })
+    }]);
+angular.module('applicationModule')
+  .controller('DormApplyVacantRoomCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    'hmsHttp',
+    'hmsPopup',
+    '$timeout',
+    '$stateParams',
+    function ($scope,
+              $rootScope,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              hmsHttp,
+              hmsPopup,
+              $timeout,
+              $stateParams) {
+
      var resultInfo=$stateParams.dormApplySearchResult;//从$stateParams中拿到查询界面得到的查询结果
      var projectId=$stateParams.projectId;//从$stateParams中拿到项目id，如果不是项目类型就不用
      var applyType=$stateParams.applyType;//从$satteParams中拿到申请类型
@@ -4078,7 +3118,6 @@ angular.module("applicationModule")
 
 /**
  * Created by LeonChan on 2016/5/27.
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
  */
 'use strict';
 angular.module('myApp')
@@ -4113,56 +3152,6 @@ angular.module('applicationModule')
               $ionicHistory,
               hmsHttp,
               hmsPopup,
-<<<<<<< HEAD
-              $ionicHistory) {
-
-      $scope.timeOffHeader       ={
-        userId                 : 999,
-        paidHoliday            : 9,
-        paidSickLeave          : 9,
-        extPaidHoliday         : 9,
-        usedPaidHoliday        : 9,
-        usedPaidSickLeave      : 9,
-        usedExtPaidHoliday     : 9
-      };
-
-      $scope.timeOffHistoryList  =[
-        {
-        holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
-        timeOffType          : 'paid-holiday',
-        timeOffTypeMeaning   : '带薪年假',
-        datetimeFrom         : '2016-6-16',
-        datetimeTo           : '2016-6-18',
-        timeLeave            : '2天',
-        approveStatus        : 'APPROVED',
-        approveStatusMeaning : '已审批',
-        applyReason          : '陪老婆去迪斯尼玩',
-        reason_image         : [
-          {
-            image_url1       : '',
-            image_url2       : '',
-            image_url3       : '',
-            image_url4       : '',
-            image_url5       : '',
-            image_url6       : '',
-            image_url7       : '',
-            image_url8       : '',
-            image_url9       : '',
-          }
-        ]
-      }];
-
-
-      $scope.timeOffCreate = function(){
-
-      }
-
-
-      function getServeData() {
-
-        var requestUrl = baseConfig.businessPath + "/api_holiday/get_holidays_data";
-        var requestParams = {
-=======
               $ionicScrollDelegate,
               $timeout) {
       $scope.descriptionAppearance = false;
@@ -4172,7 +3161,6 @@ angular.module('applicationModule')
         $scope.items=[];
         var url = baseConfig.businessPath + "/api_apply_room/query_room_history_list";
         var param = {
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
           "params": {
             p_employee_number: window.localStorage.empno
           }
@@ -4288,215 +3276,9 @@ angular.module('applicationModule')
     }]);
 
 /**
-<<<<<<< HEAD
- * Created by gusenlin on 16/4/24.
- */
-angular.module('messageModule')
-
-  .controller('messageDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicHistory',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicHistory) {
-
-      var message = $stateParams.message;
-      console.log('message : ' + angular.toJson(message));
-
-      $scope.message = message;
-
-      $scope.goBack = function(){
-        $ionicHistory.goBack();
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageDetailCtrl.$ionicView.enter');
-      });
-      console.log('messageDetailCtrl.enter');
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageDetailCtrl.$destroy');
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('messageModule')
-
-  .controller('messageDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicHistory',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicHistory) {
-
-      var message = $stateParams.message;
-      console.log('message : ' + angular.toJson(message));
-
-      $scope.message = message;
-
-      $scope.goBack = function(){
-        $ionicHistory.goBack();
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageDetailCtrl.$ionicView.enter');
-      });
-      console.log('messageDetailCtrl.enter');
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageDetailCtrl.$destroy');
-      });
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.workflow-detail', {
-          url: '/workflow-detail',
-          params: {detail: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/detail/detail.html',
-              controller: 'WorkFLowDetailCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
-      var detail = $stateParams.detail;
-      if(baseConfig.debug){
-        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
-      }
-
-      $scope.historyList = [];
-      $scope.singalArrayList = [];
-      $scope.multipleArrayList = [];
-
-      //var
-      var success = function (result) {
-        if(baseConfig.debug){
-          console.log('getWorkflowDetail.result ' + angular.toJson(result));
-        }
-        if(result.status == 'S'){
-          $scope.historyList = result.history;
-          $scope.singalArrayList = result.workflow_data.details;
-          $scope.multipleArrayList = result.workflow_data.lines;
-        }
-      }
-      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.workflow-detail', {
-          url: '/workflow-detail',
-          params: {detail: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/detail/detail.html',
-              controller: 'WorkFLowDetailCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
-      var detail = $stateParams.detail;
-      if(baseConfig.debug){
-        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
-      }
-
-      $scope.historyList = [];
-      $scope.singalArrayList = [];
-      $scope.multipleArrayList = [];
-
-      //var
-      var success = function (result) {
-        if(baseConfig.debug){
-          console.log('getWorkflowDetail.result ' + angular.toJson(result));
-        }
-        if(result.status == 'S'){
-          $scope.historyList = result.history;
-          $scope.singalArrayList = result.workflow_data.details;
-          $scope.multipleArrayList = result.workflow_data.lines;
-        }
-      }
-      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
-    }]);
-
-=======
  * Created by LeonChan on 2016/5/30.
  */
 'use strict';
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
@@ -4766,19 +3548,6 @@ angular.module('applicationModule')
         });
       };
 
-<<<<<<< HEAD
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.flybackApply', {
-          url: '/flyback-apply',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/apply/apply.html',
-              controller: 'FlyBackApplyCtrl'
-=======
       $scope.chooseLongDays=function(num){//选择30,60,90天的点击事件
         refreshEndDate(num);
         $scope.showNumButton=true;
@@ -4854,19 +3623,11 @@ angular.module('myApp')
               p_room_number: $scope.inputinfo.roomnum,
               p_floor_number: $scope.inputinfo.floornum,
               p_pro_id:""
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
             }
           };
           if($scope.defaultApplyType=='项目申请'){
            param.params.p_pro_id=$scope.defaultProjectInfo.projectId;
           }
-<<<<<<< HEAD
-        });
-    }])
-
-angular.module("applicationModule")
-  .controller('FlyBackApplyCtrl', [
-=======
           hmsPopup.showLoading('请稍候');
           hmsHttp.post(url, param).success(function (result) {
             var message = result.message;
@@ -5038,21 +3799,12 @@ angular.module('myApp')
         })
     }]);
 
-<<<<<<< HEAD
 angular.module('applicationModule')
   .controller('PersonnelPolicyCtrl', [
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
     '$scope',
-    '$rootScope',
     '$state',
     'baseConfig',
     '$ionicHistory',
-<<<<<<< HEAD
-    '$timeout',
-    'hmsHttp',
-    '$ionicModal',
-    'flaybackService',
-=======
     function ($scope,
               $state,
               baseConfig,
@@ -5069,6 +3821,539 @@ angular.module('applicationModule')
 );
 
 
+
+/**
+ * Created by gusenlin on 16/6/21.
+ */
+angular.module('applicationModule')
+  .service('TimeSheetService', [
+    'baseConfig',
+    'hmsHttp',
+    'hmsPopup',
+    function (baseConfig,
+              hmsHttp,
+              hmsPopup) {
+      this.fetchCalendar = function (monthParams) {
+
+        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_month": monthParams + "",
+            "p_offset": "0"
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function (response, status) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(response));
+          }
+        });
+      };
+
+      this.fetchEachDay = function (callback, oneDate) {
+        var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
+        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + ""}};
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('获取状态错误,请检查网络!');
+        });
+      };
+
+      this.fetchProjectDetailInfo = function (callback, oneDate, projectId) {
+        var url = baseConfig.businessPath + "/timesheet_process/project_change"
+        var params = {
+          'params': {
+            'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + "",
+            'p_project_id': projectId + ""
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('获取项目信息错误,请检查网络!');
+        });
+      };
+
+      this.submitTimesheet = function (callback, params) {
+        var url = baseConfig.businessPath + "/timesheet_process/save_timesheet1";
+        var params = params;
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
+        });
+      };
+
+      this.generateAllowance = function (success,error,generateFlag, month) {
+        var url = baseConfig.businessPath + "/timesheet_process/generate_allowance";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_generate_flag": generateFlag + "",
+            "p_token": "",
+            "p_month": month + ""
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          error(response);
+        });
+      };
+      
+      this.slippingBatch = function (success,error,template,dateArray) {
+        var url = baseConfig.businessPath + "/timesheet_process/slipping_batch1";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_ref_date": template + "",
+            "p_date_range": dateArray + ""
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          error(response);
+        });
+      };
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('messageModule')
+
+  .controller('messageDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicHistory',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicHistory) {
+
+      var message = $stateParams.message;
+      console.log('message : ' + angular.toJson(message));
+
+      $scope.message = message;
+
+      $scope.goBack = function(){
+        $ionicHistory.goBack();
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('messageDetailCtrl.$ionicView.enter');
+      });
+      console.log('messageDetailCtrl.enter');
+
+      $scope.$on('$destroy', function (e) {
+        console.log('messageDetailCtrl.$destroy');
+      });
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.workflow-detail', {
+          url: '/workflow-detail',
+          params: {"detail": {}, "processedFlag": {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/workflow/detail/detail.html',
+              controller: 'WorkFLowDetailCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('WorkFLowDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    '$ionicScrollDelegate',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    'WorkFLowListService',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              $ionicScrollDelegate,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup,
+              WorkFLowListService) {
+      var detail = $stateParams.detail;
+      if (baseConfig.debug) {
+        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
+      }
+
+      $scope.historyList = [];
+      $scope.singalArrayList = [];
+
+      var multipleArrayList = [];
+      $scope.multipleLine = [];
+
+      $scope.workflowActionShowFlag = !$stateParams.processedFlag.value;
+
+      var processLine = function (line) {
+        var oneLine = {
+          title: line.line_big_title,
+          arrayList: line.line,
+          currentPage: 1,
+          currentArray: []
+        };
+        if (line.line.length > 0) {
+          var currentList = [];
+          var lineTitle = line.line_title;
+          var list = line.line[0].line_values;
+          for (var i = 0; i < list.length; i++) {
+            var array = {
+              "name": lineTitle[i].line_title,
+              "value": list[i].line_value
+            };
+            currentList.push(array);
+          }
+          oneLine.currentArray = currentList;
+        }
+        return oneLine;
+      };
+
+      $scope.showContent = function (array) {
+        if(array.showFlag){
+          array.showFlag = false;
+        }else{
+          array.showFlag = true;
+        }
+        $ionicScrollDelegate.resize();
+      }
+
+      $scope.toBack = function (array) {
+        if (array.currentPage <= 1) {
+          return;
+        } else {
+          var currentPage = array.currentPage - 1;
+          array.currentPage = currentPage;
+          for (var i = 0; i < array.currentArray.length; i++) {
+            array.currentArray[i].value = array.arrayList[currentPage - 1].line_values[i].line_value;
+          }
+        }
+      };
+      $scope.goForward = function (array) {
+        if (array.currentPage >= array.arrayList.length) {
+          return;
+        } else {
+          var currentPage = array.currentPage + 1;
+          array.currentPage = currentPage;
+          for (var i = 0; i < array.currentArray.length; i++) {
+            array.currentArray[i].value = array.arrayList[currentPage - 1].line_values[i].line_value;
+          }
+        }
+      }
+      //var
+      var success = function (result) {
+        if (baseConfig.debug) {
+          console.log('getWorkflowDetail.result ' + angular.toJson(result));
+        }
+        if (result.status == 'S') {
+          $scope.historyList = result.history;
+          if (result.workflow_data) {
+            $scope.singalArrayList = result.workflow_data.details;
+            multipleArrayList = result.workflow_data.lines;
+            angular.forEach(multipleArrayList, function (data) {
+              $scope.multipleLine.push(processLine(data));
+            });
+            if (baseConfig.debug) {
+              console.log('$scope.multipleLine ' + angular.toJson($scope.multipleLine));
+            }
+          }
+        }
+      }
+      WorkFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.workflow-list', {
+          url: '/workflow-list',
+          params: {day: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/workflow/list/workflow-list.html',
+              controller: 'WorkFLowListCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('WorkFLowListCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    'WorkFLowListService',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup,
+              WorkFLowListService) {
+
+      $scope.list = [];
+      $scope.fetchDataFlag = true;
+      $scope.pullRefreshDataFlag = false;
+      $scope.showDetailArrow = true;
+      $scope.listStatus = {
+        todo: {
+          selected: true
+        },
+        done: {
+          selected: false
+        }
+      };
+
+      var workflowIcon = 'build/img/application/profile@3x.png';
+      var workflowType = '工作流类型';
+      var workflowNode = '当前节点';
+      var workflowPerson = '提交人';
+
+      $scope.fetchTodoList = function () {
+        if ($scope.listStatus.todo.selected) {
+
+        } else {
+          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+            $scope.listStatus.todo.selected = true;
+            $scope.listStatus.done.selected = false;
+            getTodoList(false);
+          }
+        }
+      };
+
+      $scope.fetchDoneList = function () {
+        if ($scope.listStatus.done.selected) {
+
+        } else {
+          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+            $scope.listStatus.done.selected = true;
+            $scope.listStatus.todo.selected = false;
+            getDoneList(false);
+          }
+
+        }
+      };
+
+      var showList = function () {
+        $timeout(
+          function () {
+            $scope.fetchDataFlag = false;
+          }, 100
+        );
+      }
+
+      var getTodoList = function (pullRefresh) {
+        $scope.list = [];
+        if (pullRefresh) {
+          $scope.fetchDataFlag = false;
+          $scope.pullRefreshDataFlag = true;
+        } else {
+          $scope.fetchDataFlag = true;
+        }
+        var success = function (result) {
+          var list = result.待审批列表;
+          angular.forEach(list, function (data) {
+            var item = {
+              title1: data.workflow_name,
+              icon: workflowIcon,
+              type: workflowType,
+              typeValue: data.workflow_name,
+              node: workflowNode,
+              nodeValue: data.current_node,
+              submit: workflowPerson,
+              submitPerson: data.employee_name,
+              workflowId: data.workflow_id,
+              instanceId: data.instance_id
+            };
+            $scope.list.push(item);
+          });
+
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+          showList();
+        };
+        var error = function (result) {
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+          showList();
+        }
+        $timeout(function () {
+          WorkFLowListService.getTodoList('N', success, error);
+        }, 0);
+      };
+
+      var getDoneList = function (pullRefresh) {
+        $scope.list = [];
+        if (pullRefresh) {
+          $scope.fetchDataFlag = false;
+          $scope.pullRefreshDataFlag = true;
+        } else {
+          $scope.fetchDataFlag = true;
+        }
+        var success = function (result) {
+          var list = result.已审批列表;
+          angular.forEach(list, function (data) {
+            var item = {
+              title1: data.workflow_desc,
+              icon: workflowIcon,
+              type: workflowType,
+              typeValue: data.workflow_desc,
+              node: workflowNode,
+              nodeValue: data.status_name,
+              submit: workflowPerson,
+              submitPerson: data.created_by_name,
+              workflowId: data.workflow_id,
+              instanceId: data.instance_id
+            };
+            $scope.list.push(item);
+          });
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+          showList();
+        };
+        var error = function (result) {
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+          showList();
+        }
+        $timeout(function () {
+          WorkFLowListService.getTodoList('Y', success, error);
+        }, 0);
+      };
+
+      getTodoList(false);
+
+      $scope.enterWorkflowDetail = function (detail) {
+        var processedFlag = {value: false};
+        if ($scope.listStatus.done.selected) {
+          processedFlag.value = true;
+        }
+        $state.go('tab.workflow-detail', {"detail": detail, "processedFlag": processedFlag})
+      }
+
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
+        scope: $scope
+      }).then(function (modal) {
+        $scope.tsFilterModal = modal;
+      });
+
+      $scope.filterTsInfo = function () { //响应筛选按钮的方法
+        $scope.tsFilterModal.show();
+      };
+
+      $scope.refresh = function () {
+        if (!$scope.fetchDataFlag) {
+
+          $scope.list = [];
+          $scope.$apply();
+          $timeout(function () {
+            if ($scope.listStatus.todo.selected) {
+              getTodoList(true);
+            } else {
+              getDoneList(true);
+            }
+          }, 0);
+        } else {
+          $scope.$broadcast('scroll.refreshComplete');
+        }
+      }
+    }])
+
+  .service('WorkFLowListService', ['hmsHttp',
+    'baseConfig',
+    'hmsPopup',
+    function (hmsHttp,
+              baseConfig,
+              hmsPopup) {
+
+      this.getTodoList = function (flag, success, error) {
+        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list";
+        var params = {'params': {'p_employee_code': window.localStorage.empno, 'p_flag': flag + ''}};
+        hmsHttp.post(url, params).success(function (result) {
+          success(result)
+        }).error(function (response, status) {
+          hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+          error(response);
+        });
+      };
+
+      this.getWorkflowDetail = function (success, workflowId, recordId, submitFlag) {
+        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
+        var params = {
+          "params": {
+            "p_workflow_id": workflowId,
+            "p_instance_id": recordId,
+            "p_employee_code": window.localStorage.empno,
+            "p_submit_flag": submitFlag
+          }
+        };
+        hmsHttp.post(url, params).success(function (data) {
+          success(data);
+        }).error(function (data) {
+        });
+      };
+    }]);
 
 /** Author      : joshua.shi
  *
@@ -5097,7 +4382,6 @@ angular.module('applicationModule')
     '$state',
     'baseConfig',
     'hmsHttp',
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
     'hmsPopup',
     '$ionicHistory',
     function ($scope,
@@ -5247,22 +4531,6 @@ angular.module('applicationModule')
       getServeData();
     }]);
 
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.flybackApply', {
-          url: '/flyback-apply',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/apply/apply.html',
-              controller: 'FlyBackApplyCtrl'
-            }
-          }
-        });
-    }])
-=======
 /**
  * Created by wuxiaocheng on 15/8/26.
  */
@@ -5521,7 +4789,6 @@ angular.module("applicationModule")
                 //dialog.showAlert("I","租房信息 不能为空");
 
                 msg = msg+" 租房信息 不能为空";
->>>>>>> xbr
 
 
             }
@@ -6341,43 +5608,11 @@ angular.module('myApp')
     }]);
 
 angular.module("applicationModule")
-<<<<<<< HEAD
-  .controller('FlyBackQueryCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    '$ionicModal',
-    '$ionicScrollDelegate',
-    'hmsHttp',
-    'flaybackService',
-    'hmsPopup',
-    'hmsHttp',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, $ionicModal, $ionicScrollDelegate, hmsHttp, 
-      flaybackService, hmsPopup, HttpAppService){
-
-        var strDate = flaybackService.getNowFormatDate();
-        var dateTo = new Date(strDate.replace(/\-/g, "/"));
-        var now = new Date(strDate.replace(/\-/g, "/"));
-        var dateFrom = new Date(now.setMonth(now.getMonth() - 1));
-        $scope.param = {
-          "projectCode": "",
-          "projectName": "",
-          "filter": "",
-          "reqDateFrom": dateFrom,//默认最近一个月
-          "reqDateTo": dateTo
-        };
-        $scope.flybackList = [];
-=======
   .controller('accountListController', function ($scope, $http, $q, keepAccount, $state, $ionicLoading, baseConfig) {
 
     $scope.shouldShowDelete = true;
 
     function queryAccountList() {
->>>>>>> xbr
 
       //showMessage("查询列表");
       var list = [];
@@ -8200,12 +7435,6 @@ angular.module("applicationModule")
 });
 
 /**
-<<<<<<< HEAD
- * Created by wolf on 2016/5/21. (_wen.dai_)
- */
-'use strict';
-//应用-timeSheet审批模块-详情
-=======
  * Created by wuxiaocheng on 15/8/26.
  */
 
@@ -8225,19 +7454,10 @@ angular.module("applicationModule")
 //         });
 //     }]);
 
->>>>>>> xbr
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-<<<<<<< HEAD
-        .state('tab.tsApproveDetail', {
-          url: 'application/tsApproveDetail',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
-              controller: 'tsApproveDetailCtrl'
-=======
         .state('tab.acc_main', {
           url: '/acc',
           params: {},
@@ -8245,228 +7465,10 @@ angular.module('myApp')
             'tab-application': {
               templateUrl: 'build/pages/application/expense/acc/accounts.html',
               controller: 'keepAccountController'
->>>>>>> xbr
             }
-          },
-          params: {
-            'employeeNumber': "",
-            'projectId': "",
-            'startDate': "",
-            'endDate': ""
           }
-        })
+        });
     }]);
-<<<<<<< HEAD
-tsApproveModule.controller('tsApproveDetailCtrl', [
-  '$scope',
-  '$state',
-  'baseConfig',
-  '$ionicHistory',
-  '$stateParams',
-  'hmsHttp',
-  'hmsPopup',
-  '$timeout',
-  'ApproveDetailService',
-  function ($scope,
-            $state,
-            baseConfig,
-            $ionicHistory,
-            $stateParams,
-            hmsHttp,
-            hmsPopup,
-            $timeout,
-            ApproveDetailService) {
-
-    /**
-     * init var section
-     */
-    {
-      if(ionic.Platform.isIOS()) {
-        angular.element('.ae-detail-head').css('marginTop','64px');
-        angular.element('#approveDetailContent').css('top','64px');
-      }
-      var selectItem = []; //初始化点击全部条目为false
-      var clickSelectAll = false; //默认没有点击全选
-      $scope.detailActionName = "操作";
-      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
-      $scope.detailInfoArray = {}; //用于接收列表对应数据object
-      $scope.selectArray = [];
-      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
-      var tsApproveDetailParams = {
-        "params": {
-          "p_employee_number": $stateParams.employeeNumber,
-          "p_start_date": $stateParams.startDate.toString(),
-          "p_end_date": $stateParams.endDate.toString(),
-          "p_project_id": $stateParams.projectId
-        }
-      };
-      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
-      var tsActionParams = { //审批拒绝/通过的参数
-        "params": {
-          "p_approve_flag": "AGREE",
-          "p_employee_number": window.localStorage.empno,
-          "p_param_json": ''
-        }
-      };
-      var approveList = { //审批拒绝/通过的子对象
-        "approve_list": []
-      };
-    }
-
-    $scope.$on('$ionicView.enter', function (e) {
-      ApproveDetailService.setRefreshFlag('');
-    });
-
-    $scope.$on('$destroy', function (e) {
-      warn('tsApproveListCtrl.$destroy');
-    });
-
-    hmsPopup.showLoading('加载中...');
-    function getData() {
-      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          $scope.detailInfoArray = response.timesheet_approve_detail_response;
-          if ($scope.detailInfoArray.subsidy_list.length === 0) {
-            ApproveDetailService.setRefreshFlag('refresh-approve-list');
-            $ionicHistory.goBack();
-          }
-        } else {
-          if (response.status === 'E' || response.status == 'e') {
-            hmsPopup.showShortCenterToast("没有相关数据!");
-          } else {
-            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-          }
-        }
-      }).error(function (response, status) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
-      });
-    };
-    getData();
-
-    function __initSelectArray(selectParam) { //初始化选择按钮
-      //先初始化数据操作--
-      $scope.selectArray = [];
-      selectItem = [];
-      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
-        if ('undoSelectAll' == selectParam) {
-          $scope.selectArray.push(false);
-          selectItem.push(false);
-        } else if ('selectedAll' == selectParam) {
-          $scope.selectArray.push(true);
-          selectItem.push(true);
-        }
-      });
-    };
-    __initSelectArray('undoSelectAll');
-
-    $scope.dealDetailInfo = function () {
-      if ($scope.detailActionName == "操作") {
-        $scope.detailActionName = "取消";
-        $scope.showActionBar = true;
-        angular.element('#tsApproveItem').css('paddingLeft', '6%');
-      } else if ($scope.detailActionName == "取消") {
-        $scope.detailActionName = "操作";
-        $scope.showActionBar = false;
-        __initSelectArray('undoSelectAll');
-        angular.element('#tsApproveItem').css('paddingLeft', '0');
-        tsActionParams = { //审批拒绝/通过的参数
-          "params": {
-            "p_approve_flag": "AGREE",
-            "p_employee_number": window.localStorage.empno,
-            "p_param_json": ''
-          }
-        };
-        approveList = {
-          "approve_list": []
-        };
-      }
-    };
-
-    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
-      selectItem[index] = !selectItem[index];
-      var approve = {
-        "p_project_id": $scope.detailInfoArray.project_id,
-        "p_project_person_number": $scope.detailInfoArray.employee_number,
-        "p_start_date": "",
-        "p_end_date": "",
-        "p_record_id": ""
-      };
-      if (selectItem[index]) {
-        $scope.selectArray[index] = true;
-        approve.p_record_id = newLineNumber;
-        approveList.approve_list[index] = approve;
-      } else {
-        $scope.selectArray[index] = false;
-        approveList.approve_list.splice(index, 1, 'delete');
-      }
-    };
-
-    $scope.selectAllDetail = function () { //全选
-      clickSelectAll = !clickSelectAll;
-      if (clickSelectAll) {
-        __initSelectArray('selectedAll');
-        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
-          var approve = {
-            "p_project_id": $scope.detailInfoArray.project_id,
-            "p_project_person_number": $scope.detailInfoArray.employee_number,
-            "p_start_date": "",
-            "p_end_date": "",
-            "p_record_id": ""
-          };
-          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
-          approveList.approve_list.push(approve);
-        }
-        warn(approveList.approve_list);
-      } else {
-        __initSelectArray('undoSelectAll');
-        approveList.approve_list = [];
-      }
-    };
-
-    function deleteSuperfluous() {
-      for (var i = 0; i < approveList.approve_list.length; i++) {
-        if (approveList.approve_list[i] === 'delete') {
-          approveList.approve_list.splice(i, 1);
-          i--;
-        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
-          approveList.approve_list.splice(i, 1);
-          i--;
-        }
-      }
-    };
-
-    $scope.passThroughDetailItem = function () { //通过
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "AGREE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('审批成功！');
-        } else {
-          hmsPopup.showShortCenterToast('审批失败！');
-        }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-=======
      
 angular.module("applicationModule")
   .controller('keepAccountController', function ($scope, keepAccount, $http, $state, $rootScope, $q, hmsPopup) {
@@ -8489,14 +7491,15 @@ angular.module("applicationModule")
 
 
     $scope.openAccountListPage = function () {
-      $state.go("tab.acc_accountList");
+      alert("未完待续");
+      //$state.go("tab.acc_accountList");
 
     };
 
     $scope.openUploadBatchPage = function () {
       //globalNavigator.pushPage(moduleHtmlPath.ACC+'uploadAccount.html', { animation : 'slide' });
-
-      $state.go("tab.acc_uploadAccount");
+      alert("未完待续");
+      //$state.go("tab.acc_uploadAccount");
 
     };
 
@@ -8759,27 +7762,8 @@ angular.module("applicationModule")
       $ionicLoading.show({
         template: 'Loading...',
         duration: 1000
->>>>>>> xbr
       });
-    };
 
-<<<<<<< HEAD
-    $scope.refuseDetailItem = function () { //拒绝
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "REFUSE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('拒绝成功');
-        } else {
-          hmsPopup.showShortCenterToast('拒绝失败！');
-=======
       //Store imagepath in session for future use
       // like to store it in database
       var date = getFormatDate(new Date());
@@ -8835,41 +7819,9 @@ angular.module("applicationModule")
           $scope.removePhoto();
         } else {
           console.log('You are not sure');
->>>>>>> xbr
         }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
       });
-<<<<<<< HEAD
-<<<<<<< HEAD
-    };
-  }]).service('ApproveDetailService', function () {
-  var flag = ''; //刷新上个列表的标识
-  return {
-    setRefreshFlag: function (newFlag) {
-      flag = newFlag;
-    },
-    getRefreshFlag: function () {
-      return flag;
     }
-  }
-});
-=======
-    }])
-=======
-    }
->>>>>>> xbr
 
       // 删除照片
       $scope.removePhoto = function () {
@@ -8894,38 +7846,6 @@ angular.module("applicationModule")
         showMessage(keepAccount.tempPhoto.photo_src);
         var myFolderApp = baseConfig.appRootFile;
 
-<<<<<<< HEAD
-      this.fetchEachDay = function (callback, oneDate) {
-        var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
-        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + ""}};
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取状态错误,请检查网络!');
-        });
-      };
-
-      this.fetchProjectDetailInfo = function (callback, oneDate, projectId) {
-        var url = baseConfig.businessPath + "/timesheet_process/project_change"
-        var params = {
-          'params': {
-            'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + "",
-            'p_project_id': projectId + ""
-          }
-        };
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取项目信息错误,请检查网络!');
-        });
-      };
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-
-=======
         showMessage(myFolderApp + '/' + keepAccount.tempPhoto.photo_name);
         fileSystem.root.getFile(myFolderApp + '/' + keepAccount.tempPhoto.photo_name, null, onGetFileSuccess, onGetFileError);
       }
@@ -9738,27 +8658,11 @@ angular.module("applicationModule")
 
 
 });
->>>>>>> xbr
 
-/**
- * Created by wolf on 2016/5/19.
- * @author: wen.dai@hand-china.com
- *
- */
-'use strict';
-//应用-timeSheet审批模块-列表
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) { 
       $stateProvider
-<<<<<<< HEAD
-        .state('tab.tsApproveList', {
-          url: 'application/tsApproveList',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/list/ts-approve-list.html',
-              controller: 'tsApproveListCtrl'
-=======
         .state('tab.cst_costDetail', {
           url: '/expense/cst/costDetail',
           params: {},
@@ -9767,78 +8671,10 @@ angular.module('myApp')
               templateUrl: 'build/pages/application/expense/cst/costDetail.html',
               controller: 'costDetailController',
               cache: false
->>>>>>> xbr
             }
           }
         });
     }]);
-<<<<<<< HEAD
-<<<<<<< HEAD
-angular.module('tsApproveModule')
-  .controller('tsApproveListCtrl', [
-=======
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('TimeSheetWriteCtrl', [
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicModal',
-    '$ionicScrollDelegate',
-    '$ionicPopup',
-    '$timeout',
-    'TsApproveListService',
-    'hmsPopup',
-    'hmsHttp',
-    'ApproveDetailService',
-    '$ionicPopover',
-    '$cordovaDatePicker',
-    function ($scope,
-              $rootScope,
-              $state,
-              baseConfig,
-              $ionicModal,
-              $ionicScrollDelegate,
-              $ionicPopup,
-              $timeout,
-              TsApproveListService,
-              hmsPopup,
-              hmsHttp,
-              ApproveDetailService,
-              $ionicPopover,
-              $cordovaDatePicker) {
-      /**
-       * initial var section
-       */
-      {
-<<<<<<< HEAD
-        if (ionic.Platform.isIOS()) {
-          angular.element('.custom-head').css('paddingTop', '10px');
-          angular.element('.ts-list-bg').css('paddingTop', '110px');
-=======
-        currentDay: "",
-        approver: "",
-        currentProject: {},
-        currentAddress: {},
-        currentFlyback: {},
-        travelingAllowance: {flag: false, style: unchecked},
-        normalAllowance: {flag: false, style: unchecked},
-        intCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        extCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        description: ""
-      };
-=======
 
 
 angular.module("applicationModule")
@@ -9851,480 +8687,12 @@ angular.module("applicationModule")
     //$scope.currentQueryTypeDesc = loanApply.currentQueryTypeDesc;
 
     $scope.canSubmit = costApply.canSubmit;
->>>>>>> xbr
 
     //$scope.detailData=loanApply.getDataFromTravel(globalNavigator.getCurrentPage().options.travelDataPara);
 
 
     //$scope.canSubmit = loanApply.canSubmit;
 
-<<<<<<< HEAD
-      //加载项目地点画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/addressModal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.addressModal = modal;
-      });
-
-      //加载机票补贴画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/flybackList.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.flybackModal = modal;
-      });
-
-      $scope.selectAddress = function (address) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.address " + angular.toJson(address));
-        }
-        $scope.timesheetDetail.currentAddress = address;
-        $scope.addressModal.hide();
-      };
-
-      $scope.selectFlyback = function (flyback) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.flyback " + angular.toJson(flyback));
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-        }
-        $scope.showProjectName = true; //默认显示项目名称
-        $scope.showRocket = false; //默认不显示小火箭image
-        $scope.showConnectBlock = false; //默认不显示连接块
-        $scope.showDetailArrow = true; //默认显示向右的箭头--go list detail
-        $scope.showLsLoading = false; //loading默认不显示
-        var clickSelectAll = false; //默认没有点击全选
-        $scope.endApproveDate = "";
-        $scope.actionName = "操作";
-        $scope.selectArray = [];
-        $scope.isClickedProject = []; //控制点击选择筛选条目的样式(modal-filter)
-        $scope.selectEndItem = [false, true, false]; //控制点击选择截止日期条目的样式(modal-date)
-        $scope.listInfoArray = {};
-        $scope.personList = [];
-        $scope.projectList = [];
-        $scope.endDateList = [{//记录常用的三个截止日期
-          dateValue: getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, ""),
-          dateCode: getLastMonthDate(new Date())
-        }, {
-          dateValue: getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, ""),
-          dateCode: getCurrentDate(new Date())
-        }, {
-          dateValue: getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, ""),
-          dateCode: getCurrentMonthLastDate(new Date())
-        }];
-        var position = ""; //记录滚动条的位置
-        var selectItem = []; //初始化点击全部条目为false
-        var tsLsUrl = baseConfig.businessPath + "/api_timesheet/get_timesheet_list";
-        var tsProjectPersonListUrl = baseConfig.businessPath + "/api_timesheet/get_project_person_list";
-        var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
-        var tsListParams = { //获取列表的参数
-          "params": {
-            "p_employee_number": window.localStorage.empno, //参考angularjs的localStorange--
-            "p_start_date": "",
-            "p_end_date": "",
-            "p_project_name": "",
-            "p_project_id": "",
-            "p_project_person_number": "",
-            "p_page": 1,
-            "p_page_size": 6
-          }
-        };
-        var tsActionParams = { //审批拒绝/通过的参数
-          "params": {
-            "p_approve_flag": "AGREE",
-            "p_employee_number": window.localStorage.empno,
-            "p_param_json": ''
-          }
-        };
-        var approveList = { //审批拒绝/通过的子对象
-          "approve_list": []
-        };
-        var currentDay = new Date().getDate();
-        if (currentDay <= 10) {
-          tsListParams.params.p_end_date = getLastMonthDate(new Date());
-          $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, "");
-        } else if (currentDay > 10 && currentDay <= 20) {
-          tsListParams.params.p_end_date = getCurrentDate(new Date());
-          $scope.endApproveDate = getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, "");
-        } else if (currentDay > 20) {
-          tsListParams.params.p_end_date = getCurrentMonthLastDate(new Date());
-          $scope.endApproveDate = getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, "");
-        }
-      }
-
-      /**
-       * 立即执行 拉取数据的代码
-       */
-      function initData() {
-        $scope.showLsLoading = true;
-        hmsHttp.post(tsProjectPersonListUrl, tsListParams).success(function (response) {
-          if (hmsHttp.isSuccessfull(response.status)) {
-            $scope.personList = unique_better(response.project_person_list, 'employee_number');
-            $scope.projectList = unique_better(response.project_list, 'project_id');
-          }
-        }).error(function (e) {
-        });
-        $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
-      };
-      initData();
-
-      $scope.$on('$ionicView.enter', function (e) {
-        if (ApproveDetailService.getRefreshFlag() === 'refresh-approve-list') {
-          $scope.tsListRefresh();
-        }
-      });
-
-      $scope.$on('$destroy', function (e) {
-        log('tsApproveListCtrl.$destroy');
-      });
-
-      function __initSelectArray(selectParam) { //初始化选择按钮
-        //先初始化数据操作--
-        $scope.selectArray = [];
-        selectItem = [];
-        angular.forEach($scope.listInfoArray.listArray, function (data, index) {
-          if ('undoSelectAll' == selectParam) {
-            $scope.selectArray.push(false);
-            selectItem.push(false);
-          } else if ('selectedAll' == selectParam) {
-            $scope.selectArray.push(true);
-            selectItem.push(true);
-          }
-        });
-      };
-      __initSelectArray('undoSelectAll');
-
-      $scope.doSelectAction = function () { //header 右上角显示操作按钮
-        if ($scope.actionName == "操作") {
-          $scope.actionName = "取消";
-          $scope.showDetailArrow = false;
-          angular.element('.ts-approve-list-item').css("paddingLeft", "10%");
-        } else if ($scope.actionName == "取消") {
-          $scope.actionName = "操作";
-          $scope.showDetailArrow = true;
-          angular.element('.ts-approve-list-item').css("paddingLeft", "10px");
-          tsActionParams = { //审批拒绝/通过的参数
-            "params": {
-              "p_approve_flag": "AGREE",
-              "p_employee_number": window.localStorage.empno,
-              "p_param_json": ''
-            }
-          };
-          approveList = {
-            "approve_list": []
-          };
-          __initSelectArray('undoSelectAll');
-        }
-      };
-
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-date-modal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.dateModal = modal;
-      });
-
-      $ionicPopover.fromTemplateUrl("endDate.html", {
-        scope: $scope
-      }).then(function (popover) {
-        $scope.endDatePopover = popover;
-      });
-
-      $scope.selectEndDate = function ($event) { //显示截止日期列表界面
-        tsListParams.params.p_end_date = $scope.endApproveDate;
-        if (ionic.Platform.isIOS()) {
-          $scope.endDatePopover.show($event);
-          angular.element('#popover-date2').css('borderBottom', '0px');
-        } else {
-          $scope.dateModal.show();
-        }
-      };
-
-
-      $scope.chooseStartDate = function () {//选择开始日期
-        var myDate = $scope.startDate = new Date();
-        var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
-        var options = {
-          date: previousDate,
-          mode: 'date',
-          titleText: '请选择截止日期',
-          okText: '确定',
-          cancelText: '取消',
-          doneButtonLabel: '确认',
-          cancelButtonLabel: '取消',
-          androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
-          locale: "zh_cn"
-        }
-        $cordovaDatePicker.show(options).then(function (date) {
-          var month = date.getMonth() + 1;
-          var day = date.getDate();
-          var weekday = date.getDay();
-          if (weekday == 0) {
-            $scope.startDate.weekday = "周日";
-          } else if (weekday == 1) {
-            $scope.startDate.weekday = "周一";
-          } else if (weekday == 2) {
-            $scope.startDate.weekday = "周二";
-          } else if (weekday == 3) {
-            $scope.startDate.weekday = "周三";
-          } else if (weekday == 4) {
-            $scope.startDate.weekday = "周四";
-          } else if (weekday == 5) {
-            $scope.startDate.weekday = "周五";
-          } else if (weekday == 6) {
-            $scope.startDate.weekday = "周六";
-          }
-          if (month < 10) {
-            month = "0" + month;
-          }
-          if (day < 10) {
-            day = "0" + day;
-          }
-          $scope.startDate.year = date.getFullYear();
-          $scope.startDate.month = month;
-          $scope.startDate.day = day;
-          $scope.$apply();
-        });
-      };
-      $scope.selectEndDateItem = function (newEndDateCode, newEndDateValue, newIndex) { //选择不同的截止日期
-        $scope.selectEndItem = [];
-        $scope.selectEndItem[newIndex] = true;
-        $scope.endApproveDate = newEndDateValue;
-        tsListParams.params.p_page = 1;
-        tsListParams.params.p_end_date = newEndDateCode;
-        $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
-        if (ionic.Platform.isIOS()) {
-          $scope.endDatePopover.hide();
-        } else {
-          $scope.dateModal.hide();
-        }
-      };
-
-      $scope.cancelDateModal = function () { //取消date modal
-        tsListParams.params.p_end_date = $scope.endApproveDate;
-        $scope.dateModal.hide()
-      };
-
-      $scope.onDrag = function () { //拖拽
-        $scope.showConnectBlock = false;
-      };
-
-      $scope.onDragUp = function () { //向上拖拽
-        $scope.showConnectBlock = true; //显示连接块
-      };
-
-      $scope.watchScroll = function () { //滚动内容时执行的method
-        position = $ionicScrollDelegate.getScrollPosition().top;
-        $scope.$apply(function () {
-          if (position < 0) {
-            $scope.showConnectBlock = false;
-          } else if (position >= 0 && position < 400) { //在顶部时显示连接块
-            $scope.showRocket = false;
-            $scope.showConnectBlock = true;
-          } else if (position >= 400) {
-            $scope.showRocket = true;
-          } else {
-          }
-        });
-      };
-
-      $scope.tsListRefresh = function () { //下拉刷新
-        tsListParams.params.p_page = 1;
-        $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
-      };
-
-      $scope.getAttentionInfo = function (e, newWarnList) {
-        if (!$scope.showDetailArrow) {
-          return;
-        }
-        e.stopPropagation(); //阻止事件冒泡
-        warn(newWarnList);
-        $ionicPopup.show({
-          template: '<div class="warn-attention-icon">' + newWarnList[0].description + '</div>',
-          scope: $scope,
-          buttons: [
-            {
-              text: '<div class="warn-cancel-icon"></div>',
-              type: 'button-clear',
-              onTap: function (e) {
-              }
-            }
-          ]
-        });
-      };
-
-      $scope.goTsLsTop = function () { //返回列表顶部
-        angular.element('#rocket').addClass('ng-hide');
-        $ionicScrollDelegate.scrollTop(true);
-      };
-
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
-        scope: $scope
-      }).then(function (modal) {
-        $scope.tsFilterModal = modal;
-      });
-
-      $scope.filterTsInfo = function () { //响应筛选按钮的方法
-        tsListParams.params.p_project_id = "";
-        tsListParams.params.p_project_person_number = "";
-        $scope.tsFilterModal.show();
-      };
-
-      $scope.goApproveDetail = function (index, newEmployeeNumber, newProjectId, newStartDate, newEndDate) {
-        if ($scope.showDetailArrow) {
-          $state.go('tab.tsApproveDetail', {
-              'employeeNumber': newEmployeeNumber,
-              'projectId': newProjectId,
-              'startDate': newStartDate,
-              'endDate': newEndDate
-            }
-          );
-        } else {
-          selectItem[index] = !selectItem[index];
-          var approve = {
-            "p_project_id": "",
-            "p_project_person_number": "",
-            "p_start_date": "",
-            "p_end_date": "",
-            "p_record_id": ""
-          };
-          if (selectItem[index]) {
-            $scope.selectArray[index] = true;
-            approve.p_project_id = newProjectId;
-            approve.p_project_person_number = newEmployeeNumber;
-            approve.p_start_date = newStartDate;
-            approve.p_end_date = newEndDate;
-            approveList.approve_list[index] = approve;
-          } else {
-            approveList.approve_list.splice(index, 1, 'delete');
-            $scope.selectArray[index] = false;
-          }
-        }
-      };
-
-<<<<<<< HEAD
-      $scope.selectAllList = function () { //全选
-        clickSelectAll = !clickSelectAll;
-        if (clickSelectAll) {
-          for (var i = 0; i < $scope.listInfoArray.listArray.length; i++) {
-            var approve = {
-              "p_project_id": "",
-              "p_project_person_number": "",
-              "p_start_date": "",
-              "p_end_date": "",
-              "p_record_id": ""
-            };
-            approve.p_project_id = $scope.listInfoArray.listArray[i].project_id;
-            approve.p_project_person_number = $scope.listInfoArray.listArray[i].employee_number;
-            approve.p_start_date = $scope.listInfoArray.listArray[i].start_date;
-            approve.p_end_date = $scope.listInfoArray.listArray[i].end_date;
-            approveList.approve_list.push(approve);
-=======
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            hmsPopup.showPopup('提交Timesheet成功');
-            $rootScope.$broadcast('refreshTimesheet', 'parent');
-            $ionicHistory.goBack();
-          } else {
-            hmsPopup.showPopup('提交Timesheet错误,错误原因为');
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-          }
-          __initSelectArray('selectedAll');
-        } else {
-          approveList.approve_list = [];
-          __initSelectArray('undoSelectAll');
-        }
-      };
-
-<<<<<<< HEAD
-      function deleteSuperfluous() {
-        for (var i = 0; i < approveList.approve_list.length; i++) {
-          if (approveList.approve_list[i] === 'delete') {
-            approveList.approve_list.splice(i, 1);
-            i--;
-          } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
-            approveList.approve_list.splice(i, 1);
-            i--;
-          }
-        }
-      };
-      $scope.passThroughListItem = function () { //通过
-        if (approveList.approve_list.length === 0) {
-          hmsPopup.showShortCenterToast('请先选择操作项！');
-          return;
-        }
-        deleteSuperfluous();
-        tsActionParams.params.p_approve_flag = "AGREE";
-        tsActionParams.params.p_param_json = JSON.stringify(approveList);
-        hmsPopup.showLoading("审批中...");
-        hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-          hmsPopup.hideLoading();
-          if (hmsHttp.isSuccessfull(response.status)) {
-            hmsPopup.showShortCenterToast('审批成功！');
-          } else {
-            hmsPopup.showShortCenterToast('审批失败！');
-          }
-          $scope.doSelectAction();
-          $timeout(function () {
-            $scope.tsListRefresh();
-          }, 1000);
-        }).error(function (e) {
-          hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
-          $scope.doSelectAction();
-          $timeout(function () {
-            $scope.tsListRefresh();
-          }, 1000);
-        });
-      };
-
-      $scope.refuseListItem = function () { //拒绝
-        if (approveList.approve_list.length === 0) {
-          hmsPopup.showShortCenterToast('请先选择操作项！');
-          return;
-        }
-        deleteSuperfluous();
-        tsActionParams.params.p_approve_flag = "REFUSE";
-        tsActionParams.params.p_param_json = JSON.stringify(approveList);
-        hmsPopup.showLoading("审批中...");
-        hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-          hmsPopup.hideLoading();
-          if (hmsHttp.isSuccessfull(response.status)) {
-            hmsPopup.showShortCenterToast('拒绝成功！');
-          } else {
-            hmsPopup.showShortCenterToast('拒绝失败！');
-          }
-          $scope.doSelectAction();
-          $timeout(function () {
-            $scope.tsListRefresh();
-          }, 1000);
-        }).error(function (e) {
-          hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
-          $scope.doSelectAction();
-          $timeout(function () {
-            $scope.tsListRefresh();
-          }, 1000);
-        });
-      };
-
-      /**
-       *  筛选modal方法区--
-       */
-      $scope.selectScreening = function (selectParam) {
-        if (selectParam == 'projectName') {
-          $scope.showProjectName = true;
-          angular.element('#project-name').css({'backgroundColor': 'white', 'color': '#4A4A4A'});
-          angular.element('#person-select').css({'backgroundColor': '#fafafa', 'color': '#9b9b9b'});
-        } else if (selectParam == 'personSelect') {
-          $scope.showProjectName = false;
-          angular.element('#person-select').css({'backgroundColor': 'white', 'color': '#4A4A4A'});
-          angular.element('#project-name').css({'backgroundColor': '#fafafa', 'color': '#9b9b9b'});
-=======
-      //从服务器获取请求
-      $timeout(
-        function () {
-          hmsPopup.showLoading('获取timesheet明细数据');
-          TimeSheetService.fetchEachDay(fetchEachDay, $scope.currentDate);
-=======
 
     $scope.detailData = costApply.data;
 
@@ -10375,228 +8743,8 @@ angular.module("applicationModule")
                 //showMessage("请输入金额");
                 checkDataValid = false;
             }
->>>>>>> xbr
         }
-      );
-    }
-  ])
-;
 
-<<<<<<< HEAD
-/**
- * Created by wolf on 2016/5/21. (_wen.dai_)
- */
-'use strict';
-//应用-timeSheet审批模块-详情
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.tsApproveDetail', {
-          url: 'application/tsApproveDetail',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
-              controller: 'tsApproveDetailCtrl'
-            }
-          },
-          params: {
-            'employeeNumber': "",
-            'projectId': "",
-            'startDate': "",
-            'endDate': ""
-          }
-        })
-    }]);
-tsApproveModule.controller('tsApproveDetailCtrl', [
-  '$scope',
-  '$state',
-  'baseConfig',
-  '$ionicHistory',
-  '$stateParams',
-  'hmsHttp',
-  'hmsPopup',
-  '$timeout',
-  'ApproveDetailService',
-  function ($scope,
-            $state,
-            baseConfig,
-            $ionicHistory,
-            $stateParams,
-            hmsHttp,
-            hmsPopup,
-            $timeout,
-            ApproveDetailService) {
-
-    /**
-     * init var section
-     */
-    {
-      if(ionic.Platform.isIOS()) {
-        angular.element('.ae-detail-head').css('marginTop','64px');
-        angular.element('#approveDetailContent').css('top','64px');
-      }
-      var selectItem = []; //初始化点击全部条目为false
-      var clickSelectAll = false; //默认没有点击全选
-      $scope.detailActionName = "操作";
-      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
-      $scope.detailInfoArray = {}; //用于接收列表对应数据object
-      $scope.selectArray = [];
-      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
-      var tsApproveDetailParams = {
-        "params": {
-          "p_employee_number": $stateParams.employeeNumber,
-          "p_start_date": $stateParams.startDate.toString(),
-          "p_end_date": $stateParams.endDate.toString(),
-          "p_project_id": $stateParams.projectId
-        }
-      };
-      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
-      var tsActionParams = { //审批拒绝/通过的参数
-        "params": {
-          "p_approve_flag": "AGREE",
-          "p_employee_number": window.localStorage.empno,
-          "p_param_json": ''
-        }
-      };
-      var approveList = { //审批拒绝/通过的子对象
-        "approve_list": []
-      };
-    }
-
-    $scope.$on('$ionicView.enter', function (e) {
-      ApproveDetailService.setRefreshFlag('');
-    });
-
-    $scope.$on('$destroy', function (e) {
-      warn('tsApproveListCtrl.$destroy');
-    });
-
-    hmsPopup.showLoading('加载中...');
-    function getData() {
-      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          $scope.detailInfoArray = response.timesheet_approve_detail_response;
-          if ($scope.detailInfoArray.subsidy_list.length === 0) {
-            ApproveDetailService.setRefreshFlag('refresh-approve-list');
-            $ionicHistory.goBack();
-          }
-        } else {
-          if (response.status === 'E' || response.status == 'e') {
-            hmsPopup.showShortCenterToast("没有相关数据!");
-          } else {
-            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-          }
-        }
-      }).error(function (response, status) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
-      });
-    };
-    getData();
-
-    function __initSelectArray(selectParam) { //初始化选择按钮
-      //先初始化数据操作--
-      $scope.selectArray = [];
-      selectItem = [];
-      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
-        if ('undoSelectAll' == selectParam) {
-          $scope.selectArray.push(false);
-          selectItem.push(false);
-        } else if ('selectedAll' == selectParam) {
-          $scope.selectArray.push(true);
-          selectItem.push(true);
-        }
-      });
-    };
-    __initSelectArray('undoSelectAll');
-
-    $scope.dealDetailInfo = function () {
-      if ($scope.detailActionName == "操作") {
-        $scope.detailActionName = "取消";
-        $scope.showActionBar = true;
-        angular.element('#tsApproveItem').css('paddingLeft', '6%');
-      } else if ($scope.detailActionName == "取消") {
-        $scope.detailActionName = "操作";
-        $scope.showActionBar = false;
-        __initSelectArray('undoSelectAll');
-        angular.element('#tsApproveItem').css('paddingLeft', '0');
-        tsActionParams = { //审批拒绝/通过的参数
-          "params": {
-            "p_approve_flag": "AGREE",
-            "p_employee_number": window.localStorage.empno,
-            "p_param_json": ''
-          }
-        };
-        approveList = {
-          "approve_list": []
-        };
-      }
-    };
-
-    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
-      selectItem[index] = !selectItem[index];
-      var approve = {
-        "p_project_id": $scope.detailInfoArray.project_id,
-        "p_project_person_number": $scope.detailInfoArray.employee_number,
-        "p_start_date": "",
-        "p_end_date": "",
-        "p_record_id": ""
-      };
-      if (selectItem[index]) {
-        $scope.selectArray[index] = true;
-        approve.p_record_id = newLineNumber;
-        approveList.approve_list[index] = approve;
-      } else {
-        $scope.selectArray[index] = false;
-        approveList.approve_list.splice(index, 1, 'delete');
-      }
-    };
-
-    $scope.selectAllDetail = function () { //全选
-      clickSelectAll = !clickSelectAll;
-      if (clickSelectAll) {
-        __initSelectArray('selectedAll');
-        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
-          var approve = {
-            "p_project_id": $scope.detailInfoArray.project_id,
-            "p_project_person_number": $scope.detailInfoArray.employee_number,
-            "p_start_date": "",
-            "p_end_date": "",
-            "p_record_id": ""
-          };
-          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
-          approveList.approve_list.push(approve);
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-        }
-        warn(approveList.approve_list);
-      } else {
-        __initSelectArray('undoSelectAll');
-        approveList.approve_list = [];
-      }
-    };
-
-<<<<<<< HEAD
-      $scope.selectFilterItem = function (newName, index, newId) { //点击modal单个条目时的响应方法
-        if (newName === 'projectName') {
-          $scope.isClickedProject = [];
-          $scope.isClickedProject[index] = true;
-          tsListParams.params.p_project_id = newId;
-        } else if (newName === 'personSelect') {
-          $scope.isClickedPerson = [];
-          $scope.isClickedPerson[index] = true;
-          tsListParams.params.p_project_person_number = newId;
-=======
-    function deleteSuperfluous() {
-      for (var i = 0; i < approveList.approve_list.length; i++) {
-        if (approveList.approve_list[i] === 'delete') {
-          approveList.approve_list.splice(i, 1);
-          i--;
-        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
-          approveList.approve_list.splice(i, 1);
-          i--;
-=======
         if (checkDataValid == true ) {
             $ionicLoading.show({
                 template: '请等待 ... '
@@ -10640,99 +8788,8 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
                     showMessage(angular.toJson(error));
                 }
             )
->>>>>>> xbr
         }
-      }
-    };
 
-<<<<<<< HEAD
-    $scope.passThroughDetailItem = function () { //通过
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "AGREE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('审批成功！');
-        } else {
-          hmsPopup.showShortCenterToast('审批失败！');
-        }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      });
-    };
-
-    $scope.refuseDetailItem = function () { //拒绝
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "REFUSE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('拒绝成功');
-        } else {
-          hmsPopup.showShortCenterToast('拒绝失败！');
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-        }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      });
-    };
-  }]).service('ApproveDetailService', function () {
-  var flag = ''; //刷新上个列表的标识
-  return {
-    setRefreshFlag: function (newFlag) {
-      flag = newFlag;
-    },
-    getRefreshFlag: function () {
-      return flag;
-    }
-  }
-});
-
-<<<<<<< HEAD
-      function __initModal() { //初始化modal的样式
-        $scope.tsFilterModal.hide();
-        $scope.showProjectName = true;
-        $scope.isClickedProject = [];
-        $scope.isClickedPerson = [];
-        angular.element('#project-name').addClass('active-select');
-        angular.element('#project-name').removeClass('active-off');
-        angular.element('#person-select').removeClass('active-select');
-=======
-=======
 
 
 
@@ -10809,7 +8866,6 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
             $state.go("tab.cst_costTypeItemList");
 
         }
->>>>>>> xbr
 
 
 
@@ -10852,139 +8908,6 @@ angular.module('myApp')
             }
           }
         });
-<<<<<<< HEAD
-    }]);
-angular.module('tsApproveModule')
-  .controller('tsApproveListCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    '$ionicModal',
-    '$ionicScrollDelegate',
-    '$ionicPopup',
-    '$timeout',
-    'TsApproveListService',
-    'hmsPopup',
-    'hmsHttp',
-    'ApproveDetailService',
-    '$ionicPopover',
-    '$cordovaDatePicker',
-    function ($scope,
-              $state,
-              baseConfig,
-              $ionicModal,
-              $ionicScrollDelegate,
-              $ionicPopup,
-              $timeout,
-              TsApproveListService,
-              hmsPopup,
-              hmsHttp,
-              ApproveDetailService,
-              $ionicPopover,
-              $cordovaDatePicker) {
-      /**
-       * initial var section
-       */
-      {
-        if (ionic.Platform.isIOS()) {
-          angular.element('.custom-head').css('paddingTop', '10px');
-          angular.element('.ts-list-bg').css('paddingTop', '110px');
-        }
-        $scope.showProjectName = true; //默认显示项目名称
-        $scope.showRocket = false; //默认不显示小火箭image
-        $scope.showConnectBlock = false; //默认不显示连接块
-        $scope.showDetailArrow = true; //默认显示向右的箭头--go list detail
-        $scope.showLsLoading = false; //loading默认不显示
-        var clickSelectAll = false; //默认没有点击全选
-        $scope.endApproveDate = "";
-        $scope.actionName = "操作";
-        $scope.selectArray = [];
-        $scope.isClickedProject = []; //控制点击选择筛选条目的样式(modal-filter)
-        $scope.listInfoArray = {};
-        $scope.personList = [];
-        $scope.projectList = [];
-        $scope.endDateList = [{//记录常用的三个截止日期
-          dateValue: getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, ""),
-          dateCode: getLastMonthDate(new Date())
-        }, {
-          dateValue: getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, ""),
-          dateCode: getCurrentDate(new Date())
-        }, {
-          dateValue: getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, ""),
-          dateCode: getCurrentMonthLastDate(new Date())
-        }];
-        var position = ""; //记录滚动条的位置
-        var selectItem = []; //初始化点击全部条目为false
-        var tsLsUrl = baseConfig.businessPath + "/api_timesheet/get_timesheet_list";
-        var tsProjectPersonListUrl = baseConfig.businessPath + "/api_timesheet/get_project_person_list";
-        var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
-        var tsListParams = { //获取列表的参数
-          "params": {
-            "p_employee_number": window.localStorage.empno, //参考angularjs的localStorange--
-            "p_start_date": "",
-            "p_end_date": "",
-            "p_project_name": "",
-            "p_project_id": "",
-            "p_project_person_number": "",
-            "p_page": 1,
-            "p_page_size": 6
-          }
-        };
-        var tsActionParams = { //审批拒绝/通过的参数
-          "params": {
-            "p_approve_flag": "AGREE",
-            "p_employee_number": window.localStorage.empno,
-            "p_param_json": ''
-          }
-        };
-        var approveList = { //审批拒绝/通过的子对象
-          "approve_list": []
-        };
-        var currentDay = new Date().getDate();
-        if (currentDay <= 10) {
-          tsListParams.params.p_end_date = getLastMonthDate(new Date());
-          $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, "");
-          $scope.selectEndItem = [true, false, false]; //控制点击选择截止日期条目的样式(modal-date)
-        } else if (currentDay > 10 && currentDay <= 20) {
-          tsListParams.params.p_end_date = getCurrentDate(new Date());
-          $scope.endApproveDate = getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, "");
-          $scope.selectEndItem = [false, true, false];
-        } else if (currentDay > 20) {
-          tsListParams.params.p_end_date = getCurrentMonthLastDate(new Date());
-          $scope.endApproveDate = getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, "");
-          $scope.selectEndItem = [false, false, true];
-        }
-      }
-
-      /**
-       * 立即执行 拉取数据的代码
-       */
-      function initData() {
-        $scope.showLsLoading = true;
-        hmsHttp.post(tsProjectPersonListUrl, tsListParams).success(function (response) {
-          if (hmsHttp.isSuccessfull(response.status)) {
-            $scope.personList = unique_better(response.project_person_list, 'employee_number');
-            $scope.projectList = unique_better(response.project_list, 'project_id');
-          }
-        }).error(function (e) {
-        });
-        $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-      };
-      initData();
-
-<<<<<<< HEAD
-      $scope.cancelFilter = function () { //取消按钮
-        tsListParams.params.p_project_id = "";
-        tsListParams.params.p_project_person_number = "";
-        __initModal();
-=======
-      $scope.$on('$ionicView.enter', function (e) {
-        if (ApproveDetailService.getRefreshFlag() === 'refresh-approve-list') {
-          $scope.tsListRefresh();
-        }
-      });
-=======
   }]);
 
 angular.module("applicationModule")
@@ -10994,7 +8917,6 @@ angular.module("applicationModule")
       new: "NEW",
       submit: "SUBMIT"
     };
->>>>>>> xbr
 
     var currentListStatusType = statusType.new;
 
@@ -11130,43 +9052,6 @@ angular.module("applicationModule")
               };
 
 
-<<<<<<< HEAD
-      $scope.chooseStartDate = function () {//选择开始日期
-        var myDate = $scope.startDate = new Date();
-        var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
-        var options = {
-          date: previousDate,
-          mode: 'date',
-          titleText: '请选择截止日期',
-          okText: '确定',
-          cancelText: '取消',
-          doneButtonLabel: '确认',
-          cancelButtonLabel: '取消',
-          androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
-          locale: "zh_cn"
-        };
-        $cordovaDatePicker.show(options).then(function (date) {
-          var month = date.getMonth() + 1;
-          var day = date.getDate();
-          var weekday = date.getDay();
-          if (weekday == 0) {
-            $scope.startDate.weekday = "周日";
-          } else if (weekday == 1) {
-            $scope.startDate.weekday = "周一";
-          } else if (weekday == 2) {
-            $scope.startDate.weekday = "周二";
-          } else if (weekday == 3) {
-            $scope.startDate.weekday = "周三";
-          } else if (weekday == 4) {
-            $scope.startDate.weekday = "周四";
-          } else if (weekday == 5) {
-            $scope.startDate.weekday = "周五";
-          } else if (weekday == 6) {
-            $scope.startDate.weekday = "周六";
-          }
-          if (month < 10) {
-            month = "0" + month;
-=======
               detailData.push(item);
 
             });
@@ -11175,7 +9060,6 @@ angular.module("applicationModule")
             $scope.applyList = detailData;
             costApply.appLyList = detailData;
 
->>>>>>> xbr
           }
           else {
             dialog.showAlert("E", "查询失败");
@@ -11197,215 +9081,6 @@ angular.module("applicationModule")
 
         });
 
-<<<<<<< HEAD
-      $scope.cancelDateModal = function () { //取消date modal
-        //tsListParams.params.p_end_date = $scope.endApproveDate;//这个地方有小bug
-        $scope.dateModal.hide()
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-      };
-
-      $scope.confirmFilter = function () { //确定按钮
-        __initModal();
-        tsListParams.params.p_page = 1;
-        $scope.showLsLoading = true;
-        $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
-      };
-
-      $scope.clearFilterParams = function () { //响应清空筛选的点击
-        $scope.isClickedProject = [];
-        $scope.isClickedPerson = [];
-        tsListParams.params.p_project_id = "";
-        tsListParams.params.p_project_person_number = "";
-      };
-    }])
-/**
- * @params:
- *  1:scope  //controller的作用域
- *  2:url //请求地址
- *  3:params //请求的参数
- *  4: refurbishParam //控制下拉刷线的参数
- *  5:busy //用于控制下拉刷新的flag
- *  6:totalNumber //获取的数据总数
- *  7:listArray //数据列表
- *  8:loading //数据加载标记
- */
-  .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup',
-    function (hmsHttp, baseConfig, hmsPopup) {
-      var TsApproveListService = function (scope, requestUrl, requestSearchParams, loadingFlag, refurbishParam) {
-        var _self = this;
-        _self.scope = scope;
-        _self.url = requestUrl;
-        _self.params = {};
-        _self.params = requestSearchParams;
-        _self.refurbishParam = refurbishParam;
-        _self.busy = false;
-        _self.totalNumber = 0;
-        _self.listArray = [];
-        _self.loading = loadingFlag;
-        if (_self.refurbishParam === 'clickRefreshEvent') {
-          _self.scope.$broadcast('scroll.infiniteScrollComplete');
-        }
-
-        hmsHttp.post(_self.url, _self.params).success(function (response) {
-          _self.loading = false;
-          try {
-            if (hmsHttp.isSuccessfull(response.status)) {
-              var tsResult = response.timesheet_approve_response;
-              if (baseConfig.debug) {
-                warn('hi,create a new factory!!' + '\n' + jsonFormat());
-              }
-              _self.totalNumber = response.count;
-              try {
-                _self.listArray = _self.listArray.concat(tsResult.result_list);
-              } catch (e) {
-                _self.listArray = [];
-                _self.projectList = [];
-                _self.employeeList = [];
-              }
-              if (response.count == 0) {
-                _self.busy = false;
-                _self.listArray = [];
-              } else if (response.count <= 6) {
-                _self.busy = false;
-              } else {
-                _self.busy = true;
-              }
-              _self.scope.$broadcast('scroll.refreshComplete');
-              _self.scope.$broadcast('scroll.infiniteScrollComplete');
-            } else {
-              _self.busy = false;
-              if (response.status === 'E' || response.status == 'e') {
-                hmsPopup.showShortCenterToast("没有相关数据!");
-              } else {
-                hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-              }
-              _self.scope.$broadcast('scroll.refreshComplete');
-              _self.scope.$broadcast('scroll.infiniteScrollComplete');
-            }
-          } catch (e) {
-          }
-
-        }.bind(_self)).error(function (error) {
-          _self.loading = false;
-          _self.params.params.p_page = 1;
-          _self.busy = false;
-          _self.scope.$broadcast('scroll.refreshComplete');
-          _self.scope.$broadcast('scroll.infiniteScrollComplete');
-          hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
-        }.bind(_self));
-      };
-      TsApproveListService.prototype.nextPage = function () {
-        var _self = this;
-        if (baseConfig.debug) {
-          warn('enter next page!');
-        }
-        if (!_self.busy) {
-          return;
-        }
-        if (_self.busy) {
-          if (_self.refurbishParam === 'clickRefreshEvent') {
-            _self.refurbishParam = '';
-            _self.scope.$broadcast('scroll.infiniteScrollComplete');
-            return;
-          }
-        }
-        _self.busy = true;
-        _self.params.params.p_page++;
-        hmsHttp.post(_self.url, _self.params).success(function (response) {
-          try {
-            if (hmsHttp.isSuccessfull(response.status)) {
-              if (angular.isUndefined(response.timesheet_approve_response.result_list)) {
-                _self.busy = false;
-                hmsPopup.showShortCenterToast("数据已经加载完毕!");
-              } else {
-                var tsResult = response.timesheet_approve_response;
-                _self.listArray = _self.listArray.concat(tsResult.result_list);
-              }
-              _self.scope.$broadcast('scroll.infiniteScrollComplete');
-            } else {
-              if (response.status === 'E') {
-                _self.params.params.p_page--;
-                hmsPopup.showShortCenterToast("数据请求错误,请检查传入参数重新操作!");
-              }
-              _self.scope.$broadcast('scroll.infiniteScrollComplete');
-            }
-          } catch (e) {
-            _self.params.params.p_page--;
-            _self.scope.$broadcast('scroll.infiniteScrollComplete');
-          }
-        }.bind(_self)).error(function (error) {
-          _self.params.params.p_page--;
-          _self.scope.$broadcast('scroll.infiniteScrollComplete');
-          hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-        }.bind(_self));
-      };
-      return TsApproveListService;
-    }]);
-
-/**
- * Created by gusenlin on 16/5/22.
- */ 
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.timesheet', {
-          url: '/timesheet',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet/query/query.html',
-              controller: 'TimeSheetQueryCtrl'
-            }
-          }
-        });
-    }]);
-
-angular.module('applicationModule')
-  .controller('TimeSheetQueryCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig', 
-    '$ionicHistory',
-    '$timeout',
-    '$ionicScrollDelegate',
-    'TimeSheetService',
-    'hmsHttp',
-    function ($scope,
-              $rootScope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              $timeout,
-              $ionicScrollDelegate,
-              TimeSheetService,
-              hmsHttp) {
-
-      var currentTimeSheetPosition = true;
-      $scope.calendar = [];
-      $scope.loadingDataFlag = true;
-
-      //年表
-      $scope.currentYear = '';
-      $scope.currentMonth = '';
-      //月份列表
-      $scope.monthList = [
-        {"selected": false, value: "1"}, {"selected": false, value: "2"}, {"selected": false, value: "3"},
-        {"selected": false, value: "4"}, {"selected": false, value: "5"}, {"selected": false, value: "6"},
-        {"selected": false, value: "7"}, {"selected": false, value: "8"}, {"selected": false, value: "9"},
-        {"selected": false, value: "10"}, {"selected": false, value: "11"}, {"selected": false, value: "12"}
-      ];
-      //周列表
-      $scope.weekTitleList = [
-        '日', '一', '二', '三', '四', '五', '六'
-      ];
-
-      var formatMonth = function (month) {
-        if (parseInt(month) < 10) {
-          return '0' + month;
-        } else {
-          return '' + month;
-=======
 
       $ionicLoading.hide();
       //queryCostApplyList(type);
@@ -11465,70 +9140,10 @@ angular.module('applicationModule')
         },
         function (err) {  // 处理错误 .reject
           showMessage("删除失败...." + angular.toJson(err));
->>>>>>> xbr
         }
       )
     };
 
-<<<<<<< HEAD
-      var initDate = function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        $scope.currentYear = year;
-        $scope.currentMonth = month;
-        angular.forEach($scope.monthList, function (data) {
-          if (data.value === month + '') {
-            data.selected = true;
-            return;
-          }
-        });
-        if (baseConfig.debug) {
-          console.log('initDate.year ' + year);
-          console.log('initDate.month ' + month)
-        }
-
-        var monthParams = year + '' + formatMonth(month);
-        fetchCalendar(monthParams);
-      }
-
-      var init = function () {
-        $scope.calendar = [];
-        for (i = 0; i < 5; i++) {
-          var style_outline = 'each-day';
-          var style_color = 'day-item';
-          var money = '';
-          var project = '';
-          var week = {
-            week: i,
-            list: []
-          };
-          for (j = 0; j < 7; j++) {
-            var item = {
-              day: i + "" + j,
-              style_outline: style_outline,
-              style_color: style_color,
-              money: money,
-              project: project
-            };
-            week.list.push(item);
-          }
-          $scope.calendar.push(week);
-        }
-      };
-
-      $scope.writeTimesheet = function (day) {
-        $state.go('tab.timesheet-write', {day: day});
-      }
-
-      $scope.scrollToFixScreen = function () {
-        if (currentTimeSheetPosition) {
-          $ionicScrollDelegate.scrollTo(0, 400, true);
-          currentTimeSheetPosition = false;
-        } else {
-          $ionicScrollDelegate.scrollTo(0, 0, true);
-          currentTimeSheetPosition = true;
-=======
 
     function groupJSON(jsons) {
       var newJson = [];
@@ -11548,695 +9163,12 @@ angular.module('applicationModule')
             newJson.push(arr);
             break loop1;
           }
->>>>>>> xbr
         }
         newJson.push(arr);
       }
       return newJson;
     }
 
-<<<<<<< HEAD
-      var fetchData = function (result) {
-        var timesheetArray = result.timesheet;
-        var seq = 0;
-        $scope.calendar = [];
-        for (i = 0; i < 5; i++) {
-          var week = {
-            week: i,
-            list: []
-          };
-          for (j = 0; j < 7; j++) {
-            var item;
-            var style_outline = 'each-day';
-            var style_color = 'day-item';
-            var money = '';
-            var project = '';
-            var lockFlag = false;
-
-            if (timesheetArray[seq]) {
-              if (timesheetArray[seq].lockflag == '0') {
-                lockFlag = false;
-              } else {
-                lockFlag = true;
-              }
-              if (timesheetArray[seq].status == 'Empty') {
-                style_outline = 'each-day';
-                style_color = 'day-item';
-              } else if (timesheetArray[seq].status == 'Draft') {
-                style_outline = 'each-day attendance';
-                style_color = 'day-item attendance';
-              } else if (timesheetArray[seq].status == 'Approved') {
-                style_outline = 'each-day approve';
-                style_color = 'day-item approve';
-              } else if (timesheetArray[seq].status == 'Rejected') {
-                style_outline = 'each-day reject';
-                style_color = 'day-item reject';
-              }
-              item = {
-                day: timesheetArray[seq].day.replace('0', ''),
-                style_outline: style_outline,
-                style_color: style_color,
-                money: timesheetArray[seq].allowance,
-                project: timesheetArray[seq].proj,
-                each_day: timesheetArray[seq].each_day,
-                lockFlag: lockFlag
-              };
-            } else {
-              item = {
-                day: '',
-                style_outline: style_outline,
-                style_color: style_color,
-                money: money,
-                project: project,
-                each_day: '',
-                lockFlag: lockFlag
-              };
-            }
-
-            week.list.push(item);
-
-            seq = seq + 1;
-          }
-          $scope.calendar.push(week);
-        }
-      }
-
-      var fetchCalendar = function (monthParams) {
-        init();
-        $scope.loadingDataFlag = true;
-
-        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
-        var params = {
-          "params": {
-            "p_employee": window.localStorage.empno,
-            "p_month": monthParams + "",
-            "p_offset": 0
-          }
-        };
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          fetchData(result);
-          $scope.loadingDataFlag = false;
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function (response, status) {
-          $scope.loadingDataFlag = false;
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(response));
-          }
-        });
-      };
-
-      $scope.getTimeSheet = function (year, month) {
-        angular.forEach($scope.monthList, function (data) {
-          data.selected = false;
-        });
-        month.selected = true;
-        var monthParams = year + '' + formatMonth(month.value);
-        fetchCalendar(monthParams);
-      };
-
-      //从服务器获取请求
-      $timeout(
-        function () {
-          initDate();
-        }, 300
-      );
-
-      $scope.goBack = function () {
-        $ionicHistory.$ionicGoBack();
-      };
-<<<<<<< HEAD
-
-      $rootScope.$on('refreshTimesheet', function(event,data) {
-        if (baseConfig.debug) {
-          console.log('refreshTimesheet', data);
-=======
-    }])
-/**
- * @params:
- *  1:scope  //controller的作用域
- *  2:url //请求地址
- *  3:params //请求的参数
- *  4:refurbishParam //控制下拉刷线的参数
- *  5:busy //用于控制下拉刷新的flag
- *  6:totalNumber //获取的数据总数
- *  7:listArray //数据列表
- *  8:loading //数据加载标记
- *  9:subsidyDaysArray //记录每月的补助天数
- */
-  .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup',
-    function (hmsHttp, baseConfig, hmsPopup) {
-      var TsApproveListService = function (scope, requestUrl, requestSearchParams, loadingFlag, refurbishParam) {
-        var _self = this;
-        _self.scope = scope;
-        _self.url = requestUrl;
-        _self.params = {};
-        _self.params = requestSearchParams;
-        _self.refurbishParam = refurbishParam;
-        _self.busy = false;
-        _self.totalNumber = 0;
-        _self.listArray = [];
-        _self.subsidyDaysArray = [];
-        _self.loading = loadingFlag;
-        if (_self.refurbishParam === 'clickRefreshEvent') {
-          _self.scope.$broadcast('scroll.infiniteScrollComplete');
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-        }
-        $timeout(
-          function () {
-            var monthParams = $scope.currentYear  + '' + formatMonth($scope.currentMonth);
-            fetchCalendar(monthParams);
-          }, 300
-        );
-      });
-
-<<<<<<< HEAD
-      if (baseConfig.debug) {
-        console.log('applicationCtrl.enter');
-      }
-
-      $scope.$on('$ionicView.enter', function (e) {
-        if (baseConfig.debug) {
-          console.log('applicationCtrl.$ionicView.enter');
-        }
-      });
-
-      $scope.$on('$destroy', function (e) {
-        if (baseConfig.debug) {
-          console.log('applicationCtrl.$destroy');
-        }
-      });
-    }])
-
-  .service('TimeSheetService', [
-    'baseConfig',
-    'hmsHttp',
-    'hmsPopup',
-    function (baseConfig,
-              hmsHttp,
-              hmsPopup) {
-      this.fetchCalendar = function (monthParams) {
-
-        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
-        var params = {
-          "params": {
-            "p_employee": window.localStorage.empno,
-            "p_month": monthParams + "",
-            "p_offset": "0"
-          }
-        };
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function (response, status) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(response));
-          }
-        });
-      };
-
-      this.fetchEachDay = function (callback, oneDate) {
-        var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
-        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + ""}};
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取状态错误,请检查网络!');
-        });
-      };
-
-      this.fetchProjectDetailInfo = function (callback, oneDate, projectId) {
-        var url = baseConfig.businessPath + "/timesheet_process/project_change"
-        var params = {
-          'params': {
-            'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + "",
-            'p_project_id': projectId + ""
-          }
-        };
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取项目信息错误,请检查网络!');
-        });
-      };
-
-      this.submitTimesheet = function (callback,params) {
-        var url = baseConfig.businessPath + "/timesheet_process/save_timesheet1";
-        var params = params;
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
-        });
-      }
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.timesheet-write', {
-          url: '/timesheet-write',
-          params: {day: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet/write/write.html',
-              controller: 'TimeSheetWriteCtrl'
-=======
-        hmsHttp.post(_self.url, _self.params).success(function (response) {
-          _self.loading = false;
-          try {
-            if (hmsHttp.isSuccessfull(response.status)) {
-              var tsResult = response.timesheet_approve_response;
-              if (baseConfig.debug) {
-                warn('hi,create a new factory!!' + '\n' + jsonFormat());
-              }
-              _self.totalNumber = response.count;
-              try {
-                _self.listArray = _self.listArray.concat(tsResult.result_list);
-                for (var i = 0; i < _self.listArray.length; i++) {
-                  var subsidys = 0;
-                  if (_self.listArray[i].subsidy_list.length == 0) {
-                    subsidys++;
-                    _self.subsidyDaysArray.push(subsidys);
-                  } else {
-                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
-                      subsidys = parseInt(subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
-                      subsidys++;
-                      _self.subsidyDaysArray.push(subsidys);
-                    }
-                  }
-                }
-              } catch (e) {
-                _self.listArray = [];
-                _self.subsidyDaysArray = [];
-              }
-              if (response.count == 0) {
-                _self.busy = false;
-                _self.listArray = [];
-                hmsPopup.showShortCenterToast("没有相关数据!");
-              } else if (response.count <= 6) {
-                _self.busy = false;
-              } else {
-                _self.busy = true;
-              }
-              _self.scope.$broadcast('scroll.refreshComplete');
-              _self.scope.$broadcast('scroll.infiniteScrollComplete');
-            } else {
-              _self.busy = false;
-              if (response.status === 'E' || response.status == 'e') {
-                hmsPopup.showShortCenterToast("没有相关数据!");
-              } else {
-                hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-              }
-              _self.scope.$broadcast('scroll.refreshComplete');
-              _self.scope.$broadcast('scroll.infiniteScrollComplete');
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('TimeSheetWriteCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    '$ionicHistory',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    function ($scope,
-              $rootScope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              $ionicHistory,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup) {
-
-      var checked = 'ion-ios-checkmark';
-      var unchecked = 'ion-ios-circle-outline'
-      $scope.projectList = [];
-      $scope.addressList = [];
-      $scope.flybackList = [];
-      var editable = 'N';
-      var uncheckedJson = {flag: false, style: unchecked};
-      var checkedJson = {flag: true, style: checked};
-
-
-      //初始化timesheet填写界面字段
-      $scope.timesheetDetail =
-      {
-        currentDay: "",
-        approver: "",
-        currentProject: {},
-        currentAddress: {},
-        currentFlyback: {},
-        travelingAllowance: {flag: false, style: unchecked},
-        normalAllowance: {flag: false, style: unchecked},
-        intCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        extCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        description: ""
-      };
-
-      if (baseConfig.debug) {
-        console.log('$stateParams.day ' + angular.toJson($stateParams.day));
-      }
-
-      $scope.currentDate = $stateParams.day.each_day;
-
-      //加载项目画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/projectModal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.projectModal = modal;
-      });
-
-      //加载项目地点画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/addressModal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.addressModal = modal;
-      });
-
-      //加载机票补贴画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/flybackList.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.flybackModal = modal;
-      });
-
-      $scope.selectAddress = function (address) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.address " + angular.toJson(address));
-        }
-        $scope.timesheetDetail.currentAddress = address;
-        $scope.addressModal.hide();
-      };
-
-      $scope.selectFlyback = function (flyback) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.flyback " + angular.toJson(flyback));
-        }
-        $scope.timesheetDetail.currentFlyback = flyback;
-        $scope.flybackModal.hide();
-      };
-
-      $scope.selectProject = function (project) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.project " + angular.toJson(project));
-        }
-<<<<<<< HEAD
-        $scope.timesheetDetail.currentProject = project;
-        $scope.projectModal.hide();
-
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            $scope.addressList = result.projaddress;
-            $scope.flybackList = result.flyback;
-            $scope.timesheetDetail.approver = result.approver;
-            $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
-            $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
-            if (result.projaddress[0]) {
-              $scope.timesheetDetail.currentAddress = result.projaddress[0];
-=======
-        _self.busy = true;
-        _self.params.params.p_page++;
-        hmsHttp.post(_self.url, _self.params).success(function (response) {
-          try {
-            if (hmsHttp.isSuccessfull(response.status)) {
-              if (angular.isUndefined(response.timesheet_approve_response.result_list)) {
-                _self.busy = false;
-                hmsPopup.showShortCenterToast("数据已经加载完毕!");
-              } else {
-                var tsResult = response.timesheet_approve_response;
-                _self.listArray = _self.listArray.concat(tsResult.result_list);
-                for (var i = (_self.params.params.p_page - 1) * 6; i < _self.listArray.length; i++) {
-                  var new_subsidys = 0;
-                  if (_self.listArray[i].subsidy_list.length == 0) {
-                    new_subsidys++;
-                    _self.subsidyDaysArray.push(new_subsidys);
-                  } else {
-                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
-                      new_subsidys = parseInt(new_subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
-                      new_subsidys++;
-                      _self.subsidyDaysArray.push(new_subsidys);
-                    }
-                  }
-                }
-              }
-              _self.scope.$broadcast('scroll.infiniteScrollComplete');
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-            } else {
-              $scope.timesheetDetail.currentAddress = {"selected_flag": "Y", "address_id": "0", "address_name": "缺省地点"};
-            }
-            if (result.flyback[0]) {
-              $scope.timesheetDetail.currentFlyback = result.flyback[0];
-            } else {
-              $scope.timesheetDetail.currentFlyback = {"fly_select": "Y", "fly_name": "无flyback", "fly_id": "-1"};
-            }
-          } else {
-            hmsPopup.showPopup('获取项目信息错误,请检查');
-          }
-        }
-        $timeout(function () {
-          hmsPopup.showLoading('获取项目信息中');
-          TimeSheetService.fetchProjectDetailInfo(success, $scope.currentDate, project.project_id)
-        });
-      };
-<<<<<<< HEAD
-
-      $scope.showProjectModal = function () {
-        $scope.projectModal.show();
-      };
-      $scope.hideProjectModal = function () {
-        $scope.projectModal.hide();
-      };
-
-      $scope.showFlybackModal = function () {
-        $scope.flybackModal.show();
-      };
-      $scope.hideFlybackModal = function () {
-        $scope.flybackModal.hide();
-      };
-
-      $scope.showAddressModal = function () {
-        $scope.addressModal.show();
-      };
-      $scope.hideAddressModal = function () {
-        $scope.addressModal.hide();
-      };
-
-      var fetchEachDay = function (result) {
-        hmsPopup.hideLoading();
-        if (result.status == 'S') {
-          var projectList = result.project;
-          var flybackList = result.flyback;
-          var addressList = result.projaddress;
-
-          if (baseConfig.debug) {
-            console.log('fetchEachDay result.every_day ' + angular.toJson(result.every_day));
-          }
-
-          //判断是否可编辑 // add by ciwei
-          if (result.every_day.holiday == 'Y') {
-            editable = 'Y';
-          } else if (result.every_day.holiday == 'N') {
-            editable = 'N';
-          }
-
-          if (result.every_day.offbase == '1') {
-            $scope.timesheetDetail.travelingAllowance = checkedJson;
-          } else {
-            $scope.timesheetDetail.travelingAllowance = uncheckedJson;
-          }
-          if (result.every_day.base == 'Y') {
-            $scope.timesheetDetail.normalAllowance = checkedJson;
-          } else {
-            $scope.timesheetDetail.normalAllowance = uncheckedJson;
-          }
-
-          //判断内外部计费是否被选中
-          if (result.every_day.internalcharge == '1') {
-            $scope.timesheetDetail.intCharge = checkedJson;
-          } else {
-            $scope.timesheetDetail.intCharge = uncheckedJson;
-          }
-          if (result.every_day.externalcharge == '1') {
-            $scope.timesheetDetail.extCharge = checkedJson;
-          } else {
-            $scope.timesheetDetail.extCharge = uncheckedJson;
-          }
-
-          $scope.timesheetDetail.currentDay = result.every_day.every_day;
-          $scope.timesheetDetail.approver = result.every_day.approver;
-          $scope.timesheetDetail.description = result.every_day.descrpt;
-          $scope.timesheetDetail.allowance = result.every_day.allowance;
-
-          angular.forEach(projectList, function (data) {
-            if (data.selected_flag === 'Y') {
-              $scope.timesheetDetail.currentProject = data;
-              return;
-            }
-          });
-          angular.forEach(addressList, function (data) {
-            if (data.selected_flag === 'Y') {
-              $scope.timesheetDetail.currentAddress = data;
-              return;
-            }
-          });
-          angular.forEach(flybackList, function (data) {
-            if (data.fly_select === 'Y') {
-              $scope.timesheetDetail.currentFlyback = data;
-              return;
-            }
-          });
-
-          $scope.projectList = projectList;
-          $scope.addressList = addressList;
-          $scope.flybackList = flybackList;
-        }
-        else {
-          hmsPopup.showPopup('获取timesheet错误,错误原因为');
-        }
-      };
-
-      $scope.checkBoxChanged = function (item, type) {
-        console.log('$scope.checkBoxChanged item ' + angular.toJson(item));
-        if (editable == "N" && type == 'charging') {
-          return;
-        }
-        if (item.flag) {
-          item.flag = false;
-          item.style = unchecked;
-        } else {
-          item.flag = true;
-          item.style = checked;
-        }
-        if (type == 'travelingAllowance' && $scope.timesheetDetail.travelingAllowance.flag) {
-          $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
-        }
-        if (type == 'normalAllowance' && $scope.timesheetDetail.normalAllowance.flag) {
-          $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
-        }
-      };
-
-      $scope.submitTimesheet = function (timesheetDetail) {
-        if (baseConfig.debug) {
-          console.log('timesheetDetail ' + angular.toJson(timesheetDetail));
-        }
-
-        var employee = window.localStorage.empno;
-        var currentDate = $scope.currentDate;
-        var projectId = $scope.timesheetDetail.currentProject.project_id;
-        var description = '';
-        var offBaseFlag = '';
-        var baseFlag = '';
-        var extCharge = '';
-        var intCharge = '';
-        var addressId = $scope.timesheetDetail.currentAddress.address_id;
-        var flybackId = $scope.timesheetDetail.currentFlyback.fly_id;
-
-        //内外部计费
-        if ($scope.timesheetDetail.extCharge.flag) {
-          extCharge = 1;
-        } else {
-          extCharge = 0;
-        }
-        if ($scope.timesheetDetail.intCharge.flag) {
-          intCharge = 1;
-        } else {
-          intCharge = 0;
-        }
-        if ($scope.timesheetDetail.travelingAllowance.flag) {
-          offBaseFlag = 1;
-        } else {
-          offBaseFlag = 0;
-        }
-        if ($scope.timesheetDetail.normalAllowance.flag) {
-          baseFlag = 1;
-        } else {
-          baseFlag = 0;
-        }
-
-        description = $scope.timesheetDetail.description.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
-
-        var params = {
-          "params": {
-            "p_employee": employee + "",
-            "p_date": currentDate + "",
-            "p_project": projectId + "",
-            "p_description": description + "",
-            "p_offbase_flag": offBaseFlag + "",
-            "p_base_flag": baseFlag + "",
-            "p_ext_charge": extCharge + "",
-            "p_int_charge": intCharge + "",
-            "p_address": addressId + "",
-            "p_flyback": flybackId + ""
-          }
-        };
-
-        if (baseConfig.debug) {
-          console.log('submitTimesheet.params ' + angular.toJson(params));
-        }
-
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            hmsPopup.showPopup('提交Timesheet成功');
-            $rootScope.$broadcast('refreshTimesheet', 'parent');
-            $ionicHistory.goBack();
-          } else {
-            hmsPopup.showPopup('提交Timesheet错误,错误原因为');
-          }
-        }
-        hmsPopup.showLoading('提交数据中');
-        TimeSheetService.submitTimesheet(success, params)
-      };
-
-      //从服务器获取请求
-      $timeout(
-        function () {
-          hmsPopup.showLoading('获取timesheet明细数据');
-          TimeSheetService.fetchEachDay(fetchEachDay, $scope.currentDate);
-        }
-      );
-    }
-  ])
-;
-=======
-      return TsApproveListService;
-    }]);
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-=======
 
     /**************
      *
@@ -14855,247 +11787,6 @@ angular.module("applicationModule").controller('reportTypeController', function(
 
 angular.module('myApp')
   .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.flybackApply', {
-          url: '/flyback-apply',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/apply/apply.html',
-              controller: 'FlyBackApplyCtrl'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('FlyBackApplyCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    'hmsHttp',
-    '$ionicModal',
-    'flaybackService',
-    'hmsPopup',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, HttpAppService, $ionicModal, fbService,
-      Prompter){
-      $scope.viewtitle = "机票申请";
-      $scope.pageParam = fbService.getPageStatusCreate();  //JSON.parse($stateParams.param);
-      console.log(" $scope.pageParam =" + $scope.pageParam);
-      $scope.canEdit = $scope.pageParam.canEdit;// 页面是否可编辑
-      var dataSource = $scope.pageParam.dataSource;//页面数据来源
-
-      fbService.setLines($scope.flybacklines);
-      //数据
-      function init() {
-        if (dataSource == "create") {
-          $scope.flybackHeader = {
-            "applyId": "",
-            "projName": "",
-            "projCode": ""
-          };
-          fbService.clearLines();
-          $scope.flybacklines = fbService.getLines();
-        } else if (dataSource == "query") {
-          var applyId = $scope.pageParam.applyId;
-          Prompter.showLoading("Loading...");
-          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_detail";
-          var paramValueList = '{"params":{"p_apply_id":"' + applyId + '"}}';
-          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-            console.log("get_flyback_detail =" + angular.toJson(response));
-            if (response.status == "S") {
-              $scope.flybackHeader = response["flybackHeader"];
-              $scope.flybacklines = response["flybacklines"];
-              fbService.setLines($scope.flybacklines);
-              Prompter.hideLoading("");
-            } else {
-              console.log("获取机票申请信息失败：" + response.returnMsg);
-              Prompter.hideLoading("");
-            }
-          }).error(function (response, status) {
-            console.log("HttpAppService error ");
-            Prompter.hideLoading("");
-          });
-        }
-      }
-
-      init();
-
-      //
-      $scope.$on("$ionicView.enter", function () {
-        console.log("fbService.getLines()");
-        $scope.flybacklines = fbService.getLines();
-        console.log(angular.toJson($scope.flybacklines));
-        $scope.$apply();
-      });
-
-
-      // 获取值列表数据
-      if ($scope.canEdit) {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list";
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          if (response.status == "S") {
-            $scope.projectList = response.projectList;
-            fbService.setTicketTypeList(response.ticketTypeList);// 订票类型
-            fbService.setRouteTypeList(response.routeTypeList);//行程类别
-            fbService.setPassenger(response.passengerList);//乘机人列表
-            fbService.setPassenger(response.passenger);//默认乘机人
-            fbService.setCertification(response.certification);//默认身份证
-            Prompter.hideLoading("");
-          } else {
-            console.log("获取值列表失败：" + response.returnMsg);
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      }
-
-      // 项目值列表
-      $ionicModal.fromTemplateUrl('build/pages/application/flyback/apply/model/project-modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        $scope.modal = modal
-      });
-      $scope.openProjectList = function () {
-        $scope.modal.show();
-      };
-      $scope.closeModal = function (proj) {
-        $scope.modal.hide();
-        //若更换项目则清空订票行
-        if (proj !== undefined) {
-          if ((typeof($scope.flybackHeader.projCode) !== "undefined") && ($scope.flybackHeader.projCode !== null)) {
-            if ($scope.flybackHeader.projCode !== proj.value) {
-              $scope.flybacklines = [];
-              fbService.clearLines();
-            }
-          }
-          $scope.flybackHeader.projName = proj.name;
-          $scope.flybackHeader.projCode = proj.value;
-          fbService.setProjName($scope.flybackHeader.projName);
-          fbService.setProjCode($scope.flybackHeader.projCode);
-        }
-      };
-      $scope.$on('$destroy', function () {
-        $scope.modal.remove();
-      });
-
-
-      $scope.goDetail = function (detail, index) {
-        var param = {
-          "canEdit": $scope.canEdit,
-          "dataSource": dataSource,
-          "status": "update",
-          "detail": detail,
-          "index": index,
-          "applyId": $scope.flybackHeader.applyId
-        };
-        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
-      };
-
-    //添加更多订票信息
-      $scope.addFlightInfo = function () {
-        fbService.setProjName($scope.flybackHeader.projName);
-        fbService.setProjCode($scope.flybackHeader.projCode);
-        var param = {"canEdit": $scope.canEdit, "status": "new"};
-        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
-      };
-    //保存 baseConfig.businessPath   baseConfig.businessPath
-      $scope.save = function () {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/save_flyback";
-        var jsonData = JSON.stringify($scope.flybacklines);
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
-          + '","p_apply_id":"' + $scope.flybackHeader.applyId
-          + '","p_project_code":"' + $scope.flybackHeader.projCode
-          + '","p_fb_lines":' + jsonData + '}}';
-        console.log(paramValueList);
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          console.log("save_flyback = " + angular.toJson(response));
-          if (response.status == "S") {
-            $scope.flybackHeader.applyId = response["applyId"];
-            $scope.flybacklines = response["flybackLines"];
-            fbService.setLines($scope.flybacklines);
-            Prompter.hideLoading("");
-            Prompter.showPopup("保存成功!");
-          } else {
-            console.log("保存失败：" + response["returnMsg"]);
-            Prompter.hideLoading("");
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      };
-    //提交
-      $scope.submit = function () {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/flyback_submit";
-        var jsonData = JSON.stringify($scope.flybacklines);
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
-          + '","p_apply_id":"' + $scope.flybackHeader.applyId
-          + '","p_project_code":"' + $scope.flybackHeader.projCode
-          + '","p_fb_lines":' + jsonData + '}}';
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          console.log("flyback_submit = " + angular.toJson(response));
-          if (response.status == "S") {
-            Prompter.hideLoading("");
-            Prompter.showPopup("提交成功!");
-            $scope.canEdit = false;
-          } else {
-            Prompter.hideLoading("");
-            Prompter.showPopup("提交失败：" + response["returnMsg"]);
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      };
-
-      // 删除fyback
-      $scope.deleteFB = function () {
-        console.log(angular.toJson($scope.flybackHeader));
-        if ($scope.flybackHeader.applyId == "") {
-          $state.go("tab.flyback");
-        } else {
-          if ($scope.canEdit) {
-            Prompter.showLoading("Loading...");
-            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
-            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + $scope.flybackHeader.applyId + '"}}';
-            console.log(paramValueList);
-            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-              if (response.status == "S") {
-                Prompter.hideLoading("");
-                Prompter.showPopup("删除成功!");
-                $state.go("tab.flybackQuery");
-                dataSource = "create";
-                init();
-              } else {
-                console.log("删除失败：" + response.returnMsg);
-                Prompter.hideLoading("");
-                Prompter.showPopup("删除失败,请重新查询后再操作!");
-              }
-            }).error(function (response, status) {
-              console.log("HttpAppService error ");
-              Prompter.hideLoading("");
-            });
-          } else {
-            Prompter.showPopup("已提交数据无法删除!");
-          }
-
-        }
-      }
-    }]);
-angular.module('myApp')
-  .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
         .state('tab.flybackDetail', {
@@ -15461,6 +12152,286 @@ angular.module("applicationModule")
     }]);
 angular.module('myApp')
   .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.flybackApply', {
+          url: '/flyback-apply',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/apply/apply.html',
+              controller: 'FlyBackApplyCtrl'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('FlyBackApplyCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    'hmsHttp',
+    '$ionicModal',
+    'flaybackService',
+    'hmsPopup',
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+      $timeout, HttpAppService, $ionicModal, fbService,
+      Prompter){
+      $scope.viewtitle = "机票申请";
+      $scope.pageParam = fbService.getPageStatusCreate();  //JSON.parse($stateParams.param);
+      console.log(" $scope.pageParam =" + $scope.pageParam);
+      $scope.canEdit = $scope.pageParam.canEdit;// 页面是否可编辑
+      var dataSource = $scope.pageParam.dataSource;//页面数据来源
+
+      fbService.setLines($scope.flybacklines);
+      //数据
+      function init() {
+        if (dataSource == "create") {
+          $scope.flybackHeader = {
+            "applyId": "",
+            "projName": "",
+            "projCode": ""
+          };
+          fbService.clearLines();
+          $scope.flybacklines = fbService.getLines();
+        } else if (dataSource == "query") {
+          var applyId = $scope.pageParam.applyId;
+          Prompter.showLoading("Loading...");
+          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_detail";
+          var paramValueList = '{"params":{"p_apply_id":"' + applyId + '"}}';
+          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+            console.log("get_flyback_detail =" + angular.toJson(response));
+            if (response.status == "S") {
+              $scope.flybackHeader = response["flybackHeader"];
+              $scope.flybacklines = response["flybacklines"];
+              fbService.setLines($scope.flybacklines);
+              Prompter.hideLoading("");
+            } else {
+              console.log("获取机票申请信息失败：" + response.returnMsg);
+              Prompter.hideLoading("");
+            }
+          }).error(function (response, status) {
+            console.log("HttpAppService error ");
+            Prompter.hideLoading("");
+          });
+        }
+      }
+
+      init();
+
+      //
+      $scope.$on("$ionicView.enter", function () {
+        console.log("fbService.getLines()");
+        $scope.flybacklines = fbService.getLines();
+        console.log(angular.toJson($scope.flybacklines));
+        $scope.$apply();
+      });
+
+
+      // 获取值列表数据
+      if ($scope.canEdit) {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list";
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          if (response.status == "S") {
+            $scope.projectList = response.projectList;
+            fbService.setTicketTypeList(response.ticketTypeList);// 订票类型
+            fbService.setRouteTypeList(response.routeTypeList);//行程类别
+            fbService.setPassenger(response.passengerList);//乘机人列表
+            fbService.setPassenger(response.passenger);//默认乘机人
+            fbService.setCertification(response.certification);//默认身份证
+            Prompter.hideLoading("");
+          } else {
+            console.log("获取值列表失败：" + response.returnMsg);
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      }
+
+      // 项目值列表
+      $ionicModal.fromTemplateUrl('build/pages/application/flyback/apply/model/project-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function (modal) {
+        $scope.modal = modal
+      });
+      $scope.openProjectList = function () {
+        $scope.modal.show();
+      };
+      $scope.closeModal = function (proj) {
+        $scope.modal.hide();
+        //若更换项目则清空订票行
+        if (proj !== undefined) {
+          if ((typeof($scope.flybackHeader.projCode) !== "undefined") && ($scope.flybackHeader.projCode !== null)) {
+            if ($scope.flybackHeader.projCode !== proj.value) {
+              $scope.flybacklines = [];
+              fbService.clearLines();
+            }
+          }
+          $scope.flybackHeader.projName = proj.name;
+          $scope.flybackHeader.projCode = proj.value;
+          fbService.setProjName($scope.flybackHeader.projName);
+          fbService.setProjCode($scope.flybackHeader.projCode);
+        }
+      };
+      $scope.$on('$destroy', function () {
+        $scope.modal.remove();
+      });
+
+
+      $scope.goDetail = function (detail, index) {
+        var param = {
+          "canEdit": $scope.canEdit,
+          "dataSource": dataSource,
+          "status": "update",
+          "detail": detail,
+          "index": index,
+          "applyId": $scope.flybackHeader.applyId
+        };
+        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
+      };
+
+    //添加更多订票信息
+      $scope.addFlightInfo = function () {
+        fbService.setProjName($scope.flybackHeader.projName);
+        fbService.setProjCode($scope.flybackHeader.projCode);
+        var param = {"canEdit": $scope.canEdit, "status": "new"};
+        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
+      };
+    //保存 baseConfig.businessPath   baseConfig.businessPath
+      $scope.save = function () {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/save_flyback";
+        var jsonData = JSON.stringify($scope.flybacklines);
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
+          + '","p_apply_id":"' + $scope.flybackHeader.applyId
+          + '","p_project_code":"' + $scope.flybackHeader.projCode
+          + '","p_fb_lines":' + jsonData + '}}';
+        console.log(paramValueList);
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          console.log("save_flyback = " + angular.toJson(response));
+          if (response.status == "S") {
+            $scope.flybackHeader.applyId = response["applyId"];
+            $scope.flybacklines = response["flybackLines"];
+            fbService.setLines($scope.flybacklines);
+            Prompter.hideLoading("");
+            Prompter.showPopup("保存成功!");
+          } else {
+            console.log("保存失败：" + response["returnMsg"]);
+            Prompter.hideLoading("");
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      };
+    //提交
+      $scope.submit = function () {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/flyback_submit";
+        var jsonData = JSON.stringify($scope.flybacklines);
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
+          + '","p_apply_id":"' + $scope.flybackHeader.applyId
+          + '","p_project_code":"' + $scope.flybackHeader.projCode
+          + '","p_fb_lines":' + jsonData + '}}';
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          console.log("flyback_submit = " + angular.toJson(response));
+          if (response.status == "S") {
+            Prompter.hideLoading("");
+            Prompter.showPopup("提交成功!");
+            $scope.canEdit = false;
+          } else {
+            Prompter.hideLoading("");
+            Prompter.showPopup("提交失败：" + response["returnMsg"]);
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      };
+
+      // 删除fyback
+      $scope.deleteFB = function () {
+        console.log(angular.toJson($scope.flybackHeader));
+        if ($scope.flybackHeader.applyId == "") {
+          $state.go("tab.flyback");
+        } else {
+          if ($scope.canEdit) {
+            Prompter.showLoading("Loading...");
+            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
+            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + $scope.flybackHeader.applyId + '"}}';
+            console.log(paramValueList);
+            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+              if (response.status == "S") {
+                Prompter.hideLoading("");
+                Prompter.showPopup("删除成功!");
+                $state.go("tab.flybackQuery");
+                dataSource = "create";
+                init();
+              } else {
+                console.log("删除失败：" + response.returnMsg);
+                Prompter.hideLoading("");
+                Prompter.showPopup("删除失败,请重新查询后再操作!");
+              }
+            }).error(function (response, status) {
+              console.log("HttpAppService error ");
+              Prompter.hideLoading("");
+            });
+          } else {
+            Prompter.showPopup("已提交数据无法删除!");
+          }
+
+        }
+      }
+    }]);
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.flyback', { 
+          url: '/flyback-main',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/main/main.html',
+              controller: 'FlyBackMainCtrl'
+            }
+          }
+        });
+    }])
+
+angular.module("applicationModule")
+  .controller('FlyBackMainCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    'hmsHttp',
+    'flaybackService',
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+      $timeout, hmsHttp, fbService){
+
+        $scope.createFlightBook = function(){
+          var param = {"canEdit": true, "dataSource": "create"};
+          fbService.setPageStatusCreate(param);
+          $state.go("tab.flybackApply");
+        };
+        $scope.queryFlightBook = function(){
+          $state.go("tab.flybackQuery");
+        };
+
+    }]);
+angular.module('myApp')
+  .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
         .state('tab.flybackQuery', {
@@ -15630,385 +12601,6 @@ angular.module("applicationModule")
         }
 
     }]);
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.flyback', { 
-          url: '/flyback-main',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/main/main.html',
-              controller: 'FlyBackMainCtrl'
-            }
-          }
-        });
-    }])
-
-angular.module("applicationModule")
-  .controller('FlyBackMainCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    'hmsHttp',
-    'flaybackService',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, hmsHttp, fbService){
-
-        $scope.createFlightBook = function(){
-          var param = {"canEdit": true, "dataSource": "create"};
-          fbService.setPageStatusCreate(param);
-          $state.go("tab.flybackApply");
-        };
-        $scope.queryFlightBook = function(){
-          $state.go("tab.flybackQuery");
-        };
-
-    }]);
-/**
- * Created by gusenlin on 16/5/22.
- */ 
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.timesheet', {
-          url: '/timesheet',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet/query/query.html',
-              controller: 'TimeSheetQueryCtrl'
-            }
-          }
-        });
-    }]);
-
-angular.module('applicationModule')
-  .controller('TimeSheetQueryCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig', 
-    '$ionicHistory',
-    '$timeout',
-    '$ionicScrollDelegate',
-    'TimeSheetService',
-    'hmsHttp',
-    function ($scope,
-              $rootScope,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              $timeout,
-              $ionicScrollDelegate,
-              TimeSheetService,
-              hmsHttp) {
-
-      var currentTimeSheetPosition = true;
-      $scope.calendar = [];
-      $scope.loadingDataFlag = true;
-
-      //年表
-      $scope.currentYear = '';
-      $scope.currentMonth = '';
-      //月份列表
-      $scope.monthList = [
-        {"selected": false, value: "1"}, {"selected": false, value: "2"}, {"selected": false, value: "3"},
-        {"selected": false, value: "4"}, {"selected": false, value: "5"}, {"selected": false, value: "6"},
-        {"selected": false, value: "7"}, {"selected": false, value: "8"}, {"selected": false, value: "9"},
-        {"selected": false, value: "10"}, {"selected": false, value: "11"}, {"selected": false, value: "12"}
-      ];
-      //周列表
-      $scope.weekTitleList = [
-        '日', '一', '二', '三', '四', '五', '六'
-      ];
-
-      var formatMonth = function (month) {
-        if (parseInt(month) < 10) {
-          return '0' + month;
-        } else {
-          return '' + month;
-        }
-      };
-
-      var initDate = function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        $scope.currentYear = year;
-        $scope.currentMonth = month;
-        angular.forEach($scope.monthList, function (data) {
-          if (data.value === month + '') {
-            data.selected = true;
-            return;
-          }
-        });
-        if (baseConfig.debug) {
-          console.log('initDate.year ' + year);
-          console.log('initDate.month ' + month)
-        }
-
-        var monthParams = year + '' + formatMonth(month);
-        fetchCalendar(monthParams);
-      }
-
-      var init = function () {
-        $scope.calendar = [];
-        for (i = 0; i < 5; i++) {
-          var style_outline = 'each-day';
-          var style_color = 'day-item';
-          var money = '';
-          var project = '';
-          var week = {
-            week: i,
-            list: []
-          };
-          for (j = 0; j < 7; j++) {
-            var item = {
-              day: i + "" + j,
-              style_outline: style_outline,
-              style_color: style_color,
-              money: money,
-              project: project
-            };
-            week.list.push(item);
-          }
-          $scope.calendar.push(week);
-        }
-      };
-
-      $scope.writeTimesheet = function (day) {
-        $state.go('tab.timesheet-write', {day: day});
-      }
-
-      $scope.scrollToFixScreen = function () {
-        if (currentTimeSheetPosition) {
-          $ionicScrollDelegate.scrollTo(0, 400, true);
-          currentTimeSheetPosition = false;
-        } else {
-          $ionicScrollDelegate.scrollTo(0, 0, true);
-          currentTimeSheetPosition = true;
-        }
-      };
-
-      var fetchData = function (result) {
-        var timesheetArray = result.timesheet;
-        var seq = 0;
-        $scope.calendar = [];
-        for (i = 0; i < 5; i++) {
-          var week = {
-            week: i,
-            list: []
-          };
-          for (j = 0; j < 7; j++) {
-            var item;
-            var style_outline = 'each-day';
-            var style_color = 'day-item';
-            var money = '';
-            var project = '';
-            var lockFlag = false;
-
-            if (timesheetArray[seq]) {
-              if (timesheetArray[seq].lockflag == '0') {
-                lockFlag = false;
-              } else {
-                lockFlag = true;
-              }
-              if (timesheetArray[seq].status == 'Empty') {
-                style_outline = 'each-day';
-                style_color = 'day-item';
-              } else if (timesheetArray[seq].status == 'Draft') {
-                style_outline = 'each-day attendance';
-                style_color = 'day-item attendance';
-              } else if (timesheetArray[seq].status == 'Approved') {
-                style_outline = 'each-day approve';
-                style_color = 'day-item approve';
-              } else if (timesheetArray[seq].status == 'Rejected') {
-                style_outline = 'each-day reject';
-                style_color = 'day-item reject';
-              }
-              item = {
-                day: timesheetArray[seq].day.replace('0', ''),
-                style_outline: style_outline,
-                style_color: style_color,
-                money: timesheetArray[seq].allowance,
-                project: timesheetArray[seq].proj,
-                each_day: timesheetArray[seq].each_day,
-                lockFlag: lockFlag
-              };
-            } else {
-              item = {
-                day: '',
-                style_outline: style_outline,
-                style_color: style_color,
-                money: money,
-                project: project,
-                each_day: '',
-                lockFlag: lockFlag
-              };
-            }
-
-            week.list.push(item);
-
-            seq = seq + 1;
-          }
-          $scope.calendar.push(week);
-        }
-      }
-
-      var fetchCalendar = function (monthParams) {
-        init();
-        $scope.loadingDataFlag = true;
-
-        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
-        var params = {
-          "params": {
-            "p_employee": window.localStorage.empno,
-            "p_month": monthParams + "",
-            "p_offset": 0
-          }
-        };
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          fetchData(result);
-          $scope.loadingDataFlag = false;
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function (response, status) {
-          $scope.loadingDataFlag = false;
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(response));
-          }
-        });
-      };
-
-      $scope.getTimeSheet = function (year, month) {
-        angular.forEach($scope.monthList, function (data) {
-          data.selected = false;
-        });
-        month.selected = true;
-        var monthParams = year + '' + formatMonth(month.value);
-        fetchCalendar(monthParams);
-      };
-
-      //从服务器获取请求
-      $timeout(
-        function () {
-          initDate();
-        }, 300
-      );
-
-      $scope.goBack = function () {
-        $ionicHistory.$ionicGoBack();
-      };
-
-      $rootScope.$on('refreshTimesheet', function(event,data) {
-        if (baseConfig.debug) {
-          console.log('refreshTimesheet', data);
-        }
-        $timeout(
-          function () {
-            var monthParams = $scope.currentYear  + '' + formatMonth($scope.currentMonth);
-            fetchCalendar(monthParams);
-          }, 300
-        );
-      });
-
-      if (baseConfig.debug) {
-        console.log('applicationCtrl.enter');
-      }
-
-      $scope.$on('$ionicView.enter', function (e) {
-        if (baseConfig.debug) {
-          console.log('applicationCtrl.$ionicView.enter');
-        }
-      });
-
-      $scope.$on('$destroy', function (e) {
-        if (baseConfig.debug) {
-          console.log('applicationCtrl.$destroy');
-        }
-      });
-    }])
-
-  .service('TimeSheetService', [
-    'baseConfig',
-    'hmsHttp',
-    'hmsPopup',
-    function (baseConfig,
-              hmsHttp,
-              hmsPopup) {
-      this.fetchCalendar = function (monthParams) {
-
-        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
-        var params = {
-          "params": {
-            "p_employee": window.localStorage.empno,
-            "p_month": monthParams + "",
-            "p_offset": "0"
-          }
-        };
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function (response, status) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(response));
-          }
-        });
-      };
-
-      this.fetchEachDay = function (callback, oneDate) {
-        var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
-        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + ""}};
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取状态错误,请检查网络!');
-        });
-      };
-
-      this.fetchProjectDetailInfo = function (callback, oneDate, projectId) {
-        var url = baseConfig.businessPath + "/timesheet_process/project_change"
-        var params = {
-          'params': {
-            'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + "",
-            'p_project_id': projectId + ""
-          }
-        };
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取项目信息错误,请检查网络!');
-        });
-      };
-
-      this.submitTimesheet = function (callback,params) {
-        var url = baseConfig.businessPath + "/timesheet_process/save_timesheet1";
-        var params = params;
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
-        });
-      }
-    }]);
-
 /**
  * Created by wolf on 2016/5/21. (_wen.dai_)
  */
@@ -16290,356 +12882,6 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
 });
 
 
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.timesheet-write', {
-          url: '/timesheet-write',
-          params: {day: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet/write/write.html',
-              controller: 'TimeSheetWriteCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('TimeSheetWriteCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    '$ionicHistory',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    function ($scope,
-              $rootScope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              $ionicHistory,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup) {
-
-      var checked = 'ion-ios-checkmark';
-      var unchecked = 'ion-ios-circle-outline'
-      $scope.projectList = [];
-      $scope.addressList = [];
-      $scope.flybackList = [];
-      var editable = 'N';
-      var uncheckedJson = {flag: false, style: unchecked};
-      var checkedJson = {flag: true, style: checked};
-
-
-      //初始化timesheet填写界面字段
-      $scope.timesheetDetail =
-      {
-        currentDay: "",
-        approver: "",
-        currentProject: {},
-        currentAddress: {},
-        currentFlyback: {},
-        travelingAllowance: {flag: false, style: unchecked},
-        normalAllowance: {flag: false, style: unchecked},
-        intCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        extCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        description: ""
-      };
-
-      if (baseConfig.debug) {
-        console.log('$stateParams.day ' + angular.toJson($stateParams.day));
-      }
-
-      $scope.currentDate = $stateParams.day.each_day;
-
-      //加载项目画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/projectModal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.projectModal = modal;
-      });
-
-      //加载项目地点画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/addressModal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.addressModal = modal;
-      });
-
-      //加载机票补贴画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/flybackList.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.flybackModal = modal;
-      });
-
-      $scope.selectAddress = function (address) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.address " + angular.toJson(address));
-        }
-        $scope.timesheetDetail.currentAddress = address;
-        $scope.addressModal.hide();
-      };
-
-      $scope.selectFlyback = function (flyback) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.flyback " + angular.toJson(flyback));
-        }
-        $scope.timesheetDetail.currentFlyback = flyback;
-        $scope.flybackModal.hide();
-      };
-
-      $scope.selectProject = function (project) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.project " + angular.toJson(project));
-        }
-        $scope.timesheetDetail.currentProject = project;
-        $scope.projectModal.hide();
-
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            $scope.addressList = result.projaddress;
-            $scope.flybackList = result.flyback;
-            $scope.timesheetDetail.approver = result.approver;
-            $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
-            $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
-            if (result.projaddress[0]) {
-              $scope.timesheetDetail.currentAddress = result.projaddress[0];
-            } else {
-              $scope.timesheetDetail.currentAddress = {"selected_flag": "Y", "address_id": "0", "address_name": "缺省地点"};
-            }
-            if (result.flyback[0]) {
-              $scope.timesheetDetail.currentFlyback = result.flyback[0];
-            } else {
-              $scope.timesheetDetail.currentFlyback = {"fly_select": "Y", "fly_name": "无flyback", "fly_id": "-1"};
-            }
-          } else {
-            hmsPopup.showPopup('获取项目信息错误,请检查');
-          }
-        }
-        $timeout(function () {
-          hmsPopup.showLoading('获取项目信息中');
-          TimeSheetService.fetchProjectDetailInfo(success, $scope.currentDate, project.project_id)
-        });
-      };
-
-      $scope.showProjectModal = function () {
-        $scope.projectModal.show();
-      };
-      $scope.hideProjectModal = function () {
-        $scope.projectModal.hide();
-      };
-
-      $scope.showFlybackModal = function () {
-        $scope.flybackModal.show();
-      };
-      $scope.hideFlybackModal = function () {
-        $scope.flybackModal.hide();
-      };
-
-      $scope.showAddressModal = function () {
-        $scope.addressModal.show();
-      };
-      $scope.hideAddressModal = function () {
-        $scope.addressModal.hide();
-      };
-
-      var fetchEachDay = function (result) {
-        hmsPopup.hideLoading();
-        if (result.status == 'S') {
-          var projectList = result.project;
-          var flybackList = result.flyback;
-          var addressList = result.projaddress;
-
-          if (baseConfig.debug) {
-            console.log('fetchEachDay result.every_day ' + angular.toJson(result.every_day));
-          }
-
-          //判断是否可编辑 // add by ciwei
-          if (result.every_day.holiday == 'Y') {
-            editable = 'Y';
-          } else if (result.every_day.holiday == 'N') {
-            editable = 'N';
-          }
-
-          if (result.every_day.offbase == '1') {
-            $scope.timesheetDetail.travelingAllowance = checkedJson;
-          } else {
-            $scope.timesheetDetail.travelingAllowance = uncheckedJson;
-          }
-          if (result.every_day.base == 'Y') {
-            $scope.timesheetDetail.normalAllowance = checkedJson;
-          } else {
-            $scope.timesheetDetail.normalAllowance = uncheckedJson;
-          }
-
-          //判断内外部计费是否被选中
-          if (result.every_day.internalcharge == '1') {
-            $scope.timesheetDetail.intCharge = checkedJson;
-          } else {
-            $scope.timesheetDetail.intCharge = uncheckedJson;
-          }
-          if (result.every_day.externalcharge == '1') {
-            $scope.timesheetDetail.extCharge = checkedJson;
-          } else {
-            $scope.timesheetDetail.extCharge = uncheckedJson;
-          }
-
-          $scope.timesheetDetail.currentDay = result.every_day.every_day;
-          $scope.timesheetDetail.approver = result.every_day.approver;
-          $scope.timesheetDetail.description = result.every_day.descrpt;
-          $scope.timesheetDetail.allowance = result.every_day.allowance;
-
-          angular.forEach(projectList, function (data) {
-            if (data.selected_flag === 'Y') {
-              $scope.timesheetDetail.currentProject = data;
-              return;
-            }
-          });
-          angular.forEach(addressList, function (data) {
-            if (data.selected_flag === 'Y') {
-              $scope.timesheetDetail.currentAddress = data;
-              return;
-            }
-          });
-          angular.forEach(flybackList, function (data) {
-            if (data.fly_select === 'Y') {
-              $scope.timesheetDetail.currentFlyback = data;
-              return;
-            }
-          });
-
-          $scope.projectList = projectList;
-          $scope.addressList = addressList;
-          $scope.flybackList = flybackList;
-        }
-        else {
-          hmsPopup.showPopup('获取timesheet错误,错误原因为');
-        }
-      };
-
-      $scope.checkBoxChanged = function (item, type) {
-        console.log('$scope.checkBoxChanged item ' + angular.toJson(item));
-        if (editable == "N" && type == 'charging') {
-          return;
-        }
-        if (item.flag) {
-          item.flag = false;
-          item.style = unchecked;
-        } else {
-          item.flag = true;
-          item.style = checked;
-        }
-        if (type == 'travelingAllowance' && $scope.timesheetDetail.travelingAllowance.flag) {
-          $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
-        }
-        if (type == 'normalAllowance' && $scope.timesheetDetail.normalAllowance.flag) {
-          $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
-        }
-      };
-
-      $scope.submitTimesheet = function (timesheetDetail) {
-        if (baseConfig.debug) {
-          console.log('timesheetDetail ' + angular.toJson(timesheetDetail));
-        }
-
-        var employee = window.localStorage.empno;
-        var currentDate = $scope.currentDate;
-        var projectId = $scope.timesheetDetail.currentProject.project_id;
-        var description = '';
-        var offBaseFlag = '';
-        var baseFlag = '';
-        var extCharge = '';
-        var intCharge = '';
-        var addressId = $scope.timesheetDetail.currentAddress.address_id;
-        var flybackId = $scope.timesheetDetail.currentFlyback.fly_id;
-
-        //内外部计费
-        if ($scope.timesheetDetail.extCharge.flag) {
-          extCharge = 1;
-        } else {
-          extCharge = 0;
-        }
-        if ($scope.timesheetDetail.intCharge.flag) {
-          intCharge = 1;
-        } else {
-          intCharge = 0;
-        }
-        if ($scope.timesheetDetail.travelingAllowance.flag) {
-          offBaseFlag = 1;
-        } else {
-          offBaseFlag = 0;
-        }
-        if ($scope.timesheetDetail.normalAllowance.flag) {
-          baseFlag = 1;
-        } else {
-          baseFlag = 0;
-        }
-
-        description = $scope.timesheetDetail.description.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
-
-        var params = {
-          "params": {
-            "p_employee": employee + "",
-            "p_date": currentDate + "",
-            "p_project": projectId + "",
-            "p_description": description + "",
-            "p_offbase_flag": offBaseFlag + "",
-            "p_base_flag": baseFlag + "",
-            "p_ext_charge": extCharge + "",
-            "p_int_charge": intCharge + "",
-            "p_address": addressId + "",
-            "p_flyback": flybackId + ""
-          }
-        };
-
-        if (baseConfig.debug) {
-          console.log('submitTimesheet.params ' + angular.toJson(params));
-        }
-
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            hmsPopup.showPopup('提交Timesheet成功');
-            $rootScope.$broadcast('refreshTimesheet', 'parent');
-            $ionicHistory.goBack();
-          } else {
-            hmsPopup.showPopup('提交Timesheet错误,错误原因为');
-          }
-        }
-        hmsPopup.showLoading('提交数据中');
-        TimeSheetService.submitTimesheet(success, params)
-      };
-
-      //从服务器获取请求
-      $timeout(
-        function () {
-          hmsPopup.showLoading('获取timesheet明细数据');
-          TimeSheetService.fetchEachDay(fetchEachDay, $scope.currentDate);
-        }
-      );
-    }
-  ])
-;
-
 /**
  * Created by wolf on 2016/5/19.
  * @author: wen.dai@hand-china.com
@@ -16707,7 +12949,6 @@ angular.module('tsApproveModule')
         $scope.actionName = "操作";
         $scope.selectArray = [];
         $scope.isClickedProject = []; //控制点击选择筛选条目的样式(modal-filter)
-        $scope.selectEndItem = [false, true, false]; //控制点击选择截止日期条目的样式(modal-date)
         $scope.listInfoArray = {};
         $scope.personList = [];
         $scope.projectList = [];
@@ -16752,12 +12993,15 @@ angular.module('tsApproveModule')
         if (currentDay <= 10) {
           tsListParams.params.p_end_date = getLastMonthDate(new Date());
           $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.selectEndItem = [true, false, false]; //控制点击选择截止日期条目的样式(modal-date)
         } else if (currentDay > 10 && currentDay <= 20) {
           tsListParams.params.p_end_date = getCurrentDate(new Date());
           $scope.endApproveDate = getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.selectEndItem = [false, true, false];
         } else if (currentDay > 20) {
           tsListParams.params.p_end_date = getCurrentMonthLastDate(new Date());
           $scope.endApproveDate = getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.selectEndItem = [false, false, true];
         }
       }
 
@@ -16862,7 +13106,7 @@ angular.module('tsApproveModule')
           cancelButtonLabel: '取消',
           androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
           locale: "zh_cn"
-        }
+        };
         $cordovaDatePicker.show(options).then(function (date) {
           var month = date.getMonth() + 1;
           var day = date.getDate();
@@ -16909,7 +13153,7 @@ angular.module('tsApproveModule')
       };
 
       $scope.cancelDateModal = function () { //取消date modal
-        tsListParams.params.p_end_date = $scope.endApproveDate;
+        //tsListParams.params.p_end_date = $scope.endApproveDate;//这个地方有小bug
         $scope.dateModal.hide()
       };
 
@@ -17185,6 +13429,7 @@ angular.module('tsApproveModule')
         _self.busy = false;
         _self.totalNumber = 0;
         _self.listArray = [];
+        _self.subsidyDaysArray = [];
         _self.loading = loadingFlag;
         if (_self.refurbishParam === 'clickRefreshEvent') {
           _self.scope.$broadcast('scroll.infiniteScrollComplete');
@@ -17201,14 +13446,27 @@ angular.module('tsApproveModule')
               _self.totalNumber = response.count;
               try {
                 _self.listArray = _self.listArray.concat(tsResult.result_list);
+                for (var i = 0; i < _self.listArray.length; i++) {
+                  var subsidys = 0;
+                  if (_self.listArray[i].subsidy_list.length == 0) {
+                    subsidys++;
+                    _self.subsidyDaysArray.push(subsidys);
+                  } else {
+                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
+                      subsidys = parseInt(subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      subsidys++;
+                      _self.subsidyDaysArray.push(subsidys);
+                    }
+                  }
+                }
               } catch (e) {
                 _self.listArray = [];
-                _self.projectList = [];
-                _self.employeeList = [];
+                _self.subsidyDaysArray = [];
               }
               if (response.count == 0) {
                 _self.busy = false;
                 _self.listArray = [];
+                hmsPopup.showShortCenterToast("没有相关数据!");
               } else if (response.count <= 6) {
                 _self.busy = false;
               } else {
@@ -17264,6 +13522,19 @@ angular.module('tsApproveModule')
               } else {
                 var tsResult = response.timesheet_approve_response;
                 _self.listArray = _self.listArray.concat(tsResult.result_list);
+                for (var i = (_self.params.params.p_page - 1) * 6; i < _self.listArray.length; i++) {
+                  var new_subsidys = 0;
+                  if (_self.listArray[i].subsidy_list.length == 0) {
+                    new_subsidys++;
+                    _self.subsidyDaysArray.push(new_subsidys);
+                  } else {
+                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
+                      new_subsidys = parseInt(new_subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      new_subsidys++;
+                      _self.subsidyDaysArray.push(new_subsidys);
+                    }
+                  }
+                }
               }
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             } else {
@@ -17285,4 +13556,902 @@ angular.module('tsApproveModule')
       };
       return TsApproveListService;
     }]);
->>>>>>> xbr
+
+/**
+ * Created by gusenlin on 16/5/22.
+ */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.timesheet', {
+          url: '/timesheet',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet/query/query.html',
+              controller: 'TimeSheetQueryCtrl'
+            }
+          }
+        });
+    }]);
+
+angular.module('applicationModule')
+  .controller('TimeSheetQueryCtrl', [
+    '$scope',
+    '$rootScope',
+    '$ionicPopover',
+    '$ionicGesture',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    '$ionicScrollDelegate',
+    'TimeSheetService',
+    'hmsHttp',
+    'hmsPopup',
+    function ($scope,
+              $rootScope,
+              $ionicPopover,
+              $ionicGesture,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              $timeout,
+              $ionicScrollDelegate,
+              TimeSheetService,
+              hmsHttp,
+              hmsPopup) {
+
+      var currentTimeSheetPosition = true;
+      $scope.calendar = [];
+      $scope.loadingDataFlag = true;
+      $scope.loadingAllowanceFlag = true;
+
+      $scope.allowanceList = [];
+      $scope.selectYearList = [];
+
+      var offset = -5;
+      var yearCount = 10;
+
+      var startTouchX = 0;
+      var startTouchY = 0;
+
+      var slippingFlag = false;
+      var slippingEnableFlag = true;
+
+      var clientWidth = document.body.clientWidth;
+
+      var calendarTopBar;
+
+      if(ionic.Platform.isIOS()){
+        calendarTopBar = 135 + 20;
+      }
+      else{
+        calendarTopBar = 135;
+      }
+
+
+      var cacheCalendar = [];
+      var copyFromDay = {};
+
+      //年表
+      $scope.currentYear = '';
+      //当前月份
+      $scope.currentMonth = '';
+      //月份初始化列表
+      $scope.monthList = [
+        {"selected": false, value: "1"}, {"selected": false, value: "2"}, {"selected": false, value: "3"},
+        {"selected": false, value: "4"}, {"selected": false, value: "5"}, {"selected": false, value: "6"},
+        {"selected": false, value: "7"}, {"selected": false, value: "8"}, {"selected": false, value: "9"},
+        {"selected": false, value: "10"}, {"selected": false, value: "11"}, {"selected": false, value: "12"}
+      ];
+      //周列表
+      $scope.weekTitleList = [
+        '日', '一', '二', '三', '四', '五', '六'
+      ];
+
+      if (baseConfig.debug) {
+        console.log('TimeSheetQueryCtrl.clientWidth ' + clientWidth);
+      }
+
+      //单格数字用0填充
+      var formatMonth = function (month) {
+        if (parseInt(month) < 10) {
+          return '0' + month;
+        } else {
+          return '' + month;
+        }
+      };
+
+      //初始化日历
+      var initDate = function () {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        $scope.currentYear = year;
+        $scope.currentMonth = month;
+        angular.forEach($scope.monthList, function (data) {
+          if (data.value === month + '') {
+            data.selected = true;
+            return;
+          }
+        });
+
+        for (var i = 0; i < yearCount; i++) {
+          var value = (parseInt(year) + offset + i) + '';
+          var item = {};
+          if (year == value) {
+            item = {
+              "value": value,
+              "selected": true
+            }
+          } else {
+            item = {
+              "value": value,
+              "selected": false
+            }
+          }
+          $scope.selectYearList.push(item);
+        }
+
+        if (baseConfig.debug) {
+          console.log('initDate.year ' + year);
+          console.log('initDate.month ' + month)
+        }
+        var monthParams = year + '' + formatMonth(month);
+        fetchCalendar(monthParams);
+        generateAllowance(monthParams);
+      }
+
+      //初始化日历数组
+      var initCalendar = function () {
+        $scope.calendar = [];
+        for (i = 0; i < 5; i++) {
+          var style_outline = 'each-day';
+          var style_color = 'day-item';
+          var money = '';
+          var project = '';
+          var week = {
+            week: i,
+            list: []
+          };
+          for (j = 0; j < 7; j++) {
+            var item = {
+              day: "",
+              style_outline: style_outline,
+              style_color: style_color,
+              money: money,
+              project: project
+            };
+            week.list.push(item);
+          }
+          $scope.calendar.push(week);
+        }
+      };
+
+      $ionicPopover.fromTemplateUrl('build/pages/application/timesheet/popover/years.html', {
+        scope: $scope,
+        animation: 'animated fadeIn'
+      }).then(function (popover) {
+        $scope.popover = popover;
+      });
+
+      $scope.openPopover = function ($event) {
+        $scope.popover.show($event);
+      };
+
+      $scope.selectYear = function (year) {
+        $scope.currentYear = year.value;
+        $scope.popover.hide();
+        var monthParams = $scope.currentYear + '' + formatMonth($scope.currentMonth);
+
+        angular.forEach($scope.selectYearList, function (data) {
+          if (data.value == year.value) {
+            data.selected = true;
+          } else {
+            data.selected = false;
+          }
+        });
+
+        initCalendar();
+        fetchCalendar(monthParams);
+        generateAllowance(monthParams);
+      }
+
+      $scope.writeTimesheet = function (day) {
+        $state.go('tab.timesheet-write', {day: day});
+      };
+
+      $scope.scrollToFixScreen = function () {
+        if (currentTimeSheetPosition) {
+          $ionicScrollDelegate.scrollTo(0, 400, true);
+          currentTimeSheetPosition = false;
+        } else {
+          $ionicScrollDelegate.scrollTo(0, 0, true);
+          currentTimeSheetPosition = true;
+        }
+      };
+
+      var fetchData = function (result) {
+        var timesheetArray = result.timesheet;
+        var seq = 0;
+        $scope.calendar = [];
+        for (i = 0; i < 5; i++) {
+          var week = {
+            week: i,
+            list: []
+          };
+          for (j = 0; j < 7; j++) {
+            var item;
+            var style_outline = 'each-day';
+            var style_color = 'day-item';
+            var money = '';
+            var project = '';
+            var lockFlag = false;
+
+            if (timesheetArray[seq]) {
+              if (timesheetArray[seq].lockflag == '0') {
+                lockFlag = false;
+              } else {
+                lockFlag = true;
+              }
+              if (timesheetArray[seq].status == 'Empty') {
+                style_outline = 'each-day';
+                style_color = 'day-item';
+              } else if (timesheetArray[seq].status == 'Draft') {
+                style_outline = 'each-day attendance';
+                style_color = 'day-item attendance';
+              } else if (timesheetArray[seq].status == 'Approved') {
+                style_outline = 'each-day approve';
+                style_color = 'day-item approve';
+              } else if (timesheetArray[seq].status == 'Rejected') {
+                style_outline = 'each-day reject';
+                style_color = 'day-item reject';
+              }
+              item = {
+                day: timesheetArray[seq].day.replace('0', ''),
+                style_outline: style_outline,
+                style_color: style_color,
+                money: timesheetArray[seq].allowance,
+                project: timesheetArray[seq].proj,
+                each_day: timesheetArray[seq].each_day,
+                lockFlag: lockFlag,
+                choosed: false
+              };
+            } else {
+              item = {
+                day: '',
+                style_outline: style_outline,
+                style_color: style_color,
+                money: money,
+                project: project,
+                each_day: '',
+                lockFlag: lockFlag,
+                choosed: false
+              };
+            }
+
+            week.list.push(item);
+
+            seq = seq + 1;
+          }
+          $scope.calendar.push(week);
+        }
+      };
+
+      var fetchCalendar = function (monthParams) {
+        $scope.loadingDataFlag = true;
+
+        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_month": monthParams + "",
+            "p_offset": 0
+          }
+        };
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          fetchData(result);
+          $scope.loadingDataFlag = false;
+        }).error(function (response, status) {
+          $scope.loadingDataFlag = false;
+        });
+      };
+
+      var element = angular.element(document.querySelector('#timesheetCalandar'));
+
+      var startSlipping = function () {
+        slippingFlag = true;
+      };
+      var stopSlipping = function () {
+        slippingFlag = false;
+      };
+      var clearCalendarCache = function () {
+        angular.forEach($scope.calendar, function (data) {
+          angular.forEach(data.list, function (list) {
+            list.choosed = false;
+          });
+        });
+      };
+
+      var slippingWriteTimesheet = function () {
+        //var batchList = [];
+        var dateArray = '';
+        angular.forEach($scope.calendar, function (data) {
+          angular.forEach(data.list, function (list) {
+            if (list.choosed) {
+              //batchList.push({"day": list.each_day});
+              if (dateArray == '') {
+                dateArray = dateArray + list.each_day;
+              } else {
+                dateArray = dateArray + '#' + list.each_day;
+              }
+            }
+          });
+        });
+        if (baseConfig.debug) {
+          console.log('copyFromDay ' + angular.toJson(copyFromDay));
+          console.log('dateArray ' + angular.toJson(dateArray));
+        }
+
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            var timesheetArray = result.refresh_timesheet;
+            fetchData(timesheetArray);
+          } else {
+            hmsPopup.showPopup('批量填写失败!' + result.message);
+          }
+        };
+        var error = function (response) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('批量填写失败,可能是网络问题!');
+          clearCalendarCache();
+        };
+        hmsPopup.showLoading('批量填写中');
+        TimeSheetService.slippingBatch(success, error, copyFromDay.day, dateArray);
+      };
+
+      //捕获触摸的
+      var markSelectCalendar = function (clentW, touchX, touchY) {
+        var selectX = -1;
+        var selectY = -1;
+        var averageX = (clentW - 20) / 7;
+        var averageY = 60;
+        var lengthY = calendarTopBar;
+        var offsetY = 0;
+        var offsetX = 10;
+        for (var i = 0; i < 7; i++) {
+          var left = averageX * ( i ) + offsetX;
+          var right = averageX * ( i + 1 ) + offsetX;
+          if (touchX > left && touchX < right) {
+            selectX = i;
+            if ((touchY >= lengthY + 0 + offsetY) && (touchY <= lengthY + 1 * averageY - offsetY)) {
+              selectY = 0;
+            }
+            else if ((touchY >= lengthY + 1 * averageY + offsetY) && (touchY <= lengthY + 2 * averageY - offsetY)) {
+              selectY = 1;
+            }
+            else if ((touchY >= lengthY + 2 * averageY + offsetY) && (touchY <= lengthY + 3 * averageY - offsetY)) {
+              selectY = 2;
+            }
+            else if ((touchY >= lengthY + 3 * averageY + offsetY) && (touchY <= lengthY + 4 * averageY - offsetY)) {
+              selectY = 3;
+            }
+            else if ((touchY >= lengthY + 4 * averageY + offsetY) && (touchY <= lengthY + 5 * averageY - offsetY)) {
+              selectY = 4;
+            }
+            else if ((touchY >= lengthY + 5 * averageY + offsetY) && (touchY <= lengthY + 6 * averageY - offsetY)) {
+              selectY = 5;
+            }
+          }
+        }
+        return {
+          "selectX": selectX,
+          "selectY": selectY
+        };
+      };
+
+
+      //拖拽标记TimeSheet具体天
+      $ionicGesture.on("drag", function (e) {
+        //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
+        //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
+        if (!slippingFlag && slippingEnableFlag) {
+          if (Math.abs(startTouchX - e.gesture.touches[0].pageX) > 5 || Math.abs(startTouchY - e.gesture.touches[0].pageY) > 5) {
+            startSlipping();
+          }
+        }
+        if (slippingFlag && slippingEnableFlag) {
+          var selectDay = markSelectCalendar(clientWidth,
+            e.gesture.touches[0].pageX,
+            e.gesture.touches[0].pageY);
+          if (baseConfig.debug) {
+            console.log('drag.selectDay ' + angular.toJson(selectDay));
+          }
+          if (selectDay.selectX >= 0 && selectDay.selectX <= 6 && selectDay.selectY >= 0 && selectDay.selectY <= 5) {
+            var dayItem = $scope.calendar[selectDay.selectY].list[selectDay.selectX];
+            if (copyFromDay.day) {
+
+            } else {
+              copyFromDay.day = dayItem.each_day;
+            }
+            if (dayItem && dayItem.day != '') {
+              dayItem.choosed = true;
+            } else {
+              dayItem.choosed = false;
+            }
+          }
+          $scope.$apply();
+        }
+      }, element);
+
+      $ionicGesture.on("touch", function (e) {
+        //console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
+        //console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
+        startTouchX = e.gesture.touches[0].pageX;
+        startTouchY = e.gesture.touches[0].pageY;
+        copyFromDay = {};
+      }, element);
+
+      $ionicGesture.on("release", function (e) {
+        if (slippingFlag && slippingEnableFlag) {
+          stopSlipping();
+          //console.log('release.startTouchX ' + e.gesture.touches[0].pageX);
+          //console.log('release.startTouchY ' + e.gesture.touches[0].pageY);
+          var summitOrder = function (buttonIndex) {
+            if (baseConfig.debug) {
+              console.log('You selected button ' + buttonIndex);
+            }
+            if (buttonIndex == 1) {
+              slippingWriteTimesheet();
+            } else {
+              clearCalendarCache();
+            }
+          }
+          hmsPopup.confirm("确定要否进行批量填写?", "", summitOrder);
+        }
+      }, element);
+
+      $scope.getTimeSheet = function (year, month) {
+        angular.forEach($scope.monthList, function (data) {
+          data.selected = false;
+        });
+        month.selected = true;
+        $scope.currentMonth = month.value;
+        var monthParams = year + '' + formatMonth(month.value);
+        initCalendar();
+        fetchCalendar(monthParams);
+        generateAllowance(monthParams);
+      };
+
+
+      //获取津贴信息
+      var generateAllowance = function (monthParams) {
+        $scope.loadingAllowanceFlag = true;
+        $scope.allowanceList = [];
+        var success = function (result) {
+          if (result.status == 'S') {
+            angular.forEach(result.allowance, function (data) {
+              var allowance = {
+                "allow": data.allow,
+                "amount": data.amt,
+                "creationDate": data.crea,
+                "days": data.days,
+                "status": data.is_audited,
+                "project": data.proj,
+                "period": data.range,
+                "type": data.type
+              }
+              $scope.allowanceList.push(allowance);
+            });
+            $scope.loadingAllowanceFlag = false;
+          } else {
+            $scope.loadingAllowanceFlag = false;
+          }
+        }
+        var error = function () {
+          $scope.loadingAllowanceFlag = false;
+        }
+        TimeSheetService.generateAllowance(success, error, 'N', monthParams);
+      }
+
+      initCalendar();
+      //从服务器获取请求
+      $timeout(
+        function () {
+          initDate();
+        }, 300
+      );
+
+      $scope.goBack = function () {
+        $ionicHistory.$ionicGoBack();
+      };
+
+      $rootScope.$on('refreshTimesheet', function (event, data) {
+        if (baseConfig.debug) {
+          console.log('refreshTimesheet', data);
+        }
+        $timeout(
+          function () {
+            var monthParams = $scope.currentYear + '' + formatMonth($scope.currentMonth);
+            fetchCalendar(monthParams);
+          }, 600
+        );
+      });
+
+      if (baseConfig.debug) {
+        console.log('applicationCtrl.enter');
+      }
+
+      $scope.$on('$ionicView.enter', function (e) {
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$ionicView.enter');
+        }
+      });
+
+      $scope.$on('$destroy', function (e) {
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$destroy');
+        }
+        $scope.popover.remove();
+      });
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.timesheet-write', {
+          url: '/timesheet-write',
+          params: {day: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet/write/write.html',
+              controller: 'TimeSheetWriteCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('TimeSheetWriteCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    '$ionicHistory',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    function ($scope,
+              $rootScope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              $ionicHistory,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup) {
+
+      var checked = 'ion-ios-checkmark';
+      var unchecked = 'ion-ios-circle-outline'
+      $scope.projectList = [];
+      $scope.addressList = [];
+      $scope.flybackList = [];
+      var editable = 'N';
+      var uncheckedJson = {flag: false, style: unchecked};
+      var checkedJson = {flag: true, style: checked};
+
+
+      //初始化timesheet填写界面字段
+      $scope.timesheetDetail =
+      {
+        currentDay: "",
+        approver: "",
+        currentProject: {},
+        currentAddress: {},
+        currentFlyback: {},
+        travelingAllowance: {flag: false, style: unchecked},
+        normalAllowance: {flag: false, style: unchecked},
+        intCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
+        extCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
+        description: ""
+      };
+
+      if (baseConfig.debug) {
+        console.log('$stateParams.day ' + angular.toJson($stateParams.day));
+      }
+
+      $scope.lockFlag= $stateParams.day.lockFlag;
+
+      $scope.currentDate = $stateParams.day.each_day;
+
+      //加载项目画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/projectModal.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.projectModal = modal;
+      });
+
+      //加载项目地点画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/addressModal.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.addressModal = modal;
+      });
+
+      //加载机票补贴画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/flybackList.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.flybackModal = modal;
+      });
+
+      $scope.selectAddress = function (address) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.address " + angular.toJson(address));
+        }
+        $scope.timesheetDetail.currentAddress = address;
+        $scope.addressModal.hide();
+      };
+
+      $scope.selectFlyback = function (flyback) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.flyback " + angular.toJson(flyback));
+        }
+        $scope.timesheetDetail.currentFlyback = flyback;
+        $scope.flybackModal.hide();
+      };
+
+      $scope.selectProject = function (project) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.project " + angular.toJson(project));
+        }
+        $scope.timesheetDetail.currentProject = project;
+        $scope.projectModal.hide();
+
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            $scope.addressList = result.projaddress;
+            $scope.flybackList = result.flyback;
+            $scope.timesheetDetail.approver = result.approver;
+            $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
+            $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
+            if (result.projaddress[0]) {
+              $scope.timesheetDetail.currentAddress = result.projaddress[0];
+            } else {
+              $scope.timesheetDetail.currentAddress = {"selected_flag": "Y", "address_id": "0", "address_name": "缺省地点"};
+            }
+            if (result.flyback[0]) {
+              $scope.timesheetDetail.currentFlyback = result.flyback[0];
+            } else {
+              $scope.timesheetDetail.currentFlyback = {"fly_select": "Y", "fly_name": "无flyback", "fly_id": "-1"};
+            }
+          } else {
+            hmsPopup.showPopup('获取项目信息错误,请检查');
+          }
+        }
+        $timeout(function () {
+          hmsPopup.showLoading('获取项目信息中');
+          TimeSheetService.fetchProjectDetailInfo(success, $scope.currentDate, project.project_id)
+        });
+      };
+
+      $scope.showProjectModal = function () {
+        $scope.projectModal.show();
+      };
+      $scope.hideProjectModal = function () {
+        $scope.projectModal.hide();
+      };
+
+      $scope.showFlybackModal = function () {
+        $scope.flybackModal.show();
+      };
+      $scope.hideFlybackModal = function () {
+        $scope.flybackModal.hide();
+      };
+
+      $scope.showAddressModal = function () {
+        $scope.addressModal.show();
+      };
+      $scope.hideAddressModal = function () {
+        $scope.addressModal.hide();
+      };
+
+      var fetchEachDay = function (result) {
+        hmsPopup.hideLoading();
+        if (result.status == 'S') {
+          var projectList = result.project;
+          var flybackList = result.flyback;
+          var addressList = result.projaddress;
+
+          if (baseConfig.debug) {
+            console.log('fetchEachDay result.every_day ' + angular.toJson(result.every_day));
+          }
+
+          //判断是否可编辑 // add by ciwei
+          if (result.every_day.holiday == 'Y') {
+            editable = 'Y';
+          } else if (result.every_day.holiday == 'N') {
+            editable = 'N';
+          }
+
+          if (result.every_day.offbase == '1') {
+            $scope.timesheetDetail.travelingAllowance = checkedJson;
+          } else {
+            $scope.timesheetDetail.travelingAllowance = uncheckedJson;
+          }
+          if (result.every_day.base == 'Y') {
+            $scope.timesheetDetail.normalAllowance = checkedJson;
+          } else {
+            $scope.timesheetDetail.normalAllowance = uncheckedJson;
+          }
+
+          //判断内外部计费是否被选中
+          if (result.every_day.internalcharge == '1') {
+            $scope.timesheetDetail.intCharge = checkedJson;
+          } else {
+            $scope.timesheetDetail.intCharge = uncheckedJson;
+          }
+          if (result.every_day.externalcharge == '1') {
+            $scope.timesheetDetail.extCharge = checkedJson;
+          } else {
+            $scope.timesheetDetail.extCharge = uncheckedJson;
+          }
+
+          $scope.timesheetDetail.currentDay = result.every_day.every_day;
+          $scope.timesheetDetail.approver = result.every_day.approver;
+          $scope.timesheetDetail.description = result.every_day.descrpt;
+          $scope.timesheetDetail.allowance = result.every_day.allowance;
+
+          angular.forEach(projectList, function (data) {
+            if (data.selected_flag === 'Y') {
+              $scope.timesheetDetail.currentProject = data;
+              return;
+            }
+          });
+          angular.forEach(addressList, function (data) {
+            if (data.selected_flag === 'Y') {
+              $scope.timesheetDetail.currentAddress = data;
+              return;
+            }
+          });
+          angular.forEach(flybackList, function (data) {
+            if (data.fly_select === 'Y') {
+              $scope.timesheetDetail.currentFlyback = data;
+              return;
+            }
+          });
+
+          $scope.projectList = projectList;
+          $scope.addressList = addressList;
+          $scope.flybackList = flybackList;
+        }
+        else {
+          hmsPopup.showPopup('获取timesheet错误,错误原因为');
+        }
+      };
+
+      $scope.checkBoxChanged = function (item, type) {
+        console.log('$scope.checkBoxChanged item ' + angular.toJson(item));
+        if (editable == "N" && type == 'charging') {
+          return;
+        }
+        if (item.flag) {
+          item.flag = false;
+          item.style = unchecked;
+        } else {
+          item.flag = true;
+          item.style = checked;
+        }
+        if (type == 'travelingAllowance' && $scope.timesheetDetail.travelingAllowance.flag) {
+          $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
+        }
+        if (type == 'normalAllowance' && $scope.timesheetDetail.normalAllowance.flag) {
+          $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
+        }
+      };
+
+      $scope.submitTimesheet = function (timesheetDetail) {
+        if (baseConfig.debug) {
+          console.log('timesheetDetail ' + angular.toJson(timesheetDetail));
+        }
+
+        var employee = window.localStorage.empno;
+        var currentDate = $scope.currentDate;
+        var projectId = $scope.timesheetDetail.currentProject.project_id;
+        var description = '';
+        var offBaseFlag = '';
+        var baseFlag = '';
+        var extCharge = '';
+        var intCharge = '';
+        var addressId = $scope.timesheetDetail.currentAddress.address_id;
+        var flybackId = $scope.timesheetDetail.currentFlyback.fly_id;
+
+        //内外部计费
+        if ($scope.timesheetDetail.extCharge.flag) {
+          extCharge = 1;
+        } else {
+          extCharge = 0;
+        }
+        if ($scope.timesheetDetail.intCharge.flag) {
+          intCharge = 1;
+        } else {
+          intCharge = 0;
+        }
+        if ($scope.timesheetDetail.travelingAllowance.flag) {
+          offBaseFlag = 1;
+        } else {
+          offBaseFlag = 0;
+        }
+        if ($scope.timesheetDetail.normalAllowance.flag) {
+          baseFlag = 1;
+        } else {
+          baseFlag = 0;
+        }
+
+        description = $scope.timesheetDetail.description.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
+
+        if(baseConfig.debug){
+          console.log('$scope.timesheetDetail.description ' + $scope.timesheetDetail.description);
+          console.log('description ' + description);
+        }
+
+        var params = {
+          "params": {
+            "p_employee": employee + "",
+            "p_date": currentDate + "",
+            "p_project": projectId + "",
+            "p_description": description + "",
+            "p_offbase_flag": offBaseFlag + "",
+            "p_base_flag": baseFlag + "",
+            "p_ext_charge": extCharge + "",
+            "p_int_charge": intCharge + "",
+            "p_address": addressId + "",
+            "p_flyback": flybackId + ""
+          }
+        };
+
+        if (baseConfig.debug) {
+          console.log('submitTimesheet.params ' + angular.toJson(params));
+        }
+
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            hmsPopup.showPopup('提交Timesheet成功');
+            $rootScope.$broadcast('refreshTimesheet', 'parent');
+            $ionicHistory.goBack();
+          } else {
+            hmsPopup.showPopup('提交Timesheet错误,错误原因为');
+          }
+        }
+        hmsPopup.showLoading('提交数据中');
+        TimeSheetService.submitTimesheet(success, params)
+      };
+
+      //从服务器获取请求
+      $timeout(
+        function () {
+          hmsPopup.showLoading('获取timesheet明细数据');
+          TimeSheetService.fetchEachDay(fetchEachDay, $scope.currentDate);
+        }
+      );
+    }
+  ])
+;

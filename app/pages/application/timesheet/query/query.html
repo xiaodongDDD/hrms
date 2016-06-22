@@ -8,7 +8,7 @@
     <h1 class="title">TimeSheet
     </h1>
 
-    <div class="buttons">
+    <div class="buttons" ng-click="openPopover($event)">
       <button class="button button-clear">
         <span class="barRightButton">{{currentYear}}</span>
       </button>
@@ -36,14 +36,17 @@
           {{title}}
         </div>
       </div>
-      <div class="calendar-week" ng-repeat="weak in calendar">
-        <a class="{{day.style_color}}" ng-repeat="day in weak.list" ng-click="writeTimesheet(day)">
-          <div class="lock-item" ng-if="day.lockFlag">
-          </div>
-          <div class="{{day.style_outline}}">{{day.day}}</div>
-          <div class="money">{{day.money}}</div>
-          <div class="project">{{day.project}}</div>
-        </a>
+      <div id="timesheetCalandar">
+        <div class="calendar-week" ng-repeat="week in calendar">
+          <a class="{{day.style_color}}" ng-repeat="day in week.list" ng-click="writeTimesheet(day)"
+             ng-class="{true:'choosed',false:''}[day.choosed]">
+            <div class="lock-item" ng-if="day.lockFlag">
+            </div>
+            <div class="{{day.style_outline}}">{{day.day}}</div>
+            <div class="money">{{day.money}}</div>
+            <div class="project">{{day.project}}</div>
+          </a>
+        </div>
       </div>
       <div class="allowance">
         <div class="batch-write">
@@ -60,28 +63,25 @@
       <div class="allowance-title">
         已生成津贴状态
       </div>
-      <div class="allowance-detail" ng-repeat="weak in calendar">
+      <hms-loading ng-if="loadingAllowanceFlag"></hms-loading>
+      <div class="allowance-detail" ng-repeat="allowance in allowanceList">
         <div class="allowance-project-info">
           <div class="row no-padding">
             <div class="col col-10 no-padding">
               <div class="sequence">{{$index + 1}}
               </div>
             </div>
-            <div class="col col-90 no-padding allowance-project">
-              移动内部HRMS研发项目
+            <div class="col col-90 no-padding allowance-project" ng-bind="allowance.project">
             </div>
           </div>
           <div class="row no-padding allowance-dotted">
             <div class="col col-10 no-padding">
             </div>
-            <div class="col col-20 no-padding">
-              普通津贴
+            <div class="col col-20 no-padding" ng-bind="allowance.type">
             </div>
-            <div class="col col-20 no-padding allowance-status">
-              已经审核
+            <div class="col col-20 no-padding allowance-status" ng-bind="allowance.status">
             </div>
-            <div class="col col-50 no-padding">
-              2016-03-01~2016-03-31
+            <div class="col col-50 no-padding" ng-bind="allowance.period">
             </div>
           </div>
           <div class="allowance-dashed">
@@ -92,13 +92,13 @@
 
             </div>
             <div class="col col-20 no-padding">
-              金额:40
+              金额:{{allowance.allow}}
             </div>
             <div class="col col-20 no-padding">
-              天数:6
+              天数:{{allowance.days}}
             </div>
             <div class="col col-50 no-padding allowance-cash">
-              ¥240
+              ¥{{allowance.amount}}
             </div>
           </div>
         </div>

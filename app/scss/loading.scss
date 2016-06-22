@@ -21,3 +21,26 @@
     margin-right: auto;
   }
 }
+.hms-hide-small-content {
+  width: 100%;
+  height: 40px;
+  margin-top: 50px;
+  .spinner svg {
+    width: 24px;
+    height: 24px;
+    stroke: #444;
+    fill: #444;
+  }
+  .content {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+    color: #9B9B9B;
+  }
+  .hide-icon {
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

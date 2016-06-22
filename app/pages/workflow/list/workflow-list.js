@@ -87,6 +87,14 @@ angular.module('applicationModule')
         }
       };
 
+      var showList = function () {
+        $timeout(
+          function () {
+            $scope.fetchDataFlag = false;
+          }, 100
+        );
+      }
+
       var getTodoList = function (pullRefresh) {
         $scope.list = [];
         if (pullRefresh) {
@@ -107,28 +115,28 @@ angular.module('applicationModule')
               nodeValue: data.current_node,
               submit: workflowPerson,
               submitPerson: data.employee_name,
-              workflowId:data.workflow_id,
-              instanceId:data.instance_id
+              workflowId: data.workflow_id,
+              instanceId: data.instance_id
             };
             $scope.list.push(item);
           });
-          $scope.fetchDataFlag = false;
+
           if (pullRefresh) {
             $scope.pullRefreshDataFlag = false;
             $scope.$broadcast('scroll.refreshComplete');
           }
-
+          showList();
         };
         var error = function (result) {
-          $scope.fetchDataFlag = false;
           if (pullRefresh) {
             $scope.pullRefreshDataFlag = false;
             $scope.$broadcast('scroll.refreshComplete');
           }
+          showList();
         }
         $timeout(function () {
           WorkFLowListService.getTodoList('N', success, error);
-        }, 100);
+        }, 0);
       };
 
       var getDoneList = function (pullRefresh) {
@@ -151,34 +159,37 @@ angular.module('applicationModule')
               nodeValue: data.status_name,
               submit: workflowPerson,
               submitPerson: data.created_by_name,
-              workflowId:data.workflow_id,
-              instanceId:data.instance_id
+              workflowId: data.workflow_id,
+              instanceId: data.instance_id
             };
             $scope.list.push(item);
           });
-          $scope.fetchDataFlag = false;
           if (pullRefresh) {
             $scope.pullRefreshDataFlag = false;
             $scope.$broadcast('scroll.refreshComplete');
           }
-
+          showList();
         };
         var error = function (result) {
-          $scope.fetchDataFlag = false;
           if (pullRefresh) {
             $scope.pullRefreshDataFlag = false;
             $scope.$broadcast('scroll.refreshComplete');
           }
+          showList();
         }
         $timeout(function () {
           WorkFLowListService.getTodoList('Y', success, error);
-        }, 100);
+        }, 0);
       };
 
       getTodoList(false);
 
       $scope.enterWorkflowDetail = function (detail) {
-        $state.go('tab.workflow-detail', {"detail": detail})
+        var processedFlag = {value: false};
+        if ($scope.listStatus.done.selected) {
+          processedFlag.value = true;
+        }
+        $state.go('tab.workflow-detail', {"detail": detail, "processedFlag": processedFlag})
       }
 
       $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
@@ -202,7 +213,7 @@ angular.module('applicationModule')
             } else {
               getDoneList(true);
             }
-          }, 300);
+          }, 0);
         } else {
           $scope.$broadcast('scroll.refreshComplete');
         }
@@ -227,7 +238,7 @@ angular.module('applicationModule')
         });
       };
 
-      this.getWorkflowDetail = function (success,workflowId, recordId, submitFlag) {
+      this.getWorkflowDetail = function (success, workflowId, recordId, submitFlag) {
         var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
         var params = {
           "params": {

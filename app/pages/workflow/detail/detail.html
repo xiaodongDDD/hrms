@@ -12,8 +12,9 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content style="bottom:74px">
-    <div class="hms-workflow-history">
+  <ion-content ng-class="{'true':'detail-has-footer'}[workflowActionShowFlag]">
+
+    <div class="hms-workflow-history" ng-if="historyList.length>0">
       <div class="history-slide">
         <i class="ion-ios-arrow-right"></i>
       </div>
@@ -37,17 +38,17 @@
       </div>
     </div>
 
-    <div class="hms-workflow-array" ng-repeat="array in singalArrayList">
+    <div class="hms-workflow-array" ng-repeat="array in singalArrayList" ng-if="true">
       <div class="hms-singal-array-header">
         <div class="hms-singal-array-name">
-          <i class="ion-ios-sunny"></i>{{array.detail_title}}&nbsp;
+          <i class="ion-ios-sunny"></i>{{array.detail_title}};
         </div>
-        <div class="hms-singal-array-operation">
-          <i class="ion-ios-arrow-up"></i>
+        <div class="hms-singal-array-operation" ng-click="showContent(array)">
+          <i class="ion-ios-minus-outline"></i>
         </div>
       </div>
-      <div class="hms-singal-array-content">
-        <div class="hms-singal-array-line" ng-repeat="arrayItem in array.detail">
+      <div class="hms-singal-array-content" ng-if="array.showFlag">
+        <div class="hms-singal-array-line" ng-repeat="arrayItem in array.detail" ng-if="true">
           <div class="hms-singal-array-key" ng-bind="arrayItem.item_name">
           </div>
           <div class="hms-singal-array-value" ng-bind="arrayItem.item_value">
@@ -55,9 +56,35 @@
         </div>
       </div>
     </div>
+
+    <div class="hms-workflow-array" ng-repeat="array in multipleLine">
+      <div class="hms-singal-array-header">
+        <div class="hms-singal-array-name">
+          <i class="ion-ios-sunny"></i>{{array.title}};
+        </div>
+        <div class="hms-singal-array-link">
+          <a class="hms-array-selector">共{{array.arrayList.length}}条</a>
+          <a class="hms-array-selector" ng-click="toBack(array)"
+             ng-class="{'true':'no-activated'}[array.currentPage==1]">上一条</a>
+          <a class="hms-array-selector" ng-click="goForward(array)"
+             ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
+        </div>
+        <div class="hms-singal-array-operation" ng-click="showContent(array)">
+          <i class="ion-ios-plus-outline"></i>
+        </div>
+      </div>
+      <div class="hms-singal-array-content" ng-if="array.showFlag">
+        <div class="hms-singal-array-line" ng-repeat="item in array.currentArray">
+          <div class="hms-singal-array-key" ng-bind="item.name">
+          </div>
+          <div class="hms-singal-array-value" ng-bind="item.value">
+          </div>
+        </div>
+      </div>
+    </div>
   </ion-content>
 
-  <div class="hms-workflow-submit">
+  <div class="hms-workflow-submit" ng-if="workflowActionShowFlag">
     <div class="hms-workflow-reject">
       拒绝
     </div>

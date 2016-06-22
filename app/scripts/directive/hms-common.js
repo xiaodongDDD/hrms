@@ -219,7 +219,7 @@ HmsModule.directive('hideTabs', function($rootScope) {
 HmsModule.directive('hmsLoading', function($rootScope) {
   return {
     restrict: 'E',
-    template: '<div class="hms-hide-content">'+
+    template: '<div class="hms-hide-small-content">'+
     '<div class="content">数据加载中...</div>'+
     '<div class="hide-icon">'+
     '<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>'+

@@ -390,8 +390,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -416,8 +416,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -2385,6 +2385,26 @@ Copyright (c) 2015 Daniel Eden
   .hms-hide-content .hide-icon {
     width: 36px;
     height: 36px;
+    margin-left: auto;
+    margin-right: auto; }
+
+.hms-hide-small-content {
+  width: 100%;
+  height: 40px;
+  margin-top: 50px; }
+  .hms-hide-small-content .spinner svg {
+    width: 24px;
+    height: 24px;
+    stroke: #444;
+    fill: #444; }
+  .hms-hide-small-content .content {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 10px;
+    color: #9B9B9B; }
+  .hms-hide-small-content .hide-icon {
+    width: 24px;
+    height: 24px;
     margin-left: auto;
     margin-right: auto; }
 
@@ -4669,6 +4689,8 @@ Copyright (c) 2015 Daniel Eden
         background-repeat: no-repeat;
         background-position: center;
         color: #24559C; }
+  .timesheet .choosed {
+    background: #E3F5F0; }
   .timesheet .calendar-day {
     margin: 5px;
     padding: 5px;
@@ -4708,12 +4730,14 @@ Copyright (c) 2015 Daniel Eden
         position: relative; }
         .timesheet .calendar-day .calendar-week .day-item.activated {
           background: #eeeeee; }
+        .timesheet .calendar-day .calendar-week .day-item.choosed.activated {
+          background: #E3F5F0; }
         .timesheet .calendar-day .calendar-week .day-item.approve {
           color: #E08283; }
         .timesheet .calendar-day .calendar-week .day-item.reject {
           color: #913D88; }
         .timesheet .calendar-day .calendar-week .day-item.attendance {
-          color: #A2DED0; }
+          color: #86E2D5; }
         .timesheet .calendar-day .calendar-week .day-item .each-day {
           width: 30px;
           height: 30px;
@@ -4814,7 +4838,7 @@ Copyright (c) 2015 Daniel Eden
         margin: 0;
         padding: 0; }
       .timesheet .allowance-content .allowance-detail .allowance-status {
-        color: #A2DED0; }
+        color: #86E2D5; }
       .timesheet .allowance-content .allowance-detail .allowance-cash {
         color: #24559C;
         text-align: right; }
@@ -4930,9 +4954,21 @@ Copyright (c) 2015 Daniel Eden
   width: 100%;
   background: #4cd964; }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+.timesheet-year-list .timesheet-year-item {
+  padding: 10px;
+  font-size: 16px;
+  border-bottom: 1px solid #ddd;
+  color: #4C5665; }
+  .timesheet-year-list .timesheet-year-item.selected {
+    color: #F99D32; }
+
+/**
+* 自定义pop
+*/
+.timesheet-year-pop-container {
+  height: 250px;
+  width: 155px; }
+
 .personnel-policy .item-title-bg {
   height: 41px;
   background-color: #FAFAFA;
@@ -4978,9 +5014,6 @@ Copyright (c) 2015 Daniel Eden
   margin-right: 25px;
   margin-top: 4px; }
 
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-=======
->>>>>>> xbr
 .workflow {
   background: #fafafa; }
   .workflow .has-daiwen-bar {
@@ -5022,6 +5055,17 @@ Copyright (c) 2015 Daniel Eden
       border-top-right-radius: 15px;
       font-size: 13px; }
 
+.workflow-list.ng-enter {
+  -webkit-animation: fadeIn 0.5s;
+  animation: fadeIn .5s; }
+
+.workflow-list.ng-enter-stagger {
+  -webkit-animation-delay: 150ms;
+  animation-delay: 150ms;
+  /* override to make sure it's not inherited from other styles */
+  -webkit-animation-duration: 0;
+  animation-duration: 0; }
+
 .workflow-list {
   display: block;
   background: white;
@@ -5060,7 +5104,6 @@ Copyright (c) 2015 Daniel Eden
   .workflow-list .workflow-list-header {
     margin-left: 55px;
     height: 40px;
-    line-height: 40px;
     border-bottom: 2px dotted #D2D2D2;
     color: #24559C; }
   .workflow-list .workflow-list-content {
@@ -5074,6 +5117,8 @@ Copyright (c) 2015 Daniel Eden
   background: url("../img/workflow/BG@3x.png");
   background-size: cover;
   background-repeat: no-repeat; }
+  .workflow-detail .detail-has-footer {
+    bottom: 80px; }
   .workflow-detail .hms-workflow-history {
     width: 100%;
     height: 136px;
@@ -5132,7 +5177,7 @@ Copyright (c) 2015 Daniel Eden
           height: 14px;
           font-size: 12px; }
   .workflow-detail .hms-workflow-array {
-    margin: 5px;
+    margin: 5px 5px 10px 5px;
     background: white;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -5150,12 +5195,26 @@ Copyright (c) 2015 Daniel Eden
         padding-right: 14px;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px; }
+      .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-link {
+        float: left;
+        height: 43px;
+        line-height: 43px;
+        font-size: 14px; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-link .hms-array-selector {
+          padding-left: 10px;
+          color: #205098; }
+          .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-link .hms-array-selector.no-activated, .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-link .hms-array-selector.activated {
+            color: #999999; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-link .selector-large {
+          font-size: 20px;
+          font-weight: bold; }
       .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-operation {
         float: right;
         height: 43px;
         width: 35px;
         font-size: 20px;
-        line-height: 43px; }
+        line-height: 43px;
+        font-weight: bold; }
     .workflow-detail .hms-workflow-array .hms-singal-array-content {
       padding-left: 12px; }
       .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-line {
@@ -5184,14 +5243,14 @@ Copyright (c) 2015 Daniel Eden
           font-size: 16px; }
   .workflow-detail .hms-workflow-submit {
     width: 100%;
-    height: 44px;
+    height: 50px;
     position: absolute;
     bottom: 0;
     background: white; }
     .workflow-detail .hms-workflow-submit .hms-workflow-reject {
       width: 25%;
-      height: 44px;
-      line-height: 44px;
+      height: 50px;
+      line-height: 50px;
       padding-left: 20px;
       float: left;
       color: #B95756;
@@ -5199,10 +5258,10 @@ Copyright (c) 2015 Daniel Eden
     .workflow-detail .hms-workflow-submit .hms-workflow-back {
       width: 25%;
       float: left;
-      height: 44px;
+      height: 50px;
       text-align: right;
       color: #4C5665;
-      line-height: 44px;
+      line-height: 50px;
       padding-right: 20px;
       font-size: 16px; }
     .workflow-detail .hms-workflow-submit .hms-workflow-other {
@@ -5799,8 +5858,6 @@ Copyright (c) 2015 Daniel Eden
 #departmentModal .input-right.activated {
   background-color: #eee;
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
-<<<<<<< HEAD
-=======
 
 .invisible {
   display: none; }
@@ -6021,7 +6078,6 @@ Copyright (c) 2015 Daniel Eden
 
 .col-offset-3 {
   margin-left: 3%; }
->>>>>>> xbr
 
 .father {
   text-align: center;

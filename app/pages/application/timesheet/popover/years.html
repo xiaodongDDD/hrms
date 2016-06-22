@@ -1,0 +1,10 @@
+<ion-popover-view class="light-bg timesheet-year-pop-container">
+  <ion-content>
+    <div class="timesheet-year-list">
+      <div class="timesheet-year-item" ng-repeat="year in selectYearList" ng-click="selectYear(year)"
+           ng-class="{true:'selected',false:''}[year.selected]">
+        {{year.value}}
+      </div>
+    </div>
+  </ion-content>
+</ion-popover-view>

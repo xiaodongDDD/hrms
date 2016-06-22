@@ -1,7 +1,8 @@
 $timesheet-bule: #24559C !default;
-$timesheet-green: #A2DED0 !default;
+$timesheet-green: #86E2D5 !default;
 $timesheet-purple: #913D88 !default;
 $timesheet-red: #E08283 !default;
+$timesheet-cover: #E3F5F0 !default;
 
 
 .timesheet {
@@ -37,6 +38,10 @@ $timesheet-red: #E08283 !default;
         color: $timesheet-bule;
       }
     }
+  }
+
+  .choosed{
+    background: $timesheet-cover;
   }
 
   .calendar-day {
@@ -82,6 +87,9 @@ $timesheet-red: #E08283 !default;
         position: relative;
         &.activated {
           background: #eeeeee;
+        }
+        &.choosed.activated {
+          background: $timesheet-cover;
         }
         &.approve {
           color: $timesheet-red;

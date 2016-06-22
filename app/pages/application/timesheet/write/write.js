@@ -75,6 +75,8 @@ angular.module('applicationModule')
         console.log('$stateParams.day ' + angular.toJson($stateParams.day));
       }
 
+      $scope.lockFlag= $stateParams.day.lockFlag;
+
       $scope.currentDate = $stateParams.day.each_day;
 
       //加载项目画面
@@ -303,6 +305,11 @@ angular.module('applicationModule')
         }
 
         description = $scope.timesheetDetail.description.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
+
+        if(baseConfig.debug){
+          console.log('$scope.timesheetDetail.description ' + $scope.timesheetDetail.description);
+          console.log('description ' + description);
+        }
 
         var params = {
           "params": {
