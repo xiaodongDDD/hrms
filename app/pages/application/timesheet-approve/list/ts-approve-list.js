@@ -59,7 +59,8 @@ angular.module('tsApproveModule')
         $scope.showRocket = false; //默认不显示小火箭image
         $scope.showConnectBlock = false; //默认不显示连接块
         $scope.showDetailArrow = true; //默认显示向右的箭头--go list detail
-        $scope.showLsLoading = false; //loading默认不显示
+        $scope.showLsLoading = true; //loading默认显示
+        $scope.pullDownFlag = true; //下拉刷新显示标识
         var clickSelectAll = false; //默认没有点击全选
         $scope.endApproveDate = "";
         $scope.actionName = "操作";
@@ -167,10 +168,12 @@ angular.module('tsApproveModule')
         if ($scope.actionName == "操作") {
           $scope.actionName = "取消";
           $scope.showDetailArrow = false;
+          $scope.pullDownFlag = false;
           angular.element('.ts-approve-list-item').css("paddingLeft", "10%");
         } else if ($scope.actionName == "取消") {
           $scope.actionName = "操作";
           $scope.showDetailArrow = true;
+          $scope.pullDownFlag = true;
           angular.element('.ts-approve-list-item').css("paddingLeft", "10px");
           tsActionParams = { //审批拒绝/通过的参数
             "params": {
@@ -296,8 +299,17 @@ angular.module('tsApproveModule')
         });
       };
 
-      $scope.tsListRefresh = function () { //下拉刷新
+      $scope.tsListRefresh = function (pullFlag) { //下拉刷新
+        if ($scope.actionName === '取消') {
+          $scope.goTsLsTop();
+          return;
+        }
         tsListParams.params.p_page = 1;
+        if (pullFlag === 'pull_down') {
+          $scope.showLsLoading = false;
+        } else {
+          $scope.showLsLoading = true;
+        }
         $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
       };
 
@@ -305,10 +317,19 @@ angular.module('tsApproveModule')
         if (!$scope.showDetailArrow) {
           return;
         }
+        var warnInfo = ""; // 存储提示信息
+        if (newWarnList.length === 1) {
+          warnInfo = newWarnList[0].description;
+        } else {
+          angular.forEach(newWarnList, function (data, index) {
+            warnInfo += newWarnList[index].description + '<br>';
+          });
+        }
+
         e.stopPropagation(); //阻止事件冒泡
         warn(newWarnList);
         $ionicPopup.show({
-          template: '<div class="warn-attention-icon">' + newWarnList[0].description + '</div>',
+          template: '<div class="warn-attention-icon">' + warnInfo + '</div>',
           scope: $scope,
           buttons: [
             {
@@ -497,9 +518,8 @@ angular.module('tsApproveModule')
         $scope.showProjectName = true;
         $scope.isClickedProject = [];
         $scope.isClickedPerson = [];
-        angular.element('#project-name').addClass('active-select');
-        angular.element('#project-name').removeClass('active-off');
-        angular.element('#person-select').removeClass('active-select');
+        angular.element('#project-name').css({'backgroundColor': 'white', 'color': '#4A4A4A'});
+        angular.element('#person-select').css({'backgroundColor': '#fafafa', 'color': '#9b9b9b'});
       };
 
       $scope.cancelFilter = function () { //取消按钮

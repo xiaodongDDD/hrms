@@ -22,223 +22,222 @@ var tsApproveModule = angular.module('tsApproveModule', []);
  * @author
  * gusenlin
  */
-HmsModule.directive('hideTabs', function($rootScope) {
+HmsModule.directive('hideTabs', function ($rootScope) {
   return {
     restrict: 'A',
-    link: function(scope, element, attributes) {
-      scope.$on('$ionicView.beforeEnter', function() {
-        scope.$watch(attributes.hideTabs, function(value){
-          console.log('$ionicView.beforeEnter value ' + value );
-          if(value){
+    link: function (scope, element, attributes) {
+      scope.$on('$ionicView.beforeEnter', function () {
+        scope.$watch(attributes.hideTabs, function (value) {
+          console.log('$ionicView.beforeEnter value ' + value);
+          if (value) {
             $rootScope.hideTabs = false;
           }
-          else{
+          else {
             $rootScope.hideTabs = true;
           }
         });
       });
 
-      scope.$on('$ionicView.beforeLeave', function() {
+      scope.$on('$ionicView.beforeLeave', function () {
         $rootScope.hideTabs = true;
         console.log('$ionicView.beforeLeave value ');
       });
     }
   };
 })
-.directive('elasticImage', function($ionicScrollDelegate) {
-  return {
-    restrict: 'A',
-    link: function($scope, $scroller, $attr) {
-      var image = document.getElementById($attr.elasticImage);
-      var imageHeight = image.offsetHeight;
-      $scroller.bind('scroll', function(e) {
-        var scrollTop = e.detail.scrollTop;
-
-        var newImageHeight = imageHeight - scrollTop;
-        if (newImageHeight < 0) {
-          newImageHeight = 0;
-        }
-        image.style.height = newImageHeight + 'px';
-      });
-    }
-  }
-}).directive('circleRotate', function($timeout) {
-  return {
-    restrict: 'A',
-    link: function($scope, $scroller, $attr) {
-      var params=$attr.circleRotate;
-      var domsId=params.split(',');
-      console.log(domsId);
-      if(domsId[0]=="dorm-apply") {
-        var leftball = document.getElementById(domsId[1]);
-        var rightball = document.getElementById(domsId[2]);
-        var calculation = $scope.leftDays / $scope.totalDays;
-        if (calculation <= 0.5) {//剩余天数大于总天数的一半
-          leftball.style.transition = "all 0.3s linear";
-          leftball.style.webkitTransition = "all 0.3s linear";
-          rightball.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-          rightball.style.webkitTransition = "all 0.3s ease-out";
-        } else if (calculation > 0.5) {//剩余天数不到入住天数的一半
-          leftball.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-          leftball.style.webkitTransition = "all 0.3s ease-out 0.3s";
-          rightball.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-          rightball.style.webkitTransition = "all 0.3s ease-in";
-        }
-        leftball.style.webkitTransform = "rotate(-135deg)";
-        leftball.style.transform = "rotate(-135deg)";
-        rightball.style.webkitTransform = "rotate(-135deg)";
-        rightball.style.transform = "rotate(-135deg)";
-        $timeout(function () {//定时器中决定两个圆的终止角度
-          var angle = 0;
-          if (calculation <= 0.5) {
-            angle = 360 * calculation;
-            angle = angle - 135;
-            //console.log("角度："+angle);
-            leftball.style.webkitTransform = "rotate(-135deg)";
-            leftball.style.transform = "rotate(-135deg)";
-            rightball.style.webkitTransform = "rotate(" + angle + "deg)";
-            rightball.style.transform = "rotate(" + angle + "deg)";
-          } else if (calculation > 0.5) {
-            calculation = calculation - 0.5;
-            angle = 360 * calculation;
-            angle = angle - 135;
-            //console.log("角度："+angle);
-            leftball.style.webkitTransform = "rotate(" + angle + "deg)";
-            leftball.style.transform = "rotate(" + angle + "deg)";
-            rightball.style.webkitTransform = "rotate(45deg)";
-            rightball.style.transform = "rotate(45deg)";
+  .directive('elasticImage', function ($ionicScrollDelegate) {
+    return {
+      restrict: 'A',
+      link: function ($scope, $scroller, $attr) {
+        var image = document.getElementById($attr.elasticImage);
+        var imageHeight = image.offsetHeight;
+        $scroller.bind('scroll', function (e) {
+          var scrollTop = e.detail.scrollTop;
+          var newImageHeight = imageHeight - scrollTop;
+          if (newImageHeight < 0) {
+            newImageHeight = 0;
           }
-        }, 500);
-      }else if(domsId[0]=="time-off-manage"){
-        var leftball1 = document.getElementById(domsId[1]);
-        var rightball1 = document.getElementById(domsId[2]);
-        var leftball2 = document.getElementById(domsId[3]);
-        var rightball2 = document.getElementById(domsId[4]);
-        var leftball3 = document.getElementById(domsId[5]);
-        var rightball3 = document.getElementById(domsId[6]);
-        var calculation1 = $scope.paidHolidayLeftDays / $scope.paidHolidayTotalDays;
-        var calculation2 = $scope.paidSickLeftDays / $scope.paidSickTotalDays;
-        var calculation3 = $scope.extPaidHolidayLeftDays / $scope.extPaidHolidayTotalDays;
-        if (calculation1 <= 0.5) {//剩余天数大于总天数的一半
-          leftball1.style.transition = "all 0.3s linear";
-          leftball1.style.webkitTransition = "all 0.3s linear";
-          rightball1.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-          rightball1.style.webkitTransition = "all 0.3s ease-out";
-        } else if (calculation1 > 0.5) {//剩余天数不到入住天数的一半
-          leftball1.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-          leftball1.style.webkitTransition = "all 0.3s ease-out 0.3s";
-          rightball1.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-          rightball1.style.webkitTransition = "all 0.3s ease-in";
-        }
-        if (calculation2 <= 0.5) {//剩余天数大于总天数的一半
-          leftball2.style.transition = "all 0.3s linear";
-          leftball2.style.webkitTransition = "all 0.3s linear";
-          rightball2.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-          rightball2.style.webkitTransition = "all 0.3s ease-out";
-        } else if (calculation2 > 0.5) {//剩余天数不到入住天数的一半
-          leftball2.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-          leftball2.style.webkitTransition = "all 0.3s ease-out 0.3s";
-          rightball2.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-          rightball2.style.webkitTransition = "all 0.3s ease-in";
-        }
-        if (calculation3 <= 0.5) {//剩余天数大于总天数的一半
-          leftball3.style.transition = "all 0.3s linear";
-          leftball3.style.webkitTransition = "all 0.3s linear";
-          rightball3.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-          rightball3.style.webkitTransition = "all 0.3s ease-out";
-        } else if (calculation3 > 0.5) {//剩余天数不到入住天数的一半
-          leftball3.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-          leftball3.style.webkitTransition = "all 0.3s ease-out 0.3s";
-          rightball3.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-          rightball3.style.webkitTransition = "all 0.3s ease-in";
-        }
-        leftball1.style.webkitTransform = "rotate(-135deg)";
-        leftball1.style.transform = "rotate(-135deg)";
-        rightball1.style.webkitTransform = "rotate(-135deg)";
-        rightball1.style.transform = "rotate(-135deg)";
-        leftball2.style.webkitTransform = "rotate(-135deg)";
-        leftball2.style.transform = "rotate(-135deg)";
-        rightball2.style.webkitTransform = "rotate(-135deg)";
-        rightball2.style.transform = "rotate(-135deg)";
-        leftball3.style.webkitTransform = "rotate(-135deg)";
-        leftball3.style.transform = "rotate(-135deg)";
-        rightball3.style.webkitTransform = "rotate(-135deg)";
-        rightball3.style.transform = "rotate(-135deg)";
-        $timeout(function () {//定时器中决定两个圆的终止角度
-          var angle1 = 0;
-          var angle2 = 0;
-          var angle3 = 0;
-          if (calculation1 <= 0.5) {
-            angle1 = 360 * calculation1;
-            angle1 = angle1 - 135;
-            //console.log("角度："+angle);
-            leftball1.style.webkitTransform = "rotate(-135deg)";
-            leftball1.style.transform = "rotate(-135deg)";
-            rightball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
-            rightball1.style.transform = "rotate(" + angle1 + "deg)";
-          } else if (calculation1 > 0.5) {
-            calculation1 = calculation1 - 0.5;
-            angle1 = 360 * calculation1;
-            angle1 = angle1 - 135;
-            //console.log("角度："+angle);
-            leftball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
-            leftball1.style.transform = "rotate(" + angle1 + "deg)";
-            rightball1.style.webkitTransform = "rotate(45deg)";
-            rightball1.style.transform = "rotate(45deg)";
-          }
-          if (calculation2 <= 0.5) {
-            angle2 = 360 * calculation2;
-            angle2 = angle2 - 135;
-            //console.log("角度："+angle);
-            leftball2.style.webkitTransform = "rotate(-135deg)";
-            leftball2.style.transform = "rotate(-135deg)";
-            rightball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
-            rightball2.style.transform = "rotate(" + angle2 + "deg)";
-          } else if (calculation2 > 0.5) {
-            calculation2 = calculation2 - 0.5;
-            angle2 = 360 * calculation2;
-            angle2 = angle2 - 135;
-            //console.log("角度："+angle);
-            leftball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
-            leftball2.style.transform = "rotate(" + angle2 + "deg)";
-            rightball2.style.webkitTransform = "rotate(45deg)";
-            rightball2.style.transform = "rotate(45deg)";
-          }
-          if (calculation3 <= 0.5) {
-            angle3 = 360 * calculation3;
-            angle3 = angle3 - 135;
-            //console.log("角度："+angle);
-            leftball3.style.webkitTransform = "rotate(-135deg)";
-            leftball3.style.transform = "rotate(-135deg)";
-            rightball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
-            rightball3.style.transform = "rotate(" + angle3 + "deg)";
-          } else if (calculation3 > 0.5) {
-            calculation3 = calculation3 - 0.5;
-            angle3 = 360 * calculation3;
-            angle3 = angle3 - 135;
-            //console.log("角度："+angle);
-            leftball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
-            leftball3.style.transform = "rotate(" + angle3 + "deg)";
-            rightball3.style.webkitTransform = "rotate(45deg)";
-            rightball3.style.transform = "rotate(45deg)";
-          }
-        }, 500);
+          image.style.height = newImageHeight + 'px';
+        });
       }
     }
-  }
-});
+  }).directive('circleRotate', function ($timeout) {
+    return {
+      restrict: 'A',
+      link: function ($scope, $scroller, $attr) {
+        var params = $attr.circleRotate;
+        var domsId = params.split(',');
+        console.log(domsId);
+        if (domsId[0] == "dorm-apply") {
+          var leftball = document.getElementById(domsId[1]);
+          var rightball = document.getElementById(domsId[2]);
+          var calculation = $scope.leftDays / $scope.totalDays;
+          if (calculation <= 0.5) {//剩余天数大于总天数的一半
+            leftball.style.transition = "all 0.3s linear";
+            leftball.style.webkitTransition = "all 0.3s linear";
+            rightball.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball.style.webkitTransition = "all 0.3s ease-out";
+          } else if (calculation > 0.5) {//剩余天数不到入住天数的一半
+            leftball.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+            leftball.style.webkitTransition = "all 0.3s ease-out 0.3s";
+            rightball.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball.style.webkitTransition = "all 0.3s ease-in";
+          }
+          leftball.style.webkitTransform = "rotate(-135deg)";
+          leftball.style.transform = "rotate(-135deg)";
+          rightball.style.webkitTransform = "rotate(-135deg)";
+          rightball.style.transform = "rotate(-135deg)";
+          $timeout(function () {//定时器中决定两个圆的终止角度
+            var angle = 0;
+            if (calculation <= 0.5) {
+              angle = 360 * calculation;
+              angle = angle - 135;
+              //console.log("角度："+angle);
+              leftball.style.webkitTransform = "rotate(-135deg)";
+              leftball.style.transform = "rotate(-135deg)";
+              rightball.style.webkitTransform = "rotate(" + angle + "deg)";
+              rightball.style.transform = "rotate(" + angle + "deg)";
+            } else if (calculation > 0.5) {
+              calculation = calculation - 0.5;
+              angle = 360 * calculation;
+              angle = angle - 135;
+              //console.log("角度："+angle);
+              leftball.style.webkitTransform = "rotate(" + angle + "deg)";
+              leftball.style.transform = "rotate(" + angle + "deg)";
+              rightball.style.webkitTransform = "rotate(45deg)";
+              rightball.style.transform = "rotate(45deg)";
+            }
+          }, 500);
+        } else if (domsId[0] == "time-off-manage") {
+          var leftball1 = document.getElementById(domsId[1]);
+          var rightball1 = document.getElementById(domsId[2]);
+          var leftball2 = document.getElementById(domsId[3]);
+          var rightball2 = document.getElementById(domsId[4]);
+          var leftball3 = document.getElementById(domsId[5]);
+          var rightball3 = document.getElementById(domsId[6]);
+          var calculation1 = $scope.paidHolidayLeftDays / $scope.paidHolidayTotalDays;
+          var calculation2 = $scope.paidSickLeftDays / $scope.paidSickTotalDays;
+          var calculation3 = $scope.extPaidHolidayLeftDays / $scope.extPaidHolidayTotalDays;
+          if (calculation1 <= 0.5) {//剩余天数大于总天数的一半
+            leftball1.style.transition = "all 0.3s linear";
+            leftball1.style.webkitTransition = "all 0.3s linear";
+            rightball1.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball1.style.webkitTransition = "all 0.3s ease-out";
+          } else if (calculation1 > 0.5) {//剩余天数不到入住天数的一半
+            leftball1.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+            leftball1.style.webkitTransition = "all 0.3s ease-out 0.3s";
+            rightball1.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball1.style.webkitTransition = "all 0.3s ease-in";
+          }
+          if (calculation2 <= 0.5) {//剩余天数大于总天数的一半
+            leftball2.style.transition = "all 0.3s linear";
+            leftball2.style.webkitTransition = "all 0.3s linear";
+            rightball2.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball2.style.webkitTransition = "all 0.3s ease-out";
+          } else if (calculation2 > 0.5) {//剩余天数不到入住天数的一半
+            leftball2.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+            leftball2.style.webkitTransition = "all 0.3s ease-out 0.3s";
+            rightball2.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball2.style.webkitTransition = "all 0.3s ease-in";
+          }
+          if (calculation3 <= 0.5) {//剩余天数大于总天数的一半
+            leftball3.style.transition = "all 0.3s linear";
+            leftball3.style.webkitTransition = "all 0.3s linear";
+            rightball3.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball3.style.webkitTransition = "all 0.3s ease-out";
+          } else if (calculation3 > 0.5) {//剩余天数不到入住天数的一半
+            leftball3.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+            leftball3.style.webkitTransition = "all 0.3s ease-out 0.3s";
+            rightball3.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball3.style.webkitTransition = "all 0.3s ease-in";
+          }
+          leftball1.style.webkitTransform = "rotate(-135deg)";
+          leftball1.style.transform = "rotate(-135deg)";
+          rightball1.style.webkitTransform = "rotate(-135deg)";
+          rightball1.style.transform = "rotate(-135deg)";
+          leftball2.style.webkitTransform = "rotate(-135deg)";
+          leftball2.style.transform = "rotate(-135deg)";
+          rightball2.style.webkitTransform = "rotate(-135deg)";
+          rightball2.style.transform = "rotate(-135deg)";
+          leftball3.style.webkitTransform = "rotate(-135deg)";
+          leftball3.style.transform = "rotate(-135deg)";
+          rightball3.style.webkitTransform = "rotate(-135deg)";
+          rightball3.style.transform = "rotate(-135deg)";
+          $timeout(function () {//定时器中决定两个圆的终止角度
+            var angle1 = 0;
+            var angle2 = 0;
+            var angle3 = 0;
+            if (calculation1 <= 0.5) {
+              angle1 = 360 * calculation1;
+              angle1 = angle1 - 135;
+              //console.log("角度："+angle);
+              leftball1.style.webkitTransform = "rotate(-135deg)";
+              leftball1.style.transform = "rotate(-135deg)";
+              rightball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
+              rightball1.style.transform = "rotate(" + angle1 + "deg)";
+            } else if (calculation1 > 0.5) {
+              calculation1 = calculation1 - 0.5;
+              angle1 = 360 * calculation1;
+              angle1 = angle1 - 135;
+              //console.log("角度："+angle);
+              leftball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
+              leftball1.style.transform = "rotate(" + angle1 + "deg)";
+              rightball1.style.webkitTransform = "rotate(45deg)";
+              rightball1.style.transform = "rotate(45deg)";
+            }
+            if (calculation2 <= 0.5) {
+              angle2 = 360 * calculation2;
+              angle2 = angle2 - 135;
+              //console.log("角度："+angle);
+              leftball2.style.webkitTransform = "rotate(-135deg)";
+              leftball2.style.transform = "rotate(-135deg)";
+              rightball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
+              rightball2.style.transform = "rotate(" + angle2 + "deg)";
+            } else if (calculation2 > 0.5) {
+              calculation2 = calculation2 - 0.5;
+              angle2 = 360 * calculation2;
+              angle2 = angle2 - 135;
+              //console.log("角度："+angle);
+              leftball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
+              leftball2.style.transform = "rotate(" + angle2 + "deg)";
+              rightball2.style.webkitTransform = "rotate(45deg)";
+              rightball2.style.transform = "rotate(45deg)";
+            }
+            if (calculation3 <= 0.5) {
+              angle3 = 360 * calculation3;
+              angle3 = angle3 - 135;
+              //console.log("角度："+angle);
+              leftball3.style.webkitTransform = "rotate(-135deg)";
+              leftball3.style.transform = "rotate(-135deg)";
+              rightball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
+              rightball3.style.transform = "rotate(" + angle3 + "deg)";
+            } else if (calculation3 > 0.5) {
+              calculation3 = calculation3 - 0.5;
+              angle3 = 360 * calculation3;
+              angle3 = angle3 - 135;
+              //console.log("角度："+angle);
+              leftball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
+              leftball3.style.transform = "rotate(" + angle3 + "deg)";
+              rightball3.style.webkitTransform = "rotate(45deg)";
+              rightball3.style.transform = "rotate(45deg)";
+            }
+          }, 500);
+        }
+      }
+    }
+  });
 /**
  * @description:loading tag
  *
  */
-HmsModule.directive('hmsLoading', function($rootScope) {
+HmsModule.directive('hmsLoading', function ($rootScope) {
   return {
     restrict: 'E',
-    template: '<div class="hms-hide-content">'+
-    '<div class="content">数据加载中...</div>'+
-    '<div class="hide-icon">'+
-    '<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>'+
-    '</div>'+
+    template: '<div class="hms-hide-content">' +
+    '<div class="content">数据加载中...</div>' +
+    '<div class="hide-icon">' +
+    '<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>' +
+    '</div>' +
     '</div>',
     replace: true, //使用模板替换原始标记
     transclude: false,    // 不复制原始HTML内容
@@ -3440,74 +3439,6 @@ angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.workflow-detail', {
-          url: '/workflow-detail',
-          params: {detail: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/detail/detail.html',
-              controller: 'WorkFLowDetailCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowDetailCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
-      var detail = $stateParams.detail;
-      if(baseConfig.debug){
-        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
-      }
-
-      $scope.historyList = [];
-      $scope.singalArrayList = [];
-      $scope.multipleArrayList = [];
-
-      //var
-      var success = function (result) {
-        if(baseConfig.debug){
-          console.log('getWorkflowDetail.result ' + angular.toJson(result));
-        }
-        if(result.status == 'S'){
-          $scope.historyList = result.history;
-          $scope.singalArrayList = result.workflow_data.details;
-          $scope.multipleArrayList = result.workflow_data.lines;
-        }
-      }
-      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
         .state('tab.workflow-list', {
           url: '/workflow-list',
           params: {day: {}},
@@ -3748,6 +3679,74 @@ angular.module('applicationModule')
         }).error(function (data) {
         });
       };
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.workflow-detail', {
+          url: '/workflow-detail',
+          params: {detail: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/workflow/detail/detail.html',
+              controller: 'WorkFLowDetailCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('WorkFLowDetailCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    'WorkFLowListService',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup,
+              WorkFLowListService) {
+      var detail = $stateParams.detail;
+      if(baseConfig.debug){
+        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
+      }
+
+      $scope.historyList = [];
+      $scope.singalArrayList = [];
+      $scope.multipleArrayList = [];
+
+      //var
+      var success = function (result) {
+        if(baseConfig.debug){
+          console.log('getWorkflowDetail.result ' + angular.toJson(result));
+        }
+        if(result.status == 'S'){
+          $scope.historyList = result.history;
+          $scope.singalArrayList = result.workflow_data.details;
+          $scope.multipleArrayList = result.workflow_data.lines;
+        }
+      }
+      WorkFLowListService.getWorkflowDetail(success,detail.workflowId,detail.instanceId,'Y');
     }]);
 
 angular.module('myApp')
@@ -5598,7 +5597,8 @@ angular.module('tsApproveModule')
         $scope.showRocket = false; //默认不显示小火箭image
         $scope.showConnectBlock = false; //默认不显示连接块
         $scope.showDetailArrow = true; //默认显示向右的箭头--go list detail
-        $scope.showLsLoading = false; //loading默认不显示
+        $scope.showLsLoading = true; //loading默认显示
+        $scope.pullDownFlag = true; //下拉刷新显示标识
         var clickSelectAll = false; //默认没有点击全选
         $scope.endApproveDate = "";
         $scope.actionName = "操作";
@@ -5706,10 +5706,12 @@ angular.module('tsApproveModule')
         if ($scope.actionName == "操作") {
           $scope.actionName = "取消";
           $scope.showDetailArrow = false;
+          $scope.pullDownFlag = false;
           angular.element('.ts-approve-list-item').css("paddingLeft", "10%");
         } else if ($scope.actionName == "取消") {
           $scope.actionName = "操作";
           $scope.showDetailArrow = true;
+          $scope.pullDownFlag = true;
           angular.element('.ts-approve-list-item').css("paddingLeft", "10px");
           tsActionParams = { //审批拒绝/通过的参数
             "params": {
@@ -5835,8 +5837,17 @@ angular.module('tsApproveModule')
         });
       };
 
-      $scope.tsListRefresh = function () { //下拉刷新
+      $scope.tsListRefresh = function (pullFlag) { //下拉刷新
+        if ($scope.actionName === '取消') {
+          $scope.goTsLsTop();
+          return;
+        }
         tsListParams.params.p_page = 1;
+        if (pullFlag === 'pull_down') {
+          $scope.showLsLoading = false;
+        } else {
+          $scope.showLsLoading = true;
+        }
         $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
       };
 
@@ -5844,10 +5855,19 @@ angular.module('tsApproveModule')
         if (!$scope.showDetailArrow) {
           return;
         }
+        var warnInfo = ""; // 存储提示信息
+        if (newWarnList.length === 1) {
+          warnInfo = newWarnList[0].description;
+        } else {
+          angular.forEach(newWarnList, function (data, index) {
+            warnInfo += newWarnList[index].description + '<br>';
+          });
+        }
+
         e.stopPropagation(); //阻止事件冒泡
         warn(newWarnList);
         $ionicPopup.show({
-          template: '<div class="warn-attention-icon">' + newWarnList[0].description + '</div>',
+          template: '<div class="warn-attention-icon">' + warnInfo + '</div>',
           scope: $scope,
           buttons: [
             {
@@ -6036,9 +6056,8 @@ angular.module('tsApproveModule')
         $scope.showProjectName = true;
         $scope.isClickedProject = [];
         $scope.isClickedPerson = [];
-        angular.element('#project-name').addClass('active-select');
-        angular.element('#project-name').removeClass('active-off');
-        angular.element('#person-select').removeClass('active-select');
+        angular.element('#project-name').css({'backgroundColor': 'white', 'color': '#4A4A4A'});
+        angular.element('#person-select').css({'backgroundColor': '#fafafa', 'color': '#9b9b9b'});
       };
 
       $scope.cancelFilter = function () { //取消按钮
@@ -6110,6 +6129,7 @@ angular.module('tsApproveModule')
                   } else {
                     for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
                       subsidys = parseInt(subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      subsidys++;
                       _self.subsidyDaysArray.push(subsidys);
                     }
                   }
@@ -6185,6 +6205,7 @@ angular.module('tsApproveModule')
                   } else {
                     for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
                       new_subsidys = parseInt(new_subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
+                      new_subsidys++;
                       _self.subsidyDaysArray.push(new_subsidys);
                     }
                   }

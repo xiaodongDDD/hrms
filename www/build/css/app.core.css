@@ -45,6 +45,17 @@
   transform: scale(0.95, 0.95);
   -webkit-transform: scale(0.95, 0.95); }
 
+.loading-hand {
+  background: url("./../img/loading.gif");
+  background-size: 70px 70px;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 70px;
+  width: 100%;
+  margin-top: 27%;
+  position: fixed;
+  z-index: 1000; }
+
 /*!
 Animate.css - http://daneden.me/animate
 Version - 3.4.0
