@@ -18,7 +18,9 @@
                on-drag-up="onDragUp()"
                scrollbar-y="false">
     <hms-loading ng-if="listInfoArray.loading"></hms-loading>
-    <ion-refresher on-refresh="tsListRefresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
+    <!--<div class="loading-hand"></div>-->
+    <ion-refresher on-refresh="tsListRefresh('pull_down')" ng-if="pullDownFlag" pulling-text="正在刷新数据..."
+                   pulling-icon="ion-ios-loop">
     </ion-refresher>
     <div id="tsApproveList" class="ts-approve-list-item" ng-repeat="i in listInfoArray.listArray"
          ng-click="goApproveDetail($index,i.employee_number,i.project_id,i.start_date,i.end_date)">
