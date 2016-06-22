@@ -18,7 +18,7 @@ angular.module('myApp', [
   'tsApproveModule',
   'HmsModule'
 ]); 
-
+ 
 angular.module('myApp')
   .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {

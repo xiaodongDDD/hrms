@@ -390,8 +390,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -416,8 +416,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -4930,9 +4930,6 @@ Copyright (c) 2015 Daniel Eden
   width: 100%;
   background: #4cd964; }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 .personnel-policy .item-title-bg {
   height: 41px;
   background-color: #FAFAFA;
@@ -4978,9 +4975,6 @@ Copyright (c) 2015 Daniel Eden
   margin-right: 25px;
   margin-top: 4px; }
 
->>>>>>> cece32b2585ec8df47ca2184035e04d510fc3353
-=======
->>>>>>> xbr
 .workflow {
   background: #fafafa; }
   .workflow .has-daiwen-bar {
@@ -5560,6 +5554,73 @@ Copyright (c) 2015 Daniel Eden
   margin-top: 10px;
   float: left; }
 
+.flyback-detail-select-model .ion-ios-arrow-back {
+  color: #aaaaaa;
+  font-size: 20px;
+  margin-right: 3px; }
+
+.flyback-detail-view ion-content {
+  background-color: #ececec; }
+  .flyback-detail-view ion-content .ion-ios-calendar-outline {
+    font-size: 20px;
+    color: white;
+    text-overflow: ellipsis; }
+  .flyback-detail-view ion-content .fb-item-select.a {
+    width: 80%; }
+    .flyback-detail-view ion-content .fb-item-select.a input {
+      background: none;
+      font-size: 13px; }
+  .flyback-detail-view ion-content .xbr-arrow {
+    position: fixed;
+    width: 60px;
+    height: 20px;
+    padding-left: 16px;
+    margin-top: -12px;
+    background-color: #FFFFFF;
+    color: #FFFFFF; }
+    .flyback-detail-view ion-content .xbr-arrow img {
+      height: 20px; }
+  .flyback-detail-view ion-content .xbr-more-info {
+    height: 40px;
+    line-height: 40px;
+    color: #878787;
+    text-align: center;
+    font-size: 14px;
+    margin-top: -8px; }
+  .flyback-detail-view ion-content .fb-area.xbr1 label:nth-child(1) {
+    background: none;
+    font-size: 13px;
+    margin-left: 10px; }
+  .flyback-detail-view ion-content .fb-area.xbr1 label:nth-child(2) input {
+    background: none;
+    font-size: 13px;
+    margin-left: 10px; }
+  .flyback-detail-view ion-content .fb-area.xbr1 label:nth-child(3) input {
+    background: none;
+    font-size: 13px;
+    margin-left: 10px; }
+  .flyback-detail-view ion-content .fb-item-input2.xbr2-other #ticketonly {
+    margin-left: 14px; }
+  .flyback-detail-view ion-content .fb-area.xbr3 textarea {
+    width: 100%; }
+  .flyback-detail-view ion-content .xbr4 {
+    background-color: #5B607A;
+    colog: #FFFFFF;
+    border: none;
+    height: 45px;
+    line-height: 45px; }
+    .flyback-detail-view ion-content .xbr4 button {
+      width: 100%;
+      float: left;
+      height: 45px;
+      line-height: 45px; }
+  .flyback-detail-view ion-content .ion-ios-location {
+    color: #11c1f3; }
+  .flyback-detail-view ion-content .ion-flag {
+    color: #ff3b30; }
+  .flyback-detail-view ion-content .text-input--underbar.width-full {
+    width: 100%; }
+
 .flyback-main-view ion-content {
   margin-top: -20px; }
 
@@ -5587,6 +5648,20 @@ Copyright (c) 2015 Daniel Eden
   color: #FFFFFF;
   text-align: center;
   font-size: 16px; }
+
+.flyback-main-view ion-content {
+  overflow: hidden; }
+
+.flyback-main-view .fbnav-img img {
+  width: 100%; }
+
+.flyback-main-view .fbnav-button-block div:nth-child(1) {
+  margin-top: 30px;
+  background-color: #FFBE00; }
+
+.flyback-main-view .fbnav-button-block div:nth-child(2) {
+  margin-top: 10px;
+  background-color: #FF9B00; }
 
 .flyback-query-view .fb-query-block {
   background-color: #FFFFFF;
@@ -5799,8 +5874,84 @@ Copyright (c) 2015 Daniel Eden
 #departmentModal .input-right.activated {
   background-color: #eee;
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
-<<<<<<< HEAD
-=======
+
+#departmentModal {
+  top: 0; }
+  #departmentModal .xbr-header-bar button {
+    color: #333; }
+  #departmentModal .bar-subheader {
+    background-color: #f8f8f8; }
+    #departmentModal .bar-subheader .input-left {
+      width: 10%; }
+    #departmentModal .bar-subheader .xbr-center {
+      width: 90%;
+      float: left; }
+
+.flyback-query-view ion-content {
+  overflow: hidden; }
+  .flyback-query-view ion-content .fb-query-block .row:nth-child(1) {
+    height: 40px; }
+    .flyback-query-view ion-content .fb-query-block .row:nth-child(1) div:nth-child(1) {
+      color: #687F87; }
+    .flyback-query-view ion-content .fb-query-block .row:nth-child(1) input {
+      width: 95%;
+      color: #888888;
+      background-color: #FFFFFF;
+      margin-top: 1px;
+      text-overflow: ellipsis; }
+  .flyback-query-view ion-content .fb-query-block .row:nth-child(2) {
+    height: 40px; }
+    .flyback-query-view ion-content .fb-query-block .row:nth-child(2) div:nth-child(1) {
+      color: #687F87; }
+    .flyback-query-view ion-content .fb-query-block .row:nth-child(2) input {
+      background: none;
+      color: #888888;
+      font-size: 13px;
+      width: 100%;
+      text-align: right; }
+  .flyback-query-view ion-content .fb-query-block .row:nth-child(3) {
+    height: 40px; }
+    .flyback-query-view ion-content .fb-query-block .row:nth-child(3) div:nth-child(1) {
+      color: #687F87; }
+      .flyback-query-view ion-content .fb-query-block .row:nth-child(3) div:nth-child(1) input {
+        background: none;
+        color: #888888;
+        font-size: 13px;
+        width: 100%;
+        text-align: right; }
+  .flyback-query-view ion-content .xbr-div-2 {
+    width: 100%;
+    height: 20px;
+    background-color: #ececec;
+    text-align: center;
+    font-size: 12px;
+    color: #FFBE00; }
+  .flyback-query-view ion-content .xbr-ion-list {
+    margin-top: 20px;
+    padding: 0;
+    border: none; }
+    .flyback-query-view ion-content .xbr-ion-list .xbr-ion-item {
+      background-color: #FFFFFF;
+      height: 115px;
+      padding: 0;
+      margin: 0;
+      border: none; }
+      .flyback-query-view ion-content .xbr-ion-list .xbr-ion-item .xbr-item-inner {
+        width: 100%;
+        margin: 0;
+        padding: 0; }
+        .flyback-query-view ion-content .xbr-ion-list .xbr-ion-item .xbr-item-inner div:nth-child(1) {
+          width: 7%;
+          height: 115px;
+          float: left; }
+        .flyback-query-view ion-content .xbr-ion-list .xbr-ion-item .xbr-item-inner div:nth-child(2) {
+          width: 93%;
+          height: 115px;
+          float: left; }
+        .flyback-query-view ion-content .xbr-ion-list .xbr-ion-item .xbr-item-inner .xbr-flag-a {
+          width: 100%;
+          margin-top: 16px;
+          height: 30px; }
 
 .invisible {
   display: none; }
@@ -6021,7 +6172,6 @@ Copyright (c) 2015 Daniel Eden
 
 .col-offset-3 {
   margin-left: 3%; }
->>>>>>> xbr
 
 .father {
   text-align: center;
