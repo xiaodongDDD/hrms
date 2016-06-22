@@ -17,14 +17,12 @@ HmsModule.directive('hmsWorkflowList', function () {
       submit: '=workflowSubmit',
       submitPerson: '=workflowSubmitPerson'
     },
-    /*template : '<div>'
-     + '<div class="title" ng-click="toggle()">{{title}}</div>'
-     + '<div class="body" ng-show="showMe" ng-transclude></div>'
-     + '</div>', */
 
     template: '<a class="workflow-list">' +
-    '<div class="workflow-list-logo"><img src="{{icon}}"/>' +
-    '</div><div class="workflow-list-header">{{title}}</div>' +
+    '<div class="workflow-list-logo">' +
+    '<img src="{{icon}}"/>' +
+    '</div>' +
+    '<div class="workflow-list-header">{{title}}</div>' +
     '<div class="workflow-list-content">' +
     '<div class="row no-padding">' +
     '<div class="col col-90 no-padding">' +
