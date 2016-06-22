@@ -13,6 +13,9 @@ angular.module('loginModule')
     '$ionicHistory',
     '$ionicPlatform',
     'hmsPopup',
+    '$ionicScrollDelegate',
+    '$timeout',
+    'hmsPopup',
     function ($scope,
               $state,
               baseConfig,
@@ -21,6 +24,9 @@ angular.module('loginModule')
               $timeout,
               $ionicHistory,
               $ionicPlatform,
+              hmsPopup,
+              $ionicScrollDelegate,
+              $timeout,
               hmsPopup) {
 
       //将页面的导航bar设置成白色
@@ -29,7 +35,98 @@ angular.module('loginModule')
           StatusBar.styleDefault();
         }
       });
+      /////////////////////////////////////
+      //$timeout(function(){
+      //  $ionicScrollDelegate.$getByHandle('loginScroll').freezeScroll(true);//锁死Android平台上的滚动条
+      //},300);
+      //$scope.loginInfo={
+      //  username:"请输入用户名",
+      //  password:"请输入密码"
+      //};//登录信息
+      //$scope.showBigPortrait=true;
+      //$scope.showLittlePortrait=false;
+      //$scope.rememberPassword=false;
+      //$scope.littlePortrait="build/img/login/login-username.png";//大头像图片
+      //$scope.bigPortrait="build/img/login/login-hand.png"//小头像图片
+      //$scope.passwordChecked="build/img/login/login-unchecked.png";//是否记住密码图片
+      //$scope.fillUsername=false;
+      //$scope.fillPassword=false;
+      //$scope.buttonStyle=[true,false];//登录按钮的两种样式
+      //$scope.disableButton=true;//禁用登录按钮
+      //$scope.showButtonIcon=false;
+      //$scope.showLoginButton=false;
+      //
+      //$scope.usernameFocus=function(){//聚焦用户名
+      //  $scope.showBigPortrait=false;
+      //  $scope.showLittlePortrait=true;
+      //  $scope.littlePortrait="build/img/login/login-username.png";
+      //  if($scope.loginInfo.username=="请输入用户名"){
+      //    $scope.loginInfo.username="";
+      //  }
+      //};
+      //$scope.usernameBlur=function(){//用户名失去焦点
+      //  $scope.showBigPortrait=true;
+      //  $scope.showLittlePortrait=false;
+      //  if($scope.loginInfo.username==""){
+      //    $scope.loginInfo.username="请输入用户名";
+      //  }else{
+      //
+      //  }
+      //};
+      //$scope.usernameChange=function(){//用户名改变
+      //  if($scope.loginInfo.username!=""){
+      //    $scope.fillUsername=true;
+      //  }else if($scope.loginInfo.username==""){
+      //    $scope.fillUsername=false;
+      //  }
+      //};
+      //$scope.passwordChange=function(){//密码改变
+      //  if($scope.loginInfo.password!=""){
+      //    $scope.fillPassword=true;
+      //    $scope.disableButton=false;
+      //    $scope.buttonStyle[0]=false;
+      //    $scope.buttonStyle[1]=true;
+      //  }else if($scope.loginInfo.password==""){
+      //    $scope.fillPassword=false;
+      //    $scope.disableButton=true;
+      //    $scope.buttonStyle[0]=true;
+      //    $scope.buttonStyle[1]=false;
+      //  }
+      //};
+      //$scope.passwordFocus=function(){//聚焦密码
+      //    $scope.showBigPortrait=false;
+      //    $scope.showLittlePortrait=true;
+      //    $scope.littlePortrait="build/img/login/login-password.png";
+      //    if($scope.loginInfo.password=="请输入密码"){
+      //      $scope.loginInfo.password="";
+      //    }
+      //};
+      //$scope.passwordBlur=function(){//密码失去焦点
+      //  $scope.showBigPortrait=true;
+      //  $scope.showLittlePortrait=false;
+      //  if($scope.loginInfo.password==""){
+      //    $scope.loginInfo.password="请输入密码";
+      //  }else{
+      //
+      //  }
+      //};
+      //$scope.savePassword=function(){//记住密码
+      // $scope.rememberPassword=!$scope.rememberPassword;
+      // if($scope.rememberPassword==true){
+      //   $scope.passwordChecked="build/img/login/login-checked.png"
+      // }else if($scope.rememberPassword==false){
+      //   $scope.passwordChecked="build/img/login/login-unchecked.png"
+      // }
+      //};
+      //
+      //$scope.login=function(){
+      //  $scope.showLoginButton=true;
+      //  $scope.showButtonIcon=true;
+      //  $scope.showBigPortrait=true;
+      //  $scope.bigPortrait="build/img/login/login-portrait.png"
+      //}
 
+      ////////////////////////////
       $scope.loginData = {};
       $scope.currentVersionNum = baseConfig.versionName;
 

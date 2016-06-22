@@ -210,6 +210,35 @@ HmsModule.directive('hideTabs', function ($rootScope) {
       }
     }
   }
+}).directive('calculatePortrait', function() {
+    return {
+      restrict: 'A',
+      link: function($scope, $scroller, $attr) {
+        var params=$attr.calculatePortrait;
+        var domsId=params.split(',');
+        var bigPortraitVariable=0;//大头像的偏移量
+        var myBigPortrait=document.getElementById(domsId[0]);
+        var myLittlePortrait=document.getElementById(domsId[1]);
+        var clientWidth=window.screen.width;
+        var calculationBig=90*clientWidth/375;
+        var calculationLittle=64*clientWidth/375;
+        if(clientWidth>300 && clientWidth<=345){
+          bigPortraitVariable=4;
+        }else if(clientWidth>345 && clientWidth<=395){
+          bigPortraitVariable=-3;
+        }else if(clientWidth>395 && clientWidth<=445){
+          bigPortraitVariable=-10;
+        }else if(clientWidth>445){
+          bigPortraitVariable=-17;
+        }
+        myBigPortrait.style.width=calculationBig+"px";
+        myBigPortrait.style.height=calculationBig+"px";
+        myLittlePortrait.style.width=calculationLittle+"px";
+        myLittlePortrait.style.height=calculationLittle+"px";
+        myLittlePortrait.style.top=-calculationLittle/2+"px";
+        myBigPortrait.style.top=bigPortraitVariable*clientWidth/375-calculationBig/2+"px";
+      }
+    }
 });
 /**
  * @description:loading tag

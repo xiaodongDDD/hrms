@@ -503,7 +503,7 @@ angular.module('applicationModule')
       $timeout(
         function () {
           initDate();
-        }, 300
+        }, 600
       );
 
       $scope.goBack = function () {

@@ -30,6 +30,7 @@ angular.module('applicationModule')
     '$rootScope',
     '$timeout',
     '$stateParams',
+    '$cordovaDatePicker',
     function ($scope,
               $state,
               baseConfig,
@@ -38,58 +39,43 @@ angular.module('applicationModule')
               hmsPopup,
               $rootScope,
               $timeout,
-              $stateParams) {
+              $stateParams,
+              $cordovaDatePicker) {
+      /**
+       * 续住和再次预定功能部分由于需要选择开始和结束时间
+       * 所以目前设计成点击按钮后，提示用户选择开始于结束日期
+       * 当再次点击续住的时候，会判断日期选择是否合法
+       * 如果合法的话，就调用接口
+       **/
       $scope.applyInfo = $stateParams.dormApplyDetailInfo;
       $scope.checkIn = false;//审批中状态标志位
       $scope.checkOut = false;//已拒绝状态标识位
       $scope.buttonText = '';//按钮上显示的文字
       $scope.leftDays=$scope.applyInfo.leftDays;//剩余天数
+      $scope.allowApply=false;//由于续住和再次预定需要选择开始日期和结束日期，默认未选择日期
       $scope.totalDays=parseInt($scope.applyInfo.checkinDays);
-////////////
-//      var childDays=parseInt($scope.leftDays);//计算圆旋转角度的剩余天数
-//      var motherDays=parseInt($scope.applyInfo.checkinDays);//计算圆旋转角度的入住天数
-//      var calculation=childDays/motherDays;//分子除以分母
-//      //console.log(calculation);
-//      //JS圆环动画
-//      var leftball=document.getElementById('left_ball');//拿到左半圆DOM
-//      var rightball=document.getElementById('right_ball');//拿到右半圆DOM
-//      if(calculation<=0.5){//剩余天数大于总天数的一半
-//        leftball.style.transition="all 0.3s linear";
-//        leftball.style.webkitTransition="all 0.3s linear";
-//        rightball.style.transition="all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-//        rightball.style.webkitTransition="all 0.3s ease-out";
-//      }else if(calculation>0.5){//剩余天数不到入住天数的一半
-//        leftball.style.transition="all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-//        leftball.style.webkitTransition="all 0.3s ease-out 0.3s";
-//        rightball.style.transition="all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-//        rightball.style.webkitTransition="all 0.3s ease-in";
-//      }
-//      leftball.style.webkitTransform = "rotate(-135deg)";
-//      leftball.style.transform = "rotate(-135deg)";
-//      rightball.style.webkitTransform = "rotate(-135deg)";
-//      rightball.style.transform = "rotate(-135deg)";
-      //定时器中决定两个圆的终止角度
-      //$timeout(function(){
-      //  var angle=0;
-      //  if(calculation<=0.5){
-      //    angle=360*calculation;
-      //    angle=angle-135;
-      //    //console.log("角度："+angle);
-      //    leftball.style.webkitTransform = "rotate(-135deg)";
-      //    leftball.style.transform = "rotate(-135deg)";
-      //    rightball.style.webkitTransform = "rotate("+angle+"deg)";
-      //    rightball.style.transform = "rotate("+angle+"deg)";
-      //  }else if(calculation>0.5){
-      //    calculation=calculation-0.5;
-      //    angle=360*calculation;
-      //    angle=angle-135;
-      //    //console.log("角度："+angle);
-      //    leftball.style.webkitTransform = "rotate("+angle+"deg)";
-      //    leftball.style.transform = "rotate("+angle+"deg)";
-      //    rightball.style.webkitTransform = "rotate(45deg)";
-      //    rightball.style.transform = "rotate(45deg)";
-      //  }
-      //},500);
+      var todayDate = new Date();//用今天日期和明天日期初始化入住日期和结束日期
+      var todayMonth = todayDate.getMonth()+1;
+      var todayDay =todayDate.getDate();
+      $scope.startDate={//入住日期
+        year:todayDate.getFullYear(),
+        month:"",
+        day:""
+      };
+      $scope.endDate={//结束日期
+        year:"",
+        month:"",
+        day:""
+      };
+      if(todayMonth<10){
+        todayMonth="0"+todayMonth;
+      }
+      if(todayDay<10){
+        todayDay="0"+todayDay;
+      }
+      $scope.startDate.month=todayMonth;
+      $scope.startDate.day=todayDay;
+      refreshEndDate(1);//初始化结束日期为明天
 
       if ($scope.applyInfo.status == '已入住') {//已入住
         $scope.checkIn = true;
@@ -101,45 +87,167 @@ angular.module('applicationModule')
         $scope.buttonText = '再次预定';
       }
 
+      function refreshEndDate(num){//今天之后的num天
+        var myDate=$scope.startDate;
+        var todayDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var tomorrowDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var tomorrowYear="";
+        var tomorrowDay="";
+        var tomorrowMonth="";
+        num=parseInt(num);
+        tomorrowDate.setDate(todayDate.getDate()+num);
+        tomorrowYear=tomorrowDate.getFullYear();
+        tomorrowDay=tomorrowDate.getDate();
+        tomorrowMonth=tomorrowDate.getMonth()+1;
+        if(tomorrowMonth<10){
+          tomorrowMonth="0"+tomorrowMonth;
+        }
+        if(tomorrowDay<10){
+          tomorrowDay="0"+tomorrowDay;
+        }
+        $scope.endDate.year=tomorrowYear;
+        $scope.endDate.month=tomorrowMonth;
+        $scope.endDate.day=tomorrowDay;
+      };
+
       $scope.goBack = function () {//返回上一界面
         $ionicHistory.goBack();
       };
 
-      $scope.renewContract=function(){//续住
-        var url=baseConfig.businessPath+"/api_apply_room/overstay_apply_room";
-        var param={
-          "params": {
-            p_employee_number:window.localStorage.empno,
-            p_pro_id:"",
-            p_checkin_date:"2016-08-15",
-            p_checkout_date:"2016-09-20",
-            p_room_number:$scope.applyInfo.roomNumber,
-            p_bed_number:$scope.applyInfo.bedNumber,
-            p_apply_type:$scope.applyInfo.applyType,
-            p_reason:""
-          }
+      $scope.formatStartDate=function(){//格式化开始日期成接口和展示形式
+        var date = $scope.startDate;
+        var year = date.year;
+        var month = date.month;
+        var day = date.day;
+        var result = year+"-"+month+"-"+day;
+        return result;
+      };
+
+      $scope.formatEndDate=function(){//格式化结束日期成接口和展示形式
+        var date = $scope.endDate;
+        var year = date.year;
+        var month = date.month;
+        var day = date.day;
+        var result = year+"-"+month+"-"+day;
+        return result;
+      };
+
+      $scope.chooseStartDate=function(){//选择入住日期
+        var myDate=$scope.startDate;
+        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var options={
+          date: previousDate,
+          mode: 'date',
+          titleText:'请选择入住日期',
+          okText:'确定',
+          cancelText:'取消',
+          doneButtonLabel:'确认',
+          cancelButtonLabel:'取消',
+          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
+          locale:"zh_cn"
         };
-        if($scope.applyInfo.applyType=='项目申请'){
-          param.params.p_pro_id=$scope.applyInfo.projectId;
-        }
-        hmsPopup.showLoading('请稍候');
-        hmsHttp.post(url,param).success(function(result){
-          hmsPopup.hideLoading();
-          var message=result.message;
-          hmsPopup.showShortCenterToast(message);
-          if(result.status=="S"){
-              $rootScope.$broadcast("APPLY_SUCCESS");//触发上一界面重新刷新数据
-              $ionicHistory.goBack();//删除申请成功后返回上一界面
+        $cordovaDatePicker.show(options).then(function(date){
+          var month=date.getMonth()+1;
+          var day=date.getDate();
+          if(month<10){
+            month="0"+month;
           }
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
+          if(day<10){
+            day="0"+day;
           }
-        }).error(function(error,status){
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(error));
-          }
+          $scope.startDate.year=date.getFullYear();
+          $scope.startDate.month=month;
+          $scope.startDate.day=day;
+          $scope.$apply();
         });
+      };
+
+      $scope.chooseEndDate=function(){//选择结束日期
+        var myDate=$scope.endDate;
+        var previousDate=new Date(myDate.year,myDate.month-1,myDate.day);
+        var options={
+          date: previousDate,
+          mode: 'date',
+          titleText:'请选择入住日期',
+          okText:'确定',
+          cancelText:'取消',
+          doneButtonLabel:'确认',
+          cancelButtonLabel:'取消',
+          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK,
+          locale:"zh_cn"
+        };
+        $cordovaDatePicker.show(options).then(function(date){
+          var month=date.getMonth()+1;
+          var day=date.getDate();
+          if(month<10){
+            month="0"+month;
+          }
+          if(day<10){
+            day="0"+day;
+          }
+          $scope.endDate.year=date.getFullYear();
+          $scope.endDate.month=month;
+          $scope.endDate.day=day;
+          $scope.$apply();
+        });
+      };
+
+      $scope.renewContract=function(){//续住
+        var startYear=$scope.startDate.year;//开始日期年份
+        var startMonth=$scope.startDate.month;//开始日期月份
+        var startDay=$scope.startDate.day;//开始日期
+        var endYear=$scope.endDate.year;//结束日期年份
+        var endMonth=$scope.endDate.month;//结束日期月份
+        var endDay=$scope.endDate.day;//结束日期
+        startMonth=parseInt(startMonth);
+        startDay=parseInt(startDay);
+        endMonth=parseInt(endMonth);
+        endDay=parseInt(endDay);
+        if($scope.allowApply == false) {
+          $scope.allowApply=true;
+          $scope.buttonText='确认';
+          hmsPopup.showShortCenterToast('请选择入住日期和结束日期');
+        }else if( $scope.allowApply == true ) {
+          if((startYear>endYear) ||((startYear==endYear)&&(startMonth>endMonth)) || ((startYear==endYear)&&(startMonth==endMonth)&&(startDay>endDay))){
+            hmsPopup.showShortCenterToast('入住日期不能晚于结束日期');
+          }else{
+            var url = baseConfig.businessPath + "/api_apply_room/overstay_apply_room";
+            var param = {
+              "params": {
+                p_employee_number: window.localStorage.empno,
+                p_pro_id: "",
+                p_checkin_date: $scope.startDate.year+"-"+$scope.startDate.month+"-"+$scope.startDate.day,
+                p_checkout_date: $scope.endDate.year+"-"+$scope.endDate.month+"-"+$scope.endDate.day,
+                p_room_number: $scope.applyInfo.roomNumber,
+                p_bed_number: $scope.applyInfo.bedNumber,
+                p_apply_type: $scope.applyInfo.applyType,
+                p_reason: ""
+              }
+            };
+            if ($scope.applyInfo.applyType == '项目申请') {
+              param.params.p_pro_id = $scope.applyInfo.projectId;
+            }
+            hmsPopup.showLoading('请稍候');
+            hmsHttp.post(url, param).success(function (result) {
+              hmsPopup.hideLoading();
+              var message = result.message;
+              hmsPopup.showShortCenterToast(message);
+              if (result.status == "S") {
+                $rootScope.$broadcast("APPLY_SUCCESS");//触发上一界面重新刷新数据
+                $ionicHistory.goBack();//删除申请成功后返回上一界面
+              }
+              if (baseConfig.debug) {
+                console.log("result success " + angular.toJson(result));
+              }
+            }).error(function (error, status) {
+              hmsPopup.hideLoading();
+              hmsPopup.showShortCenterToast("网络连接出错");
+              if (baseConfig.debug) {
+                console.log("response error " + angular.toJson(error));
+              }
+            });
+          }
+        }
       };
 
     }]);

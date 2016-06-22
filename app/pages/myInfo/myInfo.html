@@ -7,10 +7,10 @@
         <img src="build/img/myInfo/portrait.png" class="header-image"/>
       </div>
       <div class="header-item-label-row1">
-        <label class="name-label">石顺</label>
+        <label class="name-label" ng-bind="personalInfo.name"></label>
       </div>
       <div class="header-item-label-row2">
-        <label class="employee-number-label">2203</label>
+        <label class="employee-number-label" ng-bind="personalInfo.employee_number"></label>
       </div>
     </ion-item>
     <button class="button button-icon setup-button" ng-click="setup()">
@@ -30,13 +30,13 @@
       </div>
       <div class="row text-row">
         <div class="col col-33 center-style">
-          <label class="info-text-label">技术经理</label>
+          <label class="info-text-label" ng-bind="personalInfo.position"></label>
         </div>
         <div class="col col-33 center-style">
-          <label class="info-text-label">S</label>
+          <label class="info-text-label" ng-bind="personalInfo.level"></label>
         </div>
         <div class="col col-33 center-style">
-          <label class="info-text-label">上海</label>
+          <label class="info-text-label" ng-bind="personalInfo.baseland"></label>
         </div>
       </div>
     </ion-item>
