@@ -18,18 +18,21 @@ angular.module('myApp')
 angular.module("applicationModule")
     .controller('uploadController', function ($scope, keepAccount, dialog, $http, $q,$ionicLoading, baseConfig) {
 
-
-    $scope.currentProgress = '批量上传';
+    $scope.currentProgress = '批量上传'; 
     var recordToUpload = 0;
     var recordUploaded = 0;
-    var recordToUploadLength = 0;
+    var recordToUploadLength = 0; 
 
         //showMessage(window.localStorage.empno);
     function queryAccountList() {
+        // alert("queryAccountList");
         var list = [];
-        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+        // alert(baseConfig.dbName);
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
+        // alert("queryAccountList0000");
         var deferred = $q.defer();
         db.transaction(function (tx) {
+            // alert("++++++++-------");
             var querySql = "select * from MOBILE_EXP_REPORT_LINE t WHERE local_status = 'NEW' AND created_by =? order by creation_date desc, line_id desc ;"
             var para=[
                 window.localStorage.empno
@@ -42,6 +45,8 @@ angular.module("applicationModule")
                 deferred.resolve(list);
             });
         }, function (e) {
+            // alert("++++++++");
+            alert(angular.toJson(e));
             console.log("ERROR: " + e.message);
             deferred.reject(e);
         });
@@ -51,7 +56,7 @@ angular.module("applicationModule")
     function queryAccountPhotos(lineId) {
         var list = [];
         //alert("打开数据库...");
-        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
 
         var deferred = $q.defer();
         db.transaction(function (tx) {
@@ -74,15 +79,16 @@ angular.module("applicationModule")
        // /*
     var promise = queryAccountList();
     promise.then(function (list) {  // 调用承诺API获取数据 .resolve
+        // alert("...");
         $scope.accountList = list;
 
         console.log("list - "+angular.toJson($scope.accountList));
         $scope.accountList2 = groupJSON($scope.accountList);
         //alert(angular.toJson($scope.accountList2));
     }, function (response) {  // 处理错误 .reject
+        // alert(".........");
         //alert("查询数据库错误,初始化数据");
         dialog.showAlert("E","查询数据库错误,初始化数据");
-
     });
    // */
 
@@ -173,33 +179,33 @@ angular.module("applicationModule")
 
          //*/
 
-//    author:郑旭 用于对json进行分组并在界面上显示
+    //    author:郑旭 用于对json进行分组并在界面上显示
     function groupJSON(jsons) {
 
             /*
-        var newJson = [];
-        loop1:for (var i = 0; i < jsons.length; i++) {
-            var t1 = jsons[i].expense_date_from;
-            var arr = {time: t1, list: []};
-            arr.list.push(jsons[i]);
-            for (var j = i + 1; j < jsons.length; j++) {
-                var t2 = jsons[j].expense_date_from;
-                if (t2 == t1) {
-                    arr.list.push(jsons[j]);
-                } else {
-                    i = j - 1;
-                    break;
-                }
-                if (j == jsons.length - 1) {
+                var newJson = [];
+                loop1:for (var i = 0; i < jsons.length; i++) {
+                    var t1 = jsons[i].expense_date_from;
+                    var arr = {time: t1, list: []};
+                    arr.list.push(jsons[i]);
+                    for (var j = i + 1; j < jsons.length; j++) {
+                        var t2 = jsons[j].expense_date_from;
+                        if (t2 == t1) {
+                            arr.list.push(jsons[j]);
+                        } else {
+                            i = j - 1;
+                            break;
+                        }
+                        if (j == jsons.length - 1) {
+                            newJson.push(arr);
+                            break loop1;
+                        }
+                    }
                     newJson.push(arr);
-                    break loop1;
                 }
-            }
-            newJson.push(arr);
-        }
-        return newJson;
+                return newJson;
 
-        */
+                */
             var newJson=[];
             loop1:for(var i=0;i<jsons.length;i++){
                 var t1=jsons[i].creation_date;
@@ -256,173 +262,173 @@ angular.module("applicationModule")
 
 
 
-        function uploadDataUnitV2(keepAccountUnit){
+    function uploadDataUnitV2(keepAccountUnit){
 
-            showMessage("uploadDataUmit ："+angular.toJson(keepAccountUnit));
+        showMessage("uploadDataUmit ："+angular.toJson(keepAccountUnit));
 
-            var form=new FormData();
-
-
-            var myDate = new Date();
-
-           // var expense_detail_id = window.localStorage.empno+myDate.getFullYear()+myDate.getMonth()+myDate.getDate()
-               // + myDate.getHours()+ myDate.getMinutes()+ myDate.getSeconds()+ myDate.getMilliseconds();
-            var month = fillNumberBySize(myDate.getMonth()+1,2);
-            var date = fillNumberBySize(myDate.getDate(),2);
-            var hours = fillNumberBySize(myDate.getHours(),2);
-            var minutes = fillNumberBySize(myDate.getMinutes(),2);
-            var seconds = fillNumberBySize(myDate.getSeconds(),2);
-            var milliseconds = fillNumberBySize(myDate.getMilliseconds(),3);
+        var form=new FormData();
 
 
-            var expense_detail_id = window.localStorage.empno+myDate.getFullYear()
-                +month+date+hours+minutes+seconds+milliseconds;
+        var myDate = new Date();
+
+       // var expense_detail_id = window.localStorage.empno+myDate.getFullYear()+myDate.getMonth()+myDate.getDate()
+           // + myDate.getHours()+ myDate.getMinutes()+ myDate.getSeconds()+ myDate.getMilliseconds();
+        var month = fillNumberBySize(myDate.getMonth()+1,2);
+        var date = fillNumberBySize(myDate.getDate(),2);
+        var hours = fillNumberBySize(myDate.getHours(),2);
+        var minutes = fillNumberBySize(myDate.getMinutes(),2);
+        var seconds = fillNumberBySize(myDate.getSeconds(),2);
+        var milliseconds = fillNumberBySize(myDate.getMilliseconds(),3);
 
 
-            showMessage(expense_detail_id);
-            console.log(expense_detail_id+" - "+expense_detail_id);
-
-            form.append("expense_detail_id",expense_detail_id);
+        var expense_detail_id = window.localStorage.empno+myDate.getFullYear()
+            +month+date+hours+minutes+seconds+milliseconds;
 
 
+        showMessage(expense_detail_id);
+        console.log(expense_detail_id+" - "+expense_detail_id);
 
-            var Photos = [];
-            var promisePhoto = queryAccountPhotos(keepAccountUnit.line_id);
-            promisePhoto.then(
-                function(response) {
-                    //showMessage("照片列表获取成功"+angular.toJson(response));
-                    Photos=response;
-                    //showMessage("照片列表获取成功"+Photos);
-
-                    showMessage("准备上传:"+angular.toJson(form));
-
-                    //var promise= keepAccount.uploadData(form,Photos);
-
-                    var promise= keepAccount.uploadDataV2(form,Photos);
-
-                    promise.then(
-                        function(response) {
-                            //var code=getResponseCode(response);
-                            showMessage(angular.toJson(response));
-                            var code = response.head.code;
-                            if(code=="success"){
-                                //接受返回参数
-                                //keepAccount.data.expenseDetailId=response.body.expenseDetailId;
-
-                                // 开始 上传数据
-
-                                var upload_option = {
-                                    source_code: "HIH_PIC_UPLOAD",
-                                    source_line_id: expense_detail_id
-
-                                };
-
-                                var p2= keepAccount.uploadDataByJosn(keepAccountUnit,upload_option);
-                                p2.then(
-
-                                    function(res){
-
-                                        var code = res.status;
-
-                                        if (code == 'S') {
-                                            // $ionicLoading.hide();
-                                            showMessage("上传成功 数据"+angular.toJson(res));
-
-
-                                            keepAccountUnit.local_status="UPLOADED";
-                                            //$scope.accountDetail=keepAccount.data;
-                                            //keepAccount.canEdit=false;
-                                            //$scope.canEdit=false;
-                                            //更新本地数据库，修改local_status
-                                            var p=keepAccount.updateLocalStatus(keepAccountUnit.line_id,"UPLOADED");
-                                            p .then(
-                                                function(res){
-
-                                                    recordToUpload--;
-
-                                                    $ionicLoading.hide();
-                                                    checkUploadFinish();
-
-                                                    showMessage("上传成功 本地状态修改成功"+angular.toJson(res));
-
-                                                },
-                                                function(e){
-                                                    $ionicLoading.hide();
-                                                    checkUploadFinish();
+        form.append("expense_detail_id",expense_detail_id);
 
 
 
-                                                    showMessage(angular.toJson(e));
-                                                }
-                                            );
+        var Photos = [];
+        var promisePhoto = queryAccountPhotos(keepAccountUnit.line_id);
+        promisePhoto.then(
+            function(response) {
+                //showMessage("照片列表获取成功"+angular.toJson(response));
+                Photos=response;
+                //showMessage("照片列表获取成功"+Photos);
 
-                                        }
-                                        else {
-                                            checkUploadFinish();
-                                            showMessage("上传失败 数据"+angular.toJson(res));
+                showMessage("准备上传:"+angular.toJson(form));
+
+                //var promise= keepAccount.uploadData(form,Photos);
+
+                var promise= keepAccount.uploadDataV2(form,Photos);
+
+                promise.then(
+                    function(response) {
+                        //var code=getResponseCode(response);
+                        showMessage(angular.toJson(response));
+                        var code = response.head.code;
+                        if(code=="success"){
+                            //接受返回参数
+                            //keepAccount.data.expenseDetailId=response.body.expenseDetailId;
+
+                            // 开始 上传数据
+
+                            var upload_option = {
+                                source_code: "HIH_PIC_UPLOAD",
+                                source_line_id: expense_detail_id
+
+                            };
+
+                            var p2= keepAccount.uploadDataByJosn(keepAccountUnit,upload_option);
+                            p2.then(
+
+                                function(res){
+
+                                    var code = res.status;
+
+                                    if (code == 'S') {
+                                        // $ionicLoading.hide();
+                                        showMessage("上传成功 数据"+angular.toJson(res));
 
 
-                                        }
+                                        keepAccountUnit.local_status="UPLOADED";
+                                        //$scope.accountDetail=keepAccount.data;
+                                        //keepAccount.canEdit=false;
+                                        //$scope.canEdit=false;
+                                        //更新本地数据库，修改local_status
+                                        var p=keepAccount.updateLocalStatus(keepAccountUnit.line_id,"UPLOADED");
+                                        p .then(
+                                            function(res){
+
+                                                recordToUpload--;
+
+                                                $ionicLoading.hide();
+                                                checkUploadFinish();
+
+                                                showMessage("上传成功 本地状态修改成功"+angular.toJson(res));
+
+                                            },
+                                            function(e){
+                                                $ionicLoading.hide();
+                                                checkUploadFinish();
 
 
 
+                                                showMessage(angular.toJson(e));
+                                            }
+                                        );
 
-                                    },
-                                    function(e){
-                                        $ionicLoading.hide();
+                                    }
+                                    else {
                                         checkUploadFinish();
+                                        showMessage("上传失败 数据"+angular.toJson(res));
 
 
-
-                                        showMessage(angular.toJson(e));
                                     }
 
-                                );
+
+
+
+                                },
+                                function(e){
+                                    $ionicLoading.hide();
+                                    checkUploadFinish();
+
+
+
+                                    showMessage(angular.toJson(e));
+                                }
+
+                            );
 
 
 
 
-                            }else if(code=="E"){
-                                $ionicLoading.hide();
-                                checkUploadFinish();
-
-
-                                showMessage("查询失败:"+angular.toJson(response))
-                            }
-                            else{
-                                checkUploadFinish();
-
-                                $ionicLoading.hide();
-
-                                showMessage("未知错误:"+angular.toJson(response));
-                            }
-
-
-                        },
-                        function(err) {  // 处理错误 .reject
-
+                        }else if(code=="E"){
                             $ionicLoading.hide();
-
                             checkUploadFinish();
 
 
-                            showMessage("网络连接错误...."+angular.toJson(err));
-                            //uploadProgressModal.hide();
+                            showMessage("查询失败:"+angular.toJson(response))
+                        }
+                        else{
+                            checkUploadFinish();
 
-                        });  // end of 上传
+                            $ionicLoading.hide();
 
-                },
-                function(err) {
-                    $ionicLoading.hide();
-
-                    checkUploadFinish();
-                    showMessage("照片列表获取失败"+err);
-
-                }
-            );
+                            showMessage("未知错误:"+angular.toJson(response));
+                        }
 
 
-        }
+                    },
+                    function(err) {  // 处理错误 .reject
+
+                        $ionicLoading.hide();
+
+                        checkUploadFinish();
+
+
+                        showMessage("网络连接错误...."+angular.toJson(err));
+                        //uploadProgressModal.hide();
+
+                    });  // end of 上传
+
+            },
+            function(err) {
+                $ionicLoading.hide();
+
+                checkUploadFinish();
+                showMessage("照片列表获取失败"+err);
+
+            }
+        );
+
+
+    }
 
 
 

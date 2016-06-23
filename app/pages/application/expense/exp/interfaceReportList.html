@@ -1,4 +1,4 @@
-<ion-view view-title="">
+<ion-view view-title="" class="interfaceReportList-view">
 
    <ion-header-bar align-title="center" class="bar-stable">
     <div class="buttons"> 
@@ -8,56 +8,54 @@
     </div> 
     <h1 class="title">记一笔选择</h1>
     <div class="buttons" side="secondary">
-      <button class="button button-clear" style="color: #3ed9cd;" ng-click="confirmAccounts()">
+      <button class="button button-clear" ng-click="confirmAccounts()">
         确定
       </button>
     </div>
   </ion-header-bar>
 
-
   <ion-content>
     <ion-list>
-      <ion-item modifier="tappable" ng-repeat="account in interfaceReportList"
-                style="padding: 0 5px;margin: 0;border-left: 5px solid #3ed9cd">
-        <label style="width: 100%;" class="checkbox checkbox--list-item">
-          <div style="width: 100%">
+      <ion-item class="xbr-f-ion-item" modifier="tappable" ng-repeat="account in interfaceReportList">
+        <label class="checkbox checkbox--list-item">
+          <div class="xbr-f-div">
 
-            <div style="width: 100%;">
-              <div style="float: left;">
+            <div class="xbr-f-div-1">
+              <div class="xbr-flag-div-11">
                 {{account.dateFrom}}
               </div>
-              <div style="float: left;position: absolute;left: 28%;">
+              <div class="xbr-flag-div-12">
                 至
               </div>
-              <div style="float: left;position: absolute;left: 38%;">
+              <div class="xbr-flag-div-13">
                 {{account.dateTo}}
               </div>
             </div>
 
             <br/>
 
-            <div style="width: 100%;position: relative;top: -5px;">
-              <div style="float: left;position: absolute;left: 90%;">
+            <div class="xbr-f-div-2">
+              <div>
                 <input type="checkbox" ng-model="account.Selected" ng-true-value="'YES'" ng-false-value="'NO'">
               </div>
             </div>
             <br/>
 
-            <div style="width: 100%">
-              <div style="float: left;">
+            <div class="xbr-f-div-3">
+              <div>
                 {{account.expObject_desc}}
               </div>
 
-              <div style="float: left;position: absolute;left: 38%;">
-                <i class="icon ion-ios-location" style="color: darkgray;margin-right: 3px;"></i>{{account.place}}
+              <div>
+                <i class="icon ion-ios-location"></i>{{account.place}}
               </div>
 
-              <div style="float: left;position: absolute;left: 68%;color: #3ed9cd">
+              <div>
                 {{account.amount}}元
               </div>
             </div>
           </div>
-          <div style="width: 100%; white-space: normal; float: left; text-align: left">
+          <div class="xbr-f-div-a">
             {{account.memo}}
           </div>
 

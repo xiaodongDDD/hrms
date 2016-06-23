@@ -17,7 +17,7 @@ angular.module('myApp')
           }
         });
     }]);
-
+ 
 angular.module("applicationModule")
     .controller('accountDetailController', function($scope,keepAccount,expenseApply,expenseObject,dialog,$http,$rootScope,$state, $ionicHistory, $ionicLoading, baseConfig) {
 

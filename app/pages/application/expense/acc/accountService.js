@@ -138,7 +138,7 @@ angular.module("applicationModule")
             //请求数据库，查询操作
             var detailData={};
             var deferred=$q.defer();
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
             db.transaction(function(tx) {
                 var querySql="select * from MOBILE_EXP_REPORT_LINE t where t.line_id=?";
                 var para=[lineId];
@@ -218,7 +218,7 @@ angular.module("applicationModule")
         queryDetailPhoto: function(lineId) {
             var detailData={};
             var deferred=$q.defer();
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
 
             db.transaction(function(tx) {
                 var photos=[];
@@ -257,7 +257,7 @@ angular.module("applicationModule")
             var deferred=$q.defer();
             var data=this.data;
             showMessage('open db');
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
             var lineID;
             db.transaction(function(tx) {
                 // 删除记一笔数据
@@ -302,7 +302,7 @@ angular.module("applicationModule")
             var data=this.data;
             var resID;
             showMessage('open db to del lineid'+ line_id);
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
            // var lineID;
             db.transaction(function(tx) {
                 // 删除记一笔数据
@@ -367,7 +367,7 @@ angular.module("applicationModule")
 
 
             showMessage("creation_date"+creation_date);
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
             var lineID;
 
 
@@ -647,7 +647,7 @@ angular.module("applicationModule")
             var expense_date_to=getFormatDate(new Date(data.expense_date_to));
 
 
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
             // var lineID;
             var rowsAffacted = 0;
             //showMessage("打开数据库成功");
@@ -1102,7 +1102,7 @@ angular.module("applicationModule")
         },
         updateLocalStatus:function(lineId,status){  //根据lineId 更新本地记一笔的local_status
             var deferred=$q.defer();
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
             db.transaction(function(tx) {
                 var insertSql="UPDATE MOBILE_EXP_REPORT_LINE  "+
                     " SET  local_status = ? " +

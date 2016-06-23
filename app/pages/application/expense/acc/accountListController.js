@@ -24,7 +24,7 @@ angular.module("applicationModule")
       //showMessage("查询列表");
       var list = [];
 
-      var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1});
+      var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
       var deferred = $q.defer();
       db.transaction(function (tx) {
         var querySql = "select * from MOBILE_EXP_REPORT_LINE where created_by = ? order by creation_date desc, line_id desc";

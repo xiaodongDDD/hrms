@@ -1,4 +1,4 @@
-<ion-view title="记一笔列表">
+<ion-view title="记一笔列表" class="accountList-view">
     <ion-header-bar align-title="center" class="bar-stable">
     <div class="buttons"> 
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
@@ -10,96 +10,84 @@
       
     </div>
   </ion-header-bar>
-  <style>
-    .uploaded {
-      color: red;
-    }
-
-    .new {
-      color: green;
-    }
-  </style>
+  
   <ion-content>
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
     <ion-list ng-repeat="account in accountList">
-      <div class="item item-divider" style="background-color: #f1f4f4">
-        <div style="width: 6px;height: 6px;background-color: #3ed9cd;float: left;margin-top: 5px;"></div>
-        <div class="title" style="float: left;margin-left: 5px;">{{account.time}}</div>
+      <div class="item item-divider">
+        <div ></div>
+        <div class="title">{{account.time}}</div>
       </div>
-      <ion-item modifier="chevron" class="item-icon-right" ng-repeat="a in account.list"
-                style="border-left: 5px solid #4cd1c1;  white-space: normal">
-        <div style="display: inline" ng-click="openDetail($event)" lineId="{{a.line_id}}" status="{{a.local_status}}"
+      <ion-item modifier="chevron" class="item-icon-right xbr-item-ion-ll" ng-repeat="a in account.list" >
+        <div class="xbr-flag-abc" ng-click="openDetail($event)" lineId="{{a.line_id}}" status="{{a.local_status}}"
              timestamp="{{a.timestamp}}">
+            <div class="xbr-width-full" lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
 
-          <div style="width: 100%;" lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
-
-            <div style="width: 100%;" lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
-              <div style="width: 100%;float: none" class="desc" lineId="{{a.line_id}}" status="{{a.local_status}}"
-                   timestamp="{{a.timestamp}}">
-                <div style="float: left;" lineId="{{a.line_id}}" status="{{a.local_status}}"
+              <div class="xbr-width-full"lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                <div class="xbr-width-full xbr-aaa desc" lineId="{{a.line_id}}" status="{{a.local_status}}"
                      timestamp="{{a.timestamp}}">
-                  {{a.expense_date_from}}
+                  <div class="xbr-flab-bbb" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                       timestamp="{{a.timestamp}}">
+                    {{a.expense_date_from}}
+                  </div>
+                  <div class="xbr-flab-cccc" lineId="{{a.line_id}}"
+                       status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    至
+                  </div>
+                  <div class="xbr-flab-dddd" lineId="{{a.line_id}}"
+                       status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    {{a.expense_date_to}}
+                  </div>
                 </div>
-                <div style="float: left;position: absolute;left: 32%;" lineId="{{a.line_id}}"
-                     status="{{a.local_status}}" timestamp="{{a.timestamp}}">
-                  至
-                </div>
-                <div style="float: left;position: absolute;left: 42%;" lineId="{{a.line_id}}"
-                     status="{{a.local_status}}" timestamp="{{a.timestamp}}">
-                  {{a.expense_date_to}}
-                </div>
-              </div>
-              <br/>
+                <br/>
 
-              <div style="position: absolute;left: 70%;" lineId="{{a.line_id}}" status="{{a.local_status}}"
-                   timestamp="{{a.timestamp}}" align="center"
-                   ng-class="{'uploaded':a.local_status=='UPLOADED','new':a.local_status=='NEW'}">
-                {{a.local_status}}
-              </div>
-              <br/>
-
-              <div style="width: 100%;float: none" class="name" lineId="{{a.line_id}}" status="{{a.local_status}}"
-                   timestamp="{{a.timestamp}}">
-                <div style="float: left;">
-                  {{a.expense_type_desc}}{{a.expense_item_desc}}
+                <div class="xbr-flag-local-status" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                     timestamp="{{a.timestamp}}" align="center"
+                     ng-class="{'uploaded':a.local_status=='UPLOADED','new':a.local_status=='NEW'}">
+                  {{a.local_status}}
                 </div>
+                <br/>
 
-                <div style="float: left;position: absolute;left: 49%;margin-top: 2px" class="location"
-                     lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
-                  <i class="icon ion-ios-location"
-                     style="color: darkgray;font-size: 15px;width: 15px;height: 15px;padding: 0;margin-right: 1px;;"></i>
+                <div class="xbr-width-full name xbr-flag-eeee" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                     timestamp="{{a.timestamp}}">
+                  <div class="xbr-flag-ffff">
+                    {{a.expense_type_desc}}{{a.expense_item_desc}}
+                  </div>
+
+                  <div class="location xbr-location-flag"
+                       lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    <i class="icon ion-ios-location"></i>
+                  </div>
+
+                  <div class="location xbr-location-45" lineId="{{a.line_id}}"
+                       status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    <div class="fa fa-map-marker" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                         timestamp="{{a.timestamp}}">{{a.expense_place}}
+                    </div>
+                  </div>
+
+                  <div class="xbr-flag-gggg" lineId="{{a.line_id}}"
+                       status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    {{a.total_amount.toFixed(2)}}元
+                  </div>
                 </div>
+                <!--新增描述字段-->
+                <br/>
 
-                <div style="float: left;position: absolute;left: 45%;" class="location" lineId="{{a.line_id}}"
-                     status="{{a.local_status}}" timestamp="{{a.timestamp}}">
-                  <div class="fa fa-map-marker" lineId="{{a.line_id}}" status="{{a.local_status}}"
-                       timestamp="{{a.timestamp}}">{{a.expense_place}}
+                <div class="description xbr-width-full xbr-flag-desc" lineId="{{a.line_id}}"
+                     status="{{a.local_status}}">
+                  <div>
+                    {{a.description}}
                   </div>
                 </div>
 
-                <div style="float: left;position: absolute;left: 65%;color: #3ed9cd" lineId="{{a.line_id}}"
-                     status="{{a.local_status}}" timestamp="{{a.timestamp}}">
-                  {{a.total_amount.toFixed(2)}}元
-                </div>
               </div>
-              <!--新增描述字段-->
               <br/>
-
-              <div style="width: 100%;float: none;" class="description" lineId="{{a.line_id}}"
-                   status="{{a.local_status}}">
-                <div style="float: left; white-space: normal">
-                  {{a.description}}
-                </div>
-              </div>
-
             </div>
-            <br/>
-          </div>
         </div>
 
-        <i class="icon ion-ios-arrow-right" style="font-size: 25px;color: #D5D5D5;"></i>
-        <ion-option-button class="button-assertive" ng-click="removeData($event)" lineId="{{a.line_id}}"
-                           timestamp="{{a.timestamp}}">删除
+        <i class="icon ion-ios-arrow-right" ></i>
+        <ion-option-button class="button-assertive" ng-click="removeData($event)" lineId="{{a.line_id}}" timestamp="{{a.timestamp}}">删除
         </ion-option-button>
       </ion-item>
     </ion-list>

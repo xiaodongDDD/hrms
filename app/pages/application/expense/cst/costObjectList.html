@@ -1,4 +1,4 @@
-<ion-view title="选择费用申请" xmlns="http://www.w3.org/1999/html">
+<ion-view title="选择费用申请" class="costObjectList-view" xmlns="http://www.w3.org/1999/html">
 
      <ion-header-bar align-title="center" class="bar-stable">
         <div class="buttons"> 
@@ -15,18 +15,18 @@
         <div>
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
-                <input type="text"  style="width: 96%; margin: 6px auto 6px auto;" placeholder="输入费用信息" ng-model="query">
+                <input type="text" placeholder="输入费用信息" ng-model="query">
             </label>
         </div>
 
         <ion-list class="airport-list"  >
             <ion-item class="airport list-item-container" modifier="tappable" ng-repeat="costObject in costObjectList  | filter:query" >
                 <div class="row">
-                    <div style="white-space: normal; line-height: 25px;" class="airport-name col" costObjectId="{{costObject.costObjectId}}" costObjectDesc="{{costObject.desc}}"
+                    <div class="airport-name col" costObjectId="{{costObject.costObjectId}}" costObjectDesc="{{costObject.desc}}"
                          ng-click="selectCostObject($index)">
-                        <label style="line-height: 25px">{{costObject.costObjectId}}</label>
+                        <label class="xbr-f-lable-1" >{{costObject.costObjectId}}</label>
                         <br/>
-                        <label style="line-height: 15px">{{costObject.desc}}</label>
+                        <label class="xbr-f-lable-2">{{costObject.desc}}</label>
 
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-<ion-view title="选择费用" hide-tabs="true">
+<ion-view title="选择费用" hide-tabs="true" class="expenseItemList-view">
      <ion-header-bar align-title="center" class="bar-stable">
         <div class="buttons"> 
           <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
@@ -13,7 +13,7 @@
         <div>
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
-                <input type="text"  style="width: 96%; margin: 6px auto 6px auto;" placeholder="输入费用" ng-model="query">
+                <input class="xbr-f-a" type="text" placeholder="输入费用" ng-model="query">
             </label>
         </div>
 
@@ -23,7 +23,7 @@
                      expenseItemName="{{expenseItem.expense_item_desc}}"
                      expenseItemIndex="{{expenseItem.expense_item_index}}">
 
-                    <div style="white-space: normal; line-height: 25px" class="airport-name col"  expenseItemCode="{{expenseItem.expense_item_code}}"
+                    <div class="xbr-f-b" class="airport-name col"  expenseItemCode="{{expenseItem.expense_item_code}}"
                              expenseItemName="{{expenseItem.expense_item_desc}}"
                                 expenseItemIndex="{{expenseItem.expense_item_index}}"
                          ng-click="selectExpenseItem($event)">
