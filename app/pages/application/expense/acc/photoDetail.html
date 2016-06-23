@@ -1,8 +1,19 @@
-<ion-view titile="图片明细">
+<ion-view titile="图片明细" class="photoDetail-view">
+
+    <ion-header-bar align-title="center" class="bar-stable">
+        <div class="buttons"> 
+          <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+            <span class="back-text">返回</span>
+          </button>
+        </div> 
+        <h1 class="title" >图片明细</h1>
+        <div class="buttons">
+        </div>
+      </ion-header-bar>
 
     <ion-content>
         <div  >
-            <img ng-src="{{photoPathURL+tempPhoto.photo_name}}" style="width: 90%;height: 85%;border: solid 1px #000000;margin-right: 5%;margin-left: 5%;margin-top:20px ">
+            <img class="xbr-flag-img" ng-src="{{photoPathURL+tempPhoto.photo_name}}">
         </div>
 
 

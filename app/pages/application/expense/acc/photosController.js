@@ -28,7 +28,7 @@ angular.module("applicationModule")
     $scope.showAlertPhoto = function (photoName) {//点击图片 放大图片
       $scope.photoNameUrl = photoName;
       // 自定义弹窗
-      var myPopup = $ionicPopup.show({
+      var myPopup = $ionicPopup.show({ 
         scope: $scope,
         template: '<div style="text-align: center;"><img ng-src="{{photoPathURL + photoNameUrl}}"  style="width: 95%; height: 350px"></div>',
         buttons: [
@@ -60,8 +60,9 @@ angular.module("applicationModule")
     //};
     /*拍摄照片 相机*/
     // $scope.getPhotoFromCamera=function(){
-    getPhotoFromCamera = function () {
-      if (detectOS() == "iPhone") {
+    getPhotoFromCamera = function () { 
+      //if (detectOS() == "iPhone") {
+      if(ionic.Platform.isIOS() && !ionic.Platform.isIPad()){
         var optionsCamera = {
           destinationType: Camera.DestinationType.FILE_URI,
           sourceType: Camera.PictureSourceType.CAMERA,
@@ -88,6 +89,8 @@ angular.module("applicationModule")
         //alert("not iphone");
 
       }
+      // alert(angular.toJson(optionsCamera));
+      // alert(navigator.camera.getPicture);
       navigator.camera.getPicture(onSuccess, onFail, optionsCamera);
 
     };

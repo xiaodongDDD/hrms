@@ -1,4 +1,4 @@
-<ion-view title="申请明细">
+<ion-view title="申请明细" class="costDetail-view">
   <ion-header-bar align-title="center" class="bar-stable">
     <div class="buttons"> 
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
@@ -9,6 +9,7 @@
     <div class="buttons">
     </div>
   </ion-header-bar>
+
   <ion-content>
     <form name="detailForm">
       <ion-list>
@@ -62,16 +63,15 @@
         </ion-item>
 
 
-        <ion-item class="item list-item-container">
-          <div class="row" style="line-height: 30px">
+        <ion-item class="item list-item-container xbr-f-a">
+          <div class="row">
             <div class="col">
               <label>用途描述</label>
-
             </div>
           </div>
           <div class="row">
             <div class="col col-80 col-offset-10">
-                            <textarea class="textarea textarea--transparent width-full" style="height: 80px"
+                            <textarea class="textarea textarea--transparent width-full"
                                       ng-readonly="!canEdit" ng-change="valueChange()"
                                       ng-model="detailData.description">
                             </textarea>
@@ -86,21 +86,21 @@
         <div class="row">
           <div class="col-45 col-offset-3">
 
-            <button class="button button-stable" ng-show="true" ng-disabled="((canSubmit) || (!detailForm.$valid))"
-                    ng-click="saveData()" style="width:100%;background-color: #1cd4c6">保 存
+            <button class="button button-stable xbr-but-f-1" ng-show="true" ng-disabled="((canSubmit) || (!detailForm.$valid))"
+                    ng-click="saveData()">保 存
             </button>
 
           </div>
           <div class="col-45 col-offset-5">
             <button class="button button-stable " ng-show="true" ng-disabled="!canSubmit "
-                    ng-click="submitData()" style="width:100%;background-color: #1cd4c6">提 交
+                    ng-click="submitData()">提 交
             </button>
           </div>
         </div>
       </div>
 
-      <div ng-class="{invisible:accountDetail.status!='UPLOADED'}">
-        <p style="color: red ;text-align: center;"><strong>已上传</strong></p>
+      <div class="xbr-flag-p-wrapper" ng-class="{invisible:accountDetail.status!='UPLOADED'}">
+        <p><strong>已上传</strong></p>
       </div>
 
 
@@ -121,12 +121,12 @@
         </div>
       </div>
 
-      <div ng-class="{invisible:detailData.local_status!='SUBMITTED'}">
-        <p style="color: red ;text-align: center;"><strong>已提交</strong></p>
+      <div  ng-class="{invisible:detailData.local_status!='SUBMITTED'}">
+        <p class="xbr-f-p-1"><strong>已提交</strong></p>
       </div>
 
       <div ng-class="{invisible:detailData.local_status!='APPROVED'}">
-        <p style="color: red ;text-align: center;"><strong>已审核</strong></p>
+        <p class="xbr-f-p-2"><strong>已审核</strong></p>
       </div>
     </form>
   </ion-content>

@@ -259,3 +259,49 @@ middle; padding: 0 8px 0 8px;
 
 .col-offset-3 {
   margin-left: 3%; }
+
+
+
+/*
+    expenseObjectList-view
+ */
+.expenseObjectList-view .list-item-container:nth-child(1){
+    border-top: 0px;
+}
+.expenseObjectList-view ion-content{
+    .bar-header.item-input-inset{
+      border-bottom: 1px solid #dddddd;
+      .item.item-input{
+        border: 0px;
+        width: 100%;
+        input{
+          width: 96%;
+          margin: 6px auto 6px auto;
+        }
+      }
+    }
+    .airport-list{
+      .airport-name.col{
+        white-space: normal;
+        line-height: 25px
+      }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
