@@ -1,0 +1,26 @@
+ <ion-modal-view class="groupModal" style="top: 0;">
+    <ion-header-bar style="background-color: #f8f8f8">
+      <button class="button button-clear" ng-click="closeGroupModal()" style="color: #333">返回</button>
+      <h1 class="title">分组选择</h1>
+      <button class="button button-clear" ng-click="clearGroupChoose()" style="color: #333">清选</button>
+    </ion-header-bar>
+    <ion-content>
+      <div class="row header-search">
+        <div class="input-left" style="width: 10%;"><i class="ion-ios-search"></i></div>
+        <div style="width: 90%;">
+          <input class="input-search" placeholder="输入分组名称" ng-model='param.filter'/>
+        </div>
+      </div>
+      <ion-list>
+        <ion-item style="padding: 0.25rem 0.5rem" ng-repeat="item in groupItems| filter:param.filter">
+          <div class="row" ng-click="groupChoose(item)">
+            <span style="font-size: 0.875rem">{{item.name}}</span>
+          </div>
+        </ion-item>
+      </ion-list>
+      <!--<ion-infinite-scroll on-infinite="" ng-if="" immediate-check="false"></ion-infinite-scroll>-->
+    </ion-content>
+  </ion-modal-view>
+
+</script>
+
