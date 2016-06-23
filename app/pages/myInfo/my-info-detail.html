@@ -14,7 +14,7 @@
          <label class="left-label">工号：</label>
        </div>
        <div class="col col-60 normal-col">
-         <label class="right-label">3705</label>
+         <label class="right-label" ng-bind="personalInfo.employeeNumber"></label>
        </div>
      </div>
      <div class="row card-row-with-bottom">
@@ -22,7 +22,7 @@
          <label class="left-label">姓名：</label>
        </div>
        <div class="col col-60 normal-col">
-         <label class="right-label">顾森林</label>
+         <label class="right-label" ng-bind="personalInfo.name"></label>
        </div>
      </div>
      <div class="row card-row-with-bottom">
@@ -30,7 +30,7 @@
          <label class="left-label">英文名：</label>
        </div>
        <div class="col col-60 normal-col">
-         <label class="right-label">Forest</label>
+         <label class="right-label" ng-bind="personalInfo.englishName"></label>
        </div>
      </div>
      <div class="row card-row-with-bottom">
@@ -38,7 +38,7 @@
          <label class="left-label">部门：</label>
        </div>
        <div class="col col-60 normal-col">
-         <label class="right-label">移动技术中心</label>
+         <label class="right-label" ng-bind="personalInfo.department"></label>
        </div>
      </div>
      <div class="row card-row-with-bottom">
@@ -46,7 +46,7 @@
          <label class="left-label">职位：</label>
        </div>
        <div class="col col-60 normal-col">
-         <label class="right-label">技术经理</label>
+         <label class="right-label" ng-bind="personalInfo.position"></label>
        </div>
      </div>
      <div class="row card-row-without-bottom">
@@ -54,15 +54,15 @@
          <label class="left-label">级别：</label>
        </div>
        <div class="col col-60 normal-col">
-         <label class="right-label">S</label>
+         <label class="right-label" ng-bind="personalInfo.level"></label>
        </div>
      </div>
    </ion-item>
     <div class="portrait-shelter">
       <img src="build/img/myInfo/temporary-portrait.png" class="portrait-icon"/>
     </div>
-    <ion-item class="info-card-item2">
-      <div class="row card-row-with-bottom">
+    <ion-item class="info-card-item-email">
+      <div class="row email-row">
         <div class="col col-40 normal-col">
           <div class="row no-space">
             <div class="icon-shelter">
@@ -72,7 +72,7 @@
           </div>
         </div>
         <div class="col col-60 normal-col">
-            <label class="right-icon-label">senlin.gu@hand-china.com</label>
+            <textarea class="email-textarea" ng-bind="personalInfo.email"></textarea>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -85,7 +85,7 @@
           </div>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-icon-label">上海</label>
+          <label class="right-icon-label" ng-bind="personalInfo.baseland"></label>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -98,7 +98,7 @@
           </div>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-icon-label"></label>
+          <label class="right-icon-label" ng-bind="personalInfo.socialToolNumber"></label>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -111,7 +111,7 @@
           </div>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-icon-label">15688539756</label>
+          <label class="right-icon-label" ng-bind="personalInfo.telephoneNumber"></label>
         </div>
       </div>
       <div class="row card-row-without-bottom">
@@ -124,7 +124,7 @@
           </div>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-icon-label">021-88709008</label>
+          <label class="right-icon-label" ng-bind="personalInfo.phoneNumber"></label>
         </div>
       </div>
     </ion-item>
@@ -134,7 +134,7 @@
           <label class="left-col">护照：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.passport"></label>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -142,7 +142,7 @@
           <label class="left-col">驾照：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.drivingLicense"></label>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -150,7 +150,7 @@
           <label class="left-col">医疗保险账号：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.healthInsuranceNumber"></label>
         </div>
       </div>
       <div class="row card-row-without-bottom">
@@ -158,7 +158,7 @@
           <label class="left-col">公积金账号：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.publicReserveFundsNumber"></label>
         </div>
       </div>
     </ion-item>
@@ -168,7 +168,7 @@
           <label class="left-col">转正日期：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.regularDate"></label>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -176,7 +176,7 @@
           <label class="left-col">实习开始日期：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.internshipStartDate"></label>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -184,7 +184,7 @@
           <label class="left-col">入职日期：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.entryDate"></label>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -192,7 +192,7 @@
           <label class="left-col">试用日期：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.probationaryPeriod"></label>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -200,7 +200,7 @@
           <label class="left-col">首次工作日期：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.firstWorkingDay"></label>
         </div>
       </div>
     </ion-item>
@@ -210,7 +210,7 @@
           <label class="left-col">员工状态：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.stuffStatus"></label>
         </div>
       </div>
       <div class="row card-row-with-bottom">
@@ -218,7 +218,7 @@
           <label class="left-col">下一个项目：</label>
         </div>
         <div class="col col-60 normal-col">
-          <label class="right-col"></label>
+          <label class="right-col" ng-bind="personalInfo.nextProject"></label>
         </div>
       </div>
     </ion-item>

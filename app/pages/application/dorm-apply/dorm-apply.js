@@ -36,7 +36,7 @@ angular.module('applicationModule')
               hmsPopup,
               $ionicScrollDelegate,
               $timeout) {
-      $scope.descriptionAppearance = false;
+      $scope.descriptionAppearance = "";
       $scope.items=[];//历史列表中的数据
       searchHistoryApplyListAutomatically();//自动获取历史申请数据
       function searchHistoryApplyListAutomatically() {
@@ -88,7 +88,7 @@ angular.module('applicationModule')
             }
           });
         }).error(function (error, status) {
-          hmsPopup.hideLoading();
+          //hmsPopup.hideLoading();
           if (baseConfig.debug) {
             console.log("response error " + angular.toJson(error));
           }

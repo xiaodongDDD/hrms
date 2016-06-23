@@ -13,6 +13,9 @@ angular.module('myApp')
               templateUrl: 'build/pages/myInfo/my-info-detail.html',
               controller: 'MyInfoDetailCtrl'
             }
+          },
+          params:{
+            myDetailInfo:''
           }
         })
     }]);
@@ -23,11 +26,15 @@ angular.module('myInfoModule')
     '$ionicHistory',
     'hmsHttp',
     'hmsPopup',
+    '$stateParams',
     function ($scope,
               baseConfig,
               $ionicHistory,
               hmsHttp,
-              hmsPopup) {
+              hmsPopup,
+              $stateParams) {
+
+      $scope.personalInfo=$stateParams.myDetailInfo;
 
       $scope.goBack=function(){//返回按钮
         $ionicHistory.goBack();

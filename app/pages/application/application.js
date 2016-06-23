@@ -13,8 +13,8 @@ angular.module('applicationModule')
               baseConfig) {
 
       $scope.animationsEnabled = false;
-      
-      //个人办公 
+
+      //个人办公
       $scope.officeApp = [
         {
           list: [
@@ -45,7 +45,7 @@ angular.module('applicationModule')
               appName: "假期管理",
               imageUrl: "build/img/application/holidayManage@3x.png",
               destUrl: "tab.time-off-manage",
-            }, 
+            },
             {
               appName: "住宿申请",
               imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
@@ -109,6 +109,29 @@ angular.module('applicationModule')
               appName: "预报销",
               imageUrl: "build/img/application/flightBooking@3x.png",
               destUrl: "tab.cst_list"
+            }]
+        },
+        {
+          list: [
+            {
+              appName: "资源查询",
+              imageUrl: "build/img/application/flightBooking@3x.png",
+              destUrl: "tab.resources-query",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: ""
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: ""
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: ""
             }]
         }
       ];

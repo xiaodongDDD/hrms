@@ -428,6 +428,16 @@
     box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
     border: none;
   }
+  .info-card-item-email{
+    margin: 0px;
+    padding: 0px;
+    width: 97%;
+    height: 190px;
+    margin-left: 1.5%;
+    margin-top: 8px;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    border: none;
+  }
   .info-card-item3{
     margin: 0px;
     padding: 0px;
@@ -505,6 +515,25 @@
     color: #9b9b9b;
     margin-top: 10px;
     padding-right: 20px;
+  }
+  .email-textarea{
+    text-align: left;
+    font-size: 0.9375rem;
+    color: #9b9b9b;
+    padding-right: 20px;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background-color: #ffffff;
+    padding-top: 0px;
+  }
+  .email-row{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 50px;
+    margin-left: 15px;
+    border-bottom: 1px solid #e8e8e8;
   }
   .icon-shelter{
     width: 16px;

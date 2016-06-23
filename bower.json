@@ -12,8 +12,6 @@
     "cryptojslib": "",
     "angular-local-storage": "^0.2.3",
     "ionic-native-transitions": "shprink/ionic-native-transitions#^1.0.0-rc10",
-    "ionic-material": "^0.4.2",
-    "ion-datetime-picker": "^0.1.2",
     "jquery": "^2.2.0"
   },
   "devDependencies": {
