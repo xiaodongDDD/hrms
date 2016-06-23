@@ -4982,8 +4982,6 @@ Copyright (c) 2015 Daniel Eden
   width: 100%;
   background: #4cd964; }
 
-<<<<<<< HEAD
-=======
 .timesheet-year-list .timesheet-year-item {
   padding: 10px;
   font-size: 16px;
@@ -4999,7 +4997,6 @@ Copyright (c) 2015 Daniel Eden
   height: 250px;
   width: 155px; }
 
->>>>>>> senlin
 .personnel-policy .item-title-bg {
   height: 41px;
   background-color: #FAFAFA;
@@ -5970,7 +5967,6 @@ Copyright (c) 2015 Daniel Eden
 #departmentModal .input-right.activated {
   background-color: #eee;
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
-<<<<<<< HEAD
 
 #departmentModal {
   top: 0; }
@@ -6049,8 +6045,6 @@ Copyright (c) 2015 Daniel Eden
           width: 100%;
           margin-top: 16px;
           height: 30px; }
-=======
->>>>>>> senlin
 
 .invisible {
   display: none; }
