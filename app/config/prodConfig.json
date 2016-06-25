@@ -1,19 +1,15 @@
 {
   "baseConfig": {
     "debug": false,
-    "isMobilePlatform": true,
+    "isMobilePlatform": false,
     "clearTable": true,
-    "nativeScreenFlag":true,
+    "nativeScreenFlag":false,
     "basePath": "http://mobile-app.hand-china.com/hmbms_hand/api",
-<<<<<<< HEAD
     "businessPath": "http://mobile-app.hand-china.com/hmbms_hand/api/dataEngine",
-=======
-    "businessPath": "http://wechat.hand-china.com/hmbms_hand/api/dataEngine",
->>>>>>> 863179601a521fb9504196e235d2dfacdc1d0813
-    "currentVersion": "2.0.0",
+    "currentVersion": "1.9.1",
     "url": "",
     "pkgIdentifier": "",
-    "versionName": "此版本为PROD 2.0.0",
+    "versionName": "此版本为正式版本1.9.1",
     "appEnvironment": "PROD"
   }
 }

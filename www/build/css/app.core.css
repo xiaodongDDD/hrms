@@ -6403,6 +6403,7 @@ Copyright (c) 2015 Daniel Eden
           width: 100%;
           margin-top: 16px;
           height: 30px; }
+<<<<<<< HEAD
 
 /**
  * expenseLines.html
@@ -7161,6 +7162,8 @@ Copyright (c) 2015 Daniel Eden
         color: #3ed9cd; }
     .uploadAccount-view ion-content .xbr-ion-item-f .xbr-f-item-inner div:nth-child(4) {
       width: 100%; }
+=======
+>>>>>>> senlin
 
 .invisible {
   display: none; }

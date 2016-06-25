@@ -52,6 +52,9 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
+        },
         "cordova-sqlite-storage": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
