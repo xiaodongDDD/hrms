@@ -44,6 +44,7 @@ angular.module('applicationModule')
               hmsPopup) {
 
       var currentTimeSheetPosition = true;
+      var isScrollFreeze;
       $scope.calendar = [];
       $scope.loadingDataFlag = true;
       $scope.loadingAllowanceFlag = true;
@@ -64,14 +65,16 @@ angular.module('applicationModule')
 
       var calendarTopBar;
 
-      if(ionic.Platform.isIOS()){
-        calendarTopBar = 135 + 20;
+      if (ionic.Platform.isIOS()) {
+        calendarTopBar = 135;//+ 20;
       }
-      else{
+      else {
         calendarTopBar = 135;
       }
 
-
+      var scrollPosition = 0;
+      var startTime;
+      var toTime;
       var cacheCalendar = [];
       var copyFromDay = {};
 
@@ -204,6 +207,15 @@ angular.module('applicationModule')
       };
 
       $scope.scrollToFixScreen = function () {
+        if (isScrollFreeze) {
+          isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
+        } else {
+          isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
+        }
+
+        //isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
+        console.log('scrollToFixScreen result ' + isScrollFreeze);
+
         if (currentTimeSheetPosition) {
           $ionicScrollDelegate.scrollTo(0, 400, true);
           currentTimeSheetPosition = false;
@@ -304,9 +316,12 @@ angular.module('applicationModule')
 
       var startSlipping = function () {
         slippingFlag = true;
+        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
+        scrollPosition = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition().top;
       };
       var stopSlipping = function () {
         slippingFlag = false;
+        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
       };
       var clearCalendarCache = function () {
         angular.forEach($scope.calendar, function (data) {
@@ -314,6 +329,9 @@ angular.module('applicationModule')
             list.choosed = false;
           });
         });
+        if (baseConfig.nativeScreenFlag) {
+          $scope.$apply();
+        }
       };
 
       var slippingWriteTimesheet = function () {
@@ -360,7 +378,7 @@ angular.module('applicationModule')
         var selectY = -1;
         var averageX = (clentW - 20) / 7;
         var averageY = 60;
-        var lengthY = calendarTopBar;
+        var lengthY = calendarTopBar - scrollPosition;
         var offsetY = 0;
         var offsetX = 10;
         for (var i = 0; i < 7; i++) {
@@ -394,14 +412,20 @@ angular.module('applicationModule')
         };
       };
 
-
       //拖拽标记TimeSheet具体天
       $ionicGesture.on("drag", function (e) {
         //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
         //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
         if (!slippingFlag && slippingEnableFlag) {
-          if (Math.abs(startTouchX - e.gesture.touches[0].pageX) > 5 || Math.abs(startTouchY - e.gesture.touches[0].pageY) > 5) {
-            startSlipping();
+          if (Math.abs(startTouchX - e.gesture.touches[0].pageX) > 3 || Math.abs(startTouchY - e.gesture.touches[0].pageY) > 3) {
+            toTime = new Date().getTime();
+            if (baseConfig.debug) {
+              console.log('startTime ' + startTime);
+              console.log('toTime ' + toTime);
+            }
+            if ((toTime - startTime) > 250) {
+              startSlipping();
+            }
           }
         }
         if (slippingFlag && slippingEnableFlag) {
@@ -409,7 +433,7 @@ angular.module('applicationModule')
             e.gesture.touches[0].pageX,
             e.gesture.touches[0].pageY);
           if (baseConfig.debug) {
-            console.log('drag.selectDay ' + angular.toJson(selectDay));
+            //console.log('drag.selectDay ' + angular.toJson(selectDay));
           }
           if (selectDay.selectX >= 0 && selectDay.selectX <= 6 && selectDay.selectY >= 0 && selectDay.selectY <= 5) {
             var dayItem = $scope.calendar[selectDay.selectY].list[selectDay.selectX];
@@ -429,10 +453,13 @@ angular.module('applicationModule')
       }, element);
 
       $ionicGesture.on("touch", function (e) {
-        //console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
-        //console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
+        console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
+        console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
+        var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
+        console.log('position ' + angular.toJson(position));
         startTouchX = e.gesture.touches[0].pageX;
         startTouchY = e.gesture.touches[0].pageY;
+        startTime = new Date().getTime();
         copyFromDay = {};
       }, element);
 

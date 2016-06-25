@@ -401,8 +401,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -427,8 +427,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -4982,8 +4982,6 @@ Copyright (c) 2015 Daniel Eden
   width: 100%;
   background: #4cd964; }
 
-<<<<<<< HEAD
-=======
 .timesheet-year-list .timesheet-year-item {
   padding: 10px;
   font-size: 16px;
@@ -4999,7 +4997,6 @@ Copyright (c) 2015 Daniel Eden
   height: 250px;
   width: 155px; }
 
->>>>>>> senlin
 .personnel-policy .item-title-bg {
   height: 41px;
   background-color: #FAFAFA;
@@ -5970,7 +5967,6 @@ Copyright (c) 2015 Daniel Eden
 #departmentModal .input-right.activated {
   background-color: #eee;
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
-<<<<<<< HEAD
 
 #departmentModal {
   top: 0; }
@@ -6049,8 +6045,6 @@ Copyright (c) 2015 Daniel Eden
           width: 100%;
           margin-top: 16px;
           height: 30px; }
-=======
->>>>>>> senlin
 
 .invisible {
   display: none; }

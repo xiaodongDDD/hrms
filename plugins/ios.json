@@ -10,15 +10,12 @@
         "com.handmobile.cordovaplugin.hotpatch": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
-<<<<<<< HEAD
-=======
         "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-compat": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
->>>>>>> 863179601a521fb9504196e235d2dfacdc1d0813
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
@@ -33,15 +30,12 @@
         },
         "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
-<<<<<<< HEAD
-=======
         },
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
->>>>>>> 863179601a521fb9504196e235d2dfacdc1d0813
         },
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
@@ -58,12 +52,12 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
-<<<<<<< HEAD
-=======
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.handchina.hrmsnew"
+        },
         "cordova-sqlite-storage": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         },
->>>>>>> 863179601a521fb9504196e235d2dfacdc1d0813
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
         }
