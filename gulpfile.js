@@ -173,18 +173,12 @@ gulp.task('build-prod', function (callback) {
 // Default Task
 gulp.task('default', ['run-dev']);
 
-// Default Task
+// build dev environment
 gulp.task('run-dev', function (callback) {
   runSequence('clean', 'build-dev', callback);
 });
 
-// Default Task
-gulp.task('run-prod', function (callback) {
-  runSequence('clean', 'build-prod', callback);
-});
-
-
-// Default Task
+// build prod environment
 gulp.task('run-prod', function (callback) {
   runSequence('clean', 'build-prod', callback);
 });
