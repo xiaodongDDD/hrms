@@ -5443,8 +5443,8 @@ Copyright (c) 2015 Daniel Eden
   animation: fadeIn .5s; }
 
 .workflow-list.ng-enter-stagger {
-  -webkit-animation-delay: 150ms;
-  animation-delay: 150ms;
+  -webkit-animation-delay: 90ms;
+  animation-delay: 90ms;
   /* override to make sure it's not inherited from other styles */
   -webkit-animation-duration: 0;
   animation-duration: 0; }
@@ -5624,6 +5624,35 @@ Copyright (c) 2015 Daniel Eden
           text-align: right;
           color: #9B9B9B;
           font-size: 16px; }
+  .workflow-detail .hms-extra-info {
+    margin-top: 10px;
+    background: white;
+    padding-left: 15px; }
+    .workflow-detail .hms-extra-info .hms-opinion {
+      height: 43px;
+      padding-top: 10px;
+      border-bottom: 1px solid #D2D2D2; }
+      .workflow-detail .hms-extra-info .hms-opinion input {
+        height: 23px;
+        width: 100%; }
+    .workflow-detail .hms-extra-info .hms-transmit {
+      padding-top: 10px;
+      padding-bottom: 12px; }
+      .workflow-detail .hms-extra-info .hms-transmit.activated {
+        background: #f2f2f2; }
+      .workflow-detail .hms-extra-info .hms-transmit .transmit-title {
+        color: #23549B;
+        font-size: 16px; }
+      .workflow-detail .hms-extra-info .hms-transmit .transmit-person {
+        padding-top: 2px;
+        color: #9B9B9B;
+        font-size: 14px; }
+      .workflow-detail .hms-extra-info .hms-transmit .row-col-no-padding {
+        margin: 0;
+        padding: 0; }
+      .workflow-detail .hms-extra-info .hms-transmit img {
+        width: 20px;
+        height: 20px; }
   .workflow-detail .hms-workflow-submit {
     width: 100%;
     height: 50px;
@@ -5638,6 +5667,9 @@ Copyright (c) 2015 Daniel Eden
       float: left;
       color: #B95756;
       font-size: 16px; }
+      .workflow-detail .hms-workflow-submit .hms-workflow-reject.activated {
+        color: #ffcaca;
+        font-size: 16px; }
     .workflow-detail .hms-workflow-submit .hms-workflow-back {
       width: 25%;
       float: left;
@@ -5647,6 +5679,9 @@ Copyright (c) 2015 Daniel Eden
       line-height: 50px;
       padding-right: 20px;
       font-size: 16px; }
+      .workflow-detail .hms-workflow-submit .hms-workflow-back.activated {
+        color: #DBDBDB;
+        font-size: 16px; }
     .workflow-detail .hms-workflow-submit .hms-workflow-other {
       width: 50%;
       height: 84px;
@@ -5667,9 +5702,12 @@ Copyright (c) 2015 Daniel Eden
           padding-left: 15px;
           padding-right: 15px;
           float: left; }
+          .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-approve.activated img {
+            width: 26px;
+            height: 26px; }
           .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-approve img {
-            width: 27px;
-            height: 27px; }
+            width: 26px;
+            height: 26px; }
         .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-transmit {
           float: left;
           width: 50%;
@@ -5677,6 +5715,9 @@ Copyright (c) 2015 Daniel Eden
           padding: 8px;
           padding-left: 15px;
           padding-right: 15px; }
+          .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-transmit.activated img {
+            width: 25px;
+            height: 25px; }
           .workflow-detail .hms-workflow-submit .hms-workflow-other .hms-workflow-function .hms-work-transmit img {
             float: right;
             width: 27px;
@@ -5700,6 +5741,27 @@ Copyright (c) 2015 Daniel Eden
           width: 50%;
           height: 30px;
           text-align: right; }
+
+.transmit-person-modal .transmit-search {
+  width: 80%;
+  margin-left: 15px;
+  background: white;
+  height: 25px;
+  color: gray;
+  margin-top: 5px;
+  padding-left: 15px;
+  border-radius: 15px;
+  padding-top: 2px; }
+  .transmit-person-modal .transmit-search .transmit-button {
+    float: left;
+    width: 8%;
+    margin-top: 1px;
+    font-size: 18px; }
+  .transmit-person-modal .transmit-search input {
+    float: left;
+    width: 85%;
+    height: 20px;
+    border: none; }
 
 .flayback-apply-view .fbSelectproject, .flyback-apply-project-model .fbSelectproject {
   background-color: #5D6182;
@@ -6403,7 +6465,6 @@ Copyright (c) 2015 Daniel Eden
           width: 100%;
           margin-top: 16px;
           height: 30px; }
-<<<<<<< HEAD
 
 /**
  * expenseLines.html
@@ -7162,8 +7223,6 @@ Copyright (c) 2015 Daniel Eden
         color: #3ed9cd; }
     .uploadAccount-view ion-content .xbr-ion-item-f .xbr-f-item-inner div:nth-child(4) {
       width: 100%; }
-=======
->>>>>>> senlin
 
 .invisible {
   display: none; }

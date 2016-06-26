@@ -17,43 +17,43 @@ angular.module('myApp', [
   'utilModule',
   'tsApproveModule',
   'HmsModule'
-]);  
+]);
 
 angular.module('myApp')
   .run(function ($ionicPlatform, $timeout, baseConfig) {
     $ionicPlatform.ready(function () {
-        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-        // for form inputs)
-        if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-          cordova.plugins.Keyboard.disableScroll(true);
-        }
-        if (window.StatusBar) {
-          // org.apache.cordova.statusbar required
-          StatusBar.styleDefault();
-        }
+      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      // for form inputs)
+      if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
+        cordova.plugins.Keyboard.disableScroll(true);
+      }
+      if (window.StatusBar) {
+        // org.apache.cordova.statusbar required
+        StatusBar.styleDefault();
+      }
 
-        if(ionic.Platform.isWebView()){
-            // alert(".....  "+window.sqlitePlugin);
-            // alert(window.sqlitePlugin.openDatabase);
-            // alert(LocalFileSystem);
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
-              // 获取路径
-              baseConfig.appRootPath = fileSys.root.toURL() + '/' + baseConfig.appRootFile + '/';
-              //showMessage(baseConfig.appRootPath+' - '+ fileSys.root.toURL() );
-              //The folder is created if doesn't exist
-              fileSys.root.getDirectory(baseConfig.appRootFile, {create: true, exclusive: false},
-                function (directory) {
-                },
-                function (error) {
-                  alert(error);
-                });
+      if (ionic.Platform.isWebView()) {
+        // alert(".....  "+window.sqlitePlugin);
+        // alert(window.sqlitePlugin.openDatabase);
+        // alert(LocalFileSystem);
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
+          // 获取路径
+          baseConfig.appRootPath = fileSys.root.toURL() + '/' + baseConfig.appRootFile + '/';
+          //showMessage(baseConfig.appRootPath+' - '+ fileSys.root.toURL() );
+          //The folder is created if doesn't exist
+          fileSys.root.getDirectory(baseConfig.appRootFile, {create: true, exclusive: false},
+            function (directory) {
+            },
+            function (error) {
+              alert(error);
             });
+        });
 
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: 0});
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: 0});
 
-            db.transaction(function (tx) { 
-              tx.executeSql(' CREATE TABLE IF NOT EXISTS MOBILE_EXP_REPORT_LINE \
+        db.transaction(function (tx) {
+          tx.executeSql(' CREATE TABLE IF NOT EXISTS MOBILE_EXP_REPORT_LINE \
                     (line_id integer primary key AUTOINCREMENT,\
                     expenseObject_id INTEGER,\
                     expenseObject_code TEXT,\
@@ -94,17 +94,17 @@ angular.module('myApp')
                     segment_8 TEXT ,\
                     segment_9 TEXT,\
                     segment_10 TEXT )'
-              );
-              tx.executeSql('CREATE TABLE IF NOT EXISTS MOBILE_EXP_LINE_PHOTOS (' +
-                  'photo_id integer primary key, ' +
-                  'line_id integer, ' +
-                  'photo_name text,' +
-                  'photo_src text,' +
-                  'creation_date text,' +
-                  'created_by integer)'
-              );
-            });
-         }
+          );
+          tx.executeSql('CREATE TABLE IF NOT EXISTS MOBILE_EXP_LINE_PHOTOS (' +
+            'photo_id integer primary key, ' +
+            'line_id integer, ' +
+            'photo_name text,' +
+            'photo_src text,' +
+            'creation_date text,' +
+            'created_by integer)'
+          );
+        });
+      }
 
     });
   });
@@ -116,7 +116,7 @@ angular.module('myApp')
       // Learn more here: https://github.com/angular-ui/ui-router
       // Set up the various states which the app can be in.
       // Each state's controller can be found in controllers.js
-       
+
       $httpProvider.interceptors.push('httpRequestHeader');//注册过滤器
       $ionicConfigProvider.platform.ios.tabs.style('standard');
       $ionicConfigProvider.platform.ios.tabs.position('bottom');
@@ -133,7 +133,7 @@ angular.module('myApp')
       $ionicConfigProvider.platform.android.views.transition('android');
 
       $stateProvider
-        // setup an abstract state for the tabs directive
+      // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
           abstract: true,
@@ -207,10 +207,10 @@ angular.module('myApp')
         });
 
       // if none of the above states are matched, use this as the fallback
-      if(window.localStorage.token&&window.localStorage.token!=""){
+      if (window.localStorage.token && window.localStorage.token != "") {
         //$urlRouterProvider.otherwise('/tab/message');
-        $urlRouterProvider.otherwise('/login');
-      }else{
+        $urlRouterProvider.otherwise('/tab/message');
+      } else {
         $urlRouterProvider.otherwise('/login');
       }
 

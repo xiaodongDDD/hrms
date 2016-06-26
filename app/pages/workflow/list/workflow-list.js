@@ -31,18 +31,16 @@ angular.module('applicationModule')
     '$ionicModal',
     '$timeout',
     'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    'WorkFLowListService',
+    'workFLowListService',
+    '$ionicScrollDelegate',
     function ($scope,
               $state,
               $stateParams,
               $ionicModal,
               $timeout,
               baseConfig,
-              TimeSheetService,
-              hmsPopup,
-              WorkFLowListService) {
+              workFLowListService,
+              $ionicScrollDelegate) {
 
       $scope.list = [];
       $scope.fetchDataFlag = true;
@@ -62,29 +60,44 @@ angular.module('applicationModule')
       var workflowNode = '当前节点';
       var workflowPerson = '提交人';
 
-      $scope.fetchTodoList = function () {
-        if ($scope.listStatus.todo.selected) {
+      var refreshTodoList = function () {
+        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
+        $scope.fetchDataFlag = true;
+        $scope.pullRefreshDataFlag = false;
+        $scope.listStatus.todo.selected = true;
+        $scope.listStatus.done.selected = false;
+        $timeout(function () {
+          getTodoList(false);
+        }, 500);
+      };
 
-        } else {
-          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
-            $scope.listStatus.todo.selected = true;
-            $scope.listStatus.done.selected = false;
-            getTodoList(false);
+      $scope.fetchTodoList = function () {
+        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
+        $timeout(function () {
+          if ($scope.listStatus.todo.selected) {
+          } else {
+            if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+              $scope.listStatus.todo.selected = true;
+              $scope.listStatus.done.selected = false;
+              getTodoList(false);
+            }
           }
-        }
+        }, 100);
       };
 
       $scope.fetchDoneList = function () {
-        if ($scope.listStatus.done.selected) {
+        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
 
-        } else {
-          if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
-            $scope.listStatus.done.selected = true;
-            $scope.listStatus.todo.selected = false;
-            getDoneList(false);
+        $timeout(function () {
+          if ($scope.listStatus.done.selected) {
+          } else {
+            if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+              $scope.listStatus.done.selected = true;
+              $scope.listStatus.todo.selected = false;
+              getDoneList(false);
+            }
           }
-
-        }
+        }, 100);
       };
 
       var showList = function () {
@@ -116,7 +129,9 @@ angular.module('applicationModule')
               submit: workflowPerson,
               submitPerson: data.employee_name,
               workflowId: data.workflow_id,
-              instanceId: data.instance_id
+              instanceId: data.instance_id,
+              recordId: data.record_id,
+              nodeId: data.node_id
             };
             $scope.list.push(item);
           });
@@ -135,7 +150,7 @@ angular.module('applicationModule')
           showList();
         }
         $timeout(function () {
-          WorkFLowListService.getTodoList('N', success, error);
+          workFLowListService.getTodoList('N', success, error);
         }, 0);
       };
 
@@ -178,7 +193,7 @@ angular.module('applicationModule')
           showList();
         }
         $timeout(function () {
-          WorkFLowListService.getTodoList('Y', success, error);
+          workFLowListService.getTodoList('Y', success, error);
         }, 0);
       };
 
@@ -217,40 +232,38 @@ angular.module('applicationModule')
         } else {
           $scope.$broadcast('scroll.refreshComplete');
         }
-      }
-    }])
-
-  .service('WorkFLowListService', ['hmsHttp',
-    'baseConfig',
-    'hmsPopup',
-    function (hmsHttp,
-              baseConfig,
-              hmsPopup) {
-
-      this.getTodoList = function (flag, success, error) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list";
-        var params = {'params': {'p_employee_code': window.localStorage.empno, 'p_flag': flag + ''}};
-        hmsHttp.post(url, params).success(function (result) {
-          success(result)
-        }).error(function (response, status) {
-          hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-          error(response);
-        });
       };
 
-      this.getWorkflowDetail = function (success, workflowId, recordId, submitFlag) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
-        var params = {
-          "params": {
-            "p_workflow_id": workflowId,
-            "p_instance_id": recordId,
-            "p_employee_code": window.localStorage.empno,
-            "p_submit_flag": submitFlag
+
+      $scope.$on('$ionicView.enter', function (e) {
+        if (baseConfig.debug) {
+          console.log('WorkFLowListCtrl.$ionicView.enter');
+        }
+      });
+
+      $scope.$on('$ionicView.beforeEnter', function () {
+        if (baseConfig.debug) {
+          console.log('WorkFLowListCtrl.$ionicView.beforeEnter');
+        }
+        if (workFLowListService.getRefreshWorkflowList().flag == true) {
+          workFLowListService.setRefreshWorkflowList(false);
+          if (baseConfig.debug) {
+            console.log('refresh workflow list');
           }
-        };
-        hmsHttp.post(url, params).success(function (data) {
-          success(data);
-        }).error(function (data) {
-        });
-      };
+          refreshTodoList();
+        }
+      });
+
+      $scope.$on('$ionicView.beforeLeave', function () {
+        if (baseConfig.debug) {
+          console.log('WorkFLowListCtrl.$ionicView.beforeLeave');
+        }
+      });
+
+      $scope.$on('$destroy', function (e) {
+        if (baseConfig.debug) {
+          console.log('WorkFLowListCtrl.$destroy');
+        }
+      });
+
     }]);

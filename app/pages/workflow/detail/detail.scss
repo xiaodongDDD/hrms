@@ -2,7 +2,7 @@
   background: url("../img/workflow/BG@3x.png");
   background-size: cover;
   background-repeat: no-repeat;
-  .detail-has-footer{
+  .detail-has-footer {
     bottom: 80px;
   }
   .hms-workflow-history {
@@ -94,19 +94,19 @@
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
       }
-      .hms-singal-array-link{
+      .hms-singal-array-link {
         float: left;
         height: 43px;
         line-height: 43px;
         font-size: 14px;
-        .hms-array-selector{
+        .hms-array-selector {
           padding-left: 10px;
           color: #205098;
-          &.no-activated,&.activated{
-            color:#999999;
+          &.no-activated, &.activated {
+            color: #999999;
           }
         }
-        .selector-large{
+        .selector-large {
           font-size: 20px;
           font-weight: bold;
         }
@@ -152,6 +152,45 @@
     }
   }
 
+  .hms-extra-info {
+    margin-top: 10px;
+    background: white;
+    padding-left: 15px;
+    .hms-opinion {
+      height: 43px;
+      padding-top: 10px;
+      input {
+        height: 23px;
+        width: 100%;
+      }
+      border-bottom: 1px solid #D2D2D2;
+    }
+    .hms-transmit {
+      &.activated{
+        background: #f2f2f2;
+      }
+      padding-top: 10px;
+      padding-bottom: 12px;
+      .transmit-title {
+        color: #23549B;
+        font-size: 16px;
+      }
+      .transmit-person {
+        padding-top: 2px;
+        color: #9B9B9B;
+        font-size: 14px;
+      }
+      .row-col-no-padding {
+        margin: 0;
+        padding: 0;
+      }
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
   .hms-workflow-submit {
     width: 100%;
     height: 50px;
@@ -166,6 +205,10 @@
       float: left;
       color: #B95756;
       font-size: 16px;
+      &.activated{
+        color: #ffcaca;
+        font-size: 16px;
+      }
     }
     .hms-workflow-back {
       width: 25%;
@@ -176,6 +219,10 @@
       line-height: 50px;
       padding-right: 20px;
       font-size: 16px;
+      &.activated{
+        color: #DBDBDB;
+        font-size: 16px;
+      }
     }
     .hms-workflow-other {
       width: 50%;
@@ -191,6 +238,12 @@
         margin-left: auto;
         margin-right: auto;
         .hms-work-approve {
+          &.activated{
+            img {
+              width: 26px;
+              height: 26px;
+            }
+          }
           width: 50%;
           height: 44px;
           padding: 8px;
@@ -198,8 +251,8 @@
           padding-right: 15px;
           float: left;
           img {
-            width: 27px;
-            height: 27px;
+            width: 26px;
+            height: 26px;
           }
         }
         .hms-work-transmit {
@@ -209,6 +262,12 @@
           padding: 8px;
           padding-left: 15px;
           padding-right: 15px;
+          &.activated{
+            img {
+              width: 25px;
+              height: 25px;
+            }
+          }
           img {
             float: right;
             width: 27px;
@@ -238,6 +297,33 @@
           text-align: right;
         }
       }
+    }
+  }
+}
+
+
+.transmit-person-modal{
+  .transmit-search {
+    width: 80%;
+    margin-left: 15px;
+    background: white;
+    height: 25px;
+    color: gray;
+    margin-top: 5px;
+    padding-left: 15px;
+    border-radius: 15px;
+    padding-top: 2px;
+    .transmit-button {
+      float: left;
+      width: 8%;
+      margin-top: 1px;
+      font-size: 18px;
+    }
+    input {
+      float: left;
+      width: 85%;
+      height: 20px;
+      border: none;
     }
   }
 }

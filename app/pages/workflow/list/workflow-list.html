@@ -24,7 +24,7 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content class="has-daiwen-bar">
+  <ion-content class="has-daiwen-bar" delegate-handle="workflowListHandle">
     <ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </ion-refresher>
     <div class="hms-hide-content" ng-if="fetchDataFlag">

@@ -60,6 +60,10 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.handchina.hrmsnew"
+        },
+        "cn.jpush.phonegap.JPushPlugin": {
+            "API_KEY": "6e0b08078306f45ac8331d54",
+            "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
         }
     },
     "dependent_plugins": {}

@@ -82,18 +82,38 @@
         </div>
       </div>
     </div>
+
+    <div class="hms-extra-info" ng-if="workflowActionShowFlag">
+      <div class="hms-opinion">
+        <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
+        </input>
+      </div>
+      <div class="hms-transmit" ng-click="chooseTransmitPerson()">
+        <div class="row row-col-no-padding">
+          <div class="col col-20 transmit-title row-col-no-padding">
+            转交人
+          </div>
+          <div class="col col-66 transmit-person row-col-no-padding">
+            {{processExtroInfo.transmitPerson.name}}
+          </div>
+          <div class="col col-10 row-col-no-padding">
+            <img src="build/img/workflow/select@3x.png"/>
+          </div>
+        </div>
+      </div>
+    </div>
   </ion-content>
 
   <div class="hms-workflow-submit" ng-if="workflowActionShowFlag">
-    <div class="hms-workflow-reject">
+    <div class="hms-workflow-reject" ng-click="submitAction(actionType.reject)">
       拒绝
     </div>
     <div class="hms-workflow-other">
       <div class="hms-workflow-function">
-        <div class="hms-work-approve">
+        <div class="hms-work-approve" ng-click="submitAction(actionType.approve)">
           <img src="build/img/workflow/deliver@3x.png"/>
         </div>
-        <div class="hms-work-transmit">
+        <div class="hms-work-transmit" ng-click="submitAction(actionType.transmit)">
           <img src="build/img/workflow/approval2@3x.png"/>
         </div>
       </div>
@@ -106,7 +126,7 @@
         </div>
       </div>
     </div>
-    <div class="hms-workflow-back">
+    <div class="hms-workflow-back" ng-click="submitAction(actionType.back)">
       退回
     </div>
   </div>
