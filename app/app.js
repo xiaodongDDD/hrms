@@ -33,6 +33,46 @@ angular.module('myApp')
         StatusBar.styleDefault();
       }
 
+      if (window.plugins.jPushPlugin) {
+        var getRegistrationID = function () {
+          window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
+        };
+        var onGetRegistrationID = function (data) {
+          try {
+            alert("JPushPlugin:registrationID is " + angular.toJson(data));
+            if (data.length == 0) {
+              var t1 = window.setTimeout(getRegistrationID, 1000);
+            }
+          } catch (exception) {
+            console.log(exception);
+          }
+        };
+        var initiateUI = function () {
+          try {
+            window.plugins.jPushPlugin.init();
+            getRegistrationID();
+            if (device.platform != "Android") {
+              window.plugins.jPushPlugin.setDebugModeFromIos();
+              window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
+            } else {
+              window.plugins.jPushPlugin.setDebugMode(true);
+              window.plugins.jPushPlugin.setStatisticsOpen(true);
+            }
+          } catch (exception) {
+            console.log(exception);
+          }
+          try {
+            var alias = '3705';
+            var tags = [];
+            tags.push('3705');
+            window.plugins.jPushPlugin.setTagsWithAlias(tags, alias);
+          } catch (exception) {
+            console.log(exception);
+          }
+        };
+        initiateUI();
+      }
+
       if (ionic.Platform.isWebView()) {
         // alert(".....  "+window.sqlitePlugin);
         // alert(window.sqlitePlugin.openDatabase);
@@ -142,7 +182,6 @@ angular.module('myApp')
         })
 
         // Each tab has its own nav history stack:
-
         .state('tab.message', {
           url: '/message',
           views: {
@@ -211,7 +250,11 @@ angular.module('myApp')
         //$urlRouterProvider.otherwise('/tab/message');
         $urlRouterProvider.otherwise('/tab/message');
       } else {
-        $urlRouterProvider.otherwise('/login');
+        if (!window.localStorage.needGuide || window.localStorage.needGuide == 'Y') {
+          $urlRouterProvider.otherwise('/guide');
+          window.localStorage.needGuide = 'N'
+        } else {
+          $urlRouterProvider.otherwise('/login');
+        }
       }
-
     }]);

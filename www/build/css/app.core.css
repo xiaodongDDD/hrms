@@ -5409,14 +5409,15 @@ Copyright (c) 2015 Daniel Eden
     margin-left: auto;
     margin-right: auto; }
     .workflow .workflow-filter .selected {
-      background: #2A5BA1;
-      color: white; }
-    .workflow .workflow-filter .no-selected {
       background: white;
       color: #2A5BA1; }
+    .workflow .workflow-filter .no-selected {
+      background: none;
+      color: white; }
       .workflow .workflow-filter .no-selected.activated {
         background: #64ACFF;
-        color: white; }
+        color: white;
+        opacity: 0.8; }
     .workflow .workflow-filter .to-do-list {
       border: 1px solid white;
       float: left;
@@ -5746,21 +5747,20 @@ Copyright (c) 2015 Daniel Eden
   width: 80%;
   margin-left: 15px;
   background: white;
-  height: 25px;
+  height: 28px;
   color: gray;
   margin-top: 5px;
   padding-left: 15px;
-  border-radius: 15px;
-  padding-top: 2px; }
+  border-radius: 15px; }
   .transmit-person-modal .transmit-search .transmit-button {
     float: left;
     width: 8%;
-    margin-top: 1px;
+    margin-top: 5px;
     font-size: 18px; }
   .transmit-person-modal .transmit-search input {
     float: left;
     width: 85%;
-    height: 20px;
+    height: 25px;
     border: none; }
 
 .flayback-apply-view .fbSelectproject, .flyback-apply-project-model .fbSelectproject {
@@ -7587,127 +7587,217 @@ Copyright (c) 2015 Daniel Eden
       text-align: center;
       color: white; }
 
-.message-list .message-search {
-  width: 84%;
-  margin-left: 8%;
-  background: white;
-  height: 25px;
-  color: gray;
-  margin-top: 5px;
-  padding-left: 15px;
-  border-radius: 15px;
-  padding-top: 2px; }
-  .message-list .message-search .message-button {
-    float: left;
-    width: 8%;
-    margin-top: 1px;
-    font-size: 18px; }
-  .message-list .message-search input {
-    float: left;
-    width: 85%;
-    border: none; }
-
-.message-list .message-item {
-  position: relative;
-  margin-top: 10px;
-  width: 100%;
-  height: 105px;
-  padding-right: 15px;
-  border-bottom: 1px solid #e5e5e5; }
-  .message-list .message-item .message-introduce {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    height: 68px;
-    width: 180px;
-    padding: 9px;
-    background-image: url("../img/name@3x.png");
-    background-size: cover;
-    z-index: 99; }
-    .message-list .message-item .message-introduce .message-logo {
-      width: 51px;
-      height: 51px;
-      line-height: 51px;
-      text-align: center;
-      float: left;
-      border-radius: 25px;
-      font-size: 16px; }
-      .message-list .message-item .message-introduce .message-logo.red {
-        border: 1px solid #dd1144; }
-      .message-list .message-item .message-introduce .message-logo.blue {
-        border: 1px solid #4b8bf4; }
-    .message-list .message-item .message-introduce .message-has-logo {
-      width: 51px;
-      height: 51px;
-      line-height: 51px;
-      text-align: center;
-      float: left;
-      border-radius: 25px;
-      font-size: 16px; }
-    .message-list .message-item .message-introduce .message-mult-logo {
-      width: 51px;
-      height: 51px;
-      line-height: 51px;
-      text-align: center;
-      float: left;
-      border-radius: 25px;
-      font-size: 16px;
-      position: relative; }
-      .message-list .message-item .message-introduce .message-mult-logo .message-image1 {
-        width: 34px;
-        height: 34px;
-        position: absolute;
-        top: 10px;
-        left: 0px;
-        border-radius: 17px; }
-      .message-list .message-item .message-introduce .message-mult-logo .message-image2 {
-        width: 34px;
-        height: 34px;
-        position: absolute;
-        top: 10px;
-        left: 20px;
-        border-radius: 17px; }
-    .message-list .message-item .message-introduce .message-title {
-      float: left;
-      padding-left: 25px;
-      height: 20px;
-      width: 70px;
-      margin-top: -5px;
-      font-size: 15px; }
-  .message-list .message-item .message-date {
-    position: absolute;
-    top: 5px;
-    right: 15px;
-    height: 25px;
-    width: 100px;
-    text-align: right;
-    font-size: 11px;
-    color: #9B9B9B; }
-  .message-list .message-item .message-content {
-    position: absolute;
-    top: 30px;
-    left: 15px;
-    height: 65px;
-    width: 92%;
-    padding-top: 20px;
-    border-right: 1px solid #e5e5e5;
+.message-list {
+  /*.message-item {
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
+    height: 105px;
+    //background: #4b8bf4;
+    padding-right: 15px;
     border-bottom: 1px solid #e5e5e5;
-    border-left: 1px solid #e5e5e5;
-    border-top: 1px solid #fafafa;
-    z-index: 10;
-    box-shadow: 3px 3px 5px #eeeeee; }
-    .message-list .message-item .message-content .message-text {
-      padding-left: 60px;
+    .message-introduce {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      height: 68px;
+      width: 180px;
+      padding: 9px;
+      background-image: url("../img/name@3x.png");
+      background-size: cover;
+      z-index: 99;
+      .message-logo {
+        width: 51px;
+        height: 51px;
+        line-height: 51px;
+        text-align: center;
+        float: left;
+        border-radius: 25px;
+        font-size: 16px;
+        &.red{
+          border: 1px solid #dd1144;
+        }
+        &.blue{
+          border: 1px solid #4b8bf4;
+        }
+      }
+      .message-has-logo {
+        width: 51px;
+        height: 51px;
+        line-height: 51px;
+        text-align: center;
+        float: left;
+        border-radius: 25px;
+        font-size: 16px;
+      }
+      .message-mult-logo {
+        width: 51px;
+        height: 51px;
+        line-height: 51px;
+        text-align: center;
+        float: left;
+        border-radius: 25px;
+        font-size: 16px;
+        position: relative;
+
+        .message-image1{
+          width: 34px;
+          height: 34px;
+          position: absolute;
+          top: 10px;
+          left: 0px;
+          border-radius: 17px;
+        }
+        .message-image2{
+          width: 34px;
+          height: 34px;
+          position: absolute;
+          top: 10px;
+          left: 20px;
+          border-radius: 17px;
+        }
+      }
+      .message-title {
+        float: left;
+        padding-left: 25px;
+        height: 20px;
+        width: 70px;
+        margin-top: -5px;
+        font-size: 15px;
+      }
+    }
+    .message-date {
+
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      height: 25px;
+      width: 100px;
+      text-align: right;
+      font-size: 11px;
+      color: #9B9B9B;
+    }
+    .message-content {
+      position: absolute;
+      top: 30px;
+      left: 15px;
+      height: 65px;
+      width: 92%;
+      padding-top: 20px;
+      border-right: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+      border-left: 1px solid #e5e5e5;
+      border-top: 1px solid #fafafa;
+      z-index: 10;
+      box-shadow: 3px 3px 5px #eeeeee;
+      .message-text {
+        padding-left: 60px;
+        width: 85%;
+        float: left;
+        color: #9B9B9B;
+      }
+      .message-qty {
+        width: 10%;
+        float: left;
+        border-radius: 8px;
+        background: #285AA0;
+        color: white;
+        text-align: center;
+      }
+    }
+  }*/ }
+  .message-list .message-search {
+    width: 84%;
+    margin-left: 8%;
+    background: white;
+    height: 28px;
+    color: gray;
+    margin-top: 5px;
+    padding-left: 15px;
+    border-radius: 15px; }
+    .message-list .message-search .message-button {
+      float: left;
+      width: 8%;
+      margin-top: 5px;
+      font-size: 18px; }
+    .message-list .message-search input {
+      float: left;
       width: 85%;
-      float: left;
-      color: #9B9B9B; }
-    .message-list .message-item .message-content .message-qty {
-      width: 10%;
-      float: left;
-      border-radius: 8px;
-      background: #285AA0;
-      color: white;
-      text-align: center; }
+      border: none; }
+  .message-list .message-item {
+    height: 78.5px;
+    padding-top: 15.5px;
+    padding-bottom: 20px;
+    padding-left: 15px;
+    padding-right: 12px;
+    position: relative;
+    border-bottom: 1px solid #DBDBDB; }
+    .message-list .message-item .message-introduce {
+      position: absolute;
+      left: 15px;
+      top: 15.5px;
+      width: 45px;
+      height: 45px; }
+      .message-list .message-item .message-introduce .message-logo {
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        text-align: center;
+        float: left;
+        border-radius: 22.5px;
+        font-size: 16px; }
+        .message-list .message-item .message-introduce .message-logo img {
+          width: 45px;
+          height: 45px; }
+        .message-list .message-item .message-introduce .message-logo.red {
+          border: 1px solid #dd1144; }
+        .message-list .message-item .message-introduce .message-logo.blue {
+          border: 1px solid #4b8bf4; }
+      .message-list .message-item .message-introduce .message-has-logo {
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        text-align: center;
+        float: left;
+        border-radius: 22.5px;
+        font-size: 16px; }
+    .message-list .message-item .message-content {
+      position: absolute;
+      left: 70px;
+      top: 15.5px;
+      height: 45px;
+      right: 55px; }
+      .message-list .message-item .message-content .message-title {
+        font-size: 15px;
+        color: #4A4A4A;
+        height: 21px;
+        line-height: 21px; }
+      .message-list .message-item .message-content .message-line {
+        margin-top: 4px;
+        font-size: 13px;
+        color: #9B9B9B;
+        height: 18px;
+        line-height: 18px; }
+    .message-list .message-item .message-extro {
+      position: absolute;
+      top: 15.5px;
+      height: 45px;
+      right: 12px; }
+      .message-list .message-item .message-extro .message-date {
+        font-size: 11px;
+        color: #9B9B9B;
+        height: 16px;
+        line-height: 16px; }
+      .message-list .message-item .message-extro .message-qty {
+        text-align: center;
+        margin-top: 8px;
+        width: 45px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 13px;
+        color: #285AA0;
+        border-radius: 8px;
+        box-shadow: 0px 0px 4px #DBDBDB; }
 
 .platform-android .my-info .shrink-image {
   height: 148px;

@@ -17,15 +17,16 @@ $workflow-gray-line: #D2D2D2;
     margin-left: auto;
     margin-right: auto;
     .selected{
-      background: $workflow-bule;
-      color: white;
-    }
-    .no-selected{
       background: white;
       color: $workflow-bule;
+    }
+    .no-selected{
+      background: none;
+      color: white;
       &.activated{
         background: #64ACFF;
         color: white;
+        opacity: 0.8;
       }
     }
     .to-do-list {

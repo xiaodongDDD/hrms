@@ -14,6 +14,16 @@ angular.module('myApp')
             }
           }
         });
+      $stateProvider
+        .state('tab.workflow-message', {
+          url: '/workflow-message',
+          views: {
+            'tab-message': {
+              templateUrl: 'build/pages/application/timesheet/query/query.html',
+              controller: 'TimeSheetQueryCtrl'
+            }
+          }
+        });
     }]);
 
 angular.module('applicationModule')

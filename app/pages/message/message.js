@@ -12,15 +12,28 @@ angular.module('messageModule')
               $state,
               $timeout,
               $ionicPlatform) {
-
-      $scope.messageList = [
-      ];
+      $scope.messageList = [];
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
         if (window.StatusBar) {
           StatusBar.styleLightContent();
         }
+        /*var onOpenNotification = function (event) {
+          try {
+            var alertContent;
+            if (device.platform == "Android") {
+              alertContent = window.plugins.jPushPlugin.openNotification.alert;
+            } else {
+              alertContent = event.aps.alert;
+            }
+            //alert("open Notification:" + alertContent);
+            $state.go('tab.workflow-message');
+          } catch (exception) {
+            console.log("JPushPlugin:onOpenNotification" + exception);
+          }
+        };
+        document.addEventListener("jpush.openNotification", onOpenNotification, false);*/
       });
 
       $scope.talk = function (message) {
@@ -28,10 +41,10 @@ angular.module('messageModule')
         $state.go("tab.messageDetail", {message: message});
       };
 
-      $scope.refresh = function(){
-        $timeout(function(){
+      $scope.refresh = function () {
+        $timeout(function () {
           $scope.$broadcast("scroll.refreshComplete");
-        },2000);
+        }, 2000);
       };
 
       console.log('messageCtrl.enter');
@@ -43,5 +56,4 @@ angular.module('messageModule')
       $scope.$on('$destroy', function (e) {
         console.log('messageCtrl.$destroy');
       });
-
     }]);
