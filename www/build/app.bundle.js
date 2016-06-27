@@ -1,5 +1,5 @@
 angular.module("baseConfig", [])
-.constant("baseConfig", {"debug":true,"isMobilePlatform":false,"clearTable":true,"nativeScreenFlag":false,"basePath":"http://wechat.hand-china.com/hmbms_hand/api","businessPath":"http://wechat.hand-china.com/hmbms_hand/api/dataEngine","pkgIdentifier":"","appEnvironment":"UAT","version":{"currentVersion":"1.9.1","currentversionName":"此版本为测试版本1.9.1","currentSubVersion":"1","currentSubVersionName":"资源增量包1"}});
+.constant("baseConfig", {"debug":true,"isMobilePlatform":false,"clearTable":true,"nativeScreenFlag":false,"basePath":"http://wechat.hand-china.com/hmbms_hand/api","businessPath":"http://wechat.hand-china.com/hmbms_hand/api/dataEngine","pkgIdentifier":"","appEnvironment":"UAT","version":{"currentVersion":"1.9.1","currentversionName":"此版本为测试版本1.9.1","currentSubVersion":"0","currentSubVersionName":"资源增量包1"}});
 
 /**
  * Created by gusenlin on 16/5/22.
@@ -12,662 +12,6 @@ var contactModule = angular.module('contactModule', []);
 var applicationModule = angular.module('applicationModule', []);
 var myInfoModule = angular.module('myInfoModule', []);
 var tsApproveModule = angular.module('tsApproveModule', []);
-
-/**
- * @ngdoc interceptor
- * @name httpRequestHeader
- * @module utilModule
- * @description
- * This is the http interceptor
- * @author
- * gusenlin
- */
-angular.module('utilModule').factory('httpRequestHeader', function () {
-  var interceptor = {
-    'request': function (config) {
-      if (window.localStorage.token && window.localStorage.empno) {
-        var timestamp = new Date().getTime();
-        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
-        config.headers.timestamp = timestamp;
-        config.headers.token     = token;
-        config.headers.loginName = window.localStorage.empno;
-      }
-      return config;
-    }
-  };
-
-  return interceptor;
-});
-
-/**
- * Created by wolf on 2016/6/13. (_wen.dai_)
- */
-"use strict";
-//根据日期获取星期
-HmsModule.filter('weekDay', function () {
-  return function (data) {
-    if (data == "") {
-      return data;
-    } else {
-      var d = new Date(data);
-      var day = d.getDay();
-      switch (day) {
-        case  0:
-          data = data + "　" + "星期天";
-          break;
-        case  1:
-          data = data + "　" + "星期一";
-          break;
-        case  2:
-          data = data + "　" + "星期二";
-          break;
-        case  3:
-          data = data + "　" + "星期三";
-          break;
-        case  4:
-          data = data + "　" + "星期四";
-          break;
-        case  5:
-          data = data + "　" + "星期五";
-          break;
-        case  6:
-          data = data + "　" + "星期六";
-          break;
-      }
-      return data;
-    }
-  }
-});
-
-/**
- * Created by gusenlin on 16/5/21.
- */
-angular.module('HmsModule')
-  .factory('hmsHttp', ['$log',
-    '$http',
-    'hmsPopup',
-    '$state',
-    function ($log,
-              $http,
-              hmsPopup,
-              $state) {
-      var serivieName = "HmsHttp";
-      var isSucessfullName = "isSucessfull";
-      var noAuthorPostName = serivieName + ".noAuthorPost";
-      var noAuthorGetName = serivieName + ".noAuthorGet";
-      var postName = serivieName + ".post";
-      var getName = serivieName + ".get";
-      var procedure;
-
-      var init = function (procedure) {
-        procedure = procedure;
-      };
-      var debug = function (text) {
-        $log.debug(procedure + " success");
-      };
-
-      //如果登录令牌失效，跳转会登录界面
-      var goBackLogin = function (state) {
-        hmsPopup.hideLoading();
-        state.go('login');
-      };
-
-      var request = {
-        goBackLogin: function (state) {
-          goBackLogin(state);
-        },
-        isSuccessfull: function (status) {
-          $log.debug(isSucessfullName + " Start!");
-          $log.debug(noAuthorPostName + " status " + status);
-          if (status == "S" || status == "SW") {
-            return true;
-          } else {
-            return false;
-          }
-        },
-        post: function (url, paramter, state) {
-          $log.debug(postName + " Start!");
-          $log.debug(postName + " url " + url);
-          $log.debug(postName + " paramter " + angular.toJson(paramter));
-          var post = $http.post(url, paramter).success(function (response) {
-            if (response.status == 'ETOKEN') {
-              window.localStorage.token = '';
-              goBackLogin($state);
-              hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!')
-            }
-            $log.debug(postName + " success");
-            $log.debug(postName + " response " + angular.toJson(response));
-            $log.debug(postName + " End!");
-          }).error(function (response, status) {
-            $log.debug(postName + " error");
-            $log.debug(postName + " response " + response);
-            $log.debug(postName + " status " + status);
-            $log.debug(postName + " End!");
-          });
-          return post;
-        },
-        get: function (url) {
-          $log.debug(getName + " Start!");
-          $log.debug(getName + " url " + url);
-          var get = $http.get(url).success(function (response) {
-            $log.debug(getName + " success");
-            $log.debug(getName + " response " + angular.toJson(response));
-            $log.debug(getName + " End!");
-          }).error(function (response, status) {
-            $log.debug(getName + " error");
-            $log.debug(getName + " response " + response);
-            $log.debug(getName + " status " + status);
-            $log.debug(getName + " End!");
-          });
-          return get;
-        }
-      };
-      return request;
-    }])
-
-  .service('hmsPopup', ['$ionicLoading', '$cordovaToast', '$ionicPopup', 'baseConfig',
-    function ($ionicLoading, $cordovaToast, $ionicPopup, baseConfig) {
-      this.showLoading = function (content) {
-        $ionicLoading.show({
-          template: '<ion-spinner icon="ios" class="spinner spinner-ios spinner-stable"></ion-spinner>' +
-          '<div style="color: white;font-size: 12px;text-align: center;height:25px;line-height: 25px;">' + content + '</div>'
-        });
-      };
-      this.hideLoading = function () {
-        $ionicLoading.hide();
-      };
-      this.showShortCenterToast = function (content) {
-        if (!baseConfig.nativeScreenFlag) {
-          $ionicLoading.show({
-            template: (angular.isDefined(content) ? content : "操作失败"),
-            animation: 'fade-in',
-            showBackdrop: false,
-            maxWidth: 200,
-            duration: 2000
-          });
-        } else {
-          $cordovaToast.showLongBottom((angular.isDefined(content) ? content : "操作失败")).then(function (success) {
-          }, function (error) {
-          });
-        }
-      };
-      //弹出确认弹出框
-      this.showPopup = function (template, title) {
-        if (!baseConfig.nativeScreenFlag) {
-          $ionicPopup.show({
-            title: "提示",
-            template: template,
-            buttons: [{
-              text: '确定',
-              type: 'button button-cux-popup-confirm'
-            }]
-          });
-        } else {
-          var alertDismissed = function () {
-          };
-          navigator.notification.alert(
-            template, // message
-            alertDismissed, // callback
-            "提示", // title
-            '确定' // buttonName
-          );
-        }
-      };
-      //弹出是否确认的窗口
-      this.prompt = function (myscope, title, popup, pluginPopup) {
-        if (!baseConfig.nativeScreenFlag) {
-          var myPopup = $ionicPopup.show({
-            template: '<input type="type" ng-model="myScope.data.city">',
-            title: title,
-            subTitle: title,
-            scope: myscope,
-            buttons: [
-              {text: '取消'},
-              {
-                text: '<b>确定</b>',
-                type: 'button-positive',
-                onTap: function (e) {
-                  if (!myscope.myScope.data.city) {
-                    e.preventDefault();
-                  } else {
-                    return myscope.myScope.data.city;
-                  }
-                }
-              },
-            ]
-          });
-          myPopup.then(popup);
-
-        } else {
-          navigator.notification.prompt(
-            title,  // message
-            pluginPopup,          // callback to invoke
-            '填写信息',           // title
-            ['确定', '退出'],    // buttonLabels
-            ''                 // defaultText
-          );
-        }
-      }
-      ;
-      /*function onPrompt(results) {
-       alert("You selected button number " + results.buttonIndex + " and entered " + results.input1);
-       }
-       navigator.notification.prompt(
-       'Please enter your name',  // message
-       onPrompt,                  // callback to invoke
-       'Registration',            // title
-       ['Ok','Exit'],             // buttonLabels
-       'Jane Doe'                 // defaultText
-       );
-       */
-      this.confirm = function (message, title, onConfirm) {
-        if (!baseConfig.nativeScreenFlag) {
-          var confirmPopup = $ionicPopup.confirm({
-            title: (angular.isDefined(title) ? title : "提示"),
-            template: message,
-            cancelText: '取消',
-            cancelType: 'button-cux-popup-cancel',
-            okText: '确定',
-            okType: 'button-cux-popup-confirm'
-          });
-          confirmPopup.then(onConfirm);
-        } else {
-          navigator.notification.confirm(
-            message, // message
-            onConfirm, // callback to invoke with index of button pressed
-            title, // title
-            ['确定', '取消'] // buttonLabels
-          );
-        }
-      };
-    }
-  ])
-
-  .factory('hmsReturnView', ['$ionicHistory', 'baseConfig', function ($ionicHistory, baseConfig) {
-    //当前屏幕宽度
-    var screenWidth = window.screen.width - 50;
-    //滑动栏的宽度
-    var scrollWidth = {
-      width: ''
-    };
-    //当前内容的宽度
-    var contentWidth = 0;
-    //当前标题的宽度
-    var viewLength;
-
-    return {
-      go: function (depth) {
-        // get the right history stack based on the current view
-        var historyId = $ionicHistory.currentHistoryId();
-        var history = $ionicHistory.viewHistory().histories[historyId];
-        // set the view 'depth' back in the stack as the back view
-        var targetViewIndex = history.stack.length - 1 - depth;
-        $ionicHistory.backView(history.stack[targetViewIndex]);
-        // navigate to it
-        $ionicHistory.goBack();
-      },
-      returnToState: function (stateName) {
-        var historyId = $ionicHistory.currentHistoryId();
-        var history = $ionicHistory.viewHistory().histories[historyId];
-        if (baseConfig.debug) {
-          console.log('history.stack.length : ' + history.stack.length);
-        }
-        for (var i = history.stack.length - 1; i >= 0; i--) {
-          if (baseConfig.debug) {
-            console.log('history.stack[i].stateName : ' + history.stack[i].stateName);
-          }
-          if (history.stack[i].stateName == stateName) {
-            $ionicHistory.backView(history.stack[i]);
-            $ionicHistory.goBack();
-          }
-        }
-      },
-      getStackList: function (currentIonicHistory, viewName) {
-        var stackList = [];
-        var historyId = currentIonicHistory.currentHistoryId();
-        var history = currentIonicHistory.viewHistory().histories[historyId];
-        if (baseConfig.debug) {
-          console.log(currentIonicHistory.viewHistory());
-        }
-        var color = '#F99D32';
-        for (var i = 0; i < history.stack.length; i++) {
-          if (i == history.stack.length - 1) {
-            color = 'black';
-          }
-          var stackItem = {
-            viewId: history.stack[i].viewId,
-            stateName: history.stack[i].stateName,
-            title: history.stack[i].title,
-            color: {
-              color: color
-            }
-          };
-          if (baseConfig.debug) {
-            console.log(history.stack[i]);
-          }
-          stackList.push(stackItem);
-        }
-        stackList[stackList.length - 1].title = viewName;
-        return stackList;
-      },
-      getWidth: function () {
-        return scrollWidth;
-      }
-    };
-  }])
-
-  .factory('hmsBackLine', ['$ionicHistory', 'baseConfig', function ($ionicHistory) {
-    //当前屏幕宽度
-    var screenWidth = window.screen.width - 50;
-    //滑动栏的宽度
-    var scrollWidth = {
-      width: ''
-    };
-    //当前内容的宽度
-    var contentWidth = 0;
-    //当前标题的宽度
-    var viewLength;
-    var backViews = [];
-    return {
-      getViews: function (viewName) {
-        viewLength = viewName.toString().length;
-        if (ROOTCONFIG.debug) {
-          console.log(viewLength);
-        }
-        //				alert(viewName)
-        for (var i = 0; i < backViews.length; i++) {
-          if (viewName == backViews[i].name) {
-            //						if(i==0){
-            //							i=i+1;
-            //						}
-            backViews = backViews.slice(0, i + 1);
-            //						alert(backViews.length)
-            contentWidth = 0;
-            for (var j = 0; j < backViews.length; j++) {
-              if (j == backViews.length - 1) {
-                contentWidth = contentWidth + backViews[j].name.toString().length * 14 + 8;
-              } else {
-                contentWidth = contentWidth + backViews[j].name.toString().length * 14 + 18 + 8;
-              }
-            }
-            console.log(contentWidth);
-            if (contentWidth < screenWidth) {
-              scrollWidth.width = '';
-            } else {
-              scrollWidth.width = contentWidth + 'px';
-            }
-            for (var k = 0; k < backViews.length - 1; k++) {
-              backViews[k].myStyle.color = '#F99D32';
-            }
-            console.log(backViews);
-            backViews[backViews.length - 1].myStyle.color = 'black';
-            return backViews;
-          }
-        }
-
-        var view = {
-          name: viewName,
-          myStyle: {
-            color: ''
-          }
-        };
-        backViews.push(view);
-        contentWidth = 0;
-        for (var ii = 0; i < backViews.length; ii++) {
-          if (ii == backViews.length - 1) {
-            contentWidth = contentWidth + backViews[ii].name.toString().length * 14 + 8;
-          } else {
-            contentWidth = contentWidth + backViews[ii].name.toString().length * 14 + 18 + 8;
-          }
-        }
-        if (contentWidth > screenWidth) {
-          scrollWidth.width = contentWidth + 'px';
-        }
-        for (var iii = 0; iii < backViews.length - 1; i++) {
-          backViews[iii].myStyle.color = '#F99D32';
-        }
-        return backViews;
-      },
-      getWidth: function () {
-        return scrollWidth;
-      }
-    };
-  }])
-
-  .factory('$hmsHelp', [
-    '$ionicTemplateLoader',
-    '$ionicBackdrop',
-    '$q',
-    '$timeout',
-    '$rootScope',
-    '$ionicBody',
-    '$compile',
-    '$ionicPlatform',
-    '$ionicModal',
-    'IONIC_BACK_PRIORITY',
-    function ($ionicTemplateLoader,
-              $ionicBackdrop,
-              $q,
-              $timeout,
-              $rootScope,
-              $ionicBody,
-              $compile,
-              $ionicPlatform,
-              $ionicModal,
-              IONIC_BACK_PRIORITY) {
-      //TODO allow this to be configured
-      var config = {
-        stackPushDelay: 75
-      };
-      var HELP_TPL;
-      if (ionic.Platform.isIOS()) {
-        HELP_TPL = '<div style="position: absolute;top:2px;left: -4px;bottom: 0;right: 0;' +
-          'background: url(img/mainHide.png); background-size: cover;;z-index: 12;">' +
-          '<div style="height: 100%;width: 100%;background: none" ng-click="$buttonTapped()"></div></div>';
-      } else {
-        HELP_TPL = '<div style="position: absolute;top: -14px;left: -4px;bottom: 0;right: 0;' +
-          'background: url(img/mainHide.png); background-size: cover;;z-index: 12;">' +
-          '<div style="height: 100%;width: 100%;background: none" ng-click="$buttonTapped()"></div></div>';
-      }
-      var popupStack = [];
-
-      function setHashKey(obj, h) {
-        if (h) {
-          obj.$$hashKey = h;
-        } else {
-          delete obj.$$hashKey;
-        }
-      }
-
-      function extend(dst, args) {
-        var h = dst.$$hashKey;
-        if (baseConfig.debug) {
-          console.log(arguments);
-        }
-        for (var i = 1, ii = arguments.length; i < ii; i++) {
-          var obj = arguments[i];
-          if (obj) {
-            var keys = Object.keys(obj);
-            for (var j = 0, jj = keys.length; j < jj; j++) {
-              var key = keys[j];
-              dst[key] = obj[key];
-            }
-          }
-        }
-        setHashKey(dst, h);
-        return dst;
-      }
-
-      var $hmsHelp = {
-        showPopup: showPopup,
-        _createPopup: createPopup,
-        _popupStack: popupStack
-      };
-
-
-      return $hmsHelp;
-
-      function createPopup() {
-        var self = {};
-        self.scope = ($rootScope).$new();
-        self.element = angular.element(HELP_TPL);
-        self.responseDeferred = $q.defer();
-        $ionicBody.get().appendChild(self.element[0]);
-        if (baseConfig.debug) {
-          debug(self.element);
-        }
-        $compile(self.element)(self.scope);
-
-        extend(self.scope, {
-          title: "",
-          $buttonTapped: function () {
-            //event = event.originalEvent || event; //jquery events
-            if (baseConfig.debug) {
-              debug("$buttonTapped");
-            }
-            self.responseDeferred.resolve(1);
-          }
-        });
-        self.show = function () {
-          if (self.isShown || self.removed) return;
-          $ionicModal.stack.add(self);
-          self.isShown = true;
-          ionic.requestAnimationFrame(function () {
-            //if hidden while waiting for raf, don't show
-            if (!self.isShown) return;
-
-            //self.element.removeClass('popup-hidden');
-            //self.element.addClass('popup-showing active');
-            focusInput(self.element);
-          });
-        };
-        self.hide = function (callback) {
-          if (baseConfig.debug) {
-            console.log("4 self.hide " + callback);
-          }
-          callback = callback || function () {
-            };
-          if (!self.isShown) return callback();
-
-          $ionicModal.stack.remove(self);
-          self.isShown = false;
-          //self.element.removeClass('active');
-          //self.element.addClass('popup-hidden');
-          $timeout(callback, 250, false);
-        };
-        self.remove = function () {
-          if (baseConfig.debug) {
-            console.log("5 self.remove ");
-          }
-          if (self.removed || !$ionicModal.stack.isHighest(self)) return;
-          self.hide(function () {
-            self.element.remove();
-            self.scope.$destroy();
-          });
-          self.removed = true;
-        };
-        return self;
-      }
-
-      function onHardwareBackButton() {
-        var last = popupStack[popupStack.length - 1];
-        last && last.responseDeferred.resolve();
-      }
-
-      function showPopup() {
-        var popup = $HmsHelp._createPopup();
-        var showDelay = 0;
-
-        if (popupStack.length > 0) {
-          popupStack[popupStack.length - 1].hide();
-          showDelay = config.stackPushDelay;
-        } else {
-          //Add popup-open & backdrop if this is first popup
-          //$ionicBody.addClass('popup-open');
-          //$ionicBackdrop.retain();
-          //only show the backdrop on the first popup
-          $hmsHelp._backButtonActionDone = $ionicPlatform.registerBackButtonAction(
-            onHardwareBackButton,
-            IONIC_BACK_PRIORITY.popup
-          );
-        }
-
-        // Expose a 'close' method on the returned promise
-        popup.responseDeferred.promise.close = function popupClose(result) {
-          if (!popup.removed) popup.responseDeferred.resolve(result);
-        };
-        //DEPRECATED: notify the promise with an object with a close method
-        popup.responseDeferred.notify({
-          close: popup.responseDeferred.close
-        });
-
-        doShow();
-
-        return popup.responseDeferred.promise;
-
-        function doShow() {
-          popupStack.push(popup);
-          if (baseConfig.debug) {
-            console.log("popupStack.push(popup)");
-          }
-          $timeout(popup.show, showDelay, false);
-
-          popup.responseDeferred.promise.then(function (result) {
-            var index = popupStack.indexOf(popup);
-            if (index !== -1) {
-              popupStack.splice(index, 1);
-            }
-            if (baseConfig.debug) {
-              console.log("popupStack.length");
-            }
-            if (popupStack.length > 0) {
-              popupStack[popupStack.length - 1].show();
-            } else {
-              //$ionicBackdrop.release();
-              //Remove popup-open & backdrop if this is last popup
-              $timeout(function () {
-                // wait to remove this due to a 300ms delay native
-                // click which would trigging whatever was underneath this
-                if (!popupStack.length) {
-                  //$ionicBody.removeClass('popup-open');
-                }
-              }, 400, false);
-              ($hmsHelp._backButtonActionDone || function () {
-              })();
-            }
-
-            popup.remove();
-            return result;
-          });
-        }
-      }
-
-      function focusInput(element) {
-        var focusOn = element[0].querySelector('[autofocus]');
-        if (focusOn) {
-          focusOn.focus();
-        }
-      }
-    }
-  ])
-
-  .factory("hmsFastPath", function () {
-    var request = {
-      configFastPath: function (scope, returnView, ionicHistory) {
-        scope.screenWidth = {
-          width: (window.screen.width - 50 + 'px')
-        };
-        scope.scrollWidth = returnView.getWidth();
-        var viewTag = document.getElementsByTagName('ion-view');
-        var viewName = viewTag[viewTag.length - 1].attributes[0].value;
-        scope.currentStackList = returnView.getStackList(ionicHistory, viewName);
-        scope.goStack = function (stackItem) {
-          returnView.returnToState(stackItem.stateName);
-        };
-      }
-    };
-    return request;
-  });
 
 /**
  * @ngdoc directive
@@ -1270,6 +614,72 @@ angular.module('HmsModule')
   })*/
 
 /**
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
+ */
+angular.module('utilModule').factory('httpRequestHeader', function () {
+  var interceptor = {
+    'request': function (config) {
+      if (window.localStorage.token && window.localStorage.empno) {
+        var timestamp = new Date().getTime();
+        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
+        config.headers.timestamp = timestamp;
+        config.headers.token     = token;
+        config.headers.loginName = window.localStorage.empno;
+      }
+      return config;
+    }
+  };
+
+  return interceptor;
+});
+
+/**
+ * Created by wolf on 2016/6/13. (_wen.dai_)
+ */
+"use strict";
+//根据日期获取星期
+HmsModule.filter('weekDay', function () {
+  return function (data) {
+    if (data == "") {
+      return data;
+    } else {
+      var d = new Date(data);
+      var day = d.getDay();
+      switch (day) {
+        case  0:
+          data = data + "　" + "星期天";
+          break;
+        case  1:
+          data = data + "　" + "星期一";
+          break;
+        case  2:
+          data = data + "　" + "星期二";
+          break;
+        case  3:
+          data = data + "　" + "星期三";
+          break;
+        case  4:
+          data = data + "　" + "星期四";
+          break;
+        case  5:
+          data = data + "　" + "星期五";
+          break;
+        case  6:
+          data = data + "　" + "星期六";
+          break;
+      }
+      return data;
+    }
+  }
+});
+
+/**
  * Created by wolf on 2016/6/12.
  * @author:wen.dai@hand-china.com
  */
@@ -1400,6 +810,596 @@ function unique_better(arr, newitem) {
 
 
 
+
+/**
+ * Created by gusenlin on 16/5/21.
+ */
+angular.module('HmsModule')
+  .factory('hmsHttp', ['$log',
+    '$http',
+    'hmsPopup',
+    '$state',
+    function ($log,
+              $http,
+              hmsPopup,
+              $state) {
+      var serivieName = "HmsHttp";
+      var isSucessfullName = "isSucessfull";
+      var noAuthorPostName = serivieName + ".noAuthorPost";
+      var noAuthorGetName = serivieName + ".noAuthorGet";
+      var postName = serivieName + ".post";
+      var getName = serivieName + ".get";
+      var procedure;
+
+      var init = function (procedure) {
+        procedure = procedure;
+      };
+      var debug = function (text) {
+        $log.debug(procedure + " success");
+      };
+
+      //如果登录令牌失效，跳转会登录界面
+      var goBackLogin = function (state) {
+        hmsPopup.hideLoading();
+        state.go('login');
+      };
+
+      var request = {
+        goBackLogin: function (state) {
+          goBackLogin(state);
+        },
+        isSuccessfull: function (status) {
+          $log.debug(isSucessfullName + " Start!");
+          $log.debug(noAuthorPostName + " status " + status);
+          if (status == "S" || status == "SW") {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        post: function (url, paramter, state) {
+          $log.debug(postName + " Start!");
+          $log.debug(postName + " url " + url);
+          $log.debug(postName + " paramter " + angular.toJson(paramter));
+          var post = $http.post(url, paramter).success(function (response) {
+            if (response.status == 'ETOKEN') {
+              window.localStorage.token = '';
+              goBackLogin($state);
+              hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!')
+            }
+            $log.debug(postName + " success");
+            $log.debug(postName + " response " + angular.toJson(response));
+            $log.debug(postName + " End!");
+          }).error(function (response, status) {
+            $log.debug(postName + " error");
+            $log.debug(postName + " response " + response);
+            $log.debug(postName + " status " + status);
+            $log.debug(postName + " End!");
+          });
+          return post;
+        },
+        get: function (url) {
+          $log.debug(getName + " Start!");
+          $log.debug(getName + " url " + url);
+          var get = $http.get(url).success(function (response) {
+            $log.debug(getName + " success");
+            $log.debug(getName + " response " + angular.toJson(response));
+            $log.debug(getName + " End!");
+          }).error(function (response, status) {
+            $log.debug(getName + " error");
+            $log.debug(getName + " response " + response);
+            $log.debug(getName + " status " + status);
+            $log.debug(getName + " End!");
+          });
+          return get;
+        }
+      };
+      return request;
+    }])
+
+  .service('hmsPopup', ['$ionicLoading', '$cordovaToast', '$ionicPopup', 'baseConfig',
+    function ($ionicLoading, $cordovaToast, $ionicPopup, baseConfig) {
+      this.showLoading = function (content) {
+        $ionicLoading.show({
+          template: '<ion-spinner icon="ios" class="spinner spinner-ios spinner-stable"></ion-spinner>' +
+          '<div style="color: white;font-size: 12px;text-align: center;height:25px;line-height: 25px;">' + content + '</div>'
+        });
+      };
+      this.hideLoading = function () {
+        $ionicLoading.hide();
+      };
+      this.showShortCenterToast = function (content) {
+        if (!baseConfig.nativeScreenFlag) {
+          $ionicLoading.show({
+            template: (angular.isDefined(content) ? content : "操作失败"),
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            duration: 2000
+          });
+        } else {
+          $cordovaToast.showLongBottom((angular.isDefined(content) ? content : "操作失败")).then(function (success) {
+          }, function (error) {
+          });
+        }
+      };
+      //弹出确认弹出框
+      this.showPopup = function (template, title) {
+        if (!baseConfig.nativeScreenFlag) {
+          $ionicPopup.show({
+            title: "提示",
+            template: template,
+            buttons: [{
+              text: '确定',
+              type: 'button button-cux-popup-confirm'
+            }]
+          });
+        } else {
+          var alertDismissed = function () {
+          };
+          navigator.notification.alert(
+            template, // message
+            alertDismissed, // callback
+            "提示", // title
+            '确定' // buttonName
+          );
+        }
+      };
+      //弹出是否确认的窗口
+      this.prompt = function (myscope, title, popup, pluginPopup) {
+        if (!baseConfig.nativeScreenFlag) {
+          var myPopup = $ionicPopup.show({
+            template: '<input type="type" ng-model="myScope.data.city">',
+            title: title,
+            subTitle: title,
+            scope: myscope,
+            buttons: [
+              {text: '取消'},
+              {
+                text: '<b>确定</b>',
+                type: 'button-positive',
+                onTap: function (e) {
+                  if (!myscope.myScope.data.city) {
+                    e.preventDefault();
+                  } else {
+                    return myscope.myScope.data.city;
+                  }
+                }
+              },
+            ]
+          });
+          myPopup.then(popup);
+
+        } else {
+          navigator.notification.prompt(
+            title,  // message
+            pluginPopup,          // callback to invoke
+            '填写信息',           // title
+            ['确定', '退出'],    // buttonLabels
+            ''                 // defaultText
+          );
+        }
+      }
+      ;
+      /*function onPrompt(results) {
+       alert("You selected button number " + results.buttonIndex + " and entered " + results.input1);
+       }
+       navigator.notification.prompt(
+       'Please enter your name',  // message
+       onPrompt,                  // callback to invoke
+       'Registration',            // title
+       ['Ok','Exit'],             // buttonLabels
+       'Jane Doe'                 // defaultText
+       );
+       */
+      this.confirm = function (message, title, onConfirm) {
+        if (!baseConfig.nativeScreenFlag) {
+          var confirmPopup = $ionicPopup.confirm({
+            title: (angular.isDefined(title) ? title : "提示"),
+            template: message,
+            cancelText: '取消',
+            cancelType: 'button-cux-popup-cancel',
+            okText: '确定',
+            okType: 'button-cux-popup-confirm'
+          });
+          confirmPopup.then(onConfirm);
+        } else {
+          navigator.notification.confirm(
+            message, // message
+            onConfirm, // callback to invoke with index of button pressed
+            title, // title
+            ['确定', '取消'] // buttonLabels
+          );
+        }
+      };
+    }
+  ])
+
+  .factory('hmsReturnView', ['$ionicHistory', 'baseConfig', function ($ionicHistory, baseConfig) {
+    //当前屏幕宽度
+    var screenWidth = window.screen.width - 50;
+    //滑动栏的宽度
+    var scrollWidth = {
+      width: ''
+    };
+    //当前内容的宽度
+    var contentWidth = 0;
+    //当前标题的宽度
+    var viewLength;
+
+    return {
+      go: function (depth) {
+        // get the right history stack based on the current view
+        var historyId = $ionicHistory.currentHistoryId();
+        var history = $ionicHistory.viewHistory().histories[historyId];
+        // set the view 'depth' back in the stack as the back view
+        var targetViewIndex = history.stack.length - 1 - depth;
+        $ionicHistory.backView(history.stack[targetViewIndex]);
+        // navigate to it
+        $ionicHistory.goBack();
+      },
+      returnToState: function (stateName) {
+        var historyId = $ionicHistory.currentHistoryId();
+        var history = $ionicHistory.viewHistory().histories[historyId];
+        if (baseConfig.debug) {
+          console.log('history.stack.length : ' + history.stack.length);
+        }
+        for (var i = history.stack.length - 1; i >= 0; i--) {
+          if (baseConfig.debug) {
+            console.log('history.stack[i].stateName : ' + history.stack[i].stateName);
+          }
+          if (history.stack[i].stateName == stateName) {
+            $ionicHistory.backView(history.stack[i]);
+            $ionicHistory.goBack();
+          }
+        }
+      },
+      getStackList: function (currentIonicHistory, viewName) {
+        var stackList = [];
+        var historyId = currentIonicHistory.currentHistoryId();
+        var history = currentIonicHistory.viewHistory().histories[historyId];
+        if (baseConfig.debug) {
+          console.log(currentIonicHistory.viewHistory());
+        }
+        var color = '#F99D32';
+        for (var i = 0; i < history.stack.length; i++) {
+          if (i == history.stack.length - 1) {
+            color = 'black';
+          }
+          var stackItem = {
+            viewId: history.stack[i].viewId,
+            stateName: history.stack[i].stateName,
+            title: history.stack[i].title,
+            color: {
+              color: color
+            }
+          };
+          if (baseConfig.debug) {
+            console.log(history.stack[i]);
+          }
+          stackList.push(stackItem);
+        }
+        stackList[stackList.length - 1].title = viewName;
+        return stackList;
+      },
+      getWidth: function () {
+        return scrollWidth;
+      }
+    };
+  }])
+
+  .factory('hmsBackLine', ['$ionicHistory', 'baseConfig', function ($ionicHistory) {
+    //当前屏幕宽度
+    var screenWidth = window.screen.width - 50;
+    //滑动栏的宽度
+    var scrollWidth = {
+      width: ''
+    };
+    //当前内容的宽度
+    var contentWidth = 0;
+    //当前标题的宽度
+    var viewLength;
+    var backViews = [];
+    return {
+      getViews: function (viewName) {
+        viewLength = viewName.toString().length;
+        if (ROOTCONFIG.debug) {
+          console.log(viewLength);
+        }
+        //				alert(viewName)
+        for (var i = 0; i < backViews.length; i++) {
+          if (viewName == backViews[i].name) {
+            //						if(i==0){
+            //							i=i+1;
+            //						}
+            backViews = backViews.slice(0, i + 1);
+            //						alert(backViews.length)
+            contentWidth = 0;
+            for (var j = 0; j < backViews.length; j++) {
+              if (j == backViews.length - 1) {
+                contentWidth = contentWidth + backViews[j].name.toString().length * 14 + 8;
+              } else {
+                contentWidth = contentWidth + backViews[j].name.toString().length * 14 + 18 + 8;
+              }
+            }
+            console.log(contentWidth);
+            if (contentWidth < screenWidth) {
+              scrollWidth.width = '';
+            } else {
+              scrollWidth.width = contentWidth + 'px';
+            }
+            for (var k = 0; k < backViews.length - 1; k++) {
+              backViews[k].myStyle.color = '#F99D32';
+            }
+            console.log(backViews);
+            backViews[backViews.length - 1].myStyle.color = 'black';
+            return backViews;
+          }
+        }
+
+        var view = {
+          name: viewName,
+          myStyle: {
+            color: ''
+          }
+        };
+        backViews.push(view);
+        contentWidth = 0;
+        for (var ii = 0; i < backViews.length; ii++) {
+          if (ii == backViews.length - 1) {
+            contentWidth = contentWidth + backViews[ii].name.toString().length * 14 + 8;
+          } else {
+            contentWidth = contentWidth + backViews[ii].name.toString().length * 14 + 18 + 8;
+          }
+        }
+        if (contentWidth > screenWidth) {
+          scrollWidth.width = contentWidth + 'px';
+        }
+        for (var iii = 0; iii < backViews.length - 1; i++) {
+          backViews[iii].myStyle.color = '#F99D32';
+        }
+        return backViews;
+      },
+      getWidth: function () {
+        return scrollWidth;
+      }
+    };
+  }])
+
+  .factory('$hmsHelp', [
+    '$ionicTemplateLoader',
+    '$ionicBackdrop',
+    '$q',
+    '$timeout',
+    '$rootScope',
+    '$ionicBody',
+    '$compile',
+    '$ionicPlatform',
+    '$ionicModal',
+    'IONIC_BACK_PRIORITY',
+    function ($ionicTemplateLoader,
+              $ionicBackdrop,
+              $q,
+              $timeout,
+              $rootScope,
+              $ionicBody,
+              $compile,
+              $ionicPlatform,
+              $ionicModal,
+              IONIC_BACK_PRIORITY) {
+      //TODO allow this to be configured
+      var config = {
+        stackPushDelay: 75
+      };
+      var HELP_TPL;
+      if (ionic.Platform.isIOS()) {
+        HELP_TPL = '<div style="position: absolute;top:2px;left: -4px;bottom: 0;right: 0;' +
+          'background: url(img/mainHide.png); background-size: cover;;z-index: 12;">' +
+          '<div style="height: 100%;width: 100%;background: none" ng-click="$buttonTapped()"></div></div>';
+      } else {
+        HELP_TPL = '<div style="position: absolute;top: -14px;left: -4px;bottom: 0;right: 0;' +
+          'background: url(img/mainHide.png); background-size: cover;;z-index: 12;">' +
+          '<div style="height: 100%;width: 100%;background: none" ng-click="$buttonTapped()"></div></div>';
+      }
+      var popupStack = [];
+
+      function setHashKey(obj, h) {
+        if (h) {
+          obj.$$hashKey = h;
+        } else {
+          delete obj.$$hashKey;
+        }
+      }
+
+      function extend(dst, args) {
+        var h = dst.$$hashKey;
+        if (baseConfig.debug) {
+          console.log(arguments);
+        }
+        for (var i = 1, ii = arguments.length; i < ii; i++) {
+          var obj = arguments[i];
+          if (obj) {
+            var keys = Object.keys(obj);
+            for (var j = 0, jj = keys.length; j < jj; j++) {
+              var key = keys[j];
+              dst[key] = obj[key];
+            }
+          }
+        }
+        setHashKey(dst, h);
+        return dst;
+      }
+
+      var $hmsHelp = {
+        showPopup: showPopup,
+        _createPopup: createPopup,
+        _popupStack: popupStack
+      };
+
+
+      return $hmsHelp;
+
+      function createPopup() {
+        var self = {};
+        self.scope = ($rootScope).$new();
+        self.element = angular.element(HELP_TPL);
+        self.responseDeferred = $q.defer();
+        $ionicBody.get().appendChild(self.element[0]);
+        if (baseConfig.debug) {
+          debug(self.element);
+        }
+        $compile(self.element)(self.scope);
+
+        extend(self.scope, {
+          title: "",
+          $buttonTapped: function () {
+            //event = event.originalEvent || event; //jquery events
+            if (baseConfig.debug) {
+              debug("$buttonTapped");
+            }
+            self.responseDeferred.resolve(1);
+          }
+        });
+        self.show = function () {
+          if (self.isShown || self.removed) return;
+          $ionicModal.stack.add(self);
+          self.isShown = true;
+          ionic.requestAnimationFrame(function () {
+            //if hidden while waiting for raf, don't show
+            if (!self.isShown) return;
+
+            //self.element.removeClass('popup-hidden');
+            //self.element.addClass('popup-showing active');
+            focusInput(self.element);
+          });
+        };
+        self.hide = function (callback) {
+          if (baseConfig.debug) {
+            console.log("4 self.hide " + callback);
+          }
+          callback = callback || function () {
+            };
+          if (!self.isShown) return callback();
+
+          $ionicModal.stack.remove(self);
+          self.isShown = false;
+          //self.element.removeClass('active');
+          //self.element.addClass('popup-hidden');
+          $timeout(callback, 250, false);
+        };
+        self.remove = function () {
+          if (baseConfig.debug) {
+            console.log("5 self.remove ");
+          }
+          if (self.removed || !$ionicModal.stack.isHighest(self)) return;
+          self.hide(function () {
+            self.element.remove();
+            self.scope.$destroy();
+          });
+          self.removed = true;
+        };
+        return self;
+      }
+
+      function onHardwareBackButton() {
+        var last = popupStack[popupStack.length - 1];
+        last && last.responseDeferred.resolve();
+      }
+
+      function showPopup() {
+        var popup = $HmsHelp._createPopup();
+        var showDelay = 0;
+
+        if (popupStack.length > 0) {
+          popupStack[popupStack.length - 1].hide();
+          showDelay = config.stackPushDelay;
+        } else {
+          //Add popup-open & backdrop if this is first popup
+          //$ionicBody.addClass('popup-open');
+          //$ionicBackdrop.retain();
+          //only show the backdrop on the first popup
+          $hmsHelp._backButtonActionDone = $ionicPlatform.registerBackButtonAction(
+            onHardwareBackButton,
+            IONIC_BACK_PRIORITY.popup
+          );
+        }
+
+        // Expose a 'close' method on the returned promise
+        popup.responseDeferred.promise.close = function popupClose(result) {
+          if (!popup.removed) popup.responseDeferred.resolve(result);
+        };
+        //DEPRECATED: notify the promise with an object with a close method
+        popup.responseDeferred.notify({
+          close: popup.responseDeferred.close
+        });
+
+        doShow();
+
+        return popup.responseDeferred.promise;
+
+        function doShow() {
+          popupStack.push(popup);
+          if (baseConfig.debug) {
+            console.log("popupStack.push(popup)");
+          }
+          $timeout(popup.show, showDelay, false);
+
+          popup.responseDeferred.promise.then(function (result) {
+            var index = popupStack.indexOf(popup);
+            if (index !== -1) {
+              popupStack.splice(index, 1);
+            }
+            if (baseConfig.debug) {
+              console.log("popupStack.length");
+            }
+            if (popupStack.length > 0) {
+              popupStack[popupStack.length - 1].show();
+            } else {
+              //$ionicBackdrop.release();
+              //Remove popup-open & backdrop if this is last popup
+              $timeout(function () {
+                // wait to remove this due to a 300ms delay native
+                // click which would trigging whatever was underneath this
+                if (!popupStack.length) {
+                  //$ionicBody.removeClass('popup-open');
+                }
+              }, 400, false);
+              ($hmsHelp._backButtonActionDone || function () {
+              })();
+            }
+
+            popup.remove();
+            return result;
+          });
+        }
+      }
+
+      function focusInput(element) {
+        var focusOn = element[0].querySelector('[autofocus]');
+        if (focusOn) {
+          focusOn.focus();
+        }
+      }
+    }
+  ])
+
+  .factory("hmsFastPath", function () {
+    var request = {
+      configFastPath: function (scope, returnView, ionicHistory) {
+        scope.screenWidth = {
+          width: (window.screen.width - 50 + 'px')
+        };
+        scope.scrollWidth = returnView.getWidth();
+        var viewTag = document.getElementsByTagName('ion-view');
+        var viewName = viewTag[viewTag.length - 1].attributes[0].value;
+        scope.currentStackList = returnView.getStackList(ionicHistory, viewName);
+        scope.goStack = function (stackItem) {
+          returnView.returnToState(stackItem.stateName);
+        };
+      }
+    };
+    return request;
+  });
 
 // Ionic Starter App
 
@@ -1548,67 +1548,70 @@ angular.module('myApp')
           );
         });
       }
-    });
 
-    var url = baseConfig.businessPath + '/common_info/get_last_version',
-      checkVersionParams = {'params': {'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone'}};
-    var serveVersionParams = {
-      minVersion: '',
-      bigVersion: '',
-      minUpdateUrl: '',
-      bigUpdateUrl: '',
-      updateContent: ''
-    };
+      //var url = baseConfig.businessPath + '/common_info/get_last_version',
+      var url = 'http://wechat.hand-china.com/hmbms_hand/api/dataEngine/common_info/get_last_version',
+        checkVersionParams = {'params': {'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone'}};
+      var serveVersionParams = {
+        minVersion: '',
+        bigVersion: '',
+        minUpdateUrl: '',
+        bigUpdateUrl: '',
+        updateContent: ''
+      };
 
-    function checkAppVersion() {
-      var promise = $http.post(url, checkVersionParams).success(function (response) {
-        serveVersionParams.bigVersion = response.version_num;
-        serveVersionParams.bigUpdateUrl = response.download_url;
-        serveVersionParams.minVersion = response.sub_version_num;
-        serveVersionParams.minUpdateUrl = response.www_url;
-        serveVersionParams.updateContent = response.sub_download_desc;
-      }).error(function () {
-      });
-      if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
-        // update from pgy
-        var confirmPopup = $ionicPopup.confirm({
-          title: '大版本更新',
-          template: '<div>' + serveVersionParams.updateContent + '</div>',
-          okText: '确定',
-          cancelText: '取消'
-        });
-        confirmPopup.then(function (res) {
-          if (res) {
-            warn(serveVersionParams.bigUpdateUrl);
-            window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
-            return;
-          } else {
-            return;
+      function checkAppVersion() {
+        var promise = $http.post(url, checkVersionParams).success(function (response) {
+          serveVersionParams.bigVersion = response.version_num;
+          serveVersionParams.bigUpdateUrl = response.download_url;
+          serveVersionParams.minVersion = response.sub_version_num;
+          serveVersionParams.minUpdateUrl = response.sub_download_url; //for temp test!!
+          try {
+            serveVersionParams.updateContent = response.sub_download_desc.replace(/\\n/g, '<br>');
+          } catch (e){
+            serveVersionParams.updateContent = '';
           }
-        });
-      } else {
-        if (serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
-          // update from hotpatch
-          var confirmPopupSamll = $ionicPopup.confirm({
-            title: '小版本更新',
-            template: '<div>' + serveVersionParams.updateContent + '</div>',
-            okText: '确定',
-            cancelText: '取消'
-          });
-          confirmPopupSamll.then(function (res) {
-            if (res) {
-              warn(serveVersionParams.minUpdateUrl);
-              hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
-              return;
-            } else {
-              return;
+          if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
+            // update from pgy
+            var confirmPopup = $ionicPopup.confirm({
+              title: '大版本更新',
+              template: '<div>' + serveVersionParams.updateContent + '</div>',
+              okText: '确定',
+              cancelText: '取消'
+            });
+            confirmPopup.then(function (res) {
+              if (res) {
+                window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
+                return;
+              } else {
+                return;
+              }
+            });
+          } else {
+            if (serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
+              // update from hotpatch
+              var confirmPopupSamll = $ionicPopup.confirm({
+                title: '小版本更新',
+                template: '<div>' + serveVersionParams.updateContent + '</div>',
+                okText: '确定',
+                cancelText: '取消'
+              });
+              confirmPopupSamll.then(function (res) {
+                if (res) {
+                  hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
+                  return;
+                } else {
+                  return;
+                }
+              });
             }
-          });
-        }
+          }
+        }).error(function () {
+        });
       }
-    }
 
-    checkAppVersion();
+      checkAppVersion();
+    });
   });
 
 angular.module('myApp')
@@ -1891,6 +1894,33 @@ angular.module('contactModule')
 
       $scope.$on('$destroy', function (e) {
         console.log('contactCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/5/16.
+ */
+angular.module('loginModule')
+
+  .controller('guideCtrl', [
+    '$scope',
+    '$state',
+    function ($scope,
+              $state) {
+
+      console.log('loginCtrl.enter');
+
+      $scope.toLogin = function () {
+        console.log("跳过导航页到登陆页");
+        $state.go("login");
+      };
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('guideCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('guideCtrl.$destroy');
       });
     }]);
 
@@ -2284,33 +2314,6 @@ angular.module('loginModule')
         if (baseConfig.debug) {
           console.log('loginCtrl.$destroy');
         }
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/5/16.
- */
-angular.module('loginModule')
-
-  .controller('guideCtrl', [
-    '$scope',
-    '$state',
-    function ($scope,
-              $state) {
-
-      console.log('loginCtrl.enter');
-
-      $scope.toLogin = function () {
-        console.log("跳过导航页到登陆页");
-        $state.go("login");
-      };
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('guideCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('guideCtrl.$destroy');
       });
     }]);
 
@@ -5097,276 +5100,6 @@ angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.workflow-list', {
-          url: '/workflow-list',
-          params: {day: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/workflow/list/workflow-list.html',
-              controller: 'WorkFLowListCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('WorkFLowListCtrl', [
-    '$scope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    'baseConfig',
-    'workFLowListService',
-    '$ionicScrollDelegate',
-    function ($scope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              baseConfig,
-              workFLowListService,
-              $ionicScrollDelegate) {
-
-      $scope.list = [];
-      $scope.fetchDataFlag = true;
-      $scope.pullRefreshDataFlag = false;
-      $scope.showDetailArrow = true;
-      $scope.listStatus = {
-        todo: {
-          selected: true
-        },
-        done: {
-          selected: false
-        }
-      };
-
-      var workflowIcon = 'build/img/application/profile@3x.png';
-      var workflowType = '工作流类型';
-      var workflowNode = '当前节点';
-      var workflowPerson = '提交人';
-
-      var refreshTodoList = function () {
-        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
-        $scope.fetchDataFlag = true;
-        $scope.pullRefreshDataFlag = false;
-        $scope.listStatus.todo.selected = true;
-        $scope.listStatus.done.selected = false;
-        $timeout(function () {
-          getTodoList(false);
-        }, 500);
-      };
-
-      $scope.fetchTodoList = function () {
-        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
-        $timeout(function () {
-          if ($scope.listStatus.todo.selected) {
-          } else {
-            if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
-              $scope.listStatus.todo.selected = true;
-              $scope.listStatus.done.selected = false;
-              getTodoList(false);
-            }
-          }
-        }, 100);
-      };
-
-      $scope.fetchDoneList = function () {
-        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
-
-        $timeout(function () {
-          if ($scope.listStatus.done.selected) {
-          } else {
-            if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
-              $scope.listStatus.done.selected = true;
-              $scope.listStatus.todo.selected = false;
-              getDoneList(false);
-            }
-          }
-        }, 100);
-      };
-
-      var showList = function () {
-        $timeout(
-          function () {
-            $scope.fetchDataFlag = false;
-          }, 100
-        );
-      }
-
-      var getTodoList = function (pullRefresh) {
-        $scope.list = [];
-        if (pullRefresh) {
-          $scope.fetchDataFlag = false;
-          $scope.pullRefreshDataFlag = true;
-        } else {
-          $scope.fetchDataFlag = true;
-        }
-        var success = function (result) {
-          var list = result.待审批列表;
-          angular.forEach(list, function (data) {
-            var item = {
-              title1: data.workflow_name,
-              icon: workflowIcon,
-              type: workflowType,
-              typeValue: data.workflow_name,
-              node: workflowNode,
-              nodeValue: data.current_node,
-              submit: workflowPerson,
-              submitPerson: data.employee_name,
-              workflowId: data.workflow_id,
-              instanceId: data.instance_id,
-              recordId: data.record_id,
-              nodeId: data.node_id
-            };
-            $scope.list.push(item);
-          });
-
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-          showList();
-        };
-        var error = function (result) {
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-          showList();
-        }
-        $timeout(function () {
-          workFLowListService.getTodoList('N', success, error);
-        }, 0);
-      };
-
-      var getDoneList = function (pullRefresh) {
-        $scope.list = [];
-        if (pullRefresh) {
-          $scope.fetchDataFlag = false;
-          $scope.pullRefreshDataFlag = true;
-        } else {
-          $scope.fetchDataFlag = true;
-        }
-        var success = function (result) {
-          var list = result.已审批列表;
-          angular.forEach(list, function (data) {
-            var item = {
-              title1: data.workflow_desc,
-              icon: workflowIcon,
-              type: workflowType,
-              typeValue: data.workflow_desc,
-              node: workflowNode,
-              nodeValue: data.status_name,
-              submit: workflowPerson,
-              submitPerson: data.created_by_name,
-              workflowId: data.workflow_id,
-              instanceId: data.instance_id
-            };
-            $scope.list.push(item);
-          });
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-          showList();
-        };
-        var error = function (result) {
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-          showList();
-        }
-        $timeout(function () {
-          workFLowListService.getTodoList('Y', success, error);
-        }, 0);
-      };
-
-      getTodoList(false);
-
-      $scope.enterWorkflowDetail = function (detail) {
-        var processedFlag = {value: false};
-        if ($scope.listStatus.done.selected) {
-          processedFlag.value = true;
-        }
-        $state.go('tab.workflow-detail', {"detail": detail, "processedFlag": processedFlag})
-      }
-
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
-        scope: $scope
-      }).then(function (modal) {
-        $scope.tsFilterModal = modal;
-      });
-
-      $scope.filterTsInfo = function () { //响应筛选按钮的方法
-        $scope.tsFilterModal.show();
-      };
-
-      $scope.refresh = function () {
-        if (!$scope.fetchDataFlag) {
-
-          $scope.list = [];
-          $scope.$apply();
-          $timeout(function () {
-            if ($scope.listStatus.todo.selected) {
-              getTodoList(true);
-            } else {
-              getDoneList(true);
-            }
-          }, 0);
-        } else {
-          $scope.$broadcast('scroll.refreshComplete');
-        }
-      };
-
-
-      $scope.$on('$ionicView.enter', function (e) {
-        if (baseConfig.debug) {
-          console.log('WorkFLowListCtrl.$ionicView.enter');
-        }
-      });
-
-      $scope.$on('$ionicView.beforeEnter', function () {
-        if (baseConfig.debug) {
-          console.log('WorkFLowListCtrl.$ionicView.beforeEnter');
-        }
-        if (workFLowListService.getRefreshWorkflowList().flag == true) {
-          workFLowListService.setRefreshWorkflowList(false);
-          if (baseConfig.debug) {
-            console.log('refresh workflow list');
-          }
-          refreshTodoList();
-        }
-      });
-
-      $scope.$on('$ionicView.beforeLeave', function () {
-        if (baseConfig.debug) {
-          console.log('WorkFLowListCtrl.$ionicView.beforeLeave');
-        }
-      });
-
-      $scope.$on('$destroy', function (e) {
-        if (baseConfig.debug) {
-          console.log('WorkFLowListCtrl.$destroy');
-        }
-      });
-
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
         .state('tab.workflow-detail', {
           url: '/workflow-detail',
           params: {"detail": {}, "processedFlag": {}},
@@ -5643,6 +5376,276 @@ angular.module('applicationModule')
       };
 
       getWorkflowDetail();
+    }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.workflow-list', {
+          url: '/workflow-list',
+          params: {day: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/workflow/list/workflow-list.html',
+              controller: 'WorkFLowListCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('WorkFLowListCtrl', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    'baseConfig',
+    'workFLowListService',
+    '$ionicScrollDelegate',
+    function ($scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              baseConfig,
+              workFLowListService,
+              $ionicScrollDelegate) {
+
+      $scope.list = [];
+      $scope.fetchDataFlag = true;
+      $scope.pullRefreshDataFlag = false;
+      $scope.showDetailArrow = true;
+      $scope.listStatus = {
+        todo: {
+          selected: true
+        },
+        done: {
+          selected: false
+        }
+      };
+
+      var workflowIcon = 'build/img/application/profile@3x.png';
+      var workflowType = '工作流类型';
+      var workflowNode = '当前节点';
+      var workflowPerson = '提交人';
+
+      var refreshTodoList = function () {
+        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
+        $scope.fetchDataFlag = true;
+        $scope.pullRefreshDataFlag = false;
+        $scope.listStatus.todo.selected = true;
+        $scope.listStatus.done.selected = false;
+        $timeout(function () {
+          getTodoList(false);
+        }, 500);
+      };
+
+      $scope.fetchTodoList = function () {
+        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
+        $timeout(function () {
+          if ($scope.listStatus.todo.selected) {
+          } else {
+            if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+              $scope.listStatus.todo.selected = true;
+              $scope.listStatus.done.selected = false;
+              getTodoList(false);
+            }
+          }
+        }, 100);
+      };
+
+      $scope.fetchDoneList = function () {
+        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
+
+        $timeout(function () {
+          if ($scope.listStatus.done.selected) {
+          } else {
+            if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+              $scope.listStatus.done.selected = true;
+              $scope.listStatus.todo.selected = false;
+              getDoneList(false);
+            }
+          }
+        }, 100);
+      };
+
+      var showList = function () {
+        $timeout(
+          function () {
+            $scope.fetchDataFlag = false;
+          }, 100
+        );
+      }
+
+      var getTodoList = function (pullRefresh) {
+        $scope.list = [];
+        if (pullRefresh) {
+          $scope.fetchDataFlag = false;
+          $scope.pullRefreshDataFlag = true;
+        } else {
+          $scope.fetchDataFlag = true;
+        }
+        var success = function (result) {
+          var list = result.待审批列表;
+          angular.forEach(list, function (data) {
+            var item = {
+              title1: data.workflow_name,
+              icon: workflowIcon,
+              type: workflowType,
+              typeValue: data.workflow_name,
+              node: workflowNode,
+              nodeValue: data.current_node,
+              submit: workflowPerson,
+              submitPerson: data.employee_name,
+              workflowId: data.workflow_id,
+              instanceId: data.instance_id,
+              recordId: data.record_id,
+              nodeId: data.node_id
+            };
+            $scope.list.push(item);
+          });
+
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+          showList();
+        };
+        var error = function (result) {
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+          showList();
+        }
+        $timeout(function () {
+          workFLowListService.getTodoList('N', success, error);
+        }, 0);
+      };
+
+      var getDoneList = function (pullRefresh) {
+        $scope.list = [];
+        if (pullRefresh) {
+          $scope.fetchDataFlag = false;
+          $scope.pullRefreshDataFlag = true;
+        } else {
+          $scope.fetchDataFlag = true;
+        }
+        var success = function (result) {
+          var list = result.已审批列表;
+          angular.forEach(list, function (data) {
+            var item = {
+              title1: data.workflow_desc,
+              icon: workflowIcon,
+              type: workflowType,
+              typeValue: data.workflow_desc,
+              node: workflowNode,
+              nodeValue: data.status_name,
+              submit: workflowPerson,
+              submitPerson: data.created_by_name,
+              workflowId: data.workflow_id,
+              instanceId: data.instance_id
+            };
+            $scope.list.push(item);
+          });
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+          showList();
+        };
+        var error = function (result) {
+          if (pullRefresh) {
+            $scope.pullRefreshDataFlag = false;
+            $scope.$broadcast('scroll.refreshComplete');
+          }
+          showList();
+        }
+        $timeout(function () {
+          workFLowListService.getTodoList('Y', success, error);
+        }, 0);
+      };
+
+      getTodoList(false);
+
+      $scope.enterWorkflowDetail = function (detail) {
+        var processedFlag = {value: false};
+        if ($scope.listStatus.done.selected) {
+          processedFlag.value = true;
+        }
+        $state.go('tab.workflow-detail', {"detail": detail, "processedFlag": processedFlag})
+      }
+
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
+        scope: $scope
+      }).then(function (modal) {
+        $scope.tsFilterModal = modal;
+      });
+
+      $scope.filterTsInfo = function () { //响应筛选按钮的方法
+        $scope.tsFilterModal.show();
+      };
+
+      $scope.refresh = function () {
+        if (!$scope.fetchDataFlag) {
+
+          $scope.list = [];
+          $scope.$apply();
+          $timeout(function () {
+            if ($scope.listStatus.todo.selected) {
+              getTodoList(true);
+            } else {
+              getDoneList(true);
+            }
+          }, 0);
+        } else {
+          $scope.$broadcast('scroll.refreshComplete');
+        }
+      };
+
+
+      $scope.$on('$ionicView.enter', function (e) {
+        if (baseConfig.debug) {
+          console.log('WorkFLowListCtrl.$ionicView.enter');
+        }
+      });
+
+      $scope.$on('$ionicView.beforeEnter', function () {
+        if (baseConfig.debug) {
+          console.log('WorkFLowListCtrl.$ionicView.beforeEnter');
+        }
+        if (workFLowListService.getRefreshWorkflowList().flag == true) {
+          workFLowListService.setRefreshWorkflowList(false);
+          if (baseConfig.debug) {
+            console.log('refresh workflow list');
+          }
+          refreshTodoList();
+        }
+      });
+
+      $scope.$on('$ionicView.beforeLeave', function () {
+        if (baseConfig.debug) {
+          console.log('WorkFLowListCtrl.$ionicView.beforeLeave');
+        }
+      });
+
+      $scope.$on('$destroy', function (e) {
+        if (baseConfig.debug) {
+          console.log('WorkFLowListCtrl.$destroy');
+        }
+      });
+
     }]);
 
 /**
@@ -12910,247 +12913,6 @@ angular.module("applicationModule").controller('reportTypeController', function(
 
 angular.module('myApp')
   .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.flybackApply', {
-          url: '/flyback-apply',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/apply/apply.html',
-              controller: 'FlyBackApplyCtrl'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('FlyBackApplyCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    'hmsHttp',
-    '$ionicModal',
-    'flaybackService',
-    'hmsPopup',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, HttpAppService, $ionicModal, fbService,
-      Prompter){
-      $scope.viewtitle = "机票申请";
-      $scope.pageParam = fbService.getPageStatusCreate();  //JSON.parse($stateParams.param);
-      console.log(" $scope.pageParam =" + $scope.pageParam);
-      $scope.canEdit = $scope.pageParam.canEdit;// 页面是否可编辑
-      var dataSource = $scope.pageParam.dataSource;//页面数据来源
-
-      fbService.setLines($scope.flybacklines);
-      //数据
-      function init() {
-        if (dataSource == "create") {
-          $scope.flybackHeader = {
-            "applyId": "",
-            "projName": "",
-            "projCode": ""
-          };
-          fbService.clearLines();
-          $scope.flybacklines = fbService.getLines();
-        } else if (dataSource == "query") {
-          var applyId = $scope.pageParam.applyId;
-          Prompter.showLoading("Loading...");
-          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_detail";
-          var paramValueList = '{"params":{"p_apply_id":"' + applyId + '"}}';
-          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-            console.log("get_flyback_detail =" + angular.toJson(response));
-            if (response.status == "S") {
-              $scope.flybackHeader = response["flybackHeader"];
-              $scope.flybacklines = response["flybacklines"];
-              fbService.setLines($scope.flybacklines);
-              Prompter.hideLoading("");
-            } else {
-              console.log("获取机票申请信息失败：" + response.returnMsg);
-              Prompter.hideLoading("");
-            }
-          }).error(function (response, status) {
-            console.log("HttpAppService error ");
-            Prompter.hideLoading("");
-          });
-        }
-      }
-
-      init();
-
-      //
-      $scope.$on("$ionicView.enter", function () {
-        console.log("fbService.getLines()");
-        $scope.flybacklines = fbService.getLines();
-        console.log(angular.toJson($scope.flybacklines));
-        $scope.$apply();
-      });
-
-
-      // 获取值列表数据
-      if ($scope.canEdit) {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list";
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          if (response.status == "S") {
-            $scope.projectList = response.projectList;
-            fbService.setTicketTypeList(response.ticketTypeList);// 订票类型
-            fbService.setRouteTypeList(response.routeTypeList);//行程类别
-            fbService.setPassenger(response.passengerList);//乘机人列表
-            fbService.setPassenger(response.passenger);//默认乘机人
-            fbService.setCertification(response.certification);//默认身份证
-            Prompter.hideLoading("");
-          } else {
-            console.log("获取值列表失败：" + response.returnMsg);
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      }
-
-      // 项目值列表
-      $ionicModal.fromTemplateUrl('build/pages/application/flyback/apply/model/project-modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        $scope.modal = modal
-      });
-      $scope.openProjectList = function () {
-        $scope.modal.show();
-      };
-      $scope.closeModal = function (proj) {
-        $scope.modal.hide();
-        //若更换项目则清空订票行
-        if (proj !== undefined) {
-          if ((typeof($scope.flybackHeader.projCode) !== "undefined") && ($scope.flybackHeader.projCode !== null)) {
-            if ($scope.flybackHeader.projCode !== proj.value) {
-              $scope.flybacklines = [];
-              fbService.clearLines();
-            }
-          }
-          $scope.flybackHeader.projName = proj.name;
-          $scope.flybackHeader.projCode = proj.value;
-          fbService.setProjName($scope.flybackHeader.projName);
-          fbService.setProjCode($scope.flybackHeader.projCode);
-        }
-      };
-      $scope.$on('$destroy', function () {
-        $scope.modal.remove();
-      });
-
-
-      $scope.goDetail = function (detail, index) {
-        var param = {
-          "canEdit": $scope.canEdit,
-          "dataSource": dataSource,
-          "status": "update",
-          "detail": detail,
-          "index": index,
-          "applyId": $scope.flybackHeader.applyId
-        };
-        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
-      };
-
-    //添加更多订票信息
-      $scope.addFlightInfo = function () {
-        fbService.setProjName($scope.flybackHeader.projName);
-        fbService.setProjCode($scope.flybackHeader.projCode);
-        var param = {"canEdit": $scope.canEdit, "status": "new"};
-        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
-      };
-    //保存 baseConfig.businessPath   baseConfig.businessPath
-      $scope.save = function () {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/save_flyback";
-        var jsonData = JSON.stringify($scope.flybacklines);
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
-          + '","p_apply_id":"' + $scope.flybackHeader.applyId
-          + '","p_project_code":"' + $scope.flybackHeader.projCode
-          + '","p_fb_lines":' + jsonData + '}}';
-        console.log(paramValueList);
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          console.log("save_flyback = " + angular.toJson(response));
-          if (response.status == "S") {
-            $scope.flybackHeader.applyId = response["applyId"];
-            $scope.flybacklines = response["flybackLines"];
-            fbService.setLines($scope.flybacklines);
-            Prompter.hideLoading("");
-            Prompter.showPopup("保存成功!");
-          } else {
-            console.log("保存失败：" + response["returnMsg"]);
-            Prompter.hideLoading("");
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      };
-    //提交
-      $scope.submit = function () {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/flyback_submit";
-        var jsonData = JSON.stringify($scope.flybacklines);
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
-          + '","p_apply_id":"' + $scope.flybackHeader.applyId
-          + '","p_project_code":"' + $scope.flybackHeader.projCode
-          + '","p_fb_lines":' + jsonData + '}}';
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          console.log("flyback_submit = " + angular.toJson(response));
-          if (response.status == "S") {
-            Prompter.hideLoading("");
-            Prompter.showPopup("提交成功!");
-            $scope.canEdit = false;
-          } else {
-            Prompter.hideLoading("");
-            Prompter.showPopup("提交失败：" + response["returnMsg"]);
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      };
-
-      // 删除fyback
-      $scope.deleteFB = function () {
-        console.log(angular.toJson($scope.flybackHeader));
-        if ($scope.flybackHeader.applyId == "") {
-          $state.go("tab.flyback");
-        } else {
-          if ($scope.canEdit) {
-            Prompter.showLoading("Loading...");
-            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
-            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + $scope.flybackHeader.applyId + '"}}';
-            console.log(paramValueList);
-            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-              if (response.status == "S") {
-                Prompter.hideLoading("");
-                Prompter.showPopup("删除成功!");
-                $state.go("tab.flybackQuery");
-                dataSource = "create";
-                init();
-              } else {
-                console.log("删除失败：" + response.returnMsg);
-                Prompter.hideLoading("");
-                Prompter.showPopup("删除失败,请重新查询后再操作!");
-              }
-            }).error(function (response, status) {
-              console.log("HttpAppService error ");
-              Prompter.hideLoading("");
-            });
-          } else {
-            Prompter.showPopup("已提交数据无法删除!");
-          }
-
-        }
-      }
-    }]);
-angular.module('myApp')
-  .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
         .state('tab.flybackDetail', {
@@ -13513,6 +13275,247 @@ angular.module("applicationModule")
           }
 
         };
+    }]);
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.flybackApply', {
+          url: '/flyback-apply',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/apply/apply.html',
+              controller: 'FlyBackApplyCtrl'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('FlyBackApplyCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    'hmsHttp',
+    '$ionicModal',
+    'flaybackService',
+    'hmsPopup',
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+      $timeout, HttpAppService, $ionicModal, fbService,
+      Prompter){
+      $scope.viewtitle = "机票申请";
+      $scope.pageParam = fbService.getPageStatusCreate();  //JSON.parse($stateParams.param);
+      console.log(" $scope.pageParam =" + $scope.pageParam);
+      $scope.canEdit = $scope.pageParam.canEdit;// 页面是否可编辑
+      var dataSource = $scope.pageParam.dataSource;//页面数据来源
+
+      fbService.setLines($scope.flybacklines);
+      //数据
+      function init() {
+        if (dataSource == "create") {
+          $scope.flybackHeader = {
+            "applyId": "",
+            "projName": "",
+            "projCode": ""
+          };
+          fbService.clearLines();
+          $scope.flybacklines = fbService.getLines();
+        } else if (dataSource == "query") {
+          var applyId = $scope.pageParam.applyId;
+          Prompter.showLoading("Loading...");
+          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_detail";
+          var paramValueList = '{"params":{"p_apply_id":"' + applyId + '"}}';
+          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+            console.log("get_flyback_detail =" + angular.toJson(response));
+            if (response.status == "S") {
+              $scope.flybackHeader = response["flybackHeader"];
+              $scope.flybacklines = response["flybacklines"];
+              fbService.setLines($scope.flybacklines);
+              Prompter.hideLoading("");
+            } else {
+              console.log("获取机票申请信息失败：" + response.returnMsg);
+              Prompter.hideLoading("");
+            }
+          }).error(function (response, status) {
+            console.log("HttpAppService error ");
+            Prompter.hideLoading("");
+          });
+        }
+      }
+
+      init();
+
+      //
+      $scope.$on("$ionicView.enter", function () {
+        console.log("fbService.getLines()");
+        $scope.flybacklines = fbService.getLines();
+        console.log(angular.toJson($scope.flybacklines));
+        $scope.$apply();
+      });
+
+
+      // 获取值列表数据
+      if ($scope.canEdit) {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list";
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          if (response.status == "S") {
+            $scope.projectList = response.projectList;
+            fbService.setTicketTypeList(response.ticketTypeList);// 订票类型
+            fbService.setRouteTypeList(response.routeTypeList);//行程类别
+            fbService.setPassenger(response.passengerList);//乘机人列表
+            fbService.setPassenger(response.passenger);//默认乘机人
+            fbService.setCertification(response.certification);//默认身份证
+            Prompter.hideLoading("");
+          } else {
+            console.log("获取值列表失败：" + response.returnMsg);
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      }
+
+      // 项目值列表
+      $ionicModal.fromTemplateUrl('build/pages/application/flyback/apply/model/project-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function (modal) {
+        $scope.modal = modal
+      });
+      $scope.openProjectList = function () {
+        $scope.modal.show();
+      };
+      $scope.closeModal = function (proj) {
+        $scope.modal.hide();
+        //若更换项目则清空订票行
+        if (proj !== undefined) {
+          if ((typeof($scope.flybackHeader.projCode) !== "undefined") && ($scope.flybackHeader.projCode !== null)) {
+            if ($scope.flybackHeader.projCode !== proj.value) {
+              $scope.flybacklines = [];
+              fbService.clearLines();
+            }
+          }
+          $scope.flybackHeader.projName = proj.name;
+          $scope.flybackHeader.projCode = proj.value;
+          fbService.setProjName($scope.flybackHeader.projName);
+          fbService.setProjCode($scope.flybackHeader.projCode);
+        }
+      };
+      $scope.$on('$destroy', function () {
+        $scope.modal.remove();
+      });
+
+
+      $scope.goDetail = function (detail, index) {
+        var param = {
+          "canEdit": $scope.canEdit,
+          "dataSource": dataSource,
+          "status": "update",
+          "detail": detail,
+          "index": index,
+          "applyId": $scope.flybackHeader.applyId
+        };
+        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
+      };
+
+    //添加更多订票信息
+      $scope.addFlightInfo = function () {
+        fbService.setProjName($scope.flybackHeader.projName);
+        fbService.setProjCode($scope.flybackHeader.projCode);
+        var param = {"canEdit": $scope.canEdit, "status": "new"};
+        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
+      };
+    //保存 baseConfig.businessPath   baseConfig.businessPath
+      $scope.save = function () {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/save_flyback";
+        var jsonData = JSON.stringify($scope.flybacklines);
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
+          + '","p_apply_id":"' + $scope.flybackHeader.applyId
+          + '","p_project_code":"' + $scope.flybackHeader.projCode
+          + '","p_fb_lines":' + jsonData + '}}';
+        console.log(paramValueList);
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          console.log("save_flyback = " + angular.toJson(response));
+          if (response.status == "S") {
+            $scope.flybackHeader.applyId = response["applyId"];
+            $scope.flybacklines = response["flybackLines"];
+            fbService.setLines($scope.flybacklines);
+            Prompter.hideLoading("");
+            Prompter.showPopup("保存成功!");
+          } else {
+            console.log("保存失败：" + response["returnMsg"]);
+            Prompter.hideLoading("");
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      };
+    //提交
+      $scope.submit = function () {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/flyback_submit";
+        var jsonData = JSON.stringify($scope.flybacklines);
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
+          + '","p_apply_id":"' + $scope.flybackHeader.applyId
+          + '","p_project_code":"' + $scope.flybackHeader.projCode
+          + '","p_fb_lines":' + jsonData + '}}';
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          console.log("flyback_submit = " + angular.toJson(response));
+          if (response.status == "S") {
+            Prompter.hideLoading("");
+            Prompter.showPopup("提交成功!");
+            $scope.canEdit = false;
+          } else {
+            Prompter.hideLoading("");
+            Prompter.showPopup("提交失败：" + response["returnMsg"]);
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      };
+
+      // 删除fyback
+      $scope.deleteFB = function () {
+        console.log(angular.toJson($scope.flybackHeader));
+        if ($scope.flybackHeader.applyId == "") {
+          $state.go("tab.flyback");
+        } else {
+          if ($scope.canEdit) {
+            Prompter.showLoading("Loading...");
+            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
+            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + $scope.flybackHeader.applyId + '"}}';
+            console.log(paramValueList);
+            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+              if (response.status == "S") {
+                Prompter.hideLoading("");
+                Prompter.showPopup("删除成功!");
+                $state.go("tab.flybackQuery");
+                dataSource = "create";
+                init();
+              } else {
+                console.log("删除失败：" + response.returnMsg);
+                Prompter.hideLoading("");
+                Prompter.showPopup("删除失败,请重新查询后再操作!");
+              }
+            }).error(function (response, status) {
+              console.log("HttpAppService error ");
+              Prompter.hideLoading("");
+            });
+          } else {
+            Prompter.showPopup("已提交数据无法删除!");
+          }
+
+        }
+      }
     }]);
 angular.module('myApp')
   .config(['$stateProvider',
@@ -15002,8 +15005,8 @@ angular.module('tsApproveModule')
        */
       {
         if (ionic.Platform.isIOS()) {
-          angular.element('.custom-head').css('paddingTop', '10px');
-          angular.element('.ts-list-bg').css('paddingTop', '110px');
+          angular.element('.custom-head').css('paddingTop', '20px');
+          angular.element('.ts-list-bg').css('paddingTop', '120px');
         }
         $scope.showProjectName = true; //默认显示项目名称
         $scope.showRocket = false; //默认不显示小火箭image
@@ -15231,7 +15234,7 @@ angular.module('tsApproveModule')
       };
 
       $scope.onDragUp = function () { //向上拖拽
-        $scope.showConnectBlock = true; //显示连接块
+        $scope.showConnectBlock = false; //显示连接块
       };
 
       $scope.watchScroll = function () { //滚动内容时执行的method
@@ -15239,10 +15242,10 @@ angular.module('tsApproveModule')
         $scope.$apply(function () {
           if (position < 0) {
             $scope.showConnectBlock = false;
-          } else if (position >= 0 && position < 400) { //在顶部时显示连接块
+          } else if (position >= 0 && position < 350) { //在顶部时显示连接块
             $scope.showRocket = false;
             $scope.showConnectBlock = true;
-          } else if (position >= 400) {
+          } else if (position >= 350) {
             $scope.showRocket = true;
           } else {
           }
@@ -15275,21 +15278,21 @@ angular.module('tsApproveModule')
             warnInfo += newWarnList[index].description + '<br>';
           });
         }
-
         e.stopPropagation(); //阻止事件冒泡
-        warn(newWarnList);
-        $ionicPopup.show({
-          template: '<div class="warn-attention-icon">' + warnInfo + '</div>',
-          scope: $scope,
-          buttons: [
-            {
-              text: '<div class="warn-cancel-icon"></div>',
-              type: 'button-clear',
-              onTap: function (e) {
-              }
-            }
-          ]
-        });
+        hmsPopup.showShortCenterToast(warnInfo);
+        //warn(newWarnList);
+        //$ionicPopup.show({
+        //  template: '<div class="warn-attention-icon">' + warnInfo + '</div>',
+        //  scope: $scope,
+        //  buttons: [
+        //    {
+        //      text: '<div class="warn-cancel-icon"></div>',
+        //      type: 'button-clear',
+        //      onTap: function (e) {
+        //      }
+        //    }
+        //  ]
+        //});
       };
 
       $scope.goTsLsTop = function () { //返回列表顶部
@@ -15492,19 +15495,19 @@ angular.module('tsApproveModule')
         tsListParams.params.p_project_person_number = "";
       };
     }])
-    /**
-     * @params:
-     *  1:scope  //controller的作用域
-     *  2:url //请求地址
-     *  3:params //请求的参数
-     *  4: refurbishParam //控制下拉刷线的参数
-     *  5:busy //用于控制下拉刷新的flag
-     *  6:totalNumber //获取的数据总数
-     *  7:listArray //数据列表
-     *  8:loading //数据加载标记
-     */
-  .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup',
-    function (hmsHttp, baseConfig, hmsPopup) {
+/**
+ * @params:
+ *  1:scope  //controller的作用域
+ *  2:url //请求地址
+ *  3:params //请求的参数
+ *  4: refurbishParam //控制下拉刷线的参数
+ *  5:busy //用于控制下拉刷新的flag
+ *  6:totalNumber //获取的数据总数
+ *  7:listArray //数据列表
+ *  8:loading //数据加载标记
+ */
+  .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup', '$ionicScrollDelegate',
+    function (hmsHttp, baseConfig, hmsPopup, $ionicScrollDelegate) {
       var TsApproveListService = function (scope, requestUrl, requestSearchParams, loadingFlag, refurbishParam) {
         var _self = this;
         _self.scope = scope;
@@ -15515,7 +15518,6 @@ angular.module('tsApproveModule')
         _self.busy = false;
         _self.totalNumber = 0;
         _self.listArray = [];
-        _self.subsidyDaysArray = [];
         _self.loading = loadingFlag;
         if (_self.refurbishParam === 'clickRefreshEvent') {
           _self.scope.$broadcast('scroll.infiniteScrollComplete');
@@ -15532,20 +15534,8 @@ angular.module('tsApproveModule')
               _self.totalNumber = response.count;
               try {
                 _self.listArray = _self.listArray.concat(tsResult.result_list);
-                for (var i = 0; i < _self.listArray.length; i++) {
-                  var subsidys = 0;
-                  if (_self.listArray[i].subsidy_list.length == 0) {
-                    _self.subsidyDaysArray.push(subsidys);
-                  } else {
-                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
-                      subsidys = parseInt(subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
-                      _self.subsidyDaysArray.push(subsidys);
-                    }
-                  }
-                }
               } catch (e) {
                 _self.listArray = [];
-                _self.subsidyDaysArray = [];
               }
               if (response.count == 0) {
                 _self.busy = false;
@@ -15603,20 +15593,10 @@ angular.module('tsApproveModule')
               if (angular.isUndefined(response.timesheet_approve_response.result_list)) {
                 _self.busy = false;
                 hmsPopup.showShortCenterToast("数据已经加载完毕!");
+                $ionicScrollDelegate.scrollBy(300);
               } else {
                 var tsResult = response.timesheet_approve_response;
                 _self.listArray = _self.listArray.concat(tsResult.result_list);
-                for (var i = (_self.params.params.p_page - 1) * 6; i < _self.listArray.length; i++) {
-                  var new_subsidys = 0;
-                  if (_self.listArray[i].subsidy_list.length == 0) {
-                    _self.subsidyDaysArray.push(new_subsidys);
-                  } else {
-                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
-                      new_subsidys = parseInt(new_subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
-                      _self.subsidyDaysArray.push(new_subsidys);
-                    }
-                  }
-                }
               }
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             } else {
