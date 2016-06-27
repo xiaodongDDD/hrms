@@ -13,7 +13,7 @@ import java.util.zip.ZipEntry;
 
 import org.apache.cordova.CordovaWebView;
 
-import com.handchina.hrmsnew.R;
+import com.hand.china.hrms2.research.R;
 
 import android.R.bool;
 import android.app.ProgressDialog;

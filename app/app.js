@@ -20,7 +20,7 @@ angular.module('myApp', [
 ]);
 
 angular.module('myApp')
-  .run(function ($ionicPlatform, $timeout, baseConfig) {
+  .run(function ($ionicPlatform, $timeout, baseConfig, $http, $ionicPopup) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -145,8 +145,67 @@ angular.module('myApp')
           );
         });
       }
-
     });
+
+    var url = baseConfig.businessPath + '/common_info/get_last_version',
+      checkVersionParams = {'params': {'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone'}};
+    var serveVersionParams = {
+      minVersion: '',
+      bigVersion: '',
+      minUpdateUrl: '',
+      bigUpdateUrl: '',
+      updateContent: ''
+    };
+
+    function checkAppVersion() {
+      var promise = $http.post(url, checkVersionParams).success(function (response) {
+        serveVersionParams.bigVersion = response.version_num;
+        serveVersionParams.bigUpdateUrl = response.download_url;
+        serveVersionParams.minVersion = response.sub_version_num;
+        serveVersionParams.minUpdateUrl = response.www_url;
+        serveVersionParams.updateContent = response.sub_download_desc;
+      }).error(function () {
+      });
+      if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
+        // update from pgy
+        var confirmPopup = $ionicPopup.confirm({
+          title: '大版本更新',
+          template: '<div>' + serveVersionParams.updateContent + '</div>',
+          okText: '确定',
+          cancelText: '取消'
+        });
+        confirmPopup.then(function (res) {
+          if (res) {
+            warn(serveVersionParams.bigUpdateUrl);
+            window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
+            return;
+          } else {
+            return;
+          }
+        });
+      } else {
+        if (serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
+          // update from hotpatch
+          var confirmPopupSamll = $ionicPopup.confirm({
+            title: '小版本更新',
+            template: '<div>' + serveVersionParams.updateContent + '</div>',
+            okText: '确定',
+            cancelText: '取消'
+          });
+          confirmPopupSamll.then(function (res) {
+            if (res) {
+              warn(serveVersionParams.minUpdateUrl);
+              hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
+              return;
+            } else {
+              return;
+            }
+          });
+        }
+      }
+    }
+
+    checkAppVersion();
   });
 
 angular.module('myApp')
@@ -173,7 +232,7 @@ angular.module('myApp')
       $ionicConfigProvider.platform.android.views.transition('android');
 
       $stateProvider
-      // setup an abstract state for the tabs directive
+        // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
           abstract: true,
