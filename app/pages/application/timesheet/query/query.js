@@ -271,8 +271,12 @@ angular.module('applicationModule')
                 style_outline = 'each-day reject';
                 style_color = 'day-item reject';
               }
+              var dayEach = timesheetArray[seq].day;
+              if (dayEach.length == 2) {
+                dayEach = dayEach.replace('0', '');
+              }
               item = {
-                day: timesheetArray[seq].day.replace('0', ''),
+                day: dayEach,
                 style_outline: style_outline,
                 style_color: style_color,
                 money: timesheetArray[seq].allowance,
@@ -313,10 +317,13 @@ angular.module('applicationModule')
             "p_offset": 0
           }
         };
+
         //hmsPopup.showLoading('获取timesheet数据中...');
         hmsHttp.post(url, params).success(function (result) {
-          fetchData(result);
-          $scope.loadingDataFlag = false;
+          if (result.status == 'S') {
+            fetchData(result);
+            $scope.loadingDataFlag = false;
+          }
         }).error(function (response, status) {
           $scope.loadingDataFlag = false;
         });
