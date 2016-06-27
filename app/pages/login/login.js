@@ -241,7 +241,7 @@ angular.module('loginModule')
             return;
           }
 
-          var url = baseConfig.basePath + "/appLogin/user_login/login";
+          var url = baseConfig.loginPath + "/appLogin/user_login/login";
           var params = {
             "params": {
               "p_user_name": +$scope.loginInfo.username,
