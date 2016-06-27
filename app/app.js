@@ -147,7 +147,8 @@ angular.module('myApp')
       }
     });
 
-    var url = baseConfig.businessPath + '/common_info/get_last_version',
+    //var url = baseConfig.businessPath + '/common_info/get_last_version',
+    var url = 'http://wechat.hand-china.com/hmbms_hand/api/dataEngine/common_info/get_last_version',
       checkVersionParams = {'params': {'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone'}};
     var serveVersionParams = {
       minVersion: '',
