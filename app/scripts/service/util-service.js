@@ -1,76 +1,88 @@
 /**
  * Created by gusenlin on 16/5/21.
- */ 
+ */
 angular.module('HmsModule')
-  .factory('hmsHttp', ['$log', '$http', 'hmsPopup', function ($log, $http, hmsPopup) {
-    var serivieName = "HmsHttp";
-    var isSucessfullName = "isSucessfull";
-    var noAuthorPostName = serivieName + ".noAuthorPost";
-    var noAuthorGetName = serivieName + ".noAuthorGet";
-    var postName = serivieName + ".post";
-    var getName = serivieName + ".get";
-    var procedure;
+  .factory('hmsHttp', ['$log',
+    '$http',
+    'hmsPopup',
+    '$state',
+    function ($log,
+              $http,
+              hmsPopup,
+              $state) {
+      var serivieName = "HmsHttp";
+      var isSucessfullName = "isSucessfull";
+      var noAuthorPostName = serivieName + ".noAuthorPost";
+      var noAuthorGetName = serivieName + ".noAuthorGet";
+      var postName = serivieName + ".post";
+      var getName = serivieName + ".get";
+      var procedure;
 
-    var init = function (procedure) {
-      procedure = procedure;
-    };
-    var debug = function (text) {
-      $log.debug(procedure + " success");
-    };
+      var init = function (procedure) {
+        procedure = procedure;
+      };
+      var debug = function (text) {
+        $log.debug(procedure + " success");
+      };
 
-    //如果登录令牌失效，跳转会登录界面
-    var goBackLogin = function (state) {
-      Prompter.hideLoading();
-      state.go('login');
-    };
+      //如果登录令牌失效，跳转会登录界面
+      var goBackLogin = function (state) {
+        hmsPopup.hideLoading();
+        state.go('login');
+      };
 
-    var request = {
-      goBackLogin: function (state) {
-        goBackLogin(state);
-      },
-      isSuccessfull: function (status) {
-        $log.debug(isSucessfullName + " Start!");
-        $log.debug(noAuthorPostName + " status " + status);
-        if (status == "S" || status == "SW") {
-          return true;
-        } else {
-          return false;
+      var request = {
+        goBackLogin: function (state) {
+          goBackLogin(state);
+        },
+        isSuccessfull: function (status) {
+          $log.debug(isSucessfullName + " Start!");
+          $log.debug(noAuthorPostName + " status " + status);
+          if (status == "S" || status == "SW") {
+            return true;
+          } else {
+            return false;
+          }
+        },
+        post: function (url, paramter, state) {
+          $log.debug(postName + " Start!");
+          $log.debug(postName + " url " + url);
+          $log.debug(postName + " paramter " + angular.toJson(paramter));
+          var post = $http.post(url, paramter).success(function (response) {
+            if (response.status == 'ETOKEN') {
+              window.localStorage.token = '';
+              goBackLogin($state);
+              hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!')
+            }
+            $log.debug(postName + " success");
+            $log.debug(postName + " response " + angular.toJson(response));
+            $log.debug(postName + " End!");
+          }).error(function (response, status) {
+            $log.debug(postName + " error");
+            $log.debug(postName + " response " + response);
+            $log.debug(postName + " status " + status);
+            $log.debug(postName + " End!");
+          });
+          return post;
+        },
+        get: function (url) {
+          $log.debug(getName + " Start!");
+          $log.debug(getName + " url " + url);
+          var get = $http.get(url).success(function (response) {
+            $log.debug(getName + " success");
+            $log.debug(getName + " response " + angular.toJson(response));
+            $log.debug(getName + " End!");
+          }).error(function (response, status) {
+            $log.debug(getName + " error");
+            $log.debug(getName + " response " + response);
+            $log.debug(getName + " status " + status);
+            $log.debug(getName + " End!");
+          });
+          return get;
         }
-      },
-      post: function (url, paramter) {
-        $log.debug(postName + " Start!");
-        $log.debug(postName + " url " + url);
-        $log.debug(postName + " paramter " + angular.toJson(paramter));
-        var post = $http.post(url, paramter).success(function (response) {
-          $log.debug(postName + " success");
-          //$log.debug(postName + " response " + angular.toJson(response));
-          $log.debug(postName + " End!");
-        }).error(function (response, status) {
-          $log.debug(postName + " error");
-          $log.debug(postName + " response " + response);
-          $log.debug(postName + " status " + status);
-          $log.debug(postName + " End!");
-        });
-        return post;
-      },
-      get: function (url) {
-        $log.debug(getName + " Start!");
-        $log.debug(getName + " url " + url);
-        var get = $http.get(url).success(function (response) {
-          $log.debug(getName + " success");
-          $log.debug(getName + " response " + angular.toJson(response));
-          $log.debug(getName + " End!");
-        }).error(function (response, status) {
-          $log.debug(getName + " error");
-          $log.debug(getName + " response " + response);
-          $log.debug(getName + " status " + status);
-          $log.debug(getName + " End!");
-        });
-        return get;
-      }
-    };
-    return request;
-  }])
+      };
+      return request;
+    }])
 
   .service('hmsPopup', ['$ionicLoading', '$cordovaToast', '$ionicPopup', 'baseConfig',
     function ($ionicLoading, $cordovaToast, $ionicPopup, baseConfig) {
@@ -388,7 +400,7 @@ angular.module('HmsModule')
 
       function extend(dst, args) {
         var h = dst.$$hashKey;
-        if(baseConfig.debug){
+        if (baseConfig.debug) {
           console.log(arguments);
         }
         for (var i = 1, ii = arguments.length; i < ii; i++) {
@@ -420,7 +432,7 @@ angular.module('HmsModule')
         self.element = angular.element(HELP_TPL);
         self.responseDeferred = $q.defer();
         $ionicBody.get().appendChild(self.element[0]);
-        if(baseConfig.debug){
+        if (baseConfig.debug) {
           debug(self.element);
         }
         $compile(self.element)(self.scope);
