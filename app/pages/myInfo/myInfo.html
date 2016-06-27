@@ -4,7 +4,7 @@
   <ion-content class="content-style" has-bouncing="true" elastic-image="portrait-image">
     <ion-item class="header-item" ng-click="checkMyInfo()">
       <div class="header-item-image-row">
-        <img src="build/img/myInfo/portrait.png" class="header-image"/>
+        <img ng-src="{{defaultPortrait}}" class="header-image"/>
       </div>
       <div class="header-item-label-row1">
         <label class="name-label" ng-bind="personalInfo.name"></label>
