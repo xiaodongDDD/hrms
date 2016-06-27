@@ -16,7 +16,9 @@
   </custom-head-bar>
   <ion-content class="ts-list-bg" has-bouncing="true" on-scroll="watchScroll()" on-drag="onDrag()"
                on-drag-up="onDragUp()"
-               scrollbar-y="false">
+               scrollbar-y="false"
+               delegate-handle="approveListHandle"
+               >
     <hms-loading ng-if="listInfoArray.loading"></hms-loading>
     <!--<div class="loading-hand"></div>-->
     <ion-refresher on-refresh="tsListRefresh('pull_down')" ng-if="pullDownFlag" pulling-text="正在刷新数据..."

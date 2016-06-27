@@ -344,7 +344,8 @@ angular.module('tsApproveModule')
 
       $scope.goTsLsTop = function () { //返回列表顶部
         angular.element('#rocket').addClass('ng-hide');
-        $ionicScrollDelegate.scrollTop(true);
+        //$ionicScrollDelegate.scrollTop(true);
+        $ionicScrollDelegate.$getByHandle('approveListHandle').scrollTop(true);
       };
 
       $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal
@@ -640,7 +641,8 @@ angular.module('tsApproveModule')
               if (angular.isUndefined(response.timesheet_approve_response.result_list)) {
                 _self.busy = false;
                 hmsPopup.showShortCenterToast("数据已经加载完毕!");
-                $ionicScrollDelegate.scrollBy(300);
+                //$ionicScrollDelegate.scrollBy(300);
+                $ionicScrollDelegate.$getByHandle('approveListHandle').scrollBy(300);
               } else {
                 var tsResult = response.timesheet_approve_response;
                 _self.listArray = _self.listArray.concat(tsResult.result_list);
