@@ -4982,8 +4982,6 @@ Copyright (c) 2015 Daniel Eden
   width: 100%;
   background: #4cd964; }
 
-<<<<<<< HEAD
-=======
 .timesheet-year-list .timesheet-year-item {
   padding: 10px;
   font-size: 16px;
@@ -4999,7 +4997,6 @@ Copyright (c) 2015 Daniel Eden
   height: 250px;
   width: 155px; }
 
->>>>>>> senlin
 .personnel-policy .item-title-bg {
   height: 41px;
   background-color: #FAFAFA;
@@ -5970,7 +5967,6 @@ Copyright (c) 2015 Daniel Eden
 #departmentModal .input-right.activated {
   background-color: #eee;
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
-<<<<<<< HEAD
 
 #departmentModal {
   top: 0; }
@@ -6049,8 +6045,6 @@ Copyright (c) 2015 Daniel Eden
           width: 100%;
           margin-top: 16px;
           height: 30px; }
-=======
->>>>>>> senlin
 
 .invisible {
   display: none; }
@@ -6289,112 +6283,339 @@ Copyright (c) 2015 Daniel Eden
     background: #4cd964; }
 
 .login {
-  background: url("../img/login/backgroundImg.png");
-  background-size: cover; }
-  .login .login-up {
-    width: 34%;
-    height: 120px;
-    margin-top: 20%;
-    margin-left: 33%;
-    margin-right: 33%; }
-    .login .login-up .login-logo {
-      width: 100%;
-      height: 80px;
-      background: url("../img/login/hand@3x.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center; }
-    .login .login-up .login-title {
-      width: 100%;
-      height: 40px;
-      background: url("../img/login/BetterExperience@3x.png");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center; }
-  .login .login-form {
-    margin-top: 18px; }
-    .login .login-form .login-input-item {
-      margin-top: 8px;
-      width: 68%;
-      margin-left: 16%;
-      margin-right: 16%;
-      height: 40px;
-      padding-top: 7px;
-      padding-bottom: 7px;
-      background: #dfe8f4;
-      border-radius: 12px; }
-      .login .login-form .login-input-item .login-input-user {
-        float: left;
-        width: 15%;
-        height: 26px;
-        background: url("../img/login/username@3x.png");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center; }
-      .login .login-form .login-input-item .login-input-passwd {
-        float: left;
-        width: 15%;
-        height: 26px;
-        background: url("../img/login/password@3x.png");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center; }
-      .login .login-form .login-input-item .login-input-text {
-        float: left;
-        height: 26px;
-        width: 70%;
-        background: none; }
-      .login .login-form .login-input-item .login-input-clear {
-        float: left;
-        width: 15%;
-        height: 18px;
-        margin-top: 4px;
-        margin-bottom: 4px;
-        padding-left: 3px;
-        padding-right: 3px;
-        background: url("../img/login/delete@3x.png");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center; }
-    .login .login-form .login-remember-passwd {
-      margin-top: 12px;
-      height: 32px;
-      width: 68%;
-      margin-left: 16%;
-      margin-right: 16%; }
-      .login .login-form .login-remember-passwd .login-remember-checkbox {
-        float: right;
-        width: 20%;
-        height: 32px; }
-      .login .login-form .login-remember-passwd .login-remember-text {
-        float: right;
-        width: 30%;
-        height: 32px;
-        line-height: 32px;
-        color: white; }
-    .login .login-form .login-button {
-      margin-top: 34px;
-      width: 68%;
-      margin-left: 16%;
-      margin-right: 16%;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-      border-radius: 12px;
-      background: #D72F32;
-      color: white;
-      display: block;
-      font-weight: bold; }
-      .login .login-form .login-button.activated {
-        background: #B95756;
-        color: white; }
-    .login .login-form .login-version {
-      margin-top: 15px;
-      width: 100%;
-      height: 24px;
-      line-height: 24px;
-      text-align: center;
-      color: white; }
+  background: url("../img/login/login-back.png");
+  background-size: 100% 100%;
+  animation: backgroundTransition 4s linear;
+  -webkit-animation: backgroundTransition 4s linear; }
+  .login .content-style {
+    background-color: transparent; }
+  .login .login-item {
+    background: url("../img/login/login-item.png");
+    background-size: 100% 100%;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    width: 92%;
+    margin-left: 4%;
+    height: 320px;
+    margin-top: 32.5%; }
+  .login .username-input {
+    color: #4a4a4a;
+    font-size: 1rem;
+    background-color: transparent;
+    width: 82.6%;
+    margin-left: 8.7%;
+    height: 32px;
+    padding-bottom: 3px;
+    border: none;
+    margin-top: 74px; }
+  .login .password-input {
+    color: #4a4a4a;
+    font-size: 1.2rem;
+    letter-spacing: -1px;
+    background-color: transparent;
+    width: 82.6%;
+    margin-left: 8.7%;
+    height: 31px;
+    padding-bottom: 7px;
+    border: none;
+    margin-top: 21px; }
+  .login .login-checkbox-item {
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    height: 30px;
+    width: 82.6%;
+    margin-left: 8.7%;
+    margin-top: 5px; }
+  .login .login-checkbox-icon {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 12.5px;
+    right: 62px; }
+  .login .big-portrait {
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 999; }
+  .login .big-portrait.ng-hide-remove {
+    -webkit-animation: zoomIn 0.3s;
+    animation: zoomIn .3s; }
+  .login .little-portrait {
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 999; }
+  .login .little-portrait.ng-hide-remove {
+    -webkit-animation: zoomIn 0.3s;
+    animation: zoomIn .3s; }
+  .login .flying-username-item-focus {
+    transition: all 0.15s ease-in 0s;
+    -webkit-transition: all 0.15s ease-in 0s;
+    position: absolute;
+    left: 0px;
+    top: 80px;
+    width: 54px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    height: 30px;
+    margin-left: 8.7%;
+    background-color: transparent;
+    line-height: normal; }
+  .login .flying-username-item-blur {
+    transition: all 0.15s ease-in 0s;
+    -webkit-transition: all 0.15s ease-in 0s;
+    position: absolute;
+    left: 0px;
+    top: 60px;
+    width: 54px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    height: 30px;
+    margin-left: 8.7%;
+    background-color: transparent;
+    line-height: normal; }
+  .login .flying-password-item-focus {
+    transition: all 0.15s ease-in 0s;
+    -webkit-transition: all 0.15s ease-in 0s;
+    position: absolute;
+    left: 0px;
+    top: 128px;
+    width: 54px;
+    height: 23px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    height: 30px;
+    margin-left: 8.7%;
+    background-color: transparent;
+    line-height: normal; }
+  .login .flying-password-item-blur {
+    transition: all 0.15s ease-in 0s;
+    -webkit-transition: all 0.15s ease-in 0s;
+    position: absolute;
+    left: 0px;
+    top: 113px;
+    width: 54px;
+    height: 23px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    height: 30px;
+    margin-left: 8.7%;
+    background-color: transparent;
+    line-height: normal; }
+  .login .focus-user-label {
+    transition: transform 0.15s ease-in 0s;
+    -webkit-transition: transform 0.15s ease-in 0s;
+    transform: translate3d(0px, 10px, 0px);
+    -webkit-transform: translate3d(0px, 10px, 0px);
+    font-size: 1rem;
+    position: absolute;
+    width: 54px;
+    height: 25px;
+    text-align: left;
+    left: 0px;
+    top: 70px;
+    margin-left: 8.7%;
+    color: #4a4a4a; }
+  .login .blur-user-label {
+    transition: transform 0.15s ease-in 0s;
+    -webkit-transition: transform 0.15s ease-in 0s;
+    transform: translate3d(0px, -10px, 0px);
+    -webkit-transform: translate3d(0px, -10px, 0px);
+    font-size: 0.975rem;
+    position: absolute;
+    width: 54px;
+    height: 25px;
+    text-align: left;
+    left: 0px;
+    top: 70px;
+    margin-left: 8.7%;
+    color: #9b9b9b; }
+  .login .focus-password-label {
+    transition: transform 0.15s ease-in 0s;
+    -webkit-transition: transform 0.15s ease-in 0s;
+    transform: translate3d(0px, 8px, 0px);
+    -webkit-transform: translate3d(0px, 8px, 0px);
+    font-size: 1rem;
+    position: absolute;
+    width: 54px;
+    height: 25px;
+    text-align: left;
+    left: 0px;
+    top: 121px;
+    margin-left: 8.7%;
+    color: #4a4a4a; }
+  .login .blur-password-label {
+    transition: transform 0.15s ease-in 0s;
+    -webkit-transition: transform 0.15s ease-in 0s;
+    transform: translate3d(0px, -7px, 0px);
+    -webkit-transform: translate3d(0px, -7px, 0px);
+    font-size: 0.975rem;
+    position: absolute;
+    width: 54px;
+    height: 25px;
+    text-align: left;
+    left: 0px;
+    top: 121px;
+    margin-left: 8.7%;
+    color: #9b9b9b; }
+  .login .remember-password-button {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    right: 2px;
+    top: 0px;
+    min-height: 20px;
+    line-height: 20px;
+    width: 62px;
+    border: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: transparent;
+    padding-left: 6px;
+    font-size: 0.875rem; }
+  .login .remember-password-unchecked {
+    color: #9b9b9b; }
+  .login .remember-password-checked {
+    color: #24559c; }
+  .login .user-clear-item {
+    transition: all 0.2s ease-in 0s;
+    -webkit-transition: all 0.2s ease-in 0s;
+    opacity: 1;
+    position: absolute;
+    top: 75px;
+    right: 0px;
+    height: 34px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    margin-right: 8.7%;
+    background-color: transparent;
+    line-height: normal; }
+  .login .user-clear-item.ng-hide-remove {
+    opacity: 0; }
+  .login .password-clear-item {
+    transition: all 0.2s ease-in 0s;
+    -webkit-transition: all 0.2s ease-in 0s;
+    opacity: 1;
+    position: absolute;
+    top: 124px;
+    right: 0px;
+    height: 34px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    margin-right: 8.7%;
+    background-color: transparent;
+    line-height: normal; }
+  .login .password-clear-item.ng-hide-remove {
+    opacity: 0; }
+  .login .clear-button {
+    min-height: 34px;
+    line-height: 34px;
+    height: 34px;
+    max-width: 40px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    background-color: transparent; }
+  .login .clear-image {
+    width: 24px;
+    height: 34px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px; }
+  .login .login-button {
+    padding: 0px;
+    margin: 0px;
+    width: 67%;
+    min-height: 50px;
+    line-height: 50px;
+    margin-left: 16.5%;
+    margin-top: 34px;
+    border-radius: 20px; }
+  .login .gray-button {
+    opacity: 1;
+    background-color: #ffffff;
+    color: #9b9b9b;
+    font-size: 1rem;
+    border: 1px solid #9b9b9b; }
+  .login .blue-button {
+    opacity: 1;
+    background-color: #ffffff;
+    color: #24559c;
+    font-size: 1rem;
+    border: 1px solid #24559c; }
+  .login .finish-button {
+    background-color: #24559c;
+    font-size: 1rem;
+    color: #ffffff;
+    border: 1px solid #24559c; }
+  .login .button-icon {
+    transition: all 0.1s ease-in 0s;
+    -webkit-transition: all 0.1s ease-in 0s;
+    position: relative;
+    top: 3px;
+    width: 21px;
+    height: 16px;
+    padding: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 1;
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg); }
+  .login .button-icon.ng-hide-remove {
+    opacity: 0;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg); }
+  .login .gray-line {
+    transition: all 0.1s ease-in 0s;
+    -webkit-transition: all 0.1s ease-in 0s;
+    transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    width: 82.6%;
+    height: 2px;
+    margin-left: 8.7%;
+    background-color: #d2d2d2;
+    opacity: 1; }
+  .login .blue-line {
+    transition: all 0.3s ease-in 0s;
+    -webkit-transition: all 0.3s ease-in 0s;
+    opacity: 1;
+    transform: scale(1.03, 1.05);
+    -webkit-transform: scale(1.03, 1.05);
+    width: 82.6%;
+    height: 2px;
+    margin-left: 8.7%;
+    background-color: #24559c;
+    opacity: 1; }
+  .login .blue-line.CLASS-add {
+    opacity: 0; }
+  .login .gray-line.CLASS-add {
+    opacity: 0; }
+  .login #real-button, .login #false-button.button.activated {
+    opacity: 1;
+    transform: scale(1, 1);
+    -webkit-transform: scale(1, 1); }
+
+@keyframes backgroundTransition {
+  from {
+    background-size: 110% 110%; }
+  to {
+    background-size: 100% 100%; } }
+
+@-webkit-keyframes backgroundTransition {
+  from {
+    background-size: 110% 110%; }
+  to {
+    background-size: 100% 100%; } }
 
 .message-list .message-search {
   width: 84%;

@@ -18,7 +18,8 @@ angular.module('myInfoModule')
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
       }
-      $scope.personInfo="";
+      $scope.personalInfo="";
+      $scope.defaultPortrait="build/img/myInfo/man-portrait.png";
       var url=baseConfig.businessPath + "/api_employee/get_employee_code";//获取用户信息
       var param={
          "params":{
@@ -31,6 +32,11 @@ angular.module('myInfoModule')
         var message=result.message;
         if(result.status=="S"){
           $scope.personalInfo=result.result;
+          if($scope.personalInfo.gender=="男"){//根据性别判定头像男女
+            $scope.defaultPortrait="build/img/myInfo/man-portrait.png";
+          }else if($scope.personalInfo.gender=="女"){
+            $scope.defaultPortrait="build/img/myInfo/woman-portrait.png";
+          }
         }else if(result.status=="E"){
           hmsPopup.showShortCenterToast(message);
         }
@@ -62,7 +68,7 @@ angular.module('myInfoModule')
         var param={
           employeeNumber:info.employee_number,
           name:info.name,
-          englishName:info.name,
+          englishName:info.english_name,
           department:info.department,
           position:info.position,
           level:info.level,
