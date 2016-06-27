@@ -35,7 +35,7 @@
       <div class="row second-content">
         <div class="name">补助:</div>
         <div class="number" ng-cloak ng-repeat="j in listInfoArray.listArray[$index].subsidy_list">
-          {{j.subsidy_money}}*{{listInfoArray.subsidyDaysArray[$index]}}
+          {{j.subsidy_money}}*{{j.subsidy_days}}
         </div>
         <div class="number-icon" ng-click="getAttentionInfo($event,i.warn_list)" ng-if="i.warn_list.length >=1"></div>
       </div>

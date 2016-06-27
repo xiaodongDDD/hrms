@@ -52,8 +52,8 @@ angular.module('tsApproveModule')
        */
       {
         if (ionic.Platform.isIOS()) {
-          angular.element('.custom-head').css('paddingTop', '10px');
-          angular.element('.ts-list-bg').css('paddingTop', '110px');
+          angular.element('.custom-head').css('paddingTop', '20px');
+          angular.element('.ts-list-bg').css('paddingTop', '120px');
         }
         $scope.showProjectName = true; //默认显示项目名称
         $scope.showRocket = false; //默认不显示小火箭image
@@ -281,7 +281,7 @@ angular.module('tsApproveModule')
       };
 
       $scope.onDragUp = function () { //向上拖拽
-        $scope.showConnectBlock = true; //显示连接块
+        $scope.showConnectBlock = false; //显示连接块
       };
 
       $scope.watchScroll = function () { //滚动内容时执行的method
@@ -289,10 +289,10 @@ angular.module('tsApproveModule')
         $scope.$apply(function () {
           if (position < 0) {
             $scope.showConnectBlock = false;
-          } else if (position >= 0 && position < 400) { //在顶部时显示连接块
+          } else if (position >= 0 && position < 350) { //在顶部时显示连接块
             $scope.showRocket = false;
             $scope.showConnectBlock = true;
-          } else if (position >= 400) {
+          } else if (position >= 350) {
             $scope.showRocket = true;
           } else {
           }
@@ -325,21 +325,21 @@ angular.module('tsApproveModule')
             warnInfo += newWarnList[index].description + '<br>';
           });
         }
-
         e.stopPropagation(); //阻止事件冒泡
-        warn(newWarnList);
-        $ionicPopup.show({
-          template: '<div class="warn-attention-icon">' + warnInfo + '</div>',
-          scope: $scope,
-          buttons: [
-            {
-              text: '<div class="warn-cancel-icon"></div>',
-              type: 'button-clear',
-              onTap: function (e) {
-              }
-            }
-          ]
-        });
+        hmsPopup.showShortCenterToast(warnInfo);
+        //warn(newWarnList);
+        //$ionicPopup.show({
+        //  template: '<div class="warn-attention-icon">' + warnInfo + '</div>',
+        //  scope: $scope,
+        //  buttons: [
+        //    {
+        //      text: '<div class="warn-cancel-icon"></div>',
+        //      type: 'button-clear',
+        //      onTap: function (e) {
+        //      }
+        //    }
+        //  ]
+        //});
       };
 
       $scope.goTsLsTop = function () { //返回列表顶部
@@ -542,19 +542,19 @@ angular.module('tsApproveModule')
         tsListParams.params.p_project_person_number = "";
       };
     }])
-    /**
-     * @params:
-     *  1:scope  //controller的作用域
-     *  2:url //请求地址
-     *  3:params //请求的参数
-     *  4: refurbishParam //控制下拉刷线的参数
-     *  5:busy //用于控制下拉刷新的flag
-     *  6:totalNumber //获取的数据总数
-     *  7:listArray //数据列表
-     *  8:loading //数据加载标记
-     */
-  .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup',
-    function (hmsHttp, baseConfig, hmsPopup) {
+/**
+ * @params:
+ *  1:scope  //controller的作用域
+ *  2:url //请求地址
+ *  3:params //请求的参数
+ *  4: refurbishParam //控制下拉刷线的参数
+ *  5:busy //用于控制下拉刷新的flag
+ *  6:totalNumber //获取的数据总数
+ *  7:listArray //数据列表
+ *  8:loading //数据加载标记
+ */
+  .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup', '$ionicScrollDelegate',
+    function (hmsHttp, baseConfig, hmsPopup, $ionicScrollDelegate) {
       var TsApproveListService = function (scope, requestUrl, requestSearchParams, loadingFlag, refurbishParam) {
         var _self = this;
         _self.scope = scope;
@@ -565,7 +565,6 @@ angular.module('tsApproveModule')
         _self.busy = false;
         _self.totalNumber = 0;
         _self.listArray = [];
-        _self.subsidyDaysArray = [];
         _self.loading = loadingFlag;
         if (_self.refurbishParam === 'clickRefreshEvent') {
           _self.scope.$broadcast('scroll.infiniteScrollComplete');
@@ -582,20 +581,8 @@ angular.module('tsApproveModule')
               _self.totalNumber = response.count;
               try {
                 _self.listArray = _self.listArray.concat(tsResult.result_list);
-                for (var i = 0; i < _self.listArray.length; i++) {
-                  var subsidys = 0;
-                  if (_self.listArray[i].subsidy_list.length == 0) {
-                    _self.subsidyDaysArray.push(subsidys);
-                  } else {
-                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
-                      subsidys = parseInt(subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
-                      _self.subsidyDaysArray.push(subsidys);
-                    }
-                  }
-                }
               } catch (e) {
                 _self.listArray = [];
-                _self.subsidyDaysArray = [];
               }
               if (response.count == 0) {
                 _self.busy = false;
@@ -653,20 +640,10 @@ angular.module('tsApproveModule')
               if (angular.isUndefined(response.timesheet_approve_response.result_list)) {
                 _self.busy = false;
                 hmsPopup.showShortCenterToast("数据已经加载完毕!");
+                $ionicScrollDelegate.scrollBy(300);
               } else {
                 var tsResult = response.timesheet_approve_response;
                 _self.listArray = _self.listArray.concat(tsResult.result_list);
-                for (var i = (_self.params.params.p_page - 1) * 6; i < _self.listArray.length; i++) {
-                  var new_subsidys = 0;
-                  if (_self.listArray[i].subsidy_list.length == 0) {
-                    _self.subsidyDaysArray.push(new_subsidys);
-                  } else {
-                    for (var j = 0; j < _self.listArray[i].subsidy_list.length; j++) {
-                      new_subsidys = parseInt(new_subsidys) + parseInt(_self.listArray[i].subsidy_list[j].subsidy_days);
-                      _self.subsidyDaysArray.push(new_subsidys);
-                    }
-                  }
-                }
               }
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             } else {
