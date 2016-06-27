@@ -863,7 +863,9 @@ angular.module('HmsModule')
           $log.debug(postName + " paramter " + angular.toJson(paramter));
           var post = $http.post(url, paramter).success(function (response) {
             if (response.status == 'ETOKEN') {
+              window.localStorage.token = '';
               goBackLogin($state);
+              hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!')
             }
             $log.debug(postName + " success");
             $log.debug(postName + " response " + angular.toJson(response));
@@ -2318,66 +2320,6 @@ angular.module('loginModule')
     }]);
 
 /**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('messageModule')
-
-  .controller('messageCtrl', [
-    '$scope',
-    '$state',
-    '$timeout',
-    '$ionicPlatform',
-    function ($scope,
-              $state,
-              $timeout,
-              $ionicPlatform) {
-      $scope.messageList = [];
-
-      //将页面的导航bar设置成白色
-      $ionicPlatform.ready(function () {
-        if (window.StatusBar) {
-          StatusBar.styleLightContent();
-        }
-        /*var onOpenNotification = function (event) {
-          try {
-            var alertContent;
-            if (device.platform == "Android") {
-              alertContent = window.plugins.jPushPlugin.openNotification.alert;
-            } else {
-              alertContent = event.aps.alert;
-            }
-            //alert("open Notification:" + alertContent);
-            $state.go('tab.workflow-message');
-          } catch (exception) {
-            console.log("JPushPlugin:onOpenNotification" + exception);
-          }
-        };
-        document.addEventListener("jpush.openNotification", onOpenNotification, false);*/
-      });
-
-      $scope.talk = function (message) {
-        console.log('$scope.talk');
-        $state.go("tab.messageDetail", {message: message});
-      };
-
-      $scope.refresh = function () {
-        $timeout(function () {
-          $scope.$broadcast("scroll.refreshComplete");
-        }, 2000);
-      };
-
-      console.log('messageCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('messageCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('messageCtrl.$destroy');
-      });
-    }]);
-
-/**
  * Created by LeonChan on 2016/6/17.
  */
 'use strict';
@@ -2695,6 +2637,66 @@ angular.module('myInfoModule')
 /**
  * Created by gusenlin on 16/4/24.
  */
+angular.module('messageModule')
+
+  .controller('messageCtrl', [
+    '$scope',
+    '$state',
+    '$timeout',
+    '$ionicPlatform',
+    function ($scope,
+              $state,
+              $timeout,
+              $ionicPlatform) {
+      $scope.messageList = [];
+
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleLightContent();
+        }
+        /*var onOpenNotification = function (event) {
+          try {
+            var alertContent;
+            if (device.platform == "Android") {
+              alertContent = window.plugins.jPushPlugin.openNotification.alert;
+            } else {
+              alertContent = event.aps.alert;
+            }
+            //alert("open Notification:" + alertContent);
+            $state.go('tab.workflow-message');
+          } catch (exception) {
+            console.log("JPushPlugin:onOpenNotification" + exception);
+          }
+        };
+        document.addEventListener("jpush.openNotification", onOpenNotification, false);*/
+      });
+
+      $scope.talk = function (message) {
+        console.log('$scope.talk');
+        $state.go("tab.messageDetail", {message: message});
+      };
+
+      $scope.refresh = function () {
+        $timeout(function () {
+          $scope.$broadcast("scroll.refreshComplete");
+        }, 2000);
+      };
+
+      console.log('messageCtrl.enter');
+
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('messageCtrl.$ionicView.enter');
+      });
+
+      $scope.$on('$destroy', function (e) {
+        console.log('messageCtrl.$destroy');
+      });
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
 angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$state', 'baseConfig',
   function ($scope, $rootScope, $state, baseConfig) {
     $rootScope.$on('$ionicView.beforeEnter', function () {
@@ -2797,6 +2799,492 @@ angular.module('applicationModule')
       };
     }]);
 
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.acc_expenseObjectList', {
+          url: '/acc/expenseObjectList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/expenseObjectList.html',
+              controller: 'expenseObjectController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+    .controller('expenseObjectController', function($scope,expenseObject,expenseApply,$ionicHistory,keepAccount, $ionicLoading, baseConfig) {
+        $scope.businessType=expenseObject.businessType;
+        $scope.objectType=expenseObject.objectType;
+        $ionicLoading.show({
+            template: "下载项目信息..."
+            //duration: 3000
+        });
+
+        $scope.objectType = "PRJ";
+        //businessType = 'ACC';
+        if($scope.objectType=="UNIT"){
+            $scope.title="选择部门";
+            console.log(expenseObject);
+            var promise=expenseObject.queryUnitList();
+            promise.then(function(response) {
+                var code=getResponseCode(response);
+                if(code=="ok"){
+
+                }else if(code=="failure"){
+                }
+                else if (code =="login_required"){
+                    showMessage("登录状态异常\n"+angular.toJson(response));
+                    reLogin();
+                }else{
+                    showMessage("未知错误:"+angular.toJson(response));
+                }
+                $scope.unitList=response.body.unitList;
+            }, function(response) {
+                alert("网络连接错误,初始化数据 unitList");
+            });
+        }else if($scope.objectType=="PRJ") {
+            $scope.title = "选择项目";
+            console.log(expenseObject);
+            var promise = expenseObject.queryProjectList();
+            promise.then(function (response) {
+
+                console.log(angular.toJson(response));
+
+                if(response["status"] == "S") {
+
+
+
+                    keepAccount.projectList = [];
+                    var proj_tmp = response["proj"];
+                    $.each(proj_tmp, function (i, value) {
+                        var item = {
+                            expenseObject_id : value.pj_id,
+                            expenseObject_code:value.pj_code,
+                            expenseObject_desc : value.pj_name,
+                            expenseObject_type : value.cost_type,
+//                            expenseItemList: value.expense,
+                            expenseItemList_index:i
+                        };
+
+                        //expenseObject.projectList.push(item);
+
+                        keepAccount.projectList.push(item);
+                        //expenseApply.projectList.push(item);
+
+                    });
+
+                    //console.log( keepAccount.projectList);
+
+                    $scope.projectList = keepAccount.projectList;
+                    //console.log( angular.toJson($scope.projectList));
+
+                    $ionicLoading.hide();
+
+                } else {
+                    var errmsg = angular.toJson(response);
+                    $ionicLoading.hide();
+                    $ionicLoading.show({
+                        template: errmsg,
+                        duration: 1000
+                    });
+                }
+
+                $ionicLoading.hide();
+
+
+                /*
+                 $scope.projectList=[
+                 {
+                 "projectId": 12,
+                 "projectCode": "PRJ0001",
+                 "projectName": "XXX公司人力资源管理系统实施项目",
+                 "enabledFlag": "Y",
+                 "companyId": 2
+                 },
+                 {
+                 "projectId": 23,
+                 "projectCode": "PRJ0004",
+                 "projectName": "外包",
+                 "enabledFlag": "Y",
+                 "companyId": 2
+                 },
+                 {
+                 "projectId": 13,
+                 "projectCode": "PRJ0002",
+                 "projectName": "XXX公司财务管理系统实施项目",
+                 "enabledFlag": "Y",
+                 "companyId": 2
+                 },
+                 {
+                 "projectId": 14,
+                 "projectCode": "PRJ0003",
+                 "projectName": "XXX公司财务共享实施项目",
+                 "enabledFlag": "Y",
+                 "companyId": 2
+                 }
+                 ];
+                 */
+
+
+            }, function (response) {
+                //alert("网络连接错误,初始化数据 projectList");
+                showMessage(response);
+                $ionicLoading.hide();
+                $ionicLoading.show({
+                    template: '网络连接错误,初始化数据 ',
+                    duration: 500
+                });
+
+
+            });
+
+        }
+
+
+
+
+        $scope.selectExpenseObject=function (e){
+            var target= e.target;
+            var expenseObject_id=target.getAttribute('expenseObject_id');
+            var expenseObject_code=target.getAttribute('expenseObject_code');
+            var expenseObject_desc=target.getAttribute('expenseObject_desc');
+            var expenseObject_type=target.getAttribute('expenseObject_type');
+
+            var expenseItemList_index=target.getAttribute('expenseItemList_index');
+            /*
+             if(businessType=="TRP"){
+             travelApply.data.objectType=$scope.objectType;
+             travelApply.data.expenseObject=expenseObject;
+             travelApply.data.expenseObjectName=expenseObjectName;
+             }
+             else if(businessType == 'CSH') {
+             console.log("CSH ...");
+
+             loanApply.data.objectType=$scope.objectType;
+             loanApply.data.expenseObject=expenseObject;
+             loanApply.data.expenseObjectName=expenseObjectName;
+             }
+             else if(businessType == 'EXP') {
+             console.log("EXP ...");
+             console.log( expenseApply.data);
+             expenseApply.data.objectType=$scope.objectType;
+             expenseApply.data.expenseObject=expenseObject;
+             expenseApply.data.expenseObjectName=expenseObjectName;
+             // console.log(            expenseApply.data.expenseObjectName );
+             }
+             else
+             */
+
+            //showMessage($scope.businessType);
+            if ($scope.businessType == 'ACC') {
+                console.log("ACC ...");
+                //console.log( keepAccount.data);
+
+                if(expenseObject_id == '0' || expenseObject_id =='-1') {
+
+                }
+                else {
+                    keepAccount.data.objectType=$scope.objectType;
+                    keepAccount.data.expenseObject_id=expenseObject_id;
+                    keepAccount.data.expenseObject_code=expenseObject_code;
+                    keepAccount.data.expenseObject_desc=expenseObject_desc;
+                    keepAccount.data.expenseObject_type=expenseObject_type;
+
+
+
+
+                    keepAccount.data.expense_item_code="";
+                    keepAccount.data.expense_item_desc="";
+
+                    keepAccount.data.costObject_id  = "";
+                    keepAccount.data.costObject_desc= "";
+                    keepAccount.expenseItemList = [];
+                    keepAccount.expenseCostList = [];
+
+//                    console.log(expenseObject_id);
+                    console.log("get the objectId = "+expenseObject_id+" get the objectCode = "+expenseObject_code);
+                    var promise=expenseObject.queryExpenseList(expenseObject_id, expenseObject_code);
+                    
+                    promise.then(function (response) {
+
+                        console.log(response);
+                        if(response["status"] == "S") {
+                            var expenseItemList_tmp = response["expense"];
+                            $.each(expenseItemList_tmp, function (i, value) {
+                                var item = {
+                                   expense_item_code : value.exp_code,
+                                   expense_item_desc:value.exp_name,
+                                   expense_item_house:value.exp_house,
+                                   expense_item_index:i
+                                };
+                                keepAccount.expenseItemList.push(item);
+                            });
+                        }
+                    }, function (response) {
+                        //alert("网络连接错误,初始化数据 projectList");
+                        showMessage(response);
+                        $ionicLoading.hide();
+                        $ionicLoading.show({
+                            template: '网络连接错误,初始化数据 ',
+                            duration: 500
+                        });
+                    });
+                    
+
+                    //keepAccount.expenseItemList = keepAccount.projectList[expenseItemList_index].expenseItemList;
+
+                    //console.log(angular.toJson(keepAccount.expenseItemList));
+
+                }
+
+
+            }
+            else if ($scope.businessType == 'EXP') {
+
+                expenseApply.data.expenseObject_desc=expenseObject_desc;
+                expenseApply.data.expenseObject_id=expenseObject_id;
+
+            }
+            else{
+                console.log('程序错误 expenseObjectController line23');
+            }
+
+            $ionicHistory.goBack();
+
+            //globalNavigator.popPage();
+
+        }
+
+    });
+/*结算对象service*/
+angular.module("applicationModule")
+    .factory('expenseObject', function ($http,$q, $ionicLoading, baseConfig) {
+    var service= {
+        businessType:'',
+        objectType:'',
+        queryUnitList: function (){
+            var deferred = $q.defer();
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_unit_list.svc?companyId=2",{cache:false}).
+                success(function(response) {
+                    deferred.resolve(response);
+                }).
+                error(function(response ) {
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        },
+        queryProjectList:function (){
+            //showMessage("查询项目列表");
+            var deferred = $q.defer();
+
+            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_proj";
+            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
+
+            $http.post(Url,PostData).success(function (data){
+
+                deferred.resolve(data);
+
+            }).error(function(data) {
+                deferred.reject(data);
+
+                //$ionicLoading.hide();
+
+            });
+
+            /*
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
+                success(function(response) {
+                    deferred.resolve(response);
+                }).
+                error(function(response) {
+                    deferred.reject(response);
+                });
+
+                */
+
+            //deferred.resolve("ok");
+
+            return deferred.promise;
+        },
+        queryExpenseList:function (projectId, projectCode){
+            //showMessage("查询项目列表");
+            var deferred = $q.defer();
+
+            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_types";
+//            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
+//            '","p_project_code":' + projectCode +
+//            '","p_project_id":' + projectId +'}}';
+            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_code":"' + projectCode +  '","p_project_id":"' + projectId +  '"}}';
+
+
+            $http.post(Url,PostData).success(function (data){
+                deferred.resolve(data);
+            }).error(function(data) {
+                deferred.reject(data);
+
+                //$ionicLoading.hide();
+
+            });
+
+            /*
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
+                success(function(response) {
+                    deferred.resolve(response);
+                }).
+                error(function(response) {
+                    deferred.reject(response);
+                });
+
+                */
+
+            //deferred.resolve("ok");
+
+            return deferred.promise;
+        }
+    };
+    return service;
+});
+
+function showMessage(msg) {
+  //navigator.notification.alert('未知错误 saveData', function(){}, '提示', '确定');
+  //alert(msg);
+}
+function getFormatDate(date) {
+  var seperator1 = "-";
+  var month = date.getMonth() + 1;
+  var strDate = date.getDate();
+  if (month >= 1 && month <= 9) {
+    month = "0" + month;
+  }
+  if (strDate >= 0 && strDate <= 9) {
+    strDate = "0" + strDate;
+  }
+  return date.getFullYear() + seperator1 + month + seperator1 + strDate;
+}
+/*对话框service*/
+angular.module("applicationModule")
+    .factory('dialog', function ( $ionicPopup, baseConfig) {
+        var service= {
+            // 一个提示对话框
+            showAlert : function(type,msg) {
+                var title = "";
+                switch (type) {
+                    case 'E':
+                        title = "错误";
+                        break;
+                    case 'I':
+                        title = "提示";
+                        break;
+                    default :
+                        title = "提示";
+                        break;
+                }
+                /***
+                 * {
+                      title: '', // String. The title of the popup.
+                      subTitle: '', // String (optional). The sub-title of the popup.
+                      template: '', // String (optional). The html template to place in the popup body.
+                      templateUrl: '', // String (optional). The URL of an html template to place in the popup   body.
+                      okText: '', // String (default: 'OK'). The text of the OK button.
+                      okType: '', // String (default: 'button-positive'). The type of the OK button.
+                    }
+                 * ***/
+                var alertPopup = $ionicPopup.alert({
+                    title: title,
+                    template: msg,
+                    okText:"好的",
+                    okType: 'button-light'
+                });
+                alertPopup.then(function(res) {
+                    console.log("dialog: "+title+" - "+msg);
+                });
+            }
+        };
+        return service;
+    });
+
+/*结算对象service*/ 
+angular.module("applicationModule")
+    .factory('expenseObject', function ($http,$q, $ionicLoading, baseConfig) {
+    var service= {
+        businessType:'',
+        objectType:'',
+        queryUnitList: function (){
+            var deferred = $q.defer();
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_unit_list.svc?companyId=2",{cache:false}).
+                success(function(response) {
+                    deferred.resolve(response);
+                }).
+                error(function(response ) {
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        },
+        queryProjectList:function (){
+            //showMessage("查询项目列表");
+            var deferred = $q.defer();
+            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_proj";
+            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
+
+            $http.post(Url,PostData).success(function (data){
+                deferred.resolve(data);
+            }).error(function(data) {
+                deferred.reject(data);
+            });
+            /*
+                $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
+                    success(function(response) {
+                        deferred.resolve(response);
+                    }).
+                    error(function(response) {
+                        deferred.reject(response);
+                    });
+            */
+            //deferred.resolve("ok");
+            return deferred.promise;
+        },
+        queryExpenseList:function (projectId, projectCode){
+            //showMessage("查询项目列表");
+            var deferred = $q.defer();
+
+            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_types";
+//            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
+//            '","p_project_code":' + projectCode +
+//            '","p_project_id":' + projectId +'}}';
+            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_code":"' + projectCode +  '","p_project_id":"' + projectId +  '"}}';
+
+
+            $http.post(Url,PostData).success(function (data){
+                deferred.resolve(data);
+            }).error(function(data) {
+                deferred.reject(data);
+
+                //$ionicLoading.hide();
+
+            });
+
+            /*
+            $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
+                success(function(response) {
+                    deferred.resolve(response);
+                }).
+                error(function(response) {
+                    deferred.reject(response);
+                });
+
+                */
+
+            //deferred.resolve("ok");
+
+            return deferred.promise;
+        }
+    };
+    return service;
+});
 /**
  * Created by LeonChan on 2016/5/31.
  */
@@ -3783,667 +4271,166 @@ angular.module('applicationModule')
       };
     }]);
 
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.acc_expenseObjectList', {
-          url: '/acc/expenseObjectList',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/expenseObjectList.html',
-              controller: 'expenseObjectController'
-            }
-          }
-        });
-    }]);
-
 angular.module("applicationModule")
-    .controller('expenseObjectController', function($scope,expenseObject,expenseApply,$ionicHistory,keepAccount, $ionicLoading, baseConfig) {
-        $scope.businessType=expenseObject.businessType;
-        $scope.objectType=expenseObject.objectType;
-        $ionicLoading.show({
-            template: "下载项目信息..."
-            //duration: 3000
-        });
-
-        $scope.objectType = "PRJ";
-        //businessType = 'ACC';
-        if($scope.objectType=="UNIT"){
-            $scope.title="选择部门";
-            console.log(expenseObject);
-            var promise=expenseObject.queryUnitList();
-            promise.then(function(response) {
-                var code=getResponseCode(response);
-                if(code=="ok"){
-
-                }else if(code=="failure"){
-                }
-                else if (code =="login_required"){
-                    showMessage("登录状态异常\n"+angular.toJson(response));
-                    reLogin();
-                }else{
-                    showMessage("未知错误:"+angular.toJson(response));
-                }
-                $scope.unitList=response.body.unitList;
-            }, function(response) {
-                alert("网络连接错误,初始化数据 unitList");
-            });
-        }else if($scope.objectType=="PRJ") {
-            $scope.title = "选择项目";
-            console.log(expenseObject);
-            var promise = expenseObject.queryProjectList();
-            promise.then(function (response) {
-
-                console.log(angular.toJson(response));
-
-                if(response["status"] == "S") {
-
-
-
-                    keepAccount.projectList = [];
-                    var proj_tmp = response["proj"];
-                    $.each(proj_tmp, function (i, value) {
-                        var item = {
-                            expenseObject_id : value.pj_id,
-                            expenseObject_code:value.pj_code,
-                            expenseObject_desc : value.pj_name,
-                            expenseObject_type : value.cost_type,
-//                            expenseItemList: value.expense,
-                            expenseItemList_index:i
-                        };
-
-                        //expenseObject.projectList.push(item);
-
-                        keepAccount.projectList.push(item);
-                        //expenseApply.projectList.push(item);
-
-                    });
-
-                    //console.log( keepAccount.projectList);
-
-                    $scope.projectList = keepAccount.projectList;
-                    //console.log( angular.toJson($scope.projectList));
-
-                    $ionicLoading.hide();
-
-                } else {
-                    var errmsg = angular.toJson(response);
-                    $ionicLoading.hide();
-                    $ionicLoading.show({
-                        template: errmsg,
-                        duration: 1000
-                    });
-                }
-
-                $ionicLoading.hide();
-
-
-                /*
-                 $scope.projectList=[
-                 {
-                 "projectId": 12,
-                 "projectCode": "PRJ0001",
-                 "projectName": "XXX公司人力资源管理系统实施项目",
-                 "enabledFlag": "Y",
-                 "companyId": 2
-                 },
-                 {
-                 "projectId": 23,
-                 "projectCode": "PRJ0004",
-                 "projectName": "外包",
-                 "enabledFlag": "Y",
-                 "companyId": 2
-                 },
-                 {
-                 "projectId": 13,
-                 "projectCode": "PRJ0002",
-                 "projectName": "XXX公司财务管理系统实施项目",
-                 "enabledFlag": "Y",
-                 "companyId": 2
-                 },
-                 {
-                 "projectId": 14,
-                 "projectCode": "PRJ0003",
-                 "projectName": "XXX公司财务共享实施项目",
-                 "enabledFlag": "Y",
-                 "companyId": 2
-                 }
-                 ];
-                 */
-
-
-            }, function (response) {
-                //alert("网络连接错误,初始化数据 projectList");
-                showMessage(response);
-                $ionicLoading.hide();
-                $ionicLoading.show({
-                    template: '网络连接错误,初始化数据 ',
-                    duration: 500
-                });
-
-
-            });
-
-        }
-
-
-
-
-        $scope.selectExpenseObject=function (e){
-            var target= e.target;
-            var expenseObject_id=target.getAttribute('expenseObject_id');
-            var expenseObject_code=target.getAttribute('expenseObject_code');
-            var expenseObject_desc=target.getAttribute('expenseObject_desc');
-            var expenseObject_type=target.getAttribute('expenseObject_type');
-
-            var expenseItemList_index=target.getAttribute('expenseItemList_index');
-            /*
-             if(businessType=="TRP"){
-             travelApply.data.objectType=$scope.objectType;
-             travelApply.data.expenseObject=expenseObject;
-             travelApply.data.expenseObjectName=expenseObjectName;
-             }
-             else if(businessType == 'CSH') {
-             console.log("CSH ...");
-
-             loanApply.data.objectType=$scope.objectType;
-             loanApply.data.expenseObject=expenseObject;
-             loanApply.data.expenseObjectName=expenseObjectName;
-             }
-             else if(businessType == 'EXP') {
-             console.log("EXP ...");
-             console.log( expenseApply.data);
-             expenseApply.data.objectType=$scope.objectType;
-             expenseApply.data.expenseObject=expenseObject;
-             expenseApply.data.expenseObjectName=expenseObjectName;
-             // console.log(            expenseApply.data.expenseObjectName );
-             }
-             else
-             */
-
-            //showMessage($scope.businessType);
-            if ($scope.businessType == 'ACC') {
-                console.log("ACC ...");
-                //console.log( keepAccount.data);
-
-                if(expenseObject_id == '0' || expenseObject_id =='-1') {
-
-                }
-                else {
-                    keepAccount.data.objectType=$scope.objectType;
-                    keepAccount.data.expenseObject_id=expenseObject_id;
-                    keepAccount.data.expenseObject_code=expenseObject_code;
-                    keepAccount.data.expenseObject_desc=expenseObject_desc;
-                    keepAccount.data.expenseObject_type=expenseObject_type;
-
-
-
-
-                    keepAccount.data.expense_item_code="";
-                    keepAccount.data.expense_item_desc="";
-
-                    keepAccount.data.costObject_id  = "";
-                    keepAccount.data.costObject_desc= "";
-                    keepAccount.expenseItemList = [];
-                    keepAccount.expenseCostList = [];
-
-//                    console.log(expenseObject_id);
-                    console.log("get the objectId = "+expenseObject_id+" get the objectCode = "+expenseObject_code);
-                    var promise=expenseObject.queryExpenseList(expenseObject_id, expenseObject_code);
-                    
-                    promise.then(function (response) {
-
-                        console.log(response);
-                        if(response["status"] == "S") {
-                            var expenseItemList_tmp = response["expense"];
-                            $.each(expenseItemList_tmp, function (i, value) {
-                                var item = {
-                                   expense_item_code : value.exp_code,
-                                   expense_item_desc:value.exp_name,
-                                   expense_item_house:value.exp_house,
-                                   expense_item_index:i
-                                };
-                                keepAccount.expenseItemList.push(item);
-                            });
-                        }
-                    }, function (response) {
-                        //alert("网络连接错误,初始化数据 projectList");
-                        showMessage(response);
-                        $ionicLoading.hide();
-                        $ionicLoading.show({
-                            template: '网络连接错误,初始化数据 ',
-                            duration: 500
-                        });
-                    });
-                    
-
-                    //keepAccount.expenseItemList = keepAccount.projectList[expenseItemList_index].expenseItemList;
-
-                    //console.log(angular.toJson(keepAccount.expenseItemList));
-
-                }
-
-
-            }
-            else if ($scope.businessType == 'EXP') {
-
-                expenseApply.data.expenseObject_desc=expenseObject_desc;
-                expenseApply.data.expenseObject_id=expenseObject_id;
-
-            }
-            else{
-                console.log('程序错误 expenseObjectController line23');
-            }
-
-            $ionicHistory.goBack();
-
-            //globalNavigator.popPage();
-
-        }
-
-    });
-/*结算对象service*/
-angular.module("applicationModule")
-    .factory('expenseObject', function ($http,$q, $ionicLoading, baseConfig) {
-    var service= {
-        businessType:'',
-        objectType:'',
-        queryUnitList: function (){
-            var deferred = $q.defer();
-            $http.get(baseConfig.basePath+"TRP/TRP1130/app_unit_list.svc?companyId=2",{cache:false}).
-                success(function(response) {
-                    deferred.resolve(response);
-                }).
-                error(function(response ) {
-                    deferred.reject(response);
-                });
-            return deferred.promise;
-        },
-        queryProjectList:function (){
-            //showMessage("查询项目列表");
-            var deferred = $q.defer();
-
-            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_proj";
-            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
-
-            $http.post(Url,PostData).success(function (data){
-
-                deferred.resolve(data);
-
-            }).error(function(data) {
-                deferred.reject(data);
-
-                //$ionicLoading.hide();
-
-            });
-
-            /*
-            $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
-                success(function(response) {
-                    deferred.resolve(response);
-                }).
-                error(function(response) {
-                    deferred.reject(response);
-                });
-
-                */
-
-            //deferred.resolve("ok");
-
-            return deferred.promise;
-        },
-        queryExpenseList:function (projectId, projectCode){
-            //showMessage("查询项目列表");
-            var deferred = $q.defer();
-
-            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_types";
-//            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
-//            '","p_project_code":' + projectCode +
-//            '","p_project_id":' + projectId +'}}';
-            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_code":"' + projectCode +  '","p_project_id":"' + projectId +  '"}}';
-
-
-            $http.post(Url,PostData).success(function (data){
-                deferred.resolve(data);
-            }).error(function(data) {
-                deferred.reject(data);
-
-                //$ionicLoading.hide();
-
-            });
-
-            /*
-            $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
-                success(function(response) {
-                    deferred.resolve(response);
-                }).
-                error(function(response) {
-                    deferred.reject(response);
-                });
-
-                */
-
-            //deferred.resolve("ok");
-
-            return deferred.promise;
-        }
-    };
-    return service;
-});
-
-function showMessage(msg) {
-  //navigator.notification.alert('未知错误 saveData', function(){}, '提示', '确定');
-  //alert(msg);
-}
-function getFormatDate(date) {
-  var seperator1 = "-";
-  var month = date.getMonth() + 1;
-  var strDate = date.getDate();
-  if (month >= 1 && month <= 9) {
-    month = "0" + month;
+.factory('flaybackService', ['$ionicLoading', function ($ionicLoading) {
+  var projName = "";
+  var projCode = "";
+  var ticketTypeList = [];
+  var routeTypeList = [];
+  var passengerList = [];
+  var passenger = "";
+  var certification = "";
+  var fbLines = [];
+  var pageStatusCreate = {};// var param = {"canEdit": true,"dataSource":"create"}
+  function getFormatDate(date) {
+    var seperator1 = "-";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+      month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+      strDate = "0" + strDate;
+    }
+    return date.getFullYear() + seperator1 + month + seperator1 + strDate;
   }
-  if (strDate >= 0 && strDate <= 9) {
-    strDate = "0" + strDate;
+  return {
+    getFormatDate: getFormatDate,
+    getNowFormatDate: function () {
+      var date = new Date();
+      var seperator = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator + month + seperator + strDate;
+      return currentdate;
+    },
+    setPageStatusCreate: function (obj) {
+      pageStatusCreate = obj;
+    },
+    getPageStatusCreate: function (obj) {
+      return pageStatusCreate;
+    },
+    setProjName: function (obj) {
+      projName = obj;
+    },
+    getProjName: function (obj) {
+      return projName;
+    },
+    setProjCode: function (obj) {
+      projCode = obj;
+    },
+    getProjCode: function (obj) {
+      return projCode;
+    },
+    setTicketTypeList: function (obj) {
+      ticketTypeList = obj;
+    },
+    getTicketTypeList: function (obj) {
+      return ticketTypeList;
+    },
+    setRouteTypeList: function (obj) {
+      routeTypeList = obj;
+    },
+    getRouteTypeList: function (obj) {
+      return routeTypeList;
+    },
+    setPassengerList: function (obj) {
+      passengerList = obj;
+    },
+    getPassengerList: function (obj) {
+      return passengerList;
+    },
+    setPassenger: function (obj) {
+      passenger = obj;
+    },
+    getPassenger: function (obj) {
+      return passenger;
+    },
+    setCertification: function (obj) {
+      certification = obj;
+    },
+    getCertification: function (obj) {
+      return certification;
+    },
+    addLine: function (obj) {
+      /* var flight_date = getFormatDate(new Date(obj.flight_date));
+       obj.flight_date = flight_date;*/
+      fbLines.push(obj);
+    },
+    updateLine: function (obj, index) {
+      var flight_date = getFormatDate(new Date(obj.flight_date));
+      obj.flight_date = flight_date;
+      fbLines[index] = obj;
+    },
+    getLines: function () {
+      return fbLines;
+    },
+    setLines: function (obj) {
+      fbLines = obj;
+    },
+    /* deleteLine: function (item) {
+     //  fbLines.splice(index, 1);
+     console.log("fbLines.indexOf(item) = " + fbLines.indexOf(item));
+     console.log("fbLines  = " + angular.toJson(fbLines));
+     console.log("item  = " + angular.toJson(item));
+     fbLines.splice(fbLines.indexOf(item), 1);
+     },*/
+    deleteLine: function (index) {
+      fbLines.splice(index, 1);
+    },
+    clearLines: function () {
+      fbLines = [];
+    }
+
   }
-  return date.getFullYear() + seperator1 + month + seperator1 + strDate;
-}
-/*对话框service*/
-angular.module("applicationModule")
-    .factory('dialog', function ( $ionicPopup, baseConfig) {
-        var service= {
-            // 一个提示对话框
-            showAlert : function(type,msg) {
-                var title = "";
-                switch (type) {
-                    case 'E':
-                        title = "错误";
-                        break;
-                    case 'I':
-                        title = "提示";
-                        break;
-                    default :
-                        title = "提示";
-                        break;
-                }
-                /***
-                 * {
-                      title: '', // String. The title of the popup.
-                      subTitle: '', // String (optional). The sub-title of the popup.
-                      template: '', // String (optional). The html template to place in the popup body.
-                      templateUrl: '', // String (optional). The URL of an html template to place in the popup   body.
-                      okText: '', // String (default: 'OK'). The text of the OK button.
-                      okType: '', // String (default: 'button-positive'). The type of the OK button.
-                    }
-                 * ***/
-                var alertPopup = $ionicPopup.alert({
-                    title: title,
-                    template: msg,
-                    okText:"好的",
-                    okType: 'button-light'
-                });
-                alertPopup.then(function(res) {
-                    console.log("dialog: "+title+" - "+msg);
-                });
-            }
-        };
-        return service;
-    });
 
-/*结算对象service*/ 
-angular.module("applicationModule")
-    .factory('expenseObject', function ($http,$q, $ionicLoading, baseConfig) {
-    var service= {
-        businessType:'',
-        objectType:'',
-        queryUnitList: function (){
-            var deferred = $q.defer();
-            $http.get(baseConfig.basePath+"TRP/TRP1130/app_unit_list.svc?companyId=2",{cache:false}).
-                success(function(response) {
-                    deferred.resolve(response);
-                }).
-                error(function(response ) {
-                    deferred.reject(response);
-                });
-            return deferred.promise;
-        },
-        queryProjectList:function (){
-            //showMessage("查询项目列表");
-            var deferred = $q.defer();
-            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_proj";
-            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
+}])
+;
 
-            $http.post(Url,PostData).success(function (data){
-                deferred.resolve(data);
-            }).error(function(data) {
-                deferred.reject(data);
-            });
-            /*
-                $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
-                    success(function(response) {
-                        deferred.resolve(response);
-                    }).
-                    error(function(response) {
-                        deferred.reject(response);
-                    });
-            */
-            //deferred.resolve("ok");
-            return deferred.promise;
-        },
-        queryExpenseList:function (projectId, projectCode){
-            //showMessage("查询项目列表");
-            var deferred = $q.defer();
-
-            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_types";
-//            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
-//            '","p_project_code":' + projectCode +
-//            '","p_project_id":' + projectId +'}}';
-            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_code":"' + projectCode +  '","p_project_id":"' + projectId +  '"}}';
-
-
-            $http.post(Url,PostData).success(function (data){
-                deferred.resolve(data);
-            }).error(function(data) {
-                deferred.reject(data);
-
-                //$ionicLoading.hide();
-
-            });
-
-            /*
-            $http.get(baseConfig.basePath+"TRP/TRP1130/app_project_list.svc?companyId=2",{cache:false}).
-                success(function(response) {
-                    deferred.resolve(response);
-                }).
-                error(function(response) {
-                    deferred.reject(response);
-                });
-
-                */
-
-            //deferred.resolve("ok");
-
-            return deferred.promise;
-        }
-    };
-    return service;
-});
-/** Author      : joshua.shi
- *
- *  History:
- *      1.00    2016-4-28   joshua.shi   Creation
- */
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.time-off-manage', {
-          url: '/time-off-manage',
+        .state('tab.personnel-policy', {
+          url: '/personnel-policy',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/time-off-manage/time-off-manage-list.html',
-              controller: 'TimeOffManageCtrl'
+              templateUrl: 'build/pages/application/personnel-policy/personnel-policy.html',
+              controller: 'PersonnelPolicyCtrl'
             }
           }
         })
     }]);
 
 angular.module('applicationModule')
-
-  .controller('TimeOffManageCtrl', [
+  .controller('PersonnelPolicyCtrl', [
     '$scope',
     '$state',
     'baseConfig',
-    'hmsHttp',
-    'hmsPopup',
     '$ionicHistory',
     function ($scope,
               $state,
               baseConfig,
-              hmsHttp,
-              hmsPopup,
               $ionicHistory) {
 
-      $scope.timeOffHeader       ={
-        userId                 : 999,
-        paidHoliday            : 9,
-        paidSickLeave          : 9,
-        extPaidHoliday         : 9,
-        usedPaidHoliday        : 9,
-        usedPaidSickLeave      : 9,
-        usedExtPaidHoliday     : 9
+      $scope.goBack=function(){
+        $ionicHistory.goBack();
       };
-
-      $scope.timeOffHistoryList  =[
-        {
-        holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
-        timeOffType          : 'paid-holiday',
-        timeOffTypeMeaning   : '带薪年假',
-        datetimeFrom         : '2016-6-16',
-        datetimeTo           : '2016-6-18',
-        timeLeave            : '2天',
-        approveStatus        : 'APPROVED',
-        approveStatusMeaning : '已审批',
-        applyReason          : '陪老婆去迪斯尼玩',
-        reason_image         : [
-          {
-            image_url1       : '',
-            image_url2       : '',
-            image_url3       : '',
-            image_url4       : '',
-            image_url5       : '',
-            image_url6       : '',
-            image_url7       : '',
-            image_url8       : '',
-            image_url9       : '',
-          }
-        ]
-      }];
-
-
-      $scope.timeOffCreate = function(){
-
-      }
-
-
-      function getServeData() {
-
-        var requestUrl = baseConfig.businessPath + "/api_holiday/get_holidays_data";
-        var requestParams = {
-          "params": {
-            "p_employee_code": window.localStorage.empno
-          }
+      $scope.openwin=function($url){
+        //window.open($url,'newwindow','top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
+        window.open("http://www.daxuequan.org/ceshi/"+$url, '_system', 'location=yes');
         };
-
-        hmsHttp.post(requestUrl, requestParams).success(function (response) {
-          hmsPopup.hideLoading();
-          if (hmsHttp.isSuccessfull(response.status)) {
-
-            var baseImgUrl = 'build/img/application/time-off-manage/';
-
-            //处理前置结构
-            if(response.result[0]) {
-              var responseData = response.result[0];
-            }else{
-              hmsPopup.showShortCenterToast("服务器返回结构解析错误!");
-              return;
-            }
-
-            //将获取到的数据绑定到页面
-            //赋值头数据
-            $scope.timeOffHeader.paidHoliday        = responseData.paidHoliday;
-            $scope.timeOffHeader.paidSickLeave      = responseData.paidSickLeave;
-            $scope.timeOffHeader.extPaidHoliday     = responseData.extPaidHoliday;
-            $scope.timeOffHeader.usedPaidHoliday    = responseData.usedPaidHoliday;
-            $scope.timeOffHeader.usedPaidSickLeave  = responseData.usedPaidSickLeave;
-            $scope.timeOffHeader.usedExtPaidHoliday = responseData.usedExtPaidHoliday;
-
-            //赋值行数据
-            $scope.timeOffHistoryList  = [];
-            $scope.timeOffHistoryList = responseData.timeOffHistory;
+    }]
+);
 
 
-            //1:带薪年假，2,额外福利年假，3:事假，4.带薪病假，5.病假，6.婚嫁，7.产假，8.丧假，9.陪产假
-            angular.forEach($scope.timeOffHistoryList, function (data, index) {
-              if ('1' == data.timeOffType) {
-                data.holidayIcon        = baseImgUrl + 'PaidHoliday@3x.png';
-                data.timeOffTypeMeaning = '带薪年假';
-              } else if ('2' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
-                data.timeOffTypeMeaning  = '额外福利年假';
-              } else if ('3' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'CasualLeave@3x.png';
-                data.timeOffTypeMeaning  = '事假';
-              } else if ('4' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'SickLeave@@3x.png';
-                data.timeOffTypeMeaning  = '带薪病假';
-              } else if ('5' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'SickLeave@3x.png';
-                data.timeOffTypeMeaning  = '病假';
-              } else if ('6' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'HoneyMood@3x.png';
-                data.timeOffTypeMeaning  = '婚嫁';
-              } else if ('7' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'MaternityLeave@3x.png';
-                data.timeOffTypeMeaning  = '产假';
-              } else if ('8' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
-                data.timeOffTypeMeaning  = '丧假';
-              } else if ('9' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'PaternityLeave@3x.png';
-                data.timeOffTypeMeaning  = '陪产假';
-              }
-
-              //1.审批通过：APPROVED,2.审批中：APPROVING,3：审批拒绝：REJECTED,4.草稿：DRAFT
-              if ('APPROVED'         == data.approveStatus) {
-                data.approveStatusMeaning = '审批通过';
-              } else if ('APPROVING' == data.approveStatus) {
-                data.approveStatusMeaning = '审批中';
-              } else if ('REJECTED'  == data.approveStatus) {
-                data.approveStatusMeaning = '审批拒绝';
-              } else if ('DRAFT'     == data.approveStatus) {
-                data.approveStatusMeaning = '草稿';
-              }
-            });
-
-            //$scope.$apply();
-
-          } else {
-            if (response.status === 'E' || response.status == 'e') {
-              hmsPopup.showShortCenterToast("没有相关数据!");
-            } else {
-              hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-            }
-          }
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
-        });
-      };
-
-      getServeData();
-    }]);
 
 angular.module('myApp')
   .config(['$stateProvider',
@@ -4795,128 +4782,181 @@ angular.module('applicationModule')
 
 
 
-angular.module("applicationModule")
-.factory('flaybackService', ['$ionicLoading', function ($ionicLoading) {
-  var projName = "";
-  var projCode = "";
-  var ticketTypeList = [];
-  var routeTypeList = [];
-  var passengerList = [];
-  var passenger = "";
-  var certification = "";
-  var fbLines = [];
-  var pageStatusCreate = {};// var param = {"canEdit": true,"dataSource":"create"}
-  function getFormatDate(date) {
-    var seperator1 = "-";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-      month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-      strDate = "0" + strDate;
-    }
-    return date.getFullYear() + seperator1 + month + seperator1 + strDate;
-  }
-  return {
-    getFormatDate: getFormatDate,
-    getNowFormatDate: function () {
-      var date = new Date();
-      var seperator = "-";
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-      }
-      var currentdate = year + seperator + month + seperator + strDate;
-      return currentdate;
-    },
-    setPageStatusCreate: function (obj) {
-      pageStatusCreate = obj;
-    },
-    getPageStatusCreate: function (obj) {
-      return pageStatusCreate;
-    },
-    setProjName: function (obj) {
-      projName = obj;
-    },
-    getProjName: function (obj) {
-      return projName;
-    },
-    setProjCode: function (obj) {
-      projCode = obj;
-    },
-    getProjCode: function (obj) {
-      return projCode;
-    },
-    setTicketTypeList: function (obj) {
-      ticketTypeList = obj;
-    },
-    getTicketTypeList: function (obj) {
-      return ticketTypeList;
-    },
-    setRouteTypeList: function (obj) {
-      routeTypeList = obj;
-    },
-    getRouteTypeList: function (obj) {
-      return routeTypeList;
-    },
-    setPassengerList: function (obj) {
-      passengerList = obj;
-    },
-    getPassengerList: function (obj) {
-      return passengerList;
-    },
-    setPassenger: function (obj) {
-      passenger = obj;
-    },
-    getPassenger: function (obj) {
-      return passenger;
-    },
-    setCertification: function (obj) {
-      certification = obj;
-    },
-    getCertification: function (obj) {
-      return certification;
-    },
-    addLine: function (obj) {
-      /* var flight_date = getFormatDate(new Date(obj.flight_date));
-       obj.flight_date = flight_date;*/
-      fbLines.push(obj);
-    },
-    updateLine: function (obj, index) {
-      var flight_date = getFormatDate(new Date(obj.flight_date));
-      obj.flight_date = flight_date;
-      fbLines[index] = obj;
-    },
-    getLines: function () {
-      return fbLines;
-    },
-    setLines: function (obj) {
-      fbLines = obj;
-    },
-    /* deleteLine: function (item) {
-     //  fbLines.splice(index, 1);
-     console.log("fbLines.indexOf(item) = " + fbLines.indexOf(item));
-     console.log("fbLines  = " + angular.toJson(fbLines));
-     console.log("item  = " + angular.toJson(item));
-     fbLines.splice(fbLines.indexOf(item), 1);
-     },*/
-    deleteLine: function (index) {
-      fbLines.splice(index, 1);
-    },
-    clearLines: function () {
-      fbLines = [];
-    }
+/** Author      : joshua.shi
+ *
+ *  History:
+ *      1.00    2016-4-28   joshua.shi   Creation
+ */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.time-off-manage', {
+          url: '/time-off-manage',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/time-off-manage/time-off-manage-list.html',
+              controller: 'TimeOffManageCtrl'
+            }
+          }
+        })
+    }]);
 
-  }
+angular.module('applicationModule')
 
-}])
-;
+  .controller('TimeOffManageCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    'hmsHttp',
+    'hmsPopup',
+    '$ionicHistory',
+    function ($scope,
+              $state,
+              baseConfig,
+              hmsHttp,
+              hmsPopup,
+              $ionicHistory) {
+
+      $scope.timeOffHeader       ={
+        userId                 : 999,
+        paidHoliday            : 9,
+        paidSickLeave          : 9,
+        extPaidHoliday         : 9,
+        usedPaidHoliday        : 9,
+        usedPaidSickLeave      : 9,
+        usedExtPaidHoliday     : 9
+      };
+
+      $scope.timeOffHistoryList  =[
+        {
+        holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
+        timeOffType          : 'paid-holiday',
+        timeOffTypeMeaning   : '带薪年假',
+        datetimeFrom         : '2016-6-16',
+        datetimeTo           : '2016-6-18',
+        timeLeave            : '2天',
+        approveStatus        : 'APPROVED',
+        approveStatusMeaning : '已审批',
+        applyReason          : '陪老婆去迪斯尼玩',
+        reason_image         : [
+          {
+            image_url1       : '',
+            image_url2       : '',
+            image_url3       : '',
+            image_url4       : '',
+            image_url5       : '',
+            image_url6       : '',
+            image_url7       : '',
+            image_url8       : '',
+            image_url9       : '',
+          }
+        ]
+      }];
+
+
+      $scope.timeOffCreate = function(){
+
+      }
+
+
+      function getServeData() {
+
+        var requestUrl = baseConfig.businessPath + "/api_holiday/get_holidays_data";
+        var requestParams = {
+          "params": {
+            "p_employee_code": window.localStorage.empno
+          }
+        };
+
+        hmsHttp.post(requestUrl, requestParams).success(function (response) {
+          hmsPopup.hideLoading();
+          if (hmsHttp.isSuccessfull(response.status)) {
+
+            var baseImgUrl = 'build/img/application/time-off-manage/';
+
+            //处理前置结构
+            if(response.result[0]) {
+              var responseData = response.result[0];
+            }else{
+              hmsPopup.showShortCenterToast("服务器返回结构解析错误!");
+              return;
+            }
+
+            //将获取到的数据绑定到页面
+            //赋值头数据
+            $scope.timeOffHeader.paidHoliday        = responseData.paidHoliday;
+            $scope.timeOffHeader.paidSickLeave      = responseData.paidSickLeave;
+            $scope.timeOffHeader.extPaidHoliday     = responseData.extPaidHoliday;
+            $scope.timeOffHeader.usedPaidHoliday    = responseData.usedPaidHoliday;
+            $scope.timeOffHeader.usedPaidSickLeave  = responseData.usedPaidSickLeave;
+            $scope.timeOffHeader.usedExtPaidHoliday = responseData.usedExtPaidHoliday;
+
+            //赋值行数据
+            $scope.timeOffHistoryList  = [];
+            $scope.timeOffHistoryList = responseData.timeOffHistory;
+
+
+            //1:带薪年假，2,额外福利年假，3:事假，4.带薪病假，5.病假，6.婚嫁，7.产假，8.丧假，9.陪产假
+            angular.forEach($scope.timeOffHistoryList, function (data, index) {
+              if ('1' == data.timeOffType) {
+                data.holidayIcon        = baseImgUrl + 'PaidHoliday@3x.png';
+                data.timeOffTypeMeaning = '带薪年假';
+              } else if ('2' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
+                data.timeOffTypeMeaning  = '额外福利年假';
+              } else if ('3' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'CasualLeave@3x.png';
+                data.timeOffTypeMeaning  = '事假';
+              } else if ('4' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'SickLeave@@3x.png';
+                data.timeOffTypeMeaning  = '带薪病假';
+              } else if ('5' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'SickLeave@3x.png';
+                data.timeOffTypeMeaning  = '病假';
+              } else if ('6' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'HoneyMood@3x.png';
+                data.timeOffTypeMeaning  = '婚嫁';
+              } else if ('7' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'MaternityLeave@3x.png';
+                data.timeOffTypeMeaning  = '产假';
+              } else if ('8' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
+                data.timeOffTypeMeaning  = '丧假';
+              } else if ('9' == data.timeOffType) {
+                data.holidayIcon         = baseImgUrl + 'PaternityLeave@3x.png';
+                data.timeOffTypeMeaning  = '陪产假';
+              }
+
+              //1.审批通过：APPROVED,2.审批中：APPROVING,3：审批拒绝：REJECTED,4.草稿：DRAFT
+              if ('APPROVED'         == data.approveStatus) {
+                data.approveStatusMeaning = '审批通过';
+              } else if ('APPROVING' == data.approveStatus) {
+                data.approveStatusMeaning = '审批中';
+              } else if ('REJECTED'  == data.approveStatus) {
+                data.approveStatusMeaning = '审批拒绝';
+              } else if ('DRAFT'     == data.approveStatus) {
+                data.approveStatusMeaning = '草稿';
+              }
+            });
+
+            //$scope.$apply();
+
+          } else {
+            if (response.status === 'E' || response.status == 'e') {
+              hmsPopup.showShortCenterToast("没有相关数据!");
+            } else {
+              hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+            }
+          }
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
+        });
+      };
+
+      getServeData();
+    }]);
 
 /**
  * Created by gusenlin on 16/6/21.
@@ -5327,44 +5367,6 @@ angular.module('applicationModule')
       });
 
     }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.personnel-policy', {
-          url: '/personnel-policy',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/personnel-policy/personnel-policy.html',
-              controller: 'PersonnelPolicyCtrl'
-            }
-          }
-        })
-    }]);
-
-angular.module('applicationModule')
-  .controller('PersonnelPolicyCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    function ($scope,
-              $state,
-              baseConfig,
-              $ionicHistory) {
-
-      $scope.goBack=function(){
-        $ionicHistory.goBack();
-      };
-      $scope.openwin=function($url){
-        //window.open($url,'newwindow','top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
-        window.open("http://www.daxuequan.org/ceshi/"+$url, '_system', 'location=yes');
-        };
-    }]
-);
-
-
 
 angular.module('myApp')
   .config(['$stateProvider',
@@ -6868,6 +6870,1912 @@ angular.module("applicationModule").controller('costTypeItemController', functio
     };
 
 });
+
+/**
+ * Created by huchaoliang on 15-5-15.
+ */ 
+angular.module("applicationModule").controller('attachmentController', function($scope,$q,$http,expenseApply, baseConfig) {
+
+    var page = globalNavigator.getCurrentPage();
+    var expLineId= page.options.expLineId;
+    $scope.addAttachments = expenseApply.photoData.photos;
+
+    $scope.serverURL =  rootConfig.serverPath;
+
+    $scope.currentProgress = '执行补传，时间与照片大小有关';
+
+
+    //$scope.attachmentList=expenseApply.data.attachmentList;
+
+    /*
+    function addAttachmentList(){
+        var deferred = $q.defer();
+        $http.get(rootConfig.basePath+"EXP/EXP5010/exp_upload_line_photos.svc?expLineId="+expLineId,{cache:false}).
+            success(function(response, status, headers, config) {
+                deferred.resolve(response);
+            }).
+            error(function(error, status, headers, config) {
+                deferred.reject(error);
+            });
+        return deferred.promise;
+    }
+    var promise=addAttachmentList();
+    promise.then(function(response){
+        var code=getResponseCode(response);
+        if(code=="ok"){
+            console.log("获取附件列表");
+             console.log(response);
+            $scope.attachmentList=response.body;
+        }else if(code=="failure"){
+            showMessage("查询失败:"+angular.toJson(response))
+        }else{
+            showMessage("未知错误:"+angular.toJson(response));
+        }
+
+    },function(error){
+        showMessage("网络连接错误...."+angular.toJson(error));
+    });
+
+    */
+
+    function attachmentList(){
+        var deferred = $q.defer();
+        //$http.get(rootConfig.basePath+"EXP/EXP5010/mobile_exp_report_list.svc",{cache:false}).
+       $http.get(rootConfig.basePath+"PUBLIC/expense_lines_attachment.svc?tableName=EXP_REIMBURSEMENT_LN&tablePkValue="+expLineId,{cache:false}).
+            success(function(response, status, headers, config) {
+              deferred.resolve(response);
+
+            }).
+            error(function(error, status, headers, config) {
+                deferred.reject(error);
+            });
+        return deferred.promise;
+    }
+    var promise=attachmentList();
+    promise.then(function(response){
+        var code=getResponseCode(response);
+        if(code=="ok"){
+            // console.log(response);
+            $scope.attachmentData=response.body;
+          //  console.log(response.body);
+            console.log(response.body);
+            console.log(angular.toJson($scope.attachmentData));
+
+        }else if(code=="failure"){
+            showMessage("查询失败:"+angular.toJson(response));
+        }
+        else if (code =="login_required"){
+            showMessage("登录状态异常\n"+angular.toJson(response));
+            reLogin();
+        }
+        else{
+            showMessage("未知错误:"+angular.toJson(response));
+        }
+
+    },function(error){
+        showMessage("网络连接错误...."+angular.toJson(error));
+    });
+
+    /*打开dialog*/
+    $scope.dialogs = {};
+    $scope.openDialog=function(dlg) {
+        if (!$scope.dialogs[dlg]) {
+            ons.createDialog(dlg).then(function(dialog) {
+                $scope.dialogs[dlg] = dialog;
+                dialog.show();
+            });
+        }
+        else {
+            $scope.dialogs[dlg].show();
+        }
+    };
+    /*选择相机*/
+    $scope.selectPhotoSource=function(sourceType){
+        if (sourceType == "Cemera") {
+            getPhotoFromCamera();
+        }else if (sourceType == "PhotoLibary") {
+            getPhotoFromLibary();
+        }
+        $scope.attachmentSourceDialog.hide();
+    };
+
+    /*拍摄照片 相机*/
+    getPhotoFromCamera=function(){
+
+        navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+            destinationType: Camera.DestinationType.FILE_URL ,
+            sourceType : Camera.PictureSourceType.CAMERA
+            // saveToPhotoAlbum : true
+            //sourceType : Camera.PictureSourceType.PHOTOLIBRARY
+        });
+    };
+
+    /*拍摄照片 相册*/
+    getPhotoFromLibary=function(){
+
+        navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+            destinationType: Camera.DestinationType.FILE_URL ,
+            //sourceType : Camera.PictureSourceType.CAMERA
+            sourceType : Camera.PictureSourceType.PHOTOLIBRARY
+        });
+    };
+
+    /*打开确认照片页面*/
+    $scope.showConfirmAttachment=function(index){
+        expenseApply.tempAttachment=expenseApply.data.tempAttachment[index];
+        globalNavigator.pushPage(moduleHtmlPath.ACC+'checkPhoto.html', { animation : 'slide' });
+    };
+
+    function onSuccess(imageURI) {
+
+        //var image = document.getElementById('myImage');
+        //image.src = imageURI;
+        // alert("asd");
+        showMessage("补拍照片 ："+imageURI);
+
+        getPic(imageURI);
+        //$scope.$apply();
+    }
+    function onFail(message) {
+        alert('Failed because: ' + message);
+    }
+
+    function getPic(file){
+        window.resolveLocalFileSystemURI(file, resolveGetOnSuccess, resOnError);
+    }
+
+    function resolveGetOnSuccess(entry){
+        var date= getFormatDate(new Date());
+        var photo={
+            photo_name:entry.name,
+            photo_src:entry.toNativeURL(),
+            creation_date:date,
+            created_by:rootConfig.user.userId
+        };
+
+       // showMessage("src:"+photo.photo_src);
+        //showMessage('name:'+photo.photo_name);
+       // showMessage( angular.toJson(expenseApply.photoData.photos));
+
+
+        expenseApply.photoData.photos.push(photo);
+
+        showMessage( angular.toJson(expenseApply.photoData.photos));
+
+        //showMessage( angular.toJson($scope.attachmentData.attachments));
+        //keepAccount.data.photos.push(photo);
+        /*清除缓存*/
+        //cleanupCache();
+
+        uploadData();
+
+        $scope.$apply();
+        showMessage("补拍完成");
+
+
+    }
+
+    function showUploadProgress(msg) {
+        //console.log($scope.currentProgress);
+        //showMessage($scope.currentProgress);
+        $scope.currentProgress = msg;
+        //console.log($scope.currentProgress);
+        //showMessage(msg);
+        //showMessage($scope.currentProgress);
+
+
+    }
+
+    /*上传数据*/
+    uploadData=function(){
+        /**/
+
+        showMessage("进入上传");
+        var form=new FormData();
+        form.append("expense_line_id",expLineId);
+
+        //showMessage("准备上传:"+angular.toJson(form));
+        var length = expenseApply.photoData.photos.length;
+        var Photos=[];
+        Photos.push(expenseApply.photoData.photos[length-1]);
+
+        //showUploadProgress("执行补传，时间与照片大小有关");
+        uploadProgressModal.show();
+        var promise= expenseApply.uploadData(form,Photos);
+        promise.then(
+            function(response) {
+                var code=getResponseCode(response);
+                if(code=="ok"){
+                    //接受返回参数
+                   showMessage("上传结束");
+
+
+                }else if(code=="failure"){
+                    showMessage("查询失败:"+angular.toJson(response))
+                }
+                else if (code =="login_required"){
+                    showMessage("登录状态异常\n"+angular.toJson(response));
+                    reLogin();
+                }else{
+                    showMessage("未知错误:"+angular.toJson(response));
+                }
+
+                uploadProgressModal.hide();
+
+            },
+            function(err) {  // 处理错误 .reject
+                showMessage("网络连接错误...."+angular.toJson(err));
+                uploadProgressModal.hide();     //网络错误退出
+
+            });
+    };
+
+
+    function resOnError(error) {
+        alert(error.code);
+    }
+});
+/**
+ * Created by Administrator on 15-5-15.
+ */
+
+angular.module("applicationModule").controller('checkAttachmentController', function($scope,expenseApply) {
+
+    $scope.tempAttachment=expenseApply.tempAttachment;
+
+    $scope.back=function(){
+        globalNavigator.popPage();
+    };
+
+    $scope.testFunction=function(){
+
+        alert("11111");
+    };
+
+    // 删除照片
+    $scope.deleteAttachment=function() {
+        showMessage("删除照片操作");
+    };
+
+});
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.expenseDetail', {
+          url: '/expenseDetail',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/expenseDetail.html',
+              controller: 'expenseDetailController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('expenseDetailController', [
+      '$scope', 'expenseApply', 'keepAccount', 'dialog', 
+      'expenseObject', '$state', '$http', '$ionicLoading', 
+      '$q', 'baseConfig', 
+    function ($scope, expenseApply, keepAccount, dialog, expenseObject, 
+      $state, $http, $ionicLoading, $q, baseConfig) {
+
+    $scope.isshow=true;
+    if(window.localStorage.AlertPage=="" || window.localStorage.AlertPage==undefined )
+    {
+      $scope.navBar = true;
+      window.localStorage.AlertPage="exist";
+    }
+    else
+    {
+      $scope.navBar = false;
+      $scope.isshow=false;
+    }
+    $scope.hide=function()
+    {
+      $scope.isshow=false;
+      $scope.navBar = false;
+    };
+    //expenseDetail 缓冲图片added by heLiu
+
+    expenseObject.businessType = 'EXP';
+    $scope.canEdit = expenseApply.canEdit;
+    //  expenseApply.dateFmtForSave();
+    $scope.canUpload = expenseApply.canUpload;
+    console.log($scope.canUpload);
+    $scope.detailData = expenseApply.data;
+    //console.log("参数数据为：" + angular.toJson( $scope.detailData));
+    $scope.currentQueryTypeDesc = expenseApply.currentQueryTypeDesc;
+    //  $scope.detailData=expenseApply.getDataFromTravel(globalNavigator.getCurrentPage().options.travelDataPara);
+
+    $scope.canSubmit = expenseApply.canSubmit;
+
+    /*创建明细行*/
+    $scope.openCreateDetail = function () {
+      keepAccount.operation = "INSERT";
+      keepAccount.canEdit = true;
+      keepAccount.sourceFrom = "EXPENSE";
+      keepAccount.initData();
+      if (expenseApply.canEditObjectType == true) {
+        $scope.valueChange();
+        $state.go('tab.acc_detail');
+        // globalNavigator.pushPage('html/acc/accountDetail.html', { animation : 'slide' });
+      }
+    };
+
+
+    /*从记一笔选择明细行*/
+    $scope.openSelectDetail = function () {
+      console.log("expenseApply.data.lines: " + angular.toJson(expenseApply.data.lines));
+      console.log("canEditObjectType="+expenseApply.canEditObjectType);
+      console.log("expenseObject_desc="+$scope.detailData.expenseObject_desc);
+      expenseApply.canUpload = false;
+      if (expenseApply.canEditObjectType == true && ($scope.detailData.expenseObject_desc) != null) {
+        $scope.valueChange();
+        $state.go('tab.exp_SelectDetail');
+        // globalNavigator.pushPage('html/exp/interfaceReportList.html', { animation : 'slide' });
+      }
+    };
+
+    /*保存数据*/
+    $scope.saveData = function () {
+      expenseApply.data = $scope.detailData;
+      if (expenseApply.data.description == undefined) {
+        expenseApply.data.description = " ";
+      }
+
+      if (expenseApply.data.lines.length == 0) {
+        dialog.showAlert("I", "请先从记一笔选择");
+        // showMessage("请先从记一笔选择");
+      }
+      else {
+        $ionicLoading.show({
+          template: "正在保存..."
+        });
+
+        if (expenseApply.operation == "INSERT") {
+          var promise = expenseApply.insert($scope.detailData);
+          promise.then(
+            function (response) {
+              //console.log("接口返回参数： " + angular.toJson(response));
+              if (response["status"] == "S") {
+                $ionicLoading.hide();
+                expenseApply.data.expHeaderId = response["ra_id"];
+                //console.log("新增返回参数： " + angular.toJson(response));
+                //console.log("参数数据：" + angular.toJson(expenseApply.data));
+                $scope.detailData.lines = response.expense_list;
+                //console.log("更新后参数数据：" + angular.toJson($scope.detailData.lines));
+                expenseApply.selectedLineId = [];
+
+                //showMessage("保存成功");
+                dialog.showAlert("I", "保存成功");
+                expenseApply.operation = "UPDATE";
+                //  expenseApply.canUpload=true;
+                $scope.canUpload = true;
+              }
+              else {
+                // showMessage("未知错误:"+angular.toJson(response));
+                dialog.showAlert("E", "获取信息错误");
+                $ionicLoading.hide();
+
+              }
+            },
+            function (err) {  // 处理错误 .reject
+              // showMessage("网络连接错误:"+angular.toJson(err));
+              dialog.showAlert("E", "网络连接错误");
+              $ionicLoading.hide();
+            });
+        } else if (expenseApply.operation == "UPDATE") {
+          var promise = expenseApply.update($scope.detailData);
+          promise.then(function (response) {
+            if (response["status"] == "S") {
+              //console.log("接口返回参数： " + angular.toJson(response));
+              $scope.detailData.lines = response.expense_list;
+              //console.log("更新后参数数据：" + angular.toJson($scope.detailData.lines));
+              expenseApply.selectedLineId = [];
+              $ionicLoading.hide();
+              expenseApply.operation = "UPDATE";
+              expenseApply.saveAfterSubmit = true;
+              dialog.showAlert("I", "更新成功");
+              //  expenseApply.canUpload=true;
+              $scope.canUpload = true;
+              //showMessage("更新成功");
+            }
+            else {
+              // showMessage("未知错误:"+angular.toJson(response));
+              dialog.showAlert("E", "获取信息错误");
+              $ionicLoading.hide();
+
+            }
+          }, function (err) {  // 处理错误 .reject
+            //showMessage("网络连接错误:"+angular.toJson(err));
+            dialog.showAlert("E", "网络连接错误");
+            $ionicLoading.hide();
+          });
+        }
+      }
+    };
+
+    // 判断是否可删除
+    $scope.canToRemove = function () {
+      /*
+       if (loanApply.data.status ==  'NEW' ||  loanApply.data.status == 'REJECTED') {
+       return true;
+       }else {
+       return false;
+       }
+       */
+      //return (expenseApply.data.status ==  'NEW' ||  expenseApply.data.status == 'REJECTED');
+      return (expenseApply.data.status == 'NEW' );
+    };
+
+    //打开报销单明细
+    $scope.openReportLines = function (index) {
+      //根据index做相应处理
+      expenseApply.tempLine = expenseApply.data.lines[index];
+      $state.go('tab.exp_expenseLines');
+    };
+
+    $scope.valueChange = function () {
+      expenseApply.canSubmit = false;
+      $scope.canSubmit = false;
+      expenseApply.canUpload = false;
+      $scope.canUpload = false;
+    };
+
+    /*提交报销数据*/
+    $scope.submitData = function () {
+      expenseApply.data = $scope.detailData;
+
+      $ionicLoading.show({
+        template: "正在提交..."
+      });
+      var expHeaderId = $scope.detailData.expHeaderId;
+      var Url = baseConfig.businessPath + "/expense_account/submit_expense";
+      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
+      $http.post(Url, PostData).success(function (response) {
+        if (response["status"] == "S") {
+          $ionicLoading.hide();
+          // showMessage("提交成功");
+          dialog.showAlert("I", "提交成功");
+          $state.go('tab.exp_main');
+          var promise = expenseApply.queryTabList('toSubmit')
+          promise.then(function (response) {
+            if (response["status"] == "S") {
+              $("#toSubmit").addClass("button-positive")
+              $scope.expList = response["expense_list"];
+              var length = $scope.expList.length;
+              console.log(length);
+              for (var i = 0; i < length; i++) {
+                if ($scope.expList[i].descrpt == 'undefined') {
+                  $scope.expList[i].descrpt = "";
+                }
+              }
+            }
+            else {
+              //  showMessage("未知错误:"+angular.toJson(response));
+              dialog.showAlert("E", "获取信息错误");
+              $ionicLoading.hide();
+            }
+
+          }, function (error) {
+            // showMessage("网络连接错误...."+angular.toJson(error));
+            dialog.showAlert("E", "网络连接错误");
+            $ionicLoading.hide();
+          });
+
+
+          $scope.canEdit = false;
+        }
+        else {
+          // showMessage("未知错误:"+angular.toJson(response));
+          dialog.showAlert("E", "获取信息错误");
+          $ionicLoading.hide();
+
+        }
+      }).error(function (data) {
+        //  $ionicLoading.hide();
+        $ionicLoading.show({
+          template: '网络连接错误'
+
+        });
+        $ionicLoading.hide();
+      })
+    }
+
+    $scope.openExpenseObjectList = function () {
+      console.log($scope.canEdit);
+      console.log($scope.detailData.expHeaderId);
+      if ($scope.detailData.lines.length == 0 && $scope.detailData.expHeaderId == undefined) {
+        $scope.valueChange();
+        $state.go("tab.acc_expenseObjectList");
+      }
+    }
+
+    $scope.removeLine = function (canDeleteLine, index) {
+      var amount = $scope.detailData.lines[index].amount;
+      console.log($scope.detailData.lines[index].amount);
+      console.log(expenseApply.data.lines.length);
+      if (canDeleteLine == true) {
+        $ionicLoading.show({
+          template: "正在删除..."
+        });
+        var deferred = $q.defer();
+        var lineId = $scope.detailData.lines[index].lineId;
+        var expHeaderId = $scope.detailData.expHeaderId;
+        //console.log("+++++++++++++++++++++++++++++" +　lineId);
+        var Url = baseConfig.businessPath + "/expense_account/delete_expense_line";
+        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '","p_ra_line_id":"' + lineId + '"}}';
+
+        $http.post(Url, PostData).success(function (response) {
+          if (response["status"] == "S") {
+            console.log(expenseApply.data.lines.length);
+            // dialog.showAlert("I", "删除成功"); // mod by ciwei
+            console.log(expenseApply.data.lines.length);
+            for (var i = 0; i < expenseApply.selectedLineId.length; i++) {
+              if (expenseApply.selectedLineId[i] == lineId) {
+                expenseApply.selectedLineId = removeElement(i, expenseApply.selectedLineId);
+              }
+            }
+            expenseApply.data.sum = expenseApply.data.sum - amount;
+            $scope.detailData.lines.splice(index, 1);
+            expenseApply.data = $scope.detailData;
+            $ionicLoading.hide(); // move by ciwei
+          }
+          else {
+            //showMessage("未知错误:"+angular.toJson(response));
+            dialog.showAlert("E", "获取信息错误");
+            $ionicLoading.hide();
+
+          }
+        }).error(function (data) {
+          $ionicLoading.hide();
+          $ionicLoading.show({
+            template: '网络连接错误'
+
+          });
+        })
+      }
+
+      else if (canDeleteLine == false) {
+        dialog.showAlert("I", "不能删除");
+      }
+    }
+    function removeElement(index, array) {
+      if (index >= 0 && index < array.length) {
+        for (var i = index; i < array.length; i++) {
+          array[i] = array[i + 1];
+        }
+        array.length = array.length - 1;
+      }
+      return array;
+    }
+
+  }]);
+
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.exp_expenseItemList', {
+          url: '/expense/acc/expenseItemList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/expenseItemList.html',
+              controller: 'expenseItemController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule").controller('expenseItemController', function ($scope, $rootScope, keepAccount, expenseApply, $http, $q, $ionicHistory, $ionicLoading) {
+
+  $ionicLoading.show({
+    template: "Loading...",
+    duration: 1000
+  });
+
+  function queryExpenseItemList() {
+    var expenseTypeId = keepAccount.data.expense_type_id;
+    var deferred = $q.defer();
+    deferred.resolve(keepAccount.expenseItemList);
+    return deferred.promise;
+  }
+
+  var promise = queryExpenseItemList();
+  promise.then(
+    function (response) {
+      $scope.expenseItemList = response;
+      console.log(angular.toJson(keepAccount.expenseItemList));
+      $ionicLoading.hide();
+    },
+    function (err) {  // 处理错误 .reject
+      //showMessage("网络连接错误...."+angular.toJson(err));
+    });
+
+  $scope.selectExpenseItem = function (e) {
+    var target = e.target;
+    // var expenseItemId=target.getAttribute('expenseItemId');
+    var expenseItemCode = target.getAttribute('expenseItemCode');
+    var expenseItemName = target.getAttribute('expenseItemName');
+    var expenseItemIndex = target.getAttribute('expenseItemIndex');
+
+    //keepAccount.data.expense_item_id=expenseItemId;
+    keepAccount.data.expense_item_code = expenseItemCode;
+    keepAccount.data.expense_item_desc = expenseItemName;
+
+    // 清空 费用申请
+    keepAccount.data.costObject_id = "";
+    keepAccount.data.costObject_desc = "";
+
+    keepAccount.expenseCostList = [];
+
+    var expenseHouseList_tmp = keepAccount.expenseItemList[expenseItemIndex].expense_item_house;
+
+    $.each(expenseHouseList_tmp, function (i, value) {
+      var item = {
+        costObjectId: value.id,
+        desc: value.name
+      };
+      keepAccount.expenseCostList.push(item);
+    });
+
+    console.log("coutList -- " + angular.toJson(keepAccount.expenseCostList));
+
+    $ionicHistory.goBack();
+  };
+
+  //$rootScope.hideTabs = true;// mod by ciwei
+});
+
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.exp_expenseLines', {
+          url: '/expenseLines',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/expenseLines.html',
+              controller: 'expenseLinesController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+    .controller('expenseLinesController', ['$scope','expenseApply','keepAccount','$ionicHistory',function($scope,expenseApply,keepAccount,$ionicHistory) {
+
+
+    $scope.detailData=expenseApply.tempLine;
+
+    $scope.canEdit=expenseApply.canEdit;
+    $scope.local_status=expenseApply.local_status;
+    //  $scope.sourceFrom="exp";
+    console.log( $scope.detailData);
+  // var canEdit=expenseApply.canEdit;
+  /*  $scope.detailData.dateFrom=new Date( $scope.detailData.dateFrom);
+    $scope.detailData.dateTo=new Date($scope.detailData.dateTo);*/
+    $scope.openCurrencyList=function(e){
+        /*var target= e.target;
+        var currencyName=target.getAttribute('currencyName');
+        var currencyCode=target.getAttribute('currencyCode');
+        var exchangeRate=target.getAttribute('exchangeRate');*/
+      /*expenseApply.tempLine.currencyName=currencyName;
+        expenseApply.tempLine.currencyCode=currencyCode+"-"+currencyName;
+        expenseApply.tempLine.exchangeRate=Number(exchangeRate);*/
+       // expenseApply.tempLine.currency_code=currencyCode;
+        //expenseApply.tempLine.currency_code_desc=currencyCode+"-"+currencyName;
+       // expenseApply.tempLine.originalCurrency=currencyCode
+         expenseApply.sourceFrom="EXP";
+        if (expenseApply.canEditObjectType==true){
+
+       globalNavigator.pushPage('html/acc/currencyList.html', { animation : 'slide' });
+        }
+    };
+     $scope.valueChange=function(){
+            expenseApply.canUpload=false;
+            $scope.canUpload=false;
+        };
+
+
+    $scope.openExpenseTypeList=function(){
+        if (expenseApply.canEditObjectType==true){
+            globalNavigator.pushPage('html/exp/expenseTypeList.html', { animation : 'slide' });
+        }
+
+    };
+    $scope.openExpenseItemList=function(){
+        if (expenseApply.canEditObjectType==true){
+            globalNavigator.pushPage('html/exp/expenseItemList.html', { animation : 'slide' });
+        }
+    };
+
+    //
+    $scope.canShow = function() {
+
+        if($scope.detailData.price.toFixed(2)==null)
+        {
+            $scope.sum=0.00;
+        }
+        else{
+          //  $scope.sum=($scope.detailData.price*$scope.detailData.quantity*$scope.detailData.exchangeRate).toFixed(2);
+            $scope.sum=5;
+        }
+
+    };
+    $scope.removeLine=function(){
+        var index=$scope.detailData.index;
+      //  console.log(index);
+        expenseApply.data.lines.splice(index,1);
+      //  expenseApply.removeLine(expenseApply.tempLine.expLineId);
+        showMessage("删除成功");
+        $ionicHistory.goBack();
+    };
+    $scope.confirmLine=function(){
+        var index=$scope.detailData.index;
+        if(index==-1){
+            expenseApply.data.lines.push($scope.tempLine);
+        }
+        else{
+            expenseApply.data.lines[index]=$scope.tempLine;
+        }
+        var date_from= getFormatDate(new Date($scope.detailData.dateFrom));
+        var date_to= getFormatDate(new Date($scope.detailData.dateTo));
+        if(date_from>date_to)
+        {showMessage("开始日期大于结束日期");}
+        else{
+            globalNavigator.popPage();
+        }
+    };
+
+
+  /*  $scope.removeLine=function(){
+        var index=$scope.detailData.index;
+        expenseApply.data.lines.splice(index,1);
+        expenseApply.removeLine(expenseApply.tempLine.expLineId);
+        showMessage("删除成功");
+        globalNavigator.popPage();
+    };*/
+
+
+    $scope.openAttachment=function(){
+        var LineId=$scope.detailData.expLineId;
+        console.log(LineId);
+        //globalNavigator.pushPage("html/exp/attachmentList.html");
+
+        globalNavigator.pushPage("html/exp/attachmentList.html", { expLineId: LineId, param2: "value2" });
+    }
+
+}]);
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.expense', {
+          url: '/expenseQueryTabList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/expenseQueryTabList.html',
+              controller: 'expenseQueryController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('expenseQueryController', [
+    '$scope', 'expenseApply', 'dialog', 
+    '$http', '$q', '$state', '$ionicLoading', 
+    'hmsHttp', 'hmsPopup', "baseConfig",
+    function ($scope, expenseApply, dialog, 
+      $http, $q, $state, $ionicLoading, 
+      HttpAppService, hmsPopup, baseConfig) {
+
+    $scope.newPage = 0;
+    $scope.isshow = true;
+    $scope.canClickButton = {
+      toSubmit: true,
+      submitted: false
+    };
+    var statusType = {
+      new: "toSubmit",
+      submit: "submitted"
+    };
+    var currentListStatusType = statusType.new;
+
+    var noApprove = document.getElementById("noApprove");// add by ciwei
+    var alreadyApprove = document.getElementById("alreadyApprove");// add by ciwei
+    $scope.changeButton = function (type) {
+      switch (type) {
+        case 'toSubmit':
+          $scope.canClickButton = {
+            toSubmit: false,
+            submitted: true
+          };
+          //  $("#toSubmit").addClass("button-positive")
+          // $("#submitted").removeClass("button-positive")
+          noApprove.style.backgroundColor = "#D1F4F6";
+          noApprove.style.color = "#20CBD3";
+          alreadyApprove.style.backgroundColor = "#20CBD3";
+          alreadyApprove.style.color = "white";
+          currentListStatusType = statusType.new;
+          break;
+        case 'submitted':
+          $scope.canClickButton = {
+            toSubmit: true,
+            submitted: false
+          };
+          //  $("#submitted").addClass("button-positive")
+          //  $("#toSubmit").removeClass("button-positive")
+          alreadyApprove.style.backgroundColor = "#D1F4F6";
+          alreadyApprove.style.color = "#20CBD3";
+          noApprove.style.backgroundColor = "#20CBD3";
+          noApprove.style.color = "white";
+          currentListStatusType = statusType.submit;
+          break;
+      }
+      queryTabList(type);
+    };
+
+    $scope.$on('$stateChangeSuccess', // add by jiangzuoyong
+      function (event, toState, toParams, fromState, fromParams) {
+        if (toState.name == 'tab.exp_main' && fromState.name == 'tab.expenseDetail') {
+          var promise = queryList();
+          promise.then(function (response) {
+            if (response["status"] == "S") {
+              $("#toSubmit").addClass("button-positive")
+              $scope.expList = response["expense_list"];
+              var length = $scope.expList.length;
+              console.log(length);
+              for (var i = 0; i < length; i++) {
+                if ($scope.expList[i].descrpt == 'undefined') {
+                  $scope.expList[i].descrpt = "";
+                }
+              } 
+              $ionicLoading.hide();
+            } else if (response["status"] == "ETOKEN") {// add by ciwei
+              dialog.showAlert("E", response["returnMsg"]);
+              $ionicLoading.hide();
+              $state.go('login');
+            }
+            else {
+              // showMessage("未知错误:"+angular.toJson(response));
+              dialog.showAlert("E", "获取信息错误");
+              $ionicLoading.hide();
+            }
+          }, function (error) {
+            // showMessage("网络连接错误...."+angular.toJson(error));
+            dialog.showAlert("E", "网络连接错误");
+            $ionicLoading.hide();
+          });
+        }
+      });
+
+    // add by ciwei
+    $scope.showHelp = function () {
+      var template = 'Step1：“新建记一笔”，填写待报销记录，保存并上传。' + '<br> ' +
+        'Step2：在“报销”功能中，创建报销单，选择项目，再选择已经上传的“记一笔”作为报销行信息，保存提交。' + '<br><br> ' +
+        '**“记一笔”保存，是保存在手机本地，只有上传后，才能在报销单处选到。另，如若要卸载app，需先将所有记一笔“上传”，否则会丢失。';
+
+      var alertPopup = hmsPopup.showPopup(template, "报销功能使用说明");
+    };
+
+    $scope.show = function () {
+      $ionicLoading.show({
+        template: 'Loading...' 
+      });
+    };
+    $scope.hide = function () {
+      $ionicLoading.hide();
+    };
+    //初始化列表
+    function queryList() {
+      // $scope.expList.splice(0, $scope.expList.length);
+      // // baseConfig.businessPath   baseConfig.businessPath
+      $ionicLoading.show({
+        template: "Loading..."
+      });
+      var expStatues = 'SAVE';
+      var deferred = $q.defer();
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
+      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
+        + '","p_page_num":"' + "1" + '"}}';
+
+      $http.post(Url, PostData).success(function (response) {
+        deferred.resolve(response);
+
+      }).error(function (response) {
+        deferred.reject(response);
+      });
+      return deferred.promise;
+    }
+
+    var promise = queryList();
+    promise.then(function (response) {
+      if (response["status"] == "S") {
+        $("#toSubmit").addClass("button-positive")
+        $scope.expList = response["expense_list"];
+        var length = $scope.expList.length;
+        console.log(length);
+        for (var i = 0; i < length; i++) {
+          if ($scope.expList[i].descrpt == 'undefined') {
+            $scope.expList[i].descrpt = "";
+          }
+        }
+        $ionicLoading.hide();
+      } else if (response["status"] == "ETOKEN") {// add by ciwei
+        dialog.showAlert("E", response["returnMsg"]);
+        $ionicLoading.hide();
+        $state.go('login');
+      }
+      else {
+        // showMessage("未知错误:"+angular.toJson(response));
+        dialog.showAlert("E", "获取信息错误");
+        $ionicLoading.hide();
+      }
+    }, function (error) {
+      // showMessage("网络连接错误...."+angular.toJson(error));
+      dialog.showAlert("E", "网络连接错误");
+      $ionicLoading.hide();
+    });
+
+    function queryTabList(statues) {
+      $scope.isshow = false;
+      console.log("helloworld");
+      $scope.expList = new Array();
+      // $scope.expList.splice(0, $scope.expList.length);
+      $scope.newPage = $scope.newPage + 1;
+
+      console.log($scope.newPage);
+
+      var expStatues
+      if (statues == 'toSubmit') {
+        expStatues = 'SAVE';
+      }
+      else if (statues == 'submitted') {
+        expStatues = 'SUBMIT';
+      }
+      //  console.log("queryList");
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
+      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues + '","p_page_num":"' + $scope.newPage + '"}}';
+      $scope.show();
+      $http.post(Url, PostData).success(function (response) {
+        if (response["status"] == "S") {
+          //  $scope.isshow = true;
+          console.log(123);
+          console.log($scope.newPage);
+          console.log(456);
+          $scope.expenseList = response["expense_list"];
+          //  console.log(expenseList);
+          $.each($scope.expenseList, function (n, value) {
+            $scope.expList.push(value);
+          });
+          //$scope.expList=Item;
+          var length = $scope.expList.length;
+          //console.log(length);
+          for (var i = 0; i < length; i++) {
+            //  console.log($scope.expList[i].descrpt);
+            if ($scope.expList[i].descrpt == 'undefined') {
+              $scope.expList[i].descrpt = "";
+            }
+          }
+          //  $scope.isshow = false;
+          $scope.hide();
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        } else if (response["expense_list"].length == 0) {
+          // alert(123);
+          $scope.isshow = false;
+          $ionicLoading.show({template: '没有更多的数据了....', noBackdrop: true, duration: 1000});
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        }
+      }).error(function (data) {
+        $scope.isshow = false;
+        //$scope.hide();
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+        $ionicLoading.hide();
+      });
+    }
+
+    /*打开申请创建页面*/
+    $scope.openCreateExpense = function () {
+      //初始化数据
+      expenseApply.initData();
+      expenseApply.operation = "INSERT";
+      //expenseApply.initData();
+      expenseApply.selectedLineId = [];
+      //prepareForReturn();
+      // prepareForReturn();
+      expenseApply.canEdit = true;
+      expenseApply.canSubmit = false;
+      expenseApply.canUpload = false;
+      expenseApply.canEditObjectType = true;// add by ciwei
+      $state.go('tab.expenseDetail');
+      // globalNavigator.pushPage(moduleHtmlPath.EXP+'expenseDetail.html', { animation: 'slide' });
+
+
+    };
+
+    //明细打开,更新可编辑
+    function openUpdate() {
+      //初始化数据，
+      expenseApply.canEdit = true;
+      expenseApply.operation = "UPDATE";
+      expenseApply.canEditObjectType = true;
+      expenseApply.canSubmit = true;
+      $state.go('tab.expenseDetail');
+    }
+
+    //明细打开,只读方式
+    function openReadOnly() {
+      //初始化数据
+      expenseApply.canEdit = false;
+      expenseApply.canEditObjectType = false;
+      expenseApply.canSubmit = false;
+      $state.go('tab.expenseDetail');
+    }
+
+
+    $scope.openExpenseDetail = function (status, index) {
+      // expenseApply.data.splice(0, expenseApply.data.length);
+      // expenseApply.data.lines=[];
+      //设置标志，保存后才能提交
+      // expenseApply.saveAfterSubmit=false;
+
+      expenseApply.selectedLineId = [];
+      $ionicLoading.show({
+        template: "Loading..."
+
+      });
+      var expHeaderId;
+      expHeaderId = $scope.expList[index].ra_id;
+
+      console.log("明细打开：" + expHeaderId);
+      var promise = expenseApply.queryDetail(expHeaderId);
+      promise.then(
+        function (response) {
+          if (response["status"] == "S") {
+            var Item1 = [];
+            //expenseApply.dateFmtForUI();
+            var detailData = response["expense_list"];
+            var head = response["expense_heaeder"];
+            console.log(head);
+            console.log(detailData);
+            // Item1.push(detailData[0].ra_id);
+            // expenseApply.data.expHeaderId=detailData[0].ra_id,
+            expenseApply.data.expHeaderId = head.ra_id;
+            expenseApply.data.description = head.description;
+            expenseApply.canUpload = true;
+
+            if (expenseApply.data.description == 'undefined') {
+              expenseApply.data.description = "";
+            }
+            expenseApply.data.expenseObject_id = head.project_id
+            expenseApply.data.expenseObject_desc = head.project_name;
+            expenseApply.data.sum = head.amount;
+            console.log(expenseApply.data.sum);
+            // expenseApply.data.sum=head.amount;
+            //  expenseApply.data.sum=0;
+            $.each(detailData, function (n, value) {
+              var item = {
+                dateFrom: value.date_from,
+                dateTo: value.date_to,
+                place: value.place,
+                memo: value.abstract,
+                expenseItemName: value.ra_name,
+                expObject_desc: value.fee_item_name,
+                price: value.unit_price,
+                quantity: value.quantity,
+                amount: value.amount,
+                lineId: value.ra_line_id,
+                original_currency: value.original_currency,
+                exchange_rate: value.exchange_rate,
+                attach_number: value.attach_number,
+                rentals_infor: value.rentals_infor
+
+              };
+
+              Item1.push(item);
+              console.log(Item1);
+              // this.date.head=Item;
+              //console.log(this.date.head);
+              $ionicLoading.hide();
+            });
+
+            expenseApply.data.lines = Item1;
+
+            for (var i = 0; i < expenseApply.data.lines.length; i++) {
+              expenseApply.selectedLineId.push(expenseApply.data.lines[i].lineId);
+            }
+            console.log(8888);
+            console.log(expenseApply.selectedLineId);
+            console.log(9999);
+
+            /*  var length=expenseApply.data.lines.length;
+             for(var i=0;i<length;i++)
+             {
+             expenseApply.data.sum+=expenseApply.data.lines[i].amount;
+             }
+             */
+
+            $ionicLoading.hide();
+            //  expenseApply.data = response["expense_list"];
+            if (status == "已经保存") {
+              openUpdate();
+            }
+            else if (status == "已经审批" || status == "已提交") {
+              console.log("SUBMITTED Query");
+              openReadOnly();
+
+            }
+          }
+        },
+        function (err) {
+          // showMessage('网络连接错误:'+angular.toJson(err));
+          dialog.showAlert("E", "网络连接错误");
+          $ionicLoading.hide();
+        });
+    }
+    $scope.removeData = function (status, index) {
+      if (status == "已经保存") {
+        $ionicLoading.show({
+          template: "正在删除报销单"
+
+        });
+        var deferred = $q.defer();
+        var expHeaderId = $scope.expList[index].ra_id;
+        console.log(expHeaderId);
+        var Url = baseConfig.businessPath + "/expense_account/delete_expense";
+        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
+        $http.post(Url, PostData).success(function (response) {
+          if (response["status"] == "S") {
+            $scope.expList.splice(index, 1);
+            $ionicLoading.hide();
+            // dialog.showAlert("I", "删除成功");// mod by ciwei
+          }
+          else {
+            dialog.showAlert("E", "获取信息错误");
+
+          }
+        }).error(function (data) {
+
+          $ionicLoading.show({
+            template: '网络连接错误'
+
+          });
+          $ionicLoading.hide();
+        })
+      }
+
+      else if (status == "已提交" || status == "已经审批") {
+        // showMessage("不能删除");
+        dialog.showAlert("I", "不能删除");
+      }
+    }
+
+    $scope.doRefresh = function () {
+      console.log('Refreshing!');
+      // showMessage('Refreshing!');
+
+      queryTabList(currentListStatusType);
+
+      $scope.$broadcast('scroll.refreshComplete');
+
+
+    };
+
+  }]);
+
+/**
+ * Created by huchaoliang on 15/5/6.
+ */
+
+/*报销服务*/
+angular.module("applicationModule")
+.factory('expenseApply', function ($http, $q, $window, $ionicLoading, baseConfig) {
+
+  // 上传附件
+  function doPostHttp(form, deferred) {
+    //showMessage("doPostHttp");
+    $http.post(baseConfig.basePath + 'EXP/EXP5010/exp_upload_line_photos.svc', form, {
+      transformRequest: angular.identity,
+      headers: {'Content-Type': undefined}
+    })
+      .success(function (response) {
+        //showMessage("上传成功");
+
+        deferred.resolve(response);
+      })
+      .error(function (err) {
+        showMessage("上传失败");
+
+        deferred.reject(err);
+      });
+  }
+
+  function createBlob(data, type) {
+    var r;
+    try {
+      r = new $window.Blob([data], {type: type});
+    }
+    catch (e) {
+      // TypeError old chrome and FF
+      $window.BlobBuilder = $window.BlobBuilder ||
+        $window.WebKitBlobBuilder ||
+        $window.MozBlobBuilder ||
+        $window.MSBlobBuilder;
+      // consider to use crosswalk for android
+
+      if (e.name === 'TypeError' && window.BlobBuilder) {
+        var bb = new BlobBuilder();
+        bb.append([data.buffer]);
+        r = bb.getBlob(type);
+      }
+      else if (e.name == "InvalidStateError") {
+        // InvalidStateError (tested on FF13 WinXP)
+        r = new $window.Blob([data.buffer], {type: type});
+      }
+      else {
+        throw e;
+      }
+    }
+    return r;
+  }
+
+  var service = {
+
+    data: {},
+    dataBuffer: {},
+    canEdit: '',
+    tempLine: {},
+    tempAttachment: {},
+    projectList: [],
+    selectedLineId: [],
+    currentQueryType: "",
+    canEditObjectType: true,
+    canSelectProject: "",
+    canUpload: '',
+    photoData: {},
+    currentQueryTypeDesc: '',
+    sourceFrom: '',
+    ListItem: {},
+    canSubmit: '',
+    expenseObject_id: '',
+    queryDetail: function (expHeaderId) {
+      //请求服务器，查询操作
+      var deferred = $q.defer();
+      console.log(1122);
+      var Item = [];
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_detail";
+      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
+      $http.post(Url, PostData).success(function (response) {
+        //console.log("返回数据：" + angular.toJson(response));
+        deferred.resolve(response);
+
+      }).error(function (err) {
+
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
+    // 查询tab列表
+    queryTabList: function (queryType) {
+
+      var deferred = $q.defer();
+      var expStatues
+      if (queryType == 'toSubmit') {
+        expStatues = 'SAVE';
+      }
+      else if (queryType == 'submitted') {
+        expStatues = 'SUBMIT';
+      }
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
+      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
+        + '","p_page_num":"' + "1" + '"}}';
+
+      $http.post(Url, PostData).success(function (response) {
+        deferred.resolve(response);
+
+      }).error(function (response) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
+
+    getDataFromTravel: function (travelDataPara) {
+      if (travelDataPara != undefined) {
+        this.canEditObjectType = false;
+        this.data.travelApplicationNumber = travelDataPara.travelNo;
+        this.data.objectType = travelDataPara.objectType;
+        this.data.expenseObject = travelDataPara.expenseObject;
+        this.data.expenseObjectName = travelDataPara.expenseObjectName;
+      } else {
+        //showMessage("没有差旅申请�?)
+      }
+      return this.data;
+
+    },
+
+    insert: function (detailData) {
+      //请求数据库服务器
+      /* console.log("response:" +  "进入");
+       console.log(angular.toJson(this.data));*/
+      console.log(detailData);
+      console.log("lineId=" + detailData.lines[0].lineId);
+      console.log("detailData.lines.length=" + detailData.lines.length);
+      var linesId
+      if (detailData.lines.length == 1)
+        linesId = detailData.lines[0].lineId;
+      else if (detailData.lines.length > 1) {
+        linesId = detailData.lines[0].lineId + "#";
+        for (var i = 1; i < detailData.lines.length; i++) {
+          linesId = linesId + detailData.lines[i].lineId;
+          if (i != detailData.lines.length - 1)
+            linesId = linesId + "#";
+        }
+      }
+      console.log(linesId);
+      var deferred = $q.defer();
+      var Url = baseConfig.businessPath + "/expense_account/create_expense";
+      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + "" + '","p_description":"'
+        + detailData.description + '","p_line":"' + linesId + '"}}';
+
+      $http.post(Url, PostData).success(function (response) {
+        deferred.resolve(response);
+
+      }).error(function (response) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
+
+    remove: function (expHeaderId) {
+      var dataPara = {
+        expHeaderId: expHeaderId
+      };
+      var deferred = $q.defer();
+      $http({
+        method: 'POST',
+        url: baseConfig.basePath + "EXP/EXP5010/app_reimbursement_delete.svc",
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        transformRequest: function (data) {
+
+          return 'para=' + JSON.stringify(data);
+        },
+        data: dataPara
+      })
+        .success(function (response) {
+          console.log("response:" + "成功返回" + angular.toJson(response));
+          deferred.resolve(response);
+        })
+        .error(function (err) {
+          console.log("失败返回:" + angular.toJson(err));
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    },
+
+    submit: function (expHeaderIdToSubmit) {
+      //请求数据库服务器，进行存储操�?
+      console.log("response:" + "进入");
+
+      console.log(angular.toJson(this.data));
+      this.data.userId = window.localStorage.empno;
+      var datatemp = {
+        userId: window.localStorage.empno,
+        expHeaderId: expHeaderIdToSubmit
+      };
+
+      var deferred = $q.defer();
+      $http({
+        method: 'POST',
+        url: baseConfig.basePath + 'EXP/EXP5010/exp_reimbursement_hd_submit.svc',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        transformRequest: function (data) {
+          return 'para=' + JSON.stringify(data);
+        },
+        data: datatemp
+      })
+        .success(function (response) {
+          //login
+          console.log("response:" + "成功返回");
+          console.log("response:" + angular.toJson(response));
+          deferred.resolve(response);
+        }).error(function (response, status) {
+          // login
+          console.log("response:" + "失败返回");
+          console.log("response:" + response + ",status:" + status);
+          deferred.reject(response);
+        });
+      return deferred.promise;
+    },
+
+    initDataForAddAttachment: function () {
+      this.photoData = {
+        photos: []
+      }
+    },
+
+    initData: function () {
+      this.data = {
+        userId: window.localStorage.empno,
+        companyId: baseConfig.companyId,
+        lines: []
+      };
+    },
+
+    addData: function (record) {
+      this.data.push(record);
+    },
+    uploadData: function (form, photos) {    // 以formdatade 形式上传文件
+      console.log("进入");
+
+      showMessage("photos.length" + photos.length);
+
+      var deferred = $q.defer();
+      //showMessage("photos.length" +photos.length);
+      //deferred.reject("error");
+      if (photos.length > 0) {
+
+        var count = 0;
+        for (var i = 0; i < photos.length; i++) {
+          //这里是异步调用cordova 的文件操作，给form 增加
+          window.resolveLocalFileSystemURL(photos[i].photo_src, function (fileEntry) {
+            fileEntry.file(function (file) {
+              var reader = new FileReader();
+              reader.onloadend = function (fileReadResult) {
+                var data = new Uint8Array(fileReadResult.target.result);
+                var blob = createBlob(data, "image/jpeg");
+                form.append(file.name, blob, file.name);
+                count++;
+                if (count == photos.length) {
+                  doPostHttp(form, deferred);
+                }
+              };
+              reader.onerror = function (fileReadResult) {
+                //如果失败也算完成的话，这里也加上就行
+                //count ++
+                //if(count == photos.length()){
+                //doPostHttp(form);
+                //}
+              };
+              reader.readAsArrayBuffer(file);
+            });
+          });
+        }
+      } else {
+
+        //  showMessage("上传无照�?);
+
+        doPostHttp(form, deferred);
+      }
+
+      return deferred.promise;
+    },
+    update: function (detailData) {
+      //请求数据库服务器，进行存储操作
+      /*  var length=detailData.lines.length;
+       var linesId=detailData.lines[length-1].lineId;
+       */
+      console.log(detailData.lines);
+      var linesId;
+      // console.log(detailData.lines[0].lineId)
+      /*   if(detailData.lines.length==1)
+       linesId=detailData.lines[0].lineId;
+       else if(detailData.lines.length>1){*/
+      // linesId=detailData.lines[0].lineId+"#";
+      if (detailData.lines.length == 1)
+        linesId = detailData.lines[0].lineId;
+      else if (detailData.lines.length > 1) {
+        linesId = detailData.lines[0].lineId + "#";
+        for (var i = 1; i < detailData.lines.length; i++) {
+          linesId = linesId + detailData.lines[i].lineId;
+          if (i != detailData.lines.length - 1)
+            linesId = linesId + "#";
+        }
+      }
+      console.log(linesId);
+
+      var deferred = $q.defer();
+      var Url = baseConfig.businessPath + "/expense_account/create_expense";
+      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + detailData.expHeaderId
+        + '","p_description":"' + detailData.description + '","p_line":"' + linesId + '"}}';
+      $http.post(Url, PostData).success(function (response) {
+        deferred.resolve(response);
+
+      }).error(function (response) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
+    // 删除报销行信息
+    removeLine: function (expLineId) {
+      console.log('expLineId' + expLineId);
+      var dataPara = {
+        expLineId: expLineId
+      };
+      var deferred = $q.defer();
+      $http({
+        method: 'POST',
+        url: baseConfig.basePath + 'EXP/EXP5010/app_reimbursement_ln_delete.svc',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        transformRequest: function (data) {
+          return 'para=' + JSON.stringify(data);
+        },
+        data: dataPara
+      })
+        .success(function (response) {
+          console.log("response:" + "成功返回" + angular.toJson(response));
+          deferred.resolve(response);
+        })
+        .error(function (err) {
+          console.log("失败返回:" + angular.toJson(err));
+          deferred.reject(err);
+        });
+
+      return deferred.promise;
+    },
+
+
+    dateFmtForSave: function () {
+      // 日期格式处理
+      for (var i = 0; i < this.dataBuffer.lines.length; i++) {
+        this.dataBuffer.lines[i].dateFrom = getFormatDate(new Date(this.dataBuffer.lines[i].dateFrom));
+        this.dataBuffer.lines[i].dateTo = getFormatDate(new Date(this.dataBuffer.lines[i].dateTo));
+      }
+    },
+    dateFmtForUI: function () {
+      for (var i = 0; i < this.data.lines.length; i++) {
+        this.data.lines[i].dateFrom = new Date(this.data.lines[i].dateFrom);
+        this.data.lines[i].dateTo = new Date(this.data.lines[i].dateTo);
+      }
+    }
+
+  }
+
+  return service;
+});
+
+
+
+// 报销
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.exp_expenseTypeList', {
+          url: '/acc/expenseTypeList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/expenseTypeList.html',
+              controller: 'expenseTypeController'
+            }
+          }
+        });
+    }]);
+angular.module("applicationModule").controller('expenseTypeController', function($scope,$rootScope,keepAccount,expenseApply,$http,$q,$ionicHistory, baseConfig) {
+
+    function queryExpenseTypeList(){
+        var companyId=baseConfig.user.companyId;
+        var deferred = $q.defer();
+
+        /*
+        $http.get(baseConfig.basePath+"EXP/expenseTypeList.svc?companyId="+companyId,{cache:false}).
+            success(function(response, status, headers, config) {
+                deferred.resolve(response);
+            }).
+            error(function(error, status, headers, config) {
+                deferred.reject(error);
+            });
+
+        */
+        $scope.expenseTypeList =
+            [
+                {
+                    "expenseTypeId": 21,
+                    "expenseTypeCode": "DAILY_MANAGEMENT",
+                    "expenseTypeName": "日常管理",
+                    "reimbursementTypeId": 21
+                },
+                {
+                    "expenseTypeId": 22,
+                    "expenseTypeCode": "PROJECT_IMPLEMENTATION",
+                    "expenseTypeName": "项目实施",
+                    "reimbursementTypeId": 21
+                }
+            ];
+        return deferred.promise;
+    }
+
+    var promise=queryExpenseTypeList();
+    promise.then(
+        function(response) {
+            var code=getResponseCode(response);
+            if(code=="ok"){
+                $scope.expenseTypeList=response.body.expenseTypeList;
+            }
+            else if (code =="login_required") {
+                //showMessage("登录状态异常\n"+angular.toJson(response));
+                //reLogin();}
+                $scope.expenseTypeList =
+                    [
+                        {
+                            "expenseTypeId": 21,
+                            "expenseTypeCode": "DAILY_MANAGEMENT",
+                            "expenseTypeName": "日常管理",
+                            "reimbursementTypeId": 21
+                        },
+                        {
+                            "expenseTypeId": 22,
+                            "expenseTypeCode": "PROJECT_IMPLEMENTATION",
+                            "expenseTypeName": "项目实施",
+                            "reimbursementTypeId": 21
+                        }
+                    ];
+            }
+            else if(code=="failure"){
+                showMessage("查询失败:"+angular.toJson(response))
+            }else{
+                showMessage("未知错误:"+angular.toJson(response));
+            }
+        },
+        function(err) {  // 处理错误 .reject
+            showMessage("网络连接错误...."+angular.toJson(err));
+        });
+
+    $scope.selectExpenseType=function(e){
+        var target= e.target;
+        var expenseTypeName=target.getAttribute('expenseTypeName');
+        var expenseTypeId=target.getAttribute('expenseTypeId');
+        var expenseTypeCode=target.getAttribute('expenseTypeCode');
+        if(keepAccount.data.expense_type_id!=expenseTypeId){
+            keepAccount.data.expense_item_id=null;
+            keepAccount.data.expense_item_desc='';
+            keepAccount.data.expense_type_id=expenseTypeId;
+            keepAccount.data.expense_type_desc=expenseTypeName
+        }
+        expenseApply.tempLine.expenseTypeId=expenseTypeId;
+        expenseApply.tempLine.expenseTypeName=expenseTypeName;
+
+        //globalNavigator.popPage();
+        //$ionicNavBarDelegate.back();
+        $ionicHistory.goBack();
+    };
+
+   // $rootScope.hideTabs = true; // mod by ciwei
+});
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.exp_SelectDetail', {
+          url: '/interfaceReportList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/exp/interfaceReportList.html',
+              controller: 'interfaceReportListController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+.controller('interfaceReportListController', function($scope,keepAccount,$http,$q,expenseApply,dialog,$state,$ionicHistory,$ionicLoading, baseConfig) {
+    var Item = [];
+    $scope.detailData=expenseApply.data;
+    //console.log( $scope.detailData.expenseObject_id);
+    console.log(expenseApply.data.expenseObject_id);
+    $scope.selectedLineId=expenseApply.selectedLineId;
+    console.log(111);
+    console.log( $scope.selectedLineId);
+    //console.log("$scope.selectedLinedId+++++: " + angular.toJson($scope.selectedLineId));
+    console.log(222);
+   // console.log(expenseApply.projectList);
+    $ionicLoading.show({
+        template: "Loading..."
+    });
+    function interfaceReportList(){
+        var deferred = $q.defer();
+        var expenseObject_id= expenseApply.data.expenseObject_id;
+        var Url = baseConfig.businessPath + "/expense_account/fetch_exp_details";
+        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_id":"' + expenseObject_id + '"}}';
+        $http.post(Url,PostData).success(function (response){
+            console.log(response);
+            //console.log("接口返回数据： " + angular.toJson(response));
+            deferred.resolve(response);
+
+        }).error(function(err) {
+
+                deferred.reject(err);
+            });
+        return deferred.promise;
+    }
+    var promise=interfaceReportList();
+    promise.then(function(response){
+        if(response["status"] == "S")
+      {
+          var interfaceReportList = response["detail"];
+          $.each(interfaceReportList, function (n, value) {
+              var item = {
+                  dateFrom : value.date_from,
+                  dateTo   : value.date_to,
+                  place    : value.place,
+                  memo    : value.desc,
+                  amount :value.amt,
+                  expObject_desc:value.exp_item,
+                  lineId:value.expense_detail_id,
+                  original_currency:value.original_currency,
+                  exchange_rate:value.exchange_rate,
+                  attach_number:value.attach_number,
+                  rentals_infor:value.rentals_infor,
+                  quantity:value.qty,
+                  price:value.price
+          };
+             /* for(var i=0;i<$scope.selectedLineId.length;i++)
+              {
+                  if($scope.selectedLineId[i]!==item.lineId)
+
+
+              }*/
+             // Item.push(item);
+              console.log(Item);
+              //console.log("Item++++: " + angular.toJson(Item));
+              if(contains( $scope.selectedLineId,item.lineId))
+              {
+                console.log(456);
+              }
+              else{
+                  Item.push(item);
+                  console.log(789);
+              }
+          });
+          $scope.interfaceReportList=Item;
+          $ionicLoading.hide();
+      }
+        else{
+           // showMessage("未知错误:"+angular.toJson(response));
+            dialog.showAlert("E","获取信息错误");
+            $ionicLoading.hide();
+        }
+
+    },function(error){
+       // showMessage("网络连接错误...."+angular.toJson(error));
+        dialog.showAlert("E","网络连接错误");
+        $ionicLoading.hide();
+    });
+
+    function contains(a, obj) {
+        for (var i = 0; i < a.length; i++) {
+            if (a[i] === obj) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    $scope.confirmAccounts=function(){
+        var selectedAccounts=getSelected();
+        console.log(selectedAccounts);
+
+
+          for(var i=0;i<selectedAccounts.length;i++){
+
+              selectedAccounts[i].dateFrom= selectedAccounts[i].dateFrom.toString();
+              selectedAccounts[i].dateTo= selectedAccounts[i].dateTo.toString();
+              expenseApply.data.lines.push(selectedAccounts[i]);
+
+              expenseApply.selectedLineId.push(selectedAccounts[i].lineId);
+
+            //  expenseApply.dateFmtForUI();
+          }
+        console.log(4444);
+        console.log( expenseApply.selectedLineId);
+        console.log(5555);
+        expenseApply.data.sum=0;
+        for(var i=0;i<expenseApply.data.lines.length;i++){
+            expenseApply.data.sum+=expenseApply.data.lines[i].amount;
+        }
+       // console.log(expenseApply.data.sum);
+        $ionicHistory.goBack();
+        //$state.go('tab.expenseLines_expenseDetail');
+
+
+    };
+
+        function getSelected(){
+            var accountList=$scope.interfaceReportList;
+            var selectedList=[];
+
+            console.log(accountList);
+
+            for(var i=0;i<accountList.length;i++){
+                //alert(accountList[i].Selected==undefined || accountList[i].Selected=="NO");
+
+                if(!(accountList[i].Selected==undefined || accountList[i].Selected=="NO")){
+                   // showMessage(accountList[i].Selected);
+                    selectedList.push(accountList[i]);
+                    //从记一笔列表中删除已选行项目
+                   // $scope.interfaceReportList.splice(i,1);
+                }
+            }
+            return selectedList;
+        }
+
+
+    });
+
+/**
+ * Created by huchaoliang on 15-5-22.
+ */
+
+angular.module("applicationModule").controller('reportTypeController', function($scope,keepAccount,$http,$q,expenseApply,travelApply, baseConfig) {
+
+    function queryReportTypeList(){
+        var companyId=baseConfig.user.companyId;
+        var deferred = $q.defer();
+        $http.get(baseConfig.basePath+"EXP/reimbursementList.svc?companyId="+companyId,{cache:false}).
+            success(function(response, status, headers, config) {
+                deferred.resolve(response);
+            }).
+            error(function(error, status, headers, config) {
+                deferred.reject(error);
+            });
+        return deferred.promise;
+    }
+
+    var promise=queryReportTypeList();
+    promise.then(function(response){
+
+        $scope.reportTypeList=[];
+
+        var code=getResponseCode(response);
+        if(code=="ok"){
+            console.log(response);
+            $scope.reportTypeList=response.body.reimbursementList;
+        }else if(code=="failure"){
+        }
+        else if (code =="login_required"){
+            showMessage("登录状态异常\n"+angular.toJson(response));
+            reLogin();
+        }else{
+            showMessage("未知错误:"+angular.toJson(response));
+        }
+    },function(error){
+        $scope.reportTypeList=[];
+
+        alert("网络连接错误,初始化数据"+error.message);
+    });
+
+    $scope.selectReportType=function(e){
+        var target= e.target;
+        var reportTypeName=target.getAttribute('reportTypeName');
+        var reportTypeId=target.getAttribute('reportTypeId');
+        var reportTypeCode=target.getAttribute('reportTypeCode');
+         console.log(reportTypeName);
+      //  travelApply.data.expType="123";
+
+        expenseApply.data.reportType=reportTypeId;
+        expenseApply.data.reportTypeName=reportTypeName;
+
+        console.log( expenseApply.data);
+
+        globalNavigator.popPage();
+    }
+});
+
 /**
  * Created by wuxiaocheng on 15/8/26.
  */
@@ -11005,1912 +12913,6 @@ angular.module("applicationModule")
 
 });
 
-
-/**
- * Created by huchaoliang on 15-5-15.
- */ 
-angular.module("applicationModule").controller('attachmentController', function($scope,$q,$http,expenseApply, baseConfig) {
-
-    var page = globalNavigator.getCurrentPage();
-    var expLineId= page.options.expLineId;
-    $scope.addAttachments = expenseApply.photoData.photos;
-
-    $scope.serverURL =  rootConfig.serverPath;
-
-    $scope.currentProgress = '执行补传，时间与照片大小有关';
-
-
-    //$scope.attachmentList=expenseApply.data.attachmentList;
-
-    /*
-    function addAttachmentList(){
-        var deferred = $q.defer();
-        $http.get(rootConfig.basePath+"EXP/EXP5010/exp_upload_line_photos.svc?expLineId="+expLineId,{cache:false}).
-            success(function(response, status, headers, config) {
-                deferred.resolve(response);
-            }).
-            error(function(error, status, headers, config) {
-                deferred.reject(error);
-            });
-        return deferred.promise;
-    }
-    var promise=addAttachmentList();
-    promise.then(function(response){
-        var code=getResponseCode(response);
-        if(code=="ok"){
-            console.log("获取附件列表");
-             console.log(response);
-            $scope.attachmentList=response.body;
-        }else if(code=="failure"){
-            showMessage("查询失败:"+angular.toJson(response))
-        }else{
-            showMessage("未知错误:"+angular.toJson(response));
-        }
-
-    },function(error){
-        showMessage("网络连接错误...."+angular.toJson(error));
-    });
-
-    */
-
-    function attachmentList(){
-        var deferred = $q.defer();
-        //$http.get(rootConfig.basePath+"EXP/EXP5010/mobile_exp_report_list.svc",{cache:false}).
-       $http.get(rootConfig.basePath+"PUBLIC/expense_lines_attachment.svc?tableName=EXP_REIMBURSEMENT_LN&tablePkValue="+expLineId,{cache:false}).
-            success(function(response, status, headers, config) {
-              deferred.resolve(response);
-
-            }).
-            error(function(error, status, headers, config) {
-                deferred.reject(error);
-            });
-        return deferred.promise;
-    }
-    var promise=attachmentList();
-    promise.then(function(response){
-        var code=getResponseCode(response);
-        if(code=="ok"){
-            // console.log(response);
-            $scope.attachmentData=response.body;
-          //  console.log(response.body);
-            console.log(response.body);
-            console.log(angular.toJson($scope.attachmentData));
-
-        }else if(code=="failure"){
-            showMessage("查询失败:"+angular.toJson(response));
-        }
-        else if (code =="login_required"){
-            showMessage("登录状态异常\n"+angular.toJson(response));
-            reLogin();
-        }
-        else{
-            showMessage("未知错误:"+angular.toJson(response));
-        }
-
-    },function(error){
-        showMessage("网络连接错误...."+angular.toJson(error));
-    });
-
-    /*打开dialog*/
-    $scope.dialogs = {};
-    $scope.openDialog=function(dlg) {
-        if (!$scope.dialogs[dlg]) {
-            ons.createDialog(dlg).then(function(dialog) {
-                $scope.dialogs[dlg] = dialog;
-                dialog.show();
-            });
-        }
-        else {
-            $scope.dialogs[dlg].show();
-        }
-    };
-    /*选择相机*/
-    $scope.selectPhotoSource=function(sourceType){
-        if (sourceType == "Cemera") {
-            getPhotoFromCamera();
-        }else if (sourceType == "PhotoLibary") {
-            getPhotoFromLibary();
-        }
-        $scope.attachmentSourceDialog.hide();
-    };
-
-    /*拍摄照片 相机*/
-    getPhotoFromCamera=function(){
-
-        navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-            destinationType: Camera.DestinationType.FILE_URL ,
-            sourceType : Camera.PictureSourceType.CAMERA
-            // saveToPhotoAlbum : true
-            //sourceType : Camera.PictureSourceType.PHOTOLIBRARY
-        });
-    };
-
-    /*拍摄照片 相册*/
-    getPhotoFromLibary=function(){
-
-        navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-            destinationType: Camera.DestinationType.FILE_URL ,
-            //sourceType : Camera.PictureSourceType.CAMERA
-            sourceType : Camera.PictureSourceType.PHOTOLIBRARY
-        });
-    };
-
-    /*打开确认照片页面*/
-    $scope.showConfirmAttachment=function(index){
-        expenseApply.tempAttachment=expenseApply.data.tempAttachment[index];
-        globalNavigator.pushPage(moduleHtmlPath.ACC+'checkPhoto.html', { animation : 'slide' });
-    };
-
-    function onSuccess(imageURI) {
-
-        //var image = document.getElementById('myImage');
-        //image.src = imageURI;
-        // alert("asd");
-        showMessage("补拍照片 ："+imageURI);
-
-        getPic(imageURI);
-        //$scope.$apply();
-    }
-    function onFail(message) {
-        alert('Failed because: ' + message);
-    }
-
-    function getPic(file){
-        window.resolveLocalFileSystemURI(file, resolveGetOnSuccess, resOnError);
-    }
-
-    function resolveGetOnSuccess(entry){
-        var date= getFormatDate(new Date());
-        var photo={
-            photo_name:entry.name,
-            photo_src:entry.toNativeURL(),
-            creation_date:date,
-            created_by:rootConfig.user.userId
-        };
-
-       // showMessage("src:"+photo.photo_src);
-        //showMessage('name:'+photo.photo_name);
-       // showMessage( angular.toJson(expenseApply.photoData.photos));
-
-
-        expenseApply.photoData.photos.push(photo);
-
-        showMessage( angular.toJson(expenseApply.photoData.photos));
-
-        //showMessage( angular.toJson($scope.attachmentData.attachments));
-        //keepAccount.data.photos.push(photo);
-        /*清除缓存*/
-        //cleanupCache();
-
-        uploadData();
-
-        $scope.$apply();
-        showMessage("补拍完成");
-
-
-    }
-
-    function showUploadProgress(msg) {
-        //console.log($scope.currentProgress);
-        //showMessage($scope.currentProgress);
-        $scope.currentProgress = msg;
-        //console.log($scope.currentProgress);
-        //showMessage(msg);
-        //showMessage($scope.currentProgress);
-
-
-    }
-
-    /*上传数据*/
-    uploadData=function(){
-        /**/
-
-        showMessage("进入上传");
-        var form=new FormData();
-        form.append("expense_line_id",expLineId);
-
-        //showMessage("准备上传:"+angular.toJson(form));
-        var length = expenseApply.photoData.photos.length;
-        var Photos=[];
-        Photos.push(expenseApply.photoData.photos[length-1]);
-
-        //showUploadProgress("执行补传，时间与照片大小有关");
-        uploadProgressModal.show();
-        var promise= expenseApply.uploadData(form,Photos);
-        promise.then(
-            function(response) {
-                var code=getResponseCode(response);
-                if(code=="ok"){
-                    //接受返回参数
-                   showMessage("上传结束");
-
-
-                }else if(code=="failure"){
-                    showMessage("查询失败:"+angular.toJson(response))
-                }
-                else if (code =="login_required"){
-                    showMessage("登录状态异常\n"+angular.toJson(response));
-                    reLogin();
-                }else{
-                    showMessage("未知错误:"+angular.toJson(response));
-                }
-
-                uploadProgressModal.hide();
-
-            },
-            function(err) {  // 处理错误 .reject
-                showMessage("网络连接错误...."+angular.toJson(err));
-                uploadProgressModal.hide();     //网络错误退出
-
-            });
-    };
-
-
-    function resOnError(error) {
-        alert(error.code);
-    }
-});
-/**
- * Created by Administrator on 15-5-15.
- */
-
-angular.module("applicationModule").controller('checkAttachmentController', function($scope,expenseApply) {
-
-    $scope.tempAttachment=expenseApply.tempAttachment;
-
-    $scope.back=function(){
-        globalNavigator.popPage();
-    };
-
-    $scope.testFunction=function(){
-
-        alert("11111");
-    };
-
-    // 删除照片
-    $scope.deleteAttachment=function() {
-        showMessage("删除照片操作");
-    };
-
-});
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.expenseDetail', {
-          url: '/expenseDetail',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/exp/expenseDetail.html',
-              controller: 'expenseDetailController'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('expenseDetailController', [
-      '$scope', 'expenseApply', 'keepAccount', 'dialog', 
-      'expenseObject', '$state', '$http', '$ionicLoading', 
-      '$q', 'baseConfig', 
-    function ($scope, expenseApply, keepAccount, dialog, expenseObject, 
-      $state, $http, $ionicLoading, $q, baseConfig) {
-
-    $scope.isshow=true;
-    if(window.localStorage.AlertPage=="" || window.localStorage.AlertPage==undefined )
-    {
-      $scope.navBar = true;
-      window.localStorage.AlertPage="exist";
-    }
-    else
-    {
-      $scope.navBar = false;
-      $scope.isshow=false;
-    }
-    $scope.hide=function()
-    {
-      $scope.isshow=false;
-      $scope.navBar = false;
-    };
-    //expenseDetail 缓冲图片added by heLiu
-
-    expenseObject.businessType = 'EXP';
-    $scope.canEdit = expenseApply.canEdit;
-    //  expenseApply.dateFmtForSave();
-    $scope.canUpload = expenseApply.canUpload;
-    console.log($scope.canUpload);
-    $scope.detailData = expenseApply.data;
-    //console.log("参数数据为：" + angular.toJson( $scope.detailData));
-    $scope.currentQueryTypeDesc = expenseApply.currentQueryTypeDesc;
-    //  $scope.detailData=expenseApply.getDataFromTravel(globalNavigator.getCurrentPage().options.travelDataPara);
-
-    $scope.canSubmit = expenseApply.canSubmit;
-
-    /*创建明细行*/
-    $scope.openCreateDetail = function () {
-      keepAccount.operation = "INSERT";
-      keepAccount.canEdit = true;
-      keepAccount.sourceFrom = "EXPENSE";
-      keepAccount.initData();
-      if (expenseApply.canEditObjectType == true) {
-        $scope.valueChange();
-        $state.go('tab.acc_detail');
-        // globalNavigator.pushPage('html/acc/accountDetail.html', { animation : 'slide' });
-      }
-    };
-
-
-    /*从记一笔选择明细行*/
-    $scope.openSelectDetail = function () {
-      console.log("expenseApply.data.lines: " + angular.toJson(expenseApply.data.lines));
-      console.log("canEditObjectType="+expenseApply.canEditObjectType);
-      console.log("expenseObject_desc="+$scope.detailData.expenseObject_desc);
-      expenseApply.canUpload = false;
-      if (expenseApply.canEditObjectType == true && ($scope.detailData.expenseObject_desc) != null) {
-        $scope.valueChange();
-        $state.go('tab.exp_SelectDetail');
-        // globalNavigator.pushPage('html/exp/interfaceReportList.html', { animation : 'slide' });
-      }
-    };
-
-    /*保存数据*/
-    $scope.saveData = function () {
-      expenseApply.data = $scope.detailData;
-      if (expenseApply.data.description == undefined) {
-        expenseApply.data.description = " ";
-      }
-
-      if (expenseApply.data.lines.length == 0) {
-        dialog.showAlert("I", "请先从记一笔选择");
-        // showMessage("请先从记一笔选择");
-      }
-      else {
-        $ionicLoading.show({
-          template: "正在保存..."
-        });
-
-        if (expenseApply.operation == "INSERT") {
-          var promise = expenseApply.insert($scope.detailData);
-          promise.then(
-            function (response) {
-              //console.log("接口返回参数： " + angular.toJson(response));
-              if (response["status"] == "S") {
-                $ionicLoading.hide();
-                expenseApply.data.expHeaderId = response["ra_id"];
-                //console.log("新增返回参数： " + angular.toJson(response));
-                //console.log("参数数据：" + angular.toJson(expenseApply.data));
-                $scope.detailData.lines = response.expense_list;
-                //console.log("更新后参数数据：" + angular.toJson($scope.detailData.lines));
-                expenseApply.selectedLineId = [];
-
-                //showMessage("保存成功");
-                dialog.showAlert("I", "保存成功");
-                expenseApply.operation = "UPDATE";
-                //  expenseApply.canUpload=true;
-                $scope.canUpload = true;
-              }
-              else {
-                // showMessage("未知错误:"+angular.toJson(response));
-                dialog.showAlert("E", "获取信息错误");
-                $ionicLoading.hide();
-
-              }
-            },
-            function (err) {  // 处理错误 .reject
-              // showMessage("网络连接错误:"+angular.toJson(err));
-              dialog.showAlert("E", "网络连接错误");
-              $ionicLoading.hide();
-            });
-        } else if (expenseApply.operation == "UPDATE") {
-          var promise = expenseApply.update($scope.detailData);
-          promise.then(function (response) {
-            if (response["status"] == "S") {
-              //console.log("接口返回参数： " + angular.toJson(response));
-              $scope.detailData.lines = response.expense_list;
-              //console.log("更新后参数数据：" + angular.toJson($scope.detailData.lines));
-              expenseApply.selectedLineId = [];
-              $ionicLoading.hide();
-              expenseApply.operation = "UPDATE";
-              expenseApply.saveAfterSubmit = true;
-              dialog.showAlert("I", "更新成功");
-              //  expenseApply.canUpload=true;
-              $scope.canUpload = true;
-              //showMessage("更新成功");
-            }
-            else {
-              // showMessage("未知错误:"+angular.toJson(response));
-              dialog.showAlert("E", "获取信息错误");
-              $ionicLoading.hide();
-
-            }
-          }, function (err) {  // 处理错误 .reject
-            //showMessage("网络连接错误:"+angular.toJson(err));
-            dialog.showAlert("E", "网络连接错误");
-            $ionicLoading.hide();
-          });
-        }
-      }
-    };
-
-    // 判断是否可删除
-    $scope.canToRemove = function () {
-      /*
-       if (loanApply.data.status ==  'NEW' ||  loanApply.data.status == 'REJECTED') {
-       return true;
-       }else {
-       return false;
-       }
-       */
-      //return (expenseApply.data.status ==  'NEW' ||  expenseApply.data.status == 'REJECTED');
-      return (expenseApply.data.status == 'NEW' );
-    };
-
-    //打开报销单明细
-    $scope.openReportLines = function (index) {
-      //根据index做相应处理
-      expenseApply.tempLine = expenseApply.data.lines[index];
-      $state.go('tab.exp_expenseLines');
-    };
-
-    $scope.valueChange = function () {
-      expenseApply.canSubmit = false;
-      $scope.canSubmit = false;
-      expenseApply.canUpload = false;
-      $scope.canUpload = false;
-    };
-
-    /*提交报销数据*/
-    $scope.submitData = function () {
-      expenseApply.data = $scope.detailData;
-
-      $ionicLoading.show({
-        template: "正在提交..."
-      });
-      var expHeaderId = $scope.detailData.expHeaderId;
-      var Url = baseConfig.businessPath + "/expense_account/submit_expense";
-      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
-      $http.post(Url, PostData).success(function (response) {
-        if (response["status"] == "S") {
-          $ionicLoading.hide();
-          // showMessage("提交成功");
-          dialog.showAlert("I", "提交成功");
-          $state.go('tab.exp_main');
-          var promise = expenseApply.queryTabList('toSubmit')
-          promise.then(function (response) {
-            if (response["status"] == "S") {
-              $("#toSubmit").addClass("button-positive")
-              $scope.expList = response["expense_list"];
-              var length = $scope.expList.length;
-              console.log(length);
-              for (var i = 0; i < length; i++) {
-                if ($scope.expList[i].descrpt == 'undefined') {
-                  $scope.expList[i].descrpt = "";
-                }
-              }
-            }
-            else {
-              //  showMessage("未知错误:"+angular.toJson(response));
-              dialog.showAlert("E", "获取信息错误");
-              $ionicLoading.hide();
-            }
-
-          }, function (error) {
-            // showMessage("网络连接错误...."+angular.toJson(error));
-            dialog.showAlert("E", "网络连接错误");
-            $ionicLoading.hide();
-          });
-
-
-          $scope.canEdit = false;
-        }
-        else {
-          // showMessage("未知错误:"+angular.toJson(response));
-          dialog.showAlert("E", "获取信息错误");
-          $ionicLoading.hide();
-
-        }
-      }).error(function (data) {
-        //  $ionicLoading.hide();
-        $ionicLoading.show({
-          template: '网络连接错误'
-
-        });
-        $ionicLoading.hide();
-      })
-    }
-
-    $scope.openExpenseObjectList = function () {
-      console.log($scope.canEdit);
-      console.log($scope.detailData.expHeaderId);
-      if ($scope.detailData.lines.length == 0 && $scope.detailData.expHeaderId == undefined) {
-        $scope.valueChange();
-        $state.go("tab.acc_expenseObjectList");
-      }
-    }
-
-    $scope.removeLine = function (canDeleteLine, index) {
-      var amount = $scope.detailData.lines[index].amount;
-      console.log($scope.detailData.lines[index].amount);
-      console.log(expenseApply.data.lines.length);
-      if (canDeleteLine == true) {
-        $ionicLoading.show({
-          template: "正在删除..."
-        });
-        var deferred = $q.defer();
-        var lineId = $scope.detailData.lines[index].lineId;
-        var expHeaderId = $scope.detailData.expHeaderId;
-        //console.log("+++++++++++++++++++++++++++++" +　lineId);
-        var Url = baseConfig.businessPath + "/expense_account/delete_expense_line";
-        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '","p_ra_line_id":"' + lineId + '"}}';
-
-        $http.post(Url, PostData).success(function (response) {
-          if (response["status"] == "S") {
-            console.log(expenseApply.data.lines.length);
-            // dialog.showAlert("I", "删除成功"); // mod by ciwei
-            console.log(expenseApply.data.lines.length);
-            for (var i = 0; i < expenseApply.selectedLineId.length; i++) {
-              if (expenseApply.selectedLineId[i] == lineId) {
-                expenseApply.selectedLineId = removeElement(i, expenseApply.selectedLineId);
-              }
-            }
-            expenseApply.data.sum = expenseApply.data.sum - amount;
-            $scope.detailData.lines.splice(index, 1);
-            expenseApply.data = $scope.detailData;
-            $ionicLoading.hide(); // move by ciwei
-          }
-          else {
-            //showMessage("未知错误:"+angular.toJson(response));
-            dialog.showAlert("E", "获取信息错误");
-            $ionicLoading.hide();
-
-          }
-        }).error(function (data) {
-          $ionicLoading.hide();
-          $ionicLoading.show({
-            template: '网络连接错误'
-
-          });
-        })
-      }
-
-      else if (canDeleteLine == false) {
-        dialog.showAlert("I", "不能删除");
-      }
-    }
-    function removeElement(index, array) {
-      if (index >= 0 && index < array.length) {
-        for (var i = index; i < array.length; i++) {
-          array[i] = array[i + 1];
-        }
-        array.length = array.length - 1;
-      }
-      return array;
-    }
-
-  }]);
-
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.exp_expenseItemList', {
-          url: '/expense/acc/expenseItemList',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/exp/expenseItemList.html',
-              controller: 'expenseItemController'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule").controller('expenseItemController', function ($scope, $rootScope, keepAccount, expenseApply, $http, $q, $ionicHistory, $ionicLoading) {
-
-  $ionicLoading.show({
-    template: "Loading...",
-    duration: 1000
-  });
-
-  function queryExpenseItemList() {
-    var expenseTypeId = keepAccount.data.expense_type_id;
-    var deferred = $q.defer();
-    deferred.resolve(keepAccount.expenseItemList);
-    return deferred.promise;
-  }
-
-  var promise = queryExpenseItemList();
-  promise.then(
-    function (response) {
-      $scope.expenseItemList = response;
-      console.log(angular.toJson(keepAccount.expenseItemList));
-      $ionicLoading.hide();
-    },
-    function (err) {  // 处理错误 .reject
-      //showMessage("网络连接错误...."+angular.toJson(err));
-    });
-
-  $scope.selectExpenseItem = function (e) {
-    var target = e.target;
-    // var expenseItemId=target.getAttribute('expenseItemId');
-    var expenseItemCode = target.getAttribute('expenseItemCode');
-    var expenseItemName = target.getAttribute('expenseItemName');
-    var expenseItemIndex = target.getAttribute('expenseItemIndex');
-
-    //keepAccount.data.expense_item_id=expenseItemId;
-    keepAccount.data.expense_item_code = expenseItemCode;
-    keepAccount.data.expense_item_desc = expenseItemName;
-
-    // 清空 费用申请
-    keepAccount.data.costObject_id = "";
-    keepAccount.data.costObject_desc = "";
-
-    keepAccount.expenseCostList = [];
-
-    var expenseHouseList_tmp = keepAccount.expenseItemList[expenseItemIndex].expense_item_house;
-
-    $.each(expenseHouseList_tmp, function (i, value) {
-      var item = {
-        costObjectId: value.id,
-        desc: value.name
-      };
-      keepAccount.expenseCostList.push(item);
-    });
-
-    console.log("coutList -- " + angular.toJson(keepAccount.expenseCostList));
-
-    $ionicHistory.goBack();
-  };
-
-  //$rootScope.hideTabs = true;// mod by ciwei
-});
-
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.exp_expenseLines', {
-          url: '/expenseLines',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/exp/expenseLines.html',
-              controller: 'expenseLinesController'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-    .controller('expenseLinesController', ['$scope','expenseApply','keepAccount','$ionicHistory',function($scope,expenseApply,keepAccount,$ionicHistory) {
-
-
-    $scope.detailData=expenseApply.tempLine;
-
-    $scope.canEdit=expenseApply.canEdit;
-    $scope.local_status=expenseApply.local_status;
-    //  $scope.sourceFrom="exp";
-    console.log( $scope.detailData);
-  // var canEdit=expenseApply.canEdit;
-  /*  $scope.detailData.dateFrom=new Date( $scope.detailData.dateFrom);
-    $scope.detailData.dateTo=new Date($scope.detailData.dateTo);*/
-    $scope.openCurrencyList=function(e){
-        /*var target= e.target;
-        var currencyName=target.getAttribute('currencyName');
-        var currencyCode=target.getAttribute('currencyCode');
-        var exchangeRate=target.getAttribute('exchangeRate');*/
-      /*expenseApply.tempLine.currencyName=currencyName;
-        expenseApply.tempLine.currencyCode=currencyCode+"-"+currencyName;
-        expenseApply.tempLine.exchangeRate=Number(exchangeRate);*/
-       // expenseApply.tempLine.currency_code=currencyCode;
-        //expenseApply.tempLine.currency_code_desc=currencyCode+"-"+currencyName;
-       // expenseApply.tempLine.originalCurrency=currencyCode
-         expenseApply.sourceFrom="EXP";
-        if (expenseApply.canEditObjectType==true){
-
-       globalNavigator.pushPage('html/acc/currencyList.html', { animation : 'slide' });
-        }
-    };
-     $scope.valueChange=function(){
-            expenseApply.canUpload=false;
-            $scope.canUpload=false;
-        };
-
-
-    $scope.openExpenseTypeList=function(){
-        if (expenseApply.canEditObjectType==true){
-            globalNavigator.pushPage('html/exp/expenseTypeList.html', { animation : 'slide' });
-        }
-
-    };
-    $scope.openExpenseItemList=function(){
-        if (expenseApply.canEditObjectType==true){
-            globalNavigator.pushPage('html/exp/expenseItemList.html', { animation : 'slide' });
-        }
-    };
-
-    //
-    $scope.canShow = function() {
-
-        if($scope.detailData.price.toFixed(2)==null)
-        {
-            $scope.sum=0.00;
-        }
-        else{
-          //  $scope.sum=($scope.detailData.price*$scope.detailData.quantity*$scope.detailData.exchangeRate).toFixed(2);
-            $scope.sum=5;
-        }
-
-    };
-    $scope.removeLine=function(){
-        var index=$scope.detailData.index;
-      //  console.log(index);
-        expenseApply.data.lines.splice(index,1);
-      //  expenseApply.removeLine(expenseApply.tempLine.expLineId);
-        showMessage("删除成功");
-        $ionicHistory.goBack();
-    };
-    $scope.confirmLine=function(){
-        var index=$scope.detailData.index;
-        if(index==-1){
-            expenseApply.data.lines.push($scope.tempLine);
-        }
-        else{
-            expenseApply.data.lines[index]=$scope.tempLine;
-        }
-        var date_from= getFormatDate(new Date($scope.detailData.dateFrom));
-        var date_to= getFormatDate(new Date($scope.detailData.dateTo));
-        if(date_from>date_to)
-        {showMessage("开始日期大于结束日期");}
-        else{
-            globalNavigator.popPage();
-        }
-    };
-
-
-  /*  $scope.removeLine=function(){
-        var index=$scope.detailData.index;
-        expenseApply.data.lines.splice(index,1);
-        expenseApply.removeLine(expenseApply.tempLine.expLineId);
-        showMessage("删除成功");
-        globalNavigator.popPage();
-    };*/
-
-
-    $scope.openAttachment=function(){
-        var LineId=$scope.detailData.expLineId;
-        console.log(LineId);
-        //globalNavigator.pushPage("html/exp/attachmentList.html");
-
-        globalNavigator.pushPage("html/exp/attachmentList.html", { expLineId: LineId, param2: "value2" });
-    }
-
-}]);
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.expense', {
-          url: '/expenseQueryTabList',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/exp/expenseQueryTabList.html',
-              controller: 'expenseQueryController'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('expenseQueryController', [
-    '$scope', 'expenseApply', 'dialog', 
-    '$http', '$q', '$state', '$ionicLoading', 
-    'hmsHttp', 'hmsPopup', "baseConfig",
-    function ($scope, expenseApply, dialog, 
-      $http, $q, $state, $ionicLoading, 
-      HttpAppService, hmsPopup, baseConfig) {
-
-    $scope.newPage = 0;
-    $scope.isshow = true;
-    $scope.canClickButton = {
-      toSubmit: true,
-      submitted: false
-    };
-    var statusType = {
-      new: "toSubmit",
-      submit: "submitted"
-    };
-    var currentListStatusType = statusType.new;
-
-    var noApprove = document.getElementById("noApprove");// add by ciwei
-    var alreadyApprove = document.getElementById("alreadyApprove");// add by ciwei
-    $scope.changeButton = function (type) {
-      switch (type) {
-        case 'toSubmit':
-          $scope.canClickButton = {
-            toSubmit: false,
-            submitted: true
-          };
-          //  $("#toSubmit").addClass("button-positive")
-          // $("#submitted").removeClass("button-positive")
-          noApprove.style.backgroundColor = "#D1F4F6";
-          noApprove.style.color = "#20CBD3";
-          alreadyApprove.style.backgroundColor = "#20CBD3";
-          alreadyApprove.style.color = "white";
-          currentListStatusType = statusType.new;
-          break;
-        case 'submitted':
-          $scope.canClickButton = {
-            toSubmit: true,
-            submitted: false
-          };
-          //  $("#submitted").addClass("button-positive")
-          //  $("#toSubmit").removeClass("button-positive")
-          alreadyApprove.style.backgroundColor = "#D1F4F6";
-          alreadyApprove.style.color = "#20CBD3";
-          noApprove.style.backgroundColor = "#20CBD3";
-          noApprove.style.color = "white";
-          currentListStatusType = statusType.submit;
-          break;
-      }
-      queryTabList(type);
-    };
-
-    $scope.$on('$stateChangeSuccess', // add by jiangzuoyong
-      function (event, toState, toParams, fromState, fromParams) {
-        if (toState.name == 'tab.exp_main' && fromState.name == 'tab.expenseDetail') {
-          var promise = queryList();
-          promise.then(function (response) {
-            if (response["status"] == "S") {
-              $("#toSubmit").addClass("button-positive")
-              $scope.expList = response["expense_list"];
-              var length = $scope.expList.length;
-              console.log(length);
-              for (var i = 0; i < length; i++) {
-                if ($scope.expList[i].descrpt == 'undefined') {
-                  $scope.expList[i].descrpt = "";
-                }
-              } 
-              $ionicLoading.hide();
-            } else if (response["status"] == "ETOKEN") {// add by ciwei
-              dialog.showAlert("E", response["returnMsg"]);
-              $ionicLoading.hide();
-              $state.go('login');
-            }
-            else {
-              // showMessage("未知错误:"+angular.toJson(response));
-              dialog.showAlert("E", "获取信息错误");
-              $ionicLoading.hide();
-            }
-          }, function (error) {
-            // showMessage("网络连接错误...."+angular.toJson(error));
-            dialog.showAlert("E", "网络连接错误");
-            $ionicLoading.hide();
-          });
-        }
-      });
-
-    // add by ciwei
-    $scope.showHelp = function () {
-      var template = 'Step1：“新建记一笔”，填写待报销记录，保存并上传。' + '<br> ' +
-        'Step2：在“报销”功能中，创建报销单，选择项目，再选择已经上传的“记一笔”作为报销行信息，保存提交。' + '<br><br> ' +
-        '**“记一笔”保存，是保存在手机本地，只有上传后，才能在报销单处选到。另，如若要卸载app，需先将所有记一笔“上传”，否则会丢失。';
-
-      var alertPopup = hmsPopup.showPopup(template, "报销功能使用说明");
-    };
-
-    $scope.show = function () {
-      $ionicLoading.show({
-        template: 'Loading...' 
-      });
-    };
-    $scope.hide = function () {
-      $ionicLoading.hide();
-    };
-    //初始化列表
-    function queryList() {
-      // $scope.expList.splice(0, $scope.expList.length);
-      // // baseConfig.businessPath   baseConfig.businessPath
-      $ionicLoading.show({
-        template: "Loading..."
-      });
-      var expStatues = 'SAVE';
-      var deferred = $q.defer();
-      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
-      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
-        + '","p_page_num":"' + "1" + '"}}';
-
-      $http.post(Url, PostData).success(function (response) {
-        deferred.resolve(response);
-
-      }).error(function (response) {
-        deferred.reject(response);
-      });
-      return deferred.promise;
-    }
-
-    var promise = queryList();
-    promise.then(function (response) {
-      if (response["status"] == "S") {
-        $("#toSubmit").addClass("button-positive")
-        $scope.expList = response["expense_list"];
-        var length = $scope.expList.length;
-        console.log(length);
-        for (var i = 0; i < length; i++) {
-          if ($scope.expList[i].descrpt == 'undefined') {
-            $scope.expList[i].descrpt = "";
-          }
-        }
-        $ionicLoading.hide();
-      } else if (response["status"] == "ETOKEN") {// add by ciwei
-        dialog.showAlert("E", response["returnMsg"]);
-        $ionicLoading.hide();
-        $state.go('login');
-      }
-      else {
-        // showMessage("未知错误:"+angular.toJson(response));
-        dialog.showAlert("E", "获取信息错误");
-        $ionicLoading.hide();
-      }
-    }, function (error) {
-      // showMessage("网络连接错误...."+angular.toJson(error));
-      dialog.showAlert("E", "网络连接错误");
-      $ionicLoading.hide();
-    });
-
-    function queryTabList(statues) {
-      $scope.isshow = false;
-      console.log("helloworld");
-      $scope.expList = new Array();
-      // $scope.expList.splice(0, $scope.expList.length);
-      $scope.newPage = $scope.newPage + 1;
-
-      console.log($scope.newPage);
-
-      var expStatues
-      if (statues == 'toSubmit') {
-        expStatues = 'SAVE';
-      }
-      else if (statues == 'submitted') {
-        expStatues = 'SUBMIT';
-      }
-      //  console.log("queryList");
-      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
-      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues + '","p_page_num":"' + $scope.newPage + '"}}';
-      $scope.show();
-      $http.post(Url, PostData).success(function (response) {
-        if (response["status"] == "S") {
-          //  $scope.isshow = true;
-          console.log(123);
-          console.log($scope.newPage);
-          console.log(456);
-          $scope.expenseList = response["expense_list"];
-          //  console.log(expenseList);
-          $.each($scope.expenseList, function (n, value) {
-            $scope.expList.push(value);
-          });
-          //$scope.expList=Item;
-          var length = $scope.expList.length;
-          //console.log(length);
-          for (var i = 0; i < length; i++) {
-            //  console.log($scope.expList[i].descrpt);
-            if ($scope.expList[i].descrpt == 'undefined') {
-              $scope.expList[i].descrpt = "";
-            }
-          }
-          //  $scope.isshow = false;
-          $scope.hide();
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-        } else if (response["expense_list"].length == 0) {
-          // alert(123);
-          $scope.isshow = false;
-          $ionicLoading.show({template: '没有更多的数据了....', noBackdrop: true, duration: 1000});
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-        }
-      }).error(function (data) {
-        $scope.isshow = false;
-        //$scope.hide();
-        $scope.$broadcast('scroll.infiniteScrollComplete');
-        $ionicLoading.hide();
-      });
-    }
-
-    /*打开申请创建页面*/
-    $scope.openCreateExpense = function () {
-      //初始化数据
-      expenseApply.initData();
-      expenseApply.operation = "INSERT";
-      //expenseApply.initData();
-      expenseApply.selectedLineId = [];
-      //prepareForReturn();
-      // prepareForReturn();
-      expenseApply.canEdit = true;
-      expenseApply.canSubmit = false;
-      expenseApply.canUpload = false;
-      expenseApply.canEditObjectType = true;// add by ciwei
-      $state.go('tab.expenseDetail');
-      // globalNavigator.pushPage(moduleHtmlPath.EXP+'expenseDetail.html', { animation: 'slide' });
-
-
-    };
-
-    //明细打开,更新可编辑
-    function openUpdate() {
-      //初始化数据，
-      expenseApply.canEdit = true;
-      expenseApply.operation = "UPDATE";
-      expenseApply.canEditObjectType = true;
-      expenseApply.canSubmit = true;
-      $state.go('tab.expenseDetail');
-    }
-
-    //明细打开,只读方式
-    function openReadOnly() {
-      //初始化数据
-      expenseApply.canEdit = false;
-      expenseApply.canEditObjectType = false;
-      expenseApply.canSubmit = false;
-      $state.go('tab.expenseDetail');
-    }
-
-
-    $scope.openExpenseDetail = function (status, index) {
-      // expenseApply.data.splice(0, expenseApply.data.length);
-      // expenseApply.data.lines=[];
-      //设置标志，保存后才能提交
-      // expenseApply.saveAfterSubmit=false;
-
-      expenseApply.selectedLineId = [];
-      $ionicLoading.show({
-        template: "Loading..."
-
-      });
-      var expHeaderId;
-      expHeaderId = $scope.expList[index].ra_id;
-
-      console.log("明细打开：" + expHeaderId);
-      var promise = expenseApply.queryDetail(expHeaderId);
-      promise.then(
-        function (response) {
-          if (response["status"] == "S") {
-            var Item1 = [];
-            //expenseApply.dateFmtForUI();
-            var detailData = response["expense_list"];
-            var head = response["expense_heaeder"];
-            console.log(head);
-            console.log(detailData);
-            // Item1.push(detailData[0].ra_id);
-            // expenseApply.data.expHeaderId=detailData[0].ra_id,
-            expenseApply.data.expHeaderId = head.ra_id;
-            expenseApply.data.description = head.description;
-            expenseApply.canUpload = true;
-
-            if (expenseApply.data.description == 'undefined') {
-              expenseApply.data.description = "";
-            }
-            expenseApply.data.expenseObject_id = head.project_id
-            expenseApply.data.expenseObject_desc = head.project_name;
-            expenseApply.data.sum = head.amount;
-            console.log(expenseApply.data.sum);
-            // expenseApply.data.sum=head.amount;
-            //  expenseApply.data.sum=0;
-            $.each(detailData, function (n, value) {
-              var item = {
-                dateFrom: value.date_from,
-                dateTo: value.date_to,
-                place: value.place,
-                memo: value.abstract,
-                expenseItemName: value.ra_name,
-                expObject_desc: value.fee_item_name,
-                price: value.unit_price,
-                quantity: value.quantity,
-                amount: value.amount,
-                lineId: value.ra_line_id,
-                original_currency: value.original_currency,
-                exchange_rate: value.exchange_rate,
-                attach_number: value.attach_number,
-                rentals_infor: value.rentals_infor
-
-              };
-
-              Item1.push(item);
-              console.log(Item1);
-              // this.date.head=Item;
-              //console.log(this.date.head);
-              $ionicLoading.hide();
-            });
-
-            expenseApply.data.lines = Item1;
-
-            for (var i = 0; i < expenseApply.data.lines.length; i++) {
-              expenseApply.selectedLineId.push(expenseApply.data.lines[i].lineId);
-            }
-            console.log(8888);
-            console.log(expenseApply.selectedLineId);
-            console.log(9999);
-
-            /*  var length=expenseApply.data.lines.length;
-             for(var i=0;i<length;i++)
-             {
-             expenseApply.data.sum+=expenseApply.data.lines[i].amount;
-             }
-             */
-
-            $ionicLoading.hide();
-            //  expenseApply.data = response["expense_list"];
-            if (status == "已经保存") {
-              openUpdate();
-            }
-            else if (status == "已经审批" || status == "已提交") {
-              console.log("SUBMITTED Query");
-              openReadOnly();
-
-            }
-          }
-        },
-        function (err) {
-          // showMessage('网络连接错误:'+angular.toJson(err));
-          dialog.showAlert("E", "网络连接错误");
-          $ionicLoading.hide();
-        });
-    }
-    $scope.removeData = function (status, index) {
-      if (status == "已经保存") {
-        $ionicLoading.show({
-          template: "正在删除报销单"
-
-        });
-        var deferred = $q.defer();
-        var expHeaderId = $scope.expList[index].ra_id;
-        console.log(expHeaderId);
-        var Url = baseConfig.businessPath + "/expense_account/delete_expense";
-        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
-        $http.post(Url, PostData).success(function (response) {
-          if (response["status"] == "S") {
-            $scope.expList.splice(index, 1);
-            $ionicLoading.hide();
-            // dialog.showAlert("I", "删除成功");// mod by ciwei
-          }
-          else {
-            dialog.showAlert("E", "获取信息错误");
-
-          }
-        }).error(function (data) {
-
-          $ionicLoading.show({
-            template: '网络连接错误'
-
-          });
-          $ionicLoading.hide();
-        })
-      }
-
-      else if (status == "已提交" || status == "已经审批") {
-        // showMessage("不能删除");
-        dialog.showAlert("I", "不能删除");
-      }
-    }
-
-    $scope.doRefresh = function () {
-      console.log('Refreshing!');
-      // showMessage('Refreshing!');
-
-      queryTabList(currentListStatusType);
-
-      $scope.$broadcast('scroll.refreshComplete');
-
-
-    };
-
-  }]);
-
-/**
- * Created by huchaoliang on 15/5/6.
- */
-
-/*报销服务*/
-angular.module("applicationModule")
-.factory('expenseApply', function ($http, $q, $window, $ionicLoading, baseConfig) {
-
-  // 上传附件
-  function doPostHttp(form, deferred) {
-    //showMessage("doPostHttp");
-    $http.post(baseConfig.basePath + 'EXP/EXP5010/exp_upload_line_photos.svc', form, {
-      transformRequest: angular.identity,
-      headers: {'Content-Type': undefined}
-    })
-      .success(function (response) {
-        //showMessage("上传成功");
-
-        deferred.resolve(response);
-      })
-      .error(function (err) {
-        showMessage("上传失败");
-
-        deferred.reject(err);
-      });
-  }
-
-  function createBlob(data, type) {
-    var r;
-    try {
-      r = new $window.Blob([data], {type: type});
-    }
-    catch (e) {
-      // TypeError old chrome and FF
-      $window.BlobBuilder = $window.BlobBuilder ||
-        $window.WebKitBlobBuilder ||
-        $window.MozBlobBuilder ||
-        $window.MSBlobBuilder;
-      // consider to use crosswalk for android
-
-      if (e.name === 'TypeError' && window.BlobBuilder) {
-        var bb = new BlobBuilder();
-        bb.append([data.buffer]);
-        r = bb.getBlob(type);
-      }
-      else if (e.name == "InvalidStateError") {
-        // InvalidStateError (tested on FF13 WinXP)
-        r = new $window.Blob([data.buffer], {type: type});
-      }
-      else {
-        throw e;
-      }
-    }
-    return r;
-  }
-
-  var service = {
-
-    data: {},
-    dataBuffer: {},
-    canEdit: '',
-    tempLine: {},
-    tempAttachment: {},
-    projectList: [],
-    selectedLineId: [],
-    currentQueryType: "",
-    canEditObjectType: true,
-    canSelectProject: "",
-    canUpload: '',
-    photoData: {},
-    currentQueryTypeDesc: '',
-    sourceFrom: '',
-    ListItem: {},
-    canSubmit: '',
-    expenseObject_id: '',
-    queryDetail: function (expHeaderId) {
-      //请求服务器，查询操作
-      var deferred = $q.defer();
-      console.log(1122);
-      var Item = [];
-      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_detail";
-      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
-      $http.post(Url, PostData).success(function (response) {
-        //console.log("返回数据：" + angular.toJson(response));
-        deferred.resolve(response);
-
-      }).error(function (err) {
-
-        deferred.reject(err);
-      });
-      return deferred.promise;
-    },
-    // 查询tab列表
-    queryTabList: function (queryType) {
-
-      var deferred = $q.defer();
-      var expStatues
-      if (queryType == 'toSubmit') {
-        expStatues = 'SAVE';
-      }
-      else if (queryType == 'submitted') {
-        expStatues = 'SUBMIT';
-      }
-      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
-      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
-        + '","p_page_num":"' + "1" + '"}}';
-
-      $http.post(Url, PostData).success(function (response) {
-        deferred.resolve(response);
-
-      }).error(function (response) {
-        deferred.reject(err);
-      });
-      return deferred.promise;
-    },
-
-    getDataFromTravel: function (travelDataPara) {
-      if (travelDataPara != undefined) {
-        this.canEditObjectType = false;
-        this.data.travelApplicationNumber = travelDataPara.travelNo;
-        this.data.objectType = travelDataPara.objectType;
-        this.data.expenseObject = travelDataPara.expenseObject;
-        this.data.expenseObjectName = travelDataPara.expenseObjectName;
-      } else {
-        //showMessage("没有差旅申请�?)
-      }
-      return this.data;
-
-    },
-
-    insert: function (detailData) {
-      //请求数据库服务器
-      /* console.log("response:" +  "进入");
-       console.log(angular.toJson(this.data));*/
-      console.log(detailData);
-      console.log("lineId=" + detailData.lines[0].lineId);
-      console.log("detailData.lines.length=" + detailData.lines.length);
-      var linesId
-      if (detailData.lines.length == 1)
-        linesId = detailData.lines[0].lineId;
-      else if (detailData.lines.length > 1) {
-        linesId = detailData.lines[0].lineId + "#";
-        for (var i = 1; i < detailData.lines.length; i++) {
-          linesId = linesId + detailData.lines[i].lineId;
-          if (i != detailData.lines.length - 1)
-            linesId = linesId + "#";
-        }
-      }
-      console.log(linesId);
-      var deferred = $q.defer();
-      var Url = baseConfig.businessPath + "/expense_account/create_expense";
-      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + "" + '","p_description":"'
-        + detailData.description + '","p_line":"' + linesId + '"}}';
-
-      $http.post(Url, PostData).success(function (response) {
-        deferred.resolve(response);
-
-      }).error(function (response) {
-        deferred.reject(err);
-      });
-      return deferred.promise;
-    },
-
-    remove: function (expHeaderId) {
-      var dataPara = {
-        expHeaderId: expHeaderId
-      };
-      var deferred = $q.defer();
-      $http({
-        method: 'POST',
-        url: baseConfig.basePath + "EXP/EXP5010/app_reimbursement_delete.svc",
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        transformRequest: function (data) {
-
-          return 'para=' + JSON.stringify(data);
-        },
-        data: dataPara
-      })
-        .success(function (response) {
-          console.log("response:" + "成功返回" + angular.toJson(response));
-          deferred.resolve(response);
-        })
-        .error(function (err) {
-          console.log("失败返回:" + angular.toJson(err));
-          deferred.reject(err);
-        });
-      return deferred.promise;
-    },
-
-    submit: function (expHeaderIdToSubmit) {
-      //请求数据库服务器，进行存储操�?
-      console.log("response:" + "进入");
-
-      console.log(angular.toJson(this.data));
-      this.data.userId = window.localStorage.empno;
-      var datatemp = {
-        userId: window.localStorage.empno,
-        expHeaderId: expHeaderIdToSubmit
-      };
-
-      var deferred = $q.defer();
-      $http({
-        method: 'POST',
-        url: baseConfig.basePath + 'EXP/EXP5010/exp_reimbursement_hd_submit.svc',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        transformRequest: function (data) {
-          return 'para=' + JSON.stringify(data);
-        },
-        data: datatemp
-      })
-        .success(function (response) {
-          //login
-          console.log("response:" + "成功返回");
-          console.log("response:" + angular.toJson(response));
-          deferred.resolve(response);
-        }).error(function (response, status) {
-          // login
-          console.log("response:" + "失败返回");
-          console.log("response:" + response + ",status:" + status);
-          deferred.reject(response);
-        });
-      return deferred.promise;
-    },
-
-    initDataForAddAttachment: function () {
-      this.photoData = {
-        photos: []
-      }
-    },
-
-    initData: function () {
-      this.data = {
-        userId: window.localStorage.empno,
-        companyId: baseConfig.companyId,
-        lines: []
-      };
-    },
-
-    addData: function (record) {
-      this.data.push(record);
-    },
-    uploadData: function (form, photos) {    // 以formdatade 形式上传文件
-      console.log("进入");
-
-      showMessage("photos.length" + photos.length);
-
-      var deferred = $q.defer();
-      //showMessage("photos.length" +photos.length);
-      //deferred.reject("error");
-      if (photos.length > 0) {
-
-        var count = 0;
-        for (var i = 0; i < photos.length; i++) {
-          //这里是异步调用cordova 的文件操作，给form 增加
-          window.resolveLocalFileSystemURL(photos[i].photo_src, function (fileEntry) {
-            fileEntry.file(function (file) {
-              var reader = new FileReader();
-              reader.onloadend = function (fileReadResult) {
-                var data = new Uint8Array(fileReadResult.target.result);
-                var blob = createBlob(data, "image/jpeg");
-                form.append(file.name, blob, file.name);
-                count++;
-                if (count == photos.length) {
-                  doPostHttp(form, deferred);
-                }
-              };
-              reader.onerror = function (fileReadResult) {
-                //如果失败也算完成的话，这里也加上就行
-                //count ++
-                //if(count == photos.length()){
-                //doPostHttp(form);
-                //}
-              };
-              reader.readAsArrayBuffer(file);
-            });
-          });
-        }
-      } else {
-
-        //  showMessage("上传无照�?);
-
-        doPostHttp(form, deferred);
-      }
-
-      return deferred.promise;
-    },
-    update: function (detailData) {
-      //请求数据库服务器，进行存储操作
-      /*  var length=detailData.lines.length;
-       var linesId=detailData.lines[length-1].lineId;
-       */
-      console.log(detailData.lines);
-      var linesId;
-      // console.log(detailData.lines[0].lineId)
-      /*   if(detailData.lines.length==1)
-       linesId=detailData.lines[0].lineId;
-       else if(detailData.lines.length>1){*/
-      // linesId=detailData.lines[0].lineId+"#";
-      if (detailData.lines.length == 1)
-        linesId = detailData.lines[0].lineId;
-      else if (detailData.lines.length > 1) {
-        linesId = detailData.lines[0].lineId + "#";
-        for (var i = 1; i < detailData.lines.length; i++) {
-          linesId = linesId + detailData.lines[i].lineId;
-          if (i != detailData.lines.length - 1)
-            linesId = linesId + "#";
-        }
-      }
-      console.log(linesId);
-
-      var deferred = $q.defer();
-      var Url = baseConfig.businessPath + "/expense_account/create_expense";
-      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + detailData.expHeaderId
-        + '","p_description":"' + detailData.description + '","p_line":"' + linesId + '"}}';
-      $http.post(Url, PostData).success(function (response) {
-        deferred.resolve(response);
-
-      }).error(function (response) {
-        deferred.reject(err);
-      });
-      return deferred.promise;
-    },
-    // 删除报销行信息
-    removeLine: function (expLineId) {
-      console.log('expLineId' + expLineId);
-      var dataPara = {
-        expLineId: expLineId
-      };
-      var deferred = $q.defer();
-      $http({
-        method: 'POST',
-        url: baseConfig.basePath + 'EXP/EXP5010/app_reimbursement_ln_delete.svc',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        transformRequest: function (data) {
-          return 'para=' + JSON.stringify(data);
-        },
-        data: dataPara
-      })
-        .success(function (response) {
-          console.log("response:" + "成功返回" + angular.toJson(response));
-          deferred.resolve(response);
-        })
-        .error(function (err) {
-          console.log("失败返回:" + angular.toJson(err));
-          deferred.reject(err);
-        });
-
-      return deferred.promise;
-    },
-
-
-    dateFmtForSave: function () {
-      // 日期格式处理
-      for (var i = 0; i < this.dataBuffer.lines.length; i++) {
-        this.dataBuffer.lines[i].dateFrom = getFormatDate(new Date(this.dataBuffer.lines[i].dateFrom));
-        this.dataBuffer.lines[i].dateTo = getFormatDate(new Date(this.dataBuffer.lines[i].dateTo));
-      }
-    },
-    dateFmtForUI: function () {
-      for (var i = 0; i < this.data.lines.length; i++) {
-        this.data.lines[i].dateFrom = new Date(this.data.lines[i].dateFrom);
-        this.data.lines[i].dateTo = new Date(this.data.lines[i].dateTo);
-      }
-    }
-
-  }
-
-  return service;
-});
-
-
-
-// 报销
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.exp_expenseTypeList', {
-          url: '/acc/expenseTypeList',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/exp/expenseTypeList.html',
-              controller: 'expenseTypeController'
-            }
-          }
-        });
-    }]);
-angular.module("applicationModule").controller('expenseTypeController', function($scope,$rootScope,keepAccount,expenseApply,$http,$q,$ionicHistory, baseConfig) {
-
-    function queryExpenseTypeList(){
-        var companyId=baseConfig.user.companyId;
-        var deferred = $q.defer();
-
-        /*
-        $http.get(baseConfig.basePath+"EXP/expenseTypeList.svc?companyId="+companyId,{cache:false}).
-            success(function(response, status, headers, config) {
-                deferred.resolve(response);
-            }).
-            error(function(error, status, headers, config) {
-                deferred.reject(error);
-            });
-
-        */
-        $scope.expenseTypeList =
-            [
-                {
-                    "expenseTypeId": 21,
-                    "expenseTypeCode": "DAILY_MANAGEMENT",
-                    "expenseTypeName": "日常管理",
-                    "reimbursementTypeId": 21
-                },
-                {
-                    "expenseTypeId": 22,
-                    "expenseTypeCode": "PROJECT_IMPLEMENTATION",
-                    "expenseTypeName": "项目实施",
-                    "reimbursementTypeId": 21
-                }
-            ];
-        return deferred.promise;
-    }
-
-    var promise=queryExpenseTypeList();
-    promise.then(
-        function(response) {
-            var code=getResponseCode(response);
-            if(code=="ok"){
-                $scope.expenseTypeList=response.body.expenseTypeList;
-            }
-            else if (code =="login_required") {
-                //showMessage("登录状态异常\n"+angular.toJson(response));
-                //reLogin();}
-                $scope.expenseTypeList =
-                    [
-                        {
-                            "expenseTypeId": 21,
-                            "expenseTypeCode": "DAILY_MANAGEMENT",
-                            "expenseTypeName": "日常管理",
-                            "reimbursementTypeId": 21
-                        },
-                        {
-                            "expenseTypeId": 22,
-                            "expenseTypeCode": "PROJECT_IMPLEMENTATION",
-                            "expenseTypeName": "项目实施",
-                            "reimbursementTypeId": 21
-                        }
-                    ];
-            }
-            else if(code=="failure"){
-                showMessage("查询失败:"+angular.toJson(response))
-            }else{
-                showMessage("未知错误:"+angular.toJson(response));
-            }
-        },
-        function(err) {  // 处理错误 .reject
-            showMessage("网络连接错误...."+angular.toJson(err));
-        });
-
-    $scope.selectExpenseType=function(e){
-        var target= e.target;
-        var expenseTypeName=target.getAttribute('expenseTypeName');
-        var expenseTypeId=target.getAttribute('expenseTypeId');
-        var expenseTypeCode=target.getAttribute('expenseTypeCode');
-        if(keepAccount.data.expense_type_id!=expenseTypeId){
-            keepAccount.data.expense_item_id=null;
-            keepAccount.data.expense_item_desc='';
-            keepAccount.data.expense_type_id=expenseTypeId;
-            keepAccount.data.expense_type_desc=expenseTypeName
-        }
-        expenseApply.tempLine.expenseTypeId=expenseTypeId;
-        expenseApply.tempLine.expenseTypeName=expenseTypeName;
-
-        //globalNavigator.popPage();
-        //$ionicNavBarDelegate.back();
-        $ionicHistory.goBack();
-    };
-
-   // $rootScope.hideTabs = true; // mod by ciwei
-});
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.exp_SelectDetail', {
-          url: '/interfaceReportList',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/exp/interfaceReportList.html',
-              controller: 'interfaceReportListController'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-.controller('interfaceReportListController', function($scope,keepAccount,$http,$q,expenseApply,dialog,$state,$ionicHistory,$ionicLoading, baseConfig) {
-    var Item = [];
-    $scope.detailData=expenseApply.data;
-    //console.log( $scope.detailData.expenseObject_id);
-    console.log(expenseApply.data.expenseObject_id);
-    $scope.selectedLineId=expenseApply.selectedLineId;
-    console.log(111);
-    console.log( $scope.selectedLineId);
-    //console.log("$scope.selectedLinedId+++++: " + angular.toJson($scope.selectedLineId));
-    console.log(222);
-   // console.log(expenseApply.projectList);
-    $ionicLoading.show({
-        template: "Loading..."
-    });
-    function interfaceReportList(){
-        var deferred = $q.defer();
-        var expenseObject_id= expenseApply.data.expenseObject_id;
-        var Url = baseConfig.businessPath + "/expense_account/fetch_exp_details";
-        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_id":"' + expenseObject_id + '"}}';
-        $http.post(Url,PostData).success(function (response){
-            console.log(response);
-            //console.log("接口返回数据： " + angular.toJson(response));
-            deferred.resolve(response);
-
-        }).error(function(err) {
-
-                deferred.reject(err);
-            });
-        return deferred.promise;
-    }
-    var promise=interfaceReportList();
-    promise.then(function(response){
-        if(response["status"] == "S")
-      {
-          var interfaceReportList = response["detail"];
-          $.each(interfaceReportList, function (n, value) {
-              var item = {
-                  dateFrom : value.date_from,
-                  dateTo   : value.date_to,
-                  place    : value.place,
-                  memo    : value.desc,
-                  amount :value.amt,
-                  expObject_desc:value.exp_item,
-                  lineId:value.expense_detail_id,
-                  original_currency:value.original_currency,
-                  exchange_rate:value.exchange_rate,
-                  attach_number:value.attach_number,
-                  rentals_infor:value.rentals_infor,
-                  quantity:value.qty,
-                  price:value.price
-          };
-             /* for(var i=0;i<$scope.selectedLineId.length;i++)
-              {
-                  if($scope.selectedLineId[i]!==item.lineId)
-
-
-              }*/
-             // Item.push(item);
-              console.log(Item);
-              //console.log("Item++++: " + angular.toJson(Item));
-              if(contains( $scope.selectedLineId,item.lineId))
-              {
-                console.log(456);
-              }
-              else{
-                  Item.push(item);
-                  console.log(789);
-              }
-          });
-          $scope.interfaceReportList=Item;
-          $ionicLoading.hide();
-      }
-        else{
-           // showMessage("未知错误:"+angular.toJson(response));
-            dialog.showAlert("E","获取信息错误");
-            $ionicLoading.hide();
-        }
-
-    },function(error){
-       // showMessage("网络连接错误...."+angular.toJson(error));
-        dialog.showAlert("E","网络连接错误");
-        $ionicLoading.hide();
-    });
-
-    function contains(a, obj) {
-        for (var i = 0; i < a.length; i++) {
-            if (a[i] === obj) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    $scope.confirmAccounts=function(){
-        var selectedAccounts=getSelected();
-        console.log(selectedAccounts);
-
-
-          for(var i=0;i<selectedAccounts.length;i++){
-
-              selectedAccounts[i].dateFrom= selectedAccounts[i].dateFrom.toString();
-              selectedAccounts[i].dateTo= selectedAccounts[i].dateTo.toString();
-              expenseApply.data.lines.push(selectedAccounts[i]);
-
-              expenseApply.selectedLineId.push(selectedAccounts[i].lineId);
-
-            //  expenseApply.dateFmtForUI();
-          }
-        console.log(4444);
-        console.log( expenseApply.selectedLineId);
-        console.log(5555);
-        expenseApply.data.sum=0;
-        for(var i=0;i<expenseApply.data.lines.length;i++){
-            expenseApply.data.sum+=expenseApply.data.lines[i].amount;
-        }
-       // console.log(expenseApply.data.sum);
-        $ionicHistory.goBack();
-        //$state.go('tab.expenseLines_expenseDetail');
-
-
-    };
-
-        function getSelected(){
-            var accountList=$scope.interfaceReportList;
-            var selectedList=[];
-
-            console.log(accountList);
-
-            for(var i=0;i<accountList.length;i++){
-                //alert(accountList[i].Selected==undefined || accountList[i].Selected=="NO");
-
-                if(!(accountList[i].Selected==undefined || accountList[i].Selected=="NO")){
-                   // showMessage(accountList[i].Selected);
-                    selectedList.push(accountList[i]);
-                    //从记一笔列表中删除已选行项目
-                   // $scope.interfaceReportList.splice(i,1);
-                }
-            }
-            return selectedList;
-        }
-
-
-    });
-
-/**
- * Created by huchaoliang on 15-5-22.
- */
-
-angular.module("applicationModule").controller('reportTypeController', function($scope,keepAccount,$http,$q,expenseApply,travelApply, baseConfig) {
-
-    function queryReportTypeList(){
-        var companyId=baseConfig.user.companyId;
-        var deferred = $q.defer();
-        $http.get(baseConfig.basePath+"EXP/reimbursementList.svc?companyId="+companyId,{cache:false}).
-            success(function(response, status, headers, config) {
-                deferred.resolve(response);
-            }).
-            error(function(error, status, headers, config) {
-                deferred.reject(error);
-            });
-        return deferred.promise;
-    }
-
-    var promise=queryReportTypeList();
-    promise.then(function(response){
-
-        $scope.reportTypeList=[];
-
-        var code=getResponseCode(response);
-        if(code=="ok"){
-            console.log(response);
-            $scope.reportTypeList=response.body.reimbursementList;
-        }else if(code=="failure"){
-        }
-        else if (code =="login_required"){
-            showMessage("登录状态异常\n"+angular.toJson(response));
-            reLogin();
-        }else{
-            showMessage("未知错误:"+angular.toJson(response));
-        }
-    },function(error){
-        $scope.reportTypeList=[];
-
-        alert("网络连接错误,初始化数据"+error.message);
-    });
-
-    $scope.selectReportType=function(e){
-        var target= e.target;
-        var reportTypeName=target.getAttribute('reportTypeName');
-        var reportTypeId=target.getAttribute('reportTypeId');
-        var reportTypeCode=target.getAttribute('reportTypeCode');
-         console.log(reportTypeName);
-      //  travelApply.data.expType="123";
-
-        expenseApply.data.reportType=reportTypeId;
-        expenseApply.data.reportTypeName=reportTypeName;
-
-        console.log( expenseApply.data);
-
-        globalNavigator.popPage();
-    }
-});
-
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) { 
@@ -13728,947 +13730,285 @@ angular.module("applicationModule")
 
     }]);
 /**
- * Created by gusenlin on 16/5/22.
+ * Created by wolf on 2016/5/21. (_wen.dai_)
  */
+'use strict';
+//应用-timeSheet审批模块-详情
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.timesheet', {
-          url: '/timesheet',
+        .state('tab.tsApproveDetail', {
+          url: 'application/tsApproveDetail',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/timesheet/query/query.html',
-              controller: 'TimeSheetQueryCtrl'
+              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
+              controller: 'tsApproveDetailCtrl'
             }
+          },
+          params: {
+            'employeeNumber': "",
+            'projectId': "",
+            'startDate': "",
+            'endDate': ""
           }
-        });
-      $stateProvider
-        .state('tab.workflow-message', {
-          url: '/workflow-message',
-          views: {
-            'tab-message': {
-              templateUrl: 'build/pages/application/timesheet/query/query.html',
-              controller: 'TimeSheetQueryCtrl'
-            }
-          }
-        });
+        })
     }]);
+tsApproveModule.controller('tsApproveDetailCtrl', [
+  '$scope',
+  '$state',
+  'baseConfig',
+  '$ionicHistory',
+  '$stateParams',
+  'hmsHttp',
+  'hmsPopup',
+  '$timeout',
+  'ApproveDetailService',
+  function ($scope,
+            $state,
+            baseConfig,
+            $ionicHistory,
+            $stateParams,
+            hmsHttp,
+            hmsPopup,
+            $timeout,
+            ApproveDetailService) {
 
-angular.module('applicationModule')
-  .controller('TimeSheetQueryCtrl', [
-    '$scope',
-    '$rootScope',
-    '$ionicPopover',
-    '$ionicGesture',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    '$ionicScrollDelegate',
-    'TimeSheetService',
-    'hmsHttp',
-    'hmsPopup',
-    function ($scope,
-              $rootScope,
-              $ionicPopover,
-              $ionicGesture,
-              $state,
-              baseConfig,
-              $ionicHistory,
-              $timeout,
-              $ionicScrollDelegate,
-              TimeSheetService,
-              hmsHttp,
-              hmsPopup) {
-
-      var currentTimeSheetPosition = true;
-      var isScrollFreeze;
-      $scope.calendar = [];
-      $scope.loadingDataFlag = true;
-      $scope.loadingAllowanceFlag = true;
-
-      $scope.allowanceList = [];
-      $scope.selectYearList = [];
-
-      var offset = -5;
-      var yearCount = 10;
-
-      var startTouchX = 0;
-      var startTouchY = 0;
-
-      var slippingFlag = false;
-      var slippingEnableFlag = true;
-
-      var clientWidth = document.body.clientWidth;
-
-      var calendarTopBar;
-
-      if (ionic.Platform.isIOS()) {
-        calendarTopBar = 135;//+ 20;
+    /**
+     * init var section
+     */
+    {
+      if(ionic.Platform.isIOS()) {
+        angular.element('.ae-detail-head').css('marginTop','64px');
+        angular.element('#approveDetailContent').css('top','64px');
       }
-      else {
-        calendarTopBar = 135;
-      }
-
-      var scrollPosition = 0;
-      var startTime;
-      var toTime;
-      var cacheCalendar = [];
-      var copyFromDay = {};
-
-      //年表
-      $scope.currentYear = '';
-      //当前月份
-      $scope.currentMonth = '';
-      //月份初始化列表
-      $scope.monthList = [
-        {"selected": false, value: "1"}, {"selected": false, value: "2"}, {"selected": false, value: "3"},
-        {"selected": false, value: "4"}, {"selected": false, value: "5"}, {"selected": false, value: "6"},
-        {"selected": false, value: "7"}, {"selected": false, value: "8"}, {"selected": false, value: "9"},
-        {"selected": false, value: "10"}, {"selected": false, value: "11"}, {"selected": false, value: "12"}
-      ];
-      //周列表
-      $scope.weekTitleList = [
-        '日', '一', '二', '三', '四', '五', '六'
-      ];
-
-      if (baseConfig.debug) {
-        console.log('TimeSheetQueryCtrl.clientWidth ' + clientWidth);
-      }
-
-      //单格数字用0填充
-      var formatMonth = function (month) {
-        if (parseInt(month) < 10) {
-          return '0' + month;
-        } else {
-          return '' + month;
+      var selectItem = []; //初始化点击全部条目为false
+      var clickSelectAll = false; //默认没有点击全选
+      $scope.detailActionName = "操作";
+      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
+      $scope.detailInfoArray = {}; //用于接收列表对应数据object
+      $scope.selectArray = [];
+      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
+      var tsApproveDetailParams = {
+        "params": {
+          "p_employee_number": $stateParams.employeeNumber,
+          "p_start_date": $stateParams.startDate.toString(),
+          "p_end_date": $stateParams.endDate.toString(),
+          "p_project_id": $stateParams.projectId
         }
       };
-
-      //初始化日历
-      var initDate = function () {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        $scope.currentYear = year;
-        $scope.currentMonth = month;
-        angular.forEach($scope.monthList, function (data) {
-          if (data.value === month + '') {
-            data.selected = true;
-            return;
-          }
-        });
-
-        for (var i = 0; i < yearCount; i++) {
-          var value = (parseInt(year) + offset + i) + '';
-          var item = {};
-          if (year == value) {
-            item = {
-              "value": value,
-              "selected": true
-            }
-          } else {
-            item = {
-              "value": value,
-              "selected": false
-            }
-          }
-          $scope.selectYearList.push(item);
-        }
-
-        if (baseConfig.debug) {
-          console.log('initDate.year ' + year);
-          console.log('initDate.month ' + month)
-        }
-        var monthParams = year + '' + formatMonth(month);
-        fetchCalendar(monthParams);
-        generateAllowance(monthParams);
-      }
-
-      //初始化日历数组
-      var initCalendar = function () {
-        $scope.calendar = [];
-        for (i = 0; i < 5; i++) {
-          var style_outline = 'each-day';
-          var style_color = 'day-item';
-          var money = '';
-          var project = '';
-          var week = {
-            week: i,
-            list: []
-          };
-          for (j = 0; j < 7; j++) {
-            var item = {
-              day: "",
-              style_outline: style_outline,
-              style_color: style_color,
-              money: money,
-              project: project
-            };
-            week.list.push(item);
-          }
-          $scope.calendar.push(week);
+      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
+      var tsActionParams = { //审批拒绝/通过的参数
+        "params": {
+          "p_approve_flag": "AGREE",
+          "p_employee_number": window.localStorage.empno,
+          "p_param_json": ''
         }
       };
-
-      $ionicPopover.fromTemplateUrl('build/pages/application/timesheet/popover/years.html', {
-        scope: $scope,
-        animation: 'animated fadeIn'
-      }).then(function (popover) {
-        $scope.popover = popover;
-      });
-
-      $scope.openPopover = function ($event) {
-        $scope.popover.show($event);
+      var approveList = { //审批拒绝/通过的子对象
+        "approve_list": []
       };
-
-      $scope.selectYear = function (year) {
-        $scope.currentYear = year.value;
-        $scope.popover.hide();
-        var monthParams = $scope.currentYear + '' + formatMonth($scope.currentMonth);
-
-        angular.forEach($scope.selectYearList, function (data) {
-          if (data.value == year.value) {
-            data.selected = true;
-          } else {
-            data.selected = false;
-          }
-        });
-
-        initCalendar();
-        fetchCalendar(monthParams);
-        generateAllowance(monthParams);
-      }
-
-      $scope.writeTimesheet = function (day) {
-        $state.go('tab.timesheet-write', {day: day});
-      };
-
-      $scope.scrollToFixScreen = function () {
-        if (isScrollFreeze) {
-          isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
-        } else {
-          isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
-        }
-
-        //isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
-        console.log('scrollToFixScreen result ' + isScrollFreeze);
-
-        if (currentTimeSheetPosition) {
-          $ionicScrollDelegate.scrollTo(0, 400, true);
-          currentTimeSheetPosition = false;
-        } else {
-          $ionicScrollDelegate.scrollTo(0, 0, true);
-          currentTimeSheetPosition = true;
-        }
-      };
-
-      var fetchData = function (result) {
-        var timesheetArray = result.timesheet;
-        var seq = 0;
-        $scope.calendar = [];
-        for (i = 0; i < 5; i++) {
-          var week = {
-            week: i,
-            list: []
-          };
-          for (j = 0; j < 7; j++) {
-            var item;
-            var style_outline = 'each-day';
-            var style_color = 'day-item';
-            var money = '';
-            var project = '';
-            var lockFlag = false;
-
-            if (timesheetArray[seq]) {
-              if (timesheetArray[seq].lockflag == '0') {
-                lockFlag = false;
-              } else {
-                lockFlag = true;
-              }
-              if (timesheetArray[seq].status == 'Empty') {
-                style_outline = 'each-day';
-                style_color = 'day-item';
-              } else if (timesheetArray[seq].status == 'Draft') {
-                style_outline = 'each-day attendance';
-                style_color = 'day-item attendance';
-              } else if (timesheetArray[seq].status == 'Approved') {
-                style_outline = 'each-day approve';
-                style_color = 'day-item approve';
-              } else if (timesheetArray[seq].status == 'Rejected') {
-                style_outline = 'each-day reject';
-                style_color = 'day-item reject';
-              }
-              var dayEach = timesheetArray[seq].day;
-              if (dayEach.length == 2) {
-                dayEach = dayEach.replace('0', '');
-              }
-              item = {
-                day: dayEach,
-                style_outline: style_outline,
-                style_color: style_color,
-                money: timesheetArray[seq].allowance,
-                project: timesheetArray[seq].proj,
-                each_day: timesheetArray[seq].each_day,
-                lockFlag: lockFlag,
-                choosed: false
-              };
-            } else {
-              item = {
-                day: '',
-                style_outline: style_outline,
-                style_color: style_color,
-                money: money,
-                project: project,
-                each_day: '',
-                lockFlag: lockFlag,
-                choosed: false
-              };
-            }
-
-            week.list.push(item);
-
-            seq = seq + 1;
-          }
-          $scope.calendar.push(week);
-        }
-      };
-
-      var fetchCalendar = function (monthParams) {
-        $scope.loadingDataFlag = true;
-
-        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
-        var params = {
-          "params": {
-            "p_employee": window.localStorage.empno,
-            "p_month": monthParams + "",
-            "p_offset": 0
-          }
-        };
-
-        //hmsPopup.showLoading('获取timesheet数据中...');
-        hmsHttp.post(url, params).success(function (result) {
-          if (result.status == 'S') {
-            fetchData(result);
-            $scope.loadingDataFlag = false;
-          }
-        }).error(function (response, status) {
-          $scope.loadingDataFlag = false;
-        });
-      };
-
-      var element = angular.element(document.querySelector('#timesheetCalandar'));
-
-      var startSlipping = function () {
-        slippingFlag = true;
-        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
-        scrollPosition = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition().top;
-      };
-      var stopSlipping = function () {
-        slippingFlag = false;
-        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
-      };
-      var clearCalendarCache = function () {
-        angular.forEach($scope.calendar, function (data) {
-          angular.forEach(data.list, function (list) {
-            list.choosed = false;
-          });
-        });
-        if (baseConfig.nativeScreenFlag) {
-          $scope.$apply();
-        }
-      };
-
-      var slippingWriteTimesheet = function () {
-        //var batchList = [];
-        var dateArray = '';
-        angular.forEach($scope.calendar, function (data) {
-          angular.forEach(data.list, function (list) {
-            if (list.choosed) {
-              //batchList.push({"day": list.each_day});
-              if (dateArray == '') {
-                dateArray = dateArray + list.each_day;
-              } else {
-                dateArray = dateArray + '#' + list.each_day;
-              }
-            }
-          });
-        });
-        if (baseConfig.debug) {
-          console.log('copyFromDay ' + angular.toJson(copyFromDay));
-          console.log('dateArray ' + angular.toJson(dateArray));
-        }
-
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            var timesheetArray = result.refresh_timesheet;
-            fetchData(timesheetArray);
-          } else {
-            hmsPopup.showPopup('批量填写失败!' + result.message);
-          }
-        };
-        var error = function (response) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('批量填写失败,可能是网络问题!');
-          clearCalendarCache();
-        };
-        hmsPopup.showLoading('批量填写中');
-        TimeSheetService.slippingBatch(success, error, copyFromDay.day, dateArray);
-      };
-
-      //捕获触摸的
-      var markSelectCalendar = function (clentW, touchX, touchY) {
-        var selectX = -1;
-        var selectY = -1;
-        var averageX = (clentW - 20) / 7;
-        var averageY = 60;
-        var lengthY = calendarTopBar - scrollPosition;
-        var offsetY = 0;
-        var offsetX = 10;
-        for (var i = 0; i < 7; i++) {
-          var left = averageX * ( i ) + offsetX;
-          var right = averageX * ( i + 1 ) + offsetX;
-          if (touchX > left && touchX < right) {
-            selectX = i;
-            if ((touchY >= lengthY + 0 + offsetY) && (touchY <= lengthY + 1 * averageY - offsetY)) {
-              selectY = 0;
-            }
-            else if ((touchY >= lengthY + 1 * averageY + offsetY) && (touchY <= lengthY + 2 * averageY - offsetY)) {
-              selectY = 1;
-            }
-            else if ((touchY >= lengthY + 2 * averageY + offsetY) && (touchY <= lengthY + 3 * averageY - offsetY)) {
-              selectY = 2;
-            }
-            else if ((touchY >= lengthY + 3 * averageY + offsetY) && (touchY <= lengthY + 4 * averageY - offsetY)) {
-              selectY = 3;
-            }
-            else if ((touchY >= lengthY + 4 * averageY + offsetY) && (touchY <= lengthY + 5 * averageY - offsetY)) {
-              selectY = 4;
-            }
-            else if ((touchY >= lengthY + 5 * averageY + offsetY) && (touchY <= lengthY + 6 * averageY - offsetY)) {
-              selectY = 5;
-            }
-          }
-        }
-        return {
-          "selectX": selectX,
-          "selectY": selectY
-        };
-      };
-
-      //拖拽标记TimeSheet具体天
-      $ionicGesture.on("drag", function (e) {
-        //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
-        //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
-        if (!slippingFlag && slippingEnableFlag) {
-          if (Math.abs(startTouchX - e.gesture.touches[0].pageX) > 3 || Math.abs(startTouchY - e.gesture.touches[0].pageY) > 3) {
-            toTime = new Date().getTime();
-            if (baseConfig.debug) {
-              console.log('startTime ' + startTime);
-              console.log('toTime ' + toTime);
-            }
-            if ((toTime - startTime) > 250) {
-              startSlipping();
-            }
-          }
-        }
-        if (slippingFlag && slippingEnableFlag) {
-          var selectDay = markSelectCalendar(clientWidth,
-            e.gesture.touches[0].pageX,
-            e.gesture.touches[0].pageY);
-          if (baseConfig.debug) {
-            //console.log('drag.selectDay ' + angular.toJson(selectDay));
-          }
-          if (selectDay.selectX >= 0 && selectDay.selectX <= 6 && selectDay.selectY >= 0 && selectDay.selectY <= 5) {
-            var dayItem = $scope.calendar[selectDay.selectY].list[selectDay.selectX];
-            if (copyFromDay.day) {
-
-            } else {
-              copyFromDay.day = dayItem.each_day;
-            }
-            if (dayItem && dayItem.day != '') {
-              dayItem.choosed = true;
-            } else {
-              dayItem.choosed = false;
-            }
-          }
-          $scope.$apply();
-        }
-      }, element);
-
-      $ionicGesture.on("touch", function (e) {
-        console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
-        console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
-        var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
-        console.log('position ' + angular.toJson(position));
-        startTouchX = e.gesture.touches[0].pageX;
-        startTouchY = e.gesture.touches[0].pageY;
-        startTime = new Date().getTime();
-        copyFromDay = {};
-      }, element);
-
-      $ionicGesture.on("release", function (e) {
-        if (slippingFlag && slippingEnableFlag) {
-          stopSlipping();
-          //console.log('release.startTouchX ' + e.gesture.touches[0].pageX);
-          //console.log('release.startTouchY ' + e.gesture.touches[0].pageY);
-          var summitOrder = function (buttonIndex) {
-            if (baseConfig.debug) {
-              console.log('You selected button ' + buttonIndex);
-            }
-            if (buttonIndex == 1) {
-              slippingWriteTimesheet();
-            } else {
-              clearCalendarCache();
-            }
-          }
-          hmsPopup.confirm("确定要否进行批量填写?", "", summitOrder);
-        }
-      }, element);
-
-      $scope.getTimeSheet = function (year, month) {
-        angular.forEach($scope.monthList, function (data) {
-          data.selected = false;
-        });
-        month.selected = true;
-        $scope.currentMonth = month.value;
-        var monthParams = year + '' + formatMonth(month.value);
-        initCalendar();
-        fetchCalendar(monthParams);
-        generateAllowance(monthParams);
-      };
-
-
-      //获取津贴信息
-      var generateAllowance = function (monthParams) {
-        $scope.loadingAllowanceFlag = true;
-        $scope.allowanceList = [];
-        var success = function (result) {
-          if (result.status == 'S') {
-            angular.forEach(result.allowance, function (data) {
-              var allowance = {
-                "allow": data.allow,
-                "amount": data.amt,
-                "creationDate": data.crea,
-                "days": data.days,
-                "status": data.is_audited,
-                "project": data.proj,
-                "period": data.range,
-                "type": data.type
-              }
-              $scope.allowanceList.push(allowance);
-            });
-            $scope.loadingAllowanceFlag = false;
-          } else {
-            $scope.loadingAllowanceFlag = false;
-          }
-        }
-        var error = function () {
-          $scope.loadingAllowanceFlag = false;
-        }
-        TimeSheetService.generateAllowance(success, error, 'N', monthParams);
-      }
-
-      initCalendar();
-      //从服务器获取请求
-      $timeout(
-        function () {
-          initDate();
-        }, 600
-      );
-
-      $scope.goBack = function () {
-        $ionicHistory.$ionicGoBack();
-      };
-
-      $rootScope.$on('refreshTimesheet', function (event, data) {
-        if (baseConfig.debug) {
-          console.log('refreshTimesheet', data);
-        }
-        $timeout(
-          function () {
-            var monthParams = $scope.currentYear + '' + formatMonth($scope.currentMonth);
-            fetchCalendar(monthParams);
-          }, 600
-        );
-      });
-
-      if (baseConfig.debug) {
-        console.log('applicationCtrl.enter');
-      }
-
-      $scope.$on('$ionicView.enter', function (e) {
-        if (baseConfig.debug) {
-          console.log('applicationCtrl.$ionicView.enter');
-        }
-      });
-
-      $scope.$on('$destroy', function (e) {
-        if (baseConfig.debug) {
-          console.log('applicationCtrl.$destroy');
-        }
-        $scope.popover.remove();
-      });
-    }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.timesheet-write', {
-          url: '/timesheet-write',
-          params: {day: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet/write/write.html',
-              controller: 'TimeSheetWriteCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('TimeSheetWriteCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    '$ionicHistory',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    function ($scope,
-              $rootScope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              $ionicHistory,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup) {
-
-      var checked = 'ion-ios-checkmark';
-      var unchecked = 'ion-ios-circle-outline'
-      $scope.projectList = [];
-      $scope.addressList = [];
-      $scope.flybackList = [];
-      var editable = 'N';
-      var uncheckedJson = {flag: false, style: unchecked};
-      var checkedJson = {flag: true, style: checked};
-
-
-      //初始化timesheet填写界面字段
-      $scope.timesheetDetail =
-      {
-        currentDay: "",
-        approver: "",
-        currentProject: {},
-        currentAddress: {},
-        currentFlyback: {},
-        travelingAllowance: {flag: false, style: unchecked},
-        normalAllowance: {flag: false, style: unchecked},
-        intCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        extCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        description: ""
-      };
-
-      if (baseConfig.debug) {
-        console.log('$stateParams.day ' + angular.toJson($stateParams.day));
-      }
-
-      $scope.lockFlag= $stateParams.day.lockFlag;
-
-      $scope.currentDate = $stateParams.day.each_day;
-
-      //加载项目画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/projectModal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.projectModal = modal;
-      });
-
-      //加载项目地点画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/addressModal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.addressModal = modal;
-      });
-
-      //加载机票补贴画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/flybackList.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.flybackModal = modal;
-      });
-
-      $scope.selectAddress = function (address) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.address " + angular.toJson(address));
-        }
-        $scope.timesheetDetail.currentAddress = address;
-        $scope.addressModal.hide();
-      };
-
-      $scope.selectFlyback = function (flyback) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.flyback " + angular.toJson(flyback));
-        }
-        $scope.timesheetDetail.currentFlyback = flyback;
-        $scope.flybackModal.hide();
-      };
-
-      $scope.selectProject = function (project) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.project " + angular.toJson(project));
-        }
-        $scope.timesheetDetail.currentProject = project;
-        $scope.projectModal.hide();
-
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            $scope.addressList = result.projaddress;
-            $scope.flybackList = result.flyback;
-            $scope.timesheetDetail.approver = result.approver;
-            $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
-            $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
-            if (result.projaddress[0]) {
-              $scope.timesheetDetail.currentAddress = result.projaddress[0];
-            } else {
-              $scope.timesheetDetail.currentAddress = {"selected_flag": "Y", "address_id": "0", "address_name": "缺省地点"};
-            }
-            if (result.flyback[0]) {
-              $scope.timesheetDetail.currentFlyback = result.flyback[0];
-            } else {
-              $scope.timesheetDetail.currentFlyback = {"fly_select": "Y", "fly_name": "无flyback", "fly_id": "-1"};
-            }
-          } else {
-            hmsPopup.showPopup('获取项目信息错误,请检查');
-          }
-        }
-        $timeout(function () {
-          hmsPopup.showLoading('获取项目信息中');
-          TimeSheetService.fetchProjectDetailInfo(success, $scope.currentDate, project.project_id)
-        });
-      };
-
-      $scope.showProjectModal = function () {
-        $scope.projectModal.show();
-      };
-      $scope.hideProjectModal = function () {
-        $scope.projectModal.hide();
-      };
-
-      $scope.showFlybackModal = function () {
-        $scope.flybackModal.show();
-      };
-      $scope.hideFlybackModal = function () {
-        $scope.flybackModal.hide();
-      };
-
-      $scope.showAddressModal = function () {
-        $scope.addressModal.show();
-      };
-      $scope.hideAddressModal = function () {
-        $scope.addressModal.hide();
-      };
-
-      var fetchEachDay = function (result) {
-        hmsPopup.hideLoading();
-        if (result.status == 'S') {
-          var projectList = result.project;
-          var flybackList = result.flyback;
-          var addressList = result.projaddress;
-
-          if (baseConfig.debug) {
-            console.log('fetchEachDay result.every_day ' + angular.toJson(result.every_day));
-          }
-
-          //判断是否可编辑 // add by ciwei
-          if (result.every_day.holiday == 'Y') {
-            editable = 'Y';
-          } else if (result.every_day.holiday == 'N') {
-            editable = 'N';
-          }
-
-          if (result.every_day.offbase == '1') {
-            $scope.timesheetDetail.travelingAllowance = checkedJson;
-          } else {
-            $scope.timesheetDetail.travelingAllowance = uncheckedJson;
-          }
-          if (result.every_day.base == 'Y') {
-            $scope.timesheetDetail.normalAllowance = checkedJson;
-          } else {
-            $scope.timesheetDetail.normalAllowance = uncheckedJson;
-          }
-
-          //判断内外部计费是否被选中
-          if (result.every_day.internalcharge == '1') {
-            $scope.timesheetDetail.intCharge = checkedJson;
-          } else {
-            $scope.timesheetDetail.intCharge = uncheckedJson;
-          }
-          if (result.every_day.externalcharge == '1') {
-            $scope.timesheetDetail.extCharge = checkedJson;
-          } else {
-            $scope.timesheetDetail.extCharge = uncheckedJson;
-          }
-
-          $scope.timesheetDetail.currentDay = result.every_day.every_day;
-          $scope.timesheetDetail.approver = result.every_day.approver;
-          $scope.timesheetDetail.description = result.every_day.descrpt;
-          $scope.timesheetDetail.allowance = result.every_day.allowance;
-
-          angular.forEach(projectList, function (data) {
-            if (data.selected_flag === 'Y') {
-              $scope.timesheetDetail.currentProject = data;
-              return;
-            }
-          });
-          angular.forEach(addressList, function (data) {
-            if (data.selected_flag === 'Y') {
-              $scope.timesheetDetail.currentAddress = data;
-              return;
-            }
-          });
-          angular.forEach(flybackList, function (data) {
-            if (data.fly_select === 'Y') {
-              $scope.timesheetDetail.currentFlyback = data;
-              return;
-            }
-          });
-
-          $scope.projectList = projectList;
-          $scope.addressList = addressList;
-          $scope.flybackList = flybackList;
-        }
-        else {
-          hmsPopup.showPopup('获取timesheet错误,错误原因为');
-        }
-      };
-
-      $scope.checkBoxChanged = function (item, type) {
-        console.log('$scope.checkBoxChanged item ' + angular.toJson(item));
-        if (editable == "N" && type == 'charging') {
-          return;
-        }
-        if (item.flag) {
-          item.flag = false;
-          item.style = unchecked;
-        } else {
-          item.flag = true;
-          item.style = checked;
-        }
-        if (type == 'travelingAllowance' && $scope.timesheetDetail.travelingAllowance.flag) {
-          $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
-        }
-        if (type == 'normalAllowance' && $scope.timesheetDetail.normalAllowance.flag) {
-          $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
-        }
-      };
-
-      $scope.submitTimesheet = function (timesheetDetail) {
-        if (baseConfig.debug) {
-          console.log('timesheetDetail ' + angular.toJson(timesheetDetail));
-        }
-
-        var employee = window.localStorage.empno;
-        var currentDate = $scope.currentDate;
-        var projectId = $scope.timesheetDetail.currentProject.project_id;
-        var description = '';
-        var offBaseFlag = '';
-        var baseFlag = '';
-        var extCharge = '';
-        var intCharge = '';
-        var addressId = $scope.timesheetDetail.currentAddress.address_id;
-        var flybackId = $scope.timesheetDetail.currentFlyback.fly_id;
-
-        //内外部计费
-        if ($scope.timesheetDetail.extCharge.flag) {
-          extCharge = 1;
-        } else {
-          extCharge = 0;
-        }
-        if ($scope.timesheetDetail.intCharge.flag) {
-          intCharge = 1;
-        } else {
-          intCharge = 0;
-        }
-        if ($scope.timesheetDetail.travelingAllowance.flag) {
-          offBaseFlag = 1;
-        } else {
-          offBaseFlag = 0;
-        }
-        if ($scope.timesheetDetail.normalAllowance.flag) {
-          baseFlag = 1;
-        } else {
-          baseFlag = 0;
-        }
-
-        description = $scope.timesheetDetail.description.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
-
-        if(baseConfig.debug){
-          console.log('$scope.timesheetDetail.description ' + $scope.timesheetDetail.description);
-          console.log('description ' + description);
-        }
-
-        var params = {
-          "params": {
-            "p_employee": employee + "",
-            "p_date": currentDate + "",
-            "p_project": projectId + "",
-            "p_description": description + "",
-            "p_offbase_flag": offBaseFlag + "",
-            "p_base_flag": baseFlag + "",
-            "p_ext_charge": extCharge + "",
-            "p_int_charge": intCharge + "",
-            "p_address": addressId + "",
-            "p_flyback": flybackId + ""
-          }
-        };
-
-        if (baseConfig.debug) {
-          console.log('submitTimesheet.params ' + angular.toJson(params));
-        }
-
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            hmsPopup.showPopup('提交Timesheet成功');
-            $rootScope.$broadcast('refreshTimesheet', 'parent');
-            $ionicHistory.goBack();
-          } else {
-            hmsPopup.showPopup('提交Timesheet错误,错误原因为');
-          }
-        }
-        hmsPopup.showLoading('提交数据中');
-        TimeSheetService.submitTimesheet(success, params)
-      };
-
-      //从服务器获取请求
-      $timeout(
-        function () {
-          hmsPopup.showLoading('获取timesheet明细数据');
-          TimeSheetService.fetchEachDay(fetchEachDay, $scope.currentDate);
-        }
-      );
     }
-  ])
-;
+
+    $scope.$on('$ionicView.enter', function (e) {
+      ApproveDetailService.setRefreshFlag('');
+    });
+
+    $scope.$on('$destroy', function (e) {
+      warn('tsApproveListCtrl.$destroy');
+    });
+
+    hmsPopup.showLoading('加载中...');
+    function getData() {
+      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          $scope.detailInfoArray = response.timesheet_approve_detail_response;
+          if ($scope.detailInfoArray.subsidy_list.length === 0) {
+            ApproveDetailService.setRefreshFlag('refresh-approve-list');
+            $ionicHistory.goBack();
+          }
+        } else {
+          if (response.status === 'E' || response.status == 'e') {
+            hmsPopup.showShortCenterToast("没有相关数据!");
+          } else {
+            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+          }
+        }
+      }).error(function (response, status) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
+      });
+    };
+    getData();
+
+    function __initSelectArray(selectParam) { //初始化选择按钮
+      //先初始化数据操作--
+      $scope.selectArray = [];
+      selectItem = [];
+      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
+        if ('undoSelectAll' == selectParam) {
+          $scope.selectArray.push(false);
+          selectItem.push(false);
+        } else if ('selectedAll' == selectParam) {
+          $scope.selectArray.push(true);
+          selectItem.push(true);
+        }
+      });
+    };
+    __initSelectArray('undoSelectAll');
+
+    $scope.dealDetailInfo = function () {
+      if ($scope.detailActionName == "操作") {
+        $scope.detailActionName = "取消";
+        $scope.showActionBar = true;
+        angular.element('#tsApproveItem').css('paddingLeft', '6%');
+      } else if ($scope.detailActionName == "取消") {
+        $scope.detailActionName = "操作";
+        $scope.showActionBar = false;
+        __initSelectArray('undoSelectAll');
+        angular.element('#tsApproveItem').css('paddingLeft', '0');
+        tsActionParams = { //审批拒绝/通过的参数
+          "params": {
+            "p_approve_flag": "AGREE",
+            "p_employee_number": window.localStorage.empno,
+            "p_param_json": ''
+          }
+        };
+        approveList = {
+          "approve_list": []
+        };
+      }
+    };
+
+    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
+      selectItem[index] = !selectItem[index];
+      var approve = {
+        "p_project_id": $scope.detailInfoArray.project_id,
+        "p_project_person_number": $scope.detailInfoArray.employee_number,
+        "p_start_date": "",
+        "p_end_date": "",
+        "p_record_id": ""
+      };
+      if (selectItem[index]) {
+        $scope.selectArray[index] = true;
+        approve.p_record_id = newLineNumber;
+        approveList.approve_list[index] = approve;
+      } else {
+        $scope.selectArray[index] = false;
+        approveList.approve_list.splice(index, 1, 'delete');
+      }
+    };
+
+    $scope.selectAllDetail = function () { //全选
+      clickSelectAll = !clickSelectAll;
+      if (clickSelectAll) {
+        __initSelectArray('selectedAll');
+        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
+          var approve = {
+            "p_project_id": $scope.detailInfoArray.project_id,
+            "p_project_person_number": $scope.detailInfoArray.employee_number,
+            "p_start_date": "",
+            "p_end_date": "",
+            "p_record_id": ""
+          };
+          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
+          approveList.approve_list.push(approve);
+        }
+        warn(approveList.approve_list);
+      } else {
+        __initSelectArray('undoSelectAll');
+        approveList.approve_list = [];
+      }
+    };
+
+    function deleteSuperfluous() {
+      for (var i = 0; i < approveList.approve_list.length; i++) {
+        if (approveList.approve_list[i] === 'delete') {
+          approveList.approve_list.splice(i, 1);
+          i--;
+        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
+          approveList.approve_list.splice(i, 1);
+          i--;
+        }
+      }
+    };
+
+    $scope.passThroughDetailItem = function () { //通过
+      if (approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "AGREE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('审批成功！');
+        } else {
+          hmsPopup.showShortCenterToast('审批失败！');
+        }
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      });
+    };
+
+    $scope.refuseDetailItem = function () { //拒绝
+      if (approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "REFUSE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('拒绝成功');
+        } else {
+          hmsPopup.showShortCenterToast('拒绝失败！');
+        }
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      });
+    };
+  }]).service('ApproveDetailService', function () {
+  var flag = ''; //刷新上个列表的标识
+  return {
+    setRefreshFlag: function (newFlag) {
+      flag = newFlag;
+    },
+    getRefreshFlag: function () {
+      return flag;
+    }
+  }
+});
+
 
 /**
  * Created by wolf on 2016/5/19.
@@ -15365,283 +14705,945 @@ angular.module('tsApproveModule')
       return TsApproveListService;
     }]);
 
-/**
- * Created by wolf on 2016/5/21. (_wen.dai_)
- */
-'use strict';
-//应用-timeSheet审批模块-详情
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.tsApproveDetail', {
-          url: 'application/tsApproveDetail',
+        .state('tab.timesheet-write', {
+          url: '/timesheet-write',
+          params: {day: {}},
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
-              controller: 'tsApproveDetailCtrl'
+              templateUrl: 'build/pages/application/timesheet/write/write.html',
+              controller: 'TimeSheetWriteCtrl'
             }
-          },
-          params: {
-            'employeeNumber': "",
-            'projectId': "",
-            'startDate': "",
-            'endDate': ""
           }
-        })
+        });
     }]);
-tsApproveModule.controller('tsApproveDetailCtrl', [
-  '$scope',
-  '$state',
-  'baseConfig',
-  '$ionicHistory',
-  '$stateParams',
-  'hmsHttp',
-  'hmsPopup',
-  '$timeout',
-  'ApproveDetailService',
-  function ($scope,
-            $state,
-            baseConfig,
-            $ionicHistory,
-            $stateParams,
-            hmsHttp,
-            hmsPopup,
-            $timeout,
-            ApproveDetailService) {
 
-    /**
-     * init var section
-     */
-    {
-      if(ionic.Platform.isIOS()) {
-        angular.element('.ae-detail-head').css('marginTop','64px');
-        angular.element('#approveDetailContent').css('top','64px');
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('TimeSheetWriteCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    '$ionicHistory',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    function ($scope,
+              $rootScope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              $ionicHistory,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup) {
+
+      var checked = 'ion-ios-checkmark';
+      var unchecked = 'ion-ios-circle-outline'
+      $scope.projectList = [];
+      $scope.addressList = [];
+      $scope.flybackList = [];
+      var editable = 'N';
+      var uncheckedJson = {flag: false, style: unchecked};
+      var checkedJson = {flag: true, style: checked};
+
+
+      //初始化timesheet填写界面字段
+      $scope.timesheetDetail =
+      {
+        currentDay: "",
+        approver: "",
+        currentProject: {},
+        currentAddress: {},
+        currentFlyback: {},
+        travelingAllowance: {flag: false, style: unchecked},
+        normalAllowance: {flag: false, style: unchecked},
+        intCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
+        extCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
+        description: ""
+      };
+
+      if (baseConfig.debug) {
+        console.log('$stateParams.day ' + angular.toJson($stateParams.day));
       }
-      var selectItem = []; //初始化点击全部条目为false
-      var clickSelectAll = false; //默认没有点击全选
-      $scope.detailActionName = "操作";
-      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
-      $scope.detailInfoArray = {}; //用于接收列表对应数据object
-      $scope.selectArray = [];
-      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
-      var tsApproveDetailParams = {
-        "params": {
-          "p_employee_number": $stateParams.employeeNumber,
-          "p_start_date": $stateParams.startDate.toString(),
-          "p_end_date": $stateParams.endDate.toString(),
-          "p_project_id": $stateParams.projectId
+
+      $scope.lockFlag= $stateParams.day.lockFlag;
+
+      $scope.currentDate = $stateParams.day.each_day;
+
+      //加载项目画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/projectModal.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.projectModal = modal;
+      });
+
+      //加载项目地点画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/addressModal.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.addressModal = modal;
+      });
+
+      //加载机票补贴画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/flybackList.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.flybackModal = modal;
+      });
+
+      $scope.selectAddress = function (address) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.address " + angular.toJson(address));
         }
+        $scope.timesheetDetail.currentAddress = address;
+        $scope.addressModal.hide();
       };
-      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
-      var tsActionParams = { //审批拒绝/通过的参数
-        "params": {
-          "p_approve_flag": "AGREE",
-          "p_employee_number": window.localStorage.empno,
-          "p_param_json": ''
+
+      $scope.selectFlyback = function (flyback) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.flyback " + angular.toJson(flyback));
         }
+        $scope.timesheetDetail.currentFlyback = flyback;
+        $scope.flybackModal.hide();
       };
-      var approveList = { //审批拒绝/通过的子对象
-        "approve_list": []
-      };
-    }
 
-    $scope.$on('$ionicView.enter', function (e) {
-      ApproveDetailService.setRefreshFlag('');
-    });
+      $scope.selectProject = function (project) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.project " + angular.toJson(project));
+        }
+        $scope.timesheetDetail.currentProject = project;
+        $scope.projectModal.hide();
 
-    $scope.$on('$destroy', function (e) {
-      warn('tsApproveListCtrl.$destroy');
-    });
-
-    hmsPopup.showLoading('加载中...');
-    function getData() {
-      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          $scope.detailInfoArray = response.timesheet_approve_detail_response;
-          if ($scope.detailInfoArray.subsidy_list.length === 0) {
-            ApproveDetailService.setRefreshFlag('refresh-approve-list');
-            $ionicHistory.goBack();
-          }
-        } else {
-          if (response.status === 'E' || response.status == 'e') {
-            hmsPopup.showShortCenterToast("没有相关数据!");
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            $scope.addressList = result.projaddress;
+            $scope.flybackList = result.flyback;
+            $scope.timesheetDetail.approver = result.approver;
+            $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
+            $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
+            if (result.projaddress[0]) {
+              $scope.timesheetDetail.currentAddress = result.projaddress[0];
+            } else {
+              $scope.timesheetDetail.currentAddress = {"selected_flag": "Y", "address_id": "0", "address_name": "缺省地点"};
+            }
+            if (result.flyback[0]) {
+              $scope.timesheetDetail.currentFlyback = result.flyback[0];
+            } else {
+              $scope.timesheetDetail.currentFlyback = {"fly_select": "Y", "fly_name": "无flyback", "fly_id": "-1"};
+            }
           } else {
-            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+            hmsPopup.showPopup('获取项目信息错误,请检查');
           }
         }
-      }).error(function (response, status) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
-      });
-    };
-    getData();
-
-    function __initSelectArray(selectParam) { //初始化选择按钮
-      //先初始化数据操作--
-      $scope.selectArray = [];
-      selectItem = [];
-      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
-        if ('undoSelectAll' == selectParam) {
-          $scope.selectArray.push(false);
-          selectItem.push(false);
-        } else if ('selectedAll' == selectParam) {
-          $scope.selectArray.push(true);
-          selectItem.push(true);
-        }
-      });
-    };
-    __initSelectArray('undoSelectAll');
-
-    $scope.dealDetailInfo = function () {
-      if ($scope.detailActionName == "操作") {
-        $scope.detailActionName = "取消";
-        $scope.showActionBar = true;
-        angular.element('#tsApproveItem').css('paddingLeft', '6%');
-      } else if ($scope.detailActionName == "取消") {
-        $scope.detailActionName = "操作";
-        $scope.showActionBar = false;
-        __initSelectArray('undoSelectAll');
-        angular.element('#tsApproveItem').css('paddingLeft', '0');
-        tsActionParams = { //审批拒绝/通过的参数
-          "params": {
-            "p_approve_flag": "AGREE",
-            "p_employee_number": window.localStorage.empno,
-            "p_param_json": ''
-          }
-        };
-        approveList = {
-          "approve_list": []
-        };
-      }
-    };
-
-    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
-      selectItem[index] = !selectItem[index];
-      var approve = {
-        "p_project_id": $scope.detailInfoArray.project_id,
-        "p_project_person_number": $scope.detailInfoArray.employee_number,
-        "p_start_date": "",
-        "p_end_date": "",
-        "p_record_id": ""
+        $timeout(function () {
+          hmsPopup.showLoading('获取项目信息中');
+          TimeSheetService.fetchProjectDetailInfo(success, $scope.currentDate, project.project_id)
+        });
       };
-      if (selectItem[index]) {
-        $scope.selectArray[index] = true;
-        approve.p_record_id = newLineNumber;
-        approveList.approve_list[index] = approve;
-      } else {
-        $scope.selectArray[index] = false;
-        approveList.approve_list.splice(index, 1, 'delete');
-      }
-    };
 
-    $scope.selectAllDetail = function () { //全选
-      clickSelectAll = !clickSelectAll;
-      if (clickSelectAll) {
-        __initSelectArray('selectedAll');
-        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
-          var approve = {
-            "p_project_id": $scope.detailInfoArray.project_id,
-            "p_project_person_number": $scope.detailInfoArray.employee_number,
-            "p_start_date": "",
-            "p_end_date": "",
-            "p_record_id": ""
-          };
-          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
-          approveList.approve_list.push(approve);
-        }
-        warn(approveList.approve_list);
-      } else {
-        __initSelectArray('undoSelectAll');
-        approveList.approve_list = [];
-      }
-    };
+      $scope.showProjectModal = function () {
+        $scope.projectModal.show();
+      };
+      $scope.hideProjectModal = function () {
+        $scope.projectModal.hide();
+      };
 
-    function deleteSuperfluous() {
-      for (var i = 0; i < approveList.approve_list.length; i++) {
-        if (approveList.approve_list[i] === 'delete') {
-          approveList.approve_list.splice(i, 1);
-          i--;
-        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
-          approveList.approve_list.splice(i, 1);
-          i--;
-        }
-      }
-    };
+      $scope.showFlybackModal = function () {
+        $scope.flybackModal.show();
+      };
+      $scope.hideFlybackModal = function () {
+        $scope.flybackModal.hide();
+      };
 
-    $scope.passThroughDetailItem = function () { //通过
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "AGREE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+      $scope.showAddressModal = function () {
+        $scope.addressModal.show();
+      };
+      $scope.hideAddressModal = function () {
+        $scope.addressModal.hide();
+      };
+
+      var fetchEachDay = function (result) {
         hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('审批成功！');
+        if (result.status == 'S') {
+          var projectList = result.project;
+          var flybackList = result.flyback;
+          var addressList = result.projaddress;
+
+          if (baseConfig.debug) {
+            console.log('fetchEachDay result.every_day ' + angular.toJson(result.every_day));
+          }
+
+          //判断是否可编辑 // add by ciwei
+          if (result.every_day.holiday == 'Y') {
+            editable = 'Y';
+          } else if (result.every_day.holiday == 'N') {
+            editable = 'N';
+          }
+
+          if (result.every_day.offbase == '1') {
+            $scope.timesheetDetail.travelingAllowance = checkedJson;
+          } else {
+            $scope.timesheetDetail.travelingAllowance = uncheckedJson;
+          }
+          if (result.every_day.base == 'Y') {
+            $scope.timesheetDetail.normalAllowance = checkedJson;
+          } else {
+            $scope.timesheetDetail.normalAllowance = uncheckedJson;
+          }
+
+          //判断内外部计费是否被选中
+          if (result.every_day.internalcharge == '1') {
+            $scope.timesheetDetail.intCharge = checkedJson;
+          } else {
+            $scope.timesheetDetail.intCharge = uncheckedJson;
+          }
+          if (result.every_day.externalcharge == '1') {
+            $scope.timesheetDetail.extCharge = checkedJson;
+          } else {
+            $scope.timesheetDetail.extCharge = uncheckedJson;
+          }
+
+          $scope.timesheetDetail.currentDay = result.every_day.every_day;
+          $scope.timesheetDetail.approver = result.every_day.approver;
+          $scope.timesheetDetail.description = result.every_day.descrpt;
+          $scope.timesheetDetail.allowance = result.every_day.allowance;
+
+          angular.forEach(projectList, function (data) {
+            if (data.selected_flag === 'Y') {
+              $scope.timesheetDetail.currentProject = data;
+              return;
+            }
+          });
+          angular.forEach(addressList, function (data) {
+            if (data.selected_flag === 'Y') {
+              $scope.timesheetDetail.currentAddress = data;
+              return;
+            }
+          });
+          angular.forEach(flybackList, function (data) {
+            if (data.fly_select === 'Y') {
+              $scope.timesheetDetail.currentFlyback = data;
+              return;
+            }
+          });
+
+          $scope.projectList = projectList;
+          $scope.addressList = addressList;
+          $scope.flybackList = flybackList;
+        }
+        else {
+          hmsPopup.showPopup('获取timesheet错误,错误原因为');
+        }
+      };
+
+      $scope.checkBoxChanged = function (item, type) {
+        console.log('$scope.checkBoxChanged item ' + angular.toJson(item));
+        if (editable == "N" && type == 'charging') {
+          return;
+        }
+        if (item.flag) {
+          item.flag = false;
+          item.style = unchecked;
         } else {
-          hmsPopup.showShortCenterToast('审批失败！');
+          item.flag = true;
+          item.style = checked;
         }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      });
-    };
+        if (type == 'travelingAllowance' && $scope.timesheetDetail.travelingAllowance.flag) {
+          $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
+        }
+        if (type == 'normalAllowance' && $scope.timesheetDetail.normalAllowance.flag) {
+          $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
+        }
+      };
 
-    $scope.refuseDetailItem = function () { //拒绝
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "REFUSE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('拒绝成功');
-        } else {
-          hmsPopup.showShortCenterToast('拒绝失败！');
+      $scope.submitTimesheet = function (timesheetDetail) {
+        if (baseConfig.debug) {
+          console.log('timesheetDetail ' + angular.toJson(timesheetDetail));
         }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      });
-    };
-  }]).service('ApproveDetailService', function () {
-  var flag = ''; //刷新上个列表的标识
-  return {
-    setRefreshFlag: function (newFlag) {
-      flag = newFlag;
-    },
-    getRefreshFlag: function () {
-      return flag;
+
+        var employee = window.localStorage.empno;
+        var currentDate = $scope.currentDate;
+        var projectId = $scope.timesheetDetail.currentProject.project_id;
+        var description = '';
+        var offBaseFlag = '';
+        var baseFlag = '';
+        var extCharge = '';
+        var intCharge = '';
+        var addressId = $scope.timesheetDetail.currentAddress.address_id;
+        var flybackId = $scope.timesheetDetail.currentFlyback.fly_id;
+
+        //内外部计费
+        if ($scope.timesheetDetail.extCharge.flag) {
+          extCharge = 1;
+        } else {
+          extCharge = 0;
+        }
+        if ($scope.timesheetDetail.intCharge.flag) {
+          intCharge = 1;
+        } else {
+          intCharge = 0;
+        }
+        if ($scope.timesheetDetail.travelingAllowance.flag) {
+          offBaseFlag = 1;
+        } else {
+          offBaseFlag = 0;
+        }
+        if ($scope.timesheetDetail.normalAllowance.flag) {
+          baseFlag = 1;
+        } else {
+          baseFlag = 0;
+        }
+
+        description = $scope.timesheetDetail.description.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
+
+        if(baseConfig.debug){
+          console.log('$scope.timesheetDetail.description ' + $scope.timesheetDetail.description);
+          console.log('description ' + description);
+        }
+
+        var params = {
+          "params": {
+            "p_employee": employee + "",
+            "p_date": currentDate + "",
+            "p_project": projectId + "",
+            "p_description": description + "",
+            "p_offbase_flag": offBaseFlag + "",
+            "p_base_flag": baseFlag + "",
+            "p_ext_charge": extCharge + "",
+            "p_int_charge": intCharge + "",
+            "p_address": addressId + "",
+            "p_flyback": flybackId + ""
+          }
+        };
+
+        if (baseConfig.debug) {
+          console.log('submitTimesheet.params ' + angular.toJson(params));
+        }
+
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            hmsPopup.showPopup('提交Timesheet成功');
+            $rootScope.$broadcast('refreshTimesheet', 'parent');
+            $ionicHistory.goBack();
+          } else {
+            hmsPopup.showPopup('提交Timesheet错误,错误原因为');
+          }
+        }
+        hmsPopup.showLoading('提交数据中');
+        TimeSheetService.submitTimesheet(success, params)
+      };
+
+      //从服务器获取请求
+      $timeout(
+        function () {
+          hmsPopup.showLoading('获取timesheet明细数据');
+          TimeSheetService.fetchEachDay(fetchEachDay, $scope.currentDate);
+        }
+      );
     }
-  }
-});
+  ])
+;
 
+/**
+ * Created by gusenlin on 16/5/22.
+ */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.timesheet', {
+          url: '/timesheet',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet/query/query.html',
+              controller: 'TimeSheetQueryCtrl'
+            }
+          }
+        });
+      $stateProvider
+        .state('tab.workflow-message', {
+          url: '/workflow-message',
+          views: {
+            'tab-message': {
+              templateUrl: 'build/pages/application/timesheet/query/query.html',
+              controller: 'TimeSheetQueryCtrl'
+            }
+          }
+        });
+    }]);
+
+angular.module('applicationModule')
+  .controller('TimeSheetQueryCtrl', [
+    '$scope',
+    '$rootScope',
+    '$ionicPopover',
+    '$ionicGesture',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    '$ionicScrollDelegate',
+    'TimeSheetService',
+    'hmsHttp',
+    'hmsPopup',
+    function ($scope,
+              $rootScope,
+              $ionicPopover,
+              $ionicGesture,
+              $state,
+              baseConfig,
+              $ionicHistory,
+              $timeout,
+              $ionicScrollDelegate,
+              TimeSheetService,
+              hmsHttp,
+              hmsPopup) {
+
+      var currentTimeSheetPosition = true;
+      var isScrollFreeze;
+      $scope.calendar = [];
+      $scope.loadingDataFlag = true;
+      $scope.loadingAllowanceFlag = true;
+
+      $scope.allowanceList = [];
+      $scope.selectYearList = [];
+
+      var offset = -5;
+      var yearCount = 10;
+
+      var startTouchX = 0;
+      var startTouchY = 0;
+
+      var slippingFlag = false;
+      var slippingEnableFlag = true;
+
+      var clientWidth = document.body.clientWidth;
+
+      var calendarTopBar;
+
+      if (ionic.Platform.isIOS()) {
+        calendarTopBar = 135;//+ 20;
+      }
+      else {
+        calendarTopBar = 135;
+      }
+
+      var scrollPosition = 0;
+      var startTime;
+      var toTime;
+      var cacheCalendar = [];
+      var copyFromDay = {};
+
+      //年表
+      $scope.currentYear = '';
+      //当前月份
+      $scope.currentMonth = '';
+      //月份初始化列表
+      $scope.monthList = [
+        {"selected": false, value: "1"}, {"selected": false, value: "2"}, {"selected": false, value: "3"},
+        {"selected": false, value: "4"}, {"selected": false, value: "5"}, {"selected": false, value: "6"},
+        {"selected": false, value: "7"}, {"selected": false, value: "8"}, {"selected": false, value: "9"},
+        {"selected": false, value: "10"}, {"selected": false, value: "11"}, {"selected": false, value: "12"}
+      ];
+      //周列表
+      $scope.weekTitleList = [
+        '日', '一', '二', '三', '四', '五', '六'
+      ];
+
+      if (baseConfig.debug) {
+        console.log('TimeSheetQueryCtrl.clientWidth ' + clientWidth);
+      }
+
+      //单格数字用0填充
+      var formatMonth = function (month) {
+        if (parseInt(month) < 10) {
+          return '0' + month;
+        } else {
+          return '' + month;
+        }
+      };
+
+      //初始化日历
+      var initDate = function () {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        $scope.currentYear = year;
+        $scope.currentMonth = month;
+        angular.forEach($scope.monthList, function (data) {
+          if (data.value === month + '') {
+            data.selected = true;
+            return;
+          }
+        });
+
+        for (var i = 0; i < yearCount; i++) {
+          var value = (parseInt(year) + offset + i) + '';
+          var item = {};
+          if (year == value) {
+            item = {
+              "value": value,
+              "selected": true
+            }
+          } else {
+            item = {
+              "value": value,
+              "selected": false
+            }
+          }
+          $scope.selectYearList.push(item);
+        }
+
+        if (baseConfig.debug) {
+          console.log('initDate.year ' + year);
+          console.log('initDate.month ' + month)
+        }
+        var monthParams = year + '' + formatMonth(month);
+        fetchCalendar(monthParams);
+        generateAllowance(monthParams);
+      }
+
+      //初始化日历数组
+      var initCalendar = function () {
+        $scope.calendar = [];
+        for (i = 0; i < 5; i++) {
+          var style_outline = 'each-day';
+          var style_color = 'day-item';
+          var money = '';
+          var project = '';
+          var week = {
+            week: i,
+            list: []
+          };
+          for (j = 0; j < 7; j++) {
+            var item = {
+              day: "",
+              style_outline: style_outline,
+              style_color: style_color,
+              money: money,
+              project: project
+            };
+            week.list.push(item);
+          }
+          $scope.calendar.push(week);
+        }
+      };
+
+      $ionicPopover.fromTemplateUrl('build/pages/application/timesheet/popover/years.html', {
+        scope: $scope,
+        animation: 'animated fadeIn'
+      }).then(function (popover) {
+        $scope.popover = popover;
+      });
+
+      $scope.openPopover = function ($event) {
+        $scope.popover.show($event);
+      };
+
+      $scope.selectYear = function (year) {
+        $scope.currentYear = year.value;
+        $scope.popover.hide();
+        var monthParams = $scope.currentYear + '' + formatMonth($scope.currentMonth);
+
+        angular.forEach($scope.selectYearList, function (data) {
+          if (data.value == year.value) {
+            data.selected = true;
+          } else {
+            data.selected = false;
+          }
+        });
+
+        initCalendar();
+        fetchCalendar(monthParams);
+        generateAllowance(monthParams);
+      }
+
+      $scope.writeTimesheet = function (day) {
+        $state.go('tab.timesheet-write', {day: day});
+      };
+
+      $scope.scrollToFixScreen = function () {
+        if (isScrollFreeze) {
+          isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
+        } else {
+          isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
+        }
+
+        //isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
+        console.log('scrollToFixScreen result ' + isScrollFreeze);
+
+        if (currentTimeSheetPosition) {
+          $ionicScrollDelegate.scrollTo(0, 400, true);
+          currentTimeSheetPosition = false;
+        } else {
+          $ionicScrollDelegate.scrollTo(0, 0, true);
+          currentTimeSheetPosition = true;
+        }
+      };
+
+      var fetchData = function (result) {
+        var timesheetArray = result.timesheet;
+        var seq = 0;
+        $scope.calendar = [];
+        for (i = 0; i < 5; i++) {
+          var week = {
+            week: i,
+            list: []
+          };
+          for (j = 0; j < 7; j++) {
+            var item;
+            var style_outline = 'each-day';
+            var style_color = 'day-item';
+            var money = '';
+            var project = '';
+            var lockFlag = false;
+
+            if (timesheetArray[seq]) {
+              if (timesheetArray[seq].lockflag == '0') {
+                lockFlag = false;
+              } else {
+                lockFlag = true;
+              }
+              if (timesheetArray[seq].status == 'Empty') {
+                style_outline = 'each-day';
+                style_color = 'day-item';
+              } else if (timesheetArray[seq].status == 'Draft') {
+                style_outline = 'each-day attendance';
+                style_color = 'day-item attendance';
+              } else if (timesheetArray[seq].status == 'Approved') {
+                style_outline = 'each-day approve';
+                style_color = 'day-item approve';
+              } else if (timesheetArray[seq].status == 'Rejected') {
+                style_outline = 'each-day reject';
+                style_color = 'day-item reject';
+              }
+              var dayEach = timesheetArray[seq].day;
+              if (dayEach.length == 2) {
+                dayEach = dayEach.replace('0', '');
+              }
+              item = {
+                day: dayEach,
+                style_outline: style_outline,
+                style_color: style_color,
+                money: timesheetArray[seq].allowance,
+                project: timesheetArray[seq].proj,
+                each_day: timesheetArray[seq].each_day,
+                lockFlag: lockFlag,
+                choosed: false
+              };
+            } else {
+              item = {
+                day: '',
+                style_outline: style_outline,
+                style_color: style_color,
+                money: money,
+                project: project,
+                each_day: '',
+                lockFlag: lockFlag,
+                choosed: false
+              };
+            }
+
+            week.list.push(item);
+
+            seq = seq + 1;
+          }
+          $scope.calendar.push(week);
+        }
+      };
+
+      var fetchCalendar = function (monthParams) {
+        $scope.loadingDataFlag = true;
+
+        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_month": monthParams + "",
+            "p_offset": 0
+          }
+        };
+
+        //hmsPopup.showLoading('获取timesheet数据中...');
+        hmsHttp.post(url, params).success(function (result) {
+          if (result.status == 'S') {
+            fetchData(result);
+            $scope.loadingDataFlag = false;
+          }
+        }).error(function (response, status) {
+          $scope.loadingDataFlag = false;
+        });
+      };
+
+      var element = angular.element(document.querySelector('#timesheetCalandar'));
+
+      var startSlipping = function () {
+        slippingFlag = true;
+        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
+        scrollPosition = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition().top;
+      };
+      var stopSlipping = function () {
+        slippingFlag = false;
+        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
+      };
+      var clearCalendarCache = function () {
+        angular.forEach($scope.calendar, function (data) {
+          angular.forEach(data.list, function (list) {
+            list.choosed = false;
+          });
+        });
+        if (baseConfig.nativeScreenFlag) {
+          $scope.$apply();
+        }
+      };
+
+      var slippingWriteTimesheet = function () {
+        //var batchList = [];
+        var dateArray = '';
+        angular.forEach($scope.calendar, function (data) {
+          angular.forEach(data.list, function (list) {
+            if (list.choosed) {
+              //batchList.push({"day": list.each_day});
+              if (dateArray == '') {
+                dateArray = dateArray + list.each_day;
+              } else {
+                dateArray = dateArray + '#' + list.each_day;
+              }
+            }
+          });
+        });
+        if (baseConfig.debug) {
+          console.log('copyFromDay ' + angular.toJson(copyFromDay));
+          console.log('dateArray ' + angular.toJson(dateArray));
+        }
+
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            var timesheetArray = result.refresh_timesheet;
+            fetchData(timesheetArray);
+          } else {
+            hmsPopup.showPopup('批量填写失败!' + result.message);
+          }
+        };
+        var error = function (response) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('批量填写失败,可能是网络问题!');
+          clearCalendarCache();
+        };
+        hmsPopup.showLoading('批量填写中');
+        TimeSheetService.slippingBatch(success, error, copyFromDay.day, dateArray);
+      };
+
+      //捕获触摸的
+      var markSelectCalendar = function (clentW, touchX, touchY) {
+        var selectX = -1;
+        var selectY = -1;
+        var averageX = (clentW - 20) / 7;
+        var averageY = 60;
+        var lengthY = calendarTopBar - scrollPosition;
+        var offsetY = 0;
+        var offsetX = 10;
+        for (var i = 0; i < 7; i++) {
+          var left = averageX * ( i ) + offsetX;
+          var right = averageX * ( i + 1 ) + offsetX;
+          if (touchX > left && touchX < right) {
+            selectX = i;
+            if ((touchY >= lengthY + 0 + offsetY) && (touchY <= lengthY + 1 * averageY - offsetY)) {
+              selectY = 0;
+            }
+            else if ((touchY >= lengthY + 1 * averageY + offsetY) && (touchY <= lengthY + 2 * averageY - offsetY)) {
+              selectY = 1;
+            }
+            else if ((touchY >= lengthY + 2 * averageY + offsetY) && (touchY <= lengthY + 3 * averageY - offsetY)) {
+              selectY = 2;
+            }
+            else if ((touchY >= lengthY + 3 * averageY + offsetY) && (touchY <= lengthY + 4 * averageY - offsetY)) {
+              selectY = 3;
+            }
+            else if ((touchY >= lengthY + 4 * averageY + offsetY) && (touchY <= lengthY + 5 * averageY - offsetY)) {
+              selectY = 4;
+            }
+            else if ((touchY >= lengthY + 5 * averageY + offsetY) && (touchY <= lengthY + 6 * averageY - offsetY)) {
+              selectY = 5;
+            }
+          }
+        }
+        return {
+          "selectX": selectX,
+          "selectY": selectY
+        };
+      };
+
+      //拖拽标记TimeSheet具体天
+      $ionicGesture.on("drag", function (e) {
+        //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
+        //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
+        if (!slippingFlag && slippingEnableFlag) {
+          if (Math.abs(startTouchX - e.gesture.touches[0].pageX) > 3 || Math.abs(startTouchY - e.gesture.touches[0].pageY) > 3) {
+            toTime = new Date().getTime();
+            if (baseConfig.debug) {
+              console.log('startTime ' + startTime);
+              console.log('toTime ' + toTime);
+            }
+            if ((toTime - startTime) > 250) {
+              startSlipping();
+            }
+          }
+        }
+        if (slippingFlag && slippingEnableFlag) {
+          var selectDay = markSelectCalendar(clientWidth,
+            e.gesture.touches[0].pageX,
+            e.gesture.touches[0].pageY);
+          if (baseConfig.debug) {
+            //console.log('drag.selectDay ' + angular.toJson(selectDay));
+          }
+          if (selectDay.selectX >= 0 && selectDay.selectX <= 6 && selectDay.selectY >= 0 && selectDay.selectY <= 5) {
+            var dayItem = $scope.calendar[selectDay.selectY].list[selectDay.selectX];
+            if (copyFromDay.day) {
+
+            } else {
+              copyFromDay.day = dayItem.each_day;
+            }
+            if (dayItem && dayItem.day != '') {
+              dayItem.choosed = true;
+            } else {
+              dayItem.choosed = false;
+            }
+          }
+          $scope.$apply();
+        }
+      }, element);
+
+      $ionicGesture.on("touch", function (e) {
+        console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
+        console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
+        var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
+        console.log('position ' + angular.toJson(position));
+        startTouchX = e.gesture.touches[0].pageX;
+        startTouchY = e.gesture.touches[0].pageY;
+        startTime = new Date().getTime();
+        copyFromDay = {};
+      }, element);
+
+      $ionicGesture.on("release", function (e) {
+        if (slippingFlag && slippingEnableFlag) {
+          stopSlipping();
+          //console.log('release.startTouchX ' + e.gesture.touches[0].pageX);
+          //console.log('release.startTouchY ' + e.gesture.touches[0].pageY);
+          var summitOrder = function (buttonIndex) {
+            if (baseConfig.debug) {
+              console.log('You selected button ' + buttonIndex);
+            }
+            if (buttonIndex == 1) {
+              slippingWriteTimesheet();
+            } else {
+              clearCalendarCache();
+            }
+          }
+          hmsPopup.confirm("确定要否进行批量填写?", "", summitOrder);
+        }
+      }, element);
+
+      $scope.getTimeSheet = function (year, month) {
+        angular.forEach($scope.monthList, function (data) {
+          data.selected = false;
+        });
+        month.selected = true;
+        $scope.currentMonth = month.value;
+        var monthParams = year + '' + formatMonth(month.value);
+        initCalendar();
+        fetchCalendar(monthParams);
+        generateAllowance(monthParams);
+      };
+
+
+      //获取津贴信息
+      var generateAllowance = function (monthParams) {
+        $scope.loadingAllowanceFlag = true;
+        $scope.allowanceList = [];
+        var success = function (result) {
+          if (result.status == 'S') {
+            angular.forEach(result.allowance, function (data) {
+              var allowance = {
+                "allow": data.allow,
+                "amount": data.amt,
+                "creationDate": data.crea,
+                "days": data.days,
+                "status": data.is_audited,
+                "project": data.proj,
+                "period": data.range,
+                "type": data.type
+              }
+              $scope.allowanceList.push(allowance);
+            });
+            $scope.loadingAllowanceFlag = false;
+          } else {
+            $scope.loadingAllowanceFlag = false;
+          }
+        }
+        var error = function () {
+          $scope.loadingAllowanceFlag = false;
+        }
+        TimeSheetService.generateAllowance(success, error, 'N', monthParams);
+      }
+
+      initCalendar();
+      //从服务器获取请求
+      $timeout(
+        function () {
+          initDate();
+        }, 600
+      );
+
+      $scope.goBack = function () {
+        $ionicHistory.$ionicGoBack();
+      };
+
+      $rootScope.$on('refreshTimesheet', function (event, data) {
+        if (baseConfig.debug) {
+          console.log('refreshTimesheet', data);
+        }
+        $timeout(
+          function () {
+            var monthParams = $scope.currentYear + '' + formatMonth($scope.currentMonth);
+            fetchCalendar(monthParams);
+          }, 600
+        );
+      });
+
+      if (baseConfig.debug) {
+        console.log('applicationCtrl.enter');
+      }
+
+      $scope.$on('$ionicView.enter', function (e) {
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$ionicView.enter');
+        }
+      });
+
+      $scope.$on('$destroy', function (e) {
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$destroy');
+        }
+        $scope.popover.remove();
+      });
+    }]);
