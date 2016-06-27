@@ -1,9 +1,9 @@
 {
   "baseConfig": {
     "debug": false,
-    "isMobilePlatform": false,
+    "isMobilePlatform": true,
     "clearTable": true,
-    "nativeScreenFlag":false,
+    "nativeScreenFlag":true,
     "loginPath": "http://mobile-app.hand-china.com/hmbms_hand/api",
     "businessPath": "http://mobile-app.hand-china.com/hmbms_hand/api/dataEngine",
     "pkgIdentifier": "",
