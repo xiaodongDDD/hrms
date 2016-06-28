@@ -33,6 +33,8 @@ angular.module('applicationModule')
               hmsHttp,
               hmsPopup,
               $ionicHistory) {
+      //只支持iOS和Android
+      $scope.isIOSPlatform = ionic.Platform.isIOS();
 
       $scope.timeOffHeader       ={
         userId                 : 999,
@@ -44,15 +46,16 @@ angular.module('applicationModule')
         usedExtPaidHoliday     : 9
       };
 
-      $scope.timeOffHistoryList  =[
-        {
+      $scope.timeOffHistoryList  =[{
         holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
-        timeOffType          : 'paid-holiday',
+        timeOffType          : '1',
+        timeOffTypeClass     : 'paid-holiday',
         timeOffTypeMeaning   : '带薪年假',
         datetimeFrom         : '2016-6-16',
         datetimeTo           : '2016-6-18',
         timeLeave            : '2天',
         approveStatus        : 'APPROVED',
+        approveStatusClass   : 'approved',
         approveStatusMeaning : '已审批',
         applyReason          : '陪老婆去迪斯尼玩',
         reason_image         : [
@@ -112,51 +115,65 @@ angular.module('applicationModule')
             $scope.timeOffHistoryList  = [];
             $scope.timeOffHistoryList = responseData.timeOffHistory;
 
-
             //1:带薪年假，2,额外福利年假，3:事假，4.带薪病假，5.病假，6.婚嫁，7.产假，8.丧假，9.陪产假
             angular.forEach($scope.timeOffHistoryList, function (data, index) {
               if ('1' == data.timeOffType) {
-                data.holidayIcon        = baseImgUrl + 'PaidHoliday@3x.png';
-                data.timeOffTypeMeaning = '带薪年假';
+                data.holidayIcon         = baseImgUrl + 'PaidHoliday@3x.png';
+                data.timeOffTypeMeaning  = '带薪年假';
+                data.timeOffTypeClass    = 'paid-holiday';
               } else if ('2' == data.timeOffType) {
                 data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
                 data.timeOffTypeMeaning  = '额外福利年假';
+                data.timeOffTypeClass    = 'ext-paid-holiday';
               } else if ('3' == data.timeOffType) {
                 data.holidayIcon         = baseImgUrl + 'CasualLeave@3x.png';
                 data.timeOffTypeMeaning  = '事假';
+                data.timeOffTypeClass    = 'default-holiday';
               } else if ('4' == data.timeOffType) {
                 data.holidayIcon         = baseImgUrl + 'SickLeave@@3x.png';
                 data.timeOffTypeMeaning  = '带薪病假';
+                data.timeOffTypeClass    = 'paid-sick-leave';
               } else if ('5' == data.timeOffType) {
                 data.holidayIcon         = baseImgUrl + 'SickLeave@3x.png';
                 data.timeOffTypeMeaning  = '病假';
+                data.timeOffTypeClass    = 'default-holiday';
               } else if ('6' == data.timeOffType) {
                 data.holidayIcon         = baseImgUrl + 'HoneyMood@3x.png';
-                data.timeOffTypeMeaning  = '婚嫁';
+                data.timeOffTypeMeaning  = '婚假';
+                data.timeOffTypeClass    = 'default-holiday';
               } else if ('7' == data.timeOffType) {
                 data.holidayIcon         = baseImgUrl + 'MaternityLeave@3x.png';
                 data.timeOffTypeMeaning  = '产假';
+                data.timeOffTypeClass    = 'default-holiday';
               } else if ('8' == data.timeOffType) {
                 data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
                 data.timeOffTypeMeaning  = '丧假';
+                data.timeOffTypeClass    = 'default-holiday';
               } else if ('9' == data.timeOffType) {
                 data.holidayIcon         = baseImgUrl + 'PaternityLeave@3x.png';
                 data.timeOffTypeMeaning  = '陪产假';
+                data.timeOffTypeClass    = 'default-holiday';
               }
 
               //1.审批通过：APPROVED,2.审批中：APPROVING,3：审批拒绝：REJECTED,4.草稿：DRAFT
               if ('APPROVED'         == data.approveStatus) {
-                data.approveStatusMeaning = '审批通过';
+                data.approveStatusMeaning = '通过';
+                data.approveStatusClass   = 'approved';
               } else if ('APPROVING' == data.approveStatus) {
                 data.approveStatusMeaning = '审批中';
+                data.approveStatusClass   = 'approving';
               } else if ('REJECTED'  == data.approveStatus) {
-                data.approveStatusMeaning = '审批拒绝';
+                data.approveStatusMeaning = '拒绝';
+                data.approveStatusClass   = 'rejected';
               } else if ('DRAFT'     == data.approveStatus) {
                 data.approveStatusMeaning = '草稿';
+                data.approveStatusClass   = 'draft';
               }
+
+              //加上'天'后缀
+              data.timeLeave = data.timeLeave + '天';
             });
 
-            //$scope.$apply();
 
           } else {
             if (response.status === 'E' || response.status == 'e') {
