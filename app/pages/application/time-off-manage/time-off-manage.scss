@@ -1,76 +1,83 @@
-.time-off-header-bar {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -moz-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  position: absolute;
-  right: 0;
-  left: 0;
-  z-index: 9;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 0px;
-  width: 100%;
-  height: 180px;
-  border-width: 0;
-  border-style: solid;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid #ddd;
+.time-off-header-bg {
   background-image: url("./../img/application/time-off-manage/HeaderBar-Large@3x.png");
   background-size: cover;
-  .title {
-    display: block;
-    position: absolute;
-    top: 0;
+  .platform-status-bar {
+    width: 100%;
+    &.ios-status-bar {
+      height: 20px;
+    }
+    &.android-status-bar {
+      height: 0px;
+    }
+  }
+  .time-off-header-bar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
     right: 0;
     left: 0;
-    z-index: 0;
-    overflow: hidden;
-    margin: 0 10px;
-    min-width: 30px;
-    height: 43px;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 17px;
-    font-weight: 500;
-    line-height: 44px;
-    color: white;
-  }
-  .buttons {
-    display: inherit;
-    .right-button {
+    z-index: 9;
+    padding: 0px;
+    width: 100%;
+    height: 180px;
+    border-width: 0;
+    border-style: solid;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid #ddd;
+    .title {
+      display: block;
       position: absolute;
-      top: 0px;
-      right: 5px;
-      color: white;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 0;
+      overflow: hidden;
+      margin: 0 10px;
+      min-width: 30px;
+      height: 43px;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       font-size: 17px;
-      min-height: 31px;
-      line-height: 42px;
-      z-index: 1;
-      padding: 0 8px;
-      min-width: initial;
+      font-weight: 500;
+      line-height: 44px;
+      color: white;
     }
-    .left-button {
-      position: absolute;
-      top: 0px;
-      left: 5px;
-      color: white;
-      font-size: 17px;
-      min-height: 31px;
-      line-height: 42px;
-      z-index: 1;
-      padding: 0 8px;
-      min-width: initial;
+    .buttons {
+      display: inherit;
+      .right-button {
+        position: absolute;
+        top: 0px;
+        right: 5px;
+        color: white;
+        font-size: 17px;
+        min-height: 31px;
+        line-height: 42px;
+        z-index: 1;
+        padding: 0 8px;
+        min-width: initial;
+      }
+      .left-button {
+        position: absolute;
+        top: 0px;
+        left: 5px;
+        color: white;
+        font-size: 17px;
+        min-height: 31px;
+        line-height: 42px;
+        z-index: 1;
+        padding: 0 8px;
+        min-width: initial;
+      }
     }
   }
 }
@@ -104,7 +111,7 @@
 
 .hrms-circle {
   position: absolute;;
-  width: 82px;
+  width: 81px;
   height: 82px;
   .up-title {
     position: absolute;
@@ -214,7 +221,12 @@
 }
 
 .time-off-content {
-  top: 180px;
+  &.ios-content {
+    top: 200px;
+  }
+  &.android-content {
+    top: 180px;
+  }
   .time-off-list-title {
     font-size: 16px;
     margin-left: 1.3%;
@@ -223,26 +235,43 @@
     color: #3964A4;
   }
   .time-off-item {
-    padding: 0px;
-    height: 110px;
-    width: 97.4%;
-    margin-left: 1.3%;
-    margin-bottom: 15px;
+    position: relative;
+    height: 90px;
+    width: 97.5%;
+    margin-left: 1.25%;
+    margin-right: 1.25%;
+    margin-bottom: 10px;
     border-top: 1px solid #F8F8F8;
     border-radius: 5px;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18);
     .time-off-item-left {
-      width: 116px;
-      height: 110px;
-      padding: 0px;
+      position: absolute;
+      left: 0px;
+      width: 100px;
+      height: 90px;
       border-radius: 5px 0px 0px 5px;
+      &.paid-holiday {
+        border-left: 3px solid #6BB9F0;
+      }
+      &.paid-sick-leave {
+        border-left: 3px solid #73BBA2;
+      }
+      &.ext-paid-holiday {
+        border-left: 3px solid #F99D32;
+      }
+      &.default-holiday {
+
+      }
     }
     .time-off-item-middle {
-      margin-left: 2%;
+      position: absolute;
+      height: 90px;
+      left: 110px;
+
       .item-off-item-title {
         font-size: 14px;
         padding-top: 5px;
-        padding-bottom: 10px;
+        padding-bottom: 5px;
         &.paid-holiday {
           color: #6BB9F0;
         }
@@ -251,6 +280,9 @@
         }
         &.ext-paid-holiday {
           color: #F99D32;
+        }
+        &.default-holiday {
+          color: #3964A4;
         }
       }
       .item-off-item-text {
@@ -259,15 +291,25 @@
       }
     }
     .time-off-item-right {
+      position: absolute;
+      right: 5px;
+      height: 90px;
+      width: 80px;
       text-align: center;
       .time-circle {
-        height: 46px;
-        width: 46px;
-        line-height: 46px;
-        display: inline-block;
-        font-size: 16px;
+        position: absolute;
+        height: 45px;
+        width: 45px;
+        left: 0px;
+        top:10px;
         border-radius: 50%;
         box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.50);
+        text-align: center;
+        .time-leave-text {
+          margin-top: 13px;
+          font-size: 16px;
+          color: #6BB9F0;
+        }
         &.paid-holiday {
           color: #6BB9F0;
         }
@@ -277,10 +319,16 @@
         &.ext-paid-holiday {
           color: #F99D32;
         }
+        &.default-holiday {
+          color: #3964A4;
+        }
       }
       .approve-status {
-        margin-top: 5px;
-        font-size: 14px;
+        position: absolute;
+        left: 0px;
+        width: 45px;
+        top: 60px;
+        font-size: 14px;;
         &.approved {
           color: #B95756;
         }
@@ -290,6 +338,16 @@
         &.rejected {
           color: #F99D32;
         }
+        &.draft {
+          color: #73BBA2;
+        }
+      }
+      .back-arrow {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        right: 0px;
+        top: 35px;
       }
     }
   }
