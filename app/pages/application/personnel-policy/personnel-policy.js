@@ -28,8 +28,19 @@ angular.module('applicationModule')
         $ionicHistory.goBack();
       };
       $scope.openwin=function($url){
-        //window.open($url,'newwindow','top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
-        window.open("http://www.daxuequan.org/ceshi/"+$url, '_system', 'location=yes');
+        if(ionic.Platform.isIOS())
+        {
+          var urls = $url.split("?");
+          var pdfurl = urls[0];
+          window.open("http://www.daxuequan.org/ceshi/"+pdfurl, '_system', 'location=yes');
+        } else if(ionic.Platform.isAndroid())
+        {
+          var urls = $url.split("?");
+          var urlid = urls[1];
+          window.open("http://www.daxuequan.org/hrms-pdf/web/viewer.html/?"+urlid, '_system', 'location=yes');
+        }else
+        {
+        }
         };
     }]
 );

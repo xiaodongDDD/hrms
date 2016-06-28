@@ -1673,7 +1673,7 @@ angular.module('myApp')
           views: {
             'tab-contact': {
               templateUrl: 'build/pages/contact/contact.html',
-              controller: 'contactCtrl'
+              controller: 'ContactCtrl'
             }
           }
         })
@@ -1877,24 +1877,122 @@ angular.module('applicationModule')
     }]);
 
 /**
- * Created by gusenlin on 16/4/24.
+ *  modify by shellWolf on 16/06/28.
  */
 angular.module('contactModule')
-
-  .controller('contactCtrl', [
+  .controller('ContactCtrl', [
     '$scope',
-    '$state',
+    '$ionicScrollDelegate',
+    '$ionicModal',
     function ($scope,
-              $state) {
-      console.log('contactCtrl.enter');
+              $ionicScrollDelegate,
+              $ionicModal) {
+      /**
+       * var section
+       */
+      {
+        $scope.customContactsInfo = [
+          {
+            name: '小哥',
+            tel: '13478654565',
+            imgUrl: 'build/img/contact/profile3@3x.png'
+          }, {
+            name: '成成',
+            tel: '13478654565',
+            imgUrl: 'build/img/contact/profile2@3x.png'
+          }, {
+            name: '晴子',
+            tel: '13478654565',
+            imgUrl: 'build/img/contact/profile1@3x.png'
+          }, {
+            name: '小鹿',
+            tel: '13478654565',
+            imgUrl: 'build/img/contact/profile4@3x.png'
+          }, {
+            name: '小狼',
+            tel: '15675348120',
+            imgUrl: 'build/img/contact/profile-2@3x.png'
+          }, {
+            name: '小哥',
+            tel: '13478654565',
+            imgUrl: 'build/img/contact/profile3@3x.png'
+          }, {
+            name: '成成',
+            tel: '13478654565',
+            imgUrl: 'build/img/contact/profile2@3x.png'
+          }, {
+            name: '晴子',
+            tel: '13478654565',
+            imgUrl: 'build/img/contact/profile1@3x.png'
+          }, {
+            name: '小鹿',
+            tel: '13478654565',
+            imgUrl: 'build/img/contact/profile4@3x.png'
+          }, {
+            name: '小狼',
+            tel: '15675348120',
+            imgUrl: 'build/img/contact/profile-2@3x.png'
+          }
+        ];
+        $scope.showTopInput = false; // 默认不显示bar上的搜索框
+        var position = ''; //记录滚动条的位置
 
+      }
       $scope.$on('$ionicView.enter', function (e) {
-        console.log('contactCtrl.$ionicView.enter');
       });
 
       $scope.$on('$destroy', function (e) {
-        console.log('contactCtrl.$destroy');
       });
+
+      $scope.watchScroll = function () { //滚动内容时执行的method
+        position = $ionicScrollDelegate.getScrollPosition().top;
+        $scope.$apply(function () {
+          warn('Now Position:' + position);
+          if (position < 30) {
+            $scope.showTopInput = false;
+          } else if (position >= 30) {
+            $scope.showTopInput = true;
+          }
+        });
+      };
+
+      /**
+       * modal input 方法区
+       */
+      $ionicModal.fromTemplateUrl('build/pages/contact/modal/contact-search.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.contactInputModal = modal;
+      });
+      $scope.goInputModal = function () {
+        $scope.contactInputModal.show();
+      };
+
+      $scope.hideContactSearch = function () {
+        $scope.contactInputModal.hide();
+      };
+
+      $scope.searchContacts = function () {
+
+      };
+
+      $scope.selectPerson = function () {
+
+      };
+
+      $scope.goStructure = function () {
+
+      };
+
+      $scope.goDetailInfo = function () {
+
+      };
+
+      $scope.telNumber = function (event, newNumber) {
+        event.stopPropagation(); //阻止事件冒泡
+        window.location.href = "tel:" + newNumber;
+      };
+
     }]);
 
 /**
@@ -4422,8 +4520,19 @@ angular.module('applicationModule')
         $ionicHistory.goBack();
       };
       $scope.openwin=function($url){
-        //window.open($url,'newwindow','top=0,left=0,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes,location=yes,status=yes');
-        window.open("http://www.daxuequan.org/ceshi/"+$url, '_system', 'location=yes');
+        if(ionic.Platform.isIOS())
+        {
+          var urls = $url.split("?");
+          var pdfurl = urls[0];
+          window.open("http://www.daxuequan.org/ceshi/"+pdfurl, '_system', 'location=yes');
+        } else if(ionic.Platform.isAndroid())
+        {
+          var urls = $url.split("?");
+          var urlid = urls[1];
+          window.open("http://www.daxuequan.org/hrms-pdf/web/viewer.html/?"+urlid, '_system', 'location=yes');
+        }else
+        {
+        }
         };
     }]
 );
@@ -15046,7 +15155,7 @@ angular.module('tsApproveModule')
             "p_project_id": "",
             "p_project_person_number": "",
             "p_page": 1,
-            "p_page_size": 4
+            "p_page_size": 6
           }
         };
         var tsActionParams = { //审批拒绝/通过的参数
@@ -15127,6 +15236,7 @@ angular.module('tsApproveModule')
           $scope.actionName = "操作";
           $scope.showDetailArrow = true;
           $scope.pullDownFlag = true;
+          $scope.listInfoArray.busy = false;
           angular.element('.ts-approve-list-item').css("paddingLeft", "10px");
           tsActionParams = { //审批拒绝/通过的参数
             "params": {
@@ -15542,7 +15652,7 @@ angular.module('tsApproveModule')
                 _self.busy = false;
                 _self.listArray = [];
                 hmsPopup.showShortCenterToast("没有相关数据!");
-              } else if (response.count <= 4) {
+              } else if (response.count <= 6) {
                 _self.busy = false;
               } else {
                 _self.busy = true;

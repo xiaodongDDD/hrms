@@ -270,7 +270,7 @@ angular.module('myApp')
           views: {
             'tab-contact': {
               templateUrl: 'build/pages/contact/contact.html',
-              controller: 'contactCtrl'
+              controller: 'ContactCtrl'
             }
           }
         })

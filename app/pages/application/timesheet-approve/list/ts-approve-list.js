@@ -174,6 +174,7 @@ angular.module('tsApproveModule')
           $scope.actionName = "操作";
           $scope.showDetailArrow = true;
           $scope.pullDownFlag = true;
+          $scope.listInfoArray.busy = false;
           angular.element('.ts-approve-list-item').css("paddingLeft", "10px");
           tsActionParams = { //审批拒绝/通过的参数
             "params": {

@@ -1,9 +1,62 @@
-<ion-view view-title="通讯录">
+<ion-view view-title="通讯录" class="contact">
   <ion-header-bar align-title="center" class="bar-stable">
-    <h1 class="title">通讯录</h1>
+    <div ng-if="!showTopInput">
+      <h1 class="title">通讯录</h1>
+
+      <div class="buttons">
+        <button class="button button-clear row no-padding" ng-click="scanBusinessCard()">
+          <i class="img-scan"></i>
+          <span class="scan-text">名片</span>
+        </button>
+      </div>
+    </div>
+    <div class="row no-padding search-input" ng-if="showTopInput">
+      <input type="search" class="text-input" placeholder="搜索"
+        ng-click="goInputModal()"/>
+    </div>
   </ion-header-bar>
-  <ion-content>
-    <ion-list>
-    </ion-list>
+  <ion-content class="contact-content" has-bouncing="true" on-scroll="watchScroll()">
+    <div class="row search-input input-height" ng-if="true">
+      <input type="search" class="text-input" placeholder="搜索"
+        ng-click="goInputModal()"/>
+    </div>
+    <div class="org-structure">
+      <div class="contact-item row no-padding" ng-click="goStructure()">
+        <div class="col col-15 item-logo">
+          <img class="contact-item-logo" src="build/img/login/login-hand.png"/>
+        </div>
+        <div class="col col-85 item-name">
+          上海汉得信息技术股份有限公司
+        </div>
+        <div class="item-line"></div>
+        <div class="item-arrow"></div>
+      </div>
+      <div class="contact-item row no-padding" ng-click="goStructure()">
+        <div class="col col-15 item-logo">
+          <img class="contact-item-logo" src="build/img/application/profile@3x.png"/>
+        </div>
+        <div class="col col-85 item-name">
+          TECH-移动技术中心
+        </div>
+        <div class="item-arrow"></div>
+      </div>
+    </div>
+    <div class="custom-link-man">
+      常用联系人
+    </div>
+    <div>
+      <div class="contact-item row no-padding"
+           ng-repeat="i in customContactsInfo"
+           ng-click="goDetailInfo()"
+        >
+        <div class="col col-15 item-logo">
+          <img class="contact-item-logo" ng-src="{{i.imgUrl}}"/>
+        </div>
+        <div class="col col-85 item-name" ng-bind="i.name">
+        </div>
+        <div class="item-line"></div>
+        <div class="tel-img" ng-click="telNumber($event,i.tel)"></div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

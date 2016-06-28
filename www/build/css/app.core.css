@@ -2900,23 +2900,6 @@ Copyright (c) 2015 Daniel Eden
 .platform-ios .popover-bottom .popover-arrow:after {
   top: -6px; }
 
-.platform-android .popover {
-  margin-top: -32px;
-  background-color: #fafafa;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35); }
-
-.platform-android .popover .item {
-  border-color: #fafafa;
-  background-color: #fafafa;
-  color: #4d4d4d; }
-
-.platform-android .popover.popover-bottom {
-  margin-top: 32px; }
-
-.platform-android .popover-backdrop,
-.platform-android .popover-backdrop.active {
-  background-color: transparent; }
-
 .popover-open {
   pointer-events: none; }
 
@@ -2975,6 +2958,35 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: scale(1) translateZ(0);
     transform: scale(1) translateZ(0);
     opacity: 1; } }
+
+/*
+* 通用input搜索框样式
+*/
+.search-input {
+  padding-left: 6.6%;
+  padding-right: 6.6%; }
+  .search-input .text-input {
+    height: 22px;
+    border-radius: 40px;
+    border: 1px solid rgba(151, 151, 151, 0.15);
+    width: 87.6%;
+    font-size: 14px;
+    background-color: white;
+    background-image: url("./../img/application/timesheet-approve/list/search.png");
+    background-repeat: no-repeat;
+    background-size: 11px 13px;
+    background-position: 9px 7px;
+    padding-left: 25px; }
+
+.search-input.ng-enter {
+  -webkit-animation: zoomInUp 0.4s;
+  animation: zoomInUp .4s; }
+
+.search-input.ng-enter-stagger {
+  -webkit-animation-delay: 120ms;
+  animation-delay: 120ms;
+  -webkit-animation-duration: 0ms;
+  animation-duration: 0ms; }
 
 .rocket-icon {
   width: 42px;
@@ -3258,26 +3270,6 @@ Copyright (c) 2015 Daniel Eden
     -webkit-border-radius: 10px 10px 0 0;
     -moz-border-radius: 10px 10px 0 0;
     border-radius: 10px 10px 0 0; }
-
-.ts-filter-input {
-  height: 45px; }
-  .ts-filter-input .filter-text {
-    width: 28.3%;
-    text-align: left;
-    padding-left: 4%;
-    margin-top: 5px; }
-  .ts-filter-input .filter-input {
-    height: 25px;
-    border-radius: 40px;
-    border: 1px solid rgba(151, 151, 151, 0.28);
-    width: 57.6%;
-    font-size: 14px;
-    background-color: white;
-    background-image: url("./../img/application/timesheet-approve/list/search.png");
-    background-repeat: no-repeat;
-    background-size: 9px 7px;
-    background-position: 13px 14px;
-    padding-left: 28px; }
 
 .filter-items-row {
   padding: 0px;
@@ -7444,21 +7436,92 @@ Copyright (c) 2015 Daniel Eden
   white-space: normal;
   line-height: 25px; }
 
-.father {
-  text-align: center;
-  width: 200px;
-  height: 200px;
-  background: red;
-  vertical-align: middle;
-  -moz-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center; }
-  .father .children {
-    width: 100px;
-    height: 100px;
-    margin-left: auto;
-    margin-right: auto;
-    background: #4cd964; }
+.contact .buttons .img-scan {
+  height: 26px;
+  width: 30px;
+  background-color: transparent;
+  background-image: url("./../img/contact/scan@3x.png");
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  background-position: 9px 7px; }
+
+.contact .buttons .scan-text {
+  padding-top: 1px;
+  padding-left: 8px; }
+
+.contact .contact-content {
+  background-color: #f8f8f8; }
+  .contact .contact-content .input-height {
+    height: 25px;
+    margin-top: 4px; }
+  .contact .contact-content .org-structure {
+    margin-top: 15px; }
+  .contact .contact-content .no-padding {
+    padding: 0px;
+    margin: 0px; }
+  .contact .contact-content .contact-item {
+    height: 47px;
+    background-color: white;
+    padding-bottom: 5px; }
+    .contact .contact-content .contact-item .item-logo {
+      padding-left: 10px; }
+      .contact .contact-content .contact-item .item-logo .contact-item-logo {
+        width: 38px;
+        height: 38px;
+        line-height: 38px;
+        text-align: center;
+        float: left;
+        border-radius: 22.5px;
+        font-size: 16px; }
+    .contact .contact-content .contact-item .item-name {
+      align-self: center;
+      font-size: 17px;
+      color: #4A4A4A; }
+    .contact .contact-content .contact-item .item-line {
+      position: absolute;
+      height: 1px;
+      width: 100%;
+      background-color: #D2D2D2;
+      margin-top: 47px;
+      margin-left: -84%; }
+    .contact .contact-content .contact-item .item-arrow {
+      height: 20px;
+      width: 20px;
+      background-color: transparent;
+      background-image: url("./../img/application/timesheet-approve/list/BackArrow-1@3x.png");
+      position: absolute;
+      margin-top: 14px;
+      right: 5%;
+      font-size: 14px;
+      color: #9B9B9B;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: 0px 0px; }
+    .contact .contact-content .contact-item .tel-img {
+      height: 23px;
+      width: 23px;
+      background-color: transparent;
+      background-image: url("./../img/contact/mobile@3x.png");
+      position: absolute;
+      margin-top: 11px;
+      right: 4%;
+      font-size: 14px;
+      color: #9B9B9B;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: 0px 0px; }
+    .contact .contact-content .contact-item .tel-img.activated {
+      opacity: 0.7;
+      transform: scale(0.8, 0.8);
+      -webkit-transform: scale(0.8, 0.8); }
+  .contact .contact-content .contact-item.activated {
+    opacity: 0.7; }
+  .contact .contact-content .custom-link-man {
+    color: #24559C;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-top: 10px;
+    height: 40px; }
 
 .login {
   background: url("../img/login/login-back.png");
