@@ -37,7 +37,7 @@ angular.module('applicationModule')
         {
           var urls = $url.split("?");
           var urlid = urls[1];
-          window.open("http://www.daxuequan.org/hrms-pdf/web/viewer.html/?"+urlid, '_system', 'location=yes');
+          window.open("http://www.daxuequan.org/hrms-pdf/web/viewer.html?"+urlid, '_system', 'location=yes');
         }else
         {
         }
