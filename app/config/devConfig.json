@@ -4,7 +4,7 @@
     "isMobilePlatform": false,
     "clearTable": true,
     "nativeScreenFlag": false,
-    "basePath": "http://wechat.hand-china.com/hmbms_hand/api",
+    "loginPath": "http://wechat.hand-china.com/hmbms_hand/api",
     "businessPath": "http://wechat.hand-china.com/hmbms_hand/api/dataEngine",
     "pkgIdentifier": "",
     "appEnvironment": "UAT",

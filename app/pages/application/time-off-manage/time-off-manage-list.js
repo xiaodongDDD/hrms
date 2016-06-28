@@ -34,8 +34,8 @@ angular.module('applicationModule')
               hmsPopup,
               $ionicHistory) {
       //只支持iOS和Android
+      $scope.flag=false;//数据未加载
       $scope.isIOSPlatform = ionic.Platform.isIOS();
-
       $scope.timeOffHeader       ={
         userId                 : 999,
         paidHoliday            : 9,
@@ -68,7 +68,7 @@ angular.module('applicationModule')
             image_url6       : '',
             image_url7       : '',
             image_url8       : '',
-            image_url9       : '',
+            image_url9       : ''
           }
         ]
       }];
@@ -76,7 +76,7 @@ angular.module('applicationModule')
 
       $scope.timeOffCreate = function(){
 
-      }
+      };
 
 
       function getServeData() {
@@ -110,11 +110,10 @@ angular.module('applicationModule')
             $scope.timeOffHeader.usedPaidHoliday    = responseData.usedPaidHoliday;
             $scope.timeOffHeader.usedPaidSickLeave  = responseData.usedPaidSickLeave;
             $scope.timeOffHeader.usedExtPaidHoliday = responseData.usedExtPaidHoliday;
-
             //赋值行数据
+            $scope.flag=true;//数据加载完成标志
             $scope.timeOffHistoryList  = [];
             $scope.timeOffHistoryList = responseData.timeOffHistory;
-
             //1:带薪年假，2,额外福利年假，3:事假，4.带薪病假，5.病假，6.婚嫁，7.产假，8.丧假，9.陪产假
             angular.forEach($scope.timeOffHistoryList, function (data, index) {
               if ('1' == data.timeOffType) {
