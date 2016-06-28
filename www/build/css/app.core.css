@@ -2686,14 +2686,12 @@ Copyright (c) 2015 Daniel Eden
     border-radius: 50%;
     background: white;
     border: 6px solid transparent;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg); }
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); }
 
 .hrms-circle .left-circle {
   left: 0px;
-  -webkit-animation: circle_left 1s linear 1;
-  animation: circle_left 1s linear 1; }
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg); }
   .hrms-circle .left-circle.paid-holiday {
     border-bottom: 6px solid #6BB9F0;
     border-left: 6px solid #6BB9F0; }
@@ -2706,24 +2704,22 @@ Copyright (c) 2015 Daniel Eden
 
 .hrms-circle .right-circle {
   right: 0px;
-  -webkit-animation: circle_right 1s linear 1;
-  animation: circle_right 1s linear 1; }
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg); }
   .hrms-circle .right-circle.paid-holiday {
     border-top: 6px solid #6BB9F0;
     border-right: 6px solid #6BB9F0; }
   .hrms-circle .right-circle.paid-sick-leave {
     border-top: 6px solid #73BBA2;
     border-right: 6px solid #73BBA2; }
-  .hrms-circle .right-circleext-paid-holiday {
+  .hrms-circle .right-circle.ext-paid-holiday {
     border-top: 6px solid #F99D32;
     border-right: 6px solid #F99D32; }
 
-@-webkit-keyframes circle_left {
-  0%, 50% {
-    -webkit-transform: rotate(-135deg); }
-  75%, 100% {
-    -webkit-transform: rotate(45deg); } }
+.time-off-content.ios-content {
+  top: 200px; }
 
+<<<<<<< HEAD
 @-webkit-keyframes circle_right {
   0% {
     -webkit-transform: rotate(-135deg); }
@@ -2733,6 +2729,8 @@ Copyright (c) 2015 Daniel Eden
 .time-off-content.ios-content {
   top: 200px; }
 
+=======
+>>>>>>> leon/010
 .time-off-content.android-content {
   top: 180px; }
 
