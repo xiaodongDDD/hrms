@@ -146,11 +146,16 @@ angular.module('myApp')
         });
       }
 
-      //var url = baseConfig.businessPath + '/common_info/get_last_version',
 
     });
-    var url = 'http://wechat.hand-china.com/hmbms_hand/api/dataEngine/common_info/get_last_version',
-      checkVersionParams = {'params': {'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone'}};
+    var url = baseConfig.businessPath + '/common_info/app_upgrade_info',
+      checkVersionParams = {
+        'params': {
+          'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone',
+          'p_user_name': window.localStorage.empno,
+          'p_app_id': 'com.hand.china.hrms2.research'
+        }
+      };
     var serveVersionParams = {
       minVersion: '',
       bigVersion: '',
@@ -161,13 +166,14 @@ angular.module('myApp')
 
     function checkAppVersion() {
       var promise = $http.post(url, checkVersionParams).success(function (response) {
-        serveVersionParams.bigVersion = response.version_num;
-        serveVersionParams.bigUpdateUrl = response.download_url;
-        serveVersionParams.minVersion = response.sub_version_num;
-        serveVersionParams.minUpdateUrl = response.sub_download_url; //for temp test!!
+        serveVersionParams.bigVersion = response.returnData.versionNumber;
+        serveVersionParams.bigUpdateUrl = response.returnData.downloadUrl;
+        serveVersionParams.minVersion = response.returnData.subVersiorNumber;
+        serveVersionParams.minUpdateUrl = response.returnData.subDownloadUrl;
+        warn(jsonFormat(serveVersionParams));
         try {
-          serveVersionParams.updateContent = response.sub_download_desc.replace(/\\n/g, '<br>');
-        } catch (e){
+          serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '<br>');
+        } catch (e) {
           serveVersionParams.updateContent = '';
         }
         if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {

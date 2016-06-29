@@ -18,6 +18,7 @@ angular.module('myInfoModule')
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
       }
+      $scope.currentVersion =  baseConfig.version.currentversionName; // 获得当前版本号
       $scope.personalInfo="";
       $scope.defaultPortrait="build/img/myInfo/man-portrait.png";
       var url=baseConfig.businessPath + "/api_employee/get_employee_code";//获取用户信息

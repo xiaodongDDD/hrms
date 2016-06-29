@@ -14,8 +14,20 @@ $contactLineColor: #D2D2D2 !default;
       padding-left: 8px;
     }
   }
-
+  .head-animation {
+  }
+  .head-animation.ng-enter{
+    -webkit-animation: fadeInDown 0.4s;
+    animation: fadeInDown .4s;
+  }
+  .head-animation.ng-enter-stagger{
+    -webkit-animation-delay: 220ms;
+    animation-delay: 220ms;
+    -webkit-animation-duration: 0ms;
+    animation-duration: 0ms;
+  }
   .contact-content {
+    //top: 44px;
     background-color: $global-background;
     .input-height {
       height: 25px;

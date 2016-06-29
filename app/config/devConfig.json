@@ -9,8 +9,8 @@
     "pkgIdentifier": "",
     "appEnvironment": "UAT",
     "version":{
-      "currentVersion": "2.9.1",
-      "currentversionName": "此版本为测试版本1.9.1",
+      "currentVersion": "1.9.2",
+      "currentversionName": "此版本为测试版本1.9.2",
       "currentSubVersion": "1",
       "currentSubVersionName": "资源增量包1"
     }
