@@ -2719,18 +2719,6 @@ Copyright (c) 2015 Daniel Eden
 .time-off-content.ios-content {
   top: 200px; }
 
-<<<<<<< HEAD
-@-webkit-keyframes circle_right {
-  0% {
-    -webkit-transform: rotate(-135deg); }
-  50%, 100% {
-    -webkit-transform: rotate(45deg); } }
-
-.time-off-content.ios-content {
-  top: 200px; }
-
-=======
->>>>>>> leon/010
 .time-off-content.android-content {
   top: 180px; }
 
@@ -4507,7 +4495,7 @@ Copyright (c) 2015 Daniel Eden
 
 .dorm-apply-detail-b .dorm-hrms-circle {
   position: absolute;
-  width: 82px;
+  width: 81px;
   height: 82px; }
 
 .dorm-apply-detail-b .time-off-col {
@@ -4550,10 +4538,10 @@ Copyright (c) 2015 Daniel Eden
   top: 0px;
   overflow: hidden; }
 
-.dorm-apply-detail-b .left {
+.dorm-apply-detail-b .dorm-left {
   left: 0px; }
 
-.dorm-apply-detail-b .right {
+.dorm-apply-detail-b .dorm-right {
   right: 0px; }
 
 .dorm-apply-detail-b .dorm-circle {
@@ -4576,7 +4564,7 @@ Copyright (c) 2015 Daniel Eden
 .dorm-apply-detail-b .dorm-right-circle.dorm-apply-style-circle {
   border-top: 6px solid #b95756;
   border-right: 6px solid #b95756;
-  right: 0px;
+  right: 1px;
   -webkit-transform: rotate(-135deg);
   transform: rotate(-135deg); }
 
