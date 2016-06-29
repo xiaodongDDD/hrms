@@ -8644,7 +8644,9 @@ Copyright (c) 2015 Daniel Eden
   width: 80px;
   color: white;
   font-size: 16px;
-  z-index: 100; }
+  z-index: 100;
+  background: none;
+  border: none; }
 
 .navigateHrms .slider-button {
   position: absolute;
@@ -8652,7 +8654,9 @@ Copyright (c) 2015 Daniel Eden
   top: 75%;
   width: 40%;
   height: 20%;
-  bottom: 5%; }
+  bottom: 5%;
+  background: none;
+  border: none; }
 
 .navigateHrms .slider-pager .slider-pager-page.active {
   -webkit-transition: opacity 0.4s ease-in;
