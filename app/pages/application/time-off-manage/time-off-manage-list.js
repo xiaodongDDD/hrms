@@ -111,7 +111,6 @@ angular.module('applicationModule')
             $scope.timeOffHeader.usedPaidSickLeave  = responseData.usedPaidSickLeave;
             $scope.timeOffHeader.usedExtPaidHoliday = responseData.usedExtPaidHoliday;
             //赋值行数据
-            $scope.flag=true;//数据加载完成标志
             $scope.timeOffHistoryList  = [];
             $scope.timeOffHistoryList = responseData.timeOffHistory;
             //1:带薪年假，2,额外福利年假，3:事假，4.带薪病假，5.病假，6.婚嫁，7.产假，8.丧假，9.陪产假
@@ -172,6 +171,8 @@ angular.module('applicationModule')
               //加上'天'后缀
               data.timeLeave = data.timeLeave + '天';
             });
+
+            $scope.circleAnimationFlag = true;//数据加载完成标志,触发进度圈动画
 
 
           } else {
