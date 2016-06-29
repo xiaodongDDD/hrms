@@ -37,17 +37,17 @@ angular.module('applicationModule')
       $scope.flag=false;//数据未加载
       $scope.isIOSPlatform = ionic.Platform.isIOS();
       $scope.timeOffHeader       ={
-        userId                 : 999,
+        /*userId                 : 999,
         paidHoliday            : 9,
         paidSickLeave          : 9,
         extPaidHoliday         : 9,
-        usedPaidHoliday        : 9,
-        usedPaidSickLeave      : 9,
-        usedExtPaidHoliday     : 9
+        usedPaidHoliday        : 3,
+        usedPaidSickLeave      : 3,
+        usedExtPaidHoliday     : 3*/
       };
 
       $scope.timeOffHistoryList  =[{
-        holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
+     /*   holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
         timeOffType          : '1',
         timeOffTypeClass     : 'paid-holiday',
         timeOffTypeMeaning   : '带薪年假',
@@ -70,7 +70,7 @@ angular.module('applicationModule')
             image_url8       : '',
             image_url9       : ''
           }
-        ]
+        ]*/
       }];
 
 

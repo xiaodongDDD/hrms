@@ -161,8 +161,6 @@
     background: white;
     border: 6px solid transparent;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.50);
-    //-webkit-transform: rotate(45deg);
-    //transform: rotate(45deg);
   }
 }
 
@@ -170,8 +168,6 @@
   left: 0px;
   -webkit-transform : rotate(-135deg);
   transform : rotate(-135deg);
-  //-webkit-animation: circle_left 1s linear 1;
-  //animation: circle_left 1s linear 1;
   &.paid-holiday {
     border-bottom: 6px solid #6BB9F0;
     border-left: 6px solid #6BB9F0;
@@ -190,8 +186,6 @@
   right: 0px;
   -webkit-transform : rotate(-135deg);
   transform : rotate(-135deg);
-  //-webkit-animation: circle_right 1s linear 1;
-  //animation: circle_right 1s linear 1;
   &.paid-holiday {
     border-top: 6px solid #6BB9F0;
     border-right: 6px solid #6BB9F0;
@@ -206,23 +200,6 @@
   }
 }
 
-//@-webkit-keyframes circle_left {
-//  0%, 50% {
-//    -webkit-transform: rotate(-135deg);
-//  }
-//  75%, 100% {
-//    -webkit-transform: rotate(45deg);
-//  }
-//}
-//
-//@-webkit-keyframes circle_right {
-//  0% {
-//    -webkit-transform: rotate(-135deg);
-//  }
-//  50%, 100% {
-//    -webkit-transform: rotate(45deg);
-//  }
-//}
 
 .time-off-content {
   &.ios-content {
