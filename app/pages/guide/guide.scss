@@ -5,15 +5,41 @@
     height: 100%;
   }
 
+  .skip-button{
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    height: 30px ;
+    line-height: 30px ;
+    text-align: center;
+    width: 80px;
+    color: white;
+    font-size: 16px;
+    z-index: 100;
+  }
+
   .slider-button {
     position: absolute;
-    left: 28.8%;
-    top: 44.2%;
-    width: 42.4%;
-    height: 40px;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 10px;
+    left: 30%;
+    top: 75%;
+    width: 40%;
+    height: 20%;
+    bottom: 5%;
+  }
+
+  .slider-pager .slider-pager-page.active {
+    -webkit-transition: opacity 0.4s ease-in;
+    transition: opacity 0.4s ease-in;
+    opacity: 1;
+  }
+  .slider-pager .slider-pager-page {
+    display: inline-block;
+    margin: 0px 6px;
+    width: 8px;
+    color: #FAFAFA;
+    text-decoration: none;
+    opacity: 0.3;
   }
 }

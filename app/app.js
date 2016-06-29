@@ -312,16 +312,5 @@ angular.module('myApp')
           controller: 'loginCtrl'
         });
 
-      // if none of the above states are matched, use this as the fallback
-      if (window.localStorage.token && window.localStorage.token != "") {
-        //$urlRouterProvider.otherwise('/tab/message');
-        $urlRouterProvider.otherwise('/tab/message');
-      } else {
-        if (!window.localStorage.needGuide || window.localStorage.needGuide == 'Y') {
-          $urlRouterProvider.otherwise('/guide');
-          window.localStorage.needGuide = 'N'
-        } else {
-          $urlRouterProvider.otherwise('/login');
-        }
-      }
+      $urlRouterProvider.otherwise('/guide');
     }]);

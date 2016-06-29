@@ -39,7 +39,7 @@
           <div class="appArea" ng-repeat="appList in employeeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
-                <img src="{{appItem.imageUrl}}"/>
+                <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
               </div>
               <div class="appText">{{appItem.appName}}</div>
             </div>
@@ -76,7 +76,7 @@
           <div class="appArea" ng-repeat="appList in employeeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
               <div class="appItem" ng-click="goPage(appItem)">
-                <img src="{{appItem.imageUrl}}"/>
+                <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
               </div>
               <div class="appText">{{appItem.appName}}</div>
             </div>

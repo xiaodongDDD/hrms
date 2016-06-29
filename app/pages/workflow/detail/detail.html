@@ -20,8 +20,8 @@
       </div>
       <div style="margin-top: 48px;width:100%; position: absolute; border-bottom: 1px solid #FAFAFA;"></div>
       <div class="history-content">
-        <ion-scroll direction="x" scrollbar-x="false" style="width: 500px; height: 136px">
-          <div style="height: 136px;width: 600px;">
+        <ion-scroll direction="x" scrollbar-x="false" style="height: 136px">
+          <div style="height: 136px;width: 1050px;">
             <div class="history-item" ng-repeat="history in historyList">
               <div class="history-item-time-line" ng-bind="history.creation_date">
               </div>
@@ -44,7 +44,7 @@
           <i class="ion-ios-sunny"></i>{{array.detail_title}};
         </div>
         <div class="hms-singal-array-operation" ng-click="showContent(array)">
-          <i class="ion-ios-minus-outline"></i>
+          <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
         </div>
       </div>
       <div class="hms-singal-array-content" ng-if="array.showFlag">
@@ -70,7 +70,7 @@
              ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
         </div>
         <div class="hms-singal-array-operation" ng-click="showContent(array)">
-          <i class="ion-ios-plus-outline"></i>
+          <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
         </div>
       </div>
       <div class="hms-singal-array-content" ng-if="array.showFlag">

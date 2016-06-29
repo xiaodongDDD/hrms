@@ -216,23 +216,26 @@ angular.module('applicationModule')
         $state.go('tab.timesheet-write', {day: day});
       };
 
-      $scope.scrollToFixScreen = function () {
-        if (isScrollFreeze) {
-          isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
-        } else {
-          isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
+      $scope.processAllowance = function () {
+        var title = "确定要否进行生成津贴?";
+        if($scope.allowanceList.length>0){
+          if($scope.allowanceList[0].status == '已经审核'){
+            hmsPopup.showPopup('你的津贴已经审核,不能在生成津贴!');
+            return;
+          }
+          title = "你已经生成津贴,要否进行重新生成津贴?";
         }
-
-        //isScrollFreeze = $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
-        console.log('scrollToFixScreen result ' + isScrollFreeze);
-
-        if (currentTimeSheetPosition) {
-          $ionicScrollDelegate.scrollTo(0, 400, true);
-          currentTimeSheetPosition = false;
-        } else {
-          $ionicScrollDelegate.scrollTo(0, 0, true);
-          currentTimeSheetPosition = true;
+        var create = function (buttonIndex) {
+          if (baseConfig.debug) {
+            console.log('You selected button ' + buttonIndex);
+          }
+          if (buttonIndex == 1) {
+            createAllowance($scope.currentYear,$scope.currentMonth);
+          } else {
+            clearCalendarCache();
+          }
         }
+        hmsPopup.confirm(title, "生成津贴", create);
       };
 
       var fetchData = function (result) {
@@ -272,7 +275,7 @@ angular.module('applicationModule')
                 style_color = 'day-item reject';
               }
               var dayEach = timesheetArray[seq].day;
-              if (dayEach.length == 2) {
+              if (parseInt(dayEach) < 10) {
                 dayEach = dayEach.replace('0', '');
               }
               item = {
@@ -340,6 +343,7 @@ angular.module('applicationModule')
         slippingFlag = false;
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
       };
+
       var clearCalendarCache = function () {
         angular.forEach($scope.calendar, function (data) {
           angular.forEach(data.list, function (list) {
@@ -511,6 +515,21 @@ angular.module('applicationModule')
         generateAllowance(monthParams);
       };
 
+      var processAllowance = function (allowance) {
+        angular.forEach(allowance, function (data) {
+          var allowance = {
+            "allow": data.allow,
+            "amount": data.amt,
+            "creationDate": data.crea,
+            "days": data.days,
+            "status": data.is_audited,
+            "project": data.proj,
+            "period": data.range,
+            "type": data.type
+          }
+          $scope.allowanceList.push(allowance);
+        });
+      };
 
       //获取津贴信息
       var generateAllowance = function (monthParams) {
@@ -518,19 +537,7 @@ angular.module('applicationModule')
         $scope.allowanceList = [];
         var success = function (result) {
           if (result.status == 'S') {
-            angular.forEach(result.allowance, function (data) {
-              var allowance = {
-                "allow": data.allow,
-                "amount": data.amt,
-                "creationDate": data.crea,
-                "days": data.days,
-                "status": data.is_audited,
-                "project": data.proj,
-                "period": data.range,
-                "type": data.type
-              }
-              $scope.allowanceList.push(allowance);
-            });
+            processAllowance(result.allowance);
             $scope.loadingAllowanceFlag = false;
           } else {
             $scope.loadingAllowanceFlag = false;
@@ -540,6 +547,28 @@ angular.module('applicationModule')
           $scope.loadingAllowanceFlag = false;
         }
         TimeSheetService.generateAllowance(success, error, 'N', monthParams);
+      }
+
+      //生成津贴信息
+      var createAllowance = function (currentYear,currentMonth) {
+
+        var monthParams =  currentYear + '' + formatMonth(currentMonth);
+        hmsPopup.showLoading("生成津贴中");
+        $scope.allowanceList = [];
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            processAllowance(result.allowance);
+          } else {
+            if(result.status == 'E'){
+              hmsPopup.showPopup('生成津贴失败 ' + result.message);
+            }
+          }
+        }
+        var error = function () {
+          hmsPopup.hideLoading();
+        }
+        TimeSheetService.generateAllowance(success, error, 'Y', monthParams);
       }
 
       initCalendar();

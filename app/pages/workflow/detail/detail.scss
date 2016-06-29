@@ -115,9 +115,15 @@
         float: right;
         height: 43px;
         width: 35px;
-        font-size: 20px;
+        font-size: 25px;
         line-height: 43px;
         font-weight: bold;
+        text-align: center;
+        margin-right: 10px;
+        &.activated{
+          font-size: 24px;
+          color: #64ACFF;
+        }
       }
     }
     .hms-singal-array-content {
@@ -301,7 +307,6 @@
   }
 }
 
-
 .transmit-person-modal{
   .transmit-search {
     width: 80%;
@@ -321,7 +326,8 @@
     input {
       float: left;
       width: 85%;
-      height: 25px;
+      height: 28px;
+      line-height: 28px;
       border: none;
     }
   }

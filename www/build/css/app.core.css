@@ -3278,7 +3278,7 @@ Copyright (c) 2015 Daniel Eden
   z-index: 10;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.18); }
+  background-color: transparent; }
 
 .ts-filter-bg .ts-filter-modal {
   color: #9B9B9B;
@@ -5597,9 +5597,14 @@ Copyright (c) 2015 Daniel Eden
         float: right;
         height: 43px;
         width: 35px;
-        font-size: 20px;
+        font-size: 25px;
         line-height: 43px;
-        font-weight: bold; }
+        font-weight: bold;
+        text-align: center;
+        margin-right: 10px; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-operation.activated {
+          font-size: 24px;
+          color: #64ACFF; }
     .workflow-detail .hms-workflow-array .hms-singal-array-content {
       padding-left: 12px; }
       .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-line {
@@ -5761,7 +5766,8 @@ Copyright (c) 2015 Daniel Eden
   .transmit-person-modal .transmit-search input {
     float: left;
     width: 85%;
-    height: 25px;
+    height: 28px;
+    line-height: 28px;
     border: none; }
 
 .flayback-apply-view .fbSelectproject, .flyback-apply-project-model .fbSelectproject {
@@ -8032,6 +8038,8 @@ Copyright (c) 2015 Daniel Eden
     .message-list .message-search input {
       float: left;
       width: 85%;
+      height: 28px;
+      line-height: 28px;
       border: none; }
   .message-list .message-item {
     height: 78.5px;
@@ -8624,16 +8632,40 @@ Copyright (c) 2015 Daniel Eden
   width: 100%;
   height: 100%; }
 
+.navigateHrms .skip-button {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  width: 80px;
+  color: white;
+  font-size: 16px;
+  z-index: 100; }
+
 .navigateHrms .slider-button {
   position: absolute;
-  left: 28.8%;
-  top: 44.2%;
-  width: 42.4%;
-  height: 40px;
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 10px; }
+  left: 30%;
+  top: 75%;
+  width: 40%;
+  height: 20%;
+  bottom: 5%; }
+
+.navigateHrms .slider-pager .slider-pager-page.active {
+  -webkit-transition: opacity 0.4s ease-in;
+  transition: opacity 0.4s ease-in;
+  opacity: 1; }
+
+.navigateHrms .slider-pager .slider-pager-page {
+  display: inline-block;
+  margin: 0px 6px;
+  width: 8px;
+  color: #FAFAFA;
+  text-decoration: none;
+  opacity: 0.3; }
 
 ion-tabs.tabs-color-active-positive .tab-item.tab-item-active,
 ion-tabs.tabs-color-active-positive .tab-item.active,

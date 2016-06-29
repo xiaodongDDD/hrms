@@ -32,40 +32,13 @@ angular.module('applicationModule')
               appName: "住宿申请",
               imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
               destUrl: "tab.dorm-apply"
-            }, {
-              appName: "Timesheet填写",
-              imageUrl: "build/img/application/application/timesheet@3x.png",
-              destUrl: "tab.timesheet",
+            },
+            {
+              appName: "预报销",
+              imageUrl: "build/img/application/application/forecast@3x.png",
+              destUrl: "tab.cst_list"
             }]
         },
-        {
-          list: [
-
-            {
-              appName: "Timesheet审批",
-              imageUrl: "build/img/application/application/timesheetExamine@3x.png",
-              destUrl: "tab.tsApproveList",
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: ""
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: ""
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: ""
-            }
-          ]
-        }];
-
-      //项目门户
-      $scope.projectApp = [
         {
           list: [
             {
@@ -80,36 +53,39 @@ angular.module('applicationModule')
             },
             {
               appName: "报销单查询",
-              imageUrl: "build/img/application/application/timesheetExamine@3x.png",
+              imageUrl: "build/img/application/application/forecast@3x.png",
               destUrl: "tab.expense",
             },
             {
               appName: "记一笔",
-              imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+              imageUrl: "build/img/application/application/sign@3x.png",
               destUrl: "tab.acc_main"
             }]
-        },
+        }];
+
+      //项目门户
+      $scope.projectApp = [
         {
           list: [
             {
-              appName: "预报销",
-              imageUrl: "build/img/application/application/meetingManage@3x.png",
-              destUrl: "tab.cst_list"
+              appName: "Timesheet填写",
+              imageUrl: "build/img/application/application/timesheet@3x.png",
+              destUrl: "tab.timesheet",
+            },
+            {
+              appName: "Timesheet审批",
+              imageUrl: "build/img/application/application/timesheetExamine@3x.png",
+              destUrl: "tab.tsApproveList",
             },
             {
               appName: "",
               imageUrl: "",
-              destUrl: ""
+              destUrl: "",
             },
             {
               appName: "",
               imageUrl: "",
-              destUrl: ""
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: ""
+              destUrl: "",
             }
           ]
         }
@@ -118,7 +94,27 @@ angular.module('applicationModule')
       //员工社区
       $scope.employeeApp = [
         {
-          list: []
+          list: [
+            {
+              appName: "拼车",
+              imageUrl: "build/img/application/application/carpooling@3x.png",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },]
         }
       ];
 
