@@ -34,8 +34,8 @@ angular.module('applicationModule')
               hmsPopup,
               $ionicHistory) {
       //只支持iOS和Android
-      $scope.flag=false;//数据未加载
-      $scope.isIOSPlatform = ionic.Platform.isIOS();
+      $scope.circleAnimationFlag = false;//数据未加载
+      $scope.isIOSPlatform       = ionic.Platform.isIOS();//判断平台,留出iOS的statusBar
       $scope.timeOffHeader       ={
         /*userId                 : 999,
         paidHoliday            : 9,
@@ -129,7 +129,7 @@ angular.module('applicationModule')
                 data.timeOffTypeMeaning  = '事假';
                 data.timeOffTypeClass    = 'default-holiday';
               } else if ('4' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'SickLeave@@3x.png';
+                data.holidayIcon         = baseImgUrl + 'SickLeave@3x.png';
                 data.timeOffTypeMeaning  = '带薪病假';
                 data.timeOffTypeClass    = 'paid-sick-leave';
               } else if ('5' == data.timeOffType) {
