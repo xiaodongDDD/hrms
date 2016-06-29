@@ -1,16 +1,17 @@
 <ion-view view-title="通讯录" class="contact">
   <ion-header-bar align-title="center" class="bar-stable">
-    <div class="row no-padding search-input" ng-if="showTopInput">
-      <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
-             ng-click="goInputModal()"/>
-    </div>
-    <h1 class="title head-animation" style="margin-top: 0px !important;" ng-if="!showTopInput">通讯录</h1>
 
-    <div class="buttons head-animation" style="margin-top: 0px !important;" ng-if="!showTopInput">
+    <h1 class="title" ng-if="!showTopInput">通讯录</h1>
+
+    <div class="buttons" ng-if="!showTopInput">
       <button class="button button-clear row no-padding" ng-click="scanBusinessCard()">
         <i class="img-scan"></i>
         <span class="scan-text">名片</span>
       </button>
+    </div>
+    <div class="row no-padding search-input" ng-if="showTopInput">
+      <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
+             ng-click="goInputModal()"/>
     </div>
   </ion-header-bar>
   <ion-content class="contact-content" on-scroll="watchScroll()">

@@ -9,10 +9,10 @@
     "client",
     "browser"
   ],
-  "repository": { 
+  "repository": {
     "type": "git",
     "url": ""
-  }, 
+  },
   "author": "Derek Chia",
   "license": "MIT",
   "contributors": [],
