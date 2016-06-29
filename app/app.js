@@ -21,6 +21,74 @@ angular.module('myApp', [
 
 angular.module('myApp')
   .run(function ($ionicPlatform, $timeout, baseConfig, $http, $ionicPopup) {
+    var url = baseConfig.businessPath + '/common_info/app_upgrade_info',
+      checkVersionParams = {
+        'params': {
+          'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone',
+          'p_user_name': window.localStorage.empno,
+          'p_app_id': 'com.hand.china.hrms2.research'
+        }
+      };
+    var serveVersionParams = {
+      minVersion: '',
+      bigVersion: '',
+      minUpdateUrl: '',
+      bigUpdateUrl: '',
+      updateContent: ''
+    };
+
+    function checkAppVersion() {
+      var promise = $http.post(url, checkVersionParams).success(function (response) {
+        serveVersionParams.bigVersion = response.returnData.versionNumber;
+        serveVersionParams.bigUpdateUrl = response.returnData.downloadUrl;
+        serveVersionParams.minVersion = response.returnData.subVersiorNumber;
+        serveVersionParams.minUpdateUrl = response.returnData.subDownloadUrl;
+        //warn(jsonFormat(serveVersionParams));
+        try {
+          serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '<br>');
+        } catch (e) {
+          serveVersionParams.updateContent = '';
+        }
+        if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
+          // update from pgy
+          var confirmPopup = $ionicPopup.confirm({
+            title: '大版本更新',
+            template: '<div>' + serveVersionParams.updateContent + '</div>',
+            okText: '确定',
+            cancelText: '取消'
+          });
+          confirmPopup.then(function (res) {
+            if (res) {
+              window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
+              return;
+            } else {
+              return;
+            }
+          });
+        } else {
+          if (serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
+            // update from hotpatch
+            var confirmPopupSamll = $ionicPopup.confirm({
+              title: '小版本更新',
+              template: '<div>' + serveVersionParams.updateContent + '</div>',
+              okText: '确定',
+              cancelText: '取消'
+            });
+            confirmPopupSamll.then(function (res) {
+              if (res) {
+                hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
+                return;
+              } else {
+                return;
+              }
+            });
+          }
+        }
+      }).error(function () {
+      });
+    }
+
+    checkAppVersion();
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -145,77 +213,7 @@ angular.module('myApp')
           );
         });
       }
-
-
     });
-    var url = baseConfig.businessPath + '/common_info/app_upgrade_info',
-      checkVersionParams = {
-        'params': {
-          'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone',
-          'p_user_name': window.localStorage.empno,
-          'p_app_id': 'com.hand.china.hrms2.research'
-        }
-      };
-    var serveVersionParams = {
-      minVersion: '',
-      bigVersion: '',
-      minUpdateUrl: '',
-      bigUpdateUrl: '',
-      updateContent: ''
-    };
-
-    function checkAppVersion() {
-      var promise = $http.post(url, checkVersionParams).success(function (response) {
-        serveVersionParams.bigVersion = response.returnData.versionNumber;
-        serveVersionParams.bigUpdateUrl = response.returnData.downloadUrl;
-        serveVersionParams.minVersion = response.returnData.subVersiorNumber;
-        serveVersionParams.minUpdateUrl = response.returnData.subDownloadUrl;
-        warn(jsonFormat(serveVersionParams));
-        try {
-          serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '<br>');
-        } catch (e) {
-          serveVersionParams.updateContent = '';
-        }
-        if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
-          // update from pgy
-          var confirmPopup = $ionicPopup.confirm({
-            title: '大版本更新',
-            template: '<div>' + serveVersionParams.updateContent + '</div>',
-            okText: '确定',
-            cancelText: '取消'
-          });
-          confirmPopup.then(function (res) {
-            if (res) {
-              window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
-              return;
-            } else {
-              return;
-            }
-          });
-        } else {
-          if (serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
-            // update from hotpatch
-            var confirmPopupSamll = $ionicPopup.confirm({
-              title: '小版本更新',
-              template: '<div>' + serveVersionParams.updateContent + '</div>',
-              okText: '确定',
-              cancelText: '取消'
-            });
-            confirmPopupSamll.then(function (res) {
-              if (res) {
-                hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
-                return;
-              } else {
-                return;
-              }
-            });
-          }
-        }
-      }).error(function () {
-      });
-    }
-
-    checkAppVersion();
   });
 
 angular.module('myApp')
