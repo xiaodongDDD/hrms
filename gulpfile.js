@@ -42,7 +42,7 @@ var libFilePath = [
   'app/lib/**/**/**/*.*'];
 var imgFilePath = [
   'app/img/**/*.png',
-  'app/img/**/**/*.png',
+  'app/img/**/**/*.*',
   'app/img/**/**/**/*.png',
   'app/img/*.gif'];
 
