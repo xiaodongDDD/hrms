@@ -1075,7 +1075,7 @@
   }
   .dorm-hrms-circle{
     position: absolute;;
-    width: 82px;
+    width: 81px;
     height: 82px;
   }
   .time-off-col {
@@ -1120,11 +1120,11 @@
     overflow: hidden;
   }
 
-  .left{
+  .dorm-left{
     left: 0px;
   }
 
-  .right{
+  .dorm-right{
     right: 0px;
   }
 
@@ -1149,7 +1149,7 @@
   .dorm-right-circle.dorm-apply-style-circle{
     border-top:6px solid #b95756;
     border-right:6px solid #b95756;
-    right: 0px;
+    right: 1px;
     -webkit-transform : rotate(-135deg);
     transform : rotate(-135deg);
   }

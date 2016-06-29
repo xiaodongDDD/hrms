@@ -95,17 +95,17 @@ HmsModule.directive('hideTabs', function ($rootScope) {
           }, 500);
         } else if (domsId[0] == "time-off-manage") {
           //$timeout(function() {
-            $scope.$watch('flag',function() {
-              if($scope.flag==true){
+            $scope.$watch('circleAnimationFlag',function() {
+              if($scope.circleAnimationFlag==true){
               var leftball1 = document.getElementById(domsId[1]);
               var rightball1 = document.getElementById(domsId[2]);
               var leftball2 = document.getElementById(domsId[3]);
               var rightball2 = document.getElementById(domsId[4]);
               var leftball3 = document.getElementById(domsId[5]);
               var rightball3 = document.getElementById(domsId[6]);
-              var calculation1 = ($scope.timeOffHeader.paidHoliday - $scope.timeOffHeader.usedPaidHoliday) / $scope.timeOffHeader.paidHoliday;
-              var calculation2 = ($scope.timeOffHeader.paidSickLeave - $scope.timeOffHeader.usedPaidSickLeave) / $scope.timeOffHeader.paidSickLeave;
-              var calculation3 = ($scope.timeOffHeader.extPaidHoliday - $scope.timeOffHeader.usedExtPaidHoliday) / $scope.timeOffHeader.extPaidHoliday;
+              var calculation1 = $scope.timeOffHeader.paidHoliday  / ($scope.timeOffHeader.paidHoliday+ $scope.timeOffHeader.usedPaidHoliday);
+              var calculation2 = $scope.timeOffHeader.paidSickLeave  / ($scope.timeOffHeader.paidSickLeave + $scope.timeOffHeader.usedPaidSickLeave);
+              var calculation3 = $scope.timeOffHeader.extPaidHoliday  / ($scope.timeOffHeader.extPaidHoliday + $scope.timeOffHeader.usedExtPaidHoliday);
               if (calculation1 <= 0.5) {//剩余天数大于总天数的一半
                 leftball1.style.transition = "all 0.3s linear";
                 leftball1.style.webkitTransition = "all 0.3s linear";
