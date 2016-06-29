@@ -41,7 +41,7 @@
                 <div id="left-paid-sick-leave" class="circle left-circle paid-sick-leave"></div>
               </div>
               <div class="shelter right">
-                <div id="right-paid-sick-leave class="circle right-circle paid-sick-leave"></div>
+                <div id="right-paid-sick-leave" class="circle right-circle paid-sick-leave"></div>
               </div>
               <span class="up-title">剩余</span>
               <span class="center-title paid-sick-leave">{{timeOffHeader.paidSickLeave}}天</span>
@@ -49,7 +49,7 @@
           </div>
           <div>
             <span class="bottom-title">带薪病假</span>
-            <span class="bottom-title">已用天数{{timeOffHeader.paidSickLeave}}天</span>
+            <span class="bottom-title">已用天数{{timeOffHeader.usedPaidSickLeave}}天</span>
           </div>
         </div>
 
@@ -75,7 +75,7 @@
       </div>
     </div>
   </div>
-  <ion-content class="time-off-content" ng-class="{true:'ios-content',false:'android-content'}[isIOSPlatform]">
+  <ion-content class="time-off-content" ng-class="{true:'ios-content',false:'android-content'}[isIOSPlatform]" circle-rotate="time-off-manage,left-paid-holiday,right-paid-holiday,left-paid-sick-leave,right-paid-sick-leave,left-ext-paid-holiday,right-ext-paid-holiday">
 
     <div class="time-off-list-title">休假记录</div>
 

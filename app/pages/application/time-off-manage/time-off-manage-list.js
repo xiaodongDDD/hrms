@@ -34,20 +34,20 @@ angular.module('applicationModule')
               hmsPopup,
               $ionicHistory) {
       //只支持iOS和Android
-      $scope.isIOSPlatform = ionic.Platform.isIOS();
-
+      $scope.circleAnimationFlag = false;//数据未加载
+      $scope.isIOSPlatform       = ionic.Platform.isIOS();//判断平台,留出iOS的statusBar
       $scope.timeOffHeader       ={
-        userId                 : 999,
+        /*userId                 : 999,
         paidHoliday            : 9,
         paidSickLeave          : 9,
         extPaidHoliday         : 9,
-        usedPaidHoliday        : 9,
-        usedPaidSickLeave      : 9,
-        usedExtPaidHoliday     : 9
+        usedPaidHoliday        : 3,
+        usedPaidSickLeave      : 3,
+        usedExtPaidHoliday     : 3*/
       };
 
       $scope.timeOffHistoryList  =[{
-        holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
+     /*   holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
         timeOffType          : '1',
         timeOffTypeClass     : 'paid-holiday',
         timeOffTypeMeaning   : '带薪年假',
@@ -68,15 +68,15 @@ angular.module('applicationModule')
             image_url6       : '',
             image_url7       : '',
             image_url8       : '',
-            image_url9       : '',
+            image_url9       : ''
           }
-        ]
+        ]*/
       }];
 
 
       $scope.timeOffCreate = function(){
 
-      }
+      };
 
 
       function getServeData() {
@@ -110,11 +110,10 @@ angular.module('applicationModule')
             $scope.timeOffHeader.usedPaidHoliday    = responseData.usedPaidHoliday;
             $scope.timeOffHeader.usedPaidSickLeave  = responseData.usedPaidSickLeave;
             $scope.timeOffHeader.usedExtPaidHoliday = responseData.usedExtPaidHoliday;
-
             //赋值行数据
+            $scope.flag=true;//数据加载完成标志
             $scope.timeOffHistoryList  = [];
             $scope.timeOffHistoryList = responseData.timeOffHistory;
-
             //1:带薪年假，2,额外福利年假，3:事假，4.带薪病假，5.病假，6.婚嫁，7.产假，8.丧假，9.陪产假
             angular.forEach($scope.timeOffHistoryList, function (data, index) {
               if ('1' == data.timeOffType) {
@@ -130,7 +129,7 @@ angular.module('applicationModule')
                 data.timeOffTypeMeaning  = '事假';
                 data.timeOffTypeClass    = 'default-holiday';
               } else if ('4' == data.timeOffType) {
-                data.holidayIcon         = baseImgUrl + 'SickLeave@@3x.png';
+                data.holidayIcon         = baseImgUrl + 'SickLeave@3x.png';
                 data.timeOffTypeMeaning  = '带薪病假';
                 data.timeOffTypeClass    = 'paid-sick-leave';
               } else if ('5' == data.timeOffType) {
