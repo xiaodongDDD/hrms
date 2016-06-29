@@ -63,15 +63,15 @@ $contactLineColor: #D2D2D2 !default;
         background-color: transparent;
         background-image: url("./../img/application/timesheet-approve/list/BackArrow-1@3x.png");
         @include position-adjust(14px, 5%);
-        @include image-background(no-repeat,contain,0px 0px);
+        @include image-background(no-repeat, contain, 0px 0px);
       }
       .tel-img {
-        height: 23px;
-        width: 23px;
+        height: 38px;
+        width: 60px;
         background-color: transparent;
         background-image: url("./../img/contact/mobile@3x.png");
-        @include position-adjust(11px, 4%);
-        @include image-background(no-repeat,contain,0px 0px);
+        @include position-adjust(11px, 0%);
+        @include image-background(no-repeat, 23px 23px, 18px 0px);
       }
       .tel-img.activated {
         opacity: 0.7;

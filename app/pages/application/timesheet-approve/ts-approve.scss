@@ -225,18 +225,8 @@
   }
 }
 .search-input.ng-enter{
-  //-webkit-animation: flipInX 0.4s;
-  //animation: flipInX .4s;
-  //-webkit-animation: flipInY 0.4s;
-  //animation: flipInY .4s;
-  //-webkit-animation: fadeInUp 0.4s;
-  //animation: fadeInUp .4s;
-  -webkit-animation: zoomInUp 0.4s;
-  animation: zoomInUp .4s;
-  //-webkit-animation: lightSpeedIn 0.4s;
-  //animation: lightSpeedIn .4s;
-  //-webkit-animation: fadeIn 0.4s;
-  //animation: fadeIn .4s;
+  -webkit-animation: fadeInUp 0.4s;
+  animation: fadeInUp .4s;
 }
 .search-input.ng-enter-stagger{
   -webkit-animation-delay: 120ms;

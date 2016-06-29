@@ -11,13 +11,13 @@
       </div>
     </div>
     <div class="row no-padding search-input" ng-if="showTopInput">
-      <input type="search" class="text-input" placeholder="搜索"
+      <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
         ng-click="goInputModal()"/>
     </div>
   </ion-header-bar>
   <ion-content class="contact-content" has-bouncing="true" on-scroll="watchScroll()">
     <div class="row search-input input-height" ng-if="true">
-      <input type="search" class="text-input" placeholder="搜索"
+      <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
         ng-click="goInputModal()"/>
     </div>
     <div class="org-structure">

@@ -3021,8 +3021,8 @@ Copyright (c) 2015 Daniel Eden
     padding-left: 25px; }
 
 .search-input.ng-enter {
-  -webkit-animation: zoomInUp 0.4s;
-  animation: zoomInUp .4s; }
+  -webkit-animation: fadeInUp 0.4s;
+  animation: fadeInUp .4s; }
 
 .search-input.ng-enter-stagger {
   -webkit-animation-delay: 120ms;
@@ -7540,18 +7540,18 @@ Copyright (c) 2015 Daniel Eden
       background-size: contain;
       background-position: 0px 0px; }
     .contact .contact-content .contact-item .tel-img {
-      height: 23px;
-      width: 23px;
+      height: 38px;
+      width: 60px;
       background-color: transparent;
       background-image: url("./../img/contact/mobile@3x.png");
       position: absolute;
       margin-top: 11px;
-      right: 4%;
+      right: 0%;
       font-size: 14px;
       color: #9B9B9B;
       background-repeat: no-repeat;
-      background-size: contain;
-      background-position: 0px 0px; }
+      background-size: 23px 23px;
+      background-position: 18px 0px; }
     .contact .contact-content .contact-item .tel-img.activated {
       opacity: 0.7;
       transform: scale(0.8, 0.8);

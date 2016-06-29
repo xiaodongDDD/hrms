@@ -169,6 +169,7 @@ angular.module('tsApproveModule')
           $scope.actionName = "取消";
           $scope.showDetailArrow = false;
           $scope.pullDownFlag = false;
+          $scope.listInfoArray.busy = true;
           angular.element('.ts-approve-list-item').css("paddingLeft", "10%");
         } else if ($scope.actionName == "取消") {
           $scope.actionName = "操作";

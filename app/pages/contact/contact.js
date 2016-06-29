@@ -70,9 +70,9 @@ angular.module('contactModule')
         position = $ionicScrollDelegate.getScrollPosition().top;
         $scope.$apply(function () {
           warn('Now Position:' + position);
-          if (position < 30) {
+          if (position < 33) {
             $scope.showTopInput = false;
-          } else if (position >= 30) {
+          } else if (position >= 33) {
             $scope.showTopInput = true;
           }
         });
@@ -95,19 +95,15 @@ angular.module('contactModule')
       };
 
       $scope.searchContacts = function () {
-
       };
 
       $scope.selectPerson = function () {
-
       };
 
       $scope.goStructure = function () {
-
       };
 
       $scope.goDetailInfo = function () {
-
       };
 
       $scope.telNumber = function (event, newNumber) {
