@@ -121,7 +121,8 @@ angular.module('applicationModule')
           title: line.line_big_title,
           arrayList: line.line,
           currentPage: 1,
-          currentArray: []
+          currentArray: [],
+          showFlag : !$scope.workflowActionShowFlag
         };
         if (line.line.length > 0) {
           var currentList = [];
@@ -263,6 +264,10 @@ angular.module('applicationModule')
             $scope.historyList = result.history;
             if (result.workflow_data) {
               $scope.singalArrayList = result.workflow_data.details;
+              angular.forEach($scope.singalArrayList, function (data) {
+                data.showFlag = !$scope.workflowActionShowFlag;
+              });
+              
               multipleArrayList = result.workflow_data.lines;
               angular.forEach(multipleArrayList, function (data) {
                 $scope.multipleLine.push(processLine(data));
