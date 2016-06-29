@@ -20,7 +20,7 @@ angular.module('myApp', [
 ]);
 
 angular.module('myApp')
-  .run(function ($ionicPlatform, $timeout, baseConfig, $http, $ionicPopup) {
+  .run(function ($ionicPlatform, $timeout, baseConfig, $http, $ionicPopup, hmsPopup) {
     var url = baseConfig.businessPath + '/common_info/app_upgrade_info',
       checkVersionParams = {
         'params': {
@@ -37,6 +37,20 @@ angular.module('myApp')
       updateContent: ''
     };
 
+    /**
+     * confirm 对话框的回调函数
+     */
+    function selectAction(buttonIndex) {
+      if (buttonIndex == 1) { //确认按钮
+        updateResources();
+      } else { //取消按钮
+        return;
+      }
+    };
+    /**
+     * 检查app的版本更新
+     * -- 分大版本和小版本的update
+     */
     function checkAppVersion() {
       var promise = $http.post(url, checkVersionParams).success(function (response) {
         serveVersionParams.bigVersion = response.returnData.versionNumber;
@@ -45,43 +59,21 @@ angular.module('myApp')
         serveVersionParams.minUpdateUrl = response.returnData.subDownloadUrl;
         //warn(jsonFormat(serveVersionParams));
         try {
-          serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '<br>');
+          serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
         } catch (e) {
           serveVersionParams.updateContent = '';
         }
         if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
-          // update from pgy
-          var confirmPopup = $ionicPopup.confirm({
-            title: '大版本更新',
-            template: '<div>' + serveVersionParams.updateContent + '</div>',
-            okText: '确定',
-            cancelText: '取消'
-          });
-          confirmPopup.then(function (res) {
-            if (res) {
-              window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
-              return;
-            } else {
-              return;
-            }
-          });
+          function updateResources() { // update from pgy
+            window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
+          };
+          hmsPopup.confirm(serveVersionParams.updateContent, "大版本更新", selectAction);
         } else {
           if (serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
-            // update from hotpatch
-            var confirmPopupSamll = $ionicPopup.confirm({
-              title: '小版本更新',
-              template: '<div>' + serveVersionParams.updateContent + '</div>',
-              okText: '确定',
-              cancelText: '取消'
-            });
-            confirmPopupSamll.then(function (res) {
-              if (res) {
-                hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
-                return;
-              } else {
-                return;
-              }
-            });
+            function updateResources() { // update from hotpatch
+              hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
+            };
+            hmsPopup.confirm(serveVersionParams.updateContent, "小版本更新", selectAction);
           }
         }
       }).error(function () {
