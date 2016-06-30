@@ -7,9 +7,11 @@ angular.module('loginModule')
     '$scope',
     '$state',
     'baseConfig',
+    'checkVersionService',
     function ($scope,
               $state,
-              baseConfig) {
+              baseConfig,
+              checkVersionService) {
 
       console.log('loginCtrl.enter');
 
@@ -29,6 +31,7 @@ angular.module('loginModule')
 
       var goToMain = function () {
         if (window.localStorage.token && window.localStorage.token != "") {
+          checkVersionService.checkAppVersion();
           $state.go("tab.message");
         } else {
           $state.go("login");

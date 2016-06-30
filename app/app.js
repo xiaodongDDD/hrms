@@ -20,7 +20,11 @@ angular.module('myApp', [
 ]);
 
 angular.module('myApp')
-  .run(function ($ionicPlatform, $timeout, baseConfig, $http, $ionicPopup, hmsPopup) {
+  .run(function ($ionicPlatform, $timeout, baseConfig, checkVersionService) {
+    if (window.localStorage.token === '' || angular.isUndefined(window.localStorage.token)) {
+    } else {
+      checkVersionService.checkAppVersion();
+    }
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -31,78 +35,6 @@ angular.module('myApp')
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
-      }
-      var url = baseConfig.businessPath + '/common_info/app_upgrade_info',
-        checkVersionParams = {
-          'params': {
-            'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone',
-            'p_user_name': window.localStorage.empno,
-            'p_app_id': 'com.hand.china.hrms2.research'
-          }
-        };
-      var serveVersionParams = {
-        minVersion: '',
-        bigVersion: '',
-        minUpdateUrl: '',
-        bigUpdateUrl: '',
-        updateContent: ''
-      };
-
-      /**
-       * confirm 对话框的回调函数
-       */
-      function selectAction(buttonIndex) {
-        if (buttonIndex == 1) { //确认按钮
-          updateResources();
-        } else { //取消按钮
-          return;
-        }
-      };
-      /**
-       * 检查app的版本更新
-       * -- 分大版本和小版本的update
-       */
-      function checkAppVersion() {
-        var promise = $http.post(url, checkVersionParams).success(function (response) {
-          serveVersionParams.bigVersion = response.returnData.versionNumber;
-          serveVersionParams.bigUpdateUrl = response.returnData.downloadUrl;
-          serveVersionParams.minVersion = response.returnData.subVersiorNumber;
-          serveVersionParams.minUpdateUrl = response.returnData.subDownloadUrl;
-          try {
-            //serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '\\n\\r');
-            serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
-          } catch (e) {
-            serveVersionParams.updateContent = '';
-          }
-          warn(jsonFormat(serveVersionParams));
-          if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
-            function updateResources() { // update from pgy
-              window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
-            };
-            if (ionic.Platform.isWebView()) {
-              hmsPopup.confirm(serveVersionParams.updateContent, "大版本更新", selectAction);
-            } else {
-              alert(serveVersionParams.updateContent);
-            }
-          } else {
-            if (serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
-              function updateResources() { // update from hotpatch
-                hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
-              };
-              if (ionic.Platform.isWebView()) {
-                hmsPopup.confirm(serveVersionParams.updateContent, "小版本更新", selectAction);
-              } else {
-                alert(serveVersionParams.updateContent);
-              }
-            }
-          }
-        }).error(function () {
-        });
-      }
-
-      if (window.localStorage.token === '' || angular.isUndefined(window.localStorage.token)) {
-      } else {
-        checkAppVersion();
       }
 
       if (window.plugins.jPushPlugin) {
