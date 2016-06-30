@@ -20,10 +20,11 @@
                delegate-handle="approveListHandle"
                >
     <hms-loading ng-if="listInfoArray.loading"></hms-loading>
-    <!--<div class="loading-hand"></div>-->
+
     <ion-refresher on-refresh="tsListRefresh('pull_down')" ng-if="pullDownFlag" pulling-text="正在刷新数据..."
                    pulling-icon="ion-ios-loop">
     </ion-refresher>
+    <hms-no-data ng-if="listInfoArray.listArray.length == 0"></hms-no-data>
     <div id="tsApproveList" class="ts-approve-list-item" ng-repeat="i in listInfoArray.listArray"
          ng-click="goApproveDetail($index,i.employee_number,i.project_id,i.start_date,i.end_date)">
       <div class="row first-content">

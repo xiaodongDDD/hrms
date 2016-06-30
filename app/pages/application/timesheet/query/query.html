@@ -29,7 +29,8 @@
     </div>
     <div class="calendar-day">
       <div class="calendar-lock-screen" ng-if="loadingDataFlag">
-        <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
+        <!--<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>-->
+        <hms-loading></hms-loading>
       </div>
       <div class="calendar-title">
         <div class="title-item" ng-repeat="title in weekTitleList">

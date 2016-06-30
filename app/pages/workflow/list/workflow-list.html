@@ -28,10 +28,11 @@
     <ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </ion-refresher>
     <div class="hms-hide-content" ng-if="fetchDataFlag">
-      <div class="content">获取代办事项数据中</div>
-      <div class="hide-icon">
-        <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
-      </div>
+      <!--<div class="content">获取代办事项数据中</div>-->
+      <!--<div class="hide-icon">-->
+        <!--<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>-->
+      <!--</div>-->
+      <hms-loading></hms-loading>
     </div>
     <hms-workflow-list ng-if="!fetchDataFlag&&!pullRefreshDataFlag" ng-repeat="item in list"
                        workflow-title='item.title1'

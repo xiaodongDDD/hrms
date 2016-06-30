@@ -23,8 +23,10 @@
 }
 .hms-hide-small-content {
   width: 100%;
-  height: 40px;
-  margin-top: 50px;
+  //height: 40px;
+  //margin-top: 50px;
+  z-index: 1000;
+  position: fixed;
   .spinner svg {
     width: 24px;
     height: 24px;
@@ -36,6 +38,8 @@
     width: 100%;
     margin-bottom: 10px;
     color: #9B9B9B;
+    position: absolute;
+    z-index: 1000;
   }
   .hide-icon {
     width: 24px;

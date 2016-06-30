@@ -52,9 +52,28 @@
   background-position: center;
   height: 70px;
   width: 100%;
-  margin-top: 27%;
+  margin-top: 5%;
   position: fixed;
   z-index: 1000; }
+
+.nodata-img-hand {
+  background: url("./../img/no_datas@3x.png");
+  background-size: 190px 190px;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 190px;
+  width: 100%;
+  margin-top: 23%;
+  position: fixed;
+  z-index: 1000; }
+
+.nodata-text {
+  color: #9B9B9B;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 65%;
+  z-index: 1000;
+  position: relative; }
 
 /*!
 Animate.css - http://daneden.me/animate
@@ -2401,8 +2420,8 @@ Copyright (c) 2015 Daniel Eden
 
 .hms-hide-small-content {
   width: 100%;
-  height: 40px;
-  margin-top: 50px; }
+  z-index: 1000;
+  position: fixed; }
   .hms-hide-small-content .spinner svg {
     width: 24px;
     height: 24px;
@@ -2412,7 +2431,9 @@ Copyright (c) 2015 Daniel Eden
     text-align: center;
     width: 100%;
     margin-bottom: 10px;
-    color: #9B9B9B; }
+    color: #9B9B9B;
+    position: absolute;
+    z-index: 1000; }
   .hms-hide-small-content .hide-icon {
     width: 24px;
     height: 24px;
@@ -3287,6 +3308,8 @@ Copyright (c) 2015 Daniel Eden
     height: 40px !important; }
   .ts-filter-bg .ts-filter-modal .modal-button-margin {
     margin-top: 0px !important; }
+  .ts-filter-bg .ts-filter-modal .modal-button-margin.activated {
+    opacity: 0.8; }
   .ts-filter-bg .ts-filter-modal.modal {
     display: block;
     position: absolute;

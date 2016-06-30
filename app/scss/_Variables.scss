@@ -92,7 +92,28 @@ $global-background: #f8f8f8 !default;
   background-position: center;
   height: 70px;
   width: 100%;
-  margin-top: 27%;
+  margin-top: 5%;
   position: fixed;
   z-index: 1000;
+}
+
+.nodata-img-hand {
+  background: url('./../img/no_datas@3x.png');
+  background-size: 190px 190px;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 190px;
+  width: 100%;
+  margin-top: 23%;
+  position: fixed;
+  z-index: 1000;
+}
+
+.nodata-text{
+  color: $color-text-main;
+  font-size: $font-size-small;
+  text-align: center;
+  margin-top: 65%;
+  z-index: 1000;
+  position: relative;
 }

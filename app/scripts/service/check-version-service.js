@@ -28,16 +28,6 @@ angular.module('HmsModule')
       };
 
       /**
-       * confirm 对话框的回调函数
-       */
-      function selectAction(buttonIndex) {
-        if (buttonIndex == 1) { //确认按钮
-          updateResources();
-        } else { //取消按钮
-          return;
-        }
-      };
-      /**
        * 检查app的版本更新
        * -- 分大版本和小版本的update
        */
@@ -58,11 +48,22 @@ angular.module('HmsModule')
             } catch (e) {
               serveVersionParams.updateContent = '';
             }
+            /**
+             * confirm 对话框的回调函数
+             */
+            function selectAction(buttonIndex) {
+              if (buttonIndex == 1) { //确认按钮
+                updateResources();
+              } else { //取消按钮
+                return;
+              }
+            };
             warn(jsonFormat(serveVersionParams));
             if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
               function updateResources() { // update from pgy
                 window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
               };
+
               if (ionic.Platform.isWebView()) {
                 hmsPopup.confirm(serveVersionParams.updateContent, "大版本更新", selectAction);
               } else {

@@ -8,28 +8,28 @@
  * gusenlin
  */
 HmsModule.directive('hideTabs', function ($rootScope) {
-    return {
-      restrict: 'A',
-      link: function (scope, element, attributes) {
-        scope.$on('$ionicView.beforeEnter', function () {
-          scope.$watch(attributes.hideTabs, function (value) {
-            console.log('$ionicView.beforeEnter value ' + value);
-            if (value) {
-              $rootScope.hideTabs = false;
-            }
-            else {
-              $rootScope.hideTabs = true;
-            }
-          });
+  return {
+    restrict: 'A',
+    link: function (scope, element, attributes) {
+      scope.$on('$ionicView.beforeEnter', function () {
+        scope.$watch(attributes.hideTabs, function (value) {
+          console.log('$ionicView.beforeEnter value ' + value);
+          if (value) {
+            $rootScope.hideTabs = false;
+          }
+          else {
+            $rootScope.hideTabs = true;
+          }
         });
+      });
 
-        scope.$on('$ionicView.beforeLeave', function () {
-          $rootScope.hideTabs = true;
-          console.log('$ionicView.beforeLeave value ');
-        });
-      }
-    };
-  })
+      scope.$on('$ionicView.beforeLeave', function () {
+        $rootScope.hideTabs = true;
+        console.log('$ionicView.beforeLeave value ');
+      });
+    }
+  };
+})
   .directive('elasticImage', function ($ionicScrollDelegate) {
     return {
       restrict: 'A',
@@ -47,9 +47,9 @@ HmsModule.directive('hideTabs', function ($rootScope) {
       }
     }
   }).directive('circleRotate', function ($timeout) {
-  return {
-    restrict: 'A',
-    link: function ($scope, $scroller, $attr) {
+    return {
+      restrict: 'A',
+      link: function ($scope, $scroller, $attr) {
         var params = $attr.circleRotate;
         var domsId = params.split(',');
         console.log(domsId);
@@ -95,17 +95,17 @@ HmsModule.directive('hideTabs', function ($rootScope) {
           }, 500);
         } else if (domsId[0] == "time-off-manage") {
           //$timeout(function() {
-            $scope.$watch('circleAnimationFlag',function() {
-              if($scope.circleAnimationFlag==true){
+          $scope.$watch('circleAnimationFlag', function () {
+            if ($scope.circleAnimationFlag == true) {
               var leftball1 = document.getElementById(domsId[1]);
               var rightball1 = document.getElementById(domsId[2]);
               var leftball2 = document.getElementById(domsId[3]);
               var rightball2 = document.getElementById(domsId[4]);
               var leftball3 = document.getElementById(domsId[5]);
               var rightball3 = document.getElementById(domsId[6]);
-              var calculation1 = $scope.timeOffHeader.paidHoliday  / ($scope.timeOffHeader.paidHoliday+ $scope.timeOffHeader.usedPaidHoliday);
-              var calculation2 = $scope.timeOffHeader.paidSickLeave  / ($scope.timeOffHeader.paidSickLeave + $scope.timeOffHeader.usedPaidSickLeave);
-              var calculation3 = $scope.timeOffHeader.extPaidHoliday  / ($scope.timeOffHeader.extPaidHoliday + $scope.timeOffHeader.usedExtPaidHoliday);
+              var calculation1 = $scope.timeOffHeader.paidHoliday / ($scope.timeOffHeader.paidHoliday + $scope.timeOffHeader.usedPaidHoliday);
+              var calculation2 = $scope.timeOffHeader.paidSickLeave / ($scope.timeOffHeader.paidSickLeave + $scope.timeOffHeader.usedPaidSickLeave);
+              var calculation3 = $scope.timeOffHeader.extPaidHoliday / ($scope.timeOffHeader.extPaidHoliday + $scope.timeOffHeader.usedExtPaidHoliday);
               if (calculation1 <= 0.5) {//剩余天数大于总天数的一半
                 leftball1.style.transition = "all 0.3s linear";
                 leftball1.style.webkitTransition = "all 0.3s linear";
@@ -210,41 +210,42 @@ HmsModule.directive('hideTabs', function ($rootScope) {
                   rightball3.style.transform = "rotate(45deg)";
                 }
               }, 500);
-              }});
+            }
+          });
           //},2500);
         }
-    }
-  }
-}).directive('calculatePortrait', function() {
-    return {
-      restrict: 'A',
-      link: function($scope, $scroller, $attr) {
-        var params=$attr.calculatePortrait;
-        var domsId=params.split(',');
-        var bigPortraitVariable=0;//大头像的偏移量
-        var myBigPortrait=document.getElementById(domsId[0]);
-        var myLittlePortrait=document.getElementById(domsId[1]);
-        var clientWidth=window.screen.width;
-        var calculationBig=90*clientWidth/375;
-        var calculationLittle=64*clientWidth/375;
-        if(clientWidth>300 && clientWidth<=345){
-          bigPortraitVariable=4;
-        }else if(clientWidth>345 && clientWidth<=395){
-          bigPortraitVariable=-3;
-        }else if(clientWidth>395 && clientWidth<=445){
-          bigPortraitVariable=-10;
-        }else if(clientWidth>445){
-          bigPortraitVariable=-17;
-        }
-        myBigPortrait.style.width=calculationBig+"px";
-        myBigPortrait.style.height=calculationBig+"px";
-        myLittlePortrait.style.width=calculationLittle+"px";
-        myLittlePortrait.style.height=calculationLittle+"px";
-        myLittlePortrait.style.top=-calculationLittle/2+"px";
-        myBigPortrait.style.top=bigPortraitVariable*clientWidth/375-calculationBig/2+"px";
       }
     }
-});
+  }).directive('calculatePortrait', function () {
+    return {
+      restrict: 'A',
+      link: function ($scope, $scroller, $attr) {
+        var params = $attr.calculatePortrait;
+        var domsId = params.split(',');
+        var bigPortraitVariable = 0;//大头像的偏移量
+        var myBigPortrait = document.getElementById(domsId[0]);
+        var myLittlePortrait = document.getElementById(domsId[1]);
+        var clientWidth = window.screen.width;
+        var calculationBig = 90 * clientWidth / 375;
+        var calculationLittle = 64 * clientWidth / 375;
+        if (clientWidth > 300 && clientWidth <= 345) {
+          bigPortraitVariable = 4;
+        } else if (clientWidth > 345 && clientWidth <= 395) {
+          bigPortraitVariable = -3;
+        } else if (clientWidth > 395 && clientWidth <= 445) {
+          bigPortraitVariable = -10;
+        } else if (clientWidth > 445) {
+          bigPortraitVariable = -17;
+        }
+        myBigPortrait.style.width = calculationBig + "px";
+        myBigPortrait.style.height = calculationBig + "px";
+        myLittlePortrait.style.width = calculationLittle + "px";
+        myLittlePortrait.style.height = calculationLittle + "px";
+        myLittlePortrait.style.top = -calculationLittle / 2 + "px";
+        myBigPortrait.style.top = bigPortraitVariable * clientWidth / 375 - calculationBig / 2 + "px";
+      }
+    }
+  });
 /**
  * @description:loading tag
  *
@@ -253,10 +254,7 @@ HmsModule.directive('hmsLoading', function ($rootScope) {
   return {
     restrict: 'E',
     template: '<div class="hms-hide-small-content">' +
-    '<div class="content">数据加载中...</div>' +
-    '<div class="hide-icon">' +
-    '<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>' +
-    '</div>' +
+    '<div class="loading-hand"></div>' +
     '</div>',
     replace: true, //使用模板替换原始标记
     transclude: false,    // 不复制原始HTML内容
@@ -266,4 +264,22 @@ HmsModule.directive('hmsLoading', function ($rootScope) {
     }
   };
 });
-
+/**
+ * @description:nodata tag
+ *
+ */
+HmsModule.directive('hmsNoData', function ($rootScope) {
+  return {
+    restrict: 'E',
+    template: '<div class="hms-hide-small-content">' +
+    '<div class="nodata-img-hand"></div>' +
+    '<div class="nodata-text">没有相关数据！</div>' +
+    '</div>',
+    replace: true, //使用模板替换原始标记
+    transclude: false,    // 不复制原始HTML内容
+    controller: ["$scope", function ($scope) {
+    }],
+    link: function (scope, element, attrs, controller) {
+    }
+  };
+});

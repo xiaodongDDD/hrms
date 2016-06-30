@@ -545,6 +545,9 @@
     .modal-button-margin {
       margin-top: 0px !important;
     }
+    .modal-button-margin.activated {
+      opacity: 0.8;
+    }
     &.modal {
       display: block;
       position: absolute;

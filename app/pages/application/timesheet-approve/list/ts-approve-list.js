@@ -591,7 +591,7 @@ angular.module('tsApproveModule')
                 _self.busy = false;
                 _self.listArray = [];
                 _self.scope.$broadcast('scroll.refreshComplete');
-                hmsPopup.showShortCenterToast("没有相关数据!");
+                //hmsPopup.showShortCenterToast("没有相关数据!");
               } else if (response.count <= 6) {
                 _self.busy = false;
               } else {
@@ -602,7 +602,7 @@ angular.module('tsApproveModule')
             } else {
               _self.busy = false;
               if (response.status === 'E' || response.status == 'e') {
-                hmsPopup.showShortCenterToast("没有相关数据!");
+                //hmsPopup.showShortCenterToast("没有相关数据!");
               } else {
                 hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
               }
