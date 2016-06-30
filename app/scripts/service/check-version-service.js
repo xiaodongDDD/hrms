@@ -42,40 +42,38 @@ angular.module('HmsModule')
             } catch (e) {
             }
             try {
-              //serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '\\n\\r');
-              serveVersionParams.updateContent = response.returnData.upgradeInfo;
+              serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '\r\n');
+              //serveVersionParams.updateContent = response.returnData.upgradeInfo;
               //serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
             } catch (e) {
               serveVersionParams.updateContent = '';
             }
-            /**
-             * confirm 对话框的回调函数
-             */
-            function selectAction(buttonIndex) {
-              if (buttonIndex == 1) { //确认按钮
-                updateResources();
-              } else { //取消按钮
-                return;
-              }
-            };
+
             warn(jsonFormat(serveVersionParams));
             if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
-              function updateResources() { // update from pgy
-                window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
-              };
-
               if (ionic.Platform.isWebView()) {
+                function selectAction(buttonIndex) { // update from pgy
+                  if (buttonIndex == 1) { //确认按钮
+                    window.open(serveVersionParams.bigUpdateUrl, '_system', 'location=yes');
+                  } else { //取消按钮
+                    return;
+                  }
+                };
                 hmsPopup.confirm(serveVersionParams.updateContent, "大版本更新", selectAction);
               } else {
                 alert(serveVersionParams.updateContent);
               }
             } else {
               if (serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
-                function updateResources() { // update from hotpatch
-                  hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
-                };
                 if (ionic.Platform.isWebView()) {
-                  hmsPopup.confirm(serveVersionParams.updateContent, "小版本更新", selectAction);
+                  function selectAction_min(buttonIndex) { // update from pgy
+                    if (buttonIndex == 1) { //确认按钮
+                      hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
+                    } else { //取消按钮
+                      return;
+                    }
+                  };
+                  hmsPopup.confirm(serveVersionParams.updateContent, "小版本更新", selectAction_min);
                 } else {
                   alert(serveVersionParams.updateContent);
                 }

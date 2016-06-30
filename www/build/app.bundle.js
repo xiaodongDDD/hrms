@@ -1,5 +1,5 @@
 angular.module("baseConfig", [])
-.constant("baseConfig", {"debug":true,"isMobilePlatform":false,"clearTable":true,"nativeScreenFlag":false,"loginPath":"http://wechat.hand-china.com/hmbms_hand/api","businessPath":"http://wechat.hand-china.com/hmbms_hand/api/dataEngine","pkgIdentifier":"","appEnvironment":"UAT","version":{"currentVersion":"1.9.2","currentversionName":"此版本为测试版本1.9.2","currentSubVersion":"1","currentSubVersionName":"资源增量包1"}});
+.constant("baseConfig", {"debug":false,"isMobilePlatform":true,"clearTable":true,"nativeScreenFlag":true,"loginPath":"http://mobile-app.hand-china.com/hmbms_hand/api","businessPath":"http://mobile-app.hand-china.com/hmbms_hand/api/dataEngine","pkgIdentifier":"","appEnvironment":"PROD","version":{"currentVersion":"1.9.2","currentversionName":"此版本为正式版本1.9.2","currentSubVersion":"1","currentSubVersionName":"资源增量包1"}});
 
 /**
  * Created by gusenlin on 16/5/22.
@@ -876,8 +876,8 @@ angular.module('HmsModule')
             } catch (e) {
             }
             try {
-              //serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '\\n\\r');
-              serveVersionParams.updateContent = response.returnData.upgradeInfo;
+              serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '\n\r');
+              //serveVersionParams.updateContent = response.returnData.upgradeInfo;
               //serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
             } catch (e) {
               serveVersionParams.updateContent = '';
