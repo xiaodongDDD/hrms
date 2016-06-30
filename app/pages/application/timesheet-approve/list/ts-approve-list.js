@@ -590,6 +590,7 @@ angular.module('tsApproveModule')
               if (response.count == 0) {
                 _self.busy = false;
                 _self.listArray = [];
+                _self.scope.$broadcast('scroll.refreshComplete');
                 hmsPopup.showShortCenterToast("没有相关数据!");
               } else if (response.count <= 6) {
                 _self.busy = false;

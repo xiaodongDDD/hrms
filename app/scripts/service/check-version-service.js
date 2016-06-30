@@ -1,5 +1,5 @@
 /**
- * Created by wolf on 2016/6/30. (_wen.dai_)
+ * Created by wolf on 2016/6/30. (wen.da)
  */
 angular.module('HmsModule')
   .factory('checkVersionService', [
@@ -53,7 +53,8 @@ angular.module('HmsModule')
             }
             try {
               //serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '\\n\\r');
-              serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
+              serveVersionParams.updateContent = response.returnData.upgradeInfo;
+              //serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
             } catch (e) {
               serveVersionParams.updateContent = '';
             }
