@@ -194,6 +194,39 @@
     right: 1px;
     top: 70px;
   }
+  .no-data-shelter{
+    position: absolute;
+    top: 100px;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 250px;
+  }
+  .no-data-no-space{
+    padding:0px;
+    margin: 0px;
+    text-align: center;
+  }
+  .no-data-image{
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+  }
+  .no-data-label{
+    font-size: 1.25rem;
+    color: #245597;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .no-data-no-space-label-row{
+    padding:0px;
+    margin: 0px;
+    text-align: center;
+    margin-top: 10px;
+  }
   .black-page{//说明页
     position: fixed;
     top: 0px;

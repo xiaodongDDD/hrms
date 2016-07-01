@@ -19,6 +19,7 @@
         <label class="create-button-text">新建住宿申请</label>
       </div>
     </button>
+    <div ng-show="noData">
     <div class="space"></div>
     <label class="history-title">个人历史住宿申请</label>
     <ion-list>
@@ -50,6 +51,17 @@
         <img ng-show="x.modeCheckingIn" src="build/img/application/dorm-apply/little-stamp-checkingin.png" class="bottom-pic"/>
       </ion-item>
     </ion-list>
+    </div>
+    <div ng-hide="noData">
+      <div class="no-data-shelter">
+      <div class="row no-data-no-space">
+        <img src="build/img/application/dorm-apply/no-data.png" class="no-data-image"/>
+      </div>
+      <div class="row no-data-no-space-label-row">
+        <label class="no-data-label"><strong>无历史住宿申请</strong></label>
+      </div>
+      </div>
+    </div>
   </ion-content>
   <div class="black-page" ng-if="descriptionAppearance">
     <div class="black-head">

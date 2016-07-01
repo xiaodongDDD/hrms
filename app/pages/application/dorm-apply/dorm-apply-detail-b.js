@@ -51,6 +51,7 @@ angular.module('applicationModule')
       $scope.checkIn = false;//审批中状态标志位
       $scope.checkOut = false;//已拒绝状态标识位
       $scope.buttonText = '';//按钮上显示的文字
+      $scope.showButton=true;//是否显示按钮的标志位，默认显示
       $scope.leftDays=$scope.applyInfo.leftDays;//剩余天数
       $scope.allowApply=false;//由于续住和再次预定需要选择开始日期和结束日期，默认未选择日期
       $scope.totalDays=parseInt($scope.applyInfo.checkinDays);
@@ -86,6 +87,9 @@ angular.module('applicationModule')
         $scope.checkOut = true;
         $scope.buttonText = '再次预定';
       }
+      if($scope.applyInfo.status == '已入住' && $scope.leftDays>7){
+         $scope.showButton=false;
+      }
 
       function refreshEndDate(num){//今天之后的num天
         var myDate=$scope.startDate;
@@ -108,7 +112,7 @@ angular.module('applicationModule')
         $scope.endDate.year=tomorrowYear;
         $scope.endDate.month=tomorrowMonth;
         $scope.endDate.day=tomorrowDay;
-      };
+      }
 
       $scope.goBack = function () {//返回上一界面
         $ionicHistory.goBack();
