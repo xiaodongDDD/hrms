@@ -107,7 +107,7 @@
         </div>
       </div>
       <div class="cut-line"></div>
-      <button class="button button-block confirm-button" ng-click="renewContract()">{{buttonText}}</button>
+      <button class="button button-block confirm-button" ng-show="showButton" ng-click="renewContract()">{{buttonText}}</button>
     </ion-item>
     <img src="build/img/application/dorm-apply/big-stamp-checkin.png" class="image-stamp" ng-show="checkIn"/>
     <img src="build/img/application/dorm-apply/big-stamp-checkout.png" class="image-stamp" ng-show="checkOut"/>

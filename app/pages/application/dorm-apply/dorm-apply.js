@@ -38,6 +38,7 @@ angular.module('applicationModule')
               $timeout) {
       $scope.descriptionAppearance = "";
       $scope.items=[];//历史列表中的数据
+      $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
       searchHistoryApplyListAutomatically();//自动获取历史申请数据
       function searchHistoryApplyListAutomatically() {
         $scope.items=[];
@@ -54,39 +55,43 @@ angular.module('applicationModule')
             console.log("result success " + angular.toJson(result));
           }
           $scope.items = result.result;
-          angular.forEach($scope.items,function(data,index,array){
-            if(array[index].apply_status=='已入住'){
-               array[index].modeCheckIn=true;
-               array[index].modeCheckOut=false;
-               array[index].modeApproving=false;
-               array[index].modeRejected=false;
-               array[index].modeCheckingIn=false;
-            }else if(array[index].apply_status=='已退房'){
-               array[index].modeCheckIn=false;
-               array[index].modeCheckOut=true;
-               array[index].modeApproving=false;
-               array[index].modeRejected=false;
-               array[index].modeCheckingIn=false;
-            }else if(array[index].apply_status=='审批中'){
-              array[index].modeCheckIn=false;
-              array[index].modeCheckOut=false;
-              array[index].modeApproving=true;
-              array[index].modeRejected=false;
-              array[index].modeCheckingIn=false;
-            }else if(array[index].apply_status=='已拒绝'){
-              array[index].modeCheckIn=false;
-              array[index].modeCheckOut=false;
-              array[index].modeApproving=false;
-              array[index].modeRejected=true;
-              array[index].modeCheckingIn=false;
-            }else if(array[index].apply_status=='未入住'){
-              array[index].modeCheckIn=false;
-              array[index].modeCheckOut=false;
-              array[index].modeApproving=false;
-              array[index].modeRejected=false;
-              array[index].modeCheckingIn=true;
+          if ($scope.items.length == 0) {
+             $scope.noData=false;
+          } else if ($scope.items.length > 0) {
+          angular.forEach($scope.items, function (data, index, array) {
+            if (array[index].apply_status == '已入住') {
+              array[index].modeCheckIn = true;
+              array[index].modeCheckOut = false;
+              array[index].modeApproving = false;
+              array[index].modeRejected = false;
+              array[index].modeCheckingIn = false;
+            } else if (array[index].apply_status == '已退房') {
+              array[index].modeCheckIn = false;
+              array[index].modeCheckOut = true;
+              array[index].modeApproving = false;
+              array[index].modeRejected = false;
+              array[index].modeCheckingIn = false;
+            } else if (array[index].apply_status == '审批中') {
+              array[index].modeCheckIn = false;
+              array[index].modeCheckOut = false;
+              array[index].modeApproving = true;
+              array[index].modeRejected = false;
+              array[index].modeCheckingIn = false;
+            } else if (array[index].apply_status == '已拒绝') {
+              array[index].modeCheckIn = false;
+              array[index].modeCheckOut = false;
+              array[index].modeApproving = false;
+              array[index].modeRejected = true;
+              array[index].modeCheckingIn = false;
+            } else if (array[index].apply_status == '未入住') {
+              array[index].modeCheckIn = false;
+              array[index].modeCheckOut = false;
+              array[index].modeApproving = false;
+              array[index].modeRejected = false;
+              array[index].modeCheckingIn = true;
             }
           });
+        }
         }).error(function (error, status) {
           //hmsPopup.hideLoading();
           if (baseConfig.debug) {
