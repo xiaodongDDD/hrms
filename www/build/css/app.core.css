@@ -3027,6 +3027,10 @@ Copyright (c) 2015 Daniel Eden
     background-position: 9px 7px;
     padding-left: 25px; }
 
+.search-input.ng-leave {
+  -webkit-animation: fadeOut 0.4s;
+  animation: fadeOut .4s; }
+
 .search-input.ng-enter {
   -webkit-animation: fadeInUp 0.6s;
   animation: fadeInUp .6s; }

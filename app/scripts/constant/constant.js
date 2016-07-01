@@ -4,7 +4,6 @@
  * @attention:  nomenclature and block
  */
 'use strict';
-angular.module("HmsModule", [])
-  .constant('hmsConstant',[function () {
+HmsModule.constant('hmsConstant',[function () {
 
   }]);
