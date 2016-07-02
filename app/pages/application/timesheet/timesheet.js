@@ -86,7 +86,7 @@ angular.module('applicationModule')
           error(response);
         });
       };
-      
+
       this.slippingBatch = function (success,error,template,dateArray) {
         var url = baseConfig.businessPath + "/timesheet_process/slipping_batch1";
         var params = {
@@ -94,6 +94,22 @@ angular.module('applicationModule')
             "p_employee": window.localStorage.empno,
             "p_ref_date": template + "",
             "p_date_range": dateArray + ""
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          error(response);
+        });
+      };
+
+      this.unfreezeTimesheet = function (success,error,dateFrom,dateTo) {
+        var url = baseConfig.businessPath + "/api_timesheet_unfreeze/timesheet_unfreeze";
+        var params = {
+          "params": {
+            "p_employee_code": window.localStorage.empno,
+            "p_freeze_date_from": dateFrom + "",
+            "p_freeze_date_to": dateTo + ""
           }
         };
         hmsHttp.post(url, params).success(function (result) {

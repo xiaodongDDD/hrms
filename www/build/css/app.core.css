@@ -401,8 +401,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -427,8 +427,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -4821,12 +4821,22 @@ Copyright (c) 2015 Daniel Eden
       margin-bottom: -38px;
       height: 76px;
       position: relative; }
-      .timesheet .calendar-day .allowance .batch-write {
+      .timesheet .calendar-day .allowance .batch-process {
         position: absolute;
         right: 20px;
-        top: 10px;
+        top: 0px;
         height: 30px;
-        font-size: 24px; }
+        width: 30px;
+        font-size: 24px;
+        background: url("../img/application/timesheet/auto-G@3x.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center; }
+        .timesheet .calendar-day .allowance .batch-process.selected {
+          background: url("../img/application/timesheet/auto-b@3x.png");
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center; }
       .timesheet .calendar-day .allowance .allowance-click {
         width: 76px;
         height: 76px;
@@ -4997,6 +5007,20 @@ Copyright (c) 2015 Daniel Eden
 .timesheet-year-pop-container {
   height: 250px;
   width: 155px; }
+
+.timesheet.popover {
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  z-index: 10;
+  display: block;
+  margin-top: 12px;
+  margin-left: -110px;
+  height: 130px;
+  width: 130px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  opacity: 0; }
 
 .personnel-policy .item-title-bg {
   height: 41px;
@@ -8636,14 +8660,17 @@ Copyright (c) 2015 Daniel Eden
   margin: 0;
   padding: 0;
   position: absolute;
-  top: 15px;
+  top: 25px;
   right: 15px;
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
   text-align: center;
-  width: 80px;
+  width: 40px;
+  border-radius: 20px;
+  border: 2px solid #DBDBDB;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.4);
   color: white;
-  font-size: 16px;
   z-index: 100; }
 
 .navigateHrms .slider-button {

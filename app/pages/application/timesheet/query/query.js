@@ -62,14 +62,34 @@ angular.module('applicationModule')
       $scope.allowanceList = [];
       $scope.selectYearList = [];
 
+
+
       var offset = -5;
       var yearCount = 10;
 
       var startTouchX = 0;
       var startTouchY = 0;
 
-      var slippingFlag = false;
-      var slippingEnableFlag = true;
+
+      var timesheetTitle = 'Timesheet';
+      var unfreezeTitle = 'Timesheet解冻';
+      var batchWriteMode = 'batchWriteMode';
+      var unfreezeMode = 'unfreezeMode';
+      var slippingMode = 'batchWriteMode';
+
+      $scope.timesheetProcessModeList = [
+        {
+          "selected" : true,
+          "value": timesheetTitle
+        },
+        {
+          "selected" : false,
+          "value": unfreezeTitle
+        }
+      ];
+      $scope.timesheetProcessMode = timesheetTitle;
+      $scope.slippingFlag = false;
+      $scope.slippingEnableFlag = true;
 
       var clientWidth = document.body.clientWidth;
 
@@ -183,6 +203,34 @@ angular.module('applicationModule')
         }
       };
 
+      $ionicPopover.fromTemplateUrl('build/pages/application/timesheet/popover/timesheet-mode.html', {
+        scope: $scope,
+      }).then(function (popover) {
+        $scope.timesheetPopover = popover;
+      });
+
+      $scope.selectMode = function (mode) {
+        $scope.timesheetProcessModeList[0].selected = false;
+        $scope.timesheetProcessModeList[1].selected = false;
+        if(mode.selected){
+          mode.selected = false;
+        }else{
+          mode.selected = true;
+        }
+        if($scope.timesheetProcessModeList[1].selected){
+          slippingMode = unfreezeMode;
+        }else{
+          slippingMode = slippingMode;
+        }
+        $scope.timesheetProcessMode = mode.value;
+        $scope.timesheetPopover.hide();
+      }
+
+      $scope.openTimesheetMode = function ($event) {
+        $scope.timesheetPopover.show($event);
+      };
+
+
       $ionicPopover.fromTemplateUrl('build/pages/application/timesheet/popover/years.html', {
         scope: $scope,
         animation: 'animated fadeIn'
@@ -218,8 +266,8 @@ angular.module('applicationModule')
 
       $scope.processAllowance = function () {
         var title = "确定要否进行生成津贴?";
-        if($scope.allowanceList.length>0){
-          if($scope.allowanceList[0].status == '已经审核'){
+        if ($scope.allowanceList.length > 0) {
+          if ($scope.allowanceList[0].status == '已经审核') {
             hmsPopup.showPopup('你的津贴已经审核,不能在生成津贴!');
             return;
           }
@@ -230,7 +278,7 @@ angular.module('applicationModule')
             console.log('You selected button ' + buttonIndex);
           }
           if (buttonIndex == 1) {
-            createAllowance($scope.currentYear,$scope.currentMonth);
+            createAllowance($scope.currentYear, $scope.currentMonth);
           } else {
             clearCalendarCache();
           }
@@ -335,12 +383,12 @@ angular.module('applicationModule')
       var element = angular.element(document.querySelector('#timesheetCalandar'));
 
       var startSlipping = function () {
-        slippingFlag = true;
+        $scope.slippingFlag = true;
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
         scrollPosition = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition().top;
       };
       var stopSlipping = function () {
-        slippingFlag = false;
+        $scope.slippingFlag = false;
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
       };
 
@@ -393,6 +441,84 @@ angular.module('applicationModule')
         TimeSheetService.slippingBatch(success, error, copyFromDay.day, dateArray);
       };
 
+      var getUnfreezeDateRange = function () {
+        var dateFrom = '';
+        var dateTo = '';
+        var dateArray = '';
+        var minDate = 0;
+        var maxDate = 10000000000000;
+
+        angular.forEach($scope.calendar, function (data) {
+          angular.forEach(data.list, function (list) {
+            if (list.choosed) {
+              //batchList.push({"day": list.each_day});
+              if (dateArray == '') {
+                dateArray = dateArray + list.each_day;
+              } else {
+                dateArray = dateArray + '#' + list.each_day;
+              }
+              if (minDate == 0 || parseInt(list.each_day) < minDate) {
+                minDate = parseInt(list.each_day);
+              }
+              if (maxDate == 10000000000000 || parseInt(list.each_day) > maxDate) {
+                maxDate = parseInt(list.each_day);
+              }
+            }
+          });
+        });
+        var changeDateFormat = function (dateString) {
+          var year;
+          var month;
+          var day;
+          if (baseConfig.debug) {
+            console.log('dateString.length ' + dateString.length);
+          }
+          if (dateString.length == 8) {
+
+            year = dateString.substring(0, 4);
+            month = dateString.substring(4, 6);
+            day = dateString.substring(6, 8);
+          } else {
+            return '';
+          }
+          return day = year + '-' + month + '-' + day;
+        };
+
+        dateFrom = changeDateFormat(minDate + '');
+        dateTo = changeDateFormat(maxDate + '');
+
+        return {
+          "dateFrom": dateFrom,
+          "dateTo": dateTo
+        }
+      }
+
+      //批量解冻Timesheet
+      var slippingUnfreezeTimesheet = function (dateRange) {
+
+        if (baseConfig.debug) {
+          console.log('dateFrom ' + dateRange.dateFrom);
+          console.log('dateTo ' + dateRange.dateTo);
+        }
+
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.returnCode == 'S') {
+            hmsPopup.showPopup('解冻Timesheet申请成功,请查看个人申请!');
+          } else {
+            hmsPopup.showPopup('解冻Timesheet失败!' + result.returnMsg);
+          }
+        };
+
+        var error = function (response) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup('解冻Timesheet失败,可能是网络问题!');
+          clearCalendarCache();
+        };
+        hmsPopup.showLoading('解冻Timesheet中');
+        TimeSheetService.unfreezeTimesheet(success, error, dateRange.dateFrom, dateRange.dateTo);
+      };
+
       //捕获触摸的
       var markSelectCalendar = function (clentW, touchX, touchY) {
         var selectX = -1;
@@ -437,19 +563,20 @@ angular.module('applicationModule')
       $ionicGesture.on("drag", function (e) {
         //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
         //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
-        if (!slippingFlag && slippingEnableFlag) {
+        if (!$scope.slippingFlag && $scope.slippingEnableFlag) {
           if (Math.abs(startTouchX - e.gesture.touches[0].pageX) > 3 || Math.abs(startTouchY - e.gesture.touches[0].pageY) > 3) {
             toTime = new Date().getTime();
             if (baseConfig.debug) {
               console.log('startTime ' + startTime);
               console.log('toTime ' + toTime);
             }
-            if ((toTime - startTime) > 250) {
-              startSlipping();
-            }
+            startSlipping();
+            /*if ((toTime - startTime) > 250) {
+             startSlipping();
+             }*/
           }
         }
-        if (slippingFlag && slippingEnableFlag) {
+        if ($scope.slippingFlag && $scope.slippingEnableFlag) {
           var selectDay = markSelectCalendar(clientWidth,
             e.gesture.touches[0].pageX,
             e.gesture.touches[0].pageY);
@@ -485,23 +612,56 @@ angular.module('applicationModule')
       }, element);
 
       $ionicGesture.on("release", function (e) {
-        if (slippingFlag && slippingEnableFlag) {
-          stopSlipping();
+        if ($scope.slippingFlag && $scope.slippingEnableFlag) {
           //console.log('release.startTouchX ' + e.gesture.touches[0].pageX);
           //console.log('release.startTouchY ' + e.gesture.touches[0].pageY);
-          var summitOrder = function (buttonIndex) {
-            if (baseConfig.debug) {
-              console.log('You selected button ' + buttonIndex);
-            }
-            if (buttonIndex == 1) {
-              slippingWriteTimesheet();
-            } else {
-              clearCalendarCache();
-            }
+          if (slippingMode == unfreezeMode) {
+            stopSlipping();
+            doUnfreezeTimesheet();
+          } else {
+            stopSlipping();
+            doBatchWrite();
           }
-          hmsPopup.confirm("确定要否进行批量填写?", "", summitOrder);
         }
       }, element);
+
+
+      var doBatchWrite = function () {
+        var summitOrder = function (buttonIndex) {
+          if (baseConfig.debug) {
+            console.log('You selected button ' + buttonIndex);
+          }
+          if (buttonIndex == 1) {
+            slippingWriteTimesheet();
+          } else {
+            clearCalendarCache();
+          }
+        }
+        hmsPopup.confirm("确定要否进行批量填写?", "", summitOrder);
+      };
+
+      var doUnfreezeTimesheet = function () {
+        var dateRange = getUnfreezeDateRange();
+
+        if (dateRange.dateFrom == '' || dateRange.dateTo == '') {
+          hmsPopup.showPopup('解冻Timesheet时候,字符串解析失败 ' + minDate);
+          return;
+        }
+
+        var unfreeze = function (buttonIndex) {
+          if (baseConfig.debug) {
+            console.log('You selected button ' + buttonIndex);
+          }
+          if (buttonIndex == 1) {
+            slippingUnfreezeTimesheet(dateRange);
+            clearCalendarCache();
+          } else {
+            clearCalendarCache();
+          }
+        }
+        hmsPopup.confirm('确定要否解冻Timesheet 期间范围为(' +
+          dateRange.dateFrom + '~' + dateRange.dateTo + ') ?', '', unfreeze);
+      };
 
       $scope.getTimeSheet = function (year, month) {
         angular.forEach($scope.monthList, function (data) {
@@ -513,6 +673,10 @@ angular.module('applicationModule')
         initCalendar();
         fetchCalendar(monthParams);
         generateAllowance(monthParams);
+      };
+
+      $scope.startslipping = function () {
+        startSlipping();
       };
 
       var processAllowance = function (allowance) {
@@ -550,9 +714,9 @@ angular.module('applicationModule')
       }
 
       //生成津贴信息
-      var createAllowance = function (currentYear,currentMonth) {
+      var createAllowance = function (currentYear, currentMonth) {
 
-        var monthParams =  currentYear + '' + formatMonth(currentMonth);
+        var monthParams = currentYear + '' + formatMonth(currentMonth);
         hmsPopup.showLoading("生成津贴中");
         $scope.allowanceList = [];
         var success = function (result) {
@@ -560,7 +724,7 @@ angular.module('applicationModule')
           if (result.status == 'S') {
             processAllowance(result.allowance);
           } else {
-            if(result.status == 'E'){
+            if (result.status == 'E') {
               hmsPopup.showPopup('生成津贴失败 ' + result.message);
             }
           }
