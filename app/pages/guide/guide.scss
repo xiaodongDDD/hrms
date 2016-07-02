@@ -21,8 +21,6 @@
     background: rgba(000, 000, 000, 0.4);
     color: white;
     z-index: 100;
-    background:none;
-    border: none;
     &.activated{
       opacity: 0.8;
       -webkit-transform: scale(0.8);
