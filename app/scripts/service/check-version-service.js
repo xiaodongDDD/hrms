@@ -49,7 +49,6 @@ angular.module('HmsModule')
               serveVersionParams.updateContent = '';
             }
 
-            warn(jsonFormat(serveVersionParams));
             if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
               if (ionic.Platform.isWebView()) {
                 function selectAction(buttonIndex) { // update from pgy

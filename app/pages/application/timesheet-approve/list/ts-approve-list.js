@@ -70,13 +70,13 @@ angular.module('tsApproveModule')
         $scope.personList = [];
         $scope.projectList = [];
         $scope.endDateList = [{//记录常用的三个截止日期
-          dateValue: getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, ""),
+          dateValue: getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/, ""),
           dateCode: getLastMonthDate(new Date())
         }, {
-          dateValue: getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, ""),
+          dateValue: getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/, ""),
           dateCode: getCurrentDate(new Date())
         }, {
-          dateValue: getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, ""),
+          dateValue: getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/, ""),
           dateCode: getCurrentMonthLastDate(new Date())
         }];
         var position = ""; //记录滚动条的位置
@@ -107,17 +107,20 @@ angular.module('tsApproveModule')
           "approve_list": []
         };
         var currentDay = new Date().getDate();
+        warn(currentDay);
         if (currentDay <= 10) {
           tsListParams.params.p_end_date = getLastMonthDate(new Date());
-          $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/gi, "");
+          warn(tsListParams.params.p_end_date);
+          $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/, '');
+          warn($scope.endApproveDate);
           $scope.selectEndItem = [true, false, false]; //控制点击选择截止日期条目的样式(modal-date)
         } else if (currentDay > 10 && currentDay <= 20) {
           tsListParams.params.p_end_date = getCurrentDate(new Date());
-          $scope.endApproveDate = getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.endApproveDate = getMonthDay(getCurrentDate(new Date())).replace(/\b(0+)/, '');
           $scope.selectEndItem = [false, true, false];
         } else if (currentDay > 20) {
           tsListParams.params.p_end_date = getCurrentMonthLastDate(new Date());
-          $scope.endApproveDate = getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/gi, "");
+          $scope.endApproveDate = getMonthDay(getCurrentMonthLastDate(new Date())).replace(/\b(0+)/, '');
           $scope.selectEndItem = [false, false, true];
         }
       }
@@ -169,13 +172,13 @@ angular.module('tsApproveModule')
           $scope.actionName = "取消";
           $scope.showDetailArrow = false;
           $scope.pullDownFlag = false;
-          $scope.listInfoArray.busy = true;
+          $scope.listInfoArray.busy = false;
           angular.element('.ts-approve-list-item').css("paddingLeft", "10%");
         } else if ($scope.actionName == "取消") {
           $scope.actionName = "操作";
           $scope.showDetailArrow = true;
           $scope.pullDownFlag = true;
-          $scope.listInfoArray.busy = false;
+          $scope.listInfoArray.busy = true;
           angular.element('.ts-approve-list-item').css("paddingLeft", "10px");
           tsActionParams = { //审批拒绝/通过的参数
             "params": {
@@ -204,7 +207,7 @@ angular.module('tsApproveModule')
       });
 
       $scope.selectEndDate = function ($event) { //显示截止日期列表界面
-        tsListParams.params.p_end_date = $scope.endApproveDate;
+        //tsListParams.params.p_end_date = $scope.endApproveDate;
         if (ionic.Platform.isIOS()) {
           $scope.endDatePopover.show($event);
           angular.element('#popover-date2').css('borderBottom', '0px');
@@ -295,6 +298,7 @@ angular.module('tsApproveModule')
             $scope.showRocket = false;
             $scope.showConnectBlock = true;
           } else if (position >= 350) {
+            $scope.showConnectBlock = true;
             $scope.showRocket = true;
           } else {
           }
@@ -555,10 +559,11 @@ angular.module('tsApproveModule')
  *  6:totalNumber //获取的数据总数
  *  7:listArray //数据列表
  *  8:loading //数据加载标记
+ *  9:actionFlag //控制--响应操作按钮的flag
  */
   .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup', '$ionicScrollDelegate',
     function (hmsHttp, baseConfig, hmsPopup, $ionicScrollDelegate) {
-      var TsApproveListService = function (scope, requestUrl, requestSearchParams, loadingFlag, refurbishParam) {
+      var TsApproveListService = function (scope, requestUrl, requestSearchParams, loadingFlag, actionFlag, refurbishParam) {
         var _self = this;
         _self.scope = scope;
         _self.url = requestUrl;
@@ -569,6 +574,10 @@ angular.module('tsApproveModule')
         _self.totalNumber = 0;
         _self.listArray = [];
         _self.loading = loadingFlag;
+        _self.actionFlag = actionFlag;
+        if(_self.actionFlag === 'action') { //响应action按钮的操作
+
+        }
         if (_self.refurbishParam === 'clickRefreshEvent') {
           _self.scope.$broadcast('scroll.infiniteScrollComplete');
         }
