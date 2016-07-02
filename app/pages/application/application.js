@@ -53,7 +53,7 @@ angular.module('applicationModule')
             },
             {
               appName: "报销单查询",
-              imageUrl: "build/img/application/application/forecast@3x.png",
+              imageUrl: "build/img/application/application/wipeOut@3x.png",
               destUrl: "tab.expense",
             },
             {

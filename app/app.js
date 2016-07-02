@@ -34,7 +34,7 @@ angular.module('myApp')
       }
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
-        StatusBar.styleDefault();
+        StatusBar.styleLightContent();
       }
 
       if (window.plugins.jPushPlugin) {
