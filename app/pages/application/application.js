@@ -47,19 +47,42 @@ angular.module('applicationModule')
               destUrl: "tab.flyback",
             },
             {
-              appName: "代办事项",
+              appName: "工作流",
               imageUrl: "build/img/application/application/schedule@3x.png",
               destUrl: "tab.workflow-list",
+            },
+            {
+              appName: "我的申请",
+              imageUrl: "build/img/application/application/schedule@3x.png",
+              destUrl: "",
             },
             {
               appName: "报销单查询",
               imageUrl: "build/img/application/application/wipeOut@3x.png",
               destUrl: "tab.expense",
-            },
+            }]
+        },
+        {
+          list: [
             {
               appName: "记一笔",
               imageUrl: "build/img/application/application/sign@3x.png",
               destUrl: "tab.acc_main"
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
             }]
         }];
 
@@ -114,7 +137,8 @@ angular.module('applicationModule')
               appName: "",
               imageUrl: "",
               destUrl: "",
-            },]
+            }
+          ]
         }
       ];
 
