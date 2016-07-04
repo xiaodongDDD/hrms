@@ -2767,9 +2767,9 @@ Copyright (c) 2015 Daniel Eden
     height: 90px;
     border-radius: 5px 0px 0px 5px; }
     .time-off-content .time-off-item .time-off-item-left.paid-holiday {
-      border-left: 3px solid #6BB9F0; }
+      border-left: 3px solid #24559C; }
     .time-off-content .time-off-item .time-off-item-left.paid-sick-leave {
-      border-left: 3px solid #73BBA2; }
+      border-left: 3px solid #417505; }
     .time-off-content .time-off-item .time-off-item-left.ext-paid-holiday {
       border-left: 3px solid #F99D32; }
   .time-off-content .time-off-item .time-off-item-middle {
@@ -2779,15 +2779,15 @@ Copyright (c) 2015 Daniel Eden
     .time-off-content .time-off-item .time-off-item-middle .item-off-item-title {
       font-size: 14px;
       padding-top: 5px;
-      padding-bottom: 5px; }
+      padding-bottom: 3px; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.paid-holiday {
-        color: #6BB9F0; }
+        color: #24559C; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.paid-sick-leave {
-        color: #73BBA2; }
+        color: #417505; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.ext-paid-holiday {
         color: #F99D32; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.default-holiday {
-        color: #3964A4; }
+        color: #24559C; }
     .time-off-content .time-off-item .time-off-item-middle .item-off-item-text {
       font-size: 14px;
       color: #9B9B9B; }
@@ -2808,16 +2808,15 @@ Copyright (c) 2015 Daniel Eden
       text-align: center; }
       .time-off-content .time-off-item .time-off-item-right .time-circle .time-leave-text {
         margin-top: 13px;
-        font-size: 16px;
-        color: #6BB9F0; }
+        font-size: 16px; }
       .time-off-content .time-off-item .time-off-item-right .time-circle.paid-holiday {
-        color: #6BB9F0; }
+        color: #24559C; }
       .time-off-content .time-off-item .time-off-item-right .time-circle.paid-sick-leave {
         color: #73BBA2; }
       .time-off-content .time-off-item .time-off-item-right .time-circle.ext-paid-holiday {
         color: #F99D32; }
       .time-off-content .time-off-item .time-off-item-right .time-circle.default-holiday {
-        color: #3964A4; }
+        color: #24559C; }
     .time-off-content .time-off-item .time-off-item-right .approve-status {
       position: absolute;
       left: 0px;
@@ -2825,11 +2824,11 @@ Copyright (c) 2015 Daniel Eden
       top: 60px;
       font-size: 14px; }
       .time-off-content .time-off-item .time-off-item-right .approve-status.approved {
-        color: #B95756; }
+        color: #4A90E2; }
       .time-off-content .time-off-item .time-off-item-right .approve-status.approving {
-        color: #25569D; }
-      .time-off-content .time-off-item .time-off-item-right .approve-status.rejected {
         color: #F99D32; }
+      .time-off-content .time-off-item .time-off-item-right .approve-status.rejected {
+        color: #B95756; }
       .time-off-content .time-off-item .time-off-item-right .approve-status.draft {
         color: #73BBA2; }
     .time-off-content .time-off-item .time-off-item-right .back-arrow {
