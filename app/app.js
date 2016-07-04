@@ -20,11 +20,13 @@ angular.module('myApp', [
 ]);
 
 angular.module('myApp')
-  .run(function ($ionicPlatform, $timeout, baseConfig, checkVersionService) {
+  .run(function ($ionicPlatform, $timeout, baseConfig, checkVersionService, $state) {
     if (window.localStorage.token === '' || angular.isUndefined(window.localStorage.token)) {
     } else {
       checkVersionService.checkAppVersion();
     }
+
+
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -74,6 +76,23 @@ angular.module('myApp')
             console.log(exception);
           }
         };
+
+        var onOpenNotification = function (event) {
+          try {
+            var alertContent;
+            if (device.platform == "Android") {
+              alertContent = window.plugins.jPushPlugin.openNotification.alert;
+            } else {
+              alertContent = event.aps.alert;
+            }
+            //alert("open Notification:" + alertContent);
+            $state.go('tab.myTimesheet');
+
+          } catch (exception) {
+            console.log("JPushPlugin:onOpenNotification" + exception);
+          }
+        };
+        document.addEventListener("jpush.openNotification", onOpenNotification, false);
         initiateUI();
       }
 
@@ -176,7 +195,7 @@ angular.module('myApp')
       $ionicConfigProvider.platform.android.views.transition('android');
 
       $stateProvider
-        // setup an abstract state for the tabs directive
+      // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
           abstract: true,
@@ -202,6 +221,16 @@ angular.module('myApp')
             'tab-message': {
               templateUrl: 'build/pages/message/detail/messageDetail.html',
               controller: 'messageDetailCtrl'
+            }
+          }
+        })
+
+        .state('tab.myTimesheet', {
+          url: '/myTimesheet',
+          views: {
+            'tab-message': {
+              templateUrl: 'build/pages/application/timesheet/query/query.html',
+              controller: 'TimeSheetQueryCtrl'
             }
           }
         })
