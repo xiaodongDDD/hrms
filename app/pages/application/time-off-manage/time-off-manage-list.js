@@ -169,7 +169,7 @@ angular.module('applicationModule')
               }
 
               //加上'天'后缀
-              data.timeLeave = data.timioeLeave + '天';
+              data.timeLeave = data.timeLeave + '天';
             });
 
             $scope.circleAnimationFlag = true;//数据加载完成标志,触发进度圈动画
