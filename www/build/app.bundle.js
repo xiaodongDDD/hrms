@@ -1,5 +1,5 @@
 angular.module("baseConfig", [])
-.constant("baseConfig", {"debug":true,"isMobilePlatform":false,"clearTable":true,"nativeScreenFlag":false,"loginPath":"http://wechat.hand-china.com/hmbms_hand/api","businessPath":"http://wechat.hand-china.com/hmbms_hand/api/dataEngine","pkgIdentifier":"","appEnvironment":"UAT","version":{"currentVersion":"1.9.2","currentversionName":"此版本为测试版本1.9.2","currentSubVersion":"1","currentSubVersionName":"资源增量包1"}});
+.constant("baseConfig", {"debug":true,"isMobilePlatform":false,"clearTable":true,"nativeScreenFlag":false,"loginPath":"http://wechat.hand-china.com/hmbms_hand/api","businessPath":"http://wechat.hand-china.com/hmbms_hand/api/dataEngine","pkgIdentifier":"","appEnvironment":"UAT","version":{"currentVersion":"1.9.1","currentversionName":"此版本为测试版本1.9.1","currentSubVersion":"1","currentSubVersionName":"资源增量包1"}});
 
 /**
  * Created by gusenlin on 16/5/22.
@@ -643,6 +643,204 @@ angular.module('HmsModule')
       }
     };
   })*/
+
+/**
+ * Created by wolf on 2016/6/12.
+ * @author:wen.dai@hand-china.com
+ */
+
+'use strict';
+
+/**
+ * 打印--console--level
+ */
+var log = console.log.bind(console);
+var warn = console.warn.bind(console);
+var error = console.error.bind(console);
+
+//格式化json
+function jsonFormat(newParam) {
+  var Json = angular.toJson(newParam, true);
+  return Json;
+};
+
+//获取当前的年月日 日期
+function getCurrentDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth() + 1;     //月
+  var day = now.getDate();            //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myCurrentDate = (year.toString() + month.toString() + day.toString());
+  return myCurrentDate;
+};
+
+//获取上个月的月末
+function getLastMonthDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth();     //月
+  var newDate = new Date(year, month, 1);
+  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
+  return myLastMonthDate;
+};
+
+//获取当前月的月末
+function getCurrentMonthLastDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth() + 1;     //月
+  var newDate = new Date(year, month, 1);
+  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
+  return myCurrentMonthLastDate;
+};
+
+//获取月和日
+function getMonthDay(newDate) {
+  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
+  return newMonthDay;
+};
+
+/**
+ ​ *  下面是去重的3个写法
+ ​ *  @1：最常规
+ ​ *  @2：思路好，但是性能差点
+ ​ *  @3：更好的
+ ​ */
+
+//@1:
+function unique_normal(arr) {
+  var ret = [];
+  for (var i = 0; i < arr.length; i++) {
+    var item = arr[i];
+    if (ret.indexOf(item) === -1) {
+      ret.push(item);
+    }
+  }
+  return ret;
+};
+
+//@2:
+var indexOf = [].indexOf ?
+  function (arr, item) {
+    return arr.indexOf(item);
+  } :
+  function indexOf(arr, item) {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === item) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+function unique(arr) {
+  var ret = [];
+  for (var i = 0; i < arr.length; i++) {
+    var item = arr[i];
+    if (indexOf(ret, item) === -1) {
+      ret.push(item);
+    }
+  }
+  return ret;
+};
+
+//@3: 支持数组子条目为对象的去重
+function unique_better(arr, newitem) {
+  var ret = [];
+  var hash = {};
+  for (var i = 0; i < arr.length; i++) {
+    if (typeof(arr[i]) == 'object') {
+      var item = arr[i][newitem];
+    } else {
+      var item = arr[i];
+    }
+    var item1 = arr[i]
+    var key = typeof(item) + item;
+    if (hash[key] !== 1) {
+      ret.push(item1);
+      hash[key] = 1;
+    }
+  }
+  return ret;
+};
+
+
+
+
+
+/**
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
+ */
+angular.module('utilModule').factory('httpRequestHeader', function () {
+  var interceptor = {
+    'request': function (config) {
+      if (window.localStorage.token && window.localStorage.empno) {
+        var timestamp = new Date().getTime();
+        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
+        config.headers.timestamp = timestamp;
+        config.headers.token     = token;
+        config.headers.loginName = window.localStorage.empno;
+      }
+      return config;
+    }
+  };
+
+  return interceptor;
+});
+
+/**
+ * Created by wolf on 2016/6/13. (_wen.dai_)
+ */
+"use strict";
+//根据日期获取星期
+HmsModule.filter('weekDay', function () {
+  return function (data) {
+    if (data == "") {
+      return data;
+    } else {
+      var d = new Date(data);
+      var day = d.getDay();
+      switch (day) {
+        case  0:
+          data = data + "　" + "星期天";
+          break;
+        case  1:
+          data = data + "　" + "星期一";
+          break;
+        case  2:
+          data = data + "　" + "星期二";
+          break;
+        case  3:
+          data = data + "　" + "星期三";
+          break;
+        case  4:
+          data = data + "　" + "星期四";
+          break;
+        case  5:
+          data = data + "　" + "星期五";
+          break;
+        case  6:
+          data = data + "　" + "星期六";
+          break;
+      }
+      return data;
+    }
+  }
+});
 
 /**
  * Created by wolf on 2016/6/30. (wen.da)
@@ -1320,204 +1518,6 @@ angular.module('HmsModule')
     return request;
   });
 
-/**
- * @ngdoc interceptor
- * @name httpRequestHeader
- * @module utilModule
- * @description
- * This is the http interceptor
- * @author
- * gusenlin
- */
-angular.module('utilModule').factory('httpRequestHeader', function () {
-  var interceptor = {
-    'request': function (config) {
-      if (window.localStorage.token && window.localStorage.empno) {
-        var timestamp = new Date().getTime();
-        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
-        config.headers.timestamp = timestamp;
-        config.headers.token     = token;
-        config.headers.loginName = window.localStorage.empno;
-      }
-      return config;
-    }
-  };
-
-  return interceptor;
-});
-
-/**
- * Created by wolf on 2016/6/13. (_wen.dai_)
- */
-"use strict";
-//根据日期获取星期
-HmsModule.filter('weekDay', function () {
-  return function (data) {
-    if (data == "") {
-      return data;
-    } else {
-      var d = new Date(data);
-      var day = d.getDay();
-      switch (day) {
-        case  0:
-          data = data + "　" + "星期天";
-          break;
-        case  1:
-          data = data + "　" + "星期一";
-          break;
-        case  2:
-          data = data + "　" + "星期二";
-          break;
-        case  3:
-          data = data + "　" + "星期三";
-          break;
-        case  4:
-          data = data + "　" + "星期四";
-          break;
-        case  5:
-          data = data + "　" + "星期五";
-          break;
-        case  6:
-          data = data + "　" + "星期六";
-          break;
-      }
-      return data;
-    }
-  }
-});
-
-/**
- * Created by wolf on 2016/6/12.
- * @author:wen.dai@hand-china.com
- */
-
-'use strict';
-
-/**
- * 打印--console--level
- */
-var log = console.log.bind(console);
-var warn = console.warn.bind(console);
-var error = console.error.bind(console);
-
-//格式化json
-function jsonFormat(newParam) {
-  var Json = angular.toJson(newParam, true);
-  return Json;
-};
-
-//获取当前的年月日 日期
-function getCurrentDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth() + 1;     //月
-  var day = now.getDate();            //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myCurrentDate = (year.toString() + month.toString() + day.toString());
-  return myCurrentDate;
-};
-
-//获取上个月的月末
-function getLastMonthDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth();     //月
-  var newDate = new Date(year, month, 1);
-  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
-  return myLastMonthDate;
-};
-
-//获取当前月的月末
-function getCurrentMonthLastDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth() + 1;     //月
-  var newDate = new Date(year, month, 1);
-  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
-  return myCurrentMonthLastDate;
-};
-
-//获取月和日
-function getMonthDay(newDate) {
-  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
-  return newMonthDay;
-};
-
-/**
- ​ *  下面是去重的3个写法
- ​ *  @1：最常规
- ​ *  @2：思路好，但是性能差点
- ​ *  @3：更好的
- ​ */
-
-//@1:
-function unique_normal(arr) {
-  var ret = [];
-  for (var i = 0; i < arr.length; i++) {
-    var item = arr[i];
-    if (ret.indexOf(item) === -1) {
-      ret.push(item);
-    }
-  }
-  return ret;
-};
-
-//@2:
-var indexOf = [].indexOf ?
-  function (arr, item) {
-    return arr.indexOf(item);
-  } :
-  function indexOf(arr, item) {
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i] === item) {
-        return i;
-      }
-    }
-    return -1;
-  };
-
-function unique(arr) {
-  var ret = [];
-  for (var i = 0; i < arr.length; i++) {
-    var item = arr[i];
-    if (indexOf(ret, item) === -1) {
-      ret.push(item);
-    }
-  }
-  return ret;
-};
-
-//@3: 支持数组子条目为对象的去重
-function unique_better(arr, newitem) {
-  var ret = [];
-  var hash = {};
-  for (var i = 0; i < arr.length; i++) {
-    if (typeof(arr[i]) == 'object') {
-      var item = arr[i][newitem];
-    } else {
-      var item = arr[i];
-    }
-    var item1 = arr[i]
-    var key = typeof(item) + item;
-    if (hash[key] !== 1) {
-      ret.push(item1);
-      hash[key] = 1;
-    }
-  }
-  return ret;
-};
-
-
-
-
-
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
@@ -1949,6 +1949,61 @@ angular.module('applicationModule')
     }]);
 
 /**
+ * Created by gusenlin on 16/5/16.
+ */
+angular.module('loginModule')
+
+  .controller('guideCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    'checkVersionService',
+    function ($scope,
+              $state,
+              baseConfig,
+              checkVersionService) {
+
+      console.log('loginCtrl.enter');
+
+      $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
+
+      $scope.skipGuide = function () {
+        if (baseConfig.debug) {
+          console.log("跳过导航页到登陆页");
+        }
+        goToMain();
+      };
+
+      $scope.toLogin = function () {
+        if (baseConfig.debug) {
+          console.log("跳过导航页到登陆页");
+        }
+        goToMain();
+      };
+
+      var goToMain = function () {
+        if (window.localStorage.token && window.localStorage.token != "") {
+          checkVersionService.checkAppVersion();
+          $state.go("tab.message");
+        } else {
+          $state.go("login");
+        }
+      };
+
+      $scope.$on('$ionicView.enter', function () {
+        if (baseConfig.debug) {
+          console.log('guideCtrl.$ionicView.enter');
+        }
+      });
+
+      $scope.$on('$destroy', function () {
+        if (baseConfig.debug) {
+          console.log('guideCtrl.$destroy');
+        }
+      });
+    }]);
+
+/**
  *  modify by shellWolf on 16/06/28.
  */
 angular.module('contactModule')
@@ -2060,61 +2115,6 @@ angular.module('contactModule')
         window.location.href = "tel:" + newNumber;
       };
 
-    }]);
-
-/**
- * Created by gusenlin on 16/5/16.
- */
-angular.module('loginModule')
-
-  .controller('guideCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    'checkVersionService',
-    function ($scope,
-              $state,
-              baseConfig,
-              checkVersionService) {
-
-      console.log('loginCtrl.enter');
-
-      $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
-
-      $scope.skipGuide = function () {
-        if (baseConfig.debug) {
-          console.log("跳过导航页到登陆页");
-        }
-        goToMain();
-      };
-
-      $scope.toLogin = function () {
-        if (baseConfig.debug) {
-          console.log("跳过导航页到登陆页");
-        }
-        goToMain();
-      };
-
-      var goToMain = function () {
-        if (window.localStorage.token && window.localStorage.token != "") {
-          checkVersionService.checkAppVersion();
-          $state.go("tab.message");
-        } else {
-          $state.go("login");
-        }
-      };
-
-      $scope.$on('$ionicView.enter', function () {
-        if (baseConfig.debug) {
-          console.log('guideCtrl.$ionicView.enter');
-        }
-      });
-
-      $scope.$on('$destroy', function () {
-        if (baseConfig.debug) {
-          console.log('guideCtrl.$destroy');
-        }
-      });
     }]);
 
 /**
@@ -2557,111 +2557,6 @@ angular.module('messageModule')
     }]);
 
 /**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$state', 'baseConfig',
-  function ($scope, $rootScope, $state, baseConfig) {
-    $rootScope.$on('$ionicView.beforeEnter', function () {
-      var statename = $state.current.name;
-      if (baseConfig.debug) {
-        console.log('$ionicView.beforeEnter statename ' + statename);
-      }
-      //tabs中存在的主页面不需要隐藏，hidetabs=false
-      if (statename != 'tab.message' && statename != 'tab.application' &&
-        statename != 'tab.contact' && statename != 'tab.myInfo') {
-        $scope.hideTabs = true;
-      }
-    });
-
-    $rootScope.$on('$ionicView.afterEnter', function () {
-      var statename = $state.current.name;
-      if (baseConfig.debug) {
-        console.log('$ionicView.afterEnter statename ' + statename);
-      }
-      //tabs中存在的主页面不需要隐藏，hidetabs=false
-      if (statename === 'tab.message' || statename === 'tab.application' ||
-        statename === 'tab.contact' || statename === 'tab.myInfo') {
-        $scope.hideTabs = false;
-      }
-    });
-  }]);
-
-/**
- * Created by gusenlin on 16/6/21.
- */
-angular.module('applicationModule')
-  .service('workFLowListService', ['hmsHttp',
-    'baseConfig',
-    'hmsPopup',
-    function (hmsHttp,
-              baseConfig,
-              hmsPopup) {
-      var refreshWorkflowList = {
-        flag: false
-      };
-
-      this.setRefreshWorkflowList = function (flag) {
-        refreshWorkflowList.flag = flag;
-      };
-
-      this.getRefreshWorkflowList = function () {
-        return refreshWorkflowList;
-      };
-
-      this.getTodoList = function (flag, success, error) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list";
-        var params = {'params': {'p_employee_code': window.localStorage.empno, 'p_flag': flag + ''}};
-        hmsHttp.post(url, params).success(function (result) {
-          success(result)
-        }).error(function (response, status) {
-          hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-          error(response);
-        });
-      };
-
-      this.getWorkflowDetail = function (success, workflowId, recordId, submitFlag) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
-        var params = {
-          "params": {
-            "p_workflow_id": workflowId,
-            "p_instance_id": recordId,
-            "p_employee_code": window.localStorage.empno,
-            "p_submit_flag": submitFlag
-          }
-        };
-        hmsHttp.post(url, params).success(function (data) {
-          success(data);
-        }).error(function (data) {
-        });
-      };
-
-      this.getTransmitPerson = function (success,error,value) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_trans_employee";
-        var params = {
-          "params": {
-            "p_modual": value + ""
-          }
-        };
-        hmsHttp.post(url, params).success(function (data) {
-          success(data);
-        }).error(function (data) {
-          error(data);
-        });
-      };
-
-      this.submitAction = function (success,error,params) {
-        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/wfl_workflow_action";
-        hmsHttp.post(url, params).success(function (result) {
-          hmsPopup.hideLoading();
-          success(result);
-        }).error(function (response) {
-          hmsPopup.hideLoading();
-          error(response);
-        });
-      };
-    }]);
-
-/**
  * Created by LeonChan on 2016/6/17.
  */
 'use strict';
@@ -2975,6 +2870,111 @@ angular.module('myInfoModule')
         $ionicHistory.goBack();
       }
 
+    }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$state', 'baseConfig',
+  function ($scope, $rootScope, $state, baseConfig) {
+    $rootScope.$on('$ionicView.beforeEnter', function () {
+      var statename = $state.current.name;
+      if (baseConfig.debug) {
+        console.log('$ionicView.beforeEnter statename ' + statename);
+      }
+      //tabs中存在的主页面不需要隐藏，hidetabs=false
+      if (statename != 'tab.message' && statename != 'tab.application' &&
+        statename != 'tab.contact' && statename != 'tab.myInfo') {
+        $scope.hideTabs = true;
+      }
+    });
+
+    $rootScope.$on('$ionicView.afterEnter', function () {
+      var statename = $state.current.name;
+      if (baseConfig.debug) {
+        console.log('$ionicView.afterEnter statename ' + statename);
+      }
+      //tabs中存在的主页面不需要隐藏，hidetabs=false
+      if (statename === 'tab.message' || statename === 'tab.application' ||
+        statename === 'tab.contact' || statename === 'tab.myInfo') {
+        $scope.hideTabs = false;
+      }
+    });
+  }]);
+
+/**
+ * Created by gusenlin on 16/6/21.
+ */
+angular.module('applicationModule')
+  .service('workFLowListService', ['hmsHttp',
+    'baseConfig',
+    'hmsPopup',
+    function (hmsHttp,
+              baseConfig,
+              hmsPopup) {
+      var refreshWorkflowList = {
+        flag: false
+      };
+
+      this.setRefreshWorkflowList = function (flag) {
+        refreshWorkflowList.flag = flag;
+      };
+
+      this.getRefreshWorkflowList = function () {
+        return refreshWorkflowList;
+      };
+
+      this.getTodoList = function (flag, success, error) {
+        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list";
+        var params = {'params': {'p_employee_code': window.localStorage.empno, 'p_flag': flag + ''}};
+        hmsHttp.post(url, params).success(function (result) {
+          success(result)
+        }).error(function (response, status) {
+          hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+          error(response);
+        });
+      };
+
+      this.getWorkflowDetail = function (success, workflowId, recordId, submitFlag) {
+        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
+        var params = {
+          "params": {
+            "p_workflow_id": workflowId,
+            "p_instance_id": recordId,
+            "p_employee_code": window.localStorage.empno,
+            "p_submit_flag": submitFlag
+          }
+        };
+        hmsHttp.post(url, params).success(function (data) {
+          success(data);
+        }).error(function (data) {
+        });
+      };
+
+      this.getTransmitPerson = function (success,error,value) {
+        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_trans_employee";
+        var params = {
+          "params": {
+            "p_modual": value + ""
+          }
+        };
+        hmsHttp.post(url, params).success(function (data) {
+          success(data);
+        }).error(function (data) {
+          error(data);
+        });
+      };
+
+      this.submitAction = function (success,error,params) {
+        var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/wfl_workflow_action";
+        hmsHttp.post(url, params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (response) {
+          hmsPopup.hideLoading();
+          error(response);
+        });
+      };
     }]);
 
 /**
@@ -3972,129 +3972,6 @@ angular.module('applicationModule')
       };
     }]);
 
-angular.module("applicationModule")
-.factory('flaybackService', ['$ionicLoading', function ($ionicLoading) {
-  var projName = "";
-  var projCode = "";
-  var ticketTypeList = [];
-  var routeTypeList = [];
-  var passengerList = [];
-  var passenger = "";
-  var certification = "";
-  var fbLines = [];
-  var pageStatusCreate = {};// var param = {"canEdit": true,"dataSource":"create"}
-  function getFormatDate(date) {
-    var seperator1 = "-";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-      month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-      strDate = "0" + strDate;
-    }
-    return date.getFullYear() + seperator1 + month + seperator1 + strDate;
-  }
-  return {
-    getFormatDate: getFormatDate,
-    getNowFormatDate: function () {
-      var date = new Date();
-      var seperator = "-";
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-      }
-      var currentdate = year + seperator + month + seperator + strDate;
-      return currentdate;
-    },
-    setPageStatusCreate: function (obj) {
-      pageStatusCreate = obj;
-    },
-    getPageStatusCreate: function (obj) {
-      return pageStatusCreate;
-    },
-    setProjName: function (obj) {
-      projName = obj;
-    },
-    getProjName: function (obj) {
-      return projName;
-    },
-    setProjCode: function (obj) {
-      projCode = obj;
-    },
-    getProjCode: function (obj) {
-      return projCode;
-    },
-    setTicketTypeList: function (obj) {
-      ticketTypeList = obj;
-    },
-    getTicketTypeList: function (obj) {
-      return ticketTypeList;
-    },
-    setRouteTypeList: function (obj) {
-      routeTypeList = obj;
-    },
-    getRouteTypeList: function (obj) {
-      return routeTypeList;
-    },
-    setPassengerList: function (obj) {
-      passengerList = obj;
-    },
-    getPassengerList: function (obj) {
-      return passengerList;
-    },
-    setPassenger: function (obj) {
-      passenger = obj;
-    },
-    getPassenger: function (obj) {
-      return passenger;
-    },
-    setCertification: function (obj) {
-      certification = obj;
-    },
-    getCertification: function (obj) {
-      return certification;
-    },
-    addLine: function (obj) {
-      /* var flight_date = getFormatDate(new Date(obj.flight_date));
-       obj.flight_date = flight_date;*/
-      fbLines.push(obj);
-    },
-    updateLine: function (obj, index) {
-      var flight_date = getFormatDate(new Date(obj.flight_date));
-      obj.flight_date = flight_date;
-      fbLines[index] = obj;
-    },
-    getLines: function () {
-      return fbLines;
-    },
-    setLines: function (obj) {
-      fbLines = obj;
-    },
-    /* deleteLine: function (item) {
-     //  fbLines.splice(index, 1);
-     console.log("fbLines.indexOf(item) = " + fbLines.indexOf(item));
-     console.log("fbLines  = " + angular.toJson(fbLines));
-     console.log("item  = " + angular.toJson(item));
-     fbLines.splice(fbLines.indexOf(item), 1);
-     },*/
-    deleteLine: function (index) {
-      fbLines.splice(index, 1);
-    },
-    clearLines: function () {
-      fbLines = [];
-    }
-
-  }
-
-}])
-;
-
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) { 
@@ -4581,6 +4458,129 @@ angular.module("applicationModule")
     };
     return service;
 });
+angular.module("applicationModule")
+.factory('flaybackService', ['$ionicLoading', function ($ionicLoading) {
+  var projName = "";
+  var projCode = "";
+  var ticketTypeList = [];
+  var routeTypeList = [];
+  var passengerList = [];
+  var passenger = "";
+  var certification = "";
+  var fbLines = [];
+  var pageStatusCreate = {};// var param = {"canEdit": true,"dataSource":"create"}
+  function getFormatDate(date) {
+    var seperator1 = "-";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+      month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+      strDate = "0" + strDate;
+    }
+    return date.getFullYear() + seperator1 + month + seperator1 + strDate;
+  }
+  return {
+    getFormatDate: getFormatDate,
+    getNowFormatDate: function () {
+      var date = new Date();
+      var seperator = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator + month + seperator + strDate;
+      return currentdate;
+    },
+    setPageStatusCreate: function (obj) {
+      pageStatusCreate = obj;
+    },
+    getPageStatusCreate: function (obj) {
+      return pageStatusCreate;
+    },
+    setProjName: function (obj) {
+      projName = obj;
+    },
+    getProjName: function (obj) {
+      return projName;
+    },
+    setProjCode: function (obj) {
+      projCode = obj;
+    },
+    getProjCode: function (obj) {
+      return projCode;
+    },
+    setTicketTypeList: function (obj) {
+      ticketTypeList = obj;
+    },
+    getTicketTypeList: function (obj) {
+      return ticketTypeList;
+    },
+    setRouteTypeList: function (obj) {
+      routeTypeList = obj;
+    },
+    getRouteTypeList: function (obj) {
+      return routeTypeList;
+    },
+    setPassengerList: function (obj) {
+      passengerList = obj;
+    },
+    getPassengerList: function (obj) {
+      return passengerList;
+    },
+    setPassenger: function (obj) {
+      passenger = obj;
+    },
+    getPassenger: function (obj) {
+      return passenger;
+    },
+    setCertification: function (obj) {
+      certification = obj;
+    },
+    getCertification: function (obj) {
+      return certification;
+    },
+    addLine: function (obj) {
+      /* var flight_date = getFormatDate(new Date(obj.flight_date));
+       obj.flight_date = flight_date;*/
+      fbLines.push(obj);
+    },
+    updateLine: function (obj, index) {
+      var flight_date = getFormatDate(new Date(obj.flight_date));
+      obj.flight_date = flight_date;
+      fbLines[index] = obj;
+    },
+    getLines: function () {
+      return fbLines;
+    },
+    setLines: function (obj) {
+      fbLines = obj;
+    },
+    /* deleteLine: function (item) {
+     //  fbLines.splice(index, 1);
+     console.log("fbLines.indexOf(item) = " + fbLines.indexOf(item));
+     console.log("fbLines  = " + angular.toJson(fbLines));
+     console.log("item  = " + angular.toJson(item));
+     fbLines.splice(fbLines.indexOf(item), 1);
+     },*/
+    deleteLine: function (index) {
+      fbLines.splice(index, 1);
+    },
+    clearLines: function () {
+      fbLines = [];
+    }
+
+  }
+
+}])
+;
+
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
@@ -5018,6 +5018,7 @@ angular.module('applicationModule')
       //只支持iOS和Android
       $scope.circleAnimationFlag = false;//数据未加载
       $scope.isIOSPlatform       = ionic.Platform.isIOS();//判断平台,留出iOS的statusBar
+      $scope.fetchDataFlag       = true;
       $scope.timeOffHeader       ={
         /*userId                 : 999,
         paidHoliday            : 9,
@@ -5059,7 +5060,6 @@ angular.module('applicationModule')
       $scope.timeOffCreate = function(){
 
       };
-
 
       function getServeData() {
 
@@ -5155,7 +5155,7 @@ angular.module('applicationModule')
             });
 
             $scope.circleAnimationFlag = true;//数据加载完成标志,触发进度圈动画
-
+            $scope.fetchDataFlag       = false;//数据加载完成,设置数据加载标记隐藏
 
           } else {
             if (response.status === 'E' || response.status == 'e') {
@@ -5892,822 +5892,6 @@ angular.module('applicationModule')
 
     }]);
 
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.flybackApply', {
-          url: '/flyback-apply',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/apply/apply.html',
-              controller: 'FlyBackApplyCtrl'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('FlyBackApplyCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    'hmsHttp',
-    '$ionicModal',
-    'flaybackService',
-    'hmsPopup',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, HttpAppService, $ionicModal, fbService,
-      Prompter){
-      $scope.viewtitle = "机票申请";
-      $scope.pageParam = fbService.getPageStatusCreate();  //JSON.parse($stateParams.param);
-      console.log(" $scope.pageParam =" + $scope.pageParam);
-      $scope.canEdit = $scope.pageParam.canEdit;// 页面是否可编辑
-      var dataSource = $scope.pageParam.dataSource;//页面数据来源
-
-      fbService.setLines($scope.flybacklines);
-      //数据
-      function init() {
-        if (dataSource == "create") {
-          $scope.flybackHeader = {
-            "applyId": "",
-            "projName": "",
-            "projCode": ""
-          };
-          fbService.clearLines();
-          $scope.flybacklines = fbService.getLines();
-        } else if (dataSource == "query") {
-          var applyId = $scope.pageParam.applyId;
-          Prompter.showLoading("Loading...");
-          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_detail";
-          var paramValueList = '{"params":{"p_apply_id":"' + applyId + '"}}';
-          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-            console.log("get_flyback_detail =" + angular.toJson(response));
-            if (response.status == "S") {
-              $scope.flybackHeader = response["flybackHeader"];
-              $scope.flybacklines = response["flybacklines"];
-              fbService.setLines($scope.flybacklines);
-              Prompter.hideLoading("");
-            } else {
-              console.log("获取机票申请信息失败：" + response.returnMsg);
-              Prompter.hideLoading("");
-            }
-          }).error(function (response, status) {
-            console.log("HttpAppService error ");
-            Prompter.hideLoading("");
-          });
-        }
-      }
-
-      init();
-
-      //
-      $scope.$on("$ionicView.enter", function () {
-        console.log("fbService.getLines()");
-        $scope.flybacklines = fbService.getLines();
-        console.log(angular.toJson($scope.flybacklines));
-        $scope.$apply();
-      });
-
-
-      // 获取值列表数据
-      if ($scope.canEdit) {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list";
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          if (response.status == "S") {
-            $scope.projectList = response.projectList;
-            fbService.setTicketTypeList(response.ticketTypeList);// 订票类型
-            fbService.setRouteTypeList(response.routeTypeList);//行程类别
-            fbService.setPassenger(response.passengerList);//乘机人列表
-            fbService.setPassenger(response.passenger);//默认乘机人
-            fbService.setCertification(response.certification);//默认身份证
-            Prompter.hideLoading("");
-          } else {
-            console.log("获取值列表失败：" + response.returnMsg);
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      }
-
-      // 项目值列表
-      $ionicModal.fromTemplateUrl('build/pages/application/flyback/apply/model/project-modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        $scope.modal = modal
-      });
-      $scope.openProjectList = function () {
-        $scope.modal.show();
-      };
-      $scope.closeModal = function (proj) {
-        $scope.modal.hide();
-        //若更换项目则清空订票行
-        if (proj !== undefined) {
-          if ((typeof($scope.flybackHeader.projCode) !== "undefined") && ($scope.flybackHeader.projCode !== null)) {
-            if ($scope.flybackHeader.projCode !== proj.value) {
-              $scope.flybacklines = [];
-              fbService.clearLines();
-            }
-          }
-          $scope.flybackHeader.projName = proj.name;
-          $scope.flybackHeader.projCode = proj.value;
-          fbService.setProjName($scope.flybackHeader.projName);
-          fbService.setProjCode($scope.flybackHeader.projCode);
-        }
-      };
-      $scope.$on('$destroy', function () {
-        $scope.modal.remove();
-      });
-
-
-      $scope.goDetail = function (detail, index) {
-        var param = {
-          "canEdit": $scope.canEdit,
-          "dataSource": dataSource,
-          "status": "update",
-          "detail": detail,
-          "index": index,
-          "applyId": $scope.flybackHeader.applyId
-        };
-        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
-      };
-
-    //添加更多订票信息
-      $scope.addFlightInfo = function () {
-        fbService.setProjName($scope.flybackHeader.projName);
-        fbService.setProjCode($scope.flybackHeader.projCode);
-        var param = {"canEdit": $scope.canEdit, "status": "new"};
-        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
-      };
-    //保存 baseConfig.businessPath   baseConfig.businessPath
-      $scope.save = function () {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/save_flyback";
-        var jsonData = JSON.stringify($scope.flybacklines);
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
-          + '","p_apply_id":"' + $scope.flybackHeader.applyId
-          + '","p_project_code":"' + $scope.flybackHeader.projCode
-          + '","p_fb_lines":' + jsonData + '}}';
-        console.log(paramValueList);
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          console.log("save_flyback = " + angular.toJson(response));
-          if (response.status == "S") {
-            $scope.flybackHeader.applyId = response["applyId"];
-            $scope.flybacklines = response["flybackLines"];
-            fbService.setLines($scope.flybacklines);
-            Prompter.hideLoading("");
-            Prompter.showPopup("保存成功!");
-          } else {
-            console.log("保存失败：" + response["returnMsg"]);
-            Prompter.hideLoading("");
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      };
-    //提交
-      $scope.submit = function () {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/flyback_submit";
-        var jsonData = JSON.stringify($scope.flybacklines);
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
-          + '","p_apply_id":"' + $scope.flybackHeader.applyId
-          + '","p_project_code":"' + $scope.flybackHeader.projCode
-          + '","p_fb_lines":' + jsonData + '}}';
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          console.log("flyback_submit = " + angular.toJson(response));
-          if (response.status == "S") {
-            Prompter.hideLoading("");
-            Prompter.showPopup("提交成功!");
-            $scope.canEdit = false;
-          } else {
-            Prompter.hideLoading("");
-            Prompter.showPopup("提交失败：" + response["returnMsg"]);
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      };
-
-      // 删除fyback
-      $scope.deleteFB = function () {
-        console.log(angular.toJson($scope.flybackHeader));
-        if ($scope.flybackHeader.applyId == "") {
-          $state.go("tab.flyback");
-        } else {
-          if ($scope.canEdit) {
-            Prompter.showLoading("Loading...");
-            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
-            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + $scope.flybackHeader.applyId + '"}}';
-            console.log(paramValueList);
-            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-              if (response.status == "S") {
-                Prompter.hideLoading("");
-                Prompter.showPopup("删除成功!");
-                $state.go("tab.flybackQuery");
-                dataSource = "create";
-                init();
-              } else {
-                console.log("删除失败：" + response.returnMsg);
-                Prompter.hideLoading("");
-                Prompter.showPopup("删除失败,请重新查询后再操作!");
-              }
-            }).error(function (response, status) {
-              console.log("HttpAppService error ");
-              Prompter.hideLoading("");
-            });
-          } else {
-            Prompter.showPopup("已提交数据无法删除!");
-          }
-
-        }
-      }
-    }]);
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.flybackDetail', {
-          url: '/flyback-detail/:param',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/detail/detail.html',
-              controller: 'FlyBackDetailCtrl'
-            }
-          }
-        });
-    }])
-
-angular.module("applicationModule")
-  .controller('FlyBackDetailCtrl', [
-    '$scope',
-    '$rootScope', 
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    'hmsHttp',
-    '$ionicModal',
-    'flaybackService',
-    'hmsPopup',
-    '$stateParams',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, HttpAppService, $ionicModal, fbService,
-      Prompter, $stateParams){
-        //  $scope.canEdit = true;
-        // 获取页面参数
-        $scope.pageParam = JSON.parse($stateParams.param);
-        $scope.canEdit = $scope.pageParam.canEdit;//页面是否可编辑
-        var dataSource = $scope.pageParam.dataSource;//页面数据来源
-        if ($scope.pageParam.status == "update") {
-          $scope.flybackline = $scope.pageParam.detail;
-          var flight_date = new Date($scope.flybackline.flight_date);
-          $scope.flybackline.flight_date = flight_date;
-          var flybacklineOld = $scope.flybackline;
-          var index = $scope.pageParam.index;
-          var applyId = $scope.pageParam.applyId;
-        } else if ($scope.pageParam.status == "new") {
-
-          var flight_date = new Date(fbService.getNowFormatDate().replace(/\-/g, "/"));
-          $scope.flybackline = {
-            "apply_detail_id": "",
-            "projName": "",
-            "projCode": "",
-            "ticketTypeName": "",
-            "ticket_type": "",
-            "routeTypeName": "",
-            "route_type": "",
-            "flyback1": "",
-            "flyback1_id": "",
-            "flyback2": "",
-            "flyback2_id": "",
-            "from_place": "",
-            "go_place": "",
-            "flight_date": flight_date,
-            "flight_time": "",
-            "place": "",
-            // "placeCode": "",
-            "passenger": "",
-            "certificate_code": "",
-            "customer_paid": "0",
-            "is_ticket_only_record": "0",
-            "description": ""
-          };
-          $scope.flybackline.projName = fbService.getProjName();
-          $scope.flybackline.projCode = fbService.getProjCode();
-          $scope.flybackline.passenger = fbService.getPassenger();
-          $scope.flybackline.certificate_code = fbService.getCertification();
-          console.log(" $scope.flybackline.projName " + $scope.flybackline.projName);
-        }
-
-
-        // 获取值列表
-        if ($scope.canEdit) {
-          $scope.ticketTypeList = fbService.getTicketTypeList();
-          $scope.routeTypeList = fbService.getRouteTypeList();
-          $scope.passengerList = fbService.getPassengerList();
-          //给默认值
-          if ($scope.pageParam.status == "new") {
-            if ($scope.ticketTypeList.length > 0) {
-              $scope.flybackline.ticketTypeName = $scope.ticketTypeList[0].name;
-              $scope.flybackline.ticket_type = $scope.ticketTypeList[0].value;
-            }
-            if ($scope.routeTypeList.length > 0) {
-              $scope.flybackline.routeTypeName = $scope.routeTypeList[0].name;
-              $scope.flybackline.route_type = $scope.routeTypeList[0].value;
-            }
-          }
-          Prompter.showLoading("Loading...");
-          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list2";
-          var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_code":"' + $scope.flybackline.projCode + '"}}';
-          console.log("");
-          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-            if (response.status == "S") {
-              $scope.placeList = response.placeList;
-              $scope.flybackList = response.flybackList;
-              $scope.preflybackList = response.preflybackList;
-              // 项目地默认取值列表中的第一个
-              if ($scope.placeList.length > 0) {
-                $scope.flybackline.place = $scope.placeList[0].name;
-                //  $scope.flybackline.placeCode = $scope.placeList[0].value;
-              }
-              Prompter.hideLoading("");
-            } else {
-              console.log("获取值列表失败：" + response.returnMsg);
-              Prompter.hideLoading("");
-            }
-          }).error(function (response, status) {
-            console.log("HttpAppService error ");
-            Prompter.hideLoading("");
-          });
-        }
-
-
-        //日历插件调用
-        $scope.datepickerObject = {};
-        $scope.datepickerObject.inputDate = new Date();
-
-        $scope.datepickerObjectPopup = {
-          titleLabel: '日期选择',  //Optional
-          todayLabel: '今天',  //Optional
-          closeLabel: '关闭',  //Optional
-          setLabel: '确定',  //Optional
-          setButtonType: 'button-assertive',  //Optional
-          todayButtonType: 'button',  //Optional
-          closeButtonType: 'button',  //Optional
-          inputDate: $scope.datepickerObject.inputDate, //Optional
-          mondayFirst: true,  //Optional
-          disabledDates: [], //Optional
-          weekDaysList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
-          monthList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"], //Optional
-          templateType: 'popup', //Optional
-          showTodayButton: 'true', //Optional
-          modalHeaderColor: 'bar-positive', //Optional
-          modalFooterColor: 'bar-positive', //Optional
-          from: new Date(1900, 0, 1), //Optional
-          to: new Date(2101, 0, 1),  //Optional
-          dateFormat: ' yyyy - MM - dd ', //Optional
-          closeOnSelect: false, //Optional
-          callback: function (val) { //Optional
-            datePickerCallbackPopup(val);
-          }
-        };
-        var datePickerCallbackPopup = function (val) {
-          if (typeof(val) === 'undefined') {
-            console.log('No date selected');
-          } else {
-            $scope.datepickerObjectPopup.inputDate = val;
-            $scope.flybackline.flight_date = val;
-            console.log('Selected date is : ', $scope.flybackline.flight_date)
-          }
-        };
-
-
-        // 值列表
-        $ionicModal.fromTemplateUrl('build/pages/application/flyback/detail/model/select-modal.html', {
-          scope: $scope,
-          animation: 'slide-in-up'
-        }).then(function (modal) {
-          $scope.modal = modal
-        });
-
-        $scope.openModal = function (type) {
-          if ($scope.canEdit) {
-            if (type == "ticketType") {
-              $scope.listType = "ticketType";
-              $scope.lists = $scope.ticketTypeList;
-            } else if (type == "routeType") {
-              $scope.listType = "routeType";
-              $scope.lists = $scope.routeTypeList;
-            } else if (type == "flyback1") {
-              $scope.listType = "flyback1";
-              if ($scope.flybackline.ticket_type == "10") {
-                $scope.lists = $scope.flybackList;
-              } else if ($scope.flybackline.ticket_type == "20") {
-                $scope.lists = $scope.preflybackList;
-              }
-            } else if (type == "flyback2") {
-              $scope.listType = "flyback2";
-              if ($scope.flybackline.ticket_type == "10") {
-                $scope.lists = $scope.flybackList;
-              } else if ($scope.flybackline.ticket_type == "20") {
-                $scope.lists = $scope.preflybackList;
-              }
-            } else if (type == "place") {
-              $scope.listType = "place";
-              $scope.lists = $scope.placeList;
-            } else if (type == "passenger") {
-              $scope.listType = "passenger";
-              $scope.lists = $scope.passengerList;
-            }
-            $scope.modal.show();
-          }
-        };
-        $scope.closeModal = function (item) {
-          $scope.modal.hide();
-          if (item !== undefined) {
-            if ($scope.listType == "ticketType") {
-              if ((typeof($scope.flybackline.ticket_type) !== "undefined") && ($scope.flybackline.ticket_type !== null)) {
-                if ($scope.flybackline.flybackline !== item.value) {
-                  $scope.flybackline.flyback1 = "";
-                  $scope.flybackline.flyback1_id = "";
-                  $scope.flybackline.flyback2 = "";
-                  $scope.flybackline.flyback2_id = "";
-                }
-              }
-              $scope.flybackline.ticketTypeName = item.name;
-              $scope.flybackline.ticket_type = item.value;
-            } else if ($scope.listType == "routeType") {
-              $scope.flybackline.routeTypeName = item.name;
-              $scope.flybackline.route_type = item.value;
-            } else if ($scope.listType == "flyback1") {
-              $scope.flybackline.flyback1 = item.type_name;
-              $scope.flybackline.flyback1_id = item.value;
-            }
-            else if ($scope.listType == "flyback2") {
-              $scope.flybackline.flyback2 = item.type_name;
-              $scope.flybackline.flyback2_id = item.value;
-            } else if ($scope.listType == "place") {
-              $scope.flybackline.place = item.name;
-              //  $scope.flybackline.placeCode = item.value;
-            } else if ($scope.listType == "passenger") {
-              $scope.flybackline.passenger = item.name;
-              $scope.flybackline.certificate_code = item.value;
-            }
-          }
-        };
-
-        $scope.clearSelect = function () {
-          $scope.modal.hide();
-          if ($scope.listType == "ticketType") {
-            $scope.flybackline.ticketTypeName = "";
-            $scope.flybackline.ticket_type = "";
-            $scope.flybackline.flyback1 = "";
-            $scope.flybackline.flyback1_id = "";
-            $scope.flybackline.flyback2 = "";
-            $scope.flybackline.flyback2_id = "";
-          } else if ($scope.listType == "routeType") {
-            $scope.flybackline.routeTypeName = "";
-            $scope.flybackline.route_type = "";
-          } else if ($scope.listType == "flyback1") {
-            $scope.flybackline.flyback1 = "";
-            $scope.flybackline.flyback1_id = "";
-          }
-          else if ($scope.listType == "flyback2") {
-            $scope.flybackline.flyback2 = "";
-            $scope.flybackline.flyback2_id = "";
-          } else if ($scope.listType == "place") {
-            $scope.flybackline.place = "";
-            //   $scope.flybackline.placeCode = "";
-          } else if ($scope.listType == "passenger") {
-            $scope.flybackline.passenger = "";
-            $scope.flybackline.certificate_code = "";
-          }
-        };
-
-        var checkbox = {
-          checked: "ion-ios-checkmark fb-checkbox",
-          unchecked: "ion-ios-circle-outline fb-checkbox"
-        }
-        // 客户承担
-        $scope.customerpaid = {id: 1, selected: 'N', style: "ion-ios-circle-outline fb-checkbox", editable: 'Y'};
-        $scope.customerPaid = function () {
-          if ($scope.canEdit) {
-            if ($scope.customerpaid.editable == "Y") {// add by ciwei
-              if ($scope.customerpaid.selected == "Y") {
-                $scope.customerpaid.selected = "N";
-                $scope.customerpaid.style = checkbox.unchecked;
-                $scope.flybackline.customer_paid = "0";
-              } else {
-                $scope.customerpaid.selected = "Y";
-                $scope.customerpaid.style = checkbox.checked;
-                $scope.flybackline.customer_paid = "1";
-              }
-            }
-          }
-        };
-        // 机票补录
-        $scope.ticketonly = {id: 1, selected: 'N', style: "ion-ios-circle-outline timesheet-checkbox", editable: 'Y'};
-        $scope.ticketOnly = function () {
-          if ($scope.canEdit) {
-            if ($scope.ticketonly.selected == "Y") {
-              $scope.ticketonly.selected = "N";
-              $scope.ticketonly.style = checkbox.unchecked;
-              $scope.flybackline.is_ticket_only_record = "0";
-            } else {
-              $scope.ticketonly.selected = "Y";
-              $scope.ticketonly.style = checkbox.checked;
-              $scope.flybackline.is_ticket_only_record = "1";
-            }
-          }
-        };
-        // 初始化数据
-        if ($scope.flybackline.customer_paid == "0") {
-          $scope.customerpaid.selected = "N";
-          $scope.customerpaid.style = checkbox.unchecked;
-        } else {
-          $scope.customerpaid.selected = "Y";
-          $scope.customerpaid.style = checkbox.checked;
-        }
-        if ($scope.flybackline.is_ticket_only_record == "0") {
-          $scope.ticketonly.selected = "N";
-          $scope.ticketonly.style = checkbox.unchecked;
-        } else {
-          $scope.ticketonly.selected = "Y";
-          $scope.ticketonly.style = checkbox.checked;
-        }
-
-
-        $scope.$on('$destroy', function () {
-          $scope.modal.remove();
-        });
-
-        //删除
-        $scope.delete = function () {
-          if ($scope.canEdit) {
-            //  var flight_date = getFormatDate(new Date($scope.flybackline.flight_date));
-            //  $scope.flybackline.flight_date = flight_date;
-            if ($scope.flybackline.apply_detail_id !== "") {
-              Prompter.showLoading("Loading...");
-              var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_line";
-              var paramValueList = '{"params":{"p_apply_id":"' + applyId + '","p_apply_detail_id":"' + $scope.flybackline.apply_detail_id + '"}}';
-              console.log("paramValueList =" + paramValueList);
-              HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-                if (response.status == "S") {
-                  fbService.deleteLine(index);
-                  Prompter.hideLoading("");
-                } else {
-                  console.log("删除失败：" + response.returnMsg);
-                  Prompter.hideLoading("");
-                }
-              }).error(function (response, status) {
-                console.log("HttpAppService error ");
-                Prompter.hideLoading("");
-              });
-            } else {
-              fbService.deleteLine(index);
-            }
-            $state.go("tab.flybackApply");
-          } else {
-            Prompter.showPopup("已提交数据无法删除!");
-          }
-        }
-        //确认
-        $scope.confirm = function () {
-          console.log("confirm status =" + $scope.pageParam.status);
-          if ($scope.pageParam.status == "new") {
-            var flight_date = getFormatDate(new Date($scope.flybackline.flight_date));
-            $scope.flybackline.flight_date = flight_date;
-            fbService.addLine($scope.flybackline);
-            $state.go("tab.flybackApply");
-          } else if ($scope.pageParam.status == "update") {
-            fbService.updateLine($scope.flybackline, index);
-            $state.go("tab.flybackApply");
-          }
-
-        };
-    }]);
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.flyback', { 
-          url: '/flyback-main',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/main/main.html',
-              controller: 'FlyBackMainCtrl'
-            }
-          }
-        });
-    }])
-
-angular.module("applicationModule")
-  .controller('FlyBackMainCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    'hmsHttp',
-    'flaybackService',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, hmsHttp, fbService){
-
-        $scope.createFlightBook = function(){
-          var param = {"canEdit": true, "dataSource": "create"};
-          fbService.setPageStatusCreate(param);
-          $state.go("tab.flybackApply");
-        };
-        $scope.queryFlightBook = function(){
-          $state.go("tab.flybackQuery");
-        };
-
-    }]);
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.flybackQuery', {
-          url: '/flyback-query',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/query/query.html',
-              controller: 'FlyBackQueryCtrl'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('FlyBackQueryCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    '$ionicModal',
-    '$ionicScrollDelegate',
-    'hmsHttp',
-    'flaybackService',
-    'hmsPopup',
-    'hmsHttp',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, $ionicModal, $ionicScrollDelegate, hmsHttp, 
-      flaybackService, hmsPopup, HttpAppService){
-
-        var strDate = flaybackService.getNowFormatDate();
-        var dateTo = new Date(strDate.replace(/\-/g, "/"));
-        var now = new Date(strDate.replace(/\-/g, "/"));
-        var dateFrom = new Date(now.setMonth(now.getMonth() - 1));
-        $scope.param = {
-          "projectCode": "",
-          "projectName": "",
-          "filter": "",
-          "reqDateFrom": dateFrom,//默认最近一个月
-          "reqDateTo": dateTo
-        };
-        $scope.flybackList = [];
-
-        // 查询按钮
-        $scope.query = function () {
-          if ($scope.param.reqDateFrom == "" || $scope.param.reqDateTo == "") {
-            hmsPopup.showPopup("请输入查询日期范围！");
-          } else {
-            var dateFrom = flaybackService.getFormatDate(new Date($scope.param.reqDateFrom));
-            var dateTo = flaybackService.getFormatDate(new Date($scope.param.reqDateTo));
-            hmsPopup.showLoading("Loading...");
-            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_lists";
-            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
-              + '","p_project_code":"' + $scope.param.projectCode
-              + '","p_apply_date_from":"' + dateFrom
-              + '","p_apply_date_to":"' + dateTo
-              + '"}}';
-            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-              //console.log("get_flyback_lists =" + angular.toJson(response));
-              if (response.status == "S") {
-                $scope.flybackList = response.flybackList;
-                hmsPopup.hideLoading("");
-              } else {
-                console.log("查询机票申请失败：" + response.returnMsg);
-                hmsPopup.hideLoading("");
-              }
-            }).error(function (response, status) {
-              console.log("HttpAppService error ");
-              hmsPopup.hideLoading("");
-            });
-          }
-        };
-
-        $scope.query();
-        // 进入页面自动查询。
-        $scope.$on("$ionicView.enter", function () {
-          $scope.query();
-        });
-
-        //获取项目列表
-        hmsPopup.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_project_list";
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          //console.log("get_project_list =" + angular.toJson(response));
-          if (response.status == "S") {
-            $scope.projectList = response.projectList;
-            hmsPopup.hideLoading("");
-          } else {
-            console.log("获取项目列表失败：" + response.returnMsg);
-            hmsPopup.hideLoading("");
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          hmsPopup.hideLoading("");
-        });
-
-
-        // 值列表
-        $ionicModal.fromTemplateUrl('build/pages/application/flyback/query/model/select-modal.html', {
-          scope: $scope,
-          animation: 'slide-in-up'
-        }).then(function (modal) {
-          $scope.modal = modal
-        });
-        $scope.openModal = function (type) {
-          if (type == "project") {
-            $scope.listType = "project";
-            $scope.lists = $scope.projectList;
-          }
-          $scope.modal.show();
-        };
-        $scope.chooseModal = function (item) {
-          $scope.modal.hide();
-          if ($scope.listType == "project") {
-            $scope.param.projectName = item.name;
-            $scope.param.projectCode = item.value;
-            $scope.param.filter = "";
-          }
-        };
-        $scope.closeModal = function () {
-          $scope.modal.hide();
-        };
-        $scope.clearChoose = function (type) {
-          $scope.modal.hide();
-          if ($scope.listType == "project") {
-            $scope.param.projectName = "";
-            $scope.param.projectCode = "";
-            $scope.param.filter = "";
-          }
-        };
-        $scope.$on('$destroy', function () {
-          $scope.modal.remove();
-        });
-
-
-        $scope.goDetail = function (data) {
-          if (data.isSubmitted == "0") {
-            var canEdit = true;
-          } else if (data.isSubmitted == "1") {
-            var canEdit = false;
-          }
-          var param = {"canEdit": canEdit, "dataSource": "query", "applyId": data.applyId};
-          flaybackService.setPageStatusCreate(param);
-          $state.go("tab.flybackApply");
-        }
-
-        // 删除fyback
-        $scope.deleteFB = function (applyId, index) {
-          hmsPopup.showLoading("Loading...");
-          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
-          var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + applyId + '"}}';
-          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-            if (response.status == "S") {
-              $scope.flybackList.splice(index, 1);
-              hmsPopup.hideLoading("");
-            } else {
-              console.log("删除失败：" + response.returnMsg);
-              hmsPopup.hideLoading("");
-            }
-          }).error(function (response, status) {
-            console.log("HttpAppService error ");
-            hmsPopup.hideLoading("");
-          });
-        }
-
-    }]);
 /**
  * Created by wuxiaocheng on 15/8/26.
  */
@@ -13993,6 +13177,822 @@ angular.module("applicationModule").controller('reportTypeController', function(
     }
 });
 
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.flybackApply', {
+          url: '/flyback-apply',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/apply/apply.html',
+              controller: 'FlyBackApplyCtrl'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('FlyBackApplyCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    'hmsHttp',
+    '$ionicModal',
+    'flaybackService',
+    'hmsPopup',
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+      $timeout, HttpAppService, $ionicModal, fbService,
+      Prompter){
+      $scope.viewtitle = "机票申请";
+      $scope.pageParam = fbService.getPageStatusCreate();  //JSON.parse($stateParams.param);
+      console.log(" $scope.pageParam =" + $scope.pageParam);
+      $scope.canEdit = $scope.pageParam.canEdit;// 页面是否可编辑
+      var dataSource = $scope.pageParam.dataSource;//页面数据来源
+
+      fbService.setLines($scope.flybacklines);
+      //数据
+      function init() {
+        if (dataSource == "create") {
+          $scope.flybackHeader = {
+            "applyId": "",
+            "projName": "",
+            "projCode": ""
+          };
+          fbService.clearLines();
+          $scope.flybacklines = fbService.getLines();
+        } else if (dataSource == "query") {
+          var applyId = $scope.pageParam.applyId;
+          Prompter.showLoading("Loading...");
+          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_detail";
+          var paramValueList = '{"params":{"p_apply_id":"' + applyId + '"}}';
+          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+            console.log("get_flyback_detail =" + angular.toJson(response));
+            if (response.status == "S") {
+              $scope.flybackHeader = response["flybackHeader"];
+              $scope.flybacklines = response["flybacklines"];
+              fbService.setLines($scope.flybacklines);
+              Prompter.hideLoading("");
+            } else {
+              console.log("获取机票申请信息失败：" + response.returnMsg);
+              Prompter.hideLoading("");
+            }
+          }).error(function (response, status) {
+            console.log("HttpAppService error ");
+            Prompter.hideLoading("");
+          });
+        }
+      }
+
+      init();
+
+      //
+      $scope.$on("$ionicView.enter", function () {
+        console.log("fbService.getLines()");
+        $scope.flybacklines = fbService.getLines();
+        console.log(angular.toJson($scope.flybacklines));
+        $scope.$apply();
+      });
+
+
+      // 获取值列表数据
+      if ($scope.canEdit) {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list";
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          if (response.status == "S") {
+            $scope.projectList = response.projectList;
+            fbService.setTicketTypeList(response.ticketTypeList);// 订票类型
+            fbService.setRouteTypeList(response.routeTypeList);//行程类别
+            fbService.setPassenger(response.passengerList);//乘机人列表
+            fbService.setPassenger(response.passenger);//默认乘机人
+            fbService.setCertification(response.certification);//默认身份证
+            Prompter.hideLoading("");
+          } else {
+            console.log("获取值列表失败：" + response.returnMsg);
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      }
+
+      // 项目值列表
+      $ionicModal.fromTemplateUrl('build/pages/application/flyback/apply/model/project-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function (modal) {
+        $scope.modal = modal
+      });
+      $scope.openProjectList = function () {
+        $scope.modal.show();
+      };
+      $scope.closeModal = function (proj) {
+        $scope.modal.hide();
+        //若更换项目则清空订票行
+        if (proj !== undefined) {
+          if ((typeof($scope.flybackHeader.projCode) !== "undefined") && ($scope.flybackHeader.projCode !== null)) {
+            if ($scope.flybackHeader.projCode !== proj.value) {
+              $scope.flybacklines = [];
+              fbService.clearLines();
+            }
+          }
+          $scope.flybackHeader.projName = proj.name;
+          $scope.flybackHeader.projCode = proj.value;
+          fbService.setProjName($scope.flybackHeader.projName);
+          fbService.setProjCode($scope.flybackHeader.projCode);
+        }
+      };
+      $scope.$on('$destroy', function () {
+        $scope.modal.remove();
+      });
+
+
+      $scope.goDetail = function (detail, index) {
+        var param = {
+          "canEdit": $scope.canEdit,
+          "dataSource": dataSource,
+          "status": "update",
+          "detail": detail,
+          "index": index,
+          "applyId": $scope.flybackHeader.applyId
+        };
+        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
+      };
+
+    //添加更多订票信息
+      $scope.addFlightInfo = function () {
+        fbService.setProjName($scope.flybackHeader.projName);
+        fbService.setProjCode($scope.flybackHeader.projCode);
+        var param = {"canEdit": $scope.canEdit, "status": "new"};
+        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
+      };
+    //保存 baseConfig.businessPath   baseConfig.businessPath
+      $scope.save = function () {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/save_flyback";
+        var jsonData = JSON.stringify($scope.flybacklines);
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
+          + '","p_apply_id":"' + $scope.flybackHeader.applyId
+          + '","p_project_code":"' + $scope.flybackHeader.projCode
+          + '","p_fb_lines":' + jsonData + '}}';
+        console.log(paramValueList);
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          console.log("save_flyback = " + angular.toJson(response));
+          if (response.status == "S") {
+            $scope.flybackHeader.applyId = response["applyId"];
+            $scope.flybacklines = response["flybackLines"];
+            fbService.setLines($scope.flybacklines);
+            Prompter.hideLoading("");
+            Prompter.showPopup("保存成功!");
+          } else {
+            console.log("保存失败：" + response["returnMsg"]);
+            Prompter.hideLoading("");
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      };
+    //提交
+      $scope.submit = function () {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/flyback_submit";
+        var jsonData = JSON.stringify($scope.flybacklines);
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
+          + '","p_apply_id":"' + $scope.flybackHeader.applyId
+          + '","p_project_code":"' + $scope.flybackHeader.projCode
+          + '","p_fb_lines":' + jsonData + '}}';
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          console.log("flyback_submit = " + angular.toJson(response));
+          if (response.status == "S") {
+            Prompter.hideLoading("");
+            Prompter.showPopup("提交成功!");
+            $scope.canEdit = false;
+          } else {
+            Prompter.hideLoading("");
+            Prompter.showPopup("提交失败：" + response["returnMsg"]);
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      };
+
+      // 删除fyback
+      $scope.deleteFB = function () {
+        console.log(angular.toJson($scope.flybackHeader));
+        if ($scope.flybackHeader.applyId == "") {
+          $state.go("tab.flyback");
+        } else {
+          if ($scope.canEdit) {
+            Prompter.showLoading("Loading...");
+            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
+            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + $scope.flybackHeader.applyId + '"}}';
+            console.log(paramValueList);
+            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+              if (response.status == "S") {
+                Prompter.hideLoading("");
+                Prompter.showPopup("删除成功!");
+                $state.go("tab.flybackQuery");
+                dataSource = "create";
+                init();
+              } else {
+                console.log("删除失败：" + response.returnMsg);
+                Prompter.hideLoading("");
+                Prompter.showPopup("删除失败,请重新查询后再操作!");
+              }
+            }).error(function (response, status) {
+              console.log("HttpAppService error ");
+              Prompter.hideLoading("");
+            });
+          } else {
+            Prompter.showPopup("已提交数据无法删除!");
+          }
+
+        }
+      }
+    }]);
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.flybackDetail', {
+          url: '/flyback-detail/:param',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/detail/detail.html',
+              controller: 'FlyBackDetailCtrl'
+            }
+          }
+        });
+    }])
+
+angular.module("applicationModule")
+  .controller('FlyBackDetailCtrl', [
+    '$scope',
+    '$rootScope', 
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    'hmsHttp',
+    '$ionicModal',
+    'flaybackService',
+    'hmsPopup',
+    '$stateParams',
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+      $timeout, HttpAppService, $ionicModal, fbService,
+      Prompter, $stateParams){
+        //  $scope.canEdit = true;
+        // 获取页面参数
+        $scope.pageParam = JSON.parse($stateParams.param);
+        $scope.canEdit = $scope.pageParam.canEdit;//页面是否可编辑
+        var dataSource = $scope.pageParam.dataSource;//页面数据来源
+        if ($scope.pageParam.status == "update") {
+          $scope.flybackline = $scope.pageParam.detail;
+          var flight_date = new Date($scope.flybackline.flight_date);
+          $scope.flybackline.flight_date = flight_date;
+          var flybacklineOld = $scope.flybackline;
+          var index = $scope.pageParam.index;
+          var applyId = $scope.pageParam.applyId;
+        } else if ($scope.pageParam.status == "new") {
+
+          var flight_date = new Date(fbService.getNowFormatDate().replace(/\-/g, "/"));
+          $scope.flybackline = {
+            "apply_detail_id": "",
+            "projName": "",
+            "projCode": "",
+            "ticketTypeName": "",
+            "ticket_type": "",
+            "routeTypeName": "",
+            "route_type": "",
+            "flyback1": "",
+            "flyback1_id": "",
+            "flyback2": "",
+            "flyback2_id": "",
+            "from_place": "",
+            "go_place": "",
+            "flight_date": flight_date,
+            "flight_time": "",
+            "place": "",
+            // "placeCode": "",
+            "passenger": "",
+            "certificate_code": "",
+            "customer_paid": "0",
+            "is_ticket_only_record": "0",
+            "description": ""
+          };
+          $scope.flybackline.projName = fbService.getProjName();
+          $scope.flybackline.projCode = fbService.getProjCode();
+          $scope.flybackline.passenger = fbService.getPassenger();
+          $scope.flybackline.certificate_code = fbService.getCertification();
+          console.log(" $scope.flybackline.projName " + $scope.flybackline.projName);
+        }
+
+
+        // 获取值列表
+        if ($scope.canEdit) {
+          $scope.ticketTypeList = fbService.getTicketTypeList();
+          $scope.routeTypeList = fbService.getRouteTypeList();
+          $scope.passengerList = fbService.getPassengerList();
+          //给默认值
+          if ($scope.pageParam.status == "new") {
+            if ($scope.ticketTypeList.length > 0) {
+              $scope.flybackline.ticketTypeName = $scope.ticketTypeList[0].name;
+              $scope.flybackline.ticket_type = $scope.ticketTypeList[0].value;
+            }
+            if ($scope.routeTypeList.length > 0) {
+              $scope.flybackline.routeTypeName = $scope.routeTypeList[0].name;
+              $scope.flybackline.route_type = $scope.routeTypeList[0].value;
+            }
+          }
+          Prompter.showLoading("Loading...");
+          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list2";
+          var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_code":"' + $scope.flybackline.projCode + '"}}';
+          console.log("");
+          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+            if (response.status == "S") {
+              $scope.placeList = response.placeList;
+              $scope.flybackList = response.flybackList;
+              $scope.preflybackList = response.preflybackList;
+              // 项目地默认取值列表中的第一个
+              if ($scope.placeList.length > 0) {
+                $scope.flybackline.place = $scope.placeList[0].name;
+                //  $scope.flybackline.placeCode = $scope.placeList[0].value;
+              }
+              Prompter.hideLoading("");
+            } else {
+              console.log("获取值列表失败：" + response.returnMsg);
+              Prompter.hideLoading("");
+            }
+          }).error(function (response, status) {
+            console.log("HttpAppService error ");
+            Prompter.hideLoading("");
+          });
+        }
+
+
+        //日历插件调用
+        $scope.datepickerObject = {};
+        $scope.datepickerObject.inputDate = new Date();
+
+        $scope.datepickerObjectPopup = {
+          titleLabel: '日期选择',  //Optional
+          todayLabel: '今天',  //Optional
+          closeLabel: '关闭',  //Optional
+          setLabel: '确定',  //Optional
+          setButtonType: 'button-assertive',  //Optional
+          todayButtonType: 'button',  //Optional
+          closeButtonType: 'button',  //Optional
+          inputDate: $scope.datepickerObject.inputDate, //Optional
+          mondayFirst: true,  //Optional
+          disabledDates: [], //Optional
+          weekDaysList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
+          monthList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"], //Optional
+          templateType: 'popup', //Optional
+          showTodayButton: 'true', //Optional
+          modalHeaderColor: 'bar-positive', //Optional
+          modalFooterColor: 'bar-positive', //Optional
+          from: new Date(1900, 0, 1), //Optional
+          to: new Date(2101, 0, 1),  //Optional
+          dateFormat: ' yyyy - MM - dd ', //Optional
+          closeOnSelect: false, //Optional
+          callback: function (val) { //Optional
+            datePickerCallbackPopup(val);
+          }
+        };
+        var datePickerCallbackPopup = function (val) {
+          if (typeof(val) === 'undefined') {
+            console.log('No date selected');
+          } else {
+            $scope.datepickerObjectPopup.inputDate = val;
+            $scope.flybackline.flight_date = val;
+            console.log('Selected date is : ', $scope.flybackline.flight_date)
+          }
+        };
+
+
+        // 值列表
+        $ionicModal.fromTemplateUrl('build/pages/application/flyback/detail/model/select-modal.html', {
+          scope: $scope,
+          animation: 'slide-in-up'
+        }).then(function (modal) {
+          $scope.modal = modal
+        });
+
+        $scope.openModal = function (type) {
+          if ($scope.canEdit) {
+            if (type == "ticketType") {
+              $scope.listType = "ticketType";
+              $scope.lists = $scope.ticketTypeList;
+            } else if (type == "routeType") {
+              $scope.listType = "routeType";
+              $scope.lists = $scope.routeTypeList;
+            } else if (type == "flyback1") {
+              $scope.listType = "flyback1";
+              if ($scope.flybackline.ticket_type == "10") {
+                $scope.lists = $scope.flybackList;
+              } else if ($scope.flybackline.ticket_type == "20") {
+                $scope.lists = $scope.preflybackList;
+              }
+            } else if (type == "flyback2") {
+              $scope.listType = "flyback2";
+              if ($scope.flybackline.ticket_type == "10") {
+                $scope.lists = $scope.flybackList;
+              } else if ($scope.flybackline.ticket_type == "20") {
+                $scope.lists = $scope.preflybackList;
+              }
+            } else if (type == "place") {
+              $scope.listType = "place";
+              $scope.lists = $scope.placeList;
+            } else if (type == "passenger") {
+              $scope.listType = "passenger";
+              $scope.lists = $scope.passengerList;
+            }
+            $scope.modal.show();
+          }
+        };
+        $scope.closeModal = function (item) {
+          $scope.modal.hide();
+          if (item !== undefined) {
+            if ($scope.listType == "ticketType") {
+              if ((typeof($scope.flybackline.ticket_type) !== "undefined") && ($scope.flybackline.ticket_type !== null)) {
+                if ($scope.flybackline.flybackline !== item.value) {
+                  $scope.flybackline.flyback1 = "";
+                  $scope.flybackline.flyback1_id = "";
+                  $scope.flybackline.flyback2 = "";
+                  $scope.flybackline.flyback2_id = "";
+                }
+              }
+              $scope.flybackline.ticketTypeName = item.name;
+              $scope.flybackline.ticket_type = item.value;
+            } else if ($scope.listType == "routeType") {
+              $scope.flybackline.routeTypeName = item.name;
+              $scope.flybackline.route_type = item.value;
+            } else if ($scope.listType == "flyback1") {
+              $scope.flybackline.flyback1 = item.type_name;
+              $scope.flybackline.flyback1_id = item.value;
+            }
+            else if ($scope.listType == "flyback2") {
+              $scope.flybackline.flyback2 = item.type_name;
+              $scope.flybackline.flyback2_id = item.value;
+            } else if ($scope.listType == "place") {
+              $scope.flybackline.place = item.name;
+              //  $scope.flybackline.placeCode = item.value;
+            } else if ($scope.listType == "passenger") {
+              $scope.flybackline.passenger = item.name;
+              $scope.flybackline.certificate_code = item.value;
+            }
+          }
+        };
+
+        $scope.clearSelect = function () {
+          $scope.modal.hide();
+          if ($scope.listType == "ticketType") {
+            $scope.flybackline.ticketTypeName = "";
+            $scope.flybackline.ticket_type = "";
+            $scope.flybackline.flyback1 = "";
+            $scope.flybackline.flyback1_id = "";
+            $scope.flybackline.flyback2 = "";
+            $scope.flybackline.flyback2_id = "";
+          } else if ($scope.listType == "routeType") {
+            $scope.flybackline.routeTypeName = "";
+            $scope.flybackline.route_type = "";
+          } else if ($scope.listType == "flyback1") {
+            $scope.flybackline.flyback1 = "";
+            $scope.flybackline.flyback1_id = "";
+          }
+          else if ($scope.listType == "flyback2") {
+            $scope.flybackline.flyback2 = "";
+            $scope.flybackline.flyback2_id = "";
+          } else if ($scope.listType == "place") {
+            $scope.flybackline.place = "";
+            //   $scope.flybackline.placeCode = "";
+          } else if ($scope.listType == "passenger") {
+            $scope.flybackline.passenger = "";
+            $scope.flybackline.certificate_code = "";
+          }
+        };
+
+        var checkbox = {
+          checked: "ion-ios-checkmark fb-checkbox",
+          unchecked: "ion-ios-circle-outline fb-checkbox"
+        }
+        // 客户承担
+        $scope.customerpaid = {id: 1, selected: 'N', style: "ion-ios-circle-outline fb-checkbox", editable: 'Y'};
+        $scope.customerPaid = function () {
+          if ($scope.canEdit) {
+            if ($scope.customerpaid.editable == "Y") {// add by ciwei
+              if ($scope.customerpaid.selected == "Y") {
+                $scope.customerpaid.selected = "N";
+                $scope.customerpaid.style = checkbox.unchecked;
+                $scope.flybackline.customer_paid = "0";
+              } else {
+                $scope.customerpaid.selected = "Y";
+                $scope.customerpaid.style = checkbox.checked;
+                $scope.flybackline.customer_paid = "1";
+              }
+            }
+          }
+        };
+        // 机票补录
+        $scope.ticketonly = {id: 1, selected: 'N', style: "ion-ios-circle-outline timesheet-checkbox", editable: 'Y'};
+        $scope.ticketOnly = function () {
+          if ($scope.canEdit) {
+            if ($scope.ticketonly.selected == "Y") {
+              $scope.ticketonly.selected = "N";
+              $scope.ticketonly.style = checkbox.unchecked;
+              $scope.flybackline.is_ticket_only_record = "0";
+            } else {
+              $scope.ticketonly.selected = "Y";
+              $scope.ticketonly.style = checkbox.checked;
+              $scope.flybackline.is_ticket_only_record = "1";
+            }
+          }
+        };
+        // 初始化数据
+        if ($scope.flybackline.customer_paid == "0") {
+          $scope.customerpaid.selected = "N";
+          $scope.customerpaid.style = checkbox.unchecked;
+        } else {
+          $scope.customerpaid.selected = "Y";
+          $scope.customerpaid.style = checkbox.checked;
+        }
+        if ($scope.flybackline.is_ticket_only_record == "0") {
+          $scope.ticketonly.selected = "N";
+          $scope.ticketonly.style = checkbox.unchecked;
+        } else {
+          $scope.ticketonly.selected = "Y";
+          $scope.ticketonly.style = checkbox.checked;
+        }
+
+
+        $scope.$on('$destroy', function () {
+          $scope.modal.remove();
+        });
+
+        //删除
+        $scope.delete = function () {
+          if ($scope.canEdit) {
+            //  var flight_date = getFormatDate(new Date($scope.flybackline.flight_date));
+            //  $scope.flybackline.flight_date = flight_date;
+            if ($scope.flybackline.apply_detail_id !== "") {
+              Prompter.showLoading("Loading...");
+              var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_line";
+              var paramValueList = '{"params":{"p_apply_id":"' + applyId + '","p_apply_detail_id":"' + $scope.flybackline.apply_detail_id + '"}}';
+              console.log("paramValueList =" + paramValueList);
+              HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+                if (response.status == "S") {
+                  fbService.deleteLine(index);
+                  Prompter.hideLoading("");
+                } else {
+                  console.log("删除失败：" + response.returnMsg);
+                  Prompter.hideLoading("");
+                }
+              }).error(function (response, status) {
+                console.log("HttpAppService error ");
+                Prompter.hideLoading("");
+              });
+            } else {
+              fbService.deleteLine(index);
+            }
+            $state.go("tab.flybackApply");
+          } else {
+            Prompter.showPopup("已提交数据无法删除!");
+          }
+        }
+        //确认
+        $scope.confirm = function () {
+          console.log("confirm status =" + $scope.pageParam.status);
+          if ($scope.pageParam.status == "new") {
+            var flight_date = getFormatDate(new Date($scope.flybackline.flight_date));
+            $scope.flybackline.flight_date = flight_date;
+            fbService.addLine($scope.flybackline);
+            $state.go("tab.flybackApply");
+          } else if ($scope.pageParam.status == "update") {
+            fbService.updateLine($scope.flybackline, index);
+            $state.go("tab.flybackApply");
+          }
+
+        };
+    }]);
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.flyback', { 
+          url: '/flyback-main',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/main/main.html',
+              controller: 'FlyBackMainCtrl'
+            }
+          }
+        });
+    }])
+
+angular.module("applicationModule")
+  .controller('FlyBackMainCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    'hmsHttp',
+    'flaybackService',
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+      $timeout, hmsHttp, fbService){
+
+        $scope.createFlightBook = function(){
+          var param = {"canEdit": true, "dataSource": "create"};
+          fbService.setPageStatusCreate(param);
+          $state.go("tab.flybackApply");
+        };
+        $scope.queryFlightBook = function(){
+          $state.go("tab.flybackQuery");
+        };
+
+    }]);
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.flybackQuery', {
+          url: '/flyback-query',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/query/query.html',
+              controller: 'FlyBackQueryCtrl'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('FlyBackQueryCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    '$ionicModal',
+    '$ionicScrollDelegate',
+    'hmsHttp',
+    'flaybackService',
+    'hmsPopup',
+    'hmsHttp',
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+      $timeout, $ionicModal, $ionicScrollDelegate, hmsHttp, 
+      flaybackService, hmsPopup, HttpAppService){
+
+        var strDate = flaybackService.getNowFormatDate();
+        var dateTo = new Date(strDate.replace(/\-/g, "/"));
+        var now = new Date(strDate.replace(/\-/g, "/"));
+        var dateFrom = new Date(now.setMonth(now.getMonth() - 1));
+        $scope.param = {
+          "projectCode": "",
+          "projectName": "",
+          "filter": "",
+          "reqDateFrom": dateFrom,//默认最近一个月
+          "reqDateTo": dateTo
+        };
+        $scope.flybackList = [];
+
+        // 查询按钮
+        $scope.query = function () {
+          if ($scope.param.reqDateFrom == "" || $scope.param.reqDateTo == "") {
+            hmsPopup.showPopup("请输入查询日期范围！");
+          } else {
+            var dateFrom = flaybackService.getFormatDate(new Date($scope.param.reqDateFrom));
+            var dateTo = flaybackService.getFormatDate(new Date($scope.param.reqDateTo));
+            hmsPopup.showLoading("Loading...");
+            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_lists";
+            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
+              + '","p_project_code":"' + $scope.param.projectCode
+              + '","p_apply_date_from":"' + dateFrom
+              + '","p_apply_date_to":"' + dateTo
+              + '"}}';
+            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+              //console.log("get_flyback_lists =" + angular.toJson(response));
+              if (response.status == "S") {
+                $scope.flybackList = response.flybackList;
+                hmsPopup.hideLoading("");
+              } else {
+                console.log("查询机票申请失败：" + response.returnMsg);
+                hmsPopup.hideLoading("");
+              }
+            }).error(function (response, status) {
+              console.log("HttpAppService error ");
+              hmsPopup.hideLoading("");
+            });
+          }
+        };
+
+        $scope.query();
+        // 进入页面自动查询。
+        $scope.$on("$ionicView.enter", function () {
+          $scope.query();
+        });
+
+        //获取项目列表
+        hmsPopup.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_project_list";
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          //console.log("get_project_list =" + angular.toJson(response));
+          if (response.status == "S") {
+            $scope.projectList = response.projectList;
+            hmsPopup.hideLoading("");
+          } else {
+            console.log("获取项目列表失败：" + response.returnMsg);
+            hmsPopup.hideLoading("");
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          hmsPopup.hideLoading("");
+        });
+
+
+        // 值列表
+        $ionicModal.fromTemplateUrl('build/pages/application/flyback/query/model/select-modal.html', {
+          scope: $scope,
+          animation: 'slide-in-up'
+        }).then(function (modal) {
+          $scope.modal = modal
+        });
+        $scope.openModal = function (type) {
+          if (type == "project") {
+            $scope.listType = "project";
+            $scope.lists = $scope.projectList;
+          }
+          $scope.modal.show();
+        };
+        $scope.chooseModal = function (item) {
+          $scope.modal.hide();
+          if ($scope.listType == "project") {
+            $scope.param.projectName = item.name;
+            $scope.param.projectCode = item.value;
+            $scope.param.filter = "";
+          }
+        };
+        $scope.closeModal = function () {
+          $scope.modal.hide();
+        };
+        $scope.clearChoose = function (type) {
+          $scope.modal.hide();
+          if ($scope.listType == "project") {
+            $scope.param.projectName = "";
+            $scope.param.projectCode = "";
+            $scope.param.filter = "";
+          }
+        };
+        $scope.$on('$destroy', function () {
+          $scope.modal.remove();
+        });
+
+
+        $scope.goDetail = function (data) {
+          if (data.isSubmitted == "0") {
+            var canEdit = true;
+          } else if (data.isSubmitted == "1") {
+            var canEdit = false;
+          }
+          var param = {"canEdit": canEdit, "dataSource": "query", "applyId": data.applyId};
+          flaybackService.setPageStatusCreate(param);
+          $state.go("tab.flybackApply");
+        }
+
+        // 删除fyback
+        $scope.deleteFB = function (applyId, index) {
+          hmsPopup.showLoading("Loading...");
+          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
+          var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + applyId + '"}}';
+          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+            if (response.status == "S") {
+              $scope.flybackList.splice(index, 1);
+              hmsPopup.hideLoading("");
+            } else {
+              console.log("删除失败：" + response.returnMsg);
+              hmsPopup.hideLoading("");
+            }
+          }).error(function (response, status) {
+            console.log("HttpAppService error ");
+            hmsPopup.hideLoading("");
+          });
+        }
+
+    }]);
 /**
  * Created by gusenlin on 16/5/22.
  */

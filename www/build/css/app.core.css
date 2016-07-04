@@ -2779,7 +2779,7 @@ Copyright (c) 2015 Daniel Eden
     .time-off-content .time-off-item .time-off-item-middle .item-off-item-title {
       font-size: 14px;
       padding-top: 5px;
-      padding-bottom: 5px; }
+      padding-bottom: 3px; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.paid-holiday {
         color: #24559C; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.paid-sick-leave {
