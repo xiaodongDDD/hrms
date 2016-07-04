@@ -28,3 +28,18 @@
   height: 250px;
   width: 155px;
 }
+
+.timesheet.popover {
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  z-index: 10;
+  display: block;
+  margin-top: 12px;
+  margin-left: -110px;
+  height: 130px;
+  width: 130px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+}
