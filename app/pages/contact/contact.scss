@@ -103,3 +103,29 @@ $contactLineColor: #D2D2D2 !default;
     }
   }
 }
+
+.employee-search-content {
+  .history {
+    font-size: $font-size;
+    color: $contactLineColor;
+    img {
+      height: 16px;
+      align-self: center;
+      padding-left: 5px;
+    }
+    .history-logo {
+      padding-left: 10px;
+    }
+    .history-line {
+      border-bottom: 1px solid $contactLineColor;
+      align-self: center;
+    }
+  }
+  .employee-item {
+    padding: 10px 10px 10px 16px !important;
+    &.no-top-border-color {
+      border-top: none;
+      margin-top: -5px;
+    }
+  }
+}

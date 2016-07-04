@@ -7628,6 +7628,25 @@ Copyright (c) 2015 Daniel Eden
     padding-top: 10px;
     height: 40px; }
 
+.employee-search-content .history {
+  font-size: 15px;
+  color: #D2D2D2; }
+  .employee-search-content .history img {
+    height: 16px;
+    align-self: center;
+    padding-left: 5px; }
+  .employee-search-content .history .history-logo {
+    padding-left: 10px; }
+  .employee-search-content .history .history-line {
+    border-bottom: 1px solid #D2D2D2;
+    align-self: center; }
+
+.employee-search-content .employee-item {
+  padding: 10px 10px 10px 16px !important; }
+  .employee-search-content .employee-item.no-top-border-color {
+    border-top: none;
+    margin-top: -5px; }
+
 .login {
   background: url("../img/login/login-back.png");
   background-size: 100% 100%;

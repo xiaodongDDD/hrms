@@ -1978,8 +1978,8 @@ angular.module('contactModule')
           }
         ];
         $scope.showTopInput = false; // 默认不显示bar上的搜索框
-        var position = ''; //记录滚动条的位置
-
+        $scope.resultList = ['1','2','3']; //存储搜索结果
+        var position = ''; //记录滚动条的位置--
       }
       $scope.$on('$ionicView.enter', function (e) {
       });
@@ -1990,7 +1990,6 @@ angular.module('contactModule')
       $scope.watchScroll = function () { //滚动内容时执行的method
         position = $ionicScrollDelegate.getScrollPosition().top;
         $scope.$apply(function () {
-          warn('Now Position:' + position);
           if (position < 33) {
             $scope.showTopInput = false;
           } else if (position >= 33) {
@@ -2018,7 +2017,7 @@ angular.module('contactModule')
       $scope.searchContacts = function () {
       };
 
-      $scope.selectPerson = function () {
+      $scope.selectEmployee = function () {
       };
 
       $scope.goStructure = function () {
