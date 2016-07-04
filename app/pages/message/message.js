@@ -19,21 +19,6 @@ angular.module('messageModule')
         if (window.StatusBar) {
           StatusBar.styleLightContent();
         }
-        /*var onOpenNotification = function (event) {
-          try {
-            var alertContent;
-            if (device.platform == "Android") {
-              alertContent = window.plugins.jPushPlugin.openNotification.alert;
-            } else {
-              alertContent = event.aps.alert;
-            }
-            //alert("open Notification:" + alertContent);
-            $state.go('tab.workflow-message');
-          } catch (exception) {
-            console.log("JPushPlugin:onOpenNotification" + exception);
-          }
-        };
-        document.addEventListener("jpush.openNotification", onOpenNotification, false);*/
       });
 
       $scope.talk = function (message) {
