@@ -86,7 +86,7 @@ $timesheet-cover: #E3F5F0 !default;
         height: 60px;
         position: relative;
         &.activated {
-          background: #eeeeee;
+          //background: #eeeeee;
         }
         &.choosed.activated {
           background: $timesheet-cover;

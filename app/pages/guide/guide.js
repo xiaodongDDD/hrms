@@ -15,6 +15,8 @@ angular.module('loginModule')
 
       console.log('loginCtrl.enter');
 
+      $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
+
       $scope.skipGuide = function () {
         if (baseConfig.debug) {
           console.log("跳过导航页到登陆页");

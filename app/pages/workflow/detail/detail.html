@@ -105,29 +105,29 @@
   </ion-content>
 
   <div class="hms-workflow-submit" ng-if="workflowActionShowFlag">
-    <div class="hms-workflow-reject" ng-click="submitAction(actionType.reject)">
-      拒绝
+    <div class="hms-workflow-reject" ng-click="submitAction(actionType.reject)" >
+      <span ng-if="currentDetail.canRefuse=='Y'">拒绝</span>
     </div>
     <div class="hms-workflow-other">
       <div class="hms-workflow-function">
-        <div class="hms-work-approve" ng-click="submitAction(actionType.approve)">
+        <div class="hms-work-approve" ng-click="submitAction(actionType.approve)" ng-if="currentDetail.canApprove=='Y'">
           <img src="build/img/workflow/deliver@3x.png"/>
         </div>
-        <div class="hms-work-transmit" ng-click="submitAction(actionType.transmit)">
+        <div class="hms-work-transmit" ng-click="submitAction(actionType.transmit)" ng-if="currentDetail.canTransmit=='Y'">
           <img src="build/img/workflow/approval2@3x.png"/>
         </div>
       </div>
       <div class="hms-workflow-other-alias">
-        <div class="hms-work-approve-alias">
+        <div class="hms-work-approve-alias" ng-if="currentDetail.canApprove=='Y'">
           审批
         </div>
-        <div class="hms-work-transmit-alias">
+        <div class="hms-work-transmit-alias" ng-if="currentDetail.canTransmit=='Y'">
           转交
         </div>
       </div>
     </div>
     <div class="hms-workflow-back" ng-click="submitAction(actionType.back)">
-      退回
+      <span ng-if="currentDetail.canGoBack=='Y'">退回</span>
     </div>
   </div>
 </ion-view>

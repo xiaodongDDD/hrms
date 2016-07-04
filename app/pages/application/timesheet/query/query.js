@@ -603,6 +603,7 @@ angular.module('applicationModule')
       $ionicGesture.on("touch", function (e) {
         console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
         console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
+        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
         var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
         console.log('position ' + angular.toJson(position));
         startTouchX = e.gesture.touches[0].pageX;
@@ -612,6 +613,7 @@ angular.module('applicationModule')
       }, element);
 
       $ionicGesture.on("release", function (e) {
+        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
         if ($scope.slippingFlag && $scope.slippingEnableFlag) {
           //console.log('release.startTouchX ' + e.gesture.touches[0].pageX);
           //console.log('release.startTouchY ' + e.gesture.touches[0].pageY);

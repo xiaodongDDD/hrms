@@ -48,6 +48,7 @@ angular.module('applicationModule')
               hmsPopup,
               $ionicHistory) {
       var detail = $stateParams.detail;
+      $scope.currentDetail = $stateParams.detail;
       var multipleArrayList = [];
 
       $scope.actionType = {

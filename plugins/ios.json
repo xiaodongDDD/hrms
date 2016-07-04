@@ -7,6 +7,10 @@
         "files": {}
     },
     "installed_plugins": {
+        "cn.jpush.phonegap.JPushPlugin": {
+            "API_KEY": "6e0b08078306f45ac8331d54",
+            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+        },
         "com.handmobile.cordovaplugin.hotpatch": {
             "PACKAGE_NAME": "com.hand.china.hrms2.research"
         },

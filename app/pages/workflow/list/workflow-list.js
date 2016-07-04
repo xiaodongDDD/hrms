@@ -131,7 +131,12 @@ angular.module('applicationModule')
               workflowId: data.workflow_id,
               instanceId: data.instance_id,
               recordId: data.record_id,
-              nodeId: data.node_id
+              nodeId: data.node_id,
+              canApprove : data.approve,
+              canBackTo: data.backTo,
+              canGoBack: data.goBack,
+              canRefuse: data.refuse,
+              canTransmit: data.toOther
             };
             $scope.list.push(item);
           });
