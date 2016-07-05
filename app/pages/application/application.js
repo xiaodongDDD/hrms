@@ -159,13 +159,19 @@ angular.module('applicationModule')
         $state.go(appItem.destUrl);
       };
 
-      console.log('applicationCtrl.enter');
+      if (baseConfig.debug) {
+        console.log('applicationCtrl.enter');
+      }
 
       $scope.$on('$ionicView.enter', function (e) {
-        console.log('applicationCtrl.$ionicView.enter');
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$ionicView.enter');
+        }
       });
 
       $scope.$on('$destroy', function (e) {
-        console.log('applicationCtrl.$destroy');
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$destroy');
+        }
       });
     }]);

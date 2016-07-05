@@ -63,7 +63,6 @@ angular.module('applicationModule')
       $scope.selectYearList = [];
 
 
-
       var offset = -5;
       var yearCount = 10;
 
@@ -79,11 +78,11 @@ angular.module('applicationModule')
 
       $scope.timesheetProcessModeList = [
         {
-          "selected" : true,
+          "selected": true,
           "value": timesheetTitle
         },
         {
-          "selected" : false,
+          "selected": false,
           "value": unfreezeTitle
         }
       ];
@@ -128,6 +127,35 @@ angular.module('applicationModule')
         console.log('TimeSheetQueryCtrl.clientWidth ' + clientWidth);
       }
 
+
+      var timesheetMonthFunc = {
+        scrollToFixPosition: function (month, screenWidth) {
+          var monthScroll = $ionicScrollDelegate.$getByHandle('timeSheetMonthHandle').getScrollPosition();
+          var xOffset;
+          try {
+            if (60 * (parseInt(month) - 0.5) > (parseInt(screenWidth) / 2)) {
+              xOffset = 60 * (parseInt(month) - 0.5) - (parseInt(screenWidth) / 2);
+            } else {
+              xOffset = 0;
+            }
+            if (baseConfig.debug) {
+              console.log(monthScroll);
+              console.log('month ' + month);
+              console.log('clientWidth ' + clientWidth);
+              console.log('xOffset ' + xOffset);
+            }
+            var monthScroll1 = $ionicScrollDelegate.$getByHandle('timeSheetMonthHandle').scrollTo(xOffset, 0, true);
+            if (baseConfig.debug) {
+              console.log(monthScroll1);
+            }
+          } catch (e) {
+
+          }
+        },
+        more: function () {
+        }
+      };
+
       //单格数字用0填充
       var formatMonth = function (month) {
         if (parseInt(month) < 10) {
@@ -150,6 +178,8 @@ angular.module('applicationModule')
             return;
           }
         });
+
+        timesheetMonthFunc.scrollToFixPosition(month, clientWidth);
 
         for (var i = 0; i < yearCount; i++) {
           var value = (parseInt(year) + offset + i) + '';
@@ -212,15 +242,15 @@ angular.module('applicationModule')
       $scope.selectMode = function (mode) {
         $scope.timesheetProcessModeList[0].selected = false;
         $scope.timesheetProcessModeList[1].selected = false;
-        if(mode.selected){
+        if (mode.selected) {
           mode.selected = false;
-        }else{
+        } else {
           mode.selected = true;
         }
-        if($scope.timesheetProcessModeList[1].selected){
+        if ($scope.timesheetProcessModeList[1].selected) {
           slippingMode = unfreezeMode;
-        }else{
-          slippingMode = slippingMode;
+        } else {
+          slippingMode = batchWriteMode;
         }
         $scope.timesheetProcessMode = mode.value;
         $scope.timesheetPopover.hide();
@@ -601,11 +631,13 @@ angular.module('applicationModule')
       }, element);
 
       $ionicGesture.on("touch", function (e) {
-        console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
-        console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
         var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
-        console.log('position ' + angular.toJson(position));
+        if (baseConfig.debug) {
+          console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
+          console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
+          console.log('position ' + angular.toJson(position));
+        }
         startTouchX = e.gesture.touches[0].pageX;
         startTouchY = e.gesture.touches[0].pageY;
         startTime = new Date().getTime();
@@ -665,7 +697,9 @@ angular.module('applicationModule')
           dateRange.dateFrom + '~' + dateRange.dateTo + ') ?', '', unfreeze);
       };
 
+      //切换月份
       $scope.getTimeSheet = function (year, month) {
+        timesheetMonthFunc.scrollToFixPosition(month.value, clientWidth);
         angular.forEach($scope.monthList, function (data) {
           data.selected = false;
         });
@@ -769,6 +803,13 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('applicationCtrl.$ionicView.enter');
         }
+      });
+
+      $scope.$on('$ionicView.beforeLeave', function (e) {
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$ionicView.beforeLeave');
+        }
+        stopSlipping();
       });
 
       $scope.$on('$destroy', function (e) {

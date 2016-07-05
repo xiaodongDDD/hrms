@@ -45,7 +45,7 @@ angular.module('myApp')
         };
         var onGetRegistrationID = function (data) {
           try {
-            alert("JPushPlugin:registrationID is " + angular.toJson(data));
+            //alert("JPushPlugin:registrationID is " + angular.toJson(data));
             if (data.length == 0) {
               var t1 = window.setTimeout(getRegistrationID, 1000);
             }

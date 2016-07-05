@@ -125,6 +125,20 @@
           color: #64ACFF;
         }
       }
+      .hms-singal-array-operation-text {
+        float: right;
+        height: 43px;
+        width: 35px;
+        font-size: 16px;
+        line-height: 43px;
+        font-weight: bold;
+        text-align: center;
+        margin-right: 10px;
+        &.activated{
+          font-size: 15px;
+          color: #64ACFF;
+        }
+      }
     }
     .hms-singal-array-content {
       padding-left: 12px;

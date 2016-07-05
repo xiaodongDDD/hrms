@@ -38,6 +38,36 @@
       </div>
     </div>
 
+    <!--合同续签方式维护方式-->
+    <div class="hms-workflow-array" ng-if="contractRenewShowFlag">
+      <div class="hms-singal-array-header">
+        <div class="hms-singal-array-name">
+          <i class="ion-ios-sunny"></i>合同续签方式维护通知
+        </div>
+        <div class="hms-singal-array-operation-text">
+          保存
+        </div>
+      </div>
+      <div class="hms-singal-array-content">
+        <div class="hms-singal-array-line" ng-click="showDataList()">
+          <div class="hms-singal-array-key">
+            续签方式
+          </div>
+          <div class="hms-singal-array-value">
+            现场
+          </div>
+        </div>
+        <div class="hms-singal-array-line">
+          <div class="hms-singal-array-key">
+            续签地址
+          </div>
+          <div class="hms-singal-array-value">
+             青浦区
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="hms-workflow-array" ng-repeat="array in singalArrayList" ng-if="true">
       <div class="hms-singal-array-header">
         <div class="hms-singal-array-name">
