@@ -8,6 +8,12 @@
     "businessPath": "http://wechat.hand-china.com/hmbms_hand/api/dataEngine",
     "pkgIdentifier": "",
     "appEnvironment": "UAT",
+    "expUploadUrl":"http://172.20.0.71:8099/handhr_aurora/hand_app_fileupload.svc",
+    "dbName":"makeNote.db",
+    "dbLocation":0,
+    "appRootPath":"",
+    "serverPath":"http://10.211.96.173:8080/bts",
+    "appRootFile": "helloCordova",
     "version":{
       "currentVersion": "1.9.2",
       "currentversionName": "此版本为测试版本1.9.2",

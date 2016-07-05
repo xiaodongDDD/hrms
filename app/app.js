@@ -95,12 +95,17 @@ angular.module('myApp')
         document.addEventListener("jpush.openNotification", onOpenNotification, false);
         initiateUI();
       }
-
+      var rootConfig = {
+        dbName:baseConfig.dbName,
+        dbLocation:0,
+        appRootFile:'helloCordova'
+      };
       if (ionic.Platform.isWebView()) {
+
         // alert(".....  "+window.sqlitePlugin);
         // alert(window.sqlitePlugin.openDatabase);
         // alert(LocalFileSystem);
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
+        /*window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
           // 获取路径
           baseConfig.appRootPath = fileSys.root.toURL() + '/' + baseConfig.appRootFile + '/';
           //showMessage(baseConfig.appRootPath+' - '+ fileSys.root.toURL() );
@@ -111,12 +116,11 @@ angular.module('myApp')
             function (error) {
               alert(error);
             });
-        });
+        });*/
 
-        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: 0});
-
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
         db.transaction(function (tx) {
-          tx.executeSql(' CREATE TABLE IF NOT EXISTS MOBILE_EXP_REPORT_LINE \
+          tx.executeSql('CREATE TABLE IF NOT EXISTS MOBILE_EXP_REPORT_LINE \
                     (line_id integer primary key AUTOINCREMENT,\
                     expenseObject_id INTEGER,\
                     expenseObject_code TEXT,\

@@ -8,6 +8,12 @@
     "businessPath": "http://mobile-app.hand-china.com/hmbms_hand/api/dataEngine",
     "pkgIdentifier": "",
     "appEnvironment": "PROD",
+    "expUploadUrl":"http://app.hand-china.com/hrms/hand_app_fileupload.svc",
+    "dbName":"makeNote.db",
+    "dbLocation":0,
+    "appRootPath":"",
+    "serverPath":"http://10.211.96.173:8080/bts",
+    "appRootFile": "helloCordova",
     "version":{
       "currentVersion": "1.9.4",
       "currentversionName": "此版本为正式版本1.9.4",

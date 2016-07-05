@@ -64,8 +64,8 @@
         <ion-item class="xbr-ion-item">
           <div ng-controller="photosController">
             <div class="xbr-ng-repeat" ng-repeat="photo in photos" on-hold="showConfirmPhoto($index)"
-                 ng-click="showAlertPhoto(photo.photo_name)">
-              <img ng-src="{{photoPathURL+photo.photo_name}}">
+                 ng-click="showAlertPhoto(photo.photo_src)">
+              <img ng-src="{{photo.photo_src}}">
             </div>
             <div class="xbr-flag-d" ng-show="canEdit">
               <div ng-hide="accountDetail.photos.length==0">

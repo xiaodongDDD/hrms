@@ -1,6 +1,6 @@
 angular.module('myApp')
   .config(['$stateProvider',
-    function ($stateProvider) { 
+    function ($stateProvider) {
       $stateProvider
         .state('tab.acc_photos', {
           url: '/acc/photos',
@@ -19,26 +19,26 @@ angular.module("applicationModule")
 
     $scope.photos = keepAccount.data.photos;
 
+
     //showMessage(angular.toJson(keepAccount.data.photos));
     $scope.serverURL = baseConfig.serverPath;
 
     $scope.photoPathURL = baseConfig.appRootPath;
 
-
-    $scope.showAlertPhoto = function (photoName) {//点击图片 放大图片
-      $scope.photoNameUrl = photoName;
+    $scope.showAlertPhoto = function (photoSrc) {//点击图片 放大图片
+      $scope.photoSrcUrl = photoSrc;
       // 自定义弹窗
-      var myPopup = $ionicPopup.show({ 
+      var myPopup = $ionicPopup.show({
         scope: $scope,
-        template: '<div style="text-align: center;"><img ng-src="{{photoPathURL + photoNameUrl}}"  style="width: 95%; height: 350px"></div>',
+        template: '<div style="text-align: center;"><img ng-src="{{photoSrcUrl}}"  style="width: 95%; height: 350px"></div>',
         buttons: [
-          {text: '取消'},
+          {text: '取消'}
         ]
       });
       myPopup.then(function (res) {
         console.log('Tapped!', res);
       });
-    }
+    };
     /*
      destinationType:Camera.DestinationType.FILE_URI,
      sourceType:Camera.PictureSourceType.CAMERA,
@@ -60,7 +60,7 @@ angular.module("applicationModule")
     //};
     /*拍摄照片 相机*/
     // $scope.getPhotoFromCamera=function(){
-    getPhotoFromCamera = function () { 
+    var tPhotoFromCamera = function () {
       //if (detectOS() == "iPhone") {
       if(ionic.Platform.isIOS() && !ionic.Platform.isIPad()){
         var optionsCamera = {
@@ -96,7 +96,7 @@ angular.module("applicationModule")
     };
 
     /*拍摄照片 相册*/
-    getPhotoFromLibary = function () {
+    var getPhotoFromLibary = function () {
       var optionsPhotoLibrary = {
         destinationType: Camera.DestinationType.FILE_URI,
         sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
@@ -231,6 +231,7 @@ angular.module("applicationModule")
           fileSys.root.getDirectory(myFolderApp,
             {create: true, exclusive: false},
             function (directory) {
+              console.log(directory);
               entry.moveTo(directory, newFileName, successMove, resOnError);
             },
             resOnError);
