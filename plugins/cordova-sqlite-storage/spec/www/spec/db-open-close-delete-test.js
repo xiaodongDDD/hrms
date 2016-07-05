@@ -604,7 +604,7 @@ var mytests = function() {
           };
 
           return window.sqlitePlugin.openDatabase(dbopts, okcb, errorcb);
-        }
+        };
 
         var deleteDatabase = function(first, second, third) {
           if (!isOldAndroidImpl) {
@@ -612,7 +612,7 @@ var mytests = function() {
           } else {
             window.sqlitePlugin.deleteDatabase({name: 'i2-'+first, location: 0}, second, third);
           }
-        }
+        };
 
         test_it(suiteName + ' test sqlitePlugin.deleteDatabase()', function () {
           stop();
@@ -954,7 +954,7 @@ var mytests = function() {
         test_it(suiteName + ' close then re-open (2x) allows subsequent queries to run', function () {
           // asynch test coming up
           stop(1);
-        
+
           var dbName = "Database-Close-and-Reopen";
 
           openDatabase({name: dbName, location: 0}, function (db) {
@@ -976,7 +976,7 @@ var mytests = function() {
                     }, function(tx) {
                       // close on transaction success not while executing
                       // or commit will fail
-                      db.close(); 
+                      db.close();
                     });
                   }, function (error) {
                     ok(false, error.message);

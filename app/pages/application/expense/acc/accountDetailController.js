@@ -319,7 +319,7 @@ angular.module("applicationModule")
 
         var sum = 0;
 
-
+        console.log(keepAccount.operation);
         if (keepAccount.operation == "INSERT") {
 
           //showMessage("准备插入2");
@@ -328,7 +328,6 @@ angular.module("applicationModule")
 
 
           $scope.accountDetail.total_amount = sum == NaN ? 0 : sum;
-
           $scope.accountDetail.local_status = "NEW";
 
           keepAccount.data = $scope.accountDetail;
@@ -336,7 +335,7 @@ angular.module("applicationModule")
           var promise = keepAccount.insert();
           promise.then(
             function (lineID) {
-              showMessage("保存成功--line_id:" + lineID);
+              console.log("保存成功--line_id:" + lineID);
               dialog.showAlert("I", "新建成功");
 
               keepAccount.data.line_id = lineID;
@@ -352,7 +351,7 @@ angular.module("applicationModule")
             }
           )
         } else if (keepAccount.operation == "UPDATE") {
-          showMessage("update");
+          console.log("update");
 
           sum = ($scope.accountDetail.expense_price * $scope.accountDetail.expense_quantity * $scope.accountDetail.exchange_rate).toFixed(2);
           $scope.accountDetail.total_amount = sum == NaN ? 0 : sum;
@@ -363,13 +362,12 @@ angular.module("applicationModule")
             function (lineID) {
               showMessage("更新成功--line_id:" + keepAccount.data.line_id + ' return ' + lineID);
               dialog.showAlert("I", "更新成功");
-
               //keepAccount.data.line_id=lineID;
               keepAccount.operation = "UPDATE";
               keepAccount.canUpload = true;
               $scope.canUpload = true;
               $ionicLoading.hide();
-
+              $ionicHistory.goBack();
             },
             function (err) {
               $ionicLoading.hide();
@@ -484,7 +482,18 @@ angular.module("applicationModule")
 
       //*/
     };
+    function fillNumberBySize(num, size) {
 
+      if (size != undefined || size > 0) {
+        if (Math.pow(10, size - 1) > num) {
+          var res = "000000000" + num;
+          return res.substr(res.length - size);
+        }
+      }
+
+      return "" + num;
+
+    }
     function uploadDataUnit() {
 
       var form = new FormData();
@@ -505,14 +514,12 @@ angular.module("applicationModule")
       //var expense_detail_id_copy = myDate.toLocaleString();        //获取日期与时间
 
 
-      showMessage(expense_detail_id);
+      console.log('expense_detail_id'+expense_detail_id);
 
       //console.log(expense_detail_id+" - "+expense_detail_id_copy);
 
-
       form.append("expense_detail_id", expense_detail_id);
-
-
+      //form.expense_detail_id = expense_detail_id;
       /*
        form.append("line_id",keepAccount.data.line_id);
        form.append("expense_type_id",keepAccount.data.expense_type_id);
@@ -547,7 +554,7 @@ angular.module("applicationModule")
       promise.then(
         function (response) {
           //var code=getResponseCode(response);
-          showMessage(angular.toJson(response));
+          console.log(angular.toJson(response));
           var code = response.head.code;
           if (code == "success") {
             //接受返回参数
@@ -569,7 +576,7 @@ angular.module("applicationModule")
                 if (code == "S") {
 
                   // $ionicLoading.hide();
-                  showMessage("上传成功 数据" + angular.toJson(res));
+                  console.log("上传成功 数据" + angular.toJson(res));
 
 
                   keepAccount.data.local_status = "UPLOADED";

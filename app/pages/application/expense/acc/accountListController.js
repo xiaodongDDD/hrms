@@ -1,6 +1,6 @@
 angular.module('myApp')
   .config(['$stateProvider',
-    function ($stateProvider) { 
+    function ($stateProvider) {
       $stateProvider
         .state('tab.acc_accountList', {
           url: '/acc/accountList',
@@ -16,7 +16,7 @@ angular.module('myApp')
 
 angular.module("applicationModule")
   .controller('accountListController', function ($scope, $http, $q, keepAccount, $state, $ionicLoading, baseConfig) {
-
+    console.log('accountListController');
     $scope.shouldShowDelete = true;
 
     function queryAccountList() {
@@ -48,10 +48,10 @@ angular.module("applicationModule")
       return deferred.promise;
     }
 
-    $ionicLoading.show({
-      template: 'Loading...',
-      duration: 1000
-    });
+    //$ionicLoading.show({
+    //  template: 'Loading...',
+    //  duration: 1000
+    //});
 
     ///*
     var promise = queryAccountList();
