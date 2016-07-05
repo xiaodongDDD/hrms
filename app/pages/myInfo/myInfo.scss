@@ -411,7 +411,7 @@
     margin: 0px;
     padding: 0px;
     width: 97%;
-    height: 210px;
+    height: 225px;
     margin-left: 1.5%;
     margin-top: 24px;
     box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
@@ -519,6 +519,18 @@
   .email-textarea{
     text-align: left;
     font-size: 0.9375rem;
+    color: #9b9b9b;
+    padding-right: 20px;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background-color: #ffffff;
+    padding-top: 0px;
+  }
+  .department-textarea{
+    text-align: left;
+    font-size: 0.9375rem;
+    line-height: normal;
     color: #9b9b9b;
     padding-right: 20px;
     width: 100%;
