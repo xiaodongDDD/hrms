@@ -51,6 +51,11 @@ angular.module('applicationModule')
       $scope.currentDetail = $stateParams.detail;
       var multipleArrayList = [];
 
+      //控制需要显示的数据模块
+      $scope.showList = {
+        contractRenewShowFlag: false, //合同续签地址回写数据块
+      }
+
       $scope.actionType = {
         "approve": "0",
         "reject": "-1",
@@ -77,6 +82,35 @@ angular.module('applicationModule')
       if (baseConfig.debug) {
         console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
       }
+
+      var init = {
+        initDataModal: function () {
+          if (detail.workflowId == 100728) { //合同续签地址维护
+            $scope.contractRenewShowFlag = true;
+          }
+        }
+      };
+
+      init.initDataModal();
+
+      $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/data-list.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.dataListModal = modal;
+      });//初始化下拉列表的modal
+
+      $scope.showDataList = function () {
+        $scope.dataTitle = '合同续签方式维护方式';
+        $scope.dataList = [
+          "现场",
+          "邮寄"];
+        $scope.dataListModal.show();
+      };
+
+      $scope.selectData = function () {
+        $scope.dataListModal.hide();
+      };
+
       //加载项目画面
       $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/transmit-person.html', {
         scope: $scope
@@ -123,7 +157,7 @@ angular.module('applicationModule')
           arrayList: line.line,
           currentPage: 1,
           currentArray: [],
-          showFlag : !$scope.workflowActionShowFlag
+          showFlag: !$scope.workflowActionShowFlag
         };
         if (line.line.length > 0) {
           var currentList = [];
@@ -268,7 +302,7 @@ angular.module('applicationModule')
               angular.forEach($scope.singalArrayList, function (data) {
                 data.showFlag = !$scope.workflowActionShowFlag;
               });
-              
+
               multipleArrayList = result.workflow_data.lines;
               angular.forEach(multipleArrayList, function (data) {
                 $scope.multipleLine.push(processLine(data));

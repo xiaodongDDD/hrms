@@ -6,10 +6,12 @@ angular.module('HmsModule')
     '$http',
     'hmsPopup',
     '$state',
+    'baseConfig',
     function ($log,
               $http,
               hmsPopup,
-              $state) {
+              $state,
+              baseConfig) {
       var serivieName = "HmsHttp";
       var isSucessfullName = "isSucessfull";
       var noAuthorPostName = serivieName + ".noAuthorPost";
@@ -22,7 +24,9 @@ angular.module('HmsModule')
         procedure = procedure;
       };
       var debug = function (text) {
-        $log.debug(procedure + " success");
+        if(baseConfig.debug) {
+          console.log(procedure + " success");
+        }
       };
 
       //如果登录令牌失效，跳转会登录界面
@@ -36,8 +40,10 @@ angular.module('HmsModule')
           goBackLogin(state);
         },
         isSuccessfull: function (status) {
-          $log.debug(isSucessfullName + " Start!");
-          $log.debug(noAuthorPostName + " status " + status);
+          if(baseConfig.debug){
+            console.log(isSucessfullName + " Start!");
+            console.log(noAuthorPostName + " status " + status);
+          }
           if (status == "S" || status == "SW") {
             return true;
           } else {
@@ -45,38 +51,50 @@ angular.module('HmsModule')
           }
         },
         post: function (url, paramter, state) {
-          $log.debug(postName + " Start!");
-          $log.debug(postName + " url " + url);
-          $log.debug(postName + " paramter " + angular.toJson(paramter));
+          if(baseConfig.debug) {
+            console.log(postName + " Start!");
+            console.log(postName + " url " + url);
+            console.log(postName + " paramter " + angular.toJson(paramter));
+          }
           var post = $http.post(url, paramter).success(function (response) {
             if (response.status == 'ETOKEN') {
               window.localStorage.token = '';
               goBackLogin($state);
               hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!')
             }
-            $log.debug(postName + " success");
-            $log.debug(postName + " response " + angular.toJson(response));
-            $log.debug(postName + " End!");
+            if(baseConfig.debug) {
+              console.log(postName + " success");
+              console.log(postName + " response " + angular.toJson(response));
+              console.log(postName + " End!");
+            }
           }).error(function (response, status) {
-            $log.debug(postName + " error");
-            $log.debug(postName + " response " + response);
-            $log.debug(postName + " status " + status);
-            $log.debug(postName + " End!");
+            if(baseConfig.debug) {
+              console.log(postName + " error");
+              console.log(postName + " response " + response);
+              console.log(postName + " status " + status);
+              console.log(postName + " End!");
+            }
           });
           return post;
         },
         get: function (url) {
-          $log.debug(getName + " Start!");
-          $log.debug(getName + " url " + url);
+          if(baseConfig.debug) {
+            console.log(getName + " Start!");
+            console.log(getName + " url " + url);
+          }
           var get = $http.get(url).success(function (response) {
-            $log.debug(getName + " success");
-            $log.debug(getName + " response " + angular.toJson(response));
-            $log.debug(getName + " End!");
+            if(baseConfig.debug) {
+              console.log(getName + " success");
+              console.log(getName + " response " + angular.toJson(response));
+              console.log(getName + " End!");
+            }
           }).error(function (response, status) {
-            $log.debug(getName + " error");
-            $log.debug(getName + " response " + response);
-            $log.debug(getName + " status " + status);
-            $log.debug(getName + " End!");
+            if(baseConfig.debug) {
+              console.log(getName + " error");
+              console.log(getName + " response " + response);
+              console.log(getName + " status " + status);
+              console.log(getName + " End!");
+            }
           });
           return get;
         }
