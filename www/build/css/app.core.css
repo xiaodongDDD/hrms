@@ -2986,8 +2986,8 @@ Copyright (c) 2015 Daniel Eden
   color: #17468F; }
 
 .transform-popover {
-  animation: transform-popover 500ms ease both;
-  -webkit-animation: transform-popover 500ms ease both; }
+  animation: transform-popover 300ms ease both;
+  -webkit-animation: transform-popover 300ms ease both; }
 
 @keyframes transform-popover {
   0% {
@@ -3027,8 +3027,8 @@ Copyright (c) 2015 Daniel Eden
     padding-left: 25px; }
 
 .search-input.ng-leave {
-  -webkit-animation: fadeOut 0.4s;
-  animation: fadeOut .4s; }
+  -webkit-animation: fadeOut 0.1s;
+  animation: fadeOut .1s; }
 
 .search-input.ng-enter {
   -webkit-animation: fadeInUp 0.6s;
@@ -4824,7 +4824,7 @@ Copyright (c) 2015 Daniel Eden
         .timesheet .calendar-day .calendar-week .day-item.reject {
           color: #913D88; }
         .timesheet .calendar-day .calendar-week .day-item.attendance {
-          color: #86E2D5; }
+          color: #1BBC9B; }
         .timesheet .calendar-day .calendar-week .day-item .each-day {
           width: 30px;
           height: 30px;
@@ -4935,7 +4935,7 @@ Copyright (c) 2015 Daniel Eden
         margin: 0;
         padding: 0; }
       .timesheet .allowance-content .allowance-detail .allowance-status {
-        color: #86E2D5; }
+        color: #1BBC9B; }
       .timesheet .allowance-content .allowance-detail .allowance-cash {
         color: #24559C;
         text-align: right; }
@@ -5686,6 +5686,18 @@ Copyright (c) 2015 Daniel Eden
         margin-right: 10px; }
         .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-operation.activated {
           font-size: 24px;
+          color: #64ACFF; }
+      .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-operation-text {
+        float: right;
+        height: 43px;
+        width: 35px;
+        font-size: 16px;
+        line-height: 43px;
+        font-weight: bold;
+        text-align: center;
+        margin-right: 10px; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-header .hms-singal-array-operation-text.activated {
+          font-size: 15px;
           color: #64ACFF; }
     .workflow-detail .hms-workflow-array .hms-singal-array-content {
       padding-left: 12px; }
@@ -7627,7 +7639,7 @@ Copyright (c) 2015 Daniel Eden
       height: 38px;
       width: 60px;
       background-color: transparent;
-      background-image: url("./../img/contact/mobile@3x.png");
+      background-image: url("./../img/contact/dial@3x.png");
       position: absolute;
       margin-top: 11px;
       right: 0%;
@@ -7649,24 +7661,230 @@ Copyright (c) 2015 Daniel Eden
     padding-top: 10px;
     height: 40px; }
 
-.employee-search-content .history {
-  font-size: 15px;
-  color: #D2D2D2; }
-  .employee-search-content .history img {
-    height: 16px;
-    align-self: center;
-    padding-left: 5px; }
-  .employee-search-content .history .history-logo {
-    padding-left: 10px; }
-  .employee-search-content .history .history-line {
-    border-bottom: 1px solid #D2D2D2;
-    align-self: center; }
+.employee-search-content {
+  background-color: #fafafa; }
+  .employee-search-content .history {
+    font-size: 15px;
+    color: #D2D2D2; }
+    .employee-search-content .history img {
+      height: 16px;
+      align-self: center;
+      padding-left: 5px; }
+    .employee-search-content .history .history-logo {
+      padding-left: 10px; }
+    .employee-search-content .history .history-line {
+      border-bottom: 1px solid #D2D2D2;
+      align-self: center; }
+  .employee-search-content .employee-item {
+    background-color: #fafafa;
+    padding: 10px 10px 10px 16px !important; }
+    .employee-search-content .employee-item.no-top-border-color {
+      border-top: none;
+      margin-top: -5px; }
+  .employee-search-content .clear-button {
+    text-align: center; }
+  .employee-search-content .first-item {
+    margin-top: 5px; }
+  .employee-search-content .search-result-item {
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(155, 155, 155, 0.13);
+    width: 97.4%;
+    margin-left: 1.3%;
+    margin-bottom: 12px; }
+    .employee-search-content .search-result-item.activated {
+      background-color: #f8f8f8;
+      opacity: 0.8; }
+    .employee-search-content .search-result-item .human-img {
+      height: 32px;
+      align-self: center;
+      padding-left: 7px; }
+    .employee-search-content .search-result-item .col-padding {
+      padding-top: 0px;
+      padding-bottom: 0px; }
+    .employee-search-content .search-result-item .tel-img {
+      width: 60px;
+      height: 60px;
+      background-color: transparent;
+      background-image: url("./../img/contact/dial@3x.png");
+      position: absolute;
+      margin-top: 18px;
+      right: 2%;
+      font-size: 14px;
+      color: #9B9B9B;
+      background-repeat: no-repeat;
+      background-size: 23px 23px;
+      background-position: 18px 15px; }
+      .employee-search-content .search-result-item .tel-img.activated {
+        opacity: 0.7;
+        transform: scale(0.8, 0.8);
+        -webkit-transform: scale(0.8, 0.8); }
+    .employee-search-content .search-result-item .name {
+      line-height: 23px;
+      color: #4A4A4A;
+      font-size: 16px; }
+    .employee-search-content .search-result-item .employee-status {
+      color: #24559C;
+      padding-left: 10px; }
+    .employee-search-content .search-result-item .mail-tel {
+      line-height: 23px;
+      color: #9B9B9B;
+      font-size: 15px; }
 
-.employee-search-content .employee-item {
-  padding: 10px 10px 10px 16px !important; }
-  .employee-search-content .employee-item.no-top-border-color {
-    border-top: none;
-    margin-top: -5px; }
+.contact-employee-detail {
+  background-color: #fafafa;
+  font-size: 15px; }
+  .contact-employee-detail .contact-bg {
+    height: 115px;
+    width: 100%;
+    z-index: 99;
+    background-image: url("./../img/contact/BG-profile@3x.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center; }
+  .contact-employee-detail .img-section {
+    height: 75px;
+    width: 76px;
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    margin-top: -40px;
+    z-index: 100;
+    margin-left: 4%; }
+    .contact-employee-detail .img-section .img-employee {
+      height: 70px;
+      width: 70px;
+      background-image: url("./../img/application/profile@3x.png");
+      background-repeat: no-repeat;
+      background-size: 64px 64px;
+      background-position: 6px 5px; }
+  .contact-employee-detail .employee-name {
+    color: white;
+    font-size: 17px;
+    position: absolute;
+    z-index: 100;
+    margin-left: 28%;
+    margin-top: -9%; }
+  .contact-employee-detail .employee-content {
+    padding-top: 115px; }
+    .contact-employee-detail .employee-content .np-padding-margin {
+      padding: 0px;
+      margin: 0px; }
+    .contact-employee-detail .employee-content .item-info {
+      margin: 0px;
+      padding: 0px;
+      border: none;
+      height: 91px;
+      width: 100%;
+      background-color: white;
+      box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.1); }
+      .contact-employee-detail .employee-content .item-info .section-bg {
+        height: 30px;
+        color: #4A4A4A;
+        font-size: 14px;
+        margin-left: 28%;
+        padding-top: 3%; }
+      .contact-employee-detail .employee-content .item-info .icon-row {
+        padding: 0px;
+        margin: 0px;
+        height: 40px;
+        margin-top: 10px; }
+      .contact-employee-detail .employee-content .item-info .col-image {
+        width: 34px;
+        height: 34px;
+        margin-left: auto;
+        margin-right: auto; }
+      .contact-employee-detail .employee-content .item-info .col-5 {
+        width: 5%; }
+      .contact-employee-detail .employee-content .item-info .info-text-label {
+        font-size: 0.75rem;
+        color: #9b9b9b;
+        align-self: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+    .contact-employee-detail .employee-content .item-employee {
+      margin: 0px;
+      padding: 0px;
+      width: 97%;
+      height: 78px;
+      margin-left: 1.5%;
+      margin-top: 10px;
+      box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.2);
+      border: none;
+      color: #4A4A4A;
+      font-size: 15px; }
+      .contact-employee-detail .employee-content .item-employee .item-row {
+        margin-left: 4%; }
+      .contact-employee-detail .employee-content .item-employee .item-row1 {
+        margin-left: 2%; }
+      .contact-employee-detail .employee-content .item-employee .item-line {
+        position: absolute;
+        height: 1px;
+        width: 100%;
+        margin-left: 4%;
+        background-color: #D2D2D2; }
+      .contact-employee-detail .employee-content .item-employee .mail-img {
+        width: 14px;
+        height: 11px;
+        align-self: center; }
+      .contact-employee-detail .employee-content .item-employee .tel-img {
+        width: 14px;
+        height: 14px;
+        align-self: center; }
+      .contact-employee-detail .employee-content .item-employee .col-item {
+        text-align: right;
+        color: #9B9B9B;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+  .contact-employee-detail .employee-button {
+    margin-top: 35px;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    align-self: center;
+    border-radius: 20px;
+    margin-left: 5.4%;
+    width: 89%;
+    min-height: 40px;
+    background-color: #6BB9F0; }
+
+/*
+ * --用于--自定义的head的返回样式
+ */
+.common-head {
+  position: fixed;
+  z-index: 100;
+  height: 44px;
+  width: 100%;
+  background-color: transparent; }
+  .common-head .back-button {
+    font-size: 30px;
+    color: white;
+    min-height: 35px;
+    margin-left: -35px;
+    width: 100px; }
+  .common-head .back-text {
+    font-size: 17px;
+    position: fixed;
+    padding-left: 5px;
+    margin-top: 0px; }
+  .common-head .img-button {
+    right: 5px;
+    position: absolute;
+    color: white;
+    min-height: 35px;
+    font-size: 16px; }
+  .common-head .img-icon {
+    height: 22px;
+    margin-top: 7px; }
+  .common-head .clear-image {
+    width: 24px;
+    height: 34px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px; }
 
 .login {
   background: url("../img/login/login-back.png");

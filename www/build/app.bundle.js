@@ -14,6 +14,264 @@ var myInfoModule = angular.module('myInfoModule', []);
 var tsApproveModule = angular.module('tsApproveModule', []);
 
 /**
+ * Created by wolf on 2016/7/1.
+ * @description: add common alert for every module--
+ * @attention:  nomenclature and block
+ */
+'use strict';
+HmsModule.constant('hmsConstant',[function () {
+
+  }]);
+
+/**
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
+ */
+angular.module('utilModule').factory('httpRequestHeader', function () {
+  var interceptor = {
+    'request': function (config) {
+      if (window.localStorage.token && window.localStorage.empno) {
+        var timestamp = new Date().getTime();
+        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
+        config.headers.timestamp = timestamp;
+        config.headers.token     = token;
+        config.headers.loginName = window.localStorage.empno;
+      }
+      return config;
+    }
+  };
+
+  return interceptor;
+});
+
+/**
+ * Created by wolf on 2016/6/13. (_wen.dai_)
+ */
+"use strict";
+//根据日期获取星期
+HmsModule.filter('weekDay', function () {
+  return function (data) {
+    if (data == "") {
+      return data;
+    } else {
+      var d = new Date(data);
+      var day = d.getDay();
+      switch (day) {
+        case  0:
+          data = data + "　" + "星期天";
+          break;
+        case  1:
+          data = data + "　" + "星期一";
+          break;
+        case  2:
+          data = data + "　" + "星期二";
+          break;
+        case  3:
+          data = data + "　" + "星期三";
+          break;
+        case  4:
+          data = data + "　" + "星期四";
+          break;
+        case  5:
+          data = data + "　" + "星期五";
+          break;
+        case  6:
+          data = data + "　" + "星期六";
+          break;
+      }
+      return data;
+    }
+  }
+});
+
+/**
+ * Created by wolf on 2016/6/12.
+ * @author:wen.dai@hand-china.com
+ */
+
+'use strict';
+
+/**
+ * 打印--console--level
+ */
+var log = console.log.bind(console);
+var warn = console.warn.bind(console);
+var error = console.error.bind(console);
+
+//格式化json
+function jsonFormat(newParam) {
+  var Json = angular.toJson(newParam, true);
+  return Json;
+};
+
+//获取当前的年月日 日期
+function getCurrentDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth() + 1;     //月
+  var day = now.getDate();            //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myCurrentDate = (year.toString() + month.toString() + day.toString());
+  return myCurrentDate;
+};
+
+//获取上个月的月末
+function getLastMonthDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth();     //月
+  var newDate = new Date(year, month, 1);
+  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
+  return myLastMonthDate;
+};
+
+//获取当前月的月末
+function getCurrentMonthLastDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth() + 1;     //月
+  var newDate = new Date(year, month, 1);
+  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
+  return myCurrentMonthLastDate;
+};
+
+//获取月和日
+function getMonthDay(newDate) {
+  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
+  return newMonthDay;
+};
+
+/**
+ ​ *  下面是去重的3个写法
+ ​ *  @1：最常规
+ ​ *  @2：思路好，但是性能差点
+ ​ *  @3：更好的  --推荐
+  *  @4：更复杂，适应性更广的
+ ​ */
+
+//@1:
+function unique_normal(arr) {
+  var ret = [];
+  for (var i = 0; i < arr.length; i++) {
+    var item = arr[i];
+    if (ret.indexOf(item) === -1) {
+      ret.push(item);
+    }
+  }
+  return ret;
+};
+
+//@2:
+var indexOf = [].indexOf ?
+  function (arr, item) {
+    return arr.indexOf(item);
+  } :
+  function indexOf(arr, item) {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === item) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+function unique(arr) {
+  var ret = [];
+  for (var i = 0; i < arr.length; i++) {
+    var item = arr[i];
+    if (indexOf(ret, item) === -1) {
+      ret.push(item);
+    }
+  }
+  return ret;
+};
+
+//@3: 支持数组子条目为对象的去重
+function unique_better(arr, newitem) {
+  var ret = [];
+  var hash = {};
+  for (var i = 0; i < arr.length; i++) {
+    if (typeof(arr[i]) == 'object') {
+      var item = arr[i][newitem];
+    } else {
+      var item = arr[i];
+    }
+    var item1 = arr[i]
+    var key = typeof(item) + item;
+    if (hash[key] !== 1) {
+      ret.push(item1);
+      hash[key] = 1;
+    }
+  }
+  return ret;
+};
+
+//@4: 更高级和复杂的去重法
+Array.prototype.arrUniq = function () {
+  var temp, arrVal,
+    array = this,
+    arrClone = array.concat(),//克隆数组
+    typeArr = {//数组原型
+      'obj': '[object Object]',
+      'fun': '[object Function]',
+      'arr': '[object Array]',
+      'num': '[object Number]'
+    },
+    ent = /(\u3000|\s|\t)*(\n)+(\u3000|\s|\t)*/gi;//空白字符正则
+
+  //把数组中的object和function转换为字符串形式
+  for (var i = arrClone.length; i--;) {
+    arrVal = arrClone[i];
+    temp = Object.prototype.toString.call(arrVal);
+
+    if (temp == typeArr['num'] && arrVal.toString() == 'NaN') {
+      arrClone[i] = arrVal.toString();
+    }
+
+    if (temp == typeArr['obj']) {
+      arrClone[i] = JSON.stringify(arrVal);
+    }
+
+    if (temp == typeArr['fun']) {
+      arrClone[i] = arrVal.toString().replace(ent, '');
+    }
+  }
+
+  //去重关键步骤
+  for (var i = arrClone.length; i--;) {
+    arrVal = arrClone[i];
+    temp = Object.prototype.toString.call(arrVal);
+
+    if (temp == typeArr['arr']) arrVal.arrUniq();//如果数组中有数组，则递归
+    if (arrClone.indexOf(arrVal) != arrClone.lastIndexOf(arrVal)) {//如果有重复的，则去重
+      array.splice(i, 1);
+      arrClone.splice(i, 1);
+    }
+    else {
+      if (Object.prototype.toString.call(array[i]) != temp) {
+        //检查现在数组和原始数组的值类型是否相同，如果不同则用原数组中的替换，原因是原数组经过了字符串变换
+        arrClone[i] = array[i];
+      }
+    }
+  }
+  return arrClone;
+};
+
+
+
+/**
  * @ngdoc directive
  * @name hideTabs
  * @module utilModule
@@ -319,8 +577,8 @@ HmsModule.directive("footerSelect", function () {
     template: '<ion-footer-bar class="foot-bar">' +
     '<div class="row buttons">' +
     '<button class="button button-clear ts-button-left" ng-click="selectAllItem()">全选</button>' +
-    '<button class="button button-clear ts-button-center" ng-click="passThrough()">通过</button>' +
-    '<button class="button button-clear ts-button-right" ng-click="refuse()">拒绝</button>' +
+    '<button class="button button-clear ts-button-center" ng-click="refuse()">拒绝</button>' +
+    '<button class="button button-clear ts-button-right" ng-click="passThrough()">通过</button>' +
     '</div>' +
     '</ion-footer-bar>',
     replace: true, //使用模板替换原始标记
@@ -635,214 +893,6 @@ angular.module('HmsModule')
   })*/
 
 /**
- * Created by wolf on 2016/7/1.
- * @description: add common alert for every module--
- * @attention:  nomenclature and block
- */
-'use strict';
-HmsModule.constant('hmsConstant',[function () {
-
-  }]);
-
-/**
- * @ngdoc interceptor
- * @name httpRequestHeader
- * @module utilModule
- * @description
- * This is the http interceptor
- * @author
- * gusenlin
- */
-angular.module('utilModule').factory('httpRequestHeader', function () {
-  var interceptor = {
-    'request': function (config) {
-      if (window.localStorage.token && window.localStorage.empno) {
-        var timestamp = new Date().getTime();
-        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
-        config.headers.timestamp = timestamp;
-        config.headers.token     = token;
-        config.headers.loginName = window.localStorage.empno;
-      }
-      return config;
-    }
-  };
-
-  return interceptor;
-});
-
-/**
- * Created by wolf on 2016/6/13. (_wen.dai_)
- */
-"use strict";
-//根据日期获取星期
-HmsModule.filter('weekDay', function () {
-  return function (data) {
-    if (data == "") {
-      return data;
-    } else {
-      var d = new Date(data);
-      var day = d.getDay();
-      switch (day) {
-        case  0:
-          data = data + "　" + "星期天";
-          break;
-        case  1:
-          data = data + "　" + "星期一";
-          break;
-        case  2:
-          data = data + "　" + "星期二";
-          break;
-        case  3:
-          data = data + "　" + "星期三";
-          break;
-        case  4:
-          data = data + "　" + "星期四";
-          break;
-        case  5:
-          data = data + "　" + "星期五";
-          break;
-        case  6:
-          data = data + "　" + "星期六";
-          break;
-      }
-      return data;
-    }
-  }
-});
-
-/**
- * Created by wolf on 2016/6/12.
- * @author:wen.dai@hand-china.com
- */
-
-'use strict';
-
-/**
- * 打印--console--level
- */
-var log = console.log.bind(console);
-var warn = console.warn.bind(console);
-var error = console.error.bind(console);
-
-//格式化json
-function jsonFormat(newParam) {
-  var Json = angular.toJson(newParam, true);
-  return Json;
-};
-
-//获取当前的年月日 日期
-function getCurrentDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth() + 1;     //月
-  var day = now.getDate();            //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myCurrentDate = (year.toString() + month.toString() + day.toString());
-  return myCurrentDate;
-};
-
-//获取上个月的月末
-function getLastMonthDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth();     //月
-  var newDate = new Date(year, month, 1);
-  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
-  return myLastMonthDate;
-};
-
-//获取当前月的月末
-function getCurrentMonthLastDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth() + 1;     //月
-  var newDate = new Date(year, month, 1);
-  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
-  return myCurrentMonthLastDate;
-};
-
-//获取月和日
-function getMonthDay(newDate) {
-  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
-  return newMonthDay;
-};
-
-/**
- ​ *  下面是去重的3个写法
- ​ *  @1：最常规
- ​ *  @2：思路好，但是性能差点
- ​ *  @3：更好的
- ​ */
-
-//@1:
-function unique_normal(arr) {
-  var ret = [];
-  for (var i = 0; i < arr.length; i++) {
-    var item = arr[i];
-    if (ret.indexOf(item) === -1) {
-      ret.push(item);
-    }
-  }
-  return ret;
-};
-
-//@2:
-var indexOf = [].indexOf ?
-  function (arr, item) {
-    return arr.indexOf(item);
-  } :
-  function indexOf(arr, item) {
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i] === item) {
-        return i;
-      }
-    }
-    return -1;
-  };
-
-function unique(arr) {
-  var ret = [];
-  for (var i = 0; i < arr.length; i++) {
-    var item = arr[i];
-    if (indexOf(ret, item) === -1) {
-      ret.push(item);
-    }
-  }
-  return ret;
-};
-
-//@3: 支持数组子条目为对象的去重
-function unique_better(arr, newitem) {
-  var ret = [];
-  var hash = {};
-  for (var i = 0; i < arr.length; i++) {
-    if (typeof(arr[i]) == 'object') {
-      var item = arr[i][newitem];
-    } else {
-      var item = arr[i];
-    }
-    var item1 = arr[i]
-    var key = typeof(item) + item;
-    if (hash[key] !== 1) {
-      ret.push(item1);
-      hash[key] = 1;
-    }
-  }
-  return ret;
-};
-
-
-
-
-
-/**
  * Created by wolf on 2016/6/30. (wen.da)
  */
 angular.module('HmsModule')
@@ -936,10 +986,12 @@ angular.module('HmsModule')
     '$http',
     'hmsPopup',
     '$state',
+    'baseConfig',
     function ($log,
               $http,
               hmsPopup,
-              $state) {
+              $state,
+              baseConfig) {
       var serivieName = "HmsHttp";
       var isSucessfullName = "isSucessfull";
       var noAuthorPostName = serivieName + ".noAuthorPost";
@@ -952,7 +1004,9 @@ angular.module('HmsModule')
         procedure = procedure;
       };
       var debug = function (text) {
-        $log.debug(procedure + " success");
+        if(baseConfig.debug) {
+          console.log(procedure + " success");
+        }
       };
 
       //如果登录令牌失效，跳转会登录界面
@@ -966,8 +1020,10 @@ angular.module('HmsModule')
           goBackLogin(state);
         },
         isSuccessfull: function (status) {
-          $log.debug(isSucessfullName + " Start!");
-          $log.debug(noAuthorPostName + " status " + status);
+          if(baseConfig.debug){
+            console.log(isSucessfullName + " Start!");
+            console.log(noAuthorPostName + " status " + status);
+          }
           if (status == "S" || status == "SW") {
             return true;
           } else {
@@ -975,38 +1031,50 @@ angular.module('HmsModule')
           }
         },
         post: function (url, paramter, state) {
-          $log.debug(postName + " Start!");
-          $log.debug(postName + " url " + url);
-          $log.debug(postName + " paramter " + angular.toJson(paramter));
+          if(baseConfig.debug) {
+            console.log(postName + " Start!");
+            console.log(postName + " url " + url);
+            console.log(postName + " paramter " + angular.toJson(paramter));
+          }
           var post = $http.post(url, paramter).success(function (response) {
             if (response.status == 'ETOKEN') {
               window.localStorage.token = '';
               goBackLogin($state);
               hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!')
             }
-            $log.debug(postName + " success");
-            $log.debug(postName + " response " + angular.toJson(response));
-            $log.debug(postName + " End!");
+            if(baseConfig.debug) {
+              console.log(postName + " success");
+              console.log(postName + " response " + angular.toJson(response));
+              console.log(postName + " End!");
+            }
           }).error(function (response, status) {
-            $log.debug(postName + " error");
-            $log.debug(postName + " response " + response);
-            $log.debug(postName + " status " + status);
-            $log.debug(postName + " End!");
+            if(baseConfig.debug) {
+              console.log(postName + " error");
+              console.log(postName + " response " + response);
+              console.log(postName + " status " + status);
+              console.log(postName + " End!");
+            }
           });
           return post;
         },
         get: function (url) {
-          $log.debug(getName + " Start!");
-          $log.debug(getName + " url " + url);
+          if(baseConfig.debug) {
+            console.log(getName + " Start!");
+            console.log(getName + " url " + url);
+          }
           var get = $http.get(url).success(function (response) {
-            $log.debug(getName + " success");
-            $log.debug(getName + " response " + angular.toJson(response));
-            $log.debug(getName + " End!");
+            if(baseConfig.debug) {
+              console.log(getName + " success");
+              console.log(getName + " response " + angular.toJson(response));
+              console.log(getName + " End!");
+            }
           }).error(function (response, status) {
-            $log.debug(getName + " error");
-            $log.debug(getName + " response " + response);
-            $log.debug(getName + " status " + status);
-            $log.debug(getName + " End!");
+            if(baseConfig.debug) {
+              console.log(getName + " error");
+              console.log(getName + " response " + response);
+              console.log(getName + " status " + status);
+              console.log(getName + " End!");
+            }
           });
           return get;
         }
@@ -1032,7 +1100,7 @@ angular.module('HmsModule')
             animation: 'fade-in',
             showBackdrop: false,
             maxWidth: 200,
-            duration: 2000
+            duration: 1000
           });
         } else {
           $cordovaToast.showLongBottom((angular.isDefined(content) ? content : "操作失败")).then(function (success) {
@@ -1565,7 +1633,7 @@ angular.module('myApp')
         };
         var onGetRegistrationID = function (data) {
           try {
-            alert("JPushPlugin:registrationID is " + angular.toJson(data));
+            //alert("JPushPlugin:registrationID is " + angular.toJson(data));
             if (data.length == 0) {
               var t1 = window.setTimeout(getRegistrationID, 1000);
             }
@@ -1615,12 +1683,17 @@ angular.module('myApp')
         document.addEventListener("jpush.openNotification", onOpenNotification, false);
         initiateUI();
       }
-
+      var rootConfig = {
+        dbName:baseConfig.dbName,
+        dbLocation:0,
+        appRootFile:'helloCordova'
+      };
       if (ionic.Platform.isWebView()) {
+
         // alert(".....  "+window.sqlitePlugin);
         // alert(window.sqlitePlugin.openDatabase);
         // alert(LocalFileSystem);
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
+        /*window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
           // 获取路径
           baseConfig.appRootPath = fileSys.root.toURL() + '/' + baseConfig.appRootFile + '/';
           //showMessage(baseConfig.appRootPath+' - '+ fileSys.root.toURL() );
@@ -1631,12 +1704,11 @@ angular.module('myApp')
             function (error) {
               alert(error);
             });
-        });
+        });*/
 
-        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: 0});
-
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
         db.transaction(function (tx) {
-          tx.executeSql(' CREATE TABLE IF NOT EXISTS MOBILE_EXP_REPORT_LINE \
+          tx.executeSql('CREATE TABLE IF NOT EXISTS MOBILE_EXP_REPORT_LINE \
                     (line_id integer primary key AUTOINCREMENT,\
                     expenseObject_id INTEGER,\
                     expenseObject_code TEXT,\
@@ -1961,129 +2033,21 @@ angular.module('applicationModule')
         $state.go(appItem.destUrl);
       };
 
-      console.log('applicationCtrl.enter');
-
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('applicationCtrl.$ionicView.enter');
-      });
-
-      $scope.$on('$destroy', function (e) {
-        console.log('applicationCtrl.$destroy');
-      });
-    }]);
-
-/**
- *  modify by shellWolf on 16/06/28.
- */
-angular.module('contactModule')
-  .controller('ContactCtrl', [
-    '$scope',
-    '$ionicScrollDelegate',
-    '$ionicModal',
-    function ($scope,
-              $ionicScrollDelegate,
-              $ionicModal) {
-      /**
-       * var section
-       */
-      {
-        $scope.customContactsInfo = [
-          {
-            name: '小哥',
-            tel: '13478654565',
-            imgUrl: 'build/img/contact/profile3@3x.png'
-          }, {
-            name: '成成',
-            tel: '13478654565',
-            imgUrl: 'build/img/contact/profile2@3x.png'
-          }, {
-            name: '晴子',
-            tel: '13478654565',
-            imgUrl: 'build/img/contact/profile1@3x.png'
-          }, {
-            name: '小鹿',
-            tel: '13478654565',
-            imgUrl: 'build/img/contact/profile4@3x.png'
-          }, {
-            name: '小狼',
-            tel: '15675348120',
-            imgUrl: 'build/img/contact/profile-2@3x.png'
-          }, {
-            name: '小哥',
-            tel: '13478654565',
-            imgUrl: 'build/img/contact/profile3@3x.png'
-          }, {
-            name: '成成',
-            tel: '13478654565',
-            imgUrl: 'build/img/contact/profile2@3x.png'
-          }, {
-            name: '晴子',
-            tel: '13478654565',
-            imgUrl: 'build/img/contact/profile1@3x.png'
-          }, {
-            name: '小鹿',
-            tel: '13478654565',
-            imgUrl: 'build/img/contact/profile4@3x.png'
-          }, {
-            name: '小狼',
-            tel: '15675348120',
-            imgUrl: 'build/img/contact/profile-2@3x.png'
-          }
-        ];
-        $scope.showTopInput = false; // 默认不显示bar上的搜索框
-        $scope.resultList = ['1','2','3']; //存储搜索结果
-        var position = ''; //记录滚动条的位置--
+      if (baseConfig.debug) {
+        console.log('applicationCtrl.enter');
       }
+
       $scope.$on('$ionicView.enter', function (e) {
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$ionicView.enter');
+        }
       });
 
       $scope.$on('$destroy', function (e) {
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$destroy');
+        }
       });
-
-      $scope.watchScroll = function () { //滚动内容时执行的method
-        position = $ionicScrollDelegate.getScrollPosition().top;
-        $scope.$apply(function () {
-          if (position < 33) {
-            $scope.showTopInput = false;
-          } else if (position >= 33) {
-            $scope.showTopInput = true;
-          }
-        });
-      };
-
-      /**
-       * modal input 方法区
-       */
-      $ionicModal.fromTemplateUrl('build/pages/contact/modal/contact-search.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.contactInputModal = modal;
-      });
-      $scope.goInputModal = function () {
-        $scope.contactInputModal.show();
-      };
-
-      $scope.hideContactSearch = function () {
-        $scope.contactInputModal.hide();
-      };
-
-      $scope.searchContacts = function () {
-      };
-
-      $scope.selectEmployee = function () {
-      };
-
-      $scope.goStructure = function () {
-      };
-
-      $scope.goDetailInfo = function () {
-      };
-
-      $scope.telNumber = function (event, newNumber) {
-        event.stopPropagation(); //阻止事件冒泡
-        window.location.href = "tel:" + newNumber;
-      };
-
     }]);
 
 /**
@@ -2140,6 +2104,297 @@ angular.module('loginModule')
         }
       });
     }]);
+
+/**
+ *  modify by shellWolf on 16/06/28.
+ */
+'use strict';
+angular.module('contactModule')
+  .controller('ContactCtrl', [
+    '$scope',
+    '$ionicScrollDelegate',
+    '$ionicModal',
+    'baseConfig',
+    'hmsHttp',
+    'hmsPopup',
+    '$state',
+    function ($scope,
+              $ionicScrollDelegate,
+              $ionicModal,
+              baseConfig,
+              hmsHttp,
+              hmsPopup,
+              $state) {
+      /**
+       * var section
+       */
+      {
+        $scope.customContactsInfo = [];
+        $scope.showTopInput = false; // 默认不显示bar上的搜索框
+        $scope.showInfinite = false; //默认隐藏无限滚动的标签
+        $scope.contactLoading = false; //默认不显示loading加载
+        $scope.showHistory = true; //默认显示搜索历史
+        $scope.resultList = []; //存储搜索结果
+        $scope.contactKey = {getValue: ''}; //绑定输入的关键字
+        $scope.historys = []; //存储搜索历史的关键字
+        $scope.newPage = 0;
+        var CONTACT_TAG = 'contact:\n';
+        var DB_NAME = 'key_history';
+        var position = ''; //记录滚动条的位置--
+        var getEmployeeUrl = baseConfig.businessPath + '/get_empinfo/get_employees';
+        var employeeParams = {params: {p_token: '', p_page: ''}};
+        $scope.historys = (storedb(DB_NAME).find()).arrUniq();
+        if ($scope.historys.length > 10) {
+          $scope.historys = $scope.historys.slice(0, 10);
+        }
+      }
+
+      $scope.$on('$ionicView.enter', function (e) {
+      });
+
+      $scope.$on('$destroy', function (e) {
+      });
+
+      $scope.watchScroll = function () { //滚动内容时执行的method
+        position = $ionicScrollDelegate.getScrollPosition().top;
+        $scope.$apply(function () {
+          if (position < 33) {
+            $scope.showTopInput = false;
+          } else if (position >= 33) {
+            $scope.showTopInput = true;
+          }
+        });
+      };
+
+      function dealHistory(newEmployee) {
+        storedb(DB_NAME).remove({historyItem: newEmployee}, function (err) {
+          if (!err) {
+          } else {
+            hmsPopup.showShortCenterToast(err);
+          }
+        });
+        storedb(DB_NAME).insert({historyItem: newEmployee}, function (err) {
+          if (!err) {
+            $scope.historys = (storedb(DB_NAME).find()).arrUniq();
+          } else {
+            hmsPopup.showShortCenterToast(err);
+          }
+        });
+        if ($scope.historys.length > 10) {
+          $scope.historys = $scope.historys.slice(0, 10);
+        }
+      };
+
+      /**
+       * modal input 方法区
+       */
+      $ionicModal.fromTemplateUrl('build/pages/contact/modal/contact-search.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.contactInputModal = modal;
+      });
+      $scope.goInputModal = function () {
+        $scope.contactInputModal.show();
+      };
+
+      $scope.hideContactSearch = function () {
+        $scope.contactInputModal.hide();
+        $scope.showHistory = true;
+        $scope.resultList = [];
+        $scope.contactKey.getValue = '';
+      };
+
+      $scope.getEmployeeData = function (moreFlag) { //获取搜索关键字的数据
+        hmsHttp.post(getEmployeeUrl, employeeParams).success(function (response) {
+          $scope.contactLoading = false;
+          if (response.token == 0) {
+            $scope.showInfinite = false;
+            if (moreFlag === 'loadMore' && $scope.newPage > 2) {
+              hmsPopup.showShortCenterToast('数据加载完毕!');
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            } else {
+              $scope.resultList = [];
+              //hmsPopup.showShortCenterToast('没有查到相关数据!');
+            }
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+          } else {
+            if (response.count <= 7) {
+              $scope.showInfinite = false;
+              angular.forEach(response.token, function (data, index) {
+                $scope.resultList.push(data);
+              });
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            } else {
+              $scope.showInfinite = true;
+              angular.forEach(response.token, function (data, index) {
+                $scope.resultList.push(data);
+              });
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+          }
+        }).error(function (error) {
+          hmsPopup.showShortCenterToast('请检查网络连接,稍后重试!');
+          $scope.contactLoading = false;
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        });
+      };
+      $scope.loadMore = function () {
+        $scope.newPage += 1;
+        employeeParams.params.p_token = $scope.contactKey.getValue;
+        employeeParams.params.p_page = $scope.newPage;
+        $scope.getEmployeeData('loadMore');
+      };
+
+      $scope.searchContacts = function () { //响应搜索输入框的方法
+        $scope.showHistory = false;
+        if ($scope.contactKey.getValue === '') {
+          $scope.showHistory = true;
+        } else {
+        }
+        $scope.newPage = 1;
+        employeeParams.params.p_token = $scope.contactKey.getValue;
+        employeeParams.params.p_page = $scope.newPage;
+        $scope.contactLoading = true;
+        $scope.resultList = [];
+        $scope.getEmployeeData('init');
+      };
+
+      $scope.getHistoryItem = function (values) {
+        $scope.contactKey.getValue = values.historyItem;
+        employeeParams.params.p_token = $scope.contactKey.getValue;
+        employeeParams.params.p_page = 1;
+        $scope.contactLoading = true;
+        $scope.showHistory = false;
+        $scope.resultList = [];
+        dealHistory(values.historyItem);
+        $scope.getEmployeeData('init');
+      };
+
+      $scope.deleteHistory = function (values) { //清空历史数据
+        $scope.historys = [];
+        localStorage.removeItem(DB_NAME);
+      };
+
+      $scope.selectEmployeeItem = function (newEmployeeName, newEmployeeNumber) {
+        dealHistory(newEmployeeName);
+        $scope.contactInputModal.hide();
+        $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
+      };
+
+      $scope.goStructure = function () {
+      };
+
+      $scope.goDetailInfo = function () {
+        $scope.contactInputModal.hide();
+        $state.go('tab.employeeDetail', {employeeNumber: '7963'});
+      };
+
+      $scope.telNumber = function (event, newNumber) {
+        event.stopPropagation(); //阻止事件冒泡
+        window.location.href = "tel:" + newNumber;
+      };
+
+    }]);
+
+/**
+ */
+var storedb = function (collectionName) {
+  collectionName = collectionName ? collectionName : 'default';
+
+  var err;
+  var cache = localStorage[collectionName] ? JSON.parse(localStorage[collectionName]) : [];
+
+  return {
+    insert: function (obj, callback) {
+
+      cache.unshift(obj);
+
+      localStorage.setItem(collectionName, JSON.stringify(cache));
+      if (callback)
+        callback(err, obj);
+    },
+
+    find: function (obj, callback) {
+      if (arguments.length == 0) {
+        return cache;
+      } else {
+        var result = [];
+
+        for (var key in obj) {
+          for (var i = 0; i < cache.length; i++) {
+            if (cache[i][key] == obj[key]) {
+              result.push(cache[i]);
+            }
+          }
+        }
+        if (callback)
+          callback(err, result);
+        else
+          return result;
+      }
+    },
+
+    update: function (obj, upsert, callback) {
+
+      for (var key in obj) {
+        for (var i = 0; i < cache.length; i++) {
+          if (cache[i][key] == obj[key]) {
+
+            end_loops:
+              for (var upsrt in upsert) {
+                switch (upsrt) {
+                  case "$inc":
+                    for (var newkey in upsert[upsrt]) {
+                      cache[i][newkey] = parseInt(cache[i][newkey]) + parseInt(upsert[upsrt][newkey]);
+                    }
+                    break;
+
+                  case "$set":
+                    for (var newkey in upsert[upsrt]) {
+                      cache[i][newkey] = upsert[upsrt][newkey];
+                    }
+                    break;
+
+                  case "$push":
+                    for (var newkey in upsert[upsrt]) {
+                      cache[i][newkey].push(upsert[upsrt][newkey]);
+                    }
+                    break;
+
+                  default:
+                    upsert['_id'] = cache[i]['_id'];
+                    cache[i] = upsert;
+                    break end_loops;
+                }
+              }
+          }
+        }
+      }
+      localStorage.setItem(collectionName, JSON.stringify(cache));
+      if (callback)
+        callback(err);
+
+    },
+
+    remove: function (obj, callback) {
+      if (arguments.length == 0) {
+        localStorage.removeItem(collectionName);
+      } else {
+        for (var key in obj) {
+          for (var i = cache.length - 1; i >= 0; i--) {
+            if (cache[i][key] == obj[key]) {
+              cache.splice(i, 1);
+            }
+          }
+        }
+        localStorage.setItem(collectionName, JSON.stringify(cache));
+      }
+      if (callback)
+        callback(err);
+    }
+
+  };
+};
 
 /**
  * Created by gusenlin on 16/4/24.
@@ -2654,17 +2909,20 @@ angular.module('myInfoModule')
           }else if($scope.qualityIssue[3] == true){
             param.params.p_feedback_type="其他问题";
           }
+          hmsPopup.showLoading('请稍候');
           hmsHttp.post(url, param).success(function (result) {
             //hmsPopup.hideLoading();
             var message=result.returnMsg;
             if (baseConfig.debug) {
               console.log("result success " + angular.toJson(result));
             }
+            hmsPopup.hideLoading();
             hmsPopup.showShortCenterToast(message);
             if(result.returnCode=="S"){
               $ionicHistory.goBack();
             }
           }).error(function(error,status){
+            hmsPopup.hideLoading();
             hmsPopup.showShortCenterToast("网络连接出错");
             if (baseConfig.debug) {
               console.log("response error " + angular.toJson(error));
@@ -5447,6 +5705,11 @@ angular.module('applicationModule')
       $scope.currentDetail = $stateParams.detail;
       var multipleArrayList = [];
 
+      //控制需要显示的数据模块
+      $scope.showList = {
+        contractRenewShowFlag: false, //合同续签地址回写数据块
+      }
+
       $scope.actionType = {
         "approve": "0",
         "reject": "-1",
@@ -5473,6 +5736,35 @@ angular.module('applicationModule')
       if (baseConfig.debug) {
         console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
       }
+
+      var init = {
+        initDataModal: function () {
+          if (detail.workflowId == 100728) { //合同续签地址维护
+            $scope.contractRenewShowFlag = true;
+          }
+        }
+      };
+
+      init.initDataModal();
+
+      $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/data-list.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.dataListModal = modal;
+      });//初始化下拉列表的modal
+
+      $scope.showDataList = function () {
+        $scope.dataTitle = '合同续签方式维护方式';
+        $scope.dataList = [
+          "现场",
+          "邮寄"];
+        $scope.dataListModal.show();
+      };
+
+      $scope.selectData = function () {
+        $scope.dataListModal.hide();
+      };
+
       //加载项目画面
       $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/transmit-person.html', {
         scope: $scope
@@ -5519,7 +5811,7 @@ angular.module('applicationModule')
           arrayList: line.line,
           currentPage: 1,
           currentArray: [],
-          showFlag : !$scope.workflowActionShowFlag
+          showFlag: !$scope.workflowActionShowFlag
         };
         if (line.line.length > 0) {
           var currentList = [];
@@ -5664,7 +5956,7 @@ angular.module('applicationModule')
               angular.forEach($scope.singalArrayList, function (data) {
                 data.showFlag = !$scope.workflowActionShowFlag;
               });
-              
+
               multipleArrayList = result.workflow_data.lines;
               angular.forEach(multipleArrayList, function (data) {
                 $scope.multipleLine.push(processLine(data));
@@ -5958,4163 +6250,82 @@ angular.module('applicationModule')
     }]);
 
 /**
- * Created by wuxiaocheng on 15/8/26.
+ * Created by wolf on 2016/7/5.
+ * -wen.dai-
  */
+'use strict';
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.acc_detail', {
-          url: '/acc/detail',
-          params: {},
+        .state('tab.employeeDetail', {
+          url: 'contact/employeeDetail',
           views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/acc/accountDetail.html',
-              controller: 'accountDetailController',
-              cache: false
+            'tab-contact': {
+              templateUrl: 'build/pages/contact/detail/employee-detail.html',
+              controller: 'contactEmployeeDetailCtl'
             }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('accountDetailController', function ($scope, keepAccount, expenseApply, expenseObject, dialog, $http, $rootScope, $state, $ionicHistory, $ionicLoading, baseConfig) {
-
-    $scope.canEdit = keepAccount.canEdit;
-    $scope.canUpload = keepAccount.canUpload;
-    $scope.accountDetail = keepAccount.data;
-
-    expenseObject.businessType = 'ACC';
-
-    /*
-     $ionicLoading.show({
-     template: 'Loading ... ',
-     duration: 1000
-     });
-     */
-    //showMessage(angular.toJson($scope.accountDetail));
-    //showMessage(angular.toJson(keepAccount.data));
-
-    $scope.currentProgress = '';
-    $scope.photoPathURL = baseConfig.appRootPath;
-
-
-    /*是否隐藏 从记一笔创建 按钮的标识位 ,当来源为ACCOUNT 时表示从记一笔端进入，此时隐藏改按钮*/
-    var sourceFrom = keepAccount.sourceFrom;
-    if (sourceFrom == "ACCOUNT") {    //ACCOUNT  表示从记一笔进入
-      if (keepAccount.canEdit == true) {
-        $scope.title = '记一笔';
-      }
-      else {
-        $scope.title = "记一笔"
-      }
-      //$scope.title="记一笔";
-    } else {                        //EXPENSE 或其他  表示从报销单进入
-      $scope.title = "报销明细";
-    }
-
-    if (sourceFrom == 1) {
-
-    }
-    /******
-     *  照片响应
-     */
-    $scope.showPhoto = function () {
-      $scope.valueChange();
-      //globalNavigator.pushPage('html/acc/photos.html', { animation : 'slide' });
-
-      $state.go('tab.acc_photos');
-      //showMessage("t");
-      //$state.go("tab.acc_photoDetail");
-
-    };
-
-
-    if (keepAccount.canEdit == true && keepAccount.boolLoadExpenseObject == true) {
-      $ionicLoading.show({
-        template: '下载基础后台数据 ... '
-        //duration: 3000
-      });
-
-      /****************
-       *  查看
-       *
-       */
-      var promise = expenseObject.queryProjectList();
-      promise.then(function (response) {
-
-        //console.log(angular.toJson(response));
-        //showMessage("status -" +response["status"]);
-
-
-        if (response["status"] == "S") {
-
-
-          keepAccount.boolLoadExpenseObject = false;
-          // 清空 数据
-
-          keepAccount.projectList = [];
-          keepAccount.expenseItemList = [];
-          keepAccount.expenseCostList = [];
-
-
-          // 项目列表
-          var proj_tmp = response["proj"];
-          $.each(proj_tmp, function (i, value) {
-            var item = {
-              expenseObject_id: value.pj_id,
-              expenseObject_code: value.pj_code,
-              expenseObject_desc: value.pj_name,
-              expenseObject_type: value.cost_type,
-              //expenseItemList: value.expense,
-              expenseItemList_index: i
-            };
-
-
-            // 如果 当前 费用对象 匹配  加载费用类型 列表
-            if ($scope.accountDetail.expenseObject_id == item.expenseObject_id) {
-              var promise = expenseObject.queryExpenseList(item.expenseObject_id, item.expenseObject_code);
-
-              promise.then(function (response) {
-                //console.log("接口返回数据+++：" + angular.toJson(response));
-                // 费用类型
-                var expenseItemList_tmp = response.expense;
-                //console.log("=========: " + angular.toJson(expenseItemList_tmp));
-                $.each(expenseItemList_tmp, function (i, value) {
-                  var item = {
-                    expense_item_code: value.exp_code,
-                    expense_item_desc: value.exp_name,
-                    expense_item_house: value.exp_house,
-                    expense_item_index: i
-
-                  };
-
-                  // 租房
-                  if ($scope.accountDetail.expense_item_code == item.expense_item_code) {
-
-                    var expenseHouseList_tmp = item.expense_item_house;
-
-                    $.each(expenseHouseList_tmp, function (i, value) {
-                      var item = {
-                        costObjectId: value.id,
-                        desc: value.name
-
-                      };
-
-                      keepAccount.expenseCostList.push(item);
-
-                    });
-
-
-                    console.log("coutList -- " + angular.toJson(keepAccount.expenseCostList));
-                  }
-
-                  keepAccount.expenseItemList.push(item);
-
-                });
-              }, function (response) {
-                //alert("网络连接错误,初始化数据 projectList");
-                showMessage(response);
-                $ionicLoading.hide();
-                $ionicLoading.show({
-                  template: '网络连接错误,初始化数据 ',
-                  duration: 500
-                });
-              });
-            }
-
-            keepAccount.projectList.push(item);
-
-          });
-
-          //console.log( keepAccount.projectList);
-
-          //$scope.projectList = keepAccount.projectList;
-          //console.log( angular.toJson($scope.projectList));
-
-          $ionicLoading.hide();
-
-        } else {
-          var errmsg = data["message"];
-          $ionicLoading.hide();
-          $ionicLoading.show({
-            template: errmsg,
-            duration: 1000
-          });
-        }
-
-
-      }, function (response) {
-        //alert("网络连接错误,初始化数据 projectList");
-
-        dialog.showAlert("E", response);
-        $ionicLoading.hide();
-        $ionicLoading.show({
-          template: '网络连接错误,初始化数据 ',
-          duration: 1000
-        });
-
-
-      });
-    }
-
-
-    // */
-    var EXPENSE_ITEM_CODE = {
-      OfficeExpenses: '02',               // 办公费 02
-      ElectricityGasWater: '04',               // 水电燃气费 04
-      HouseRent: '14',               // 租房租金费用 14
-      Telephone: '20',               //固定通讯费  20
-      MiscellaneousAccommodation: '21',         //住宿杂项费 21
-      LandlordDeposit: '45'         // 赔偿房东押金  45
-
-    };
-    // 是否 需要租房信息
-// @return  true 需要租房申请  false： 不需要租房申请
-    function isNeedHouseApply(expense_item_code) {
-      var checkDataValid = false;
-      ///*
-      switch (expense_item_code) {
-        case EXPENSE_ITEM_CODE.HouseRent:
-          checkDataValid = true;
-          break;
-        case EXPENSE_ITEM_CODE.MiscellaneousAccommodation:
-          checkDataValid = true;
-          break;
-        case EXPENSE_ITEM_CODE.ElectricityGasWater:
-          checkDataValid = true;
-          break;
-        case EXPENSE_ITEM_CODE.Telephone:
-          checkDataValid = true;
-          break;
-        case EXPENSE_ITEM_CODE.LandlordDeposit:
-          checkDataValid = true;
-          break;
-        default :
-          break;
-
-      }
-
-      // showMessage("是否需要 租房信息 －" + checkDataValid);
-
-      console.log("是否需要 租房信息 －" + checkDataValid);
-      //*/
-      return checkDataValid;
-
-    }
-
-    /**
-     * 保存数据至本地数据库
-     * */
-    $scope.saveData = function () {
-      //showMessage($scope.accountDetail.photos[0].photo_src);
-
-      var date_from = getFormatDate(new Date($scope.accountDetail.expense_date_from));
-      var date_to = getFormatDate(new Date($scope.accountDetail.expense_date_to));
-
-
-      //-------------------------------
-      //          合法性 检验
-      //-------------------------------
-      var checkDataValid = true;
-      var msg = "";
-      if (date_from > date_to) {
-
-        //showMessage("开始日期大于结束日期");
-        //dialog.showAlert("I","开始日期大于结束日期");
-
-        msg = msg + "开始日期大于结束日期";
-        checkDataValid = false;
-      }
-
-      //"费用类型为水电燃气费是，没有判断租房信息必须输入
-      //（此5项费用类型都需要判断租房信息必须输入：租房租金费用、住宿杂项费、固定通讯费、水电燃气费、赔偿房东押金）"
-
-
-      if ($scope.accountDetail.costObject_id == '' || $scope.accountDetail.costObject_id == undefined ||
-        $scope.accountDetail.costObject_id == null) {
-
-        var code = isNeedHouseApply($scope.accountDetail.expense_item_code);
-
-        //showMessage("租房 必输检查"+ code);
-        //dialog.showAlert("I","租房 必输检查"+ code);
-
-
-        // 判断 是否 需要 租房申请的5类费用 之中
-        if (code == true) {
-          checkDataValid = false;
-
-          //dialog.showAlert("I","租房信息 不能为空");
-
-          msg = msg + " 租房信息 不能为空";
-
-
-        }
-
-      }
-
-
-      if (checkDataValid == false) {
-
-        dialog.showAlert("I", msg);
-
-        /*
-         $ionicLoading.show({
-         template: '数据不合法，请修改后重试 ',
-         duration: 1000
-         });
-         */
-
-        //showMessage("租房信息 不能为空");
-        //checkDataValid = false;
-      }
-      else {
-
-
-        $ionicLoading.show({
-          template: '数据保存中 ... '
-        });
-
-
-        var sum = 0;
-
-
-        if (keepAccount.operation == "INSERT") {
-
-          //showMessage("准备插入2");
-
-          sum = ($scope.accountDetail.expense_price * $scope.accountDetail.expense_quantity * $scope.accountDetail.exchange_rate).toFixed(2);
-
-
-          $scope.accountDetail.total_amount = sum == NaN ? 0 : sum;
-
-          $scope.accountDetail.local_status = "NEW";
-
-          keepAccount.data = $scope.accountDetail;
-
-          var promise = keepAccount.insert();
-          promise.then(
-            function (lineID) {
-              showMessage("保存成功--line_id:" + lineID);
-              dialog.showAlert("I", "新建成功");
-
-              keepAccount.data.line_id = lineID;
-              keepAccount.operation = "UPDATE";
-              keepAccount.canUpload = true;
-              $scope.canUpload = true;
-              $ionicLoading.hide();
-            },
-            function (err) {
-              $ionicLoading.hide();
-
-              showMessage(err);
-            }
-          )
-        } else if (keepAccount.operation == "UPDATE") {
-          showMessage("update");
-
-          sum = ($scope.accountDetail.expense_price * $scope.accountDetail.expense_quantity * $scope.accountDetail.exchange_rate).toFixed(2);
-          $scope.accountDetail.total_amount = sum == NaN ? 0 : sum;
-          $scope.accountDetail.local_status = "NEW";
-          keepAccount.data = $scope.accountDetail;
-          var promise = keepAccount.update();
-          promise.then(
-            function (lineID) {
-              showMessage("更新成功--line_id:" + keepAccount.data.line_id + ' return ' + lineID);
-              dialog.showAlert("I", "更新成功");
-
-              //keepAccount.data.line_id=lineID;
-              keepAccount.operation = "UPDATE";
-              keepAccount.canUpload = true;
-              $scope.canUpload = true;
-              $ionicLoading.hide();
-
-            },
-            function (err) {
-              $ionicLoading.hide();
-
-              showMessage(err);
-
-              dialog.showAlert("E", "更新失败" + err);
-
-            }
-          )
-        }
-      }
-    };
-
-    // 判断是否可删除
-    $scope.canToRemove = function () {
-      /*
-       if (loanApply.data.status ==  'NEW' ||  loanApply.data.status == 'REJECTED') {
-       return true;
-       }else {
-       return false;
-       }
-       */
-      //return (loanApply.data.status ==  'NEW' ||  loanApply.data.status == 'REJECTED');
-      return (keepAccount.data.local_status == 'NEW' );
-
-    };
-
-    // 删除记一笔
-    $scope.removeData = function () {
-      var promise = keepAccount.remove(keepAccount.data.line_id);
-      promise.then(
-        function (response) {  // 调用承诺API获取数据 .resolve
-
-          //  showMessage("数据删除成功");
-          dialog.showAlert("I", "数据删除成功");
-
-
-          removePhotoFiles();
-
-          //var pages = globalNavigator.getPages();
-          //console.log(pages);
-          //pages[pages.length - 1].destroy();
-          //pages[pages.length - 1].destroy();
-          //globalNavigator.pushPage(moduleHtmlPath.ACC+'accountList.html', { animation : 'slide' } );
-
-          //loanApply.applyList = response.body.tempRecord;
-          //$scope.expenseList=response.body.list;
-
-        },
-        function (err) {  // 处理错误 .reject
-          //showMessage("删除失败...."+angular.toJson(err));
-          dialog.showAlert("E", "删除失败...." + angular.toJson(err));
-
-        }
-      )
-    };
-
-
-    /**********
-
-     上传数据
-     *************/
-    $scope.uploadDataTest = function () {
-
-      //showMessage("上传成功");
-      // /*
-
-      $ionicLoading.show({
-        template: '数据检验...'
-        //duration: 1000
-      });
-
-      //-------------------------------
-      //          合法性 检验
-      //-------------------------------
-      var checkDataValid = true;
-
-
-      if (keepAccount.data.costObject_id == '' || keepAccount.data.costObject_id == undefined ||
-        keepAccount.data.costObject_id == null) {
-
-
-        //showMessage("合法性检验");
-        checkDataValid = keepAccount.checkCostObject(
-          keepAccount.data.expenseObject_type,
-          keepAccount.data.expense_item_code,
-          keepAccount.data.total_amount
-        );
-
-      }
-      if (checkDataValid == false) {
-
-        $ionicLoading.hide();
-        $ionicLoading.show({
-          template: '预报销申请不能为空...',
-          duration: 1000
-        });
-
-      }
-      else {
-        $ionicLoading.show({
-          template: '上传数据中...'
-          //duration: 1000
-        });
-        uploadDataUnit();
-
-      }
-
-      //showUploadProgress("准备上传:");
-
-
-      //*/
-    };
-
-    function uploadDataUnit() {
-
-      var form = new FormData();
-
-      var myDate = new Date();
-
-      var month = fillNumberBySize(myDate.getMonth() + 1, 2);
-      var date = fillNumberBySize(myDate.getDate(), 2);
-      var hours = fillNumberBySize(myDate.getHours(), 2);
-      var minutes = fillNumberBySize(myDate.getMinutes(), 2);
-      var seconds = fillNumberBySize(myDate.getSeconds(), 2);
-      var milliseconds = fillNumberBySize(myDate.getMilliseconds(), 3);
-
-
-      var expense_detail_id = window.localStorage.empno + myDate.getFullYear()
-        + month + date + hours + minutes + seconds + milliseconds;
-
-      //var expense_detail_id_copy = myDate.toLocaleString();        //获取日期与时间
-
-
-      showMessage(expense_detail_id);
-
-      //console.log(expense_detail_id+" - "+expense_detail_id_copy);
-
-
-      form.append("expense_detail_id", expense_detail_id);
-
-
-      /*
-       form.append("line_id",keepAccount.data.line_id);
-       form.append("expense_type_id",keepAccount.data.expense_type_id);
-       form.append("expense_type_desc",keepAccount.data.expense_type_desc);
-       form.append("expense_item_id",keepAccount.data.expense_item_id);
-       form.append("expense_item_desc",keepAccount.data.expense_item_desc);
-       form.append("expense_price",keepAccount.data.expense_price);
-       form.append("expense_quantity",keepAccount.data.expense_quantity);
-       form.append("currency_code",keepAccount.data.currency_code);
-       form.append("currency_code_desc",keepAccount.data.currency_code_desc);
-       form.append("exchange_rate",keepAccount.data.exchange_rate);
-       form.append("total_amount",keepAccount.data.total_amount);
-       //        form.append("expense_date_from", keepAccount.data.expense_date_from);
-       //        form.append("expense_date_to",keepAccount.data.expense_date_to);
-       form.append("expense_date_from", getFormatDate(new Date(keepAccount.data.expense_date_from))); //getFormatDate(new Date(this.data.expense_date_from)) getFormatDate(new Date())
-       form.append("expense_date_to",getFormatDate(new Date(keepAccount.data.expense_date_to)));    //getFormatDate(new Date(this.data.expense_date_from))
-       form.append("expense_place",keepAccount.data.expense_place);
-       form.append("description",keepAccount.data.description);
-       form.append("created_by",keepAccount.data.created_by);
-
-       */
-
-
-      //showMessage("将执行上传:"+angular.toJson(form));
-      //showUploadProgress("执行上传中，上传时长与附件数量有关");
-      //uploadProgressModal.show();
-      var Photos = keepAccount.data.photos;
-      //var promise= keepAccount.uploadData(form,Photos);
-      //var promise= keepAccount.uploadDataByJosn(keepAccount.data);
-      var promise = keepAccount.uploadDataV2(form, Photos);
-
-      promise.then(
-        function (response) {
-          //var code=getResponseCode(response);
-          showMessage(angular.toJson(response));
-          var code = response.head.code;
-          if (code == "success") {
-            //接受返回参数
-            //keepAccount.data.expenseDetailId=response.body.expenseDetailId;
-
-            // 开始 上传数据
-
-            var upload_option = {
-              source_code: "HIH_PIC_UPLOAD",
-              source_line_id: expense_detail_id
-
-            };
-
-            var p2 = keepAccount.uploadDataByJosn(keepAccount.data, upload_option);
-            p2.then(
-              function (res) {
-
-                var code = res.status;
-                if (code == "S") {
-
-                  // $ionicLoading.hide();
-                  showMessage("上传成功 数据" + angular.toJson(res));
-
-
-                  keepAccount.data.local_status = "UPLOADED";
-                  $scope.accountDetail = keepAccount.data;
-                  keepAccount.canEdit = false;
-                  $scope.canEdit = false;
-                  //更新本地数据库，修改local_status
-                  var p = keepAccount.updateLocalStatus(keepAccount.data.line_id, "UPLOADED");
-                  p.then(
-                    function (res) {
-
-                      $ionicLoading.hide();
-                      showMessage("上传成功" + angular.toJson(res));
-
-                      dialog.showAlert("I", "上传成功");
-
-
-                      //若此时的sourceFrom 为报销单，将keepAccount.data 的数据赋值给 expenseApply.data.lines ,完成值传递
-                      if (sourceFrom == "EXPENSE") {
-                        var line = {
-                          appSourceId: keepAccount.data.expenseDetailId,
-                          price: keepAccount.data.expense_price,
-                          quantity: keepAccount.data.expense_quantity,
-                          expenseTypeId: keepAccount.data.expense_type_id,
-                          expenseTypeName: keepAccount.data.expense_type_desc,
-                          expenseItemId: keepAccount.data.expense_item_id,
-                          expenseItemName: keepAccount.data.expense_item_desc,
-                          place: keepAccount.data.expense_place,
-                          dateFrom: keepAccount.data.expense_date_from,
-                          dateTo: keepAccount.data.expense_date_to,
-                          originalCurrency: keepAccount.data.currency_code,
-                          exchangeRate: keepAccount.data.exchange_rate,
-                          description: keepAccount.data.description
-                        };
-                        expenseApply.data.lines.push(line);
-                        //globalNavigator.popPage();
-
-                        $ionicHistory.goBack();
-                      }
-                    },
-                    function (e) {
-                      $ionicLoading.hide();
-
-                      dialog.showAlert("E", "上传失败" + angular.toJson(e));
-
-                      showMessage(angular.toJson(e));
-                    }
-                  );
-
-                }
-                else {
-                  showMessage("上传失败 数据" + angular.toJson(res));
-                  dialog.showAlert("E", "上传失败 数据" + angular.toJson(e));
-
-
-                }
-
-
-                /**
-
-                 //若此时的sourceFrom 为报销单，将keepAccount.data 的数据赋值给 expenseApply.data.lines ,完成值传递
-                 if(sourceFrom=="EXPENSE"){
-                                    var line={
-                                        appSourceId:keepAccount.data.expenseDetailId,
-                                        price:keepAccount.data.expense_price,
-                                        quantity:keepAccount.data.expense_quantity,
-                                        expenseTypeId:keepAccount.data.expense_type_id,
-                                        expenseTypeName:keepAccount.data.expense_type_desc,
-                                        expenseItemId:keepAccount.data.expense_item_id,
-                                        expenseItemName:keepAccount.data.expense_item_desc,
-                                        place:keepAccount.data.expense_place,
-                                        dateFrom:keepAccount.data.expense_date_from,
-                                        dateTo:keepAccount.data.expense_date_to,
-                                        originalCurrency:keepAccount.data.currency_code,
-                                        exchangeRate:keepAccount.data.exchange_rate,
-                                        description:keepAccount.data.description
-                                    };
-                                    expenseApply.data.lines.push(line);
-                                    //globalNavigator.popPage();
-
-                                    $ionicHistory.goBack();
-                                }
-
-                 */
-              },
-              function (e) {
-                $ionicLoading.hide();
-
-                dialog.showAlert("E", "上传失败" + angular.toJson(e));
-
-                showMessage(angular.toJson(e));
-              }
-            );
-
-
-          } else if (code == "E") {
-            $ionicLoading.hide();
-            dialog.showAlert("E", "上传失败" + angular.toJson(response));
-
-            showMessage("查询失败:" + angular.toJson(response))
-          }
-          else {
-            $ionicLoading.hide();
-            dialog.showAlert("E", "获取信息错误" + angular.toJson(response));
-
-            showMessage("未知错误:" + angular.toJson(response));
-          }
-
-
-        },
-        function (err) {  // 处理错误 .reject
-
-          $ionicLoading.hide();
-          dialog.showAlert("E", "网络连接错误...." + angular.toJson(err));
-
-          showMessage("网络连接错误...." + angular.toJson(err));
-          //uploadProgressModal.hide();
-
-        });  // end of 上传
-
-    }
-
-
-    /***********
-     *  通过 合法性检验后  上传 数据
-     *
-     */
-
-    /*******
-     function uploadDataUnit (){
-
-
-            var form=new FormData();
-            form.append("line_id",keepAccount.data.line_id);
-            form.append("expense_type_id",keepAccount.data.expense_type_id);
-            form.append("expense_type_desc",keepAccount.data.expense_type_desc);
-            form.append("expense_item_id",keepAccount.data.expense_item_id);
-            form.append("expense_item_desc",keepAccount.data.expense_item_desc);
-            form.append("expense_price",keepAccount.data.expense_price);
-            form.append("expense_quantity",keepAccount.data.expense_quantity);
-            form.append("currency_code",keepAccount.data.currency_code);
-            form.append("currency_code_desc",keepAccount.data.currency_code_desc);
-            form.append("exchange_rate",keepAccount.data.exchange_rate);
-            form.append("total_amount",keepAccount.data.total_amount);
-            //        form.append("expense_date_from", keepAccount.data.expense_date_from);
-            //        form.append("expense_date_to",keepAccount.data.expense_date_to);
-            form.append("expense_date_from", getFormatDate(new Date(keepAccount.data.expense_date_from))); //getFormatDate(new Date(this.data.expense_date_from)) getFormatDate(new Date())
-            form.append("expense_date_to",getFormatDate(new Date(keepAccount.data.expense_date_to)));    //getFormatDate(new Date(this.data.expense_date_from))
-            form.append("expense_place",keepAccount.data.expense_place);
-            form.append("description",keepAccount.data.description);
-            form.append("created_by",keepAccount.data.created_by);
-
-
-
-
-            //showMessage("将执行上传:"+angular.toJson(form));
-            //showUploadProgress("执行上传中，上传时长与附件数量有关");
-            //uploadProgressModal.show();
-            var Photos=keepAccount.data.photos;
-            //var promise= keepAccount.uploadData(form,Photos);
-            var promise= keepAccount.uploadDataByJosn(keepAccount.data);
-            promise.then(
-                function(response) {
-                    //var code=getResponseCode(response);
-                    var code = response.status;
-                    if(code=="S"){
-                        //接受返回参数
-                        //keepAccount.data.expenseDetailId=response.body.expenseDetailId;
-                        keepAccount.data.local_status="UPLOADED";
-                        $scope.accountDetail=keepAccount.data;
-                        keepAccount.canEdit=false;
-                        $scope.canEdit=false;
-                        //更新本地数据库，修改local_status
-                        var p=keepAccount.updateLocalStatus(keepAccount.data.line_id,"UPLOADED");
-                        p .then(
-                            function(res){
-
-                                $ionicLoading.hide();
-                                showMessage("上传成功"+angular.toJson(res));
-
-                                //若此时的sourceFrom 为报销单，将keepAccount.data 的数据赋值给 expenseApply.data.lines ,完成值传递
-                                if(sourceFrom=="EXPENSE"){
-                                    var line={
-                                        appSourceId:keepAccount.data.expenseDetailId,
-                                        price:keepAccount.data.expense_price,
-                                        quantity:keepAccount.data.expense_quantity,
-                                        expenseTypeId:keepAccount.data.expense_type_id,
-                                        expenseTypeName:keepAccount.data.expense_type_desc,
-                                        expenseItemId:keepAccount.data.expense_item_id,
-                                        expenseItemName:keepAccount.data.expense_item_desc,
-                                        place:keepAccount.data.expense_place,
-                                        dateFrom:keepAccount.data.expense_date_from,
-                                        dateTo:keepAccount.data.expense_date_to,
-                                        originalCurrency:keepAccount.data.currency_code,
-                                        exchangeRate:keepAccount.data.exchange_rate,
-                                        description:keepAccount.data.description
-                                    };
-                                    expenseApply.data.lines.push(line);
-                                    //globalNavigator.popPage();
-
-                                    $ionicHistory.goBack();
-                                }
-                            },
-                            function(e){
-                                $ionicLoading.hide();
-
-
-                                showMessage(angular.toJson(e));
-                            }
-                        );
-
-                    }else if(code=="E"){
-                        $ionicLoading.hide();
-
-                        showMessage("查询失败:"+angular.toJson(response))
-                    }
-                    else{
-                        $ionicLoading.hide();
-
-                        showMessage("未知错误:"+angular.toJson(response));
-                    }
-
-
-                },
-                function(err) {  // 处理错误 .reject
-
-                    $ionicLoading.hide();
-
-                    showMessage("网络连接错误...."+angular.toJson(err));
-                    uploadProgressModal.hide();
-
-                });
-        }
-     */
-
-    /*上传数据*/
-    $scope.uploadData = function () {
-
-      showMessage("上传成功");
-      /*
-       showUploadProgress("准备上传:");
-
-       var form=new FormData();
-       form.append("line_id",keepAccount.data.line_id);
-       form.append("expense_type_id",keepAccount.data.expense_type_id);
-       form.append("expense_type_desc",keepAccount.data.expense_type_desc);
-       form.append("expense_item_id",keepAccount.data.expense_item_id);
-       form.append("expense_item_desc",keepAccount.data.expense_item_desc);
-       form.append("expense_price",keepAccount.data.expense_price);
-       form.append("expense_quantity",keepAccount.data.expense_quantity);
-       form.append("currency_code",keepAccount.data.currency_code);
-       form.append("currency_code_desc",keepAccount.data.currency_code_desc);
-       form.append("exchange_rate",keepAccount.data.exchange_rate);
-       form.append("total_amount",keepAccount.data.total_amount);
-       //        form.append("expense_date_from", keepAccount.data.expense_date_from);
-       //        form.append("expense_date_to",keepAccount.data.expense_date_to);
-       form.append("expense_date_from", getFormatDate(new Date(keepAccount.data.expense_date_from))); //getFormatDate(new Date(this.data.expense_date_from)) getFormatDate(new Date())
-       form.append("expense_date_to",getFormatDate(new Date(keepAccount.data.expense_date_to)));    //getFormatDate(new Date(this.data.expense_date_from))
-       form.append("expense_place",keepAccount.data.expense_place);
-       form.append("description",keepAccount.data.description);
-       form.append("created_by",keepAccount.data.created_by);
-
-
-
-
-       //showMessage("将执行上传:"+angular.toJson(form));
-       showUploadProgress("执行上传中，上传时长与附件数量有关");
-       uploadProgressModal.show();
-       var Photos=keepAccount.data.photos;
-       var promise= keepAccount.uploadData(form,Photos);
-       promise.then(
-       function(response) {
-       var code=getResponseCode(response);
-       if(code=="ok"){
-       //接受返回参数
-       keepAccount.data.expenseDetailId=response.body.expenseDetailId;
-       keepAccount.data.local_status="UPLOADED";
-       $scope.accountDetail=keepAccount.data;
-       keepAccount.canEdit=false;
-       $scope.canEdit=false;
-       //更新本地数据库，修改local_status
-       var p=keepAccount.updateLocalStatus(keepAccount.data.line_id,"UPLOADED");
-       p .then(
-       function(res){
-       showMessage("上传成功"+angular.toJson(res));
-
-       //若此时的sourceFrom 为报销单，将keepAccount.data 的数据赋值给 expenseApply.data.lines ,完成值传递
-       if(sourceFrom=="EXPENSE"){
-       var line={
-       appSourceId:keepAccount.data.expenseDetailId,
-       price:keepAccount.data.expense_price,
-       quantity:keepAccount.data.expense_quantity,
-       expenseTypeId:keepAccount.data.expense_type_id,
-       expenseTypeName:keepAccount.data.expense_type_desc,
-       expenseItemId:keepAccount.data.expense_item_id,
-       expenseItemName:keepAccount.data.expense_item_desc,
-       place:keepAccount.data.expense_place,
-       dateFrom:keepAccount.data.expense_date_from,
-       dateTo:keepAccount.data.expense_date_to,
-       originalCurrency:keepAccount.data.currency_code,
-       exchangeRate:keepAccount.data.exchange_rate,
-       description:keepAccount.data.description
-       };
-       expenseApply.data.lines.push(line);
-       globalNavigator.popPage();
-       }
-       },
-       function(e){
-
-
-       showMessage(angular.toJson(e));
-       }
-       );
-
-       }else if(code=="failure"){
-       showMessage("查询失败:"+angular.toJson(response))
-       }
-       else if (code =="login_required"){
-       showMessage("登录状态异常\n"+angular.toJson(response));
-       reLogin();
-       }else{
-       showMessage("未知错误:"+angular.toJson(response));
-       }
-
-       uploadProgressModal.hide();
-
-       },
-       function(err) {  // 处理错误 .reject
-       showMessage("网络连接错误...."+angular.toJson(err));
-       uploadProgressModal.hide();
-
-       });
-
-       */
-    };
-
-
-    $scope.openCurrencyList = function () {
-
-      /*
-       keepAccount.sourceFrom='acc';
-       if($scope.canEdit){
-       $scope.valueChange();
-       //globalNavigator.pushPage('html/acc/currencyList.html', { animation : 'slide' });
-       $state.go("tab.acc_currencyList");
-       }
-       */
-    };
-
-    $scope.openExpenseTypeList = function () {
-      if ($scope.canEdit) {
-        $scope.valueChange();
-        //globalNavigator.pushPage('html/exp/expenseTypeList.html', { animation : 'slide' });
-        $state.go("tab.exp_expenseTypeList");
-
-      }
-    };
-
-    $scope.openExpenseItemList = function () {
-      if ($scope.canEdit) {
-        $scope.valueChange();
-        //globalNavigator.pushPage('html/exp/expenseItemList.html', { animation : 'slide' });
-        $state.go("tab.exp_expenseItemList");
-
-      }
-    };
-
-    $scope.openExpenseObjectList = function () {
-      if ($scope.canEdit) {
-        $scope.valueChange();
-        //globalNavigator.pushPage('html/exp/expenseItemList.html', { animation : 'slide' });
-        $state.go("tab.acc_expenseObjectList");
-
-      }
-    };
-
-    $scope.openCostObjectList = function () {
-      if ($scope.canEdit) {
-        $scope.valueChange();
-        //globalNavigator.pushPage('html/exp/expenseItemList.html', { animation : 'slide' });
-        $state.go("tab.cst_costObjectList");
-
-      }
-    };
-
-
-    $scope.valueChange = function () {
-      keepAccount.canUpload = false;
-      $scope.canUpload = false;
-    };
-
-
-    //以插件的形式来 充当时间控件，   添加crosswalk  的webview后被弃用
-    $scope.selectDate = function (field) {
-      var options = {
-        date: new Date(),
-        mode: 'date'
-      };
-      datePicker.show(options, function (date) {
-        showMessage(date);
-        if (date != undefined) {
-          if (field == "date_from") {
-            $scope.accountDetail.expense_date_from = getFormatDate(date);
-          } else if (field == "date_to") {
-            $scope.accountDetail.expense_date_to = getFormatDate(date);
-          }
-        } else {
-          if (field == "date_from") {
-            $scope.accountDetail.expense_date_from = '';
-          } else if (field == "date_to") {
-            $scope.accountDetail.expense_date_to = '';
-          }
-        }
-        $scope.$apply();
-      });
-    };
-
-    function showUploadProgress(msg) {
-      //console.log($scope.currentProgress);
-      $scope.currentProgress = msg;
-      //console.log($scope.currentProgress);
-
-    }
-
-    // 删除照片
-    function removePhotoFiles() {
-      //showMessage("删除照片操作 begin");
-
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, onError);
-    }
-
-    function onSuccess(fileSystem) {
-      console.log(fileSystem.name);
-      showMessage(fileSystem.name);
-
-      //showMessage(keepAccount.tempPhoto.photo_src);
-      var myFolderApp = baseConfig.appRootFile;
-
-
-      // 数据删除完成 开始删除图片
-      var length = keepAccount.data.photos.length;
-      showMessage("总长度 " + keepAccount.data.photos.length);
-
-      var count = 0;
-      //keepAccount.tempDeleteIndex =0;
-      if (length > 0) {
-        for (var i = 0; i < length; i++) {
-          /*插数据库*/
-          count = i;
-          showMessage("删除 " + i + " name " + keepAccount.data.photos[i].photo_name);
-          fileSystem.root.getFile(myFolderApp + '/' + keepAccount.data.photos[i].photo_name, null, onGetFileSuccess, onGetFileError);
-
-        }
-      } else {
-        dialog.showAlert("I", "图片删除成功");
-
-        deferred.resolve(lineID);
-      }
-      //showMessage(myFolderApp+'/'+keepAccount.tempPhoto.photo_name);
-      //fileSystem.root.getFile(myFolderApp+'/'+data.photo[this.tempDeleteIndex].photo_name, null, onGetFileSuccess, onGetFileError);
-    }
-
-    function onError(error) {
-      dialog.showAlert("E", "图片删除出错");
-
-      showMessage(error.code);
-    }
-
-    function onGetFileSuccess(fileEntry) {
-      console.log("File Name: " + fileEntry.name);
-      //showMessage("File Name: " + fileEntry.name);
-
-      // remove the file
-      fileEntry.remove(onRemoveSuccess, onRemoveFail);
-
-    }
-
-    function onGetFileError(error) {
-      dialog.showAlert("E", "图片删除出错");
-
-      showMessage("Failed to retrieve file: " + error.code);
-    }
-
-    function onRemoveSuccess(entry) {
-      console.log("Removal succeeded");
-      showMessage("Removal succeeded");
-      //showMessage(keepAccount.tempPhotoIndex);
-      showMessage(angular.toJson(keepAccount.data.photos));
-
-      keepAccount.data.photos.splice(keepAccount.tempPhotoIndex, 1);
-      //showMessage( 'photos list:'+angular.toJson(keepAccount.data.photos));
-
-
-      /*
-       var pages = globalNavigator.getPages();
-       //console.log(pages);
-       pages[pages.length - 1].destroy();
-       pages[pages.length - 1].destroy();
-       globalNavigator.pushPage('html/acc/photos.html', { animation : 'slide' });
-       */
-
-    }
-
-    function onRemoveFail(error) {
-      showMessage('Error removing file: ' + error.code);
-      dialog.showAlert("E", "图片删除出错");
-
-    }
-  });
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.acc_accountList', {
-          url: '/acc/accountList',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/acc/accountList.html',
-              controller: 'accountListController'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('accountListController', function ($scope, $http, $q, keepAccount, $state, $ionicLoading, baseConfig) {
-
-    $scope.shouldShowDelete = true;
-
-    function queryAccountList() {
-
-      //showMessage("查询列表");
-      var list = [];
-
-      var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-      var deferred = $q.defer();
-      db.transaction(function (tx) {
-        var querySql = "select * from MOBILE_EXP_REPORT_LINE where created_by = ? order by creation_date desc, line_id desc";
-        var para = [
-          window.localStorage.empno
-        ];
-        tx.executeSql(querySql, para, function (tx, res) {
-          if (res.rows.length == 0) {
-            showMessage("表里的数据为空!! -");
-            deferred.resolve(list);
-
-          } else {
-            //                  alert(angular.toJson(res.rows.item(0)));
-            for (var i = 0; i < res.rows.length; i++) {
-              list.push(res.rows.item(i));
-            }
-            deferred.resolve(list);
-          }
-        });
-      });
-      return deferred.promise;
-    }
-
-    $ionicLoading.show({
-      template: 'Loading...',
-      duration: 1000
-    });
-
-    ///*
-    var promise = queryAccountList();
-    promise.then(function (list) {  // 调用承诺API获取数据 .resolve
-      $scope.accountList = groupJSON(list);
-
-      //showMessage("查询 结束");
-      //$ionicLoading.hide();
-
-    }, function (response) {  // 处理错误 .reject
-      showMessage("查询数据库错误");
-    });
-
-
-    $scope.doRefresh = function () {
-      $ionicLoading.show({
-        template: '刷新列表...',
-        duration: 1000
-      });
-      var promise = queryAccountList();
-      promise.then(function (list) {  // 调用承诺API获取数据 .resolve
-        $scope.accountList = groupJSON(list);
-        $scope.$broadcast('scroll.refreshComplete');
-        $ionicLoading.hide();
-
-
-      }, function (response) {  // 处理错误 .reject
-        showMessage("查询数据库错误");
-        $scope.$broadcast('scroll.refreshComplete');
-        $ionicLoading.hide();
-
-
-      });
-    };
-
-    function doReLoadList() {
-
-      var promise = queryAccountList();
-      promise.then(function (list) {  // 调用承诺API获取数据 .resolve
-
-
-        $scope.accountList = groupJSON(list);
-        //showMessage(angular.toJson($scope,accountList));
-        $ionicLoading.hide();
-
-
-      }, function (response) {  // 处理错误 .reject
-        showMessage("查询数据库错误");
-
-        $ionicLoading.hide();
-
-      });
-    }
-
-
-    // 删除记一笔
-    $scope.removeData = function (e) {
-
-      var target = e.target;
-      var lineId = target.getAttribute('lineId');
-      var timestamp = target.getAttribute('timestamp');
-
-      showMessage("delete clicked lineid " + lineId);
-
-
-      $ionicLoading.show({
-        template: '正在删除...'
-        //duration: 1000
-      });
-
-      var promiseGetPhotos = keepAccount.queryDetailPhoto(lineId);
-      promiseGetPhotos.then(
-        function (response) {
-          var promiseRemove = keepAccount.removeItem(timestamp);
-          promiseRemove.then(function (removeResponse) {
-              var statusCode = removeResponse.status;
-              console.log("get the statusCode = " + statusCode);
-              if (statusCode === "S") {
-                keepAccount.initData();
-                keepAccount.data.photos = response.photos;
-                keepAccount.data.line_id = lineId;
-
-                var promise = keepAccount.remove(lineId);
-                promise.then(
-                  function (response) {  // 调用承诺API获取数据 .resolve
-
-                    showMessage("数据删除成功");
-                    showMessage(angular.toJson(keepAccount.data.photos));
-                    showMessage("length - " + (keepAccount.data.photos.length));
-
-
-                    if (keepAccount.data.photos.length != undefined && keepAccount.data.photos.length != 0) {
-
-                      //showMessage("length - "+(keepAccount.data.photos.length));
-
-                      removePhotoFiles();
-                    }
-                    else {
-                      showMessage("无照片");
-                      doReLoadList();
-                    }
-
-
-                  },
-                  function (err) {  // 处理错误 .reject
-                    $ionicLoading.hide();
-                    showMessage("删除失败...." + angular.toJson(err));
-                  }
-                );
-              } else {
-                $ionicLoading.hide();
-                $ionicLoading.show({
-                  template: '删除失败...',
-                  duration: 1000
-                });
-              }
-            },
-            function (err) {  // 处理错误 .reject
-              $ionicLoading.hide();
-              showMessage("删除失败...." + angular.toJson(err));
-            });
-        },
-        function (error) {
-          $ionicLoading.hide();
-          showMessage("删除失败...." + angular.toJson(err));
-
-        }
-      );
-
-    };
-
-
-    function groupJSON(jsons) {
-
-      var newJson = [];
-      loop1:for (var i = 0; i < jsons.length; i++) {
-        var t1 = jsons[i].creation_date;
-        var arr = {time: t1, list: []};
-        arr.list.push(jsons[i]);
-        for (var j = i + 1; j < jsons.length; j++) {
-          var t2 = jsons[j].creation_date;
-          if (t2 == t1) {
-            arr.list.push(jsons[j]);
-          } else {
-            i = j - 1;
-            break;
-          }
-          if (j == jsons.length - 1) {
-            newJson.push(arr);
-            break loop1;
-          }
-        }
-        newJson.push(arr);
-      }
-      return newJson;
-    }
-
-
-    $scope.openDetail = function (e) {
-      var target = e.target;
-      var lineId = target.getAttribute('lineId');
-      var status = target.getAttribute('status');
-      showMessage(lineId + "----" + status);
-      if (status == "UPLOADED") {
-        keepAccount.canEdit = false;
-        keepAccount.canUpload = false;
-        keepAccount.boolLoadExpenseObject = false;
-      } else {
-        keepAccount.canEdit = true;
-        keepAccount.canUpload = true;
-        keepAccount.sourceFrom = "ACCOUNT";
-        keepAccount.operation = "UPDATE";
-        keepAccount.boolLoadExpenseObject = true;
-      }
-
-      keepAccount.queryDetail(lineId).then(
-        function (detailData) {
-          showMessage(angular.toJson(detailData.photos));
-          keepAccount.data = detailData;
-          //globalNavigator.pushPage('html/acc/accountDetail.html', { animation : 'slide' });
-          //showMessage("acc_detail");
-          $state.go("tab.acc_detail");
-        },
-        function (err) {
-          showMessage(err);
-        }
-      );
-    };
-
-
-    // 删除照片
-    function removePhotoFiles() {
-      showMessage("删除照片操作 begin");
-
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, onError);
-    }
-
-    function onSuccess(fileSystem) {
-      console.log(fileSystem.name);
-      //showMessage(fileSystem.name);
-
-      //showMessage(keepAccount.tempPhoto.photo_src);
-      var myFolderApp = baseConfig.appRootFile;
-
-
-      // 数据删除完成 开始删除图片
-      var length = keepAccount.data.photos.length;
-      showMessage("总长度 " + keepAccount.data.photos.length);
-
-      var count = 0;
-      //keepAccount.tempDeleteIndex =0;
-      if (length > 0) {
-        for (var i = 0; i < length; i++) {
-          /*插数据库*/
-          count = i;
-          showMessage("删除 " + i + " name " + keepAccount.data.photos[i].photo_name);
-          fileSystem.root.getFile(myFolderApp + '/' + keepAccount.data.photos[i].photo_name, null, onGetFileSuccess, onGetFileError);
-
-        }
-      } else {
-        deferred.resolve(lineID);
-      }
-      //showMessage(myFolderApp+'/'+keepAccount.tempPhoto.photo_name);
-      //fileSystem.root.getFile(myFolderApp+'/'+data.photo[this.tempDeleteIndex].photo_name, null, onGetFileSuccess, onGetFileError);
-    }
-
-    function onError(error) {
-      showMessage(error.code);
-    }
-
-    function onGetFileSuccess(fileEntry) {
-      console.log("File Name: " + fileEntry.name);
-      //showMessage("File Name: " + fileEntry.name);
-
-      // remove the file
-      fileEntry.remove(onRemoveSuccess, onRemoveFail);
-
-    }
-
-    function onGetFileError(error) {
-      showMessage("Failed to retrieve file: " + error.code);
-    }
-
-    function onRemoveSuccess(entry) {
-      console.log("Removal succeeded");
-      showMessage("Removal succeeded");
-      //showMessage(keepAccount.tempPhotoIndex);
-      showMessage(angular.toJson(keepAccount.data.photos));
-
-      keepAccount.data.photos.splice(keepAccount.tempPhotoIndex, 1);
-      //showMessage( 'photos list:'+angular.toJson(keepAccount.data.photos));
-
-      doReLoadList();
-
-    }
-
-    function onRemoveFail(error) {
-      showMessage('Error removing file: ' + error.code);
-    }
-
-  });
-
-/**
- * Created by wuxiaocheng on 15/8/26.
- */
-
-
-angular.module("applicationModule")
-    .factory('keepAccount', function ($http,$q,$window, baseConfig) {
-
-
-    // 上传附件
-    function doPostHttp(form,deferred) {
-        //showMessage("doPostHttp");
-        //http://172.20.0.175:8090/handhr_aurora/hand_app_fileupload.svc
-        showMessage( window.localStorage.expUploadUrl);
-
-        $http.post( window.localStorage.expUploadUrl,form,{
-            transformRequest: angular.identity,
-            headers: { 'Content-Type':undefined}
-        })
-            .success(function(response) {
-                showMessage("上传成功 图片");
-
-                deferred.resolve(response);
-            })
-            .error(function(err) {
-                showMessage("上传失败 图片");
-
-                deferred.reject("上传失败 图片");
-            });
-    }
-
-    function doPostHttpOnlyData(json, deferred) {
-
-
-        var Url = baseConfig.businessPath + "/expense_account/create_expense_details";
-        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
-            '","p_details":' + json +'}}';
-
-        console.log(PostData);
-        showMessage(PostData );
-        $http.post(Url,PostData).success(function (data){
-
-            showMessage(angular.toJson(data));
-            deferred.resolve(data);
-
-        }).error(function(data) {
-            showMessage("error:"+angular.toJson(data));
-
-            deferred.reject(data);
-
-            //$ionicLoading.hide();
-
-        });
-
-
-        return deferred.promise;
-    }
-    
-    function deleteAccountItem(timestamp, deferred) {
-        console.log("get the timestamp = "+timestamp);
-        var Url = baseConfig.businessPath + "/expense_account/delete_expense_details";
-//        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
-//            '","p_time_stamp":' + timestamp+'}}';
-        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_time_stamp":"' + timestamp +  '"}}';
-
-        console.log(PostData);
-        showMessage(PostData );
-        $http.post(Url,PostData).success(function (data){
-
-            showMessage(angular.toJson(data));
-            deferred.resolve(data);
-
-        }).error(function(data) {
-            showMessage("error:"+angular.toJson(data));
-
-            deferred.reject(data);
-
-            //$ionicLoading.hide();
-
-        });
-
-
-        return deferred.promise;
-    }
-
-
-    function createBlob(data, type) {
-        var r;
-        try {
-            r = new $window.Blob([data], {type: type});
-        }
-        catch (e) {
-            // TypeError old chrome and FF
-            $window.BlobBuilder = $window.BlobBuilder ||
-                $window.WebKitBlobBuilder ||
-                $window.MozBlobBuilder ||
-                $window.MSBlobBuilder;
-            // consider to use crosswalk for android
-
-            if (e.name === 'TypeError' && window.BlobBuilder) {
-                var bb = new BlobBuilder();
-                bb.append([data.buffer]);
-                r = bb.getBlob(type);
-            }
-            else if (e.name == "InvalidStateError") {
-                // InvalidStateError (tested on FF13 WinXP)
-                r = new $window.Blob([data.buffer], {type: type});
-            }
-            else {
-                throw e;
-            }
-        }
-        return r;
-    }
-
-
-    /******************************************
-     *
-     */
-
-
-    var service= {
-        data:{},
-        sourceFrom:"",
-        canEdit:'',
-        canUpload:'',
-        operation:'',
-        tempPhoto:{},
-        tempPhotoIndex:'',
-        projectList:[],
-        expenseItemList:[],
-        expenseCostList:[],
-        boolLoadExpenseObject:'',
-        //curreentPhotoIndex:0,
-
-
-        queryDetail: function (lineId) {
-            //请求数据库，查询操作
-            var detailData={};
-            var deferred=$q.defer();
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-            db.transaction(function(tx) {
-                var querySql="select * from MOBILE_EXP_REPORT_LINE t where t.line_id=?";
-                var para=[lineId];
-                //showMessage("query sql "+querySql);
-
-                //showMessage("query para "+para);
-                tx.executeSql(querySql, para, function(tx, res) {
-
-                    //showMessage("查询成功");
-
-                    //返回结果
-                    detailData={
-                        line_id:res.rows.item(0).line_id,
-                        expense_type_id:res.rows.item(0).expense_type_id,
-                        expense_type_desc:res.rows.item(0).expense_type_desc,
-                        expense_item_id:res.rows.item(0).expense_item_id,
-                        expense_item_code:res.rows.item(0).expense_item_code,
-                        expense_item_desc:res.rows.item(0).expense_item_desc,
-                        costObject_id:res.rows.item(0).costObject_id,
-                        costObject_desc:res.rows.item(0).costObject_desc,
-                        expense_price:res.rows.item(0).expense_price,
-                        expense_quantity:res.rows.item(0).expense_quantity,
-                        currency_code:res.rows.item(0).currency_code,
-                        currency_code_desc:res.rows.item(0).currency_code_desc,
-                        exchange_rate:res.rows.item(0).exchange_rate,
-                        total_amount:res.rows.item(0).total_amount,
-                        expense_date_from:new Date(res.rows.item(0).expense_date_from),
-                        expense_date_to:new Date(res.rows.item(0).expense_date_to),
-                        expense_place:res.rows.item(0).expense_place,
-                        description:res.rows.item(0).description,
-                        local_status:res.rows.item(0).local_status,
-                        creation_date:res.rows.item(0).creation_date,
-                        created_by:res.rows.item(0).created_by,
-                        invoice_quantity:res.rows.item(0).invoice_quantity,
-                        expenseObject_id:res.rows.item(0).expenseObject_id,
-                        expenseObject_desc:res.rows.item(0).expenseObject_desc,
-                        expenseObject_type:res.rows.item(0).expenseObject_type,
-                        time_stamp:res.rows.item(0).timestamp
-
-                    };
-
-                    //showMessage(detailData.expense_date_from +' -- '+res.rows.item(0).expense_date_from);
-                    db.transaction(function(tx) {
-                        var photos=[];
-                        var sql="select * from MOBILE_EXP_LINE_PHOTOS t where t.line_id=?";
-                        tx.executeSql(sql, [lineId], function(tx, res) {
-                            for(var i=0;i<res.rows.length;i++){
-                                photos.push({
-                                    "line_id":res.rows.item(i).line_id,
-                                    "photo_id":res.rows.item(i).photo_id,
-                                    "photo_name":res.rows.item(i).photo_name,
-                                    "photo_src":res.rows.item(i).photo_src,
-                                    "creation_date":new Date(res.rows.item(i).creation_date),
-                                    "created_by":res.rows.item(i).created_by
-                                });
-                            }
-                            detailData.photos=photos;
-                            deferred.resolve(detailData);
-                        },function(err) {
-                            deferred.reject(err);
-                        });
-                    });
-                }, function(e) {
-                    showMessage('ERROR: '+ e.message);
-                    deferred.reject(e);
-                });
-            });
-            return deferred.promise;
-        },
-
-
-        /******
-         * 功能： 查询 行 关联的照片列表
-         * @param lineId
-         * @returns {*}
-         */
-        queryDetailPhoto: function(lineId) {
-            var detailData={};
-            var deferred=$q.defer();
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-
-            db.transaction(function(tx) {
-                var photos=[];
-                var sql="select * from MOBILE_EXP_LINE_PHOTOS t where t.line_id=?";
-                tx.executeSql(sql, [lineId], function(tx, res) {
-                    for(var i=0;i<res.rows.length;i++){
-                        photos.push({
-                            "line_id":res.rows.item(i).line_id,
-                            "photo_id":res.rows.item(i).photo_id,
-                            "photo_name":res.rows.item(i).photo_name,
-                            "photo_src":res.rows.item(i).photo_src,
-                            "creation_date":new Date(res.rows.item(i).creation_date),
-                            "created_by":res.rows.item(i).created_by
-                        });
-                    }
-                    detailData.photos=photos;
-                    deferred.resolve(detailData);
-                },function(err) {
-                    showMessage('ERROR: '+ err.message);
-
-                    deferred.reject(err);
-                });
-
-
-
-            });
-            return deferred.promise;
-        },
-
-
-
-
-
-        remove:function() {
-            //
-            var deferred=$q.defer();
-            var data=this.data;
-            showMessage('open db');
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-            var lineID;
-            db.transaction(function(tx) {
-                // 删除记一笔数据
-                var deleteSql="DELETE FROM MOBILE_EXP_REPORT_LINE WHERE line_id =" +
-                    "?";
-                var para=[
-                    data.line_id
-                ];
-                showMessage('deleteSql '+deleteSql);
-
-                tx.executeSql(deleteSql, para, function(tx, res) {
-                    //返回line_id
-                    lineID=res.insertId;
-                    db.transaction(function(tx) {
-                        // 删除图片
-                        var deletePhotoSql="DELETE FROM MOBILE_EXP_LINE_PHOTOS WHERE line_id = "+
-                            "? ";
-
-                        var para=[
-                            data.line_id
-                        ];
-
-                        tx.executeSql(deletePhotoSql,  para, function(tx, res) {
-                            deferred.resolve(lineID);
-                        },function(err) {
-                            deferred.reject(err);
-                        });
-                    });
-                }, function(e) {
-                    deferred.reject(e);
-                });
-            });
-            return deferred.promise;
-        },
-
-        /************
-         * 删除图片 的 数据库表
-         */
-        removePhoto:function(line_id) {
-
-            var deferred=$q.defer();
-            var data=this.data;
-            var resID;
-            showMessage('open db to del lineid'+ line_id);
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-           // var lineID;
-            db.transaction(function(tx) {
-                // 删除记一笔数据
-                var deletePhotoSql="DELETE FROM MOBILE_EXP_LINE_PHOTOS WHERE line_id = "+
-                    "? ";
-
-                var para=[
-                    line_id
-                ];
-                showMessage('deleteSql '+deletePhotoSql + ' --- line_id -'+line_id);
-
-                tx.executeSql(deletePhotoSql, para, function(tx, res) {
-
-                    resID=res.insertId;
-
-                    deferred.resolve(resID);
-
-                    //返回line_id
-
-                }, function(e) {
-                    deferred.reject(e);
-                });
-            });
-            return deferred.promise;
-
-        },
-
-
-        /********
-         * 记一笔 插入
-         * *******/
-        insert:function(){
-            //转换日期格式
-
-
-            //showMessage("insert");
-            var timestamp = Date.parse(new Date()) / 1000;
-            var deferred=$q.defer();
-            this.data.time_stamp = ""+timestamp;
-            var data=this.data;
-
-            var expense_date_from=getFormatDate(new Date(data.expense_date_from));
-            var expense_date_to=getFormatDate(new Date(data.expense_date_to));
-            //data.creation_date,
-
-
-            /*
-            var myDate = new Date();
-
-            var month = fillNumberBySize(myDate.getMonth()+1,2);
-            var date = fillNumberBySize(myDate.getDate(),2);
-            var hours = fillNumberBySize(myDate.getHours(),2);
-            var minutes = fillNumberBySize(myDate.getMinutes(),2);
-            var seconds = fillNumberBySize(myDate.getSeconds(),2);
-            //var milliseconds = fillNumberBySize(myDate.getMilliseconds(),3);
-
-
-            var creation_date = myDate.getFullYear()+"-"+month+"-"+date+""+hours+":"+minutes
-                        +':'+seconds;
-               ***/
-            var creation_date= getFormatDate(new Date());
-
-
-            showMessage("creation_date"+creation_date);
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-            var lineID;
-
-
-            db.transaction(function(tx) {
-                var insertSql="INSERT INTO MOBILE_EXP_REPORT_LINE (" +
-                    "expense_type_id,"+
-                    "expense_type_desc,"+
-                    "expense_item_id,"+
-                    "expense_item_code,"+
-                    "expense_item_desc,"+
-                    "expense_price ,"+
-
-                    "expense_quantity,"+
-                    "currency_code,"+
-                    "currency_code_desc,"+
-                    "exchange_rate,"+
-                    "total_amount,"+
-
-                    "expense_date_from,"+
-                    "expense_date_to,"+
-                    "expense_place,"+
-                    "description,"+
-                    "local_status,"+
-
-
-                    'invoice_quantity,'+
-                    'expenseObject_id,'+
-                    'expenseObject_code,'+
-                    'expenseObject_desc,'+
-                    'expenseObject_type,'+
-                    'costObject_id,'+
-                    'costObject_desc,'+
-
-                    "creation_date,"+
-                    "created_by,"+
-                    "timestamp"+
-
-                    ") VALUES (" +
-                    "?,?,?,?,?,?,"+
-                    "?,?,?,?,?,"+
-                    "?,?,?,?,?,"+
-                    "?,?,?,?,?,?,?,"+
-
-                    "?,?,?)";
-                var para=[
-                    data.expense_type_id,
-                    data.expense_type_desc,
-                    data.expense_item_id,
-                    data.expense_item_code,
-                    data.expense_item_desc,
-                    data.expense_price ,
-
-                    data.expense_quantity,
-                    data.currency_code,
-                    data.currency_code_desc,
-                    data.exchange_rate,
-                    data.total_amount,
-
-                    expense_date_from,
-                    expense_date_to,
-                    data.expense_place,
-                    data.description,
-                    data.local_status,
-
-                    data.invoice_quantity,
-                    data.expenseObject_id,
-                    data.expenseObject_code,
-                    data.expenseObject_desc,
-                    data.expenseObject_type,
-                    data.costObject_id,
-                    data.costObject_desc,
-
-
-                    creation_date,
-                    data.created_by,
-                    timestamp
-                ];
-
-                //showMessage('sql '+insertSql);
-                showMessage('para '+angular.toJson(para));
-                //showMessage(data.creation_date           );
-
-                console.log(para);
-               console.log(data.expense_type_id         );
-               console.log(data.expense_type_desc           );
-               console.log(data.expense_item_id         );
-               console.log(data.expense_item_code           );
-               console.log(data.expense_item_desc           );
-               console.log(data.expense_price           );
-               console.log(data.expense_quantity            );
-               console.log(data.currency_code           );
-               console.log(data.currency_code_desc          );
-               console.log(data.exchange_rate           );
-               console.log(data.total_amount            );
-               console.log(data.expense_date_from           );
-               console.log(data.expense_date_to         );
-               console.log(data.expense_place           );
-               console.log(data.description         );
-               console.log(data.local_status            );
-               console.log(data.invoice_quantity            );
-               console.log(data.expenseObject_id            );
-               console.log(data.expenseObject_code          );
-               console.log(data.expenseObject_desc          );
-               console.log(data.costObject_id           );
-               console.log(data.costObject_desc         );
-               console.log(creation_date           );
-               console.log(data.created_by          );
-
-                tx.executeSql(insertSql, para, function(tx, res) {
-
-                    //showMessage("res"+angular.toJson(res));
-
-
-                    //showMessage("插入图片");
-                    //返回line_id
-                    lineID=res.insertId;
-                    db.transaction(function(tx) {
-                        var sql="INSERT INTO MOBILE_EXP_LINE_PHOTOS ("+
-                            "line_id , " +
-                            "photo_name ,"+
-                            "photo_src ,"+
-                            "creation_date ,"+
-                            "created_by )"+
-                            "values("+
-                            "? ,"+
-                            "? ,"+
-                            "? ,"+
-                            "? ,"+
-                            "? )";
-                        var length=data.photos.length;
-                        var count=0;
-                        this.curreentPhotoIndex++
-
-                        if(length>0){
-                            for(var i=0;i<length;i++){
-
-
-                                //showMessage("--" +i);
-                                var index = i;
-                                /*插数据库*/
-                                tx.executeSql(sql, [
-                                    lineID,
-                                    data.photos[i].photo_name,
-                                    data.photos[i].photo_src,
-                                    data.photos[i].creation_date,
-                                    data.photos[i].created_by
-                                ], function(tx, res) {
-
-
-                                    showMessage(count + " -- res insert photo  -"+res.insertId);
-
-                                    showMessage(angular.toJson(data.photos));
-
-                                    data.photos[count].photo_id = res.insertId;
-                                    //showMessage(angular.toJson(data.photos[index]));
-
-
-
-                                    count++;
-                                    if(count==length){
-                                        deferred.resolve(lineID);
-                                    }
-                                },function(err) {
-                                    count++;
-                                    if(count==length){
-                                        //dialog.showAlert("E", " insert ERROR: " + angular.toJson(err) );
-
-                                        deferred.reject(err);
-                                    }
-                                })
-                            }
-                        }else{
-                            deferred.resolve(lineID);
-                        }
-                    });
-                }, function(e) {
-
-
-                    showMessage(" insert ERROR: " + e.message);
-
-                    dialog.showAlert("E", " insert ERROR: " + e.message)
-
-                    deferred.reject(e);
-                });
-            });
-            return deferred.promise;
-        },  // end of insert
-
-
-
-
-
-        getData:function(){
-            return this.data;
-        },
-
-        /***
-         * 数据初始化
-         */
-        initData:function(){
-
-            //prj_project_cost_type_v 项目报销类型归属，其中'SH'为营销，'RH' 管理费用，'PD'为项目实施，‘DN’为笔记本报销
-
-            this.data={
-                //userId:baseConfig.user.userId,
-                //companyId:baseConfig.user.companyId,
-                companyId:"",
-
-                created_by:window.localStorage.empno,
-                photos:[],
-                expense_type_id :'',
-                expense_type_desc : '',
-                expense_item_id: '',
-                expense_item_code  : '',
-                expense_item_desc  : '',
-                expense_price  : '',
-    
-                expense_quantity  : '',
-                currency_code  : '',
-                currency_code_desc  : '',
-                exchange_rate  : '',
-                total_amount  : '',
-    
-                expense_date_from  : '',
-                expense_date_to  : '',
-                expense_place  : '',
-                description  : '',
-                local_status  : '',
-
-                invoice_quantity:'',
-                expenseObject_id:'',
-                expenseObject_code:'',
-
-                expenseObject_desc:'',
-                expenseObject_type:'',
-                costObject_id:'',
-                costObject_desc:'',
-
-
-                creation_date  : ''
-
-
-
-                
-            };
-            this.boolLoadExpenseObject = false;
-            this.projectList = [];
-            this.expenseItemList=[];
-            this.expenseCostList=[];
-            console.log("数据 清空");
-
-            this.data.expense_date_from = new Date();
-            this.data.expense_date_to = new Date();
-            this.data.expense_quantity = 1;
-            //showMessage("数据清空");
-            console.log("初始化 默认人民币");
-            this.data.currency_code="CNY";
-            this.data.currency_code_desc="CNY-人民币";
-            this.data.exchange_rate=Number(1);
-        },
-
-
-        /******
-         *   记一笔更新本地数据库
-         *
-         * @param lineId 行id
-         * @returns {*}
-         */
-        update:function(){
-            //转换日期格式
-            //this.data.expense_date_from=getFormatDate(new Date(this.data.expense_date_from));
-            //this.data.expense_date_to=getFormatDate(new Date(this.data.expense_date_to));
-
-            var deferred=$q.defer();
-            var data=this.data;
-            var expense_date_from=getFormatDate(new Date(data.expense_date_from));
-            var expense_date_to=getFormatDate(new Date(data.expense_date_to));
-
-
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-            // var lineID;
-            var rowsAffacted = 0;
-            //showMessage("打开数据库成功");
-            //console.log('update'+angular.toJson(date));
-            showMessage(angular.toJson(this.date));
-            //showMessage('aaa');
-
-            db.transaction(function(tx) {
-                // 拼接字符串 行字段
-                var updateSql="UPDATE MOBILE_EXP_REPORT_LINE SET " +
-                    //"expense_type_id = ?,"+
-                    //"expense_type_desc = ?,"+
-                    "expense_item_id = ?,"+
-                    "expense_item_code = ?,"+
-                    "expense_item_desc = ? ,"+
-                    "expense_price = ?,"+
-
-                    "expense_quantity = ?,"+
-                    "currency_code = ?,"+
-                    "currency_code_desc = ?,"+
-                    "exchange_rate = ?,"+
-                    "total_amount = ?,"+
-
-                    "expense_date_from = ?,"+
-                    "expense_date_to = ?,"+
-                    "expense_place = ?,"+
-                    "description = ?,"+
-                    "local_status = ?,"+
-
-                    'invoice_quantity = ?,'+
-                    'expenseObject_id = ?,'+
-                    'expenseObject_code = ?,'+
-                    'expenseObject_desc = ?,'+
-                    'expenseObject_type = ?,'+
-
-                    'costObject_id = ?,'+
-                    'costObject_desc = ?,'+
-
-                    //"creation_date = ?,"+
-                    "created_by = ?"+
-                    "WHERE line_id = ?";
-                var para=[
-                   // data.expense_type_id,
-                    //data.expense_type_desc,
-                    data.expense_item_id,
-                    data.expense_item_code,
-                    data.expense_item_desc,
-                    data.expense_price,
-
-                    data.expense_quantity,
-                    data.currency_code,
-                    data.currency_code_desc,
-                    data.exchange_rate,
-                    data.total_amount,
-
-                    expense_date_from,
-                    expense_date_to,
-                    data.expense_place,
-                    data.description,
-                    data.local_status,
-
-                    data.invoice_quantity,
-                    data.expenseObject_id,
-                    data.expenseObject_code,
-                    data.expenseObject_desc,
-                    data.expenseObject_type,
-                    data.costObject_id,
-                    data.costObject_desc,
-
-                    //data.creation_date,
-                    data.created_by,
-                    data.line_id
-                ];
-
-                // 更新字段
-                tx.executeSql(updateSql, para, function(tx, res) {
-
-                    //showMessage(rowsAffacted);
-                    showMessage("res"+angular.toJson(res));
-
-                    rowsAffacted = res.rowsAffected;
-
-
-                    db.transaction(function(tx) {
-
-                        //showMessage("插入图片");
-
-
-                        var insertPhotoSql="INSERT INTO MOBILE_EXP_LINE_PHOTOS ("+
-                            "line_id , " +
-                            "photo_name ,"+
-                            "photo_src ,"+
-                            "creation_date ,"+
-                            "created_by )"+
-                            "values("+
-                            "? ,"+
-                            "? ,"+
-                            "? ,"+
-                            "? ,"+
-                            "? )";
-
-                        var length=data.photos.length;
-                        //showMessage("photo length"+length);
-
-                        ///*
-                        var count=0;
-                        if(length>0){
-
-                            for(var i=0;i<length;i++){
-
-                                showMessage("photo detail "+angular.toJson(data.photos[i]));
-                                //var index =i;
-
-                                //    补齐 新添加的照片记录
-                                //    原有照片记录 已在本地数据库 无需更新
-                                //   有另外一个页面入口删除本地照片
-
-                                if (typeof(data.photos[i].photo_id) == "undefined" || data.photos[i].photo_id == "") {
-                                    showMessage("undefined photo insert");
-                                    tx.executeSql(insertPhotoSql, [
-                                            data.line_id,
-                                            data.photos[i].photo_name,
-                                            data.photos[i].photo_src,
-                                            data.photos[i].creation_date,
-                                            data.photos[i].created_by
-                                        ], function(tx, res) {
-
-                                            //this.data.photos[i].photo_id = res.insertId;
-                                            //showMessage("insert "+angular.toJson(res));
-
-                                            showMessage(angular.toJson(data.photos));
-                                            showMessage(count +"--update --"+ res.insertId );
-                                            data.photos[count].photo_id = res.insertId;
-                                            showMessage(angular.toJson(data.photos));
-
-
-                                            //setPhotoID(i,res.insertId);
-
-                                            count++;
-                                            showMessage(count);
-                                            if(count==length){
-                                                //showMessage("插入成功");
-                                                deferred.resolve(rowsAffacted);
-                                            }
-                                        },function(err) {
-                                            count++;
-                                            if(count==length){
-                                                //showMessage("deferred");
-                                                //dialog.showAlert("E", " insert ERROR: " + angular.toJson(err) );
-
-                                                deferred.reject(err);
-                                            }
-                                        }
-                                    ); // end of executeSql
-                                }
-                                else {
-                                    count++;
-                                    showMessage(count);
-                                    if(count==length){
-                                        //showMessage("插入成功");
-                                        deferred.resolve(rowsAffacted);
-                                    }
-                                }
-
-                            }
-                        }else{
-                            deferred.resolve(rowsAffacted);
-                        }
-                    });
-                }, function(e) {
-                    showMessage("deferred");
-                    deferred.reject(e);
-                });
-            });
-            return deferred.promise;
-
-        },
-
-
-
-        uploadDataV2:function(form,photos) {
-            console.log("进入");
-            //showMessage("上传开始");
-
-            showMessage("photos.length" +photos.length);
-
-
-            var deferred=$q.defer();
-            //showMessage("photos.length" +photos.length);
-            //deferred.reject("error");
-            if(photos.length>0){
-                showMessage("上传有照片");
-                //setProgress("上传有照片");
-                var  count  = 0;
-                for(var i=0;i<photos.length;i++){
-                    //这里是异步调用cordova 的文件操作，给form 增加
-                    window.resolveLocalFileSystemURL(baseConfig.appRootPath+photos[i].photo_name, function (fileEntry) {
-                        fileEntry.file(function (file) {
-                            var reader = new FileReader();
-                            reader.onloadend = function (fileReadResult) {
-                                var data = new Uint8Array(fileReadResult.target.result);
-                                var blob = createBlob(data, "image/jpeg");
-
-                                //alert("size: "+file.size);
-;                               //dialog.showAlert("I", "size: "+file.size);
-                                form.append(file.name, blob, file.name);
-                                count ++;
-                                if(count == photos.length){
-                                    doPostHttp(form,deferred);
-                                }
-                            };
-                            reader.onerror = function (fileReadResult) {
-                                //如果失败也算完成的话，这里也加上就行
-                                //count ++
-                                //if(count == photos.length()){
-                                //doPostHttp(form);
-                                //}
-                            };
-                            reader.readAsArrayBuffer(file);
-                        });
-                    },
-                    function (error) {
-                        showMessage(error.code);
-                    });
-                }
-            }else{
-
-                //showMessage("上传无照片");
-
-                doPostHttp(form,deferred);
-            }
-
-            return deferred.promise;
-        },
-
-        uploadDataByJosn: function(dataList, option) {
-
-
-            var lines = {
-                expense_lines:[]
-            };
-            //showMessage("josn");
-            //showMessage(angular.toJson(dataList));
-            //showMessage(datalist.expenseObject_id );
-            //showMessage(datalist.expense_date_from );
-
-
-            /*
-
-            console.log(dataList.expenseObject_id );
-               console.log(dataList.expense_place );
-               console.log(dataList.expense_item_code );
-               console.log(dataList.expense_date_from );
-               console.log(dataList.expense_date_to );
-               console.log(dataList.expense_price );
-               console.log(dataList.expense_quantity );
-               console.log(dataList.expense_quantity );
-               console.log(dataList.exchange_rate );
-               console.log(dataList.description );
-               console.log("RMB");
-               console.log(dataList.costObject_id);
-               console.log(dataList.line_id);
-
-                */
-
-
-            // 日期转化
-            var expense_date_from=getFormatDate(new Date(dataList.expense_date_from));
-            var expense_date_to=getFormatDate(new Date(dataList.expense_date_to));
-            var invoice_quantity =  dataList.invoice_quantity;
-           // showMessage("total_amount"+dataList.total_amount);
-
-            var total_amount   = Number(dataList.total_amount).toFixed(2);
-           // showMessage("total_amount"+total_amount);
-
-
-
-            if (invoice_quantity == '' || invoice_quantity == undefined
-                || invoice_quantity == null) {
-                invoice_quantity = "";
-
-            }
-
-            showMessage("invoice_quantity - "+ invoice_quantity);
-            showMessage("rentals_infor_id - "+ dataList.costObject_id);
-            //rentals_infor_id:   ""+dataList.costObject_id,
-
-            //alert("invoice_quantity - "+ invoice_quantity);
-
-
-            //showMessage("构建数据" +dataList.expense_quantity);
-            var item = {
-                project_id :        ""+dataList.expenseObject_id,
-                place       :       dataList.expense_place,
-                fee_item_code:      dataList.expense_item_code,
-                date_from :         expense_date_from,
-                date_to:            expense_date_to,
-
-                unit_price:         ""+dataList.expense_price,
-                quantity:           ""+dataList.expense_quantity,
-                amount:             ""+total_amount,
-                exchange_rate:      ""+dataList.exchange_rate,
-                description:        dataList.description,
-
-                original_currency:  "CNY",
-                rentals_infor_id:   ""+dataList.costObject_id,
-                attach_number:      ""+invoice_quantity,
-                source_code:        option.source_code,
-                source_line_id:     option.source_line_id,
-                time_stamp:         dataList.time_stamp
-
-            };
-            
-            console.log("构建上传数据结束 "+ angular.toJson(item));
-            showMessage("构建上传数据结束 "+ angular.toJson(item));
-
-
-            lines.expense_lines.push(item);
-/*
-            data.expense_type_id,
-                data.expense_type_desc,
-                data.expense_item_id,
-                data.expense_item_code,
-                data.expense_item_desc,
-                data.expense_price ,
-
-                data.expense_quantity,
-                data.currency_code,
-                data.currency_code_desc,
-                data.exchange_rate,
-                data.total_amount,
-
-                data.expense_date_from,
-                data.expense_date_to,
-                data.expense_place,
-                data.description,
-                data.local_status,
-
-                data.invoice_quantity,
-                data.expenseObject_id,
-                data.expenseObject_code,
-                data.expenseObject_desc,
-                data.costObject_id,
-                data.costObject_desc,
-
-
-                data.creation_date,
-                data.created_by
-
-                */
-            var data = JSON.stringify(  lines);
-            console.log(data);
-            showMessage(data);
-
-            console.log("进入");
-            showMessage("上传开始");
-
-            //showMessage("photos.length" +photos.length);
-
-
-            var deferred=$q.defer();
-            //showMessage("photos.length" +photos.length);
-            //deferred.reject("error");
-
-
-                //showMessage("上传无照片");
-
-            doPostHttpOnlyData(data,deferred);
-
-
-            return deferred.promise;
-
-        },
-
-
-
-        uploadData:function(form,photos) {    // 以formdatade 形式上传文件
-            console.log("进入");
-            showMessage("上传开始");
-
-            showMessage("photos.length" +photos.length);
-
-
-            var deferred=$q.defer();
-            //showMessage("photos.length" +photos.length);
-            //deferred.reject("error");
-            if(photos.length>0){
-                showMessage("上传有照片");
-                //setProgress("上传有照片");
-                var  count  = 0;
-                for(var i=0;i<photos.length;i++){
-                    //这里是异步调用cordova 的文件操作，给form 增加
-                    window.resolveLocalFileSystemURL(photos[i].photo_src, function (fileEntry) {
-                        fileEntry.file(function (file) {
-                            var reader = new FileReader();
-                            reader.onloadend = function (fileReadResult) {
-                                var data = new Uint8Array(fileReadResult.target.result);
-                                var blob = createBlob(data, "image/jpeg");
-                                form.append(file.name, blob, file.name);
-                                count ++;
-                                if(count == photos.length){
-                                    doPostHttp(form,deferred);
-                                }
-                            };
-                            reader.onerror = function (fileReadResult) {
-                                //如果失败也算完成的话，这里也加上就行
-                                //count ++
-                                 //if(count == photos.length()){
-                                 //doPostHttp(form);
-                                 //}
-                            };
-                            reader.readAsArrayBuffer(file);
-                        });
-                    });
-                }
-            }else{
-
-                //showMessage("上传无照片");
-
-                doPostHttp(form,deferred);
-            }
-
-            return deferred.promise;
-        },
-        uploadFile:function (interfaceId,fileName,fileURL) {    //以FileTransfer 的upload方法上传单个文件
-            /*以FileTransfer的方式上传文�?*//*
-             var deferred  = $q.defer();
-             alert("uploadFile.....");
-             var deferred  = $q.defer();
-             // 显示上传进度
-             var showUploadingProgress=function(progressEvt ){
-             if( progressEvt.lengthComputable ){
-             navigator.notification.progressValue( Math.round( ( progressEvt.loaded / progressEvt.total ) * 100) );
-             }
-             }
-             var win = function (r) {
-             deferred.resolve( r );
-             };
-             var fail = function (error) {
-             deferred.reject(error);
-             alert("提示图片上传失败，错误信息：" + angular.toJson(error));
-             };
-             var options = new FileUploadOptions();
-             options.fileKey = interfaceId;
-             options.fileName = fileName;
-             options.mimeType = "image/jpeg";
-             var ft = new FileTransfer();
-             ft.onprogress = showUploadingProgress;
-             ft.upload(fileURL, encodeURI(baseConfig.basePath+"uploadAttachment.svc?interfaceId="+interfaceId), win, fail, options);
-
-             return deferred.promise;*/
-        },
-        updateLocalStatus:function(lineId,status){  //根据lineId 更新本地记一笔的local_status
-            var deferred=$q.defer();
-            var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-            db.transaction(function(tx) {
-                var insertSql="UPDATE MOBILE_EXP_REPORT_LINE  "+
-                    " SET  local_status = ? " +
-                    " WHERE line_id= ? ";
-                var para=[
-                    status,
-                    lineId
-                ];
-                tx.executeSql(insertSql, para, function(tx, res) {
-                        deferred.resolve(res);
-                    },
-                    function(e){
-                        deferred.reject(e);
-                    });
-            });
-             return deferred.promise;
-        },
-
-
-        // 上传 预报销申请 控制
-
-        // @return  true: 合法   false: 非法
-
-        checkCostObject:function (expenseObject_type,expense_item_code,total_amount) {
-            var checkDataValid = true;
-            //showMessage("checkCostObject");
-            //showMessage(expenseObject_type+" -" +expense_item_code +" - "+total_amount);
-            if (expenseObject_type == "SH") {
-                // 营销类
-                showMessage("expense_item_code - "+expense_item_code);
-                if (expense_item_code == EXPENSE_ITEM_CODE.OfficeExpenses ) {
-                    // 办公费
-                    checkDataValid = false;
-
-                }
-                else {
-
-                    //showMessage("是否在租房类别之内");
-                    var code =  isNeedHouseApply(expense_item_code);
-                    if ( false == code ) {
-
-                        // 非 租房 和 办公费
-                        if (total_amount >=2000 ) {
-
-                            checkDataValid = false;
-
-                        }
-                    }
-
-                }
-
-
-            }
-
-            //showMessage("checkDataValid -"+checkDataValid );
-
-            console.log("checkDataValid -"+checkDataValid );
-            return checkDataValid;
-
-        },
-
-
-
-
-
-
-
-        explogin:function () {
-
-
-            var deferred = $q.defer();
-
-            showMessage("login");
-            var postData = {username: "admin", password: "admin"};
-
-            var url =baseConfig.basePath+"LOGIN/login.svc";
-            console.log('登录请求的地址是:'+url);
-
-            $http({
-                method: 'POST',
-                url: url,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function (data) {
-//                return  'para=' + JSON.stringify(data);
-                    return  'para=' + JSON.stringify(data);
-                },
-                data: postData,
-                timeout:15000
-            }).
-                success(function(response) {
-                    deferred.resolve(response);
-                }).
-                error(function(err) {
-
-                    deferred.reject(err);
-                });
-            return deferred.promise;
-
-
-
-        },
-        
-
-        removeItem:function(timestamp){
-            //删除服务器记一笔数据
-            console.log("进入删除服务器记一笔数据");
-            showMessage("上传删除");
-            var deferred=$q.defer();
-            deleteAccountItem(timestamp, deferred);
-            return deferred.promise;
-        }
-
-
-    };
-    return service;
-});
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.acc_photoDetail', {
-          url: '/acc/photoDetail',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/acc/photoDetail.html',
-              controller: 'checkPhotoController'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-    .controller('checkPhotoController', function($scope,keepAccount, dialog,$ionicHistory, baseConfig) {
-
-    $scope.tempPhoto=keepAccount.tempPhoto;
-    $scope.photoPathURL = baseConfig.appRootPath;
-    $scope.canEdit  =   keepAccount.canEdit;
-
-    $scope.back=function(){
-        //globalNavigator.popPage();
-
-        showMessage($scope.tempPhoto.photo_src);
-
-
-
-        /*
-
-        showMessage("下砸图片");
-
-        var sourceUrl = baseConfig.appRootPath + keepAccount.tempPhoto.photo_name;
-        showMessage(sourceUrl);
-        var targetUrl = baseConfig.appRootPath +"temp.jpg";
-        showMessage(targetUrl);
-
-
-        var fileTransfer = new FileTransfer();
-        var uri = encodeURI(sourceUrl);
-
-        fileTransfer.download(
-            uri,targetUrl,function(entry){
-                showMessage("下载完成");
-
-                //var smallImage = document.getElementById('smallImage');
-                //smallImage.style.display = 'block';
-                //smallImage.src = entry.fullPath;
-
-            },function(error){
-                console.log("下载网络图片出现错误");
-            });
-
-        */
-
-        $ionicHistory.goBack();
-    };
-
-    $scope.testFunction=function(){
-
-        alert("11111");
-    };
-
-    // 删除照片
-    $scope.removePhoto=function() {
-        console.log("删除照片操作");
-
-        //  删除 数据库
-        var promise = keepAccount.removePhoto(keepAccount.tempPhoto.line_id);
-        promise.then(
-            function(response) {  // 调用承诺API获取数据 .resolve
-
-                showMessage("数据删除成功");
-
-                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, onError);
-
-                //removePhotoFiles();
-
-               // var pages = globalNavigator.getPages();
-                //console.log(pages);
-                //pages[pages.length - 1].destroy();
-                //pages[pages.length - 1].destroy();
-                //globalNavigator.pushPage(moduleHtmlPath.ACC+'accountList.html', { animation : 'slide' } );
-
-                //loanApply.applyList = response.body.tempRecord;
-                //$scope.expenseList=response.body.list;
-
-            },
-            function(err) {  // 处理错误 .reject
-                dialog.showAlert("E","删除失败...."+angular.toJson(err));
-
-                showMessage("删除失败...."+angular.toJson(err));
-            }
-        );
-
-    };
-
-    function onSuccess(fileSystem,test) {
-        console.log(fileSystem.name);
-        showMessage(fileSystem.name);
-        showMessage(keepAccount.tempPhoto.photo_src);
-        var myFolderApp = baseConfig.appRootFile;
-
-        showMessage(myFolderApp+'/'+keepAccount.tempPhoto.photo_name);
-        fileSystem.root.getFile(myFolderApp+'/'+keepAccount.tempPhoto.photo_name, null, onGetFileSuccess, onGetFileError);
-    }
-
-    function onError(error) {
-        showMessage(error.code);
-    }
-
-    function onGetFileSuccess(fileEntry) {
-        console.log("File Name: " + fileEntry.name);
-        showMessage("File Name: " + fileEntry.name);
-
-
-
-        //  删除 文件
-        // remove the file
-        fileEntry.remove(onRemoveSuccess, onRemoveFail);
-
-        // 删除 数组
-
-    }
-
-    function onGetFileError(error) {
-        showMessage("Failed to retrieve file: " + error.code);
-    }
-
-    function onRemoveSuccess(entry) {
-        console.log("Removal succeeded");
-        showMessage("Removal succeeded");
-        showMessage(keepAccount.tempPhotoIndex);
-        showMessage( angular.toJson(keepAccount.data.photos));
-
-        // 删除 照片纪录表
-        keepAccount.removePhoto();
-
-        // 删除 内存中照片列表
-        keepAccount.data.photos.splice(keepAccount.tempPhotoIndex,1);
-        showMessage( 'photos list:'+angular.toJson(keepAccount.data.photos));
-
-
-        $ionicHistory.goBack();
-
-        //var pages = globalNavigator.getPages();
-        //console.log(pages);
-        //pages[pages.length - 1].destroy();
-        //pages[pages.length - 1].destroy();
-        //globalNavigator.pushPage('html/acc/photos.html', { animation : 'slide' });
-
-    }
-
-    function onRemoveFail(error) {
-        showMessage('Error removing file: ' + error.code);
-    }
-
-});
-
-/**
- * Created by wuxiaocheng on 15/8/26.
- */
-angular.module("applicationModule")
-    .controller('currencyController', function($scope,$rootScope,keepAccount,expenseApply,$http,$q,$ionicHistory, baseConfig) {
-
-    function queryCurrencyList(){
-        var companyId=baseConfig.user.companyId;
-        var deferred = $q.defer();
-
-
-        /*
-        $http.get(baseConfig.basePath+"EXP/currencyList.svc?companyId="+companyId,{cache:false}).
-            success(function(response, status, headers, config) {
-
-                //showMessage('test');
-                deferred.resolve(response);
-            }).
-            error(function(error, status, headers, config) {
-                deferred.reject(error);
-            });
-
-            */
-
-        $scope.currencyList = [
-            {
-                "currencyName": "人民币",
-                "currencyCode": "CNY",
-                "exchangeRate": 1
-            },
-            {
-                "currencyName": "欧元",
-                "currencyCode": "EUR",
-                "exchangeRate": 1
-            },
-            {
-                "currencyName": "美元",
-                "currencyCode": "USD",
-                "exchangeRate": 1
-            },
-            {
-                "currencyName": "港币",
-                "currencyCode": "HKD",
-                "exchangeRate": 1
-            }
-        ];
-        deferred.resolve("ok");
-
-
-        return deferred.promise;
-    }
-
-    var promise=queryCurrencyList();
-    promise.then(
-        function(response) {
-            var code=getResponseCode(response);
-            if(code=="ok"){
-                $scope.currencyList=response.body.currencyList;
-            }else if(code=="failure"){
-                showMessage("查询失败:"+angular.toJson(response))
-            }
-            else if (code =="login_required"){
-                console.log(angular.toJson(response));
-                //showMessage("登录状态异常\n"+angular.toJson(response));
-
-                $scope.currencyList = [
-                    {
-                        "currencyName": "人民币",
-                        "currencyCode": "CNY",
-                        "exchangeRate": 1
-                    },
-                    {
-                        "currencyName": "欧元",
-                        "currencyCode": "EUR",
-                        "exchangeRate": 1
-                    },
-                    {
-                        "currencyName": "美元",
-                        "currencyCode": "USD",
-                        "exchangeRate": 1
-                    },
-                    {
-                        "currencyName": "港币",
-                        "currencyCode": "HKD",
-                        "exchangeRate": 1
-                    }
-                ];
-
-                //reLogin();
-            }else{
-                showMessage("未知错误:"+angular.toJson(response));
-            }
-        },
-        function(err) {  // 处理错误 .reject
-            //showMessage("网络连接错误...."+angular.toJson(err));
-            $scope.currencyList = [
-                {
-                    "currencyName": "人民币",
-                    "currencyCode": "CNY",
-                    "exchangeRate": 1
-                },
-                {
-                    "currencyName": "欧元",
-                    "currencyCode": "EUR",
-                    "exchangeRate": 1
-                },
-                {
-                    "currencyName": "美元",
-                    "currencyCode": "USD",
-                    "exchangeRate": 1
-                },
-                {
-                    "currencyName": "港币",
-                    "currencyCode": "HKD",
-                    "exchangeRate": 1
-                }
-            ];
-
-        });
-
-    $scope.selectCurrency=function(e){
-        var target= e.target;
-        var currencyName=target.getAttribute('currencyName');
-        var currencyCode=target.getAttribute('currencyCode');
-        var exchangeRate=target.getAttribute('exchangeRate');
-        if(keepAccount.sourceFrom=='acc')
-        {
-        keepAccount.data.currency_code=currencyCode;
-        keepAccount.data.currency_code_desc=currencyCode+"-"+currencyName;
-        keepAccount.data.exchange_rate=Number(exchangeRate);
-        }
-        if(expenseApply.sourceFrom=='EXP'){
-        expenseApply.tempLine.originalCurrency=currencyCode;
-        expenseApply.tempLine.exchangeRate=Number(exchangeRate);
-        }
-        //expenseApply.tempLine.expenseTypeName=expenseTypeName;
-
-        //$ionicNavBarDelegate.back();
-        //globalNavigator.popPage();
-        $ionicHistory.goBack();
-    };
-
-   // $rootScope.hideTabs = true; // mod by ciwei
-});
-
-/**
- * Created by wuxiaocheng on 15/8/26.
- */
-
-// angular.module('myApp')
-//   .config(['$stateProvider',
-//     function ($stateProvider) {
-//       $stateProvider
-//         .state('tab.expense_acc', {
-//           url: '/expense/acc',
-//           params: {},
-//           views: {
-//             'tab-application': {
-//               templateUrl: 'build/pages/application/expense/acc/accounts.html',
-//               controller: 'keepAccountController'
-//             }
-//           }
-//         });
-//     }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.acc_main', {
-          url: '/acc',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/acc/accounts.html',
-              controller: 'keepAccountController'
-            }
-          }
-        }); 
-    }]);
-     
-angular.module("applicationModule")
-  .controller('keepAccountController', function ($scope, keepAccount, $http, $state, $rootScope, $q, hmsPopup) {
-
-    $scope.openCreatePage = function () {
-      keepAccount.operation = "INSERT";
-      keepAccount.canEdit = true;
-      keepAccount.canUpload = false;
-      keepAccount.sourceFrom = "ACCOUNT";
-      keepAccount.initData();
-
-      console.log("should null " + angular.toJson(keepAccount.expenseItemList));
-
-      keepAccount.expenseItemList = [];
-      console.log("should null " + angular.toJson(keepAccount.expenseItemList));
-
-      keepAccount.boolLoadExpenseObject = false;
-      $state.go('tab.acc_detail', {hideTabs: true}); 
-    };
-
-
-    $scope.openAccountListPage = function () {
-      //alert("未完待续");
-      $state.go("tab.acc_accountList");
-
-    };
-
-    $scope.openUploadBatchPage = function () {
-      //globalNavigator.pushPage(moduleHtmlPath.ACC+'uploadAccount.html', { animation : 'slide' });
-      //alert("未完待续");
-      $state.go("tab.acc_uploadAccount");
-
-    };
-
-    //$rootScope.hideTabs = $stateParams.hideTabs;
-   // $rootScope.hideTabs = true; // mod by ciwei
-
-    // add by ciwei
-    $scope.showHelp = function () {
-      var template = 'Step1：在“记一笔”功能中创建待报销记录，保存并上传。' + '<br> ' +
-        'Step2：在“报销”功能中，创建报销单，选择项目，再选择已经上传的“记一笔”作为报销行信息，保存提交。' + '<br><br> ' +
-        '**“记一笔”保存，是保存在手机本地，只有上传后，才能在报销单处选到。另，如果app被卸载了，再重新下载，之前没上传的“记一笔”会丢失。';
-
-      hmsPopup.showPopup(template, '报销功能使用说明');
-    };
-
-  });
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.acc_photos', {
-          url: '/acc/photos',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/acc/photos.html',
-              controller: 'photosController'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('photosController', function ($scope, keepAccount, $state, $ionicPopup, $ionicLoading, $ionicActionSheet, dialog, baseConfig, hmsPopup) {
-
-    $scope.photos = keepAccount.data.photos;
-
-    //showMessage(angular.toJson(keepAccount.data.photos));
-    $scope.serverURL = baseConfig.serverPath;
-
-    $scope.photoPathURL = baseConfig.appRootPath;
-
-
-    $scope.showAlertPhoto = function (photoName) {//点击图片 放大图片
-      $scope.photoNameUrl = photoName;
-      // 自定义弹窗
-      var myPopup = $ionicPopup.show({ 
-        scope: $scope,
-        template: '<div style="text-align: center;"><img ng-src="{{photoPathURL + photoNameUrl}}"  style="width: 95%; height: 350px"></div>',
-        buttons: [
-          {text: '取消'},
-        ]
-      });
-      myPopup.then(function (res) {
-        console.log('Tapped!', res);
-      });
-    }
-    /*
-     destinationType:Camera.DestinationType.FILE_URI,
-     sourceType:Camera.PictureSourceType.CAMERA,
-     quality :35,
-     allowEdit:true,
-     encodingType:Camera.EncodingType.JPEG,
-     saveToPhotoAlbum:false};
-     */
-    //var optionCameraOld = {
-    //    quality: 25,
-    //    destinationType: Camera.DestinationType.FILE_URI ,
-    //    sourceType : Camera.PictureSourceType.CAMERA,
-    //    saveToPhotoAlbum : false,
-    //    allowEdit:true
-    //
-    //
-    //    //sourceType : Camera.PictureSourceType.PHOTOLIBRARY
-    //
-    //};
-    /*拍摄照片 相机*/
-    // $scope.getPhotoFromCamera=function(){
-    getPhotoFromCamera = function () { 
-      //if (detectOS() == "iPhone") {
-      if(ionic.Platform.isIOS() && !ionic.Platform.isIPad()){
-        var optionsCamera = {
-          destinationType: Camera.DestinationType.FILE_URI,
-          sourceType: Camera.PictureSourceType.CAMERA,
-          quality: 50,
-          allowEdit: false,
-          targetWidth: 1366,
-          targetHeight: 768,
-          encodingType: Camera.EncodingType.JPEG,
-          saveToPhotoAlbum: false
-        };
-        //alert("iphone");
-      }
-      else {
-        var optionsCamera = {
-          destinationType: Camera.DestinationType.FILE_URI,
-          sourceType: Camera.PictureSourceType.CAMERA,
-          quality: 50,
-          allowEdit: false,
-          //targetWidth : 100,
-          //targetHeight : 100,
-          encodingType: Camera.EncodingType.JPEG,
-          saveToPhotoAlbum: false
-        };
-        //alert("not iphone");
-
-      }
-      // alert(angular.toJson(optionsCamera));
-      // alert(navigator.camera.getPicture);
-      navigator.camera.getPicture(onSuccess, onFail, optionsCamera);
-
-    };
-
-    /*拍摄照片 相册*/
-    getPhotoFromLibary = function () {
-      var optionsPhotoLibrary = {
-        destinationType: Camera.DestinationType.FILE_URI,
-        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-        quality: 50,
-        allowEdit: false,
-        targetWidth: 1366,
-        targetHeight: 768,
-        encodingType: Camera.EncodingType.JPEG,
-        saveToPhotoAlbum: false
-      };
-      navigator.camera.getPicture(onSuccess, onFail, optionsPhotoLibrary);
-
-    };
-
-
-    /*打开dialog*/
-
-    /*
-     $scope.dialogs = {};
-     $scope.openDialog=function(dlg) {
-     if (!$scope.dialogs[dlg]) {
-     ons.createDialog(dlg).then(function(dialog) {
-     $scope.dialogs[dlg] = dialog;
-     dialog.show();
-     });
-     }
-     else {
-     $scope.dialogs[dlg].show();
-     }
-     };
-
-     ****/
-
-    /**/
-    $scope.openPopup = function () {
-      //$state.go('tab.acc_photos');
-
-
-      if (keepAccount.canEdit == true) {
-        $scope.popupView = $ionicPopup.show({
-
-          templateUrl: 'templates/expense/popCamera.html',
-          scope: $scope,
-          title: "拍照"
-
-        });
-        $scope.popupView.then(function () {
-
-          console.log("popup close");
-
-        });
-      }
-
-
-    };
-
-    //照相相册选择弹出框   add by xuchengcheng
-    $scope.addPicture = function () {
-      var hideSheet = $ionicActionSheet.show({
-        buttons: [{
-          text: '相册 '
-        }, {
-          text: '照相'
-        }],
-        titleText: '请选择获取方式',
-        cancelText: '取 消',
-        cancel: function () {
-          // add cancel code..
-        },
-        buttonClicked: function (index) {
-          // 相册文件选择上传
-          if (index == 0) {
-            console.log("相册");
-            $scope.selectPhotoSource("PhotoLibary");
-          } else if (index == 1) {
-            console.log("相机");
-            // 拍照上传
-            $scope.selectPhotoSource("Cemera");
-          } else if (index == 2) {
-            $scope.viewPhotos();
-          }
-          return true;
-        }
-      });
-    }
-
-    /*选择相机*/
-    $scope.selectPhotoSource = function (sourceType) {
-      if (sourceType == "Cemera") {
-        getPhotoFromCamera();
-      } else if (sourceType == "PhotoLibary") {
-        getPhotoFromLibary();
-      }
-      console.log("sourceType " + sourceType);
-      //$ionicPopup.close();
-      // $scope.popupView.close();
-      $ionicActionSheet.hide;
-    };
-
-
-    function onSuccess(imageURI) {
-
-      //var image = document.getElementById('myImage');
-      //image.src = imageURI;
-      // alert("asd");
-
-      console.log("----------" + angular.toJson(imageURI));
-      movePic(imageURI);
-      //$scope.$apply();
-    }
-
-    function onFail(message) {
-      // alert('Failed because: ' + message);
-    }
-
-
-    function movePic(file) {
-      window.resolveLocalFileSystemURL(file, resolveOnSuccess, resOnError);
-
-    }
-
-    //Callback function when the file system uri has been resolved
-    function resolveOnSuccess(entry) {
-      var d = new Date();
-      var n = d.getTime();
-      //new file name
-      var newFileName = n + ".jpg";
-      var myFolderApp = baseConfig.appRootFile;
-
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
-          //The folder is created if doesn't exist
-          fileSys.root.getDirectory(myFolderApp,
-            {create: true, exclusive: false},
-            function (directory) {
-              entry.moveTo(directory, newFileName, successMove, resOnError);
-            },
-            resOnError);
-        },
-        resOnError);
-    }
-
-
-    //Callback function when the file has been moved successfully - inserting the complete path
-    function successMove(entry) {
-
-      // 加载loading
-      $ionicLoading.show({
-        template: 'Loading...',
-        duration: 1000
-      });
-
-      //Store imagepath in session for future use
-      // like to store it in database
-      var date = getFormatDate(new Date());
-      var photo = {
-
-        photo_id: '',
-        photo_name: entry.name,
-        // photo_src:entry.toNativeURL(),
-        photo_src: entry.toURL(),
-        creation_date: date,
-        created_by: window.localStorage.empno
-      };
-
-      showMessage(photo.photo_src);
-      showMessage(photo.photo_name);
-
-      //showMessage(entry.toNativeURL()+' - '+entry.toURL());
-
-      keepAccount.data.photos.push(photo);
-      /*清除缓存*/
-      //cleanupCache();
-      $scope.photos = keepAccount.data.photos;
-      //$scope.$apply();
-
-      $ionicLoading.hide();
-    }
-
-    function resOnError(error) {
-      alert(error.code);
-    }
-
-    /*打开确认照片页面*/
-    $scope.showConfirmPhoto = function (index) {//图片长按删除
-      //showMessage('showConfirmPhoto aa');
-      //alert(index);
-      keepAccount.tempPhoto = keepAccount.data.photos[index];
-      keepAccount.tempPhotoIndex = index;
-      showMessage("temp - - " + angular.toJson(keepAccount.tempPhoto));
-
-      $scope.tempPhoto = keepAccount.tempPhoto;
-      $scope.photoPathURL = baseConfig.appRootPath;
-      $scope.canEdit = keepAccount.canEdit;
-
-    if($scope.canEdit){
-      //  confirm 对话框
-      var confirmPopup = $ionicPopup.confirm({
-        title: '<strong>提示</strong>',
-        template: '<div style="text-align: center">是否确定删除本张图片?</div>'
-      });
-      confirmPopup.then(function (res) {
-        if (res) {
-          console.log('You are sure');
-          $scope.removePhoto();
-        } else {
-          console.log('You are not sure');
-        }
-      });
-    }
-
-      // 删除照片
-      $scope.removePhoto = function () {
-        console.log("删除照片操作");
-        //  删除 数据库
-        var promise = keepAccount.removePhoto(keepAccount.tempPhoto.line_id);
-        promise.then(
-          function (response) {  // 调用承诺API获取数据 .resolve
-            showMessage("数据删除成功");
-            $scope.photos.splice(index, 1);
-            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, onError);
           },
-          function (err) {  // 处理错误 .reject
-            dialog.showAlert("E", "删除失败...." + angular.toJson(err));
-            showMessage("删除失败...." + angular.toJson(err));
-          });
-      };
-
-      function onSuccess(fileSystem, test) {
-        console.log(fileSystem.name);
-        showMessage(fileSystem.name);
-        showMessage(keepAccount.tempPhoto.photo_src);
-        var myFolderApp = baseConfig.appRootFile;
-
-        showMessage(myFolderApp + '/' + keepAccount.tempPhoto.photo_name);
-        fileSystem.root.getFile(myFolderApp + '/' + keepAccount.tempPhoto.photo_name, null, onGetFileSuccess, onGetFileError);
-      }
-
-      function onError(error) {
-        showMessage(error.code);
-      }
-
-      function onGetFileSuccess(fileEntry) {
-        console.log("File Name: " + fileEntry.name);
-        showMessage("File Name: " + fileEntry.name);
-        // remove the file
-        fileEntry.remove(onRemoveSuccess, onRemoveFail);
-      }
-
-      function onGetFileError(error) {
-        showMessage("Failed to retrieve file: " + error.code);
-      }
-
-      function onRemoveSuccess(entry) {
-        console.log("Removal succeeded");
-        showMessage("Removal succeeded");
-        showMessage(keepAccount.tempPhotoIndex);
-        showMessage(angular.toJson(keepAccount.data.photos));
-
-        // 删除 照片纪录表
-        keepAccount.removePhoto();
-
-        // 删除 内存中照片列表
-        //keepAccount.data.photos.splice(keepAccount.tempPhotoIndex, 1);
-        keepAccount.data.photos = $scope.photos;
-
-
-        showMessage('photos list:' + angular.toJson(keepAccount.data.photos));
-      }
-
-      function onRemoveFail(error) {
-        showMessage('Error removing file: ' + error.code);
-      }
-    };
-
-
-    /*清除相机缓存*/
-    function cleanupCache() {
-      navigator.camera.cleanup(cameraSuccess, cameraError);
-    }
-
-    function cameraSuccess() {
-    }
-
-    function cameraError(e) {
-      alert(angular.toJson(e));
-    }
-  });
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.acc_uploadAccount', {
-          url: '/acc/uploadAccount',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/expense/acc/uploadAccount.html',
-              controller: 'uploadController'
-            }
+          params: {
+            'employeeNumber': ""
           }
         });
     }]);
+angular.module('contactModule')
+  .controller('contactEmployeeDetailCtl', [
+    '$scope',
+    '$ionicScrollDelegate',
+    '$ionicModal',
+    'baseConfig',
+    'hmsHttp',
+    'hmsPopup',
+    '$ionicHistory',
+    '$stateParams',
+    function ($scope,
+              $ionicScrollDelegate,
+              $ionicModal,
+              baseConfig,
+              hmsHttp,
+              hmsPopup,
+              $ionicHistory,
+              $stateParams) {
+      /**
+       * var section
+       */
+      {
+        $scope.employeeInfo = {}; //存储查询员工的详细信息
+        $scope.contactLoading = true; //默认显示loading加载
+        var getEmployeeDetailUrl = baseConfig.businessPath + '/get_empinfo/get_emp_detail';
+        var employeeDetailParams = {params: {p_emp_code: $stateParams.employeeNumber}};
+      }
 
-
-angular.module("applicationModule")
-    .controller('uploadController', function ($scope, keepAccount, dialog, $http, $q,$ionicLoading, baseConfig) {
-
-    $scope.currentProgress = '批量上传'; 
-    var recordToUpload = 0;
-    var recordUploaded = 0;
-    var recordToUploadLength = 0; 
-
-        //showMessage(window.localStorage.empno);
-    function queryAccountList() {
-        // alert("queryAccountList");
-        var list = [];
-        // alert(baseConfig.dbName);
-        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-        // alert("queryAccountList0000");
-        var deferred = $q.defer();
-        db.transaction(function (tx) {
-            // alert("++++++++-------");
-            var querySql = "select * from MOBILE_EXP_REPORT_LINE t WHERE local_status = 'NEW' AND created_by =? order by creation_date desc, line_id desc ;"
-            var para=[
-                window.localStorage.empno
-            ];
-            tx.executeSql(querySql, para, function (tx, res) {
-                //alert(angular.toJson(res.rows.item(0)));
-                for (var i = 0; i < res.rows.length; i++) {
-                    list.push(res.rows.item(i));
-                }
-                deferred.resolve(list);
-            });
-        }, function (e) {
-            // alert("++++++++");
-            alert(angular.toJson(e));
-            console.log("ERROR: " + e.message);
-            deferred.reject(e);
+      /**
+       *  获取员工的详细信息数据--
+       */
+      function initEmployeeData() {
+        hmsHttp.post(getEmployeeDetailUrl, employeeDetailParams).success(function (response) {
+          $scope.employeeInfo = response.token;
+          $scope.contactLoading = false;
+        }).error(function (error) {
+          $scope.contactLoading = false;
+          hmsPopup.showShortCenterToast('请检查网络连接,稍后重试!');
+          $scope.employeeInfo = {};
         });
-        return deferred.promise;
-    }
-
-    function queryAccountPhotos(lineId) {
-        var list = [];
-        //alert("打开数据库...");
-        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
-
-        var deferred = $q.defer();
-        db.transaction(function (tx) {
-            var querySql = "select * from MOBILE_EXP_LINE_PHOTOS t where t.line_id=? ;";
-            tx.executeSql(querySql, [lineId], function (tx, res) {
-                //alert(angular.toJson(res.rows.item(0)));
-                for (var i = 0; i < res.rows.length; i++) {
-                    list.push(res.rows.item(i));
-                }
-                //showMessage("List:--" +angular.toJson(list));
-                deferred.resolve(list);
-            });
-        }, function (e) {
-            console.log("ERROR: " + e.message);
-            deferred.reject(e);
-        });
-        return deferred.promise;
-    }
-
-       // /*
-    var promise = queryAccountList();
-    promise.then(function (list) {  // 调用承诺API获取数据 .resolve
-        // alert("...");
-        $scope.accountList = list;
-
-        console.log("list - "+angular.toJson($scope.accountList));
-        $scope.accountList2 = groupJSON($scope.accountList);
-        //alert(angular.toJson($scope.accountList2));
-    }, function (response) {  // 处理错误 .reject
-        // alert(".........");
-        //alert("查询数据库错误,初始化数据");
-        dialog.showAlert("E","查询数据库错误,初始化数据");
-    });
-   // */
-
-
-        function doReloadData () {
-            var promise = queryAccountList();
-            promise.then(function (list) {  // 调用承诺API获取数据 .resolve
-                $scope.accountList = list;
-
-                console.log("list - "+angular.toJson($scope.accountList));
-                $scope.accountList2 = groupJSON($scope.accountList);
-
-
-                $ionicLoading.hide();
-                //alert(angular.toJson($scope.accountList2));
-            }, function (response) {  // 处理错误 .reject
-
-                $ionicLoading.hide();
-                dialog.showAlert("E","查询数据库错误,初始化数据");
-
-                //alert("查询数据库错误,初始化数据");
-            });
-        }
-
-
-        /**
-        $scope.accountList2 = [
-            {
-                time:"20120202",
-                list: [
-                    {
-                        "line_id": "123",
-                        "local_status":"UPLOADED",
-                        "expenseObject_desc":"项目1",
-                        expense_item_desc:"办公费",
-                        total_amount:22,
-                        expense_date_from:"20120202",
-                        expense_date_to:"20120202",
-                        expense_place:'上海'
-
-
-
-                    },
-                    {
-                        "line_id": "123",
-                        "local_status":"NEW",
-                        "expenseObject_desc":"项目2",
-                        expense_item_desc:"办公费",
-                        total_amount:22,
-                        expense_date_from:"20120202",
-                        expense_date_to:"20120202",
-                        expense_place:'上海'
-
-                    }
-                ]
-
-            },
-            {
-                time:"20120202",
-                list: [
-                    {
-                        "line_id": "123",
-                        local_status:"NEW",
-                        "expenseObject_desc":"项目2",
-                        expense_item_desc:"办公费",
-                        total_amount:27,
-                        expense_date_from:"20120202",
-                        expense_date_to:"20120202",
-                        expense_place:'上海'
-
-                    },
-                    {
-                        "line_id": "123",
-                        "local_status":"UPLOADED",
-                        "expenseObject_desc":"项目2",
-                        expense_item_desc:"办公费",
-                        total_amount:24,
-                        expense_date_from:"20120202",
-                        expense_date_to:"20120202",
-                        expense_place:'上海'
-                    }
-                ]
-
-            }
-
-        ];
-
-
-         //*/
-
-    //    author:郑旭 用于对json进行分组并在界面上显示
-    function groupJSON(jsons) {
-
-            /*
-                var newJson = [];
-                loop1:for (var i = 0; i < jsons.length; i++) {
-                    var t1 = jsons[i].expense_date_from;
-                    var arr = {time: t1, list: []};
-                    arr.list.push(jsons[i]);
-                    for (var j = i + 1; j < jsons.length; j++) {
-                        var t2 = jsons[j].expense_date_from;
-                        if (t2 == t1) {
-                            arr.list.push(jsons[j]);
-                        } else {
-                            i = j - 1;
-                            break;
-                        }
-                        if (j == jsons.length - 1) {
-                            newJson.push(arr);
-                            break loop1;
-                        }
-                    }
-                    newJson.push(arr);
-                }
-                return newJson;
-
-                */
-            var newJson=[];
-            loop1:for(var i=0;i<jsons.length;i++){
-                var t1=jsons[i].creation_date;
-                var arr={time:t1,list:[]};
-                arr.list.push(jsons[i]);
-                for(var j=i+1;j<jsons.length;j++){
-                    var t2=jsons[j].creation_date;
-                    if(t2==t1){
-                        arr.list.push(jsons[j]);
-                    }else{
-                        i=j-1;
-                        break;
-                    }
-                    if(j==jsons.length-1){
-                        newJson.push(arr);
-                        break loop1;
-                    }
-                }
-                newJson.push(arr);
-            }
-            return newJson;
-    }
-
-    /*$scope.accountList=[
-     {
-     line_id:1,
-     expense_type_id:1,
-     expense_type_desc:'日常报销',
-     expense_item_id:1,
-     expense_item_desc:'交通费',
-     expense_price:2.5,
-     expense_quantity:4,
-     currency_code:'CNY',
-     currency_code_desc:'人民币',
-     exchangeRate:1.5,
-     total_amount:10,
-     expense_date_from:'2015-05-01',
-     expense_date_to:'2015-05-30',
-     expense_place:'上海',
-     description:'往返交通费',
-     local_status:'NEW',
-     creation_date:'2015-05-15',
-     created_by:1
-     }
-     ];*/
-
-    $scope.showSelected = function () {
-        console.log($scope.accountList);
-    };
-
-    function queryPhotosList() {
-        var promise = keepAccount.queryPhotosList();
-    }
-
-
-
-    function uploadDataUnitV2(keepAccountUnit){
-
-        showMessage("uploadDataUmit ："+angular.toJson(keepAccountUnit));
-
-        var form=new FormData();
-
-
-        var myDate = new Date();
-
-       // var expense_detail_id = window.localStorage.empno+myDate.getFullYear()+myDate.getMonth()+myDate.getDate()
-           // + myDate.getHours()+ myDate.getMinutes()+ myDate.getSeconds()+ myDate.getMilliseconds();
-        var month = fillNumberBySize(myDate.getMonth()+1,2);
-        var date = fillNumberBySize(myDate.getDate(),2);
-        var hours = fillNumberBySize(myDate.getHours(),2);
-        var minutes = fillNumberBySize(myDate.getMinutes(),2);
-        var seconds = fillNumberBySize(myDate.getSeconds(),2);
-        var milliseconds = fillNumberBySize(myDate.getMilliseconds(),3);
-
-
-        var expense_detail_id = window.localStorage.empno+myDate.getFullYear()
-            +month+date+hours+minutes+seconds+milliseconds;
-
-
-        showMessage(expense_detail_id);
-        console.log(expense_detail_id+" - "+expense_detail_id);
-
-        form.append("expense_detail_id",expense_detail_id);
-
-
-
-        var Photos = [];
-        var promisePhoto = queryAccountPhotos(keepAccountUnit.line_id);
-        promisePhoto.then(
-            function(response) {
-                //showMessage("照片列表获取成功"+angular.toJson(response));
-                Photos=response;
-                //showMessage("照片列表获取成功"+Photos);
-
-                showMessage("准备上传:"+angular.toJson(form));
-
-                //var promise= keepAccount.uploadData(form,Photos);
-
-                var promise= keepAccount.uploadDataV2(form,Photos);
-
-                promise.then(
-                    function(response) {
-                        //var code=getResponseCode(response);
-                        showMessage(angular.toJson(response));
-                        var code = response.head.code;
-                        if(code=="success"){
-                            //接受返回参数
-                            //keepAccount.data.expenseDetailId=response.body.expenseDetailId;
-
-                            // 开始 上传数据
-
-                            var upload_option = {
-                                source_code: "HIH_PIC_UPLOAD",
-                                source_line_id: expense_detail_id
-
-                            };
-
-                            var p2= keepAccount.uploadDataByJosn(keepAccountUnit,upload_option);
-                            p2.then(
-
-                                function(res){
-
-                                    var code = res.status;
-
-                                    if (code == 'S') {
-                                        // $ionicLoading.hide();
-                                        showMessage("上传成功 数据"+angular.toJson(res));
-
-
-                                        keepAccountUnit.local_status="UPLOADED";
-                                        //$scope.accountDetail=keepAccount.data;
-                                        //keepAccount.canEdit=false;
-                                        //$scope.canEdit=false;
-                                        //更新本地数据库，修改local_status
-                                        var p=keepAccount.updateLocalStatus(keepAccountUnit.line_id,"UPLOADED");
-                                        p .then(
-                                            function(res){
-
-                                                recordToUpload--;
-
-                                                $ionicLoading.hide();
-                                                checkUploadFinish();
-
-                                                showMessage("上传成功 本地状态修改成功"+angular.toJson(res));
-
-                                            },
-                                            function(e){
-                                                $ionicLoading.hide();
-                                                checkUploadFinish();
-
-
-
-                                                showMessage(angular.toJson(e));
-                                            }
-                                        );
-
-                                    }
-                                    else {
-                                        checkUploadFinish();
-                                        showMessage("上传失败 数据"+angular.toJson(res));
-
-
-                                    }
-
-
-
-
-                                },
-                                function(e){
-                                    $ionicLoading.hide();
-                                    checkUploadFinish();
-
-
-
-                                    showMessage(angular.toJson(e));
-                                }
-
-                            );
-
-
-
-
-                        }else if(code=="E"){
-                            $ionicLoading.hide();
-                            checkUploadFinish();
-
-
-                            showMessage("查询失败:"+angular.toJson(response))
-                        }
-                        else{
-                            checkUploadFinish();
-
-                            $ionicLoading.hide();
-
-                            showMessage("未知错误:"+angular.toJson(response));
-                        }
-
-
-                    },
-                    function(err) {  // 处理错误 .reject
-
-                        $ionicLoading.hide();
-
-                        checkUploadFinish();
-
-
-                        showMessage("网络连接错误...."+angular.toJson(err));
-                        //uploadProgressModal.hide();
-
-                    });  // end of 上传
-
-            },
-            function(err) {
-                $ionicLoading.hide();
-
-                checkUploadFinish();
-                showMessage("照片列表获取失败"+err);
-
-            }
-        );
-
-
-    }
-
-
-
-    function uploadDataUnit(keepAccountUnit){
-
-        showMessage("uploadDataUmit ："+angular.toJson(keepAccountUnit));
-
-        var form=new FormData();
-
-        showMessage("line_id ："+keepAccountUnit.line_id);
-
-        form.append("line_id",keepAccountUnit.line_id);
-        //showMessage("form:"+angular.toJson(form));
-
-        form.append("expense_type_id",keepAccountUnit.expense_type_id);
-        form.append("expense_type_desc",keepAccountUnit.expense_type_desc);
-        form.append("expense_item_id",keepAccountUnit.expense_item_id);
-        form.append("expense_item_desc",keepAccountUnit.expense_item_desc);
-        form.append("expense_price",keepAccountUnit.expense_price);
-        form.append("expense_quantity",keepAccountUnit.expense_quantity);
-        form.append("currency_code",keepAccountUnit.currency_code);
-        form.append("currency_code_desc",keepAccountUnit.currency_code_desc);
-        form.append("exchange_rate",keepAccountUnit.exchange_rate);
-        form.append("total_amount",keepAccountUnit.total_amount);
-        form.append("expense_date_from",keepAccountUnit.expense_date_from);
-        form.append("expense_date_to",keepAccountUnit.expense_date_to);
-        form.append("expense_place",keepAccountUnit.expense_place);
-        form.append("description",keepAccountUnit.description);
-        form.append("created_by",keepAccountUnit.created_by);
-
-        var Photos = [];
-        var promisePhoto = queryAccountPhotos(keepAccountUnit.line_id);
-        promisePhoto.then(
-            function(response) {
-                //showMessage("照片列表获取成功"+angular.toJson(response));
-                Photos=response;
-                //showMessage("照片列表获取成功"+Photos);
-
-                showMessage("准备上传:"+angular.toJson(form));
-
-                //var promise= keepAccount.uploadData(form,Photos);
-
-                var promise= keepAccount.uploadDataByJosn(keepAccountUnit);
-
-                promise.then(
-                    function(response) {
-
-                        showMessage("上传返回:"+"--"+angular.toJson(response));
-
-                        //showMessage("上传返回:"+keepAccountUnit.line_id+"--"+angular.toJson(response));
-
-                        //var code=getResponseCode(response);
-                        var code=response.status;
-                        showMessage("status -"+code);
-
-                        if(code=="S"){
-
-                            showMessage("上传成功:"+keepAccountUnit.line_id+"--"+angular.toJson(response));
-
-                            //接受返回参数
-                            //keepAccountUnit.expenseDetailId=response.body.expenseDetailId;
-                            keepAccountUnit.local_status="UPLOADED";
-                            //$scope.accountDetail=keepAccountUnit;
-                            // keepAccount.canEdit=false;
-                            //$scope.canEdit=false;
-                            //更新本地数据库，修改local_status
-                            var p=keepAccount.updateLocalStatus(keepAccountUnit.line_id,"UPLOADED");
-                            p .then(
-                                function(res){
-                                    showMessage("更新成功"+angular.toJson(res));
-                                    recordToUpload--;
-                                    //showUploadProgress('剩余上传记录：'+ recordToUpload);
-
-                                    checkUploadFinish();
-
-                                    //若此时的sourceFrom 为报销单，将keepAccountUnit 的数据赋值给 expenseApply.data.lines ,完成值传递
-                                    /*   报销单 入口
-                                     if(sourceFrom=="EXPENSE"){
-                                     var line={
-                                     appSourceId:keepAccountUnit.expenseDetailId,
-                                     price:keepAccountUnit.expense_price,
-                                     quantity:keepAccountUnit.expense_quantity,
-                                     expenseTypeId:keepAccountUnit.expense_type_id,
-                                     expenseTypeName:keepAccountUnit.expense_type_desc,
-                                     expenseItemId:keepAccountUnit.expense_item_id,
-                                     expenseItemName:keepAccountUnit.expense_item_desc,
-                                     place:keepAccountUnit.expense_place,
-                                     dateFrom:keepAccountUnit.expense_date_from,
-                                     dateTo:keepAccountUnit.expense_date_to,
-                                     originalCurrency:keepAccountUnit.currency_code,
-                                     exchangeRate:keepAccountUnit.exchange_rate,
-                                     description:keepAccountUnit.description
-                                     };
-                                     expenseApply.data.lines.push(line);
-                                     globalNavigator.popPage();
-                                     }
-                                     */
-                                },
-                                function(e){
-                                    checkUploadFinish();
-                                    showMessage("更新失败"+angular.toJson(e));
-                                }
-                            );
-
-                        }else if(code=="E"){
-                            checkUploadFinish();
-                            showMessage("查询失败:"+angular.toJson(response))
-                        }
-                        else if (code =="login_required"){
-                            showMessage("登录状态异常\n"+angular.toJson(response));
-                            reLogin();
-                        }else{
-                            checkUploadFinish();
-                            showMessage("未知错误:"+angular.toJson(response));
-                        }
-                    },
-                    function(err) {  // 处理错误 .reject
-                        checkUploadFinish();
-                        showMessage("网络连接错误...."+angular.toJson(err));
-                    });
-
-
-            },
-            function(err) {
-                checkUploadFinish();
-                showMessage("照片列表获取失败"+err);
-
-            }
-        )
-;
-
-
-    }
-
-
-    // 结束检查
-    function checkUploadFinish () {
-        recordUploaded++;
-
-        //showMessage(recordUploaded +" - "+recordToUploadLength);
-        if (recordUploaded == recordToUploadLength) {
-            //uploadProgressBatchModal.hide();
-
-            if (recordToUpload == 0) {
-                showMessage("批量上传成功");
-                dialog.showAlert("I","批量上传成功");
-
-            }
-            else if (recordToUpload < 0){
-                dialog.showAlert("I","批量上传长度统计异常");
-
-                showMessage("批量上传长度统计异常");
-
-            }else {
-                showMessage("批量上传没有全部成功");
-                dialog.showAlert("I","批量上传 部分 失败");
-
-
-            }
-
-
-            doReloadData();
-
-
-            /*
-             var pages = globalNavigator.getPages();
-             pages[pages.length - 1].destroy();
-             globalNavigator.pushPage(moduleHtmlPath.ACC+'uploadAccount.html', { animation : 'slide' });
-             */
-
-
-        }
-    }
-
-    /*上传数据*/
-    $scope.uploadDataBatch=function(){
-        /**/
-        //showMessage("批量上传 prepare");
-
-        $ionicLoading.show({
-            template: '批量上传 ... '
-            //duration: 3000
-        });
-
-        //console.log("批量上传操作");
-
-
-
-
-       // showMessage("批量上传操作");
-        ///*
-
-        //uploadProgressBatchModal.show();
-        var selectedAccounts = getSelected();
-        //showMessage("select "+angular.toJson(selectedAccounts));
-
-        ///*
-        recordToUpload = selectedAccounts.length;
-        recordUploaded = 0;
-        recordToUploadLength = selectedAccounts.length;
-        //showUploadProgress('剩余上传记录：'+ recordToUpload);
-        //showMessage('剩余上传记录：'+ recordToUpload);
-        ///*
-
-        if (recordToUploadLength == 0 || recordToUploadLength == undefined) {
-            $ionicLoading.hide();
-        }
-        else {
-            for (var i = 0; i < selectedAccounts.length; i++) {
-                showMessage("批量上传 序列："+i);
-
-                //-----------------------
-                //       合法性  检验
-                //-----------------------
-                var checkDataValid = true;
-                var data_temp = selectedAccounts[i];
-                if (data_temp.costObject_id == '' || data_temp.costObject_id == undefined ||
-                    data_temp.costObject_id == null ) {
-
-
-                    checkDataValid = keepAccount.checkCostObject(
-                        data_temp.expenseObject_type,
-                        data_temp.expense_item_code,
-                        data_temp.total_amount
-                    );
-
-
-                }
-
-                if (checkDataValid == false ) {
-
-                    /*
-                     $ionicLoading.show({
-                     template: '预报销申请不能为空...跳过',
-                     duration: 1000
-                     });
-                     //*/
-
-                    showMessage('预报销申请不能为空...跳过- '+i);
-
-                    //dialog.showAlert("E",'预报销申请不能为空...跳过第 '+i+" 条");
-
-
-                    checkUploadFinish();
-
-                }
-                else {
-
-                    uploadDataUnitV2 (selectedAccounts[i]);
-
-                }
-
-
-                //showMessage("批量上传 end 序列："+i);
-
-            }
-        }
-
-
-        //*/
-      
-    };
-
-
-    function showUploadProgress(msg) {
-        //console.log($scope.currentProgress);
-        $scope.currentProgress = msg;
-        //console.log($scope.currentProgress);
-
-    }
-    
-    $scope.uploadAccounts = function () {
-        var selectedAccounts = getSelected();
-
-
-        for (var i = 0; i < selectedAccounts.length; i++) {
-            /*将本地数据提交到后台接口表*/
-            alert("开始上传数据" + i);
-            var line_id = selectedAccounts[i].line_id;
-            $http({
-                method: 'POST',
-                url: baseConfig.basePath + "EXP/EXP5030/mobile_exp_report_detail_insert.svc",
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function (data) {
-                    return  'para=' + JSON.stringify(data);
-                },
-                data: selectedAccounts[i]
-            })
-                .success(function (response) {
-                    console.log("response:" + "成功返回");
-                    alert("response:" + angular.toJson(response));
-                    /*获取返回的interfaceId*/
-                    var interfaceId = response.body.expenseDetailId;
-
-                    /*查询照片列表，上传照片到服务器*/
-                    var promise = queryAccountPhotos(line_id);
-                    promise.then(function (list) {
-                        var Photos = list;
-                        alert("获取photos数据成功" + Photos.length);
-                        alert("开始上传文件");
-                        for (var j = 0; j < Photos.length; j++) {
-                            keepAccount.uploadFile(interfaceId, Photos[j].photo_name, Photos[j].photo_src);
-                        }
-                        /*更新本地记一笔数据状态，local_status 更改为 UPLOADED*/
-                        keepAccount.updateLocalStatus(line_id);
-                    }, function (response) {
-                        alert("查询照片数据库错误");
-                    });
-                }).error(function (response, status) {
-                    console.log("response:" + "失败返回");
-                    console.log("response:" + response + ",status:" + status);
-                });
-        }
-    };
-
-    function getSelected() {
-        var accountList = $scope.accountList;
-        var selectedList = [];
-        for (var i = 0; i < accountList.length; i++) {
-
-            showMessage("行："+accountList[i].upLoadSelected );
-            if (!(accountList[i].upLoadSelected==undefined || accountList[i].upLoadSelected==false)) {
-                selectedList.push(accountList[i]);
-            }
-
-            //showMessage("selectedList "+ angular.toJson(selectedList));
-        }
-        return selectedList;
-    }
-
-
-});
+      };
+      initEmployeeData();
+
+      $scope.goBackPage = function () {
+        $ionicHistory.goBack();
+      };
+
+      $scope.telPhone = function () {
+        window.location.href = "tel:" + $scope.employeeInfo.mobil;
+      };
+
+      $scope.goImTalk = function () {
+        hmsPopup.showShortCenterToast('敬请期待!');
+      };
+    }]);
 
 angular.module('myApp')
   .config(['$stateProvider',
@@ -13242,6 +9453,4173 @@ angular.module("applicationModule").controller('reportTypeController', function(
     }
 });
 
+/**
+ * Created by wuxiaocheng on 15/8/26.
+ */
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.acc_detail', {
+          url: '/acc/detail',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/accountDetail.html',
+              controller: 'accountDetailController',
+              cache: false
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('accountDetailController', function ($scope, keepAccount, expenseApply, expenseObject, dialog, $http, $rootScope, $state, $ionicHistory, $ionicLoading, baseConfig) {
+
+    $scope.canEdit = keepAccount.canEdit;
+    $scope.canUpload = keepAccount.canUpload;
+    $scope.accountDetail = keepAccount.data;
+
+    expenseObject.businessType = 'ACC';
+
+    /*
+     $ionicLoading.show({
+     template: 'Loading ... ',
+     duration: 1000
+     });
+     */
+    //showMessage(angular.toJson($scope.accountDetail));
+    //showMessage(angular.toJson(keepAccount.data));
+
+    $scope.currentProgress = '';
+    $scope.photoPathURL = baseConfig.appRootPath;
+
+
+    /*是否隐藏 从记一笔创建 按钮的标识位 ,当来源为ACCOUNT 时表示从记一笔端进入，此时隐藏改按钮*/
+    var sourceFrom = keepAccount.sourceFrom;
+    if (sourceFrom == "ACCOUNT") {    //ACCOUNT  表示从记一笔进入
+      if (keepAccount.canEdit == true) {
+        $scope.title = '记一笔';
+      }
+      else {
+        $scope.title = "记一笔"
+      }
+      //$scope.title="记一笔";
+    } else {                        //EXPENSE 或其他  表示从报销单进入
+      $scope.title = "报销明细";
+    }
+
+    if (sourceFrom == 1) {
+
+    }
+    /******
+     *  照片响应
+     */
+    $scope.showPhoto = function () {
+      $scope.valueChange();
+      //globalNavigator.pushPage('html/acc/photos.html', { animation : 'slide' });
+
+      $state.go('tab.acc_photos');
+      //showMessage("t");
+      //$state.go("tab.acc_photoDetail");
+
+    };
+
+
+    if (keepAccount.canEdit == true && keepAccount.boolLoadExpenseObject == true) {
+      $ionicLoading.show({
+        template: '下载基础后台数据 ... '
+        //duration: 3000
+      });
+
+      /****************
+       *  查看
+       *
+       */
+      var promise = expenseObject.queryProjectList();
+      promise.then(function (response) {
+
+        //console.log(angular.toJson(response));
+        //showMessage("status -" +response["status"]);
+
+
+        if (response["status"] == "S") {
+
+
+          keepAccount.boolLoadExpenseObject = false;
+          // 清空 数据
+
+          keepAccount.projectList = [];
+          keepAccount.expenseItemList = [];
+          keepAccount.expenseCostList = [];
+
+
+          // 项目列表
+          var proj_tmp = response["proj"];
+          $.each(proj_tmp, function (i, value) {
+            var item = {
+              expenseObject_id: value.pj_id,
+              expenseObject_code: value.pj_code,
+              expenseObject_desc: value.pj_name,
+              expenseObject_type: value.cost_type,
+              //expenseItemList: value.expense,
+              expenseItemList_index: i
+            };
+
+
+            // 如果 当前 费用对象 匹配  加载费用类型 列表
+            if ($scope.accountDetail.expenseObject_id == item.expenseObject_id) {
+              var promise = expenseObject.queryExpenseList(item.expenseObject_id, item.expenseObject_code);
+
+              promise.then(function (response) {
+                //console.log("接口返回数据+++：" + angular.toJson(response));
+                // 费用类型
+                var expenseItemList_tmp = response.expense;
+                //console.log("=========: " + angular.toJson(expenseItemList_tmp));
+                $.each(expenseItemList_tmp, function (i, value) {
+                  var item = {
+                    expense_item_code: value.exp_code,
+                    expense_item_desc: value.exp_name,
+                    expense_item_house: value.exp_house,
+                    expense_item_index: i
+
+                  };
+
+                  // 租房
+                  if ($scope.accountDetail.expense_item_code == item.expense_item_code) {
+
+                    var expenseHouseList_tmp = item.expense_item_house;
+
+                    $.each(expenseHouseList_tmp, function (i, value) {
+                      var item = {
+                        costObjectId: value.id,
+                        desc: value.name
+
+                      };
+
+                      keepAccount.expenseCostList.push(item);
+
+                    });
+
+
+                    console.log("coutList -- " + angular.toJson(keepAccount.expenseCostList));
+                  }
+
+                  keepAccount.expenseItemList.push(item);
+
+                });
+              }, function (response) {
+                //alert("网络连接错误,初始化数据 projectList");
+                showMessage(response);
+                $ionicLoading.hide();
+                $ionicLoading.show({
+                  template: '网络连接错误,初始化数据 ',
+                  duration: 500
+                });
+              });
+            }
+
+            keepAccount.projectList.push(item);
+
+          });
+
+          //console.log( keepAccount.projectList);
+
+          //$scope.projectList = keepAccount.projectList;
+          //console.log( angular.toJson($scope.projectList));
+
+          $ionicLoading.hide();
+
+        } else {
+          var errmsg = data["message"];
+          $ionicLoading.hide();
+          $ionicLoading.show({
+            template: errmsg,
+            duration: 1000
+          });
+        }
+
+
+      }, function (response) {
+        //alert("网络连接错误,初始化数据 projectList");
+
+        dialog.showAlert("E", response);
+        $ionicLoading.hide();
+        $ionicLoading.show({
+          template: '网络连接错误,初始化数据 ',
+          duration: 1000
+        });
+
+
+      });
+    }
+
+
+    // */
+    var EXPENSE_ITEM_CODE = {
+      OfficeExpenses: '02',               // 办公费 02
+      ElectricityGasWater: '04',               // 水电燃气费 04
+      HouseRent: '14',               // 租房租金费用 14
+      Telephone: '20',               //固定通讯费  20
+      MiscellaneousAccommodation: '21',         //住宿杂项费 21
+      LandlordDeposit: '45'         // 赔偿房东押金  45
+
+    };
+    // 是否 需要租房信息
+// @return  true 需要租房申请  false： 不需要租房申请
+    function isNeedHouseApply(expense_item_code) {
+      var checkDataValid = false;
+      ///*
+      switch (expense_item_code) {
+        case EXPENSE_ITEM_CODE.HouseRent:
+          checkDataValid = true;
+          break;
+        case EXPENSE_ITEM_CODE.MiscellaneousAccommodation:
+          checkDataValid = true;
+          break;
+        case EXPENSE_ITEM_CODE.ElectricityGasWater:
+          checkDataValid = true;
+          break;
+        case EXPENSE_ITEM_CODE.Telephone:
+          checkDataValid = true;
+          break;
+        case EXPENSE_ITEM_CODE.LandlordDeposit:
+          checkDataValid = true;
+          break;
+        default :
+          break;
+
+      }
+
+      // showMessage("是否需要 租房信息 －" + checkDataValid);
+
+      console.log("是否需要 租房信息 －" + checkDataValid);
+      //*/
+      return checkDataValid;
+
+    }
+
+    /**
+     * 保存数据至本地数据库
+     * */
+    $scope.saveData = function () {
+      //showMessage($scope.accountDetail.photos[0].photo_src);
+
+      var date_from = getFormatDate(new Date($scope.accountDetail.expense_date_from));
+      var date_to = getFormatDate(new Date($scope.accountDetail.expense_date_to));
+
+
+      //-------------------------------
+      //          合法性 检验
+      //-------------------------------
+      var checkDataValid = true;
+      var msg = "";
+      if (date_from > date_to) {
+
+        //showMessage("开始日期大于结束日期");
+        //dialog.showAlert("I","开始日期大于结束日期");
+
+        msg = msg + "开始日期大于结束日期";
+        checkDataValid = false;
+      }
+
+      //"费用类型为水电燃气费是，没有判断租房信息必须输入
+      //（此5项费用类型都需要判断租房信息必须输入：租房租金费用、住宿杂项费、固定通讯费、水电燃气费、赔偿房东押金）"
+
+
+      if ($scope.accountDetail.costObject_id == '' || $scope.accountDetail.costObject_id == undefined ||
+        $scope.accountDetail.costObject_id == null) {
+
+        var code = isNeedHouseApply($scope.accountDetail.expense_item_code);
+
+        //showMessage("租房 必输检查"+ code);
+        //dialog.showAlert("I","租房 必输检查"+ code);
+
+
+        // 判断 是否 需要 租房申请的5类费用 之中
+        if (code == true) {
+          checkDataValid = false;
+
+          //dialog.showAlert("I","租房信息 不能为空");
+
+          msg = msg + " 租房信息 不能为空";
+
+
+        }
+
+      }
+
+
+      if (checkDataValid == false) {
+
+        dialog.showAlert("I", msg);
+
+        /*
+         $ionicLoading.show({
+         template: '数据不合法，请修改后重试 ',
+         duration: 1000
+         });
+         */
+
+        //showMessage("租房信息 不能为空");
+        //checkDataValid = false;
+      }
+      else {
+
+
+        $ionicLoading.show({
+          template: '数据保存中 ... '
+        });
+
+
+        var sum = 0;
+
+        console.log(keepAccount.operation);
+        if (keepAccount.operation == "INSERT") {
+
+          //showMessage("准备插入2");
+
+          sum = ($scope.accountDetail.expense_price * $scope.accountDetail.expense_quantity * $scope.accountDetail.exchange_rate).toFixed(2);
+
+
+          $scope.accountDetail.total_amount = sum == NaN ? 0 : sum;
+          $scope.accountDetail.local_status = "NEW";
+
+          keepAccount.data = $scope.accountDetail;
+
+          var promise = keepAccount.insert();
+          promise.then(
+            function (lineID) {
+              console.log("保存成功--line_id:" + lineID);
+              dialog.showAlert("I", "新建成功");
+
+              keepAccount.data.line_id = lineID;
+              keepAccount.operation = "UPDATE";
+              keepAccount.canUpload = true;
+              $scope.canUpload = true;
+              $ionicLoading.hide();
+            },
+            function (err) {
+              $ionicLoading.hide();
+
+              showMessage(err);
+            }
+          )
+        } else if (keepAccount.operation == "UPDATE") {
+          console.log("update");
+
+          sum = ($scope.accountDetail.expense_price * $scope.accountDetail.expense_quantity * $scope.accountDetail.exchange_rate).toFixed(2);
+          $scope.accountDetail.total_amount = sum == NaN ? 0 : sum;
+          $scope.accountDetail.local_status = "NEW";
+          keepAccount.data = $scope.accountDetail;
+          var promise = keepAccount.update();
+          promise.then(
+            function (lineID) {
+              showMessage("更新成功--line_id:" + keepAccount.data.line_id + ' return ' + lineID);
+              dialog.showAlert("I", "更新成功");
+              //keepAccount.data.line_id=lineID;
+              keepAccount.operation = "UPDATE";
+              keepAccount.canUpload = true;
+              $scope.canUpload = true;
+              $ionicLoading.hide();
+              $ionicHistory.goBack();
+            },
+            function (err) {
+              $ionicLoading.hide();
+
+              showMessage(err);
+
+              dialog.showAlert("E", "更新失败" + err);
+
+            }
+          )
+        }
+      }
+    };
+
+    // 判断是否可删除
+    $scope.canToRemove = function () {
+      /*
+       if (loanApply.data.status ==  'NEW' ||  loanApply.data.status == 'REJECTED') {
+       return true;
+       }else {
+       return false;
+       }
+       */
+      //return (loanApply.data.status ==  'NEW' ||  loanApply.data.status == 'REJECTED');
+      return (keepAccount.data.local_status == 'NEW' );
+
+    };
+
+    // 删除记一笔
+    $scope.removeData = function () {
+      var promise = keepAccount.remove(keepAccount.data.line_id);
+      promise.then(
+        function (response) {  // 调用承诺API获取数据 .resolve
+
+          //  showMessage("数据删除成功");
+          dialog.showAlert("I", "数据删除成功");
+
+
+          removePhotoFiles();
+
+          //var pages = globalNavigator.getPages();
+          //console.log(pages);
+          //pages[pages.length - 1].destroy();
+          //pages[pages.length - 1].destroy();
+          //globalNavigator.pushPage(moduleHtmlPath.ACC+'accountList.html', { animation : 'slide' } );
+
+          //loanApply.applyList = response.body.tempRecord;
+          //$scope.expenseList=response.body.list;
+
+        },
+        function (err) {  // 处理错误 .reject
+          //showMessage("删除失败...."+angular.toJson(err));
+          dialog.showAlert("E", "删除失败...." + angular.toJson(err));
+
+        }
+      )
+    };
+
+
+    /**********
+
+     上传数据
+     *************/
+    $scope.uploadDataTest = function () {
+
+      //showMessage("上传成功");
+      // /*
+
+      $ionicLoading.show({
+        template: '数据检验...'
+        //duration: 1000
+      });
+
+      //-------------------------------
+      //          合法性 检验
+      //-------------------------------
+      var checkDataValid = true;
+
+
+      if (keepAccount.data.costObject_id == '' || keepAccount.data.costObject_id == undefined ||
+        keepAccount.data.costObject_id == null) {
+
+
+        //showMessage("合法性检验");
+        checkDataValid = keepAccount.checkCostObject(
+          keepAccount.data.expenseObject_type,
+          keepAccount.data.expense_item_code,
+          keepAccount.data.total_amount
+        );
+
+      }
+      if (checkDataValid == false) {
+
+        $ionicLoading.hide();
+        $ionicLoading.show({
+          template: '预报销申请不能为空...',
+          duration: 1000
+        });
+
+      }
+      else {
+        $ionicLoading.show({
+          template: '上传数据中...'
+          //duration: 1000
+        });
+        uploadDataUnit();
+
+      }
+
+      //showUploadProgress("准备上传:");
+
+
+      //*/
+    };
+    function fillNumberBySize(num, size) {
+
+      if (size != undefined || size > 0) {
+        if (Math.pow(10, size - 1) > num) {
+          var res = "000000000" + num;
+          return res.substr(res.length - size);
+        }
+      }
+
+      return "" + num;
+
+    }
+    function uploadDataUnit() {
+
+      var form = new FormData();
+
+      var myDate = new Date();
+
+      var month = fillNumberBySize(myDate.getMonth() + 1, 2);
+      var date = fillNumberBySize(myDate.getDate(), 2);
+      var hours = fillNumberBySize(myDate.getHours(), 2);
+      var minutes = fillNumberBySize(myDate.getMinutes(), 2);
+      var seconds = fillNumberBySize(myDate.getSeconds(), 2);
+      var milliseconds = fillNumberBySize(myDate.getMilliseconds(), 3);
+
+
+      var expense_detail_id = window.localStorage.empno + myDate.getFullYear()
+        + month + date + hours + minutes + seconds + milliseconds;
+
+      //var expense_detail_id_copy = myDate.toLocaleString();        //获取日期与时间
+
+
+      console.log('expense_detail_id'+expense_detail_id);
+
+      //console.log(expense_detail_id+" - "+expense_detail_id_copy);
+
+      form.append("expense_detail_id", expense_detail_id);
+      //form.expense_detail_id = expense_detail_id;
+      /*
+       form.append("line_id",keepAccount.data.line_id);
+       form.append("expense_type_id",keepAccount.data.expense_type_id);
+       form.append("expense_type_desc",keepAccount.data.expense_type_desc);
+       form.append("expense_item_id",keepAccount.data.expense_item_id);
+       form.append("expense_item_desc",keepAccount.data.expense_item_desc);
+       form.append("expense_price",keepAccount.data.expense_price);
+       form.append("expense_quantity",keepAccount.data.expense_quantity);
+       form.append("currency_code",keepAccount.data.currency_code);
+       form.append("currency_code_desc",keepAccount.data.currency_code_desc);
+       form.append("exchange_rate",keepAccount.data.exchange_rate);
+       form.append("total_amount",keepAccount.data.total_amount);
+       //        form.append("expense_date_from", keepAccount.data.expense_date_from);
+       //        form.append("expense_date_to",keepAccount.data.expense_date_to);
+       form.append("expense_date_from", getFormatDate(new Date(keepAccount.data.expense_date_from))); //getFormatDate(new Date(this.data.expense_date_from)) getFormatDate(new Date())
+       form.append("expense_date_to",getFormatDate(new Date(keepAccount.data.expense_date_to)));    //getFormatDate(new Date(this.data.expense_date_from))
+       form.append("expense_place",keepAccount.data.expense_place);
+       form.append("description",keepAccount.data.description);
+       form.append("created_by",keepAccount.data.created_by);
+
+       */
+
+
+      //showMessage("将执行上传:"+angular.toJson(form));
+      //showUploadProgress("执行上传中，上传时长与附件数量有关");
+      //uploadProgressModal.show();
+      var Photos = keepAccount.data.photos;
+      //var promise= keepAccount.uploadData(form,Photos);
+      //var promise= keepAccount.uploadDataByJosn(keepAccount.data);
+      var promise = keepAccount.uploadDataV2(form, Photos);
+
+      promise.then(
+        function (response) {
+          //var code=getResponseCode(response);
+          console.log(angular.toJson(response));
+          var code = response.head.code;
+          if (code == "success") {
+            //接受返回参数
+            //keepAccount.data.expenseDetailId=response.body.expenseDetailId;
+
+            // 开始 上传数据
+
+            var upload_option = {
+              source_code: "HIH_PIC_UPLOAD",
+              source_line_id: expense_detail_id
+
+            };
+
+            var p2 = keepAccount.uploadDataByJosn(keepAccount.data, upload_option);
+            p2.then(
+              function (res) {
+
+                var code = res.status;
+                if (code == "S") {
+
+                  // $ionicLoading.hide();
+                  console.log("上传成功 数据" + angular.toJson(res));
+
+
+                  keepAccount.data.local_status = "UPLOADED";
+                  $scope.accountDetail = keepAccount.data;
+                  keepAccount.canEdit = false;
+                  $scope.canEdit = false;
+                  //更新本地数据库，修改local_status
+                  var p = keepAccount.updateLocalStatus(keepAccount.data.line_id, "UPLOADED");
+                  p.then(
+                    function (res) {
+
+                      $ionicLoading.hide();
+                      showMessage("上传成功" + angular.toJson(res));
+
+                      dialog.showAlert("I", "上传成功");
+
+
+                      //若此时的sourceFrom 为报销单，将keepAccount.data 的数据赋值给 expenseApply.data.lines ,完成值传递
+                      if (sourceFrom == "EXPENSE") {
+                        var line = {
+                          appSourceId: keepAccount.data.expenseDetailId,
+                          price: keepAccount.data.expense_price,
+                          quantity: keepAccount.data.expense_quantity,
+                          expenseTypeId: keepAccount.data.expense_type_id,
+                          expenseTypeName: keepAccount.data.expense_type_desc,
+                          expenseItemId: keepAccount.data.expense_item_id,
+                          expenseItemName: keepAccount.data.expense_item_desc,
+                          place: keepAccount.data.expense_place,
+                          dateFrom: keepAccount.data.expense_date_from,
+                          dateTo: keepAccount.data.expense_date_to,
+                          originalCurrency: keepAccount.data.currency_code,
+                          exchangeRate: keepAccount.data.exchange_rate,
+                          description: keepAccount.data.description
+                        };
+                        expenseApply.data.lines.push(line);
+                        //globalNavigator.popPage();
+
+                        $ionicHistory.goBack();
+                      }
+                    },
+                    function (e) {
+                      $ionicLoading.hide();
+
+                      dialog.showAlert("E", "上传失败" + angular.toJson(e));
+
+                      showMessage(angular.toJson(e));
+                    }
+                  );
+
+                }
+                else {
+                  showMessage("上传失败 数据" + angular.toJson(res));
+                  dialog.showAlert("E", "上传失败 数据" + angular.toJson(e));
+
+
+                }
+
+
+                /**
+
+                 //若此时的sourceFrom 为报销单，将keepAccount.data 的数据赋值给 expenseApply.data.lines ,完成值传递
+                 if(sourceFrom=="EXPENSE"){
+                                    var line={
+                                        appSourceId:keepAccount.data.expenseDetailId,
+                                        price:keepAccount.data.expense_price,
+                                        quantity:keepAccount.data.expense_quantity,
+                                        expenseTypeId:keepAccount.data.expense_type_id,
+                                        expenseTypeName:keepAccount.data.expense_type_desc,
+                                        expenseItemId:keepAccount.data.expense_item_id,
+                                        expenseItemName:keepAccount.data.expense_item_desc,
+                                        place:keepAccount.data.expense_place,
+                                        dateFrom:keepAccount.data.expense_date_from,
+                                        dateTo:keepAccount.data.expense_date_to,
+                                        originalCurrency:keepAccount.data.currency_code,
+                                        exchangeRate:keepAccount.data.exchange_rate,
+                                        description:keepAccount.data.description
+                                    };
+                                    expenseApply.data.lines.push(line);
+                                    //globalNavigator.popPage();
+
+                                    $ionicHistory.goBack();
+                                }
+
+                 */
+              },
+              function (e) {
+                $ionicLoading.hide();
+
+                dialog.showAlert("E", "上传失败" + angular.toJson(e));
+
+                showMessage(angular.toJson(e));
+              }
+            );
+
+
+          } else if (code == "E") {
+            $ionicLoading.hide();
+            dialog.showAlert("E", "上传失败" + angular.toJson(response));
+
+            showMessage("查询失败:" + angular.toJson(response))
+          }
+          else {
+            $ionicLoading.hide();
+            dialog.showAlert("E", "获取信息错误" + angular.toJson(response));
+
+            showMessage("未知错误:" + angular.toJson(response));
+          }
+
+
+        },
+        function (err) {  // 处理错误 .reject
+
+          $ionicLoading.hide();
+          dialog.showAlert("E", "网络连接错误...." + angular.toJson(err));
+
+          showMessage("网络连接错误...." + angular.toJson(err));
+          //uploadProgressModal.hide();
+
+        });  // end of 上传
+
+    }
+
+
+    /***********
+     *  通过 合法性检验后  上传 数据
+     *
+     */
+
+    /*******
+     function uploadDataUnit (){
+
+
+            var form=new FormData();
+            form.append("line_id",keepAccount.data.line_id);
+            form.append("expense_type_id",keepAccount.data.expense_type_id);
+            form.append("expense_type_desc",keepAccount.data.expense_type_desc);
+            form.append("expense_item_id",keepAccount.data.expense_item_id);
+            form.append("expense_item_desc",keepAccount.data.expense_item_desc);
+            form.append("expense_price",keepAccount.data.expense_price);
+            form.append("expense_quantity",keepAccount.data.expense_quantity);
+            form.append("currency_code",keepAccount.data.currency_code);
+            form.append("currency_code_desc",keepAccount.data.currency_code_desc);
+            form.append("exchange_rate",keepAccount.data.exchange_rate);
+            form.append("total_amount",keepAccount.data.total_amount);
+            //        form.append("expense_date_from", keepAccount.data.expense_date_from);
+            //        form.append("expense_date_to",keepAccount.data.expense_date_to);
+            form.append("expense_date_from", getFormatDate(new Date(keepAccount.data.expense_date_from))); //getFormatDate(new Date(this.data.expense_date_from)) getFormatDate(new Date())
+            form.append("expense_date_to",getFormatDate(new Date(keepAccount.data.expense_date_to)));    //getFormatDate(new Date(this.data.expense_date_from))
+            form.append("expense_place",keepAccount.data.expense_place);
+            form.append("description",keepAccount.data.description);
+            form.append("created_by",keepAccount.data.created_by);
+
+
+
+
+            //showMessage("将执行上传:"+angular.toJson(form));
+            //showUploadProgress("执行上传中，上传时长与附件数量有关");
+            //uploadProgressModal.show();
+            var Photos=keepAccount.data.photos;
+            //var promise= keepAccount.uploadData(form,Photos);
+            var promise= keepAccount.uploadDataByJosn(keepAccount.data);
+            promise.then(
+                function(response) {
+                    //var code=getResponseCode(response);
+                    var code = response.status;
+                    if(code=="S"){
+                        //接受返回参数
+                        //keepAccount.data.expenseDetailId=response.body.expenseDetailId;
+                        keepAccount.data.local_status="UPLOADED";
+                        $scope.accountDetail=keepAccount.data;
+                        keepAccount.canEdit=false;
+                        $scope.canEdit=false;
+                        //更新本地数据库，修改local_status
+                        var p=keepAccount.updateLocalStatus(keepAccount.data.line_id,"UPLOADED");
+                        p .then(
+                            function(res){
+
+                                $ionicLoading.hide();
+                                showMessage("上传成功"+angular.toJson(res));
+
+                                //若此时的sourceFrom 为报销单，将keepAccount.data 的数据赋值给 expenseApply.data.lines ,完成值传递
+                                if(sourceFrom=="EXPENSE"){
+                                    var line={
+                                        appSourceId:keepAccount.data.expenseDetailId,
+                                        price:keepAccount.data.expense_price,
+                                        quantity:keepAccount.data.expense_quantity,
+                                        expenseTypeId:keepAccount.data.expense_type_id,
+                                        expenseTypeName:keepAccount.data.expense_type_desc,
+                                        expenseItemId:keepAccount.data.expense_item_id,
+                                        expenseItemName:keepAccount.data.expense_item_desc,
+                                        place:keepAccount.data.expense_place,
+                                        dateFrom:keepAccount.data.expense_date_from,
+                                        dateTo:keepAccount.data.expense_date_to,
+                                        originalCurrency:keepAccount.data.currency_code,
+                                        exchangeRate:keepAccount.data.exchange_rate,
+                                        description:keepAccount.data.description
+                                    };
+                                    expenseApply.data.lines.push(line);
+                                    //globalNavigator.popPage();
+
+                                    $ionicHistory.goBack();
+                                }
+                            },
+                            function(e){
+                                $ionicLoading.hide();
+
+
+                                showMessage(angular.toJson(e));
+                            }
+                        );
+
+                    }else if(code=="E"){
+                        $ionicLoading.hide();
+
+                        showMessage("查询失败:"+angular.toJson(response))
+                    }
+                    else{
+                        $ionicLoading.hide();
+
+                        showMessage("未知错误:"+angular.toJson(response));
+                    }
+
+
+                },
+                function(err) {  // 处理错误 .reject
+
+                    $ionicLoading.hide();
+
+                    showMessage("网络连接错误...."+angular.toJson(err));
+                    uploadProgressModal.hide();
+
+                });
+        }
+     */
+
+    /*上传数据*/
+    $scope.uploadData = function () {
+
+      showMessage("上传成功");
+      /*
+       showUploadProgress("准备上传:");
+
+       var form=new FormData();
+       form.append("line_id",keepAccount.data.line_id);
+       form.append("expense_type_id",keepAccount.data.expense_type_id);
+       form.append("expense_type_desc",keepAccount.data.expense_type_desc);
+       form.append("expense_item_id",keepAccount.data.expense_item_id);
+       form.append("expense_item_desc",keepAccount.data.expense_item_desc);
+       form.append("expense_price",keepAccount.data.expense_price);
+       form.append("expense_quantity",keepAccount.data.expense_quantity);
+       form.append("currency_code",keepAccount.data.currency_code);
+       form.append("currency_code_desc",keepAccount.data.currency_code_desc);
+       form.append("exchange_rate",keepAccount.data.exchange_rate);
+       form.append("total_amount",keepAccount.data.total_amount);
+       //        form.append("expense_date_from", keepAccount.data.expense_date_from);
+       //        form.append("expense_date_to",keepAccount.data.expense_date_to);
+       form.append("expense_date_from", getFormatDate(new Date(keepAccount.data.expense_date_from))); //getFormatDate(new Date(this.data.expense_date_from)) getFormatDate(new Date())
+       form.append("expense_date_to",getFormatDate(new Date(keepAccount.data.expense_date_to)));    //getFormatDate(new Date(this.data.expense_date_from))
+       form.append("expense_place",keepAccount.data.expense_place);
+       form.append("description",keepAccount.data.description);
+       form.append("created_by",keepAccount.data.created_by);
+
+
+
+
+       //showMessage("将执行上传:"+angular.toJson(form));
+       showUploadProgress("执行上传中，上传时长与附件数量有关");
+       uploadProgressModal.show();
+       var Photos=keepAccount.data.photos;
+       var promise= keepAccount.uploadData(form,Photos);
+       promise.then(
+       function(response) {
+       var code=getResponseCode(response);
+       if(code=="ok"){
+       //接受返回参数
+       keepAccount.data.expenseDetailId=response.body.expenseDetailId;
+       keepAccount.data.local_status="UPLOADED";
+       $scope.accountDetail=keepAccount.data;
+       keepAccount.canEdit=false;
+       $scope.canEdit=false;
+       //更新本地数据库，修改local_status
+       var p=keepAccount.updateLocalStatus(keepAccount.data.line_id,"UPLOADED");
+       p .then(
+       function(res){
+       showMessage("上传成功"+angular.toJson(res));
+
+       //若此时的sourceFrom 为报销单，将keepAccount.data 的数据赋值给 expenseApply.data.lines ,完成值传递
+       if(sourceFrom=="EXPENSE"){
+       var line={
+       appSourceId:keepAccount.data.expenseDetailId,
+       price:keepAccount.data.expense_price,
+       quantity:keepAccount.data.expense_quantity,
+       expenseTypeId:keepAccount.data.expense_type_id,
+       expenseTypeName:keepAccount.data.expense_type_desc,
+       expenseItemId:keepAccount.data.expense_item_id,
+       expenseItemName:keepAccount.data.expense_item_desc,
+       place:keepAccount.data.expense_place,
+       dateFrom:keepAccount.data.expense_date_from,
+       dateTo:keepAccount.data.expense_date_to,
+       originalCurrency:keepAccount.data.currency_code,
+       exchangeRate:keepAccount.data.exchange_rate,
+       description:keepAccount.data.description
+       };
+       expenseApply.data.lines.push(line);
+       globalNavigator.popPage();
+       }
+       },
+       function(e){
+
+
+       showMessage(angular.toJson(e));
+       }
+       );
+
+       }else if(code=="failure"){
+       showMessage("查询失败:"+angular.toJson(response))
+       }
+       else if (code =="login_required"){
+       showMessage("登录状态异常\n"+angular.toJson(response));
+       reLogin();
+       }else{
+       showMessage("未知错误:"+angular.toJson(response));
+       }
+
+       uploadProgressModal.hide();
+
+       },
+       function(err) {  // 处理错误 .reject
+       showMessage("网络连接错误...."+angular.toJson(err));
+       uploadProgressModal.hide();
+
+       });
+
+       */
+    };
+
+
+    $scope.openCurrencyList = function () {
+
+      /*
+       keepAccount.sourceFrom='acc';
+       if($scope.canEdit){
+       $scope.valueChange();
+       //globalNavigator.pushPage('html/acc/currencyList.html', { animation : 'slide' });
+       $state.go("tab.acc_currencyList");
+       }
+       */
+    };
+
+    $scope.openExpenseTypeList = function () {
+      if ($scope.canEdit) {
+        $scope.valueChange();
+        //globalNavigator.pushPage('html/exp/expenseTypeList.html', { animation : 'slide' });
+        $state.go("tab.exp_expenseTypeList");
+
+      }
+    };
+
+    $scope.openExpenseItemList = function () {
+      if ($scope.canEdit) {
+        $scope.valueChange();
+        //globalNavigator.pushPage('html/exp/expenseItemList.html', { animation : 'slide' });
+        $state.go("tab.exp_expenseItemList");
+
+      }
+    };
+
+    $scope.openExpenseObjectList = function () {
+      if ($scope.canEdit) {
+        $scope.valueChange();
+        //globalNavigator.pushPage('html/exp/expenseItemList.html', { animation : 'slide' });
+        $state.go("tab.acc_expenseObjectList");
+
+      }
+    };
+
+    $scope.openCostObjectList = function () {
+      if ($scope.canEdit) {
+        $scope.valueChange();
+        //globalNavigator.pushPage('html/exp/expenseItemList.html', { animation : 'slide' });
+        $state.go("tab.cst_costObjectList");
+
+      }
+    };
+
+
+    $scope.valueChange = function () {
+      keepAccount.canUpload = false;
+      $scope.canUpload = false;
+    };
+
+
+    //以插件的形式来 充当时间控件，   添加crosswalk  的webview后被弃用
+    $scope.selectDate = function (field) {
+      var options = {
+        date: new Date(),
+        mode: 'date'
+      };
+      datePicker.show(options, function (date) {
+        showMessage(date);
+        if (date != undefined) {
+          if (field == "date_from") {
+            $scope.accountDetail.expense_date_from = getFormatDate(date);
+          } else if (field == "date_to") {
+            $scope.accountDetail.expense_date_to = getFormatDate(date);
+          }
+        } else {
+          if (field == "date_from") {
+            $scope.accountDetail.expense_date_from = '';
+          } else if (field == "date_to") {
+            $scope.accountDetail.expense_date_to = '';
+          }
+        }
+        $scope.$apply();
+      });
+    };
+
+    function showUploadProgress(msg) {
+      //console.log($scope.currentProgress);
+      $scope.currentProgress = msg;
+      //console.log($scope.currentProgress);
+
+    }
+
+    // 删除照片
+    function removePhotoFiles() {
+      //showMessage("删除照片操作 begin");
+
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, onError);
+    }
+
+    function onSuccess(fileSystem) {
+      console.log(fileSystem.name);
+      showMessage(fileSystem.name);
+
+      //showMessage(keepAccount.tempPhoto.photo_src);
+      var myFolderApp = baseConfig.appRootFile;
+
+
+      // 数据删除完成 开始删除图片
+      var length = keepAccount.data.photos.length;
+      showMessage("总长度 " + keepAccount.data.photos.length);
+
+      var count = 0;
+      //keepAccount.tempDeleteIndex =0;
+      if (length > 0) {
+        for (var i = 0; i < length; i++) {
+          /*插数据库*/
+          count = i;
+          showMessage("删除 " + i + " name " + keepAccount.data.photos[i].photo_name);
+          fileSystem.root.getFile(myFolderApp + '/' + keepAccount.data.photos[i].photo_name, null, onGetFileSuccess, onGetFileError);
+
+        }
+      } else {
+        dialog.showAlert("I", "图片删除成功");
+
+        deferred.resolve(lineID);
+      }
+      //showMessage(myFolderApp+'/'+keepAccount.tempPhoto.photo_name);
+      //fileSystem.root.getFile(myFolderApp+'/'+data.photo[this.tempDeleteIndex].photo_name, null, onGetFileSuccess, onGetFileError);
+    }
+
+    function onError(error) {
+      dialog.showAlert("E", "图片删除出错");
+
+      showMessage(error.code);
+    }
+
+    function onGetFileSuccess(fileEntry) {
+      console.log("File Name: " + fileEntry.name);
+      //showMessage("File Name: " + fileEntry.name);
+
+      // remove the file
+      fileEntry.remove(onRemoveSuccess, onRemoveFail);
+
+    }
+
+    function onGetFileError(error) {
+      dialog.showAlert("E", "图片删除出错");
+
+      showMessage("Failed to retrieve file: " + error.code);
+    }
+
+    function onRemoveSuccess(entry) {
+      console.log("Removal succeeded");
+      showMessage("Removal succeeded");
+      //showMessage(keepAccount.tempPhotoIndex);
+      showMessage(angular.toJson(keepAccount.data.photos));
+
+      keepAccount.data.photos.splice(keepAccount.tempPhotoIndex, 1);
+      //showMessage( 'photos list:'+angular.toJson(keepAccount.data.photos));
+
+
+      /*
+       var pages = globalNavigator.getPages();
+       //console.log(pages);
+       pages[pages.length - 1].destroy();
+       pages[pages.length - 1].destroy();
+       globalNavigator.pushPage('html/acc/photos.html', { animation : 'slide' });
+       */
+
+    }
+
+    function onRemoveFail(error) {
+      showMessage('Error removing file: ' + error.code);
+      dialog.showAlert("E", "图片删除出错");
+
+    }
+  });
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.acc_accountList', {
+          url: '/acc/accountList',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/accountList.html',
+              controller: 'accountListController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('accountListController', function ($scope, $http, $q, keepAccount, $state, $ionicLoading, baseConfig) {
+    console.log('accountListController');
+    $scope.shouldShowDelete = true;
+
+    function queryAccountList() {
+
+      //showMessage("查询列表");
+      var list = [];
+
+      var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
+      var deferred = $q.defer();
+      db.transaction(function (tx) {
+        var querySql = "select * from MOBILE_EXP_REPORT_LINE where created_by = ? order by creation_date desc, line_id desc";
+        var para = [
+          window.localStorage.empno
+        ];
+        tx.executeSql(querySql, para, function (tx, res) {
+          if (res.rows.length == 0) {
+            showMessage("表里的数据为空!! -");
+            deferred.resolve(list);
+
+          } else {
+            //                  alert(angular.toJson(res.rows.item(0)));
+            for (var i = 0; i < res.rows.length; i++) {
+              list.push(res.rows.item(i));
+            }
+            deferred.resolve(list);
+          }
+        });
+      });
+      return deferred.promise;
+    }
+
+    //$ionicLoading.show({
+    //  template: 'Loading...',
+    //  duration: 1000
+    //});
+
+    ///*
+    var promise = queryAccountList();
+    promise.then(function (list) {  // 调用承诺API获取数据 .resolve
+      $scope.accountList = groupJSON(list);
+
+      //showMessage("查询 结束");
+      //$ionicLoading.hide();
+
+    }, function (response) {  // 处理错误 .reject
+      showMessage("查询数据库错误");
+    });
+
+
+    $scope.doRefresh = function () {
+      $ionicLoading.show({
+        template: '刷新列表...',
+        duration: 1000
+      });
+      var promise = queryAccountList();
+      promise.then(function (list) {  // 调用承诺API获取数据 .resolve
+        $scope.accountList = groupJSON(list);
+        $scope.$broadcast('scroll.refreshComplete');
+        $ionicLoading.hide();
+
+
+      }, function (response) {  // 处理错误 .reject
+        showMessage("查询数据库错误");
+        $scope.$broadcast('scroll.refreshComplete');
+        $ionicLoading.hide();
+
+
+      });
+    };
+
+    function doReLoadList() {
+
+      var promise = queryAccountList();
+      promise.then(function (list) {  // 调用承诺API获取数据 .resolve
+
+
+        $scope.accountList = groupJSON(list);
+        //showMessage(angular.toJson($scope,accountList));
+        $ionicLoading.hide();
+
+
+      }, function (response) {  // 处理错误 .reject
+        showMessage("查询数据库错误");
+
+        $ionicLoading.hide();
+
+      });
+    }
+
+
+    // 删除记一笔
+    $scope.removeData = function (e) {
+
+      var target = e.target;
+      var lineId = target.getAttribute('lineId');
+      var timestamp = target.getAttribute('timestamp');
+
+      showMessage("delete clicked lineid " + lineId);
+
+
+      $ionicLoading.show({
+        template: '正在删除...'
+        //duration: 1000
+      });
+
+      var promiseGetPhotos = keepAccount.queryDetailPhoto(lineId);
+      promiseGetPhotos.then(
+        function (response) {
+          var promiseRemove = keepAccount.removeItem(timestamp);
+          promiseRemove.then(function (removeResponse) {
+              var statusCode = removeResponse.status;
+              console.log("get the statusCode = " + statusCode);
+              if (statusCode === "S") {
+                keepAccount.initData();
+                keepAccount.data.photos = response.photos;
+                keepAccount.data.line_id = lineId;
+
+                var promise = keepAccount.remove(lineId);
+                promise.then(
+                  function (response) {  // 调用承诺API获取数据 .resolve
+
+                    showMessage("数据删除成功");
+                    showMessage(angular.toJson(keepAccount.data.photos));
+                    showMessage("length - " + (keepAccount.data.photos.length));
+
+
+                    if (keepAccount.data.photos.length != undefined && keepAccount.data.photos.length != 0) {
+
+                      //showMessage("length - "+(keepAccount.data.photos.length));
+
+                      removePhotoFiles();
+                    }
+                    else {
+                      showMessage("无照片");
+                      doReLoadList();
+                    }
+
+
+                  },
+                  function (err) {  // 处理错误 .reject
+                    $ionicLoading.hide();
+                    showMessage("删除失败...." + angular.toJson(err));
+                  }
+                );
+              } else {
+                $ionicLoading.hide();
+                $ionicLoading.show({
+                  template: '删除失败...',
+                  duration: 1000
+                });
+              }
+            },
+            function (err) {  // 处理错误 .reject
+              $ionicLoading.hide();
+              showMessage("删除失败...." + angular.toJson(err));
+            });
+        },
+        function (error) {
+          $ionicLoading.hide();
+          showMessage("删除失败...." + angular.toJson(err));
+
+        }
+      );
+
+    };
+
+
+    function groupJSON(jsons) {
+
+      var newJson = [];
+      loop1:for (var i = 0; i < jsons.length; i++) {
+        var t1 = jsons[i].creation_date;
+        var arr = {time: t1, list: []};
+        arr.list.push(jsons[i]);
+        for (var j = i + 1; j < jsons.length; j++) {
+          var t2 = jsons[j].creation_date;
+          if (t2 == t1) {
+            arr.list.push(jsons[j]);
+          } else {
+            i = j - 1;
+            break;
+          }
+          if (j == jsons.length - 1) {
+            newJson.push(arr);
+            break loop1;
+          }
+        }
+        newJson.push(arr);
+      }
+      return newJson;
+    }
+
+
+    $scope.openDetail = function (e) {
+      var target = e.target;
+      var lineId = target.getAttribute('lineId');
+      var status = target.getAttribute('status');
+      showMessage(lineId + "----" + status);
+      if (status == "UPLOADED") {
+        keepAccount.canEdit = false;
+        keepAccount.canUpload = false;
+        keepAccount.boolLoadExpenseObject = false;
+      } else {
+        keepAccount.canEdit = true;
+        keepAccount.canUpload = true;
+        keepAccount.sourceFrom = "ACCOUNT";
+        keepAccount.operation = "UPDATE";
+        keepAccount.boolLoadExpenseObject = true;
+      }
+
+      keepAccount.queryDetail(lineId).then(
+        function (detailData) {
+          showMessage(angular.toJson(detailData.photos));
+          keepAccount.data = detailData;
+          //globalNavigator.pushPage('html/acc/accountDetail.html', { animation : 'slide' });
+          //showMessage("acc_detail");
+          $state.go("tab.acc_detail");
+        },
+        function (err) {
+          showMessage(err);
+        }
+      );
+    };
+
+
+    // 删除照片
+    function removePhotoFiles() {
+      showMessage("删除照片操作 begin");
+
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, onError);
+    }
+
+    function onSuccess(fileSystem) {
+      console.log(fileSystem.name);
+      //showMessage(fileSystem.name);
+
+      //showMessage(keepAccount.tempPhoto.photo_src);
+      var myFolderApp = baseConfig.appRootFile;
+
+
+      // 数据删除完成 开始删除图片
+      var length = keepAccount.data.photos.length;
+      showMessage("总长度 " + keepAccount.data.photos.length);
+
+      var count = 0;
+      //keepAccount.tempDeleteIndex =0;
+      if (length > 0) {
+        for (var i = 0; i < length; i++) {
+          /*插数据库*/
+          count = i;
+          showMessage("删除 " + i + " name " + keepAccount.data.photos[i].photo_name);
+          fileSystem.root.getFile(myFolderApp + '/' + keepAccount.data.photos[i].photo_name, null, onGetFileSuccess, onGetFileError);
+
+        }
+      } else {
+        deferred.resolve(lineID);
+      }
+      //showMessage(myFolderApp+'/'+keepAccount.tempPhoto.photo_name);
+      //fileSystem.root.getFile(myFolderApp+'/'+data.photo[this.tempDeleteIndex].photo_name, null, onGetFileSuccess, onGetFileError);
+    }
+
+    function onError(error) {
+      showMessage(error.code);
+    }
+
+    function onGetFileSuccess(fileEntry) {
+      console.log("File Name: " + fileEntry.name);
+      //showMessage("File Name: " + fileEntry.name);
+
+      // remove the file
+      fileEntry.remove(onRemoveSuccess, onRemoveFail);
+
+    }
+
+    function onGetFileError(error) {
+      showMessage("Failed to retrieve file: " + error.code);
+    }
+
+    function onRemoveSuccess(entry) {
+      console.log("Removal succeeded");
+      showMessage("Removal succeeded");
+      //showMessage(keepAccount.tempPhotoIndex);
+      showMessage(angular.toJson(keepAccount.data.photos));
+
+      keepAccount.data.photos.splice(keepAccount.tempPhotoIndex, 1);
+      //showMessage( 'photos list:'+angular.toJson(keepAccount.data.photos));
+
+      doReLoadList();
+
+    }
+
+    function onRemoveFail(error) {
+      showMessage('Error removing file: ' + error.code);
+    }
+
+  });
+
+/**
+ * Created by wuxiaocheng on 15/8/26.
+ */
+
+
+angular.module("applicationModule")
+  .factory('keepAccount', function ($http, $q, $window,$ionicHistory, baseConfig) {
+
+
+    // 上传附件
+    function doPostHttp(form, deferred) {
+      //showMessage("doPostHttp");
+      //http://172.20.0.175:8090/handhr_aurora/hand_app_fileupload.svc
+      console.log('上传附件'+baseConfig.expUploadUrl);
+      console.log(form);
+      $http.post(baseConfig.expUploadUrl, form,{
+        transformRequest: angular.identity,
+          headers: { 'Content-Type':undefined}}
+        )
+        .success(function (response) {
+          console.log("上传成功 图片");
+          deferred.resolve(response);
+          $ionicHistory.goBack();
+        })
+        .error(function (err) {
+          console.log("上传失败 图片");
+          deferred.reject("上传失败 图片");
+        });
+    }
+
+    function doPostHttpOnlyData(json, deferred) {
+      var Url = baseConfig.businessPath + "/expense_account/create_expense_details";
+      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
+        '","p_details":' + json + '}}';
+
+      console.log(PostData);
+      showMessage(PostData);
+      $http.post(Url, PostData).success(function (data) {
+
+        showMessage(angular.toJson(data));
+        deferred.resolve(data);
+
+      }).error(function (data) {
+        showMessage("error:" + angular.toJson(data));
+
+        deferred.reject(data);
+
+        //$ionicLoading.hide();
+
+      });
+
+
+      return deferred.promise;
+    }
+
+    function deleteAccountItem(timestamp, deferred) {
+      console.log("get the timestamp = " + timestamp);
+      var Url = baseConfig.businessPath + "/expense_account/delete_expense_details";
+//        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
+//            '","p_time_stamp":' + timestamp+'}}';
+      var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_time_stamp":"' + timestamp + '"}}';
+
+      console.log(PostData);
+      showMessage(PostData);
+      $http.post(Url, PostData).success(function (data) {
+
+        showMessage(angular.toJson(data));
+        deferred.resolve(data);
+
+      }).error(function (data) {
+        showMessage("error:" + angular.toJson(data));
+
+        deferred.reject(data);
+
+        //$ionicLoading.hide();
+
+      });
+
+
+      return deferred.promise;
+    }
+
+
+    function createBlob(data, type) {
+      var r;
+      try {
+        r = new $window.Blob([data], {type: type});
+      }
+      catch (e) {
+        // TypeError old chrome and FF
+        $window.BlobBuilder = $window.BlobBuilder ||
+          $window.WebKitBlobBuilder ||
+          $window.MozBlobBuilder ||
+          $window.MSBlobBuilder;
+        // consider to use crosswalk for android
+
+        if (e.name === 'TypeError' && window.BlobBuilder) {
+          var bb = new BlobBuilder();
+          bb.append([data.buffer]);
+          r = bb.getBlob(type);
+        }
+        else if (e.name == "InvalidStateError") {
+          // InvalidStateError (tested on FF13 WinXP)
+          r = new $window.Blob([data.buffer], {type: type});
+        }
+        else {
+          throw e;
+        }
+      }
+      return r;
+    }
+
+
+    /******************************************
+     *
+     */
+
+
+    var service = {
+      data: {},
+      sourceFrom: "",
+      canEdit: '',
+      canUpload: '',
+      operation: '',
+      tempPhoto: {},
+      tempPhotoIndex: '',
+      projectList: [],
+      expenseItemList: [],
+      expenseCostList: [],
+      boolLoadExpenseObject: '',
+      //curreentPhotoIndex:0,
+
+
+      queryDetail: function (lineId) {
+        //请求数据库，查询操作
+        var detailData = {};
+        var deferred = $q.defer();
+        var db = window.sqlitePlugin.openDatabase({
+          name: baseConfig.dbName,
+          createFromLocation: 1,
+          location: baseConfig.dbLocation
+        });
+        db.transaction(function (tx) {
+          var querySql = "select * from MOBILE_EXP_REPORT_LINE t where t.line_id=?";
+          var para = [lineId];
+          //showMessage("query sql "+querySql);
+
+          //showMessage("query para "+para);
+          tx.executeSql(querySql, para, function (tx, res) {
+
+            //showMessage("查询成功");
+
+            //返回结果
+            detailData = {
+              line_id: res.rows.item(0).line_id,
+              expense_type_id: res.rows.item(0).expense_type_id,
+              expense_type_desc: res.rows.item(0).expense_type_desc,
+              expense_item_id: res.rows.item(0).expense_item_id,
+              expense_item_code: res.rows.item(0).expense_item_code,
+              expense_item_desc: res.rows.item(0).expense_item_desc,
+              costObject_id: res.rows.item(0).costObject_id,
+              costObject_desc: res.rows.item(0).costObject_desc,
+              expense_price: res.rows.item(0).expense_price,
+              expense_quantity: res.rows.item(0).expense_quantity,
+              currency_code: res.rows.item(0).currency_code,
+              currency_code_desc: res.rows.item(0).currency_code_desc,
+              exchange_rate: res.rows.item(0).exchange_rate,
+              total_amount: res.rows.item(0).total_amount,
+              expense_date_from: new Date(res.rows.item(0).expense_date_from),
+              expense_date_to: new Date(res.rows.item(0).expense_date_to),
+              expense_place: res.rows.item(0).expense_place,
+              description: res.rows.item(0).description,
+              local_status: res.rows.item(0).local_status,
+              creation_date: res.rows.item(0).creation_date,
+              created_by: res.rows.item(0).created_by,
+              invoice_quantity: res.rows.item(0).invoice_quantity,
+              expenseObject_id: res.rows.item(0).expenseObject_id,
+              expenseObject_desc: res.rows.item(0).expenseObject_desc,
+              expenseObject_type: res.rows.item(0).expenseObject_type,
+              time_stamp: res.rows.item(0).timestamp
+
+            };
+
+            //showMessage(detailData.expense_date_from +' -- '+res.rows.item(0).expense_date_from);
+            db.transaction(function (tx) {
+              var photos = [];
+              var sql = "select * from MOBILE_EXP_LINE_PHOTOS t where t.line_id=?";
+              tx.executeSql(sql, [lineId], function (tx, res) {
+                for (var i = 0; i < res.rows.length; i++) {
+                  photos.push({
+                    "line_id": res.rows.item(i).line_id,
+                    "photo_id": res.rows.item(i).photo_id,
+                    "photo_name": res.rows.item(i).photo_name,
+                    "photo_src": res.rows.item(i).photo_src,
+                    "creation_date": new Date(res.rows.item(i).creation_date),
+                    "created_by": res.rows.item(i).created_by
+                  });
+                }
+                detailData.photos = photos;
+                deferred.resolve(detailData);
+              }, function (err) {
+                deferred.reject(err);
+              });
+            });
+          }, function (e) {
+            showMessage('ERROR: ' + e.message);
+            deferred.reject(e);
+          });
+        });
+        return deferred.promise;
+      },
+
+
+      /******
+       * 功能： 查询 行 关联的照片列表
+       * @param lineId
+       * @returns {*}
+       */
+      queryDetailPhoto: function (lineId) {
+        var detailData = {};
+        var deferred = $q.defer();
+        var db = window.sqlitePlugin.openDatabase({
+          name: baseConfig.dbName,
+          createFromLocation: 1,
+          location: baseConfig.dbLocation
+        });
+
+        db.transaction(function (tx) {
+          var photos = [];
+          var sql = "select * from MOBILE_EXP_LINE_PHOTOS t where t.line_id=?";
+          tx.executeSql(sql, [lineId], function (tx, res) {
+            for (var i = 0; i < res.rows.length; i++) {
+              photos.push({
+                "line_id": res.rows.item(i).line_id,
+                "photo_id": res.rows.item(i).photo_id,
+                "photo_name": res.rows.item(i).photo_name,
+                "photo_src": res.rows.item(i).photo_src,
+                "creation_date": new Date(res.rows.item(i).creation_date),
+                "created_by": res.rows.item(i).created_by
+              });
+            }
+            detailData.photos = photos;
+            deferred.resolve(detailData);
+          }, function (err) {
+            showMessage('ERROR: ' + err.message);
+
+            deferred.reject(err);
+          });
+
+
+        });
+        return deferred.promise;
+      },
+
+
+      remove: function () {
+        //
+        var deferred = $q.defer();
+        var data = this.data;
+        showMessage('open db');
+        var db = window.sqlitePlugin.openDatabase({
+          name: baseConfig.dbName,
+          createFromLocation: 1,
+          location: baseConfig.dbLocation
+        });
+        var lineID;
+        db.transaction(function (tx) {
+          // 删除记一笔数据
+          var deleteSql = "DELETE FROM MOBILE_EXP_REPORT_LINE WHERE line_id =" +
+            "?";
+          var para = [
+            data.line_id
+          ];
+          showMessage('deleteSql ' + deleteSql);
+
+          tx.executeSql(deleteSql, para, function (tx, res) {
+            //返回line_id
+            lineID = res.insertId;
+            db.transaction(function (tx) {
+              // 删除图片
+              var deletePhotoSql = "DELETE FROM MOBILE_EXP_LINE_PHOTOS WHERE line_id = " +
+                "? ";
+
+              var para = [
+                data.line_id
+              ];
+
+              tx.executeSql(deletePhotoSql, para, function (tx, res) {
+                deferred.resolve(lineID);
+              }, function (err) {
+                deferred.reject(err);
+              });
+            });
+          }, function (e) {
+            deferred.reject(e);
+          });
+        });
+        return deferred.promise;
+      },
+
+      /************
+       * 删除图片 的 数据库表
+       */
+      removePhoto: function (line_id) {
+
+        var deferred = $q.defer();
+        var data = this.data;
+        var resID;
+        showMessage('open db to del lineid' + line_id);
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
+        // var lineID;
+        db.transaction(function (tx) {
+          // 删除记一笔数据
+          var deletePhotoSql = "DELETE FROM MOBILE_EXP_LINE_PHOTOS WHERE line_id = " +
+            "? ";
+
+          var para = [
+            line_id
+          ];
+          showMessage('deleteSql ' + deletePhotoSql + ' --- line_id -' + line_id);
+
+          tx.executeSql(deletePhotoSql, para, function (tx, res) {
+
+            resID = res.insertId;
+
+            deferred.resolve(resID);
+
+            //返回line_id
+
+          }, function (e) {
+            deferred.reject(e);
+          });
+        });
+        return deferred.promise;
+
+      },
+
+
+      /********
+       * 记一笔 插入
+       * *******/
+      insert: function () {
+        //转换日期格式
+
+
+        //showMessage("insert");
+        var timestamp = Date.parse(new Date()) / 1000;
+        var deferred = $q.defer();
+        this.data.time_stamp = "" + timestamp;
+        var data = this.data;
+
+        var expense_date_from = getFormatDate(new Date(data.expense_date_from));
+        var expense_date_to = getFormatDate(new Date(data.expense_date_to));
+        //data.creation_date,
+
+
+        /*
+         var myDate = new Date();
+
+         var month = fillNumberBySize(myDate.getMonth()+1,2);
+         var date = fillNumberBySize(myDate.getDate(),2);
+         var hours = fillNumberBySize(myDate.getHours(),2);
+         var minutes = fillNumberBySize(myDate.getMinutes(),2);
+         var seconds = fillNumberBySize(myDate.getSeconds(),2);
+         //var milliseconds = fillNumberBySize(myDate.getMilliseconds(),3);
+
+
+         var creation_date = myDate.getFullYear()+"-"+month+"-"+date+""+hours+":"+minutes
+         +':'+seconds;
+         ***/
+        var creation_date = getFormatDate(new Date());
+
+
+        console.log("creation_date" + creation_date);
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
+        var lineID;
+
+        console.log(db);
+        db.transaction(function (tx) {
+          var insertSql = "INSERT INTO MOBILE_EXP_REPORT_LINE (" +
+            "expense_type_id," +
+            "expense_type_desc," +
+            "expense_item_id," +
+            "expense_item_code," +
+            "expense_item_desc," +
+            "expense_price ," +
+
+            "expense_quantity," +
+            "currency_code," +
+            "currency_code_desc," +
+            "exchange_rate," +
+            "total_amount," +
+
+            "expense_date_from," +
+            "expense_date_to," +
+            "expense_place," +
+            "description," +
+            "local_status," +
+
+
+            'invoice_quantity,' +
+            'expenseObject_id,' +
+            'expenseObject_code,' +
+            'expenseObject_desc,' +
+            'expenseObject_type,' +
+            'costObject_id,' +
+            'costObject_desc,' +
+
+            "creation_date," +
+            "created_by," +
+            "timestamp" +
+
+            ") VALUES (" +
+            "?,?,?,?,?,?," +
+            "?,?,?,?,?," +
+            "?,?,?,?,?," +
+            "?,?,?,?,?,?,?," +
+
+            "?,?,?)";
+          var para = [
+            data.expense_type_id,
+            data.expense_type_desc,
+            data.expense_item_id,
+            data.expense_item_code,
+            data.expense_item_desc,
+            data.expense_price,
+
+            data.expense_quantity,
+            data.currency_code,
+            data.currency_code_desc,
+            data.exchange_rate,
+            data.total_amount,
+
+            expense_date_from,
+            expense_date_to,
+            data.expense_place,
+            data.description,
+            data.local_status,
+
+            data.invoice_quantity,
+            data.expenseObject_id,
+            data.expenseObject_code,
+            data.expenseObject_desc,
+            data.expenseObject_type,
+            data.costObject_id,
+            data.costObject_desc,
+
+
+            creation_date,
+            data.created_by,
+            timestamp
+          ];
+
+          //showMessage('sql '+insertSql);
+          console.log('para ' + angular.toJson(para));
+          //showMessage(data.creation_date           );
+
+          console.log(para);
+          console.log(data.expense_type_id);
+          console.log(data.expense_type_desc);
+          console.log(data.expense_item_id);
+          console.log(data.expense_item_code);
+          console.log(data.expense_item_desc);
+          console.log(data.expense_price);
+          console.log(data.expense_quantity);
+          console.log(data.currency_code);
+          console.log(data.currency_code_desc);
+          console.log(data.exchange_rate);
+          console.log(data.total_amount);
+          console.log(data.expense_date_from);
+          console.log(data.expense_date_to);
+          console.log(data.expense_place);
+          console.log(data.description);
+          console.log(data.local_status);
+          console.log(data.invoice_quantity);
+          console.log(data.expenseObject_id);
+          console.log(data.expenseObject_code);
+          console.log(data.expenseObject_desc);
+          console.log(data.costObject_id);
+          console.log(data.costObject_desc);
+          console.log(creation_date);
+          console.log(data.created_by);
+
+          tx.executeSql(insertSql, para, function (tx, res) {
+
+            //showMessage("res"+angular.toJson(res));
+
+
+            //showMessage("插入图片");
+            //返回line_id
+            lineID = res.insertId;
+            db.transaction(function (tx) {
+              var sql = "INSERT INTO MOBILE_EXP_LINE_PHOTOS (" +
+                "line_id , " +
+                "photo_name ," +
+                "photo_src ," +
+                "creation_date ," +
+                "created_by )" +
+                "values(" +
+                "? ," +
+                "? ," +
+                "? ," +
+                "? ," +
+                "? )";
+              var length = data.photos.length;
+              var count = 0;
+              this.curreentPhotoIndex++;
+
+              if (length > 0) {
+                for (var i = 0; i < length; i++) {
+
+
+                  //showMessage("--" +i);
+                  var index = i;
+                  /*插数据库*/
+                  tx.executeSql(sql, [
+                    lineID,
+                    data.photos[i].photo_name,
+                    data.photos[i].photo_src,
+                    data.photos[i].creation_date,
+                    data.photos[i].created_by
+                  ], function (tx, res) {
+
+
+                    showMessage(count + " -- res insert photo  -" + res.insertId);
+
+                    showMessage(angular.toJson(data.photos));
+
+                    data.photos[count].photo_id = res.insertId;
+                    //showMessage(angular.toJson(data.photos[index]));
+
+
+                    count++;
+                    if (count == length) {
+                      deferred.resolve(lineID);
+                    }
+                  }, function (err) {
+                    count++;
+                    if (count == length) {
+                      //dialog.showAlert("E", " insert ERROR: " + angular.toJson(err) );
+
+                      deferred.reject(err);
+                    }
+                  })
+                }
+              } else {
+                deferred.resolve(lineID);
+              }
+            });
+          }, function (e) {
+
+
+            showMessage(" insert ERROR: " + e.message);
+
+            dialog.showAlert("E", " insert ERROR: " + e.message)
+
+            deferred.reject(e);
+          });
+        });
+        return deferred.promise;
+      },  // end of insert
+
+
+      getData: function () {
+        return this.data;
+      },
+
+      /***
+       * 数据初始化
+       */
+      initData: function () {
+
+        //prj_project_cost_type_v 项目报销类型归属，其中'SH'为营销，'RH' 管理费用，'PD'为项目实施，‘DN’为笔记本报销
+
+        this.data = {
+          //userId:baseConfig.user.userId,
+          //companyId:baseConfig.user.companyId,
+          companyId: "",
+
+          created_by: window.localStorage.empno,
+          photos: [],
+          expense_type_id: '',
+          expense_type_desc: '',
+          expense_item_id: '',
+          expense_item_code: '',
+          expense_item_desc: '',
+          expense_price: '',
+
+          expense_quantity: '',
+          currency_code: '',
+          currency_code_desc: '',
+          exchange_rate: '',
+          total_amount: '',
+
+          expense_date_from: '',
+          expense_date_to: '',
+          expense_place: '',
+          description: '',
+          local_status: '',
+
+          invoice_quantity: '',
+          expenseObject_id: '',
+          expenseObject_code: '',
+
+          expenseObject_desc: '',
+          expenseObject_type: '',
+          costObject_id: '',
+          costObject_desc: '',
+
+
+          creation_date: ''
+
+
+        };
+        this.boolLoadExpenseObject = false;
+        this.projectList = [];
+        this.expenseItemList = [];
+        this.expenseCostList = [];
+        console.log("数据 清空");
+
+        this.data.expense_date_from = new Date();
+        this.data.expense_date_to = new Date();
+        this.data.expense_quantity = 1;
+        //showMessage("数据清空");
+        console.log("初始化 默认人民币");
+        this.data.currency_code = "CNY";
+        this.data.currency_code_desc = "CNY-人民币";
+        this.data.exchange_rate = Number(1);
+      },
+
+
+      /******
+       *   记一笔更新本地数据库
+       *
+       * @param lineId 行id
+       * @returns {*}
+       */
+      update: function () {
+        //转换日期格式
+        //this.data.expense_date_from=getFormatDate(new Date(this.data.expense_date_from));
+        //this.data.expense_date_to=getFormatDate(new Date(this.data.expense_date_to));
+
+        var deferred = $q.defer();
+        var data = this.data;
+        var expense_date_from = getFormatDate(new Date(data.expense_date_from));
+        var expense_date_to = getFormatDate(new Date(data.expense_date_to));
+
+
+        var db = window.sqlitePlugin.openDatabase({
+          name: baseConfig.dbName,
+          createFromLocation: 1,
+          location: baseConfig.dbLocation
+        });
+        // var lineID;
+        var rowsAffacted = 0;
+        //showMessage("打开数据库成功");
+        //console.log('update'+angular.toJson(date));
+        showMessage(angular.toJson(this.date));
+        //showMessage('aaa');
+
+        db.transaction(function (tx) {
+          // 拼接字符串 行字段
+          var updateSql = "UPDATE MOBILE_EXP_REPORT_LINE SET " +
+              //"expense_type_id = ?,"+
+              //"expense_type_desc = ?,"+
+            "expense_item_id = ?," +
+            "expense_item_code = ?," +
+            "expense_item_desc = ? ," +
+            "expense_price = ?," +
+
+            "expense_quantity = ?," +
+            "currency_code = ?," +
+            "currency_code_desc = ?," +
+            "exchange_rate = ?," +
+            "total_amount = ?," +
+
+            "expense_date_from = ?," +
+            "expense_date_to = ?," +
+            "expense_place = ?," +
+            "description = ?," +
+            "local_status = ?," +
+
+            'invoice_quantity = ?,' +
+            'expenseObject_id = ?,' +
+            'expenseObject_code = ?,' +
+            'expenseObject_desc = ?,' +
+            'expenseObject_type = ?,' +
+
+            'costObject_id = ?,' +
+            'costObject_desc = ?,' +
+
+              //"creation_date = ?,"+
+            "created_by = ?" +
+            "WHERE line_id = ?";
+          var para = [
+            // data.expense_type_id,
+            //data.expense_type_desc,
+            data.expense_item_id,
+            data.expense_item_code,
+            data.expense_item_desc,
+            data.expense_price,
+
+            data.expense_quantity,
+            data.currency_code,
+            data.currency_code_desc,
+            data.exchange_rate,
+            data.total_amount,
+
+            expense_date_from,
+            expense_date_to,
+            data.expense_place,
+            data.description,
+            data.local_status,
+
+            data.invoice_quantity,
+            data.expenseObject_id,
+            data.expenseObject_code,
+            data.expenseObject_desc,
+            data.expenseObject_type,
+            data.costObject_id,
+            data.costObject_desc,
+
+            //data.creation_date,
+            data.created_by,
+            data.line_id
+          ];
+
+          // 更新字段
+          tx.executeSql(updateSql, para, function (tx, res) {
+
+            //showMessage(rowsAffacted);
+            showMessage("res" + angular.toJson(res));
+
+            rowsAffacted = res.rowsAffected;
+
+
+            db.transaction(function (tx) {
+
+              //showMessage("插入图片");
+
+
+              var insertPhotoSql = "INSERT INTO MOBILE_EXP_LINE_PHOTOS (" +
+                "line_id , " +
+                "photo_name ," +
+                "photo_src ," +
+                "creation_date ," +
+                "created_by )" +
+                "values(" +
+                "? ," +
+                "? ," +
+                "? ," +
+                "? ," +
+                "? )";
+
+              var length = data.photos.length;
+              //showMessage("photo length"+length);
+
+              ///*
+              var count = 0;
+              if (length > 0) {
+
+                for (var i = 0; i < length; i++) {
+
+                  showMessage("photo detail " + angular.toJson(data.photos[i]));
+                  //var index =i;
+
+                  //    补齐 新添加的照片记录
+                  //    原有照片记录 已在本地数据库 无需更新
+                  //   有另外一个页面入口删除本地照片
+
+                  if (typeof(data.photos[i].photo_id) == "undefined" || data.photos[i].photo_id == "") {
+                    showMessage("undefined photo insert");
+                    tx.executeSql(insertPhotoSql, [
+                        data.line_id,
+                        data.photos[i].photo_name,
+                        data.photos[i].photo_src,
+                        data.photos[i].creation_date,
+                        data.photos[i].created_by
+                      ], function (tx, res) {
+
+                        //this.data.photos[i].photo_id = res.insertId;
+                        //showMessage("insert "+angular.toJson(res));
+
+                        showMessage(angular.toJson(data.photos));
+                        showMessage(count + "--update --" + res.insertId);
+                        data.photos[count].photo_id = res.insertId;
+                        showMessage(angular.toJson(data.photos));
+
+
+                        //setPhotoID(i,res.insertId);
+
+                        count++;
+                        showMessage(count);
+                        if (count == length) {
+                          //showMessage("插入成功");
+                          deferred.resolve(rowsAffacted);
+                        }
+                      }, function (err) {
+                        count++;
+                        if (count == length) {
+                          //showMessage("deferred");
+                          //dialog.showAlert("E", " insert ERROR: " + angular.toJson(err) );
+
+                          deferred.reject(err);
+                        }
+                      }
+                    ); // end of executeSql
+                  }
+                  else {
+                    count++;
+                    showMessage(count);
+                    if (count == length) {
+                      //showMessage("插入成功");
+                      deferred.resolve(rowsAffacted);
+                    }
+                  }
+
+                }
+              } else {
+                deferred.resolve(rowsAffacted);
+              }
+            });
+          }, function (e) {
+            showMessage("deferred");
+            deferred.reject(e);
+          });
+        });
+        return deferred.promise;
+
+      },
+
+
+      uploadDataV2: function (form, photos) {
+        console.log("进入");
+        //showMessage("上传开始");
+
+        console.log("photos.length" + photos.length);
+
+
+        var deferred = $q.defer();
+        //showMessage("photos.length" +photos.length);
+        //deferred.reject("error");
+        if (photos.length > 0) {
+          console.log("上传有照片");
+          //setProgress("上传有照片");
+          var count = 0;
+          for (var i = 0; i < photos.length; i++) {
+            //这里是异步调用cordova 的文件操作，给form 增加
+            window.resolveLocalFileSystemURL(photos[i].photo_src, function (fileEntry) {
+                fileEntry.file(function (file) {
+                  var reader = new FileReader();
+                  reader.onloadend = function (fileReadResult) {
+                    var data = new Uint8Array(fileReadResult.target.result);
+                    var blob = createBlob(data, "image/jpeg");
+
+                    //alert("size: "+file.size);
+                    //dialog.showAlert("I", "size: "+file.size);
+                    form.append(file.name, blob, file.name);
+                    count++;
+                    if (count == photos.length) {
+                      doPostHttp(form, deferred);
+                    }
+                  };
+                  reader.onerror = function (fileReadResult) {
+                    //如果失败也算完成的话，这里也加上就行
+                    //count ++
+                    //if(count == photos.length()){
+                    //doPostHttp(form);
+                    //}
+                  };
+                  reader.readAsArrayBuffer(file);
+                });
+              },
+              function (error) {
+                showMessage(error.code);
+              });
+          }
+        } else {
+
+          //showMessage("上传无照片");
+
+          doPostHttp(form, deferred);
+        }
+
+        return deferred.promise;
+      },
+
+      uploadDataByJosn: function (dataList, option) {
+
+
+        var lines = {
+          expense_lines: []
+        };
+        //showMessage("josn");
+        //showMessage(angular.toJson(dataList));
+        //showMessage(datalist.expenseObject_id );
+        //showMessage(datalist.expense_date_from );
+
+
+        /*
+
+         console.log(dataList.expenseObject_id );
+         console.log(dataList.expense_place );
+         console.log(dataList.expense_item_code );
+         console.log(dataList.expense_date_from );
+         console.log(dataList.expense_date_to );
+         console.log(dataList.expense_price );
+         console.log(dataList.expense_quantity );
+         console.log(dataList.expense_quantity );
+         console.log(dataList.exchange_rate );
+         console.log(dataList.description );
+         console.log("RMB");
+         console.log(dataList.costObject_id);
+         console.log(dataList.line_id);
+
+         */
+
+
+        // 日期转化
+        var expense_date_from = getFormatDate(new Date(dataList.expense_date_from));
+        var expense_date_to = getFormatDate(new Date(dataList.expense_date_to));
+        var invoice_quantity = dataList.invoice_quantity;
+        // showMessage("total_amount"+dataList.total_amount);
+
+        var total_amount = Number(dataList.total_amount).toFixed(2);
+        // showMessage("total_amount"+total_amount);
+
+
+        if (invoice_quantity == '' || invoice_quantity == undefined
+          || invoice_quantity == null) {
+          invoice_quantity = "";
+
+        }
+
+        showMessage("invoice_quantity - " + invoice_quantity);
+        showMessage("rentals_infor_id - " + dataList.costObject_id);
+        //rentals_infor_id:   ""+dataList.costObject_id,
+
+        //alert("invoice_quantity - "+ invoice_quantity);
+
+
+        //showMessage("构建数据" +dataList.expense_quantity);
+        var item = {
+          project_id: "" + dataList.expenseObject_id,
+          place: dataList.expense_place,
+          fee_item_code: dataList.expense_item_code,
+          date_from: expense_date_from,
+          date_to: expense_date_to,
+
+          unit_price: "" + dataList.expense_price,
+          quantity: "" + dataList.expense_quantity,
+          amount: "" + total_amount,
+          exchange_rate: "" + dataList.exchange_rate,
+          description: dataList.description,
+
+          original_currency: "CNY",
+          rentals_infor_id: "" + dataList.costObject_id,
+          attach_number: "" + invoice_quantity,
+          source_code: option.source_code,
+          source_line_id: option.source_line_id,
+          time_stamp: dataList.time_stamp
+
+        };
+
+        console.log("构建上传数据结束 " + angular.toJson(item));
+        showMessage("构建上传数据结束 " + angular.toJson(item));
+
+
+        lines.expense_lines.push(item);
+        /*
+         data.expense_type_id,
+         data.expense_type_desc,
+         data.expense_item_id,
+         data.expense_item_code,
+         data.expense_item_desc,
+         data.expense_price ,
+
+         data.expense_quantity,
+         data.currency_code,
+         data.currency_code_desc,
+         data.exchange_rate,
+         data.total_amount,
+
+         data.expense_date_from,
+         data.expense_date_to,
+         data.expense_place,
+         data.description,
+         data.local_status,
+
+         data.invoice_quantity,
+         data.expenseObject_id,
+         data.expenseObject_code,
+         data.expenseObject_desc,
+         data.costObject_id,
+         data.costObject_desc,
+
+
+         data.creation_date,
+         data.created_by
+
+         */
+        var data = JSON.stringify(lines);
+        console.log(data);
+        showMessage(data);
+
+        console.log("进入");
+        showMessage("上传开始");
+
+        //showMessage("photos.length" +photos.length);
+
+
+        var deferred = $q.defer();
+        //showMessage("photos.length" +photos.length);
+        //deferred.reject("error");
+
+
+        //showMessage("上传无照片");
+
+        doPostHttpOnlyData(data, deferred);
+
+
+        return deferred.promise;
+
+      },
+
+
+      uploadData: function (form, photos) {    // 以formdatade 形式上传文件
+        console.log("进入");
+        showMessage("上传开始");
+
+        showMessage("photos.length" + photos.length);
+
+
+        var deferred = $q.defer();
+        //showMessage("photos.length" +photos.length);
+        //deferred.reject("error");
+        if (photos.length > 0) {
+          showMessage("上传有照片");
+          //setProgress("上传有照片");
+          var count = 0;
+          for (var i = 0; i < photos.length; i++) {
+            //这里是异步调用cordova 的文件操作，给form 增加
+            window.resolveLocalFileSystemURL(photos[i].photo_src, function (fileEntry) {
+              fileEntry.file(function (file) {
+                var reader = new FileReader();
+                reader.onloadend = function (fileReadResult) {
+                  var data = new Uint8Array(fileReadResult.target.result);
+                  var blob = createBlob(data, "image/jpeg");
+                  form.append(file.name, blob, file.name);
+                  count++;
+                  if (count == photos.length) {
+                    doPostHttp(form, deferred);
+                  }
+                };
+                reader.onerror = function (fileReadResult) {
+                  //如果失败也算完成的话，这里也加上就行
+                  //count ++
+                  //if(count == photos.length()){
+                  //doPostHttp(form);
+                  //}
+                };
+                reader.readAsArrayBuffer(file);
+              });
+            });
+          }
+        } else {
+
+          //showMessage("上传无照片");
+
+          doPostHttp(form, deferred);
+        }
+
+        return deferred.promise;
+      },
+      uploadFile: function (interfaceId, fileName, fileURL) {    //以FileTransfer 的upload方法上传单个文件
+        /*以FileTransfer的方式上传文�?*/
+        /*
+         var deferred  = $q.defer();
+         alert("uploadFile.....");
+         var deferred  = $q.defer();
+         // 显示上传进度
+         var showUploadingProgress=function(progressEvt ){
+         if( progressEvt.lengthComputable ){
+         navigator.notification.progressValue( Math.round( ( progressEvt.loaded / progressEvt.total ) * 100) );
+         }
+         }
+         var win = function (r) {
+         deferred.resolve( r );
+         };
+         var fail = function (error) {
+         deferred.reject(error);
+         alert("提示图片上传失败，错误信息：" + angular.toJson(error));
+         };
+         var options = new FileUploadOptions();
+         options.fileKey = interfaceId;
+         options.fileName = fileName;
+         options.mimeType = "image/jpeg";
+         var ft = new FileTransfer();
+         ft.onprogress = showUploadingProgress;
+         ft.upload(fileURL, encodeURI(baseConfig.basePath+"uploadAttachment.svc?interfaceId="+interfaceId), win, fail, options);
+
+         return deferred.promise;*/
+      },
+      updateLocalStatus: function (lineId, status) {  //根据lineId 更新本地记一笔的local_status
+        var deferred = $q.defer();
+        var db = window.sqlitePlugin.openDatabase({
+          name: baseConfig.dbName,
+          createFromLocation: 1,
+          location: baseConfig.dbLocation
+        });
+        db.transaction(function (tx) {
+          var insertSql = "UPDATE MOBILE_EXP_REPORT_LINE  " +
+            " SET  local_status = ? " +
+            " WHERE line_id= ? ";
+          var para = [
+            status,
+            lineId
+          ];
+          tx.executeSql(insertSql, para, function (tx, res) {
+              deferred.resolve(res);
+            },
+            function (e) {
+              deferred.reject(e);
+            });
+        });
+        return deferred.promise;
+      },
+
+
+      // 上传 预报销申请 控制
+
+      // @return  true: 合法   false: 非法
+
+      checkCostObject: function (expenseObject_type, expense_item_code, total_amount) {
+        var checkDataValid = true;
+        //showMessage("checkCostObject");
+        //showMessage(expenseObject_type+" -" +expense_item_code +" - "+total_amount);
+        if (expenseObject_type == "SH") {
+          // 营销类
+          showMessage("expense_item_code - " + expense_item_code);
+          if (expense_item_code == EXPENSE_ITEM_CODE.OfficeExpenses) {
+            // 办公费
+            checkDataValid = false;
+
+          }
+          else {
+
+            //showMessage("是否在租房类别之内");
+            var code = isNeedHouseApply(expense_item_code);
+            if (false == code) {
+
+              // 非 租房 和 办公费
+              if (total_amount >= 2000) {
+
+                checkDataValid = false;
+
+              }
+            }
+
+          }
+
+
+        }
+
+        //showMessage("checkDataValid -"+checkDataValid );
+
+        console.log("checkDataValid -" + checkDataValid);
+        return checkDataValid;
+
+      },
+
+
+      explogin: function () {
+
+
+        var deferred = $q.defer();
+
+        showMessage("login");
+        var postData = {username: "admin", password: "admin"};
+
+        var url = baseConfig.basePath + "LOGIN/login.svc";
+        console.log('登录请求的地址是:' + url);
+
+        $http({
+          method: 'POST',
+          url: url,
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          transformRequest: function (data) {
+//                return  'para=' + JSON.stringify(data);
+            return 'para=' + JSON.stringify(data);
+          },
+          data: postData,
+          timeout: 15000
+        }).
+        success(function (response) {
+          deferred.resolve(response);
+        }).
+        error(function (err) {
+
+          deferred.reject(err);
+        });
+        return deferred.promise;
+
+
+      },
+
+
+      removeItem: function (timestamp) {
+        //删除服务器记一笔数据
+        console.log("进入删除服务器记一笔数据");
+        showMessage("上传删除");
+        var deferred = $q.defer();
+        deleteAccountItem(timestamp, deferred);
+        return deferred.promise;
+      }
+
+
+    };
+    return service;
+  });
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.acc_photoDetail', {
+          url: '/acc/photoDetail',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/photoDetail.html',
+              controller: 'checkPhotoController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+    .controller('checkPhotoController', function($scope,keepAccount, dialog,$ionicHistory, baseConfig) {
+
+    $scope.tempPhoto=keepAccount.tempPhoto;
+    $scope.photoPathURL = baseConfig.appRootPath;
+    $scope.canEdit  =   keepAccount.canEdit;
+
+    $scope.back=function(){
+        //globalNavigator.popPage();
+
+        showMessage($scope.tempPhoto.photo_src);
+
+
+
+        /*
+
+        showMessage("下砸图片");
+
+        var sourceUrl = baseConfig.appRootPath + keepAccount.tempPhoto.photo_name;
+        showMessage(sourceUrl);
+        var targetUrl = baseConfig.appRootPath +"temp.jpg";
+        showMessage(targetUrl);
+
+
+        var fileTransfer = new FileTransfer();
+        var uri = encodeURI(sourceUrl);
+
+        fileTransfer.download(
+            uri,targetUrl,function(entry){
+                showMessage("下载完成");
+
+                //var smallImage = document.getElementById('smallImage');
+                //smallImage.style.display = 'block';
+                //smallImage.src = entry.fullPath;
+
+            },function(error){
+                console.log("下载网络图片出现错误");
+            });
+
+        */
+
+        $ionicHistory.goBack();
+    };
+
+    $scope.testFunction=function(){
+
+        alert("11111");
+    };
+
+    // 删除照片
+    $scope.removePhoto=function() {
+        console.log("删除照片操作");
+
+        //  删除 数据库
+        var promise = keepAccount.removePhoto(keepAccount.tempPhoto.line_id);
+        promise.then(
+            function(response) {  // 调用承诺API获取数据 .resolve
+
+                showMessage("数据删除成功");
+
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, onError);
+
+                //removePhotoFiles();
+
+               // var pages = globalNavigator.getPages();
+                //console.log(pages);
+                //pages[pages.length - 1].destroy();
+                //pages[pages.length - 1].destroy();
+                //globalNavigator.pushPage(moduleHtmlPath.ACC+'accountList.html', { animation : 'slide' } );
+
+                //loanApply.applyList = response.body.tempRecord;
+                //$scope.expenseList=response.body.list;
+
+            },
+            function(err) {  // 处理错误 .reject
+                dialog.showAlert("E","删除失败...."+angular.toJson(err));
+
+                showMessage("删除失败...."+angular.toJson(err));
+            }
+        );
+
+    };
+
+    function onSuccess(fileSystem,test) {
+        console.log(fileSystem.name);
+        showMessage(fileSystem.name);
+        showMessage(keepAccount.tempPhoto.photo_src);
+        var myFolderApp = baseConfig.appRootFile;
+
+        showMessage(myFolderApp+'/'+keepAccount.tempPhoto.photo_name);
+        fileSystem.root.getFile(myFolderApp+'/'+keepAccount.tempPhoto.photo_name, null, onGetFileSuccess, onGetFileError);
+    }
+
+    function onError(error) {
+        showMessage(error.code);
+    }
+
+    function onGetFileSuccess(fileEntry) {
+        console.log("File Name: " + fileEntry.name);
+        showMessage("File Name: " + fileEntry.name);
+
+
+
+        //  删除 文件
+        // remove the file
+        fileEntry.remove(onRemoveSuccess, onRemoveFail);
+
+        // 删除 数组
+
+    }
+
+    function onGetFileError(error) {
+        showMessage("Failed to retrieve file: " + error.code);
+    }
+
+    function onRemoveSuccess(entry) {
+        console.log("Removal succeeded");
+        showMessage("Removal succeeded");
+        showMessage(keepAccount.tempPhotoIndex);
+        showMessage( angular.toJson(keepAccount.data.photos));
+
+        // 删除 照片纪录表
+        keepAccount.removePhoto();
+
+        // 删除 内存中照片列表
+        keepAccount.data.photos.splice(keepAccount.tempPhotoIndex,1);
+        showMessage( 'photos list:'+angular.toJson(keepAccount.data.photos));
+
+
+        $ionicHistory.goBack();
+
+        //var pages = globalNavigator.getPages();
+        //console.log(pages);
+        //pages[pages.length - 1].destroy();
+        //pages[pages.length - 1].destroy();
+        //globalNavigator.pushPage('html/acc/photos.html', { animation : 'slide' });
+
+    }
+
+    function onRemoveFail(error) {
+        showMessage('Error removing file: ' + error.code);
+    }
+
+});
+
+/**
+ * Created by wuxiaocheng on 15/8/26.
+ */
+angular.module("applicationModule")
+    .controller('currencyController', function($scope,$rootScope,keepAccount,expenseApply,$http,$q,$ionicHistory, baseConfig) {
+
+    function queryCurrencyList(){
+        var companyId=baseConfig.user.companyId;
+        var deferred = $q.defer();
+
+
+        /*
+        $http.get(baseConfig.basePath+"EXP/currencyList.svc?companyId="+companyId,{cache:false}).
+            success(function(response, status, headers, config) {
+
+                //showMessage('test');
+                deferred.resolve(response);
+            }).
+            error(function(error, status, headers, config) {
+                deferred.reject(error);
+            });
+
+            */
+
+        $scope.currencyList = [
+            {
+                "currencyName": "人民币",
+                "currencyCode": "CNY",
+                "exchangeRate": 1
+            },
+            {
+                "currencyName": "欧元",
+                "currencyCode": "EUR",
+                "exchangeRate": 1
+            },
+            {
+                "currencyName": "美元",
+                "currencyCode": "USD",
+                "exchangeRate": 1
+            },
+            {
+                "currencyName": "港币",
+                "currencyCode": "HKD",
+                "exchangeRate": 1
+            }
+        ];
+        deferred.resolve("ok");
+
+
+        return deferred.promise;
+    }
+
+    var promise=queryCurrencyList();
+    promise.then(
+        function(response) {
+            var code=getResponseCode(response);
+            if(code=="ok"){
+                $scope.currencyList=response.body.currencyList;
+            }else if(code=="failure"){
+                showMessage("查询失败:"+angular.toJson(response))
+            }
+            else if (code =="login_required"){
+                console.log(angular.toJson(response));
+                //showMessage("登录状态异常\n"+angular.toJson(response));
+
+                $scope.currencyList = [
+                    {
+                        "currencyName": "人民币",
+                        "currencyCode": "CNY",
+                        "exchangeRate": 1
+                    },
+                    {
+                        "currencyName": "欧元",
+                        "currencyCode": "EUR",
+                        "exchangeRate": 1
+                    },
+                    {
+                        "currencyName": "美元",
+                        "currencyCode": "USD",
+                        "exchangeRate": 1
+                    },
+                    {
+                        "currencyName": "港币",
+                        "currencyCode": "HKD",
+                        "exchangeRate": 1
+                    }
+                ];
+
+                //reLogin();
+            }else{
+                showMessage("未知错误:"+angular.toJson(response));
+            }
+        },
+        function(err) {  // 处理错误 .reject
+            //showMessage("网络连接错误...."+angular.toJson(err));
+            $scope.currencyList = [
+                {
+                    "currencyName": "人民币",
+                    "currencyCode": "CNY",
+                    "exchangeRate": 1
+                },
+                {
+                    "currencyName": "欧元",
+                    "currencyCode": "EUR",
+                    "exchangeRate": 1
+                },
+                {
+                    "currencyName": "美元",
+                    "currencyCode": "USD",
+                    "exchangeRate": 1
+                },
+                {
+                    "currencyName": "港币",
+                    "currencyCode": "HKD",
+                    "exchangeRate": 1
+                }
+            ];
+
+        });
+
+    $scope.selectCurrency=function(e){
+        var target= e.target;
+        var currencyName=target.getAttribute('currencyName');
+        var currencyCode=target.getAttribute('currencyCode');
+        var exchangeRate=target.getAttribute('exchangeRate');
+        if(keepAccount.sourceFrom=='acc')
+        {
+        keepAccount.data.currency_code=currencyCode;
+        keepAccount.data.currency_code_desc=currencyCode+"-"+currencyName;
+        keepAccount.data.exchange_rate=Number(exchangeRate);
+        }
+        if(expenseApply.sourceFrom=='EXP'){
+        expenseApply.tempLine.originalCurrency=currencyCode;
+        expenseApply.tempLine.exchangeRate=Number(exchangeRate);
+        }
+        //expenseApply.tempLine.expenseTypeName=expenseTypeName;
+
+        //$ionicNavBarDelegate.back();
+        //globalNavigator.popPage();
+        $ionicHistory.goBack();
+    };
+
+   // $rootScope.hideTabs = true; // mod by ciwei
+});
+
+/**
+ * Created by wuxiaocheng on 15/8/26.
+ */
+
+// angular.module('myApp')
+//   .config(['$stateProvider',
+//     function ($stateProvider) {
+//       $stateProvider
+//         .state('tab.expense_acc', {
+//           url: '/expense/acc',
+//           params: {},
+//           views: {
+//             'tab-application': {
+//               templateUrl: 'build/pages/application/expense/acc/accounts.html',
+//               controller: 'keepAccountController'
+//             }
+//           }
+//         });
+//     }]);
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.acc_main', {
+          url: '/acc',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/accounts.html',
+              controller: 'keepAccountController'
+            }
+          }
+        }); 
+    }]);
+     
+angular.module("applicationModule")
+  .controller('keepAccountController', function ($scope, keepAccount, $http, $state, $rootScope, $q, hmsPopup) {
+
+    $scope.openCreatePage = function () {
+      keepAccount.operation = "INSERT";
+      keepAccount.canEdit = true;
+      keepAccount.canUpload = false;
+      keepAccount.sourceFrom = "ACCOUNT";
+      keepAccount.initData();
+
+      console.log("should null " + angular.toJson(keepAccount.expenseItemList));
+
+      keepAccount.expenseItemList = [];
+      console.log("should null " + angular.toJson(keepAccount.expenseItemList));
+
+      keepAccount.boolLoadExpenseObject = false;
+      $state.go('tab.acc_detail', {hideTabs: true}); 
+    };
+
+
+    $scope.openAccountListPage = function () {
+      //alert("未完待续");
+      $state.go("tab.acc_accountList");
+
+    };
+
+    $scope.openUploadBatchPage = function () {
+      //globalNavigator.pushPage(moduleHtmlPath.ACC+'uploadAccount.html', { animation : 'slide' });
+      //alert("未完待续");
+      $state.go("tab.acc_uploadAccount");
+
+    };
+
+    //$rootScope.hideTabs = $stateParams.hideTabs;
+   // $rootScope.hideTabs = true; // mod by ciwei
+
+    // add by ciwei
+    $scope.showHelp = function () {
+      var template = 'Step1：在“记一笔”功能中创建待报销记录，保存并上传。' + '<br> ' +
+        'Step2：在“报销”功能中，创建报销单，选择项目，再选择已经上传的“记一笔”作为报销行信息，保存提交。' + '<br><br> ' +
+        '**“记一笔”保存，是保存在手机本地，只有上传后，才能在报销单处选到。另，如果app被卸载了，再重新下载，之前没上传的“记一笔”会丢失。';
+
+      hmsPopup.showPopup(template, '报销功能使用说明');
+    };
+
+  });
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.acc_photos', {
+          url: '/acc/photos',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/photos.html',
+              controller: 'photosController'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('photosController', function ($scope, keepAccount, $state, $ionicPopup, $ionicLoading, $ionicActionSheet, dialog, baseConfig, hmsPopup) {
+
+    $scope.photos = keepAccount.data.photos;
+
+
+    //showMessage(angular.toJson(keepAccount.data.photos));
+    $scope.serverURL = baseConfig.serverPath;
+
+    $scope.photoPathURL = baseConfig.appRootPath;
+
+    $scope.showAlertPhoto = function (photoSrc) {//点击图片 放大图片
+      $scope.photoSrcUrl = photoSrc;
+      // 自定义弹窗
+      var myPopup = $ionicPopup.show({
+        scope: $scope,
+        template: '<div style="text-align: center;"><img ng-src="{{photoSrcUrl}}"  style="width: 95%; height: 350px"></div>',
+        buttons: [
+          {text: '取消'}
+        ]
+      });
+      myPopup.then(function (res) {
+        console.log('Tapped!', res);
+      });
+    };
+    /*
+     destinationType:Camera.DestinationType.FILE_URI,
+     sourceType:Camera.PictureSourceType.CAMERA,
+     quality :35,
+     allowEdit:true,
+     encodingType:Camera.EncodingType.JPEG,
+     saveToPhotoAlbum:false};
+     */
+    //var optionCameraOld = {
+    //    quality: 25,
+    //    destinationType: Camera.DestinationType.FILE_URI ,
+    //    sourceType : Camera.PictureSourceType.CAMERA,
+    //    saveToPhotoAlbum : false,
+    //    allowEdit:true
+    //
+    //
+    //    //sourceType : Camera.PictureSourceType.PHOTOLIBRARY
+    //
+    //};
+    /*拍摄照片 相机*/
+    // $scope.getPhotoFromCamera=function(){
+    var tPhotoFromCamera = function () {
+      //if (detectOS() == "iPhone") {
+      if(ionic.Platform.isIOS() && !ionic.Platform.isIPad()){
+        var optionsCamera = {
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.CAMERA,
+          quality: 50,
+          allowEdit: false,
+          targetWidth: 1366,
+          targetHeight: 768,
+          encodingType: Camera.EncodingType.JPEG,
+          saveToPhotoAlbum: false
+        };
+        //alert("iphone");
+      }
+      else {
+        var optionsCamera = {
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.CAMERA,
+          quality: 50,
+          allowEdit: false,
+          //targetWidth : 100,
+          //targetHeight : 100,
+          encodingType: Camera.EncodingType.JPEG,
+          saveToPhotoAlbum: false
+        };
+        //alert("not iphone");
+
+      }
+      // alert(angular.toJson(optionsCamera));
+      // alert(navigator.camera.getPicture);
+      navigator.camera.getPicture(onSuccess, onFail, optionsCamera);
+
+    };
+
+    /*拍摄照片 相册*/
+    var getPhotoFromLibary = function () {
+      var optionsPhotoLibrary = {
+        destinationType: Camera.DestinationType.FILE_URI,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+        quality: 50,
+        allowEdit: false,
+        targetWidth: 1366,
+        targetHeight: 768,
+        encodingType: Camera.EncodingType.JPEG,
+        saveToPhotoAlbum: false
+      };
+      navigator.camera.getPicture(onSuccess, onFail, optionsPhotoLibrary);
+
+    };
+
+
+    /*打开dialog*/
+
+    /*
+     $scope.dialogs = {};
+     $scope.openDialog=function(dlg) {
+     if (!$scope.dialogs[dlg]) {
+     ons.createDialog(dlg).then(function(dialog) {
+     $scope.dialogs[dlg] = dialog;
+     dialog.show();
+     });
+     }
+     else {
+     $scope.dialogs[dlg].show();
+     }
+     };
+
+     ****/
+
+    /**/
+    $scope.openPopup = function () {
+      //$state.go('tab.acc_photos');
+
+
+      if (keepAccount.canEdit == true) {
+        $scope.popupView = $ionicPopup.show({
+
+          templateUrl: 'templates/expense/popCamera.html',
+          scope: $scope,
+          title: "拍照"
+
+        });
+        $scope.popupView.then(function () {
+
+          console.log("popup close");
+
+        });
+      }
+
+
+    };
+
+    //照相相册选择弹出框   add by xuchengcheng
+    $scope.addPicture = function () {
+      var hideSheet = $ionicActionSheet.show({
+        buttons: [{
+          text: '相册 '
+        }, {
+          text: '照相'
+        }],
+        titleText: '请选择获取方式',
+        cancelText: '取 消',
+        cancel: function () {
+          // add cancel code..
+        },
+        buttonClicked: function (index) {
+          // 相册文件选择上传
+          if (index == 0) {
+            console.log("相册");
+            $scope.selectPhotoSource("PhotoLibary");
+          } else if (index == 1) {
+            console.log("相机");
+            // 拍照上传
+            $scope.selectPhotoSource("Cemera");
+          } else if (index == 2) {
+            $scope.viewPhotos();
+          }
+          return true;
+        }
+      });
+    }
+
+    /*选择相机*/
+    $scope.selectPhotoSource = function (sourceType) {
+      if (sourceType == "Cemera") {
+        getPhotoFromCamera();
+      } else if (sourceType == "PhotoLibary") {
+        getPhotoFromLibary();
+      }
+      console.log("sourceType " + sourceType);
+      //$ionicPopup.close();
+      // $scope.popupView.close();
+      $ionicActionSheet.hide;
+    };
+
+
+    function onSuccess(imageURI) {
+
+      //var image = document.getElementById('myImage');
+      //image.src = imageURI;
+      // alert("asd");
+
+      console.log("----------" + angular.toJson(imageURI));
+      movePic(imageURI);
+      //$scope.$apply();
+    }
+
+    function onFail(message) {
+      // alert('Failed because: ' + message);
+    }
+
+
+    function movePic(file) {
+      window.resolveLocalFileSystemURL(file, resolveOnSuccess, resOnError);
+
+    }
+
+    //Callback function when the file system uri has been resolved
+    function resolveOnSuccess(entry) {
+      var d = new Date();
+      var n = d.getTime();
+      //new file name
+      var newFileName = n + ".jpg";
+      var myFolderApp = baseConfig.appRootFile;
+
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
+          //The folder is created if doesn't exist
+          fileSys.root.getDirectory(myFolderApp,
+            {create: true, exclusive: false},
+            function (directory) {
+              console.log(directory);
+              entry.moveTo(directory, newFileName, successMove, resOnError);
+            },
+            resOnError);
+        },
+        resOnError);
+    }
+
+
+    //Callback function when the file has been moved successfully - inserting the complete path
+    function successMove(entry) {
+
+      // 加载loading
+      $ionicLoading.show({
+        template: 'Loading...',
+        duration: 1000
+      });
+
+      //Store imagepath in session for future use
+      // like to store it in database
+      var date = getFormatDate(new Date());
+      var photo = {
+
+        photo_id: '',
+        photo_name: entry.name,
+        // photo_src:entry.toNativeURL(),
+        photo_src: entry.toURL(),
+        creation_date: date,
+        created_by: window.localStorage.empno
+      };
+
+      showMessage(photo.photo_src);
+      showMessage(photo.photo_name);
+
+      //showMessage(entry.toNativeURL()+' - '+entry.toURL());
+
+      keepAccount.data.photos.push(photo);
+      /*清除缓存*/
+      //cleanupCache();
+      $scope.photos = keepAccount.data.photos;
+      //$scope.$apply();
+
+      $ionicLoading.hide();
+    }
+
+    function resOnError(error) {
+      alert(error.code);
+    }
+
+    /*打开确认照片页面*/
+    $scope.showConfirmPhoto = function (index) {//图片长按删除
+      //showMessage('showConfirmPhoto aa');
+      //alert(index);
+      keepAccount.tempPhoto = keepAccount.data.photos[index];
+      keepAccount.tempPhotoIndex = index;
+      showMessage("temp - - " + angular.toJson(keepAccount.tempPhoto));
+
+      $scope.tempPhoto = keepAccount.tempPhoto;
+      $scope.photoPathURL = baseConfig.appRootPath;
+      $scope.canEdit = keepAccount.canEdit;
+
+    if($scope.canEdit){
+      //  confirm 对话框
+      var confirmPopup = $ionicPopup.confirm({
+        title: '<strong>提示</strong>',
+        template: '<div style="text-align: center">是否确定删除本张图片?</div>'
+      });
+      confirmPopup.then(function (res) {
+        if (res) {
+          console.log('You are sure');
+          $scope.removePhoto();
+        } else {
+          console.log('You are not sure');
+        }
+      });
+    }
+
+      // 删除照片
+      $scope.removePhoto = function () {
+        console.log("删除照片操作");
+        //  删除 数据库
+        var promise = keepAccount.removePhoto(keepAccount.tempPhoto.line_id);
+        promise.then(
+          function (response) {  // 调用承诺API获取数据 .resolve
+            showMessage("数据删除成功");
+            $scope.photos.splice(index, 1);
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, onError);
+          },
+          function (err) {  // 处理错误 .reject
+            dialog.showAlert("E", "删除失败...." + angular.toJson(err));
+            showMessage("删除失败...." + angular.toJson(err));
+          });
+      };
+
+      function onSuccess(fileSystem, test) {
+        console.log(fileSystem.name);
+        showMessage(fileSystem.name);
+        showMessage(keepAccount.tempPhoto.photo_src);
+        var myFolderApp = baseConfig.appRootFile;
+
+        showMessage(myFolderApp + '/' + keepAccount.tempPhoto.photo_name);
+        fileSystem.root.getFile(myFolderApp + '/' + keepAccount.tempPhoto.photo_name, null, onGetFileSuccess, onGetFileError);
+      }
+
+      function onError(error) {
+        showMessage(error.code);
+      }
+
+      function onGetFileSuccess(fileEntry) {
+        console.log("File Name: " + fileEntry.name);
+        showMessage("File Name: " + fileEntry.name);
+        // remove the file
+        fileEntry.remove(onRemoveSuccess, onRemoveFail);
+      }
+
+      function onGetFileError(error) {
+        showMessage("Failed to retrieve file: " + error.code);
+      }
+
+      function onRemoveSuccess(entry) {
+        console.log("Removal succeeded");
+        showMessage("Removal succeeded");
+        showMessage(keepAccount.tempPhotoIndex);
+        showMessage(angular.toJson(keepAccount.data.photos));
+
+        // 删除 照片纪录表
+        keepAccount.removePhoto();
+
+        // 删除 内存中照片列表
+        //keepAccount.data.photos.splice(keepAccount.tempPhotoIndex, 1);
+        keepAccount.data.photos = $scope.photos;
+
+
+        showMessage('photos list:' + angular.toJson(keepAccount.data.photos));
+      }
+
+      function onRemoveFail(error) {
+        showMessage('Error removing file: ' + error.code);
+      }
+    };
+
+
+    /*清除相机缓存*/
+    function cleanupCache() {
+      navigator.camera.cleanup(cameraSuccess, cameraError);
+    }
+
+    function cameraSuccess() {
+    }
+
+    function cameraError(e) {
+      alert(angular.toJson(e));
+    }
+  });
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.acc_uploadAccount', {
+          url: '/acc/uploadAccount',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/expense/acc/uploadAccount.html',
+              controller: 'uploadController'
+            }
+          }
+        });
+    }]);
+
+
+angular.module("applicationModule")
+    .controller('uploadController', function ($scope, keepAccount, dialog, $http, $q,$ionicLoading, baseConfig) {
+
+    $scope.currentProgress = '批量上传'; 
+    var recordToUpload = 0;
+    var recordUploaded = 0;
+    var recordToUploadLength = 0; 
+
+        //showMessage(window.localStorage.empno);
+    function queryAccountList() {
+        // alert("queryAccountList");
+        var list = [];
+        // alert(baseConfig.dbName);
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
+        // alert("queryAccountList0000");
+        var deferred = $q.defer();
+        db.transaction(function (tx) {
+            // alert("++++++++-------");
+            var querySql = "select * from MOBILE_EXP_REPORT_LINE t WHERE local_status = 'NEW' AND created_by =? order by creation_date desc, line_id desc ;"
+            var para=[
+                window.localStorage.empno
+            ];
+            tx.executeSql(querySql, para, function (tx, res) {
+                //alert(angular.toJson(res.rows.item(0)));
+                for (var i = 0; i < res.rows.length; i++) {
+                    list.push(res.rows.item(i));
+                }
+                deferred.resolve(list);
+            });
+        }, function (e) {
+            // alert("++++++++");
+            alert(angular.toJson(e));
+            console.log("ERROR: " + e.message);
+            deferred.reject(e);
+        });
+        return deferred.promise;
+    }
+
+    function queryAccountPhotos(lineId) {
+        var list = [];
+        //alert("打开数据库...");
+        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
+
+        var deferred = $q.defer();
+        db.transaction(function (tx) {
+            var querySql = "select * from MOBILE_EXP_LINE_PHOTOS t where t.line_id=? ;";
+            tx.executeSql(querySql, [lineId], function (tx, res) {
+                //alert(angular.toJson(res.rows.item(0)));
+                for (var i = 0; i < res.rows.length; i++) {
+                    list.push(res.rows.item(i));
+                }
+                //showMessage("List:--" +angular.toJson(list));
+                deferred.resolve(list);
+            });
+        }, function (e) {
+            console.log("ERROR: " + e.message);
+            deferred.reject(e);
+        });
+        return deferred.promise;
+    }
+
+       // /*
+    var promise = queryAccountList();
+    promise.then(function (list) {  // 调用承诺API获取数据 .resolve
+        // alert("...");
+        $scope.accountList = list;
+
+        console.log("list - "+angular.toJson($scope.accountList));
+        $scope.accountList2 = groupJSON($scope.accountList);
+        //alert(angular.toJson($scope.accountList2));
+    }, function (response) {  // 处理错误 .reject
+        // alert(".........");
+        //alert("查询数据库错误,初始化数据");
+        dialog.showAlert("E","查询数据库错误,初始化数据");
+    });
+   // */
+
+
+        function doReloadData () {
+            var promise = queryAccountList();
+            promise.then(function (list) {  // 调用承诺API获取数据 .resolve
+                $scope.accountList = list;
+
+                console.log("list - "+angular.toJson($scope.accountList));
+                $scope.accountList2 = groupJSON($scope.accountList);
+
+
+                $ionicLoading.hide();
+                //alert(angular.toJson($scope.accountList2));
+            }, function (response) {  // 处理错误 .reject
+
+                $ionicLoading.hide();
+                dialog.showAlert("E","查询数据库错误,初始化数据");
+
+                //alert("查询数据库错误,初始化数据");
+            });
+        }
+
+
+        /**
+        $scope.accountList2 = [
+            {
+                time:"20120202",
+                list: [
+                    {
+                        "line_id": "123",
+                        "local_status":"UPLOADED",
+                        "expenseObject_desc":"项目1",
+                        expense_item_desc:"办公费",
+                        total_amount:22,
+                        expense_date_from:"20120202",
+                        expense_date_to:"20120202",
+                        expense_place:'上海'
+
+
+
+                    },
+                    {
+                        "line_id": "123",
+                        "local_status":"NEW",
+                        "expenseObject_desc":"项目2",
+                        expense_item_desc:"办公费",
+                        total_amount:22,
+                        expense_date_from:"20120202",
+                        expense_date_to:"20120202",
+                        expense_place:'上海'
+
+                    }
+                ]
+
+            },
+            {
+                time:"20120202",
+                list: [
+                    {
+                        "line_id": "123",
+                        local_status:"NEW",
+                        "expenseObject_desc":"项目2",
+                        expense_item_desc:"办公费",
+                        total_amount:27,
+                        expense_date_from:"20120202",
+                        expense_date_to:"20120202",
+                        expense_place:'上海'
+
+                    },
+                    {
+                        "line_id": "123",
+                        "local_status":"UPLOADED",
+                        "expenseObject_desc":"项目2",
+                        expense_item_desc:"办公费",
+                        total_amount:24,
+                        expense_date_from:"20120202",
+                        expense_date_to:"20120202",
+                        expense_place:'上海'
+                    }
+                ]
+
+            }
+
+        ];
+
+
+         //*/
+
+    //    author:郑旭 用于对json进行分组并在界面上显示
+    function groupJSON(jsons) {
+
+            /*
+                var newJson = [];
+                loop1:for (var i = 0; i < jsons.length; i++) {
+                    var t1 = jsons[i].expense_date_from;
+                    var arr = {time: t1, list: []};
+                    arr.list.push(jsons[i]);
+                    for (var j = i + 1; j < jsons.length; j++) {
+                        var t2 = jsons[j].expense_date_from;
+                        if (t2 == t1) {
+                            arr.list.push(jsons[j]);
+                        } else {
+                            i = j - 1;
+                            break;
+                        }
+                        if (j == jsons.length - 1) {
+                            newJson.push(arr);
+                            break loop1;
+                        }
+                    }
+                    newJson.push(arr);
+                }
+                return newJson;
+
+                */
+            var newJson=[];
+            loop1:for(var i=0;i<jsons.length;i++){
+                var t1=jsons[i].creation_date;
+                var arr={time:t1,list:[]};
+                arr.list.push(jsons[i]);
+                for(var j=i+1;j<jsons.length;j++){
+                    var t2=jsons[j].creation_date;
+                    if(t2==t1){
+                        arr.list.push(jsons[j]);
+                    }else{
+                        i=j-1;
+                        break;
+                    }
+                    if(j==jsons.length-1){
+                        newJson.push(arr);
+                        break loop1;
+                    }
+                }
+                newJson.push(arr);
+            }
+            return newJson;
+    }
+
+    /*$scope.accountList=[
+     {
+     line_id:1,
+     expense_type_id:1,
+     expense_type_desc:'日常报销',
+     expense_item_id:1,
+     expense_item_desc:'交通费',
+     expense_price:2.5,
+     expense_quantity:4,
+     currency_code:'CNY',
+     currency_code_desc:'人民币',
+     exchangeRate:1.5,
+     total_amount:10,
+     expense_date_from:'2015-05-01',
+     expense_date_to:'2015-05-30',
+     expense_place:'上海',
+     description:'往返交通费',
+     local_status:'NEW',
+     creation_date:'2015-05-15',
+     created_by:1
+     }
+     ];*/
+
+    $scope.showSelected = function () {
+        console.log($scope.accountList);
+    };
+
+    function queryPhotosList() {
+        var promise = keepAccount.queryPhotosList();
+    }
+
+
+
+    function uploadDataUnitV2(keepAccountUnit){
+
+        showMessage("uploadDataUmit ："+angular.toJson(keepAccountUnit));
+
+        var form=new FormData();
+
+
+        var myDate = new Date();
+
+       // var expense_detail_id = window.localStorage.empno+myDate.getFullYear()+myDate.getMonth()+myDate.getDate()
+           // + myDate.getHours()+ myDate.getMinutes()+ myDate.getSeconds()+ myDate.getMilliseconds();
+        var month = fillNumberBySize(myDate.getMonth()+1,2);
+        var date = fillNumberBySize(myDate.getDate(),2);
+        var hours = fillNumberBySize(myDate.getHours(),2);
+        var minutes = fillNumberBySize(myDate.getMinutes(),2);
+        var seconds = fillNumberBySize(myDate.getSeconds(),2);
+        var milliseconds = fillNumberBySize(myDate.getMilliseconds(),3);
+
+
+        var expense_detail_id = window.localStorage.empno+myDate.getFullYear()
+            +month+date+hours+minutes+seconds+milliseconds;
+
+
+        showMessage(expense_detail_id);
+        console.log(expense_detail_id+" - "+expense_detail_id);
+
+        form.append("expense_detail_id",expense_detail_id);
+
+
+
+        var Photos = [];
+        var promisePhoto = queryAccountPhotos(keepAccountUnit.line_id);
+        promisePhoto.then(
+            function(response) {
+                //showMessage("照片列表获取成功"+angular.toJson(response));
+                Photos=response;
+                //showMessage("照片列表获取成功"+Photos);
+
+                showMessage("准备上传:"+angular.toJson(form));
+
+                //var promise= keepAccount.uploadData(form,Photos);
+
+                var promise= keepAccount.uploadDataV2(form,Photos);
+
+                promise.then(
+                    function(response) {
+                        //var code=getResponseCode(response);
+                        showMessage(angular.toJson(response));
+                        var code = response.head.code;
+                        if(code=="success"){
+                            //接受返回参数
+                            //keepAccount.data.expenseDetailId=response.body.expenseDetailId;
+
+                            // 开始 上传数据
+
+                            var upload_option = {
+                                source_code: "HIH_PIC_UPLOAD",
+                                source_line_id: expense_detail_id
+
+                            };
+
+                            var p2= keepAccount.uploadDataByJosn(keepAccountUnit,upload_option);
+                            p2.then(
+
+                                function(res){
+
+                                    var code = res.status;
+
+                                    if (code == 'S') {
+                                        // $ionicLoading.hide();
+                                        showMessage("上传成功 数据"+angular.toJson(res));
+
+
+                                        keepAccountUnit.local_status="UPLOADED";
+                                        //$scope.accountDetail=keepAccount.data;
+                                        //keepAccount.canEdit=false;
+                                        //$scope.canEdit=false;
+                                        //更新本地数据库，修改local_status
+                                        var p=keepAccount.updateLocalStatus(keepAccountUnit.line_id,"UPLOADED");
+                                        p .then(
+                                            function(res){
+
+                                                recordToUpload--;
+
+                                                $ionicLoading.hide();
+                                                checkUploadFinish();
+
+                                                showMessage("上传成功 本地状态修改成功"+angular.toJson(res));
+
+                                            },
+                                            function(e){
+                                                $ionicLoading.hide();
+                                                checkUploadFinish();
+
+
+
+                                                showMessage(angular.toJson(e));
+                                            }
+                                        );
+
+                                    }
+                                    else {
+                                        checkUploadFinish();
+                                        showMessage("上传失败 数据"+angular.toJson(res));
+
+
+                                    }
+
+
+
+
+                                },
+                                function(e){
+                                    $ionicLoading.hide();
+                                    checkUploadFinish();
+
+
+
+                                    showMessage(angular.toJson(e));
+                                }
+
+                            );
+
+
+
+
+                        }else if(code=="E"){
+                            $ionicLoading.hide();
+                            checkUploadFinish();
+
+
+                            showMessage("查询失败:"+angular.toJson(response))
+                        }
+                        else{
+                            checkUploadFinish();
+
+                            $ionicLoading.hide();
+
+                            showMessage("未知错误:"+angular.toJson(response));
+                        }
+
+
+                    },
+                    function(err) {  // 处理错误 .reject
+
+                        $ionicLoading.hide();
+
+                        checkUploadFinish();
+
+
+                        showMessage("网络连接错误...."+angular.toJson(err));
+                        //uploadProgressModal.hide();
+
+                    });  // end of 上传
+
+            },
+            function(err) {
+                $ionicLoading.hide();
+
+                checkUploadFinish();
+                showMessage("照片列表获取失败"+err);
+
+            }
+        );
+
+
+    }
+
+
+
+    function uploadDataUnit(keepAccountUnit){
+
+        showMessage("uploadDataUmit ："+angular.toJson(keepAccountUnit));
+
+        var form=new FormData();
+
+        showMessage("line_id ："+keepAccountUnit.line_id);
+
+        form.append("line_id",keepAccountUnit.line_id);
+        //showMessage("form:"+angular.toJson(form));
+
+        form.append("expense_type_id",keepAccountUnit.expense_type_id);
+        form.append("expense_type_desc",keepAccountUnit.expense_type_desc);
+        form.append("expense_item_id",keepAccountUnit.expense_item_id);
+        form.append("expense_item_desc",keepAccountUnit.expense_item_desc);
+        form.append("expense_price",keepAccountUnit.expense_price);
+        form.append("expense_quantity",keepAccountUnit.expense_quantity);
+        form.append("currency_code",keepAccountUnit.currency_code);
+        form.append("currency_code_desc",keepAccountUnit.currency_code_desc);
+        form.append("exchange_rate",keepAccountUnit.exchange_rate);
+        form.append("total_amount",keepAccountUnit.total_amount);
+        form.append("expense_date_from",keepAccountUnit.expense_date_from);
+        form.append("expense_date_to",keepAccountUnit.expense_date_to);
+        form.append("expense_place",keepAccountUnit.expense_place);
+        form.append("description",keepAccountUnit.description);
+        form.append("created_by",keepAccountUnit.created_by);
+
+        var Photos = [];
+        var promisePhoto = queryAccountPhotos(keepAccountUnit.line_id);
+        promisePhoto.then(
+            function(response) {
+                //showMessage("照片列表获取成功"+angular.toJson(response));
+                Photos=response;
+                //showMessage("照片列表获取成功"+Photos);
+
+                showMessage("准备上传:"+angular.toJson(form));
+
+                //var promise= keepAccount.uploadData(form,Photos);
+
+                var promise= keepAccount.uploadDataByJosn(keepAccountUnit);
+
+                promise.then(
+                    function(response) {
+
+                        showMessage("上传返回:"+"--"+angular.toJson(response));
+
+                        //showMessage("上传返回:"+keepAccountUnit.line_id+"--"+angular.toJson(response));
+
+                        //var code=getResponseCode(response);
+                        var code=response.status;
+                        showMessage("status -"+code);
+
+                        if(code=="S"){
+
+                            showMessage("上传成功:"+keepAccountUnit.line_id+"--"+angular.toJson(response));
+
+                            //接受返回参数
+                            //keepAccountUnit.expenseDetailId=response.body.expenseDetailId;
+                            keepAccountUnit.local_status="UPLOADED";
+                            //$scope.accountDetail=keepAccountUnit;
+                            // keepAccount.canEdit=false;
+                            //$scope.canEdit=false;
+                            //更新本地数据库，修改local_status
+                            var p=keepAccount.updateLocalStatus(keepAccountUnit.line_id,"UPLOADED");
+                            p .then(
+                                function(res){
+                                    showMessage("更新成功"+angular.toJson(res));
+                                    recordToUpload--;
+                                    //showUploadProgress('剩余上传记录：'+ recordToUpload);
+
+                                    checkUploadFinish();
+
+                                    //若此时的sourceFrom 为报销单，将keepAccountUnit 的数据赋值给 expenseApply.data.lines ,完成值传递
+                                    /*   报销单 入口
+                                     if(sourceFrom=="EXPENSE"){
+                                     var line={
+                                     appSourceId:keepAccountUnit.expenseDetailId,
+                                     price:keepAccountUnit.expense_price,
+                                     quantity:keepAccountUnit.expense_quantity,
+                                     expenseTypeId:keepAccountUnit.expense_type_id,
+                                     expenseTypeName:keepAccountUnit.expense_type_desc,
+                                     expenseItemId:keepAccountUnit.expense_item_id,
+                                     expenseItemName:keepAccountUnit.expense_item_desc,
+                                     place:keepAccountUnit.expense_place,
+                                     dateFrom:keepAccountUnit.expense_date_from,
+                                     dateTo:keepAccountUnit.expense_date_to,
+                                     originalCurrency:keepAccountUnit.currency_code,
+                                     exchangeRate:keepAccountUnit.exchange_rate,
+                                     description:keepAccountUnit.description
+                                     };
+                                     expenseApply.data.lines.push(line);
+                                     globalNavigator.popPage();
+                                     }
+                                     */
+                                },
+                                function(e){
+                                    checkUploadFinish();
+                                    showMessage("更新失败"+angular.toJson(e));
+                                }
+                            );
+
+                        }else if(code=="E"){
+                            checkUploadFinish();
+                            showMessage("查询失败:"+angular.toJson(response))
+                        }
+                        else if (code =="login_required"){
+                            showMessage("登录状态异常\n"+angular.toJson(response));
+                            reLogin();
+                        }else{
+                            checkUploadFinish();
+                            showMessage("未知错误:"+angular.toJson(response));
+                        }
+                    },
+                    function(err) {  // 处理错误 .reject
+                        checkUploadFinish();
+                        showMessage("网络连接错误...."+angular.toJson(err));
+                    });
+
+
+            },
+            function(err) {
+                checkUploadFinish();
+                showMessage("照片列表获取失败"+err);
+
+            }
+        )
+;
+
+
+    }
+
+
+    // 结束检查
+    function checkUploadFinish () {
+        recordUploaded++;
+
+        //showMessage(recordUploaded +" - "+recordToUploadLength);
+        if (recordUploaded == recordToUploadLength) {
+            //uploadProgressBatchModal.hide();
+
+            if (recordToUpload == 0) {
+                showMessage("批量上传成功");
+                dialog.showAlert("I","批量上传成功");
+
+            }
+            else if (recordToUpload < 0){
+                dialog.showAlert("I","批量上传长度统计异常");
+
+                showMessage("批量上传长度统计异常");
+
+            }else {
+                showMessage("批量上传没有全部成功");
+                dialog.showAlert("I","批量上传 部分 失败");
+
+
+            }
+
+
+            doReloadData();
+
+
+            /*
+             var pages = globalNavigator.getPages();
+             pages[pages.length - 1].destroy();
+             globalNavigator.pushPage(moduleHtmlPath.ACC+'uploadAccount.html', { animation : 'slide' });
+             */
+
+
+        }
+    }
+
+    /*上传数据*/
+    $scope.uploadDataBatch=function(){
+        /**/
+        //showMessage("批量上传 prepare");
+
+        $ionicLoading.show({
+            template: '批量上传 ... '
+            //duration: 3000
+        });
+
+        //console.log("批量上传操作");
+
+
+
+
+       // showMessage("批量上传操作");
+        ///*
+
+        //uploadProgressBatchModal.show();
+        var selectedAccounts = getSelected();
+        //showMessage("select "+angular.toJson(selectedAccounts));
+
+        ///*
+        recordToUpload = selectedAccounts.length;
+        recordUploaded = 0;
+        recordToUploadLength = selectedAccounts.length;
+        //showUploadProgress('剩余上传记录：'+ recordToUpload);
+        //showMessage('剩余上传记录：'+ recordToUpload);
+        ///*
+
+        if (recordToUploadLength == 0 || recordToUploadLength == undefined) {
+            $ionicLoading.hide();
+        }
+        else {
+            for (var i = 0; i < selectedAccounts.length; i++) {
+                showMessage("批量上传 序列："+i);
+
+                //-----------------------
+                //       合法性  检验
+                //-----------------------
+                var checkDataValid = true;
+                var data_temp = selectedAccounts[i];
+                if (data_temp.costObject_id == '' || data_temp.costObject_id == undefined ||
+                    data_temp.costObject_id == null ) {
+
+
+                    checkDataValid = keepAccount.checkCostObject(
+                        data_temp.expenseObject_type,
+                        data_temp.expense_item_code,
+                        data_temp.total_amount
+                    );
+
+
+                }
+
+                if (checkDataValid == false ) {
+
+                    /*
+                     $ionicLoading.show({
+                     template: '预报销申请不能为空...跳过',
+                     duration: 1000
+                     });
+                     //*/
+
+                    showMessage('预报销申请不能为空...跳过- '+i);
+
+                    //dialog.showAlert("E",'预报销申请不能为空...跳过第 '+i+" 条");
+
+
+                    checkUploadFinish();
+
+                }
+                else {
+
+                    uploadDataUnitV2 (selectedAccounts[i]);
+
+                }
+
+
+                //showMessage("批量上传 end 序列："+i);
+
+            }
+        }
+
+
+        //*/
+      
+    };
+
+
+    function showUploadProgress(msg) {
+        //console.log($scope.currentProgress);
+        $scope.currentProgress = msg;
+        //console.log($scope.currentProgress);
+
+    }
+    
+    $scope.uploadAccounts = function () {
+        var selectedAccounts = getSelected();
+
+
+        for (var i = 0; i < selectedAccounts.length; i++) {
+            /*将本地数据提交到后台接口表*/
+            alert("开始上传数据" + i);
+            var line_id = selectedAccounts[i].line_id;
+            $http({
+                method: 'POST',
+                url: baseConfig.basePath + "EXP/EXP5030/mobile_exp_report_detail_insert.svc",
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                transformRequest: function (data) {
+                    return  'para=' + JSON.stringify(data);
+                },
+                data: selectedAccounts[i]
+            })
+                .success(function (response) {
+                    console.log("response:" + "成功返回");
+                    alert("response:" + angular.toJson(response));
+                    /*获取返回的interfaceId*/
+                    var interfaceId = response.body.expenseDetailId;
+
+                    /*查询照片列表，上传照片到服务器*/
+                    var promise = queryAccountPhotos(line_id);
+                    promise.then(function (list) {
+                        var Photos = list;
+                        alert("获取photos数据成功" + Photos.length);
+                        alert("开始上传文件");
+                        for (var j = 0; j < Photos.length; j++) {
+                            keepAccount.uploadFile(interfaceId, Photos[j].photo_name, Photos[j].photo_src);
+                        }
+                        /*更新本地记一笔数据状态，local_status 更改为 UPLOADED*/
+                        keepAccount.updateLocalStatus(line_id);
+                    }, function (response) {
+                        alert("查询照片数据库错误");
+                    });
+                }).error(function (response, status) {
+                    console.log("response:" + "失败返回");
+                    console.log("response:" + response + ",status:" + status);
+                });
+        }
+    };
+
+    function getSelected() {
+        var accountList = $scope.accountList;
+        var selectedList = [];
+        for (var i = 0; i < accountList.length; i++) {
+
+            showMessage("行："+accountList[i].upLoadSelected );
+            if (!(accountList[i].upLoadSelected==undefined || accountList[i].upLoadSelected==false)) {
+                selectedList.push(accountList[i]);
+            }
+
+            //showMessage("selectedList "+ angular.toJson(selectedList));
+        }
+        return selectedList;
+    }
+
+
+});
+
 angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) { 
@@ -13852,45 +14230,6 @@ angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.flyback', { 
-          url: '/flyback-main',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/main/main.html',
-              controller: 'FlyBackMainCtrl'
-            }
-          }
-        });
-    }])
-
-angular.module("applicationModule")
-  .controller('FlyBackMainCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    'hmsHttp',
-    'flaybackService',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, hmsHttp, fbService){
-
-        $scope.createFlightBook = function(){
-          var param = {"canEdit": true, "dataSource": "create"};
-          fbService.setPageStatusCreate(param);
-          $state.go("tab.flybackApply");
-        };
-        $scope.queryFlightBook = function(){
-          $state.go("tab.flybackQuery");
-        };
-
-    }]);
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
         .state('tab.flybackQuery', {
           url: '/flyback-query',
           params: {},
@@ -14058,6 +14397,45 @@ angular.module("applicationModule")
         }
 
     }]);
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.flyback', { 
+          url: '/flyback-main',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/main/main.html',
+              controller: 'FlyBackMainCtrl'
+            }
+          }
+        });
+    }])
+
+angular.module("applicationModule")
+  .controller('FlyBackMainCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    'hmsHttp',
+    'flaybackService',
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+      $timeout, hmsHttp, fbService){
+
+        $scope.createFlightBook = function(){
+          var param = {"canEdit": true, "dataSource": "create"};
+          fbService.setPageStatusCreate(param);
+          $state.go("tab.flybackApply");
+        };
+        $scope.queryFlightBook = function(){
+          $state.go("tab.flybackQuery");
+        };
+
+    }]);
 /**
  * Created by gusenlin on 16/5/22.
  */
@@ -14123,7 +14501,6 @@ angular.module('applicationModule')
       $scope.selectYearList = [];
 
 
-
       var offset = -5;
       var yearCount = 10;
 
@@ -14139,11 +14516,11 @@ angular.module('applicationModule')
 
       $scope.timesheetProcessModeList = [
         {
-          "selected" : true,
+          "selected": true,
           "value": timesheetTitle
         },
         {
-          "selected" : false,
+          "selected": false,
           "value": unfreezeTitle
         }
       ];
@@ -14188,6 +14565,35 @@ angular.module('applicationModule')
         console.log('TimeSheetQueryCtrl.clientWidth ' + clientWidth);
       }
 
+
+      var timesheetMonthFunc = {
+        scrollToFixPosition: function (month, screenWidth) {
+          var monthScroll = $ionicScrollDelegate.$getByHandle('timeSheetMonthHandle').getScrollPosition();
+          var xOffset;
+          try {
+            if (60 * (parseInt(month) - 0.5) > (parseInt(screenWidth) / 2)) {
+              xOffset = 60 * (parseInt(month) - 0.5) - (parseInt(screenWidth) / 2);
+            } else {
+              xOffset = 0;
+            }
+            if (baseConfig.debug) {
+              console.log(monthScroll);
+              console.log('month ' + month);
+              console.log('clientWidth ' + clientWidth);
+              console.log('xOffset ' + xOffset);
+            }
+            var monthScroll1 = $ionicScrollDelegate.$getByHandle('timeSheetMonthHandle').scrollTo(xOffset, 0, true);
+            if (baseConfig.debug) {
+              console.log(monthScroll1);
+            }
+          } catch (e) {
+
+          }
+        },
+        more: function () {
+        }
+      };
+
       //单格数字用0填充
       var formatMonth = function (month) {
         if (parseInt(month) < 10) {
@@ -14210,6 +14616,8 @@ angular.module('applicationModule')
             return;
           }
         });
+
+        timesheetMonthFunc.scrollToFixPosition(month, clientWidth);
 
         for (var i = 0; i < yearCount; i++) {
           var value = (parseInt(year) + offset + i) + '';
@@ -14272,15 +14680,15 @@ angular.module('applicationModule')
       $scope.selectMode = function (mode) {
         $scope.timesheetProcessModeList[0].selected = false;
         $scope.timesheetProcessModeList[1].selected = false;
-        if(mode.selected){
+        if (mode.selected) {
           mode.selected = false;
-        }else{
+        } else {
           mode.selected = true;
         }
-        if($scope.timesheetProcessModeList[1].selected){
+        if ($scope.timesheetProcessModeList[1].selected) {
           slippingMode = unfreezeMode;
-        }else{
-          slippingMode = slippingMode;
+        } else {
+          slippingMode = batchWriteMode;
         }
         $scope.timesheetProcessMode = mode.value;
         $scope.timesheetPopover.hide();
@@ -14661,11 +15069,13 @@ angular.module('applicationModule')
       }, element);
 
       $ionicGesture.on("touch", function (e) {
-        console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
-        console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
         var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
-        console.log('position ' + angular.toJson(position));
+        if (baseConfig.debug) {
+          console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
+          console.log('touch.startTouchY ' + e.gesture.touches[0].pageY);
+          console.log('position ' + angular.toJson(position));
+        }
         startTouchX = e.gesture.touches[0].pageX;
         startTouchY = e.gesture.touches[0].pageY;
         startTime = new Date().getTime();
@@ -14725,7 +15135,9 @@ angular.module('applicationModule')
           dateRange.dateFrom + '~' + dateRange.dateTo + ') ?', '', unfreeze);
       };
 
+      //切换月份
       $scope.getTimeSheet = function (year, month) {
+        timesheetMonthFunc.scrollToFixPosition(month.value, clientWidth);
         angular.forEach($scope.monthList, function (data) {
           data.selected = false;
         });
@@ -14831,6 +15243,13 @@ angular.module('applicationModule')
         }
       });
 
+      $scope.$on('$ionicView.beforeLeave', function (e) {
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$ionicView.beforeLeave');
+        }
+        stopSlipping();
+      });
+
       $scope.$on('$destroy', function (e) {
         if (baseConfig.debug) {
           console.log('applicationCtrl.$destroy');
@@ -14838,644 +15257,6 @@ angular.module('applicationModule')
         $scope.popover.remove();
       });
     }]);
-
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.timesheet-write', {
-          url: '/timesheet-write',
-          params: {day: {}},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet/write/write.html',
-              controller: 'TimeSheetWriteCtrl'
-            }
-          }
-        });
-    }]);
-
-/**
- * @ngdoc controller
- * @name TimeSheetWriteCtrl
- * @module applicationModule
- * @description
- *
- * @author
- * gusenlin
- */
-angular.module('applicationModule')
-  .controller('TimeSheetWriteCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    '$stateParams',
-    '$ionicModal',
-    '$timeout',
-    '$ionicHistory',
-    'baseConfig',
-    'TimeSheetService',
-    'hmsPopup',
-    function ($scope,
-              $rootScope,
-              $state,
-              $stateParams,
-              $ionicModal,
-              $timeout,
-              $ionicHistory,
-              baseConfig,
-              TimeSheetService,
-              hmsPopup) {
-
-      var checked = 'ion-ios-checkmark';
-      var unchecked = 'ion-ios-circle-outline'
-      $scope.projectList = [];
-      $scope.addressList = [];
-      $scope.flybackList = [];
-      var editable = 'N';
-      var uncheckedJson = {flag: false, style: unchecked};
-      var checkedJson = {flag: true, style: checked};
-
-
-      //初始化timesheet填写界面字段
-      $scope.timesheetDetail =
-      {
-        currentDay: "",
-        approver: "",
-        currentProject: {},
-        currentAddress: {},
-        currentFlyback: {},
-        travelingAllowance: {flag: false, style: unchecked},
-        normalAllowance: {flag: false, style: unchecked},
-        intCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        extCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
-        description: ""
-      };
-
-      if (baseConfig.debug) {
-        console.log('$stateParams.day ' + angular.toJson($stateParams.day));
-      }
-
-      $scope.lockFlag= $stateParams.day.lockFlag;
-
-      $scope.currentDate = $stateParams.day.each_day;
-
-      //加载项目画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/projectModal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.projectModal = modal;
-      });
-
-      //加载项目地点画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/addressModal.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.addressModal = modal;
-      });
-
-      //加载机票补贴画面
-      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/flybackList.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.flybackModal = modal;
-      });
-
-      $scope.selectAddress = function (address) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.address " + angular.toJson(address));
-        }
-        $scope.timesheetDetail.currentAddress = address;
-        $scope.addressModal.hide();
-      };
-
-      $scope.selectFlyback = function (flyback) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.flyback " + angular.toJson(flyback));
-        }
-        $scope.timesheetDetail.currentFlyback = flyback;
-        $scope.flybackModal.hide();
-      };
-
-      $scope.selectProject = function (project) {
-        if (baseConfig.debug) {
-          console.log("selectAddress.project " + angular.toJson(project));
-        }
-        $scope.timesheetDetail.currentProject = project;
-        $scope.projectModal.hide();
-
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            $scope.addressList = result.projaddress;
-            $scope.flybackList = result.flyback;
-            $scope.timesheetDetail.approver = result.approver;
-            $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
-            $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
-            if (result.projaddress[0]) {
-              $scope.timesheetDetail.currentAddress = result.projaddress[0];
-            } else {
-              $scope.timesheetDetail.currentAddress = {"selected_flag": "Y", "address_id": "0", "address_name": "缺省地点"};
-            }
-            if (result.flyback[0]) {
-              $scope.timesheetDetail.currentFlyback = result.flyback[0];
-            } else {
-              $scope.timesheetDetail.currentFlyback = {"fly_select": "Y", "fly_name": "无flyback", "fly_id": "-1"};
-            }
-          } else {
-            hmsPopup.showPopup('获取项目信息错误,请检查');
-          }
-        }
-        $timeout(function () {
-          hmsPopup.showLoading('获取项目信息中');
-          TimeSheetService.fetchProjectDetailInfo(success, $scope.currentDate, project.project_id)
-        });
-      };
-
-      $scope.showProjectModal = function () {
-        $scope.projectModal.show();
-      };
-      $scope.hideProjectModal = function () {
-        $scope.projectModal.hide();
-      };
-
-      $scope.showFlybackModal = function () {
-        $scope.flybackModal.show();
-      };
-      $scope.hideFlybackModal = function () {
-        $scope.flybackModal.hide();
-      };
-
-      $scope.showAddressModal = function () {
-        $scope.addressModal.show();
-      };
-      $scope.hideAddressModal = function () {
-        $scope.addressModal.hide();
-      };
-
-      var fetchEachDay = function (result) {
-        hmsPopup.hideLoading();
-        if (result.status == 'S') {
-          var projectList = result.project;
-          var flybackList = result.flyback;
-          var addressList = result.projaddress;
-
-          if (baseConfig.debug) {
-            console.log('fetchEachDay result.every_day ' + angular.toJson(result.every_day));
-          }
-
-          //判断是否可编辑 // add by ciwei
-          if (result.every_day.holiday == 'Y') {
-            editable = 'Y';
-          } else if (result.every_day.holiday == 'N') {
-            editable = 'N';
-          }
-
-          if (result.every_day.offbase == '1') {
-            $scope.timesheetDetail.travelingAllowance = checkedJson;
-          } else {
-            $scope.timesheetDetail.travelingAllowance = uncheckedJson;
-          }
-          if (result.every_day.base == 'Y') {
-            $scope.timesheetDetail.normalAllowance = checkedJson;
-          } else {
-            $scope.timesheetDetail.normalAllowance = uncheckedJson;
-          }
-
-          //判断内外部计费是否被选中
-          if (result.every_day.internalcharge == '1') {
-            $scope.timesheetDetail.intCharge = checkedJson;
-          } else {
-            $scope.timesheetDetail.intCharge = uncheckedJson;
-          }
-          if (result.every_day.externalcharge == '1') {
-            $scope.timesheetDetail.extCharge = checkedJson;
-          } else {
-            $scope.timesheetDetail.extCharge = uncheckedJson;
-          }
-
-          $scope.timesheetDetail.currentDay = result.every_day.every_day;
-          $scope.timesheetDetail.approver = result.every_day.approver;
-          $scope.timesheetDetail.description = result.every_day.descrpt;
-          $scope.timesheetDetail.allowance = result.every_day.allowance;
-
-          angular.forEach(projectList, function (data) {
-            if (data.selected_flag === 'Y') {
-              $scope.timesheetDetail.currentProject = data;
-              return;
-            }
-          });
-          angular.forEach(addressList, function (data) {
-            if (data.selected_flag === 'Y') {
-              $scope.timesheetDetail.currentAddress = data;
-              return;
-            }
-          });
-          angular.forEach(flybackList, function (data) {
-            if (data.fly_select === 'Y') {
-              $scope.timesheetDetail.currentFlyback = data;
-              return;
-            }
-          });
-
-          $scope.projectList = projectList;
-          $scope.addressList = addressList;
-          $scope.flybackList = flybackList;
-        }
-        else {
-          hmsPopup.showPopup('获取timesheet错误,错误原因为');
-        }
-      };
-
-      $scope.checkBoxChanged = function (item, type) {
-        console.log('$scope.checkBoxChanged item ' + angular.toJson(item));
-        if (editable == "N" && type == 'charging') {
-          return;
-        }
-        if (item.flag) {
-          item.flag = false;
-          item.style = unchecked;
-        } else {
-          item.flag = true;
-          item.style = checked;
-        }
-        if (type == 'travelingAllowance' && $scope.timesheetDetail.travelingAllowance.flag) {
-          $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
-        }
-        if (type == 'normalAllowance' && $scope.timesheetDetail.normalAllowance.flag) {
-          $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
-        }
-      };
-
-      $scope.submitTimesheet = function (timesheetDetail) {
-        if (baseConfig.debug) {
-          console.log('timesheetDetail ' + angular.toJson(timesheetDetail));
-        }
-
-        var employee = window.localStorage.empno;
-        var currentDate = $scope.currentDate;
-        var projectId = $scope.timesheetDetail.currentProject.project_id;
-        var description = '';
-        var offBaseFlag = '';
-        var baseFlag = '';
-        var extCharge = '';
-        var intCharge = '';
-        var addressId = $scope.timesheetDetail.currentAddress.address_id;
-        var flybackId = $scope.timesheetDetail.currentFlyback.fly_id;
-
-        //内外部计费
-        if ($scope.timesheetDetail.extCharge.flag) {
-          extCharge = 1;
-        } else {
-          extCharge = 0;
-        }
-        if ($scope.timesheetDetail.intCharge.flag) {
-          intCharge = 1;
-        } else {
-          intCharge = 0;
-        }
-        if ($scope.timesheetDetail.travelingAllowance.flag) {
-          offBaseFlag = 1;
-        } else {
-          offBaseFlag = 0;
-        }
-        if ($scope.timesheetDetail.normalAllowance.flag) {
-          baseFlag = 1;
-        } else {
-          baseFlag = 0;
-        }
-
-        description = $scope.timesheetDetail.description.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
-
-        if(baseConfig.debug){
-          console.log('$scope.timesheetDetail.description ' + $scope.timesheetDetail.description);
-          console.log('description ' + description);
-        }
-
-        var params = {
-          "params": {
-            "p_employee": employee + "",
-            "p_date": currentDate + "",
-            "p_project": projectId + "",
-            "p_description": description + "",
-            "p_offbase_flag": offBaseFlag + "",
-            "p_base_flag": baseFlag + "",
-            "p_ext_charge": extCharge + "",
-            "p_int_charge": intCharge + "",
-            "p_address": addressId + "",
-            "p_flyback": flybackId + ""
-          }
-        };
-
-        if (baseConfig.debug) {
-          console.log('submitTimesheet.params ' + angular.toJson(params));
-        }
-
-        var success = function (result) {
-          hmsPopup.hideLoading();
-          if (result.status == 'S') {
-            hmsPopup.showPopup('提交Timesheet成功');
-            $rootScope.$broadcast('refreshTimesheet', 'parent');
-            $ionicHistory.goBack();
-          } else {
-            hmsPopup.showPopup('提交Timesheet错误,错误原因为');
-          }
-        }
-        hmsPopup.showLoading('提交数据中');
-        TimeSheetService.submitTimesheet(success, params)
-      };
-
-      //从服务器获取请求
-      $timeout(
-        function () {
-          hmsPopup.showLoading('获取timesheet明细数据');
-          TimeSheetService.fetchEachDay(fetchEachDay, $scope.currentDate);
-        }
-      );
-    }
-  ])
-;
-
-/**
- * Created by wolf on 2016/5/21. (_wen.dai_)
- */
-'use strict';
-//应用-timeSheet审批模块-详情
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.tsApproveDetail', {
-          url: 'application/tsApproveDetail',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
-              controller: 'tsApproveDetailCtrl'
-            }
-          },
-          params: {
-            'employeeNumber': "",
-            'projectId': "",
-            'startDate': "",
-            'endDate': ""
-          }
-        })
-    }]);
-tsApproveModule.controller('tsApproveDetailCtrl', [
-  '$scope',
-  '$state',
-  'baseConfig',
-  '$ionicHistory',
-  '$stateParams',
-  'hmsHttp',
-  'hmsPopup',
-  '$timeout',
-  'ApproveDetailService',
-  function ($scope,
-            $state,
-            baseConfig,
-            $ionicHistory,
-            $stateParams,
-            hmsHttp,
-            hmsPopup,
-            $timeout,
-            ApproveDetailService) {
-
-    /**
-     * init var section
-     */
-    {
-      if(ionic.Platform.isIOS()) {
-        angular.element('.ae-detail-head').css('marginTop','64px');
-        angular.element('#approveDetailContent').css('top','64px');
-      }
-      var selectItem = []; //初始化点击全部条目为false
-      var clickSelectAll = false; //默认没有点击全选
-      $scope.detailActionName = "操作";
-      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
-      $scope.detailInfoArray = {}; //用于接收列表对应数据object
-      $scope.selectArray = [];
-      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
-      var tsApproveDetailParams = {
-        "params": {
-          "p_employee_number": $stateParams.employeeNumber,
-          "p_start_date": $stateParams.startDate.toString(),
-          "p_end_date": $stateParams.endDate.toString(),
-          "p_project_id": $stateParams.projectId
-        }
-      };
-      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
-      var tsActionParams = { //审批拒绝/通过的参数
-        "params": {
-          "p_approve_flag": "AGREE",
-          "p_employee_number": window.localStorage.empno,
-          "p_param_json": ''
-        }
-      };
-      var approveList = { //审批拒绝/通过的子对象
-        "approve_list": []
-      };
-    }
-
-    $scope.$on('$ionicView.enter', function (e) {
-      ApproveDetailService.setRefreshFlag('');
-    });
-
-    $scope.$on('$destroy', function (e) {
-      warn('tsApproveListCtrl.$destroy');
-    });
-
-    hmsPopup.showLoading('加载中...');
-    function getData() {
-      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          $scope.detailInfoArray = response.timesheet_approve_detail_response;
-          if ($scope.detailInfoArray.subsidy_list.length === 0) {
-            ApproveDetailService.setRefreshFlag('refresh-approve-list');
-            $ionicHistory.goBack();
-          }
-        } else {
-          if (response.status === 'E' || response.status == 'e') {
-            hmsPopup.showShortCenterToast("没有相关数据!");
-          } else {
-            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-          }
-        }
-      }).error(function (response, status) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
-      });
-    };
-    getData();
-
-    function __initSelectArray(selectParam) { //初始化选择按钮
-      //先初始化数据操作--
-      $scope.selectArray = [];
-      selectItem = [];
-      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
-        if ('undoSelectAll' == selectParam) {
-          $scope.selectArray.push(false);
-          selectItem.push(false);
-        } else if ('selectedAll' == selectParam) {
-          $scope.selectArray.push(true);
-          selectItem.push(true);
-        }
-      });
-    };
-    __initSelectArray('undoSelectAll');
-
-    $scope.dealDetailInfo = function () {
-      if ($scope.detailActionName == "操作") {
-        $scope.detailActionName = "取消";
-        $scope.showActionBar = true;
-        angular.element('#tsApproveItem').css('paddingLeft', '6%');
-      } else if ($scope.detailActionName == "取消") {
-        $scope.detailActionName = "操作";
-        $scope.showActionBar = false;
-        __initSelectArray('undoSelectAll');
-        angular.element('#tsApproveItem').css('paddingLeft', '0');
-        tsActionParams = { //审批拒绝/通过的参数
-          "params": {
-            "p_approve_flag": "AGREE",
-            "p_employee_number": window.localStorage.empno,
-            "p_param_json": ''
-          }
-        };
-        approveList = {
-          "approve_list": []
-        };
-      }
-    };
-
-    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
-      selectItem[index] = !selectItem[index];
-      var approve = {
-        "p_project_id": $scope.detailInfoArray.project_id,
-        "p_project_person_number": $scope.detailInfoArray.employee_number,
-        "p_start_date": "",
-        "p_end_date": "",
-        "p_record_id": ""
-      };
-      if (selectItem[index]) {
-        $scope.selectArray[index] = true;
-        approve.p_record_id = newLineNumber;
-        approveList.approve_list[index] = approve;
-      } else {
-        $scope.selectArray[index] = false;
-        approveList.approve_list.splice(index, 1, 'delete');
-      }
-    };
-
-    $scope.selectAllDetail = function () { //全选
-      clickSelectAll = !clickSelectAll;
-      if (clickSelectAll) {
-        __initSelectArray('selectedAll');
-        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
-          var approve = {
-            "p_project_id": $scope.detailInfoArray.project_id,
-            "p_project_person_number": $scope.detailInfoArray.employee_number,
-            "p_start_date": "",
-            "p_end_date": "",
-            "p_record_id": ""
-          };
-          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
-          approveList.approve_list.push(approve);
-        }
-        warn(approveList.approve_list);
-      } else {
-        __initSelectArray('undoSelectAll');
-        approveList.approve_list = [];
-      }
-    };
-
-    function deleteSuperfluous() {
-      for (var i = 0; i < approveList.approve_list.length; i++) {
-        if (approveList.approve_list[i] === 'delete') {
-          approveList.approve_list.splice(i, 1);
-          i--;
-        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
-          approveList.approve_list.splice(i, 1);
-          i--;
-        }
-      }
-    };
-
-    $scope.passThroughDetailItem = function () { //通过
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "AGREE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('审批成功！');
-        } else {
-          hmsPopup.showShortCenterToast('审批失败！');
-        }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      });
-    };
-
-    $scope.refuseDetailItem = function () { //拒绝
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "REFUSE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('拒绝成功');
-        } else {
-          hmsPopup.showShortCenterToast('拒绝失败！');
-        }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      });
-    };
-  }]).service('ApproveDetailService', function () {
-  var flag = ''; //刷新上个列表的标识
-  return {
-    setRefreshFlag: function (newFlag) {
-      flag = newFlag;
-    },
-    getRefreshFlag: function () {
-      return flag;
-    }
-  }
-});
-
 
 /**
  * Created by wolf on 2016/5/19.
@@ -16158,3 +15939,641 @@ angular.module('tsApproveModule')
       };
       return TsApproveListService;
     }]);
+
+/**
+ * Created by wolf on 2016/5/21. (_wen.dai_)
+ */
+'use strict';
+//应用-timeSheet审批模块-详情
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.tsApproveDetail', {
+          url: 'application/tsApproveDetail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
+              controller: 'tsApproveDetailCtrl'
+            }
+          },
+          params: {
+            'employeeNumber': "",
+            'projectId': "",
+            'startDate': "",
+            'endDate': ""
+          }
+        })
+    }]);
+tsApproveModule.controller('tsApproveDetailCtrl', [
+  '$scope',
+  '$state',
+  'baseConfig',
+  '$ionicHistory',
+  '$stateParams',
+  'hmsHttp',
+  'hmsPopup',
+  '$timeout',
+  'ApproveDetailService',
+  function ($scope,
+            $state,
+            baseConfig,
+            $ionicHistory,
+            $stateParams,
+            hmsHttp,
+            hmsPopup,
+            $timeout,
+            ApproveDetailService) {
+
+    /**
+     * init var section
+     */
+    {
+      if(ionic.Platform.isIOS()) {
+        angular.element('.ae-detail-head').css('marginTop','64px');
+        angular.element('#approveDetailContent').css('top','64px');
+      }
+      var selectItem = []; //初始化点击全部条目为false
+      var clickSelectAll = false; //默认没有点击全选
+      $scope.detailActionName = "操作";
+      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
+      $scope.detailInfoArray = {}; //用于接收列表对应数据object
+      $scope.selectArray = [];
+      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
+      var tsApproveDetailParams = {
+        "params": {
+          "p_employee_number": $stateParams.employeeNumber,
+          "p_start_date": $stateParams.startDate.toString(),
+          "p_end_date": $stateParams.endDate.toString(),
+          "p_project_id": $stateParams.projectId
+        }
+      };
+      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
+      var tsActionParams = { //审批拒绝/通过的参数
+        "params": {
+          "p_approve_flag": "AGREE",
+          "p_employee_number": window.localStorage.empno,
+          "p_param_json": ''
+        }
+      };
+      var approveList = { //审批拒绝/通过的子对象
+        "approve_list": []
+      };
+    }
+
+    $scope.$on('$ionicView.enter', function (e) {
+      ApproveDetailService.setRefreshFlag('');
+    });
+
+    $scope.$on('$destroy', function (e) {
+      warn('tsApproveListCtrl.$destroy');
+    });
+
+    hmsPopup.showLoading('加载中...');
+    function getData() {
+      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          $scope.detailInfoArray = response.timesheet_approve_detail_response;
+          if ($scope.detailInfoArray.subsidy_list.length === 0) {
+            ApproveDetailService.setRefreshFlag('refresh-approve-list');
+            $ionicHistory.goBack();
+          }
+        } else {
+          if (response.status === 'E' || response.status == 'e') {
+            hmsPopup.showShortCenterToast("没有相关数据!");
+          } else {
+            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+          }
+        }
+      }).error(function (response, status) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
+      });
+    };
+    getData();
+
+    function __initSelectArray(selectParam) { //初始化选择按钮
+      //先初始化数据操作--
+      $scope.selectArray = [];
+      selectItem = [];
+      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
+        if ('undoSelectAll' == selectParam) {
+          $scope.selectArray.push(false);
+          selectItem.push(false);
+        } else if ('selectedAll' == selectParam) {
+          $scope.selectArray.push(true);
+          selectItem.push(true);
+        }
+      });
+    };
+    __initSelectArray('undoSelectAll');
+
+    $scope.dealDetailInfo = function () {
+      if ($scope.detailActionName == "操作") {
+        $scope.detailActionName = "取消";
+        $scope.showActionBar = true;
+        angular.element('#tsApproveItem').css('paddingLeft', '6%');
+      } else if ($scope.detailActionName == "取消") {
+        $scope.detailActionName = "操作";
+        $scope.showActionBar = false;
+        __initSelectArray('undoSelectAll');
+        angular.element('#tsApproveItem').css('paddingLeft', '0');
+        tsActionParams = { //审批拒绝/通过的参数
+          "params": {
+            "p_approve_flag": "AGREE",
+            "p_employee_number": window.localStorage.empno,
+            "p_param_json": ''
+          }
+        };
+        approveList = {
+          "approve_list": []
+        };
+      }
+    };
+
+    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
+      selectItem[index] = !selectItem[index];
+      var approve = {
+        "p_project_id": $scope.detailInfoArray.project_id,
+        "p_project_person_number": $scope.detailInfoArray.employee_number,
+        "p_start_date": "",
+        "p_end_date": "",
+        "p_record_id": ""
+      };
+      if (selectItem[index]) {
+        $scope.selectArray[index] = true;
+        approve.p_record_id = newLineNumber;
+        approveList.approve_list[index] = approve;
+      } else {
+        $scope.selectArray[index] = false;
+        approveList.approve_list.splice(index, 1, 'delete');
+      }
+    };
+
+    $scope.selectAllDetail = function () { //全选
+      clickSelectAll = !clickSelectAll;
+      if (clickSelectAll) {
+        __initSelectArray('selectedAll');
+        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
+          var approve = {
+            "p_project_id": $scope.detailInfoArray.project_id,
+            "p_project_person_number": $scope.detailInfoArray.employee_number,
+            "p_start_date": "",
+            "p_end_date": "",
+            "p_record_id": ""
+          };
+          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
+          approveList.approve_list.push(approve);
+        }
+        warn(approveList.approve_list);
+      } else {
+        __initSelectArray('undoSelectAll');
+        approveList.approve_list = [];
+      }
+    };
+
+    function deleteSuperfluous() {
+      for (var i = 0; i < approveList.approve_list.length; i++) {
+        if (approveList.approve_list[i] === 'delete') {
+          approveList.approve_list.splice(i, 1);
+          i--;
+        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
+          approveList.approve_list.splice(i, 1);
+          i--;
+        }
+      }
+    };
+
+    $scope.passThroughDetailItem = function () { //通过
+      if (approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "AGREE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('审批成功！');
+        } else {
+          hmsPopup.showShortCenterToast('审批失败！');
+        }
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      });
+    };
+
+    $scope.refuseDetailItem = function () { //拒绝
+      if (approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "REFUSE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('拒绝成功');
+        } else {
+          hmsPopup.showShortCenterToast('拒绝失败！');
+        }
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      });
+    };
+  }]).service('ApproveDetailService', function () {
+  var flag = ''; //刷新上个列表的标识
+  return {
+    setRefreshFlag: function (newFlag) {
+      flag = newFlag;
+    },
+    getRefreshFlag: function () {
+      return flag;
+    }
+  }
+});
+
+
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.timesheet-write', {
+          url: '/timesheet-write',
+          params: {day: {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet/write/write.html',
+              controller: 'TimeSheetWriteCtrl'
+            }
+          }
+        });
+    }]);
+
+/**
+ * @ngdoc controller
+ * @name TimeSheetWriteCtrl
+ * @module applicationModule
+ * @description
+ *
+ * @author
+ * gusenlin
+ */
+angular.module('applicationModule')
+  .controller('TimeSheetWriteCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    '$stateParams',
+    '$ionicModal',
+    '$timeout',
+    '$ionicHistory',
+    'baseConfig',
+    'TimeSheetService',
+    'hmsPopup',
+    function ($scope,
+              $rootScope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              $ionicHistory,
+              baseConfig,
+              TimeSheetService,
+              hmsPopup) {
+
+      var checked = 'ion-ios-checkmark';
+      var unchecked = 'ion-ios-circle-outline'
+      $scope.projectList = [];
+      $scope.addressList = [];
+      $scope.flybackList = [];
+      var editable = 'N';
+      var uncheckedJson = {flag: false, style: unchecked};
+      var checkedJson = {flag: true, style: checked};
+
+
+      //初始化timesheet填写界面字段
+      $scope.timesheetDetail =
+      {
+        currentDay: "",
+        approver: "",
+        currentProject: {},
+        currentAddress: {},
+        currentFlyback: {},
+        travelingAllowance: {flag: false, style: unchecked},
+        normalAllowance: {flag: false, style: unchecked},
+        intCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
+        extCharge: {flag: false, style: unchecked}, //ion-ios-checkmark
+        description: ""
+      };
+
+      if (baseConfig.debug) {
+        console.log('$stateParams.day ' + angular.toJson($stateParams.day));
+      }
+
+      $scope.lockFlag= $stateParams.day.lockFlag;
+
+      $scope.currentDate = $stateParams.day.each_day;
+
+      //加载项目画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/projectModal.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.projectModal = modal;
+      });
+
+      //加载项目地点画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/addressModal.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.addressModal = modal;
+      });
+
+      //加载机票补贴画面
+      $ionicModal.fromTemplateUrl('build/pages/application/timesheet/write/modal/flybackList.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.flybackModal = modal;
+      });
+
+      $scope.selectAddress = function (address) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.address " + angular.toJson(address));
+        }
+        $scope.timesheetDetail.currentAddress = address;
+        $scope.addressModal.hide();
+      };
+
+      $scope.selectFlyback = function (flyback) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.flyback " + angular.toJson(flyback));
+        }
+        $scope.timesheetDetail.currentFlyback = flyback;
+        $scope.flybackModal.hide();
+      };
+
+      $scope.selectProject = function (project) {
+        if (baseConfig.debug) {
+          console.log("selectAddress.project " + angular.toJson(project));
+        }
+        $scope.timesheetDetail.currentProject = project;
+        $scope.projectModal.hide();
+
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            $scope.addressList = result.projaddress;
+            $scope.flybackList = result.flyback;
+            $scope.timesheetDetail.approver = result.approver;
+            $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
+            $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
+            if (result.projaddress[0]) {
+              $scope.timesheetDetail.currentAddress = result.projaddress[0];
+            } else {
+              $scope.timesheetDetail.currentAddress = {"selected_flag": "Y", "address_id": "0", "address_name": "缺省地点"};
+            }
+            if (result.flyback[0]) {
+              $scope.timesheetDetail.currentFlyback = result.flyback[0];
+            } else {
+              $scope.timesheetDetail.currentFlyback = {"fly_select": "Y", "fly_name": "无flyback", "fly_id": "-1"};
+            }
+          } else {
+            hmsPopup.showPopup('获取项目信息错误,请检查');
+          }
+        }
+        $timeout(function () {
+          hmsPopup.showLoading('获取项目信息中');
+          TimeSheetService.fetchProjectDetailInfo(success, $scope.currentDate, project.project_id)
+        });
+      };
+
+      $scope.showProjectModal = function () {
+        $scope.projectModal.show();
+      };
+      $scope.hideProjectModal = function () {
+        $scope.projectModal.hide();
+      };
+
+      $scope.showFlybackModal = function () {
+        $scope.flybackModal.show();
+      };
+      $scope.hideFlybackModal = function () {
+        $scope.flybackModal.hide();
+      };
+
+      $scope.showAddressModal = function () {
+        $scope.addressModal.show();
+      };
+      $scope.hideAddressModal = function () {
+        $scope.addressModal.hide();
+      };
+
+      var fetchEachDay = function (result) {
+        hmsPopup.hideLoading();
+        if (result.status == 'S') {
+          var projectList = result.project;
+          var flybackList = result.flyback;
+          var addressList = result.projaddress;
+
+          if (baseConfig.debug) {
+            console.log('fetchEachDay result.every_day ' + angular.toJson(result.every_day));
+          }
+
+          //判断是否可编辑 // add by ciwei
+          if (result.every_day.holiday == 'Y') {
+            editable = 'Y';
+          } else if (result.every_day.holiday == 'N') {
+            editable = 'N';
+          }
+
+          if (result.every_day.offbase == '1') {
+            $scope.timesheetDetail.travelingAllowance = checkedJson;
+          } else {
+            $scope.timesheetDetail.travelingAllowance = uncheckedJson;
+          }
+          if (result.every_day.base == 'Y') {
+            $scope.timesheetDetail.normalAllowance = checkedJson;
+          } else {
+            $scope.timesheetDetail.normalAllowance = uncheckedJson;
+          }
+
+          //判断内外部计费是否被选中
+          if (result.every_day.internalcharge == '1') {
+            $scope.timesheetDetail.intCharge = checkedJson;
+          } else {
+            $scope.timesheetDetail.intCharge = uncheckedJson;
+          }
+          if (result.every_day.externalcharge == '1') {
+            $scope.timesheetDetail.extCharge = checkedJson;
+          } else {
+            $scope.timesheetDetail.extCharge = uncheckedJson;
+          }
+
+          $scope.timesheetDetail.currentDay = result.every_day.every_day;
+          $scope.timesheetDetail.approver = result.every_day.approver;
+          $scope.timesheetDetail.description = result.every_day.descrpt;
+          $scope.timesheetDetail.allowance = result.every_day.allowance;
+
+          angular.forEach(projectList, function (data) {
+            if (data.selected_flag === 'Y') {
+              $scope.timesheetDetail.currentProject = data;
+              return;
+            }
+          });
+          angular.forEach(addressList, function (data) {
+            if (data.selected_flag === 'Y') {
+              $scope.timesheetDetail.currentAddress = data;
+              return;
+            }
+          });
+          angular.forEach(flybackList, function (data) {
+            if (data.fly_select === 'Y') {
+              $scope.timesheetDetail.currentFlyback = data;
+              return;
+            }
+          });
+
+          $scope.projectList = projectList;
+          $scope.addressList = addressList;
+          $scope.flybackList = flybackList;
+        }
+        else {
+          hmsPopup.showPopup('获取timesheet错误,错误原因为');
+        }
+      };
+
+      $scope.checkBoxChanged = function (item, type) {
+        console.log('$scope.checkBoxChanged item ' + angular.toJson(item));
+        if (editable == "N" && type == 'charging') {
+          return;
+        }
+        if (item.flag) {
+          item.flag = false;
+          item.style = unchecked;
+        } else {
+          item.flag = true;
+          item.style = checked;
+        }
+        if (type == 'travelingAllowance' && $scope.timesheetDetail.travelingAllowance.flag) {
+          $scope.timesheetDetail.normalAllowance = {flag: false, style: unchecked};
+        }
+        if (type == 'normalAllowance' && $scope.timesheetDetail.normalAllowance.flag) {
+          $scope.timesheetDetail.travelingAllowance = {flag: false, style: unchecked};
+        }
+      };
+
+      $scope.submitTimesheet = function (timesheetDetail) {
+        if (baseConfig.debug) {
+          console.log('timesheetDetail ' + angular.toJson(timesheetDetail));
+        }
+
+        var employee = window.localStorage.empno;
+        var currentDate = $scope.currentDate;
+        var projectId = $scope.timesheetDetail.currentProject.project_id;
+        var description = '';
+        var offBaseFlag = '';
+        var baseFlag = '';
+        var extCharge = '';
+        var intCharge = '';
+        var addressId = $scope.timesheetDetail.currentAddress.address_id;
+        var flybackId = $scope.timesheetDetail.currentFlyback.fly_id;
+
+        //内外部计费
+        if ($scope.timesheetDetail.extCharge.flag) {
+          extCharge = 1;
+        } else {
+          extCharge = 0;
+        }
+        if ($scope.timesheetDetail.intCharge.flag) {
+          intCharge = 1;
+        } else {
+          intCharge = 0;
+        }
+        if ($scope.timesheetDetail.travelingAllowance.flag) {
+          offBaseFlag = 1;
+        } else {
+          offBaseFlag = 0;
+        }
+        if ($scope.timesheetDetail.normalAllowance.flag) {
+          baseFlag = 1;
+        } else {
+          baseFlag = 0;
+        }
+
+        description = $scope.timesheetDetail.description.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
+
+        if(baseConfig.debug){
+          console.log('$scope.timesheetDetail.description ' + $scope.timesheetDetail.description);
+          console.log('description ' + description);
+        }
+
+        var params = {
+          "params": {
+            "p_employee": employee + "",
+            "p_date": currentDate + "",
+            "p_project": projectId + "",
+            "p_description": description + "",
+            "p_offbase_flag": offBaseFlag + "",
+            "p_base_flag": baseFlag + "",
+            "p_ext_charge": extCharge + "",
+            "p_int_charge": intCharge + "",
+            "p_address": addressId + "",
+            "p_flyback": flybackId + ""
+          }
+        };
+
+        if (baseConfig.debug) {
+          console.log('submitTimesheet.params ' + angular.toJson(params));
+        }
+
+        var success = function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == 'S') {
+            hmsPopup.showPopup('提交Timesheet成功');
+            $rootScope.$broadcast('refreshTimesheet', 'parent');
+            $ionicHistory.goBack();
+          } else {
+            hmsPopup.showPopup('提交Timesheet错误,错误原因为');
+          }
+        }
+        hmsPopup.showLoading('提交数据中');
+        TimeSheetService.submitTimesheet(success, params)
+      };
+
+      //从服务器获取请求
+      $timeout(
+        function () {
+          hmsPopup.showLoading('获取timesheet明细数据');
+          TimeSheetService.fetchEachDay(fetchEachDay, $scope.currentDate);
+        }
+      );
+    }
+  ])
+;
