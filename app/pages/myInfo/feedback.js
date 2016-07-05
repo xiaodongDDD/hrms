@@ -54,6 +54,40 @@ angular.module('myInfoModule')
           hmsPopup.showShortCenterToast('请选择反馈问题类型');
         }else if($scope.feedbackInfo.info==""){
           hmsPopup.showShortCenterToast('请填写产品质量问题反馈');
+        }else if( (i<$scope.qualityIssue.length) && ($scope.feedbackInfo.info!="") ){
+          var url=baseConfig.businessPath+"/api_feedback/submit_feedback_info";
+          var param={
+           params:{
+             p_employee_number: window.localStorage.empno,
+             p_feedback_type:"",
+             p_feedback_info:$scope.feedbackInfo.info
+           }
+          };
+          if($scope.qualityIssue[0] == true){
+            param.params.p_feedback_type="质量问题";
+          }else if($scope.qualityIssue[1] == true){
+            param.params.p_feedback_type="服务问题";
+          }else if($scope.qualityIssue[2] == true){
+            param.params.p_feedback_type="优化问题";
+          }else if($scope.qualityIssue[3] == true){
+            param.params.p_feedback_type="其他问题";
+          }
+          hmsHttp.post(url, param).success(function (result) {
+            //hmsPopup.hideLoading();
+            var message=result.returnMsg;
+            if (baseConfig.debug) {
+              console.log("result success " + angular.toJson(result));
+            }
+            hmsPopup.showShortCenterToast(message);
+            if(result.returnCode=="S"){
+              $ionicHistory.goBack();
+            }
+          }).error(function(error,status){
+            hmsPopup.showShortCenterToast("网络连接出错");
+            if (baseConfig.debug) {
+              console.log("response error " + angular.toJson(error));
+            }
+          })
         }
       }
     }])

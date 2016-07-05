@@ -2767,9 +2767,9 @@ Copyright (c) 2015 Daniel Eden
     height: 90px;
     border-radius: 5px 0px 0px 5px; }
     .time-off-content .time-off-item .time-off-item-left.paid-holiday {
-      border-left: 3px solid #6BB9F0; }
+      border-left: 3px solid #24559C; }
     .time-off-content .time-off-item .time-off-item-left.paid-sick-leave {
-      border-left: 3px solid #73BBA2; }
+      border-left: 3px solid #417505; }
     .time-off-content .time-off-item .time-off-item-left.ext-paid-holiday {
       border-left: 3px solid #F99D32; }
   .time-off-content .time-off-item .time-off-item-middle {
@@ -2779,15 +2779,15 @@ Copyright (c) 2015 Daniel Eden
     .time-off-content .time-off-item .time-off-item-middle .item-off-item-title {
       font-size: 14px;
       padding-top: 5px;
-      padding-bottom: 5px; }
+      padding-bottom: 3px; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.paid-holiday {
-        color: #6BB9F0; }
+        color: #24559C; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.paid-sick-leave {
-        color: #73BBA2; }
+        color: #417505; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.ext-paid-holiday {
         color: #F99D32; }
       .time-off-content .time-off-item .time-off-item-middle .item-off-item-title.default-holiday {
-        color: #3964A4; }
+        color: #24559C; }
     .time-off-content .time-off-item .time-off-item-middle .item-off-item-text {
       font-size: 14px;
       color: #9B9B9B; }
@@ -2808,16 +2808,15 @@ Copyright (c) 2015 Daniel Eden
       text-align: center; }
       .time-off-content .time-off-item .time-off-item-right .time-circle .time-leave-text {
         margin-top: 13px;
-        font-size: 16px;
-        color: #6BB9F0; }
+        font-size: 16px; }
       .time-off-content .time-off-item .time-off-item-right .time-circle.paid-holiday {
-        color: #6BB9F0; }
+        color: #24559C; }
       .time-off-content .time-off-item .time-off-item-right .time-circle.paid-sick-leave {
         color: #73BBA2; }
       .time-off-content .time-off-item .time-off-item-right .time-circle.ext-paid-holiday {
         color: #F99D32; }
       .time-off-content .time-off-item .time-off-item-right .time-circle.default-holiday {
-        color: #3964A4; }
+        color: #24559C; }
     .time-off-content .time-off-item .time-off-item-right .approve-status {
       position: absolute;
       left: 0px;
@@ -2825,11 +2824,11 @@ Copyright (c) 2015 Daniel Eden
       top: 60px;
       font-size: 14px; }
       .time-off-content .time-off-item .time-off-item-right .approve-status.approved {
-        color: #B95756; }
+        color: #4A90E2; }
       .time-off-content .time-off-item .time-off-item-right .approve-status.approving {
-        color: #25569D; }
-      .time-off-content .time-off-item .time-off-item-right .approve-status.rejected {
         color: #F99D32; }
+      .time-off-content .time-off-item .time-off-item-right .approve-status.rejected {
+        color: #B95756; }
       .time-off-content .time-off-item .time-off-item-right .approve-status.draft {
         color: #73BBA2; }
     .time-off-content .time-off-item .time-off-item-right .back-arrow {
@@ -2844,7 +2843,7 @@ Copyright (c) 2015 Daniel Eden
   color: white;
   background-image: url("./../img/application/timesheet-approve/list/BG@3x.png");
   background-size: cover;
-  padding-top: 100px;
+  padding-top: 120px;
   width: 100%;
   height: 100%; }
 
@@ -3027,6 +3026,10 @@ Copyright (c) 2015 Daniel Eden
     background-position: 9px 7px;
     padding-left: 25px; }
 
+.search-input.ng-leave {
+  -webkit-animation: fadeOut 0.4s;
+  animation: fadeOut .4s; }
+
 .search-input.ng-enter {
   -webkit-animation: fadeInUp 0.6s;
   animation: fadeInUp .6s; }
@@ -3049,38 +3052,38 @@ Copyright (c) 2015 Daniel Eden
 
 @media screen and (max-width: 320px) and (min-width: 300px) {
   .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #7caed5);
-    background: linear-gradient(top, #17468F, #3D7BC4, #7caed5);
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #a3bfe0);
+    background: linear-gradient(top, #17468F, #3D7BC4, #a3bfe0);
     /* 标准的语法 */ } }
 
 @media screen and (max-width: 350px) and (min-width: 321px) {
   .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #7aadd5);
-    background: linear-gradient(top, #17468F, #3D7BC4, #7aadd5);
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #a4c0e0);
+    background: linear-gradient(top, #17468F, #3D7BC4, #a4c0e0);
     /* 标准的语法 */ } }
 
 @media screen and (max-width: 389px) and (min-width: 351px) {
   .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
-    background: linear-gradient(top, #17468F, #3D7BC4, #6EA5D2);
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #93b4dc);
+    background: linear-gradient(top, #17468F, #3D7BC4, #93b4dc);
     /* 标准的语法 */ } }
 
 @media screen and (max-width: 401px) and (min-width: 390px) {
   .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #65a1cf);
-    background: linear-gradient(top, #17468F, #3D7BC4, #65a1cf);
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #8fb2da);
+    background: linear-gradient(top, #17468F, #3D7BC4, #8fb2da);
     /* 标准的语法 */ } }
 
 @media screen and (min-width: 402px) {
   .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #5f9dcd);
-    background: linear-gradient(top, #17468F, #3D7BC4, #5f9dcd);
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #8bafd9);
+    background: linear-gradient(top, #17468F, #3D7BC4, #8bafd9);
     /* 标准的语法 */ } }
 
 .custom-head {
   position: fixed;
   z-index: 100;
-  height: 100px;
+  height: 120px;
   width: 100%; }
   .custom-head .custom-first-head {
     height: 44px; }
@@ -3244,15 +3247,16 @@ Copyright (c) 2015 Daniel Eden
     margin-top: -23px; }
 
 .ts-approve-list-item.activated {
-  opacity: 0.6; }
+  background-color: #f8f8f8;
+  opacity: 0.8; }
 
 .ts-approve-list-item.ng-enter {
-  -webkit-animation: zoomInUp 0.5s;
-  animation: zoomInUp .5s; }
+  -webkit-animation: fadeIn 0.5s;
+  animation: fadeIn .5s; }
 
 .ts-approve-list-item.ng-enter-stagger {
-  -webkit-animation-delay: 150ms;
-  animation-delay: 150ms;
+  -webkit-animation-delay: 90ms;
+  animation-delay: 90ms;
   -webkit-animation-duration: 0ms;
   animation-duration: 0ms; }
 
@@ -4813,8 +4817,6 @@ Copyright (c) 2015 Daniel Eden
         width: 14%;
         height: 60px;
         position: relative; }
-        .timesheet .calendar-day .calendar-week .day-item.activated {
-          background: #eeeeee; }
         .timesheet .calendar-day .calendar-week .day-item.choosed.activated {
           background: #E3F5F0; }
         .timesheet .calendar-day .calendar-week .day-item.approve {
@@ -4877,12 +4879,22 @@ Copyright (c) 2015 Daniel Eden
       margin-bottom: -38px;
       height: 76px;
       position: relative; }
-      .timesheet .calendar-day .allowance .batch-write {
+      .timesheet .calendar-day .allowance .batch-process {
         position: absolute;
         right: 20px;
-        top: 10px;
+        top: 0px;
         height: 30px;
-        font-size: 24px; }
+        width: 30px;
+        font-size: 24px;
+        background: url("../img/application/timesheet/auto-G@3x.png");
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center; }
+        .timesheet .calendar-day .allowance .batch-process.selected {
+          background: url("../img/application/timesheet/auto-b@3x.png");
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center; }
       .timesheet .calendar-day .allowance .allowance-click {
         width: 76px;
         height: 76px;
@@ -5053,6 +5065,20 @@ Copyright (c) 2015 Daniel Eden
 .timesheet-year-pop-container {
   height: 250px;
   width: 155px; }
+
+.timesheet.popover {
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  z-index: 10;
+  display: block;
+  margin-top: 12px;
+  margin-left: -110px;
+  height: 130px;
+  width: 130px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  opacity: 0; }
 
 .personnel-policy .item-title-bg {
   height: 41px;
@@ -7623,6 +7649,25 @@ Copyright (c) 2015 Daniel Eden
     padding-top: 10px;
     height: 40px; }
 
+.employee-search-content .history {
+  font-size: 15px;
+  color: #D2D2D2; }
+  .employee-search-content .history img {
+    height: 16px;
+    align-self: center;
+    padding-left: 5px; }
+  .employee-search-content .history .history-logo {
+    padding-left: 10px; }
+  .employee-search-content .history .history-line {
+    border-bottom: 1px solid #D2D2D2;
+    align-self: center; }
+
+.employee-search-content .employee-item {
+  padding: 10px 10px 10px 16px !important; }
+  .employee-search-content .employee-item.no-top-border-color {
+    border-top: none;
+    margin-top: -5px; }
+
 .login {
   background: url("../img/login/login-back.png");
   background-size: 100% 100%;
@@ -8695,6 +8740,15 @@ Copyright (c) 2015 Daniel Eden
   width: 14px;
   height: 13px; }
 
+.navigateHrms .slider-item1 {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: url("../img/1@3x.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center; }
+
 .navigateHrms .slider-item {
   margin: 0 auto;
   width: 100%;
@@ -8704,17 +8758,22 @@ Copyright (c) 2015 Daniel Eden
   margin: 0;
   padding: 0;
   position: absolute;
-  top: 15px;
+  top: 25px;
   right: 15px;
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;
   text-align: center;
-  width: 80px;
+  width: 40px;
+  border-radius: 20px;
+  border: 2px solid #DBDBDB;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.4);
   color: white;
-  font-size: 16px;
-  z-index: 100;
-  background: none;
-  border: none; }
+  z-index: 100; }
+  .navigateHrms .skip-button.activated {
+    opacity: 0.8;
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8); }
 
 .navigateHrms .slider-button {
   position: absolute;
