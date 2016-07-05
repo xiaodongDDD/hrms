@@ -1,10 +1,10 @@
 <ion-view title="选择费用" hide-tabs="true" class="expenseItemList-view">
      <ion-header-bar align-title="center" class="bar-stable">
-        <div class="buttons"> 
+        <div class="buttons">
           <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
             <span class="back-text">返回</span>
           </button>
-        </div> 
+        </div>
         <h1 class="title">选择费用</h1>
         <div class="buttons">
         </div>
@@ -18,15 +18,14 @@
         </div>
 
         <ion-list class="airport-list" >
-            <ion-item class="airport list-item-container" modifier="tappable" ng-repeat="expenseItem in expenseItemList | filter:query" >
+            <ion-item class="airport list-item-container" ng-click="selectExpenseItem($event)" modifier="tappable" ng-repeat="expenseItem in expenseItemList | filter:query" >
                 <div class="row" expenseItemCode="{{expenseItem.expense_item_code}}"
                      expenseItemName="{{expenseItem.expense_item_desc}}"
                      expenseItemIndex="{{expenseItem.expense_item_index}}">
 
                     <div class="xbr-f-b" class="airport-name col"  expenseItemCode="{{expenseItem.expense_item_code}}"
                              expenseItemName="{{expenseItem.expense_item_desc}}"
-                                expenseItemIndex="{{expenseItem.expense_item_index}}"
-                         ng-click="selectExpenseItem($event)">
+                                expenseItemIndex="{{expenseItem.expense_item_index}}">
                         {{expenseItem.expense_item_desc}}
                     </div>
                 </div>

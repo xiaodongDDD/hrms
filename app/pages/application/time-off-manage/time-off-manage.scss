@@ -200,7 +200,6 @@
   }
 }
 
-
 .time-off-content {
   &.ios-content {
     top: 200px;
@@ -232,10 +231,10 @@
       height: 90px;
       border-radius: 5px 0px 0px 5px;
       &.paid-holiday {
-        border-left: 3px solid #6BB9F0;
+        border-left: 3px solid #24559C;
       }
       &.paid-sick-leave {
-        border-left: 3px solid #73BBA2;
+        border-left: 3px solid #417505;
       }
       &.ext-paid-holiday {
         border-left: 3px solid #F99D32;
@@ -252,18 +251,18 @@
       .item-off-item-title {
         font-size: 14px;
         padding-top: 5px;
-        padding-bottom: 5px;
+        padding-bottom: 3px;
         &.paid-holiday {
-          color: #6BB9F0;
+          color: #24559C;
         }
         &.paid-sick-leave {
-          color: #73BBA2;
+          color: #417505;
         }
         &.ext-paid-holiday {
           color: #F99D32;
         }
         &.default-holiday {
-          color: #3964A4;
+          color: #24559C;
         }
       }
       .item-off-item-text {
@@ -289,10 +288,9 @@
         .time-leave-text {
           margin-top: 13px;
           font-size: 16px;
-          color: #6BB9F0;
         }
         &.paid-holiday {
-          color: #6BB9F0;
+          color: #24559C;
         }
         &.paid-sick-leave {
           color: #73BBA2;
@@ -301,7 +299,7 @@
           color: #F99D32;
         }
         &.default-holiday {
-          color: #3964A4;
+          color: #24559C;
         }
       }
       .approve-status {
@@ -311,13 +309,13 @@
         top: 60px;
         font-size: 14px;;
         &.approved {
-          color: #B95756;
+          color: #4A90E2;
         }
         &.approving {
-          color: #25569D;
+          color: #F99D32;
         }
         &.rejected {
-          color: #F99D32;
+          color: #B95756;
         }
         &.draft {
           color: #73BBA2;

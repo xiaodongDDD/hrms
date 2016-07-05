@@ -47,19 +47,42 @@ angular.module('applicationModule')
               destUrl: "tab.flyback",
             },
             {
-              appName: "代办事项",
+              appName: "工作流",
               imageUrl: "build/img/application/application/schedule@3x.png",
               destUrl: "tab.workflow-list",
+            },
+            {
+              appName: "我的申请",
+              imageUrl: "build/img/application/application/schedule@3x.png",
+              destUrl: "",
             },
             {
               appName: "报销单查询",
               imageUrl: "build/img/application/application/wipeOut@3x.png",
               destUrl: "tab.expense",
-            },
+            }]
+        },
+        {
+          list: [
             {
               appName: "记一笔",
               imageUrl: "build/img/application/application/sign@3x.png",
               destUrl: "tab.acc_main"
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
             }]
         }];
 
@@ -114,7 +137,8 @@ angular.module('applicationModule')
               appName: "",
               imageUrl: "",
               destUrl: "",
-            },]
+            }
+          ]
         }
       ];
 
@@ -135,13 +159,19 @@ angular.module('applicationModule')
         $state.go(appItem.destUrl);
       };
 
-      console.log('applicationCtrl.enter');
+      if (baseConfig.debug) {
+        console.log('applicationCtrl.enter');
+      }
 
       $scope.$on('$ionicView.enter', function (e) {
-        console.log('applicationCtrl.$ionicView.enter');
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$ionicView.enter');
+        }
       });
 
       $scope.$on('$destroy', function (e) {
-        console.log('applicationCtrl.$destroy');
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$destroy');
+        }
       });
     }]);

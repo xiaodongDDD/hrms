@@ -36,6 +36,7 @@ angular.module('applicationModule')
       //只支持iOS和Android
       $scope.circleAnimationFlag = false;//数据未加载
       $scope.isIOSPlatform       = ionic.Platform.isIOS();//判断平台,留出iOS的statusBar
+      $scope.fetchDataFlag       = true;
       $scope.timeOffHeader       ={
         /*userId                 : 999,
         paidHoliday            : 9,
@@ -77,7 +78,6 @@ angular.module('applicationModule')
       $scope.timeOffCreate = function(){
 
       };
-
 
       function getServeData() {
 
@@ -173,7 +173,7 @@ angular.module('applicationModule')
             });
 
             $scope.circleAnimationFlag = true;//数据加载完成标志,触发进度圈动画
-
+            $scope.fetchDataFlag       = false;//数据加载完成,设置数据加载标记隐藏
 
           } else {
             if (response.status === 'E' || response.status == 'e') {
