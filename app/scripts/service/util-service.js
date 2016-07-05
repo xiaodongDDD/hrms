@@ -102,7 +102,7 @@ angular.module('HmsModule')
             animation: 'fade-in',
             showBackdrop: false,
             maxWidth: 200,
-            duration: 2000
+            duration: 1000
           });
         } else {
           $cordovaToast.showLongBottom((angular.isDefined(content) ? content : "操作失败")).then(function (success) {

@@ -179,8 +179,8 @@
 }
 
 .transform-popover {
-  animation: transform-popover 500ms ease both;
-  -webkit-animation: transform-popover 500ms ease both;
+  animation: transform-popover 300ms ease both;
+  -webkit-animation: transform-popover 300ms ease both;
 }
 
 @keyframes transform-popover {
@@ -226,8 +226,8 @@
 }
 
 .search-input.ng-leave {
-  -webkit-animation: fadeOut 0.4s;
-  animation: fadeOut .4s;
+  -webkit-animation: fadeOut 0.1s;
+  animation: fadeOut .1s;
 }
 
 .search-input.ng-enter {

@@ -18,8 +18,8 @@ HmsModule.directive("footerSelect", function () {
     template: '<ion-footer-bar class="foot-bar">' +
     '<div class="row buttons">' +
     '<button class="button button-clear ts-button-left" ng-click="selectAllItem()">全选</button>' +
-    '<button class="button button-clear ts-button-center" ng-click="passThrough()">通过</button>' +
-    '<button class="button button-clear ts-button-right" ng-click="refuse()">拒绝</button>' +
+    '<button class="button button-clear ts-button-center" ng-click="refuse()">拒绝</button>' +
+    '<button class="button button-clear ts-button-right" ng-click="passThrough()">通过</button>' +
     '</div>' +
     '</ion-footer-bar>',
     replace: true, //使用模板替换原始标记
