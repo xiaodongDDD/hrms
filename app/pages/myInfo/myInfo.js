@@ -9,11 +9,13 @@ angular.module('myInfoModule')
     'baseConfig',
     'hmsHttp',
     'hmsPopup',
+    'checkVersionService',
     function ($scope,
               $state,
               baseConfig,
               hmsHttp,
-              hmsPopup) {
+              hmsPopup,
+              checkVersionService) {
 
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
@@ -63,6 +65,10 @@ angular.module('myInfoModule')
       $scope.feedback=function(){//进入反馈界面
         $state.go('tab.feedback');
       };
+
+      $scope.checkVersion=function(){
+        checkVersionService.checkAppVersion();
+      }
 
       $scope.checkMyInfo=function(){//进入查看我的信息界面
         var info=$scope.personalInfo;
