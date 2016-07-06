@@ -218,7 +218,7 @@
     border: 1px solid rgba(151, 151, 151, 0.15);
     width: 87.6%;
     font-size: $font-size-small;
-    background-color: $color-base;
+    background-color: $color-base!important;
     background-image: url('./../img/application/timesheet-approve/list/search.png');
     @include image-background(no-repeat, 11px 13px, 9px 7px);
     padding-left: 25px;
