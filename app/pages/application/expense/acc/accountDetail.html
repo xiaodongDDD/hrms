@@ -39,6 +39,11 @@
     background: none!important;
     border: none!important;
   }
+  .accountDetail-view .ion-ios-camera{
+    font-size: 26px;
+    position: relative;
+    top: -7px;
+  }
 </style>
 <ion-view title="{{title}}" hide-tabs="true" class="accountDetail-view">
 
@@ -53,7 +58,8 @@
     <div class="buttons">
       <div class="xbr-flag-c" ng-click="addPicture()"
            ng-controller="photosController" ng-show="canEdit">
-        <img src="build/img/application/expense/takePhoto.png">
+        <!--<img src="build/img/application/expense/takePhoto.png">-->
+        <i class="ion-ios-camera"></i>
       </div>
     </div>
   </ion-header-bar>
