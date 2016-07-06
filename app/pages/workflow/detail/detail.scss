@@ -93,6 +93,9 @@
         padding-right: 14px;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
+        i{
+          font-size: 12px; margin-right: 10px;
+        }
       }
       .hms-singal-array-link {
         float: left;
@@ -140,6 +143,19 @@
         }
       }
     }
+
+    .hms-singal-array-sub-header{
+      padding-top: 11px;
+      padding-bottom: 5.5px;
+      .hms-singal-array-name{
+        font-size: 16px;
+        padding-left: 15px;
+        border-bottom: 1px solid #24559C;
+        color: #24559C;
+        width: 105px;
+      }
+    }
+
     .hms-singal-array-content {
       padding-left: 12px;
       .hms-singal-array-line {
@@ -257,24 +273,6 @@
         height: 44px;
         margin-left: auto;
         margin-right: auto;
-        .hms-work-approve {
-          &.activated{
-            img {
-              width: 26px;
-              height: 26px;
-            }
-          }
-          width: 50%;
-          height: 44px;
-          padding: 8px;
-          padding-left: 15px;
-          padding-right: 15px;
-          float: left;
-          img {
-            width: 26px;
-            height: 26px;
-          }
-        }
         .hms-work-transmit {
           float: left;
           width: 50%;
@@ -289,9 +287,28 @@
             }
           }
           img {
-            float: right;
             width: 27px;
             height: 27px;
+          }
+        }
+        .hms-work-approve {
+          &.activated{
+            img {
+              float: right;
+              width: 26px;
+              height: 26px;
+            }
+          }
+          width: 50%;
+          height: 44px;
+          padding: 8px;
+          padding-left: 15px;
+          padding-right: 15px;
+          float: left;
+          img {
+            float: right;
+            width: 26px;
+            height: 26px;
           }
         }
       }
@@ -304,13 +321,13 @@
         margin-right: auto;
         padding-left: 18px;
         padding-right: 18px;
-        .hms-work-approve-alias {
+        .hms-work-transmit-alias {
           float: left;
           width: 50%;
           height: 30px;
           text-align: left;
         }
-        .hms-work-transmit-alias {
+        .hms-work-approve-alias {
           float: right;
           width: 50%;
           height: 30px;

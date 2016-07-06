@@ -53,7 +53,8 @@ angular.module('applicationModule')
 
       //控制需要显示的数据模块
       $scope.showList = {
-        contractRenewShowFlag: false, //合同续签地址回写数据块
+        contractRenewShowFlag: false, //合同续签地址回写数据块,
+        applicationFullMemberShowFlag: false, //转正申请数据块
       }
 
       $scope.actionType = {
@@ -61,7 +62,7 @@ angular.module('applicationModule')
         "reject": "-1",
         "back": "",
         "transmit": "3"
-      }
+      };
       $scope.historyList = [];
       $scope.singalArrayList = [];
       $scope.loadingDataFlag = false;
@@ -86,7 +87,9 @@ angular.module('applicationModule')
       var init = {
         initDataModal: function () {
           if (detail.workflowId == 100728) { //合同续签地址维护
-            $scope.contractRenewShowFlag = true;
+            $scope.showList.contractRenewShowFlag = true;
+          }else if (detail.workflowId == 10008) { //合同续签地址维护
+            $scope.showList.applicationFullMemberShowFlag = true;
           }
         }
       };
@@ -175,9 +178,18 @@ angular.module('applicationModule')
         return oneLine;
       };
 
-      $scope.showContent = function (array) {
+      $scope.showContent = function (array,$event) {
+        var detail = $ionicScrollDelegate.$getByHandle('workflowDetailHandle').getScrollView();
+        if(baseConfig.debug){
+          console.log('detail ' + angular.toJson(detail.__clientHeight));
+          console.log('$event ' + angular.toJson($event.pageY));
+        }
+
         if (!array.showFlag) {
           array.showFlag = true;
+          if($event.pageY + 10 > detail.__clientHeight ){
+            $ionicScrollDelegate.$getByHandle('workflowDetailHandle').scrollBottom(true);
+          }
         } else {
           array.showFlag = false;
         }
