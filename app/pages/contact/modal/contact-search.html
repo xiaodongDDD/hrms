@@ -1,14 +1,15 @@
-<ion-modal-view class="transmit-person-modal">
+<ion-modal-view class="transmit-person-modal" ng-controller="employeeModalCtl">
   <ion-header-bar align-title="center" class="bar-stable">
     <div class="transmit-search">
       <div class="transmit-button">
         <i class="ion-ios-search search-i"></i>
       </div>
-      <input id="inputSearch" placeholder="搜索" autofocus
+      <input id="employeeInputSearch" placeholder="搜索" autofocus="true" ng-virtual-keyboard
+             type="text"
              ng-model="contactKey.getValue"
              ng-change="searchContacts()">
       <!--<button class="button button-block clear-button" ng-click="clearUsername()">-->
-        <!--<img src="build/img/login/login-clear.png" class="clear-image"/>-->
+      <!--<img src="build/img/login/login-clear.png" class="clear-image"/>-->
       <!--</button>-->
     </div>
     <div class="buttons">

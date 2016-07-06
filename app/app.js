@@ -96,9 +96,9 @@ angular.module('myApp')
         initiateUI();
       }
       var rootConfig = {
-        dbName:baseConfig.dbName,
-        dbLocation:0,
-        appRootFile:'helloCordova'
+        dbName: baseConfig.dbName,
+        dbLocation: 0,
+        appRootFile: 'helloCordova'
       };
       if (ionic.Platform.isWebView()) {
 
@@ -106,19 +106,23 @@ angular.module('myApp')
         // alert(window.sqlitePlugin.openDatabase);
         // alert(LocalFileSystem);
         /*window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
-          // 获取路径
-          baseConfig.appRootPath = fileSys.root.toURL() + '/' + baseConfig.appRootFile + '/';
-          //showMessage(baseConfig.appRootPath+' - '+ fileSys.root.toURL() );
-          //The folder is created if doesn't exist
-          fileSys.root.getDirectory(baseConfig.appRootFile, {create: true, exclusive: false},
-            function (directory) {
-            },
-            function (error) {
-              alert(error);
-            });
-        });*/
+         // 获取路径
+         baseConfig.appRootPath = fileSys.root.toURL() + '/' + baseConfig.appRootFile + '/';
+         //showMessage(baseConfig.appRootPath+' - '+ fileSys.root.toURL() );
+         //The folder is created if doesn't exist
+         fileSys.root.getDirectory(baseConfig.appRootFile, {create: true, exclusive: false},
+         function (directory) {
+         },
+         function (error) {
+         alert(error);
+         });
+         });*/
 
-        var db = window.sqlitePlugin.openDatabase({name: baseConfig.dbName, createFromLocation: 1, location: baseConfig.dbLocation});
+        var db = window.sqlitePlugin.openDatabase({
+          name: baseConfig.dbName,
+          createFromLocation: 1,
+          location: baseConfig.dbLocation
+        });
         db.transaction(function (tx) {
           tx.executeSql('CREATE TABLE IF NOT EXISTS MOBILE_EXP_REPORT_LINE \
                     (line_id integer primary key AUTOINCREMENT,\
@@ -199,7 +203,7 @@ angular.module('myApp')
       $ionicConfigProvider.platform.android.views.transition('android');
 
       $stateProvider
-      // setup an abstract state for the tabs directive
+        // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
           abstract: true,

@@ -81,12 +81,15 @@ angular.module('contactModule')
       /**
        * modal input 方法区
        */
+        //fadeInRightBig/fadeInUp
       $ionicModal.fromTemplateUrl('build/pages/contact/modal/contact-search.html', {
-        scope: $scope
+        scope: $scope,
+        animation: 'animated fadeInRightBig'
       }).then(function (modal) {
         $scope.contactInputModal = modal;
       });
       $scope.goInputModal = function () {
+        $scope.$broadcast('contact-search');
         $scope.contactInputModal.show();
       };
 
@@ -142,6 +145,7 @@ angular.module('contactModule')
         $scope.showHistory = false;
         if ($scope.contactKey.getValue === '') {
           $scope.showHistory = true;
+          $scope.resultList = [];
         } else {
         }
         $scope.newPage = 1;

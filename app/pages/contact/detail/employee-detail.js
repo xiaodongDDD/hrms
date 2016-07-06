@@ -42,6 +42,9 @@ angular.module('contactModule')
        * var section
        */
       {
+        if (ionic.Platform.isIOS()) {
+          angular.element('.common-head').css('paddingTop', '20px');
+        }
         $scope.employeeInfo = {}; //存储查询员工的详细信息
         $scope.contactLoading = true; //默认显示loading加载
         var getEmployeeDetailUrl = baseConfig.businessPath + '/get_empinfo/get_emp_detail';
