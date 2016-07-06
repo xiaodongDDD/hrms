@@ -12,8 +12,9 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content ng-class="{'true':'detail-has-footer'}[workflowActionShowFlag]">
+  <ion-content ng-class="{'true':'detail-has-footer'}[workflowActionShowFlag]" delegate-handle="workflowDetailHandle">
 
+    <!--工作流历史记录-->
     <div class="hms-workflow-history" ng-if="historyList.length>0">
       <div class="history-slide">
         <i class="ion-ios-arrow-right"></i>
@@ -39,10 +40,10 @@
     </div>
 
     <!--合同续签方式维护方式-->
-    <div class="hms-workflow-array" ng-if="contractRenewShowFlag">
+    <div class="hms-workflow-array" ng-if="showList.contractRenewShowFlag">
       <div class="hms-singal-array-header">
         <div class="hms-singal-array-name">
-          <i class="ion-ios-sunny"></i>合同续签方式维护通知
+          <i class="ion-record"></i>合同续签方式维护通知
         </div>
         <div class="hms-singal-array-operation-text">
           保存
@@ -68,12 +69,107 @@
       </div>
     </div>
 
+    <!--转正申请-->
+    <div class="hms-workflow-array" ng-if="showList.applicationFullMemberShowFlag">
+      <div class="hms-singal-array-header">
+        <div class="hms-singal-array-name">
+          <i class="ion-record"></i>转正信息
+        </div>
+        <div class="hms-singal-array-operation" ng-click="showContent(array,$event)">
+          <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
+        </div>
+      </div>
+      <div class="hms-singal-array-content">
+        <div class="hms-singal-array-line" ng-click="showDataList()">
+          <div class="hms-singal-array-key">
+            申请者
+          </div>
+          <div class="hms-singal-array-value">
+          </div>
+        </div>
+        <div class="hms-singal-array-line">
+          <div class="hms-singal-array-key">
+            转正职位
+          </div>
+          <div class="hms-singal-array-value">
+          </div>
+        </div>
+        <div class="hms-singal-array-line">
+          <div class="hms-singal-array-key">
+            转正意见
+          </div>
+          <div class="hms-singal-array-value">
+          </div>
+        </div>
+      </div>
+      <div class="hms-singal-array-sub-header">
+        <div class="hms-singal-array-name">
+          试用期信息
+        </div>
+      </div>
+      <div class="hms-singal-array-content">
+        <div class="hms-singal-array-line">
+          <div class="hms-singal-array-key">
+            测试
+          </div>
+          <div class="hms-singal-array-value">
+            测试
+          </div>
+        </div>
+      </div>
+      <div class="hms-singal-array-sub-header">
+        <div class="hms-singal-array-name">
+          考评结果
+        </div>
+        <div class="hms-singal-array-name">
+          总分
+        </div>
+      </div>
+      <div class="hms-singal-array-content">
+        <div class="hms-singal-array-line">
+          <div class="hms-singal-array-key">
+            测试
+          </div>
+          <div class="hms-singal-array-value">
+            测试
+          </div>
+        </div>
+      </div>
+      <div class="hms-singal-array-content">
+        <div class="hms-singal-array-line">
+          <div class="hms-singal-array-key">
+            学习能力
+          </div>
+          <div class="hms-singal-array-value">
+            学习能力
+          </div>
+        </div>
+      </div>
+
+      <div class="hms-singal-array-sub-header">
+        <div class="hms-singal-array-name">
+          试用期总结
+        </div>
+      </div>
+      <div class="hms-singal-array-content">
+        <div class="hms-singal-array-line">
+          <div class="hms-singal-array-key">
+            需求改进
+          </div>
+          <div class="hms-singal-array-value">
+            测试
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--一维数组-->
     <div class="hms-workflow-array" ng-repeat="array in singalArrayList" ng-if="true">
       <div class="hms-singal-array-header">
         <div class="hms-singal-array-name">
-          <i class="ion-ios-sunny"></i>{{array.detail_title}};
+          <i class="ion-record"></i>{{array.detail_title}};
         </div>
-        <div class="hms-singal-array-operation" ng-click="showContent(array)">
+        <div class="hms-singal-array-operation" ng-click="showContent(array,$event)">
           <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
         </div>
       </div>
@@ -87,10 +183,11 @@
       </div>
     </div>
 
+    <!--多维数组-->
     <div class="hms-workflow-array" ng-repeat="array in multipleLine">
       <div class="hms-singal-array-header">
         <div class="hms-singal-array-name">
-          <i class="ion-ios-sunny"></i>{{array.title}};
+          <i class="ion-record"></i>{{array.title}};
         </div>
         <div class="hms-singal-array-link">
           <a class="hms-array-selector">共{{array.arrayList.length}}条</a>
@@ -99,7 +196,7 @@
           <a class="hms-array-selector" ng-click="goForward(array)"
              ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
         </div>
-        <div class="hms-singal-array-operation" ng-click="showContent(array)">
+        <div class="hms-singal-array-operation" ng-click="showContent(array,$event)">
           <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
         </div>
       </div>
@@ -113,6 +210,7 @@
       </div>
     </div>
 
+    <!--处理意见和转交人-->
     <div class="hms-extra-info" ng-if="workflowActionShowFlag">
       <div class="hms-opinion">
         <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
@@ -140,19 +238,19 @@
     </div>
     <div class="hms-workflow-other">
       <div class="hms-workflow-function">
-        <div class="hms-work-approve" ng-click="submitAction(actionType.approve)" ng-if="currentDetail.canApprove=='Y'">
+        <div class="hms-work-transmit" ng-click="submitAction(actionType.transmit)" ng-if="currentDetail.canTransmit=='Y'">
           <img src="build/img/workflow/deliver@3x.png"/>
         </div>
-        <div class="hms-work-transmit" ng-click="submitAction(actionType.transmit)" ng-if="currentDetail.canTransmit=='Y'">
+        <div class="hms-work-approve" ng-click="submitAction(actionType.approve)" ng-if="currentDetail.canApprove=='Y'">
           <img src="build/img/workflow/approval2@3x.png"/>
         </div>
       </div>
       <div class="hms-workflow-other-alias">
-        <div class="hms-work-approve-alias" ng-if="currentDetail.canApprove=='Y'">
-          审批
-        </div>
         <div class="hms-work-transmit-alias" ng-if="currentDetail.canTransmit=='Y'">
           转交
+        </div>
+        <div class="hms-work-approve-alias" ng-if="currentDetail.canApprove=='Y'">
+          审批
         </div>
       </div>
     </div>
