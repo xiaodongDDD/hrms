@@ -72,17 +72,20 @@ angular.module('myInfoModule')
           }else if($scope.qualityIssue[3] == true){
             param.params.p_feedback_type="其他问题";
           }
+          hmsPopup.showLoading('请稍候');
           hmsHttp.post(url, param).success(function (result) {
             //hmsPopup.hideLoading();
             var message=result.returnMsg;
             if (baseConfig.debug) {
               console.log("result success " + angular.toJson(result));
             }
+            hmsPopup.hideLoading();
             hmsPopup.showShortCenterToast(message);
             if(result.returnCode=="S"){
               $ionicHistory.goBack();
             }
           }).error(function(error,status){
+            hmsPopup.hideLoading();
             hmsPopup.showShortCenterToast("网络连接出错");
             if (baseConfig.debug) {
               console.log("response error " + angular.toJson(error));
