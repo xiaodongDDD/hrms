@@ -1,7 +1,7 @@
 /** Author      : joshua.shi
  *
  *  History:
- *      1.00    2016-4-28   joshua.shi   Creation
+ *      1.00    2016-5-28   joshua.shi   Creation
  */
 angular.module('myApp')
   .config(['$stateProvider',
@@ -76,7 +76,7 @@ angular.module('applicationModule')
 
 
       $scope.timeOffCreate = function(){
-
+        $state.go("tab.time-off-manage-detail")
       };
 
       function getServeData() {
