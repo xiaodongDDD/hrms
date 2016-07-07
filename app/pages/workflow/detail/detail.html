@@ -45,7 +45,7 @@
         <div class="hms-singal-array-name">
           <i class="ion-record"></i>合同续签方式维护通知
         </div>
-        <div class="hms-singal-array-operation-text">
+        <div class="hms-singal-array-operation-text" ng-click="renewContractUtil.submit()">
           保存
         </div>
       </div>
@@ -54,17 +54,18 @@
           <div class="hms-singal-array-key">
             续签方式
           </div>
-          <div class="hms-singal-array-value">
-            现场
+          <div class="hms-singal-array-value" ng-bind="renewContract.method">
           </div>
         </div>
         <div class="hms-singal-array-line">
           <div class="hms-singal-array-key">
             续签地址
           </div>
-          <div class="hms-singal-array-value">
-             青浦区
+          <div class="hms-singal-array-value" ng-bind="renewContract.address" ng-if="!renewContractEditable">
           </div>
+          <input class="hms-singal-array-value" placeholder="请填写邮寄地址"
+                 ng-model="renewContract.address" ng-if="renewContractEditable" style="height: 18px;">
+          </input>
         </div>
       </div>
     </div>
@@ -169,7 +170,7 @@
         <div class="hms-singal-array-name">
           <i class="ion-record"></i>{{array.detail_title}};
         </div>
-        <div class="hms-singal-array-operation" ng-click="showContent(array,$event)">
+        <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
           <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
         </div>
       </div>
@@ -196,7 +197,7 @@
           <a class="hms-array-selector" ng-click="goForward(array)"
              ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
         </div>
-        <div class="hms-singal-array-operation" ng-click="showContent(array,$event)">
+        <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
           <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
         </div>
       </div>
@@ -216,7 +217,7 @@
         <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
         </input>
       </div>
-      <div class="hms-transmit" ng-click="chooseTransmitPerson()">
+      <div class="hms-transmit" ng-click="workflowDetailUtil.chooseTransmitPerson()">
         <div class="row row-col-no-padding">
           <div class="col col-20 transmit-title row-col-no-padding">
             转交人
@@ -233,15 +234,17 @@
   </ion-content>
 
   <div class="hms-workflow-submit" ng-if="workflowActionShowFlag">
-    <div class="hms-workflow-reject" ng-click="submitAction(actionType.reject)" >
+    <div class="hms-workflow-reject" ng-click="workflowDetailUtil.submitAction(actionType.reject)">
       <span ng-if="currentDetail.canRefuse=='Y'">拒绝</span>
     </div>
     <div class="hms-workflow-other">
       <div class="hms-workflow-function">
-        <div class="hms-work-transmit" ng-click="submitAction(actionType.transmit)" ng-if="currentDetail.canTransmit=='Y'">
+        <div class="hms-work-transmit" ng-click="workflowDetailUtil.submitAction(actionType.transmit)"
+             ng-if="currentDetail.canTransmit=='Y'">
           <img src="build/img/workflow/deliver@3x.png"/>
         </div>
-        <div class="hms-work-approve" ng-click="submitAction(actionType.approve)" ng-if="currentDetail.canApprove=='Y'">
+        <div class="hms-work-approve" ng-click="workflowDetailUtil.submitAction(actionType.approve)"
+             ng-if="currentDetail.canApprove=='Y'">
           <img src="build/img/workflow/approval2@3x.png"/>
         </div>
       </div>
@@ -254,7 +257,7 @@
         </div>
       </div>
     </div>
-    <div class="hms-workflow-back" ng-click="submitAction(actionType.back)">
+    <div class="hms-workflow-back" ng-click="workflowDetailUtil.submitAction(actionType.back)">
       <span ng-if="currentDetail.canGoBack=='Y'">退回</span>
     </div>
   </div>

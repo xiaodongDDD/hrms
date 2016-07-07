@@ -5,7 +5,8 @@
   <ion-content class="back-color">
     <div class="change-line"></div>
     <div class="list">
-      <div ng-repeat="data in dataList" class="item room-item" ng-click="selectData(data)">{{data}}</div>
+      <div ng-repeat="data in dataList" class="item room-item"
+           ng-click="selectData(data)" ng-bind="data.item"></div>
     </div>
   </ion-content>
 </ion-modal-view>

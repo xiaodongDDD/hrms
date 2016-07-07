@@ -125,6 +125,13 @@ angular.module('tsApproveModule')
         }
       }
 
+      $scope.openCalender = function () {
+        if(baseConfig.debug) {
+          console.log('openCalender');
+        }
+        myFunc.openCalender();
+      };
+
       /**
        * 立即执行 拉取数据的代码
        */
