@@ -6,6 +6,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import com.hand.china.hrms2.research.R;
 
 public class ViewPagerAdapter extends PagerAdapter {
 

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
+import com.hand.china.hrms2.research.R;
 
 public class FaceAdapter extends BaseAdapter {
 
@@ -54,10 +54,10 @@ public class FaceAdapter extends BaseAdapter {
             viewHolder=(ViewHolder)convertView.getTag();
         }
         if(emoji.getId() == R.drawable.face_del_icon) {
-            convertView.setBackground(null);
+            convertView.setBackgroundDrawable(null);
             viewHolder.iv_face.setImageResource(emoji.getId());
         } else if(TextUtils.isEmpty(emoji.getCharacter())) {
-            convertView.setBackground(null);
+            convertView.setBackgroundDrawable(null);
             viewHolder.iv_face.setImageDrawable(null);
         } else {
             viewHolder.iv_face.setTag(emoji);

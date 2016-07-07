@@ -28,6 +28,7 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.TextMessage;
+import com.hand.china.hrms2.research.R;
 
 public class HandIMPlugin extends CordovaPlugin{
     public static final String ACTION_GET_CHAT_LIST = "getChatList";

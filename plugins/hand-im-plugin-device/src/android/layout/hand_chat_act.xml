@@ -21,7 +21,9 @@
             android:textSize="16sp"
             android:gravity="center_vertical"
             android:drawableLeft="@drawable/back"
+            android:drawableStart="@drawable/back"
             android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             />
         <TextView
             android:id="@+id/textv_name"
@@ -88,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="5dp">
             <ImageView
@@ -97,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/selector_emjoe"
                 android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 />
             <ImageView
                 android:id="@+id/imgv_record"
@@ -104,6 +107,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/selector_record"
                 android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 />
             <ImageView
                 android:id="@+id/imgv_album"
@@ -111,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/selector_album"
                 android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 />
             <ImageView
                 android:id="@+id/imgv_camera"
@@ -128,7 +133,9 @@
                 android:text="发送"
                 android:textColor="#FFD2D2D2"
                 android:paddingLeft="20dp"
+                android:paddingStart="20dp"
                 android:paddingRight="10dp"
+                android:paddingEnd="10dp"
                 />
         </LinearLayout>
     <LinearLayout

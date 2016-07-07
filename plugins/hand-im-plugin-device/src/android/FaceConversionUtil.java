@@ -14,6 +14,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import com.hand.china.hrms2.research.R;
 
 public class FaceConversionUtil {
 
