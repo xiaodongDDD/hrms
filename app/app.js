@@ -36,10 +36,13 @@ angular.module('myApp')
         // org.apache.cordova.statusbar required
         StatusBar.styleLightContent();
       }
-
-      if(ionic.Platform.isWebView()) {
-        imService.getImChatList();
+      if (window.localStorage.access_token === '' || angular.isUndefined(window.localStorage.access_token)) {
+      } else {
+        if(ionic.Platform.isWebView()) {
+          imService.getImChatList();
+        }
       }
+
 
       if (window.plugins.jPushPlugin) {
         var getRegistrationID = function () {

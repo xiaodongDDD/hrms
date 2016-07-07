@@ -36,7 +36,7 @@ angular.module('HmsModule')
                   token: result.rows[0].token,
                   userId: window.localStorage.empno
                 };
-                localStorage.access_token = result.rows[0].token;
+                window.localStorage.access_token = result.rows[0].token;
               } catch (e) {
                 imParams = {token: '', userId: ''};
               }
@@ -50,7 +50,7 @@ angular.module('HmsModule')
         },
         getImChatList: function () {
           var newImParams = {
-            token: localStorage.access_token,
+            token: window.localStorage.access_token,
             userId: window.localStorage.empno
           };
           dojs.getChatList(function success(msg) {

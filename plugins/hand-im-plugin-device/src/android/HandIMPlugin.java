@@ -50,10 +50,14 @@ public class HandIMPlugin extends CordovaPlugin{
         mCallbackContext = callbackContext;
         if(ACTION_GET_CHAT_LIST.equals(action)){
             //获取用户的id 这里定义上为进入初始化的操作 但是还是加了判断防止多次进入
+            Log.i("json",args.toString());
             if(args!=null && args.length()>0){
-            JSONObject obj = args.optJSONObject(0);
-            userId = obj.optString("userId");
-            token = obj.optString("token");}
+                JSONObject obj = args.optJSONObject(0);
+                Log.i("json",obj.toString());
+                userId = obj.optString("userId","");
+                Log.i("json",userId);
+                token = obj.optString("token","");
+                Log.i("json",token);    }
 //            userId = "9607";
 //            token = "jXvXjRT5+sgt7Icek92lwVY2C1hR3dIp9TV04D0Hxc3ZYBt7t353mgUNK016dkd/yTi6v2P+dmIl+PQi0Z39Zw==";
             if(token.equals("")){
