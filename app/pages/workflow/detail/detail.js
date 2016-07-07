@@ -262,7 +262,7 @@ angular.module('applicationModule')
           if (baseConfig.debug) {
             console.log('actionType ' + actionType);
           }
-          if (workflowDetail.validateWorkFlowAction(actionType)) {
+          if (workflowDetail().validateWorkFlowAction(actionType)) {
           } else {
             return '';
           }
@@ -375,7 +375,7 @@ angular.module('applicationModule')
             arrayList: line.line,
             currentPage: 1,
             currentArray: [],
-            showFlag: !$scope.workflowActionShowFlag
+            showFlag: true
           };
           if (line.line.length > 0) {
             var currentList = [];
