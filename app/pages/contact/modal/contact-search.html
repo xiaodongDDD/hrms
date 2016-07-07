@@ -54,7 +54,7 @@
         <div class="row mail-tel" ng-bind="i.emp_mobil">
         </div>
       </div>
-      <div class="tel-img" ng-click="telNumber($event,i.emp_mobil,i.emp_name,i.emp_code,'search')"></div>
+      <div class="tel-img" ng-click="telNumber($event,i,'search')"></div>
     </div>
     <ion-infinite-scroll on-infinite="loadMore()"
                          ng-if="showInfinite"
