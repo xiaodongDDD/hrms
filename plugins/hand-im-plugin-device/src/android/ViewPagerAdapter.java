@@ -5,7 +5,8 @@ import java.util.List;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import com.hand.im.R;
+import android.view.ViewGroup;
+
 public class ViewPagerAdapter extends PagerAdapter {
 
     private List<View> pageViews;
@@ -32,16 +33,16 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(View arg0, int arg1, Object arg2) {
-        ((ViewPager)arg0).removeView(pageViews.get(arg1));
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        super.destroyItem(container, position, object);
+        ((ViewPager)container).removeView(pageViews.get(position));
     }
 
-    /***
-     * 获取每一个item�?类于listview中的getview
-     */
     @Override
-    public Object instantiateItem(View arg0, int arg1) {
-        ((ViewPager)arg0).addView(pageViews.get(arg1));
-        return pageViews.get(arg1);
+    public Object instantiateItem(ViewGroup container, int position) {
+        ((ViewPager)container).addView(pageViews.get(position));
+        return pageViews.get(position);
     }
+
+
 }

@@ -113,7 +113,7 @@ angular.module('contactModule')
         //fadeInRightBig/
       $ionicModal.fromTemplateUrl('build/pages/contact/modal/contact-search.html', {
         scope: $scope,
-        animation: 'animated fadeInUp'
+        animation: 'fadeInUp'
       }).then(function (modal) {
         $scope.contactInputModal = modal;
       });

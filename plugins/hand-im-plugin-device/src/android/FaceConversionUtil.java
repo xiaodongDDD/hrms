@@ -14,7 +14,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import com.hand.im.R;
+
 public class FaceConversionUtil {
 
 	/** 每一页表情的个数 */

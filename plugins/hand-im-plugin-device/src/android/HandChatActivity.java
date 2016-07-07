@@ -50,7 +50,6 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
-import com.hand.im.R;
 
 public class HandChatActivity extends Activity implements View.OnClickListener,AdapterView.OnItemClickListener{
     public static final String TAG = "HandChatActivity";
@@ -289,7 +288,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
         vp_face.setAdapter(new ViewPagerAdapter(pageViews));
         vp_face.setCurrentItem(1);
         current = 0;
-        vp_face.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        vp_face.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int arg0) {
                 current = arg0 - 1;

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.hand.im.R;
 import java.util.List;
 
 /**
