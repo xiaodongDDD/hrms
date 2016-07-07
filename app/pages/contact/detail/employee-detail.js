@@ -30,6 +30,7 @@ angular.module('contactModule')
     'hmsPopup',
     '$ionicHistory',
     '$stateParams',
+    'imService',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -37,7 +38,8 @@ angular.module('contactModule')
               hmsHttp,
               hmsPopup,
               $ionicHistory,
-              $stateParams) {
+              $stateParams,
+              imService) {
       /**
        * var section
        */
@@ -83,7 +85,7 @@ angular.module('contactModule')
         });
       };
       $scope.telPhone = function () {
-         employeeBaseInfo = {
+        employeeBaseInfo = {
           tel: $scope.employeeInfo.mobil,
           name: $scope.employeeInfo.emp_name,
           employeeNumber: $scope.employeeInfo.emp_code
@@ -93,13 +95,19 @@ angular.module('contactModule')
       };
 
       $scope.goImTalk = function () {
-         employeeBaseInfo = {
+        employeeBaseInfo = {
           tel: $scope.employeeInfo.mobil,
           name: $scope.employeeInfo.emp_name,
           employeeNumber: $scope.employeeInfo.emp_code
         };
         storeCommonLinkman(employeeBaseInfo);
-        hmsPopup.showShortCenterToast('敬请期待!');
+
+        //go native page --im talk
+        if (ionic.Platform.isWebView()) {
+          imService.toNativeChatPage({friendId: $scope.employeeInfo.emp_code});
+        } else {
+          hmsPopup.showShortCenterToast('不支持网页聊天!');
+        }
       };
     }])
 ;

@@ -8,10 +8,12 @@ angular.module('messageModule')
     '$state',
     '$timeout',
     '$ionicPlatform',
+    'imService',
     function ($scope,
               $state,
               $timeout,
-              $ionicPlatform) {
+              $ionicPlatform,
+              imService) {
       $scope.messageList = [];
 
       //将页面的导航bar设置成白色

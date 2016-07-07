@@ -98,7 +98,7 @@ angular.module('applicationModule')
             {
               appName: "拼车",
               imageUrl: "build/img/application/application/carpooling@3x.png",
-              destUrl: "",
+              destUrl: "tab.carpooling",
             },
             {
               appName: "附近的员工",

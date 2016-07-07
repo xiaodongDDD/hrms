@@ -17,7 +17,6 @@ angular.module('myApp')
           }
         });
     }]);
-
 angular.module("applicationModule")
   .controller('accountDetailController', function ($scope, keepAccount, expenseApply, expenseObject, dialog, $http, $rootScope, $state, $ionicHistory, $ionicLoading, baseConfig) {
 
@@ -90,7 +89,6 @@ angular.module("applicationModule")
 
         if (response["status"] == "S") {
 
-
           keepAccount.boolLoadExpenseObject = false;
           // 清空 数据
 
@@ -110,8 +108,6 @@ angular.module("applicationModule")
               //expenseItemList: value.expense,
               expenseItemList_index: i
             };
-
-
             // 如果 当前 费用对象 匹配  加载费用类型 列表
             if ($scope.accountDetail.expenseObject_id == item.expenseObject_id) {
               var promise = expenseObject.queryExpenseList(item.expenseObject_id, item.expenseObject_code);
@@ -163,18 +159,12 @@ angular.module("applicationModule")
                 });
               });
             }
-
             keepAccount.projectList.push(item);
-
           });
-
           //console.log( keepAccount.projectList);
-
           //$scope.projectList = keepAccount.projectList;
           //console.log( angular.toJson($scope.projectList));
-
           $ionicLoading.hide();
-
         } else {
           var errmsg = data["message"];
           $ionicLoading.hide();
@@ -183,19 +173,14 @@ angular.module("applicationModule")
             duration: 1000
           });
         }
-
-
       }, function (response) {
         //alert("网络连接错误,初始化数据 projectList");
-
         dialog.showAlert("E", response);
         $ionicLoading.hide();
         $ionicLoading.show({
           template: '网络连接错误,初始化数据 ',
           duration: 1000
         });
-
-
       });
     }
 
@@ -494,6 +479,7 @@ angular.module("applicationModule")
       return "" + num;
 
     }
+
     function uploadDataUnit() {
 
       var form = new FormData();
@@ -514,7 +500,7 @@ angular.module("applicationModule")
       //var expense_detail_id_copy = myDate.toLocaleString();        //获取日期与时间
 
 
-      console.log('expense_detail_id'+expense_detail_id);
+      console.log('expense_detail_id' + expense_detail_id);
 
       //console.log(expense_detail_id+" - "+expense_detail_id_copy);
 
