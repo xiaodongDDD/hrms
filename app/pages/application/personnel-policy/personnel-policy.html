@@ -12,263 +12,114 @@
     <div class="item-title-bg">
       <div class="item-title-font" style="color: #B85756;">汉得经营大纲</div>
     </div>
-      <div class="policy-item-shadow">
-              <div class="item-font" ng-click="openwin('hand business outline.pdf?arg=0')">
-            <i>汉得经营大纲</i>
-            <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-          </div>
+
+    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesManagement">
+      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
+        <i style="font-size: 16px;">{{file.text}}</i>
       </div>
+      <div class="col col-20 col-offset-3 col-center">
+        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+      </div>
+    </div>
+
+    <!--HR分工情况-->
     <div class="item-title-bg">
       <div class="item-title-font">HR分工情况</div>
     </div>
-    <div class="policy-item-shadow">
-        <div class="item-font" ng-click="openwin('A.HR分工情况/HR工作明细（201605）.pdf?arg=11')">
-          <i>HR工作明细</i>
-          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-        </div>
+
+    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesWork">
+      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
+        <i style="font-size: 16px;">{{file.text}}</i>
+      </div>
+      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
+        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+      </div>
     </div>
+
+    <!--员工手册-->
     <div class="item-title-bg">
       <div class="item-title-font">员工手册</div>
     </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('B.员工手册/1、员工手册201603月.pdf?arg=21')">
-        <i>员工手册2016年3月</i>
+
+    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesStaff">
+      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
+        <i style="font-size: 16px;">{{file.text}}</i>
+      </div>
+      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
         <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
       </div>
     </div>
-    <div class="policy-item-shadow">
-      <div class="item-font">
-        <div style="width: 77%;"   ng-click="openwin('B.员工手册/1、上海汉得信息技术股份有限公司商业道德规范及行为准则.pdf?arg=22')">
-          <i>上海汉得信息技术股份有限公司商业道德规范及行为准则</i>
-        </div>
-        <img class="policy-back-arrow" style="margin-top: -25px" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
+
+    <!--人事政策  -->
     <div class="item-title-bg" >
       <div class="item-title-font">人事政策</div>
     </div>
-    <div class="policy-item">
-        <div class="item-font" ng-click="openwin('C.人事政策/深圳生育报销信息登记表.xlsx?arg=31')">
-          <i>深圳生育报销个人信息登记表</i>
-          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-        </div>
-    </div>
-      <div class="policy-item">
-          <div class="item-font" ng-click="openwin('C.人事政策/外地生育报销指南.pdf?arg=32')">
-            <span>深圳外服-外地生育报销指南</span>
-            <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-          </div>
+
+    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesPersonnel">
+      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
+        <i style="font-size: 16px;">{{file.text}}</i>
       </div>
-      <div class="policy-item">
-          <div class="item-font" ng-click="openwin('C.人事政策/深圳外服-外地住院医疗报销指南 .pdf?arg=33')">
-            <span>深圳外服-外地住院医疗报销指南</span>
-            <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-          </div>
-      </div>
-      <div class="policy-item">
-        <div class="item-font" ng-click="openwin('C.人事政策/汉得员工宿舍管理制度 .pdf?arg=34')">
-          <span>汉得员工宿舍管理制度</span>
-          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-        </div>
-      </div>
-      <div class="policy-item">
-          <div class="item-font" ng-click="openwin('C.人事政策/HRMS系统使用介绍 .pdf?arg=35')">
-            <i>HRMS系统使用介绍</i>
-            <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-          </div>
-      </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('C.人事政策/离职流程说明.pdf?arg=36')" >
-        <i>离职流程说明</i>
+      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
         <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
       </div>
     </div>
-    <div class="policy-item">
-      <div class="item-font"  ng-click="openwin('C.人事政策/如何办理港澳商务签证.pdf?arg=37')">
-        <i>如何办理港澳商务签注手册</i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item-shadow">
-      <div class="item-font" style="width: 77%" ng-click="openwin('C.人事政策/乘机人受益人申请的流程说明201209 .pdf?arg=38')">
-        <span>乘机人受益人申请的流程说明201209</span>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
+
+
+    <!--公司福利-->
     <div class="item-title-bg">
       <div class="item-title-font">公司福利</div>
     </div>
-    <div class="policy-item">
-      <div class="item-font " ng-click="openwin('D.公司福利/笔记本相关流程.pdf?arg=401')">
-        <i>笔记本相关流程</i>
+
+    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesWelfare">
+      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
+        <i style="font-size: 16px;">{{file.text}}</i>
+      </div>
+      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
         <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
       </div>
     </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('D.公司福利/商业保险说明（医疗理赔报销）.pdf?arg=402')">
-        <i> 商业保险说明（医疗理赔报销）</i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('D.公司福利/团险理赔申请书（汉得2016）.doc?arg=403')">
-        <i>商业保险-友邦理赔申请书(新版) </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('D.公司福利/常见问题解答.pdf?arg=404')">
-        <i> 常见问题解答</i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('D.公司福利/员工生日祝贺金.pdf?arg=405')">
-        <i>员工生日祝贺金</i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('D.公司福利/Flyback的政策及机票购买规定.pdf?arg=406')">
-        <i>Flyback的政策及机票购买规定</i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-    <div class="item-font" ng-click="openwin('D.公司福利/房屋贷款政策.pdf?arg=407')">
-      <i>房屋贷款政策 </i>
-      <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-    </div>
-  </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('D.公司福利/机票补贴规定及申请流程-201209.pdf?arg=408')">
-        <i>机票补贴规定及申请流程-201209 </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('D.公司福利/差旅及相关费用报销规定-201209.pdf?arg=409')">
-        <i> 差旅及相关费用报销规定-201209</i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item-shadow">
-      <div class="item-font" ng-click="openwin('D.公司福利/旅游福利政策.pdf?arg=410')">
-        <i>旅游福利政策</i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
+
     <!--公共类文档 -->
     <div class="item-title-bg" >
       <div class="item-title-font">公共类文档</div>
     </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('E.公共类文档/201409公司采购流程.pdf?arg=51')">
-        <i>采购流程 </i>
+
+    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesCommon">
+      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
+        <i style="font-size: 16px;">{{file.text}}</i>
+      </div>
+      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
         <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
       </div>
     </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('E.公共类文档/汉得青浦园区VPN接入手册201502.pdf?arg=52')">
-        <i> 汉得青浦园区VPN接入手册 </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('E.公共类文档/汉得青浦园区电话使用手册20140425.pdf?arg=53')">
-        <i> 汉得青浦园区电话使用手册 </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font"  ng-click="openwin('E.公共类文档/汉得青浦园区网络开通申请及使用流程.pdf?arg=54')">
-        <i>汉得青浦园区网络开通申请及使用流程 </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('E.公共类文档/A栋5楼理光打印机使用手册.docx?arg=55')">
-        <i>汉得青浦园区A栋5楼打印机使用操作手册 </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font">
-        <div style="width: 77%;" ng-click="openwin('E.公共类文档/关于网上报销的正确填报及发票提交和粘帖方法.pdf?arg=56')">
-          <i>关于网上报销的正确填报及发票提交和粘帖方法 </i></div>
-        <img class="policy-back-arrow" style="margin-top: -25px;" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item-shadow">
-      <div class="item-font" ng-click="openwin('E.公共类文档/公司介绍.pdf?arg=57')">
-        <i>公司介绍(pdf) </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
+
     <!--人事系统手册 -->
     <div class="item-title-bg">
       <div class="item-title-font">人事系统手册</div>
     </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('F.人事系统手册/机票功能操作说明.doc?arg=61')">
-        <i>机票系统操作说明  </i>
+
+    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesPersonnelSys">
+      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
+        <i style="font-size: 16px;">{{file.text}}</i>
+      </div>
+      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
         <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
       </div>
     </div>
-    <div class="policy-item">
-      <div class="item-font"  ng-click="openwin('F.人事系统手册/HR系统工作流审批设置.doc?arg=62')">
-        <i> HR系统工作流审批设置  </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item">
-      <div class="item-font"  ng-click="openwin('F.人事系统手册/HRMS 项目租房使用手册.zip?arg=63')">
-        <i>HRMS 项目租房使用手册  </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
-    <div class="policy-item-shadow">
-      <div class="item-font"  ng-click="openwin('F.人事系统手册/EIP系统 项目租房使用手册.zip?arg=64')">
-        <i>EIP系统 项目租房使用手册  </i>
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-      </div>
-    </div>
+
     <!--武汉分公司政策 -->
     <div class="item-title-bg">
       <div class="item-title-font" style="width: 115px;">武汉分公司政策</div>
     </div>
-    <div class="policy-item">
-      <div class="item-font" ng-click="openwin('G.武汉分公司政策/武汉分公司员工入职须知V1.0.pdf?arg=71')">
-        <i>武汉分公司员工入职须知v1.0.pdf </i>
+
+    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesWuhan">
+      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
+        <i style="font-size: 16px;">{{file.text}}</i>
+      </div>
+      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
         <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
       </div>
     </div>
-    <div class="policy-item">
-        <div class="item-font" ng-click="openwin('G.武汉分公司政策/武汉分公司商业道德规范及行为准则V1.0.pdf?arg=72')">
-           <div style="width: 290px;"><i>武汉分公司商业道德规范及行为准则v1.0.pdf </i>
-        </div>
-        <img class="policy-back-arrow" style="margin-top: -25px;" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-    </div>
-  </div>
-    <div class="policy-item">
-    <div class="item-font">
-      <div style="width: 290px;" ng-click="openwin('G.武汉分公司政策/武汉分公司员工公寓住宿相关规定V1.0.pdf?arg=73')">
-        <i>武汉分公司员工公寓住宿相关规定v1.0.pdf</i>
-      </div>
-      <img class="policy-back-arrow" style="margin-top: -25px;" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-    </div>
-  </div>
-    <div class="policy-item">
-     <div class="item-font" ng-click="openwin('G.武汉分公司政策/201511武汉分公司员工手册V1.1.pdf?arg=74')">
-      <i> 武汉分公司员工手册v1.0.pdf </i>
-      <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-    </div>
-  </div>
-    <div class="policy-item-shadow">
-    <div class="item-font" ng-click="openwin('G.武汉分公司政策/上海汉得信息技术股份有限公司武汉分公司离职流程V1.0.pdf?arg=75')">
-      <div style="width: 77%;"> <i>上海汉得信息技术股份有限公司武汉分公司离职流程v1.0.pdf  </i></div>
-      <img class="policy-back-arrow" style="margin-top: -25px" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
-    </div>
-  </div>
   </ion-content>
 </ion-view>
+
