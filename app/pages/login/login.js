@@ -262,9 +262,9 @@ angular.module('loginModule')
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
               checkVersionService.checkAppVersion();
-              if(ionic.Platform.isWebView()) {
+              //if(ionic.Platform.isWebView()) {
                 imService.initImData();
-              }
+              //}
               $state.go("tab.message");
             } else {
               $scope.bigPortrait = "build/img/login/login-hand.png";

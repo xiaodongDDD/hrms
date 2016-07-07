@@ -45,7 +45,11 @@ angular.module('HmsModule')
               }, function success(error) {
                 hmsPopup.showShortCenterToast(error);
               }, imParams);
+            }).error(function () {
+              hmsPopup.showShortCenterToast('error 2');
             });
+          }).error(function () {
+            hmsPopup.showShortCenterToast('error 1');
           });
         },
         getImChatList: function () {

@@ -9,10 +9,10 @@ getChatList : function(successCallback, errorCallback, options) {
         return
     }
     if (typeof successCallback != "function") {
-        
+
         return
     }
-    a(successCallback, errorCallback, "HandIMPlugin", "getChatList", options);
+    a(successCallback, errorCallback, "HandIMPlugin", "getChatList", [options]);
 
 },
 //跳转到会话界面
@@ -23,7 +23,7 @@ toChatAct : function(successCallback, errorCallback, options) {
         return
     }
     if (typeof successCallback != "function") {
-        
+
         return
     }
     a(successCallback, errorCallback, "HandIMPlugin", "toChatAct", options);
@@ -38,7 +38,7 @@ toChatAct : function(successCallback, errorCallback, options) {
         return
     }
     if (typeof successCallback != "function") {
-        
+
         return
     }
     cordova.exec(successCallback, errorCallback, "HandIMPlugin", "getChatList", options);
@@ -52,7 +52,7 @@ dojs.prototype.toChatAct = function(successCallback, errorCallback, options) {
         return
     }
     if (typeof successCallback != "function") {
-        
+
         return
     }
     cordova.exec(successCallback, errorCallback, "HandIMPlugin", "toChatAct", options);

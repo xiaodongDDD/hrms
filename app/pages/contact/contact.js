@@ -213,6 +213,10 @@ angular.module('contactModule')
 
       $scope.selectEmployeeItem = function (newEmployeeName, newEmployeeNumber) {
         dealHistory(newEmployeeName);
+        $scope.showHistory = true;
+        $scope.showClear = false;
+        $scope.resultList = [];
+        $scope.contactKey.getValue = '';
         $scope.contactInputModal.hide();
         $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
       };
