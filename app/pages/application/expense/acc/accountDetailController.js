@@ -108,8 +108,6 @@ angular.module("applicationModule")
               //expenseItemList: value.expense,
               expenseItemList_index: i
             };
-
-
             // 如果 当前 费用对象 匹配  加载费用类型 列表
             if ($scope.accountDetail.expenseObject_id == item.expenseObject_id) {
               var promise = expenseObject.queryExpenseList(item.expenseObject_id, item.expenseObject_code);
@@ -161,18 +159,12 @@ angular.module("applicationModule")
                 });
               });
             }
-
             keepAccount.projectList.push(item);
-
           });
-
           //console.log( keepAccount.projectList);
-
           //$scope.projectList = keepAccount.projectList;
           //console.log( angular.toJson($scope.projectList));
-
           $ionicLoading.hide();
-
         } else {
           var errmsg = data["message"];
           $ionicLoading.hide();
@@ -181,19 +173,14 @@ angular.module("applicationModule")
             duration: 1000
           });
         }
-
-
       }, function (response) {
         //alert("网络连接错误,初始化数据 projectList");
-
         dialog.showAlert("E", response);
         $ionicLoading.hide();
         $ionicLoading.show({
           template: '网络连接错误,初始化数据 ',
           duration: 1000
         });
-
-
       });
     }
 
