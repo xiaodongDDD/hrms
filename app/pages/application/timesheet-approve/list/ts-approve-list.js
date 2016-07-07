@@ -129,7 +129,7 @@ angular.module('tsApproveModule')
         if(baseConfig.debug) {
           console.log('openCalender');
         }
-        myFunc.openCalender();
+        hmsCalender.openCalender();
       };
 
       /**
