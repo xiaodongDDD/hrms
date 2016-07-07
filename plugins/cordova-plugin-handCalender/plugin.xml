@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="wsPlugin" version="0.0.1">
+<plugin id="cordova-plugin-handCalender" version="0.0.1">
     <name>CalenderPlugin</name>
     <author>wangsheng</author>
     <js-module name="MyPlugin" src="www/MyPlugin.js">
-        <clobbers target="hmsCalender" />
+        <clobbers target="hmsCalendar" />
     </js-module>
     <platform name="ios">
         <config-file target="config.xml" parent="/*">

@@ -129,7 +129,17 @@ angular.module('tsApproveModule')
         if(baseConfig.debug) {
           console.log('openCalender');
         }
-        hmsCalender.openCalender();
+        var success= function(response){
+          if(baseConfig.debug) {
+            console.log('success.response ' + angular.toJson(response));
+          }
+        };
+        var error= function(response){
+          if(baseConfig.debug) {
+            console.log('error.response ' + angular.toJson(response));
+          }
+        };
+        hmsCalendar.openCalender(success,error);
       };
 
       /**
