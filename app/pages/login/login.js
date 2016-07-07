@@ -12,10 +12,10 @@ angular.module('loginModule')
     '$timeout',
     '$ionicHistory',
     '$ionicPlatform',
-    'hmsPopup',
     '$ionicScrollDelegate',
     'checkVersionService',
     'hmsPopup',
+    'imService',
     function ($scope,
               $state,
               baseConfig,
@@ -24,10 +24,10 @@ angular.module('loginModule')
               $timeout,
               $ionicHistory,
               $ionicPlatform,
-              hmsPopup,
               $ionicScrollDelegate,
               checkVersionService,
-              hmsPopup) {
+              hmsPopup,
+              imService) {
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
@@ -262,6 +262,9 @@ angular.module('loginModule')
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
               checkVersionService.checkAppVersion();
+              if(ionic.Platform.isWebView()) {
+                imService.initImData();
+              }
               $state.go("tab.message");
             } else {
               $scope.bigPortrait = "build/img/login/login-hand.png";

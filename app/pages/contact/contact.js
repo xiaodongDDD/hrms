@@ -11,13 +11,15 @@ angular.module('contactModule')
     'hmsHttp',
     'hmsPopup',
     '$state',
+    '$ionicActionSheet',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
               baseConfig,
               hmsHttp,
               hmsPopup,
-              $state) {
+              $state,
+              $ionicActionSheet) {
       /**
        * var section
        */
@@ -51,7 +53,7 @@ angular.module('contactModule')
         }
       };
 
-      $scope.$on('$ionicView.enter', function (e) {
+      $scope.$on('$ionicView.beforeEnter', function (e) {
         getCommonLinkMan();
       });
 
@@ -108,10 +110,10 @@ angular.module('contactModule')
       /**
        * modal input 方法区
        */
-        //fadeInRightBig/fadeInUp
+        //fadeInRightBig/
       $ionicModal.fromTemplateUrl('build/pages/contact/modal/contact-search.html', {
         scope: $scope,
-        animation: 'animated fadeInRightBig'
+        animation: 'animated fadeInUp'
       }).then(function (modal) {
         $scope.contactInputModal = modal;
       });
@@ -223,17 +225,73 @@ angular.module('contactModule')
         $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
       };
 
-      $scope.telNumber = function (event, newNumber, newName, newEmpNumber, flag) {
-        event.stopPropagation(); //阻止事件冒泡
-        window.location.href = "tel:" + newNumber;
-        if (flag === 'search') {
-          var employeeBaseInfo = {
-            tel: newNumber,
-            name: newName,
-            employeeNumber: newEmpNumber
-          };
-          dealCommonLinkMan(employeeBaseInfo);
+      //for contact
+      function onSaveContactSuccess(contacts) {
+        hmsPopup.showShortCenterToast('添加成功!');
+      };
+
+      //for contact
+      function onSaveContactError(contactError) {
+        hmsPopup.showShortCenterToast('添加失败!');
+      };
+
+      //联系人保存到本地--
+      function contactLocal(baseInfo) {
+        if (ionic.Platform.isWebView()) {
+          var newContact = navigator.contacts.create();
+          var phoneNumbers = [];
+          phoneNumbers[0] = new ContactField('mobile', baseInfo.emp_mobil, true);
+          var emails = [];
+          emails[0] = new ContactField('email', baseInfo.email, true);
+          if (ionic.Platform.isAndroid()) {
+            newContact.displayName = baseInfo.emp_name; // ios 不支持 displayName
+          }
+          if (ionic.Platform.isIOS()) {
+            var name = new ContactName();
+            name.givenName = baseInfo.emp_name.substring(1, baseInfo.emp_name.length);
+            name.familyName = baseInfo.emp_name.substring(0, 1);
+            newContact.name = name;
+          }
+          newContact.phoneNumbers = phoneNumbers;
+          newContact.emails = emails;
+          newContact.save(onSaveContactSuccess, onSaveContactError);
         }
       };
 
+      $scope.telNumber = function (event, baseInfo, flag) { //拨打电话按钮的响应事件
+        event.stopPropagation(); //阻止事件冒泡
+        if (flag === 'search') {
+          try {
+            $ionicActionSheet.show({
+              buttons: [
+                {text: '拨打电话'},
+                {text: '增加到通讯录'},
+              ],
+              cancelText: 'Cancel',
+              buttonClicked: function (index) {
+                if (index == 0) {
+                  //window.location.href = "tel:" + 00000000000; //不明觉厉--
+                  window.location.href = "tel:" + baseInfo.emp_mobil;
+                  var employeeBaseInfo = {
+                    tel: baseInfo.emp_mobil,
+                    name: baseInfo.emp_name,
+                    employeeNumber: baseInfo.emp_code
+                  };
+                  dealCommonLinkMan(employeeBaseInfo);
+                  return true;
+                }
+                if (index == 1) {
+                  contactLocal(baseInfo);
+                  return true;
+                }
+              }
+            });
+          } catch (e) {
+            alert(e);
+          }
+        } else {
+          //常用联系人拨打电话
+          window.location.href = "tel:" + baseInfo;
+        }
+      };
     }]);

@@ -20,13 +20,11 @@ angular.module('myApp', [
 ]);
 
 angular.module('myApp')
-  .run(function ($ionicPlatform, $timeout, baseConfig, checkVersionService, $state) {
+  .run(function ($ionicPlatform, $timeout, baseConfig, checkVersionService, $state,imService) {
     if (window.localStorage.token === '' || angular.isUndefined(window.localStorage.token)) {
     } else {
       checkVersionService.checkAppVersion();
     }
-
-
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -37,6 +35,10 @@ angular.module('myApp')
       if (window.StatusBar) {
         // org.apache.cordova.statusbar required
         StatusBar.styleLightContent();
+      }
+
+      if(ionic.Platform.isWebView()) {
+        imService.getImChatList();
       }
 
       if (window.plugins.jPushPlugin) {
