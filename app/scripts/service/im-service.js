@@ -50,8 +50,8 @@ angular.module('HmsModule')
         },
         getImChatList: function () {
           var newImParams = {
-            token: window.localStorage.access_token,
-            userId: window.localStorage.empno
+            "userId": window.localStorage.empno,
+            "token": window.localStorage.access_token
           };
           dojs.getChatList(function success(msg) {
             hmsPopup.showShortCenterToast(msg);
