@@ -11,12 +11,11 @@ angular.module('contactModule')
               baseConfig,
               $timeout) {
       $scope.$on('contact-search', function () {
-        if(ionic.Platform.isWebView()) {
+        if (ionic.Platform.isWebView()) {
           cordova.plugins.Keyboard.show();
         }
         $timeout(function () {
           var item = document.getElementById("employeeInputSearch");
-          warn(item);
           item.focus();
           $scope.$apply();
         }, 400);

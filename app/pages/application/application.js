@@ -29,14 +29,14 @@ angular.module('applicationModule')
               destUrl: "tab.time-off-manage",
             },
             {
-              appName: "住宿申请",
-              imageUrl: "build/img/application/dorm-apply/dorm-apply.png",
-              destUrl: "tab.dorm-apply"
-            },
-            {
               appName: "预报销",
               imageUrl: "build/img/application/application/forecast@3x.png",
               destUrl: "tab.cst_list"
+            },
+            {
+              appName: "记一笔",
+              imageUrl: "build/img/application/application/sign@3x.png",
+              destUrl: "tab.acc_main"
             }]
         },
         {
@@ -60,29 +60,6 @@ angular.module('applicationModule')
               appName: "报销单查询",
               imageUrl: "build/img/application/application/wipeOut@3x.png",
               destUrl: "tab.expense",
-            }]
-        },
-        {
-          list: [
-            {
-              appName: "记一笔",
-              imageUrl: "build/img/application/application/sign@3x.png",
-              destUrl: "tab.acc_main"
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
-            },
-            {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
             }]
         }];
 
@@ -124,14 +101,14 @@ angular.module('applicationModule')
               destUrl: "",
             },
             {
-              appName: "",
-              imageUrl: "",
+              appName: "附近的员工",
+              imageUrl: "build/img/application/application/nearby@3x.png",
               destUrl: "",
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "住宿申请",
+              imageUrl: "build/img/application/application/dormApply@3x.png",
+              destUrl: "tab.dorm-apply"
             },
             {
               appName: "",

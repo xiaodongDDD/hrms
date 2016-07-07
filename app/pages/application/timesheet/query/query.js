@@ -796,25 +796,25 @@ angular.module('applicationModule')
       });
 
       if (baseConfig.debug) {
-        console.log('applicationCtrl.enter');
+        console.log('TimeSheetQueryCtrl.enter');
       }
 
       $scope.$on('$ionicView.enter', function (e) {
         if (baseConfig.debug) {
-          console.log('applicationCtrl.$ionicView.enter');
+          console.log('TimeSheetQueryCtrl.$ionicView.enter');
         }
       });
 
       $scope.$on('$ionicView.beforeLeave', function (e) {
         if (baseConfig.debug) {
-          console.log('applicationCtrl.$ionicView.beforeLeave');
+          console.log('TimeSheetQueryCtrl.$ionicView.beforeLeave');
         }
         stopSlipping();
       });
 
       $scope.$on('$destroy', function (e) {
         if (baseConfig.debug) {
-          console.log('applicationCtrl.$destroy');
+          console.log('TimeSheetQueryCtrl.$destroy');
         }
         $scope.popover.remove();
       });

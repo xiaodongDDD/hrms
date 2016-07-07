@@ -333,7 +333,7 @@ angular.module('applicationModule')
         var success = function (result) {
           hmsPopup.hideLoading();
           if (result.status == 'S') {
-            hmsPopup.showPopup('提交Timesheet成功');
+            //hmsPopup.showPopup('提交Timesheet成功');
             $rootScope.$broadcast('refreshTimesheet', 'parent');
             $ionicHistory.goBack();
           } else {

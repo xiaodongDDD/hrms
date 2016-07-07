@@ -216,7 +216,6 @@ angular.module('tsApproveModule')
         }
       };
 
-
       $scope.chooseStartDate = function () {//选择开始日期
         var myDate = $scope.startDate = new Date();
         var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);

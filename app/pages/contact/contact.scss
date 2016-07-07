@@ -360,13 +360,16 @@ $bgColor: #fafafa !default;
     height: 22px;
     margin-top: 7px;
   }
-  .clear-image{
-    width: 24px;
-    height: 34px;
-    padding-left: 10px;
-    padding-top:10px;
-    padding-bottom:10px;
-  }
+}
+
+.employee-clear-img {
+  width: 18px;
+  height: 18px;
+  background-color: rgba(250, 250, 250, 0.6);
+  margin-right: 10px;
+  border-radius: 50%;
+  float: right;
+  margin-top: -23px;
 }
 
 
