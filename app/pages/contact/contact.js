@@ -262,6 +262,40 @@ angular.module('contactModule')
         }
       };
 
+      $scope.scanBusinessCard = function () { //名片扫描添加联系人到通讯录
+        if (ionic.Platform.isWebView()) {
+          scanCard.takePicturefun(function (msg) {
+            var manInfo = {
+              emp_name: '',
+              emp_mobil: '',
+              email: ''
+            };
+            manInfo.emp_name = msg.lastName + msg.firstName;
+            try {
+              var phones = msg.phones;
+              if (phones.length > 0) {
+                manInfo.emp_mobil = phones[0].itemInfo;
+              }
+            } catch (e) {
+              manInfo.emp_mobil = '';
+            }
+            try {
+              var emails = msg.emails;
+              if (emails.length > 0) {
+                manInfo.email = emails[0].itemInfo;
+              }
+            } catch (e) {
+              manInfo.email = '';
+            }
+            contactLocal(manInfo);
+          }, function (msg) {
+            hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
+          });
+        } else {
+          hmsPopup.showShortCenterToast('暂不支持网页端的名片扫描!');
+        }
+      };
+
       $scope.telNumber = function (event, baseInfo, flag) { //拨打电话按钮的响应事件
         event.stopPropagation(); //阻止事件冒泡
         if (flag === 'search') {

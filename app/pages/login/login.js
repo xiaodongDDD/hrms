@@ -16,6 +16,7 @@ angular.module('loginModule')
     'checkVersionService',
     'hmsPopup',
     'imService',
+    '$rootScope',
     function ($scope,
               $state,
               baseConfig,
@@ -27,7 +28,8 @@ angular.module('loginModule')
               $ionicScrollDelegate,
               checkVersionService,
               hmsPopup,
-              imService) {
+              imService,
+              $rootScope) {
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
@@ -219,6 +221,10 @@ angular.module('loginModule')
       };
 
       $scope.login = function () {//登录功能
+        if(window.localStorage.empno != $scope.loginInfo.username) {
+          localStorage.removeItem('key_history');
+          localStorage.removeItem('common_linkman');
+        }
         $scope.showLittlePortrait = false;
         $scope.showLoginButton = true;
         $scope.showButtonIcon = true;
@@ -262,7 +268,7 @@ angular.module('loginModule')
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
               checkVersionService.checkAppVersion();
-              //if(ionic.Platform.isWebView()) {
+              //if (ionic.Platform.isWebView()) {
                 imService.initImData();
               //}
               $state.go("tab.message");
@@ -381,7 +387,6 @@ angular.module('loginModule')
         if (baseConfig.debug) {
           console.log('loginCtrl.$ionicView.enter');
         }
-
         $timeout(function () {
           $ionicHistory.clearCache();
           $ionicHistory.clearHistory();

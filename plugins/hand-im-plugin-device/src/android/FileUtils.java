@@ -19,7 +19,7 @@ public class FileUtils {
 	public static List<String> getEmojiFile(Context context) {
 		try {
 			List<String> list = new ArrayList<String>();
-			InputStream in = context.getResources().getAssets().open("emoji");// �ļ�����Ϊrose.txt
+			InputStream in = context.getResources().getAssets().open("emoji");
 			BufferedReader br = new BufferedReader(new InputStreamReader(in,
 					"UTF-8"));
 			String str = null;

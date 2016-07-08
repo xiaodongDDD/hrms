@@ -125,23 +125,6 @@ angular.module('tsApproveModule')
         }
       }
 
-      $scope.openCalender = function () {
-        if(baseConfig.debug) {
-          console.log('openCalender');
-        }
-        var success= function(response){
-          if(baseConfig.debug) {
-            console.log('success.response ' + angular.toJson(response));
-          }
-        };
-        var error= function(response){
-          if(baseConfig.debug) {
-            console.log('error.response ' + angular.toJson(response));
-          }
-        };
-        hmsCalendar.openCalender(success,error);
-      };
-
       /**
        * 立即执行 拉取数据的代码
        */
@@ -211,6 +194,22 @@ angular.module('tsApproveModule')
         }
       };
 
+      $scope.openCalender = function () { //跳到原生日历界面--获取截止日期
+        var success= function(response){
+          if(baseConfig.debug) {
+            warn('success.response ' + angular.toJson(response));
+          }
+        };
+        var error= function(response){
+          if(baseConfig.debug) {
+            warn('error.response ' + angular.toJson(response));
+          }
+        };
+        if(ionic.Platform.isIOS()) {
+          hmsCalendar.openCalender(success,error);
+        }
+      };
+
       $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-date-modal.html', {
         scope: $scope
       }).then(function (modal) {
@@ -233,51 +232,6 @@ angular.module('tsApproveModule')
         }
       };
 
-      $scope.chooseStartDate = function () {//选择开始日期
-        var myDate = $scope.startDate = new Date();
-        var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
-        var options = {
-          date: previousDate,
-          mode: 'date',
-          titleText: '请选择截止日期',
-          okText: '确定',
-          cancelText: '取消',
-          doneButtonLabel: '确认',
-          cancelButtonLabel: '取消',
-          androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
-          locale: "zh_cn"
-        };
-        $cordovaDatePicker.show(options).then(function (date) {
-          var month = date.getMonth() + 1;
-          var day = date.getDate();
-          var weekday = date.getDay();
-          if (weekday == 0) {
-            $scope.startDate.weekday = "周日";
-          } else if (weekday == 1) {
-            $scope.startDate.weekday = "周一";
-          } else if (weekday == 2) {
-            $scope.startDate.weekday = "周二";
-          } else if (weekday == 3) {
-            $scope.startDate.weekday = "周三";
-          } else if (weekday == 4) {
-            $scope.startDate.weekday = "周四";
-          } else if (weekday == 5) {
-            $scope.startDate.weekday = "周五";
-          } else if (weekday == 6) {
-            $scope.startDate.weekday = "周六";
-          }
-          if (month < 10) {
-            month = "0" + month;
-          }
-          if (day < 10) {
-            day = "0" + day;
-          }
-          $scope.startDate.year = date.getFullYear();
-          $scope.startDate.month = month;
-          $scope.startDate.day = day;
-          $scope.$apply();
-        });
-      };
       $scope.selectEndDateItem = function (newEndDateCode, newEndDateValue, newIndex) { //选择不同的截止日期
         $scope.selectEndItem = [];
         $scope.selectEndItem[newIndex] = true;

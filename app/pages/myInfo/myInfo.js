@@ -10,12 +10,14 @@ angular.module('myInfoModule')
     'hmsHttp',
     'hmsPopup',
     'checkVersionService',
+    '$ionicHistory',
     function ($scope,
               $state,
               baseConfig,
               hmsHttp,
               hmsPopup,
-              checkVersionService) {
+              checkVersionService,
+              $ionicHistory) {
 
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
@@ -55,6 +57,7 @@ angular.module('myInfoModule')
         window.localStorage.password = "";
         window.localStorage.timesheetAuto="";
         window.localStorage.messagePush="";
+        window.localStorage.access_token = "";
         $state.go('login');
       };
 

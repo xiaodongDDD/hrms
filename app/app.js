@@ -43,7 +43,6 @@ angular.module('myApp')
         }
       }
 
-
       if (window.plugins.jPushPlugin) {
         var getRegistrationID = function () {
           window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);

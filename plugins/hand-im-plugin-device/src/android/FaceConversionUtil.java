@@ -190,7 +190,7 @@ public class FaceConversionUtil {
 		if (endIndex > emojis.size()) {
 			endIndex = emojis.size();
 		}
-		// 不这么写，会在viewpager加载中报集合操作异常，我也不知道为什么
+		// 不这么写，会在viewpager加载中报集合操作异常
 		List<ChatEmoji> list = new ArrayList<ChatEmoji>();
 		list.addAll(emojis.subList(startIndex, endIndex));
 		if (list.size() < pageSize) {

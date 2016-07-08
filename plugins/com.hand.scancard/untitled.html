@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+
+
+<html>
+    <head>
+        
+        <meta charset="UTF-8"/>
+        
+        <script>
+            function takePicture(){
+                scanCard.takePicturefun(getSuceess,getError);
+            }
+        
+        function choosePicture(){
+            scanCard.choosePicturefun(getSuceess,getError);
+        }
+        
+        
+        
+        function getSuceess(msg){
+            alert("成功回调回来的消息123 ： 名："+msg.firstName
+                  +"\n姓"+msg.lastName
+                  +"\n电话"+msg.phones[0].itemInfo
+                 +"\n电话类型"+msg.phones[0].itemLabel
+                 +"\n邮箱"+msg.emails[0].itemInfo
+              +"\n邮箱类型"+msg.emails[0].itemLabel
+
+                 +"\n公司名称"+msg.companys[0].company
+                  +"\n公司职位"+msg.jobtitles[0].jobtitle
+                 +"\n公司部门"+msg.companys[0].department
+
+                 +"\n地址类型"+msg.addresses[0].lable
+                +"\n地址国家"+msg.addresses[0].country
+                +"\n地址省"+msg.addresses[0].province
+               +"\n地址市"+msg.addresses[0].city
+              +"\n地址街道1"+msg.addresses[0].street
+              +"\n地址街道2"+msg.addresses[0].street2
+               +"\n地址邮编"+msg.addresses[0].postcode
+           
+                  
+                  
+                  
+                  );
+        }
+        
+        
+        function getError(msg){
+            alert("错误回调回来的消息123 ："+msg);
+        }
+        
+      
+            </script>
+        
+        <meta name="format-detection" content="telephone=no">
+            <meta name="msapplication-tap-highlight" content="no">
+                <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+                    <link rel="stylesheet" type="text/css" href="css/index.css">
+                        <title>Hello World</title>
+                        </head>
+    <body>
+        <div class="app">
+            <input type="button" value="打开相机" onclick="takePicture()">
+                <br/>
+                <br/>
+                <br/>
+                <input type="button" value="打开相册" onclick="choosePicture()">
+                    
+                    
+                    </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>

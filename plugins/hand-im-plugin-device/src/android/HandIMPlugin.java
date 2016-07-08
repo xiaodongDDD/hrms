@@ -46,20 +46,15 @@ public class HandIMPlugin extends CordovaPlugin{
         init();
     }
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    public boolean execute(String action, JSONArray args,CallbackContext callbackContext) throws JSONException {
         mCallbackContext = callbackContext;
         if(ACTION_GET_CHAT_LIST.equals(action)){
             //获取用户的id 这里定义上为进入初始化的操作 但是还是加了判断防止多次进入
-            Log.i("json",args.toString());
             if(args!=null && args.length()>0){
-                JSONObject obj = args.optJSONObject(0);
-                Log.i("json",obj.toString());
-                userId = obj.optString("userId","");
-                Log.i("json",userId);
-                token = obj.optString("token","");
-                Log.i("json",token);    }
-//            userId = "9607";
-//            token = "jXvXjRT5+sgt7Icek92lwVY2C1hR3dIp9TV04D0Hxc3ZYBt7t353mgUNK016dkd/yTi6v2P+dmIl+PQi0Z39Zw==";
+                JSONObject obj = args.getJSONObject(0);
+                userId = obj.getString("userId");
+                token = obj.getString("token");
+            }
             if(token.equals("")){
                 Toast.makeText(context,"未获取到数据",Toast.LENGTH_SHORT).show();
                 return true;
@@ -76,9 +71,8 @@ public class HandIMPlugin extends CordovaPlugin{
             //获取消息发送对象的ID
             //判断连接状态
             if(args!=null && args.length()>0){
-            JSONObject obj = args.optJSONObject(0);
-            friendId = obj.optString("friendId");}
-//            friendId="9606";
+                JSONObject obj = args.getJSONObject(0);
+            friendId = obj.getString("friendId");}
             if(userId.isEmpty()||friendId.isEmpty()||token.isEmpty()){
                 Toast.makeText(context,"没有用户数据",Toast.LENGTH_SHORT).show();
                 return true;
@@ -95,7 +89,7 @@ public class HandIMPlugin extends CordovaPlugin{
                 Toast.makeText(context,"准备重新连接，请检查网络状态",Toast.LENGTH_SHORT).show();
                 if(!getRmConnect()){
                     //获取token 建立连接
-                    connect(token);
+//                    connect(token);
                 }
             }
             return true;
@@ -171,6 +165,7 @@ public class HandIMPlugin extends CordovaPlugin{
                     RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
                         @Override
                         public void onSuccess(List<Conversation> conversations) {
+                            myConversations.clear();
                             //首次登陆消息为空需要判断
                             if(conversations==null || conversations.size() ==0){
                                 return;
@@ -203,6 +198,7 @@ public class HandIMPlugin extends CordovaPlugin{
                         }
                         @Override
                         public void onError(RongIMClient.ErrorCode errorCode) {
+                            Log.i("error",errorCode.toString());
                         }
                     }, Conversation.ConversationType.PRIVATE);
                 }
@@ -232,6 +228,7 @@ public class HandIMPlugin extends CordovaPlugin{
                     RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
                         @Override
                         public void onSuccess(List<Conversation> conversations) {
+                            myConversations.clear();
                             //消息为空需要判断
                             if(conversations==null || conversations.size() ==0){
                                 return;
@@ -328,45 +325,49 @@ public class HandIMPlugin extends CordovaPlugin{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        //拉取会话列表提供给前端刷新数据
-        RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
-            @Override
-            public void onSuccess(List<Conversation> conversations) {
-                //消息为空需要判断
-                if (conversations == null || conversations.size() == 0) {
-                    return;
-                }
-                for (int i = 0; i < conversations.size(); i++) {
-                    Conversation conversation = conversations.get(i);
-                    //本回话最后一条消息
-                    MessageContent messageContent = conversation.getLatestMessage();
-                    String txt = "";
-                    //如果是文本消息获取最后一条消息的文本内容
-                    if (messageContent instanceof TextMessage) {
-                        TextMessage tm = (TextMessage) messageContent;
-                        txt = tm.getContent();
-                    } else {
-                        txt = "图片";
+        super.onActivityResult(requestCode, resultCode, intent);
+        if(requestCode == RESULT){
+            myConversations.clear();
+            //拉取会话列表提供给前端刷新数据
+            RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+                @Override
+                public void onSuccess(List<Conversation> conversations) {
+                    //消息为空需要判断
+                    if (conversations == null || conversations.size() == 0) {
+                        return;
                     }
-                    //获取消息发送的用户ID
-                    //String sendUserId = conversation.getSenderUserId();
-                    //获取消息发送的用户姓名
-                    //String sendUserName = conversation.getSenderUserName();
-                    //获取目标ID
-                    String targetId = conversation.getTargetId();
-                    myConversation mc = new myConversation(txt, targetId);
-                    myConversations.add(mc);
-                }
+                    for (int i = 0; i < conversations.size(); i++) {
+                        Conversation conversation = conversations.get(i);
+                        //本回话最后一条消息
+                        MessageContent messageContent = conversation.getLatestMessage();
+                        String txt = "";
+                        //如果是文本消息获取最后一条消息的文本内容
+                        if (messageContent instanceof TextMessage) {
+                            TextMessage tm = (TextMessage) messageContent;
+                            txt = tm.getContent();
+                        } else {
+                            txt = "图片";
+                        }
+                        //获取消息发送的用户ID
+                        //String sendUserId = conversation.getSenderUserId();
+                        //获取消息发送的用户姓名
+                        //String sendUserName = conversation.getSenderUserName();
+                        //获取目标ID
+                        String targetId = conversation.getTargetId();
+                        myConversation mc = new myConversation(txt, targetId);
+                        myConversations.add(mc);
+                    }
                 if (myConversations.size() == 0) {
                     return;
                 }
                 putChatList(myConversations);
             }
+
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
             }
         }, Conversation.ConversationType.PRIVATE);
-        super.onActivityResult(requestCode, resultCode, intent);
+        }
     }
 
     }

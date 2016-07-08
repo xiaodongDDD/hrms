@@ -19,35 +19,38 @@ angular.module('HmsModule')
               baseConfig) {
       //为application/x-www-form-urlencoded格式的请求--post方式
       var baseUrl = 'http://172.20.0.165:8080/hrms';
-      var getLoginTokenUrl = baseUrl + '/oauth/token?client_id=client&client_secret=secret&grant_type=password&username=' + window.localStorage.empno + '&password=123456';
-      var access_token = '';
-      var getImTokenUrl = baseUrl + '/api/thirdparty/getToken?access_token=';
-      var getImTokenParams = {
-        appCode: 'RONGCLOUD',
-        empNo: window.localStorage.empno
+      function init2Cloud() {
+        var getImTokenParams = {
+          appCode: 'RONGCLOUD',
+          empNo: window.localStorage.empno
+        };
+        $http.post(getImTokenUrl, getImTokenParams).success(function (result) {
+          try {
+            var imParams = {
+              token: result.rows[0].token,
+              userId: window.localStorage.empno
+            };
+            window.localStorage.access_token = result.rows[0].token;
+          } catch (e) {
+            imParams = {token: '', userId: ''};
+          }
+          dojs.getChatList(function success(msg) {
+            hmsPopup.showShortCenterToast(msg);
+          }, function success(error) {
+            hmsPopup.showShortCenterToast(error);
+          }, imParams);
+        }).error(function () {
+          hmsPopup.showShortCenterToast('error 2');
+        });
       };
+
       return {
         initImData: function () {
-          var promise = $http.post(getLoginTokenUrl).success(function (response) {
-            getImTokenUrl = getImTokenUrl + response.access_token;
-            $http.post(getImTokenUrl, getImTokenParams).success(function (result) {
-              try {
-                var imParams = {
-                  token: result.rows[0].token,
-                  userId: window.localStorage.empno
-                };
-                window.localStorage.access_token = result.rows[0].token;
-              } catch (e) {
-                imParams = {token: '', userId: ''};
-              }
-              dojs.getChatList(function success(msg) {
-                hmsPopup.showShortCenterToast(msg);
-              }, function success(error) {
-                hmsPopup.showShortCenterToast(error);
-              }, imParams);
-            }).error(function () {
-              hmsPopup.showShortCenterToast('error 2');
-            });
+          var getLoginTokenUrl = baseUrl + '/oauth/token?client_id=client&client_secret=secret&grant_type=password&username=' + window.localStorage.empno + '&password=123456'+ '&p_phone_no=123456';
+          $http.post(getLoginTokenUrl).success(function (response) {
+            var getImTokenUrl = baseUrl + '/api/thirdparty/getToken?access_token=' + response.access_token;
+            //warn('response.access_token' + getImTokenUrl);
+            init2Cloud(getImTokenUrl);
           }).error(function () {
             hmsPopup.showShortCenterToast('error 1');
           });

@@ -6,8 +6,8 @@
     <description>hand IM plugin.</description>
     <keywords>handim</keywords>
     <license>GPLv2</license>
-    <js-module charset="utf-8" name="do" src="www/do.js">
-    <clobbers target="dojs"/>
+    <js-module charset="utf-8" name="HandIMPlugin" src="www/HandIMPlugin.js">
+    <clobbers target="HandIMPlugin"/>
     </js-module>
   <platform name="android">
     <config-file parent="/*" target="res/xml/config.xml">

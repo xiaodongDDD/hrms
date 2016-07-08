@@ -33,16 +33,15 @@ public class ViewPagerAdapter extends PagerAdapter {
         return super.getItemPosition(object);
     }
 
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        super.destroyItem(container, position, object);
-        ((ViewPager)container).removeView(pageViews.get(position));
+	@Override
+    public void destroyItem(View arg0, int arg1, Object arg2) {
+        ((ViewPager)arg0).removeView(pageViews.get(arg1));
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        ((ViewPager)container).addView(pageViews.get(position));
-        return pageViews.get(position);
+    public Object instantiateItem(View arg0, int arg1) {
+        ((ViewPager)arg0).addView(pageViews.get(arg1));
+        return pageViews.get(arg1);
     }
 
 
