@@ -1,11 +1,11 @@
-<ion-view view-title="{{pageTitle}}}">
+<ion-view view-title="{{pageTitle}}">
   <ion-header-bar align-title="center" class="bar-stable">
     <div class="buttons">
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
         <span class="back-text">返回</span>
       </button>
     </div>
-    <h1 class="title">休假详情</h1>
+    <h1 class="title">{{pageTitle}}</h1>
     <div class="buttons">
       <button class="button button-icon icon ion-ios-help-outline" ng-click="showDescription()">
       </button>
@@ -28,13 +28,13 @@
 
       <div class="row text-row no-padding-margin">
         <div class="col-20 text-left">起始日期:</div>
-        <div class="col-80 text-right" ng-click="chooseStartDate()" ng-bind="timeOffData.datetimeFrom"></div>
+        <div class="col-80 text-right" ng-click="chooseStartDate()" ng-bind="getdateFromMeaning()"></div>
         <div class="item-line"></div>
       </div>
 
       <div class="row text-row no-padding-margin">
         <div class="col-20 text-left">结束日期:</div>
-        <div class="col-80 text-right" ng-click="chooseEndDate()" ng-bind="timeOffData.datetimeTo"></div>
+        <div class="col-80 text-right" ng-click="chooseEndDate()" ng-bind="getdateToMeaning()"></div>
         <div class="item-line"></div>
       </div>
 

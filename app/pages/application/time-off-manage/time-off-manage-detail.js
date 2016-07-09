@@ -82,8 +82,8 @@ angular.module('applicationModule')
       $scope.timeOffData = {
         operationType        : '',
         timeOffTypeMeaning   : '',
-        datetimeFrom         : '',
-        datetimeTo           : '',
+        dateFromMeaning      : '',
+        dateToMeaning        : '',
         unusedPaidHoliday    : '',
         unusedPaidSickLeave  : '',
         unusedExtPaidHoliday : '',
@@ -112,12 +112,12 @@ angular.module('applicationModule')
         var todayDate = new Date();//今天日期
         var month     = todayDate.getMonth() + 1;
         var day       = todayDate.getDate();
-        $scope.timeOffData.datetimeFrom = {//开始日期
+        $scope.datetimeFrom = {//开始日期
           year  : todayDate.getFullYear(),
           month : "",
           day   : ""
         };
-        $scope.timeOffData.datetimeTo = {//结束日期
+        $scope.datetimeTo = {//结束日期
           year  : "",
           month : "",
           day   : ""
@@ -129,13 +129,21 @@ angular.module('applicationModule')
         if (day < 10) {
           day = "0" + day;
         }
-        $scope.timeOffData.datetimeFrom.month = month;
-        $scope.timeOffData.datetimeFrom.day = day;
+        $scope.datetimeFrom.month = month;
+        $scope.datetimeFrom.day = day;
 
         //初始化结束时间
         refreshEndDate(1);
 
       }
+
+      $scope.getdateFromMeaning = function() {
+        return $scope.datetimeFrom.year +'-'+ $scope.datetimeFrom.month +'-'+ $scope.datetimeFrom.day + ' 08:30:00';
+      };
+
+      $scope.getdateToMeaning = function() {
+        return $scope.datetimeTo.year +'-'+ $scope.datetimeTo.month +'-'+ $scope.datetimeTo.day + ' 18:00:00';
+      };
 
       //初始化假期类型弹窗
       $ionicModal.fromTemplateUrl('build/pages/application/time-off-manage/modal/new-time-off-type.html', {
@@ -186,7 +194,7 @@ angular.module('applicationModule')
           return;
         }
 
-        var myDate = $scope.timeOffData.datetimeFrom;
+        var myDate = $scope.datetimeFrom;
 
         var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
         var options = {
@@ -210,9 +218,9 @@ angular.module('applicationModule')
           if (day < 10) {
             day = "0" + day;
           }
-          $scope.timeOffData.datetimeFrom.year = date.getFullYear();
-          $scope.timeOffData.datetimeFrom.month = month;
-          $scope.timeOffData.datetimeFrom.day = day;
+          $scope.datetimeFrom.year = date.getFullYear();
+          $scope.datetimeFrom.month = month;
+          $scope.datetimeFrom.day = day;
           $scope.$apply();
         });
       };
@@ -223,7 +231,7 @@ angular.module('applicationModule')
           return;
         }
 
-        var myDate = $scope.timeOffData.datetimeTo;
+        var myDate = $scope.datetimeTo;
         var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
         var options = {
           date: previousDate,
@@ -246,15 +254,15 @@ angular.module('applicationModule')
           if (day < 10) {
             day = "0" + day;
           }
-          $scope.timeOffData.datetimeTo.year = date.getFullYear();
-          $scope.timeOffData.datetimeTo.month = month;
-          $scope.timeOffData.datetimeTo.day = day;
+          $scope.datetimeTo.year = date.getFullYear();
+          $scope.datetimeTo.month = month;
+          $scope.datetimeTo.day = day;
           $scope.$apply();
         });
       };
 
       function refreshEndDate(num) {//选择30,60,90后刷新结束日期
-        var myDate = $scope.timeOffData.datetimeFrom;
+        var myDate = $scope.datetimeFrom;
         var todayDate = new Date(myDate.year, myDate.month - 1, myDate.day);
         var tomorrowDate = new Date(myDate.year, myDate.month - 1, myDate.day);
 
@@ -270,9 +278,9 @@ angular.module('applicationModule')
         if (tomorrowDay < 10) {
           tomorrowDay = "0" + tomorrowDay;
         }
-        $scope.timeOffData.datetimeTo.year = tomorrowYear;
-        $scope.timeOffData.datetimeTo.month = tomorrowMonth;
-        $scope.timeOffData.datetimeTo.day = tomorrowDay;
+        $scope.datetimeTo.year = tomorrowYear;
+        $scope.datetimeTo.month = tomorrowMonth;
+        $scope.datetimeTo.day = tomorrowDay;
       };
       //创建休假申请
       $scope.submitTimeOff = function () {
@@ -281,8 +289,8 @@ angular.module('applicationModule')
         var requestParams = {};
 
         if ($scope.timeOffData.timeOffTypeMeaning == '' ||
-          $scope.timeOffData.datetimeFrom == '' ||
-          $scope.timeOffData.datetimeTo == ''
+          $scope.getdateFromMeaning() == '' ||
+          $scope.getdateToMeaning() == ''
         ) {
           hmsPopup.showPopup('请填写必要的申请信息!');
           return;
@@ -298,12 +306,12 @@ angular.module('applicationModule')
           requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday_apply";
           requestParams = {
             "params": {
-              "p_employeecode": window.localStorage.empno,
-              "timeOffTypeMeaning": $scope.timeOffData.timeOffTypeMeaning,
-              "p_datetimefrom": $scope.timeOffData.datetimeFrom,
-              "p_datetimeto": $scope.timeOffData.datetimeTo,
-              "p_timeleave": $scope.timeOffData.timeLeave,
-              "p_applyreason": $scope.timeOffData.applyReason
+              "p_employeecode"     : window.localStorage.empno,
+              "timeOffTypeMeaning" : $scope.timeOffData.timeOffTypeMeaning,
+              "p_datetimefrom"     : $scope.getdateFromMeaning(),
+              "p_datetimeto"       : $scope.getdateToMeaning(),
+              "p_timeleave"        : $scope.timeOffData.timeLeave,
+              "p_applyreason"      : $scope.timeOffData.applyReason
             }
           };
 
