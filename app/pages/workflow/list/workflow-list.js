@@ -121,7 +121,7 @@ angular.module('applicationModule')
           angular.forEach(list, function (data) {
             var item = {
               title1: data.workflow_name,
-              icon: workflowIcon,
+              icon: data.employee_img,
               type: workflowType,
               typeValue: data.workflow_name,
               node: workflowNode,
@@ -172,7 +172,7 @@ angular.module('applicationModule')
           angular.forEach(list, function (data) {
             var item = {
               title1: data.workflow_desc,
-              icon: workflowIcon,
+              icon: data.employee_img,
               type: workflowType,
               typeValue: data.workflow_desc,
               node: workflowNode,
