@@ -420,8 +420,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -446,8 +446,8 @@ Copyright (c) 2015 Daniel Eden
     -webkit-transform: skewX(-0.78125deg) skewY(-0.78125deg);
     transform: skewX(-0.78125deg) skewY(-0.78125deg); }
   77.7% {
-    -webkit-transform: skewX(0.39063deg) skewY(0.39063deg);
-    transform: skewX(0.39063deg) skewY(0.39063deg); }
+    -webkit-transform: skewX(0.39062deg) skewY(0.39062deg);
+    transform: skewX(0.39062deg) skewY(0.39062deg); }
   88.8% {
     -webkit-transform: skewX(-0.19531deg) skewY(-0.19531deg);
     transform: skewX(-0.19531deg) skewY(-0.19531deg); } }
@@ -2666,12 +2666,12 @@ Copyright (c) 2015 Daniel Eden
 
 .hrms-circle {
   position: absolute;
-  width: 81px;
+  width: 80px;
   height: 82px; }
   .hrms-circle .up-title {
     position: absolute;
     height: 20px;
-    width: 82px;
+    width: 80px;
     top: 20px;
     display: block;
     font-size: 15px;
@@ -2679,7 +2679,7 @@ Copyright (c) 2015 Daniel Eden
   .hrms-circle .center-title {
     position: absolute;
     height: 24px;
-    width: 82px;
+    width: 80px;
     top: 40px;
     display: block;
     font-size: 18px; }
@@ -2691,8 +2691,8 @@ Copyright (c) 2015 Daniel Eden
       color: #F99D32; }
   .hrms-circle .shelter {
     position: absolute;
-    width: 41px;
-    height: 82px;
+    width: 40px;
+    height: 80px;
     top: 0px;
     overflow: hidden; }
   .hrms-circle .left {
@@ -2701,8 +2701,8 @@ Copyright (c) 2015 Daniel Eden
     right: 0px; }
   .hrms-circle .circle {
     position: absolute;
-    width: 82px;
-    height: 82px;
+    width: 80px;
+    height: 80px;
     top: 0px;
     border-radius: 50%;
     background: white;
@@ -2850,30 +2850,53 @@ Copyright (c) 2015 Daniel Eden
   .time-off-detail-card .no-padding-margin {
     padding: 0px;
     margin: 0px; }
-  .time-off-detail-card .item-row {
-    height: 39px; }
-    .time-off-detail-card .item-row.description-row {
-      height: 102px; }
-    .time-off-detail-card .item-row .text-left {
+  .time-off-detail-card .text-row {
+    height: 45px; }
+    .time-off-detail-card .text-row .text-left {
       font-size: 16px;
       color: #4A4A4A;
       text-align: left;
       align-self: center; }
-    .time-off-detail-card .item-row .text-right {
+    .time-off-detail-card .text-row .text-right {
       font-size: 16px;
       color: #9B9B9B;
       text-align: right;
       align-self: center;
       padding-right: 10px; }
-      .time-off-detail-card .item-row .text-right.important-value {
+      .time-off-detail-card .text-row .text-right.important-value {
         color: #24559C; }
-    .time-off-detail-card .item-row .item-line {
+    .time-off-detail-card .text-row .item-line {
       position: absolute;
       height: 1px;
       width: 100%;
       background-color: #D2D2D2;
       margin-top: 38px;
       margin-left: -95%; }
+  .time-off-detail-card .desc-text-area {
+    height: 102px;
+    width: 90%;
+    margin: 10px; }
+
+.bottom-bar {
+  margin-top: 40px;
+  height: 40px; }
+  .bottom-bar .process-button {
+    width: 200px;
+    height: 40px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px 20px 20px 20px;
+    font-size: 16px;
+    color: #FFFFFF;
+    line-height: 40px;
+    text-align: center; }
+    .bottom-bar .process-button.submit-mode {
+      background-color: #F99D32; }
+    .bottom-bar .process-button.revoke-mode {
+      background-color: #B95756; }
+    .bottom-bar .process-button.transparent-mode {
+      background-color: transparent; }
 
 .black-page {
   position: fixed;
@@ -2883,20 +2906,30 @@ Copyright (c) 2015 Daniel Eden
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7); }
+  .black-page .platform-status-bar {
+    width: 100%; }
+    .black-page .platform-status-bar.ios-status-bar {
+      height: 20px; }
+    .black-page .platform-status-bar.android-status-bar {
+      height: 0px; }
   .black-page .black-page.ng-enter {
     -webkit-animation: fadeIn 0.5s;
     animation: fadeIn .5s; }
+  .black-page .buttons {
+    display: inherit; }
+    .black-page .buttons .right-button {
+      position: absolute;
+      right: 5px;
+      color: white;
+      font-size: 17px;
+      min-height: 31px;
+      line-height: 42px;
+      z-index: 1;
+      padding: 0 8px;
+      min-width: initial; }
   .black-page .black-head {
     width: 100%;
-    height: 60px; }
-  .black-page .cancel-button {
-    padding: 0px;
-    margin: 0px;
-    width: 55px;
-    position: absolute;
-    top: 5px;
-    border: none;
-    right: 5px; }
+    height: 40px; }
   .black-page .scroll-height {
     width: 100%;
     height: 100%; }
@@ -2911,6 +2944,37 @@ Copyright (c) 2015 Daniel Eden
     width: 100%;
     height: 100px;
     background-color: transparent; }
+
+.popup-select {
+  position: absolute;
+  top: 60%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px; }
+  .popup-select .header-color {
+    background-color: #ffffff; }
+  .popup-select .title-color {
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none; }
+  .popup-select .change-line {
+    width: 100%;
+    height: 1px;
+    background: -webkit-linear-gradient(right, #3D7BC4, #17468F, #3D7BC4); }
+  .popup-select .back-color {
+    background-color: #ffffff; }
+  .popup-select .list {
+    border: none; }
+  .popup-select .apply-item {
+    width: 94%;
+    margin-left: 3%;
+    color: #9b9b9b;
+    padding: 10px 0px 10px 0px;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #d2d2d2; }
 
 .ts-list-bg {
   border-color: #b2b2b2;
@@ -5094,7 +5158,7 @@ Copyright (c) 2015 Daniel Eden
 .hms-input-list {
   margin: 5px 5px 20px 5px;
   padding-bottom: 25px;
-  padding-left: 10px;
+  padding-left: 12px;
   border-bottom-right-radius: 25px;
   border: 1px solid #f5f5f5;
   box-shadow: 0px 0px 8px #D2D2D2; }
@@ -5104,9 +5168,9 @@ Copyright (c) 2015 Daniel Eden
     margin: 10px; }
   .hms-input-list .hms-input-item {
     display: block;
-    padding-top: 12px;
-    padding-bottom: 3px;
-    border-bottom: 2px solid #D2D2D2; }
+    padding-top: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #D2D2D2; }
     .hms-input-list .hms-input-item .checkbox-size {
       font-size: 18px;
       color: #24559C; }
@@ -6212,6 +6276,48 @@ Copyright (c) 2015 Daniel Eden
           text-align: right;
           color: #9B9B9B;
           font-size: 16px; }
+      .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-textarea-line {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        line-height: 18px;
+        width: 100%;
+        border-bottom: 1px solid #D2D2D2;
+        padding-right: 15px; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-textarea-line .hms-singal-array-textarea-key {
+          width: 100%;
+          color: #4A4A4A;
+          font-size: 16px;
+          margin-bottom: 20px; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-textarea-line .hms-singal-array-textarea-value {
+          width: 100%;
+          color: #9B9B9B;
+          font-size: 16px; }
+        .workflow-detail .hms-workflow-array .hms-singal-array-content .hms-singal-array-textarea-line textarea {
+          height: 80px;
+          width: 100%; }
+    .workflow-detail .hms-workflow-array .application-member-opioion {
+      padding: 2px 4px;
+      border-radius: 13px;
+      font-size: 14px;
+      border: 1px solid #9B9B9B;
+      color: #9B9B9B; }
+      .workflow-detail .hms-workflow-array .application-member-opioion.selected {
+        color: white;
+        background: #24559C;
+        border: 1px solid #24559C; }
+    .workflow-detail .hms-workflow-array .hms-application-member-button {
+      display: block;
+      text-align: center;
+      margin: 12px auto;
+      width: 193px;
+      height: 30px;
+      line-height: 30px;
+      border: 1px solid #24559C;
+      background: none;
+      border-radius: 6px;
+      color: #24559C; }
+      .workflow-detail .hms-workflow-array .hms-application-member-button.activated {
+        background: #b7cde7; }
   .workflow-detail .hms-extra-info {
     margin-top: 10px;
     background: white;

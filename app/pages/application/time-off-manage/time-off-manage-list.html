@@ -1,6 +1,6 @@
 <ion-view view-title="假期管理">
   <div class="time-off-header-bg">
-    <div class="platform-status-bar" ng-class="{true:'ios-status-bar',false:'android-status-bar'}[isIOSPlatform]"></div>
+    <div class="platform-status-bar"></div>
     <div class="time-off-header-bar">
       <div class="buttons">
         <button class="button button-icon icon ion-ios-arrow-back left-button" ng-click="$ionicGoBack()">
@@ -75,7 +75,8 @@
       </div>
     </div>
   </div>
-  <ion-content class="time-off-content" ng-class="{true:'ios-content',false:'android-content'}[isIOSPlatform]" circle-rotate="time-off-manage,left-paid-holiday,right-paid-holiday,left-paid-sick-leave,right-paid-sick-leave,left-ext-paid-holiday,right-ext-paid-holiday">
+  <ion-content class="time-off-content"
+               circle-rotate="time-off-manage,left-paid-holiday,right-paid-holiday,left-paid-sick-leave,right-paid-sick-leave,left-ext-paid-holiday,right-ext-paid-holiday">
     <div class="hms-hide-content" ng-if="fetchDataFlag">
       <hms-loading></hms-loading>
     </div>

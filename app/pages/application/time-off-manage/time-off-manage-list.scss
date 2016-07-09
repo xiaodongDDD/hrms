@@ -3,12 +3,7 @@
   background-size: cover;
   .platform-status-bar {
     width: 100%;
-    &.ios-status-bar {
-      height: 20px;
-    }
-    &.android-status-bar {
-      height: 0px;
-    }
+    height: 0px;
   }
   .time-off-header-bar {
     display: -webkit-box;
@@ -111,12 +106,12 @@
 
 .hrms-circle {
   position: absolute;;
-  width: 81px;
+  width: 80px;
   height: 82px;
   .up-title {
     position: absolute;
     height: 20px;
-    width: 82px;
+    width: 80px;
     top: 20px;
     display: block;
     font-size: 15px;
@@ -125,7 +120,7 @@
   .center-title {
     position: absolute;
     height: 24px;
-    width: 82px;
+    width: 80px;
     top: 40px;
     display: block;
     font-size: 18px;
@@ -141,8 +136,8 @@
   }
   .shelter {
     position: absolute;
-    width: 41px;
-    height: 82px;
+    width: 40px;
+    height: 80px;
     top: 0px;
     overflow: hidden;
   }
@@ -154,8 +149,8 @@
   }
   .circle {
     position: absolute;
-    width: 81px;
-    height: 82px;
+    width: 80px;
+    height: 80px;
     top: 0px;
     border-radius: 50%;
     background: white;
@@ -201,12 +196,8 @@
 }
 
 .time-off-content {
-  &.ios-content {
-    top: 200px;
-  }
-  &.android-content {
-    top: 180px;
-  }
+  top: 180px;
+
   .time-off-list-title {
     font-size: 16px;
     margin-left: 1.3%;
