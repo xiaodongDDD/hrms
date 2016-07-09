@@ -60,7 +60,6 @@ angular.module('myInfoModule')
         window.localStorage.timesheetAuto="";
         window.localStorage.messagePush="";
         window.localStorage.access_token = "";
-        $rootScope.$broadcast("REFRESH_LOGIN");
         $state.go('login');
       };
 

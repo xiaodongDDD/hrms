@@ -4150,6 +4150,9 @@ Copyright (c) 2015 Daniel Eden
     border-left: none;
     border-right: none;
     border-bottom: 1px solid #d2d2d2; }
+  .new-dorm-apply-modal .item.activated {
+    opacity: 0.4;
+    background-color: #ffffff; }
 
 .new-dorm-apply-room-modal {
   position: absolute;
@@ -4184,6 +4187,9 @@ Copyright (c) 2015 Daniel Eden
     border-left: none;
     border-right: none;
     border-bottom: 1px solid #d2d2d2; }
+  .new-dorm-apply-room-modal .item.activated {
+    opacity: 0.4;
+    background-color: #ffffff; }
 
 .new-dorm-apply-project-modal {
   position: absolute;
@@ -4218,6 +4224,9 @@ Copyright (c) 2015 Daniel Eden
     border-left: none;
     border-right: none;
     border-bottom: 1px solid #d2d2d2; }
+  .new-dorm-apply-project-modal .item.activated {
+    opacity: 0.4;
+    background-color: #ffffff; }
 
 .platform-android .bar .title {
   font-size: 1.0625rem; }
@@ -8394,7 +8403,8 @@ Copyright (c) 2015 Daniel Eden
     height: 32px;
     padding-bottom: 3px;
     border: none;
-    margin-top: 74px; }
+    margin-top: 74px;
+    z-index: 100; }
   .login .password-input {
     color: #4a4a4a;
     font-size: 1.2rem;
@@ -8405,7 +8415,8 @@ Copyright (c) 2015 Daniel Eden
     height: 31px;
     padding-bottom: 7px;
     border: none;
-    margin-top: 21px; }
+    margin-top: 21px;
+    z-index: 100; }
   .login .login-checkbox-item {
     padding: 0px;
     margin: 0px;
@@ -8509,7 +8520,8 @@ Copyright (c) 2015 Daniel Eden
     left: 0px;
     top: 70px;
     margin-left: 8.7%;
-    color: #4a4a4a; }
+    color: #4a4a4a;
+    z-index: -10; }
   .login .blur-user-label {
     transition: transform 0.15s ease-in 0s;
     -webkit-transition: transform 0.15s ease-in 0s;
@@ -8537,7 +8549,8 @@ Copyright (c) 2015 Daniel Eden
     left: 0px;
     top: 121px;
     margin-left: 8.7%;
-    color: #4a4a4a; }
+    color: #4a4a4a;
+    z-index: -10; }
   .login .blur-password-label {
     transition: transform 0.15s ease-in 0s;
     -webkit-transition: transform 0.15s ease-in 0s;
@@ -8945,8 +8958,8 @@ Copyright (c) 2015 Daniel Eden
   margin-top: 15px; }
 
 .platform-android .my-info .setup-button {
-  position: fixed;
-  top: -148px;
+  position: absolute;
+  top: 0px;
   right: 5px;
   border: none;
   margin: 0px;
@@ -8985,7 +8998,7 @@ Copyright (c) 2015 Daniel Eden
 
 .platform-ios .my-info .setup-button {
   position: absolute;
-  top: -148px;
+  top: 20px;
   right: 5px;
   border: none;
   margin: 0px;
@@ -9050,6 +9063,13 @@ Copyright (c) 2015 Daniel Eden
     font-size: 0.875rem;
     color: #9b9b9b; }
   .my-info .colorful-part {
+    height: 140px;
+    width: 100%;
+    background-color: #ffffff;
+    margin-top: 12px;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2; }
+  .my-info .common-part {
     height: 94px;
     width: 100%;
     background-color: #ffffff;
@@ -9087,7 +9107,7 @@ Copyright (c) 2015 Daniel Eden
     right: 15px;
     width: 6px;
     height: 11px; }
-  .my-info .feedback-item {
+  .my-info .certificate-item {
     opacity: 1;
     margin: 0px;
     padding: 0px;
@@ -9125,7 +9145,10 @@ Copyright (c) 2015 Daniel Eden
     width: 90%;
     margin-left: 5%;
     margin-top: 30px; }
-  .my-info .item.activated {
+  .my-info .login-item.item.activated {
+    background-color: #ffffff;
+    opacity: 0.2; }
+  .my-info .certificate-item.item.activated {
     background-color: #ffffff;
     opacity: 0.2; }
 
@@ -9439,6 +9462,279 @@ Copyright (c) 2015 Daniel Eden
 .my-info-detail .phone-img {
   width: 14px;
   height: 13px; }
+
+.my-certificate .content-style {
+  background-color: #fafafa; }
+
+.my-certificate .add-icon {
+  width: 24px;
+  height: 24px;
+  margin-top: 5px; }
+
+.my-certificate .certificate-item {
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background-color: #ffffff;
+  width: 97.4%;
+  margin-left: 1.3%;
+  height: 78px;
+  margin-top: 8px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.5); }
+
+.my-certificate .certificate-row {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  height: 20px;
+  margin-top: 24px; }
+
+.my-certificate .certificate-label {
+  color: #24559c;
+  font-size: 0.9375rem;
+  margin-left: 24px; }
+
+.my-certificate .orange-arrow-image {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 26px;
+  right: 11px; }
+
+.my-certificate .item.activated {
+  background-color: #ffffff;
+  opacity: 0.4; }
+
+.my-certificate .add-image {
+  width: 26px;
+  height: 22px;
+  margin-top: 12px; }
+
+.my-certificate-detail .content-style {
+  background-color: #fafafa; }
+
+.platform-android .new-certificate .cancel-button-image {
+  width: 30px;
+  height: 30px;
+  margin-top: 5px; }
+
+.platform-ios .new-certificate .cancel-button-image {
+  width: 30px;
+  height: 30px;
+  margin-top: 18px; }
+
+.new-certificate .content-style {
+  background-color: #fafafa; }
+
+.new-certificate .upload-card {
+  background-color: #ffffff;
+  width: 97.4%;
+  margin-left: 1.3%;
+  margin-top: 5px;
+  box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.5);
+  border-bottom-right-radius: 30px; }
+
+.new-certificate .common-item {
+  padding: 0px;
+  margin: 0px;
+  border: none; }
+
+.new-certificate .image-item {
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background-color: transparent; }
+
+.new-certificate .common-row {
+  padding: 0px;
+  margin: 0px;
+  border-bottom: 1px solid #d2d2d2;
+  width: 94.5%;
+  margin-left: 5.5%;
+  height: 40px; }
+
+.new-certificate .common-label {
+  color: #4a4a4a;
+  font-size: 1rem;
+  margin-top: 10px; }
+
+.new-certificate .choose-label {
+  color: #9b9b9b;
+  font-size: 1rem;
+  position: absolute;
+  top: 9px;
+  right: 42px; }
+
+.new-certificate .gray-arrow-icon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 9px;
+  right: 12px; }
+
+.new-certificate .certificate-input {
+  background-color: transparent;
+  height: 22px;
+  width: 60%;
+  color: #9b9b9b;
+  font-size: 1rem;
+  position: absolute;
+  top: 9px;
+  right: 15px;
+  text-align: right; }
+
+.new-certificate .label-row {
+  margin: 0px;
+  padding: 0px;
+  margin-top: 10px;
+  margin-left: 5.5%; }
+
+.new-certificate .upload-label {
+  font-size: 1rem;
+  color: #4a4a4a; }
+
+.new-certificate .upload-bottom {
+  width: 100%;
+  height: 20px; }
+
+.new-certificate .no-space {
+  margin: 0px;
+  padding: 0px; }
+
+.new-certificate .item.activated {
+  opacity: 0.4;
+  background-color: #ffffff; }
+
+.new-certificate .image-square-item {
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  width: 92px;
+  height: 92px;
+  border: 1px solid #d2d2d2;
+  background-color: transparent; }
+
+.new-certificate .delete-icon {
+  font-size: 4rem;
+  color: orangered;
+  position: absolute;
+  left: 19px;
+  top: 13px; }
+
+.new-certificate .camera-image {
+  width: 90px;
+  height: 90px;
+  padding: 27.5px 25px; }
+
+.new-certificate .common-image {
+  width: 90px;
+  height: 90px; }
+
+.new-certificate .black-shelter {
+  width: 90px;
+  height: 90px;
+  background-color: rgba(0, 0, 0, 0.7); }
+
+.new-certificate .black-page {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  z-index: 200;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); }
+
+.new-certificate .black-page.ng-enter {
+  -webkit-animation: fadeIn 0.5s;
+  animation: fadeIn .5s; }
+
+.new-certificate .black-head {
+  width: 100%;
+  height: 60px; }
+
+.new-certificate .cancel-button {
+  padding: 0px;
+  margin: 0px;
+  width: 55px;
+  position: absolute;
+  top: 5px;
+  border: none;
+  right: 5px; }
+
+.new-certificate .scroll-height {
+  width: 100%;
+  height: 100%; }
+
+.new-certificate .flank {
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center; }
+
+.new-certificate .scroll-bottom-line {
+  width: 100%;
+  height: 100px;
+  background-color: transparent; }
+
+.new-certificate .commit-button {
+  min-height: 40px;
+  line-height: 40px;
+  margin: 0px;
+  padding: 0px;
+  border: none;
+  width: 54%;
+  margin-left: 23%;
+  margin-top: 35px;
+  border-radius: 20px;
+  background-color: #f99d32;
+  color: #ffffff;
+  font-size: 1rem; }
+
+.new-certificate .picture-position {
+  border: none;
+  margin-left: auto;
+  margin-right: auto; }
+
+.new-certificate .blur-back {
+  -webkit-filter: blur(5px);
+  filter: blur(5px); }
+
+.new-certificate-type-modal {
+  position: absolute;
+  top: 52%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px; }
+  .new-certificate-type-modal .header-color {
+    background-color: #ffffff; }
+  .new-certificate-type-modal .title-color {
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none; }
+  .new-certificate-type-modal .change-line {
+    width: 100%;
+    height: 1px;
+    background: -webkit-linear-gradient(right, #3D7BC4, #17468F, #3D7BC4); }
+  .new-certificate-type-modal .back-color {
+    background-color: #ffffff; }
+  .new-certificate-type-modal .list {
+    border: none; }
+  .new-certificate-type-modal .certificate-item {
+    width: 94%;
+    margin-left: 3%;
+    color: #9b9b9b;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #d2d2d2; }
+  .new-certificate-type-modal .item.activated {
+    background-color: #ffffff;
+    opacity: 0.4; }
 
 .navigateHrms .slider-item1 {
   width: 100%;

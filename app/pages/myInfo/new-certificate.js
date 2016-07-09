@@ -192,10 +192,10 @@ angular.module('myInfoModule')
            if(row<3){
              if($scope.imageList[parseInt(row)*3+parseInt(col)].selected==true){
                $scope.matrix[row][col]=true;
-               console.log("row:"+row+" col:"+col+" 数字："+(parseInt(row)*3+parseInt(col)));
+               //console.log("row:"+row+" col:"+col+" 数字："+(parseInt(row)*3+parseInt(col)));
              }else if($scope.imageList[parseInt(row)*3+parseInt(col)].selected==false){
                $scope.matrix[row][col]=false;
-               console.log("row:"+row+" col:"+col+" 数字："+(parseInt(row)*3+parseInt(col)));
+               //console.log("row:"+row+" col:"+col+" 数字："+(parseInt(row)*3+parseInt(col)));
              }
            }else if(row==3){
              if($scope.imageList[9].selected==true){
@@ -215,7 +215,6 @@ angular.module('myInfoModule')
           }
         }
         l=l+1;
-        console.log('l:'+l);
         var j = l%3;
         var i = ( l - j ) / 3;
         if(j>0){
@@ -239,10 +238,12 @@ angular.module('myInfoModule')
            if(picHeight>picWidth){
              bigPicture.style.height=480+"px";
              bigPicture.style.width=270+"px";
+             bigPicture.style.marginTop=30+"px";
            }else if(picHeight<picWidth){
-             bigPicture.style.height=180+"px";
-             bigPicture.style.width=320+"px";
-             bigPicture.style.marginTop=100+"px";
+             bigPicture.style.marginTop=30+"px";
+             bigPicture.style.height=171+"px";
+             bigPicture.style.width=304+"px";
+             bigPicture.style.marginTop=120+"px";
            }
          },100);
       };
