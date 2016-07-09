@@ -1,5 +1,16 @@
 # Changes
 
+### cordova-sqlite-storage 1.4.5
+
+- Log/error message fixes; remove extra qid from internal JSON interface
+
+### cordova-sqlite-storage 1.4.4
+
+- Fix readTransaction to reject modification statements with extra semicolon(s) in the beginning
+- Announce new Cordova-sqlite-evcore-extbuild-free version
+- Additional tests
+- Other doc fixes
+
 ### cordova-sqlite-storage 1.4.3
 
 - Handle executeSql with object sql value (solves another possible crash on iOS)
