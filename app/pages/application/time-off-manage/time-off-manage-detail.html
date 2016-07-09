@@ -13,43 +13,57 @@
   </ion-header-bar>
   <ion-content>
     <ion-item class="time-off-detail-card">
-      <div class="row item-row no-padding-margin">
-        <div class="col-20 text-left">休假项目:</div>
-        <div class="col-80 text-right"></div>
+
+      <div class="row text-row no-padding-margin" ng-click="selectTimeOffType()">
+        <div class="col-20 text-left">休假类型:</div>
+        <div class="col-80 text-right" ng-bind="timeOffData.timeOffTypeMeaning"></div>
         <div class="item-line"></div>
       </div>
-      <div class="row item-row no-padding-margin">
+
+      <div class="row text-row no-padding-margin" ng-if="operation.createMode">
         <div class="col-20 text-left">可用天数:</div>
-        <div class="col-80 text-right">4</div>
+        <div class="col-80 text-right" ng-bind="timeOffData.unusedHoliday"></div>
         <div class="item-line"></div>
       </div>
-      <div class="row item-row no-padding-margin">
+
+      <div class="row text-row no-padding-margin">
         <div class="col-20 text-left">起始日期:</div>
-        <div class="col-80 text-right">2016-05-04</div>
+        <div class="col-80 text-right" ng-click="chooseStartDate()" ng-bind="timeOffData.datetimeFrom"></div>
         <div class="item-line"></div>
       </div>
-      <div class="row item-row no-padding-margin">
+
+      <div class="row text-row no-padding-margin">
         <div class="col-20 text-left">结束日期:</div>
-        <div class="col-80 text-right">2016-05-04</div>
+        <div class="col-80 text-right" ng-click="chooseEndDate()" ng-bind="timeOffData.datetimeTo"></div>
         <div class="item-line"></div>
       </div>
-      <div class="row item-row no-padding-margin important-value">
+
+      <div class="row text-row no-padding-margin important-value">
         <div class="col-20 text-left">休假天数:</div>
-        <div class="col-80 text-right">4</div>
+        <div class="col-80 text-right" ng-bind="timeOffData.timeLeave">4</div>
         <div class="item-line"></div>
       </div>
-      <div class="row item-row no-padding-margin description-row">
-        <div class="col-20 text-left">申请描述:</div>
-        <div class="col-80 text-right">4</div>
-      </div>
+
+      <textarea class="desc-text-area" type="text" placeholder="休假原因"
+                ng-model="timeOffData.applyReason"
+                ng-readonly="readOnly">
+      </textarea>
     </ion-item>
+
+    <div class="bottom-bar">
+      <div class="process-button"
+           ng-class="{'submit-mode':operation.createMode,'revoke-mode':operation.revokeMode,'transparent-mode':operation.queryMode}"
+           ng-bind="operationTypeMeaning"
+           ng-click="submitTimeOff()"></div>
+    </div>
   </ion-content>
-  <div class="black-page" ng-if="descriptionAppearance">
-    <div class="black-head">
-      <button class="button button-icon cancel-button" ng-click="hideDescription()">
-        <img class="cancel-button-image" src="build/img/application/dorm-apply/cancel-opacity.png"/>
+  <div class="black-page" ng-if="descriptionFlag">
+    <div class="platform-status-bar" ng-class="{true:'ios-status-bar',false:'android-status-bar'}[isIOSPlatform]"></div>
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-close-empty right-button" ng-click="hideDescription()">
       </button>
     </div>
+    <div class="black-head"></div>
     <ion-scroll has-bouncing="false" class="scroll-height">
       <div class="flank">
         <p class="paper-write">
