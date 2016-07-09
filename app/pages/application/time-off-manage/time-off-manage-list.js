@@ -48,8 +48,8 @@ angular.module('applicationModule')
       };
 
       $scope.timeOffHistoryList  =[{
-     /*   holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
-        timeOffType          : '1',
+     /* holidayIcon          : 'build/img/application/time-off-manage/PaidHoliday@3x.png',
+        timeOffId            : '1231231',
         timeOffTypeClass     : 'paid-holiday',
         timeOffTypeMeaning   : '带薪年假',
         datetimeFrom         : '2016-6-16',
@@ -73,11 +73,6 @@ angular.module('applicationModule')
           }
         ]*/
       }];
-
-
-      $scope.timeOffCreate = function(){
-        $state.go("tab.time-off-manage-detail")
-      };
 
       function getServeData() {
 
@@ -113,43 +108,35 @@ angular.module('applicationModule')
             //赋值行数据
             $scope.timeOffHistoryList  = [];
             $scope.timeOffHistoryList = responseData.timeOffHistory;
+
             //1:带薪年假，2,额外福利年假，3:事假，4.带薪病假，5.病假，6.婚嫁，7.产假，8.丧假，9.陪产假
             angular.forEach($scope.timeOffHistoryList, function (data, index) {
-              if ('1' == data.timeOffType) {
+              if ('带薪年假' == data.timeOffTypeMeaning) {
                 data.holidayIcon         = baseImgUrl + 'PaidHoliday@3x.png';
-                data.timeOffTypeMeaning  = '带薪年假';
                 data.timeOffTypeClass    = 'paid-holiday';
-              } else if ('2' == data.timeOffType) {
+              } else if ('额外福利年假' == data.timeOffTypeMeaning) {
                 data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
-                data.timeOffTypeMeaning  = '额外福利年假';
                 data.timeOffTypeClass    = 'ext-paid-holiday';
-              } else if ('3' == data.timeOffType) {
+              } else if ('事假'    == data.timeOffTypeMeaning) {
                 data.holidayIcon         = baseImgUrl + 'CasualLeave@3x.png';
-                data.timeOffTypeMeaning  = '事假';
                 data.timeOffTypeClass    = 'default-holiday';
-              } else if ('4' == data.timeOffType) {
+              } else if ('带薪病假' == data.timeOffTypeMeaning) {
                 data.holidayIcon         = baseImgUrl + 'SickLeave@3x.png';
-                data.timeOffTypeMeaning  = '带薪病假';
                 data.timeOffTypeClass    = 'paid-sick-leave';
-              } else if ('5' == data.timeOffType) {
+              } else if ('病假'    == data.timeOffTypeMeaning) {
                 data.holidayIcon         = baseImgUrl + 'SickLeave@3x.png';
-                data.timeOffTypeMeaning  = '病假';
                 data.timeOffTypeClass    = 'default-holiday';
-              } else if ('6' == data.timeOffType) {
+              } else if ('婚假'    == data.timeOffTypeMeaning) {
                 data.holidayIcon         = baseImgUrl + 'HoneyMood@3x.png';
-                data.timeOffTypeMeaning  = '婚假';
                 data.timeOffTypeClass    = 'default-holiday';
-              } else if ('7' == data.timeOffType) {
+              } else if ('产假'    == data.timeOffTypeMeaning) {
                 data.holidayIcon         = baseImgUrl + 'MaternityLeave@3x.png';
-                data.timeOffTypeMeaning  = '产假';
                 data.timeOffTypeClass    = 'default-holiday';
-              } else if ('8' == data.timeOffType) {
+              } else if ('丧假'    == data.timeOffTypeMeaning) {
                 data.holidayIcon         = baseImgUrl + 'ExtPaidHoliday@3x.png';
-                data.timeOffTypeMeaning  = '丧假';
                 data.timeOffTypeClass    = 'default-holiday';
-              } else if ('9' == data.timeOffType) {
+              } else if ('陪产假'  == data.timeOffTypeMeaning) {
                 data.holidayIcon         = baseImgUrl + 'PaternityLeave@3x.png';
-                data.timeOffTypeMeaning  = '陪产假';
                 data.timeOffTypeClass    = 'default-holiday';
               }
 
@@ -186,6 +173,64 @@ angular.module('applicationModule')
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
         });
+      };
+
+      //处理休假信息,根据审批状态来判断对应操作
+      $scope.processTimeOff = function (item) {
+
+        var timeOffData = {};
+
+        if (item.approveStatus == 'APPROVING') {
+          timeOffData.operationType       = 'revoke';
+        } else if(item.approveStatus == 'DRAFT') {
+          timeOffData.operationType       = 'update';
+        } else {
+          timeOffData.operationType       = 'query';
+        }
+
+        timeOffData.paidHoliday    = $scope.timeOffHeader.paidHoliday;
+        timeOffData.paidSickLeave  = $scope.timeOffHeader.paidSickLeave;
+        timeOffData.extPaidHoliday = $scope.timeOffHeader.extPaidHoliday;
+
+        if (item.timeOffTypeMeaning == '带薪年假') {
+          timeOffData.unusedHoliday = timeOffData.unusedPaidHoliday
+        } else if (item.timeOffTypeMeaning == '带薪病假') {
+          timeOffData.unusedHoliday = timeOffData.unusedPaidSickLeave
+        } else if (item.timeOffTypeMeaning == '额外福利年假') {
+          timeOffData.unusedHoliday = timeOffData.unusedExtPaidHoliday;
+        } else {
+          timeOffData.unusedHoliday = '0';
+        }
+
+        timeOffData.timeOffId           = item.timeOffId;
+        timeOffData.timeOffTypeMeaning  = item.timeOffTypeMeaning;
+        timeOffData.datetimeFrom        = item.datetimeFrom;
+        timeOffData.datetimeTo          = item.datetimeTo;
+        timeOffData.timeLeave           = item.timeLeave;
+        timeOffData.applyReason         = item.applyReason;
+
+        $state.go("tab.time-off-manage-detail", {timeOffData : timeOffData});
+      };
+
+      //执行创建休假动作
+      $scope.timeOffCreate = function(){
+
+        var timeOffData = {};
+
+        timeOffData.operationType  = 'create';
+
+        timeOffData.paidHoliday    = $scope.timeOffHeader.paidHoliday;
+        timeOffData.paidSickLeave  = $scope.timeOffHeader.paidSickLeave;
+        timeOffData.extPaidHoliday = $scope.timeOffHeader.extPaidHoliday;
+        timeOffData.unusedHoliday = '0';
+
+        timeOffData.timeOffTypeMeaning  = '';
+        timeOffData.datetimeFrom        = '';
+        timeOffData.datetimeTo          = '';
+        timeOffData.timeLeave           = '';
+        timeOffData.applyReason         = '';
+
+        $state.go("tab.time-off-manage-detail", {timeOffData : timeOffData});
       };
 
       getServeData();

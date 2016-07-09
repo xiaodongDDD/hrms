@@ -82,7 +82,7 @@
     <div ng-if="!fetchDataFlag">
       <div class="time-off-list-title">休假记录</div>
 
-      <div class="time-off-item" ng-repeat="item in timeOffHistoryList">
+      <div class="time-off-item" ng-repeat="item in timeOffHistoryList" ng-click="processTimeOff(item)">
 
         <img class="time-off-item-left {{item.timeOffTypeClass}}" src="{{item.holidayIcon}}" }>
 
