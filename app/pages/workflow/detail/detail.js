@@ -127,11 +127,17 @@ angular.module('applicationModule')
 
       //转正申请功能
       $scope.applicationFullMemberUtil = {
-        changeType: function (type) {
+        changeType: function (item,type) {
           var cache = {
-            "selected": type.selected
+            "selected": item.selected
           };
-          type.selected = !cache.selected;
+          $scope.applicationEmployeeType.agree.selected = false;
+          $scope.applicationEmployeeType.reject.selected = false;
+          $scope.applicationEmployeeType.notChange.selected = false;
+          item.selected = !cache.selected;
+        },
+        showEmployeeGrade: function () {
+          $scope.dataListModal = modal;
         }
       };
 
@@ -145,6 +151,13 @@ angular.module('applicationModule')
       $scope.applicationEmployeeInfo = [];
       $scope.applicationEmployeeAbility = [];
       $scope.applicationEmployeeTrial = {};
+      $scope.employeeGrade = [
+        {item: '100000', value: '优秀'},
+        {item: '100001', value: '好'},
+        {item: '100002', value: '达标'},
+        {item: '100003', value: '待提高'},
+        {item: '100004', value: '不满意'}
+      ];
 
 
       //转正申请功能包

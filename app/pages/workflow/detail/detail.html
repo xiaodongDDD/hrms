@@ -100,16 +100,23 @@
           </div>
           <div class="hms-singal-array-line">
             <div class="hms-singal-array-key">
+              转正日期
+            </div>
+            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.position">
+            </div>
+          </div>
+          <div class="hms-singal-array-line">
+            <div class="hms-singal-array-key">
               转正意见
             </div>
             <div class="hms-singal-array-value">
               <a class="application-member-opioion" ng-class="{'true':'selected'}[applicationEmployeeType.agree.selected]"
-                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.agree)">同意</a>
+                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.agree,'agree')">同意</a>
               <a class="application-member-opioion" ng-class="{'true':'selected'}[applicationEmployeeType.reject.selected]"
-                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.reject)">不同意</a>
+                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.reject,'reject')">不同意</a>
               <a class="application-member-opioion"
                  ng-class="{'true':'selected'}[applicationEmployeeType.notChange.selected]"
-                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.notChange)">试用中</a>
+                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.notChange,'notChange')">试用中</a>
             </div>
           </div>
         </div>
