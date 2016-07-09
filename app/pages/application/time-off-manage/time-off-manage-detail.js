@@ -30,6 +30,7 @@ angular.module('applicationModule')
     'hmsPopup',
     '$ionicModal',
     '$ionicHistory',
+    '$cordovaDatePicker',
     function ($scope,
               $state,
               $stateParams,
@@ -37,10 +38,12 @@ angular.module('applicationModule')
               hmsHttp,
               hmsPopup,
               $ionicModal,
-              $ionicHistory) {
+              $ionicHistory,
+              $cordovaDatePicker) {
 
       $scope.isIOSPlatform = ionic.Platform.isIOS();//判断平台,留出iOS的statusBar
       $scope.descriptionFlag = '';
+      $scope.pageTitle       = '创建休假';
       $scope.readOnly = ''; // 界面是否可以编辑
       $scope.buttonModeClass = 'submit-mode';//submit-mode,revoke-mode,transparent-mode
       $scope.operationTypeMeaning = '';
@@ -55,35 +58,38 @@ angular.module('applicationModule')
         if (modeType == 'create') {
           $scope.operation.createMode = true;
           $scope.operation.revokeMode = false;
-          $scope.operation.queryMode = false;
+          $scope.operation.queryMode  = false;
           $scope.operationTypeMeaning = '提交';
-          $scope.readOnly = false;
+          $scope.readOnly  = false;
+          $scope.pageTitle = '创建休假';
         } else if (modeType == 'revoke') {
           $scope.operation.createMode = false;
           $scope.operation.revokeMode = true;
-          $scope.operation.queryMode = false;
+          $scope.operation.queryMode  = false;
           $scope.operationTypeMeaning = '撤回';
-          $scope.readOnly = true;
+          $scope.readOnly  = true;
+          $scope.pageTitle = '撤回休假';
         } else if (modeType == 'query') {
           $scope.operation.createMode = false;
           $scope.operation.revokeMode = false;
-          $scope.operation.queryMode = true;
-          $scope.readOnly = true;
+          $scope.operation.queryMode  = true;
+          $scope.readOnly  = true;
+          $scope.pageTitle = '休假详情';
         }
       };
 
       //定义创建休假申请数据结构
       $scope.timeOffData = {
-        operationType: '',
-        timeOffTypeMeaning: '',
-        datetimeFrom: '',
-        datetimeTo: '',
-        unusedPaidHoliday: '',
-        unusedPaidSickLeave: '',
-        unusedExtPaidHoliday: '',
-        unusedHoliday: '',
-        timeLeave: '',
-        applyReason: ''
+        operationType        : '',
+        timeOffTypeMeaning   : '',
+        datetimeFrom         : '',
+        datetimeTo           : '',
+        unusedPaidHoliday    : '',
+        unusedPaidSickLeave  : '',
+        unusedExtPaidHoliday : '',
+        unusedHoliday        : '',
+        timeLeave            : '',
+        applyReason          : ''
       };
 
       //初始化假期类型数组
@@ -98,19 +104,23 @@ angular.module('applicationModule')
       //init data
       {
         $scope.timeOffData = $stateParams.timeOffData;
+        //create,revoke,update,query
+        //当前还不支持草稿类型,所以不存在update操作
+        setOperationMode($scope.timeOffData.operationType);
 
+        //设置初始化时间
         var todayDate = new Date();//今天日期
-        var month = todayDate.getMonth() + 1;
-        var day = todayDate.getDate();
+        var month     = todayDate.getMonth() + 1;
+        var day       = todayDate.getDate();
         $scope.timeOffData.datetimeFrom = {//开始日期
-          year: todayDate.getFullYear(),
-          month: "",
-          day: ""
+          year  : todayDate.getFullYear(),
+          month : "",
+          day   : ""
         };
         $scope.timeOffData.datetimeTo = {//结束日期
-          year: "",
-          month: "",
-          day: ""
+          year  : "",
+          month : "",
+          day   : ""
         };
 
         if (month < 10) {
@@ -124,10 +134,6 @@ angular.module('applicationModule')
 
         //初始化结束时间
         refreshEndDate(1);
-
-        //create,revoke,update,query
-        //当前还不支持草稿类型,所以不存在update操作
-        setOperationMode($scope.timeOffData.operationType);
 
       }
 

@@ -35,9 +35,15 @@ angular.module('applicationModule')
               $ionicHistory) {
       //只支持iOS和Android
       $scope.circleAnimationFlag = false;//数据未加载
-      $scope.isIOSPlatform       = ionic.Platform.isIOS();//判断平台,留出iOS的statusBar
+
+      //为iOS平台增加status bar
+      if (ionic.Platform.isIOS()) {
+        angular.element('.platform-status-bar').css('height','20px');
+        angular.element('.time-off-content').css('height','200px');
+      }
+
       $scope.fetchDataFlag       = true;
-      $scope.timeOffHeader       ={
+      $scope.timeOffHeader       = {
         /*userId                 : 999,
         paidHoliday            : 9,
         paidSickLeave          : 9,
