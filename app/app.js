@@ -20,169 +20,64 @@ angular.module('myApp', [
 ]);
 
 angular.module('myApp')
-  .run(function ($ionicPlatform, $timeout, baseConfig, checkVersionService, $state,imService) {
-    if (window.localStorage.token === '' || angular.isUndefined(window.localStorage.token)) {
-    } else {
-      checkVersionService.checkAppVersion();
-    }
-    $ionicPlatform.ready(function () {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
-      if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-        cordova.plugins.Keyboard.disableScroll(true);
-      }
-      if (window.StatusBar) {
-        // org.apache.cordova.statusbar required
-        StatusBar.styleLightContent();
-      }
-      if (window.localStorage.access_token === '' || angular.isUndefined(window.localStorage.access_token)) {
+  .run([
+    '$ionicPlatform',
+    '$timeout',
+    'baseConfig',
+    'checkVersionService',
+    '$state',
+    'imService',
+    'hmsJpushService',
+    'sqliteService',
+    function ($ionicPlatform,
+              $timeout,
+              baseConfig,
+              checkVersionService,
+              $state,
+              imService,
+              hmsJpushService,
+              sqliteService) {
+
+      if (window.localStorage.token === '' || angular.isUndefined(window.localStorage.token)) {
       } else {
-        if(ionic.Platform.isWebView()) {
-          imService.getImChatList();
+        checkVersionService.checkAppVersion();
+      }
+
+      $ionicPlatform.ready(function () {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
+          cordova.plugins.Keyboard.disableScroll(false);
         }
-      }
+        if (window.StatusBar) {
+          StatusBar.styleLightContent();
+        }
 
+        /*$timeout(function () {
+          $state.go('detail',{content:{"content":"测试"}});
+        },10000);*/
 
-      if (window.plugins.jPushPlugin) {
-        var getRegistrationID = function () {
-          window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);
-        };
-        var onGetRegistrationID = function (data) {
-          try {
-            //alert("JPushPlugin:registrationID is " + angular.toJson(data));
-            if (data.length == 0) {
-              var t1 = window.setTimeout(getRegistrationID, 1000);
-            }
-          } catch (exception) {
-            console.log(exception);
+        hmsJpushService.init($state);
+
+        if (window.localStorage.access_token === '' || angular.isUndefined(window.localStorage.access_token)) {
+        } else {
+          if (ionic.Platform.isWebView()) {
+            imService.getImChatList();
           }
-        };
-        var initiateUI = function () {
-          try {
-            window.plugins.jPushPlugin.init();
-            getRegistrationID();
-            if (device.platform != "Android") {
-              window.plugins.jPushPlugin.setDebugModeFromIos();
-              window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
-            } else {
-              window.plugins.jPushPlugin.setDebugMode(true);
-              window.plugins.jPushPlugin.setStatisticsOpen(true);
-            }
-          } catch (exception) {
-            console.log(exception);
-          }
-          try {
-            var alias = '3705';
-            var tags = [];
-            tags.push('3705');
-            window.plugins.jPushPlugin.setTagsWithAlias(tags, alias);
-          } catch (exception) {
-            console.log(exception);
-          }
+        }
+
+        var rootConfig = {
+          dbName: baseConfig.dbName,
+          dbLocation: 0,
+          appRootFile: 'helloCordova'
         };
 
-        var onOpenNotification = function (event) {
-          try {
-            var alertContent;
-            if (device.platform == "Android") {
-              alertContent = window.plugins.jPushPlugin.openNotification.alert;
-            } else {
-              alertContent = event.aps.alert;
-            }
-            //alert("open Notification:" + alertContent);
-            $state.go('tab.myTimesheet');
+        if (ionic.Platform.isWebView()) {
 
-          } catch (exception) {
-            console.log("JPushPlugin:onOpenNotification" + exception);
-          }
-        };
-        document.addEventListener("jpush.openNotification", onOpenNotification, false);
-        initiateUI();
-      }
-      var rootConfig = {
-        dbName: baseConfig.dbName,
-        dbLocation: 0,
-        appRootFile: 'helloCordova'
-      };
-      if (ionic.Platform.isWebView()) {
-
-        // alert(".....  "+window.sqlitePlugin);
-        // alert(window.sqlitePlugin.openDatabase);
-        // alert(LocalFileSystem);
-        /*window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
-         // 获取路径
-         baseConfig.appRootPath = fileSys.root.toURL() + '/' + baseConfig.appRootFile + '/';
-         //showMessage(baseConfig.appRootPath+' - '+ fileSys.root.toURL() );
-         //The folder is created if doesn't exist
-         fileSys.root.getDirectory(baseConfig.appRootFile, {create: true, exclusive: false},
-         function (directory) {
-         },
-         function (error) {
-         alert(error);
-         });
-         });*/
-
-        var db = window.sqlitePlugin.openDatabase({
-          name: baseConfig.dbName,
-          createFromLocation: 1,
-          location: baseConfig.dbLocation
-        });
-        db.transaction(function (tx) {
-          tx.executeSql('CREATE TABLE IF NOT EXISTS MOBILE_EXP_REPORT_LINE \
-                    (line_id integer primary key AUTOINCREMENT,\
-                    expenseObject_id INTEGER,\
-                    expenseObject_code TEXT,\
-                    expenseObject_desc TEXT,\
-                    expenseObject_type TEXT,\
-                    costObject_id TEXT,\
-                    costObject_desc TEXT,\
-                    expense_type_id INTEGER,  \
-                    expense_type_desc TEXT,   \
-                    expense_item_id INTEGER,\
-                    expense_item_code TEXT,\
-                    expense_item_desc TEXT,\
-                    expense_apply_id TEXT,\
-                    expense_apply_desc TEST,\
-                    expense_price INTEGER,\
-                    expense_quantity INTEGER,\
-                    currency_code TEXT,\
-                    currency_code_desc text,\
-                    invoice_quantity INTEGER,\
-                    exchange_rate INTEGER,\
-                    total_amount INTEGER,\
-                    expense_date_from TEXT,\
-                    expense_date_to TEXT,\
-                    expense_place Text ,\
-                    description TEXT,\
-                    local_status TEXT,\
-                    service_id INTEGER,\
-                    creation_date  TEXT ,\
-                    created_by TEXT,\
-                    timestamp TEXT,\
-                    segment_1 INTEGER,\
-                    segment_2 INTEGER,\
-                    segment_3 INTEGER,\
-                    segment_4 INTEGER,\
-                    segment_5 INTEGER,\
-                    segment_6 TEXT,\
-                    segment_7 TEXT,\
-                    segment_8 TEXT ,\
-                    segment_9 TEXT,\
-                    segment_10 TEXT )'
-          );
-          tx.executeSql('CREATE TABLE IF NOT EXISTS MOBILE_EXP_LINE_PHOTOS (' +
-            'photo_id integer primary key, ' +
-            'line_id integer, ' +
-            'photo_name text,' +
-            'photo_src text,' +
-            'creation_date text,' +
-            'created_by integer)'
-          );
-        });
-      }
-    });
-  });
+        }
+      });
+    }]);
 
 angular.module('myApp')
   .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider', 'baseConfig',
@@ -193,6 +88,7 @@ angular.module('myApp')
       // Each state's controller can be found in controllers.js
 
       $httpProvider.interceptors.push('httpRequestHeader');//注册过滤器
+      //$httpProvider.interceptors[0] = $httpProvider.interceptors[0] + "access_token=" + window.localStorage.token;
       $ionicConfigProvider.platform.ios.tabs.style('standard');
       $ionicConfigProvider.platform.ios.tabs.position('bottom');
       $ionicConfigProvider.platform.android.tabs.style('standard');
@@ -208,7 +104,7 @@ angular.module('myApp')
       $ionicConfigProvider.platform.android.views.transition('android');
 
       $stateProvider
-        // setup an abstract state for the tabs directive
+      // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
           abstract: true,
@@ -282,6 +178,14 @@ angular.module('myApp')
           url: '/guide',
           templateUrl: 'build/pages/guide/guide.html',
           controller: 'guideCtrl'
+        })
+
+        .state('detail', {
+          url: '/detail',
+          cache: false,
+          params: {"content": {}},
+              templateUrl: 'build/pages/push/push-detail.html',
+              controller: 'pushDetailCtrl'
         })
 
         .state('login', {

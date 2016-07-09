@@ -6,18 +6,19 @@
 //
 //
 
-#import "MyPlugin.h"
+#import "CDVCalendar.h"
 #import "RootViewController.h"
 #import "CalendarDayModel.h"
-@interface MyPlugin()
+
+@interface CDVCalendar()
 {
     RootViewController *rootVC;
 }
 @end
 
-@implementation MyPlugin
+@implementation CDVCalendar
 
--(void)openCalender:(CDVInvokedUrlCommand *)cmd
+-(void)openCalendar:(CDVInvokedUrlCommand *)cmd
 {
     if ([cmd.arguments.firstObject boolValue]) {
         [self function1:cmd];
@@ -30,7 +31,7 @@
 - (void)function1:(CDVInvokedUrlCommand *)cmd
 {
     rootVC = [[RootViewController alloc] initIfIsCalender:YES];
-    __weak MyPlugin *weakSelf = self;
+    __weak CDVCalendar *weakSelf = self;
     rootVC.rootBlock = ^(NSMutableArray *array){
         CDVPluginResult *result;
         if (cmd.arguments.count) {
@@ -55,7 +56,7 @@
 -(void)function2:(CDVInvokedUrlCommand *)cmd
 {
     rootVC = [[RootViewController alloc] initIfIsCalender:NO];
-    __weak MyPlugin *weakSelf = self;
+    __weak CDVCalendar *weakSelf = self;
     //  CalendarDayModel *day;
     rootVC.rootBlock = ^(NSMutableArray *array){
         CDVPluginResult *result;

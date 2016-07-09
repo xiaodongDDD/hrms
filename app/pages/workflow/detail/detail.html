@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="hms-singal-array-content">
-        <div class="hms-singal-array-line" ng-click="showDataList()">
+        <div class="hms-singal-array-line" ng-click="renewContractUtil.showDataList()">
           <div class="hms-singal-array-key">
             续签方式
           </div>
@@ -76,96 +76,91 @@
         <div class="hms-singal-array-name">
           <i class="ion-record"></i>转正信息
         </div>
-        <div class="hms-singal-array-operation" ng-click="showContent(array,$event)">
-          <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
+        <div class="hms-singal-array-operation"
+             ng-click="workflowDetailUtil.showContent(applicationEmployeeDetail,$event)">
+          <i
+            ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[applicationEmployeeDetail.showFlag]"></i>
         </div>
       </div>
-      <div class="hms-singal-array-content">
-        <div class="hms-singal-array-line" ng-click="showDataList()">
-          <div class="hms-singal-array-key">
-            申请者
+      <div ng-if="applicationEmployeeDetail.showFlag">
+        <div class="hms-singal-array-content">
+          <div class="hms-singal-array-line" ng-click="showDataList()">
+            <div class="hms-singal-array-key">
+              申请者
+            </div>
+            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.applier">
+            </div>
           </div>
-          <div class="hms-singal-array-value">
+          <div class="hms-singal-array-line">
+            <div class="hms-singal-array-key">
+              转正职位
+            </div>
+            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.position">
+            </div>
           </div>
-        </div>
-        <div class="hms-singal-array-line">
-          <div class="hms-singal-array-key">
-            转正职位
-          </div>
-          <div class="hms-singal-array-value">
-          </div>
-        </div>
-        <div class="hms-singal-array-line">
-          <div class="hms-singal-array-key">
-            转正意见
-          </div>
-          <div class="hms-singal-array-value">
-          </div>
-        </div>
-      </div>
-      <div class="hms-singal-array-sub-header">
-        <div class="hms-singal-array-name">
-          试用期信息
-        </div>
-      </div>
-      <div class="hms-singal-array-content">
-        <div class="hms-singal-array-line">
-          <div class="hms-singal-array-key">
-            测试
-          </div>
-          <div class="hms-singal-array-value">
-            测试
+          <div class="hms-singal-array-line">
+            <div class="hms-singal-array-key">
+              转正意见
+            </div>
+            <div class="hms-singal-array-value">
+              <a class="application-member-opioion" ng-class="{'true':'selected'}[applicationEmployeeType.agree.selected]"
+                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.agree)">同意</a>
+              <a class="application-member-opioion" ng-class="{'true':'selected'}[applicationEmployeeType.reject.selected]"
+                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.reject)">不同意</a>
+              <a class="application-member-opioion"
+                 ng-class="{'true':'selected'}[applicationEmployeeType.notChange.selected]"
+                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.notChange)">试用中</a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="hms-singal-array-sub-header">
-        <div class="hms-singal-array-name">
-          考评结果
-        </div>
-        <div class="hms-singal-array-name">
-          总分
-        </div>
-      </div>
-      <div class="hms-singal-array-content">
-        <div class="hms-singal-array-line">
-          <div class="hms-singal-array-key">
-            测试
-          </div>
-          <div class="hms-singal-array-value">
-            测试
+        <a class="hms-application-member-button">保存</a>
+        <div class="hms-singal-array-sub-header">
+          <div class="hms-singal-array-name">
+            试用期信息
           </div>
         </div>
-      </div>
-      <div class="hms-singal-array-content">
-        <div class="hms-singal-array-line">
-          <div class="hms-singal-array-key">
-            学习能力
-          </div>
-          <div class="hms-singal-array-value">
-            学习能力
+        <div class="hms-singal-array-content">
+          <div class="hms-singal-array-line" ng-repeat="info in applicationEmployeeInfo">
+            <div class="hms-singal-array-key" ng-bind="info.item_name">
+            </div>
+            <div class="hms-singal-array-value" ng-bind="info.item_value">
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="hms-singal-array-sub-header">
-        <div class="hms-singal-array-name">
-          试用期总结
-        </div>
-      </div>
-      <div class="hms-singal-array-content">
-        <div class="hms-singal-array-line">
-          <div class="hms-singal-array-key">
-            需求改进
-          </div>
-          <div class="hms-singal-array-value">
-            测试
+        <div class="hms-singal-array-sub-header">
+          <div class="hms-singal-array-name">
+            考评结果
           </div>
         </div>
+        <div class="hms-singal-array-content">
+          <div class="hms-singal-array-line" ng-repeat="ability in applicationEmployeeAbility">
+            <div class="hms-singal-array-key" ng-bind="ability.element_name">
+            </div>
+            <div class="hms-singal-array-value" ng-bind="ability.element_value">
+            </div>
+          </div>
+        </div>
+        <a class="hms-application-member-button">保存</a>
+        <div class="hms-singal-array-sub-header">
+          <div class="hms-singal-array-name">
+            试用期总结
+          </div>
+        </div>
+        <div class="hms-singal-array-content" ng-repeat="trial in applicationEmployeeTrial">
+          <div class="hms-singal-array-textarea-line">
+            <div class="hms-singal-array-textarea-key" ng-bind="trial.field_name">
+            </div>
+            <div class="hms-singal-array-textarea-value" ng-if="trial.can_update==0" ng-bind="trial.field_value">
+            </div>
+            <textarea ng-model="trial.field_value" ng-if="trial.can_update==1"></textarea>
+          </div>
+        </div>
+        <a class="hms-application-member-button">保存</a>
       </div>
     </div>
 
     <!--一维数组-->
-    <div class="hms-workflow-array" ng-repeat="array in singalArrayList" ng-if="true">
+    <div class="hms-workflow-array" ng-repeat="array in singalArrayList">
       <div class="hms-singal-array-header">
         <div class="hms-singal-array-name">
           <i class="ion-record"></i>{{array.detail_title}};
@@ -217,7 +212,7 @@
         <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
         </input>
       </div>
-      <div class="hms-transmit" ng-click="chooseTransmitPerson()">
+      <div class="hms-transmit" ng-click="workflowDetailUtil.chooseTransmitPerson()">
         <div class="row row-col-no-padding">
           <div class="col col-20 transmit-title row-col-no-padding">
             转交人

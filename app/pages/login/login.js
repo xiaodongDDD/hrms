@@ -16,6 +16,7 @@ angular.module('loginModule')
     'checkVersionService',
     'hmsPopup',
     'imService',
+    'hmsJpushService',
     function ($scope,
               $state,
               baseConfig,
@@ -27,12 +28,13 @@ angular.module('loginModule')
               $ionicScrollDelegate,
               checkVersionService,
               hmsPopup,
-              imService) {
+              imService,
+              hmsJpushService) {
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
         if (window.StatusBar) {
-          StatusBar.styleDefault();
+          StatusBar.styleLightContent();
         }
       });
       /////////////////////////////////////
@@ -241,21 +243,22 @@ angular.module('loginModule')
             return;
           }
 
-          var url = baseConfig.loginPath + "/appLogin/user_login/login";
-          var params = {
-            "params": {
-              "p_user_name": +$scope.loginInfo.username,
-              "p_password": $scope.loginInfo.password
-            }
-          };
+          var url = baseConfig.loginPath;
+          var phoneNumber = "PC";
+          var params = "username=" + $scope.loginInfo.username + "&password=" + $scope.loginInfo.password + "&p_phone_no=" + phoneNumber;
+
           hmsPopup.showLoading('登陆中...');
-          $http.post(url, params).success(function (result) {
+
+          $http.post(url + params).success(function (result) {
             hmsPopup.hideLoading();
             if (baseConfig.debug) {
               console.log("result success " + angular.toJson(result));
             }
-            if (!result.status && result.con_status == 'S') {
-              window.localStorage.token = result.pre_token + result.token_key;
+            //绑定推送服务
+            hmsJpushService.bind($scope.loginInfo.username);
+
+            if (result.access_token && result.access_token != '') {
+              window.localStorage.token = result.access_token;
               window.localStorage.empno = $scope.loginInfo.username;
               window.localStorage.checkboxSavePwd = $scope.rememberPassword;
               $scope.bigPortrait = "build/img/login/login-hand.png";
@@ -263,21 +266,21 @@ angular.module('loginModule')
               $scope.showButtonIcon = false;
               checkVersionService.checkAppVersion();
               //if(ionic.Platform.isWebView()) {
-                imService.initImData();
+              imService.initImData();
               //}
               $state.go("tab.message");
             } else {
               $scope.bigPortrait = "build/img/login/login-hand.png";
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
-              hmsPopup.showPopup('登陆失败,请确认密码');
+              hmsPopup.showPopup('登陆失败,请确认密码是否正确!');
             }
           }).error(function (response, status) {
             $scope.bigPortrait = "build/img/login/login-hand.png";
             $scope.showLoginButton = false;
             $scope.showButtonIcon = false;
             hmsPopup.hideLoading();
-            hmsPopup.showPopup('网络连接出错');
+            hmsPopup.showPopup('登陆失败,请确认网络连接是否正常,或者联系管理员');
             if (baseConfig.debug) {
               console.log("response error " + angular.toJson(response));
             }
