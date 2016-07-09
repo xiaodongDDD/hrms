@@ -60,9 +60,11 @@ angular.module("applicationModule")
     //};
     /*拍摄照片 相机*/
     // $scope.getPhotoFromCamera=function(){
-    var tPhotoFromCamera = function () {
+    var getPhotoFromCamera2 = function () {
+      console.log('getPhotoFromCamera');
       //if (detectOS() == "iPhone") {
-      if(ionic.Platform.isIOS() && !ionic.Platform.isIPad()){
+      if(ionic.Platform.isIOS()){
+        console.log('iPhone');
         var optionsCamera = {
           destinationType: Camera.DestinationType.FILE_URI,
           sourceType: Camera.PictureSourceType.CAMERA,
@@ -76,6 +78,7 @@ angular.module("applicationModule")
         //alert("iphone");
       }
       else {
+        console.log('Android');
         var optionsCamera = {
           destinationType: Camera.DestinationType.FILE_URI,
           sourceType: Camera.PictureSourceType.CAMERA,
@@ -96,7 +99,7 @@ angular.module("applicationModule")
     };
 
     /*拍摄照片 相册*/
-    var getPhotoFromLibary = function () {
+    var getPhotoFromLibary2 = function () {
       var optionsPhotoLibrary = {
         destinationType: Camera.DestinationType.FILE_URI,
         sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
@@ -174,7 +177,7 @@ angular.module("applicationModule")
           } else if (index == 1) {
             console.log("相机");
             // 拍照上传
-            $scope.selectPhotoSource("Cemera");
+            $scope.selectPhotoSource2("Cemera");
           } else if (index == 2) {
             $scope.viewPhotos();
           }
@@ -184,11 +187,12 @@ angular.module("applicationModule")
     }
 
     /*选择相机*/
-    $scope.selectPhotoSource = function (sourceType) {
+    $scope.selectPhotoSource2 = function (sourceType) {
+      console.log(sourceType);
       if (sourceType == "Cemera") {
-        getPhotoFromCamera();
+        getPhotoFromCamera2();
       } else if (sourceType == "PhotoLibary") {
-        getPhotoFromLibary();
+        getPhotoFromLibary2();
       }
       console.log("sourceType " + sourceType);
       //$ionicPopup.close();

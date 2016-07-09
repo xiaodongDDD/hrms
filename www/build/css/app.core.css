@@ -9612,11 +9612,14 @@ Copyright (c) 2015 Daniel Eden
   background-color: #ffffff;
   opacity: 0.4; }
 
+<<<<<<< HEAD
 .my-certificate .add-image {
   width: 26px;
   height: 22px;
   margin-top: 12px; }
 
+=======
+>>>>>>> zhangren
 .my-certificate-detail .content-style {
   background-color: #fafafa; }
 
@@ -9712,6 +9715,7 @@ Copyright (c) 2015 Daniel Eden
   opacity: 0.4;
   background-color: #ffffff; }
 
+<<<<<<< HEAD
 .new-certificate .image-square-item {
   padding: 0px;
   margin: 0px;
@@ -9742,6 +9746,8 @@ Copyright (c) 2015 Daniel Eden
   height: 90px;
   background-color: rgba(0, 0, 0, 0.7); }
 
+=======
+>>>>>>> zhangren
 .new-certificate .black-page {
   position: fixed;
   top: 0px;
@@ -9773,6 +9779,7 @@ Copyright (c) 2015 Daniel Eden
   height: 100%; }
 
 .new-certificate .flank {
+<<<<<<< HEAD
   padding-left: 5px;
   padding-right: 5px;
   text-align: center; }
@@ -9801,6 +9808,12 @@ Copyright (c) 2015 Daniel Eden
   margin-left: auto;
   margin-right: auto; }
 
+=======
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center; }
+
+>>>>>>> zhangren
 .new-certificate .blur-back {
   -webkit-filter: blur(5px);
   filter: blur(5px); }

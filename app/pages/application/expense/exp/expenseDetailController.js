@@ -1,6 +1,6 @@
 angular.module('myApp')
   .config(['$stateProvider',
-    function ($stateProvider) { 
+    function ($stateProvider) {
       $stateProvider
         .state('tab.expenseDetail', {
           url: '/expenseDetail',
@@ -16,10 +16,10 @@ angular.module('myApp')
 
 angular.module("applicationModule")
   .controller('expenseDetailController', [
-      '$scope', 'expenseApply', 'keepAccount', 'dialog', 
-      'expenseObject', '$state', '$http', '$ionicLoading', 
-      '$q', 'baseConfig', 
-    function ($scope, expenseApply, keepAccount, dialog, expenseObject, 
+      '$scope', 'expenseApply', 'keepAccount', 'dialog',
+      'expenseObject', '$state', '$http', '$ionicLoading',
+      '$q', 'baseConfig',
+    function ($scope, expenseApply, keepAccount, dialog, expenseObject,
       $state, $http, $ionicLoading, $q, baseConfig) {
 
     $scope.isshow=true;

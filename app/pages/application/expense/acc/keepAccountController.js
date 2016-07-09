@@ -31,9 +31,9 @@ angular.module('myApp')
               controller: 'keepAccountController'
             }
           }
-        }); 
+        });
     }]);
-     
+
 angular.module("applicationModule")
   .controller('keepAccountController', function ($scope, keepAccount, $http, $state, $rootScope, $q, hmsPopup) {
 
@@ -50,7 +50,7 @@ angular.module("applicationModule")
       console.log("should null " + angular.toJson(keepAccount.expenseItemList));
 
       keepAccount.boolLoadExpenseObject = false;
-      $state.go('tab.acc_detail', {hideTabs: true}); 
+      $state.go('tab.acc_detail', {hideTabs: true});
     };
 
 
