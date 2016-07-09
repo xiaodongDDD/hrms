@@ -111,9 +111,9 @@ angular.module('applicationModule')
               destUrl: "tab.dorm-apply"
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "房屋转租",
+              imageUrl: "build/img/application/application/housingrental@3x.png",
+              destUrl: ""
             }
           ]
         }
@@ -133,7 +133,9 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log("appItem " + angular.toJson(appItem));
         }
-        $state.go(appItem.destUrl);
+        if(appItem.destUrl != ""){
+          $state.go(appItem.destUrl);
+        }
       };
 
       if (baseConfig.debug) {

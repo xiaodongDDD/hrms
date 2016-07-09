@@ -5,7 +5,8 @@
         <span class="back-text">返回</span>
       </button>
     </div>
-    <h1 class="title" ng-click="openTimesheetMode($event)">{{timesheetProcessMode}}&nbsp;<i class="ion-chevron-down"></i>
+    <h1 class="title" ng-click="openTimesheetMode($event)">{{timesheetProcessMode}}&nbsp;<i
+      class="ion-chevron-down"></i>
     </h1>
     <div class="buttons" ng-click="openPopover($event)">
       <button class="button button-clear">
@@ -16,8 +17,9 @@
   <ion-content delegate-handle="timeSheetHandle" has-bouncing="false">
     <!--<hmsslidecalendar>
     </hmsslidecalendar>-->
-    <div class="calendar-month" >
-      <ion-scroll delegate-handle="timeSheetMonthHandle" direction="x" scrollbar-x="false" scrollbar-y="false" style="height:50px;">
+    <div class="calendar-month">
+      <ion-scroll delegate-handle="timeSheetMonthHandle" direction="x" scrollbar-x="false" scrollbar-y="false"
+                  style="height:50px;">
         <div style="height: 40px;width: 720px;">
           <div class="month-item" ng-click="getTimeSheet(currentYear,month)"
                ng-repeat="month in monthList" ng-class="{true:'selected',false:''}[month.selected]">

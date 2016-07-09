@@ -7,11 +7,13 @@ angular.module('HmsModule')
     'hmsPopup',
     '$state',
     'baseConfig',
+    '$rootScope',
     function ($log,
               $http,
               hmsPopup,
               $state,
-              baseConfig) {
+              baseConfig,
+              $rootScope) {
       var serivieName = "HmsHttp";
       var isSucessfullName = "isSucessfull";
       var noAuthorPostName = serivieName + ".noAuthorPost";
@@ -24,7 +26,7 @@ angular.module('HmsModule')
         procedure = procedure;
       };
       var debug = function (text) {
-        if(baseConfig.debug) {
+        if (baseConfig.debug) {
           console.log(procedure + " success");
         }
       };
@@ -32,6 +34,7 @@ angular.module('HmsModule')
       //如果登录令牌失效，跳转会登录界面
       var goBackLogin = function (state) {
         hmsPopup.hideLoading();
+        $rootScope.$broadcast("REFRESH_LOGIN");
         state.go('login');
       };
 
@@ -40,7 +43,7 @@ angular.module('HmsModule')
           goBackLogin(state);
         },
         isSuccessfull: function (status) {
-          if(baseConfig.debug){
+          if (baseConfig.debug) {
             console.log(isSucessfullName + " Start!");
             console.log(noAuthorPostName + " status " + status);
           }
@@ -50,46 +53,52 @@ angular.module('HmsModule')
             return false;
           }
         },
-        post: function (url, paramter, state) {
-          if(baseConfig.debug) {
+        post: function (url, paramter) {
+          if (baseConfig.debug) {
             console.log(postName + " Start!");
             console.log(postName + " url " + url);
             console.log(postName + " paramter " + angular.toJson(paramter));
           }
-          var post = $http.post(url, paramter).success(function (response) {
-            if (response.status == 'ETOKEN') {
-              window.localStorage.token = '';
-              goBackLogin($state);
-              hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!')
-            }
-            if(baseConfig.debug) {
+          var destUrl = url + "?access_token=" + window.localStorage.token;
+          var post = $http.post(destUrl, paramter).success(function (response) {
+            if (baseConfig.debug) {
               console.log(postName + " success");
               console.log(postName + " response " + angular.toJson(response));
               console.log(postName + " End!");
             }
           }).error(function (response, status) {
-            if(baseConfig.debug) {
+            if (baseConfig.debug) {
               console.log(postName + " error");
               console.log(postName + " response " + response);
               console.log(postName + " status " + status);
               console.log(postName + " End!");
             }
+            hmsPopup.hideLoading();
+            if (status == '401') {
+              window.localStorage.token = '';
+              goBackLogin($state);
+              hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!');
+            }
+            if (status == '404') {
+              hmsPopup.showShortCenterToast('后端服务器请求失败,请联系管理员!');
+            }
           });
           return post;
         },
         get: function (url) {
-          if(baseConfig.debug) {
+          if (baseConfig.debug) {
             console.log(getName + " Start!");
             console.log(getName + " url " + url);
           }
-          var get = $http.get(url).success(function (response) {
-            if(baseConfig.debug) {
+          var destUrl = url + "?access_token=" + window.localStorage.token;
+          var get = $http.get(destUrl).success(function (response) {
+            if (baseConfig.debug) {
               console.log(getName + " success");
               console.log(getName + " response " + angular.toJson(response));
               console.log(getName + " End!");
             }
           }).error(function (response, status) {
-            if(baseConfig.debug) {
+            if (baseConfig.debug) {
               console.log(getName + " error");
               console.log(getName + " response " + response);
               console.log(getName + " status " + status);
@@ -174,8 +183,8 @@ angular.module('HmsModule')
             ]
           });
           myPopup.then(popup);
-
         } else {
+
           navigator.notification.prompt(
             title,  // message
             pluginPopup,          // callback to invoke
@@ -184,19 +193,8 @@ angular.module('HmsModule')
             ''                 // defaultText
           );
         }
-      }
-      ;
-      /*function onPrompt(results) {
-       alert("You selected button number " + results.buttonIndex + " and entered " + results.input1);
-       }
-       navigator.notification.prompt(
-       'Please enter your name',  // message
-       onPrompt,                  // callback to invoke
-       'Registration',            // title
-       ['Ok','Exit'],             // buttonLabels
-       'Jane Doe'                 // defaultText
-       );
-       */
+      };
+
       this.confirm = function (message, title, onConfirm) {
         if (!baseConfig.nativeScreenFlag) {
           var confirmPopup = $ionicPopup.confirm({
@@ -308,17 +306,12 @@ angular.module('HmsModule')
     return {
       getViews: function (viewName) {
         viewLength = viewName.toString().length;
-        if (ROOTCONFIG.debug) {
+        if (baseConfig.debug) {
           console.log(viewLength);
         }
-        //				alert(viewName)
         for (var i = 0; i < backViews.length; i++) {
           if (viewName == backViews[i].name) {
-            //						if(i==0){
-            //							i=i+1;
-            //						}
             backViews = backViews.slice(0, i + 1);
-            //						alert(backViews.length)
             contentWidth = 0;
             for (var j = 0; j < backViews.length; j++) {
               if (j == backViews.length - 1) {
@@ -327,7 +320,9 @@ angular.module('HmsModule')
                 contentWidth = contentWidth + backViews[j].name.toString().length * 14 + 18 + 8;
               }
             }
-            console.log(contentWidth);
+            if (baseConfig.debug) {
+              console.log(contentWidth);
+            }
             if (contentWidth < screenWidth) {
               scrollWidth.width = '';
             } else {
@@ -341,7 +336,6 @@ angular.module('HmsModule')
             return backViews;
           }
         }
-
         var view = {
           name: viewName,
           myStyle: {

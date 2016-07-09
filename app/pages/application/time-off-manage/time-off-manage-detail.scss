@@ -5,16 +5,13 @@
   padding: 0px 0px 0px 20px;
   border: 1px solid #F8F8F8;
   border-radius: 0px 0px 5px 0px;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18);
+  box-shadow: 0px 3px 25px rgba(0, 0, 0, 0.18);
   .no-padding-margin{
     padding: 0px;
     margin: 0px;
   }
-  .item-row {
+  .text-row {
     height: 39px;
-    &.description-row {
-      height: 102px;
-    }
     .text-left {
       font-size: 16px;
       color: #4A4A4A;
@@ -40,6 +37,37 @@
       margin-left: -95%;
     }
   }
+  .desc-text-area {
+    height: 102px;
+    width: 90%;
+    margin:10px;
+  }
+}
+
+.bottom-bar {
+  margin-top: 40px;
+  height: 40px;
+  .process-button {
+    width: 200px;
+    height: 40px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px 20px 20px 20px;
+    font-size: 16px;
+    color: #FFFFFF;
+    line-height: 40px;
+    text-align: center;
+    &.submit-mode {
+      background-color: #F99D32;
+    }
+    &.revoke-mode {
+      background-color: #B95756;
+    }
+    &.transparent-mode {
+      background-color: transparent;
+    }
+  }
 }
 
 .black-page{
@@ -50,23 +78,36 @@
   width: 100%;
   height:100%;
   background-color: rgba(0, 0, 0, 0.7);
-
+  .platform-status-bar {
+    width: 100%;
+    &.ios-status-bar {
+      height: 20px;
+    }
+    &.android-status-bar {
+      height: 0px;
+    }
+  }
   .black-page.ng-enter{
     -webkit-animation: fadeIn 0.5s;
     animation: fadeIn .5s;
   }
+  .buttons {
+    display: inherit;
+    .right-button {
+      position: absolute;
+      right: 5px;
+      color: white;
+      font-size: 17px;
+      min-height: 31px;
+      line-height: 42px;
+      z-index: 1;
+      padding: 0 8px;
+      min-width: initial;
+    }
+  }
   .black-head{
     width: 100%;
-    height: 60px;
-  }
-  .cancel-button{
-    padding: 0px;
-    margin: 0px;
-    width: 55px;
-    position: absolute;
-    top: 5px;
-    border: none;
-    right: 5px;
+    height: 40px;
   }
   .scroll-height{
     width: 100%;
@@ -85,5 +126,42 @@
     width: 100%;
     height: 100px;
     background-color: transparent;
+  }
+}
+
+.popup-select{
+  position: absolute;
+  top: 60%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .header-color{
+    background-color: #ffffff;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none;
+  }
+  .change-line{
+    width: 100%;
+    height: 1px;
+    background:-webkit-linear-gradient(right,#3D7BC4,#17468F,#3D7BC4);
+  }
+  .back-color {
+    background-color: #ffffff;
+  }
+  .list{
+    border: none;
+  }
+  .apply-item{
+    width: 94%;
+    margin-left: 3%;
+    color:#9b9b9b;
+    padding: 10px 0px 10px 0px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2
   }
 }

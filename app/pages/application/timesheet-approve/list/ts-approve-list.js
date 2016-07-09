@@ -125,6 +125,23 @@ angular.module('tsApproveModule')
         }
       }
 
+      $scope.openCalendar = function () {
+        if (baseConfig.debug) {
+          console.log('openCalender');
+        }
+        var success = function (response) {
+          if (baseConfig.debug) {
+            console.log('success.response ' + angular.toJson(response));
+          }
+        };
+        var error = function (response) {
+          if (baseConfig.debug) {
+            console.log('error.response ' + angular.toJson(response));
+          }
+        };
+        HmsCalendar.openCalendar(success, error, 0);
+      };
+
       /**
        * 立即执行 拉取数据的代码
        */
@@ -195,18 +212,16 @@ angular.module('tsApproveModule')
       };
 
       $scope.openCalender = function () { //跳到原生日历界面--获取截止日期
-        var success= function(response){
-          if(baseConfig.debug) {
-            warn('success.response ' + angular.toJson(response));
-          }
+        var success = function (response) {
+
         };
-        var error= function(response){
-          if(baseConfig.debug) {
+        var error = function (response) {
+          if (baseConfig.debug) {
             warn('error.response ' + angular.toJson(response));
           }
         };
-        if(ionic.Platform.isIOS()) {
-          hmsCalendar.openCalender(success,error);
+        if (ionic.Platform.isIOS()) {
+          HmsCalendar.openCalender(success, error, '1');
         }
       };
 
@@ -532,7 +547,7 @@ angular.module('tsApproveModule')
         _self.listArray = [];
         _self.loading = loadingFlag;
         _self.actionFlag = actionFlag;
-        if(_self.actionFlag === 'action') { //响应action按钮的操作
+        if (_self.actionFlag === 'action') { //响应action按钮的操作
 
         }
         if (_self.refurbishParam === 'clickRefreshEvent') {

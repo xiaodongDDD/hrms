@@ -4,8 +4,8 @@
     "isMobilePlatform": false,
     "clearTable": true,
     "nativeScreenFlag": false,
-    "loginPath": "http://wechat.hand-china.com/hmbms_hand/api",
-    "businessPath": "http://wechat.hand-china.com/hmbms_hand/api/dataEngine",
+    "loginPath": "http://wechat.hand-china.com/hrmsv2/oauth/token?client_id=client&client_secret=secret&grant_type=password&",
+    "businessPath": "http://wechat.hand-china.com/hrmsv2/v2/api/l",
     "pkgIdentifier": "",
     "appEnvironment": "UAT",
     "expUploadUrl":"http://172.20.0.71:8099/handhr_aurora/hand_app_fileupload.svc",
@@ -15,8 +15,8 @@
     "serverPath":"http://10.211.96.173:8080/bts",
     "appRootFile": "helloCordova",
     "version":{
-      "currentVersion": "1.9.2",
-      "currentversionName": "此版本为测试版本1.9.2",
+      "currentVersion": "1.9.8",
+      "currentversionName": "此版本为测试版本1.9.8",
       "currentSubVersion": "1",
       "currentSubVersionName": "资源增量包1"
     }

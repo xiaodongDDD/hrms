@@ -28,12 +28,21 @@ angular.module('myInfoModule')
               $ionicHistory,
               hmsHttp,
               hmsPopup) {
-
+      $scope.placeholderText="请填写产品问题反馈";
       $scope.qualityIssue=[false,false,false,false];//反馈问题类型样式
       $scope.feedbackInfo={//反馈信息
         info:""
       }
       $scope.selectQualityIssue=function(num){//选择反馈问题类型
+        if(num == 0){
+          $scope.placeholderText="请填写产品质量问题反馈";
+        }else if(num == 1){
+          $scope.placeholderText="请填写产品服务问题反馈";
+        }else if(num == 2){
+          $scope.placeholderText="请填写产品优化问题反馈";
+        }else if(num == 3){
+          $scope.placeholderText="请填写产品其他问题反馈";
+        }
         angular.forEach($scope.qualityIssue,function(data,index,array){
           array[index]=false;
         });
