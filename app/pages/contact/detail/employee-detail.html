@@ -22,7 +22,7 @@
   <ion-content class="employee-content" has-bouncing="true" elastic-image="employee-bg">
     <hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>
     <ion-item class="item-info">
-      <div class="section-bg" ng-bind="employeeInfo.unit_name">
+      <div class="section-bg" ng-bind="employeeInfo.rootUnitName">
       </div>
       <div class="row icon-row">
         <div class="col col-40 np-padding-margin">
@@ -70,7 +70,7 @@
       <div class="item-line"></div>
       <div class="row item-row1">
         <div class="col col-20">微信号</div>
-        <div class="col col-75 col-item"></div>
+        <div class="col col-75 col-item" ng-bind="employeeInfo.wxNumber"></div>
       </div>
     </ion-item>
     <div class="button button-clear employee-button" ng-click="goImTalk()">发起会话</div>

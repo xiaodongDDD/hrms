@@ -55,8 +55,8 @@ angular.module('contactModule')
           name: '',
           employeeNumber: ''
         };
-        var getEmployeeDetailUrl = baseConfig.businessPath + '/get_empinfo/get_emp_detail';
-        var employeeDetailParams = {params: {p_emp_code: $stateParams.employeeNumber}};
+        var getEmployeeDetailUrl = baseConfig.queryPath + '/staff/detail';
+        var employeeDetailParams = {key: $stateParams.employeeNumber};
       }
 
       /**
@@ -64,11 +64,11 @@ angular.module('contactModule')
        */
       function initEmployeeData() {
         hmsHttp.post(getEmployeeDetailUrl, employeeDetailParams).success(function (response) {
-          $scope.employeeInfo = response.token;
+          $scope.employeeInfo = response.rows[0];
           $scope.contactLoading = false;
         }).error(function (error) {
           $scope.contactLoading = false;
-          hmsPopup.showShortCenterToast('请检查网络连接,稍后重试!');
+          //hmsPopup.showShortCenterToast('请检查网络连接,稍后重试!');
           $scope.employeeInfo = {};
         });
       };

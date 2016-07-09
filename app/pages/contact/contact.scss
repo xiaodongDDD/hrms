@@ -88,8 +88,8 @@ $bgColor: #fafafa !default;
       }
       .tel-img.activated {
         opacity: 0.7;
-        transform: scale(0.8, 0.8);
-        -webkit-transform: scale(0.8, 0.8);
+        transform: scale(0.9, 0.9);
+        -webkit-transform: scale(0.9, 0.9);
       }
     }
     .contact-item.activated {
@@ -166,8 +166,8 @@ $bgColor: #fafafa !default;
       @include image-background(no-repeat, 23px 23px, 18px 15px);
       &.activated {
         opacity: 0.7;
-        transform: scale(0.8, 0.8);
-        -webkit-transform: scale(0.8, 0.8);
+        transform: scale(0.9, 0.9);
+        -webkit-transform: scale(0.9, 0.9);
       }
     }
     .name {
