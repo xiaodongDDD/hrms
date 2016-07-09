@@ -38,8 +38,9 @@ angular.module('contactModule')
         var DB_NAME = 'key_history';
         var LINK_MAN = 'common_linkman';
         var position = ''; //记录滚动条的位置--
-        var getEmployeeUrl = baseConfig.businessPath + '/get_empinfo/get_employees';
-        var employeeParams = {params: {p_token: '', p_page: ''}};
+        var getEmployeeUrl = baseConfig.queryPath + '/staff/query';
+        var employeeParams = {key: '', page: 1, pageSize: '7'};
+
         $scope.historys = (storedb(DB_NAME).find()).arrUniq();
         if ($scope.historys.length > 10) {
           $scope.historys = $scope.historys.slice(0, 10);
@@ -134,41 +135,42 @@ angular.module('contactModule')
       $scope.getEmployeeData = function (moreFlag) { //获取搜索关键字的数据
         hmsHttp.post(getEmployeeUrl, employeeParams).success(function (response) {
           $scope.contactLoading = false;
-          if (response.token == 0) {
+          if (response.total == 0) {
             $scope.showInfinite = false;
-            if (moreFlag === 'loadMore' && $scope.newPage > 2) {
-              hmsPopup.showShortCenterToast('数据加载完毕!');
+            if (moreFlag === 'loadMore') {
               $scope.$broadcast('scroll.infiniteScrollComplete');
             } else {
               $scope.resultList = [];
-              //hmsPopup.showShortCenterToast('没有查到相关数据!');
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           } else {
-            if (response.count <= 7) {
-              $scope.showInfinite = false;
-              angular.forEach(response.token, function (data, index) {
-                $scope.resultList.push(data);
-              });
+            if(response.total < 7) {
+              hmsPopup.showShortCenterToast('加载完毕!');
               $scope.$broadcast('scroll.infiniteScrollComplete');
+              if(moreFlag === 'init' || $scope.page === 1) {
+                $scope.resultList = [];
+                angular.forEach(response.rows, function (data, index) {
+                  $scope.resultList.push(data);
+                });
+              }
+              $scope.showInfinite = false;
             } else {
               $scope.showInfinite = true;
-              angular.forEach(response.token, function (data, index) {
+              angular.forEach(response.rows, function (data, index) {
                 $scope.resultList.push(data);
               });
-              $scope.$broadcast('scroll.infiniteScrollComplete');
             }
+            $scope.$broadcast('scroll.infiniteScrollComplete');
           }
         }).error(function (error) {
-          hmsPopup.showShortCenterToast('请检查网络连接,稍后重试!');
           $scope.contactLoading = false;
           $scope.$broadcast('scroll.infiniteScrollComplete');
         });
       };
       $scope.loadMore = function () {
         $scope.newPage += 1;
-        employeeParams.params.p_token = $scope.contactKey.getValue;
-        employeeParams.params.p_page = $scope.newPage;
+        employeeParams.key = $scope.contactKey.getValue;
+        employeeParams.page = $scope.newPage;
         $scope.getEmployeeData('loadMore');
       };
 
@@ -187,8 +189,8 @@ angular.module('contactModule')
           $scope.showClear = true;
         }
         $scope.newPage = 1;
-        employeeParams.params.p_token = $scope.contactKey.getValue;
-        employeeParams.params.p_page = $scope.newPage;
+        employeeParams.key = $scope.contactKey.getValue;
+        employeeParams.page = $scope.newPage;
         $scope.contactLoading = true;
         $scope.resultList = [];
         $scope.getEmployeeData('init');
@@ -196,8 +198,8 @@ angular.module('contactModule')
 
       $scope.getHistoryItem = function (values) {
         $scope.contactKey.getValue = values.historyItem;
-        employeeParams.params.p_token = $scope.contactKey.getValue;
-        employeeParams.params.p_page = 1;
+        employeeParams.key = $scope.contactKey.getValue;
+        employeeParams.page = 1;
         $scope.contactLoading = true;
         $scope.showHistory = false;
         $scope.showClear = true;
@@ -288,7 +290,7 @@ angular.module('contactModule')
               manInfo.email = '';
             }
             contactLocal(manInfo);
-          }, function (msg) {
+          }, function (error) {
             hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
           });
         } else {
