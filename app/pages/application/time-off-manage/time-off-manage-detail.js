@@ -137,6 +137,14 @@ angular.module('applicationModule')
 
       }
 
+      $scope.getOffDays = function(startDate, endDate) {
+
+        var mmSec = (endDate.getTime() - startDate.getTime());
+
+        return parseInt(mmSec / 3600000 / 24);
+      };
+
+
       $scope.getdateFromMeaning = function() {
         return $scope.datetimeFrom.year +'-'+ $scope.datetimeFrom.month +'-'+ $scope.datetimeFrom.day + ' 08:30:00';
       };
@@ -221,6 +229,15 @@ angular.module('applicationModule')
           $scope.datetimeFrom.year = date.getFullYear();
           $scope.datetimeFrom.month = month;
           $scope.datetimeFrom.day = day;
+
+          var offDays = getOffDays($scope.datetimeFrom,$scope.datetimeTo) + 1;
+
+          if (offDays > 0) {
+            $scope.timeOffData.timeLeave = offDays;
+          } else {
+            $scope.timeOffData.timeLeave = '';
+          }
+
           $scope.$apply();
         });
       };
@@ -257,11 +274,20 @@ angular.module('applicationModule')
           $scope.datetimeTo.year = date.getFullYear();
           $scope.datetimeTo.month = month;
           $scope.datetimeTo.day = day;
+
+          var offDays = getOffDays($scope.datetimeFrom,$scope.datetimeTo) + 1;
+
+          if (offDays > 0) {
+            $scope.timeOffData.timeLeave = offDays;
+          } else {
+            $scope.timeOffData.timeLeave = '';
+          }
+
           $scope.$apply();
         });
       };
 
-      function refreshEndDate(num) {//选择30,60,90后刷新结束日期
+      function refreshEndDate(num) {
         var myDate = $scope.datetimeFrom;
         var todayDate = new Date(myDate.year, myDate.month - 1, myDate.day);
         var tomorrowDate = new Date(myDate.year, myDate.month - 1, myDate.day);
@@ -293,6 +319,11 @@ angular.module('applicationModule')
           $scope.getdateToMeaning() == ''
         ) {
           hmsPopup.showPopup('请填写必要的申请信息!');
+          return;
+        }
+
+        if ($scope.timeOffData.timeLeave == '' || parseInt($scope.timeOffData.timeLeave <=0)) {
+          hmsPopup.showPopup('请输出正确的休假区间!!');
           return;
         }
 

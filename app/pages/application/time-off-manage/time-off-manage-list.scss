@@ -223,6 +223,20 @@
     color: #3964A4;
   }
   .time-off-item {
+    &.activated {
+      background-color: #f8f8f8;
+      opacity: 0.8;
+    }
+    &.ng-enter {
+      -webkit-animation: fadeIn 0.5s;
+      animation: fadeIn .5s;
+    }
+    &.ng-enter-stagger {
+      -webkit-animation-delay: 90ms;
+      animation-delay: 90ms;
+      -webkit-animation-duration: 0ms;
+      animation-duration: 0ms;
+    }
     position: relative;
     height: 90px;
     width: 97.5%;
