@@ -7,11 +7,13 @@ angular.module('HmsModule')
     'hmsPopup',
     '$state',
     'baseConfig',
+    '$rootScope',
     function ($log,
               $http,
               hmsPopup,
               $state,
-              baseConfig) {
+              baseConfig,
+              $rootScope) {
       var serivieName = "HmsHttp";
       var isSucessfullName = "isSucessfull";
       var noAuthorPostName = serivieName + ".noAuthorPost";
@@ -32,6 +34,7 @@ angular.module('HmsModule')
       //如果登录令牌失效，跳转会登录界面
       var goBackLogin = function (state) {
         hmsPopup.hideLoading();
+        $rootScope.$broadcast("REFRESH_LOGIN");
         state.go('login');
       };
 

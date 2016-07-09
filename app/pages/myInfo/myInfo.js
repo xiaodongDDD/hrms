@@ -11,14 +11,15 @@ angular.module('myInfoModule')
     'hmsPopup',
     'checkVersionService',
     '$ionicHistory',
+    '$rootScope',
     function ($scope,
               $state,
               baseConfig,
               hmsHttp,
               hmsPopup,
               checkVersionService,
-              $ionicHistory) {
-
+              $ionicHistory,
+              $rootScope) {
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
       }
@@ -55,9 +56,11 @@ angular.module('myInfoModule')
       $scope.logout = function(){//注销登录
         window.localStorage.token = "";
         window.localStorage.password = "";
+        window.localStorage.checkboxSavePwd = "";
         window.localStorage.timesheetAuto="";
         window.localStorage.messagePush="";
         window.localStorage.access_token = "";
+        $rootScope.$broadcast("REFRESH_LOGIN");
         $state.go('login');
       };
 
@@ -69,9 +72,13 @@ angular.module('myInfoModule')
         $state.go('tab.feedback');
       };
 
-      $scope.checkVersion=function(){
+      $scope.checkCertificate=function(){
+        $state.go('tab.my-certificate');
+      };
+
+      $scope.checkVersion=function(){//点击版本信息
         checkVersionService.checkAppVersion();
-      }
+      };
 
       $scope.checkMyInfo=function(){//进入查看我的信息界面
         var info=$scope.personalInfo;

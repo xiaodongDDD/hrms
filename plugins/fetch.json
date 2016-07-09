@@ -98,10 +98,19 @@
             "API_KEY": "6e0b08078306f45ac8331d54"
         }
     },
+
     "cordova-plugin-contacts": {
         "source": {
-            "type": "registry",
-            "id": "cordova-plugin-contacts"
+          "type": "registry",
+          "id": "cordova-plugin-contacts"
+        }
+    },
+
+    "cordova-plugin-image-picker": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wymsee/cordova-imagePicker.git",
+            "subdir": "."
         },
         "is_top_level": true,
         "variables": {}

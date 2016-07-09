@@ -153,9 +153,6 @@
          <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
              <string></string>
          </config-file>
-         <config-file target="*-Info.plist"  parent="CFBundleDevelopmentRegion">
-          <string>zh_CN</string>
-         </config-file>
 
      </platform>
 

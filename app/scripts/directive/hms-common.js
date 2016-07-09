@@ -60,13 +60,13 @@ HmsModule.directive('hideTabs', function ($rootScope) {
           if (calculation <= 0.5) {//剩余天数大于总天数的一半
             leftball.style.transition = "all 0.3s linear";
             leftball.style.webkitTransition = "all 0.3s linear";
-            rightball.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball.style.webkitTransition = "all 0.3s ease-out";
+            rightball.style.transition = "all 0.3s linear";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball.style.webkitTransition = "all 0.3s linear";
           } else if (calculation > 0.5) {//剩余天数不到入住天数的一半
-            leftball.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-            leftball.style.webkitTransition = "all 0.3s ease-out 0.3s";
-            rightball.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-            rightball.style.webkitTransition = "all 0.3s ease-in";
+            leftball.style.transition = "all 0.3s linear 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+            leftball.style.webkitTransition = "all 0.3s linear 0.3s";
+            rightball.style.transition = "all 0.3s linear";//右半圆过渡动画0.3s，渐快，无延迟
+            rightball.style.webkitTransition = "all 0.3s linear";
           }
           leftball.style.webkitTransform = "rotate(-135deg)";
           leftball.style.transform = "rotate(-135deg)";
@@ -109,35 +109,35 @@ HmsModule.directive('hideTabs', function ($rootScope) {
               if (calculation1 <= 0.5) {//剩余天数大于总天数的一半
                 leftball1.style.transition = "all 0.3s linear";
                 leftball1.style.webkitTransition = "all 0.3s linear";
-                rightball1.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-                rightball1.style.webkitTransition = "all 0.3s ease-out";
+                rightball1.style.transition = "all 0.3s linear";//右半圆过渡动画0.3s，渐快，无延迟
+                rightball1.style.webkitTransition = "all 0.3s linear";
               } else if (calculation1 > 0.5) {//剩余天数不到入住天数的一半
-                leftball1.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-                leftball1.style.webkitTransition = "all 0.3s ease-out 0.3s";
-                rightball1.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-                rightball1.style.webkitTransition = "all 0.3s ease-in";
+                leftball1.style.transition = "all 0.3s linear 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+                leftball1.style.webkitTransition = "all 0.3s linear 0.3s";
+                rightball1.style.transition = "all 0.3s linear";//右半圆过渡动画0.3s，渐快，无延迟
+                rightball1.style.webkitTransition = "all 0.3s linear";
               }
               if (calculation2 <= 0.5) {//剩余天数大于总天数的一半
                 leftball2.style.transition = "all 0.3s linear";
                 leftball2.style.webkitTransition = "all 0.3s linear";
-                rightball2.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-                rightball2.style.webkitTransition = "all 0.3s ease-out";
+                rightball2.style.transition = "all 0.3s linear";//右半圆过渡动画0.3s，渐快，无延迟
+                rightball2.style.webkitTransition = "all 0.3s linear";
               } else if (calculation2 > 0.5) {//剩余天数不到入住天数的一半
-                leftball2.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-                leftball2.style.webkitTransition = "all 0.3s ease-out 0.3s";
-                rightball2.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-                rightball2.style.webkitTransition = "all 0.3s ease-in";
+                leftball2.style.transition = "all 0.3s linear 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+                leftball2.style.webkitTransition = "all 0.3s linear 0.3s";
+                rightball2.style.transition = "all 0.3s linear";//右半圆过渡动画0.3s，渐快，无延迟
+                rightball2.style.webkitTransition = "all 0.3s linear";
               }
               if (calculation3 <= 0.5) {//剩余天数大于总天数的一半
                 leftball3.style.transition = "all 0.3s linear";
                 leftball3.style.webkitTransition = "all 0.3s linear";
-                rightball3.style.transition = "all 0.3s ease-out";//右半圆过渡动画0.3s，渐快，无延迟
-                rightball3.style.webkitTransition = "all 0.3s ease-out";
+                rightball3.style.transition = "all 0.3s linear";//右半圆过渡动画0.3s，渐快，无延迟
+                rightball3.style.webkitTransition = "all 0.3s linear";
               } else if (calculation3 > 0.5) {//剩余天数不到入住天数的一半
-                leftball3.style.transition = "all 0.3s ease-out 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
-                leftball3.style.webkitTransition = "all 0.3s ease-out 0.3s";
-                rightball3.style.transition = "all 0.3s ease-in";//右半圆过渡动画0.3s，渐快，无延迟
-                rightball3.style.webkitTransition = "all 0.3s ease-in";
+                leftball3.style.transition = "all 0.3s linear 0.3s";//左半圆过渡动画0.3s，渐缓，0.3s延迟
+                leftball3.style.webkitTransition = "all 0.3s linear 0.3s";
+                rightball3.style.transition = "all 0.3s linear";//右半圆过渡动画0.3s，渐快，无延迟
+                rightball3.style.webkitTransition = "all 0.3s linear";
               }
               leftball1.style.webkitTransform = "rotate(-135deg)";
               leftball1.style.transform = "rotate(-135deg)";
