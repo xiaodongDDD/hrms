@@ -59,7 +59,7 @@ angular.module('myInfoModule')
         window.localStorage.checkboxSavePwd = "";
         window.localStorage.timesheetAuto="";
         window.localStorage.messagePush="";
-        $rootScope.$broadcast("REFRESH_LOGIN");
+        window.localStorage.access_token = "";
         $state.go('login');
       };
 
