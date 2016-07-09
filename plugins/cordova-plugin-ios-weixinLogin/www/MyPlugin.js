@@ -9,9 +9,9 @@ var weixinLogin = function(){};
 // arg5：参数，
 
 weixinLogin.prototype.openWeChatLoad=function(successCallBack, errorCallBack, type) {
+    alert("可以调用微信插件!");
     exec(successCallBack,errorCallBack, "CDVWeChat", "openWeChatLoad", [type]);
 };
-
 module.exports = new weixinLogin();
 
 //调用方法 weixinLogin
