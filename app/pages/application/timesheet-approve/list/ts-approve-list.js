@@ -125,23 +125,6 @@ angular.module('tsApproveModule')
         }
       }
 
-      $scope.openCalendar = function () {
-        if (baseConfig.debug) {
-          console.log('openCalender');
-        }
-        var success = function (response) {
-          if (baseConfig.debug) {
-            console.log('success.response ' + angular.toJson(response));
-          }
-        };
-        var error = function (response) {
-          if (baseConfig.debug) {
-            console.log('error.response ' + angular.toJson(response));
-          }
-        };
-        HmsCalendar.openCalendar(success, error, 0);
-      };
-
       /**
        * 立即执行 拉取数据的代码
        */
@@ -213,12 +196,20 @@ angular.module('tsApproveModule')
 
       $scope.openCalender = function () { //跳到原生日历界面--获取截止日期
         var success = function (response) {
-
+          try{
+            var result = response.result;
+            var startDate = result[0].splice(/-/, '');
+            var endDate = result[result.length - 1].splice(/-/, '');
+            tsListParams.params.p_page = 1;
+            tsListParams.params.p_start_date = startDate;
+            tsListParams.params.p_end_date = endDate;
+            $scope.showLsLoading = true;
+            $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
+          } catch(e) {
+            hmsPopup.showShortCenterToast('取值失败'+ angular.toJson(response.result));
+          }
         };
         var error = function (response) {
-          if (baseConfig.debug) {
-            warn('error.response ' + angular.toJson(response));
-          }
         };
         if (ionic.Platform.isIOS()) {
           HmsCalendar.openCalender(success, error, '1');
