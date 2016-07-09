@@ -2762,6 +2762,17 @@ Copyright (c) 2015 Daniel Eden
   border-top: 1px solid #F8F8F8;
   border-radius: 5px;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18); }
+  .time-off-content .time-off-item.activated {
+    background-color: #f8f8f8;
+    opacity: 0.8; }
+  .time-off-content .time-off-item.ng-enter {
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn .5s; }
+  .time-off-content .time-off-item.ng-enter-stagger {
+    -webkit-animation-delay: 90ms;
+    animation-delay: 90ms;
+    -webkit-animation-duration: 0ms;
+    animation-duration: 0ms; }
   .time-off-content .time-off-item .time-off-item-left {
     position: absolute;
     left: 0px;

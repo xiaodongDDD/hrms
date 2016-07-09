@@ -85,7 +85,7 @@
 
       <div class="time-off-item" ng-repeat="item in timeOffHistoryList" ng-click="processTimeOff(item)">
 
-        <img class="time-off-item-left {{item.timeOffTypeClass}}" src="{{item.holidayIcon}}" }>
+        <img class="time-off-item-left {{item.timeOffTypeClass}}" ng-src="{{item.holidayIcon}}" }>
 
         <div class="time-off-item-middle">
           <div class="item-off-item-title {{item.timeOffTypeClass}}">{{item.timeOffTypeMeaning}}</div>
