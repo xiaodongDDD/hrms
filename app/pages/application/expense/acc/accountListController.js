@@ -47,7 +47,10 @@ angular.module("applicationModule")
       });
       return deferred.promise;
     }
-
+    $scope.$on('$ionicView.enter', function (e) {
+      console.log('ionicViewEnter');
+      $scope.doRefresh();
+    });
     //$ionicLoading.show({
     //  template: 'Loading...',
     //  duration: 1000
@@ -67,10 +70,10 @@ angular.module("applicationModule")
 
 
     $scope.doRefresh = function () {
-      $ionicLoading.show({
-        template: '刷新列表...',
-        duration: 1000
-      });
+      //$ionicLoading.show({
+      //  template: '刷新列表...',
+      //  duration: 1000
+      //});
       var promise = queryAccountList();
       promise.then(function (list) {  // 调用承诺API获取数据 .resolve
         $scope.accountList = groupJSON(list);

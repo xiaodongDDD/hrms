@@ -26,6 +26,7 @@ angular.module('myApp')
       checkVersionService.checkAppVersion();
     }
     $ionicPlatform.ready(function () {
+      ionic.Platform.isFullScreen = false;
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -190,6 +191,7 @@ angular.module('myApp')
       // Learn more here: https://github.com/angular-ui/ui-router
       // Set up the various states which the app can be in.
       // Each state's controller can be found in controllers.js
+      $ionicConfigProvider.scrolling.jsScrolling(false);
 
       $httpProvider.interceptors.push('httpRequestHeader');//注册过滤器
       $ionicConfigProvider.platform.ios.tabs.style('standard');

@@ -1,7 +1,7 @@
 
 /**
  * Created by huchaoliang on 15-5-15.
- */ 
+ */
 angular.module("applicationModule").controller('attachmentController', function($scope,$q,$http,expenseApply, baseConfig) {
 
     var page = globalNavigator.getCurrentPage();
@@ -108,7 +108,7 @@ angular.module("applicationModule").controller('attachmentController', function(
     };
 
     /*拍摄照片 相机*/
-    getPhotoFromCamera=function(){
+    var getPhotoFromCamera=function(){
 
         navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
             destinationType: Camera.DestinationType.FILE_URL ,
@@ -119,7 +119,7 @@ angular.module("applicationModule").controller('attachmentController', function(
     };
 
     /*拍摄照片 相册*/
-    getPhotoFromLibary=function(){
+    var getPhotoFromLibary=function(){
 
         navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
             destinationType: Camera.DestinationType.FILE_URL ,

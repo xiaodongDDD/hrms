@@ -1,16 +1,16 @@
 <ion-view title="记一笔列表" class="accountList-view">
     <ion-header-bar align-title="center" class="bar-stable">
-    <div class="buttons"> 
+    <div class="buttons">
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
         <span class="back-text">返回</span>
       </button>
-    </div> 
+    </div>
     <h1 class="title">记一笔列表</h1>
     <div class="buttons">
-      
+
     </div>
   </ion-header-bar>
-  
+
   <ion-content>
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
     <ion-list ng-repeat="account in accountList">
@@ -18,8 +18,8 @@
         <div ></div>
         <div class="title">{{account.time}}</div>
       </div>
-      <ion-item modifier="chevron" class="item-icon-right xbr-item-ion-ll" ng-repeat="a in account.list" >
-        <div class="xbr-flag-abc" ng-click="openDetail($event)" lineId="{{a.line_id}}" status="{{a.local_status}}"
+      <ion-item modifier="chevron" class="item-icon-right xbr-item-ion-ll" ng-repeat="a in account.list" ng-click="openDetail($event)">
+        <div class="xbr-flag-abc" lineId="{{a.line_id}}" status="{{a.local_status}}"
              timestamp="{{a.timestamp}}">
             <div class="xbr-width-full" lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
 
