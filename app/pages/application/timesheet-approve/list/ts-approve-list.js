@@ -303,19 +303,6 @@ angular.module('tsApproveModule')
         }
         e.stopPropagation(); //阻止事件冒泡
         hmsPopup.showShortCenterToast(warnInfo);
-        //warn(newWarnList);
-        //$ionicPopup.show({
-        //  template: '<div class="warn-attention-icon">' + warnInfo + '</div>',
-        //  scope: $scope,
-        //  buttons: [
-        //    {
-        //      text: '<div class="warn-cancel-icon"></div>',
-        //      type: 'button-clear',
-        //      onTap: function (e) {
-        //      }
-        //    }
-        //  ]
-        //});
       };
 
       $scope.goTsLsTop = function () { //返回列表顶部
@@ -524,7 +511,7 @@ angular.module('tsApproveModule')
  *  1:scope  //controller的作用域
  *  2:url //请求地址
  *  3:params //请求的参数
- *  4: refurbishParam //控制下拉刷线的参数
+ *  4: refurbishParam //控制操作按钮的参数
  *  5:busy //用于控制下拉刷新的flag
  *  6:totalNumber //获取的数据总数
  *  7:listArray //数据列表
@@ -609,7 +596,7 @@ angular.module('tsApproveModule')
           return;
         }
         if (_self.busy) {
-          if (_self.refurbishParam === 'clickRefreshEvent') {
+          if (_self.refurbishParam === 'action') {
             _self.refurbishParam = '';
             _self.scope.$broadcast('scroll.infiniteScrollComplete');
             return;
@@ -622,7 +609,7 @@ angular.module('tsApproveModule')
             if (hmsHttp.isSuccessfull(response.status)) {
               if (angular.isUndefined(response.timesheet_approve_response.result_list)) {
                 _self.busy = false;
-                hmsPopup.showShortCenterToast("数据已经加载完毕!");
+                //hmsPopup.showShortCenterToast("数据已经加载完毕!");
                 //$ionicScrollDelegate.scrollBy(300);
                 $ionicScrollDelegate.$getByHandle('approveListHandle').scrollBy(300);
               } else {

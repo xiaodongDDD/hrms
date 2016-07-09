@@ -57,7 +57,6 @@ angular.module('myInfoModule')
         window.localStorage.password = "";
         window.localStorage.timesheetAuto="";
         window.localStorage.messagePush="";
-        window.localStorage.access_token = "";
         $state.go('login');
       };
 

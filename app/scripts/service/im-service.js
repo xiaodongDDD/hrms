@@ -18,8 +18,8 @@ angular.module('HmsModule')
               hmsPopup,
               baseConfig) {
       //为application/x-www-form-urlencoded格式的请求--post方式
-      var baseUrl = 'http://172.20.0.165:8080/hrms';
-      function init2Cloud() {
+      var baseUrl = 'http://wechat.hand-china.com/hrmsv2';
+      function init2Cloud(getImTokenUrl) {
         var getImTokenParams = {
           appCode: 'RONGCLOUD',
           empNo: window.localStorage.empno
@@ -34,9 +34,9 @@ angular.module('HmsModule')
           } catch (e) {
             imParams = {token: '', userId: ''};
           }
-          dojs.getChatList(function success(msg) {
+          HandIMPlugin.getChatList(function success(msg) {
             hmsPopup.showShortCenterToast(msg);
-          }, function success(error) {
+          }, function error(error) {
             hmsPopup.showShortCenterToast(error);
           }, imParams);
         }).error(function () {
@@ -60,16 +60,16 @@ angular.module('HmsModule')
             "userId": window.localStorage.empno,
             "token": window.localStorage.access_token
           };
-          dojs.getChatList(function success(msg) {
+          HandIMPlugin.getChatList(function success(msg) {
             hmsPopup.showShortCenterToast(msg);
             return msg;
-          }, function success(error) {
+          }, function error(error) {
             hmsPopup.showShortCenterToast(error);
           }, newImParams);
         },
         toNativeChatPage: function (newEmpNum) { //传入工号
-          dojs.toChatAct(function success() {
-          }, function success() {
+          HandIMPlugin.toChatAct(function success() {
+          }, function error() {
           }, newEmpNum);
         }
       }
