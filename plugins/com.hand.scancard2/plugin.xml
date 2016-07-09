@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+            id="com.hand.scancard2" version="1.0.1">
+             <name>scanCard</name>
+  <description>A Cordova Plugin for scaning card SDK in cordova</description>
+  <author>liyanjun</author>
+  <keywords>scancard</keywords>
+  <js-module name="scanCard" src="www/scanCard.js">
+    <clobbers target="scanCard" />
+  </js-module>
+
+  <platform name="android">
+        <source-file src="src/android/CamcardPlugin.java" target-dir="src/camcard"/>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="scanCard">
+                <param name="android-package" value="camcard.CamcardPlugin"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">  
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" /> 
+        </config-file> 
+    </platform>
+
+   <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="scanCard">
+        <param name="ios-package" value="scanCard"/>
+        <!--<param name="onload" value="true"/>-->
+      </feature>
+    </config-file>
+  
+  <config-file target="*-Info.plist"  parent="CFBundleDevelopmentRegion">
+      <string>zh_CN</string>
+
+    </config-file>
+
+
+
+
+    <!-- 源码    -->
+    <header-file src="src/ios/scanCard.h"/>
+    <source-file src="src/ios/scanCard.mm"/>
+
+
+  <!-- Fundamental frameworks -->
+   <framework src="libstdc++.tbd" />
+   <framework src="libstdc++.dylib" />
+
+
+
+
+
+</platform>
+
+</plugin>

@@ -28,6 +28,7 @@
     padding-bottom: 3px;
     border: none;
     margin-top: 74px;
+    z-index: 100;
   }
 
   .password-input{
@@ -41,6 +42,7 @@
     padding-bottom: 7px;
     border: none;
     margin-top: 21px;
+    z-index: 100;
   }
   .login-checkbox-item{
     padding: 0px;
@@ -158,6 +160,7 @@
     top: 70px;
     margin-left: 8.7%;
     color: #4a4a4a;
+    z-index: -10;
   }
   .blur-user-label{
     transition: transform 0.15s ease-in 0s;
@@ -188,6 +191,7 @@
     top: 121px;
     margin-left: 8.7%;
     color: #4a4a4a;
+    z-index: -10;
   }
   .blur-password-label{
     transition: transform 0.15s ease-in 0s;
@@ -363,129 +367,9 @@
     transform: scale(1,1);
     -webkit-transform: scale(1,1);
   }
-  //////////////////////旧版
-  //
-  //background: url("../img/login/backgroundImg.png");
-  //background-size: cover;
-  //.login-up{
-  //  width: 34%;
-  //  height: 120px;
-  //  margin-top: 20%;
-  //  margin-left: 33%;
-  //  margin-right: 33%;
-  //  .login-logo{
-  //    width: 100%;
-  //    height: 80px;
-  //    background: url("../img/login/hand@3x.png");
-  //    background-size: contain;
-  //    background-repeat: no-repeat;
-  //    background-position: center;
-  //  }
-  //  .login-title{
-  //    width: 100%;
-  //    height: 40px;
-  //    background: url("../img/login/BetterExperience@3x.png");
-  //    background-size: contain;
-  //    background-repeat: no-repeat;
-  //    background-position: center;
-  //  }
-  //}
-  //.login-form{
-  //  margin-top: 18px;
-  //  .login-input-item{
-  //    margin-top: 8px;
-  //    width: 68%;
-  //    margin-left: 16%;
-  //    margin-right: 16%;
-  //    height: 40px;
-  //    padding-top: 7px;
-  //    padding-bottom: 7px;
-  //    background: rgb(223, 232, 244);
-  //    border-radius: 12px;
-  //    .login-input-user{
-  //      float: left;
-  //      width: 15%;
-  //      height: 26px;
-  //      background: url("../img/login/username@3x.png");
-  //      background-size: contain;
-  //      background-repeat: no-repeat;
-  //      background-position: center;
-  //    }
-  //    .login-input-passwd{
-  //      float: left;
-  //      width: 15%;
-  //      height: 26px;
-  //      background: url("../img/login/password@3x.png");
-  //      background-size: contain;
-  //      background-repeat: no-repeat;
-  //      background-position: center;
-  //    }
-  //    .login-input-text{
-  //      float: left;
-  //      height: 26px;
-  //      width: 70%;
-  //      background: none;
-  //    }
-  //    .login-input-clear{
-  //      float: left;
-  //      width: 15%;
-  //      height: 18px;
-  //      margin-top: 4px;
-  //      margin-bottom: 4px;
-  //      padding-left: 3px;
-  //      padding-right: 3px;
-  //      background: url("../img/login/delete@3x.png");
-  //      background-size: contain;
-  //      background-repeat: no-repeat;
-  //      background-position: center;
-  //    }
-  //  }
-  //  .login-remember-passwd{
-  //    margin-top: 12px;
-  //    height: 32px;
-  //    width: 68%;
-  //    margin-left: 16%;
-  //    margin-right: 16%;
-  //    .login-remember-checkbox{
-  //      float: right;
-  //      width: 20%;
-  //      height: 32px;
-  //    }
-  //    .login-remember-text{
-  //      float: right;
-  //      width: 30%;
-  //      height: 32px;
-  //      line-height: 32px;
-  //      color: white;
-  //    }
-  //  }
-  //  .login-button{
-  //    margin-top: 34px;
-  //    width: 68%;
-  //    margin-left: 16%;
-  //    margin-right: 16%;
-  //    height: 40px;
-  //    line-height: 40px;
-  //    text-align: center;
-  //    border-radius: 12px;
-  //    background: #D72F32;
-  //    color: white;
-  //    display: block;
-  //    font-weight: bold;
-  //    &.activated{
-  //      background: #B95756;
-  //      color: white;
-  //    }
-  //  }
-  //  .login-version{
-  //    margin-top: 15px;
-  //    width: 100%;
-  //    height: 24px;
-  //    line-height: 24px;
-  //    text-align: center;
-  //    color: white;
-  //  }
-  //}
+  .wechat-button{
+
+  }
 }
 @keyframes backgroundTransition{
   from{

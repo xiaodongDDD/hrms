@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="weixinLogin" version="1.1.0">
+    <name>weixinLogin</name>
+    <author>wangsheng</author>
+    <js-module name="MyPlugin" src="www/MyPlugin.js">
+        <clobbers target="weixinLogin" />
+    </js-module>
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="CDVWeChat">
+                <param name="ios-package" value="CDVWeChat"/>
+            </feature>
+        </config-file>
+        
+        <!-- 配置-info.plist    -->
+        <config-file target="*-Info.plist"  parent="LSApplicationQueriesSchemes">
+            <array>
+                <string>weixin</string>
+                <string>wechat</string>
+            </array>
+        </config-file>
+        <config-file target="*-Info.plist"  parent="CFBundleURLTypes">
+            <array>
+                <dict>
+                    <key>CFBundleTypeRole</key>
+                    <string>Editor</string>
+                    <key>CFBundleURLName</key>
+                    <string>weixin</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>wxaaeac85f01714b29</string>
+                    </array>
+                </dict>
+            </array>
+        </config-file>
+        
+        
+        <!-- resource   -->
+        
+        <!--源码 -->
+        <header-file src="src/ios/plugins/CDVWeChat.h" />
+        <source-file src="src/ios/plugins/CDVWeChat.m" />
+        
+        <header-file src="src/ios/plugins/WXOAuthEngine.h"/>
+        <source-file src="src/ios/plugins/WXOAuthEngine.m"/>
+        
+        <header-file src="src/ios/plugins/AppDelegate+WXAppDelegate.h"/>
+        <source-file src="src/ios/plugins/AppDelegate+WXAppDelegate.m"/>
+        
+        <header-file src="src/ios/plugins/WechatAuthSDK.h"/>
+        
+        <header-file src="src/ios/plugins/WXApi.h"/>
+        
+        <header-file src="src/ios/plugins/WXApiObject.h"/>
+        
+        <!--框架-->
+        <framework src="CoreTelephony.framework"  />
+        <framework src="SystemConfiguration.framework"  />
+        <framework src="src/ios/plugins/libWeChatSDK.a" custom="true"/>
+        
+        <framework src="libc++.tbd" />
+        <framework src="libsqlite3.0.tbd" />
+        <framework src="libz.tbd" />
+
+        
+        
+    </platform>
+</plugin>

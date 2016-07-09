@@ -1,3 +1,4 @@
+
 /**
  * Created by gusenlin on 16/4/24.
  */
@@ -294,21 +295,15 @@ angular.module('loginModule')
           });
         }, 700);
       };
+
+      $scope.goToWechat=function(){//调用微信登录
+        weixinLogin();
+      };
+
       $scope.$on('$ionicView.enter', function (e) {
         if (baseConfig.debug) {
           console.log('loginCtrl.$ionicView.enter');
         }
-        $timeout(function () {
-          $ionicHistory.clearCache();
-          $ionicHistory.clearHistory();
-        }, 400);
-      });
-      $scope.$on('$destroy', function (e) {
-        if (baseConfig.debug) {
-          console.log('loginCtrl.$destroy');
-        }
-      });
-      $rootScope.$on("REFRESH_LOGIN",function(){
         $scope.loginInfo = {
           username: "",
           password: ""
@@ -361,6 +356,15 @@ angular.module('loginModule')
         } else {
           $scope.rememberPassword = false;
           $scope.passwordChecked = "build/img/login/login-unchecked.png";
+        }
+        $timeout(function () {
+          $ionicHistory.clearCache();
+          $ionicHistory.clearHistory();
+        }, 400);
+      });
+      $scope.$on('$destroy', function (e) {
+        if (baseConfig.debug) {
+          console.log('loginCtrl.$destroy');
         }
       });
     }]);

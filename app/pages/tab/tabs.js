@@ -3,7 +3,7 @@
  */
 angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$state', 'baseConfig',
   function ($scope, $rootScope, $state, baseConfig) {
-    $rootScope.$on('$ionicView.beforeEnter', function () {
+    $scope.$on('$ionicView.beforeEnter', function () {
       var statename = $state.current.name;
       if (baseConfig.debug) {
         console.log('$ionicView.beforeEnter statename ' + statename);
@@ -15,7 +15,7 @@ angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$
       }
     });
 
-    $rootScope.$on('$ionicView.afterEnter', function () {
+    $scope.$on('$ionicView.afterEnter', function () {
       var statename = $state.current.name;
       if (baseConfig.debug) {
         console.log('$ionicView.afterEnter statename ' + statename);
