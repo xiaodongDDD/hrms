@@ -197,7 +197,7 @@ angular.module('tsApproveModule')
       $scope.openCalender = function () { //跳到原生日历界面--获取截止日期
         var success = function (response) {
           try{
-            var result = response.result;
+            var result = response;
             var startDate = result[0].splice(/-/, '');
             var endDate = result[result.length - 1].splice(/-/, '');
             tsListParams.params.p_page = 1;
@@ -206,7 +206,7 @@ angular.module('tsApproveModule')
             $scope.showLsLoading = true;
             $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
           } catch(e) {
-            hmsPopup.showShortCenterToast('取值失败'+ angular.toJson(response.result));
+            hmsPopup.showShortCenterToast('取值失败'+ response);
           }
         };
         var error = function (response) {
