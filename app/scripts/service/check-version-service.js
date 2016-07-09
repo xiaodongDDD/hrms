@@ -3,11 +3,11 @@
  */
 angular.module('HmsModule')
   .factory('checkVersionService', [
-    '$http',
+    'hmsHttp',
     'hmsPopup',
     'baseConfig',
     '$ionicPopup',
-    function ($http,
+    function (hmsHttp,
               hmsPopup,
               baseConfig,
               $ionicPopup) {
@@ -33,7 +33,7 @@ angular.module('HmsModule')
        */
       return {
         checkAppVersion: function () {
-          var promise = $http.post(url, checkVersionParams).success(function (response) {
+          var promise = hmsHttp.post(url, checkVersionParams).success(function (response) {
             try {
               serveVersionParams.bigVersion = response.returnData.versionNumber;
               serveVersionParams.bigUpdateUrl = response.returnData.downloadUrl;

@@ -11,20 +11,20 @@
 'use strict';
 angular.module('HmsModule')
   .factory('imService', [
-    '$http',
+    'hmsHttp',
     'hmsPopup',
     'baseConfig',
-    function ($http,
+    function (hmsHttp,
               hmsPopup,
               baseConfig) {
       //为application/x-www-form-urlencoded格式的请求--post方式
-      var baseUrl = 'http://wechat.hand-china.com/hrmsv2';
+      var baseUrl = baseConfig.imPath;
       function init2Cloud(getImTokenUrl) {
         var getImTokenParams = {
           appCode: 'RONGCLOUD',
           empNo: window.localStorage.empno
         };
-        $http.post(getImTokenUrl, getImTokenParams).success(function (result) {
+        hmsHttp.post(getImTokenUrl, getImTokenParams).success(function (result) {
           try {
             var imParams = {
               token: result.rows[0].token,
@@ -46,14 +46,8 @@ angular.module('HmsModule')
 
       return {
         initImData: function () {
-          var getLoginTokenUrl = baseUrl + '/oauth/token?client_id=client&client_secret=secret&grant_type=password&username=' + window.localStorage.empno + '&password=123456'+ '&p_phone_no=123456';
-          $http.post(getLoginTokenUrl).success(function (response) {
-            var getImTokenUrl = baseUrl + '/api/thirdparty/getToken?access_token=' + response.access_token;
-            //warn('response.access_token' + getImTokenUrl);
+            var getImTokenUrl = baseUrl + '/v2/api/thirdparty/getToken';
             init2Cloud(getImTokenUrl);
-          }).error(function () {
-            hmsPopup.showShortCenterToast('error 1');
-          });
         },
         getImChatList: function () {
           var newImParams = {
