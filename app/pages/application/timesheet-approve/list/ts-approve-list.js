@@ -223,7 +223,7 @@ angular.module('tsApproveModule')
           }
         };
         if(ionic.Platform.isIOS()) {
-          hmsCalendar.openCalender(success,error);
+          HmsCalendar.openCalendar(success,error,1);
         }
       };
 

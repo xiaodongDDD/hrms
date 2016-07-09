@@ -294,6 +294,7 @@ angular.module('loginModule')
           });
         }, 700);
       };
+
       $scope.$on('$ionicView.enter', function (e) {
         if (baseConfig.debug) {
           console.log('loginCtrl.$ionicView.enter');
@@ -303,6 +304,7 @@ angular.module('loginModule')
           $ionicHistory.clearHistory();
         }, 400);
       });
+
       $scope.$on('$destroy', function (e) {
         if (baseConfig.debug) {
           console.log('loginCtrl.$destroy');
