@@ -7,7 +7,7 @@
       <input placeholder="搜索转交人" ng-model="transmitPersonFilter.value" ng-change="workflowDetailUtil.searchTransmitPerson()">
     </div>
     <div class="buttons">
-      <button class="button button-icon icon" ng-click="hideTransmitPerson()">
+      <button class="button button-icon icon" ng-click="workflowDetailUtil.hideTransmitPerson()">
         <span class="back-text">取消</span>
       </button>
     </div>
@@ -15,7 +15,7 @@
   <ion-content>
     <hms-loading ng-if="loadingDataFlag"></hms-loading>
     <ion-list ng-if="!loadingDataFlag">
-      <ion-item ng-repeat="person in transmitPerson" ng-click="selectTransmitPerson(person)">
+      <ion-item ng-repeat="person in transmitPerson" ng-click="workflowDetailUtil.selectTransmitPerson(person)">
         {{person.name}}
       </ion-item>
     </ion-list>

@@ -125,6 +125,23 @@ angular.module('tsApproveModule')
         }
       }
 
+      $scope.openCalendar = function () {
+        if(baseConfig.debug) {
+          console.log('openCalender');
+        }
+        var success= function(response){
+          if(baseConfig.debug) {
+            console.log('success.response ' + angular.toJson(response));
+          }
+        };
+        var error= function(response){
+          if(baseConfig.debug) {
+            console.log('error.response ' + angular.toJson(response));
+          }
+        };
+        HmsCalendar.openCalendar(success,error,0);
+      };
+
       /**
        * 立即执行 拉取数据的代码
        */

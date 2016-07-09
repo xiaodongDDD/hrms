@@ -286,24 +286,25 @@ angular.module('applicationModule')
             data.selected = false;
           }
         });
-
         initCalendar();
         fetchCalendar(monthParams);
         generateAllowance(monthParams);
       }
 
       $scope.writeTimesheet = function (day) {
-        $state.go('tab.timesheet-write', {day: day});
+        if (day.day && day.day !== "") {
+          $state.go('tab.timesheet-write', {day: day});
+        }
       };
 
       $scope.processAllowance = function () {
-        var title = "确定要否进行生成津贴?";
+        var title = "确定是否生成津贴?";
         if ($scope.allowanceList.length > 0) {
           if ($scope.allowanceList[0].status == '已经审核') {
-            hmsPopup.showPopup('你的津贴已经审核,不能在生成津贴!');
+            hmsPopup.showPopup('你的津贴已经审核,不能再生成津贴!');
             return;
           }
-          title = "你已经生成津贴,要否进行重新生成津贴?";
+          title = "你已经生成津贴,要否重新生成津贴?";
         }
         var create = function (buttonIndex) {
           if (baseConfig.debug) {
@@ -459,6 +460,7 @@ angular.module('applicationModule')
         var success = function (result) {
           hmsPopup.hideLoading();
           if (result.status == 'S') {
+            hmsPopup.showPopup('批量填写成功!');
             var timesheetArray = result.refresh_timesheet;
             fetchData(timesheetArray);
           } else {
@@ -566,7 +568,7 @@ angular.module('applicationModule')
           var right = averageX * ( i + 1 ) + offsetX;
           if (touchX > left && touchX < right) {
             selectX = i;
-            if ((touchY >= lengthY + 0 + offsetY) && (touchY <= lengthY + 1 * averageY - offsetY)) {
+            if ((touchY >= (lengthY + 0 + offsetY)) && (touchY <= lengthY + 1 * averageY - offsetY)) {
               selectY = 0;
             }
             else if ((touchY >= lengthY + 1 * averageY + offsetY) && (touchY <= lengthY + 2 * averageY - offsetY)) {
@@ -596,7 +598,7 @@ angular.module('applicationModule')
       $ionicGesture.on("drag", function (e) {
         //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
         //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
-        if ($scope.startSlippingFlag&&!$scope.slippingFlag && $scope.slippingEnableFlag&&!$scope.exitQuery) {
+        if ($scope.startSlippingFlag && !$scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           if (Math.abs(startTouchX - e.gesture.touches[0].pageX) > 3 || Math.abs(startTouchY - e.gesture.touches[0].pageY) > 3) {
             toTime = new Date().getTime();
             if (baseConfig.debug) {
@@ -609,7 +611,7 @@ angular.module('applicationModule')
              }*/
           }
         }
-        if ($scope.startSlippingFlag&&$scope.slippingFlag && $scope.slippingEnableFlag&&!$scope.exitQuery) {
+        if ($scope.startSlippingFlag && $scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           var selectDay = markSelectCalendar(clientWidth,
             e.gesture.touches[0].pageX,
             e.gesture.touches[0].pageY);
@@ -634,9 +636,10 @@ angular.module('applicationModule')
       }, element);
 
       $ionicGesture.on("touch", function (e) {
+        copyFromDay = {};
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
         $scope.startSlippingFlag = true;
-        if ($scope.slippingFlag && $scope.slippingEnableFlag&&!$scope.exitQuery) {
+        if ($scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
           if (baseConfig.debug) {
             console.log('touch.startTouchX ' + e.gesture.touches[0].pageX);
@@ -646,13 +649,12 @@ angular.module('applicationModule')
           startTouchX = e.gesture.touches[0].pageX;
           startTouchY = e.gesture.touches[0].pageY;
           startTime = new Date().getTime();
-          copyFromDay = {};
         }
       }, element);
 
       $ionicGesture.on("release", function (e) {
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
-        if ($scope.startSlippingFlag && $scope.slippingFlag && $scope.slippingEnableFlag &&!$scope.exitQuery) {
+        if ($scope.startSlippingFlag && $scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           //console.log('release.startTouchX ' + e.gesture.touches[0].pageX);
           //console.log('release.startTouchY ' + e.gesture.touches[0].pageY);
           if (slippingMode == unfreezeMode) {
@@ -748,10 +750,10 @@ angular.module('applicationModule')
           } else {
             $scope.loadingAllowanceFlag = false;
           }
-        }
+        };
         var error = function () {
           $scope.loadingAllowanceFlag = false;
-        }
+        };
         TimeSheetService.generateAllowance(success, error, 'N', monthParams);
       }
 
@@ -770,10 +772,10 @@ angular.module('applicationModule')
               hmsPopup.showPopup('生成津贴失败 ' + result.message);
             }
           }
-        }
+        };
         var error = function () {
           hmsPopup.hideLoading();
-        }
+        };
         TimeSheetService.generateAllowance(success, error, 'Y', monthParams);
       }
 
@@ -845,7 +847,7 @@ angular.module('applicationModule')
         stopSlipping();
         $timeout(function () {
           $scope.exitQuery = false;
-        },2000)
+        }, 2000)
       });
 
       $scope.$on('$ionicView.afterLeave', function (e) {

@@ -236,7 +236,7 @@ static NSString *DayCell = @"DayCell";
 //日期重新排序按照从前往后
 - (void)compareDate:(NSMutableArray *)array
 {
-    for (int n=0; n<array.count; n++) {
+    for (int n=0; n<array.count-1; n++) {
         for (int i=0; i<array.count-1-n; i++) {
             CalendarDayModel *dayModelBefore = (CalendarDayModel *)array[i];
             NSString *dayModelBeforeStr = [dayModelBefore toString];

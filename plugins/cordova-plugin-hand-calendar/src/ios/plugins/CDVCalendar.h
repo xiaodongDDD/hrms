@@ -8,8 +8,8 @@
 
 #import <Cordova/CDV.h>
 
-@interface MyPlugin : CDVPlugin
+@interface CDVCalendar : CDVPlugin
 
-- (void)openCalender:(CDVInvokedUrlCommand *)cmd;
+- (void)openCalendar:(CDVInvokedUrlCommand *)cmd;
 
 @end

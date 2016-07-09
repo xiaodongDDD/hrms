@@ -94,18 +94,6 @@ angular.module('applicationModule')
         console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
       }
 
-      var init = {
-        initDataModal: function () {
-          if (detail.workflowId == 100728) { //合同续签地址维护
-            $scope.showList.contractRenewShowFlag = true;
-          } else if (detail.workflowId == 10008) { //合同续签地址维护
-            $scope.showList.applicationFullMemberShowFlag = true;
-          }
-        }
-      };
-
-      init.initDataModal();
-
       var contractRenewal = {
         queryData: function () {
 
@@ -118,20 +106,14 @@ angular.module('applicationModule')
         $scope.dataListModal = modal;
       });//初始化下拉列表的modal
 
-      $scope.showDataList = function () {
-        $scope.dataTitle = '合同续签方式维护方式';
-        $scope.dataList = [];
-        angular.forEach($scope.renewContractMethodList, function (data) {
-          var item = {
-            "item": data.renewMethod,
-            "value": data.defaultRenewAddress
-          };
-          $scope.dataList.push(item);
-        });
+      //加载项目画面
+      $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/transmit-person.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.transmitPersonModal = modal;
+      });
 
-        $scope.dataListModal.show();
-      };
-
+      //选择值列表的数据
       $scope.selectData = function (data) {
         $scope.renewContract.method = data.item;
         if (data.value == "") {
@@ -143,29 +125,70 @@ angular.module('applicationModule')
         $scope.dataListModal.hide();
       };
 
-      //加载项目画面
-      $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/transmit-person.html', {
-        scope: $scope
-      }).then(function (modal) {
-        $scope.transmitPersonModal = modal;
-      });
-      $scope.selectTransmitPerson = function (person) {
-        if (baseConfig.debug) {
-          console.log("selectTransmitPerson.person " + angular.toJson(person));
+      //转正申请功能
+      $scope.applicationFullMemberUtil = {
+        changeType: function (type) {
+          var cache = {
+            "selected": type.selected
+          };
+          type.selected = !cache.selected;
         }
-        $scope.processExtroInfo.transmitPerson = person;
-        $scope.transmitPersonModal.hide();
-      };
-      $scope.hideTransmitPerson = function () {
-        $scope.transmitPersonModal.hide();
-      };
-      $scope.chooseTransmitPerson = function () {
-        $scope.transmitPersonModal.show();
       };
 
+      $scope.applicationEmployeeType = {
+        "agree": {"selected": true},
+        "reject": {"selected": false},
+        "notChange": {"selected": false}
+      };
+
+      $scope.applicationEmployeeDetail = {};
+      $scope.applicationEmployeeInfo = [];
+      $scope.applicationEmployeeAbility = [];
+      $scope.applicationEmployeeTrial = {};
+
+
+      //转正申请功能包
+      var applicationFullMember = function () {
+        var __self = {};
+        __self.query = function () {
+          var success = function (result) {
+            if (baseConfig.debug) {
+              console.log('applicationFullMember.getWorkflowDetailresult ' + angular.toJson(result));
+            }
+
+            if (result.status == 'S') {
+              $scope.historyList = result.history;
+              if (result.workflow_data) {
+                $scope.applicationEmployeeDetail = result.workflow_data.details.detail;
+                $scope.applicationEmployeeDetail.showFlag = true;
+                $scope.applicationEmployeeInfo = result.workflow_data.testResult.detail;
+                $scope.applicationEmployeeAbility = result.workflow_data.testResult.record;
+                $scope.applicationEmployeeTrial = result.workflow_data.trialSummary.summary;
+              }
+            }
+          };
+          workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
+        };
+        return __self;
+      };
+
+      //合通续签功能
       $scope.renewContractUtil = {
+        showDataList: function () {
+          $scope.dataTitle = '合同续签方式维护方式';
+          $scope.dataList = [];
+          angular.forEach($scope.renewContractMethodList, function (data) {
+            var item = {
+              "item": data.renewMethod,
+              "value": data.defaultRenewAddress
+            };
+            $scope.dataList.push(item);
+          });
+
+          $scope.dataListModal.show();
+        },
         submit: function () {
-          if(!$scope.renewContract.address && $scope.renewContract.address==""){
+          if (!$scope.renewContract.address && $scope.renewContract.address == "") {
             hmsPopup.showPopup('请填写邮寄地址!');
             return;
           }
@@ -191,6 +214,7 @@ angular.module('applicationModule')
         }
       };
 
+      //合通续签功能包
       var renewContract = function () {
         var __self = {};
         __self.query = function () {
@@ -232,6 +256,22 @@ angular.module('applicationModule')
             array.showFlag = false;
           }
           $ionicScrollDelegate.resize();
+        },
+        //
+        selectTransmitPerson: function (person) {
+          if (baseConfig.debug) {
+            console.log("selectTransmitPerson.person " + angular.toJson(person));
+          }
+          $scope.processExtroInfo.transmitPerson = person;
+          $scope.transmitPersonModal.hide();
+        },
+        //
+        hideTransmitPerson: function () {
+          $scope.transmitPersonModal.hide();
+        },
+        //
+        chooseTransmitPerson: function () {
+          $scope.transmitPersonModal.show();
         },
         //二维表单上一页操作
         toBack: function (array) {
@@ -331,7 +371,7 @@ angular.module('applicationModule')
         self.validateWorkFlowAction = function (actionType) {
 
           if (detail.workflowId == 100728) {
-            if(!$scope.renewContractSaveFlag){
+            if (!$scope.renewContractSaveFlag) {
               hmsPopup.showPopup('请先保存合同续签方式!');
               return false;
             }
@@ -397,13 +437,12 @@ angular.module('applicationModule')
             if (baseConfig.debug) {
               console.log('getWorkflowDetail.result ' + angular.toJson(result));
             }
-
             if (result.status == 'S') {
               $scope.historyList = result.history;
               if (result.workflow_data) {
                 $scope.singalArrayList = result.workflow_data.details;
                 angular.forEach($scope.singalArrayList, function (data) {
-                  data.showFlag = !$scope.workflowActionShowFlag;
+                  data.showFlag = true;
                 });
 
                 multipleArrayList = result.workflow_data.lines;
@@ -413,6 +452,7 @@ angular.module('applicationModule')
 
                 if (baseConfig.debug) {
                   console.log('$scope.multipleLine ' + angular.toJson($scope.multipleLine));
+                  console.log('$scope.singalArrayList ' + angular.toJson($scope.singalArrayList));
                 }
               }
             }
@@ -422,6 +462,20 @@ angular.module('applicationModule')
         return self;
       };
 
-      renewContract().query();
-      workflowDetail().getWorkflowDetail();
+      var init = {
+        initDataModal: function () {
+          if (detail.workflowId == 100728) { //合同续签地址维护
+            $scope.showList.contractRenewShowFlag = true;
+            renewContract().query();
+          } else if (detail.workflowId == 10008) { //合同续签地址维护
+            $scope.showList.applicationFullMemberShowFlag = true;
+            applicationFullMember().query();
+          } else {
+            workflowDetail().getWorkflowDetail();
+          }
+        }
+      };
+
+      init.initDataModal();
+
     }]);
