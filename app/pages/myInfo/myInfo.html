@@ -1,6 +1,9 @@
 <ion-view view-title="我的" class="my-info">
   <div id="portrait-image" class="shrink-image" style="background: url('build/img/myInfo/background.png');background-size: cover;background-position: center;background-repeat: no-repeat;">
   </div>
+  <button class="button button-icon setup-button" ng-click="setup()">
+    <img src="build/img/myInfo/setup.png" class="setup-image"/>
+  </button>
   <ion-content class="content-style" has-bouncing="true" elastic-image="portrait-image">
     <ion-item class="header-item" ng-click="checkMyInfo()">
       <div class="header-item-image-row">
@@ -13,9 +16,6 @@
         <label class="employee-number-label" ng-bind="personalInfo.employee_number"></label>
       </div>
     </ion-item>
-    <button class="button button-icon setup-button" ng-click="setup()">
-      <img src="build/img/myInfo/setup.png" class="setup-image"/>
-    </button>
     <ion-item class="info-item">
       <div class="row icon-row">
         <div class="col col-33 center-style">
@@ -50,8 +50,8 @@
         </div>
         <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
       </ion-item>
-      <ion-item class="feedback-item" ng-click="feedback()">
-        <div class="row feedback-item-row">
+      <ion-item class="login-item" ng-click="feedback()">
+        <div class="row login-item-row">
           <div class="login-icon-shelter">
             <img src="build/img/myInfo/feedback.png" class="feedback-icon"/>
           </div>
@@ -59,8 +59,17 @@
         </div>
         <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
       </ion-item>
+      <ion-item class="certificate-item" ng-click="">
+        <div class="row feedback-item-row">
+          <div class="login-icon-shelter">
+            <img src="build/img/myInfo/certificate.png" class="feedback-icon"/>
+          </div>
+          <label class="login-label">我的证书</label>
+        </div>
+        <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
+      </ion-item>
     </div>
-    <div class="colorful-part">
+    <div class="common-part">
       <ion-item class="login-item" ng-click="">
         <div class="row login-item-row">
           <div class="login-icon-shelter">
@@ -70,7 +79,7 @@
         </div>
         <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
       </ion-item>
-      <ion-item class="feedback-item" ng-click="checkVersion()">
+      <ion-item class="certificate-item" ng-click="checkVersion()">
         <div class="row feedback-item-row">
           <div class="login-icon-shelter">
             <img src="build/img/myInfo/version.png" class="help-icon"/>

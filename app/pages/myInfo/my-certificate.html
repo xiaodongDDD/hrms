@@ -1,0 +1,26 @@
+<ion-view view-title="我的证书" class="my-certificate">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">我的证书</h1>
+    <div class="buttons">
+      <button class="button button-icon" ng-click="createNewCertificate()">
+        <img class="add-icon" src="build/img/myInfo/my-certificate-add.png"/>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="content-style">
+    <ion-list>
+      <ion-item class="certificate-item" ng-click="checkMyCertificate()">
+       <div class="row certificate-row">
+         <label class="certificate-label">SAP证书</label>
+       </div>
+       <img src="build/img/myInfo/my-certificate-orange-arrow.png" class="orange-arrow-image"/>
+       <img src="build/img/myInfo/rectangle.png" style="width: 26px;height: 22px;margin-top: 12px;">
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
