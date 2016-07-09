@@ -37,10 +37,10 @@ angular.module('applicationModule')
       $scope.circleAnimationFlag = false;//数据未加载
 
       //为iOS平台增加status bar
-      if (ionic.Platform.isIOS()) {
+      /*if (ionic.Platform.isIOS()) {
         angular.element('.platform-status-bar').css('height','20px');
         angular.element('.time-off-content').css('height','200px');
-      }
+      }*/
 
       $scope.fetchDataFlag       = true;
       $scope.timeOffHeader       = {

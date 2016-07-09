@@ -1,10 +1,29 @@
+.platform-android{
+  .time-off-header-bg {
+    .platform-status-bar {
+      width: 100%;
+      height: 0px;
+    }
+  }
+  .time-off-content {
+    top: 180px;
+  }
+}
+.platform-ios{
+  .time-off-header-bg {
+    .platform-status-bar {
+      width: 100%;
+      height: 20px;
+    }
+  }
+  .time-off-content {
+    top: 200px;
+  }
+}
+
 .time-off-header-bg {
   background-image: url("./../img/application/time-off-manage/HeaderBar-Large@3x.png");
   background-size: cover;
-  .platform-status-bar {
-    width: 100%;
-    height: 0px;
-  }
   .time-off-header-bar {
     display: -webkit-box;
     display: -webkit-flex;
@@ -196,8 +215,6 @@
 }
 
 .time-off-content {
-  top: 180px;
-
   .time-off-list-title {
     font-size: 16px;
     margin-left: 1.3%;
