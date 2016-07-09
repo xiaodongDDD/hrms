@@ -211,8 +211,9 @@ angular.module('tsApproveModule')
         };
         var error = function (response) {
         };
-        if (ionic.Platform.isIOS()) {
-          HmsCalendar.openCalender(success, error, '1');
+
+        if(ionic.Platform.isIOS()) {
+          HmsCalendar.openCalendar(success,error,'1');
         }
       };
 
