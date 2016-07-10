@@ -49,7 +49,7 @@
            ng-click="goDetailInfo(i.employeeNumber)"
         >
         <div class="col col-15 item-logo">
-          <img class="contact-item-logo" ng-src="{{i.imgUrl | filterImg}}"/>
+          <img class="contact-item-logo" ng-cloak ng-src="{{i.imgUrl | filterImg}}"/>
         </div>
         <div class="col col-85 item-name" ng-bind="i.name">
         </div>

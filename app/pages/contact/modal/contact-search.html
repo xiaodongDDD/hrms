@@ -41,7 +41,7 @@
          ng-class="{'first-item':$index === 0}"
          ng-repeat="i in resultList"
          ng-click="selectEmployeeItem(i.emp_name,i.emp_code)">
-      <img class="human-img" ng-src="{{i.avatar | filterImg}}"/>
+      <img class="human-img" ng-cloak ng-src="{{i.avatar | filterImg}}"/>
       <div class="col col-80 col-padding">
         <div class="row name" ng-cloak>
           {{i.emp_name}}({{i.emp_code}})

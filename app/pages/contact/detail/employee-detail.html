@@ -14,7 +14,7 @@
 
   </div>
   <div class="img-section">
-    <img class="img-employee" ng-src="{{employeeInfo.avatar | filterImg}}"></img>
+    <img class="img-employee" ng-cloak ng-src="{{employeeInfo.avatar | filterImg}}"></img>
   </div>
   <div class="employee-name" ng-cloak>
     {{employeeInfo.emp_name}} {{employeeInfo.emp_code}}
