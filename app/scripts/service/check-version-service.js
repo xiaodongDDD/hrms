@@ -78,7 +78,7 @@ angular.module('HmsModule')
                 }
               } else {
                 if(newName === 'MY_INFO')
-                hmsPopup.showShortCenterToast("已经是最新版本了！");
+                hmsPopup.showShortCenterToast("当前为最新版本");
               }
             }
           });

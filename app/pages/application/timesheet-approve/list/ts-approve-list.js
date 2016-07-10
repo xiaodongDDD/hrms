@@ -203,7 +203,7 @@ angular.module('tsApproveModule')
             $scope.showLsLoading = true;
             $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
           } catch(e) {
-            hmsPopup.showShortCenterToast('取值失败'+ response);
+            alert('取值失败'+ response);
           }
         };
         var error = function (response) {
