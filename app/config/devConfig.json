@@ -1,9 +1,9 @@
 {
   "baseConfig": {
-    "debug": false,
-    "isMobilePlatform": true,
+    "debug": true,
+    "isMobilePlatform": false,
     "clearTable": true,
-    "nativeScreenFlag": true,
+    "nativeScreenFlag": false,
     "loginPath": "http://wechat.hand-china.com/hrmsv2/oauth/token?client_id=client&client_secret=secret&grant_type=password&",
     "businessPath": "http://wechat.hand-china.com/hrmsv2/v2/api/l",
     "queryPath": "http://wechat.hand-china.com/hrmsv2/v2/api",
