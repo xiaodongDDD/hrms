@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import com.hand.china_hrms.R;
+import com.hand_china.hrms.R;
 
 public class FaceAdapter extends BaseAdapter {
 

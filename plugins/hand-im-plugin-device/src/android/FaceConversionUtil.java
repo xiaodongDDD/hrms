@@ -14,7 +14,7 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import com.hand.china_hrms.R;
+import com.hand_china.hrms.R;
 
 public class FaceConversionUtil {
 
@@ -45,7 +45,7 @@ public class FaceConversionUtil {
 
 	/**
 	 * 得到一个SpanableString对象，通过传入的字符串,并进行正则判断
-	 * 
+	 *
 	 * @param context
 	 * @param str
 	 * @return
@@ -66,7 +66,7 @@ public class FaceConversionUtil {
 
 	/**
 	 * 添加表情
-	 * 
+	 *
 	 * @param context
 	 * @param imgId
 	 * @param spannableString
@@ -91,7 +91,7 @@ public class FaceConversionUtil {
 
 	/**
 	 * 对spanableString进行正则判断，如果符合要求，则以表情图片代替
-	 * 
+	 *
 	 * @param context
 	 * @param spannableString
 	 * @param patten
@@ -145,7 +145,7 @@ public class FaceConversionUtil {
 
 	/**
 	 * 解析字符
-	 * 
+	 *
 	 * @param data
 	 */
 	private void ParseData(List<String> data, Context context) {
@@ -185,7 +185,7 @@ public class FaceConversionUtil {
 
 	/**
 	 * 获取分页数据
-	 * 
+	 *
 	 * @param page
 	 * @return
 	 */

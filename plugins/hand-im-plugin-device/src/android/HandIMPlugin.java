@@ -32,7 +32,7 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.TextMessage;
-import com.hand.china_hrms.R;
+import com.hand_china.hrms.R;
 
 public class HandIMPlugin extends CordovaPlugin{
     public static final String ACTION_GET_CHAT_LIST = "getChatList";
