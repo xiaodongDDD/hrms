@@ -76,7 +76,8 @@ angular.module('myInfoModule')
       };
 
       $scope.checkVersion=function(){//点击版本信息
-        checkVersionService.checkAppVersion();
+        var param="MY_INFO";
+        checkVersionService.checkAppVersion(param);
       };
 
       $scope.nextTime=function(){
