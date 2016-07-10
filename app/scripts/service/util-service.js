@@ -585,21 +585,13 @@ angular.module('HmsModule')
     }
   ])
 
-  .factory('HmsDateUtil', ['$filter', function ($filter) {
+  .factory('HmsDateFormat', ['$filter', function ($filter) {
     return {
       getDateString: function (date) {
         return $filter('date')(date, 'yyyy-MM-dd');
       },
       getDateTimeString: function (date) {
         return $filter('date')(date, 'yyyy-MM-dd HH:mm:ss');
-      },
-      getLastDate: function (month) {
-        var date = new Date();
-        date.setDate(date.getDate() - (30 * month));
-        return date;
-      },
-      getDateStringByFormat: function (date, format) {
-        return $filter('date')(date, format);
       }
     }
   }])

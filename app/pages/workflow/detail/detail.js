@@ -187,6 +187,10 @@ angular.module('applicationModule')
           $scope.positionModal.hide();
         },
 
+        closePositionModal: function () {
+          $scope.positionModal.hide();
+        },
+
         getDepartmentData: function (unitId) {
           var success = function (response) {
             $scope.parent = response.parent[0];
@@ -270,6 +274,8 @@ angular.module('applicationModule')
           if(baseConfig.debug){
             console.log('detail ' + angular.toJson(detail));
           }
+
+          return;
 
           var success = function (result) {
             if (result.status == 'S') {
