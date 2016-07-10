@@ -1,6 +1,6 @@
 angular.module('myApp')
   .config(['$stateProvider',
-    function ($stateProvider) { 
+    function ($stateProvider) {
       $stateProvider
         .state('tab.exp_SelectDetail', {
           url: '/interfaceReportList',
@@ -15,7 +15,7 @@ angular.module('myApp')
     }]);
 
 angular.module("applicationModule")
-.controller('interfaceReportListController', function($scope,keepAccount,$http,$q,expenseApply,dialog,$state,$ionicHistory,$ionicLoading, baseConfig) {
+.controller('interfaceReportListController', function($scope,keepAccount,$http,$q,expenseApply,dialog,$state,$ionicHistory,$ionicLoading, baseConfig,hmsHttp) {
     var Item = [];
     $scope.detailData=expenseApply.data;
     //console.log( $scope.detailData.expenseObject_id);
@@ -34,7 +34,7 @@ angular.module("applicationModule")
         var expenseObject_id= expenseApply.data.expenseObject_id;
         var Url = baseConfig.businessPath + "/expense_account/fetch_exp_details";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_id":"' + expenseObject_id + '"}}';
-        $http.post(Url,PostData).success(function (response){
+      hmsHttp.post(Url,PostData).success(function (response){
             console.log(response);
             //console.log("接口返回数据： " + angular.toJson(response));
             deferred.resolve(response);

@@ -1,6 +1,6 @@
 angular.module('myApp')
   .config(['$stateProvider',
-    function ($stateProvider) { 
+    function ($stateProvider) {
       $stateProvider
         .state('tab.cst_costTypeItemList', {
           url: '/expense/cst/costTypeItemList',
@@ -15,7 +15,7 @@ angular.module('myApp')
     }]);
 
 
-angular.module("applicationModule").controller('costTypeItemController', function($scope,$http,$q, costApply,$ionicHistory,$ionicLoading, baseConfig) {
+angular.module("applicationModule").controller('costTypeItemController', function($scope,$http,$q, costApply,$ionicHistory,$ionicLoading, baseConfig,hmsHttp) {
 
 
     $ionicLoading.show({
@@ -36,7 +36,7 @@ angular.module("applicationModule").controller('costTypeItemController', functio
 
         console.log(PostData);
         //showMessage(PostData );
-        $http.post(Url,PostData).success(function (data){
+        hmsHttp.post(Url,PostData).success(function (data){
 
             showMessage(angular.toJson(data));
             deferred.resolve(data);

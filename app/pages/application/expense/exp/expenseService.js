@@ -4,12 +4,12 @@
 
 /*报销服务*/
 angular.module("applicationModule")
-.factory('expenseApply', function ($http, $q, $window, $ionicLoading, baseConfig) {
+.factory('expenseApply', function ($http, $q, $window, $ionicLoading, baseConfig,hmsHttp) {
 
   // 上传附件
   function doPostHttp(form, deferred) {
     //showMessage("doPostHttp");
-    $http.post(baseConfig.basePath + 'EXP/EXP5010/exp_upload_line_photos.svc', form, {
+    hmsHttp.post(baseConfig.basePath + 'EXP/EXP5010/exp_upload_line_photos.svc', form, {
       transformRequest: angular.identity,
       headers: {'Content-Type': undefined}
     })
@@ -80,7 +80,7 @@ angular.module("applicationModule")
       var Item = [];
       var Url = baseConfig.businessPath + "/expense_account/fetch_expense_detail";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
-      $http.post(Url, PostData).success(function (response) {
+      hmsHttp.post(Url, PostData).success(function (response) {
         //console.log("返回数据：" + angular.toJson(response));
         deferred.resolve(response);
 
@@ -105,7 +105,7 @@ angular.module("applicationModule")
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
         + '","p_page_num":"' + "1" + '"}}';
 
-      $http.post(Url, PostData).success(function (response) {
+      hmsHttp.post(Url, PostData).success(function (response) {
         deferred.resolve(response);
 
       }).error(function (response) {
@@ -152,7 +152,7 @@ angular.module("applicationModule")
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + "" + '","p_description":"'
         + detailData.description + '","p_line":"' + linesId + '"}}';
 
-      $http.post(Url, PostData).success(function (response) {
+      hmsHttp.post(Url, PostData).success(function (response) {
         deferred.resolve(response);
 
       }).error(function (response) {
@@ -312,7 +312,7 @@ angular.module("applicationModule")
       var Url = baseConfig.businessPath + "/expense_account/create_expense";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + detailData.expHeaderId
         + '","p_description":"' + detailData.description + '","p_line":"' + linesId + '"}}';
-      $http.post(Url, PostData).success(function (response) {
+      hmsHttp.post(Url, PostData).success(function (response) {
         deferred.resolve(response);
 
       }).error(function (response) {
