@@ -25,6 +25,7 @@ angular.module('myInfoModule')
       }
       $scope.currentVersion =  baseConfig.version.currentversionName; // 获得当前版本号
       $scope.personalInfo="";
+      $scope.showLoading=true;//默认显示loading
       $scope.defaultPortrait="build/img/myInfo/man-portrait.png";
       var url=baseConfig.businessPath + "/api_employee/get_employee_code";//获取用户信息
       var param={
@@ -32,9 +33,8 @@ angular.module('myInfoModule')
            "p_employee_code":window.localStorage.empno
          }
       };
-      hmsPopup.showLoading('请稍候');
       hmsHttp.post(url,param).success(function (result) {
-        hmsPopup.hideLoading();
+        $scope.showLoading=false;
         var message=result.message;
         if(result.status=="S"){
           $scope.personalInfo=result.result;
@@ -50,7 +50,7 @@ angular.module('myInfoModule')
           console.log("result success " + angular.toJson(result));
         }
       }).error(function(err,status){
-        hmsPopup.hideLoading();
+        $scope.showLoading=false;
         hmsPopup.showShortCenterToast("网络连接出错");
       });
       $scope.logout = function(){//注销登录
