@@ -27,12 +27,14 @@ angular.module('applicationModule')
     'hmsHttp',
     'hmsPopup',
     '$ionicHistory',
+    'timeOffManageService',
     function ($scope,
               $state,
               baseConfig,
               hmsHttp,
               hmsPopup,
-              $ionicHistory) {
+              $ionicHistory,
+              timeOffManageService) {
       //只支持iOS和Android
       $scope.circleAnimationFlag = false;//数据未加载
 
@@ -81,6 +83,8 @@ angular.module('applicationModule')
       }];
 
       function getServeData() {
+
+        //hmsPopup.showPopup(window.screen.width);
 
         var requestUrl = baseConfig.businessPath + "/api_holiday/get_holidays_data";
         var requestParams = {
@@ -177,7 +181,6 @@ angular.module('applicationModule')
           }
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
         });
       };
 
@@ -239,5 +242,38 @@ angular.module('applicationModule')
         $state.go("tab.time-off-manage-detail", {timeOffData : timeOffData});
       };
 
+      $scope.$on('$ionicView.beforeEnter', function () {
+
+        if (timeOffManageService.getRefreshWorkflowList().flag == true) {
+          timeOffManageService.setRefreshTimeOffList(false);
+          if (baseConfig.debug) {
+            console.log('refresh time off list');
+          }
+          getServeData();
+        }
+      });
+
       getServeData();
+    }]);
+
+
+angular.module('applicationModule')
+  .service('timeOffManageService',
+  ['hmsHttp',
+    'baseConfig',
+    'hmsPopup',
+    function (hmsHttp,
+              baseConfig,
+              hmsPopup) {
+      var refreshTimeOffList = {
+        flag: false
+      };
+
+      this.setRefreshTimeOffList = function (flag) {
+        refreshTimeOffList.flag = flag;
+      };
+
+      this.getRefreshWorkflowList = function () {
+        return refreshTimeOffList;
+      };
     }]);

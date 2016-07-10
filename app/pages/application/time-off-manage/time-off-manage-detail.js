@@ -31,6 +31,7 @@ angular.module('applicationModule')
     '$ionicModal',
     '$ionicHistory',
     '$cordovaDatePicker',
+    'timeOffManageService',
     function ($scope,
               $state,
               $stateParams,
@@ -39,10 +40,12 @@ angular.module('applicationModule')
               hmsPopup,
               $ionicModal,
               $ionicHistory,
-              $cordovaDatePicker) {
+              $cordovaDatePicker,
+              timeOffManageService) {
 
       $scope.isIOSPlatform = ionic.Platform.isIOS();//判断平台,留出iOS的statusBar
       $scope.descriptionFlag = '';
+      $scope.timeLeaveFlag = false;
       $scope.pageTitle       = '创建休假';
       $scope.readOnly = ''; // 界面是否可以编辑
       $scope.buttonModeClass = 'submit-mode';//submit-mode,revoke-mode,transparent-mode
@@ -322,10 +325,10 @@ angular.module('applicationModule')
           return;
         }
 
-        if ($scope.timeOffData.timeLeave == '' || parseInt($scope.timeOffData.timeLeave <=0)) {
-          hmsPopup.showPopup('请输出正确的休假区间!!');
-          return;
-        }
+        //if ($scope.timeOffData.timeLeave == '' || parseInt($scope.timeOffData.timeLeave <=0)) {
+        //  hmsPopup.showPopup('请输出正确的休假区间!!');
+        //  return;
+        //}
 
         if ($scope.timeOffData.timeOffTypeMeaning == '带薪病假' && $scope.timeOffData.timeLeave > 1) {
           hmsPopup.showPopup('超过1天的病假需要上传三甲医院证明,请从PC端进行提交');
@@ -337,12 +340,12 @@ angular.module('applicationModule')
           requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday_apply";
           requestParams = {
             "params": {
-              "p_employeecode"     : window.localStorage.empno,
-              "timeOffTypeMeaning" : $scope.timeOffData.timeOffTypeMeaning,
-              "p_datetimefrom"     : $scope.getdateFromMeaning(),
-              "p_datetimeto"       : $scope.getdateToMeaning(),
-              "p_timeleave"        : $scope.timeOffData.timeLeave,
-              "p_applyreason"      : $scope.timeOffData.applyReason
+              "p_employeecode"       : window.localStorage.empno,
+              "p_timeofftypemeaning" : $scope.timeOffData.timeOffTypeMeaning,
+              "p_datetimefrom"       : $scope.getdateFromMeaning(),
+              "p_datetimeto"         : $scope.getdateToMeaning(),
+              "p_timeleave"          : '',//$scope.timeOffData.timeLeave
+              "p_applyreason"        : $scope.timeOffData.applyReason
             }
           };
 
@@ -351,26 +354,34 @@ angular.module('applicationModule')
           requestUrl = baseConfig.businessPath + "/api_holiday/get_holiday_apply_back";
           requestParams = {
             "params": {
-              "p_employee_code": window.localStorage.empno,
-              "p_timeoffid": $scope.timeOffData.timeOffId
+              "p_employee_code" : window.localStorage.empno,
+              "p_timeoffid"     : $scope.timeOffData.timeOffId
             }
           }
+        }
+
+        //记录调用日志参数
+        if (baseConfig.debug) {
+          console.log('requestParams ' + angular.toJson(requestParams));
         }
 
         hmsHttp.post(requestUrl, requestParams).success(function (response) {
           hmsPopup.hideLoading();
           if (hmsHttp.isSuccessfull(response.status)) {
 
+            //跳转回列表界面
+            timeOffManageService.setRefreshTimeOffList(true);
+            $ionicHistory.goBack();
+
           } else {
             if (response.status === 'E' || response.status == 'e') {
-              hmsPopup.showShortCenterToast("没有相关数据!");
+              hmsPopup.showShortCenterToast("处理休假申请出错:" + response.errorMsg);
             } else {
               hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
             }
           }
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
         });
       }
 

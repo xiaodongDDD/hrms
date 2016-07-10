@@ -48,6 +48,10 @@
   margin-top: 40px;
   height: 40px;
   .process-button {
+    &.activated {
+      background-color: #f8f8f8;
+      opacity: 0.8;
+    }
     width: 200px;
     height: 40px;
     display: block;
