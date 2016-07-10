@@ -86,6 +86,7 @@ angular.module('myApp')
         },40000);*/
 
         hmsJpushService.init($state);
+        sqliteService.buildExpenseSql();
 
         if (window.localStorage.access_token === '' || angular.isUndefined(window.localStorage.access_token)) {
         } else {

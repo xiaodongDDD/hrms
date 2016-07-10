@@ -14,7 +14,7 @@ import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
-import com.hand.china.hrms2.research.R;
+import com.hand_china.hrms.R;
 /**
  * Created by USER on 2016/7/6.
  */
