@@ -94,7 +94,7 @@ angular.module('applicationModule')
         }
         }).error(function (error, status) {
           //hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast("网络连接出错");
+          //hmsPopup.showShortCenterToast("网络连接出错");
           if (baseConfig.debug) {
             console.log("response error " + angular.toJson(error));
           }

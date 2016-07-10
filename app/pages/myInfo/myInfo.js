@@ -51,7 +51,7 @@ angular.module('myInfoModule')
         }
       }).error(function(err,status){
         $scope.showLoading=false;
-        hmsPopup.showShortCenterToast("网络连接出错");
+        //hmsPopup.showShortCenterToast("网络连接出错");
       });
       $scope.logout = function(){//注销登录
         window.localStorage.token = "";
