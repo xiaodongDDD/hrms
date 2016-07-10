@@ -107,12 +107,9 @@ angular.module('tsApproveModule')
           "approve_list": []
         };
         var currentDay = new Date().getDate();
-        warn(currentDay);
         if (currentDay <= 10) {
           tsListParams.params.p_end_date = getLastMonthDate(new Date());
-          warn(tsListParams.params.p_end_date);
           $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/, '');
-          warn($scope.endApproveDate);
           $scope.selectEndItem = [true, false, false]; //控制点击选择截止日期条目的样式(modal-date)
         } else if (currentDay > 10 && currentDay <= 20) {
           tsListParams.params.p_end_date = getCurrentDate(new Date());
@@ -141,7 +138,7 @@ angular.module('tsApproveModule')
       };
       initData();
 
-      $scope.$on('$ionicView.enter', function (e) {
+      $scope.$on('$ionicView.beforeEnter', function (e) {
         if (ApproveDetailService.getRefreshFlag() === 'refresh-approve-list') {
           $scope.tsListRefresh();
         }
@@ -419,7 +416,6 @@ angular.module('tsApproveModule')
           }, 1000);
         }).error(function (e) {
           hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
@@ -449,7 +445,6 @@ angular.module('tsApproveModule')
           }, 1000);
         }).error(function (e) {
           hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
@@ -574,11 +569,6 @@ angular.module('tsApproveModule')
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             } else {
               _self.busy = false;
-              if (response.status === 'E' || response.status == 'e') {
-                //hmsPopup.showShortCenterToast("没有相关数据!");
-              } else {
-                hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-              }
               _self.scope.$broadcast('scroll.refreshComplete');
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             }
@@ -616,8 +606,6 @@ angular.module('tsApproveModule')
             if (hmsHttp.isSuccessfull(response.status)) {
               if (angular.isUndefined(response.timesheet_approve_response.result_list)) {
                 _self.busy = false;
-                //hmsPopup.showShortCenterToast("数据已经加载完毕!");
-                //$ionicScrollDelegate.scrollBy(300);
                 $ionicScrollDelegate.$getByHandle('approveListHandle').scrollBy(300);
               } else {
                 var tsResult = response.timesheet_approve_response;
@@ -627,7 +615,6 @@ angular.module('tsApproveModule')
             } else {
               if (response.status === 'E') {
                 _self.params.params.p_page--;
-                hmsPopup.showShortCenterToast("数据请求错误,请检查传入参数重新操作!");
               }
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             }
@@ -638,7 +625,6 @@ angular.module('tsApproveModule')
         }.bind(_self)).error(function (error) {
           _self.params.params.p_page--;
           _self.scope.$broadcast('scroll.infiniteScrollComplete');
-          hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
         }.bind(_self));
       };
       return TsApproveListService;

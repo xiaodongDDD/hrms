@@ -40,7 +40,7 @@ angular.module('HmsModule')
             hmsPopup.showShortCenterToast(error);
           }, imParams);
         }).error(function () {
-          hmsPopup.showShortCenterToast('error 2');
+          //hmsPopup.showShortCenterToast('error 2');
         });
       };
 

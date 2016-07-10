@@ -101,12 +101,11 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
           if (response.status === 'E' || response.status == 'e') {
             hmsPopup.showShortCenterToast("没有相关数据!");
           } else {
-            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+            //hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
           }
         }
       }).error(function (response, status) {
         hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
       });
     };
     getData();
@@ -226,7 +225,6 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         }, 1000);
       }).error(function (e) {
         hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
         $scope.dealDetailInfo();
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
@@ -258,7 +256,6 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         }, 1000);
       }).error(function (e) {
         hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
         $scope.dealDetailInfo();
         $timeout(function () {
           hmsPopup.showLoading('加载中...');

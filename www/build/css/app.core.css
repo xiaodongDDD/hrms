@@ -8305,8 +8305,9 @@ Copyright (c) 2015 Daniel Eden
       opacity: 0.8; }
     .employee-search-content .search-result-item .human-img {
       height: 32px;
+      border-radius: 100%;
       align-self: center;
-      padding-left: 7px; }
+      margin-left: 7px; }
     .employee-search-content .search-result-item .col-padding {
       padding-top: 0px;
       padding-bottom: 0px; }
@@ -8316,13 +8317,13 @@ Copyright (c) 2015 Daniel Eden
       background-color: transparent;
       background-image: url("./../img/contact/dial@3x.png");
       position: absolute;
-      margin-top: 18px;
+      margin-top: 0px;
       right: 2%;
       font-size: 14px;
       color: #9B9B9B;
       background-repeat: no-repeat;
       background-size: 23px 23px;
-      background-position: 18px 15px; }
+      background-position: 21px 53%; }
       .employee-search-content .search-result-item .tel-img.activated {
         opacity: 0.7;
         transform: scale(0.9, 0.9);
@@ -8360,19 +8361,18 @@ Copyright (c) 2015 Daniel Eden
     z-index: 100;
     margin-left: 4%; }
     .contact-employee-detail .img-section .img-employee {
-      height: 70px;
+      height: 69px;
       width: 70px;
-      background-image: url("./../img/application/profile@3x.png");
-      background-repeat: no-repeat;
-      background-size: 64px 64px;
-      background-position: 6px 5px; }
+      border-radius: 100%;
+      margin-left: 3px;
+      margin-top: 3px; }
   .contact-employee-detail .employee-name {
     color: white;
     font-size: 17px;
     position: absolute;
     z-index: 100;
-    margin-left: 28%;
-    margin-top: -9%; }
+    margin-left: 30%;
+    margin-top: -10%; }
   .contact-employee-detail .employee-content {
     padding-top: 115px; }
     .contact-employee-detail .employee-content .np-padding-margin {
@@ -8389,8 +8389,8 @@ Copyright (c) 2015 Daniel Eden
       .contact-employee-detail .employee-content .item-info .section-bg {
         height: 30px;
         color: #4A4A4A;
-        font-size: 14px;
-        margin-left: 28%;
+        font-size: 12px;
+        margin-left: 30%;
         padding-top: 3%; }
       .contact-employee-detail .employee-content .item-info .icon-row {
         padding: 0px;
@@ -8486,6 +8486,7 @@ Copyright (c) 2015 Daniel Eden
     font-size: 16px; }
   .common-head .img-icon {
     height: 22px;
+    width: 22px;
     margin-top: 7px; }
 
 .employee-clear-img {

@@ -32,7 +32,7 @@ angular.module('HmsModule')
        * -- 分大版本和小版本的update
        */
       return {
-        checkAppVersion: function () {
+        checkAppVersion: function (newName) {
           var promise = hmsHttp.post(url, checkVersionParams).success(function (response) {
             try {
               serveVersionParams.bigVersion = response.returnData.versionNumber;
@@ -43,13 +43,13 @@ angular.module('HmsModule')
             }
             try {
               serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '\r\n');
-              //serveVersionParams.updateContent = response.returnData.upgradeInfo;
-              //serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
             } catch (e) {
               serveVersionParams.updateContent = '';
             }
+            var serveVersion = serveVersionParams.bigVersion.split('.');
+            var localVersion = baseConfig.version.currentVersion.split('.');
 
-            if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
+            if (serveVersion[0] > localVersion[0] || serveVersion[1] > localVersion[1] || serveVersion[2] > localVersion[2]) {
               if (ionic.Platform.isWebView()) {
                 function selectAction(buttonIndex) { // update from pgy
                   if (buttonIndex == 1) { //确认按钮
@@ -76,9 +76,11 @@ angular.module('HmsModule')
                 } else {
                   alert(serveVersionParams.updateContent);
                 }
+              } else {
+                if(newName === 'MY_INFO')
+                hmsPopup.showShortCenterToast("已经是最新版本了！");
               }
             }
-          }).error(function () {
           });
         }
       }

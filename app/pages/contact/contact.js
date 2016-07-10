@@ -144,10 +144,10 @@ angular.module('contactModule')
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           } else {
-            if(response.total < 7) {
+            if (response.total < 7) {
               hmsPopup.showShortCenterToast('加载完毕!');
               $scope.$broadcast('scroll.infiniteScrollComplete');
-              if(moreFlag === 'init' || $scope.page === 1) {
+              if (moreFlag === 'init' || $scope.page === 1) {
                 $scope.resultList = [];
                 angular.forEach(response.rows, function (data, index) {
                   $scope.resultList.push(data);
@@ -243,10 +243,11 @@ angular.module('contactModule')
 
       //联系人保存到本地--
       function contactLocal(baseInfo) {
+        warn('baseInfo ' + angular.toJson(baseInfo));
         if (ionic.Platform.isWebView()) {
           var newContact = navigator.contacts.create();
           var phoneNumbers = [];
-          phoneNumbers[0] = new ContactField('mobile', baseInfo.emp_mobil, true);
+          phoneNumbers[0] = new ContactField('mobile', baseInfo.mobil, true);
           var emails = [];
           emails[0] = new ContactField('email', baseInfo.email, true);
           if (ionic.Platform.isAndroid()) {
@@ -269,17 +270,17 @@ angular.module('contactModule')
           scanCard.takePicturefun(function (msg) {
             var manInfo = {
               emp_name: '',
-              emp_mobil: '',
+              mobil: '',
               email: ''
             };
             manInfo.emp_name = msg.lastName + msg.firstName;
             try {
               var phones = msg.phones;
               if (phones.length > 0) {
-                manInfo.emp_mobil = phones[0].itemInfo;
+                manInfo.mobil = phones[0].itemInfo;
               }
             } catch (e) {
-              manInfo.emp_mobil = '';
+              manInfo.mobil = '';
             }
             try {
               var emails = msg.emails;
@@ -310,14 +311,17 @@ angular.module('contactModule')
               cancelText: 'Cancel',
               buttonClicked: function (index) {
                 if (index == 0) {
-                  //window.location.href = "tel:" + 00000000000; //不明觉厉--
-                  window.location.href = "tel:" + baseInfo.emp_mobil;
+                  window.location.href = "tel:" + 88888888888; //不明觉厉--
+                  window.location.href = "tel:" + baseInfo.mobil;
                   var employeeBaseInfo = {
-                    tel: baseInfo.emp_mobil,
+                    tel: baseInfo.mobil,
                     name: baseInfo.emp_name,
-                    employeeNumber: baseInfo.emp_code
+                    employeeNumber: baseInfo.emp_code,
+                    imgUrl: baseInfo.avatar
                   };
-                  dealCommonLinkMan(employeeBaseInfo);
+                  if (employeeBaseInfo.name) {
+                    dealCommonLinkMan(employeeBaseInfo);
+                  }
                   return true;
                 }
                 if (index == 1) {
