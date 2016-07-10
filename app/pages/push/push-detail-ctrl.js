@@ -66,6 +66,7 @@ angular.module('loginModule')
               $ionicHistory) {
 
       $scope.content = angular.toJson($stateParams.content);
+      $scope.title = $stateParams.title;
 
       $scope.goBack = function () {
         $ionicHistory.goBack();
