@@ -15,263 +15,6 @@ var tsApproveModule = angular.module('tsApproveModule', []);
 
 
 /**
- * Created by wolf on 2016/7/1.
- * @description: add common alert for every module--
- * @attention:  nomenclature and block
- */
-'use strict';
-HmsModule.constant('hmsConstant', [function () {
-}]);
-
-/**
- * @ngdoc interceptor
- * @name httpRequestHeader
- * @module utilModule
- * @description
- * This is the http interceptor
- * @author
- * gusenlin
- */
-angular.module('utilModule').factory('httpRequestHeader', function () {
-  var interceptor = {
-    'request': function (config) {
-      if (window.localStorage.token && window.localStorage.empno) {
-        var timestamp = new Date().getTime();
-        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
-        config.headers.timestamp = timestamp;
-        config.headers.token     = token;
-        config.headers.loginName = window.localStorage.empno;
-      }
-      return config;
-    }
-  };
-
-  return interceptor;
-});
-
-/**
- * Created by wolf on 2016/6/13. (_wen.dai_)
- */
-"use strict";
-//根据日期获取星期
-HmsModule.filter('weekDay', function () {
-  return function (data) {
-    if (data == "") {
-      return data;
-    } else {
-      var d = new Date(data);
-      var day = d.getDay();
-      switch (day) {
-        case  0:
-          data = data + "　" + "星期天";
-          break;
-        case  1:
-          data = data + "　" + "星期一";
-          break;
-        case  2:
-          data = data + "　" + "星期二";
-          break;
-        case  3:
-          data = data + "　" + "星期三";
-          break;
-        case  4:
-          data = data + "　" + "星期四";
-          break;
-        case  5:
-          data = data + "　" + "星期五";
-          break;
-        case  6:
-          data = data + "　" + "星期六";
-          break;
-      }
-      return data;
-    }
-  }
-});
-
-/**
- * Created by wolf on 2016/6/12.
- * @author:wen.dai@hand-china.com
- */
-
-'use strict';
-
-/**
- * 打印--console--level
- */
-var log = console.log.bind(console);
-var warn = console.warn.bind(console);
-var error = console.error.bind(console);
-
-//格式化json
-function jsonFormat(newParam) {
-  var Json = angular.toJson(newParam, true);
-  return Json;
-};
-
-//获取当前的年月日 日期
-function getCurrentDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth() + 1;     //月
-  var day = now.getDate();            //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myCurrentDate = (year.toString() + month.toString() + day.toString());
-  return myCurrentDate;
-};
-
-//获取上个月的月末
-function getLastMonthDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth();     //月
-  var newDate = new Date(year, month, 1);
-  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
-  return myLastMonthDate;
-};
-
-//获取当前月的月末
-function getCurrentMonthLastDate(now) {
-  //eg:获取当前日期 xxxxxxxx(format)
-  var year = now.getFullYear();       //年
-  var month = now.getMonth() + 1;     //月
-  var newDate = new Date(year, month, 1);
-  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
-  month = (month < 10 ? "0" + month : month);
-  day = (day < 10 ? "0" + day : day);
-  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
-  return myCurrentMonthLastDate;
-};
-
-//获取月和日
-function getMonthDay(newDate) {
-  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
-  return newMonthDay;
-};
-
-/**
- ​ *  下面是去重的3个写法
- ​ *  @1：最常规
- ​ *  @2：思路好，但是性能差点
- ​ *  @3：更好的  --推荐
-  *  @4：更复杂，适应性更广的
- ​ */
-
-//@1:
-function unique_normal(arr) {
-  var ret = [];
-  for (var i = 0; i < arr.length; i++) {
-    var item = arr[i];
-    if (ret.indexOf(item) === -1) {
-      ret.push(item);
-    }
-  }
-  return ret;
-};
-
-//@2:
-var indexOf = [].indexOf ?
-  function (arr, item) {
-    return arr.indexOf(item);
-  } :
-  function indexOf(arr, item) {
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i] === item) {
-        return i;
-      }
-    }
-    return -1;
-  };
-
-function unique(arr) {
-  var ret = [];
-  for (var i = 0; i < arr.length; i++) {
-    var item = arr[i];
-    if (indexOf(ret, item) === -1) {
-      ret.push(item);
-    }
-  }
-  return ret;
-};
-
-//@3: 支持数组子条目为对象的去重
-function unique_better(arr, newitem) {
-  var ret = [];
-  var hash = {};
-  for (var i = 0; i < arr.length; i++) {
-    if (typeof(arr[i]) == 'object') {
-      var item = arr[i][newitem];
-    } else {
-      var item = arr[i];
-    }
-    var item1 = arr[i]
-    var key = typeof(item) + item;
-    if (hash[key] !== 1) {
-      ret.push(item1);
-      hash[key] = 1;
-    }
-  }
-  return ret;
-};
-
-//@4: 更高级和复杂的去重法
-Array.prototype.arrUniq = function () {
-  var temp, arrVal,
-    array = this,
-    arrClone = array.concat(),//克隆数组
-    typeArr = {//数组原型
-      'obj': '[object Object]',
-      'fun': '[object Function]',
-      'arr': '[object Array]',
-      'num': '[object Number]'
-    },
-    ent = /(\u3000|\s|\t)*(\n)+(\u3000|\s|\t)*/gi;//空白字符正则
-
-  //把数组中的object和function转换为字符串形式
-  for (var i = arrClone.length; i--;) {
-    arrVal = arrClone[i];
-    temp = Object.prototype.toString.call(arrVal);
-
-    if (temp == typeArr['num'] && arrVal.toString() == 'NaN') {
-      arrClone[i] = arrVal.toString();
-    }
-
-    if (temp == typeArr['obj']) {
-      arrClone[i] = JSON.stringify(arrVal);
-    }
-
-    if (temp == typeArr['fun']) {
-      arrClone[i] = arrVal.toString().replace(ent, '');
-    }
-  }
-
-  //去重关键步骤
-  for (var i = arrClone.length; i--;) {
-    arrVal = arrClone[i];
-    temp = Object.prototype.toString.call(arrVal);
-
-    if (temp == typeArr['arr']) arrVal.arrUniq();//如果数组中有数组，则递归
-    if (arrClone.indexOf(arrVal) != arrClone.lastIndexOf(arrVal)) {//如果有重复的，则去重
-      array.splice(i, 1);
-      arrClone.splice(i, 1);
-    }
-    else {
-      if (Object.prototype.toString.call(array[i]) != temp) {
-        //检查现在数组和原始数组的值类型是否相同，如果不同则用原数组中的替换，原因是原数组经过了字符串变换
-        arrClone[i] = array[i];
-      }
-    }
-  }
-  return arrClone;
-};
-
-
-
-/**
  * @ngdoc directive
  * @name hideTabs
  * @module utilModule
@@ -893,6 +636,275 @@ angular.module('HmsModule')
   })*/
 
 /**
+ * @ngdoc interceptor
+ * @name httpRequestHeader
+ * @module utilModule
+ * @description
+ * This is the http interceptor
+ * @author
+ * gusenlin
+ */
+angular.module('utilModule').factory('httpRequestHeader', function () {
+  var interceptor = {
+    'request': function (config) {
+      if (window.localStorage.token && window.localStorage.empno) {
+        var timestamp = new Date().getTime();
+        var token = CryptoJS.MD5(window.localStorage.token + timestamp);
+        config.headers.timestamp = timestamp;
+        config.headers.token     = token;
+        config.headers.loginName = window.localStorage.empno;
+      }
+      return config;
+    }
+  };
+
+  return interceptor;
+});
+
+/**
+ * Created by wolf on 2016/6/13. (_wen.dai_)
+ */
+"use strict";
+//根据日期获取星期
+HmsModule.filter('weekDay', function () {
+  return function (data) {
+    if (data == "") {
+      return data;
+    } else {
+      var d = new Date(data);
+      var day = d.getDay();
+      switch (day) {
+        case  0:
+          data = data + "　" + "星期天";
+          break;
+        case  1:
+          data = data + "　" + "星期一";
+          break;
+        case  2:
+          data = data + "　" + "星期二";
+          break;
+        case  3:
+          data = data + "　" + "星期三";
+          break;
+        case  4:
+          data = data + "　" + "星期四";
+          break;
+        case  5:
+          data = data + "　" + "星期五";
+          break;
+        case  6:
+          data = data + "　" + "星期六";
+          break;
+      }
+      return data;
+    }
+  }
+});
+
+HmsModule.filter('filterImg', function () {
+  return function (data) {
+    if (data) {
+      return data;
+    } else {
+      data = 'build/img/application/profile@3x.png';
+      return data;
+    }
+  }
+});
+
+
+/**
+ * Created by wolf on 2016/7/1.
+ * @description: add common alert for every module--
+ * @attention:  nomenclature and block
+ */
+'use strict';
+HmsModule.constant('hmsConstant', [function () {
+}]);
+
+/**
+ * Created by wolf on 2016/6/12.
+ * @author:wen.dai@hand-china.com
+ */
+
+'use strict';
+
+/**
+ * 打印--console--level
+ */
+var log = console.log.bind(console);
+var warn = console.warn.bind(console);
+var error = console.error.bind(console);
+
+//格式化json
+function jsonFormat(newParam) {
+  var Json = angular.toJson(newParam, true);
+  return Json;
+};
+
+//获取当前的年月日 日期
+function getCurrentDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth() + 1;     //月
+  var day = now.getDate();            //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myCurrentDate = (year.toString() + month.toString() + day.toString());
+  return myCurrentDate;
+};
+
+//获取上个月的月末
+function getLastMonthDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth();     //月
+  var newDate = new Date(year, month, 1);
+  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myLastMonthDate = (year.toString() + month.toString() + day.toString());
+  return myLastMonthDate;
+};
+
+//获取当前月的月末
+function getCurrentMonthLastDate(now) {
+  //eg:获取当前日期 xxxxxxxx(format)
+  var year = now.getFullYear();       //年
+  var month = now.getMonth() + 1;     //月
+  var newDate = new Date(year, month, 1);
+  var day = new Date(newDate.getTime() - 1000 * 60 * 60 * 24).getDate(); //日
+  month = (month < 10 ? "0" + month : month);
+  day = (day < 10 ? "0" + day : day);
+  var myCurrentMonthLastDate = (year.toString() + month.toString() + day.toString());
+  return myCurrentMonthLastDate;
+};
+
+//获取月和日
+function getMonthDay(newDate) {
+  var newMonthDay = newDate.substring(4,6) + "月" + newDate.substring(6,8) + "日";
+  return newMonthDay;
+};
+
+/**
+ ​ *  下面是去重的3个写法
+ ​ *  @1：最常规
+ ​ *  @2：思路好，但是性能差点
+ ​ *  @3：更好的  --推荐
+  *  @4：更复杂，适应性更广的
+ ​ */
+
+//@1:
+function unique_normal(arr) {
+  var ret = [];
+  for (var i = 0; i < arr.length; i++) {
+    var item = arr[i];
+    if (ret.indexOf(item) === -1) {
+      ret.push(item);
+    }
+  }
+  return ret;
+};
+
+//@2:
+var indexOf = [].indexOf ?
+  function (arr, item) {
+    return arr.indexOf(item);
+  } :
+  function indexOf(arr, item) {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] === item) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+function unique(arr) {
+  var ret = [];
+  for (var i = 0; i < arr.length; i++) {
+    var item = arr[i];
+    if (indexOf(ret, item) === -1) {
+      ret.push(item);
+    }
+  }
+  return ret;
+};
+
+//@3: 支持数组子条目为对象的去重
+function unique_better(arr, newitem) {
+  var ret = [];
+  var hash = {};
+  for (var i = 0; i < arr.length; i++) {
+    if (typeof(arr[i]) == 'object') {
+      var item = arr[i][newitem];
+    } else {
+      var item = arr[i];
+    }
+    var item1 = arr[i]
+    var key = typeof(item) + item;
+    if (hash[key] !== 1) {
+      ret.push(item1);
+      hash[key] = 1;
+    }
+  }
+  return ret;
+};
+
+//@4: 更高级和复杂的去重法
+Array.prototype.arrUniq = function () {
+  var temp, arrVal,
+    array = this,
+    arrClone = array.concat(),//克隆数组
+    typeArr = {//数组原型
+      'obj': '[object Object]',
+      'fun': '[object Function]',
+      'arr': '[object Array]',
+      'num': '[object Number]'
+    },
+    ent = /(\u3000|\s|\t)*(\n)+(\u3000|\s|\t)*/gi;//空白字符正则
+
+  //把数组中的object和function转换为字符串形式
+  for (var i = arrClone.length; i--;) {
+    arrVal = arrClone[i];
+    temp = Object.prototype.toString.call(arrVal);
+
+    if (temp == typeArr['num'] && arrVal.toString() == 'NaN') {
+      arrClone[i] = arrVal.toString();
+    }
+
+    if (temp == typeArr['obj']) {
+      arrClone[i] = JSON.stringify(arrVal);
+    }
+
+    if (temp == typeArr['fun']) {
+      arrClone[i] = arrVal.toString().replace(ent, '');
+    }
+  }
+
+  //去重关键步骤
+  for (var i = arrClone.length; i--;) {
+    arrVal = arrClone[i];
+    temp = Object.prototype.toString.call(arrVal);
+
+    if (temp == typeArr['arr']) arrVal.arrUniq();//如果数组中有数组，则递归
+    if (arrClone.indexOf(arrVal) != arrClone.lastIndexOf(arrVal)) {//如果有重复的，则去重
+      array.splice(i, 1);
+      arrClone.splice(i, 1);
+    }
+    else {
+      if (Object.prototype.toString.call(array[i]) != temp) {
+        //检查现在数组和原始数组的值类型是否相同，如果不同则用原数组中的替换，原因是原数组经过了字符串变换
+        arrClone[i] = array[i];
+      }
+    }
+  }
+  return arrClone;
+};
+
+
+
+/**
  * Created by wolf on 2016/6/30. (wen.da)
  */
 angular.module('HmsModule')
@@ -926,7 +938,7 @@ angular.module('HmsModule')
        * -- 分大版本和小版本的update
        */
       return {
-        checkAppVersion: function () {
+        checkAppVersion: function (newName) {
           var promise = hmsHttp.post(url, checkVersionParams).success(function (response) {
             try {
               serveVersionParams.bigVersion = response.returnData.versionNumber;
@@ -937,13 +949,13 @@ angular.module('HmsModule')
             }
             try {
               serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/\\n/g, '\r\n');
-              //serveVersionParams.updateContent = response.returnData.upgradeInfo;
-              //serveVersionParams.updateContent = response.returnData.upgradeInfo.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
             } catch (e) {
               serveVersionParams.updateContent = '';
             }
+            var serveVersion = serveVersionParams.bigVersion.split('.');
+            var localVersion = baseConfig.version.currentVersion.split('.');
 
-            if (serveVersionParams.bigVersion > baseConfig.version.currentVersion) {
+            if (serveVersion[0] > localVersion[0] || serveVersion[1] > localVersion[1] || serveVersion[2] > localVersion[2]) {
               if (ionic.Platform.isWebView()) {
                 function selectAction(buttonIndex) { // update from pgy
                   if (buttonIndex == 1) { //确认按钮
@@ -970,9 +982,11 @@ angular.module('HmsModule')
                 } else {
                   alert(serveVersionParams.updateContent);
                 }
+              } else {
+                if(newName === 'MY_INFO')
+                hmsPopup.showShortCenterToast("当前为最新版本");
               }
             }
-          }).error(function () {
           });
         }
       }
@@ -1020,7 +1034,7 @@ angular.module('HmsModule')
             hmsPopup.showShortCenterToast(error);
           }, imParams);
         }).error(function () {
-          hmsPopup.showShortCenterToast('error 2');
+          //hmsPopup.showShortCenterToast('error 2');
         });
       };
 
@@ -1310,8 +1324,11 @@ angular.module('HmsModule')
               goBackLogin($state);
               hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!');
             }
-            if (status == '404') {
+            else if (status == '404') {
               hmsPopup.showShortCenterToast('后端服务器请求失败,请联系管理员!');
+            }
+            else{
+              hmsPopup.showShortCenterToast('处理请求失败,请确认网络连接是否正常,或者联系管理员!');
             }
           });
           return post;
@@ -1813,6 +1830,17 @@ angular.module('HmsModule')
     }
   ])
 
+  .factory('HmsDateFormat', ['$filter', function ($filter) {
+    return {
+      getDateString: function (date) {
+        return $filter('date')(date, 'yyyy-MM-dd');
+      },
+      getDateTimeString: function (date) {
+        return $filter('date')(date, 'yyyy-MM-dd HH:mm:ss');
+      }
+    }
+  }])
+
   .factory("hmsFastPath", function () {
     var request = {
       configFastPath: function (scope, returnView, ionicHistory) {
@@ -1919,6 +1947,7 @@ angular.module('myApp')
         },40000);*/
 
         hmsJpushService.init($state);
+        sqliteService.buildExpenseSql();
 
         if (window.localStorage.access_token === '' || angular.isUndefined(window.localStorage.access_token)) {
         } else {
@@ -2443,10 +2472,10 @@ angular.module('contactModule')
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           } else {
-            if(response.total < 7) {
+            if (response.total < 7) {
               hmsPopup.showShortCenterToast('加载完毕!');
               $scope.$broadcast('scroll.infiniteScrollComplete');
-              if(moreFlag === 'init' || $scope.page === 1) {
+              if (moreFlag === 'init' || $scope.page === 1) {
                 $scope.resultList = [];
                 angular.forEach(response.rows, function (data, index) {
                   $scope.resultList.push(data);
@@ -2542,10 +2571,11 @@ angular.module('contactModule')
 
       //联系人保存到本地--
       function contactLocal(baseInfo) {
+        warn('baseInfo ' + angular.toJson(baseInfo));
         if (ionic.Platform.isWebView()) {
           var newContact = navigator.contacts.create();
           var phoneNumbers = [];
-          phoneNumbers[0] = new ContactField('mobile', baseInfo.emp_mobil, true);
+          phoneNumbers[0] = new ContactField('mobile', baseInfo.mobil, true);
           var emails = [];
           emails[0] = new ContactField('email', baseInfo.email, true);
           if (ionic.Platform.isAndroid()) {
@@ -2568,17 +2598,17 @@ angular.module('contactModule')
           scanCard.takePicturefun(function (msg) {
             var manInfo = {
               emp_name: '',
-              emp_mobil: '',
+              mobil: '',
               email: ''
             };
             manInfo.emp_name = msg.lastName + msg.firstName;
             try {
               var phones = msg.phones;
               if (phones.length > 0) {
-                manInfo.emp_mobil = phones[0].itemInfo;
+                manInfo.mobil = phones[0].itemInfo;
               }
             } catch (e) {
-              manInfo.emp_mobil = '';
+              manInfo.mobil = '';
             }
             try {
               var emails = msg.emails;
@@ -2609,14 +2639,17 @@ angular.module('contactModule')
               cancelText: 'Cancel',
               buttonClicked: function (index) {
                 if (index == 0) {
-                  //window.location.href = "tel:" + 00000000000; //不明觉厉--
-                  window.location.href = "tel:" + baseInfo.emp_mobil;
+                  window.location.href = "tel:" + 88888888888; //不明觉厉--
+                  window.location.href = "tel:" + baseInfo.mobil;
                   var employeeBaseInfo = {
-                    tel: baseInfo.emp_mobil,
+                    tel: baseInfo.mobil,
                     name: baseInfo.emp_name,
-                    employeeNumber: baseInfo.emp_code
+                    employeeNumber: baseInfo.emp_code,
+                    imgUrl: baseInfo.avatar
                   };
-                  dealCommonLinkMan(employeeBaseInfo);
+                  if (employeeBaseInfo.name) {
+                    dealCommonLinkMan(employeeBaseInfo);
+                  }
                   return true;
                 }
                 if (index == 1) {
@@ -3010,9 +3043,9 @@ angular.module('loginModule')
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
               checkVersionService.checkAppVersion();
-              //if(ionic.Platform.isWebView()) {
+              if(ionic.Platform.isWebView()) {
               imService.initImData();
-              //}
+              }
               $state.go("tab.message");
             } else {
               $scope.bigPortrait = "build/img/login/login-hand.png";
@@ -6462,128 +6495,6 @@ angular.module('applicationModule')
 
 
 
-/**
- * Created by gusenlin on 16/6/21.
- */
-angular.module('applicationModule')
-  .service('TimeSheetService', [
-    'baseConfig',
-    'hmsHttp',
-    'hmsPopup',
-    function (baseConfig,
-              hmsHttp,
-              hmsPopup) {
-      this.fetchCalendar = function (monthParams) {
-
-        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
-        var params = {
-          "params": {
-            "p_employee": window.localStorage.empno,
-            "p_month": monthParams + "",
-            "p_offset": "0"
-          }
-        };
-        hmsHttp.post(url, params).success(function (result) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-        }).error(function (response, status) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(response));
-          }
-        });
-      };
-
-      this.fetchEachDay = function (callback, oneDate) {
-        var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
-        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + ""}};
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          //hmsPopup.showPopup('获取状态错误,请检查网络!');
-        });
-      };
-
-      this.fetchProjectDetailInfo = function (callback, oneDate, projectId) {
-        var url = baseConfig.businessPath + "/timesheet_process/project_change"
-        var params = {
-          'params': {
-            'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + "",
-            'p_project_id': projectId + ""
-          }
-        };
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          //hmsPopup.showPopup('获取项目信息错误,请检查网络!');
-        });
-      };
-
-      this.submitTimesheet = function (callback, params) {
-        var url = baseConfig.businessPath + "/timesheet_process/save_timesheet1";
-        var params = params;
-        hmsHttp.post(url, params).success(function (result) {
-          callback(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          //hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
-        });
-      };
-
-      this.generateAllowance = function (success,error,generateFlag, month) {
-        var url = baseConfig.businessPath + "/timesheet_process/generate_allowance";
-        var params = {
-          "params": {
-            "p_employee": window.localStorage.empno,
-            "p_generate_flag": generateFlag + "",
-            "p_token": "",
-            "p_month": month + ""
-          }
-        };
-        hmsHttp.post(url, params).success(function (result) {
-          success(result);
-        }).error(function (response, status) {
-          error(response);
-        });
-      };
-
-      this.slippingBatch = function (success,error,template,dateArray) {
-        var url = baseConfig.businessPath + "/timesheet_process/slipping_batch1";
-        var params = {
-          "params": {
-            "p_employee": window.localStorage.empno,
-            "p_ref_date": template + "",
-            "p_date_range": dateArray + ""
-          }
-        };
-        hmsHttp.post(url, params).success(function (result) {
-          success(result);
-        }).error(function (response, status) {
-          error(response);
-        });
-      };
-
-      this.unfreezeTimesheet = function (success,error,dateFrom,dateTo) {
-        var url = baseConfig.businessPath + "/api_timesheet_unfreeze/timesheet_unfreeze";
-        var params = {
-          "params": {
-            "p_employee_code": window.localStorage.empno,
-            "p_freeze_date_from": dateFrom + "",
-            "p_freeze_date_to": dateTo + ""
-          }
-        };
-        hmsHttp.post(url, params).success(function (result) {
-          success(result);
-        }).error(function (response, status) {
-          error(response);
-        });
-      };
-    }]);
-
 /** Author      : joshua.shi
  *
  *  History:
@@ -7254,6 +7165,128 @@ angular.module('applicationModule')
     }]);
 
 /**
+ * Created by gusenlin on 16/6/21.
+ */
+angular.module('applicationModule')
+  .service('TimeSheetService', [
+    'baseConfig',
+    'hmsHttp',
+    'hmsPopup',
+    function (baseConfig,
+              hmsHttp,
+              hmsPopup) {
+      this.fetchCalendar = function (monthParams) {
+
+        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_month": monthParams + "",
+            "p_offset": "0"
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+        }).error(function (response, status) {
+          //hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(response));
+          }
+        });
+      };
+
+      this.fetchEachDay = function (callback, oneDate) {
+        var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
+        var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + ""}};
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          //hmsPopup.showPopup('获取状态错误,请检查网络!');
+        });
+      };
+
+      this.fetchProjectDetailInfo = function (callback, oneDate, projectId) {
+        var url = baseConfig.businessPath + "/timesheet_process/project_change"
+        var params = {
+          'params': {
+            'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + "",
+            'p_project_id': projectId + ""
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          //hmsPopup.showPopup('获取项目信息错误,请检查网络!');
+        });
+      };
+
+      this.submitTimesheet = function (callback, params) {
+        var url = baseConfig.businessPath + "/timesheet_process/save_timesheet1";
+        var params = params;
+        hmsHttp.post(url, params).success(function (result) {
+          callback(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          //hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
+        });
+      };
+
+      this.generateAllowance = function (success,error,generateFlag, month) {
+        var url = baseConfig.businessPath + "/timesheet_process/generate_allowance";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_generate_flag": generateFlag + "",
+            "p_token": "",
+            "p_month": month + ""
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          error(response);
+        });
+      };
+
+      this.slippingBatch = function (success,error,template,dateArray) {
+        var url = baseConfig.businessPath + "/timesheet_process/slipping_batch1";
+        var params = {
+          "params": {
+            "p_employee": window.localStorage.empno,
+            "p_ref_date": template + "",
+            "p_date_range": dateArray + ""
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          error(response);
+        });
+      };
+
+      this.unfreezeTimesheet = function (success,error,dateFrom,dateTo) {
+        var url = baseConfig.businessPath + "/api_timesheet_unfreeze/timesheet_unfreeze";
+        var params = {
+          "params": {
+            "p_employee_code": window.localStorage.empno,
+            "p_freeze_date_from": dateFrom + "",
+            "p_freeze_date_to": dateTo + ""
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          error(response);
+        });
+      };
+    }]);
+
+/**
  * Created by wolf on 2016/7/5.
  * -wen.dai-
  */
@@ -7323,7 +7356,6 @@ angular.module('contactModule')
           $scope.contactLoading = false;
         }).error(function (error) {
           $scope.contactLoading = false;
-          //hmsPopup.showShortCenterToast('请检查网络连接,稍后重试!');
           $scope.employeeInfo = {};
         });
       };
@@ -7343,9 +7375,12 @@ angular.module('contactModule')
         employeeBaseInfo = {
           tel: $scope.employeeInfo.mobil,
           name: $scope.employeeInfo.emp_name,
-          employeeNumber: $scope.employeeInfo.emp_code
+          employeeNumber: $scope.employeeInfo.emp_code,
+          imgUrl: $scope.employeeInfo.avatar
         };
-        storeCommonLinkman(employeeBaseInfo);
+        if (employeeBaseInfo.name) {
+          storeCommonLinkman(employeeBaseInfo);
+        }
         window.location.href = "tel:" + $scope.employeeInfo.mobil;
       };
 
@@ -7355,8 +7390,9 @@ angular.module('contactModule')
           name: $scope.employeeInfo.emp_name,
           employeeNumber: $scope.employeeInfo.emp_code
         };
-        storeCommonLinkman(employeeBaseInfo);
-
+        if (employeeBaseInfo.name) {
+          storeCommonLinkman(employeeBaseInfo);
+        }
         //go native page --im talk
         if (ionic.Platform.isWebView()) {
           imService.toNativeChatPage({friendId: $scope.employeeInfo.emp_code});
@@ -7463,6 +7499,7 @@ angular.module('applicationModule')
     'workFLowListService',
     'hmsPopup',
     '$ionicHistory',
+    'HmsDateFormat',
     function ($scope,
               $state,
               $stateParams,
@@ -7473,7 +7510,8 @@ angular.module('applicationModule')
               TimeSheetService,
               workFLowListService,
               hmsPopup,
-              $ionicHistory) {
+              $ionicHistory,
+              HmsDateFormat) {
 
       $scope.currentDetail = $stateParams.detail; //传过来的数据块
       var detail = $stateParams.detail;//传过来的数据块
@@ -7601,12 +7639,18 @@ angular.module('applicationModule')
       $scope.positionUtil = {
         positionChoose: function (item) {
           $scope.applicationEmployeeDetail.position = item.name;
+          $scope.applicationEmployeeDetail.position_id = item.value;;
           $scope.positionModal.hide();
         },
 
         clearPositionChoose: function () {
           $scope.applicationEmployeeDetail.position = '';
+          $scope.applicationEmployeeDetail.position_id = '';
           //$scope.config.position.value = '';
+          $scope.positionModal.hide();
+        },
+
+        closePositionModal: function () {
           $scope.positionModal.hide();
         },
 
@@ -7669,6 +7713,25 @@ angular.module('applicationModule')
           $scope.currentApplicationEmployeeAbility = ability;
           $scope.abilityGradeModal.show();
         },
+        showDate: function () {
+          var options = {
+            date: $scope.applicationEmployeeDetail.trialDate,
+            mode: 'date',
+            titleText: '请选择时间',
+            okText: '确定',
+            cancelText: '取消',
+            doneButtonLabel: '确认',
+            cancelButtonLabel: '取消',
+            locale: 'zh_cn',
+            androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+          };
+          $cordovaDatePicker.show(options).then(function (date) {
+            if (date) {
+              $scope.applicationEmployeeDetail.date = date;
+              $scope.applicationEmployeeDetail.dateString = HmsDateFormat.getDateString(date);
+            }
+          });
+        },
         //保存转正信息
         savePositiveBlock1: function (detail) {
           if(baseConfig.debug){
@@ -7676,7 +7739,7 @@ angular.module('applicationModule')
           }
 
           return;
-          
+
           var success = function (result) {
             if (result.status == 'S') {
               hmsPopup.showPopup('保存转正信息成功!');
@@ -7706,6 +7769,17 @@ angular.module('applicationModule')
               if (result.workflow_data) {
                 $scope.applicationEmployeeDetail = result.workflow_data.details.detail;
                 $scope.applicationEmployeeDetail.showFlag = true;
+                try{
+                  if($scope.applicationEmployeeDetail.trial_date == ""){
+                    var dateString = $scope.applicationEmployeeDetail.trial_date.replace(/-/g,"/");
+                    $scope.applicationEmployeeDetail.trialDate = new Date(dateString);
+                  }else{
+                    $scope.applicationEmployeeDetail.trialDate = new Date();
+                    $scope.applicationEmployeeDetail.trial_date =
+                      HmsDateFormat.getDateString($scope.applicationEmployeeDetail.trialDate);
+                  }
+                }catch(e){
+                }
                 $scope.applicationEmployeeInfo = result.workflow_data.testResult.detail;
                 $scope.applicationEmployeeAbility = result.workflow_data.testResult.record;
                 $scope.applicationEmployeeTrial = result.workflow_data.trialSummary.summary;
@@ -7714,6 +7788,9 @@ angular.module('applicationModule')
           };
           workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
         };
+        __self.init = function () {
+
+        }
 
         return __self;
       };
@@ -9803,7 +9880,7 @@ angular.module("applicationModule")
 
 
 angular.module("applicationModule")
-  .factory('keepAccount', function ($http, $q, $window,$ionicHistory, baseConfig) {
+  .factory('keepAccount', function ($http,hmsHttp, $q, $window,$ionicHistory, baseConfig) {
 
 
     // 上传附件
@@ -9812,7 +9889,7 @@ angular.module("applicationModule")
       //http://172.20.0.175:8090/handhr_aurora/hand_app_fileupload.svc
       console.log('上传附件'+baseConfig.expUploadUrl);
       console.log(form);
-      $http.post(baseConfig.expUploadUrl, form,{
+      hmsHttp.post(baseConfig.expUploadUrl, form,{
         transformRequest: angular.identity,
           headers: { 'Content-Type':undefined}}
         )
@@ -9834,7 +9911,7 @@ angular.module("applicationModule")
 
       console.log(PostData);
       showMessage(PostData);
-      $http.post(Url, PostData).success(function (data) {
+      hmsHttp.post(Url, PostData).success(function (data) {
 
         showMessage(angular.toJson(data));
         deferred.resolve(data);
@@ -9861,7 +9938,7 @@ angular.module("applicationModule")
 
       console.log(PostData);
       showMessage(PostData);
-      $http.post(Url, PostData).success(function (data) {
+      hmsHttp.post(Url, PostData).success(function (data) {
 
         showMessage(angular.toJson(data));
         deferred.resolve(data);
@@ -15701,247 +15778,6 @@ angular.module("applicationModule").controller('reportTypeController', function(
 
 angular.module('myApp')
   .config(['$stateProvider',
-    function ($stateProvider) { 
-      $stateProvider
-        .state('tab.flybackApply', {
-          url: '/flyback-apply',
-          params: {},
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/flyback/apply/apply.html',
-              controller: 'FlyBackApplyCtrl'
-            }
-          }
-        });
-    }]);
-
-angular.module("applicationModule")
-  .controller('FlyBackApplyCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    'baseConfig',
-    '$ionicHistory',
-    '$timeout',
-    'hmsHttp',
-    '$ionicModal',
-    'flaybackService',
-    'hmsPopup',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, HttpAppService, $ionicModal, fbService,
-      Prompter){
-      $scope.viewtitle = "机票申请";
-      $scope.pageParam = fbService.getPageStatusCreate();  //JSON.parse($stateParams.param);
-      console.log(" $scope.pageParam =" + $scope.pageParam);
-      $scope.canEdit = $scope.pageParam.canEdit;// 页面是否可编辑
-      var dataSource = $scope.pageParam.dataSource;//页面数据来源
-
-      fbService.setLines($scope.flybacklines);
-      //数据
-      function init() {
-        if (dataSource == "create") {
-          $scope.flybackHeader = {
-            "applyId": "",
-            "projName": "",
-            "projCode": ""
-          };
-          fbService.clearLines();
-          $scope.flybacklines = fbService.getLines();
-        } else if (dataSource == "query") {
-          var applyId = $scope.pageParam.applyId;
-          Prompter.showLoading("Loading...");
-          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_detail";
-          var paramValueList = '{"params":{"p_apply_id":"' + applyId + '"}}';
-          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-            console.log("get_flyback_detail =" + angular.toJson(response));
-            if (response.status == "S") {
-              $scope.flybackHeader = response["flybackHeader"];
-              $scope.flybacklines = response["flybacklines"];
-              fbService.setLines($scope.flybacklines);
-              Prompter.hideLoading("");
-            } else {
-              console.log("获取机票申请信息失败：" + response.returnMsg);
-              Prompter.hideLoading("");
-            }
-          }).error(function (response, status) {
-            console.log("HttpAppService error ");
-            Prompter.hideLoading("");
-          });
-        }
-      }
-
-      init();
-
-      //
-      $scope.$on("$ionicView.enter", function () {
-        console.log("fbService.getLines()");
-        $scope.flybacklines = fbService.getLines();
-        console.log(angular.toJson($scope.flybacklines));
-        $scope.$apply();
-      });
-
-
-      // 获取值列表数据
-      if ($scope.canEdit) {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list";
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          if (response.status == "S") {
-            $scope.projectList = response.projectList;
-            fbService.setTicketTypeList(response.ticketTypeList);// 订票类型
-            fbService.setRouteTypeList(response.routeTypeList);//行程类别
-            fbService.setPassenger(response.passengerList);//乘机人列表
-            fbService.setPassenger(response.passenger);//默认乘机人
-            fbService.setCertification(response.certification);//默认身份证
-            Prompter.hideLoading("");
-          } else {
-            console.log("获取值列表失败：" + response.returnMsg);
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      }
-
-      // 项目值列表
-      $ionicModal.fromTemplateUrl('build/pages/application/flyback/apply/model/project-modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        $scope.modal = modal
-      });
-      $scope.openProjectList = function () {
-        $scope.modal.show();
-      };
-      $scope.closeModal = function (proj) {
-        $scope.modal.hide();
-        //若更换项目则清空订票行
-        if (proj !== undefined) {
-          if ((typeof($scope.flybackHeader.projCode) !== "undefined") && ($scope.flybackHeader.projCode !== null)) {
-            if ($scope.flybackHeader.projCode !== proj.value) {
-              $scope.flybacklines = [];
-              fbService.clearLines();
-            }
-          }
-          $scope.flybackHeader.projName = proj.name;
-          $scope.flybackHeader.projCode = proj.value;
-          fbService.setProjName($scope.flybackHeader.projName);
-          fbService.setProjCode($scope.flybackHeader.projCode);
-        }
-      };
-      $scope.$on('$destroy', function () {
-        $scope.modal.remove();
-      });
-
-
-      $scope.goDetail = function (detail, index) {
-        var param = {
-          "canEdit": $scope.canEdit,
-          "dataSource": dataSource,
-          "status": "update",
-          "detail": detail,
-          "index": index,
-          "applyId": $scope.flybackHeader.applyId
-        };
-        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
-      };
-
-    //添加更多订票信息
-      $scope.addFlightInfo = function () {
-        fbService.setProjName($scope.flybackHeader.projName);
-        fbService.setProjCode($scope.flybackHeader.projCode);
-        var param = {"canEdit": $scope.canEdit, "status": "new"};
-        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
-      };
-    //保存 baseConfig.businessPath   baseConfig.businessPath
-      $scope.save = function () {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/save_flyback";
-        var jsonData = JSON.stringify($scope.flybacklines);
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
-          + '","p_apply_id":"' + $scope.flybackHeader.applyId
-          + '","p_project_code":"' + $scope.flybackHeader.projCode
-          + '","p_fb_lines":' + jsonData + '}}';
-        console.log(paramValueList);
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          console.log("save_flyback = " + angular.toJson(response));
-          if (response.status == "S") {
-            $scope.flybackHeader.applyId = response["applyId"];
-            $scope.flybacklines = response["flybackLines"];
-            fbService.setLines($scope.flybacklines);
-            Prompter.hideLoading("");
-            Prompter.showPopup("保存成功!");
-          } else {
-            console.log("保存失败：" + response["returnMsg"]);
-            Prompter.hideLoading("");
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      };
-    //提交
-      $scope.submit = function () {
-        Prompter.showLoading("Loading...");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/flyback_submit";
-        var jsonData = JSON.stringify($scope.flybacklines);
-        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
-          + '","p_apply_id":"' + $scope.flybackHeader.applyId
-          + '","p_project_code":"' + $scope.flybackHeader.projCode
-          + '","p_fb_lines":' + jsonData + '}}';
-        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-          console.log("flyback_submit = " + angular.toJson(response));
-          if (response.status == "S") {
-            Prompter.hideLoading("");
-            Prompter.showPopup("提交成功!");
-            $scope.canEdit = false;
-          } else {
-            Prompter.hideLoading("");
-            Prompter.showPopup("提交失败：" + response["returnMsg"]);
-          }
-        }).error(function (response, status) {
-          console.log("HttpAppService error ");
-          Prompter.hideLoading("");
-        });
-      };
-
-      // 删除fyback
-      $scope.deleteFB = function () {
-        console.log(angular.toJson($scope.flybackHeader));
-        if ($scope.flybackHeader.applyId == "") {
-          $state.go("tab.flyback");
-        } else {
-          if ($scope.canEdit) {
-            Prompter.showLoading("Loading...");
-            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
-            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + $scope.flybackHeader.applyId + '"}}';
-            console.log(paramValueList);
-            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
-              if (response.status == "S") {
-                Prompter.hideLoading("");
-                Prompter.showPopup("删除成功!");
-                $state.go("tab.flybackQuery");
-                dataSource = "create";
-                init();
-              } else {
-                console.log("删除失败：" + response.returnMsg);
-                Prompter.hideLoading("");
-                Prompter.showPopup("删除失败,请重新查询后再操作!");
-              }
-            }).error(function (response, status) {
-              console.log("HttpAppService error ");
-              Prompter.hideLoading("");
-            });
-          } else {
-            Prompter.showPopup("已提交数据无法删除!");
-          }
-
-        }
-      }
-    }]);
-angular.module('myApp')
-  .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
         .state('tab.flybackDetail', {
@@ -16304,6 +16140,247 @@ angular.module("applicationModule")
           }
 
         };
+    }]);
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) { 
+      $stateProvider
+        .state('tab.flybackApply', {
+          url: '/flyback-apply',
+          params: {},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/flyback/apply/apply.html',
+              controller: 'FlyBackApplyCtrl'
+            }
+          }
+        });
+    }]);
+
+angular.module("applicationModule")
+  .controller('FlyBackApplyCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    'baseConfig',
+    '$ionicHistory',
+    '$timeout',
+    'hmsHttp',
+    '$ionicModal',
+    'flaybackService',
+    'hmsPopup',
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+      $timeout, HttpAppService, $ionicModal, fbService,
+      Prompter){
+      $scope.viewtitle = "机票申请";
+      $scope.pageParam = fbService.getPageStatusCreate();  //JSON.parse($stateParams.param);
+      console.log(" $scope.pageParam =" + $scope.pageParam);
+      $scope.canEdit = $scope.pageParam.canEdit;// 页面是否可编辑
+      var dataSource = $scope.pageParam.dataSource;//页面数据来源
+
+      fbService.setLines($scope.flybacklines);
+      //数据
+      function init() {
+        if (dataSource == "create") {
+          $scope.flybackHeader = {
+            "applyId": "",
+            "projName": "",
+            "projCode": ""
+          };
+          fbService.clearLines();
+          $scope.flybacklines = fbService.getLines();
+        } else if (dataSource == "query") {
+          var applyId = $scope.pageParam.applyId;
+          Prompter.showLoading("Loading...");
+          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_detail";
+          var paramValueList = '{"params":{"p_apply_id":"' + applyId + '"}}';
+          HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+            console.log("get_flyback_detail =" + angular.toJson(response));
+            if (response.status == "S") {
+              $scope.flybackHeader = response["flybackHeader"];
+              $scope.flybacklines = response["flybacklines"];
+              fbService.setLines($scope.flybacklines);
+              Prompter.hideLoading("");
+            } else {
+              console.log("获取机票申请信息失败：" + response.returnMsg);
+              Prompter.hideLoading("");
+            }
+          }).error(function (response, status) {
+            console.log("HttpAppService error ");
+            Prompter.hideLoading("");
+          });
+        }
+      }
+
+      init();
+
+      //
+      $scope.$on("$ionicView.enter", function () {
+        console.log("fbService.getLines()");
+        $scope.flybacklines = fbService.getLines();
+        console.log(angular.toJson($scope.flybacklines));
+        $scope.$apply();
+      });
+
+
+      // 获取值列表数据
+      if ($scope.canEdit) {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list";
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          if (response.status == "S") {
+            $scope.projectList = response.projectList;
+            fbService.setTicketTypeList(response.ticketTypeList);// 订票类型
+            fbService.setRouteTypeList(response.routeTypeList);//行程类别
+            fbService.setPassenger(response.passengerList);//乘机人列表
+            fbService.setPassenger(response.passenger);//默认乘机人
+            fbService.setCertification(response.certification);//默认身份证
+            Prompter.hideLoading("");
+          } else {
+            console.log("获取值列表失败：" + response.returnMsg);
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      }
+
+      // 项目值列表
+      $ionicModal.fromTemplateUrl('build/pages/application/flyback/apply/model/project-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function (modal) {
+        $scope.modal = modal
+      });
+      $scope.openProjectList = function () {
+        $scope.modal.show();
+      };
+      $scope.closeModal = function (proj) {
+        $scope.modal.hide();
+        //若更换项目则清空订票行
+        if (proj !== undefined) {
+          if ((typeof($scope.flybackHeader.projCode) !== "undefined") && ($scope.flybackHeader.projCode !== null)) {
+            if ($scope.flybackHeader.projCode !== proj.value) {
+              $scope.flybacklines = [];
+              fbService.clearLines();
+            }
+          }
+          $scope.flybackHeader.projName = proj.name;
+          $scope.flybackHeader.projCode = proj.value;
+          fbService.setProjName($scope.flybackHeader.projName);
+          fbService.setProjCode($scope.flybackHeader.projCode);
+        }
+      };
+      $scope.$on('$destroy', function () {
+        $scope.modal.remove();
+      });
+
+
+      $scope.goDetail = function (detail, index) {
+        var param = {
+          "canEdit": $scope.canEdit,
+          "dataSource": dataSource,
+          "status": "update",
+          "detail": detail,
+          "index": index,
+          "applyId": $scope.flybackHeader.applyId
+        };
+        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
+      };
+
+    //添加更多订票信息
+      $scope.addFlightInfo = function () {
+        fbService.setProjName($scope.flybackHeader.projName);
+        fbService.setProjCode($scope.flybackHeader.projCode);
+        var param = {"canEdit": $scope.canEdit, "status": "new"};
+        $state.go("tab.flybackDetail", {param: angular.toJson(param)});
+      };
+    //保存 baseConfig.businessPath   baseConfig.businessPath
+      $scope.save = function () {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/save_flyback";
+        var jsonData = JSON.stringify($scope.flybacklines);
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
+          + '","p_apply_id":"' + $scope.flybackHeader.applyId
+          + '","p_project_code":"' + $scope.flybackHeader.projCode
+          + '","p_fb_lines":' + jsonData + '}}';
+        console.log(paramValueList);
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          console.log("save_flyback = " + angular.toJson(response));
+          if (response.status == "S") {
+            $scope.flybackHeader.applyId = response["applyId"];
+            $scope.flybacklines = response["flybackLines"];
+            fbService.setLines($scope.flybacklines);
+            Prompter.hideLoading("");
+            Prompter.showPopup("保存成功!");
+          } else {
+            console.log("保存失败：" + response["returnMsg"]);
+            Prompter.hideLoading("");
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      };
+    //提交
+      $scope.submit = function () {
+        Prompter.showLoading("Loading...");
+        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/flyback_submit";
+        var jsonData = JSON.stringify($scope.flybacklines);
+        var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
+          + '","p_apply_id":"' + $scope.flybackHeader.applyId
+          + '","p_project_code":"' + $scope.flybackHeader.projCode
+          + '","p_fb_lines":' + jsonData + '}}';
+        HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+          console.log("flyback_submit = " + angular.toJson(response));
+          if (response.status == "S") {
+            Prompter.hideLoading("");
+            Prompter.showPopup("提交成功!");
+            $scope.canEdit = false;
+          } else {
+            Prompter.hideLoading("");
+            Prompter.showPopup("提交失败：" + response["returnMsg"]);
+          }
+        }).error(function (response, status) {
+          console.log("HttpAppService error ");
+          Prompter.hideLoading("");
+        });
+      };
+
+      // 删除fyback
+      $scope.deleteFB = function () {
+        console.log(angular.toJson($scope.flybackHeader));
+        if ($scope.flybackHeader.applyId == "") {
+          $state.go("tab.flyback");
+        } else {
+          if ($scope.canEdit) {
+            Prompter.showLoading("Loading...");
+            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
+            var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + $scope.flybackHeader.applyId + '"}}';
+            console.log(paramValueList);
+            HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
+              if (response.status == "S") {
+                Prompter.hideLoading("");
+                Prompter.showPopup("删除成功!");
+                $state.go("tab.flybackQuery");
+                dataSource = "create";
+                init();
+              } else {
+                console.log("删除失败：" + response.returnMsg);
+                Prompter.hideLoading("");
+                Prompter.showPopup("删除失败,请重新查询后再操作!");
+              }
+            }).error(function (response, status) {
+              console.log("HttpAppService error ");
+              Prompter.hideLoading("");
+            });
+          } else {
+            Prompter.showPopup("已提交数据无法删除!");
+          }
+
+        }
+      }
     }]);
 angular.module('myApp')
   .config(['$stateProvider',
@@ -17907,12 +17984,9 @@ angular.module('tsApproveModule')
           "approve_list": []
         };
         var currentDay = new Date().getDate();
-        warn(currentDay);
         if (currentDay <= 10) {
           tsListParams.params.p_end_date = getLastMonthDate(new Date());
-          warn(tsListParams.params.p_end_date);
           $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/, '');
-          warn($scope.endApproveDate);
           $scope.selectEndItem = [true, false, false]; //控制点击选择截止日期条目的样式(modal-date)
         } else if (currentDay > 10 && currentDay <= 20) {
           tsListParams.params.p_end_date = getCurrentDate(new Date());
@@ -17941,7 +18015,7 @@ angular.module('tsApproveModule')
       };
       initData();
 
-      $scope.$on('$ionicView.enter', function (e) {
+      $scope.$on('$ionicView.beforeEnter', function (e) {
         if (ApproveDetailService.getRefreshFlag() === 'refresh-approve-list') {
           $scope.tsListRefresh();
         }
@@ -18006,7 +18080,7 @@ angular.module('tsApproveModule')
             $scope.showLsLoading = true;
             $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
           } catch(e) {
-            hmsPopup.showShortCenterToast('取值失败'+ response);
+            alert('取值失败'+ response);
           }
         };
         var error = function (response) {
@@ -18219,7 +18293,6 @@ angular.module('tsApproveModule')
           }, 1000);
         }).error(function (e) {
           hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
@@ -18249,7 +18322,6 @@ angular.module('tsApproveModule')
           }, 1000);
         }).error(function (e) {
           hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
           $scope.doSelectAction();
           $timeout(function () {
             $scope.tsListRefresh();
@@ -18374,11 +18446,6 @@ angular.module('tsApproveModule')
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             } else {
               _self.busy = false;
-              if (response.status === 'E' || response.status == 'e') {
-                //hmsPopup.showShortCenterToast("没有相关数据!");
-              } else {
-                hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-              }
               _self.scope.$broadcast('scroll.refreshComplete');
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             }
@@ -18416,8 +18483,6 @@ angular.module('tsApproveModule')
             if (hmsHttp.isSuccessfull(response.status)) {
               if (angular.isUndefined(response.timesheet_approve_response.result_list)) {
                 _self.busy = false;
-                //hmsPopup.showShortCenterToast("数据已经加载完毕!");
-                //$ionicScrollDelegate.scrollBy(300);
                 $ionicScrollDelegate.$getByHandle('approveListHandle').scrollBy(300);
               } else {
                 var tsResult = response.timesheet_approve_response;
@@ -18427,7 +18492,6 @@ angular.module('tsApproveModule')
             } else {
               if (response.status === 'E') {
                 _self.params.params.p_page--;
-                hmsPopup.showShortCenterToast("数据请求错误,请检查传入参数重新操作!");
               }
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             }
@@ -18438,7 +18502,6 @@ angular.module('tsApproveModule')
         }.bind(_self)).error(function (error) {
           _self.params.params.p_page--;
           _self.scope.$broadcast('scroll.infiniteScrollComplete');
-          hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
         }.bind(_self));
       };
       return TsApproveListService;
@@ -18547,12 +18610,11 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
           if (response.status === 'E' || response.status == 'e') {
             hmsPopup.showShortCenterToast("没有相关数据!");
           } else {
-            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+            //hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
           }
         }
       }).error(function (response, status) {
         hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
       });
     };
     getData();
@@ -18672,7 +18734,6 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         }, 1000);
       }).error(function (e) {
         hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
         $scope.dealDetailInfo();
         $timeout(function () {
           hmsPopup.showLoading('加载中...');
@@ -18704,7 +18765,6 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
         }, 1000);
       }).error(function (e) {
         hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
         $scope.dealDetailInfo();
         $timeout(function () {
           hmsPopup.showLoading('加载中...');

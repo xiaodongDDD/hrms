@@ -4,7 +4,7 @@
 
 
 angular.module("applicationModule")
-  .factory('keepAccount', function ($http, $q, $window,$ionicHistory, baseConfig) {
+  .factory('keepAccount', function ($http,hmsHttp, $q, $window,$ionicHistory, baseConfig) {
 
 
     // 上传附件
@@ -13,7 +13,7 @@ angular.module("applicationModule")
       //http://172.20.0.175:8090/handhr_aurora/hand_app_fileupload.svc
       console.log('上传附件'+baseConfig.expUploadUrl);
       console.log(form);
-      $http.post(baseConfig.expUploadUrl, form,{
+      hmsHttp.post(baseConfig.expUploadUrl, form,{
         transformRequest: angular.identity,
           headers: { 'Content-Type':undefined}}
         )
@@ -35,7 +35,7 @@ angular.module("applicationModule")
 
       console.log(PostData);
       showMessage(PostData);
-      $http.post(Url, PostData).success(function (data) {
+      hmsHttp.post(Url, PostData).success(function (data) {
 
         showMessage(angular.toJson(data));
         deferred.resolve(data);
@@ -62,7 +62,7 @@ angular.module("applicationModule")
 
       console.log(PostData);
       showMessage(PostData);
-      $http.post(Url, PostData).success(function (data) {
+      hmsHttp.post(Url, PostData).success(function (data) {
 
         showMessage(angular.toJson(data));
         deferred.resolve(data);
