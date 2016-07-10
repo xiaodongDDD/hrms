@@ -37,3 +37,15 @@ HmsModule.filter('weekDay', function () {
     }
   }
 });
+
+HmsModule.filter('filterImg', function () {
+  return function (data) {
+    if (data) {
+      return data;
+    } else {
+      data = 'build/img/application/profile@3x.png';
+      return data;
+    }
+  }
+});
+

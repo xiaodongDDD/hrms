@@ -68,7 +68,6 @@ angular.module('contactModule')
           $scope.contactLoading = false;
         }).error(function (error) {
           $scope.contactLoading = false;
-          //hmsPopup.showShortCenterToast('请检查网络连接,稍后重试!');
           $scope.employeeInfo = {};
         });
       };
@@ -88,9 +87,12 @@ angular.module('contactModule')
         employeeBaseInfo = {
           tel: $scope.employeeInfo.mobil,
           name: $scope.employeeInfo.emp_name,
-          employeeNumber: $scope.employeeInfo.emp_code
+          employeeNumber: $scope.employeeInfo.emp_code,
+          imgUrl: $scope.employeeInfo.avatar
         };
-        storeCommonLinkman(employeeBaseInfo);
+        if (employeeBaseInfo.name) {
+          storeCommonLinkman(employeeBaseInfo);
+        }
         window.location.href = "tel:" + $scope.employeeInfo.mobil;
       };
 
@@ -100,8 +102,9 @@ angular.module('contactModule')
           name: $scope.employeeInfo.emp_name,
           employeeNumber: $scope.employeeInfo.emp_code
         };
-        storeCommonLinkman(employeeBaseInfo);
-
+        if (employeeBaseInfo.name) {
+          storeCommonLinkman(employeeBaseInfo);
+        }
         //go native page --im talk
         if (ionic.Platform.isWebView()) {
           imService.toNativeChatPage({friendId: $scope.employeeInfo.emp_code});

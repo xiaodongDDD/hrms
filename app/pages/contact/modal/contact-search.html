@@ -21,7 +21,7 @@
     <div ng-if="showHistory">
       <div class="row history">
         <img ng-src="build/img/contact/history@3x.png"/>
-        <span class="col-20 history-logo">历史纪录</span>
+        <span class="col-25 history-logo">历史纪录</span>
         <label class="col-80 history-line"></label>
       </div>
       <ion-list>
@@ -41,8 +41,7 @@
          ng-class="{'first-item':$index === 0}"
          ng-repeat="i in resultList"
          ng-click="selectEmployeeItem(i.emp_name,i.emp_code)">
-      <img class="human-img" ng-src="build/img/application/profile@3x.png"/>
-
+      <img class="human-img" ng-src="{{i.avatar | filterImg}}"/>
       <div class="col col-80 col-padding">
         <div class="row name" ng-cloak>
           {{i.emp_name}}({{i.emp_code}})
