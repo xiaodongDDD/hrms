@@ -68,11 +68,11 @@ angular.module('applicationModule')
         },
         {
           list: [
-            {
+            /*{
               appName: "机票预定",
               imageUrl: "build/img/application/application/flightBooking@3x.png",
               destUrl: "tab.flyback",
-            },
+            },*/
             {
               appName: "工作流",
               imageUrl: "build/img/application/application/schedule@3x.png",
@@ -87,7 +87,12 @@ angular.module('applicationModule')
               appName: "",
               imageUrl: "",
               destUrl: "",
-            },]
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            }]
         }];
 
       //项目门户
