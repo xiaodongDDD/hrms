@@ -16,6 +16,7 @@
     "appRootPath": "",
     "serverPath": "http://10.211.96.173:8080/bts",
     "appRootFile": "helloCordova",
+    "appUpId":"com.hand-china.hrms",
     "version": {
       "currentVersion": "1.9.12",
       "currentversionName": "此版本为测试版本1.9.12",

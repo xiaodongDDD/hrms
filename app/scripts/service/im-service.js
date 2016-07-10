@@ -35,9 +35,9 @@ angular.module('HmsModule')
             imParams = {token: '', userId: ''};
           }
           HandIMPlugin.getChatList(function success(msg) {
-            hmsPopup.showShortCenterToast(msg);
+            //hmsPopup.showShortCenterToast(msg);
           }, function error(error) {
-            hmsPopup.showShortCenterToast(error);
+            //hmsPopup.showShortCenterToast(error);
           }, imParams);
         }).error(function () {
           //hmsPopup.showShortCenterToast('error 2');
@@ -55,10 +55,10 @@ angular.module('HmsModule')
             "token": window.localStorage.access_token
           };
           HandIMPlugin.getChatList(function success(msg) {
-            hmsPopup.showShortCenterToast(msg);
+            //hmsPopup.showShortCenterToast(msg);
             return msg;
           }, function error(error) {
-            hmsPopup.showShortCenterToast(error);
+            //hmsPopup.showShortCenterToast(error);
           }, newImParams);
         },
         toNativeChatPage: function (newEmpNum) { //传入工号

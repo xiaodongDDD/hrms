@@ -50,7 +50,7 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
-import com.hand.china.hrms2.research.R;
+import com.hand.china_hrms.R;
 
 public class HandChatActivity extends Activity implements View.OnClickListener,AdapterView.OnItemClickListener{
     public static final String TAG = "HandChatActivity";
@@ -237,7 +237,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
             view.setAdapter(adapter);
             faceAdapters.add(adapter);
             view.setOnItemClickListener(this);
-            view.setNumColumns(7);
+            view.setNumColumns(6);
             view.setBackgroundColor(Color.TRANSPARENT);
             view.setHorizontalSpacing(1);
             view.setVerticalSpacing(1);

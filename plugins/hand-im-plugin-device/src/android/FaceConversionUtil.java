@@ -14,12 +14,12 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import com.hand.china.hrms2.research.R;
+import com.hand.china_hrms.R;
 
 public class FaceConversionUtil {
 
 	/** 每一页表情的个数 */
-	private int pageSize = 20;
+	private int pageSize = 17;
 
 	private static FaceConversionUtil mFaceConversionUtil;
 
@@ -79,7 +79,9 @@ public class FaceConversionUtil {
 		}
 		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
 				imgId);
-		bitmap = Bitmap.createScaledBitmap(bitmap, 60, 60, true);
+		int x = context.getResources().getDimensionPixelOffset(R.dimen.x60);
+		int y = context.getResources().getDimensionPixelOffset(R.dimen.y54);
+		bitmap = Bitmap.createScaledBitmap(bitmap, x, y, true);
 		ImageSpan imageSpan = new ImageSpan(context, bitmap);
 		SpannableString spannable = new SpannableString(spannableString);
 		spannable.setSpan(imageSpan, 0, spannableString.length(),
@@ -100,6 +102,8 @@ public class FaceConversionUtil {
 			SpannableString spannableString, Pattern patten, int start)
 			throws Exception {
 		Matcher matcher = patten.matcher(spannableString);
+		final int x = context.getResources().getDimensionPixelOffset(R.dimen.x130);
+		final int y = context.getResources().getDimensionPixelOffset(R.dimen.y116);
 		while (matcher.find()) {
 			String key = matcher.group();
 			// 返回第一个字符的索引的文本匹配整个正则表达式,ture 则继续递归
@@ -118,7 +122,7 @@ public class FaceConversionUtil {
 			if (resId != 0) {
 				Bitmap bitmap = BitmapFactory.decodeResource(
 						context.getResources(), resId);
-				bitmap = Bitmap.createScaledBitmap(bitmap, 180,180, true);
+				bitmap = Bitmap.createScaledBitmap(bitmap, x,y, true);
 				// 通过图片资源id来得到bitmap，用一个ImageSpan来包装
 				ImageSpan imageSpan = new ImageSpan(bitmap);
 				// 计算该图片名字的长度，也就是要替换的字符串的长度
@@ -146,6 +150,8 @@ public class FaceConversionUtil {
 	 */
 	private void ParseData(List<String> data, Context context) {
 		emojiMap.clear();
+		emojis.clear();
+		emojiLists.clear();
 		if (data == null) {
 			return;
 		}
@@ -167,7 +173,7 @@ public class FaceConversionUtil {
 					emojis.add(emojEentry);
 				}
 			}
-			int pageCount = (int) Math.ceil(emojis.size() / 20 + 0.1);
+			int pageCount = (int) Math.ceil(emojis.size() / pageSize + 0.1);
 
 			for (int i = 0; i < pageCount; i++) {
 				emojiLists.add(getData(i));

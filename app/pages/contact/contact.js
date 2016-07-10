@@ -12,6 +12,7 @@ angular.module('contactModule')
     'hmsPopup',
     '$state',
     '$ionicActionSheet',
+    '$timeout',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -19,7 +20,8 @@ angular.module('contactModule')
               hmsHttp,
               hmsPopup,
               $state,
-              $ionicActionSheet) {
+              $ionicActionSheet,
+              $timeout) {
       /**
        * var section
        */
@@ -39,7 +41,7 @@ angular.module('contactModule')
         var LINK_MAN = 'common_linkman';
         var position = ''; //记录滚动条的位置--
         var getEmployeeUrl = baseConfig.queryPath + '/staff/query';
-        var employeeParams = {key: '', page: 1, pageSize: '7'};
+        var employeeParams = {key: '', page: 1, pageSize: '30'};
 
         $scope.historys = (storedb(DB_NAME).find()).arrUniq();
         if ($scope.historys.length > 10) {
@@ -111,13 +113,15 @@ angular.module('contactModule')
       /**
        * modal input 方法区
        */
-        //fadeInRightBig/
-      $ionicModal.fromTemplateUrl('build/pages/contact/modal/contact-search.html', {
-        scope: $scope,
-        animation: 'fadeInUp'
-      }).then(function (modal) {
-        $scope.contactInputModal = modal;
-      });
+      function inputModal(){
+        $ionicModal.fromTemplateUrl('build/pages/contact/modal/contact-search.html', {
+          scope: $scope,
+          animation: 'fadeInUp'
+        }).then(function (modal) {
+          $scope.contactInputModal = modal;
+        });
+      }
+      inputModal();
       $scope.goInputModal = function () {
         $scope.$broadcast('contact-search');
         $scope.contactInputModal.show();
@@ -133,6 +137,9 @@ angular.module('contactModule')
       };
 
       $scope.getEmployeeData = function (moreFlag) { //获取搜索关键字的数据
+        if (moreFlag === 'init') {
+          employeeParams.page = 1;
+        }
         hmsHttp.post(getEmployeeUrl, employeeParams).success(function (response) {
           $scope.contactLoading = false;
           if (response.total == 0) {
@@ -144,8 +151,8 @@ angular.module('contactModule')
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           } else {
-            if (response.total < 7) {
-              hmsPopup.showShortCenterToast('加载完毕!');
+            if (response.total < 30) {
+              //hmsPopup.showShortCenterToast('加载完毕!');
               $scope.$broadcast('scroll.infiniteScrollComplete');
               if (moreFlag === 'init' || $scope.page === 1) {
                 $scope.resultList = [];
@@ -193,7 +200,9 @@ angular.module('contactModule')
         employeeParams.page = $scope.newPage;
         $scope.contactLoading = true;
         $scope.resultList = [];
-        $scope.getEmployeeData('init');
+        $timeout(function () {
+          $scope.getEmployeeData('init');
+        }, 200);
       };
 
       $scope.getHistoryItem = function (values) {
@@ -290,7 +299,10 @@ angular.module('contactModule')
             } catch (e) {
               manInfo.email = '';
             }
-            contactLocal(manInfo);
+            try{
+              $scope.$apply();
+              contactLocal(manInfo);
+            } catch(e) {}
           }, function (error) {
             hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
           });

@@ -41,6 +41,19 @@
 	<source-file src="src/android/layout/values/rc_strings.xml" target-dir="res/values"/>
     <source-file src="src/android/layout/values-en" target-dir="res/"/>
     <source-file src="src/android/layout/values-sw" target-dir="res/"/>
+	<source-file src="src/android/layout/values-480x320" target-dir="res/"/>
+	<source-file src="src/android/layout/values-800x480" target-dir="res/"/>
+	<source-file src="src/android/layout/values-854x480" target-dir="res/"/>
+	<source-file src="src/android/layout/values-960x540" target-dir="res/"/>
+	<source-file src="src/android/layout/values-1024x600" target-dir="res/"/>
+	<source-file src="src/android/layout/values-1024x768" target-dir="res/"/>
+	<source-file src="src/android/layout/values-1184x720" target-dir="res/"/>
+	<source-file src="src/android/layout/values-1196x720" target-dir="res/"/>
+	<source-file src="src/android/layout/values-1280x720" target-dir="res/"/>
+	<source-file src="src/android/layout/values-1280x800" target-dir="res/"/>
+	<source-file src="src/android/layout/values-1812x1080" target-dir="res/"/>
+	<source-file src="src/android/layout/values-1920x1080" target-dir="res/"/>
+	<source-file src="src/android/layout/values-2560x1440" target-dir="res/"/>
 	
 	<source-file src="src/android/layout/drawable/selector_album.xml" target-dir="res/drawable"/>
 	<source-file src="src/android/layout/drawable/selector_camera.xml" target-dir="res/drawable"/>

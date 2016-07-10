@@ -16,7 +16,7 @@ angular.module('HmsModule')
           'params': {
             'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone',
             'p_user_name': window.localStorage.empno,
-            'p_app_id': 'com.hand.china.hrms2.research'
+            'p_app_id': baseConfig.appUpId
           }
         };
       var serveVersionParams = {
