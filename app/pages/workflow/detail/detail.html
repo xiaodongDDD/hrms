@@ -45,7 +45,7 @@
         <div class="hms-singal-array-name">
           <i class="ion-record"></i>合同续签方式维护通知
         </div>
-        <div class="hms-singal-array-operation-text" ng-click="renewContractUtil.submit()">
+        <div class="hms-singal-array-operation-text" ng-click="renewContractUtil.submit()" ng-if="!processedFlag">
           保存
         </div>
       </div>
@@ -95,14 +95,14 @@
             <div class="hms-singal-array-key">
               转正职位
             </div>
-            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.position">
+            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.positionValue">
             </div>
           </div>
           <div class="hms-singal-array-line">
             <div class="hms-singal-array-key">
               转正日期
             </div>
-            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.position">
+            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.date">
             </div>
           </div>
           <div class="hms-singal-array-line">
@@ -120,7 +120,8 @@
             </div>
           </div>
         </div>
-        <a class="hms-application-member-button">保存</a>
+        <a class="hms-application-member-button" ng-if="!processedFlag"
+           ng-click="applicationFullMemberUtil.savePositiveBlock1(applicationEmployeeDetail)">保存</a>
         <div class="hms-singal-array-sub-header">
           <div class="hms-singal-array-name">
             试用期信息
@@ -148,7 +149,7 @@
             </div>
           </div>
         </div>
-        <a class="hms-application-member-button">保存</a>
+        <a class="hms-application-member-button" ng-if="!processedFlag">保存</a>
         <div class="hms-singal-array-sub-header">
           <div class="hms-singal-array-name">
             试用期总结
@@ -163,7 +164,7 @@
             <textarea ng-model="trial.field_value" ng-if="trial.can_update==1"></textarea>
           </div>
         </div>
-        <a class="hms-application-member-button">保存</a>
+        <a class="hms-application-member-button" ng-if="!processedFlag">保存</a>
       </div>
     </div>
 
@@ -260,8 +261,8 @@
         </div>
       </div>
     </div>
-    <div class="hms-workflow-back" ng-click="workflowDetailUtil.submitAction(actionType.back)">
-      <span ng-if="currentDetail.canGoBack=='Y'">退回</span>
+    <div class="hms-workflow-back" > <!--ng-click="workflowDetailUtil.submitAction(actionType.back)"-->
+      <span ng-if="currentDetail.canGoBack=='Y'"></span>
     </div>
   </div>
 </ion-view>

@@ -54,7 +54,7 @@ angular.module('myApp')
           StatusBar.styleLightContent();
         }
 
-        var analyze = function (currentState) {
+        /*var analyze = function (currentState) {
           if (currentState.views) {
             if (currentState.views['tab-application']) {
               return 'tab.tab-application-';
@@ -83,7 +83,7 @@ angular.module('myApp')
         },30000);
         $timeout(function () {
           goToPushDetail();
-        },40000);
+        },40000);*/
 
         hmsJpushService.init($state);
 

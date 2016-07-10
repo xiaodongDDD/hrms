@@ -24,7 +24,7 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content class="has-daiwen-bar" delegate-handle="workflowListHandle">
+  <ion-content delegate-handle="workflowListHandle">
     <ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </ion-refresher>
     <div class="hms-hide-content" ng-if="fetchDataFlag">
@@ -86,14 +86,11 @@
       </div>
     </a>-->
   </ion-content>
-  <ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="showDetailArrow">
+  <!--<ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="showDetailArrow">
     <div class="buttons">
       <button class="button button-clear filter-icon" ng-click="filterTsInfo()">
       </button>
       <div class="filter-text" ng-click="filterTsInfo()">筛选</div>
-      <!--<button class="button button-clear time-icon">-->
-      <!--</button>-->
-      <!--<div class="time-text">时间</div>-->
     </div>
-  </ion-footer-bar>
+  </ion-footer-bar>-->
 </ion-view>

@@ -99,9 +99,9 @@ angular.module('applicationModule')
 
       /*------------------转正申请数据源------------------*/
       $scope.applicationEmployeeType = {
-        "agree": {"selected": true},
-        "reject": {"selected": false},
-        "notChange": {"selected": false}
+        "agree": {"selected": true, "value":"1"},
+        "reject": {"selected": false, "value":"-1"},
+        "notChange": {"selected": false, "value":"0"}
       };
       $scope.applicationEmployeeDetail = {};
       $scope.applicationEmployeeInfo = [];
@@ -241,6 +241,27 @@ angular.module('applicationModule')
         showEmployeeGrade: function (ability) {
           $scope.currentApplicationEmployeeAbility = ability;
           $scope.abilityGradeModal.show();
+        },
+        //保存转正信息
+        savePositiveBlock1: function (detail) {
+          if(baseConfig.debug){
+            console.log('detail ' + angular.toJson(detail));
+          }
+
+          return;
+          
+          var success = function (result) {
+            if (result.status == 'S') {
+              hmsPopup.showPopup('保存转正信息成功!');
+            }
+            else {
+              hmsPopup.showPopup('保存转正信息失败!');
+            }
+          };
+          var error = function (response) {
+          };
+          hmsPopup.showLoading('保存转正信息中');
+          workFLowListService.savePositiveBlock1(success, error, params);
         }
       };
 
@@ -429,14 +450,12 @@ angular.module('applicationModule')
               hmsPopup.showPopup('处理工作流成功!');
               workFLowListService.setRefreshWorkflowList(true);
               $ionicHistory.goBack();
-
             }
             else {
               hmsPopup.showPopup('处理工作流失败!');
             }
           };
           var error = function (response) {
-            hmsPopup.showPopup('处理工作流出现错误,可能是网络问题!');
           };
           hmsPopup.showLoading('处理工作流中');
           workFLowListService.submitAction(success, error, params);

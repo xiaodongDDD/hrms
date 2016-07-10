@@ -131,5 +131,65 @@ angular.module('applicationModule')
             error(response);
           });
         };
+
+
+        // 保存转正信息（转正审批工作流）
+        this.savePositiveBlock1 = function (suceess, error, instanceId, trialResult, approveDate, positionId) {
+          var url = baseConfig.businessPath + "/wfl_save_action/save_positive_block1_data";
+          var response = {
+            "params": {
+              "p_instance_id": instanceId,
+              "p_trial_result": trialResult,
+              "p_approve_date": approveDate,
+              "p_position_id": positionId
+            }
+          };
+
+          hmsHttp.post(url, params).success(function (result) {
+            hmsPopup.hideLoading();
+            success(result);
+          }).error(function (response) {
+            hmsPopup.hideLoading();
+            error(response);
+          });
+        };
+        // 保存考评结果（转正审批工作流）
+        this.savePositiveBlock2 = function (suceess, error, instanceId, record) {
+
+          var url = baseConfig.businessPath + "/get_workflow_data/save_positive_block2_data";
+          var params = {
+            "params": {
+              "p_instance_id": instanceId,
+              "p_record": {"record": record}
+            }
+          };
+
+          hmsHttp.post(url, params).success(function (result) {
+            hmsPopup.hideLoading();
+            success(result);
+          }).error(function (response) {
+            hmsPopup.hideLoading();
+            error(response);
+          });
+        };
+        // 保存试用期总结（转正审批工作流）
+        this.savePositiveBlock3 = function (suceess, error, instanceId, fieldId, fieldValue) {
+
+          var url = baseConfig.businessPath + "/wfl_save_action/save_positive_block3_data";
+          var params = {
+            "params": {
+              "p_instance_id": instanceId,
+              "p_field_id": fieldId,
+              "p_field_value": fieldValue
+            }
+          };
+          hmsHttp.post(url, params).success(function (result) {
+            hmsPopup.hideLoading();
+            success(result);
+          }).error(function (response) {
+            hmsPopup.hideLoading();
+            error(response);
+          });
+        };
       }])
 ;
