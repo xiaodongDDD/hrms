@@ -79,6 +79,10 @@ angular.module('myInfoModule')
         checkVersionService.checkAppVersion();
       };
 
+      $scope.nextTime=function(){
+        hmsPopup.showPopup("本功能下一版本上线");
+      };
+
       $scope.checkMyInfo=function(){//进入查看我的信息界面
         var info=$scope.personalInfo;
         var param={
