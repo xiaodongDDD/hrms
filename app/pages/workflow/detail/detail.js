@@ -36,6 +36,7 @@ angular.module('applicationModule')
     'workFLowListService',
     'hmsPopup',
     '$ionicHistory',
+    'HmsDateFormat',
     function ($scope,
               $state,
               $stateParams,
@@ -46,7 +47,8 @@ angular.module('applicationModule')
               TimeSheetService,
               workFLowListService,
               hmsPopup,
-              $ionicHistory) {
+              $ionicHistory,
+              HmsDateFormat) {
 
       $scope.currentDetail = $stateParams.detail; //传过来的数据块
       var detail = $stateParams.detail;//传过来的数据块
@@ -174,12 +176,18 @@ angular.module('applicationModule')
       $scope.positionUtil = {
         positionChoose: function (item) {
           $scope.applicationEmployeeDetail.position = item.name;
+          $scope.applicationEmployeeDetail.position_id = item.value;;
           $scope.positionModal.hide();
         },
 
         clearPositionChoose: function () {
           $scope.applicationEmployeeDetail.position = '';
+          $scope.applicationEmployeeDetail.position_id = '';
           //$scope.config.position.value = '';
+          $scope.positionModal.hide();
+        },
+
+        closePositionModal: function () {
           $scope.positionModal.hide();
         },
 
@@ -242,6 +250,25 @@ angular.module('applicationModule')
           $scope.currentApplicationEmployeeAbility = ability;
           $scope.abilityGradeModal.show();
         },
+        showDate: function () {
+          var options = {
+            date: $scope.applicationEmployeeDetail.trialDate,
+            mode: 'date',
+            titleText: '请选择时间',
+            okText: '确定',
+            cancelText: '取消',
+            doneButtonLabel: '确认',
+            cancelButtonLabel: '取消',
+            locale: 'zh_cn',
+            androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+          };
+          $cordovaDatePicker.show(options).then(function (date) {
+            if (date) {
+              $scope.applicationEmployeeDetail.date = date;
+              $scope.applicationEmployeeDetail.dateString = HmsDateFormat.getDateString(date);
+            }
+          });
+        },
         //保存转正信息
         savePositiveBlock1: function (detail) {
           if(baseConfig.debug){
@@ -249,7 +276,7 @@ angular.module('applicationModule')
           }
 
           return;
-          
+
           var success = function (result) {
             if (result.status == 'S') {
               hmsPopup.showPopup('保存转正信息成功!');
@@ -279,6 +306,17 @@ angular.module('applicationModule')
               if (result.workflow_data) {
                 $scope.applicationEmployeeDetail = result.workflow_data.details.detail;
                 $scope.applicationEmployeeDetail.showFlag = true;
+                try{
+                  if($scope.applicationEmployeeDetail.trial_date == ""){
+                    var dateString = $scope.applicationEmployeeDetail.trial_date.replace(/-/g,"/");
+                    $scope.applicationEmployeeDetail.trialDate = new Date(dateString);
+                  }else{
+                    $scope.applicationEmployeeDetail.trialDate = new Date();
+                    $scope.applicationEmployeeDetail.trial_date =
+                      HmsDateFormat.getDateString($scope.applicationEmployeeDetail.trialDate);
+                  }
+                }catch(e){
+                }
                 $scope.applicationEmployeeInfo = result.workflow_data.testResult.detail;
                 $scope.applicationEmployeeAbility = result.workflow_data.testResult.record;
                 $scope.applicationEmployeeTrial = result.workflow_data.trialSummary.summary;
@@ -287,6 +325,9 @@ angular.module('applicationModule')
           };
           workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
         };
+        __self.init = function () {
+
+        }
 
         return __self;
       };
