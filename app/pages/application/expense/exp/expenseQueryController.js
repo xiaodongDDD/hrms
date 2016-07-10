@@ -16,12 +16,12 @@ angular.module('myApp')
 
 angular.module("applicationModule")
   .controller('expenseQueryController', [
-    '$scope', 'expenseApply', 'dialog', 
-    '$http', '$q', '$state', '$ionicLoading', 
+    '$scope', 'expenseApply', 'dialog',
+    '$http', '$q', '$state', '$ionicLoading',
     'hmsHttp', 'hmsPopup', "baseConfig",
-    function ($scope, expenseApply, dialog, 
-      $http, $q, $state, $ionicLoading, 
-      HttpAppService, hmsPopup, baseConfig) {
+    function ($scope, expenseApply, dialog,
+      $http, $q, $state, $ionicLoading,
+              hmsHttp, hmsPopup, baseConfig) {
 
     $scope.newPage = 0;
     $scope.isshow = true;
@@ -83,7 +83,7 @@ angular.module("applicationModule")
                 if ($scope.expList[i].descrpt == 'undefined') {
                   $scope.expList[i].descrpt = "";
                 }
-              } 
+              }
               $ionicLoading.hide();
             } else if (response["status"] == "ETOKEN") {// add by ciwei
               dialog.showAlert("E", response["returnMsg"]);
@@ -114,7 +114,7 @@ angular.module("applicationModule")
 
     $scope.show = function () {
       $ionicLoading.show({
-        template: 'Loading...' 
+        template: 'Loading...'
       });
     };
     $scope.hide = function () {
@@ -133,7 +133,7 @@ angular.module("applicationModule")
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
         + '","p_page_num":"' + "1" + '"}}';
 
-      $http.post(Url, PostData).success(function (response) {
+      hmsHttp.post(Url, PostData).success(function (response) {
         deferred.resolve(response);
 
       }).error(function (response) {
@@ -191,7 +191,7 @@ angular.module("applicationModule")
       var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues + '","p_page_num":"' + $scope.newPage + '"}}';
       $scope.show();
-      $http.post(Url, PostData).success(function (response) {
+      hmsHttp.post(Url, PostData).success(function (response) {
         if (response["status"] == "S") {
           //  $scope.isshow = true;
           console.log(123);
@@ -378,7 +378,7 @@ angular.module("applicationModule")
         console.log(expHeaderId);
         var Url = baseConfig.businessPath + "/expense_account/delete_expense";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
-        $http.post(Url, PostData).success(function (response) {
+        hmsHttp.post(Url, PostData).success(function (response) {
           if (response["status"] == "S") {
             $scope.expList.splice(index, 1);
             $ionicLoading.hide();

@@ -18,9 +18,9 @@ angular.module("applicationModule")
   .controller('expenseDetailController', [
       '$scope', 'expenseApply', 'keepAccount', 'dialog',
       'expenseObject', '$state', '$http', '$ionicLoading',
-      '$q', 'baseConfig',
+      '$q', 'baseConfig','hmsHttp',
     function ($scope, expenseApply, keepAccount, dialog, expenseObject,
-      $state, $http, $ionicLoading, $q, baseConfig) {
+      $state, $http, $ionicLoading, $q, baseConfig,hmsHttp) {
 
     $scope.isshow=true;
     if(window.localStorage.AlertPage=="" || window.localStorage.AlertPage==undefined )
@@ -195,7 +195,7 @@ angular.module("applicationModule")
       var expHeaderId = $scope.detailData.expHeaderId;
       var Url = baseConfig.businessPath + "/expense_account/submit_expense";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
-      $http.post(Url, PostData).success(function (response) {
+      hmsHttp.post(Url, PostData).success(function (response) {
         if (response["status"] == "S") {
           $ionicLoading.hide();
           // showMessage("提交成功");
@@ -269,7 +269,7 @@ angular.module("applicationModule")
         var Url = baseConfig.businessPath + "/expense_account/delete_expense_line";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '","p_ra_line_id":"' + lineId + '"}}';
 
-        $http.post(Url, PostData).success(function (response) {
+        hmsHttp.post(Url, PostData).success(function (response) {
           if (response["status"] == "S") {
             console.log(expenseApply.data.lines.length);
             // dialog.showAlert("I", "删除成功"); // mod by ciwei

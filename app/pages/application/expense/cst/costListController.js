@@ -18,7 +18,7 @@ angular.module('myApp')
   }]);
 
 angular.module("applicationModule")
-  .controller('costListController', function ($scope, $http, $q, dialog, costApply, $state, $ionicLoading, baseConfig) {
+  .controller('costListController', function ($scope, $http, $q, dialog, costApply, $state, $ionicLoading, baseConfig,hmsHttp) {
 
     var statusType = {
       new: "NEW",
@@ -106,7 +106,7 @@ angular.module("applicationModule")
 
       console.log(PostData);
       showMessage(PostData);
-      $http.post(Url, PostData).success(function (data) {
+     hmsHttp.post(Url, PostData).success(function (data) {
 
         //showMessage(angular.toJson(data));
         deferred.resolve(data);

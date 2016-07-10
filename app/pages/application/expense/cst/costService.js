@@ -1,5 +1,5 @@
 /* 借款服务 */
-angular.module("applicationModule").factory('costApply', function ($http, $q, baseConfig) {
+angular.module("applicationModule").factory('costApply', function ($http, $q, baseConfig,hmsHttp) {
     var service= {
         data:{},
         canEdit:'',
@@ -49,7 +49,7 @@ angular.module("applicationModule").factory('costApply', function ($http, $q, ba
             var userId      =baseConfig.user.userId;
             var companyId   =baseConfig.user.companyId;
             var deferred = $q.defer();
-            $http.get(baseConfig.basePath+'/EXP/EXP5020/exp_payment_requisition_list.svc?userId='+userId+'&companyId='+companyId,{cache:false}).
+          hmsHttp.get(baseConfig.basePath+'/EXP/EXP5020/exp_payment_requisition_list.svc?userId='+userId+'&companyId='+companyId,{cache:false}).
                 success(function(response, status, headers, config) {
                     console.log(response);
                     deferred.resolve(response);
@@ -127,7 +127,7 @@ angular.module("applicationModule").factory('costApply', function ($http, $q, ba
             console.log(PostData);
 
             var deferred = $q.defer();
-            $http.post(Url,PostData)
+          hmsHttp.post(Url,PostData)
                 .success(function (data){
 
                     showMessage(angular.toJson(data));
@@ -170,7 +170,7 @@ angular.module("applicationModule").factory('costApply', function ($http, $q, ba
             console.log(PostData);
 
             var deferred = $q.defer();
-            $http.post(Url,PostData)
+          hmsHttp.post(Url,PostData)
                 .success(function (data){
 
                     showMessage(angular.toJson(data));
