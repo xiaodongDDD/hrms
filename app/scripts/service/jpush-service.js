@@ -80,7 +80,7 @@ angular.module('HmsModule')
                 console.log("open Notification event: " + event);
               }
 
-              state.go(analyze(state.current) + 'pushDetail', {"title": alertContent, "content": result});
+              //state.go(analyze(state.current) + 'pushDetail', {"title": alertContent, "content": result});
               //state.go('detail', {content: result});
               //state.go('push.pushDetail',{content:alertContent});
 
