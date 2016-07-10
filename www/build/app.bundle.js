@@ -1,6 +1,3 @@
-angular.module("baseConfig", [])
-.constant("baseConfig", {"debug":false,"isMobilePlatform":true,"clearTable":true,"nativeScreenFlag":true,"loginPath":"http://wechat.hand-china.com/hrmsv2/oauth/token?client_id=client&client_secret=secret&grant_type=password&","businessPath":"http://wechat.hand-china.com/hrmsv2/v2/api/l","queryPath":"http://wechat.hand-china.com/hrmsv2/v2/api","imPath":"http://wechat.hand-china.com/hrmsv2","pkgIdentifier":"","appEnvironment":"UAT","expUploadUrl":"http://172.20.0.71:8099/handhr_aurora/hand_app_fileupload.svc","dbName":"makeNote.db","dbLocation":0,"appRootPath":"","serverPath":"http://10.211.96.173:8080/bts","appRootFile":"helloCordova","version":{"currentVersion":"1.9.10","currentversionName":"此版本为测试版本1.9.10","currentSubVersion":"1","currentSubVersionName":"资源增量包1"}});
-
 /**
  * Created by gusenlin on 16/5/22.
  */
@@ -13,6 +10,15 @@ var applicationModule = angular.module('applicationModule', []);
 var myInfoModule = angular.module('myInfoModule', []);
 var tsApproveModule = angular.module('tsApproveModule', []);
 
+
+/**
+ * Created by wolf on 2016/7/1.
+ * @description: add common alert for every module--
+ * @attention:  nomenclature and block
+ */
+'use strict';
+HmsModule.constant('hmsConstant', [function () {
+}]);
 
 /**
  * @ngdoc directive
@@ -636,16 +642,6 @@ angular.module('HmsModule')
   })*/
 
 /**
- * Created by wolf on 2016/7/1.
- * @description: add common alert for every module--
- * @attention:  nomenclature and block
- */
-'use strict';
-HmsModule.constant('hmsConstant',[function () {
-
-  }]);
-
-/**
  * @ngdoc interceptor
  * @name httpRequestHeader
  * @module utilModule
@@ -1066,14 +1062,14 @@ angular.module('HmsModule')
           var onGetRegistrationID = function (data) {
             try {
               //alert("JPushPlugin:registrationID is " + angular.toJson(data));
-              if(baseConfig.debug) {
+              if (baseConfig.debug) {
                 console.log("JPushPlugin:registrationID is " + angular.toJson(data));
               }
               if (data.length == 0) {
                 var t1 = window.setTimeout(getRegistrationID, 1000);
               }
             } catch (exception) {
-              if(baseConfig.debug) {
+              if (baseConfig.debug) {
                 console.log(exception);
               }
             }
@@ -1090,24 +1086,50 @@ angular.module('HmsModule')
                 window.plugins.jPushPlugin.setStatisticsOpen(true);
               }
             } catch (exception) {
-              if(baseConfig.debug) {
+              if (baseConfig.debug) {
                 console.log(exception);
               }
             }
           };
 
+          var analyze = function (currentState) {
+            if (currentState.views) {
+              if (currentState.views['tab-application']) {
+                return 'tab.tab-application-';
+              } else if (currentState.views['tab-message']) {
+                return 'tab.tab-message-';
+              } else if (currentState.views['tab-contact']) {
+                return 'tab.tab-contact-';
+              } else if (currentState.views['tab-myInfo']) {
+                return 'tab.tab-myInfo-';
+              }
+            }
+            return '';
+          };
+
           var onOpenNotification = function (event) {
             try {
               var alertContent;
+              var result;
               if (device.platform == "Android") {
-                alertContent = window.plugins.jPushPlugin.openNotification;
+                alertContent = window.plugins.jPushPlugin.openNotification.alert;
+                result = {
+                  "type": typeof(window.plugins.jPushPlugin),
+                  "value": window.plugins.jPushPlugin
+                };
               } else {
-                alertContent = event.aps;
+                alertContent = event.aps.alert;
+                result = {
+                  "type": typeof(event),
+                  "value": event
+                };
               }
-              if(baseConfig.debug) {
-                console.log("open Notification:" + alertContent);
+              if (baseConfig.debug) {
+                console.log("open Notification event: " + event);
               }
-              state.go('detail',{content:alertContent});
+
+              state.go(analyze(state.current) + 'pushDetail', {"title": alertContent, "content": result});
+              //state.go('detail', {content: result});
               //state.go('push.pushDetail',{content:alertContent});
 
             } catch (exception) {
@@ -1126,7 +1148,7 @@ angular.module('HmsModule')
           tags.push(userName);
           window.plugins.jPushPlugin.setTagsWithAlias(tags, alias);
         } catch (exception) {
-          if(baseConfig.debug) {
+          if (baseConfig.debug) {
             console.log(exception);
           }
         }
@@ -1862,6 +1884,37 @@ angular.module('myApp')
           StatusBar.styleLightContent();
         }
 
+        var analyze = function (currentState) {
+          if (currentState.views) {
+            if (currentState.views['tab-application']) {
+              return 'tab.tab-application-';
+            } else if (currentState.views['tab-message']) {
+              return 'tab.tab-message-';
+            } else if (currentState.views['tab-contact']) {
+              return 'tab.tab-contact-';
+            } else if (currentState.views['tab-myInfo']) {
+              return 'tab.tab-myInfo-';
+            }
+          }
+          return '';
+        };
+
+        var goToPushDetail = function () {
+          $state.go(analyze($state.current) + 'pushDetail', {content: {"stateName": $state.current}});
+        };
+        $timeout(function () {
+          goToPushDetail();
+        },10000);
+        $timeout(function () {
+          goToPushDetail();
+        },20000);
+        $timeout(function () {
+          goToPushDetail();
+        },30000);
+        $timeout(function () {
+          goToPushDetail();
+        },40000);
+
         hmsJpushService.init($state);
 
         if (window.localStorage.access_token === '' || angular.isUndefined(window.localStorage.access_token)) {
@@ -1984,8 +2037,8 @@ angular.module('myApp')
           controller: 'guideCtrl'
         })
 
-        .state('detail', {
-          url: '/detail',
+        .state('pushDetail', {
+          url: '/pushDetail',
           cache: false,
           params: {"content": {}},
           templateUrl: 'build/pages/push/push-detail.html',
@@ -2016,6 +2069,32 @@ angular.module('applicationModule')
               baseConfig) {
 
       $scope.animationsEnabled = false;
+      $scope.openDoor = 0;
+
+
+
+      var initSetting = function () {
+        if(!window.localStorage.slippingEnableFlag){
+          window.localStorage.slippingEnableFlag = "true";
+          $scope.slippingEnableFlag = true;
+        }else{
+          if(window.localStorage.slippingEnableFlag == "true"){
+            $scope.slippingEnableFlag = true;
+          }else{
+            $scope.slippingEnableFlag = false;
+          }
+        }
+      };
+
+      $scope.changeSlippingSetting = function () {
+        if($scope.slippingEnableFlag==true){
+          $scope.slippingEnableFlag = false;
+          window.localStorage.slippingEnableFlag = "false";
+        }else{
+          $scope.slippingEnableFlag = true;
+          window.localStorage.slippingEnableFlag = "true";
+        }
+      };
 
       //个人办公
       $scope.officeApp = [
@@ -2145,70 +2224,17 @@ angular.module('applicationModule')
         console.log('applicationCtrl.enter');
       }
 
-      $scope.$on('$ionicView.enter', function (e) {
+      $scope.$on('$ionicView.beforeEnter', function (e) {
         if (baseConfig.debug) {
-          console.log('applicationCtrl.$ionicView.enter');
+          console.log('applicationCtrl.$ionicView.beforeEnter');
         }
+        initSetting();
+        $scope.openDoor = 0;
       });
 
       $scope.$on('$destroy', function (e) {
         if (baseConfig.debug) {
           console.log('applicationCtrl.$destroy');
-        }
-      });
-    }]);
-
-/**
- * Created by gusenlin on 16/5/16.
- */
-angular.module('loginModule')
-
-  .controller('guideCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    'checkVersionService',
-    function ($scope,
-              $state,
-              baseConfig,
-              checkVersionService) {
-
-      console.log('loginCtrl.enter');
-
-      $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
-
-      $scope.skipGuide = function () {
-        if (baseConfig.debug) {
-          console.log("跳过导航页到登陆页");
-        }
-        goToMain();
-      };
-
-      $scope.toLogin = function () {
-        if (baseConfig.debug) {
-          console.log("跳过导航页到登陆页");
-        }
-        goToMain();
-      };
-
-      var goToMain = function () {
-        if (window.localStorage.token && window.localStorage.token != "") {
-          checkVersionService.checkAppVersion();
-          $state.go("tab.message");
-        } else {
-          $state.go("login");
-        }
-      };
-
-      $scope.$on('$ionicView.enter', function () {
-        if (baseConfig.debug) {
-          console.log('guideCtrl.$ionicView.enter');
-        }
-      });
-
-      $scope.$on('$destroy', function () {
-        if (baseConfig.debug) {
-          console.log('guideCtrl.$destroy');
         }
       });
     }]);
@@ -2651,6 +2677,60 @@ var storedb = function (collectionName) {
   };
 };
 
+/**
+ * Created by gusenlin on 16/5/16.
+ */
+angular.module('loginModule')
+
+  .controller('guideCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    'checkVersionService',
+    function ($scope,
+              $state,
+              baseConfig,
+              checkVersionService) {
+
+      console.log('loginCtrl.enter');
+
+      $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
+
+      $scope.skipGuide = function () {
+        if (baseConfig.debug) {
+          console.log("跳过导航页到登陆页");
+        }
+        goToMain();
+      };
+
+      $scope.toLogin = function () {
+        if (baseConfig.debug) {
+          console.log("跳过导航页到登陆页");
+        }
+        goToMain();
+      };
+
+      var goToMain = function () {
+        if (window.localStorage.token && window.localStorage.token != "") {
+          checkVersionService.checkAppVersion();
+          $state.go("tab.message");
+        } else {
+          $state.go("login");
+        }
+      };
+
+      $scope.$on('$ionicView.enter', function () {
+        if (baseConfig.debug) {
+          console.log('guideCtrl.$ionicView.enter');
+        }
+      });
+
+      $scope.$on('$destroy', function () {
+        if (baseConfig.debug) {
+          console.log('guideCtrl.$destroy');
+        }
+      });
+    }]);
 
 /**
  * Created by gusenlin on 16/4/24.
@@ -2685,7 +2765,7 @@ angular.module('loginModule')
               hmsPopup,
               imService,
               $rootScope,
-              hmsJpushService){
+              hmsJpushService) {
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
@@ -2878,7 +2958,7 @@ angular.module('loginModule')
       };
 
       $scope.login = function () {//登录功能
-        if(window.localStorage.empno != $scope.loginInfo.username) {
+        if (window.localStorage.empno != $scope.loginInfo.username) {
           localStorage.removeItem('key_history');
           localStorage.removeItem('common_linkman');
         }
@@ -2937,19 +3017,26 @@ angular.module('loginModule')
               hmsPopup.showPopup('登陆失败,请确认密码是否正确!');
             }
           }).error(function (response, status) {
-            $scope.bigPortrait = "build/img/login/login-hand.png";
-            $scope.showLoginButton = false;
-            $scope.showButtonIcon = false;
             hmsPopup.hideLoading();
-            hmsPopup.showPopup('登陆失败,请确认网络连接是否正常,或者联系管理员');
-            if (baseConfig.debug) {
-              console.log("response error " + angular.toJson(response));
+            if (status && status == '401') {
+              $scope.bigPortrait = "build/img/login/login-hand.png";
+              $scope.showLoginButton = false;
+              $scope.showButtonIcon = false;
+              hmsPopup.showPopup('登陆失败,请确认密码是否正确!');
+            } else {
+              $scope.bigPortrait = "build/img/login/login-hand.png";
+              $scope.showLoginButton = false;
+              $scope.showButtonIcon = false;
+              hmsPopup.showPopup('登陆失败,请确认网络连接是否正常,或者联系管理员');
+              if (baseConfig.debug) {
+                console.log("response error " + angular.toJson(response));
+              }
             }
           });
         }, 700);
       };
 
-      $scope.goToWechat=function(){//调用微信登录
+      $scope.goToWechat = function () {//调用微信登录
         weixinLogin();
       };
 
@@ -3818,6 +3905,56 @@ angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$
  * Created by gusenlin on 16/7/9.
  */
 angular.module('loginModule')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.tab-message-pushDetail', {
+          url: 'tab-message-pushDetail',
+          cache: false,
+          params: {"content": {}},
+          views: {
+            'tab-message': {
+              templateUrl: 'build/pages/push/push-detail.html',
+              controller: 'pushDetailCtrl'
+            }
+          }
+        })
+        .state('tab.tab-application-pushDetail', {
+          url: 'tab-application-pushDetail',
+          cache: false,
+          params: {"content": {}},
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/push/push-detail.html',
+              controller: 'pushDetailCtrl'
+            }
+          }
+        })
+        .state('tab.tab-contact-pushDetail', {
+          url: 'tab-contact-pushDetail',
+          cache: false,
+          params: {"content": {}},
+          views: {
+            'tab-contact': {
+              templateUrl: 'build/pages/push/push-detail.html',
+              controller: 'pushDetailCtrl'
+            }
+          }
+        })
+        .state('tab.tab-myInfo-pushDetail', {
+          url: 'tab-myInfo-pushDetail',
+          cache: false,
+          params: {"content": {}},
+          views: {
+            'tab-myInfo': {
+              templateUrl: 'build/pages/push/push-detail.html',
+              controller: 'pushDetailCtrl'
+            }
+          }
+        })
+      ;
+    }]);
+angular.module('loginModule')
 
   .controller('pushDetailCtrl', [
     '$scope',
@@ -3834,7 +3971,7 @@ angular.module('loginModule')
       $scope.content = angular.toJson($stateParams.content);
 
       $scope.goBack = function () {
-        $state.go('tab.message');
+        $ionicHistory.goBack();
       };
 
       $scope.$on('$ionicView.enter', function (e) {
@@ -3879,7 +4016,7 @@ angular.module('applicationModule')
           hmsHttp.post(url, params).success(function (result) {
             success(result)
           }).error(function (response, status) {
-            hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+            //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
             error(response);
           });
         };
@@ -3947,6 +4084,39 @@ angular.module('applicationModule')
             success(result);
           }).error(function (response) {
             hmsPopup.hideLoading();
+            error(response);
+          });
+        };
+
+
+        // 获取部门信息（转正审批工作流）
+        this.getUnitData = function (success, error, unitId) {
+          var url = baseConfig.businessPath + "/get_workflow_data/get_unit_data";
+          var params = '{"params":{"p_unit_id":"' + unitId + '"}}';
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response) {
+            error(response);
+          });
+        };
+        // 获取职位信息（转正审批工作流）
+        this.getPositionData = function (success, error, unitId) {
+          var url = baseConfig.businessPath + "/get_workflow_data/get_position_data";
+          var params = '{"params":{"p_unit_id":"' + unitId + '"}}';
+
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response) {
+            error(response);
+          });
+        };
+        // 获取上层部门信息（转正审批工作流）
+        this.getParentUnitData = function (success, error, unitId) {
+          var url = baseConfig.businessPath + "/get_workflow_data/get_parent_unit_data";
+          var params = '{"params":{"p_unit_id":"' + unitId + '"}}';
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response) {
             error(response);
           });
         };
@@ -6854,7 +7024,7 @@ angular.module('applicationModule')
           callback(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取状态错误,请检查网络!');
+          //hmsPopup.showPopup('获取状态错误,请检查网络!');
         });
       };
 
@@ -6870,7 +7040,7 @@ angular.module('applicationModule')
           callback(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取项目信息错误,请检查网络!');
+          //hmsPopup.showPopup('获取项目信息错误,请检查网络!');
         });
       };
 
@@ -6881,7 +7051,7 @@ angular.module('applicationModule')
           callback(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
+          //hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
         });
       };
 
@@ -7156,9 +7326,16 @@ angular.module('applicationModule')
               workFLowListService,
               hmsPopup,
               $ionicHistory) {
-      var detail = $stateParams.detail;
-      $scope.currentDetail = $stateParams.detail;
+
+      $scope.currentDetail = $stateParams.detail; //传过来的数据块
+      var detail = $stateParams.detail;//传过来的数据块
+      var processedFlag = $stateParams.processedFlag.value; //已经审批和未审批的标记
       var multipleArrayList = [];
+
+      if (baseConfig.debug) {
+        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
+        console.log('WorkFLowDetailCtrl.processedFlag ' + processedFlag);
+      }
 
       //控制需要显示的数据模块
       $scope.showList = {
@@ -7199,20 +7376,42 @@ angular.module('applicationModule')
         "value": ""
       };
 
-      if (baseConfig.debug) {
-        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
-      }
+      /*------------------转正申请数据源------------------*/
+      $scope.applicationEmployeeType = {
+        "agree": {"selected": true},
+        "reject": {"selected": false},
+        "notChange": {"selected": false}
+      };
+      $scope.applicationEmployeeDetail = {};
+      $scope.applicationEmployeeInfo = [];
+      $scope.applicationEmployeeAbility = [];
+      $scope.applicationEmployeeTrial = {};
+      $scope.employeeGrade = [
+        {item: '100000', value: '优秀'},
+        {item: '100001', value: '好'},
+        {item: '100002', value: '达标'},
+        {item: '100003', value: '待提高'},
+        {item: '100004', value: '不满意'}
+      ];
+      $scope.currentApplicationEmployeeAbility = {};
+      /*------------------转正申请数据源------------------*/
 
       var contractRenewal = {
         queryData: function () {
 
         }
-      }
+      };
 
       $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/data-list.html', {
         scope: $scope
       }).then(function (modal) {
         $scope.dataListModal = modal;
+      });//初始化下拉列表的modal
+
+      $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/employee-ability.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.abilityGradeModal = modal;
       });//初始化下拉列表的modal
 
       //加载项目画面
@@ -7221,6 +7420,74 @@ angular.module('applicationModule')
       }).then(function (modal) {
         $scope.transmitPersonModal = modal;
       });
+
+
+      // 职位选择 modal
+      $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/position-modal.html', {
+        scope: $scope,
+      }).then(function (modal) {
+        $scope.positionModal = modal;
+      });
+      $scope.openPositionModal = function () {
+        $scope.positionUtil.getDepartmentData(1000);
+        $scope.getPositionData(1000);
+        $scope.positionModal.show();
+      };
+      $scope.closePositionModal = function () {
+        $scope.positionModal.hide();
+      };
+
+      $scope.getPositionData = function (unitId) {
+        var success = function (response) {
+          $scope.position = response["position"];
+          hmsPopup.hideLoading();
+        };
+        var error = function (response) {
+          hmsPopup.hideLoading();
+        };
+        hmsPopup.showLoading('获取部门信息');
+        workFLowListService.getPositionData(success,error,unitId);
+      },
+
+      //职位选择与清选
+      $scope.positionUtil = {
+        positionChoose: function (item) {
+          $scope.applicationEmployeeDetail.position = item.name;
+          $scope.positionModal.hide();
+        },
+
+        clearPositionChoose: function () {
+          $scope.applicationEmployeeDetail.position = '';
+          //$scope.config.position.value = '';
+          $scope.positionModal.hide();
+        },
+
+        getDepartmentData: function (unitId) {
+          var success = function (response) {
+            $scope.parent = response.parent[0];
+            $scope.child = response.child;
+            hmsPopup.hideLoading();
+          };
+          var error = function (response) {
+            hmsPopup.hideLoading();
+          };
+          hmsPopup.showLoading('获取部门信息');
+          workFLowListService.getUnitData(success, error, unitId);
+        },
+
+        getParentDepartmentData: function (unitId) {
+          var success = function (response) {
+            $scope.parent = response.parent[0];
+            $scope.child = response.child;
+            $scope.getPositionData($scope.parent.value);
+          };
+          var error = function (response) {
+          };
+          hmsPopup.showLoading('获取部门信息');
+          workFLowListService.getParentUnitData(success,error,unitId);
+        }
+      };
+
 
       //选择值列表的数据
       $scope.selectData = function (data) {
@@ -7236,25 +7503,25 @@ angular.module('applicationModule')
 
       //转正申请功能
       $scope.applicationFullMemberUtil = {
-        changeType: function (type) {
+        changeType: function (item, type) {
           var cache = {
-            "selected": type.selected
+            "selected": item.selected
           };
-          type.selected = !cache.selected;
+          $scope.applicationEmployeeType.agree.selected = false;
+          $scope.applicationEmployeeType.reject.selected = false;
+          $scope.applicationEmployeeType.notChange.selected = false;
+          item.selected = !cache.selected;
+        },
+        selectAbilityGrade: function (data) {
+          $scope.currentApplicationEmployeeAbility.element_value = data.item;
+          $scope.currentApplicationEmployeeAbility.element_desc = data.value;
+          $scope.abilityGradeModal.hide();
+        },
+        showEmployeeGrade: function (ability) {
+          $scope.currentApplicationEmployeeAbility = ability;
+          $scope.abilityGradeModal.show();
         }
       };
-
-      $scope.applicationEmployeeType = {
-        "agree": {"selected": true},
-        "reject": {"selected": false},
-        "notChange": {"selected": false}
-      };
-
-      $scope.applicationEmployeeDetail = {};
-      $scope.applicationEmployeeInfo = [];
-      $scope.applicationEmployeeAbility = [];
-      $scope.applicationEmployeeTrial = {};
-
 
       //转正申请功能包
       var applicationFullMember = function () {
@@ -7278,6 +7545,7 @@ angular.module('applicationModule')
           };
           workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
         };
+
         return __self;
       };
 
@@ -7646,7 +7914,7 @@ angular.module('applicationModule')
         }
       };
 
-      var workflowIcon = 'build/img/application/profile@3x.png';
+      var workflowDefaultIcon = 'build/img/application/profile@3x.png';
       var workflowType = '工作流类型';
       var workflowNode = '当前节点';
       var workflowPerson = '提交人';
@@ -7710,9 +7978,13 @@ angular.module('applicationModule')
         var success = function (result) {
           var list = result.待审批列表;
           angular.forEach(list, function (data) {
+            var employeeImg = data.employee_img;
+            if (!employeeImg || employeeImg == "") {
+              employeeImg = workflowDefaultIcon;
+            }
             var item = {
               title1: data.workflow_name,
-              icon: data.employee_img,
+              icon: employeeImg,
               type: workflowType,
               typeValue: data.workflow_name,
               node: workflowNode,
@@ -7723,7 +7995,7 @@ angular.module('applicationModule')
               instanceId: data.instance_id,
               recordId: data.record_id,
               nodeId: data.node_id,
-              canApprove : data.approve,
+              canApprove: data.approve,
               canBackTo: data.backTo,
               canGoBack: data.goBack,
               canRefuse: data.refuse,
@@ -7761,9 +8033,13 @@ angular.module('applicationModule')
         var success = function (result) {
           var list = result.已审批列表;
           angular.forEach(list, function (data) {
+            var employeeImg = data.employee_img;
+            if (!employeeImg || employeeImg == "") {
+              employeeImg = workflowDefaultIcon;
+            }
             var item = {
               title1: data.workflow_desc,
-              icon: data.employee_img,
+              icon: employeeImg,
               type: workflowType,
               typeValue: data.workflow_desc,
               node: workflowNode,
@@ -16143,11 +16419,45 @@ angular.module('applicationModule')
       var startTouchY = 0;
 
 
-      var timesheetTitle = 'Timesheet';
+      var timesheetTitle = 'Timesheet填写';
       var unfreezeTitle = 'Timesheet解冻';
       var batchWriteMode = 'batchWriteMode';
       var unfreezeMode = 'unfreezeMode';
       var slippingMode = 'batchWriteMode';
+
+
+      /*var requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday_apply";
+      var requestParams = {
+        "params": {
+          "p_employeecode": "2203",
+          "p_timeofftypemeaning": "带薪年假",
+          "p_datetimefrom": "2016-07-10 08:30:00",
+          "p_datetimeto": "2016-07-11 18:00:00",
+          "p_timeleave": "",
+          "p_applyreason": ""
+        }
+      };
+
+      hmsHttp.post(requestUrl, requestParams).success(function (result) {
+      }).error(function (response, status) {
+      });
+
+      var requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday";
+      var requestParams = {
+        "params": {
+          "p_employeecode": "2203",
+          "p_timeofftypemeaning": "1",
+          "p_datetimefrom": "2016-07-10 08:30:00",
+          "p_datetimeto": "2016-07-11 18:00:00",
+          "p_timeleave": "",
+          "p_applyreason": ""
+        }
+      };
+
+      hmsHttp.post(requestUrl, requestParams).success(function (result) {
+      }).error(function (response, status) {
+      });*/
+
 
       $scope.timesheetProcessModeList = [
         {
@@ -16487,14 +16797,27 @@ angular.module('applicationModule')
 
       var element = angular.element(document.querySelector('#timesheetCalandar'));
 
+      var openSlippingSetting = function () {
+        if (window.localStorage.slippingEnableFlag == "true") {
+          $scope.slippingEnableFlag = true;
+        } else {
+          $scope.slippingEnableFlag = false;
+        }
+      };
+
+      openSlippingSetting();
+
       var startSlipping = function () {
         $scope.slippingFlag = true;
+        $scope.startSlippingFlag = true;
+        $scope.slippingEnableFlag = true;
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
         scrollPosition = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition().top;
       };
       var stopSlipping = function () {
         $scope.slippingFlag = false;
         $scope.startSlippingFlag = false;
+        openSlippingSetting();
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
       };
 
@@ -16791,8 +17114,13 @@ angular.module('applicationModule')
         generateAllowance(monthParams);
       };
 
-      $scope.startslipping = function () {
-        startSlipping();
+      $scope.changeSlippingMode = function () {
+        if ($scope.slippingFlag && $scope.slippingEnableFlag && $scope.startSlippingFlag) {
+          stopSlipping();
+        } else {
+          startSlipping();
+        }
+
       };
 
       var processAllowance = function (allowance) {
@@ -17300,287 +17628,6 @@ angular.module('applicationModule')
     }
   ])
 ;
-
-/**
- * Created by wolf on 2016/5/21. (_wen.dai_)
- */
-'use strict';
-//应用-timeSheet审批模块-详情
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.tsApproveDetail', {
-          url: 'application/tsApproveDetail',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
-              controller: 'tsApproveDetailCtrl'
-            }
-          },
-          params: {
-            'employeeNumber': "",
-            'projectId': "",
-            'startDate': "",
-            'endDate': ""
-          }
-        })
-    }]);
-tsApproveModule.controller('tsApproveDetailCtrl', [
-  '$scope',
-  '$state',
-  'baseConfig',
-  '$ionicHistory',
-  '$stateParams',
-  'hmsHttp',
-  'hmsPopup',
-  '$timeout',
-  'ApproveDetailService',
-  function ($scope,
-            $state,
-            baseConfig,
-            $ionicHistory,
-            $stateParams,
-            hmsHttp,
-            hmsPopup,
-            $timeout,
-            ApproveDetailService) {
-
-    /**
-     * init var section
-     */
-    {
-      if(ionic.Platform.isIOS()) {
-        angular.element('.ae-detail-head').css('marginTop','64px');
-        angular.element('#approveDetailContent').css('top','64px');
-      }
-      var selectItem = []; //初始化点击全部条目为false
-      var clickSelectAll = false; //默认没有点击全选
-      $scope.detailActionName = "操作";
-      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
-      $scope.detailInfoArray = {}; //用于接收列表对应数据object
-      $scope.selectArray = [];
-      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
-      var tsApproveDetailParams = {
-        "params": {
-          "p_employee_number": $stateParams.employeeNumber,
-          "p_start_date": $stateParams.startDate.toString(),
-          "p_end_date": $stateParams.endDate.toString(),
-          "p_project_id": $stateParams.projectId
-        }
-      };
-      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
-      var tsActionParams = { //审批拒绝/通过的参数
-        "params": {
-          "p_approve_flag": "AGREE",
-          "p_employee_number": window.localStorage.empno,
-          "p_param_json": ''
-        }
-      };
-      var approveList = { //审批拒绝/通过的子对象
-        "approve_list": []
-      };
-    }
-
-    $scope.$on('$ionicView.enter', function (e) {
-      ApproveDetailService.setRefreshFlag('');
-    });
-
-    $scope.$on('$destroy', function (e) {
-      warn('tsApproveListCtrl.$destroy');
-    });
-
-    hmsPopup.showLoading('加载中...');
-    function getData() {
-      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          $scope.detailInfoArray = response.timesheet_approve_detail_response;
-          if ($scope.detailInfoArray.subsidy_list.length === 0) {
-            ApproveDetailService.setRefreshFlag('refresh-approve-list');
-            $ionicHistory.goBack();
-          }
-        } else {
-          if (response.status === 'E' || response.status == 'e') {
-            hmsPopup.showShortCenterToast("没有相关数据!");
-          } else {
-            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-          }
-        }
-      }).error(function (response, status) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
-      });
-    };
-    getData();
-
-    function __initSelectArray(selectParam) { //初始化选择按钮
-      //先初始化数据操作--
-      $scope.selectArray = [];
-      selectItem = [];
-      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
-        if ('undoSelectAll' == selectParam) {
-          $scope.selectArray.push(false);
-          selectItem.push(false);
-        } else if ('selectedAll' == selectParam) {
-          $scope.selectArray.push(true);
-          selectItem.push(true);
-        }
-      });
-    };
-    __initSelectArray('undoSelectAll');
-
-    $scope.dealDetailInfo = function () {
-      if ($scope.detailActionName == "操作") {
-        $scope.detailActionName = "取消";
-        $scope.showActionBar = true;
-        angular.element('#tsApproveItem').css('paddingLeft', '6%');
-      } else if ($scope.detailActionName == "取消") {
-        $scope.detailActionName = "操作";
-        $scope.showActionBar = false;
-        __initSelectArray('undoSelectAll');
-        angular.element('#tsApproveItem').css('paddingLeft', '0');
-        tsActionParams = { //审批拒绝/通过的参数
-          "params": {
-            "p_approve_flag": "AGREE",
-            "p_employee_number": window.localStorage.empno,
-            "p_param_json": ''
-          }
-        };
-        approveList = {
-          "approve_list": []
-        };
-      }
-    };
-
-    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
-      selectItem[index] = !selectItem[index];
-      var approve = {
-        "p_project_id": $scope.detailInfoArray.project_id,
-        "p_project_person_number": $scope.detailInfoArray.employee_number,
-        "p_start_date": "",
-        "p_end_date": "",
-        "p_record_id": ""
-      };
-      if (selectItem[index]) {
-        $scope.selectArray[index] = true;
-        approve.p_record_id = newLineNumber;
-        approveList.approve_list[index] = approve;
-      } else {
-        $scope.selectArray[index] = false;
-        approveList.approve_list.splice(index, 1, 'delete');
-      }
-    };
-
-    $scope.selectAllDetail = function () { //全选
-      clickSelectAll = !clickSelectAll;
-      if (clickSelectAll) {
-        __initSelectArray('selectedAll');
-        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
-          var approve = {
-            "p_project_id": $scope.detailInfoArray.project_id,
-            "p_project_person_number": $scope.detailInfoArray.employee_number,
-            "p_start_date": "",
-            "p_end_date": "",
-            "p_record_id": ""
-          };
-          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
-          approveList.approve_list.push(approve);
-        }
-        warn(approveList.approve_list);
-      } else {
-        __initSelectArray('undoSelectAll');
-        approveList.approve_list = [];
-      }
-    };
-
-    function deleteSuperfluous() {
-      for (var i = 0; i < approveList.approve_list.length; i++) {
-        if (approveList.approve_list[i] === 'delete') {
-          approveList.approve_list.splice(i, 1);
-          i--;
-        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
-          approveList.approve_list.splice(i, 1);
-          i--;
-        }
-      }
-    };
-
-    $scope.passThroughDetailItem = function () { //通过
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "AGREE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('审批成功！');
-        } else {
-          hmsPopup.showShortCenterToast('审批失败！');
-        }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      });
-    };
-
-    $scope.refuseDetailItem = function () { //拒绝
-      if (approveList.approve_list.length === 0) {
-        hmsPopup.showShortCenterToast('请先选择操作项！');
-        return;
-      }
-      deleteSuperfluous();
-      tsActionParams.params.p_approve_flag = "REFUSE";
-      tsActionParams.params.p_param_json = JSON.stringify(approveList);
-      hmsPopup.showLoading("审批中...");
-      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
-        hmsPopup.hideLoading();
-        if (hmsHttp.isSuccessfull(response.status)) {
-          hmsPopup.showShortCenterToast('拒绝成功');
-        } else {
-          hmsPopup.showShortCenterToast('拒绝失败！');
-        }
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      }).error(function (e) {
-        hmsPopup.hideLoading();
-        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
-        $scope.dealDetailInfo();
-        $timeout(function () {
-          hmsPopup.showLoading('加载中...');
-          getData();
-        }, 1000);
-      });
-    };
-  }]).service('ApproveDetailService', function () {
-  var flag = ''; //刷新上个列表的标识
-  return {
-    setRefreshFlag: function (newFlag) {
-      flag = newFlag;
-    },
-    getRefreshFlag: function () {
-      return flag;
-    }
-  }
-});
-
 
 /**
  * Created by wolf on 2016/5/19.
@@ -18227,3 +18274,284 @@ angular.module('tsApproveModule')
       };
       return TsApproveListService;
     }]);
+
+/**
+ * Created by wolf on 2016/5/21. (_wen.dai_)
+ */
+'use strict';
+//应用-timeSheet审批模块-详情
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.tsApproveDetail', {
+          url: 'application/tsApproveDetail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
+              controller: 'tsApproveDetailCtrl'
+            }
+          },
+          params: {
+            'employeeNumber': "",
+            'projectId': "",
+            'startDate': "",
+            'endDate': ""
+          }
+        })
+    }]);
+tsApproveModule.controller('tsApproveDetailCtrl', [
+  '$scope',
+  '$state',
+  'baseConfig',
+  '$ionicHistory',
+  '$stateParams',
+  'hmsHttp',
+  'hmsPopup',
+  '$timeout',
+  'ApproveDetailService',
+  function ($scope,
+            $state,
+            baseConfig,
+            $ionicHistory,
+            $stateParams,
+            hmsHttp,
+            hmsPopup,
+            $timeout,
+            ApproveDetailService) {
+
+    /**
+     * init var section
+     */
+    {
+      if(ionic.Platform.isIOS()) {
+        angular.element('.ae-detail-head').css('marginTop','64px');
+        angular.element('#approveDetailContent').css('top','64px');
+      }
+      var selectItem = []; //初始化点击全部条目为false
+      var clickSelectAll = false; //默认没有点击全选
+      $scope.detailActionName = "操作";
+      $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
+      $scope.detailInfoArray = {}; //用于接收列表对应数据object
+      $scope.selectArray = [];
+      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
+      var tsApproveDetailParams = {
+        "params": {
+          "p_employee_number": $stateParams.employeeNumber,
+          "p_start_date": $stateParams.startDate.toString(),
+          "p_end_date": $stateParams.endDate.toString(),
+          "p_project_id": $stateParams.projectId
+        }
+      };
+      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
+      var tsActionParams = { //审批拒绝/通过的参数
+        "params": {
+          "p_approve_flag": "AGREE",
+          "p_employee_number": window.localStorage.empno,
+          "p_param_json": ''
+        }
+      };
+      var approveList = { //审批拒绝/通过的子对象
+        "approve_list": []
+      };
+    }
+
+    $scope.$on('$ionicView.enter', function (e) {
+      ApproveDetailService.setRefreshFlag('');
+    });
+
+    $scope.$on('$destroy', function (e) {
+      warn('tsApproveListCtrl.$destroy');
+    });
+
+    hmsPopup.showLoading('加载中...');
+    function getData() {
+      hmsHttp.post(tsApproveDetailUrl, tsApproveDetailParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          $scope.detailInfoArray = response.timesheet_approve_detail_response;
+          if ($scope.detailInfoArray.subsidy_list.length === 0) {
+            ApproveDetailService.setRefreshFlag('refresh-approve-list');
+            $ionicHistory.goBack();
+          }
+        } else {
+          if (response.status === 'E' || response.status == 'e') {
+            hmsPopup.showShortCenterToast("没有相关数据!");
+          } else {
+            hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+          }
+        }
+      }).error(function (response, status) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast("服务请求异常,请检查网络连接和输入参数后重新操作!");
+      });
+    };
+    getData();
+
+    function __initSelectArray(selectParam) { //初始化选择按钮
+      //先初始化数据操作--
+      $scope.selectArray = [];
+      selectItem = [];
+      angular.forEach($scope.detailInfoArray.subsidy_list, function (data, index) {
+        if ('undoSelectAll' == selectParam) {
+          $scope.selectArray.push(false);
+          selectItem.push(false);
+        } else if ('selectedAll' == selectParam) {
+          $scope.selectArray.push(true);
+          selectItem.push(true);
+        }
+      });
+    };
+    __initSelectArray('undoSelectAll');
+
+    $scope.dealDetailInfo = function () {
+      if ($scope.detailActionName == "操作") {
+        $scope.detailActionName = "取消";
+        $scope.showActionBar = true;
+        angular.element('#tsApproveItem').css('paddingLeft', '6%');
+      } else if ($scope.detailActionName == "取消") {
+        $scope.detailActionName = "操作";
+        $scope.showActionBar = false;
+        __initSelectArray('undoSelectAll');
+        angular.element('#tsApproveItem').css('paddingLeft', '0');
+        tsActionParams = { //审批拒绝/通过的参数
+          "params": {
+            "p_approve_flag": "AGREE",
+            "p_employee_number": window.localStorage.empno,
+            "p_param_json": ''
+          }
+        };
+        approveList = {
+          "approve_list": []
+        };
+      }
+    };
+
+    $scope.selectItem = function (index, newLineNumber) { //单击选中条目的响应method
+      selectItem[index] = !selectItem[index];
+      var approve = {
+        "p_project_id": $scope.detailInfoArray.project_id,
+        "p_project_person_number": $scope.detailInfoArray.employee_number,
+        "p_start_date": "",
+        "p_end_date": "",
+        "p_record_id": ""
+      };
+      if (selectItem[index]) {
+        $scope.selectArray[index] = true;
+        approve.p_record_id = newLineNumber;
+        approveList.approve_list[index] = approve;
+      } else {
+        $scope.selectArray[index] = false;
+        approveList.approve_list.splice(index, 1, 'delete');
+      }
+    };
+
+    $scope.selectAllDetail = function () { //全选
+      clickSelectAll = !clickSelectAll;
+      if (clickSelectAll) {
+        __initSelectArray('selectedAll');
+        for (var i = 0; i < $scope.detailInfoArray.subsidy_list.length; i++) {
+          var approve = {
+            "p_project_id": $scope.detailInfoArray.project_id,
+            "p_project_person_number": $scope.detailInfoArray.employee_number,
+            "p_start_date": "",
+            "p_end_date": "",
+            "p_record_id": ""
+          };
+          approve.p_record_id = $scope.detailInfoArray.subsidy_list[i].line_number;
+          approveList.approve_list.push(approve);
+        }
+        warn(approveList.approve_list);
+      } else {
+        __initSelectArray('undoSelectAll');
+        approveList.approve_list = [];
+      }
+    };
+
+    function deleteSuperfluous() {
+      for (var i = 0; i < approveList.approve_list.length; i++) {
+        if (approveList.approve_list[i] === 'delete') {
+          approveList.approve_list.splice(i, 1);
+          i--;
+        } else if (!approveList.approve_list[i] || approveList.approve_list[i] == "" || typeof(approveList.approve_list[i]) == "undefined") {
+          approveList.approve_list.splice(i, 1);
+          i--;
+        }
+      }
+    };
+
+    $scope.passThroughDetailItem = function () { //通过
+      if (approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "AGREE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('审批成功！');
+        } else {
+          hmsPopup.showShortCenterToast('审批失败！');
+        }
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('审批失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      });
+    };
+
+    $scope.refuseDetailItem = function () { //拒绝
+      if (approveList.approve_list.length === 0) {
+        hmsPopup.showShortCenterToast('请先选择操作项！');
+        return;
+      }
+      deleteSuperfluous();
+      tsActionParams.params.p_approve_flag = "REFUSE";
+      tsActionParams.params.p_param_json = JSON.stringify(approveList);
+      hmsPopup.showLoading("审批中...");
+      hmsHttp.post(tsActionUrl, tsActionParams).success(function (response) {
+        hmsPopup.hideLoading();
+        if (hmsHttp.isSuccessfull(response.status)) {
+          hmsPopup.showShortCenterToast('拒绝成功');
+        } else {
+          hmsPopup.showShortCenterToast('拒绝失败！');
+        }
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      }).error(function (e) {
+        hmsPopup.hideLoading();
+        hmsPopup.showShortCenterToast('拒绝失败！请检查网络稍后重试');
+        $scope.dealDetailInfo();
+        $timeout(function () {
+          hmsPopup.showLoading('加载中...');
+          getData();
+        }, 1000);
+      });
+    };
+  }]).service('ApproveDetailService', function () {
+  var flag = ''; //刷新上个列表的标识
+  return {
+    setRefreshFlag: function (newFlag) {
+      flag = newFlag;
+    },
+    getRefreshFlag: function () {
+      return flag;
+    }
+  }
+});
+

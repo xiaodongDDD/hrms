@@ -39,7 +39,7 @@ angular.module('applicationModule')
           callback(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取状态错误,请检查网络!');
+          //hmsPopup.showPopup('获取状态错误,请检查网络!');
         });
       };
 
@@ -55,7 +55,7 @@ angular.module('applicationModule')
           callback(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('获取项目信息错误,请检查网络!');
+          //hmsPopup.showPopup('获取项目信息错误,请检查网络!');
         });
       };
 
@@ -66,7 +66,7 @@ angular.module('applicationModule')
           callback(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
+          //hmsPopup.showPopup('提交Timesheet错误,请检查网络!');
         });
       };
 

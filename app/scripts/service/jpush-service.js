@@ -14,14 +14,14 @@ angular.module('HmsModule')
           var onGetRegistrationID = function (data) {
             try {
               //alert("JPushPlugin:registrationID is " + angular.toJson(data));
-              if(baseConfig.debug) {
+              if (baseConfig.debug) {
                 console.log("JPushPlugin:registrationID is " + angular.toJson(data));
               }
               if (data.length == 0) {
                 var t1 = window.setTimeout(getRegistrationID, 1000);
               }
             } catch (exception) {
-              if(baseConfig.debug) {
+              if (baseConfig.debug) {
                 console.log(exception);
               }
             }
@@ -38,24 +38,50 @@ angular.module('HmsModule')
                 window.plugins.jPushPlugin.setStatisticsOpen(true);
               }
             } catch (exception) {
-              if(baseConfig.debug) {
+              if (baseConfig.debug) {
                 console.log(exception);
               }
             }
           };
 
+          var analyze = function (currentState) {
+            if (currentState.views) {
+              if (currentState.views['tab-application']) {
+                return 'tab.tab-application-';
+              } else if (currentState.views['tab-message']) {
+                return 'tab.tab-message-';
+              } else if (currentState.views['tab-contact']) {
+                return 'tab.tab-contact-';
+              } else if (currentState.views['tab-myInfo']) {
+                return 'tab.tab-myInfo-';
+              }
+            }
+            return '';
+          };
+
           var onOpenNotification = function (event) {
             try {
               var alertContent;
+              var result;
               if (device.platform == "Android") {
-                alertContent = window.plugins.jPushPlugin.openNotification;
+                alertContent = window.plugins.jPushPlugin.openNotification.alert;
+                result = {
+                  "type": typeof(window.plugins.jPushPlugin),
+                  "value": window.plugins.jPushPlugin
+                };
               } else {
-                alertContent = event.aps;
+                alertContent = event.aps.alert;
+                result = {
+                  "type": typeof(event),
+                  "value": event
+                };
               }
-              if(baseConfig.debug) {
-                console.log("open Notification:" + alertContent);
+              if (baseConfig.debug) {
+                console.log("open Notification event: " + event);
               }
-              state.go('detail',{content:alertContent});
+
+              state.go(analyze(state.current) + 'pushDetail', {"title": alertContent, "content": result});
+              //state.go('detail', {content: result});
               //state.go('push.pushDetail',{content:alertContent});
 
             } catch (exception) {
@@ -74,7 +100,7 @@ angular.module('HmsModule')
           tags.push(userName);
           window.plugins.jPushPlugin.setTagsWithAlias(tags, alias);
         } catch (exception) {
-          if(baseConfig.debug) {
+          if (baseConfig.debug) {
             console.log(exception);
           }
         }

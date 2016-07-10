@@ -7,7 +7,37 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content class="mainApplication" style="bottom:50px;">
+  <ion-content class="mainApplication" style="bottom:48px;">
+    <div class="application-setting-outer" >
+    <div class="application-setting" ng-if="animationsEnabled">
+      <div class="setup">
+        <ion-item class="setup-panel">
+          <div class="row setup-panel-row1">
+            <label class="setup-label">timesheet滑动填写</label>
+          </div>
+          <div class="row setup-panel-row2">
+            <label class="setup-label">消息推送</label>
+          </div>
+          <div class="ts-toggle-position">
+            <label class="toggle toggle-positive">
+              <input type="checkbox" ng-checked="slippingEnableFlag" ng-click="changeSlippingSetting()">
+              <div class="track setup-track">
+                <div class="handle setup-handle"></div>
+              </div>
+            </label>
+          </div>
+          <div class="message-toggle-position">
+            <label class="toggle toggle-positive">
+              <input type="checkbox" ng-checked="messagePush">
+              <div class="track setup-track">
+                <div class="handle setup-handle"></div>
+              </div>
+            </label>
+          </div>
+        </ion-item>
+      </div>
+    </div>
+    </div>
     <div class="application-outer">
       <div class="hms-animated application-left" ng-class="{true: 'start', false: ''}[animationsEnabled]">
         <div class="appRegion">

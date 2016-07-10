@@ -1,4 +1,3 @@
-
 /**
  * Created by gusenlin on 16/4/24.
  */
@@ -32,7 +31,7 @@ angular.module('loginModule')
               hmsPopup,
               imService,
               $rootScope,
-              hmsJpushService){
+              hmsJpushService) {
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
@@ -225,7 +224,7 @@ angular.module('loginModule')
       };
 
       $scope.login = function () {//登录功能
-        if(window.localStorage.empno != $scope.loginInfo.username) {
+        if (window.localStorage.empno != $scope.loginInfo.username) {
           localStorage.removeItem('key_history');
           localStorage.removeItem('common_linkman');
         }
@@ -284,19 +283,26 @@ angular.module('loginModule')
               hmsPopup.showPopup('登陆失败,请确认密码是否正确!');
             }
           }).error(function (response, status) {
-            $scope.bigPortrait = "build/img/login/login-hand.png";
-            $scope.showLoginButton = false;
-            $scope.showButtonIcon = false;
             hmsPopup.hideLoading();
-            hmsPopup.showPopup('登陆失败,请确认网络连接是否正常,或者联系管理员');
-            if (baseConfig.debug) {
-              console.log("response error " + angular.toJson(response));
+            if (status && status == '401') {
+              $scope.bigPortrait = "build/img/login/login-hand.png";
+              $scope.showLoginButton = false;
+              $scope.showButtonIcon = false;
+              hmsPopup.showPopup('登陆失败,请确认密码是否正确!');
+            } else {
+              $scope.bigPortrait = "build/img/login/login-hand.png";
+              $scope.showLoginButton = false;
+              $scope.showButtonIcon = false;
+              hmsPopup.showPopup('登陆失败,请确认网络连接是否正常,或者联系管理员');
+              if (baseConfig.debug) {
+                console.log("response error " + angular.toJson(response));
+              }
             }
           });
         }, 700);
       };
 
-      $scope.goToWechat=function(){//调用微信登录
+      $scope.goToWechat = function () {//调用微信登录
         weixinLogin();
       };
 

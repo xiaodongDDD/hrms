@@ -27,7 +27,7 @@ angular.module('applicationModule')
           hmsHttp.post(url, params).success(function (result) {
             success(result)
           }).error(function (response, status) {
-            hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+            //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
             error(response);
           });
         };
@@ -95,6 +95,39 @@ angular.module('applicationModule')
             success(result);
           }).error(function (response) {
             hmsPopup.hideLoading();
+            error(response);
+          });
+        };
+
+
+        // 获取部门信息（转正审批工作流）
+        this.getUnitData = function (success, error, unitId) {
+          var url = baseConfig.businessPath + "/get_workflow_data/get_unit_data";
+          var params = '{"params":{"p_unit_id":"' + unitId + '"}}';
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response) {
+            error(response);
+          });
+        };
+        // 获取职位信息（转正审批工作流）
+        this.getPositionData = function (success, error, unitId) {
+          var url = baseConfig.businessPath + "/get_workflow_data/get_position_data";
+          var params = '{"params":{"p_unit_id":"' + unitId + '"}}';
+
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response) {
+            error(response);
+          });
+        };
+        // 获取上层部门信息（转正审批工作流）
+        this.getParentUnitData = function (success, error, unitId) {
+          var url = baseConfig.businessPath + "/get_workflow_data/get_parent_unit_data";
+          var params = '{"params":{"p_unit_id":"' + unitId + '"}}';
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response) {
             error(response);
           });
         };

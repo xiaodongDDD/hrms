@@ -71,11 +71,45 @@ angular.module('applicationModule')
       var startTouchY = 0;
 
 
-      var timesheetTitle = 'Timesheet';
+      var timesheetTitle = 'Timesheet填写';
       var unfreezeTitle = 'Timesheet解冻';
       var batchWriteMode = 'batchWriteMode';
       var unfreezeMode = 'unfreezeMode';
       var slippingMode = 'batchWriteMode';
+
+
+      /*var requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday_apply";
+      var requestParams = {
+        "params": {
+          "p_employeecode": "2203",
+          "p_timeofftypemeaning": "带薪年假",
+          "p_datetimefrom": "2016-07-10 08:30:00",
+          "p_datetimeto": "2016-07-11 18:00:00",
+          "p_timeleave": "",
+          "p_applyreason": ""
+        }
+      };
+
+      hmsHttp.post(requestUrl, requestParams).success(function (result) {
+      }).error(function (response, status) {
+      });
+
+      var requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday";
+      var requestParams = {
+        "params": {
+          "p_employeecode": "2203",
+          "p_timeofftypemeaning": "1",
+          "p_datetimefrom": "2016-07-10 08:30:00",
+          "p_datetimeto": "2016-07-11 18:00:00",
+          "p_timeleave": "",
+          "p_applyreason": ""
+        }
+      };
+
+      hmsHttp.post(requestUrl, requestParams).success(function (result) {
+      }).error(function (response, status) {
+      });*/
+
 
       $scope.timesheetProcessModeList = [
         {
@@ -415,14 +449,27 @@ angular.module('applicationModule')
 
       var element = angular.element(document.querySelector('#timesheetCalandar'));
 
+      var openSlippingSetting = function () {
+        if (window.localStorage.slippingEnableFlag == "true") {
+          $scope.slippingEnableFlag = true;
+        } else {
+          $scope.slippingEnableFlag = false;
+        }
+      };
+
+      openSlippingSetting();
+
       var startSlipping = function () {
         $scope.slippingFlag = true;
+        $scope.startSlippingFlag = true;
+        $scope.slippingEnableFlag = true;
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
         scrollPosition = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition().top;
       };
       var stopSlipping = function () {
         $scope.slippingFlag = false;
         $scope.startSlippingFlag = false;
+        openSlippingSetting();
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
       };
 
@@ -719,8 +766,13 @@ angular.module('applicationModule')
         generateAllowance(monthParams);
       };
 
-      $scope.startslipping = function () {
-        startSlipping();
+      $scope.changeSlippingMode = function () {
+        if ($scope.slippingFlag && $scope.slippingEnableFlag && $scope.startSlippingFlag) {
+          stopSlipping();
+        } else {
+          startSlipping();
+        }
+
       };
 
       var processAllowance = function (allowance) {
