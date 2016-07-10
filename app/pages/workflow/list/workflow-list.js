@@ -55,7 +55,7 @@ angular.module('applicationModule')
         }
       };
 
-      var workflowIcon = 'build/img/application/profile@3x.png';
+      var workflowDefaultIcon = 'build/img/application/profile@3x.png';
       var workflowType = '工作流类型';
       var workflowNode = '当前节点';
       var workflowPerson = '提交人';
@@ -119,9 +119,13 @@ angular.module('applicationModule')
         var success = function (result) {
           var list = result.待审批列表;
           angular.forEach(list, function (data) {
+            var employeeImg = data.employee_img;
+            if (!employeeImg || employeeImg == "") {
+              employeeImg = workflowDefaultIcon;
+            }
             var item = {
               title1: data.workflow_name,
-              icon: data.employee_img,
+              icon: employeeImg,
               type: workflowType,
               typeValue: data.workflow_name,
               node: workflowNode,
@@ -132,7 +136,7 @@ angular.module('applicationModule')
               instanceId: data.instance_id,
               recordId: data.record_id,
               nodeId: data.node_id,
-              canApprove : data.approve,
+              canApprove: data.approve,
               canBackTo: data.backTo,
               canGoBack: data.goBack,
               canRefuse: data.refuse,
@@ -170,9 +174,13 @@ angular.module('applicationModule')
         var success = function (result) {
           var list = result.已审批列表;
           angular.forEach(list, function (data) {
+            var employeeImg = data.employee_img;
+            if (!employeeImg || employeeImg == "") {
+              employeeImg = workflowDefaultIcon;
+            }
             var item = {
               title1: data.workflow_desc,
-              icon: data.employee_img,
+              icon: employeeImg,
               type: workflowType,
               typeValue: data.workflow_desc,
               node: workflowNode,

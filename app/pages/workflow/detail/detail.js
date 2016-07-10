@@ -47,9 +47,16 @@ angular.module('applicationModule')
               workFLowListService,
               hmsPopup,
               $ionicHistory) {
-      var detail = $stateParams.detail;
-      $scope.currentDetail = $stateParams.detail;
+
+      $scope.currentDetail = $stateParams.detail; //传过来的数据块
+      var detail = $stateParams.detail;//传过来的数据块
+      var processedFlag = $stateParams.processedFlag.value; //已经审批和未审批的标记
       var multipleArrayList = [];
+
+      if (baseConfig.debug) {
+        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
+        console.log('WorkFLowDetailCtrl.processedFlag ' + processedFlag);
+      }
 
       //控制需要显示的数据模块
       $scope.showList = {
@@ -90,20 +97,42 @@ angular.module('applicationModule')
         "value": ""
       };
 
-      if (baseConfig.debug) {
-        console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
-      }
+      /*------------------转正申请数据源------------------*/
+      $scope.applicationEmployeeType = {
+        "agree": {"selected": true},
+        "reject": {"selected": false},
+        "notChange": {"selected": false}
+      };
+      $scope.applicationEmployeeDetail = {};
+      $scope.applicationEmployeeInfo = [];
+      $scope.applicationEmployeeAbility = [];
+      $scope.applicationEmployeeTrial = {};
+      $scope.employeeGrade = [
+        {item: '100000', value: '优秀'},
+        {item: '100001', value: '好'},
+        {item: '100002', value: '达标'},
+        {item: '100003', value: '待提高'},
+        {item: '100004', value: '不满意'}
+      ];
+      $scope.currentApplicationEmployeeAbility = {};
+      /*------------------转正申请数据源------------------*/
 
       var contractRenewal = {
         queryData: function () {
 
         }
-      }
+      };
 
       $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/data-list.html', {
         scope: $scope
       }).then(function (modal) {
         $scope.dataListModal = modal;
+      });//初始化下拉列表的modal
+
+      $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/employee-ability.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.abilityGradeModal = modal;
       });//初始化下拉列表的modal
 
       //加载项目画面
@@ -112,6 +141,74 @@ angular.module('applicationModule')
       }).then(function (modal) {
         $scope.transmitPersonModal = modal;
       });
+
+
+      // 职位选择 modal
+      $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/position-modal.html', {
+        scope: $scope,
+      }).then(function (modal) {
+        $scope.positionModal = modal;
+      });
+      $scope.openPositionModal = function () {
+        $scope.positionUtil.getDepartmentData(1000);
+        $scope.getPositionData(1000);
+        $scope.positionModal.show();
+      };
+      $scope.closePositionModal = function () {
+        $scope.positionModal.hide();
+      };
+
+      $scope.getPositionData = function (unitId) {
+        var success = function (response) {
+          $scope.position = response["position"];
+          hmsPopup.hideLoading();
+        };
+        var error = function (response) {
+          hmsPopup.hideLoading();
+        };
+        hmsPopup.showLoading('获取部门信息');
+        workFLowListService.getPositionData(success,error,unitId);
+      },
+
+      //职位选择与清选
+      $scope.positionUtil = {
+        positionChoose: function (item) {
+          $scope.applicationEmployeeDetail.position = item.name;
+          $scope.positionModal.hide();
+        },
+
+        clearPositionChoose: function () {
+          $scope.applicationEmployeeDetail.position = '';
+          //$scope.config.position.value = '';
+          $scope.positionModal.hide();
+        },
+
+        getDepartmentData: function (unitId) {
+          var success = function (response) {
+            $scope.parent = response.parent[0];
+            $scope.child = response.child;
+            hmsPopup.hideLoading();
+          };
+          var error = function (response) {
+            hmsPopup.hideLoading();
+          };
+          hmsPopup.showLoading('获取部门信息');
+          workFLowListService.getUnitData(success, error, unitId);
+        },
+
+        getParentDepartmentData: function (unitId) {
+          var success = function (response) {
+            $scope.parent = response.parent[0];
+            $scope.child = response.child;
+            $scope.getPositionData($scope.parent.value);
+          };
+          var error = function (response) {
+          };
+          hmsPopup.showLoading('获取部门信息');
+          workFLowListService.getParentUnitData(success,error,unitId);
+        }
+      };
+
 
       //选择值列表的数据
       $scope.selectData = function (data) {
@@ -127,7 +224,7 @@ angular.module('applicationModule')
 
       //转正申请功能
       $scope.applicationFullMemberUtil = {
-        changeType: function (item,type) {
+        changeType: function (item, type) {
           var cache = {
             "selected": item.selected
           };
@@ -136,29 +233,16 @@ angular.module('applicationModule')
           $scope.applicationEmployeeType.notChange.selected = false;
           item.selected = !cache.selected;
         },
-        showEmployeeGrade: function () {
-          $scope.dataListModal = modal;
+        selectAbilityGrade: function (data) {
+          $scope.currentApplicationEmployeeAbility.element_value = data.item;
+          $scope.currentApplicationEmployeeAbility.element_desc = data.value;
+          $scope.abilityGradeModal.hide();
+        },
+        showEmployeeGrade: function (ability) {
+          $scope.currentApplicationEmployeeAbility = ability;
+          $scope.abilityGradeModal.show();
         }
       };
-
-      $scope.applicationEmployeeType = {
-        "agree": {"selected": true},
-        "reject": {"selected": false},
-        "notChange": {"selected": false}
-      };
-
-      $scope.applicationEmployeeDetail = {};
-      $scope.applicationEmployeeInfo = [];
-      $scope.applicationEmployeeAbility = [];
-      $scope.applicationEmployeeTrial = {};
-      $scope.employeeGrade = [
-        {item: '100000', value: '优秀'},
-        {item: '100001', value: '好'},
-        {item: '100002', value: '达标'},
-        {item: '100003', value: '待提高'},
-        {item: '100004', value: '不满意'}
-      ];
-
 
       //转正申请功能包
       var applicationFullMember = function () {
@@ -182,6 +266,7 @@ angular.module('applicationModule')
           };
           workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
         };
+
         return __self;
       };
 

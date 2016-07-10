@@ -12,6 +12,102 @@ $applicationColor: white !default;
     animation-fill-mode: both;
   }
 
+  .application-setting-outer {
+    position: absolute;
+    top: 200px;
+    width: 70%;
+    left: 15%;
+    right: 15%;
+  }
+
+  .application-setting{
+    position: relative;
+    z-index: 100;
+  }
+
+  @-webkit-keyframes bounceIn {
+    from, 20%, 40%, 60%, 80%, to {
+      -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    0% {
+      opacity: 0;
+      -webkit-transform: scale3d(.3, .3, .3);
+      transform: scale3d(.3, .3, .3);
+    }
+
+    40% {
+      -webkit-transform: scale3d(.9, .9, .9);
+      transform: scale3d(.9, .9, .9);
+    }
+
+    60% {
+      opacity: 1;
+      -webkit-transform: scale3d(1.03, 1.03, 1.03);
+      transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    80% {
+      -webkit-transform: scale3d(.97, .97, .97);
+      transform: scale3d(.97, .97, .97);
+    }
+
+    to {
+      opacity: 1;
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  }
+
+  @keyframes bounceIn {
+    from, 20%, 40%, 60%, 80%, to {
+      -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    0% {
+      opacity: 0;
+      -webkit-transform: scale3d(.3, .3, .3);
+      transform: scale3d(.3, .3, .3);
+    }
+
+    40% {
+      -webkit-transform: scale3d(.9, .9, .9);
+      transform: scale3d(.9, .9, .9);
+    }
+
+    60% {
+      opacity: 1;
+      -webkit-transform: scale3d(1.03, 1.03, 1.03);
+      transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    80% {
+      -webkit-transform: scale3d(.97, .97, .97);
+      transform: scale3d(.97, .97, .97);
+    }
+
+    to {
+      opacity: 1;
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  }
+
+  .application-setting.ng-enter {
+    -webkit-animation: bounceIn 0.6s;
+    animation: bounceIn 0.6s;
+  }
+
+  .application-setting.ng-enter-stagger {
+    -webkit-animation-delay: 90ms;
+    animation-delay: 90ms;
+    /* override to make sure it's not inherited from other styles */
+    -webkit-animation-duration: 0;
+    animation-duration: 0;
+  }
+
   @-webkit-keyframes open {
     from, 20%, 40%, 60%, 80%, to {
       -webkit-animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
@@ -47,11 +143,11 @@ $applicationColor: white !default;
       -webkit-transform: rotateY(85deg);
     }
 
-    to { 
+    to {
       transform: rotateY(75deg);
       -webkit-transform: rotateY(75deg);
-    } 
-  } 
+    }
+  }
 
   @-webkit-keyframes leave {
     from {
@@ -98,7 +194,7 @@ $applicationColor: white !default;
       left: 0;
       position: absolute;
       transform-origin: left;
-      &.start{
+      &.start {
         -webkit-animation-name: open;
         animation-name: open;
       }
@@ -108,7 +204,7 @@ $applicationColor: white !default;
       right: 0;
       position: absolute;
       transform-origin: right;
-      &.start{
+      &.start {
         -webkit-animation-name: leave;
         animation-name: leave;
       }

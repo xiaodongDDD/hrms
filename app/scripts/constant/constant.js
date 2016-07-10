@@ -4,6 +4,5 @@
  * @attention:  nomenclature and block
  */
 'use strict';
-HmsModule.constant('hmsConstant',[function () {
-
-  }]);
+HmsModule.constant('hmsConstant', [function () {
+}]);

@@ -13,6 +13,32 @@ angular.module('applicationModule')
               baseConfig) {
 
       $scope.animationsEnabled = false;
+      $scope.openDoor = 0;
+
+
+
+      var initSetting = function () {
+        if(!window.localStorage.slippingEnableFlag){
+          window.localStorage.slippingEnableFlag = "true";
+          $scope.slippingEnableFlag = true;
+        }else{
+          if(window.localStorage.slippingEnableFlag == "true"){
+            $scope.slippingEnableFlag = true;
+          }else{
+            $scope.slippingEnableFlag = false;
+          }
+        }
+      };
+
+      $scope.changeSlippingSetting = function () {
+        if($scope.slippingEnableFlag==true){
+          $scope.slippingEnableFlag = false;
+          window.localStorage.slippingEnableFlag = "false";
+        }else{
+          $scope.slippingEnableFlag = true;
+          window.localStorage.slippingEnableFlag = "true";
+        }
+      };
 
       //个人办公
       $scope.officeApp = [
@@ -142,10 +168,12 @@ angular.module('applicationModule')
         console.log('applicationCtrl.enter');
       }
 
-      $scope.$on('$ionicView.enter', function (e) {
+      $scope.$on('$ionicView.beforeEnter', function (e) {
         if (baseConfig.debug) {
-          console.log('applicationCtrl.$ionicView.enter');
+          console.log('applicationCtrl.$ionicView.beforeEnter');
         }
+        initSetting();
+        $scope.openDoor = 0;
       });
 
       $scope.$on('$destroy', function (e) {

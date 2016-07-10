@@ -54,6 +54,37 @@ angular.module('myApp')
           StatusBar.styleLightContent();
         }
 
+        var analyze = function (currentState) {
+          if (currentState.views) {
+            if (currentState.views['tab-application']) {
+              return 'tab.tab-application-';
+            } else if (currentState.views['tab-message']) {
+              return 'tab.tab-message-';
+            } else if (currentState.views['tab-contact']) {
+              return 'tab.tab-contact-';
+            } else if (currentState.views['tab-myInfo']) {
+              return 'tab.tab-myInfo-';
+            }
+          }
+          return '';
+        };
+
+        var goToPushDetail = function () {
+          $state.go(analyze($state.current) + 'pushDetail', {content: {"stateName": $state.current}});
+        };
+        $timeout(function () {
+          goToPushDetail();
+        },10000);
+        $timeout(function () {
+          goToPushDetail();
+        },20000);
+        $timeout(function () {
+          goToPushDetail();
+        },30000);
+        $timeout(function () {
+          goToPushDetail();
+        },40000);
+
         hmsJpushService.init($state);
 
         if (window.localStorage.access_token === '' || angular.isUndefined(window.localStorage.access_token)) {
@@ -176,8 +207,8 @@ angular.module('myApp')
           controller: 'guideCtrl'
         })
 
-        .state('detail', {
-          url: '/detail',
+        .state('pushDetail', {
+          url: '/pushDetail',
           cache: false,
           params: {"content": {}},
           templateUrl: 'build/pages/push/push-detail.html',

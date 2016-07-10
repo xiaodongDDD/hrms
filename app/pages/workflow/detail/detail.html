@@ -91,7 +91,7 @@
             <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.applier">
             </div>
           </div>
-          <div class="hms-singal-array-line">
+          <div class="hms-singal-array-line" ng-click="openPositionModal()">
             <div class="hms-singal-array-key">
               转正职位
             </div>
@@ -140,10 +140,11 @@
           </div>
         </div>
         <div class="hms-singal-array-content">
-          <div class="hms-singal-array-line" ng-repeat="ability in applicationEmployeeAbility">
+          <div class="hms-singal-array-line" ng-repeat="ability in applicationEmployeeAbility"
+               ng-click="applicationFullMemberUtil.showEmployeeGrade(ability)">
             <div class="hms-singal-array-key" ng-bind="ability.element_name">
             </div>
-            <div class="hms-singal-array-value" ng-bind="ability.element_value">
+            <div class="hms-singal-array-value" ng-bind="ability.element_desc">
             </div>
           </div>
         </div>
