@@ -63,7 +63,8 @@ angular.module('applicationModule')
               appName: "记一笔",
               imageUrl: "build/img/application/application/sign@3x.png",
               destUrl: "tab.acc_main"
-            }]
+            }
+          ]
         },
         {
           list: [
@@ -78,15 +79,15 @@ angular.module('applicationModule')
               destUrl: "tab.workflow-list",
             },
             {
-              appName: "我的申请",
-              imageUrl: "build/img/application/application/schedule@3x.png",
-              destUrl: "",
-            },
-            {
               appName: "报销单查询",
               imageUrl: "build/img/application/application/wipeOut@3x.png",
               destUrl: "tab.expense",
-            }]
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },]
         }];
 
       //项目门户
@@ -94,14 +95,14 @@ angular.module('applicationModule')
         {
           list: [
             {
-              appName: "Timesheet填写",
-              imageUrl: "build/img/application/application/timesheet@3x.png",
-              destUrl: "tab.timesheet",
-            },
-            {
               appName: "Timesheet审批",
               imageUrl: "build/img/application/application/timesheetExamine@3x.png",
               destUrl: "tab.tsApproveList",
+            },
+            {
+              appName: "Timesheet填写",
+              imageUrl: "build/img/application/application/timesheet@3x.png",
+              destUrl: "tab.timesheet",
             },
             {
               appName: "",
@@ -122,29 +123,28 @@ angular.module('applicationModule')
         {
           list: [
             {
-              appName: "拼车",
-              imageUrl: "build/img/application/application/carpooling@3x.png",
-              destUrl: "tab.carpooling",
-            },
-            {
-              appName: "附近的员工",
-              imageUrl: "build/img/application/application/nearby@3x.png",
-              destUrl: "",
-            },
-            {
               appName: "住宿申请",
               imageUrl: "build/img/application/application/dormApply@3x.png",
               destUrl: "tab.dorm-apply"
             },
             {
-              appName: "房屋转租",
-              imageUrl: "build/img/application/application/housingrental@3x.png",
-              destUrl: ""
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
             }
           ]
         }
       ];
-
 
       $scope.openSetting = function () {
         if ($scope.animationsEnabled) {
