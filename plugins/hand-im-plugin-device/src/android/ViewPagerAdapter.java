@@ -5,7 +5,7 @@ import java.util.List;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import com.hand.china_hrms.R;
+import com.hand_china.hrms.R;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
