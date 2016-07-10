@@ -7,12 +7,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
-import com.hand.china.hrms2.research.R;
+import com.hand_china.hrms.R;
 
 public class FileUtils {
 	/**
 	 * 读取表情配置文件
-	 * 
+	 *
 	 * @param context
 	 * @return
 	 */

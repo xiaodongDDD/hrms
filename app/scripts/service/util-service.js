@@ -79,8 +79,11 @@ angular.module('HmsModule')
               goBackLogin($state);
               hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!');
             }
-            if (status == '404') {
+            else if (status == '404') {
               hmsPopup.showShortCenterToast('后端服务器请求失败,请联系管理员!');
+            }
+            else{
+              hmsPopup.showShortCenterToast('处理请求失败,请确认网络连接是否正常,或者联系管理员!');
             }
           });
           return post;
@@ -581,6 +584,25 @@ angular.module('HmsModule')
       }
     }
   ])
+
+  .factory('HmsDateUtil', ['$filter', function ($filter) {
+    return {
+      getDateString: function (date) {
+        return $filter('date')(date, 'yyyy-MM-dd');
+      },
+      getDateTimeString: function (date) {
+        return $filter('date')(date, 'yyyy-MM-dd HH:mm:ss');
+      },
+      getLastDate: function (month) {
+        var date = new Date();
+        date.setDate(date.getDate() - (30 * month));
+        return date;
+      },
+      getDateStringByFormat: function (date, format) {
+        return $filter('date')(date, format);
+      }
+    }
+  }])
 
   .factory("hmsFastPath", function () {
     var request = {
