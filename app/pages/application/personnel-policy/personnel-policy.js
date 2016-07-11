@@ -43,6 +43,9 @@ angular.module('applicationModule')
         }
       };
 
+
+
+
       $scope.filesManagement = [
         {
           shadow:true,
@@ -75,6 +78,16 @@ angular.module('applicationModule')
           shadow:false,
           text: '深圳生育报销个人信息登记表',
           url:'C.人事政策/深圳生育报销信息登记表.xlsx?arg=31',
+        },
+        {
+          shadow:false,
+          text: '深圳社保卡(医保卡)办理须知',
+          url:'C.人事政策/深圳社保卡（医保卡）办理须知201603.pdf?arg=391',
+        },
+        {
+          shadow:false,
+          text: '新员工入职须知201410 ',
+          url:'C.人事政策/新员工入职须知201410.pdf?arg=392',
         },
         {
           shadow:false,

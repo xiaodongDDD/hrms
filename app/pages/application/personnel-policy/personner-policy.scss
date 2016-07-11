@@ -19,6 +19,7 @@ $padding-left:4%;
     background-color:#ECF0F1;
     padding:5px 7px 25px 9px;
   }
+
   .policy-item{
     border-top:none;
     border-bottom: 1px solid #D2D2D2;
@@ -27,7 +28,7 @@ $padding-left:4%;
     border-left: none;
     min-height: 41px;
     max-height: 60px;
-    margin-top: 0px;
+    margin-top: 5px;
     padding: 0px;
   }
   .policy-item-shadow{
@@ -37,11 +38,15 @@ $padding-left:4%;
     max-height: 60px;
     padding-left: 4%;
     margin-bottom: 2px;
-    margin-top: 0px;
+    margin-top: 5px;
 
   }
   .item-font{
     font-size: 16px;
+  }
+  .row:hover{
+    background-color: #FFFFFF;
+    opacity: 0.2;
   }
   .policy-back-arrow{
     width: 18px;
