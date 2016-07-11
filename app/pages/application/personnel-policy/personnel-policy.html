@@ -84,7 +84,7 @@
       <div class="item-title-font">公共类文档</div>
     </div>
 
-    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesCommon">
+    <div  class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesCommon">
       <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
         <i style="font-size: 16px;">{{file.text}}</i>
       </div>
@@ -99,7 +99,8 @@
     </div>
 
     <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesPersonnelSys">
-      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
+      <div class="col col-80 col-offset-4 col-center"    onclick=""
+           ng-click="openwin(file.url)" style="padding: 0px;">
         <i style="font-size: 16px;">{{file.text}}</i>
       </div>
       <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
