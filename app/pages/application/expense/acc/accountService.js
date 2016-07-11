@@ -13,7 +13,7 @@ angular.module("applicationModule")
       //http://172.20.0.175:8090/handhr_aurora/hand_app_fileupload.svc
       console.log('上传附件'+baseConfig.expUploadUrl);
       console.log(form);
-      hmsHttp.post(baseConfig.expUploadUrl, form,{
+      $http.post(baseConfig.expUploadUrl, form,{
         transformRequest: angular.identity,
           headers: { 'Content-Type':undefined}}
         )
