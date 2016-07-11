@@ -35,6 +35,17 @@ angular.module('myInfoModule')
               $stateParams) {
 
       $scope.personalInfo=$stateParams.myDetailInfo;
+      $scope.myPortrait="";
+      if($scope.personalInfo.avatar!=""){
+        $scope.myPortrait=$scope.personalInfo.avatar;
+      }else if($scope.personalInfo.avatar==""){
+         if($scope.personalInfo.gender=="男"){
+           $scope.myPortrait="build/img/myInfo/man-portrait.png";
+         }else if($scope.personalInfo.gender=="女") {
+           $scope.myPortrait = "build/img/myInfo/woman-portrait.png";
+         }
+      }
+
 
       $scope.goBack=function(){//返回按钮
         $ionicHistory.goBack();

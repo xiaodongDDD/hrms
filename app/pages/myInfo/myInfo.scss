@@ -4,6 +4,8 @@
       height: 148px;
       width: 100%;
       z-index: 100;
+      -webkit-filter: blur(5px) brightness(0.7);
+      filter: blur(5px) brightness(0.7);
     }
     .content-style{
       background-color: transparent;
@@ -47,6 +49,8 @@
       height: 168px;
       width: 100%;
       z-index: 100;
+      -webkit-filter: blur(5px) brightness(.7);
+      filter: blur(5px) brightness(.7);
     }
     .content-style{
       background-color: transparent;
@@ -87,8 +91,10 @@
 .my-info{
   background-color: #fafafa;
   .header-image{
-    width: 70px;
-    height: 70px;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
   }
   .header-item-label-row1{
     height: 24px;
@@ -511,7 +517,8 @@
   }
   .portrait-icon{
     width: 40px;
-    height: 40px
+    height: 40px;
+    border-radius: 50%;
   }
   .no-space{
     margin: 0px;

@@ -38,7 +38,8 @@ angular.module('applicationModule')
               $timeout) {
       $scope.descriptionAppearance = "";
       $scope.items=[];//历史列表中的数据
-      $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
+      //$scope.showData = true;//默认是有数据的，无数据时显示无数据提示
+      //$scope.showNoData = false;//此时显示无数据
       searchHistoryApplyListAutomatically();//自动获取历史申请数据
       function searchHistoryApplyListAutomatically() {
         $scope.items=[];
@@ -56,8 +57,11 @@ angular.module('applicationModule')
           }
           $scope.items = result.result;
           if ($scope.items.length == 0) {
-             $scope.noData=false;
+            $scope.showData=false;
+            $scope.showNoData = true;
           } else if ($scope.items.length > 0) {
+            $scope.showData=true;
+            $scope.showNoData = false;
           angular.forEach($scope.items, function (data, index, array) {
             if (array[index].apply_status == '已入住') {
               array[index].modeCheckIn = true;
@@ -100,6 +104,12 @@ angular.module('applicationModule')
           }
         });
       }
+
+      $scope.$on('$ionicView.loaded',function(){
+        $scope.showData = true;
+        $scope.showNoData = false;
+      });
+
       $scope.goBack = function () {//返回按钮
         $ionicHistory.goBack();
       };

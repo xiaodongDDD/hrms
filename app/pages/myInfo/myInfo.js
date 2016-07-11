@@ -26,7 +26,9 @@ angular.module('myInfoModule')
       $scope.currentVersion =  baseConfig.version.currentversionName; // 获得当前版本号
       $scope.personalInfo="";
       $scope.showLoading=true;//默认显示loading
-      $scope.defaultPortrait="build/img/myInfo/man-portrait.png";
+      var portraitBackground = document.getElementById('portrait-image');
+      //$scope.defaultPortrait="build/img/myInfo/man-portrait.png";
+      $scope.defaultPortrait="";
       var url=baseConfig.businessPath + "/api_employee/get_employee_code";//获取用户信息
       var param={
          "params":{
@@ -38,10 +40,15 @@ angular.module('myInfoModule')
         var message=result.message;
         if(result.status=="S"){
           $scope.personalInfo=result.result;
-          if($scope.personalInfo.gender=="男"){//根据性别判定头像男女
-            $scope.defaultPortrait="build/img/myInfo/man-portrait.png";
-          }else if($scope.personalInfo.gender=="女"){
-            $scope.defaultPortrait="build/img/myInfo/woman-portrait.png";
+          if($scope.personalInfo.avatar!=""){
+            $scope.defaultPortrait=$scope.personalInfo.avatar;
+            portraitBackground.style.backgroundImage="url('"+$scope.personalInfo.avatar+"')";
+          }else if($scope.personalInfo.avatar==""){
+            if($scope.personalInfo.gender=="男"){//根据性别判定头像男女
+              $scope.defaultPortrait="build/img/myInfo/man-portrait.png";
+            }else if($scope.personalInfo.gender=="女"){
+              $scope.defaultPortrait="build/img/myInfo/woman-portrait.png";
+            }
           }
         }else if(result.status=="E"){
           hmsPopup.showShortCenterToast(message);
@@ -108,7 +115,9 @@ angular.module('myInfoModule')
           probationaryPeriod:info.probationary_period,
           firstWorkingDay:info.first_working_day,
           stuffStatus:info.stuff_status,
-          nextProject:info.next_project
+          nextProject:info.next_project,
+          gender:info.gender,
+          avatar:info.avatar
         };
         $state.go('tab.my-info-detail',{
           'myDetailInfo':param
@@ -118,6 +127,12 @@ angular.module('myInfoModule')
       $scope.$on('$ionicView.enter', function (e) {
         if(baseConfig.debug) {
           console.log('myInfoCtrl.$ionicView.enter');
+        }
+      });
+
+      $scope.$on('$ionicView.loaded',function(e){
+        if(baseConfig.debug) {
+          console.log('myInfoCtrl.$ionicView.loaded');
         }
       });
 
