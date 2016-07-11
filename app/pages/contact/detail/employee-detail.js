@@ -46,6 +46,7 @@ angular.module('contactModule')
       {
         if (ionic.Platform.isIOS()) {
           angular.element('.common-head').css('paddingTop', '20px');
+
         }
         $scope.employeeInfo = {}; //存储查询员工的详细信息
         $scope.contactLoading = true; //默认显示loading加载
@@ -65,6 +66,14 @@ angular.module('contactModule')
       function initEmployeeData() {
         hmsHttp.post(getEmployeeDetailUrl, employeeDetailParams).success(function (response) {
           $scope.employeeInfo = response.rows[0];
+          if(!$scope.employeeInfo.avatar) {
+            $scope.employeeInfo.avatar = 'build/img/contact/BG-profile.png'
+          }
+
+          angular.element('.human-head-image').css({
+            'backgroundImage': 'url(' + $scope.employeeInfo.avatar + ')',
+            'backgroundRepeat': 'no-repeat', 'backgroundSize': 'cover', 'backgroundPosition': 'center'
+          });
           $scope.contactLoading = false;
         }).error(function (error) {
           $scope.contactLoading = false;

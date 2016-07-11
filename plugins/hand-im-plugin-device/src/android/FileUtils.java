@@ -12,7 +12,7 @@ import com.hand_china.hrms.R;
 public class FileUtils {
 	/**
 	 * 读取表情配置文件
-	 *
+	 * 
 	 * @param context
 	 * @return
 	 */

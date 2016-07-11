@@ -52,7 +52,7 @@ angular.module('tsApproveModule')
        */
       {
         if (ionic.Platform.isIOS()) {
-          angular.element('.custom-head').css('paddingTop', '20px');
+          angular.element('.custom-head').css({'paddingTop':'20px','height':'120px'});
           angular.element('.ts-list-bg').css('paddingTop', '120px');
         }
         $scope.showProjectName = true; //默认显示项目名称
@@ -196,14 +196,14 @@ angular.module('tsApproveModule')
           try{
             var result = response.result;
             var startDate = result[0].splice(/-/, '');
-            var endDate = result[result.length - 1].splice(/-/, '');
+            var endDate = result[1].splice(/-/, '');
             tsListParams.params.p_page = 1;
             tsListParams.params.p_start_date = startDate;
             tsListParams.params.p_end_date = endDate;
             $scope.showLsLoading = true;
             $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
           } catch(e) {
-            alert('取值失败'+ angular.toJson(response));
+            alert('取值失败'+ angular.toJson(response.result));
           }
         };
         var error = function (response) {

@@ -4,7 +4,7 @@
   color: $color-base;
   background-image: url("./../img/application/timesheet-approve/list/BG@3x.png");
   background-size: cover;
-  padding-top: 120px;
+  padding-top: 100px;
   width: 100%;
   height: 100%;
 }
@@ -255,44 +255,64 @@
 }
 
 @media screen and (max-width: 320px) and (min-width: 300px) {
-  .custom-head-background {
+  .platform-ios .custom-head-background {
     background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #a3bfe0);
     background: linear-gradient(top, #17468F, #3D7BC4, #a3bfe0); /* 标准的语法 */
+  }
+  .platform-android .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #89aed9);
+    background: linear-gradient(top, #17468F, #3D7BC4, #89aed9); /* 标准的语法 */
   }
 }
 
 @media screen and (max-width: 350px) and (min-width: 321px) {
-  .custom-head-background {
+  .platform-ios .custom-head-background {
     background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #a4c0e0);
     background: linear-gradient(top, #17468F, #3D7BC4, #a4c0e0); /* 标准的语法 */
+  }
+  .platform-android .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #8aaed9);
+    background: linear-gradient(top, #17468F, #3D7BC4, #8aaed9); /* 标准的语法 */
   }
 }
 
 @media screen and (max-width: 389px) and (min-width: 351px) {
-  .custom-head-background {
+  .platform-ios .custom-head-background {
     background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #93b4dc);
     background: linear-gradient(top, #17468F, #3D7BC4, #93b4dc); /* 标准的语法 */
+  }
+  .platform-android .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #7ca5d5);
+    background: linear-gradient(top, #17468F, #3D7BC4, #7ca5d5); /* 标准的语法 */
   }
 }
 
 @media screen and (max-width: 401px) and (min-width: 390px) {
-  .custom-head-background {
+  .platform-ios .custom-head-background {
     background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #8fb2da);
     background: linear-gradient(top, #17468F, #3D7BC4, #8fb2da); /* 标准的语法 */
+  }
+  .platform-android .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #79a3d4);
+    background: linear-gradient(top, #17468F, #3D7BC4, #79a3d4); /* 标准的语法 */
   }
 }
 
 @media screen and (min-width: 402px) {
-  .custom-head-background {
+  .platform-ios .custom-head-background {
     background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #8bafd9);
     background: linear-gradient(top, #17468F, #3D7BC4, #8bafd9); /* 标准的语法 */
+  }
+  .platform-android .custom-head-background {
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #74a0d2);
+    background: linear-gradient(top, #17468F, #3D7BC4, #74a0d2); /* 标准的语法 */
   }
 }
 
 .custom-head {
   position: fixed;
   z-index: 100;
-  height: 120px;
+  height: 100px;
   width: 100%;
   .custom-first-head {
     height: 44px;

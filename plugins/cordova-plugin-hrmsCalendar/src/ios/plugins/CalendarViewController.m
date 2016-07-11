@@ -19,7 +19,7 @@
 @interface CalendarViewController ()
 <UICollectionViewDataSource, UICollectionViewDelegate>
 {
-    //存放钻中的日期数组
+    //存放选中的日期数组
     NSMutableArray *selectcalendarList;
     
     
@@ -162,7 +162,6 @@ static NSString *DayCell = @"DayCell";
         [self processList:model];
     }
     [self.collectionView reloadData];
-    
 }
 
 - (void)processList:(CalendarDayModel *)model {
@@ -191,19 +190,17 @@ static NSString *DayCell = @"DayCell";
                     //第一个在前
                     [self.Logic selectLogic:calenday];
                     [selectcalendarList addObject:calenday];
-                    [self compareDate:selectcalendarList];
                 }
                 
                 else if (firstInt != modelInt && calendayInt>=modelInt && calendayInt<firstInt) {
                     //第二个选在第一个前面
                     [self.Logic selectLogic:calenday];
                     [selectcalendarList addObject:calenday];
-                    [self compareDate:selectcalendarList];
+                    
                 }
-                
             }
         }
-        
+        [self compareDate:selectcalendarList];//排序
         CalendarDayModel *beginDay = selectcalendarList.firstObject;
         CalendarDayModel *endDay = selectcalendarList.lastObject;
         
@@ -223,7 +220,7 @@ static NSString *DayCell = @"DayCell";
             [self.collectionView reloadData];
         }]];
         [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            
+            // NSLog(@"%@,%@,%li",selectcalendarList.firstObject,selectcalendarList.lastObject,selectcalendarList.count);
             self.calendarblock(selectcalendarList);//返回给上级
             [self performSelector:@selector(delayFunction) withObject:nil afterDelay:0.2];
         }]];
@@ -234,25 +231,16 @@ static NSString *DayCell = @"DayCell";
 }
 
 //日期重新排序按照从前往后
-- (void)compareDate:(NSMutableArray *)array
+- (void)compareDate:(NSMutableArray *)originalArray
 {
-    for (int n=0; n<array.count-1; n++) {
-        for (int i=0; i<array.count-1-n; i++) {
-            CalendarDayModel *dayModelBefore = (CalendarDayModel *)array[i];
-            NSString *dayModelBeforeStr = [dayModelBefore toString];
-            
-            CalendarDayModel *dayModelNext = (CalendarDayModel *)array[i+1];
-            NSString *dayModelNextStr = [dayModelNext toString];
-            
-            switch ([dayModelBeforeStr compare:dayModelNextStr]) {
-                case NSOrderedDescending:
-                    [array exchangeObjectAtIndex:i+1 withObjectAtIndex:i];
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+    NSSortDescriptor *descriptor1 = [[NSSortDescriptor alloc
+                                      ] initWithKey:@"self.year" ascending:YES];
+    NSSortDescriptor *descriptor2 = [[NSSortDescriptor alloc
+                                      ] initWithKey:@"self.month" ascending:YES];
+    NSSortDescriptor *descriptor3 = [[NSSortDescriptor alloc
+                                      ] initWithKey:@"self.day" ascending:YES];
+    [originalArray sortUsingDescriptors:@[descriptor1,descriptor2,descriptor3]];
+    
 }
 
 //返回这个UICollectionView是否可以被选择

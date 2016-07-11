@@ -44,7 +44,9 @@
       <img class="human-img" ng-cloak ng-src="{{i.avatar | filterImg}}"/>
       <div class="col col-80 col-padding">
         <div class="row name" ng-cloak>
-          {{i.emp_name}}({{i.emp_code}})
+          <span ng-bind="i.emp_name"></span>
+          <span ng-bind-html="'('+i.emp_code+')'"></span>
+          <!--{{i.emp_name}}({{i.emp_code}})-->
           <span class="employee-status" ng-bind="i.status"></span>
         </div>
         <div class="row mail-tel" ng-bind="i.email">
@@ -56,7 +58,7 @@
     </div>
     <ion-infinite-scroll on-infinite="loadMore()"
                          ng-if="showInfinite"
-                         distance="1%">
+                         distance="0.5%">
     </ion-infinite-scroll>
   </ion-content>
 </ion-modal-view>

@@ -40,8 +40,7 @@
             for (CalendarDayModel *dayModel in array) {
                 [daysString addObject:[dayModel toString]];//把数据模型转换成字符串
             }
-            NSDictionary *JSon = [[NSDictionary alloc]initWithObjects:@[daysString] forKeys:@[@"result"]];
-            
+            NSDictionary *JSon = [NSDictionary dictionaryWithObject:@[daysString.firstObject,daysString.lastObject] forKey:@"result"];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:JSon];
         }else{
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{@"result":@"Please pass args!"}];

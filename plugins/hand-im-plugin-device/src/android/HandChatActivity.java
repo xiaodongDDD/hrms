@@ -569,6 +569,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //判断是否连接到即时通讯服务器 进行重连操作
         //获取相册选择到的照片 或者照相机拍摄到的照片
+		if(resultCode == RESULT_OK){
             switch (requestCode) {
                 case PHOTO_GRAPH:
                     if (cameraUrl != null && !cameraUrl.equals("")) {
@@ -592,6 +593,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                     }
                     break;
             }
+		}
             super.onActivityResult(requestCode, resultCode, data);
     }
 

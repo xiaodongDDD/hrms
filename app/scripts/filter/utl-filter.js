@@ -38,6 +38,7 @@ HmsModule.filter('weekDay', function () {
   }
 });
 
+//图片过滤器
 HmsModule.filter('filterImg', function () {
   return function (data) {
     if (data) {
@@ -49,3 +50,17 @@ HmsModule.filter('filterImg', function () {
   }
 });
 
+//department截取
+HmsModule.filter('filterTextDepartment', function () {
+  return function (data) {
+    if (data) {
+      if (data.length > 20) {
+        var resultData = data.split('.');
+        data = resultData[resultData.length - 1];
+      }
+      return data;
+    } else {
+      return data;
+    }
+  }
+});

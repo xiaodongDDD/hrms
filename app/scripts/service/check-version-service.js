@@ -48,8 +48,24 @@ angular.module('HmsModule')
             }
             var serveVersion = serveVersionParams.bigVersion.split('.');
             var localVersion = baseConfig.version.currentVersion.split('.');
+            function dealVersion(){
+              if (parseInt(serveVersion[0]) < parseInt(localVersion[0])) {
+                return true;
+              } else if (parseInt(serveVersion[0]) == parseInt(localVersion[0])){
+                if (parseInt(serveVersion[1]) < parseInt(localVersion[1])) {
+                  return true;
+                } else if (parseInt(serveVersion[1]) == parseInt(localVersion[1])){
+                  if (parseInt(serveVersion[2]) < parseInt(localVersion[2])) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }
+              }
+              return false;
+            }
 
-            if (serveVersion[0] > localVersion[0] || serveVersion[1] > localVersion[1] || serveVersion[2] > localVersion[2]) {
+            if (dealVersion()) {
               if (ionic.Platform.isWebView()) {
                 function selectAction(buttonIndex) { // update from pgy
                   if (buttonIndex == 1) { //确认按钮
