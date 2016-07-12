@@ -4,7 +4,7 @@ angular.module('myApp')
       $stateProvider
         .state('tab.workflow-detail', {
           url: '/workflow-detail',
-          params: {"detail": {}, "processedFlag": {}},
+          params: {"detail": {}, "processedFlag": {}, "type": ""},
           views: {
             'tab-application': {
               templateUrl: 'build/pages/workflow/detail/detail.html',
@@ -52,13 +52,16 @@ angular.module('applicationModule')
 
       $scope.currentDetail = $stateParams.detail; //传过来的数据块
       var detail = $stateParams.detail;//传过来的数据块
-      var processedFlag = $stateParams.processedFlag.value; //已经审批和未审批的标记
+      var processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
       var multipleArrayList = [];
 
       if (baseConfig.debug) {
         console.log('WorkFLowDetailCtrl.detail ' + angular.toJson(detail));
         console.log('WorkFLowDetailCtrl.processedFlag ' + processedFlag);
       }
+
+      $scope.LoadingPushData = true;
+      $scope.LoadingModalData = true;
 
       //控制需要显示的数据模块
       $scope.showList = {
@@ -101,9 +104,9 @@ angular.module('applicationModule')
 
       /*------------------转正申请数据源------------------*/
       $scope.applicationEmployeeType = {
-        "agree": {"selected": true, "value":"1"},
-        "reject": {"selected": false, "value":"-1"},
-        "notChange": {"selected": false, "value":"0"}
+        "agree": {"selected": true, "value": "1"},
+        "reject": {"selected": false, "value": "-1"},
+        "notChange": {"selected": false, "value": "0"}
       };
       $scope.applicationEmployeeDetail = {};
       $scope.applicationEmployeeInfo = [];
@@ -169,53 +172,54 @@ angular.module('applicationModule')
           hmsPopup.hideLoading();
         };
         hmsPopup.showLoading('获取部门信息');
-        workFLowListService.getPositionData(success,error,unitId);
+        workFLowListService.getPositionData(success, error, unitId);
       },
 
-      //职位选择与清选
-      $scope.positionUtil = {
-        positionChoose: function (item) {
-          $scope.applicationEmployeeDetail.position = item.name;
-          $scope.applicationEmployeeDetail.position_id = item.value;;
-          $scope.positionModal.hide();
-        },
+        //职位选择与清选
+        $scope.positionUtil = {
+          positionChoose: function (item) {
+            $scope.applicationEmployeeDetail.position = item.name;
+            $scope.applicationEmployeeDetail.position_id = item.value;
+            ;
+            $scope.positionModal.hide();
+          },
 
-        clearPositionChoose: function () {
-          $scope.applicationEmployeeDetail.position = '';
-          $scope.applicationEmployeeDetail.position_id = '';
-          //$scope.config.position.value = '';
-          $scope.positionModal.hide();
-        },
+          clearPositionChoose: function () {
+            $scope.applicationEmployeeDetail.position = '';
+            $scope.applicationEmployeeDetail.position_id = '';
+            //$scope.config.position.value = '';
+            $scope.positionModal.hide();
+          },
 
-        closePositionModal: function () {
-          $scope.positionModal.hide();
-        },
+          closePositionModal: function () {
+            $scope.positionModal.hide();
+          },
 
-        getDepartmentData: function (unitId) {
-          var success = function (response) {
-            $scope.parent = response.parent[0];
-            $scope.child = response.child;
-            hmsPopup.hideLoading();
-          };
-          var error = function (response) {
-            hmsPopup.hideLoading();
-          };
-          hmsPopup.showLoading('获取部门信息');
-          workFLowListService.getUnitData(success, error, unitId);
-        },
+          getDepartmentData: function (unitId) {
+            var success = function (response) {
+              $scope.parent = response.parent[0];
+              $scope.child = response.child;
+              hmsPopup.hideLoading();
+            };
+            var error = function (response) {
+              hmsPopup.hideLoading();
+            };
+            hmsPopup.showLoading('获取部门信息');
+            workFLowListService.getUnitData(success, error, unitId);
+          },
 
-        getParentDepartmentData: function (unitId) {
-          var success = function (response) {
-            $scope.parent = response.parent[0];
-            $scope.child = response.child;
-            $scope.getPositionData($scope.parent.value);
-          };
-          var error = function (response) {
-          };
-          hmsPopup.showLoading('获取部门信息');
-          workFLowListService.getParentUnitData(success,error,unitId);
-        }
-      };
+          getParentDepartmentData: function (unitId) {
+            var success = function (response) {
+              $scope.parent = response.parent[0];
+              $scope.child = response.child;
+              $scope.getPositionData($scope.parent.value);
+            };
+            var error = function (response) {
+            };
+            hmsPopup.showLoading('获取部门信息');
+            workFLowListService.getParentUnitData(success, error, unitId);
+          }
+        };
 
 
       //选择值列表的数据
@@ -271,7 +275,7 @@ angular.module('applicationModule')
         },
         //保存转正信息
         savePositiveBlock1: function (detail) {
-          if(baseConfig.debug){
+          if (baseConfig.debug) {
             console.log('detail ' + angular.toJson(detail));
           }
 
@@ -306,22 +310,24 @@ angular.module('applicationModule')
               if (result.workflow_data) {
                 $scope.applicationEmployeeDetail = result.workflow_data.details.detail;
                 $scope.applicationEmployeeDetail.showFlag = true;
-                try{
-                  if($scope.applicationEmployeeDetail.trial_date == ""){
-                    var dateString = $scope.applicationEmployeeDetail.trial_date.replace(/-/g,"/");
+                try {
+                  if ($scope.applicationEmployeeDetail.trial_date == "") {
+                    var dateString = $scope.applicationEmployeeDetail.trial_date.replace(/-/g, "/");
                     $scope.applicationEmployeeDetail.trialDate = new Date(dateString);
-                  }else{
+                  } else {
                     $scope.applicationEmployeeDetail.trialDate = new Date();
                     $scope.applicationEmployeeDetail.trial_date =
                       HmsDateFormat.getDateString($scope.applicationEmployeeDetail.trialDate);
                   }
-                }catch(e){
+                } catch (e) {
                 }
                 $scope.applicationEmployeeInfo = result.workflow_data.testResult.detail;
                 $scope.applicationEmployeeAbility = result.workflow_data.testResult.record;
                 $scope.applicationEmployeeTrial = result.workflow_data.trialSummary.summary;
               }
             }
+
+            $scope.LoadingModalData = false;
           };
           workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
         };
@@ -389,6 +395,7 @@ angular.module('applicationModule')
             }
             else {
             }
+            $scope.LoadingModalData = false;
           };
           var error = function (response) {
           };
@@ -489,7 +496,9 @@ angular.module('applicationModule')
           var success = function (result) {
             if (result.status == 'S') {
               hmsPopup.showPopup('处理工作流成功!');
-              workFLowListService.setRefreshWorkflowList(true);
+              if($stateParams.type == 'WORKFLOWDETAIL'){
+                workFLowListService.setRefreshWorkflowList(true);
+              }
               $ionicHistory.goBack();
             }
             else {
@@ -614,6 +623,7 @@ angular.module('applicationModule')
                 }
               }
             }
+            $scope.LoadingModalData = false;
           };
           workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
         };
@@ -631,9 +641,55 @@ angular.module('applicationModule')
           } else {
             workflowDetail().getWorkflowDetail();
           }
+        },
+        initPushDetail: function (detailId) {
+          var success = function (result) {
+            if(result.returnData.processFlag == 'Y'){
+              processedFlag = true;
+            }else{
+              processedFlag = false;
+            }
+            detail.canApprove = result.returnData.canApprove;
+            detail.canGoBack = result.returnData.canGoBack;
+            detail.canBackTo = result.returnData.canBackTo;
+            detail.canTransmit = result.returnData.canTransmit;
+            detail.canRefuse = result.returnData.canRefuse;
+
+            $scope.currentDetail = detail;
+
+            $scope.LoadingPushData = false;
+
+          };
+          var error = function (response) {
+          };
+          var recordId = '';
+          var workflowId = '';
+          var instanceId = '';
+          var nodeId = '';
+
+          if(detailId.recordId){
+            recordId = detailId.recordId;
+          }
+          if(detailId.workflowId){
+            workflowId = detailId.workflowId;
+          }
+          if(detailId.instanceId){
+            instanceId = detailId.instanceId;
+          }
+          if(detailId.nodeId){
+            nodeId = detailId.nodeId;
+          }
+          workFLowListService.getDetailBase(success, error, recordId , workflowId,instanceId,nodeId);
         }
       };
 
-      init.initDataModal();
+      if($stateParams.type == 'PUSHDETAIL'){ //消息推送过来的
+        init.initPushDetail(detail);
+        init.initDataModal();
+      }else if($stateParams.type == 'WORKFLOWDETAIL'){
+        $scope.LoadingPushData = false;
+        init.initDataModal();
+      }
+
 
     }]);

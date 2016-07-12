@@ -62,7 +62,7 @@
     "cordova-plugin-file"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }

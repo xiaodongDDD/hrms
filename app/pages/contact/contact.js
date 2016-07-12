@@ -350,4 +350,11 @@ angular.module('contactModule')
           window.location.href = "tel:" + baseInfo;
         }
       };
+
+      $scope.$on('$destroy', function (e) {
+        if (baseConfig.debug) {
+          console.log('ContactCtrl.$destroy');
+        }
+        $scope.contactInputModal.remove();
+      });
     }]);

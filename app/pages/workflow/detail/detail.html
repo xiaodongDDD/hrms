@@ -39,198 +39,208 @@
       </div>
     </div>
 
-    <!--合同续签方式维护方式-->
-    <div class="hms-workflow-array" ng-if="showList.contractRenewShowFlag">
-      <div class="hms-singal-array-header">
-        <div class="hms-singal-array-name">
-          <i class="ion-record"></i>合同续签方式维护通知
-        </div>
-        <div class="hms-singal-array-operation-text" ng-click="renewContractUtil.submit()" ng-if="!processedFlag">
-          保存
-        </div>
-      </div>
-      <div class="hms-singal-array-content">
-        <div class="hms-singal-array-line" ng-click="renewContractUtil.showDataList()">
-          <div class="hms-singal-array-key">
-            续签方式
-          </div>
-          <div class="hms-singal-array-value" ng-bind="renewContract.method">
-          </div>
-        </div>
-        <div class="hms-singal-array-line">
-          <div class="hms-singal-array-key">
-            续签地址
-          </div>
-          <div class="hms-singal-array-value" ng-bind="renewContract.address" ng-if="!renewContractEditable">
-          </div>
-          <input class="hms-singal-array-value" placeholder="请填写邮寄地址"
-                 ng-model="renewContract.address" ng-if="renewContractEditable" style="height: 18px;">
-          </input>
-        </div>
-      </div>
+
+    <div class="hms-hide-content" ng-if="LoadingPushData || LoadingModalData">
+      <hms-loading></hms-loading>
     </div>
 
-    <!--转正申请-->
-    <div class="hms-workflow-array" ng-if="showList.applicationFullMemberShowFlag">
-      <div class="hms-singal-array-header">
-        <div class="hms-singal-array-name">
-          <i class="ion-record"></i>转正信息
+    <div ng-if="!LoadingPushData&&!LoadingModalData">
+
+      <!--合同续签方式维护方式-->
+      <div class="hms-workflow-array" ng-if="showList.contractRenewShowFlag">
+        <div class="hms-singal-array-header">
+          <div class="hms-singal-array-name">
+            <i class="ion-record"></i>合同续签方式维护通知
+          </div>
+          <div class="hms-singal-array-operation-text" ng-click="renewContractUtil.submit()" ng-if="!processedFlag">
+            保存
+          </div>
         </div>
-        <div class="hms-singal-array-operation"
-             ng-click="workflowDetailUtil.showContent(applicationEmployeeDetail,$event)">
-          <i
-            ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[applicationEmployeeDetail.showFlag]"></i>
-        </div>
-      </div>
-      <div ng-if="applicationEmployeeDetail.showFlag">
         <div class="hms-singal-array-content">
-          <div class="hms-singal-array-line" ng-click="showDataList()">
+          <div class="hms-singal-array-line" ng-click="renewContractUtil.showDataList()">
             <div class="hms-singal-array-key">
-              申请者
+              续签方式
             </div>
-            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.applier">
-            </div>
-          </div>
-          <div class="hms-singal-array-line" ng-click="openPositionModal()">
-            <div class="hms-singal-array-key">
-              转正职位
-            </div>
-            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.position">
-            </div>
-          </div>
-          <div class="hms-singal-array-line" ng-click="applicationFullMemberUtil.showDate()">
-            <div class="hms-singal-array-key">
-              转正日期
-            </div>
-            <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.trial_date">
+            <div class="hms-singal-array-value" ng-bind="renewContract.method">
             </div>
           </div>
           <div class="hms-singal-array-line">
             <div class="hms-singal-array-key">
-              转正意见
+              续签地址
             </div>
-            <div class="hms-singal-array-value">
-              <a class="application-member-opioion" ng-class="{'true':'selected'}[applicationEmployeeType.agree.selected]"
-                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.agree,'agree')">同意</a>
-              <a class="application-member-opioion" ng-class="{'true':'selected'}[applicationEmployeeType.reject.selected]"
-                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.reject,'reject')">不同意</a>
-              <a class="application-member-opioion"
-                 ng-class="{'true':'selected'}[applicationEmployeeType.notChange.selected]"
-                 ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.notChange,'notChange')">试用中</a>
+            <div class="hms-singal-array-value" ng-bind="renewContract.address" ng-if="!renewContractEditable">
             </div>
+            <input class="hms-singal-array-value" placeholder="请填写邮寄地址"
+                   ng-model="renewContract.address" ng-if="renewContractEditable" style="height: 18px;">
+            </input>
           </div>
         </div>
-        <a class="hms-application-member-button" ng-if="!processedFlag"
-           ng-click="applicationFullMemberUtil.savePositiveBlock1(applicationEmployeeDetail)">保存</a>
-        <div class="hms-singal-array-sub-header">
-          <div class="hms-singal-array-name">
-            试用期信息
-          </div>
-        </div>
-        <div class="hms-singal-array-content">
-          <div class="hms-singal-array-line" ng-repeat="info in applicationEmployeeInfo">
-            <div class="hms-singal-array-key" ng-bind="info.item_name">
-            </div>
-            <div class="hms-singal-array-value" ng-bind="info.item_value">
-            </div>
-          </div>
-        </div>
-        <div class="hms-singal-array-sub-header">
-          <div class="hms-singal-array-name">
-            考评结果
-          </div>
-        </div>
-        <div class="hms-singal-array-content">
-          <div class="hms-singal-array-line" ng-repeat="ability in applicationEmployeeAbility"
-               ng-click="applicationFullMemberUtil.showEmployeeGrade(ability)">
-            <div class="hms-singal-array-key" ng-bind="ability.element_name">
-            </div>
-            <div class="hms-singal-array-value" ng-bind="ability.element_desc">
-            </div>
-          </div>
-        </div>
-        <a class="hms-application-member-button" ng-if="!processedFlag">保存</a>
-        <div class="hms-singal-array-sub-header">
-          <div class="hms-singal-array-name">
-            试用期总结
-          </div>
-        </div>
-        <div class="hms-singal-array-content" ng-repeat="trial in applicationEmployeeTrial">
-          <div class="hms-singal-array-textarea-line">
-            <div class="hms-singal-array-textarea-key" ng-bind="trial.field_name">
-            </div>
-            <div class="hms-singal-array-textarea-value" ng-if="trial.can_update==0" ng-bind="trial.field_value">
-            </div>
-            <textarea ng-model="trial.field_value" ng-if="trial.can_update==1"></textarea>
-          </div>
-        </div>
-        <a class="hms-application-member-button" ng-if="!processedFlag">保存</a>
       </div>
-    </div>
 
-    <!--一维数组-->
-    <div class="hms-workflow-array" ng-repeat="array in singalArrayList">
-      <div class="hms-singal-array-header">
-        <div class="hms-singal-array-name">
-          <i class="ion-record"></i>{{array.detail_title}};
-        </div>
-        <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
-          <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
-        </div>
-      </div>
-      <div class="hms-singal-array-content" ng-if="array.showFlag">
-        <div class="hms-singal-array-line" ng-repeat="arrayItem in array.detail" ng-if="true">
-          <div class="hms-singal-array-key" ng-bind="arrayItem.item_name">
+      <!--转正申请-->
+      <div class="hms-workflow-array" ng-if="showList.applicationFullMemberShowFlag">
+        <div class="hms-singal-array-header">
+          <div class="hms-singal-array-name">
+            <i class="ion-record"></i>转正信息
           </div>
-          <div class="hms-singal-array-value" ng-bind="arrayItem.item_value">
+          <div class="hms-singal-array-operation"
+               ng-click="workflowDetailUtil.showContent(applicationEmployeeDetail,$event)">
+            <i
+              ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[applicationEmployeeDetail.showFlag]"></i>
           </div>
         </div>
+        <div ng-if="applicationEmployeeDetail.showFlag">
+          <div class="hms-singal-array-content">
+            <div class="hms-singal-array-line" ng-click="showDataList()">
+              <div class="hms-singal-array-key">
+                申请者
+              </div>
+              <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.applier">
+              </div>
+            </div>
+            <div class="hms-singal-array-line" ng-click="openPositionModal()">
+              <div class="hms-singal-array-key">
+                转正职位
+              </div>
+              <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.position">
+              </div>
+            </div>
+            <div class="hms-singal-array-line" ng-click="applicationFullMemberUtil.showDate()">
+              <div class="hms-singal-array-key">
+                转正日期
+              </div>
+              <div class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.trial_date">
+              </div>
+            </div>
+            <div class="hms-singal-array-line">
+              <div class="hms-singal-array-key">
+                转正意见
+              </div>
+              <div class="hms-singal-array-value">
+                <a class="application-member-opioion"
+                   ng-class="{'true':'selected'}[applicationEmployeeType.agree.selected]"
+                   ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.agree,'agree')">同意</a>
+                <a class="application-member-opioion"
+                   ng-class="{'true':'selected'}[applicationEmployeeType.reject.selected]"
+                   ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.reject,'reject')">不同意</a>
+                <a class="application-member-opioion"
+                   ng-class="{'true':'selected'}[applicationEmployeeType.notChange.selected]"
+                   ng-click="applicationFullMemberUtil.changeType(applicationEmployeeType.notChange,'notChange')">试用中</a>
+              </div>
+            </div>
+          </div>
+          <a class="hms-application-member-button" ng-if="!processedFlag"
+             ng-click="applicationFullMemberUtil.savePositiveBlock1(applicationEmployeeDetail)">保存</a>
+          <div class="hms-singal-array-sub-header">
+            <div class="hms-singal-array-name">
+              试用期信息
+            </div>
+          </div>
+          <div class="hms-singal-array-content">
+            <div class="hms-singal-array-line" ng-repeat="info in applicationEmployeeInfo">
+              <div class="hms-singal-array-key" ng-bind="info.item_name">
+              </div>
+              <div class="hms-singal-array-value" ng-bind="info.item_value">
+              </div>
+            </div>
+          </div>
+          <div class="hms-singal-array-sub-header">
+            <div class="hms-singal-array-name">
+              考评结果
+            </div>
+          </div>
+          <div class="hms-singal-array-content">
+            <div class="hms-singal-array-line" ng-repeat="ability in applicationEmployeeAbility"
+                 ng-click="applicationFullMemberUtil.showEmployeeGrade(ability)">
+              <div class="hms-singal-array-key" ng-bind="ability.element_name">
+              </div>
+              <div class="hms-singal-array-value" ng-bind="ability.element_desc">
+              </div>
+            </div>
+          </div>
+          <a class="hms-application-member-button" ng-if="!processedFlag">保存</a>
+          <div class="hms-singal-array-sub-header">
+            <div class="hms-singal-array-name">
+              试用期总结
+            </div>
+          </div>
+          <div class="hms-singal-array-content" ng-repeat="trial in applicationEmployeeTrial">
+            <div class="hms-singal-array-textarea-line">
+              <div class="hms-singal-array-textarea-key" ng-bind="trial.field_name">
+              </div>
+              <div class="hms-singal-array-textarea-value" ng-if="trial.can_update==0" ng-bind="trial.field_value">
+              </div>
+              <textarea ng-model="trial.field_value" ng-if="trial.can_update==1"></textarea>
+            </div>
+          </div>
+          <a class="hms-application-member-button" ng-if="!processedFlag">保存</a>
+        </div>
       </div>
-    </div>
 
-    <!--多维数组-->
-    <div class="hms-workflow-array" ng-repeat="array in multipleLine">
-      <div class="hms-singal-array-header">
-        <div class="hms-singal-array-name">
-          <i class="ion-record"></i>{{array.title}};
-        </div>
-        <div class="hms-singal-array-link">
-          <a class="hms-array-selector">共{{array.arrayList.length}}条</a>
-          <a class="hms-array-selector" ng-click="toBack(array)"
-             ng-class="{'true':'no-activated'}[array.currentPage==1]">上一条</a>
-          <a class="hms-array-selector" ng-click="goForward(array)"
-             ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
-        </div>
-        <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
-          <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
-        </div>
-      </div>
-      <div class="hms-singal-array-content" ng-if="array.showFlag">
-        <div class="hms-singal-array-line" ng-repeat="item in array.currentArray">
-          <div class="hms-singal-array-key" ng-bind="item.name">
+      <!--一维数组-->
+      <div class="hms-workflow-array" ng-repeat="array in singalArrayList">
+        <div class="hms-singal-array-header">
+          <div class="hms-singal-array-name">
+            <i class="ion-record"></i>{{array.detail_title}};
           </div>
-          <div class="hms-singal-array-value" ng-bind="item.value">
+          <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
+            <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
+          </div>
+        </div>
+        <div class="hms-singal-array-content" ng-if="array.showFlag">
+          <div class="hms-singal-array-line" ng-repeat="arrayItem in array.detail" ng-if="true">
+            <div class="hms-singal-array-key" ng-bind="arrayItem.item_name">
+            </div>
+            <div class="hms-singal-array-value" ng-bind="arrayItem.item_value">
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!--处理意见和转交人-->
-    <div class="hms-extra-info" ng-if="workflowActionShowFlag">
-      <div class="hms-opinion">
-        <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
-        </input>
+      <!--多维数组-->
+      <div class="hms-workflow-array" ng-repeat="array in multipleLine">
+        <div class="hms-singal-array-header">
+          <div class="hms-singal-array-name">
+            <i class="ion-record"></i>{{array.title}};
+          </div>
+          <div class="hms-singal-array-link">
+            <a class="hms-array-selector">共{{array.arrayList.length}}条</a>
+            <a class="hms-array-selector" ng-click="toBack(array)"
+               ng-class="{'true':'no-activated'}[array.currentPage==1]">上一条</a>
+            <a class="hms-array-selector" ng-click="goForward(array)"
+               ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
+          </div>
+          <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
+            <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
+          </div>
+        </div>
+        <div class="hms-singal-array-content" ng-if="array.showFlag">
+          <div class="hms-singal-array-line" ng-repeat="item in array.currentArray">
+            <div class="hms-singal-array-key" ng-bind="item.name">
+            </div>
+            <div class="hms-singal-array-value" ng-bind="item.value">
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="hms-transmit" ng-click="workflowDetailUtil.chooseTransmitPerson()">
-        <div class="row row-col-no-padding">
-          <div class="col col-20 transmit-title row-col-no-padding">
-            转交人
-          </div>
-          <div class="col col-66 transmit-person row-col-no-padding">
-            {{processExtroInfo.transmitPerson.name}}
-          </div>
-          <div class="col col-10 row-col-no-padding">
-            <img src="build/img/workflow/select@3x.png"/>
+
+      <!--处理意见和转交人-->
+      <div class="hms-extra-info" ng-if="workflowActionShowFlag">
+        <div class="hms-opinion">
+          <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
+          </input>
+        </div>
+        <div class="hms-transmit" ng-click="workflowDetailUtil.chooseTransmitPerson()">
+          <div class="row row-col-no-padding">
+            <div class="col col-20 transmit-title row-col-no-padding">
+              转交人
+            </div>
+            <div class="col col-66 transmit-person row-col-no-padding">
+              {{processExtroInfo.transmitPerson.name}}
+            </div>
+            <div class="col col-10 row-col-no-padding">
+              <img src="build/img/workflow/select@3x.png"/>
+            </div>
           </div>
         </div>
       </div>
@@ -261,7 +271,7 @@
         </div>
       </div>
     </div>
-    <div class="hms-workflow-back" > <!--ng-click="workflowDetailUtil.submitAction(actionType.back)"-->
+    <div class="hms-workflow-back"> <!--ng-click="workflowDetailUtil.submitAction(actionType.back)"-->
       <span ng-if="currentDetail.canGoBack=='Y'"></span>
     </div>
   </div>

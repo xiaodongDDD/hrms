@@ -7,30 +7,30 @@
  * @author
  * gusenlin
  */
-HmsModule.directive('hideTabs', function ($rootScope) {
-  return {
-    restrict: 'A',
-    link: function (scope, element, attributes) {
-      scope.$on('$ionicView.beforeEnter', function () {
-        scope.$watch(attributes.hideTabs, function (value) {
-          console.log('$ionicView.beforeEnter value ' + value);
-          if (value) {
-            $rootScope.hideTabs = false;
-          }
-          else {
-            $rootScope.hideTabs = true;
-          }
+HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attributes) {
+        scope.$on('$ionicView.beforeEnter', function () {
+          scope.$watch(attributes.hideTabs, function (value) {
+            console.log('$ionicView.beforeEnter value ' + value);
+            if (value) {
+              $rootScope.hideTabs = false;
+            }
+            else {
+              $rootScope.hideTabs = true;
+            }
+          });
         });
-      });
 
-      scope.$on('$ionicView.beforeLeave', function () {
-        $rootScope.hideTabs = true;
-        console.log('$ionicView.beforeLeave value ');
-      });
-    }
-  };
-})
-  .directive('elasticImage', function ($ionicScrollDelegate) {
+        scope.$on('$ionicView.beforeLeave', function () {
+          $rootScope.hideTabs = true;
+          console.log('$ionicView.beforeLeave value ');
+        });
+      }
+    };
+  }])
+  .directive('elasticImage', ['$ionicScrollDelegate', function ($ionicScrollDelegate) {
     return {
       restrict: 'A',
       link: function ($scope, $scroller, $attr) {
@@ -62,7 +62,9 @@ HmsModule.directive('hideTabs', function ($rootScope) {
         });
       }
     }
-  }).directive('circleRotate', function ($timeout) {
+  }])
+
+  .directive('circleRotate', ['$timeout', function ($timeout) {
     return {
       restrict: 'A',
       link: function ($scope, $scroller, $attr) {
@@ -232,7 +234,9 @@ HmsModule.directive('hideTabs', function ($rootScope) {
         }
       }
     }
-  }).directive('calculatePortrait', function () {
+  }])
+
+  .directive('calculatePortrait', function () {
     return {
       restrict: 'A',
       link: function ($scope, $scroller, $attr) {
@@ -266,7 +270,7 @@ HmsModule.directive('hideTabs', function ($rootScope) {
  * @description:loading tag
  *
  */
-HmsModule.directive('hmsLoading', function ($rootScope) {
+HmsModule.directive('hmsLoading', ['$rootScope', function ($rootScope) {
   return {
     restrict: 'E',
     template: '<div class="hms-hide-small-content">' +
@@ -279,12 +283,13 @@ HmsModule.directive('hmsLoading', function ($rootScope) {
     link: function (scope, element, attrs, controller) {
     }
   };
-});
+}]);
+
 /**
  * @description:nodata tag
  *
  */
-HmsModule.directive('hmsNoData', function ($rootScope) {
+HmsModule.directive('hmsNoData', ['$rootScope', function ($rootScope) {
   return {
     restrict: 'E',
     template: '<div class="hms-hide-small-content">' +
@@ -298,4 +303,4 @@ HmsModule.directive('hmsNoData', function ($rootScope) {
     link: function (scope, element, attrs, controller) {
     }
   };
-});
+}]);
