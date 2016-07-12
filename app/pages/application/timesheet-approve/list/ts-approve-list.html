@@ -2,13 +2,16 @@
   <custom-head-bar action-name="{{actionName}}" custom-title="Timesheet审批" go-back-page="$ionicGoBack()"
                    do-action="doSelectAction()">
     <div class="custom-second-head">
-      <div class="row bg-input" >
-        <button class="button button-clear calendar-icon" ng-click="openCalender()">
+      <div class="row bg-input" ng-click="openDiffDateModal()">
+        <button class="button button-clear calendar-icon">
         </button>
         <span class="calendar-end-date">
-          <span class="ts-approve-calendar-text" ng-click="openCalender()">日历</span>
-          <span ng-click="selectEndDate($event)" ng-cloak>截止日期: {{endApproveDate}}</span>
+          <span ng-bind-html="'截止日期: '+endApproveDate"></span>
         </span>
+        <img ng-show="showCalendar" ng-click="revertDataModal($event)" class="img-revert-calendar"
+             ng-src="build/img/application/timesheet-approve/list/shift-G@3x.png"/>
+        <img ng-show="!showCalendar" ng-click="revertDataModal($event)" class="img-revert-calendar"
+             ng-src="build/img/application/timesheet-approve/list/shift@3x.png"/>
       </div>
       <!--<div id="connect-block" class="connect-block" ng-show="showConnectBlock&&listInfoArray.listArray.length != 0">-->
       <!--</div>-->
@@ -25,7 +28,7 @@
                    pulling-icon="ion-ios-loop">
     </ion-refresher>
     <!--<hms-no-data ng-if="listInfoArray.listArray.length == 0"></hms-no-data>-->
-    <div>
+    <div class="ts-content-bottom">
       <div id="tsApproveList" class="ts-approve-list-item" ng-repeat="i in listInfoArray.listArray"
            ng-click="goApproveDetail($index,i.employee_number,i.project_id,i.start_date,i.end_date)">
         <div class="row first-content">

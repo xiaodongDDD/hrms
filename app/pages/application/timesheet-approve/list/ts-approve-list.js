@@ -52,8 +52,10 @@ angular.module('tsApproveModule')
        */
       {
         if (ionic.Platform.isIOS()) {
-          angular.element('.custom-head').css({'paddingTop':'20px','height':'120px'});
+          angular.element('.custom-head').css({'paddingTop': '20px', 'height': '120px'});
           angular.element('.ts-list-bg').css('paddingTop', '120px');
+        } else if(ionic.Platform.isAndroid()){
+          angular.element('.ts-content-bottom').css('marginBottom', '60px');
         }
         $scope.showProjectName = true; //默认显示项目名称
         $scope.showRocket = false; //默认不显示小火箭image
@@ -61,6 +63,7 @@ angular.module('tsApproveModule')
         $scope.showDetailArrow = true; //默认显示向右的箭头--go list detail
         $scope.showLsLoading = true; //loading默认显示
         $scope.pullDownFlag = true; //下拉刷新显示标识
+        $scope.showCalendar = true; //默认显示截止日期
         var clickSelectAll = false; //默认没有点击全选
         $scope.endApproveDate = "";
         $scope.actionName = "操作";
@@ -191,9 +194,9 @@ angular.module('tsApproveModule')
         }
       };
 
-      $scope.openCalender = function () { //跳到原生日历界面--获取截止日期
+      function openCalendarPage() { //跳到原生日历界面--获取截止日期
         var success = function (response) {
-          try{
+          try {
             var result = response.result;
             var startDate = result[0].splice(/-/, '');
             var endDate = result[1].splice(/-/, '');
@@ -202,15 +205,15 @@ angular.module('tsApproveModule')
             tsListParams.params.p_end_date = endDate;
             $scope.showLsLoading = true;
             $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
-          } catch(e) {
-            alert('取值失败'+ angular.toJson(response.result));
+          } catch (e) {
+            alert('取值失败' + angular.toJson(response.result));
           }
         };
         var error = function (response) {
         };
 
-        if(ionic.Platform.isIOS()) {
-          HmsCalendar.openCalendar(success,error,'1');
+        if (ionic.Platform.isIOS()) {
+          HmsCalendar.openCalendar(success, error, '1');
         }
       };
 
@@ -226,7 +229,7 @@ angular.module('tsApproveModule')
         $scope.endDatePopover = popover;
       });
 
-      $scope.selectEndDate = function ($event) { //显示截止日期列表界面
+      function selectEndDate($event) { //显示截止日期列表界面
         //tsListParams.params.p_end_date = $scope.endApproveDate;
         if (ionic.Platform.isIOS()) {
           $scope.endDatePopover.show($event);
@@ -234,6 +237,18 @@ angular.module('tsApproveModule')
         } else {
           $scope.dateModal.show();
         }
+      };
+      $scope.openDiffDateModal = function ($event) { //响应不同的模式
+        if (!$scope.showCalendar) {
+          openCalendarPage();
+        } else {
+          selectEndDate($event);
+        }
+      };
+
+      $scope.revertDataModal = function($event) { //切换日期的不同选择模式
+        $event.stopPropagation(); //阻止事件冒泡
+        $scope.showCalendar = !$scope.showCalendar;
       };
 
       $scope.selectEndDateItem = function (newEndDateCode, newEndDateValue, newIndex) { //选择不同的截止日期
