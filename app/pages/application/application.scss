@@ -249,10 +249,50 @@ $applicationColor: white !default;
           width: 60px;
           margin-left: auto;
           margin-right: auto;
-          img {
+          &.activated{
+            background: #f8f8f8;
+          }
+          .app-item-content{
             height: 60px;
             width: 60px;
+            position: relative;
+            .app-extra{
+              position: absolute;
+              top: 0px;
+              right: 0px;
+              width: 24px;
+              height: 16px;
+              line-height: 12px;
+              padding: 2px;
+              border-radius: 8px;
+              font-size: 10px;
+              background: #13B5B1;
+              color: white;
+              text-align: center;
+            }
+            .app-extra-refresh {
+              position: absolute;
+              top: 0;
+              right: 0px;
+              width: 24px;
+              height: 16px;
+              line-height: 16px;
+              border-radius: 8px;
+              background: #13B5B1;
+              text-align: center;
+            }
+            .app-extra-refresh .spinner svg {
+              width: 14px;
+              height: 14px;
+              stroke: white;
+              fill:  white;
+            }
+            img {
+              height: 60px;
+              width: 60px;
+            }
           }
+
         }
         .appText {
           text-align: center;

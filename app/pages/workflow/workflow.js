@@ -208,4 +208,14 @@ angular.module('applicationModule')
             error(response);
           });
         };
+
+        this.getNoticeListCount = function (success, error) {
+          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list_count";
+          var params = {"params": {"p_employee_code": window.localStorage.empno}};
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response) {
+            error(response);
+          });
+        }
       }]);

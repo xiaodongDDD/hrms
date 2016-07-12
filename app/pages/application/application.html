@@ -8,35 +8,35 @@
     </div>
   </ion-header-bar>
   <ion-content class="mainApplication" style="bottom:48px;">
-    <div class="application-setting-outer" >
-    <div class="application-setting" ng-if="animationsEnabled">
-      <div class="setup">
-        <ion-item class="setup-panel">
-          <div class="row setup-panel-row1">
-            <label class="setup-label">timesheet滑动填写</label>
-          </div>
-          <!--<div class="row setup-panel-row2">
-            <label class="setup-label">消息推送</label>
-          </div>-->
-          <div class="ts-toggle-position">
-            <label class="toggle toggle-positive">
-              <input type="checkbox" ng-checked="slippingEnableFlag" ng-click="changeSlippingSetting()">
-              <div class="track setup-track">
-                <div class="handle setup-handle"></div>
-              </div>
-            </label>
-          </div>
-          <!--<div class="message-toggle-position">
-            <label class="toggle toggle-positive">
-              <input type="checkbox" ng-checked="messagePush">
-              <div class="track setup-track">
-                <div class="handle setup-handle"></div>
-              </div>
-            </label>
-          </div>-->
-        </ion-item>
+    <div class="application-setting-outer">
+      <div class="application-setting" ng-if="animationsEnabled">
+        <div class="setup">
+          <ion-item class="setup-panel">
+            <div class="row setup-panel-row1">
+              <label class="setup-label">timesheet滑动填写</label>
+            </div>
+            <!--<div class="row setup-panel-row2">
+              <label class="setup-label">消息推送</label>
+            </div>-->
+            <div class="ts-toggle-position">
+              <label class="toggle toggle-positive">
+                <input type="checkbox" ng-checked="slippingEnableFlag" ng-click="changeSlippingSetting()">
+                <div class="track setup-track">
+                  <div class="handle setup-handle"></div>
+                </div>
+              </label>
+            </div>
+            <!--<div class="message-toggle-position">
+              <label class="toggle toggle-positive">
+                <input type="checkbox" ng-checked="messagePush">
+                <div class="track setup-track">
+                  <div class="handle setup-handle"></div>
+                </div>
+              </label>
+            </div>-->
+          </ion-item>
+        </div>
       </div>
-    </div>
     </div>
     <div class="application-outer">
       <div class="hms-animated application-left" ng-class="{true: 'start', false: ''}[animationsEnabled]">
@@ -45,7 +45,15 @@
           <div class="appArea" ng-repeat="appList in officeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
-                <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                <div class="app-item-content">
+                  <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
+                       ng-bind="appItem.count">
+                  </div>
+                  <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">
+                    <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
+                  </div>
+                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
             </div>
@@ -57,7 +65,9 @@
           <div class="appArea" ng-repeat="appList in projectApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
-                <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                <div class="app-item-content">
+                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
             </div>
@@ -69,7 +79,9 @@
           <div class="appArea" ng-repeat="appList in employeeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
-                <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                <div class="app-item-content">
+                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
             </div>
@@ -82,7 +94,15 @@
           <div class="appArea" ng-repeat="appList in officeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
               <div class="appItem" ng-click="goPage(appItem)">
-                <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                <div class="app-item-content">
+                  <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
+                       ng-bind="appItem.count">
+                  </div>
+                  <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">
+                    <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
+                  </div>
+                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
             </div>
@@ -94,7 +114,9 @@
           <div class="appArea" ng-repeat="appList in projectApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
               <div class="appItem" ng-click="goPage(appItem)">
-                <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                <div class="app-item-content">
+                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
             </div>
@@ -106,7 +128,9 @@
           <div class="appArea" ng-repeat="appList in employeeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
               <div class="appItem" ng-click="goPage(appItem)">
-                <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                <div class="app-item-content">
+                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
             </div>

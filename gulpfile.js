@@ -42,7 +42,7 @@ var libDevFilePath = [
   'app/lib/**/**/**/*.*'];
 
 var libPublishFilePath = [
-  'app/lib/**/css/ionic.min.css',
+  'app/lib/**/css/ionic.css',
   'app/lib/**/fonts/*.*',
   'app/lib/**/js/ionic.bundle.min.js',
   'app/lib/**/rollups/md5.js',
@@ -211,10 +211,10 @@ gulp.task('css', function () {
 gulp.task('scripts', function () {
   return gulp.src(jsFilePath)
     .pipe(concat('app.bundle.js'))
-    .pipe(gulp.dest('www/build')) // write source file for debug
-    .pipe(rename({suffix: '.min'}))   //rename压缩后的文件名
-    .pipe(uglify())    //压缩
-    .pipe(gulp.dest('www/build'));  //输出
+    .pipe(gulp.dest('www/build'));// write source file for debug
+    //.pipe(rename({suffix: '.min'}))   //rename压缩后的文件名
+    //.pipe(uglify())    //压缩
+    //.pipe(gulp.dest('www/build'));  //输出
 });
 
 //
