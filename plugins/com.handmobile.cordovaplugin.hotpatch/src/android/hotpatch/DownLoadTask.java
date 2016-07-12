@@ -10,11 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.ZipEntry;
-
 import org.apache.cordova.CordovaWebView;
-
-import com.hand_china.hrms.R;
-
 import android.R.bool;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -26,11 +22,16 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.widget.TextView;
-
+import android.content.SharedPreferences; // add by ciwei
+import android.preference.PreferenceManager; // add by ciwei
+import android.content.pm.PackageManager;// add by ciwei
+import android.content.res.Resources;
+import android.content.pm.PackageInfo;// add by ciwei
+import android.util.Log;
 
 public class DownLoadTask extends AsyncTask<String, String, Boolean>{
     private final static int TIME_OUT = 30 * 1000;
-
+	private String patchAppVersionKey ="patchAppVersion";
     private Context mContext;
     private CordovaWebView mWebView;
     private ProgressDialog mProgressDialog;
@@ -45,11 +46,11 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
 		}
 	};
 
-	public  DownLoadTask(Context context,CordovaWebView webView)
+	public  DownLoadTask(Context context,CordovaWebView webView) 
 	{
 		mContext = context;
 		mWebView = webView;
-
+		
 		mProgressDialog = new ProgressDialog(mContext);
 //		mProgressDialog.setTitle("升级文件下载");
 //		mProgressDialog.setMessage("文件下载中，请稍候...");
@@ -58,20 +59,20 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
 		mProgressDialog.setMax(100);
 		mProgressDialog.setCancelable(false);
 		mProgressDialog.show();
-
+		
 		mProgressDialog.setOnKeyListener(onKeyListener);
-		mProgressDialog.setContentView(R.layout.alterlayout);
-		mProgressBar = (MyProgressBar) mProgressDialog.findViewById(R.id.progressBar1);
+		mProgressDialog.setContentView(getResId("alterlayout"));
+		mProgressBar = (MyProgressBar) mProgressDialog.findViewById(getId("progressBar1"));
 		mProgressBar.setProgress(0);
-		mPercent =(TextView)mProgressDialog.findViewById(R.id.tv_percent);
+		mPercent =(TextView)mProgressDialog.findViewById(getId("tv_percent"));
 	}
-
-
+	
+	
 	@Override
 	protected Boolean doInBackground(String... params) {
 		if(params[0] !=null){
 			String  url = params[0];
-
+			
 			try {
                 HttpURLConnection connection = null;
 				URL u = new URL(url);
@@ -81,7 +82,7 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(TIME_OUT);
                 connection.connect();
-
+                
                 int lenghtOfFile = connection.getContentLength();
                 InputStream input = new BufferedInputStream(
                 		connection.getInputStream());
@@ -98,12 +99,20 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
                 output.flush();
                 output.close();
                 input.close();
-
+                
                 mContext.deleteFile("www");
-                ZipUtil.UnZipFolder(mContext.getFileStreamPath("www.zip").toString(), mContext.getFilesDir().toString().concat("/"));
 
-
-
+				ZipUtil.UnZipFolder(mContext.getFileStreamPath("www.zip").toString(), mContext.getFilesDir().toString().concat("/"));
+				//保存版本号
+				SharedPreferences mSharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+				SharedPreferences.Editor editor = mSharedPreferences.edit();
+				PackageManager packageManager = mContext.getPackageManager();
+				PackageInfo packageInfo = packageManager.getPackageInfo(
+					mContext.getPackageName(), 0);// mod by ciwei +m
+				String currentVersion = packageInfo.versionName;
+				editor.putString(patchAppVersionKey,currentVersion);
+				editor.commit();
 			} catch (MalformedURLException e) {
 
 				e.printStackTrace();
@@ -116,16 +125,16 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
 				e.printStackTrace();
 				return  false;
 			}
-
-
-
-
+			
+			
+			
+			
 		}else {
-
+			
 			return false;
 		}
-
-
+		
+		
 		return true;
 	}
     @Override
@@ -137,47 +146,59 @@ public class DownLoadTask extends AsyncTask<String, String, Boolean>{
         mPercentString =values[0]+"%";
         mHandler.sendEmptyMessage(100);
     }
-
-
+    
+    
 	@Override
 	protected void onPostExecute(Boolean result) {
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
-
+		
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
         	mProgressDialog.dismiss();
         }
-
+        
 		if(true){
 			mWebView.clearHistory();
 	        mWebView.loadUrlIntoView("file://".concat(mContext.getFilesDir().getPath()).concat("/www/index.html") ,false);
-
-	        new Handler().postDelayed(new Runnable(){
-	            public void run() {
+	        
+	        new Handler().postDelayed(new Runnable(){    
+	            public void run() {    
 	        		mWebView.clearHistory();
-	            }
+	            }    
 	         }, 1000);
 		}else {
-
-
-
+			
+			
+			
 		}
 
 	}
-
-
+	
+	
 	///////////////////
 	 private OnKeyListener onKeyListener = new OnKeyListener() {
 		   @Override
 	        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
 	            if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
 	            	mProgressDialog.dismiss();
-
+	            	
 	            }
 	            return false;
 	        }
 	    };
-
-
+	
+	   ///////////////////////add by fuwei/////////////////////////////////
+		private int getResId(String resourceName){
+	    	Resources resources = mContext.getResources();
+			int resId = resources.getIdentifier(resourceName,"layout",mContext.getPackageName());
+//			int resId = resources.getIdentifier(getPackageName() + ":layout/" + resourceName, null, null);
+	    	return resId;
+	    }
+		private int getId(String idName){
+	    	Resources resources = mContext.getResources();
+			int resId = resources.getIdentifier(idName, "id", mContext.getPackageName());
+	    	return resId;
+	    }
+	   //////////////////////////////////////////////////////////
 
 }

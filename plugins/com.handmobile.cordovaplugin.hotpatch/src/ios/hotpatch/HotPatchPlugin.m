@@ -2,7 +2,7 @@
 //  BaiduPushPlugin.m
 //  HelloCordova
 //
-//  Created by titengjiang on 15/9/23.
+//  Created by titengjiang on 16/06/24.
 //
 //
 
@@ -13,6 +13,8 @@
 #import "CustomIOSAlertView.h"
 //#import "AFURLSessionManager.h"
 //#import "SSZipArchive.h"
+
+static NSString *patchAppVersionKey = @"patchAppVersion";
 
 @implementation HotPatchPlugin{
     NSURL *  _newWWWFloderUrl;
@@ -35,10 +37,18 @@
     _cdvViewController = (CDVViewController *)self.viewController;
     
     
+    NSString *version = [[NSUserDefaults standardUserDefaults] valueForKey:patchAppVersionKey];
+    NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+
+    
     NSArray  *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
     NSString * targetUrl =  [documentsDirectory stringByAppendingString:@"/www/index.html"];
+    
+    if (!version || (version &&  [self isBigWithVersion1:currentVersion version2:version])) {
+        [[NSFileManager defaultManager] removeItemAtPath:[documentsDirectory stringByAppendingString:@"/www"] error:NULL];
+    }
     BOOL  isExist = [[NSFileManager defaultManager] fileExistsAtPath:targetUrl];
     
     if(isExist){
@@ -50,7 +60,19 @@
 -(void)dealloc{
     
 }
-
+#pragma mark util
+- (BOOL)isBigWithVersion1:(NSString *)version1
+                 version2:(NSString *)version2
+{
+    if ([version1 compare:version2 options:NSNumericSearch] ==NSOrderedDescending)
+    {
+        return YES;
+    }
+    
+    else {
+        return NO;
+    }
+}
 
 #pragma mark public
 -(void)updateNewVersion:(CDVInvokedUrlCommand*)command{
@@ -145,6 +167,8 @@
 {
     NSURLRequest* appReq = [NSURLRequest requestWithURL:_newWWWFloderUrl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20.0];
     [self.webView loadRequest:appReq];
+    [[NSUserDefaults standardUserDefaults] setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:patchAppVersionKey];
+
     [_alertView dismissWithClickedButtonIndex:0 animated:YES];
 }
 
