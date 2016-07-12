@@ -11,6 +11,19 @@ angular.module('myApp')
               controller: 'WorkFLowDetailCtrl'
             }
           }
+        })
+
+        .state('tab.workflow-employee-detail', {
+          url: '/workflow-employee-detail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/contact/detail/employee-detail.html',
+              controller: 'contactEmployeeDetailCtl'
+            }
+          },
+          params: {
+            'employeeNumber': ""
+          }
         });
     }]);
 
@@ -60,8 +73,20 @@ angular.module('applicationModule')
         console.log('WorkFLowDetailCtrl.processedFlag ' + processedFlag);
       }
 
+      var historyEachWidth = 102;
+
       $scope.LoadingPushData = true;
       $scope.LoadingModalData = true;
+
+      //var detailScroll = angular.element('#workflowDetailScroll');
+      //var detailHistory = angular.element('#workflowDetailHistory');
+
+      $scope.workflowDetailScroll = {
+        "width": document.body.clientWidth
+      };
+
+      $scope.workflowDetailHistory = {
+      };
 
       //控制需要显示的数据模块
       $scope.showList = {
@@ -126,6 +151,10 @@ angular.module('applicationModule')
         queryData: function () {
 
         }
+      };
+
+      $scope.goEmployeeDetail = function () {
+        $state.go('tab.workflow-employee-detail',{"employeeNumber":detail.employeeCode})
       };
 
       $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/data-list.html', {
@@ -307,6 +336,7 @@ angular.module('applicationModule')
 
             if (result.status == 'S') {
               $scope.historyList = result.history;
+              workflowDetail().setWorkflowDetailHistoryWidth(result.history.length);
               if (result.workflow_data) {
                 $scope.applicationEmployeeDetail = result.workflow_data.details.detail;
                 $scope.applicationEmployeeDetail.showFlag = true;
@@ -507,8 +537,18 @@ angular.module('applicationModule')
           };
           var error = function (response) {
           };
-          hmsPopup.showLoading('处理工作流中');
-          workFLowListService.submitAction(success, error, params);
+
+          var submit = function (buttonIndex) {
+            if (baseConfig.debug) {
+              console.log('You selected button ' + buttonIndex);
+            }
+            if (buttonIndex == 1) {
+              hmsPopup.showLoading('处理工作流中');
+              workFLowListService.submitAction(success, error, params);
+            } else {
+            }
+          }
+          hmsPopup.confirm("是否确认提交工作流?", "", submit);
         },
         //查询转交人数据
         searchTransmitPerson: function () {
@@ -535,6 +575,16 @@ angular.module('applicationModule')
       var workflowDetail = function () {
         var self = {};
         //验证工作
+        self.setWorkflowDetailHistoryWidth = function (historyNum) {
+          var historyWidth = document.body.clientWidth;
+          try{
+            historyWidth = parseInt(historyNum) * historyEachWidth;
+          }catch(e){
+          }
+          $scope.workflowDetailHistoryWidth = {
+            "width": historyWidth
+          };
+        };
         self.validateWorkFlowAction = function (actionType) {
 
           if (detail.workflowId == 100728) {
@@ -606,6 +656,7 @@ angular.module('applicationModule')
             }
             if (result.status == 'S') {
               $scope.historyList = result.history;
+              self.setWorkflowDetailHistoryWidth(result.history.length);
               if (result.workflow_data) {
                 $scope.singalArrayList = result.workflow_data.details;
                 angular.forEach($scope.singalArrayList, function (data) {
@@ -635,6 +686,7 @@ angular.module('applicationModule')
           if (detail.workflowId == 100728) { //合同续签地址维护
             $scope.showList.contractRenewShowFlag = true;
             renewContract().query();
+            workflowDetail().getWorkflowDetail();
           } else if (detail.workflowId == 10008) { //合同续签地址维护
             $scope.showList.applicationFullMemberShowFlag = true;
             applicationFullMember().query();
@@ -654,6 +706,7 @@ angular.module('applicationModule')
             detail.canBackTo = result.returnData.canBackTo;
             detail.canTransmit = result.returnData.canTransmit;
             detail.canRefuse = result.returnData.canRefuse;
+            detail.employeeCode = result.returnData.employeeCode;
 
             $scope.currentDetail = detail;
 

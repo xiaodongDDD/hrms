@@ -140,7 +140,8 @@ angular.module('applicationModule')
               canBackTo: data.backTo,
               canGoBack: data.goBack,
               canRefuse: data.refuse,
-              canTransmit: data.toOther
+              canTransmit: data.toOther,
+              employeeCode: data.employee_code
             };
             $scope.list.push(item);
           });
@@ -188,7 +189,8 @@ angular.module('applicationModule')
               submit: workflowPerson,
               submitPerson: data.created_by_name,
               workflowId: data.workflow_id,
-              instanceId: data.instance_id
+              instanceId: data.instance_id,
+              employeeCode: data.employee_code
             };
             $scope.list.push(item);
           });

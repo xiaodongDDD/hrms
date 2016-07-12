@@ -7,8 +7,8 @@
     </div>
     <h1 class="title" style="color: white">待办事项明细</h1>
     <div class="buttons">
-      <button class="button button-clear" style="font-size: 26px">
-        <i class=""></i>
+      <button class="button button-clear" ng-click="goEmployeeDetail()">
+        <i class="ion-ios-email" style="color: white;font-size: 30px"></i>
       </button>
     </div>
   </ion-header-bar>
@@ -21,8 +21,9 @@
       </div>
       <div style="margin-top: 48px;width:100%; position: absolute; border-bottom: 1px solid #FAFAFA;"></div>
       <div class="history-content">
-        <ion-scroll direction="x" scrollbar-x="false" style="height: 136px">
-          <div style="height: 136px;width: 1050px;">
+        <ion-scroll ng-style="workflowDetailScroll" direction="x" scrollbar-x="false" scrollbar-y="false"
+                    style="height: 136px">
+          <div ng-style="workflowDetailHistoryWidth" style="height: 136px;">
             <div class="history-item" ng-repeat="history in historyList">
               <div class="history-item-time-line" ng-bind="history.creation_date">
               </div>
@@ -248,11 +249,14 @@
   </ion-content>
 
   <div class="hms-workflow-submit" ng-if="workflowActionShowFlag">
-    <div class="hms-workflow-reject" ng-click="workflowDetailUtil.submitAction(actionType.reject)">
-      <span ng-if="currentDetail.canRefuse=='Y'">拒绝</span>
+    <div class="hms-workflow-reject">
+      <div class="hms-workflow-reject-content" ng-click="workflowDetailUtil.submitAction(actionType.reject)"
+           ng-if="currentDetail.canRefuse=='Y'">
+        <span >拒绝</span>
+      </div>
     </div>
     <div class="hms-workflow-other">
-      <div class="hms-workflow-function">
+      <div class="hms-workflow-function" ng-class="{'true':'only'}[currentDetail.canTransmit=='N']">
         <div class="hms-work-transmit" ng-click="workflowDetailUtil.submitAction(actionType.transmit)"
              ng-if="currentDetail.canTransmit=='Y'">
           <img src="build/img/workflow/deliver@3x.png"/>
@@ -262,7 +266,7 @@
           <img src="build/img/workflow/approval2@3x.png"/>
         </div>
       </div>
-      <div class="hms-workflow-other-alias">
+      <div class="hms-workflow-other-alias" ng-class="{'true':'only'}[currentDetail.canTransmit=='N']">
         <div class="hms-work-transmit-alias" ng-if="currentDetail.canTransmit=='Y'">
           转交
         </div>
@@ -271,8 +275,10 @@
         </div>
       </div>
     </div>
-    <div class="hms-workflow-back"> <!--ng-click="workflowDetailUtil.submitAction(actionType.back)"-->
+    <div class="hms-workflow-back">
+      <div class="hms-workflow-back-content"> <!--ng-click="workflowDetailUtil.submitAction(actionType.back)"-->
       <span ng-if="currentDetail.canGoBack=='Y'"></span>
+      </div>
     </div>
   </div>
 </ion-view>
