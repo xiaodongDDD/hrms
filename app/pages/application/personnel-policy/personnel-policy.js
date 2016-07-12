@@ -209,7 +209,7 @@ angular.module('applicationModule')
           url:'E.公共类文档/关于网上报销的正确填报及发票提交和粘帖方法.pdf?arg=56',
         },
         {
-          shadow:false,
+          shadow:true,
           text: '公司介绍',
           url:'E.公共类文档/公司介绍.pdf?arg=57',
         }
