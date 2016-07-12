@@ -217,7 +217,7 @@ angular.module('applicationModule')
         if ($scope.listStatus.done.selected) {
           processedFlag.value = true;
         }
-        $state.go('tab.workflow-detail', {"detail": detail, "processedFlag": processedFlag})
+        $state.go('tab.workflow-detail', {"detail": detail, "processedFlag": processedFlag , "type": "WORKFLOWDETAIL" })
       }
 
       $ionicModal.fromTemplateUrl('build/pages/application/timesheet-approve/modal/ts-filter-modal.html', { //筛选modal

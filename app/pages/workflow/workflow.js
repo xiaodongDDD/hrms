@@ -191,5 +191,21 @@ angular.module('applicationModule')
             error(response);
           });
         };
-      }])
-;
+
+        this.getDetailBase = function (success, error, recordId, workflowId, instanceId, nodeId) {
+          var url = baseConfig.businessPath + "/api_workflow_common/get_detail_base";
+          var params = {
+            "params": {
+              "p_record_id": recordId + "",
+              "p_workflow_id": workflowId + "",
+              "p_instance_id": instanceId + "",
+              "p_node_id": nodeId + ""
+            }
+          };
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response) {
+            error(response);
+          });
+        };
+      }]);

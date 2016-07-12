@@ -211,9 +211,9 @@ angular.module('myApp')
         .state('pushDetail', {
           url: '/pushDetail',
           cache: false,
-          params: {"content": {}},
-          templateUrl: 'build/pages/push/push-detail.html',
-          controller: 'pushDetailCtrl'
+          params: {"detail": {}, "processedFlag": {}, "type": ""},
+          templateUrl: 'build/pages/workflow/detail/detail.html',
+          controller: 'WorkFLowDetailCtrl'
         })
 
         .state('login', {

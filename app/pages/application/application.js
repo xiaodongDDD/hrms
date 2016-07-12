@@ -15,8 +15,6 @@ angular.module('applicationModule')
       $scope.animationsEnabled = false;
       $scope.openDoor = 0;
 
-
-
       var initSetting = function () {
         if(!window.localStorage.slippingEnableFlag){
           window.localStorage.slippingEnableFlag = "true";

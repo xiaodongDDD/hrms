@@ -63,11 +63,18 @@ angular.module('HmsModule')
             try {
               var alertContent;
               var result;
+              var detail;
               if (device.platform == "Android") {
                 alertContent = window.plugins.jPushPlugin.openNotification.alert;
                 result = {
                   "type": typeof(window.plugins.jPushPlugin),
                   "value": window.plugins.jPushPlugin
+                };
+                detail = {
+                  "recordId": window.plugins.jPushPlugin.source_record_id,
+                  "workflowId": window.plugins.jPushPlugin.source_workflow_id,
+                  "instanceId": window.plugins.jPushPlugin.source_instance_id,
+                  "nodeId": window.plugins.jPushPlugin.source_node_id
                 };
               } else {
                 alertContent = event.aps.alert;
@@ -75,12 +82,29 @@ angular.module('HmsModule')
                   "type": typeof(event),
                   "value": event
                 };
+                detail = {
+                  "recordId": event.source_record_id,
+                  "workflowId": event.source_workflow_id,
+                  "instanceId": event.source_instance_id,
+                  "nodeId": event.source_node_id
+                };
               }
               if (baseConfig.debug) {
                 console.log("open Notification event: " + event);
               }
 
-              //state.go(analyze(state.current) + 'pushDetail', {"title": alertContent, "content": result});
+              /*workFLowListService.getDetailBase(success, error, detailId.recordId,
+               detailId.workflowId, detailId.instanceId, detailId.nodeId);*/
+
+              alert('event ' + angular.toJson(event));
+              alert('window.plugins.jPushPlugin ' + angular.toJson(window.plugins.jPushPlugin));
+              alert('detail ' + angular.toJson(detail));
+
+              state.go(analyze(state.current) + 'pushDetail', {
+                "detail": detail,
+                "processedFlag": {value: false},
+                "type": "PUSHDETAIL"
+              });
               //state.go('detail', {content: result});
               //state.go('push.pushDetail',{content:alertContent});
 
