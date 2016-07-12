@@ -10,15 +10,17 @@
   </ion-header-bar>
   <ion-content>
     <div class="item-title-bg">
-      <div class="item-title-font" style="color: #B85756;">汉得经营大纲</div>
+      <div class="item-title-font">汉得经营大纲</div>
     </div>
 
-    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesManagement">
-      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
-        <i style="font-size: 16px;">{{file.text}}</i>
-      </div>
-      <div class="col col-20 col-offset-3 col-center">
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+    <div class="button "  ng-class="file.shadow?'has-shadow':'has-bottom'"  ng-repeat="file in filesManagement" ng-click="openwin(file.url)">
+      <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'" style="padding: 0px;">
+        <div class="col col-80  col-center"  style="padding: 0px;">
+          <i style="font-size: 16px;">{{file.text}}</i>
+        </div>
+        <div class="col col-20 col-center" ng-class="file.shadow?'col-offset-4':''">
+          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+        </div>
       </div>
     </div>
 
@@ -27,26 +29,29 @@
       <div class="item-title-font">HR分工情况</div>
     </div>
 
-    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesWork">
-      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
-        <i style="font-size: 16px;">{{file.text}}</i>
-      </div>
-      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+    <div class="button "  ng-class="file.shadow?'has-shadow':'has-bottom'"  ng-repeat="file in filesWork" ng-click="openwin(file.url)">
+      <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'" style="padding: 0px;">
+        <div class="col col-80  col-center"  style="padding: 0px;">
+          <i style="font-size: 16px;">{{file.text}}</i>
+        </div>
+        <div class="col col-20 col-center" ng-class="file.shadow?'col-offset-4':''">
+          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+        </div>
       </div>
     </div>
-
     <!--员工手册-->
     <div class="item-title-bg">
       <div class="item-title-font">员工手册</div>
     </div>
 
-    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesStaff">
-      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
-        <i style="font-size: 16px;">{{file.text}}</i>
-      </div>
-      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+    <div class="button "  ng-class="file.shadow?'has-shadow':'has-bottom'"  ng-repeat="file in filesStaff" ng-click="openwin(file.url)">
+      <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'" style="padding: 0px;">
+        <div class="col col-80  col-center"  style="padding: 0px;">
+          <i style="font-size: 16px;">{{file.text}}</i>
+        </div>
+        <div class="col col-20 col-center" ng-class="file.shadow?'col-offset-4':''">
+          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+        </div>
       </div>
     </div>
 
@@ -55,12 +60,14 @@
       <div class="item-title-font">人事政策</div>
     </div>
 
-    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesPersonnel">
-      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
-        <i style="font-size: 16px;">{{file.text}}</i>
-      </div>
-      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+    <div class="button "  ng-class="file.shadow?'has-shadow':'has-bottom'"  ng-repeat="file in filesPersonnel" ng-click="openwin(file.url)">
+      <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'" style="padding: 0px;">
+        <div class="col col-80  col-center"  style="padding: 0px;">
+          <i style="font-size: 16px;">{{file.text}}</i>
+        </div>
+        <div class="col col-20 col-center" ng-class="file.shadow?'col-offset-4':''">
+          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+        </div>
       </div>
     </div>
 
@@ -69,13 +76,14 @@
     <div class="item-title-bg">
       <div class="item-title-font">公司福利</div>
     </div>
-
-    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesWelfare">
-      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
-        <i style="font-size: 16px;">{{file.text}}</i>
-      </div>
-      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+    <div class="button "  ng-class="file.shadow?'has-shadow':'has-bottom'"  ng-repeat="file in filesWelfare" ng-click="openwin(file.url)">
+      <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'" style="padding: 0px;">
+        <div class="col col-80  col-center"  style="padding: 0px;">
+          <i style="font-size: 16px;">{{file.text}}</i>
+        </div>
+        <div class="col col-20 col-center" ng-class="file.shadow?'col-offset-4':''">
+          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+        </div>
       </div>
     </div>
 
@@ -84,12 +92,14 @@
       <div class="item-title-font">公共类文档</div>
     </div>
 
-    <div  class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesCommon">
-      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
-        <i style="font-size: 16px;">{{file.text}}</i>
-      </div>
-      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+    <div class="button "  ng-class="file.shadow?'has-shadow':'has-bottom'"  ng-repeat="file in filesCommon" ng-click="openwin(file.url)">
+      <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'" style="padding: 0px;">
+        <div class="col col-80  col-center"  style="padding: 0px;">
+          <i style="font-size: 16px;">{{file.text}}</i>
+        </div>
+        <div class="col col-20 col-center" ng-class="file.shadow?'col-offset-4':''">
+          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+        </div>
       </div>
     </div>
 
@@ -98,27 +108,32 @@
       <div class="item-title-font">人事系统手册</div>
     </div>
 
-    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesPersonnelSys">
-      <div class="col col-80 col-offset-4 col-center"    onclick=""
-           ng-click="openwin(file.url)" style="padding: 0px;">
-        <i style="font-size: 16px;">{{file.text}}</i>
-      </div>
-      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+    <div class="button "  ng-class="file.shadow?'has-shadow':'has-bottom'"  ng-repeat="file in filesPersonnelSys" ng-click="openwin(file.url)">
+      <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'" style="padding: 0px;">
+        <div class="col col-80  col-center"  style="padding: 0px;">
+          <i style="font-size: 16px;">{{file.text}}</i>
+        </div>
+        <div class="col col-20 col-center" ng-class="file.shadow?'col-offset-4':''">
+          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+        </div>
       </div>
     </div>
+
+
 
     <!--武汉分公司政策 -->
     <div class="item-title-bg">
       <div class="item-title-font" style="width: 115px;">武汉分公司政策</div>
     </div>
 
-    <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'"  ng-repeat="file in filesWuhan">
-      <div class="col col-80 col-offset-4 col-center" ng-click="openwin(file.url)" style="padding: 0px;">
-        <i style="font-size: 16px;">{{file.text}}</i>
-      </div>
-      <div class="col col-20 col-center"  ng-class="file.shadow?'col-offset-3':'col-offset--1'">
-        <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+    <div class="button "  ng-class="file.shadow?'has-shadow':'has-bottom'"  ng-repeat="file in filesWuhan" ng-click="openwin(file.url)">
+      <div class="row" ng-class="file.shadow?'policy-item-shadow':'policy-item'" style="padding: 0px;">
+        <div class="col col-80  col-center"  style="padding: 0px;">
+          <i style="font-size: 16px;">{{file.text}}</i>
+        </div>
+        <div class="col col-20 col-center" ng-class="file.shadow?'col-offset-4':''">
+          <img class="policy-back-arrow" src="build/img/application/personnel-policy/policy-back-arror@3x.png"/>
+        </div>
       </div>
     </div>
   </ion-content>
