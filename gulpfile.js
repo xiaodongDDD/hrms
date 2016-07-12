@@ -250,7 +250,7 @@ gulp.task('run-dev', function (callback) {
 
 //生成发布环境代码目录
 gulp.task('run-prod', function (callback) {
-  runSequence('clean', 'config-prod', /*'lint',*/ 'copy-prod-config', 'copy-publish-lib', ['sass', 'scripts', 'html'], 'clean-bundle-js', callback);
+  runSequence('clean', 'config-prod', /*'lint',*/ 'copy-prod-config', 'copy-publish-lib', ['sass', 'scripts', 'html'], callback);
 });
 
 //默认任务
