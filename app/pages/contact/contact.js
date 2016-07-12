@@ -13,6 +13,7 @@ angular.module('contactModule')
     '$state',
     '$ionicActionSheet',
     '$timeout',
+    'contactService',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -21,7 +22,8 @@ angular.module('contactModule')
               hmsPopup,
               $state,
               $ionicActionSheet,
-              $timeout) {
+              $timeout,
+              contactService) {
       /**
        * var section
        */
@@ -228,50 +230,17 @@ angular.module('contactModule')
         $scope.showClear = false;
         $scope.resultList = [];
         $scope.contactKey.getValue = '';
-        $scope.contactInputModal.hide();
+        //$scope.contactInputModal.hide();
         $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
       };
 
       $scope.goStructure = function () {
+        hmsPopup.showPopup("本功能下一版本上线");
       };
 
       $scope.goDetailInfo = function (newEmployeeNumber) {
         $scope.contactInputModal.hide();
         $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
-      };
-
-      //for contact
-      function onSaveContactSuccess(contacts) {
-        hmsPopup.showShortCenterToast('添加成功!');
-      };
-
-      //for contact
-      function onSaveContactError(contactError) {
-        hmsPopup.showShortCenterToast('添加失败!');
-      };
-
-      //联系人保存到本地--
-      function contactLocal(baseInfo) {
-        warn('baseInfo ' + angular.toJson(baseInfo));
-        if (ionic.Platform.isWebView()) {
-          var newContact = navigator.contacts.create();
-          var phoneNumbers = [];
-          phoneNumbers[0] = new ContactField('mobile', baseInfo.mobil, true);
-          var emails = [];
-          emails[0] = new ContactField('email', baseInfo.email, true);
-          if (ionic.Platform.isAndroid()) {
-            newContact.displayName = baseInfo.emp_name; // ios 不支持 displayName
-          }
-          if (ionic.Platform.isIOS()) {
-            var name = new ContactName();
-            name.givenName = baseInfo.emp_name.substring(1, baseInfo.emp_name.length);
-            name.familyName = baseInfo.emp_name.substring(0, 1);
-            newContact.name = name;
-          }
-          newContact.phoneNumbers = phoneNumbers;
-          newContact.emails = emails;
-          newContact.save(onSaveContactSuccess, onSaveContactError);
-        }
       };
 
       $scope.scanBusinessCard = function () { //名片扫描添加联系人到通讯录
@@ -301,7 +270,7 @@ angular.module('contactModule')
             }
             try{
               $scope.$apply();
-              contactLocal(manInfo);
+              contactService.contactLocal(manInfo);
             } catch(e) {}
           }, function (error) {
             hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
@@ -337,7 +306,7 @@ angular.module('contactModule')
                   return true;
                 }
                 if (index == 1) {
-                  contactLocal(baseInfo);
+                  contactService.contactLocal(baseInfo);
                   return true;
                 }
               }
@@ -350,4 +319,37 @@ angular.module('contactModule')
           window.location.href = "tel:" + baseInfo;
         }
       };
-    }]);
+    }]).factory('contactService',['hmsPopup', function (hmsPopup) {
+    //for contact
+    function onSaveContactSuccess(contacts) {
+      hmsPopup.showShortCenterToast('添加成功!');
+    };
+    //for contact
+    function onSaveContactError(contactError) {
+      hmsPopup.showShortCenterToast('添加失败!');
+    };
+
+    return{  //联系人保存到本地--
+      contactLocal: function (baseInfo) {
+          if (ionic.Platform.isWebView()) {
+            var newContact = navigator.contacts.create();
+            var phoneNumbers = [];
+            phoneNumbers[0] = new ContactField('mobile', baseInfo.mobil, true);
+            var emails = [];
+            emails[0] = new ContactField('email', baseInfo.email, true);
+            if (ionic.Platform.isAndroid()) {
+              newContact.displayName = baseInfo.emp_name; // ios 不支持 displayName
+            }
+            if (ionic.Platform.isIOS()) {
+              var name = new ContactName();
+              name.givenName = baseInfo.emp_name.substring(1, baseInfo.emp_name.length);
+              name.familyName = baseInfo.emp_name.substring(0, 1);
+              newContact.name = name;
+            }
+            newContact.phoneNumbers = phoneNumbers;
+            newContact.emails = emails;
+            newContact.save(onSaveContactSuccess, onSaveContactError);
+          }
+        }
+    }
+  }]);

@@ -31,6 +31,8 @@ angular.module('contactModule')
     '$ionicHistory',
     '$stateParams',
     'imService',
+    '$ionicActionSheet',
+    'contactService',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -39,14 +41,15 @@ angular.module('contactModule')
               hmsPopup,
               $ionicHistory,
               $stateParams,
-              imService) {
+              imService,
+              $ionicActionSheet,
+              contactService) {
       /**
        * var section
        */
       {
         if (ionic.Platform.isIOS()) {
           angular.element('.common-head').css('paddingTop', '20px');
-
         }
         $scope.employeeInfo = {}; //存储查询员工的详细信息
         $scope.contactLoading = true; //默认显示loading加载
@@ -54,7 +57,8 @@ angular.module('contactModule')
         var employeeBaseInfo = {
           tel: '',
           name: '',
-          employeeNumber: ''
+          employeeNumber: '',
+          imgUrl: ''
         };
         var getEmployeeDetailUrl = baseConfig.queryPath + '/staff/detail';
         var employeeDetailParams = {key: $stateParams.employeeNumber};
@@ -66,7 +70,7 @@ angular.module('contactModule')
       function initEmployeeData() {
         hmsHttp.post(getEmployeeDetailUrl, employeeDetailParams).success(function (response) {
           $scope.employeeInfo = response.rows[0];
-          if(!$scope.employeeInfo.avatar) {
+          if (!$scope.employeeInfo.avatar) {
             $scope.employeeInfo.avatar = 'build/img/contact/BG-profile.png'
           }
 
@@ -92,17 +96,44 @@ angular.module('contactModule')
         storedb(LINK_MAN).insert(newObject, function (err) {
         });
       };
-      $scope.telPhone = function () {
-        employeeBaseInfo = {
-          tel: $scope.employeeInfo.mobil,
-          name: $scope.employeeInfo.emp_name,
-          employeeNumber: $scope.employeeInfo.emp_code,
-          imgUrl: $scope.employeeInfo.avatar
-        };
-        if (employeeBaseInfo.name) {
-          storeCommonLinkman(employeeBaseInfo);
+
+      $scope.telPhone = function () { //响应拨打电话按钮的方法
+        try {
+          $ionicActionSheet.show({
+            buttons: [
+              {text: '拨打电话'},
+              {text: '增加到通讯录'},
+            ],
+            cancelText: 'Cancel',
+            buttonClicked: function (index) {
+              if (index == 0) {
+                window.location.href = "tel:" + 88888888888; //不明觉厉-!
+                window.location.href = "tel:" + $scope.employeeInfo.mobil;
+                employeeBaseInfo = {
+                  tel: $scope.employeeInfo.mobil,
+                  name: $scope.employeeInfo.emp_name,
+                  employeeNumber: $scope.employeeInfo.emp_code,
+                  imgUrl: $scope.employeeInfo.avatar
+                };
+                if (employeeBaseInfo.name) {
+                  storeCommonLinkman(employeeBaseInfo);
+                }
+                return true;
+              }
+              if (index == 1) {
+                var baseInfo = {
+                  mobil: $scope.employeeInfo.mobil,
+                  email: $scope.employeeInfo.email,
+                  emp_name: $scope.employeeInfo.emp_name
+                };
+                contactService.contactLocal(baseInfo);
+                return true;
+              }
+            }
+          });
+        } catch (e) {
+          alert(e);
         }
-        window.location.href = "tel:" + $scope.employeeInfo.mobil;
       };
 
       $scope.goImTalk = function () {
