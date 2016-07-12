@@ -13,10 +13,55 @@ angular.module('myApp')
           }
         })
 
-        .state('tab.workflow-employee-detail', {
-          url: '/workflow-employee-detail',
+        .state('workflow-employee', {
+          url: 'workflow-employee',
+          templateUrl: 'build/pages/contact/detail/employee-detail.html',
+          controller: 'contactEmployeeDetailCtl',
+          params: {
+            'employeeNumber': ""
+          }
+        })
+
+        .state('tab.tab-application-workflow-employee', {
+          url: '/tab-application-workflow-employee',
           views: {
             'tab-application': {
+              templateUrl: 'build/pages/contact/detail/employee-detail.html',
+              controller: 'contactEmployeeDetailCtl'
+            }
+          },
+          params: {
+            'employeeNumber': ""
+          }
+        })
+        .state('tab.tab-message-workflow-employee', {
+          url: '/tab-message-workflow-employee',
+          views: {
+            'tab-message': {
+              templateUrl: 'build/pages/contact/detail/employee-detail.html',
+              controller: 'contactEmployeeDetailCtl'
+            }
+          },
+          params: {
+            'employeeNumber': ""
+          }
+        })
+        .state('tab.tab-contact-workflow-employee', {
+          url: '/tab-contact-workflow-employee',
+          views: {
+            'tab-contact': {
+              templateUrl: 'build/pages/contact/detail/employee-detail.html',
+              controller: 'contactEmployeeDetailCtl'
+            }
+          },
+          params: {
+            'employeeNumber': ""
+          }
+        })
+        .state('tab.tab-myInfo-workflow-employee', {
+          url: '/tab-myInfo-workflow-employee',
+          views: {
+            'tab-myInfo': {
               templateUrl: 'build/pages/contact/detail/employee-detail.html',
               controller: 'contactEmployeeDetailCtl'
             }
@@ -85,8 +130,7 @@ angular.module('applicationModule')
         "width": document.body.clientWidth
       };
 
-      $scope.workflowDetailHistory = {
-      };
+      $scope.workflowDetailHistory = {};
 
       //控制需要显示的数据模块
       $scope.showList = {
@@ -153,8 +197,29 @@ angular.module('applicationModule')
         }
       };
 
+      var analyze = function (currentState) {
+        if (currentState.views) {
+          if (currentState.views['tab-application']) {
+            return 'tab.tab-application-';
+          } else if (currentState.views['tab-message']) {
+            return 'tab.tab-message-';
+          } else if (currentState.views['tab-contact']) {
+            return 'tab.tab-contact-';
+          } else if (currentState.views['tab-myInfo']) {
+            return 'tab.tab-myInfo-';
+          }
+        }
+        return '';
+      };
+
       $scope.goEmployeeDetail = function () {
-        $state.go('tab.workflow-employee-detail',{"employeeNumber":detail.employeeCode})
+        if(detail.employeeCode){
+          if ($stateParams.type == 'WORKFLOWDETAIL') {
+            $state.go('tab.tab-application-workflow-employee', {"employeeNumber": detail.employeeCode})
+          } else {
+            $state.go(analyze + '-employee-detail', {"employeeNumber": detail.employeeCode})
+          }
+        }
       };
 
       $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/data-list.html', {
@@ -526,7 +591,7 @@ angular.module('applicationModule')
           var success = function (result) {
             if (result.status == 'S') {
               hmsPopup.showPopup('处理工作流成功!');
-              if($stateParams.type == 'WORKFLOWDETAIL'){
+              if ($stateParams.type == 'WORKFLOWDETAIL') {
                 workFLowListService.setRefreshWorkflowList(true);
               }
               $ionicHistory.goBack();
@@ -577,9 +642,9 @@ angular.module('applicationModule')
         //验证工作
         self.setWorkflowDetailHistoryWidth = function (historyNum) {
           var historyWidth = document.body.clientWidth;
-          try{
+          try {
             historyWidth = parseInt(historyNum) * historyEachWidth;
-          }catch(e){
+          } catch (e) {
           }
           $scope.workflowDetailHistoryWidth = {
             "width": historyWidth
@@ -696,9 +761,9 @@ angular.module('applicationModule')
         },
         initPushDetail: function (detailId) {
           var success = function (result) {
-            if(result.returnData.processFlag == 'Y'){
+            if (result.returnData.processFlag == 'Y') {
               processedFlag = true;
-            }else{
+            } else {
               processedFlag = false;
             }
             detail.canApprove = result.returnData.canApprove;
@@ -720,26 +785,26 @@ angular.module('applicationModule')
           var instanceId = '';
           var nodeId = '';
 
-          if(detailId.recordId){
+          if (detailId.recordId) {
             recordId = detailId.recordId;
           }
-          if(detailId.workflowId){
+          if (detailId.workflowId) {
             workflowId = detailId.workflowId;
           }
-          if(detailId.instanceId){
+          if (detailId.instanceId) {
             instanceId = detailId.instanceId;
           }
-          if(detailId.nodeId){
+          if (detailId.nodeId) {
             nodeId = detailId.nodeId;
           }
-          workFLowListService.getDetailBase(success, error, recordId , workflowId,instanceId,nodeId);
+          workFLowListService.getDetailBase(success, error, recordId, workflowId, instanceId, nodeId);
         }
       };
 
-      if($stateParams.type == 'PUSHDETAIL'){ //消息推送过来的
+      if ($stateParams.type == 'PUSHDETAIL') { //消息推送过来的
         init.initPushDetail(detail);
         init.initDataModal();
-      }else if($stateParams.type == 'WORKFLOWDETAIL'){
+      } else if ($stateParams.type == 'WORKFLOWDETAIL') {
         $scope.LoadingPushData = false;
         init.initDataModal();
       }

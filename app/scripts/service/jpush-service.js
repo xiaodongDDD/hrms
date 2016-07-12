@@ -64,6 +64,11 @@ angular.module('HmsModule')
               var alertContent;
               var result;
               var detail;
+
+              alert('event ' + angular.toJson(event));
+              alert('window.plugins.jPushPlugin ' + angular.toJson(window.plugins.jPushPlugin));
+              alert('detail ' + angular.toJson(detail));
+              
               if (device.platform == "Android") {
                 alertContent = window.plugins.jPushPlugin.openNotification.alert;
                 result = {
@@ -95,10 +100,6 @@ angular.module('HmsModule')
 
               /*workFLowListService.getDetailBase(success, error, detailId.recordId,
                detailId.workflowId, detailId.instanceId, detailId.nodeId);*/
-
-              alert('event ' + angular.toJson(event));
-              alert('window.plugins.jPushPlugin ' + angular.toJson(window.plugins.jPushPlugin));
-              alert('detail ' + angular.toJson(detail));
 
               state.go(analyze(state.current) + 'pushDetail', {
                 "detail": detail,

@@ -183,7 +183,7 @@ angular.module('applicationModule')
               title1: data.workflow_desc,
               icon: employeeImg,
               type: workflowType,
-              typeValue: data.workflow_desc,
+              typeValue: '',
               node: workflowNode,
               nodeValue: data.status_name,
               submit: workflowPerson,
