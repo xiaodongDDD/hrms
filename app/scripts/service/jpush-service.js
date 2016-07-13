@@ -103,7 +103,7 @@ angular.module('HmsModule')
 
               state.go(analyze(state.current) + 'pushDetail', {
                 "detail": detail,
-                "processedFlag": {value: false},
+                "processedFlag": {value: true},
                 "type": "PUSHDETAIL"
               });
               //state.go('detail', {content: result});

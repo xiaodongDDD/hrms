@@ -761,11 +761,13 @@ angular.module('applicationModule')
         },
         initPushDetail: function (detailId) {
           var success = function (result) {
+            alert('initPushDetail.result ' + angular.toJson(result));
             if (result.returnData.processFlag == 'Y') {
               processedFlag = true;
             } else {
               processedFlag = false;
             }
+            $scope.workflowActionShowFlag = !processedFlag;
             detail.canApprove = result.returnData.canApprove;
             detail.canGoBack = result.returnData.canGoBack;
             detail.canBackTo = result.returnData.canBackTo;
@@ -776,6 +778,8 @@ angular.module('applicationModule')
             $scope.currentDetail = detail;
 
             $scope.LoadingPushData = false;
+
+            alert('initPushDetail.detail ' + angular.toJson(detail));
 
           };
           var error = function (response) {
