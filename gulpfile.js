@@ -42,7 +42,7 @@ var libDevFilePath = [
   'app/lib/**/**/**/*.*'];
 
 var libPublishFilePath = [
-  'app/lib/**/css/ionic.mini.css',
+  'app/lib/**/css/ionic.min.css',
   'app/lib/**/fonts/*.*',
   'app/lib/**/js/ionic.bundle.min.js',
   'app/lib/**/rollups/md5.js',
