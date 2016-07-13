@@ -76,10 +76,10 @@ angular.module('HmsModule')
                   "value": window.plugins.jPushPlugin
                 };
                 detail = {
-                  "recordId": window.plugins.jPushPlugin.extras.source_record_id,
-                  "workflowId": window.plugins.jPushPlugin.extras.source_workflow_id,
-                  "instanceId": window.plugins.jPushPlugin.extras.source_instance_id,
-                  "nodeId": window.plugins.jPushPlugin.extras.source_node_id
+                  "recordId": window.plugins.jPushPlugin.openNotification.extras.source_record_id,
+                  "workflowId": window.plugins.jPushPlugin.openNotification.extras.source_workflow_id,
+                  "instanceId": window.plugins.jPushPlugin.openNotification.extras.source_instance_id,
+                  "nodeId": window.plugins.jPushPlugin.openNotification.extras.source_node_id
                 };
               } else {
                 alertContent = event.aps.alert;
