@@ -127,8 +127,6 @@ gulp.task('copy-dev-libs', function () {
 //复制发布环境的依赖库文件
 gulp.task('copy-publish-libs', function () {
   return gulp.src(libPublishFilePath)
-    .pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
-    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('www/build/lib'));
 });
 
@@ -245,7 +243,7 @@ gulp.task('rebuild', function (callback) {
 
 //生成开发环境代码目录
 gulp.task('run-dev', function (callback) {
-  runSequence('clean', 'config-dev', /*'lint',*/ 'copy-dev-config', 'libDevFilePath', ['sass', 'scripts', 'html'], callback);
+  runSequence('clean', 'config-dev', /*'lint',*/ 'copy-dev-config', 'copy-publish-libs', ['sass', 'scripts', 'html'], callback);
 });
 
 //生成发布环境代码目录
