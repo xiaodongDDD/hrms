@@ -245,7 +245,7 @@ gulp.task('rebuild', function (callback) {
 
 //生成开发环境代码目录
 gulp.task('run-dev', function (callback) {
-  runSequence('clean', 'config-dev', /*'lint',*/ 'copy-dev-config', 'copy-publish-lib', ['sass', 'scripts', 'html'], callback);
+  runSequence('clean', 'config-dev', /*'lint',*/ 'copy-dev-config', 'libDevFilePath', ['sass', 'scripts', 'html'], callback);
 });
 
 //生成发布环境代码目录
