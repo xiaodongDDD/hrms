@@ -762,7 +762,7 @@ angular.module('applicationModule')
         initPushDetail: function (detailId) {
           var success = function (result) {
             alert('initPushDetail.result ' + angular.toJson(result));
-            if (result.returnData.processFlag == 'Y') {
+            if (result.returnData.processedFlag == 'Y') {
               processedFlag = true;
             } else {
               processedFlag = false;
