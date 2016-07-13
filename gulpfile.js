@@ -42,9 +42,9 @@ var libDevFilePath = [
   'app/lib/**/**/**/*.*'];
 
 var libPublishFilePath = [
-  'app/lib/**/css/ionic.css',
+  'app/lib/**/css/ionic.mini.css',
   'app/lib/**/fonts/*.*',
-  'app/lib/**/js/ionic.bundle.js',
+  'app/lib/**/js/ionic.bundle.min.js',
   'app/lib/**/rollups/md5.js',
   'app/lib/**/dist/jquery.min.js',
   'app/lib/**/dist/ng-cordova.js'];
@@ -119,8 +119,8 @@ gulp.task('html', [/*'rootHtml',*/ 'pagesHtml']);
 //复制开发环境的依赖库文件
 gulp.task('copy-dev-libs', function () {
   return gulp.src(libDevFilePath)
-    .pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
-    .pipe(sourcemaps.write('.'))
+    //.pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
+    //.pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('www/build/lib'));
 });
 
@@ -243,7 +243,7 @@ gulp.task('rebuild', function (callback) {
 
 //生成开发环境代码目录
 gulp.task('run-dev', function (callback) {
-  runSequence('clean', 'config-dev', /*'lint',*/ 'copy-dev-config', 'copy-publish-libs', ['sass', 'scripts', 'html'], callback);
+  runSequence('clean', 'config-dev', /*'lint',*/ 'copy-dev-config', 'copy-publish-lib', ['sass', 'scripts', 'html'], callback);
 });
 
 //生成发布环境代码目录
