@@ -36,26 +36,70 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
       link: function ($scope, $scroller, $attr) {
         var image = document.getElementById($attr.elasticImage);
         var imageHeight = image.offsetHeight;
+        var currentBrightness = '';
+
         $scroller.bind('scroll', function (e) {
           var scrollTop = e.detail.scrollTop;
+
+          console.log('scrollTop ' + scrollTop);
+
+          var brightness5 = "blur(5px) brightness(0.9)";
+          var brightness4 = "blur(4px) brightness(0.9)";
+          var brightness3 = "blur(3px) brightness(0.9)";
+          var brightness2 = "blur(2px) brightness(0.9)";
+          var brightness1 = "blur(1px) brightness(0.9)";
+          currentBrightness = brightness5;
+
+
           var newImageHeight = imageHeight - scrollTop;
           /////////
-          var calculation=0;
-          var blur=0;
-          var brightness=0;
+          var calculation = 0;
+          var blur = 0;
+          var brightness = 0;
           if (newImageHeight < 0) {
             newImageHeight = 0;
             calculation = 0;
           }
-          if(scrollTop<0){
-            if(-scrollTop<175){
-              calculation=-scrollTop/175;
-              blur = 5*calculation;
-              blur = 5-blur;
-              brightness = 0.3*calculation;
-              brightness = 0.7+brightness;
-              image.style.filter = "blur("+blur+"px) "+"brightness("+brightness+")";
-              image.style.webkitFilter = "blur("+blur+"px) "+"brightness("+brightness+")";
+          if (scrollTop <= 0) {
+
+            if (-scrollTop >= 0 && -scrollTop < 40) {
+              if (currentBrightness != brightness5) {
+                currentBrightness = brightness5;
+              }
+              image.style.filter = currentBrightness;
+              image.style.webkitFilter = currentBrightness;
+            }
+
+            if (-scrollTop >= 40 && -scrollTop < 80) {
+              if (currentBrightness != brightness4) {
+                currentBrightness = brightness4;
+              }
+              image.style.filter = currentBrightness;
+              image.style.webkitFilter = currentBrightness;
+            }
+
+            if (-scrollTop >= 80 && -scrollTop < 120) {
+              if (currentBrightness != brightness3) {
+                currentBrightness = brightness3;
+              }
+              image.style.filter = currentBrightness;
+              image.style.webkitFilter = currentBrightness;
+            }
+
+            if (-scrollTop >= 120 && -scrollTop < 160) {
+              if (currentBrightness != brightness2) {
+                currentBrightness = brightness2;
+              }
+              image.style.filter = currentBrightness;
+              image.style.webkitFilter = currentBrightness;
+            }
+
+            if (-scrollTop >= 160) {
+              if (currentBrightness != brightness1) {
+                currentBrightness = brightness1;
+              }
+              image.style.filter = currentBrightness;
+              image.style.webkitFilter = currentBrightness;
             }
           }
           image.style.height = newImageHeight + 'px';

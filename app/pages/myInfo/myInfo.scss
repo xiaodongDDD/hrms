@@ -4,8 +4,8 @@
       height: 148px;
       width: 100%;
       z-index: 100;
-      -webkit-filter: blur(5px) brightness(0.7);
-      filter: blur(5px) brightness(0.7);
+      -webkit-filter: blur(5px);
+      filter: blur(5px);
     }
     .content-style{
       background-color: transparent;
@@ -49,8 +49,8 @@
       height: 168px;
       width: 100%;
       z-index: 100;
-      -webkit-filter: blur(5px) brightness(.7);
-      filter: blur(5px) brightness(.7);
+      -webkit-filter: blur(5px);
+      filter: blur(5px);
     }
     .content-style{
       background-color: transparent;

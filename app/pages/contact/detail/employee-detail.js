@@ -148,7 +148,11 @@ angular.module('contactModule')
         }
         //go native page --im talk
         if (ionic.Platform.isWebView()) {
-          imService.toNativeChatPage({friendId: $scope.employeeInfo.emp_code});
+          var emp = {
+            "friendId": $scope.employeeInfo.emp_code,
+            "friendName": $scope.employeeInfo.emp_name
+          };
+          imService.toNativeChatPage(emp);
         } else {
           hmsPopup.showShortCenterToast('不支持网页聊天!');
         }

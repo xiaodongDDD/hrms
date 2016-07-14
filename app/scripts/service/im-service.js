@@ -19,6 +19,7 @@ angular.module('HmsModule')
               baseConfig) {
       //为application/x-www-form-urlencoded格式的请求--post方式
       var baseUrl = baseConfig.imPath;
+
       function init2Cloud(getImTokenUrl) {
         var getImTokenParams = {
           appCode: 'RONGCLOUD',
@@ -34,11 +35,13 @@ angular.module('HmsModule')
           } catch (e) {
             imParams = {token: '', userId: ''};
           }
-          HandIMPlugin.getChatList(function success(msg) {
-            //hmsPopup.showShortCenterToast(msg);
-          }, function error(error) {
-            //hmsPopup.showShortCenterToast(error);
-          }, imParams);
+          if (HandIMPlugin) {
+            HandIMPlugin.getChatList(function success(msg) {
+              //hmsPopup.showShortCenterToast(msg);
+            }, function error(error) {
+              //hmsPopup.showShortCenterToast(error);
+            }, imParams);
+          }
         }).error(function () {
           //hmsPopup.showShortCenterToast('error 2');
         });
@@ -46,25 +49,29 @@ angular.module('HmsModule')
 
       return {
         initImData: function () {
-            var getImTokenUrl = baseUrl + '/v2/api/thirdparty/getToken';
-            init2Cloud(getImTokenUrl);
+          var getImTokenUrl = baseUrl + '/v2/api/thirdparty/getToken';
+          init2Cloud(getImTokenUrl);
         },
         getImChatList: function () {
           var newImParams = {
             "userId": window.localStorage.empno,
             "token": window.localStorage.access_token
           };
-          HandIMPlugin.getChatList(function success(msg) {
-            //hmsPopup.showShortCenterToast(msg);
-            return msg;
-          }, function error(error) {
-            //hmsPopup.showShortCenterToast(error);
-          }, newImParams);
+          if (HandIMPlugin) {
+            HandIMPlugin.getChatList(function success(msg) {
+              //hmsPopup.showShortCenterToast(msg);
+              return msg;
+            }, function error(error) {
+              //hmsPopup.showShortCenterToast(error);
+            }, newImParams);
+          }
         },
         toNativeChatPage: function (newEmpNum) { //传入工号
-          HandIMPlugin.toChatAct(function success() {
-          }, function error() {
-          }, newEmpNum);
+          if (HandIMPlugin) {
+            HandIMPlugin.toChatAct(function success() {
+            }, function error() {
+            }, newEmpNum);
+          }
         }
       }
     }]);

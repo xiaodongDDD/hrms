@@ -42,7 +42,7 @@ var libDevFilePath = [
   'app/lib/**/**/**/*.*'];
 
 var libPublishFilePath = [
-  'app/lib/**/css/ionic.css',
+  'app/lib/**/css/ionic.min.css',
   'app/lib/**/fonts/*.*',
   'app/lib/**/js/ionic.bundle.min.js',
   'app/lib/**/rollups/md5.js',
@@ -119,6 +119,8 @@ gulp.task('html', [/*'rootHtml',*/ 'pagesHtml']);
 //复制开发环境的依赖库文件
 gulp.task('copy-dev-libs', function () {
   return gulp.src(libDevFilePath)
+    //.pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
+    //.pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('www/build/lib'));
 });
 

@@ -49,13 +49,13 @@ angular.module('HmsModule')
             var serveVersion = serveVersionParams.bigVersion.split('.');
             var localVersion = baseConfig.version.currentVersion.split('.');
             function dealVersion(){
-              if (parseInt(serveVersion[0]) < parseInt(localVersion[0])) {
+              if (parseInt(localVersion[0]) < parseInt(serveVersion[0])) {
                 return true;
-              } else if (parseInt(serveVersion[0]) == parseInt(localVersion[0])){
-                if (parseInt(serveVersion[1]) < parseInt(localVersion[1])) {
+              } else if (parseInt(localVersion[0]) == parseInt(serveVersion[0])){
+                if (parseInt(localVersion[1]) < parseInt(serveVersion[1])) {
                   return true;
-                } else if (parseInt(serveVersion[1]) == parseInt(localVersion[1])){
-                  if (parseInt(serveVersion[2]) < parseInt(localVersion[2])) {
+                } else if (parseInt(localVersion[1]) == parseInt(serveVersion[1])){
+                  if (parseInt(localVersion[2]) < parseInt(serveVersion[2])) {
                     return true;
                   } else {
                     return false;

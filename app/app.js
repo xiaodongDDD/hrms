@@ -222,5 +222,14 @@ angular.module('myApp')
           controller: 'loginCtrl'
         });
 
-      $urlRouterProvider.otherwise('/guide');
+      if(!window.localStorage.needGuid || window.localStorage.needGuid =="true"){
+        $urlRouterProvider.otherwise('/guide');
+      }else{
+        if (window.localStorage.token && window.localStorage.token != "") {
+          $urlRouterProvider.otherwise('/tab/message');
+        } else {
+          $urlRouterProvider.otherwise('/login');
+        }
+      }
+
     }]);

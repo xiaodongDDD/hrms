@@ -4,10 +4,10 @@
       <div class="message-button">
         <i class="ion-ios-search search-i"></i>
       </div>
-      <input name=""  placeholder="搜索">
+      <input name="" placeholder="搜索">
     </div>
   </ion-header-bar>
-  <ion-content>
+  <ion-content style="bottom:48px;">
     <ion-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </ion-refresher>
 
@@ -115,166 +115,22 @@
     </div>
     -->
 
-    <div class="message-item" ng-click="openPushDetail()">
+    <div class="message-item" ng-click="chatWithYou(message)" ng-repeat="message in messageList">
       <div class="message-introduce">
-        <img class="message-has-logo" src="build/img/application/profile@3x.png">
+        <img class="message-has-logo" src="{{message.imgUrl}}">
         </img>
       </div>
       <div class="message-content">
-        <div class="message-title">
-          William Long
+        <div class="message-title" ng-bind="message.name">
         </div>
-        <div class="message-line">
-          会议通知：明天上午10点大会议
+        <div class="message-line" ng-bind="message.content">
         </div>
       </div>
       <div class="message-extro">
-        <div class="message-date">
+        <div class="message-date" ng-bind="message.time">
           3小时前
         </div>
-        <div class="message-qty">
-          3
-        </div>
-      </div>
-    </div>
-
-    <div class="message-item">
-      <div class="message-introduce">
-        <div class="message-logo red">
-          GSL
-        </div>
-      </div>
-      <div class="message-content">
-        <div class="message-title">
-          William Long
-        </div>
-        <div class="message-line">
-          会议通知：明天上午10点大会议
-        </div>
-      </div>
-      <div class="message-extro">
-        <div class="message-date">
-          3月20号
-        </div>
-        <div class="message-qty">
-          3
-        </div>
-      </div>
-    </div>
-
-    <div class="message-item">
-      <div class="message-introduce">
-        <img class="message-has-logo" src="build/img/application/profile@3x.png">
-        </img>
-      </div>
-      <div class="message-content">
-        <div class="message-title">
-          William Long
-        </div>
-        <div class="message-line">
-          会议通知：明天上午10点大会议
-        </div>
-      </div>
-      <div class="message-extro">
-        <div class="message-date">
-          3小时前
-        </div>
-        <div class="message-qty">
-          3
-        </div>
-      </div>
-    </div>
-
-    <div class="message-item">
-      <div class="message-introduce">
-        <div class="message-logo red">
-          GSL
-        </div>
-      </div>
-      <div class="message-content">
-        <div class="message-title">
-          William Long
-        </div>
-        <div class="message-line">
-          会议通知：明天上午10点大会议
-        </div>
-      </div>
-      <div class="message-extro">
-        <div class="message-date">
-          3月20号
-        </div>
-        <div class="message-qty">
-          3
-        </div>
-      </div>
-    </div>
-
-    <div class="message-item">
-      <div class="message-introduce">
-        <img class="message-has-logo" src="build/img/application/profile@3x.png">
-        </img>
-      </div>
-      <div class="message-content">
-        <div class="message-title">
-          William Long
-        </div>
-        <div class="message-line">
-          会议通知：明天上午10点大会议
-        </div>
-      </div>
-      <div class="message-extro">
-        <div class="message-date">
-          3小时前
-        </div>
-        <div class="message-qty">
-          3
-        </div>
-      </div>
-    </div>
-
-    <div class="message-item">
-      <div class="message-introduce">
-        <div class="message-logo red">
-          GSL
-        </div>
-      </div>
-      <div class="message-content">
-        <div class="message-title">
-          William Long
-        </div>
-        <div class="message-line">
-          会议通知：明天上午10点大会议
-        </div>
-      </div>
-      <div class="message-extro">
-        <div class="message-date">
-          3月20号
-        </div>
-        <div class="message-qty">
-          3
-        </div>
-      </div>
-    </div>
-
-    <div class="message-item">
-      <div class="message-introduce">
-        <img class="message-has-logo" src="build/img/application/profile@3x.png">
-        </img>
-      </div>
-      <div class="message-content">
-        <div class="message-title">
-          William Long
-        </div>
-        <div class="message-line">
-          会议通知：明天上午10点大会议
-        </div>
-      </div>
-      <div class="message-extro">
-        <div class="message-date">
-          3小时前
-        </div>
-        <div class="message-qty">
-          3
+        <div class="message-qty" ng-bind="message.count">
         </div>
       </div>
     </div>
