@@ -42,7 +42,7 @@
 //点击返回调用的方法
 - (void)dissmiss
 {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController dismissViewControllerAnimated:NO completion:nil];
 }
 //点击电话调用的方法
 - (void)call:(NSString *)phoneNumber

@@ -28,11 +28,12 @@
 {
     NSLog(@"openIMVC");
     NSString *friendId = command.arguments[0][@"friendId"];
-    
-    CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:friendId];
-    
-    cdvIMChattingVC.navTitle = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cdvIMChattingVC];
-    [self.viewController presentViewController:nav animated:YES completion:nil];
+        NSString *friendName = command.arguments[0][@"friendName"];
+
+        CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:friendId];
+
+        cdvIMChattingVC.navTitle = friendName;//[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cdvIMChattingVC];
+        [self.viewController presentViewController:nav animated:NO completion:nil];
 }
 @end

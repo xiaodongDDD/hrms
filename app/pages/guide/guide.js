@@ -15,6 +15,8 @@ angular.module('loginModule')
 
       console.log('loginCtrl.enter');
 
+      window.localStorage.needGuid = "false";
+
       $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
 
       $scope.skipGuide = function () {
@@ -32,12 +34,13 @@ angular.module('loginModule')
       };
 
       var goToMain = function () {
-        if (window.localStorage.token && window.localStorage.token != "") {
+        $state.go("login");
+        /*if (window.localStorage.token && window.localStorage.token != "") {
           checkVersionService.checkAppVersion();
           $state.go("tab.message");
         } else {
           $state.go("login");
-        }
+        }*/
       };
 
       $scope.$on('$ionicView.enter', function () {

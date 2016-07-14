@@ -40,7 +40,7 @@ angular.module('contactModule')
         $scope.newPage = 0;
         var CONTACT_TAG = 'contact:\n';
         var DB_NAME = 'key_history';
-        var LINK_MAN = 'common_linkman';
+        var LINK_MAN = 'common_linkman1';
         var position = ''; //记录滚动条的位置--
         var getEmployeeUrl = baseConfig.queryPath + '/staff/query';
         var employeeParams = {key: '', page: 1, pageSize: '30'};
@@ -234,7 +234,7 @@ angular.module('contactModule')
         $scope.showClear = false;
         $scope.resultList = [];
         $scope.contactKey.getValue = '';
-        //$scope.contactInputModal.hide();
+        $scope.contactInputModal.hide();
         $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
       };
 

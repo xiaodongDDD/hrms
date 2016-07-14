@@ -53,7 +53,7 @@ angular.module('contactModule')
         }
         $scope.employeeInfo = {}; //存储查询员工的详细信息
         $scope.contactLoading = true; //默认显示loading加载
-        var LINK_MAN = 'common_linkman';
+        var LINK_MAN = 'common_linkman1';
         var employeeBaseInfo = {
           tel: '',
           name: '',
@@ -147,7 +147,11 @@ angular.module('contactModule')
         }
         //go native page --im talk
         if (ionic.Platform.isWebView()) {
-          imService.toNativeChatPage({friendId: $scope.employeeInfo.emp_code});
+          var emp = {
+            "friendId": $scope.employeeInfo.emp_code,
+            "friendName": $scope.employeeInfo.emp_name
+          };
+          imService.toNativeChatPage(emp);
         } else {
           hmsPopup.showShortCenterToast('不支持网页聊天!');
         }
