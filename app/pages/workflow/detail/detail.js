@@ -761,7 +761,7 @@ angular.module('applicationModule')
         },
         initPushDetail: function (detailId) {
           var success = function (result) {
-            //alert('initPushDetail.result ' + angular.toJson(result));
+            alert('initPushDetail.result ' + angular.toJson(result));
             if (result.returnData.processedFlag == 'Y') {
               processedFlag = true;
             } else {
@@ -779,7 +779,7 @@ angular.module('applicationModule')
 
             $scope.LoadingPushData = false;
 
-            //alert('initPushDetail.detail ' + angular.toJson(detail));
+            alert('initPushDetail.detail ' + angular.toJson(detail));
 
           };
           var error = function (response) {
