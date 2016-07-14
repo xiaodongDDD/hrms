@@ -74,7 +74,11 @@ angular.module('HmsModule')
                     return;
                   }
                 };
-                hmsPopup.confirm(serveVersionParams.updateContent, "大版本更新", selectAction);
+                if(!baseConfig.appStoreFlag) {
+                  hmsPopup.confirm(serveVersionParams.updateContent, "大版本更新", selectAction);
+                } else {
+                  //go appleStore--
+                }
               } else {
                 alert(serveVersionParams.updateContent);
               }
