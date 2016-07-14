@@ -27,7 +27,7 @@ angular.module('messageModule')
         }
       });
 
-      checkVersionService.checkAppVersion();
+      //checkVersionService.checkAppVersion();
 
       $scope.messageList = [
         {
