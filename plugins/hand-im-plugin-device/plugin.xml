@@ -25,16 +25,16 @@
 	<source-file src="src/android/FileUtils.java" target-dir="src/com/hand/im"/>
     <source-file src="src/android/ImageActivity.java" target-dir="src/com/hand/im"/>
     <source-file src="src/android/ViewPagerAdapter.java" target-dir="src/com/hand/im"/>
-	
+
 	<source-file src="src/android/emoji" target-dir="assets/"/>
-	
-	
+
+
     <source-file src="src/android/layout/chat_item_layout.xml" target-dir="res/layout"/>
     <source-file src="src/android/layout/hand_chat_act.xml" target-dir="res/layout"/>
 	<source-file src="src/android/layout/chat_header_view.xml" target-dir="res/layout"/>
     <source-file src="src/android/layout/image_act.xml" target-dir="res/layout"/>
 	<source-file src="src/android/layout/item_face.xml" target-dir="res/layout"/>
-	
+
 	<source-file src="src/android/uk" target-dir="src/"/>
 
     <source-file src="src/android/layout/values/rc_configuration.xml" target-dir="res/values"/>
@@ -54,7 +54,7 @@
 	<source-file src="src/android/layout/values-1812x1080" target-dir="res/"/>
 	<source-file src="src/android/layout/values-1920x1080" target-dir="res/"/>
 	<source-file src="src/android/layout/values-2560x1440" target-dir="res/"/>
-	
+
 	<source-file src="src/android/layout/drawable/selector_album.xml" target-dir="res/drawable"/>
 	<source-file src="src/android/layout/drawable/selector_camera.xml" target-dir="res/drawable"/>
 	<source-file src="src/android/layout/drawable/selector_emjoe.xml" target-dir="res/drawable"/>
@@ -212,9 +212,9 @@
     <source-file src="src/android/libs/x86/libRongIMLib.so" target-dir="libs/x86/" />
     <source-file src="src/android/libs/Rong_IMLib_v2_6_4.jar" target-dir="libs/" />
 	<source-file src="src/android/libs/universal-image-loader-1.9.2.jar" target-dir="libs/" />
-	
+
 	<framework src="com.android.support:support-v4:23.1.1" />
-	
+
     <config-file parent="/manifest" target="AndroidManifest.xml">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -235,13 +235,13 @@
             android:name="RONG_CLOUD_APP_KEY"
             android:value="0vnjpoadnd4cz" />
 
-        <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
-		android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" 
-		android:name="com.hand.im.HandChatActivity" 
+        <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+		android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"
+		android:name="com.hand.im.HandChatActivity"
 		android:screenOrientation="portrait" />
-        <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
-		android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" 
-		android:name="com.hand.im.ImageActivity" 
+        <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+		android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"
+		android:name="com.hand.im.ImageActivity"
 		android:screenOrientation="portrait" />
 
         <service
@@ -291,6 +291,69 @@
             </intent-filter>
         </receiver>
     </config-file>
+
+  </platform>
+
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="HandIMPlugin">
+        <param name="ios-package" value="CDVIMPlugin"/>
+      </feature>
+    </config-file>
+
+    <!-- 配置-info.plist    -->
+
+
+    <!-- resource   -->
+    <!--<resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable" />-->
+
+    <resource-file src="src/ios/plugins/image" />
+
+    <!--源码 -->
+    <header-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.h" />
+    <source-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.m" />
+
+    <header-file src="src/ios/plugins/CDVIMPlugin.h"/>
+    <source-file src="src/ios/plugins/CDVIMPlugin.m"/>
+
+    <header-file src="src/ios/plugins/CDVIMPluginChattingViewController.h"/>
+    <source-file src="src/ios/plugins/CDVIMPluginChattingViewController.m"/>
+
+    <header-file src="src/ios/plugins/UIColor+Hex.h"/>
+    <header-file src="src/ios/plugins/UIColor+Hex.m"/>
+
+    <header-file src="src/ios/plugins/CVDPlugin-Bridging-Header.h"/>
+
+    <!--框架-->
+    <framework src="Photos.framework"  />
+    <framework src="UIKit.framework"  />
+    <framework src="AudioToolbox.framework" />
+    <framework src="AVFoundation.framework" />
+    <framework src="CFNetwork.framework" />
+    <framework src="CoreAudio.framework" />
+    <framework src="CoreGraphics.framework" />
+    <framework src="CoreLocation.framework" />
+    <framework src="CoreMedia.framework" />
+    <framework src="CoreTelephony.framework" />
+    <framework src="CoreVideo.framework" />
+    <framework src="ImageIO.framework" />
+    <framework src="libc++abi.tbd" />
+    <framework src="libstdc++.tbd" />
+    <framework src="libxml2.tbd" />
+    <framework src="MapKit.framework" />
+    <framework src="OpenGLES.framework" />
+    <framework src="QuartzCore.framework" />
+    <framework src="SystemConfiguration.framework" />
+    <framework src="AssetsLibrary.framework" />
+    <framework src="libc++.tbd" />
+    <framework src="libsqlite3.0.tbd" />
+    <framework src="libz.tbd" />
+
+    <!--        <framework src="src/ios/plugins/RongIMKit.framework " />-->
+    <!--        <framework src="src/ios/plugins/RongIMLib.framework "  />-->
+    <!--        <framework src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/libopencore-amrnb.a "  />-->
+
+
 
   </platform>
 </plugin>
