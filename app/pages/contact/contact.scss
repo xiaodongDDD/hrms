@@ -252,6 +252,8 @@ $bgColor: #fafafa !default;
         height: 30px;
         color: $color-text-assistant;
         font-size: 12/14*$font-size-small;
+        white-space: normal;
+        width: 70%;
         margin-left: 30%;
         padding-top: 3%;
       }

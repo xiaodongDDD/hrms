@@ -158,4 +158,10 @@
             android:orientation="horizontal" >
         </LinearLayout>
     </LinearLayout>
+    <com.hand.im.VoiceLayout
+        android:id="@+id/voice_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+    </com.hand.im.VoiceLayout>
 </LinearLayout>

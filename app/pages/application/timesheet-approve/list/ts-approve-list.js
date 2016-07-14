@@ -33,7 +33,7 @@ angular.module('tsApproveModule')
     'hmsHttp',
     'ApproveDetailService',
     '$ionicPopover',
-    '$cordovaDatePicker',
+    '$ionicListDelegate',
     function ($scope,
               $state,
               baseConfig,
@@ -46,7 +46,7 @@ angular.module('tsApproveModule')
               hmsHttp,
               ApproveDetailService,
               $ionicPopover,
-              $cordovaDatePicker) {
+              $ionicListDelegate) {
       /**
        * initial var section
        */
@@ -54,7 +54,7 @@ angular.module('tsApproveModule')
         if (ionic.Platform.isIOS()) {
           angular.element('.custom-head').css({'paddingTop': '20px', 'height': '120px'});
           angular.element('.ts-list-bg').css('paddingTop', '120px');
-        } else if(ionic.Platform.isAndroid()){
+        } else if (ionic.Platform.isAndroid()) {
           angular.element('.ts-content-bottom').css('marginBottom', '60px');
         }
         $scope.showProjectName = true; //默认显示项目名称
@@ -64,6 +64,7 @@ angular.module('tsApproveModule')
         $scope.showLsLoading = true; //loading默认显示
         $scope.pullDownFlag = true; //下拉刷新显示标识
         $scope.showCalendar = true; //默认显示截止日期
+        $scope.listCanSwipe = true; //默认列表可以左划
         var clickSelectAll = false; //默认没有点击全选
         $scope.endApproveDate = "";
         $scope.actionName = "操作";
@@ -142,6 +143,7 @@ angular.module('tsApproveModule')
       initData();
 
       $scope.$on('$ionicView.beforeEnter', function (e) {
+        $scope.listCanSwipe = true;
         if (ApproveDetailService.getRefreshFlag() === 'refresh-approve-list') {
           $scope.tsListRefresh();
         }
@@ -170,16 +172,18 @@ angular.module('tsApproveModule')
       $scope.doSelectAction = function () { //header 右上角显示操作按钮
         if ($scope.actionName == "操作") {
           $scope.actionName = "取消";
+          $scope.listCanSwipe = false;
           $scope.showDetailArrow = false;
           $scope.pullDownFlag = false;
           $scope.listInfoArray.busy = false;
-          angular.element('.ts-approve-list-item').css("paddingLeft", "10%");
+          angular.element('.item-content').css("paddingLeft", "10%");
         } else if ($scope.actionName == "取消") {
           $scope.actionName = "操作";
+          $scope.listCanSwipe = true;
           $scope.showDetailArrow = true;
           $scope.pullDownFlag = true;
           $scope.listInfoArray.busy = true;
-          angular.element('.ts-approve-list-item').css("paddingLeft", "10px");
+          angular.element('.item-content').css("paddingLeft", "10px");
           tsActionParams = { //审批拒绝/通过的参数
             "params": {
               "p_approve_flag": "AGREE",
@@ -246,7 +250,7 @@ angular.module('tsApproveModule')
         }
       };
 
-      $scope.revertDataModal = function($event) { //切换日期的不同选择模式
+      $scope.revertDataModal = function ($event) { //切换日期的不同选择模式
         $event.stopPropagation(); //阻止事件冒泡
         $scope.showCalendar = !$scope.showCalendar;
       };
@@ -351,6 +355,7 @@ angular.module('tsApproveModule')
               'endDate': newEndDate
             }
           );
+          $ionicListDelegate.closeOptionButtons();
         } else {
           selectItem[index] = !selectItem[index];
           var approve = {
@@ -409,8 +414,29 @@ angular.module('tsApproveModule')
           }
         }
       };
-      $scope.passThroughListItem = function () { //通过
-        if (approveList.approve_list.length === 0) {
+
+      function swipeAction(newObject){
+        approveList = {
+          "approve_list": []
+        };
+        var approve = {
+          "p_project_id": "",
+          "p_project_person_number": "",
+          "p_start_date": "",
+          "p_end_date": "",
+          "p_record_id": ""
+        };
+        approve.p_project_id = newObject.project_id;
+        approve.p_project_person_number = newObject.employee_number;
+        approve.p_start_date = newObject.start_date;
+        approve.p_end_date = newObject.end_date;
+        approveList.approve_list.push(approve);
+      };
+
+      $scope.passThroughListItem = function (newObject) { //通过
+        if (newObject) {
+          swipeAction(newObject);
+        } else if (approveList.approve_list.length === 0) {
           hmsPopup.showShortCenterToast('请先选择操作项！');
           return;
         }
@@ -425,21 +451,27 @@ angular.module('tsApproveModule')
           } else {
             hmsPopup.showShortCenterToast('审批失败！');
           }
-          $scope.doSelectAction();
+          if (!newObject) {
+            $scope.doSelectAction();
+          }
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1000);
+          }, 400);
         }).error(function (e) {
           hmsPopup.hideLoading();
-          $scope.doSelectAction();
+          if (!newObject) {
+            $scope.doSelectAction();
+          }
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1000);
+          }, 400);
         });
       };
 
-      $scope.refuseListItem = function () { //拒绝
-        if (approveList.approve_list.length === 0) {
+      $scope.refuseListItem = function (newObject) { //拒绝
+        if (newObject) {
+          swipeAction(newObject);
+        } else if (approveList.approve_list.length === 0) {
           hmsPopup.showShortCenterToast('请先选择操作项！');
           return;
         }
@@ -454,16 +486,20 @@ angular.module('tsApproveModule')
           } else {
             hmsPopup.showShortCenterToast('拒绝失败！');
           }
-          $scope.doSelectAction();
+          if (!newObject) {
+            $scope.doSelectAction();
+          }
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1000);
+          }, 400);
         }).error(function (e) {
           hmsPopup.hideLoading();
-          $scope.doSelectAction();
+          if (!newObject) {
+            $scope.doSelectAction();
+          }
           $timeout(function () {
             $scope.tsListRefresh();
-          }, 1000);
+          }, 400);
         });
       };
 
@@ -474,11 +510,11 @@ angular.module('tsApproveModule')
         if (selectParam == 'projectName') {
           $scope.showProjectName = true;
           angular.element('#project-name').css({'backgroundColor': 'white', 'color': '#4A4A4A'});
-          angular.element('#person-select').css({'backgroundColor': '#fafafa', 'color': '#9b9b9b'});
+          angular.element('#person-select').css({'backgroundColor': '#f8f8f8', 'color': '#9b9b9b'});
         } else if (selectParam == 'personSelect') {
           $scope.showProjectName = false;
           angular.element('#person-select').css({'backgroundColor': 'white', 'color': '#4A4A4A'});
-          angular.element('#project-name').css({'backgroundColor': '#fafafa', 'color': '#9b9b9b'});
+          angular.element('#project-name').css({'backgroundColor': '#f8f8f8', 'color': '#9b9b9b'});
         }
       };
 

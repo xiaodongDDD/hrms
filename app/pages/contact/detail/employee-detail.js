@@ -53,7 +53,7 @@ angular.module('contactModule')
         }
         $scope.employeeInfo = {}; //存储查询员工的详细信息
         $scope.contactLoading = true; //默认显示loading加载
-        var LINK_MAN = 'common_linkman';
+        var LINK_MAN = 'common_linkman2';
         var employeeBaseInfo = {
           tel: '',
           name: '',
@@ -140,7 +140,8 @@ angular.module('contactModule')
         employeeBaseInfo = {
           tel: $scope.employeeInfo.mobil,
           name: $scope.employeeInfo.emp_name,
-          employeeNumber: $scope.employeeInfo.emp_code
+          employeeNumber: $scope.employeeInfo.emp_code,
+          imgUrl: $scope.employeeInfo.avatar
         };
         if (employeeBaseInfo.name) {
           storeCommonLinkman(employeeBaseInfo);

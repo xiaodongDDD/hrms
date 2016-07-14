@@ -226,7 +226,7 @@ angular.module('loginModule')
       $scope.login = function () {//登录功能
         if (window.localStorage.empno != $scope.loginInfo.username) {
           localStorage.removeItem('key_history');
-          localStorage.removeItem('common_linkman');
+          localStorage.removeItem('common_linkman2');
         }
         $scope.showLittlePortrait = false;
         $scope.showLoginButton = true;

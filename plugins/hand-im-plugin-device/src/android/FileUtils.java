@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
-import com.hand_china.hrms.R;
 
 public class FileUtils {
 	/**

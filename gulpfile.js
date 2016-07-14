@@ -125,8 +125,8 @@ gulp.task('copy-dev-libs', function () {
 //复制发布环境的依赖库文件
 gulp.task('copy-publish-libs', function () {
   return gulp.src(libPublishFilePath)
-    .pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
-    .pipe(sourcemaps.write('.'))
+    //.pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
+    //.pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('www/build/lib'));
 });
 

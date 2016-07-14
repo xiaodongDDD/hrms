@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.util.List;
-import com.hand_china.hrms.R;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by USER on 2016/7/1.
@@ -31,15 +33,23 @@ public class HandChatContentAdapter extends BaseAdapter{
     private String friendId;
     public static final String IMG = "IMG";
     public static final String TXT = "TXT";
+    public static final String VOICE="VOICE";
+    private MediaPlayUtil mMediaPlayUtil;
+    //线程池
+    private ExecutorService mImageThreadPool = Executors.newFixedThreadPool(3);
+
     public HandChatContentAdapter(Context context,List<HandChatActivity.ChatContant> chats,String userId,String friendId){
         this.data = chats;
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.userId = userId;
         this.friendId = friendId;
+        mMediaPlayUtil = MediaPlayUtil.getInstance(context);
         options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.picture_loading)
-                .showImageOnFail(R.drawable.pictures_no)
+//                .showImageOnLoading(R.drawable.picture_loading)
+//                .showImageOnFail(R.drawable.pictures_no)
+                .showImageOnLoading(Util.getRS("picture_loading", "drawable", context))
+                .showImageOnFail(Util.getRS("pictures_no", "drawable", context))
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
@@ -62,17 +72,27 @@ public class HandChatContentAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView != null){
             viewHolder = (ViewHolder) convertView.getTag();
         }else{
-            convertView = inflater.inflate(R.layout.chat_item_layout,null);
+            //convertView = inflater.inflate(R.layout.chat_item_layout,null);
+            convertView = inflater.inflate(Util.getRS("chat_item_layout", "layout", context),null);
             viewHolder = new ViewHolder();
-            viewHolder.imgv_chat_left_head_portrait = (ImageView) convertView.findViewById(R.id.imgv_chat_left_head_portrait);
-            viewHolder.textv_chat_content = (TextView) convertView.findViewById(R.id.textv_chat_content);
-            viewHolder.textv_chat_right_content = (TextView) convertView.findViewById(R.id.textv_chat_right_content);
-            viewHolder.imgv_chat_img = (ImageView) convertView.findViewById(R.id.imgv_chat_img);
-            viewHolder.imgv_chat_right_img = (ImageView) convertView.findViewById(R.id.imgv_chat_right_img);
+//            viewHolder.imgv_chat_left_head_portrait = (ImageView) convertView.findViewById(R.id.imgv_chat_left_head_portrait);
+//            viewHolder.textv_chat_content = (TextView) convertView.findViewById(R.id.textv_chat_content);
+//            viewHolder.textv_chat_right_content = (TextView) convertView.findViewById(R.id.textv_chat_right_content);
+//            viewHolder.imgv_chat_img = (ImageView) convertView.findViewById(R.id.imgv_chat_img);
+//            viewHolder.imgv_chat_right_img = (ImageView) convertView.findViewById(R.id.imgv_chat_right_img);
+//            viewHolder.imgv_left_voice = (ImageView) convertView.findViewById(R.id.imgv_left_voice);
+//            viewHolder.imgv_right_voice = (ImageView) convertView.findViewById(R.id.imgv_right_voice);
+            viewHolder.imgv_chat_left_head_portrait = (ImageView) convertView.findViewById(Util.getRS("imgv_chat_left_head_portrait","id",context));
+            viewHolder.textv_chat_content = (TextView) convertView.findViewById(Util.getRS("textv_chat_content","id",context));
+            viewHolder.textv_chat_right_content = (TextView) convertView.findViewById(Util.getRS("textv_chat_right_content","id",context));
+            viewHolder.imgv_chat_img = (ImageView) convertView.findViewById(Util.getRS("imgv_chat_img","id",context));
+            viewHolder.imgv_chat_right_img = (ImageView) convertView.findViewById(Util.getRS("imgv_chat_right_img","id",context));
+            viewHolder.imgv_left_voice = (ImageView) convertView.findViewById(Util.getRS("imgv_left_voice","id",context));
+            viewHolder.imgv_right_voice = (ImageView) convertView.findViewById(Util.getRS("imgv_right_voice","id",context));
             convertView.setTag(viewHolder);
         }
         if(data.get(position).getType().equals(IMG)){
@@ -80,6 +100,8 @@ public class HandChatContentAdapter extends BaseAdapter{
             viewHolder.imgv_chat_right_img.setVisibility(View.VISIBLE);
             viewHolder.textv_chat_content.setVisibility(View.GONE);
             viewHolder.textv_chat_right_content.setVisibility(View.GONE);
+            viewHolder.imgv_left_voice.setVisibility(View.GONE);
+            viewHolder.imgv_right_voice.setVisibility(View.GONE);
             if(data.get(position).getFromUser().equals(friendId)){
                 viewHolder.imgv_chat_left_head_portrait.setVisibility(View.VISIBLE);
                 viewHolder.imgv_chat_img.setVisibility(View.VISIBLE);
@@ -114,13 +136,15 @@ public class HandChatContentAdapter extends BaseAdapter{
         }else if(data.get(position).getType().equals(TXT)){
             viewHolder.imgv_chat_img.setVisibility(View.GONE);
             viewHolder.imgv_chat_right_img.setVisibility(View.GONE);
+            viewHolder.imgv_left_voice.setVisibility(View.GONE);
+            viewHolder.imgv_right_voice.setVisibility(View.GONE);
             viewHolder.textv_chat_content.setVisibility(View.VISIBLE);
             viewHolder.textv_chat_right_content.setVisibility(View.VISIBLE);
             //单聊对象的ID
             if(data.get(position).getFromUser().equals(friendId)){
                 viewHolder.imgv_chat_left_head_portrait.setVisibility(View.VISIBLE);
                 viewHolder.textv_chat_content.setVisibility(View.VISIBLE);
-                SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, data.get(position).getTxt());
+                SpannableString spannableString = FaceConversionUtil.getInstace(context).getExpressionString(context, data.get(position).getTxt());
                 viewHolder.textv_chat_content.setText(spannableString);
                 viewHolder.textv_chat_right_content.setVisibility(View.GONE);
             }else if(data.get(position).getFromUser().equals(userId)){
@@ -128,8 +152,63 @@ public class HandChatContentAdapter extends BaseAdapter{
                 viewHolder.imgv_chat_left_head_portrait.setVisibility(View.GONE);
                 viewHolder.textv_chat_content.setVisibility(View.GONE);
                 viewHolder.textv_chat_right_content.setVisibility(View.VISIBLE);
-                SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, data.get(position).getTxt());
+                SpannableString spannableString = FaceConversionUtil.getInstace(context).getExpressionString(context, data.get(position).getTxt());
                 viewHolder.textv_chat_right_content.setText(spannableString);
+            }
+        }else if(data.get(position).getType().equals(VOICE)){
+            viewHolder.imgv_chat_img.setVisibility(View.GONE);
+            viewHolder.imgv_chat_right_img.setVisibility(View.GONE);
+            viewHolder.imgv_left_voice.setVisibility(View.VISIBLE);
+            viewHolder.imgv_right_voice.setVisibility(View.VISIBLE);
+            viewHolder.textv_chat_content.setVisibility(View.GONE);
+            viewHolder.textv_chat_right_content.setVisibility(View.GONE);
+            if(data.get(position).getFromUser().equals(friendId)){
+                viewHolder.imgv_chat_left_head_portrait.setVisibility(View.VISIBLE);
+                viewHolder.imgv_left_voice.setVisibility(View.VISIBLE);
+                viewHolder.imgv_right_voice.setVisibility(View.GONE);
+                viewHolder.imgv_left_voice.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mImageThreadPool.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                synchronized (this){
+                                    //播放音频
+                                    if (mMediaPlayUtil.isPlaying()) {
+                                        mMediaPlayUtil.stop();
+                                        mMediaPlayUtil.play(data.get(position).getVoiceUri());
+                                    } else {
+                                        mMediaPlayUtil.play(data.get(position).getVoiceUri());
+                                    }
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }else if(data.get(position).getFromUser().equals(userId)){
+                viewHolder.imgv_chat_left_head_portrait.setVisibility(View.GONE);
+                viewHolder.imgv_left_voice.setVisibility(View.GONE);
+                viewHolder.imgv_right_voice.setVisibility(View.VISIBLE);
+                viewHolder.imgv_right_voice.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mImageThreadPool.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                synchronized (this){
+                                    //播放音频
+                                    if (mMediaPlayUtil.isPlaying()) {
+                                        mMediaPlayUtil.stop();
+                                        mMediaPlayUtil.play(data.get(position).getVoiceUri());
+                                    } else {
+                                        mMediaPlayUtil.play(data.get(position).getVoiceUri());
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
             }
         }
         return convertView;
@@ -140,5 +219,7 @@ public class HandChatContentAdapter extends BaseAdapter{
         public TextView  textv_chat_right_content;
         public ImageView imgv_chat_img;
         public ImageView imgv_chat_right_img;
+        public ImageView imgv_left_voice;
+        public ImageView imgv_right_voice;
     }
 }

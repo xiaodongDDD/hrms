@@ -40,11 +40,15 @@ HmsModule.filter('weekDay', function () {
 
 //图片过滤器
 HmsModule.filter('filterImg', function () {
-  return function (data) {
+  return function (data, gender) {
     if (data) {
       return data;
     } else {
-      data = 'build/img/application/profile@3x.png';
+      if (gender == "男") {//根据性别判定头像男女
+        data = "build/img/myInfo/man-portrait.png";
+      } else if (gender == "女") {
+        data = "build/img/myInfo/woman-portrait.png";
+      }
       return data;
     }
   }

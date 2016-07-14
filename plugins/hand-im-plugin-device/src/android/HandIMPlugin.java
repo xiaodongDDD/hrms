@@ -18,7 +18,6 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
-import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,8 +30,10 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
+import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
-import com.hand_china.hrms.R;
+import io.rong.message.VoiceMessage;
+
 
 public class HandIMPlugin extends CordovaPlugin{
     public static final String ACTION_GET_CHAT_LIST = "getChatList";
@@ -62,6 +63,8 @@ public class HandIMPlugin extends CordovaPlugin{
                 userId = obj.getString("userId");
                 token = obj.getString("token");
             }}
+//            userId="10101";
+//            token = "Z0UlKIjcWqYbOshfngwNC1lLUTMDagqb7z8dTqJKoTt0JHVAabLVUf/TjGkBDUrTmen/J3gPG+6UiAfZePpL3A==";
             //如果传来的数据是空的做一个判断控制
             if(token.equals("")){
                 Toast.makeText(context,"未获取到数据",Toast.LENGTH_SHORT).show();
@@ -86,6 +89,7 @@ public class HandIMPlugin extends CordovaPlugin{
             if(args!=null && args.length()>0){
                 JSONObject obj = args.getJSONObject(0);
             friendId = obj.getString("friendId");}
+//            friendId="5678";
             if(RongIMClient.getInstance() == null){
                 initRY();
             }
@@ -99,6 +103,7 @@ public class HandIMPlugin extends CordovaPlugin{
             }
             if(getRmConnect()){
                 Intent intent = new Intent(cordova.getActivity(),HandChatActivity.class);
+                intent.putExtra("TYPE","NORMAL");
                 intent.putExtra("USERID",userId);
                 intent.putExtra("FRIENDID",friendId);
                 intent.putExtra("TOKEN",token);
@@ -121,7 +126,7 @@ public class HandIMPlugin extends CordovaPlugin{
         context=cordova.getActivity().getApplicationContext();
         myConversations = new ArrayList<myConversation>();
         //初始化表情数据
-        FaceConversionUtil.getInstace().getFileText(cordova.getActivity().getApplication());
+        FaceConversionUtil.getInstace(cordova.getActivity().getApplicationContext()).getFileText(cordova.getActivity().getApplication());
         //初始化ImageLoader
         initImageLoader(context);
     }
@@ -205,10 +210,11 @@ public class HandIMPlugin extends CordovaPlugin{
                 public void onSuccess(Integer integer) {
 //                  int totalUnreadCount = integer;
 //                    getChatListInfo();
-                    //通过注入js的方法 调用前端js
+//                    //通过注入js的方法 调用前端js
 //                    String format = "HandIMPlugin.MessageInAndroidCallback(%s);";
 //                    final String js = String.format(format, String.valueOf(integer));
 //                    HandIMPlugin.this.webView.loadUrl("javascript:" + js);
+                    getChatListInfo();
                     //解析message
                     MessageContent mc = message.getContent();
                     String ContentText = "";
@@ -216,15 +222,18 @@ public class HandIMPlugin extends CordovaPlugin{
                     if (mc instanceof TextMessage) {
                         TextMessage tm = (TextMessage) mc;
                         ContentText = tm.getContent();
-                    } else {
+                    } else if(mc instanceof ImageMessage){
                         ContentText = "图片";
+                    } else if(mc instanceof VoiceMessage){
+                        ContentText = "语音";
                     }
                     String targetId = message.getTargetId();
-                    Intent intent = new Intent(context,HandChatActivity.class);
-                    intent.putExtra("USERID",userId);
-                    intent.putExtra("FRIENDID",targetId);
-                    intent.putExtra("TOKEN",token);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+                    Intent intent = new Intent(cordova.getActivity(),HandChatActivity.class);
+                    intent.putExtra("TYPE","NOTICE");
+                    intent.putExtra("MUSERID",userId);
+                    intent.putExtra("MFRIENDID",targetId);
+                    intent.putExtra("MTOKEN",token);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) (Math.random() * 1000) + 1, intent, 0);
                     //获取目标ID
                     //通知栏提示
                     NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
@@ -236,7 +245,8 @@ public class HandIMPlugin extends CordovaPlugin{
                             .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
                             .setDefaults(Notification.DEFAULT_VIBRATE)//向通知添加声音、闪灯和振动效果.setAutoCancel(true)
                             .setAutoCancel(true)
-                            .setSmallIcon(R.drawable.header);//设置通知小ICON
+                            .setSmallIcon(Util.getRS("header", "drawable", cordova.getActivity().getApplicationContext()));//设置通知小ICON
+                            //.setSmallIcon(R.drawable.header);//设置通知小ICON
                     Notification notification = mBuilder.build();
                     notification.flags |= Notification.FLAG_AUTO_CANCEL;
                     mNotificationManager.notify(Integer.valueOf(targetId), mBuilder.build());
@@ -324,8 +334,10 @@ public class HandIMPlugin extends CordovaPlugin{
                 if (messageContent instanceof TextMessage) {
                     TextMessage tm = (TextMessage) messageContent;
                     txt = tm.getContent();
-                } else {
+                } else if(messageContent instanceof ImageMessage){
                     txt = "图片";
+                } else if(messageContent instanceof VoiceMessage){
+                    txt = "语音";
                 }
                 //获取消息发送的用户ID
                 //String sendUserId = conversation.getSenderUserId();
@@ -360,7 +372,11 @@ public class HandIMPlugin extends CordovaPlugin{
         }
         Log.i("hand", mJson.toString());
         // mCallbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, obj));
-        mCallbackContext.success(mJson.toString());
+//        mCallbackContext.success(mJson.toString());
+        //通过注入js的方法 调用前端js
+//        String format = "HandIMPlugin.MessageInAndroidCallback(%s);";
+//        final String js = String.format(format, mJson.toString());
+//        HandIMPlugin.this.webView.loadUrl("javascript:" + js);
     }
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent intent) {

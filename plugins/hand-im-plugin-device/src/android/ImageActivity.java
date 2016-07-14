@@ -13,7 +13,6 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
-import com.hand_china.hrms.R;
 import uk.co.senab.photoview.PhotoViewAttacher;
 /**
  * Created by USER on 2016/7/6.
@@ -27,16 +26,21 @@ public class ImageActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.image_act);
+//        setContentView(R.layout.image_act);
+        setContentView(Util.getRS("image_act", "layout", ImageActivity.this));
         options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.picture_loading)
-                .showImageOnFail(R.drawable.pictures_no)
+//                .showImageOnLoading(R.drawable.picture_loading)
+//                .showImageOnFail(R.drawable.pictures_no)
+                .showImageOnLoading(Util.getRS("picture_loading", "drawable", ImageActivity.this))
+                .showImageOnFail(Util.getRS("pictures_no", "drawable", ImageActivity.this))
                 .cacheOnDisk(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .displayer(new SimpleBitmapDisplayer())
                 .build();
-        mImgView = (ImageView) findViewById(R.id.img_forwatch);
+
+//        mImgView = (ImageView) findViewById(R.id.img_forwatch);
+        mImgView = (ImageView) findViewById(Util.getRS("img_forwatch","id",ImageActivity.this));
         String url = getIntent().getStringExtra("URL");
         mAttacher = new PhotoViewAttacher(mImgView);
         ImageLoader.getInstance().displayImage(url, mImgView, options,

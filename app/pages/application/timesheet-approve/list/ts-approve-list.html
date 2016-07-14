@@ -8,9 +8,9 @@
         <span class="calendar-end-date">
           <span ng-bind-html="'截止日期: '+endApproveDate"></span>
         </span>
-        <img ng-show="showCalendar" ng-click="revertDataModal($event)" class="img-revert-calendar"
+        <img ng-if="showCalendar" ng-click="revertDataModal($event)" class="img-revert-calendar"
              ng-src="build/img/application/timesheet-approve/list/shift-G@3x.png"/>
-        <img ng-show="!showCalendar" ng-click="revertDataModal($event)" class="img-revert-calendar"
+        <img ng-if="!showCalendar" ng-click="revertDataModal($event)" class="img-revert-calendar"
              ng-src="build/img/application/timesheet-approve/list/shift@3x.png"/>
       </div>
       <!--<div id="connect-block" class="connect-block" ng-show="showConnectBlock&&listInfoArray.listArray.length != 0">-->
@@ -28,18 +28,20 @@
                    pulling-icon="ion-ios-loop">
     </ion-refresher>
     <!--<hms-no-data ng-if="listInfoArray.listArray.length == 0"></hms-no-data>-->
-    <div class="ts-content-bottom">
-      <div id="tsApproveList" class="ts-approve-list-item" ng-repeat="i in listInfoArray.listArray"
-           ng-click="goApproveDetail($index,i.employee_number,i.project_id,i.start_date,i.end_date)">
+
+    <ion-list class="ts-content-bottom" can-swipe="listCanSwipe">
+
+      <ion-item id="tsApproveList" class="ts-approve-list-item" ng-repeat="i in listInfoArray.listArray"
+                ng-click="goApproveDetail($index,i.employee_number,i.project_id,i.start_date,i.end_date)">
         <div class="row first-content">
-          <div class="name" ng-bind="i.employee_name">{{$index}}</div>
+          <div class="name" style="margin-top: -2px;" ng-bind="i.employee_name">{{$index}}</div>
           <div class="job-number" ng-bind="i.employee_number"></div>
           <div class="city" ng-bind="i.base_address"></div>
           <div class="fly-back">flyback:</div>
           <div class="fly-icon"></div>
           <div class="fly-number" ng-cloak>x {{i.fly_back}}</div>
         </div>
-        <div class="row second-content">
+        <div class="row second-content" style="padding-top: 10px;">
           <div class="name">补助:</div>
           <div class="number" ng-cloak ng-repeat="j in listInfoArray.listArray[$index].subsidy_list">
             {{j.subsidy_money}}*{{j.subsidy_days}}
@@ -49,13 +51,25 @@
         <div ng-class={"select-list-ts":selectArray[$index],"un-select-list-ts":!selectArray[$index]}
              ng-if="!showDetailArrow"></div>
         <div class="arrow-item" ng-if="showDetailArrow"></div>
+        <div class="arrow-content" ng-if="showDetailArrow"
+             ng-bind-html="i.end_date.substring(5,7).replace(0,'')+'月'"></div>
         <div class="row second-content">
           <div class="name">项目:</div>
           <div class="number" ng-bind="i.project_name"></div>
         </div>
-      </div>
-    </div>
+        <ion-option-button class="swipe-left-action">
+          <div class="row approve-row" ng-click="passThroughListItem(i)">
+            <img class="status-img"
+                 ng-src="build/img/application/timesheet-approve/list/approval@3x.png"/>
+          </div>
+          <div class="row refuse-row" ng-click="refuseListItem(i)">
+            <img class="status-img" style="width: 61px;"
+                 ng-src="build/img/application/timesheet-approve/list/refuse@3x.png"/>
+          </div>
+        </ion-option-button>
+      </ion-item>
 
+    </ion-list>
     <ion-infinite-scroll ng-if="listInfoArray.busy" on-infinite="listInfoArray.nextPage()"
                          distance="1%">
     </ion-infinite-scroll>

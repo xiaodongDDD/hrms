@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import com.hand_china.hrms.R;
 
 public class FaceAdapter extends BaseAdapter {
 
@@ -20,9 +19,12 @@ public class FaceAdapter extends BaseAdapter {
 
     private int size=0;
 
+    private Context context;
+
     public FaceAdapter(Context context, List<ChatEmoji> list) {
         this.inflater=LayoutInflater.from(context);
         this.data=list;
+        this.context = context;
         this.size=list.size();
     }
 
@@ -47,13 +49,16 @@ public class FaceAdapter extends BaseAdapter {
         ViewHolder viewHolder=null;
         if(convertView == null) {
             viewHolder=new ViewHolder();
-            convertView=inflater.inflate(R.layout.item_face, null);
-            viewHolder.iv_face=(ImageView)convertView.findViewById(R.id.item_iv_face);
+
+//            convertView=inflater.inflate(R.layout.item_face, null);
+//            viewHolder.iv_face=(ImageView)convertView.findViewById(R.id.item_iv_face);
+            convertView=inflater.inflate(Util.getRS("item_face", "layout", context), null);
+            viewHolder.iv_face=(ImageView)convertView.findViewById(Util.getRS("item_iv_face","id",context));
             convertView.setTag(viewHolder);
         } else {
             viewHolder=(ViewHolder)convertView.getTag();
         }
-        if(emoji.getId() == R.drawable.face_del_icon) {
+        if(emoji.getId() == Util.getRS("face_del_icon", "drawable", context)) {
             convertView.setBackgroundDrawable(null);
             viewHolder.iv_face.setImageResource(emoji.getId());
         } else if(TextUtils.isEmpty(emoji.getCharacter())) {

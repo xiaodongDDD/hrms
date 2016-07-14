@@ -7,7 +7,7 @@
   padding-top: 100px;
   width: 100%;
   height: 100%;
-  .ts-content-bottom{
+  .ts-content-bottom {
   }
 }
 
@@ -36,7 +36,7 @@
   left: 70.5% !important;
   z-index: 10;
   display: block;
-  margin-top: 12px;
+  margin-top: 0;
   margin-left: -110px;
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -220,7 +220,7 @@
     border: 1px solid rgba(151, 151, 151, 0.15);
     width: 87.6%;
     font-size: $font-size-small;
-    background-color: $color-base!important;
+    background-color: $color-base !important;
     background-image: url('./../img/application/timesheet-approve/list/search.png');
     @include image-background(no-repeat, 11px 13px, 9px 7px);
     padding-left: 25px;
@@ -358,14 +358,33 @@
         color: #F99D32;
         font-size: $font-size-small;
         padding-top: 6px;
-        width: 100%;
+        width: 66%;
         padding-left: 4.5%;
+      }
+      @media screen and (max-width: 350px) and (min-width: 300px) {
+        .calendar-end-date {
+          color: #F99D32;
+          font-size: $font-size-small;
+          padding-top: 6px;
+          width: 60%;
+          padding-left: 4.5%;
+        }
+      }
+      @media screen and (min-width: 351px) {
+        .calendar-end-date {
+          color: #F99D32;
+          font-size: $font-size-small;
+          padding-top: 6px;
+          width: 66%;
+          padding-left: 4.5%;
+        }
       }
       .img-revert-calendar {
         height: 34px;
-        width: 34px!important;
-        align-self: center;
-        margin-right: 2%;
+        width: 34px !important;
+        position: absolute;
+        float: right;
+        margin-top: -2px;
       }
     }
     .connect-block {
@@ -426,8 +445,11 @@
 
 //列表
 .ts-approve-list-item {
+  .item-content {
+    padding: 5px 0px 5px 10px;
+    min-height: 101px;
+  }
   margin-bottom: 5px;
-  padding-left: 10px;
   min-height: 101px;
   width: 92%;
   margin-left: 4%;
@@ -470,14 +492,17 @@
   .second-content {
     font-size: $font-size-small;
     color: $color-text-main;
-    padding-top: 10px;
+    padding-top: 5px;
     .name {
       color: $color-text-assistant;
       width: 13%;
+      margin-top: -1px;
     }
     .number {
       padding-left: 5px;
       padding-right: 10px;
+      white-space: normal;
+      width: 90%;
     }
     .number-icon {
       background-image: url("./../img/application/timesheet-approve/list/attention-s@3x.png");
@@ -494,22 +519,72 @@
     }
   }
 
+  .swipe-left-action {
+    width: 100px;
+    background-color: $color-base;
+    .approve-row {
+      height: 55px;
+      width: 85px;
+      position: absolute;
+      padding: 0px 0px 0px 5px;
+    }
+    .approve-row.activated {
+      opacity: 0.9;
+      transform: scale(0.9,0.9);
+      -webkit-transform: scale(0.9,0.9);
+    }
+    .refuse-row {
+      height: 55px;
+      width: 85px;
+      position: absolute;
+      margin-top: 55%;
+      padding: 0px 0px 0px 5px;
+    }
+    .refuse-row.activated {
+      opacity: 0.9;
+      transform: scale(0.9,0.9);
+      -webkit-transform: scale(0.9,0.9);
+      background-color: $color-base;
+    }
+    .status-img {
+      width: 62px;
+      height: 17px;
+      align-self: center;
+    }
+  }
+  .button.activated {
+    opacity: 1;
+    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+    background-color: $color-base;
+  }
+  .item-options .button {
+    height: 0;
+  }
   .arrow-item {
-    height: 21px;
-    width: 21px;
-    background-image: url("./../img/application/timesheet-approve/list/BackArrow-1@3x.png");
+    height: 46px;
+    width: 46px;
+    background-image: url("./../img/application/timesheet-approve/list/backArrowBig.png");
     background-size: cover;
     position: absolute;
-    right: 10%;
-    margin-top: -21px
+    right: 3%;
+    margin-top: -36px;
   }
+  .arrow-content {
+    position: absolute;
+    right: 8%;
+    margin-top: -25px;
+    color: #F99D32;
+    font-size: 12px;
+  }
+
   .select-list-ts {
     background-image: url("./../img/application/timesheet-approve/detail/selected@3x.png");
-    @include ts-select-action(7.5%, -23px);
+    @include ts-select-action(3%, -23px);
   }
   .un-select-list-ts {
     background-image: url("./../img/application/timesheet-approve/detail/Oval@3x.png");
-    @include ts-select-action(7.5%, -23px);
+    @include ts-select-action(3%, -23px);
   }
 }
 
@@ -794,6 +869,9 @@
   height: 24px;
 }
 
+.button:after {
+  content: none;
+}
 ////自定义popup的样式
 //.popup-container {
 //  .popup {

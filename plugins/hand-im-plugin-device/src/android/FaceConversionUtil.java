@@ -14,7 +14,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import com.hand_china.hrms.R;
 
 public class FaceConversionUtil {
 
@@ -32,13 +31,14 @@ public class FaceConversionUtil {
 	/** 表情分页的结果集合 */
 	public List<List<ChatEmoji>> emojiLists = new ArrayList<List<ChatEmoji>>();
 
-	private FaceConversionUtil() {
-
+	private Context context;
+	private FaceConversionUtil(Context context) {
+		this.context = context;
 	}
 
-	public static FaceConversionUtil getInstace() {
+	public static FaceConversionUtil getInstace(Context context) {
 		if (mFaceConversionUtil == null) {
-			mFaceConversionUtil = new FaceConversionUtil();
+			mFaceConversionUtil = new FaceConversionUtil(context);
 		}
 		return mFaceConversionUtil;
 	}
@@ -79,8 +79,8 @@ public class FaceConversionUtil {
 		}
 		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),
 				imgId);
-		int x = context.getResources().getDimensionPixelOffset(R.dimen.x60);
-		int y = context.getResources().getDimensionPixelOffset(R.dimen.y54);
+		int x = context.getResources().getDimensionPixelOffset(Util.getRS("x60","dimen",context));
+		int y = context.getResources().getDimensionPixelOffset(Util.getRS("y54","dimen",context));
 		bitmap = Bitmap.createScaledBitmap(bitmap, x, y, true);
 		ImageSpan imageSpan = new ImageSpan(context, bitmap);
 		SpannableString spannable = new SpannableString(spannableString);
@@ -102,8 +102,8 @@ public class FaceConversionUtil {
 			SpannableString spannableString, Pattern patten, int start)
 			throws Exception {
 		Matcher matcher = patten.matcher(spannableString);
-		final int x = context.getResources().getDimensionPixelOffset(R.dimen.x130);
-		final int y = context.getResources().getDimensionPixelOffset(R.dimen.y116);
+		final int x = context.getResources().getDimensionPixelOffset(Util.getRS("x130","dimen",context));
+		final int y = context.getResources().getDimensionPixelOffset(Util.getRS("y116","dimen",context));
 		while (matcher.find()) {
 			String key = matcher.group();
 			// 返回第一个字符的索引的文本匹配整个正则表达式,ture 则继续递归
@@ -207,7 +207,8 @@ public class FaceConversionUtil {
 		}
 		if (list.size() == pageSize) {
 			ChatEmoji object = new ChatEmoji();
-			object.setId(R.drawable.face_del_icon);
+//			object.setId(R.drawable.face_del_icon);
+			object.setId(Util.getRS("face_del_icon", "drawable", context));
 			list.add(object);
 		}
 		return list;

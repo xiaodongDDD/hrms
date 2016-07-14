@@ -40,10 +40,10 @@ angular.module('contactModule')
         $scope.newPage = 0;
         var CONTACT_TAG = 'contact:\n';
         var DB_NAME = 'key_history';
-        var LINK_MAN = 'common_linkman';
+        var LINK_MAN = 'common_linkman2';
         var position = ''; //记录滚动条的位置--
         var getEmployeeUrl = baseConfig.queryPath + '/staff/query';
-        var employeeParams = {key: '', page: 1, pageSize: '30'};
+        var employeeParams = {"key": "", "page": 1, "pageSize": "30"};
 
         $scope.historys = (storedb(DB_NAME).find()).arrUniq();
         if ($scope.historys.length > 10) {
@@ -52,7 +52,7 @@ angular.module('contactModule')
       }
 
       function getCommonLinkMan() { //获取常用联系人
-        $scope.customContactsInfo = (storedb(LINK_MAN).find()).arrUniq();
+        $scope.customContactsInfo = unique_better(storedb(LINK_MAN).find(),'employeeNumber');
         if ($scope.customContactsInfo.length > 15) {
           $scope.customContactsInfo = $scope.customContactsInfo.slice(0, 15);
         }
@@ -106,7 +106,7 @@ angular.module('contactModule')
       function dealCommonLinkMan(newObject) { //常用联系人最多15个
         storedb(LINK_MAN).insert(newObject, function (err) {
           if (!err) {
-            $scope.customContactsInfo = (storedb(LINK_MAN).find()).arrUniq();
+            $scope.customContactsInfo = unique_better(storedb(LINK_MAN).find(),'employeeNumber');
           } else {
             hmsPopup.showShortCenterToast(err);
           }
@@ -206,9 +206,9 @@ angular.module('contactModule')
         employeeParams.page = $scope.newPage;
         $scope.contactLoading = true;
         $scope.resultList = [];
-        $timeout(function () {
+        //$timeout(function () {
           $scope.getEmployeeData('init');
-        }, 200);
+        //}, 200);
       };
 
       $scope.getHistoryItem = function (values) {
@@ -234,7 +234,7 @@ angular.module('contactModule')
         $scope.showClear = false;
         $scope.resultList = [];
         $scope.contactKey.getValue = '';
-        //$scope.contactInputModal.hide();
+        $scope.contactInputModal.hide();
         $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
       };
 
