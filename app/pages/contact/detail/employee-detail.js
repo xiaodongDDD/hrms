@@ -70,8 +70,12 @@ angular.module('contactModule')
       function initEmployeeData() {
         hmsHttp.post(getEmployeeDetailUrl, employeeDetailParams).success(function (response) {
           $scope.employeeInfo = response.rows[0];
-          if (!$scope.employeeInfo.avatar) {
-            $scope.employeeInfo.avatar = 'build/img/contact/BG-profile.png'
+          if ($scope.employeeInfo.avatar == '' || !$scope.employeeInfo.avatar) {
+            if ($scope.employeeInfo.gender == "男") {//根据性别判定头像男女
+              $scope.employeeInfo.avatar = "build/img/myInfo/man-portrait.png";
+            } else if ($scope.employeeInfo.gender == "女") {
+              $scope.employeeInfo.avatar = "build/img/myInfo/woman-portrait.png";
+            }
           }
 
           angular.element('.human-head-image').css({
