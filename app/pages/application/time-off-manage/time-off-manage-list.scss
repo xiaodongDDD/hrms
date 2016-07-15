@@ -154,9 +154,9 @@
     }
   }
   .shelter {
-    position: absolute;
     width: 40px;
     height: 80px;
+    position: absolute;
     top: 0px;
     overflow: hidden;
   }
@@ -167,21 +167,41 @@
     right: 0px;
   }
   .circle {
-    position: absolute;
     width: 80px;
     height: 80px;
-    top: 0px;
-    border-radius: 50%;
-    background: white;
     border: 6px solid transparent;
+    border-radius: 50%;
+    position: absolute;
+    top: 0px;
+    background: white;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.50);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+}
+
+.hrms-circle .right-circle {
+  right: 0;
+  -webkit-animation: circleProgressLoad_right 1s linear  ;
+  animation: circleProgressLoad_right 1s linear  ;
+  &.paid-holiday {
+    border-top: 6px solid #6BB9F0;
+    border-right: 6px solid #6BB9F0;
+  }
+  &.paid-sick-leave {
+    border-top: 6px solid #73BBA2;
+    border-right: 6px solid #73BBA2;
+  }
+  &.ext-paid-holiday {
+    border-top: 6px solid #F99D32;
+    border-right: 6px solid #F99D32;
   }
 }
 
 .hrms-circle .left-circle {
   left: 0px;
-  -webkit-transform: rotate(-135deg);
-  transform: rotate(-135deg);
+  -webkit-animation: circleProgressLoad_left 1s linear  ;
+  animation: circleProgressLoad_left 1s linear  ;
   &.paid-holiday {
     border-bottom: 6px solid #6BB9F0;
     border-left: 6px solid #6BB9F0;
@@ -196,23 +216,59 @@
   }
 }
 
-.hrms-circle .right-circle {
-  right: 0px;
-  -webkit-transform: rotate(-135deg);
-  transform: rotate(-135deg);
-  &.paid-holiday {
-    border-top: 6px solid #6BB9F0;
-    border-right: 6px solid #6BB9F0;
+@-webkit-keyframes circleProgressLoad_right{
+  0%{
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
   }
-  &.paid-sick-leave {
-    border-top: 6px solid #73BBA2;
-    border-right: 6px solid #73BBA2;
-  }
-  &.ext-paid-holiday {
-    border-top: 6px solid #F99D32;
-    border-right: 6px solid #F99D32;
+  50%,100%{
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
   }
 }
+
+@-webkit-keyframes circleProgressLoad_left{
+  0%{
+    -webkit-transform: rotate(-136deg);
+    transform: rotate(-136deg);
+  }
+  50%{
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+  100%{
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+}
+
+
+@keyframes circleProgressLoad_right{
+  0%{
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+  50%,100%{
+    -webkit-transform: rotate(46deg);
+    transform: rotate(46deg);
+  }
+}
+
+@keyframes circleProgressLoad_left{
+  0%{
+    transform: rotate(-136deg);
+    -webkit-transform: rotate(-136deg);
+  }
+  50%{
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  100%{
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+}
+
 
 .time-off-content {
   .time-off-list-title {
