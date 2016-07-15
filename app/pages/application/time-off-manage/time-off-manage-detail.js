@@ -149,11 +149,20 @@ angular.module('applicationModule')
 
 
       $scope.getdateFromMeaning = function() {
-        return $scope.datetimeFrom.year +'-'+ $scope.datetimeFrom.month +'-'+ $scope.datetimeFrom.day + ' 08:30:00';
+        if ( $scope.readOnly) { // add by ciwei 只读模式下,直接读取列表信息
+          return  $scope.timeOffData.datetimeFrom;
+        }else{
+          return $scope.datetimeFrom.year +'-'+ $scope.datetimeFrom.month +'-'+ $scope.datetimeFrom.day + ' 08:30:00';
+        }
+
       };
 
       $scope.getdateToMeaning = function() {
-        return $scope.datetimeTo.year +'-'+ $scope.datetimeTo.month +'-'+ $scope.datetimeTo.day + ' 18:00:00';
+        if ( $scope.readOnly) { // add by ciwei 只读模式下,直接读取列表信息
+          return  $scope.timeOffData.datetimeTo;
+        }else{
+          return $scope.datetimeTo.year +'-'+ $scope.datetimeTo.month +'-'+ $scope.datetimeTo.day + ' 18:00:00';
+        }
       };
 
       //初始化假期类型弹窗
