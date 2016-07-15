@@ -89,7 +89,7 @@ angular.module('myInfoModule')
               console.log("result success " + angular.toJson(result));
             }
             hmsPopup.hideLoading();
-            hmsPopup.showShortCenterToast(message);
+            hmsPopup.showVeryShortCenterToast(message);
             if(result.returnCode=="S"){
               $ionicHistory.goBack();
             }

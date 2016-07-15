@@ -53,6 +53,7 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
 
           var newImageHeight = imageHeight - scrollTop;
           /////////
+<<<<<<< HEAD
           var calculation = 0;
           var blur = 0;
           var brightness = 0;
@@ -101,7 +102,26 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
               image.style.filter = currentBrightness;
               image.style.webkitFilter = currentBrightness;
             }
+=======
+          //var calculation=0;
+          //var blur=0;
+          //var brightness=0;
+          if (newImageHeight < 0) {
+            newImageHeight = 0;
+            //calculation = 0;
+>>>>>>> leon/034
           }
+          //if(scrollTop<0){
+          //  if(-scrollTop<175){
+          //    calculation=-scrollTop/175;
+          //    blur = 5*calculation;
+          //    blur = 5-blur;
+          //    brightness = 0.3*calculation;
+          //    brightness = 0.7+brightness;
+          //    image.style.filter = "blur("+blur+"px) "+"brightness("+brightness+")";
+          //    image.style.webkitFilter = "blur("+blur+"px) "+"brightness("+brightness+")";
+          //  }
+          //}
           image.style.height = newImageHeight + 'px';
         });
       }

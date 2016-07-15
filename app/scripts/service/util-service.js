@@ -125,7 +125,7 @@ angular.module('HmsModule')
       this.hideLoading = function () {
         $ionicLoading.hide();
       };
-      this.showShortCenterToast = function (content) {
+      this.showShortCenterToast = function (content) {//长时间底部提示toast
         if (!baseConfig.nativeScreenFlag) {
           $ionicLoading.show({
             template: (angular.isDefined(content) ? content : "操作失败"),
@@ -136,6 +136,21 @@ angular.module('HmsModule')
           });
         } else {
           $cordovaToast.showLongBottom((angular.isDefined(content) ? content : "操作失败")).then(function (success) {
+          }, function (error) {
+          });
+        }
+      };
+      this.showVeryShortCenterToast = function (content) {
+        if (!baseConfig.nativeScreenFlag) {
+          $ionicLoading.show({
+            template: (angular.isDefined(content) ? content : "操作失败"),
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            duration: 1000
+          });
+        } else {
+          $cordovaToast.showShortBottom((angular.isDefined(content) ? content : "操作失败")).then(function (success) {
           }, function (error) {
           });
         }

@@ -52,7 +52,7 @@ angular.module('loginModule')
       $scope.showLittlePortrait = false;//显示小头像图标
       $scope.rememberPassword = false;//是否记住密码
       $scope.littlePortrait = "build/img/login/login-username.png";//大头像图片
-      $scope.bigPortrait = "build/img/login/login-hand.png"//小头像图片
+      $scope.bigPortrait = "build/img/login/login-hand.png";//小头像图片
       $scope.passwordChecked = "build/img/login/login-unchecked.png";//是否记住密码图片
       $scope.fillUsername = false;//填写了用户名内容
       $scope.fillPassword = false;//填写了密码内容
@@ -188,6 +188,11 @@ angular.module('loginModule')
           $scope.focusUsername = false;
           $scope.fillUsername = false;
         }
+        if($scope.fillPassword == false){
+          $scope.showBigPortrait = true;
+          $scope.showLittlePortrait = false;
+          $scope.bigPortrait = "build/img/login/login-hand.png";
+        }
       };
 
       $scope.clearPassword = function () {//清空密码
@@ -199,6 +204,11 @@ angular.module('loginModule')
         if ($scope.focusPassword == true) {
           $scope.focusPassword = false;
           $scope.fillPassword = false;
+        }
+        if($scope.fillUsername == false){
+          $scope.showBigPortrait = true;
+          $scope.showLittlePortrait = false;
+          $scope.bigPortrait = "build/img/login/login-hand.png";
         }
       };
 

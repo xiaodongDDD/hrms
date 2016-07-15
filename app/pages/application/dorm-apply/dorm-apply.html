@@ -13,6 +13,7 @@
     </div>
   </ion-header-bar>
   <ion-content delegate-handle="dormScroll" ng-class="{'content-style blur-back':descriptionAppearance,'content-style clear-back':!descriptionAppearance}">
+    <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
     <button class="button button-block create-button" ng-click="createNewDormApply()">
       <div class="row create-button-row-plugin">
         <img src="build/img/application/dorm-apply/create.png" class="create-button-span">
