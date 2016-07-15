@@ -15,6 +15,15 @@ var tsApproveModule = angular.module('tsApproveModule', []);
 
 
 /**
+ * Created by wolf on 2016/7/1.
+ * @description: add common alert for every module--
+ * @attention:  nomenclature and block
+ */
+'use strict';
+HmsModule.constant('hmsConstant', [function () {
+}]);
+
+/**
  * @ngdoc directive
  * @name hideTabs
  * @module utilModule
@@ -56,24 +65,24 @@ HmsModule.directive('hideTabs', function ($rootScope) {
           var scrollTop = e.detail.scrollTop;
           var newImageHeight = imageHeight - scrollTop;
           /////////
-          var calculation=0;
-          var blur=0;
-          var brightness=0;
+          //var calculation=0;
+          //var blur=0;
+          //var brightness=0;
           if (newImageHeight < 0) {
             newImageHeight = 0;
-            calculation = 0;
+            //calculation = 0;
           }
-          if(scrollTop<0){
-            if(-scrollTop<175){
-              calculation=-scrollTop/175;
-              blur = 5*calculation;
-              blur = 5-blur;
-              brightness = 0.3*calculation;
-              brightness = 0.7+brightness;
-              image.style.filter = "blur("+blur+"px) "+"brightness("+brightness+")";
-              image.style.webkitFilter = "blur("+blur+"px) "+"brightness("+brightness+")";
-            }
-          }
+          //if(scrollTop<0){
+          //  if(-scrollTop<175){
+          //    calculation=-scrollTop/175;
+          //    blur = 5*calculation;
+          //    blur = 5-blur;
+          //    brightness = 0.3*calculation;
+          //    brightness = 0.7+brightness;
+          //    image.style.filter = "blur("+blur+"px) "+"brightness("+brightness+")";
+          //    image.style.webkitFilter = "blur("+blur+"px) "+"brightness("+brightness+")";
+          //  }
+          //}
           image.style.height = newImageHeight + 'px';
         });
       }
@@ -650,15 +659,6 @@ angular.module('HmsModule')
       }
     };
   })*/
-
-/**
- * Created by wolf on 2016/7/1.
- * @description: add common alert for every module--
- * @attention:  nomenclature and block
- */
-'use strict';
-HmsModule.constant('hmsConstant', [function () {
-}]);
 
 /**
  * @ngdoc interceptor
@@ -1386,7 +1386,7 @@ angular.module('HmsModule')
       this.hideLoading = function () {
         $ionicLoading.hide();
       };
-      this.showShortCenterToast = function (content) {
+      this.showShortCenterToast = function (content) {//长时间底部提示toast
         if (!baseConfig.nativeScreenFlag) {
           $ionicLoading.show({
             template: (angular.isDefined(content) ? content : "操作失败"),
@@ -1397,6 +1397,21 @@ angular.module('HmsModule')
           });
         } else {
           $cordovaToast.showLongBottom((angular.isDefined(content) ? content : "操作失败")).then(function (success) {
+          }, function (error) {
+          });
+        }
+      };
+      this.showVeryShortCenterToast = function (content) {
+        if (!baseConfig.nativeScreenFlag) {
+          $ionicLoading.show({
+            template: (angular.isDefined(content) ? content : "操作失败"),
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            duration: 1000
+          });
+        } else {
+          $cordovaToast.showShortBottom((angular.isDefined(content) ? content : "操作失败")).then(function (success) {
           }, function (error) {
           });
         }
@@ -2293,61 +2308,6 @@ angular.module('applicationModule')
     }]);
 
 /**
- * Created by gusenlin on 16/5/16.
- */
-angular.module('loginModule')
-
-  .controller('guideCtrl', [
-    '$scope',
-    '$state',
-    'baseConfig',
-    'checkVersionService',
-    function ($scope,
-              $state,
-              baseConfig,
-              checkVersionService) {
-
-      console.log('loginCtrl.enter');
-
-      $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
-
-      $scope.skipGuide = function () {
-        if (baseConfig.debug) {
-          console.log("跳过导航页到登陆页");
-        }
-        goToMain();
-      };
-
-      $scope.toLogin = function () {
-        if (baseConfig.debug) {
-          console.log("跳过导航页到登陆页");
-        }
-        goToMain();
-      };
-
-      var goToMain = function () {
-        if (window.localStorage.token && window.localStorage.token != "") {
-          checkVersionService.checkAppVersion();
-          $state.go("tab.message");
-        } else {
-          $state.go("login");
-        }
-      };
-
-      $scope.$on('$ionicView.enter', function () {
-        if (baseConfig.debug) {
-          console.log('guideCtrl.$ionicView.enter');
-        }
-      });
-
-      $scope.$on('$destroy', function () {
-        if (baseConfig.debug) {
-          console.log('guideCtrl.$destroy');
-        }
-      });
-    }]);
-
-/**
  *  modify by shellWolf on 16/06/28.
  */
 'use strict';
@@ -2855,7 +2815,7 @@ angular.module('loginModule')
       $scope.showLittlePortrait = false;//显示小头像图标
       $scope.rememberPassword = false;//是否记住密码
       $scope.littlePortrait = "build/img/login/login-username.png";//大头像图片
-      $scope.bigPortrait = "build/img/login/login-hand.png"//小头像图片
+      $scope.bigPortrait = "build/img/login/login-hand.png";//小头像图片
       $scope.passwordChecked = "build/img/login/login-unchecked.png";//是否记住密码图片
       $scope.fillUsername = false;//填写了用户名内容
       $scope.fillPassword = false;//填写了密码内容
@@ -2991,6 +2951,11 @@ angular.module('loginModule')
           $scope.focusUsername = false;
           $scope.fillUsername = false;
         }
+        if($scope.fillPassword == false){
+          $scope.showBigPortrait = true;
+          $scope.showLittlePortrait = false;
+          $scope.bigPortrait = "build/img/login/login-hand.png";
+        }
       };
 
       $scope.clearPassword = function () {//清空密码
@@ -3002,6 +2967,11 @@ angular.module('loginModule')
         if ($scope.focusPassword == true) {
           $scope.focusPassword = false;
           $scope.fillPassword = false;
+        }
+        if($scope.fillUsername == false){
+          $scope.showBigPortrait = true;
+          $scope.showLittlePortrait = false;
+          $scope.bigPortrait = "build/img/login/login-hand.png";
         }
       };
 
@@ -3180,6 +3150,61 @@ angular.module('loginModule')
     }]);
 
 /**
+ * Created by gusenlin on 16/5/16.
+ */
+angular.module('loginModule')
+
+  .controller('guideCtrl', [
+    '$scope',
+    '$state',
+    'baseConfig',
+    'checkVersionService',
+    function ($scope,
+              $state,
+              baseConfig,
+              checkVersionService) {
+
+      console.log('loginCtrl.enter');
+
+      $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
+
+      $scope.skipGuide = function () {
+        if (baseConfig.debug) {
+          console.log("跳过导航页到登陆页");
+        }
+        goToMain();
+      };
+
+      $scope.toLogin = function () {
+        if (baseConfig.debug) {
+          console.log("跳过导航页到登陆页");
+        }
+        goToMain();
+      };
+
+      var goToMain = function () {
+        if (window.localStorage.token && window.localStorage.token != "") {
+          checkVersionService.checkAppVersion();
+          $state.go("tab.message");
+        } else {
+          $state.go("login");
+        }
+      };
+
+      $scope.$on('$ionicView.enter', function () {
+        if (baseConfig.debug) {
+          console.log('guideCtrl.$ionicView.enter');
+        }
+      });
+
+      $scope.$on('$destroy', function () {
+        if (baseConfig.debug) {
+          console.log('guideCtrl.$destroy');
+        }
+      });
+    }]);
+
+/**
  * Created by gusenlin on 16/4/24.
  */
 angular.module('messageModule')
@@ -3317,7 +3342,7 @@ angular.module('myInfoModule')
               console.log("result success " + angular.toJson(result));
             }
             hmsPopup.hideLoading();
-            hmsPopup.showShortCenterToast(message);
+            hmsPopup.showVeryShortCenterToast(message);
             if(result.returnCode=="S"){
               $ionicHistory.goBack();
             }
@@ -3347,6 +3372,9 @@ angular.module('myApp')
               templateUrl: 'build/pages/myInfo/my-certificate-detail.html',
               controller: 'MyCertificateDetailCtrl'
             }
+          },
+          params:{
+            'CertificateDetail':""
           }
         })
     }]);
@@ -3357,14 +3385,470 @@ angular.module('myInfoModule')
     '$ionicHistory',
     'hmsHttp',
     'hmsPopup',
+    '$ionicModal',
+    '$stateParams',
+    '$timeout',
+    '$cordovaCamera',
+    '$rootScope',
     function ($scope,
               baseConfig,
               $ionicHistory,
               hmsHttp,
-              hmsPopup) {
-      $scope.goBack=function(){//返回按钮
-        $ionicHistory.goBack();
+              hmsPopup,
+              $ionicModal,
+              $stateParams,
+              $timeout,
+              $cordovaCamera,
+              $rootScope) {
+      $ionicModal.fromTemplateUrl('build/pages/myInfo/modal/new-certificate-choose-type.html', {//定义证书类型modal
+        scope: $scope
+      }).then(function (modal1) {
+        $scope.chooseTypePopup = modal1;
+      });//初始化选择证书类型的modal
+      $ionicModal.fromTemplateUrl('build/pages/myInfo/modal/choose-picture.html', {//定义图片选择方法modal
+        scope: $scope
+      }).then(function (modal2) {
+        $scope.choosePictureMethodPopup = modal2;
+      });//初始化选择图片上传方式类型的modal
+      $scope.certificate={
+        type:"",
+        description:""
+      };
+      var certificateId = $stateParams.CertificateDetail.id;
+      $scope.certificateType=['会计证书','SAP系统证书','Oracle系统证书','技术类证书','其他'];//证书类型值列表
+      $scope.pictureType=['拍照','相册'];//图片选择方式值列表
+      $scope.inputReadonly=true;
+      $scope.buttonText="编辑";
+      $scope.showLoading=true;
+      $scope.imageList=[];
+      var imageTotalLength=0;
+      var pictureNumber=0;//控制在图片上传完成时判断是否调用文字传入接口
+      var currentPictureNumber=0;//当前点击为相机图标的是第几项
+      var images=[];//保存服务器上的有哪些图片，避免用户增加图片又删除时，把服务器不存在的图片放入删除接口
+      var deletedImage=[];//要发送到服务器上删除的图片，经过校验后压入这个数组
+      var objectUrl=[];//用来记录调用上传图片的接口时，返回给我的新图片名称
+      var addImage=[];//要增加的图片，服务器上没有，本地却添加了的图片就是新增图片
+      $scope.matrix=[[true,false,false],[false,false,false],[false,false,false],[false]];//四行三列，共10个
+      var currentRow=0;//matrix的下标一维
+      var currentCol=0;//matrix的下标二维
+      $scope.pictureAppearance = "";//显示大图
+      $scope.extensionPicture="";//放大图片Url
+      for(var i=0;i<10;i++){
+        var param={
+          selected:false,
+          uri:"",
+          num:i+1,
+          deleteMode:false
+        };
+        $scope.imageList.push(param);
       }
+      $scope.$on("$ionicView.loaded",function(){
+        var url = baseConfig.queryPath+"/staffCertificate/"+certificateId;
+        var param={
+          employee_number:""
+        };
+        hmsHttp.post(url,param).success(function(result){
+          var certificateInfo=result.returnData;//拿到返回值
+          images=certificateInfo.objects;
+          if(result.status=="S"){
+            $scope.certificate.type = certificateInfo.certificateType;
+            $scope.certificate.description = certificateInfo.certificateName;
+            for(var i=0;i<images.length;i++){//根据接口拿到的数据初始化imageList
+              $scope.imageList[i].uri=images[i].objectUrl;
+              $scope.imageList[i].selected=true;
+            }
+            currentCol=(images.length)%3;
+            currentRow=((images.length)-currentCol)/3;
+            for(var i=0;i<currentRow;i++){
+              for(var j=0;j<3;j++){
+                $scope.matrix[i][j]=true;
+              }
+            }
+            for(var i=0;i<currentCol;i++){
+              $scope.matrix[currentRow][i]=true;
+            }
+            $scope.showLoading=false;
+          }else if(result.status!="S"){
+            hmsPopup.showPopup("数据异常");
+          }
+        }).error(function(error,status){
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(error));
+          }
+          $scope.showLoading=false;
+        });
+      });
+      $scope.enterEditMode=function(){
+       if($scope.buttonText=="编辑"){
+         $scope.buttonText="";
+         $scope.inputReadonly=false;
+         currentCol=(images.length+1)%3;
+         currentRow=((images.length+1)-currentCol)/3;
+         for(var i=0;i<currentRow;i++){
+           for(var j=0;j<3;j++){
+             $scope.matrix[i][j]=true;
+           }
+         }
+         for(var i=0;i<currentCol;i++){
+           $scope.matrix[currentRow][i]=true;
+         }
+         if(currentCol>0){
+           currentCol=currentCol-1;
+         }else if(currentCol==0){
+           currentCol=2;
+         }
+       }
+      };
+      $scope.enterDeleteMode=function(num){//长点击进入删除模式，或者长点击退出删除模式
+        if($scope.buttonText!="编辑"){
+          $scope.imageList[num].deleteMode=!$scope.imageList[num].deleteMode;
+        }
+      };
+      $scope.showCertificateTypeModal=function(){
+        if($scope.buttonText!="编辑"){
+          $scope.chooseTypePopup.show();
+        }
+      };
+
+      $scope.chooseCertificateType=function(param){//选择证书类型
+        $scope.certificate.type=param;
+        $scope.chooseTypePopup.hide();
+      };
+
+      $scope.showPictureModal=function(num){//显示图片选择的Modal
+        currentPictureNumber=num;
+        $scope.choosePictureMethodPopup.show();
+      };
+
+      $scope.choosePictureType=function(param){//选择相册或拍照
+        var selectedMethod=param;
+        if(selectedMethod == "拍照"){
+          var cameraoptions = {
+            quality: 50,
+            destinationType: Camera.DestinationType.FILE_URI,
+            sourceType: Camera.PictureSourceType.CAMERA
+          };
+          $cordovaCamera.getPicture(cameraoptions).then(function(imageURI) {
+            $scope.imageList[currentPictureNumber].uri=imageURI;//获取相机图片Uri
+            $scope.imageList[currentPictureNumber].selected=true;
+            if(($scope.imageList[currentPictureNumber].num%3)!=0){
+              if(currentRow < 3){
+                currentCol=currentCol+1;
+                $scope.matrix[currentRow][currentCol]=true;
+                $scope.imageList[currentPictureNumber].selected=true;
+              }else if(currentRow == 3){
+                $scope.imageList[currentPictureNumber].selected=true;
+              }
+            }else if(($scope.imageList[currentPictureNumber].num%3)==0){
+              currentCol=0;
+              currentRow=currentRow+1;
+              $scope.matrix[currentRow][currentCol]=true;
+              $scope.imageList[currentPictureNumber].selected=true;
+            }
+            $scope.$apply();
+          }, function(err) {
+            // error
+          });
+        }else if(selectedMethod == "相册"){
+          window.imagePicker.getPictures(function(results){
+            $scope.imageList[currentPictureNumber].uri=results[0];//获取相册图片Uri
+            $scope.imageList[currentPictureNumber].selected=true;
+            if(($scope.imageList[currentPictureNumber].num%3)!=0){
+              if(currentRow < 3){
+                currentCol=currentCol+1;
+                $scope.matrix[currentRow][currentCol]=true;
+                $scope.imageList[currentPictureNumber].selected=true;
+              }else if(currentRow == 3){
+                $scope.imageList[currentPictureNumber].selected=true;
+              }
+            }else if(($scope.imageList[currentPictureNumber].num%3)==0){
+              currentCol=0;
+              currentRow=currentRow+1;
+              $scope.matrix[currentRow][currentCol]=true;
+              $scope.imageList[currentPictureNumber].selected=true;
+            }
+            $scope.$apply();
+          },function(error){
+
+          },{
+            maximumImagesCount: 1,
+            width: 480,
+            height: 480,
+            quality: 60
+          })
+        }
+        $scope.choosePictureMethodPopup.hide();
+      };
+
+      $scope.showBigPicture=function(num){//显示大图
+        if($scope.imageList[num].deleteMode == true){
+          $scope.imageList[num].deleteMode=false;
+        }else if($scope.imageList[num].deleteMode == false){
+          $scope.pictureAppearance=true;
+          $scope.extensionPicture=$scope.imageList[num].uri;
+          $timeout(function(){
+            var bigPicture=document.getElementById('check-my-big-picture');
+            var screenWidth = window.screen.width;
+            var picHeight=bigPicture.offsetHeight;
+            var picWidth=bigPicture.offsetWidth;
+            if(picHeight>picWidth){
+              bigPicture.style.width=100+"%";
+              bigPicture.style.height=100+"%";
+              bigPicture.style.marginTop=10+"px";
+            }else if(picHeight<picWidth){
+              bigPicture.style.width=100+"%";
+              if(screenWidth>310 && screenWidth<=350){
+                bigPicture.style.height=170+"px";
+                bigPicture.style.marginTop=150+"px";
+              }else if(screenWidth >350 && screenWidth<=380){
+                bigPicture.style.height=225+"px";
+                bigPicture.style.marginTop=180+"px";
+              }else if(screenWidth >380 && screenWidth<=420){
+                bigPicture.style.height=240+"px";
+                bigPicture.style.marginTop=210+"px";
+              }else if(screenWidth>420){
+                bigPicture.style.height=255+"px";
+                bigPicture.style.marginTop=240+"px";
+              }
+            }
+          },100);
+        }
+      };
+
+      $scope.hideBigPicture=function(){//隐藏大图
+        $scope.pictureAppearance=false;
+      };
+
+      function uploadImage(){
+        $scope.showLoading=true;
+        if(addImage.length==0){//不新增图片时，只考虑知否删除图片的情况
+          var deleteIdArray=[];
+          for(var i=0;i<deletedImage.length;i++){
+            var deleteParam={
+              id:deletedImage[i].id
+            };
+            deleteIdArray.push(deleteParam);
+          }
+          var url=baseConfig.queryPath+"/staffCertificateEdit";
+          var param={
+            certificateType:$scope.certificate.type,
+            certificateName:$scope.certificate.description,
+            dataId:certificateId,
+            deleteObjects:deleteIdArray,
+            addObjects:[]
+          };
+          console.log(angular.toJson("没有增加图片的参数是："+angular.toJson(param)));
+          hmsHttp.post(url,param).success(function(result){
+            $scope.showLoading=false;
+            if(result.status == "S"){
+              hmsPopup.showPopup("信息更改成功");//图片上传成功后发送广播并返回上一界面
+              $rootScope.$broadcast("CERTIFICATE_REFRESH");
+              $ionicHistory.goBack();
+            }else if(result.status != "S"){
+              hmsPopup.showPopup("信息更改失败");
+            }
+          }).error(function(error,status){
+            console.log("失败："+angular.toJson(error));
+            $scope.showLoading=false;
+            hmsPopup.showPopup("信息更改失败");
+          });
+        }else if(addImage.length>0){//新增图片大于0时才会调用FileTransfer插件
+          for(var i=0;i<addImage.length;i++){
+              var nowDates = Date.parse(new Date()) / 1000;
+              var fileName = window.localStorage.empno + nowDates +'.jpg';
+              var urlname="";
+              var myParam={
+                filename:fileName,
+                url:urlname//图片在服务器的路径
+              };
+              var options = new FileUploadOptions();
+              options.filekey = "file";
+              options.fileName = "image.jpg";
+              options.mimeType = "image/jpeg";
+              options.chunkedMode=false;
+              var trustAllHosts=true;
+              options.params=myParam;
+              var fileTransfer = new FileTransfer();
+              fileTransfer.upload(
+                addImage[i],
+                encodeURI(baseConfig.queryPath+"/objectUpload?access_token="+window.localStorage.token),//上传服务器的接口地址
+                win,
+                fail,
+                options,
+                trustAllHosts
+              );
+          }
+        }
+      }
+      var win=function(response) {//图片上传成功
+        var data=JSON.parse(response.response);
+        var objectParam={
+          "objectName":data.returnData.objectUrl
+        };
+        objectUrl.push(objectParam);
+        pictureNumber++;
+        if(pictureNumber == imageTotalLength){
+          var deleteIdArray=[];
+          for(var i=0;i<deletedImage.length;i++){
+            var deleteParam={
+              id:deletedImage[i].id
+            };
+            deleteIdArray.push(deleteParam);
+          }
+          var url=baseConfig.queryPath+"/staffCertificateEdit";
+          var param={
+            certificateType:$scope.certificate.type,
+            certificateName:$scope.certificate.description,
+            dataId:certificateId,
+            deleteObjects:deleteIdArray,
+            addObjects:objectUrl
+          };
+          console.log(angular.toJson("增加图片的参数是："+angular.toJson(param)));
+          hmsHttp.post(url,param).success(function(result){
+            $scope.showLoading=false;
+            if(result.status == "S"){
+              hmsPopup.showPopup("信息更改成功");//图片上传成功后发送广播并返回上一界面
+              $rootScope.$broadcast("CERTIFICATE_REFRESH");
+              $ionicHistory.goBack();
+            }else if(result.status != "S"){
+              hmsPopup.showPopup("信息更改失败");
+            }
+          }).error(function(error,status){
+            console.log("失败："+angular.toJson(error));
+            $scope.showLoading=false;
+            hmsPopup.showPopup("信息更改失败");
+          });
+        }
+      }
+      var fail=function(error){//图片上传失败
+        //如果有Loading的话记得隐藏loading
+        $scope.showLoading=false;
+        hmsPopup.showPopup("图片上传失败");
+      }
+
+      $scope.commitInfo=function(){//提交图片
+        if($scope.imageList[0].selected != true){
+          hmsPopup.showPopup("请选择证书的图片");
+        }else if($scope.imageList[0].selected == true){
+            if($scope.certificate.info==""){
+              hmsPopup.showPopup("请填写证书名称");
+            }else if($scope.certificate.info!=""){
+              for(var i=0;i<$scope.imageList.length;i++) {
+                if( ($scope.imageList[i].uri!="") && ($scope.imageList[i].uri.substring(0,4)!="http")){
+                  console.log($scope.imageList[i].uri);
+                  addImage.push($scope.imageList[i].uri);
+                  imageTotalLength++;
+                }
+              }
+              uploadImage();
+            }
+        }
+      };
+
+      $scope.goBack=function(){//返回按钮
+        if($scope.showLoading==false){
+          $ionicHistory.goBack();
+        }
+      };
+      $scope.showCommitButton=function(){
+        if($scope.buttonText=="编辑"){
+         return false;
+        }else if($scope.buttonText!="编辑"){
+          return true;
+        }
+      };
+      $scope.judgeRow=function(num){//判断行是否显示
+        if(num==0){
+          if($scope.matrix[0][0]==true){
+            return true;
+          }else{
+            return false;
+          }
+        }else if(num==1){
+          if($scope.matrix[1][0]==true){
+            return true;
+          }else{
+            return false;
+          }
+        }else if(num==2){
+          if($scope.matrix[2][0]==true){
+            return true;
+          }else{
+            return false;
+          }
+        }else if(num==3){
+          if($scope.matrix[3][0]==true){
+            return true;
+          }else{
+            return false;
+          }
+        }
+      };
+      $scope.enterDeleteMode=function(num){//长点击进入删除模式，或者长点击退出删除模式
+        if($scope.buttonText!="编辑"){
+          $scope.imageList[num].deleteMode=!$scope.imageList[num].deleteMode;
+        }else if($scope.buttonText=="编辑"){
+          hmsPopup.showPopup("点击右上角编辑按钮进入编辑模式");
+        }
+      };
+      $scope.deleteImage=function(num){//删除图片时，会校验删除的是否为服务器上获取的图片
+        for(var i=0;i<images.length;i++){
+          if($scope.imageList[num].uri == images[i].objectUrl){
+            deletedImage.push(images[i]);
+          }
+        }
+        $scope.imageList.splice(num,1);
+        angular.forEach($scope.imageList,function(data,index,array){//先重置imageList列表
+          array[index].num=index+1;
+        });
+        $scope.imageList.push({
+          selected:false,
+          uri:"",
+          num:$scope.imageList.length+1,
+          deleteMode:false
+        });
+        //再重置matrix
+        for(var row=0;row<4;row++){
+          for(var col=0;col<3;col++){
+            if(row<3){
+              if($scope.imageList[parseInt(row)*3+parseInt(col)].selected==true){
+                $scope.matrix[row][col]=true;
+                //console.log("row:"+row+" col:"+col+" 数字："+(parseInt(row)*3+parseInt(col)));
+              }else if($scope.imageList[parseInt(row)*3+parseInt(col)].selected==false){
+                $scope.matrix[row][col]=false;
+                //console.log("row:"+row+" col:"+col+" 数字："+(parseInt(row)*3+parseInt(col)));
+              }
+            }else if(row==3){
+              if($scope.imageList[9].selected==true){
+                $scope.matrix[3][0]=true;
+              }else if($scope.imageList[9].selected==false){
+                $scope.matrix[3][0]=false;
+              }
+            }
+          }
+        }
+        //拿到最后一个显示的图片，将其后一个变为增加按钮
+        var k=0;
+        var l=0;
+        for(k;k<$scope.imageList.length;k++){
+          if($scope.imageList[k].selected==true){
+            l++;
+          }
+        }
+        l=l+1;
+        var j = l%3;
+        var i = ( l - j ) / 3;
+        if(j>0){
+          j=j-1;
+        }else if(j==0){
+          j=2;
+          i=i-1;
+        }
+        currentRow = i;
+        currentCol = j;
+        $scope.matrix[i][j]=true;
+      };
+
     }]);
 
 /**
@@ -3393,21 +3877,72 @@ angular.module('myInfoModule')
     'hmsHttp',
     'hmsPopup',
     '$state',
+    '$rootScope',
+    '$timeout',
+    '$ionicScrollDelegate',
     function ($scope,
               baseConfig,
               $ionicHistory,
               hmsHttp,
               hmsPopup,
-              $state) {
+              $state,
+              $rootScope,
+              $timeout,
+              $ionicScrollDelegate) {
+      $scope.certificateList=[];
+      $scope.showLoading=true;
+      $scope.showData=true;
+      $scope.showNoData=false;
+      searchDataAutomatically();
+      function searchDataAutomatically(){
+        var url = baseConfig.queryPath+"/staffCertificateList";
+        var param={
+          employee_number:""
+        };
+        hmsHttp.post(url,param).success(function (result) {
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+          $scope.showLoading=false;
+          $scope.certificateList=result.returnData;
+          if($scope.certificateList.length==0){
+            $scope.showData=false;
+            $scope.showNoData=true;
+          }else if($scope.certificateList.length>0){
+            $scope.showData=true;
+            $scope.showNoData=false;
+          }
+        }).error(function(error,status){
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(error));
+          }
+          $scope.showLoading=false;
+        });
+      }
+
       $scope.goBack=function(){//返回按钮
         $ionicHistory.goBack();
       };
-      $scope.checkMyCertificate=function(){//查看证书详情
-        $state.go('tab.my-certificate-detail');
+
+      $scope.checkMyCertificate=function(num){//查看证书详情
+        var param={
+          id:$scope.certificateList[num].id
+        };
+        $state.go('tab.my-certificate-detail',{
+         'CertificateDetail':param
+        });
       };
+
       $scope.createNewCertificate=function(){//创建新的证书
         $state.go('tab.new-certificate');
       };
+
+      $rootScope.$on("CERTIFICATE_REFRESH",function(){
+        $timeout(function() {
+          $ionicScrollDelegate.$getByHandle('certificateScroll').scrollTop(false);
+        },200);
+        searchDataAutomatically();
+      });
     }]);
 
 /**
@@ -3640,6 +4175,7 @@ angular.module('myInfoModule')
     '$ionicModal',
     '$cordovaCamera',
     '$timeout',
+    '$rootScope',
     function ($scope,
               baseConfig,
               $ionicHistory,
@@ -3647,8 +4183,8 @@ angular.module('myInfoModule')
               hmsPopup,
               $ionicModal,
               $cordovaCamera,
-              $timeout) {
-
+              $timeout,
+              $rootScope) {
       $ionicModal.fromTemplateUrl('build/pages/myInfo/modal/new-certificate-choose-type.html', {//定义证书类型modal
         scope: $scope
       }).then(function (modal1) {
@@ -3661,11 +4197,15 @@ angular.module('myInfoModule')
       });//初始化选择图片上传方式类型的modal
       $scope.pictureAppearance = "";//显示大图
       $scope.imageList=[];//图片列表
+      var objectUrl=[];//收集每次调用图片上传接口时返回的ObjectUrl，最终在传文字接口时以数组形式发送过去
+      var imageTotalLength=0;//选择了的图片总长度
+      $scope.showLoading=false;
       $scope.matrix=[[true,false,false],[false,false,false],[false,false,false],[false]];//四行三列，共10个
       var currentPictureNumber=0;//图片上传到第几张，0-9
       var currentRow=0;//matrix的下标一维
       var currentCol=0;//matrix的下标二维
       var maxNumber=0;//图片最大上传数量
+      var pictureNumber=0;//控制在图片上传完成时判断是否调用文字传入接口
       for(maxNumber;maxNumber<10;maxNumber++){
        var param={
          selected:false,
@@ -3675,6 +4215,9 @@ angular.module('myInfoModule')
        };
        $scope.imageList.push(param);
       }
+      $scope.certificate={//证书信息
+        info:""
+      };
       $scope.defaultType="请选择";//默认证书类型
       $scope.certificateType=['会计证书','SAP系统证书','Oracle系统证书','技术类证书','其他'];//证书类型值列表
       $scope.pictureType=['拍照','相册'];//图片选择方式值列表
@@ -3695,15 +4238,16 @@ angular.module('myInfoModule')
 
       $scope.choosePictureType=function(param){
         var selectedMethod=param;
-        $scope.imageList[currentPictureNumber].url="build/img/navigate3@3x.png";
+        //$scope.imageList[currentPictureNumber].uri="build/img/navigate3@3x.png";
         if(selectedMethod == "拍照"){
-          //var cameraoptions = {
-          //    destinationType: Camera.DestinationType.FILE_URI,
-          //    sourceType: Camera.PictureSourceType.CAMERA
-          //};
-          //$cordovaCamera.getPicture(cameraoptions).then(function(imageURI) {
-          //  $scope.imageList[currentPictureNumber].uri=imageURI;//获取相机图片Uri
-          //  $scope.imageList[currentPictureNumber].selected=true;
+          var cameraoptions = {
+              quality: 50,
+              destinationType: Camera.DestinationType.FILE_URI,
+              sourceType: Camera.PictureSourceType.CAMERA
+          };
+          $cordovaCamera.getPicture(cameraoptions).then(function(imageURI) {
+            $scope.imageList[currentPictureNumber].uri=imageURI;//获取相机图片Uri
+            $scope.imageList[currentPictureNumber].selected=true;
             if(($scope.imageList[currentPictureNumber].num%3)!=0){
              if(currentRow < 3){
                currentCol=currentCol+1;
@@ -3718,14 +4262,14 @@ angular.module('myInfoModule')
              $scope.matrix[currentRow][currentCol]=true;
              $scope.imageList[currentPictureNumber].selected=true;
             }
-          //  $scope.$apply();
-          //}, function(err) {
-          //   // error
-          //});
+            $scope.$apply();
+          }, function(err) {
+             // error
+          });
         }else if(selectedMethod == "相册"){
-          //window.imagePicker.getPictures(function(results){
-          //  $scope.imageList[currentPictureNumber].uri=results[0];//获取相册图片Uri
-          //  $scope.imageList[currentPictureNumber].selected=true;
+          window.imagePicker.getPictures(function(results){
+            $scope.imageList[currentPictureNumber].uri=results[0];//获取相册图片Uri
+            $scope.imageList[currentPictureNumber].selected=true;
             if(($scope.imageList[currentPictureNumber].num%3)!=0){
               if(currentRow < 3){
                 currentCol=currentCol+1;
@@ -3740,19 +4284,85 @@ angular.module('myInfoModule')
               $scope.matrix[currentRow][currentCol]=true;
               $scope.imageList[currentPictureNumber].selected=true;
             }
-            //$scope.$apply();
-          //},function(error){
-          //
-          //},{
-          //maximumImagesCount: 1,
-          //width: 90,
-          //height: 160,
-          //quality: 50
-          //})
+            $scope.$apply();
+          },function(error){
+
+          },{
+          maximumImagesCount: 1,
+          width: 480,
+          height: 480,
+          quality: 60
+          })
           }
         $scope.choosePictureMethodPopup.hide();
       };
-
+      var uploadImage=function(){//上传图片
+        $scope.showLoading=true;
+        for(var i=0;i<$scope.imageList.length;i++){
+          if($scope.imageList[i].uri!=""){
+            var nowDates = Date.parse(new Date()) / 1000;
+            var fileName = window.localStorage.empno + nowDates +'.jpg';
+            var urlname="";
+            var myParam={
+              filename:fileName,
+              url:urlname//图片在服务器的路径
+            };
+            var options = new FileUploadOptions();
+            options.filekey = "file";
+            options.fileName = "image.jpg";
+            options.mimeType = "image/jpeg";
+            options.chunkedMode=false;
+            var trustAllHosts=true;
+            //myParam.filename="";
+            options.params=myParam;
+            var fileTransfer = new FileTransfer();
+            fileTransfer.upload(
+              $scope.imageList[i].uri,
+              encodeURI(baseConfig.queryPath+"/objectUpload?access_token="+window.localStorage.token),//上传服务器的接口地址
+              win,
+              fail,
+              options,
+              trustAllHosts
+            );
+          }
+        }
+      };
+      var win=function(response){//图片上传成功
+        //如果有Loading的话记得隐藏loading
+        var data=JSON.parse(response.response);
+        var objectParam={
+          "objectName":data.returnData.objectUrl
+        };
+        objectUrl.push(objectParam);
+        pictureNumber++;
+        if(pictureNumber == imageTotalLength){
+          var url=baseConfig.queryPath+"/staffCertificateCreate";
+          var param={
+            "certificateType":$scope.defaultType,
+            "certificateName":$scope.certificate.info,
+            "objects":objectUrl
+          };
+          hmsHttp.post(url,param).success(function(result){
+            $scope.showLoading=false;
+              if(result.status == "S"){
+              hmsPopup.showPopup("图片上传成功");//图片上传成功后发送广播并返回上一界面
+              $rootScope.$broadcast("CERTIFICATE_REFRESH");
+              $ionicHistory.goBack();
+            }else if(result.status != "S"){
+              hmsPopup.showPopup("图片上传失败");
+            }
+          }).error(function(error,status){
+            console.log("失败："+angular.toJson(error));
+            $scope.showLoading=false;
+            hmsPopup.showPopup("图片上传失败");
+          });
+        }
+      }
+      var fail=function(error){//图片上传失败
+        //如果有Loading的话记得隐藏loading
+        $scope.showLoading=false;
+        hmsPopup.showPopup("图片上传失败");
+      }
       $scope.judgeRow=function(num){
         if(num==0){
          if($scope.matrix[0][0]==true){
@@ -3783,10 +4393,6 @@ angular.module('myInfoModule')
 
       $scope.enterDeleteMode=function(num){//长点击进入删除模式，或者长点击退出删除模式
         $scope.imageList[num].deleteMode=!$scope.imageList[num].deleteMode;
-      };
-
-      $scope.leaveDeleteModel=function(num){//单击删除按钮其他位置，退出删除模式
-        $scope.imageList[num].deleteMode=false;
       };
 
       $scope.deleteImage=function(num){
@@ -3843,23 +4449,59 @@ angular.module('myInfoModule')
       };
 
       $scope.showBigPicture=function(num){//显示大图
-       $scope.pictureAppearance=true;
-       $scope.extensionPicture=$scope.imageList[num].url;
-       $timeout(function(){
+       if($scope.imageList[num].deleteMode == true){
+         $scope.imageList[num].deleteMode=false;
+       }else if($scope.imageList[num].deleteMode == false){
+         $scope.pictureAppearance=true;
+         $scope.extensionPicture=$scope.imageList[num].uri;
+         $timeout(function(){
            var bigPicture=document.getElementById('my-big-picture');
            var picHeight=bigPicture.offsetHeight;
            var picWidth=bigPicture.offsetWidth;
+           var screenWidth = window.screen.width;
            if(picHeight>picWidth){
-             bigPicture.style.height=480+"px";
-             bigPicture.style.width=270+"px";
-             bigPicture.style.marginTop=30+"px";
+             bigPicture.style.width=100+"%";
+             bigPicture.style.height=100+"%";
+             bigPicture.style.marginTop=10+"px";
            }else if(picHeight<picWidth){
-             bigPicture.style.marginTop=30+"px";
-             bigPicture.style.height=171+"px";
-             bigPicture.style.width=304+"px";
-             bigPicture.style.marginTop=120+"px";
+             bigPicture.style.width=100+"%";
+             if(screenWidth>310 && screenWidth<=350){
+               bigPicture.style.height=170+"px";
+               bigPicture.style.marginTop=150+"px";
+             }else if(screenWidth >350 && screenWidth<=380){
+               bigPicture.style.height=225+"px";
+               bigPicture.style.marginTop=180+"px";
+             }else if(screenWidth >380 && screenWidth<=420){
+               bigPicture.style.height=240+"px";
+               bigPicture.style.marginTop=210+"px";
+             }else if(screenWidth>420){
+               bigPicture.style.height=255+"px";
+               bigPicture.style.marginTop=240+"px";
+             }
            }
          },100);
+       }
+      };
+
+      $scope.commitInfo=function(){//提交图片
+        if($scope.imageList[0].selected != true){
+          hmsPopup.showPopup("请选择证书的图片");
+        }else if($scope.imageList[0].selected == true){
+          if($scope.defaultType=="请选择"){
+            hmsPopup.showPopup("请选择证书类型");
+          }else if($scope.defaultType!="请选择"){
+            if($scope.certificate.info==""){
+              hmsPopup.showPopup("请填写证书名称");
+            }else if($scope.certificate.info!=""){
+              for(var i=0;i<$scope.imageList.length;i++){
+                if($scope.imageList[i].uri!=""){
+                  imageTotalLength++;
+                }
+              }
+              uploadImage();
+            }
+          }
+        }
       };
 
       $scope.hideBigPicture=function(){//隐藏大图
@@ -3867,9 +4509,10 @@ angular.module('myInfoModule')
       };
 
       $scope.goBack=function(){//返回按钮
-        $ionicHistory.goBack();
+        if($scope.showLoading==false){
+          $ionicHistory.goBack();
+        }
       };
-
     }]);
 
 /**
@@ -4058,6 +4701,36 @@ angular.module('loginModule')
         }
       });
     }]);
+
+/**
+ * Created by gusenlin on 16/4/24.
+ */
+angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$state', 'baseConfig',
+  function ($scope, $rootScope, $state, baseConfig) {
+    $scope.$on('$ionicView.beforeEnter', function () {
+      var statename = $state.current.name;
+      if (baseConfig.debug) {
+        console.log('$ionicView.beforeEnter statename ' + statename);
+      }
+      //tabs中存在的主页面不需要隐藏，hidetabs=false
+      if (statename != 'tab.message' && statename != 'tab.application' &&
+        statename != 'tab.contact' && statename != 'tab.myInfo') {
+        $scope.hideTabs = true;
+      }
+    });
+
+    $scope.$on('$ionicView.afterEnter', function () {
+      var statename = $state.current.name;
+      if (baseConfig.debug) {
+        console.log('$ionicView.afterEnter statename ' + statename);
+      }
+      //tabs中存在的主页面不需要隐藏，hidetabs=false
+      if (statename === 'tab.message' || statename === 'tab.application' ||
+        statename === 'tab.contact' || statename === 'tab.myInfo') {
+        $scope.hideTabs = false;
+      }
+    });
+  }]);
 
 /**
  * Created by gusenlin on 16/6/21.
@@ -4255,35 +4928,62 @@ angular.module('applicationModule')
       }])
 ;
 
-/**
- * Created by gusenlin on 16/4/24.
- */
-angular.module('loginModule').controller('TabsCtrl', ['$scope', '$rootScope', '$state', 'baseConfig',
-  function ($scope, $rootScope, $state, baseConfig) {
-    $scope.$on('$ionicView.beforeEnter', function () {
-      var statename = $state.current.name;
-      if (baseConfig.debug) {
-        console.log('$ionicView.beforeEnter statename ' + statename);
-      }
-      //tabs中存在的主页面不需要隐藏，hidetabs=false
-      if (statename != 'tab.message' && statename != 'tab.application' &&
-        statename != 'tab.contact' && statename != 'tab.myInfo') {
-        $scope.hideTabs = true;
-      }
-    });
+'use strict';
+angular.module('myApp')
+  .config(['$stateProvider',
+    function ($stateProvider) {
+      $stateProvider
+        .state('tab.carpooling', {
+          url: '/carpooling',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/carpooling/carpooling.html',
+              controller: 'CarpoolingCtrl'
+            }
+          }
+        })
+    }]);
 
-    $scope.$on('$ionicView.afterEnter', function () {
-      var statename = $state.current.name;
-      if (baseConfig.debug) {
-        console.log('$ionicView.afterEnter statename ' + statename);
+'use strict';
+angular.module('applicationModule')
+  .controller('CarpoolingCtrl', [
+    '$scope',
+    '$rootScope',
+    '$state',
+    '$ionicHistory',
+    function ($scope, $rootScope, $state,$ionicHistory) {
+      $rootScope.goBack = function () {
+        $ionicHistory.goBack();
+      };
+
+
+      $scope.tabs = [{
+        name: '列表',
+        isActive: true,
+        onClass: 'list-on',
+        offClass: 'list-off',
+        onUrl:'./../img/application/carpooling/carpooling-B@3x.png',
+        offUrl:'./../img/application/carpooling/carpooling-G@3x.png'
+
+      }, {
+        name: '创建拼车',
+        isActive: false,
+        onClass: 'create-on',
+        offClass: 'create-off'
+      }, {
+        name: '拼车记录',
+        isActive: false,
+        onClass: 'history-on',
+        offClass: 'history-off'
+      }];
+
+      $scope.clickTab = function (tab) {
+        for (var i = 0; i < $scope.tabs.length; i++) {
+          $scope.tabs[i].isActive = false;
+        }
+        tab.isActive = true;
       }
-      //tabs中存在的主页面不需要隐藏，hidetabs=false
-      if (statename === 'tab.message' || statename === 'tab.application' ||
-        statename === 'tab.contact' || statename === 'tab.myInfo') {
-        $scope.hideTabs = false;
-      }
-    });
-  }]);
+    }]);
 
 /**
  * Created by LeonChan on 2016/5/31.
@@ -4769,6 +5469,7 @@ angular.module('applicationModule')
               $timeout) {
       $scope.descriptionAppearance = "";
       $scope.items=[];//历史列表中的数据
+      $scope.showLoading=true;//显示loading
       //$scope.showData = true;//默认是有数据的，无数据时显示无数据提示
       //$scope.showNoData = false;//此时显示无数据
       searchHistoryApplyListAutomatically();//自动获取历史申请数据
@@ -4786,6 +5487,7 @@ angular.module('applicationModule')
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }
+          $scope.showLoading=false;//隐藏loading
           $scope.items = result.result;
           if ($scope.items.length == 0) {
             $scope.showData=false;
@@ -4830,6 +5532,7 @@ angular.module('applicationModule')
         }).error(function (error, status) {
           //hmsPopup.hideLoading();
           //hmsPopup.showShortCenterToast("网络连接出错");
+          $scope.showLoading=false;//隐藏loading
           if (baseConfig.debug) {
             console.log("response error " + angular.toJson(error));
           }
@@ -5289,63 +5992,6 @@ angular.module('applicationModule')
           });
         }
       };
-    }]);
-
-'use strict';
-angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
-      $stateProvider
-        .state('tab.carpooling', {
-          url: '/carpooling',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/carpooling/carpooling.html',
-              controller: 'CarpoolingCtrl'
-            }
-          }
-        })
-    }]);
-
-'use strict';
-angular.module('applicationModule')
-  .controller('CarpoolingCtrl', [
-    '$scope',
-    '$rootScope',
-    '$state',
-    '$ionicHistory',
-    function ($scope, $rootScope, $state,$ionicHistory) {
-      $rootScope.goBack = function () {
-        $ionicHistory.goBack();
-      };
-
-
-      $scope.tabs = [{
-        name: '列表',
-        isActive: true,
-        onClass: 'list-on',
-        offClass: 'list-off',
-        onUrl:'./../img/application/carpooling/carpooling-B@3x.png',
-        offUrl:'./../img/application/carpooling/carpooling-G@3x.png'
-
-      }, {
-        name: '创建拼车',
-        isActive: false,
-        onClass: 'create-on',
-        offClass: 'create-off'
-      }, {
-        name: '拼车记录',
-        isActive: false,
-        onClass: 'history-on',
-        offClass: 'history-off'
-      }];
-
-      $scope.clickTab = function (tab) {
-        for (var i = 0; i < $scope.tabs.length; i++) {
-          $scope.tabs[i].isActive = false;
-        }
-        tab.isActive = true;
-      }
     }]);
 
 angular.module('myApp')
@@ -6003,6 +6649,9 @@ angular.module('applicationModule')
         }
       };
 
+
+
+
       $scope.filesManagement = [
         {
           shadow:true,
@@ -6035,6 +6684,16 @@ angular.module('applicationModule')
           shadow:false,
           text: '深圳生育报销个人信息登记表',
           url:'C.人事政策/深圳生育报销信息登记表.xlsx?arg=31',
+        },
+        {
+          shadow:false,
+          text: '深圳社保卡(医保卡)办理须知',
+          url:'C.人事政策/深圳社保卡（医保卡）办理须知201603.pdf?arg=391',
+        },
+        {
+          shadow:false,
+          text: '新员工入职须知201410 ',
+          url:'C.人事政策/新员工入职须知201410.pdf?arg=392',
         },
         {
           shadow:false,
@@ -7357,30 +8016,6 @@ angular.module('applicationModule')
     }]);
 
 /**
- * Created by wolf on 2016/7/6. (-wen.dai-)
- */
-'use strict';
-angular.module('contactModule')
-  .controller('employeeModalCtl', [
-    '$scope',
-    'baseConfig',
-    '$timeout',
-    function ($scope,
-              baseConfig,
-              $timeout) {
-      $scope.$on('contact-search', function () {
-        if (ionic.Platform.isWebView()) {
-          cordova.plugins.Keyboard.show();
-        }
-        $timeout(function () {
-          var item = document.getElementById("employeeInputSearch");
-          item.focus();
-          $scope.$apply();
-        }, 400);
-      });
-    }]);
-
-/**
  * Created by wolf on 2016/7/5.
  * -wen.dai-
  */
@@ -7496,6 +8131,30 @@ angular.module('contactModule')
       };
     }])
 ;
+
+/**
+ * Created by wolf on 2016/7/6. (-wen.dai-)
+ */
+'use strict';
+angular.module('contactModule')
+  .controller('employeeModalCtl', [
+    '$scope',
+    'baseConfig',
+    '$timeout',
+    function ($scope,
+              baseConfig,
+              $timeout) {
+      $scope.$on('contact-search', function () {
+        if (ionic.Platform.isWebView()) {
+          cordova.plugins.Keyboard.show();
+        }
+        $timeout(function () {
+          var item = document.getElementById("employeeInputSearch");
+          item.focus();
+          $scope.$apply();
+        }, 400);
+      });
+    }]);
 
 /**
  * Created by gusenlin on 16/4/24.
@@ -8489,18 +9148,18 @@ angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.carpooling-list', {
-          url: '/carpooling-list',
+        .state('tab.carpooling-history', {
+          url: '/carpooling-history',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/carpooling/carpooling-list/carpooling-list.html',
-              controller: 'CarpoolingListCtrl'
+              templateUrl: 'build/pages/application/carpooling/carpooling-history/carpooling-history.html',
+              controller: 'CarpoolingHistoryCtrl'
             }
           }
         })
     }]);
 angular.module('applicationModule')
-  .controller('CarpoolingListCtrl', [
+  .controller('CarpoolingHistoryCtrl', [
     '$scope',
     '$state',
     'baseConfig',
@@ -8522,18 +9181,18 @@ angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.carpooling-history', {
-          url: '/carpooling-history',
+        .state('tab.carpooling-list', {
+          url: '/carpooling-list',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/carpooling/carpooling-history/carpooling-history.html',
-              controller: 'CarpoolingHistoryCtrl'
+              templateUrl: 'build/pages/application/carpooling/carpooling-list/carpooling-list.html',
+              controller: 'CarpoolingListCtrl'
             }
           }
         })
     }]);
 angular.module('applicationModule')
-  .controller('CarpoolingHistoryCtrl', [
+  .controller('CarpoolingListCtrl', [
     '$scope',
     '$state',
     'baseConfig',

@@ -40,24 +40,24 @@ HmsModule.directive('hideTabs', function ($rootScope) {
           var scrollTop = e.detail.scrollTop;
           var newImageHeight = imageHeight - scrollTop;
           /////////
-          var calculation=0;
-          var blur=0;
-          var brightness=0;
+          //var calculation=0;
+          //var blur=0;
+          //var brightness=0;
           if (newImageHeight < 0) {
             newImageHeight = 0;
-            calculation = 0;
+            //calculation = 0;
           }
-          if(scrollTop<0){
-            if(-scrollTop<175){
-              calculation=-scrollTop/175;
-              blur = 5*calculation;
-              blur = 5-blur;
-              brightness = 0.3*calculation;
-              brightness = 0.7+brightness;
-              image.style.filter = "blur("+blur+"px) "+"brightness("+brightness+")";
-              image.style.webkitFilter = "blur("+blur+"px) "+"brightness("+brightness+")";
-            }
-          }
+          //if(scrollTop<0){
+          //  if(-scrollTop<175){
+          //    calculation=-scrollTop/175;
+          //    blur = 5*calculation;
+          //    blur = 5-blur;
+          //    brightness = 0.3*calculation;
+          //    brightness = 0.7+brightness;
+          //    image.style.filter = "blur("+blur+"px) "+"brightness("+brightness+")";
+          //    image.style.webkitFilter = "blur("+blur+"px) "+"brightness("+brightness+")";
+          //  }
+          //}
           image.style.height = newImageHeight + 'px';
         });
       }

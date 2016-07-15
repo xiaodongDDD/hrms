@@ -38,6 +38,7 @@ angular.module('applicationModule')
               $timeout) {
       $scope.descriptionAppearance = "";
       $scope.items=[];//历史列表中的数据
+      $scope.showLoading=true;//显示loading
       //$scope.showData = true;//默认是有数据的，无数据时显示无数据提示
       //$scope.showNoData = false;//此时显示无数据
       searchHistoryApplyListAutomatically();//自动获取历史申请数据
@@ -55,6 +56,7 @@ angular.module('applicationModule')
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }
+          $scope.showLoading=false;//隐藏loading
           $scope.items = result.result;
           if ($scope.items.length == 0) {
             $scope.showData=false;
@@ -99,6 +101,7 @@ angular.module('applicationModule')
         }).error(function (error, status) {
           //hmsPopup.hideLoading();
           //hmsPopup.showShortCenterToast("网络连接出错");
+          $scope.showLoading=false;//隐藏loading
           if (baseConfig.debug) {
             console.log("response error " + angular.toJson(error));
           }

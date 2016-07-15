@@ -608,6 +608,16 @@
     border-radius: 5px;
     box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
   }
+  .certificate-item.ng-enter{
+    -webkit-animation: zoomInUp 0.5s;
+    animation: zoomInUp .5s;
+  }
+  .certificate-item.ng-enter-stagger{
+    -webkit-animation-delay: 150ms;
+    animation-delay: 150ms;
+    -webkit-animation-duration: 0ms;
+    animation-duration: 0ms;
+  }
   .certificate-row{
     padding: 0px;
     margin: 0px;
@@ -636,10 +646,270 @@
     height: 22px;
     margin-top: 12px;
   }
+  .no-data-shelter{
+    position: absolute;
+    top: 100px;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 250px;
+  }
+  .no-data-no-space{
+    padding:0px;
+    margin: 0px;
+    text-align: center;
+  }
+  .no-data-image{
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+  }
+  .no-data-label{
+    font-size: 1.25rem;
+    color: #245597;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .no-data-no-space-label-row{
+    padding:0px;
+    margin: 0px;
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+.platform-android{
+  .my-certificate-detail{
+    .cancel-button-image{
+      width: 30px;
+      height: 30px;
+      margin-top: 5px;
+    }
+  }
+}
+.platform-ios{
+  .my-certificate-detail{
+    .cancel-button-image{
+      width: 30px;
+      height: 30px;
+      margin-top: 18px;
+    }
+  }
 }
 .my-certificate-detail{
   .content-style{
     background-color: #fafafa;
+  }
+  .item{
+    &.activated{
+      background-color: #ffffff;
+      opacity: 0.4;
+    }
+  }
+ .certificate-item{
+   margin: 0px;
+   padding: 0px;
+   border: none;
+   width: 92%;
+   height: 108px;
+   margin-left: 4%;
+   margin-top: 10px;
+   background-color: #ffffff;
+   border-radius: 10px;
+   box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
+ }
+ .info-shelter{
+   width: 78px;
+   height: 24px;
+   background-color: #ecf0f1;
+   border-top-right-radius: 5px;
+   border-bottom-right-radius: 5px;
+   margin-top: 10px;
+ }
+  .info-label{
+    color: #24559c;
+    font-size: 0.75rem;
+    margin-left: 16px;
+  }
+  .row-item1{
+    width: 100%;
+    height: 37px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    background: transparent;
+  }
+  .row-item2{
+    width: 100%;
+    height: 36px;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    background: transparent;
+  }
+  .certificate-row1{
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    width: 100%;
+    margin-left: 10px;
+    height: 37px;
+    border-bottom: 1px solid #f4f4f4;
+  }
+  .certificate-row2{
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    width: 100%;
+    margin-left: 10px;
+    height: 36px;
+  }
+  .left-label1{
+    font-size: 1rem;
+    color: #4a4a4a;
+    margin-left: 5px;
+    margin-top: 7px;
+  }
+  .left-label2{
+    font-size: 1rem;
+    color: #4a4a4a;
+    margin-left: 5px;
+    margin-top: 6px;
+  }
+  .right-label{
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 1rem;
+    color: #9b9b9b;
+  }
+  .certificate-input{
+    position: absolute;
+    top: 1px;
+    right: 10px;
+    font-size: 1rem;
+    color: #9b9b9b;
+    width: 60%;
+    height:30px;
+    background: transparent;
+    text-align: right;
+  }
+  input[readonly]:not(.cloned-text-input){
+    background-color: transparent;
+  }
+  .label-row{
+    margin: 0px;
+    padding: 0px;
+    width: 90%;
+    margin-top: 10px;
+    margin-left: 5%;
+  }
+  .no-space{
+    margin: 0px;
+    padding: 0px;
+  }
+  .image-square-item{
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    width: 92px;
+    height: 92px;
+    border: 1px solid #d2d2d2;
+    background-color: transparent;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .delete-icon{
+    font-size: 1.6rem;
+    color: #b95756;
+    position: absolute;
+    right: 3px;
+    top: 1px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+  }
+
+  .camera-image{
+    width: 90px;
+    height: 90px;
+    padding: 27.5px 25px;
+  }
+  .common-image{
+    width: 90px;
+    height: 90px;
+  }
+  .black-shelter{
+    width: 90px;
+    height: 90px;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .commit-button{
+    min-height: 40px;
+    line-height: 40px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    width: 54%;
+    margin-left: 23%;
+    margin-top: 35px;
+    border-radius: 20px;
+    background-color: #f99d32;
+    color: #ffffff;
+    font-size: 1rem;
+  }
+  .black-page{//大图页
+    position: fixed;
+    top: 0px;
+    left: 0;
+    z-index: 200;
+    width: 100%;
+    height:100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .black-page.ng-enter{
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn .5s;
+  }
+  .black-head{
+    width: 100%;
+    height: 60px;
+  }
+  .cancel-button{
+    padding: 0px;
+    margin: 0px;
+    width: 55px;
+    position: absolute;
+    top: 5px;
+    border: none;
+    right: 5px;
+  }
+  .scroll-height{
+    width: 100%;
+    height: 100%;
+  }
+  .flank{
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+  }
+  .scroll-bottom-line{
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+  }
+  .picture-position{
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .clear-back{
+
+  }
+  .blur-back{
+    -webkit-filter: blur(5px);
+    filter: blur(5px);
   }
 }
 .platform-android{
@@ -731,6 +1001,10 @@
     font-size: 1rem;
     color: #4a4a4a;
   }
+  .upload-description-label{
+    font-size: 0.75rem;
+    color: #4a4a4a;
+  }
   .upload-bottom{
     width: 100%;
     height: 20px
@@ -753,11 +1027,13 @@
     background-color: transparent;
   }
   .delete-icon{
-    font-size: 4rem;
-    color: orangered;
+    font-size: 1.6rem;
+    color: #b95756;
     position: absolute;
-    left: 19px;
-    top: 13px;
+    right: 3px;
+    top: 1px;
+    padding-left: 10px;
+    padding-bottom: 10px;
   }
 
   .camera-image{
