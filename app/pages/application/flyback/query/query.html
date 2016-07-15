@@ -12,8 +12,8 @@
       </button>
     </div>
   </ion-header-bar>
-  
-  <ion-content overflow-scroll="true" delegate-handle="timeSheetHandle">
+
+  <ion-content style="background-color: #ececec;">
     <div class="fb-query-block">
       <!--项目-->
       <div class="row">
@@ -51,19 +51,19 @@
     <div class="xbr-div-2" ng-show="flybackList.length>0">--往左滑动可删除“编辑”状态的数据--
     </div>
     <!--query-result-->
-    <ion-list class="xbr-ion-list" ng-show="flybackList.length>0">
-      <ion-item class="xbr-ion-item"
+    <ion-list style="margin-top:20px;padding: 0;border:none;" ng-show="flybackList.length>0">
+      <ion-item style="background-color: #FFFFFF;height: 115px;padding: 0;margin: 0;border:none;"
                 ng-repeat="data in flybackList"
                 ng-click="goDetail(data)">
-        <div class="xbr-item-inner">
-          <div>
+        <div style="width: 100%;margin: 0;padding: 0">
+          <div style="width:7%;height:115px;float:left;">
             <div class="fb-vertical-line"></div>
             <div class="fb-circle-blue" ng-show="data.isSubmitted=='0'"></div>
             <div class="fb-circle-green" ng-show="data.isSubmitted=='1'"></div>
           </div>
-          <div>
+          <div style="width:93%;height:115px;float:left; ">
             <div class="fb-line2" ng-show="($index>0)"></div>
-            <div class="xbr-flag-a">
+            <div style="width:100%;margin-top:16px;height:30px;">
               <div class="fb-reqdate">{{data.applyDate}}</div>
               <div class="fb-status-blue" ng-show="data.isSubmitted=='0'">{{data.status}}</div>
               <div class="fb-status-green" ng-show="data.isSubmitted=='1'">{{data.status}}</div>

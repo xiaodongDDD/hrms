@@ -1,13 +1,4 @@
 {
-    "com.handmobile.cordovaplugin.hotpatch": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "jpush-phonegap-plugin": {
         "source": {
             "type": "registry",
@@ -17,15 +8,6 @@
         "variables": {
             "API_KEY": "22b25063349b6beef7bde524"
         }
-    },
-    "cordova-plugin-device": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/apache/cordova-plugin-device.git",
-            "subdir": "."
-        },
-        "is_top_level": false,
-        "variables": {}
     },
     "cordova-plugin-contacts": {
         "source": {

@@ -12,15 +12,28 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content class="content-style">
+  <ion-content delegate-handle="certificateScroll" class="content-style">
+    <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
+    <div ng-if="showData">
     <ion-list>
-      <ion-item class="certificate-item" ng-click="checkMyCertificate()">
+      <ion-item class="certificate-item" ng-click="checkMyCertificate($index)" ng-repeat="x in certificateList">
        <div class="row certificate-row">
-         <label class="certificate-label">SAP证书</label>
+         <label class="certificate-label">{{x.certificateName}}</label>
        </div>
        <img src="build/img/myInfo/my-certificate-orange-arrow.png" class="orange-arrow-image"/>
        <img src="build/img/myInfo/rectangle.png" class="add-image">
       </ion-item>
     </ion-list>
+    </div>
+    <div ng-if="showNoData">
+      <div class="no-data-shelter">
+        <div class="row no-data-no-space">
+          <img src="build/img/application/dorm-apply/no-data.png" class="no-data-image"/>
+        </div>
+        <div class="row no-data-no-space-label-row">
+          <label class="no-data-label"><strong>未添加证书</strong></label>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

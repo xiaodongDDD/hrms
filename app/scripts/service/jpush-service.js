@@ -65,9 +65,9 @@ angular.module('HmsModule')
               var result;
               var detail;
 
-              alert('event ' + angular.toJson(event));
-              alert('window.plugins.jPushPlugin ' + angular.toJson(window.plugins.jPushPlugin));
-              alert('detail ' + angular.toJson(detail));
+              //alert('event ' + angular.toJson(event));
+              //alert('window.plugins.jPushPlugin ' + angular.toJson(window.plugins.jPushPlugin));
+              //alert('detail ' + angular.toJson(detail));
 
               if (device.platform == "Android") {
                 alertContent = window.plugins.jPushPlugin.openNotification.alert;
