@@ -53,7 +53,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
 
           var newImageHeight = imageHeight - scrollTop;
           /////////
-<<<<<<< HEAD
           var calculation = 0;
           var blur = 0;
           var brightness = 0;
@@ -102,14 +101,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
               image.style.filter = currentBrightness;
               image.style.webkitFilter = currentBrightness;
             }
-=======
-          //var calculation=0;
-          //var blur=0;
-          //var brightness=0;
-          if (newImageHeight < 0) {
-            newImageHeight = 0;
-            //calculation = 0;
->>>>>>> leon/034
           }
           //if(scrollTop<0){
           //  if(-scrollTop<175){
