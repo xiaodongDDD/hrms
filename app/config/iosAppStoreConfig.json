@@ -4,7 +4,7 @@
     "isMobilePlatform": true,
     "clearTable": true,
     "nativeScreenFlag":true,
-    "appStoreFlag": false,
+    "appStoreFlag": true,
     "loginPath": "http://mobile-app.hand-china.com/hrmsv2/oauth/token?client_id=client&client_secret=secret&grant_type=password&",
     "businessPath": "http://mobile-app.hand-china.com/hrmsv2/v2/api/l",
     "queryPath": "http://mobile-app.hand-china.com/hrmsv2/v2/api",
@@ -17,7 +17,7 @@
     "appRootPath":"",
     "serverPath":"http://10.211.96.173:8080/bts",
     "appRootFile": "helloCordova",
-    "appUpId":"com.hand-china.hrms",
+    "appUpId":"com.hand-china.mobile",
     "version":{
       "currentVersion": "2.0.1",
       "currentversionName": "此版本为正式版本2.0.1",

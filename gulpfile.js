@@ -61,6 +61,10 @@ var configDEVPath = [
 var configPRODPath = [
   'publish/PROD/config.xml'];
 
+var configiOSAppStorePath = [
+  'publish/IOSAPPSTORE/config.xml'
+]
+
 var pluginDEVPath = [
   'publish/TEST/plugins/*.*',
   'publish/TEST/plugins/**/*.*',
@@ -150,6 +154,12 @@ gulp.task('copy-prod-config', function () {
     .pipe(gulp.dest(''));
 });
 
+//复制发布环境 config.xml
+gulp.task('copy-ios-appStore-config', function () {
+  return gulp.src(configiOSAppStorePath)
+    .pipe(gulp.dest(''));
+});
+
 /*
  gulp.task('copy-dev-plugin', function () {
  return gulp.src(pluginDEVPath)
@@ -192,6 +202,28 @@ gulp.task('config-prod', function () {
     .pipe(gulpNgConfig('baseConfig'))
     .pipe(rename("baseConfig.js"))
     .pipe(gulp.dest('app/scripts'))
+});
+
+//生成iOS商店发布环境环境配置文件
+gulp.task('config-ios-appStore-prod', function () {
+  gulp.src('app/config/iOSAppStoreConfig.json')
+    .pipe(gulpNgConfig('baseConfig'))
+    .pipe(rename("baseConfig.js"))
+    .pipe(gulp.dest('app/scripts'))
+});
+
+//生成iOS发布环境环境配置文件
+gulp.task('config-prod', function () {
+  gulp.src('app/config/prodConfig.json')
+    .pipe(gulpNgConfig('baseConfig'))
+    .pipe(rename("baseConfig.js"))
+    .pipe(gulp.dest('app/scripts'))
+});
+
+//复制开发环境 config.xml
+gulp.task('copy-iosAppStore-config', function () {
+  return gulp.src(configIosAppStorePath)
+    .pipe(gulp.dest(''));
 });
 
 //压缩css
@@ -252,6 +284,12 @@ gulp.task('run-dev', function (callback) {
 gulp.task('run-prod', function (callback) {
   runSequence('clean', 'config-prod', /*'lint',*/ 'copy-prod-config', 'copy-publish-lib', ['sass', 'scripts', 'html'], callback);
 });
+
+//生成发布环境代码目录
+gulp.task('run-ios-prod', function (callback) {
+  runSequence('clean', 'config-ios-appStore-prod', /*'lint',*/ 'copy-ios-appStore-config', 'copy-publish-lib', ['sass', 'scripts', 'html'], callback);
+});
+
 
 //默认任务
 gulp.task('default', ['run-dev']);
