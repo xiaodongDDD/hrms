@@ -79,36 +79,36 @@ angular.module('applicationModule')
 
 
       /*var requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday_apply";
-      var requestParams = {
-        "params": {
-          "p_employeecode": "2203",
-          "p_timeofftypemeaning": "带薪年假",
-          "p_datetimefrom": "2016-07-10 08:30:00",
-          "p_datetimeto": "2016-07-11 18:00:00",
-          "p_timeleave": "",
-          "p_applyreason": ""
-        }
-      };
+       var requestParams = {
+       "params": {
+       "p_employeecode": "2203",
+       "p_timeofftypemeaning": "带薪年假",
+       "p_datetimefrom": "2016-07-10 08:30:00",
+       "p_datetimeto": "2016-07-11 18:00:00",
+       "p_timeleave": "",
+       "p_applyreason": ""
+       }
+       };
 
-      hmsHttp.post(requestUrl, requestParams).success(function (result) {
-      }).error(function (response, status) {
-      });
+       hmsHttp.post(requestUrl, requestParams).success(function (result) {
+       }).error(function (response, status) {
+       });
 
-      var requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday";
-      var requestParams = {
-        "params": {
-          "p_employeecode": "2203",
-          "p_timeofftypemeaning": "1",
-          "p_datetimefrom": "2016-07-10 08:30:00",
-          "p_datetimeto": "2016-07-11 18:00:00",
-          "p_timeleave": "",
-          "p_applyreason": ""
-        }
-      };
+       var requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday";
+       var requestParams = {
+       "params": {
+       "p_employeecode": "2203",
+       "p_timeofftypemeaning": "1",
+       "p_datetimefrom": "2016-07-10 08:30:00",
+       "p_datetimeto": "2016-07-11 18:00:00",
+       "p_timeleave": "",
+       "p_applyreason": ""
+       }
+       };
 
-      hmsHttp.post(requestUrl, requestParams).success(function (result) {
-      }).error(function (response, status) {
-      });*/
+       hmsHttp.post(requestUrl, requestParams).success(function (result) {
+       }).error(function (response, status) {
+       });*/
 
 
       $scope.timesheetProcessModeList = [
@@ -203,6 +203,7 @@ angular.module('applicationModule')
 
       //初始化日历
       var initDate = function () {
+
         var date = new Date();
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
@@ -243,10 +244,60 @@ angular.module('applicationModule')
         generateAllowance(monthParams);
       }
 
+
+      var initCalendarArray = [];
+
       //初始化日历数组
-      var initCalendar = function () {
+      var initCalendar = function (year, month) {
+        var date;
+        try {
+          if (year && month) {
+            date = new Date(year, parseInt(month) - 1, 1);
+          }
+          else {
+            date = new Date();
+          }
+        } catch (e) {
+          date = new Date();
+        }
+
+        date.setDate(1);
+
+        var firstDay = date.getDay();
+
+        if (baseConfig.debug) {
+          console.log('initDate.year ' + year);
+          console.log('initDate.month ' + month);
+          console.log('initDate.getDate ' + date.getDate());
+          console.log('initDate.getDay ' + date.getDay());
+          console.log('initDate.getFullYear ' + date.getFullYear());
+          console.log('initDate.getMonth ' + date.getMonth());
+        }
+
+        date.setMonth(date.getMonth() + 1);
+        var lastDate = new Date(date - 3600000 * 24);
+
+        var monthTotalDay = lastDate.getDate();
+
+        initCalendarArray = [];
+
+        var calendarLine = Math.ceil((firstDay + monthTotalDay) / 7);
+
+        for (var i = 0; i < (firstDay + monthTotalDay); i++) {
+          if (i < firstDay) {
+            initCalendarArray.push('');
+          } else {
+            initCalendarArray.push(i - firstDay + 1);
+          }
+        }
+
+        if (baseConfig.debug) {
+          console.log('initCalendarArray ' + angular.toJson(initCalendarArray));
+        }
+
         $scope.calendar = [];
-        for (i = 0; i < 5; i++) {
+        var seq = 0;
+        for (i = 0; i < calendarLine; i++) {
           var style_outline = 'each-day';
           var style_color = 'day-item';
           var money = '';
@@ -256,14 +307,32 @@ angular.module('applicationModule')
             list: []
           };
           for (j = 0; j < 7; j++) {
-            var item = {
-              day: "",
-              style_outline: style_outline,
-              style_color: style_color,
-              money: money,
-              project: project
-            };
+
+            var item;
+
+            if (initCalendarArray[seq]) {
+
+              item = {
+                day: initCalendarArray[seq],
+                style_outline: style_outline,
+                style_color: style_color,
+                money: money,
+                project: project
+              };
+            }
+            else {
+              item = {
+                day: '',
+                style_outline: style_outline,
+                style_color: style_color,
+                money: money,
+                project: project
+              };
+            }
+
             week.list.push(item);
+
+            seq = seq + 1;
           }
           $scope.calendar.push(week);
         }
@@ -320,7 +389,7 @@ angular.module('applicationModule')
             data.selected = false;
           }
         });
-        initCalendar();
+        initCalendar($scope.currentYear, $scope.currentMonth);
         fetchCalendar(monthParams);
         generateAllowance(monthParams);
       }
@@ -357,7 +426,8 @@ angular.module('applicationModule')
         var timesheetArray = result.timesheet;
         var seq = 0;
         $scope.calendar = [];
-        for (i = 0; i < 5; i++) {
+        var calendarLine = Math.ceil(result.timesheet.length / 7);
+        for (i = 0; i < calendarLine; i++) {
           var week = {
             week: i,
             list: []
@@ -548,6 +618,7 @@ angular.module('applicationModule')
             }
           });
         });
+
         var changeDateFormat = function (dateString) {
           var year;
           var month;
@@ -761,7 +832,7 @@ angular.module('applicationModule')
         month.selected = true;
         $scope.currentMonth = month.value;
         var monthParams = year + '' + formatMonth(month.value);
-        initCalendar();
+        initCalendar(year, month.value);
         fetchCalendar(monthParams);
         generateAllowance(monthParams);
       };
@@ -831,7 +902,7 @@ angular.module('applicationModule')
         TimeSheetService.generateAllowance(success, error, 'Y', monthParams);
       }
 
-      initCalendar();
+      initCalendar($scope.currentYear, $scope.currentMonth);
       //从服务器获取请求
       $timeout(
         function () {

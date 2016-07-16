@@ -213,7 +213,7 @@ angular.module('applicationModule')
       };
 
       $scope.goEmployeeDetail = function () {
-        if(detail.employeeCode){
+        if (detail.employeeCode) {
           if ($stateParams.type == 'WORKFLOWDETAIL') {
             $state.go('tab.tab-application-workflow-employee', {"employeeNumber": detail.employeeCode})
           } else {
@@ -511,8 +511,13 @@ angular.module('applicationModule')
 
           if (!array.showFlag) {
             array.showFlag = true;
-            if ($event.pageY + 10 > detail.__clientHeight) {
-              $ionicScrollDelegate.$getByHandle('workflowDetailHandle').scrollBottom(true);
+            if ($event.pageY + 15 > detail.__clientHeight) {
+              var detailScroll = $ionicScrollDelegate.$getByHandle('workflowDetailHandle').getScrollPosition();
+              if (baseConfig.debug) {
+                console.log('detailScroll ' + angular.toJson(detailScroll));
+              }
+              var detailScroll1 = $ionicScrollDelegate.$getByHandle('workflowDetailHandle').scrollTo(0, (detailScroll.top + 300), true);
+              //$ionicScrollDelegate.$getByHandle('workflowDetailHandle').scrollBottom(true);
             }
           } else {
             array.showFlag = false;

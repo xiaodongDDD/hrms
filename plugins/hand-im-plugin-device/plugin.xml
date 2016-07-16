@@ -69,6 +69,9 @@
     <source-file src="src/android/layout/drawable/shape_right_chat_item.xml" target-dir="res/drawable"/>
     <source-file src="src/android/layout/drawable/select_voice_click.xml" target-dir="res/drawable"/>
 
+    <source-file src="src/android/layout/drawable-hdpi/chat_record_len_left.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/chat_record_len_right.png" target-dir="res/drawable-hdpi"/>
+
     <source-file src="src/android/layout/drawable-hdpi/album_2x.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/layout/drawable-hdpi/album_blue.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/layout/drawable-hdpi/back.png" target-dir="res/drawable-hdpi"/>
@@ -303,6 +306,69 @@
         </intent-filter>
       </receiver>
     </config-file>
+
+  </platform>
+
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="HandIMPlugin">
+        <param name="ios-package" value="CDVIMPlugin"/>
+      </feature>
+    </config-file>
+
+    <!-- 配置-info.plist    -->
+
+
+    <!-- resource   -->
+    <!<resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable" />
+
+    <resource-file src="src/ios/plugins/image" />
+
+    <!--源码 -->
+    <header-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.h" />
+    <source-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.m" />
+
+    <header-file src="src/ios/plugins/CDVIMPlugin.h"/>
+    <source-file src="src/ios/plugins/CDVIMPlugin.m"/>
+
+    <header-file src="src/ios/plugins/CDVIMPluginChattingViewController.h"/>
+    <source-file src="src/ios/plugins/CDVIMPluginChattingViewController.m"/>
+
+    <header-file src="src/ios/plugins/UIColor+Hex.h"/>
+    <header-file src="src/ios/plugins/UIColor+Hex.m"/>
+
+    <header-file src="src/ios/plugins/CVDPlugin-Bridging-Header.h"/>
+
+    <!--框架-->
+    <framework src="Photos.framework"  />
+    <framework src="UIKit.framework"  />
+    <framework src="AudioToolbox.framework" />
+    <framework src="AVFoundation.framework" />
+    <framework src="CFNetwork.framework" />
+    <framework src="CoreAudio.framework" />
+    <framework src="CoreGraphics.framework" />
+    <framework src="CoreLocation.framework" />
+    <framework src="CoreMedia.framework" />
+    <framework src="CoreTelephony.framework" />
+    <framework src="CoreVideo.framework" />
+    <framework src="ImageIO.framework" />
+    <framework src="libc++abi.tbd" />
+    <framework src="libstdc++.tbd" />
+    <framework src="libxml2.tbd" />
+    <framework src="MapKit.framework" />
+    <framework src="OpenGLES.framework" />
+    <framework src="QuartzCore.framework" />
+    <framework src="SystemConfiguration.framework" />
+    <framework src="AssetsLibrary.framework" />
+    <framework src="libc++.tbd" />
+    <framework src="libsqlite3.0.tbd" />
+    <framework src="libz.tbd" />
+
+    <!--        <framework src="src/ios/plugins/RongIMKit.framework " />-->
+    <!--        <framework src="src/ios/plugins/RongIMLib.framework "  />-->
+    <!--        <framework src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/libopencore-amrnb.a "  />-->
+
+
 
   </platform>
 </plugin>

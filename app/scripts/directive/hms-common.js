@@ -37,19 +37,17 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
         var image = document.getElementById($attr.elasticImage);
         var imageHeight = image.offsetHeight;
         var currentBrightness = '';
+        var brightness5 = "blur(5px) brightness(0.9)";
+        var brightness4 = "blur(3px) brightness(0.9)";
+        var brightness3 = "blur(2px) brightness(0.9)";
+        var brightness2 = "blur(1px) brightness(0.9)";
+        var brightness1 = "blur(0px)";
+        currentBrightness = brightness5;
 
         $scroller.bind('scroll', function (e) {
           var scrollTop = e.detail.scrollTop;
 
-          console.log('scrollTop ' + scrollTop);
-
-          var brightness5 = "blur(5px) brightness(0.9)";
-          var brightness4 = "blur(4px) brightness(0.9)";
-          var brightness3 = "blur(3px) brightness(0.9)";
-          var brightness2 = "blur(2px) brightness(0.9)";
-          var brightness1 = "blur(1px) brightness(0.9)";
-          currentBrightness = brightness5;
-
+          //console.log('scrollTop ' + scrollTop);
 
           var newImageHeight = imageHeight - scrollTop;
           /////////
@@ -65,41 +63,33 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
             if (-scrollTop >= 0 && -scrollTop < 40) {
               if (currentBrightness != brightness5) {
                 currentBrightness = brightness5;
+                image.style.filter = currentBrightness;
+                image.style.webkitFilter = currentBrightness;
               }
-              image.style.filter = currentBrightness;
-              image.style.webkitFilter = currentBrightness;
             }
 
             if (-scrollTop >= 40 && -scrollTop < 80) {
               if (currentBrightness != brightness4) {
                 currentBrightness = brightness4;
+                image.style.filter = currentBrightness;
+                image.style.webkitFilter = currentBrightness;
               }
-              image.style.filter = currentBrightness;
-              image.style.webkitFilter = currentBrightness;
             }
 
             if (-scrollTop >= 80 && -scrollTop < 120) {
               if (currentBrightness != brightness3) {
                 currentBrightness = brightness3;
+                image.style.filter = currentBrightness;
+                image.style.webkitFilter = currentBrightness;
               }
-              image.style.filter = currentBrightness;
-              image.style.webkitFilter = currentBrightness;
             }
 
-            if (-scrollTop >= 120 && -scrollTop < 160) {
-              if (currentBrightness != brightness2) {
-                currentBrightness = brightness2;
-              }
-              image.style.filter = currentBrightness;
-              image.style.webkitFilter = currentBrightness;
-            }
-
-            if (-scrollTop >= 160) {
+            if (-scrollTop >= 120) {
               if (currentBrightness != brightness1) {
                 currentBrightness = brightness1;
+                image.style.filter = currentBrightness;
+                image.style.webkitFilter = currentBrightness;
               }
-              image.style.filter = currentBrightness;
-              image.style.webkitFilter = currentBrightness;
             }
           }
           //if(scrollTop<0){

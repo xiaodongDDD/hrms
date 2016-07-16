@@ -10,4 +10,5 @@
 
 @interface CDVIMPluginChattingViewController : RCConversationViewController
 @property (nonatomic,copy)NSString *navTitle;
+@property (nonatomic,copy)NSString *targetId;
 @end

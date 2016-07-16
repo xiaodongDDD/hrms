@@ -2,32 +2,42 @@
 
 var HandIMPlugin = {
 //跳转到会话列表
-getChatList : function(successCallback, errorCallback, options) {
-	if (errorCallback == null) { errorCallback = function() {}}
-    if (typeof errorCallback != "function")  {
+  getChatList: function (successCallback, errorCallback, options) {
+    if (errorCallback == null) {
+      errorCallback = function () {
+      }
+    }
+    if (typeof errorCallback != "function") {
 
-        return
+      return
     }
     if (typeof successCallback != "function") {
 
-        return
+      return
     }
     exec(successCallback, errorCallback, "HandIMPlugin", "getChatList", [options]);
 
-},
+  },
 //跳转到会话界面
-toChatAct : function(successCallback, errorCallback, options) {
-	if (errorCallback == null) { errorCallback = function() {}}
-    if (typeof errorCallback != "function")  {
+  toChatAct: function (successCallback, errorCallback, options) {
+    if (errorCallback == null) {
+      errorCallback = function () {
+      }
+    }
+    if (typeof errorCallback != "function") {
 
-        return
+      return
     }
     if (typeof successCallback != "function") {
 
-        return
+      return
     }
     exec(successCallback, errorCallback, "HandIMPlugin", "toChatAct", [options]);
-}
+  },
+  
+  returnConversationList: function (successCallback, errorCallback) {
+    exec(successCallback, errorCallback, "HandIMPlugin", "returnConversationList", []);
+  }
 };
 
 
