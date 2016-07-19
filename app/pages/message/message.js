@@ -40,7 +40,7 @@ angular.module('messageModule')
         };
         var error = function () {
         };
-        HandIMPlugin.deleteConversationList(sucess, error, message.sendId);
+        HandIMPlugin.deleteConversationList(success, error, message.employee);
       };
 
       var getMessageList = function () {
@@ -91,8 +91,8 @@ angular.module('messageModule')
           loop();
         }, 1000);
       };
-      
-      
+
+
 
       var loop = function () {
         getMessageList();

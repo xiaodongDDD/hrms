@@ -19,7 +19,7 @@
 {
     [super viewDidLoad];
     
-    [DataBaseTool updateDataType:nil SendId:self.target_id];
+    [DataBaseTool updateDataType:nil SendId:self.targetId];
     
     //关闭navigation自带的侧滑手势
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
@@ -72,7 +72,7 @@
 //点击返回调用的方法
 - (void)dismiss
 {
-    NSLog(@"come :%@",self.navigationController);
+   // NSLog(@"come :%@",self.navigationController);
     //自定义pop动画
     
     [UIView animateWithDuration:0.35 delay:0.1 usingSpringWithDamping:0 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -124,7 +124,7 @@
 - (void)sendMessage:(RCMessageContent *)messageContent
         pushContent:(NSString *)pushContent
 {
-    [[RCIM sharedRCIM] sendMessage:ConversationType_PRIVATE targetId:self.target_id content:messageContent pushContent:pushContent pushData:nil success:^(long messageId) {
+    [[RCIM sharedRCIM] sendMessage:ConversationType_PRIVATE targetId:self.targetId content:messageContent pushContent:pushContent pushData:nil success:^(long messageId) {
         NSLog(@"成功发送消息回调：%li   %@  时间:%@",messageId,messageContent,[TimeTool timeStr:[[NSDate date] timeIntervalSince1970]*1000]);
         NSString *content;
         NSString *type;
@@ -154,7 +154,7 @@
 //操控数据库的方法
 - (void)insertDataBaseMesaageType:(NSString *)type Content:(NSString *)content
 {
-    [DataBaseTool insetSendDataType:type SendId:[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"] ReceivedId:self.target_id Content:content SendTime:[NSString stringWithFormat:@"%lf",[[NSDate date] timeIntervalSince1970]*1000] ReceiveTime:nil Flag:@"Y"];
+    [DataBaseTool insetSendDataType:type SendId:[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"] ReceivedId:self.targetId Content:content SendTime:[NSString stringWithFormat:@"%lf",[[NSDate date] timeIntervalSince1970]*1000] ReceiveTime:nil Flag:@"Y"];
 }
 
 /*!
@@ -174,10 +174,10 @@
 - (void)sendImageMessage:(RCImageMessage *)imageMessage
              pushContent:(NSString *)pushContent
 {
-    [[RCIM sharedRCIM] sendImageMessage:ConversationType_PRIVATE targetId:self.target_id content:imageMessage pushContent:pushContent pushData:nil progress:^(int progress, long messageId) {
+    [[RCIM sharedRCIM] sendImageMessage:ConversationType_PRIVATE targetId:self.targetId content:imageMessage pushContent:pushContent pushData:nil progress:^(int progress, long messageId) {
         NSLog(@"progress:%i,%li ",progress,messageId);
     } success:^(long messageId) {
-        [DataBaseTool insetSendDataType:@"img" SendId:[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"] ReceivedId:self.target_id Content:@"[图片]" SendTime:[NSString stringWithFormat:@"%lf",[[NSDate date] timeIntervalSince1970]*1000] ReceiveTime:nil Flag:@"Y"];
+        [DataBaseTool insetSendDataType:@"img" SendId:[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"] ReceivedId:self.targetId Content:@"[图片]" SendTime:[NSString stringWithFormat:@"%lf",[[NSDate date] timeIntervalSince1970]*1000] ReceiveTime:nil Flag:@"Y"];
         NSLog(@"success:%li",messageId);
     } error:^(RCErrorCode errorCode, long messageId) {
         NSLog(@"error:%li,%li",errorCode,messageId);

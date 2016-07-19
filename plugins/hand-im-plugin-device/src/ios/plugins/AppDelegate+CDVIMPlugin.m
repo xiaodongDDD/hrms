@@ -50,22 +50,23 @@
     [[RCIM sharedRCIM] setReceiveMessageDelegate:self];
     [self loginRongCloud];
     
-    if ([[UIApplication sharedApplication]
-         respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        //注册推送, 用于iOS8以及iOS8之后的系统
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings
-                                                settingsForTypes:(UIUserNotificationTypeBadge |
-                                                                  UIUserNotificationTypeSound |
-                                                                  UIUserNotificationTypeAlert)
-                                                categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    } else {
-        //注册推送，用于iOS8之前的系统
-        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge |
-        UIRemoteNotificationTypeAlert |
-        UIRemoteNotificationTypeSound;
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
-    }
+//    if ([[UIApplication sharedApplication]
+//         respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+//        //注册推送, 用于iOS8以及iOS8之后的系统
+//        UIUserNotificationSettings *settings = [UIUserNotificationSettings
+//                                                settingsForTypes:(UIUserNotificationTypeBadge |
+//                                                                  UIUserNotificationTypeSound |
+//                                                                  UIUserNotificationTypeAlert)
+//                                                categories:nil];
+//        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+//    } else {
+//        //注册推送，用于iOS8之前的系统
+//        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge |
+//        UIRemoteNotificationTypeAlert |
+//        UIRemoteNotificationTypeSound;
+//        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
+//    }
+    
     //融云即时通讯
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(didReceiveMessageNotification:)
                                                 name:RCKitDispatchMessageNotification
@@ -99,6 +100,7 @@
     } tokenIncorrect:^{
         NSLog(@"token 无效 ，请确保生成token 使用的appkey 和初始化时的appkey 一致");
     }];
+    
     [[RCIM sharedRCIM] setDisableMessageNotificaiton:YES];
     [[RCIM sharedRCIM] setDisableMessageAlertSound:YES];
     
@@ -138,16 +140,16 @@
     });
     
     //弹出提示框
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
-        UILocalNotification *localNotification = [[UILocalNotification alloc]init];
-        [localNotification setAlertBody:[NSString stringWithFormat:@"%@给你发来了一条新消息",[notification.object senderUserId]]];
-        localNotification.userInfo = @{@"id":[notification.object senderUserId]};
-        [localNotification setAlertTitle:[[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"]];
-        [localNotification setFireDate:[NSDate date]];
-        [localNotification setSoundName:UILocalNotificationDefaultSoundName];
-        //UIApplication启动通知
-        [[UIApplication sharedApplication]scheduleLocalNotification:localNotification];
-    }
+//    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+//        UILocalNotification *localNotification = [[UILocalNotification alloc]init];
+//        [localNotification setAlertBody:[NSString stringWithFormat:@"%@给你发来了一条新消息",[notification.object senderUserId]]];
+//        localNotification.userInfo = @{@"id":[notification.object senderUserId]};
+//        [localNotification setAlertTitle:[[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"]];
+//        [localNotification setFireDate:[NSDate date]];
+//        [localNotification setSoundName:UILocalNotificationDefaultSoundName];
+//        //UIApplication启动通知
+//        [[UIApplication sharedApplication]scheduleLocalNotification:localNotification];
+//    }
     //  [UIApplication sharedApplication].applicationIconBadgeNumber =
     // [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
     
@@ -186,25 +188,25 @@
     }
 }
 
-//注册用户通知设置
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
-    // register to receive notifications
-    [application registerForRemoteNotifications];
-}
-
-
-//程序进入后台2分钟之前 和 处于活跃
-- (void)application:(UIApplication *)application
-didReceiveLocalNotification:(UILocalNotification *)notification {
-    // notification为本地通知的内容
-    NSLog(@"notification为本地通知的内容:%@",notification.userInfo[@"id"]);
-    CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:notification.userInfo[@"id"]];
-    cdvIMChattingVC.targetId = notification.userInfo[@"id"];
-    cdvIMChattingVC.navTitle = notification.userInfo[@"id"];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cdvIMChattingVC];
-    [self.viewController presentViewController:nav animated:YES completion:nil];
-    //  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-}
+////注册用户通知设置
+//- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+//    // register to receive notifications
+//    [application registerForRemoteNotifications];
+//}
+//
+//
+////程序进入后台2分钟之前 和 处于活跃
+//- (void)application:(UIApplication *)application
+//didReceiveLocalNotification:(UILocalNotification *)notification {
+//    // notification为本地通知的内容
+//    NSLog(@"notification为本地通知的内容:%@",notification.userInfo[@"id"]);
+//    CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:notification.userInfo[@"id"]];
+//    cdvIMChattingVC.targetId = notification.userInfo[@"id"];
+//    cdvIMChattingVC.navTitle = notification.userInfo[@"id"];
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cdvIMChattingVC];
+//    [self.viewController presentViewController:nav animated:YES completion:nil];
+//    //  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+//}
 
 
 #pragma mark - ReceiveMessageDelegate

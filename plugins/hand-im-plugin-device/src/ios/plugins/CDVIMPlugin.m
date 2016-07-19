@@ -35,7 +35,7 @@
     NSLog(@"openIMVC");
     NSString *friendId = command.arguments[0][@"friendId"];
     NSString *friendName = command.arguments[0][@"friendName"];
-    CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:nil];
+    CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:friendName];
     
     cdvIMChattingVC.targetId = friendId;
     cdvIMChattingVC.navTitle = friendName;
