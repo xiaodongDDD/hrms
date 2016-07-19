@@ -202,15 +202,14 @@ angular.module('tsApproveModule')
         var success = function (response) {
           try {
             var result = response.result;
-            var startDate = result[0].splice(/-/, '');
-            var endDate = result[1].splice(/-/, '');
+            var startDate = result[0].replace(/-/g, '');
+            var endDate = result[1].replace(/-/g, '');
             tsListParams.params.p_page = 1;
             tsListParams.params.p_start_date = startDate;
             tsListParams.params.p_end_date = endDate;
             $scope.showLsLoading = true;
             $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
           } catch (e) {
-            alert('取值失败' + angular.toJson(response.result));
           }
         };
         var error = function (response) {

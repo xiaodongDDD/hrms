@@ -112,9 +112,9 @@ angular.module('contactModule')
             buttonClicked: function (index) {
               if (index == 0) {
                 window.location.href = "tel:" + 88888888888; //不明觉厉-!
-                window.location.href = "tel:" + $scope.employeeInfo.mobil;
+                window.location.href = "tel:" + $scope.employeeInfo.mobil.replace(/\s+/g,"");
                 employeeBaseInfo = {
-                  tel: $scope.employeeInfo.mobil,
+                  tel: $scope.employeeInfo.mobil.replace(/\s+/g,""),
                   name: $scope.employeeInfo.emp_name,
                   employeeNumber: $scope.employeeInfo.emp_code,
                   imgUrl: $scope.employeeInfo.avatar
@@ -126,7 +126,7 @@ angular.module('contactModule')
               }
               if (index == 1) {
                 var baseInfo = {
-                  mobil: $scope.employeeInfo.mobil,
+                  mobil: $scope.employeeInfo.mobil.replace(/\s+/g,""),
                   email: $scope.employeeInfo.email,
                   emp_name: $scope.employeeInfo.emp_name
                 };
@@ -142,7 +142,7 @@ angular.module('contactModule')
 
       $scope.goImTalk = function () {
         employeeBaseInfo = {
-          tel: $scope.employeeInfo.mobil,
+          tel: $scope.employeeInfo.mobil.replace(/\s+/g,""),
           name: $scope.employeeInfo.emp_name,
           employeeNumber: $scope.employeeInfo.emp_code,
           imgUrl: $scope.employeeInfo.avatar
@@ -161,5 +161,4 @@ angular.module('contactModule')
           hmsPopup.showShortCenterToast('不支持网页聊天!');
         }
       };
-    }])
-;
+    }]);
