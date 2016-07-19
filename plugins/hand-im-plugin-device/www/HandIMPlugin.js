@@ -37,6 +37,10 @@ var HandIMPlugin = {
   
   returnConversationList: function (successCallback, errorCallback) {
     exec(successCallback, errorCallback, "HandIMPlugin", "returnConversationList", []);
+  },
+
+  deleteConversationList: function (successCallback, errorCallback, friendId) {
+    exec(successCallback, errorCallback, "HandIMPlugin", "deleteConversationList", [friendId]);
   }
 };
 

@@ -134,17 +134,8 @@ angular.module('applicationModule')
 
 
         // 保存转正信息（转正审批工作流）
-        this.savePositiveBlock1 = function (suceess, error, instanceId, trialResult, approveDate, positionId) {
+        this.savePositiveBlock1 = function (success, error, params) {
           var url = baseConfig.businessPath + "/wfl_save_action/save_positive_block1_data";
-          var response = {
-            "params": {
-              "p_instance_id": instanceId,
-              "p_trial_result": trialResult,
-              "p_approve_date": approveDate,
-              "p_position_id": positionId
-            }
-          };
-
           hmsHttp.post(url, params).success(function (result) {
             hmsPopup.hideLoading();
             success(result);
@@ -154,13 +145,13 @@ angular.module('applicationModule')
           });
         };
         // 保存考评结果（转正审批工作流）
-        this.savePositiveBlock2 = function (suceess, error, instanceId, record) {
+        this.savePositiveBlock2 = function (success, error, instanceId, record) {
 
-          var url = baseConfig.businessPath + "/get_workflow_data/save_positive_block2_data";
+          var url = baseConfig.businessPath + "/wfl_save_action/save_positive_block2_data";
           var params = {
             "params": {
               "p_instance_id": instanceId,
-              "p_record": {"record": record}
+              "p_record": JSON.stringify({"record": record})
             }
           };
 
@@ -173,7 +164,7 @@ angular.module('applicationModule')
           });
         };
         // 保存试用期总结（转正审批工作流）
-        this.savePositiveBlock3 = function (suceess, error, instanceId, fieldId, fieldValue) {
+        this.savePositiveBlock3 = function (success, error, instanceId, fieldId, fieldValue) {
 
           var url = baseConfig.businessPath + "/wfl_save_action/save_positive_block3_data";
           var params = {
@@ -215,6 +206,33 @@ angular.module('applicationModule')
           hmsHttp.post(url, params).success(function (result) {
             success(result);
           }).error(function (response) {
+            error(response);
+          });
+        };
+
+        //获取回退列表 added by Ethan
+        this.getBackList = function (success, error, nodeId) {
+          var url = baseConfig.businessPath + "/get_workflow_data/get_back_list";
+          var params = '{"params":{"p_node_id":"' + nodeId + '"}}';
+
+          hmsHttp.post(url, params).success(function (result) {
+            hmsPopup.hideLoading();
+            success(result);
+          }).error(function (response) {
+            hmsPopup.hideLoading();
+            error(response);
+          });
+        };
+
+        this.backTo = function (success, error, recordId, actionId, comment) {
+          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/wfl_back_to_action";
+          var params = '{"params":{"p_record_id":"' + recordId + '","p_action_id":"' + actionId + '","p_comment":"' + comment + '"}}';
+
+          hmsHttp.post(url, params).success(function (result) {
+            hmsPopup.hideLoading();
+            success(result);
+          }).error(function (response) {
+            hmsPopup.hideLoading();
             error(response);
           });
         }

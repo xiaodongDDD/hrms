@@ -8,7 +8,6 @@
 
 #import "CDVIMPluginChattingViewController.h"
 #import "CVDPlugin-Bridging-Header.h"
-//#import "UIColor+Hex.h"
 #import "DataBaseTool.h"
 
 @interface CDVIMPluginChattingViewController ()
@@ -20,11 +19,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self setMessageAvatarStyle:RC_USER_AVATAR_CYCLE];//显示头像形状
-    //  [self setMessagePortraitSize:CGSizeMake(64, 64)];
-    
+
     [DataBaseTool updateDataType:nil SendId:self.targetId];
+    
+   // UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
+    
+   // panGesture
+ //[self.view addGestureRecognizer:gestuew];
+
+    [self setMessageAvatarStyle:RC_USER_AVATAR_CYCLE];//显示头像形状
+  //  [self setMessagePortraitSize:CGSizeMake(64, 64)];
+    
     self.navigationItem.title = [NSString stringWithFormat:@"%@",_navTitle];
     [self.navigationController.navigationBar setTintColor:[UIColor  colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0]];
     
@@ -34,7 +39,7 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     
-    //      self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+//      self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithCGImage:[UIImage imageNamed:@"dial_2x.png"].CGImage scale:1.6 orientation:UIImageOrientationUp] style:UIBarButtonItemStyleDone target:self action:@selector(call:)];
 }
@@ -89,10 +94,37 @@
         pushContent:(NSString *)pushContent
 {
     [[RCIM sharedRCIM] sendMessage:ConversationType_PRIVATE targetId:self.targetId content:messageContent pushContent:pushContent pushData:nil success:^(long messageId) {
-        NSLog(@"成功发送消息回调：%li",messageId);
+        NSLog(@"成功发送消息回调：%li   %@  时间:%@",messageId,messageContent,[TimeTool timeStr:[[NSDate date] timeIntervalSince1970]*1000]);
+        NSString *content;
+        NSString *type;
+        if ([messageContent isKindOfClass:[RCTextMessage class]]) {
+            RCTextMessage *textMessage = (RCTextMessage *)messageContent;
+            NSLog(@"content:%@ 时间:%lf",[textMessage content],[[NSDate date] timeIntervalSinceReferenceDate]*1000);
+            content = [textMessage content];
+            type = @"text";
+        } else if ([messageContent isKindOfClass:[RCVoiceMessage class]]){
+            RCVoiceMessage *voiceMessage = (RCVoiceMessage *)messageContent;
+             NSLog(@"content:%li 时间:%lf",[voiceMessage duration],[[NSDate date] timeIntervalSinceReferenceDate]*1000);
+            content = @"[语音]";
+            type = @"voice";
+        } else if ([messageContent isKindOfClass:[RCLocationMessage class]]){
+           // RCLocationMessage *locationMessage = (RCLocationMessage *)messageContent;
+            content = @"[位置]";
+            type = @"location";
+        }
+        NSLog(@"RCLocationMessage:%@",content);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self insertDataBaseMesaageType:type Content:content];
+        });
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"失败发送回调：%li,messageId:%li",nErrorCode,messageId);
     }];
+}
+
+//操控数据库的方法
+- (void)insertDataBaseMesaageType:(NSString *)type Content:(NSString *)content
+{
+    [DataBaseTool insetSendDataType:type SendId:[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"] ReceivedId:self.targetId Content:content SendTime:[NSString stringWithFormat:@"%lf",[[NSDate date] timeIntervalSince1970]*1000] ReceiveTime:nil Flag:@"Y"];
 }
 
 /*!
@@ -113,12 +145,14 @@
              pushContent:(NSString *)pushContent
 {
     [[RCIM sharedRCIM] sendImageMessage:ConversationType_PRIVATE targetId:self.targetId content:imageMessage pushContent:pushContent pushData:nil progress:^(int progress, long messageId) {
-        NSLog(@"progress:%i,%li",progress,messageId);
+        NSLog(@"progress:%i,%li ",progress,messageId);
     } success:^(long messageId) {
+        [DataBaseTool insetSendDataType:@"img" SendId:[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"] ReceivedId:self.targetId Content:@"[图片]" SendTime:[NSString stringWithFormat:@"%lf",[[NSDate date] timeIntervalSince1970]*1000] ReceiveTime:nil Flag:@"Y"];
         NSLog(@"success:%li",messageId);
     } error:^(RCErrorCode errorCode, long messageId) {
         NSLog(@"error:%li,%li",errorCode,messageId);
     }];
+    
 }
 
 /*!
@@ -131,6 +165,7 @@
  */
 - (void)resendMessage:(RCMessageContent *)messageContent
 {
+    NSLog(@"重新发送消息");
     [super resendMessage:messageContent];
 }
 #pragma mark - 点击事件回调
@@ -143,20 +178,22 @@
  @discussion SDK在此点击事件中，针对SDK中自带的图片、语音、位置等消息有默认的处理，如查看、播放等。
  您在重写此回调时，如果想保留SDK原有的功能，需要注意调用super。
  */
+
 - (void)didTapMessageCell:(RCMessageModel *)model
 {
-    // NSLog(@"%@",model.content.rawJSONData);
-    //  NSString *str = [[NSString alloc] initWithData:model.content.rawJSONData encoding:NSUTF8StringEncoding];
-    //     NSLog(@"---%@",model.objectName);
-    //    if ([model.objectName isEqualToString:@"RC:ImgMsg"]) {
-    //        imageScanView = [[CustomView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    //        [imageScanView setBackgroundColor:[UIColor blackColor]];
-    //        [imageScanView setHidden:NO];
-    //        NSLog(@"window:%@",imageScanView);
+   // NSLog(@"%@",model.content.rawJSONData);
+  //  NSString *str = [[NSString alloc] initWithData:model.content.rawJSONData encoding:NSUTF8StringEncoding];
+//     NSLog(@"---%@",model.objectName);
+//    if ([model.objectName isEqualToString:@"RC:ImgMsg"]) {
+//        imageScanView = [[CustomView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//        [imageScanView setBackgroundColor:[UIColor blackColor]];
+//        [imageScanView setHidden:NO];
+//        NSLog(@"window:%@",imageScanView);
     
-    //  }
-    [super didTapMessageCell:model];
+  //  }
+      [super didTapMessageCell:model];
 }
+
 /*!
  长按Cell中的消息内容的回调
  

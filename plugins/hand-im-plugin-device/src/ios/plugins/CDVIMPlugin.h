@@ -11,5 +11,6 @@
 @interface CDVIMPlugin : CDVPlugin
 - (void)getChatList:(CDVInvokedUrlCommand *)command;
 - (void)toChatAct:(CDVInvokedUrlCommand *)command;
-- (void)returnConversationList:(CDVInvokedUrlCommand *)command;
+-(void)returnConversationList:(CDVInvokedUrlCommand *)command;
+- (void)deleteConversationList:(CDVInvokedUrlCommand *)command;
 @end

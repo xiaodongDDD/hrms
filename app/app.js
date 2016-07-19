@@ -135,6 +135,7 @@ angular.module('myApp')
       // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
+          caches: true,
           abstract: true,
           templateUrl: 'build/pages/tab/tabs.html',
           controller: 'TabsCtrl'

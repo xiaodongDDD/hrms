@@ -29,33 +29,51 @@
 //开启单人会话
 - (void)toChatAct:(CDVInvokedUrlCommand *)command
 {
-    //    NSLog(@"openIMVC");
+    NSLog(@"openIMVC");
     NSString *friendId = command.arguments[0][@"friendId"];
     NSString *friendName = command.arguments[0][@"friendName"];
-    CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:friendId];
+    CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:nil];
+
     cdvIMChattingVC.targetId = friendId;
     cdvIMChattingVC.navTitle = friendName;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cdvIMChattingVC];
-
+    
     //自定义push动画
     CATransition *animation = [CATransition animation];
     animation.duration = 0.3;
-    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     animation.type = kCATransitionPush;
     animation.subtype = kCATransitionFromRight;
-    [self.webView.layer addAnimation:animation forKey:nil];
-
+    
+    [animation setFillMode:kCAFillModeBackwards];
+    //animation.speed = 0.5;
+    animation.removedOnCompletion = YES;
+    [self.viewController.view.superview.layer addAnimation:animation forKey:@"animation"];
+    
     [self.viewController presentViewController:nav animated:NO completion:nil];
-
+    
+    
 }
 
-- (void)returnConversationList:(CDVInvokedUrlCommand *)command
+
+-(void)returnConversationList:(CDVInvokedUrlCommand *)command
 {
     NSLog(@"returnConversationList");
-    //  NSLog(@"----数据库---%@",[DataBaseTool getAllData]);
+    NSLog(@"----数据库---%@",[DataBaseTool getAllMessagesData]);
     CDVPluginResult *result;
-    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"message":[DataBaseTool getAllData]}];
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"message":[DataBaseTool getAllMessagesData]}];
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    
+}
+
+-(void)deleteConversationList:(CDVInvokedUrlCommand *)command
+{
+    NSLog(@"deleteConversationList");
+    NSString *friendId = [command arguments][0];
+    CDVPluginResult *result;
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"success":@"success"}];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    [DataBaseTool deleteDataListBy:friendId];
 }
 
 @end

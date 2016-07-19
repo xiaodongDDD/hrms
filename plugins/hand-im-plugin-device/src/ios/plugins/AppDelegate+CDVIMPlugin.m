@@ -10,9 +10,8 @@
 #import "CVDPlugin-Bridging-Header.h"
 #import <objc/runtime.h>
 #import "CDVIMPluginChattingViewController.h"
-#import "TimeTool.h"
 #import "DataBaseTool.h"
-
+#import <AudioToolbox/AudioToolbox.h>
 
 @implementation AppDelegate (CDVIMPlugin)
 +(void)load
@@ -74,6 +73,9 @@
     
     [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
     
+    [[RCIM sharedRCIM] setDisableMessageAlertSound:YES];
+
+    
 //     NSDictionary *remoteNotificationUserInfo =
 //    _launchOptions[@"UIApplicationLaunchOptionsRemoteNotificationKey"];
 //    
@@ -97,13 +99,17 @@
     } tokenIncorrect:^{
         NSLog(@"token 无效 ，请确保生成token 使用的appkey 和初始化时的appkey 一致");
     }];
+    [[RCIM sharedRCIM] setDisableMessageNotificaiton:YES];
+    [[RCIM sharedRCIM] setDisableMessageAlertSound:YES];
     
 }
 
 - (void)didReceiveMessageNotification:(NSNotification *)notification
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AudioServicesPlaySystemSound(1003);
+    });
     RCMessage *message = (RCMessage *)[notification.object content];
-  //  NSLog(@" 收到新消息了 发送人:%@ 发送时间：%@ 未读消息数：%@",[notification.object senderUserId],[TimeTool  timeStr:[notification.object sentTime]],message);
     
     //每次收到消息就把数据存在本地数据库
 
@@ -111,23 +117,24 @@
     if ([message isKindOfClass:[RCTextMessage class]]) {
         //文本消息
         NSLog(@"[TimeTool  timeStr:[notification.object sentTime]]:%@",[TimeTool  timeStr:[notification.object sentTime]]);
-        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"text",@"sendId":[notification.object senderUserId],@"content":[message content],@"sendTime":[TimeTool  timeStr:[notification.object sentTime]],@"receiveTime":[TimeTool  timeStr:[notification.object receivedTime]]}] forKeys:@[@"message"]];
+        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"text",@"sendId":[notification.object senderUserId],@"content":[message content],@"sendTime":[NSString  stringWithFormat:@"%lli",[notification.object sentTime]],@"receiveTime":[NSString  stringWithFormat:@"%lli",[notification.object receivedTime]]}] forKeys:@[@"message"]];
         
     } else if ([ message isKindOfClass:[RCImageMessage class]]){
         //图片消息
-         msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"img" ,@"sendId":[notification.object senderUserId],@"content":@"[图片]",@"sendTime":[TimeTool  timeStr:[notification.object sentTime]],@"receiveTime":[TimeTool  timeStr:[notification.object receivedTime]]}] forKeys:@[@"message"]];
+         msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"img" ,@"sendId":[notification.object senderUserId],@"content":@"[图片]",@"sendTime":[NSString  stringWithFormat:@"%lli",[notification.object sentTime]],@"receiveTime":[NSString  stringWithFormat:@"%lli",[notification.object receivedTime]]}] forKeys:@[@"message"]];
         
     } else if ([message isKindOfClass:[RCVoiceMessage class]]){
         //语音消息
-        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"voice",@"sendId":[notification.object senderUserId],@"content":@"[语音]",@"sendTime":[TimeTool  timeStr:[notification.object sentTime]],@"receiveTime":[TimeTool  timeStr:[notification.object receivedTime]]}] forKeys:@[@"message"]];
+        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"voice",@"sendId":[notification.object senderUserId],@"content":@"[语音]",@"sendTime":[NSString  stringWithFormat:@"%lli",[notification.object sentTime]],@"receiveTime":[NSString  stringWithFormat:@"%lli",[notification.object receivedTime]]}] forKeys:@[@"message"]];
         
     } else if ([message isKindOfClass:[RCLocationMessage class]]){
         //位置消息
-        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"location",@"sendId":[notification.object senderUserId],@"content":@"[语音]",@"sendTime":[TimeTool  timeStr:[notification.object sentTime]],@"receiveTime":[TimeTool  timeStr:[notification.object receivedTime]]}] forKeys:@[@"message"]];
+        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"location",@"sendId":[notification.object senderUserId],@"content":@"[语音]",@"sendTime":[NSString  stringWithFormat:@"%lli",[notification.object sentTime]],@"receiveTime":[NSString  stringWithFormat:@"%lli",[notification.object receivedTime]]}] forKeys:@[@"message"]];
     }
         //写入数据库
         dispatch_async(dispatch_get_main_queue(), ^{
-            [DataBaseTool insetDataType:msgDic[@"message"][@"messageType"] SendId:msgDic[@"message"][@"sendId"] Content:msgDic[@"message"][@"content"] SendTime:msgDic[@"message"][@"sendTime"] ReceiveTime:msgDic[@"message"][@"receiveTime"] Flag:@"N"];
+            [DataBaseTool insetReceivedDataType:msgDic[@"message"][@"messageType"] SendId:msgDic[@"message"][@"sendId"] ReceivedId:[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"] Content:msgDic[@"message"][@"content"] SendTime:msgDic[@"message"][@"sendTime"] ReceiveTime:msgDic[@"message"][@"receiveTime"] Flag:@"N"];
+            
         });
 
     //弹出提示框
@@ -208,15 +215,11 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     
 }
 
--(BOOL)onRCIMCustomLocalNotification:(RCMessage*)message
-                      withSenderName:(NSString *)senderName
-{
-    return YES;
-}
 
--(BOOL)onRCIMCustomAlertSound:(RCMessage*)message
+-(void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-    return YES;
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"系统提示" message:@"您的手机应用内存不足" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+    [alertView show];
 }
 
 @end

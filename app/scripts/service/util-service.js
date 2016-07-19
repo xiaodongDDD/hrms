@@ -227,9 +227,11 @@ angular.module('HmsModule')
         } else {
           navigator.notification.confirm(
             message, // message
-            onConfirm, // callback to invoke with index of button pressed
+            function (index) {
+              onConfirm(index-1);
+            }, // callback to invoke with index of button pressed
             title, // title
-            ['确定', '取消'] // buttonLabels
+            ['取消' , '确定'] // buttonLabels
           );
         }
       };

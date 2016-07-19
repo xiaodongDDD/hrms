@@ -9,7 +9,7 @@ var HmsCalendar = function(){};
 // arg5：参数，
 
 HmsCalendar.prototype.openCalendar=function(successCallBack, errorCallBack, type) {
-    exec(successCallBack,errorCallBack, "CDVCalendar", "openCalendar", [type]);
+    exec(successCallBack,errorCallBack, "HmsCalendar", "openCalendar", [type]);
 };
 
 module.exports = new HmsCalendar();

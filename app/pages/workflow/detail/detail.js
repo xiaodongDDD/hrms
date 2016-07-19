@@ -89,6 +89,7 @@ angular.module('applicationModule')
     '$ionicModal',
     '$timeout',
     '$ionicScrollDelegate',
+    '$ionicActionSheet',
     'baseConfig',
     'TimeSheetService',
     'workFLowListService',
@@ -101,6 +102,7 @@ angular.module('applicationModule')
               $ionicModal,
               $timeout,
               $ionicScrollDelegate,
+              $ionicActionSheet,
               baseConfig,
               TimeSheetService,
               workFLowListService,
@@ -141,7 +143,7 @@ angular.module('applicationModule')
       $scope.actionType = {
         "approve": "0",
         "reject": "-1",
-        "back": "",
+        "back": "2",
         "transmit": "3"
       };
 
@@ -173,10 +175,11 @@ angular.module('applicationModule')
 
       /*------------------转正申请数据源------------------*/
       $scope.applicationEmployeeType = {
-        "agree": {"selected": true, "value": "1"},
+        "agree": {"selected": false, "value": "1"},
         "reject": {"selected": false, "value": "-1"},
         "notChange": {"selected": false, "value": "0"}
       };
+      $scope.applicationEmployeeSaveFlag = false;
       $scope.applicationEmployeeDetail = {};
       $scope.applicationEmployeeInfo = [];
       $scope.applicationEmployeeAbility = [];
@@ -267,54 +270,53 @@ angular.module('applicationModule')
         };
         hmsPopup.showLoading('获取部门信息');
         workFLowListService.getPositionData(success, error, unitId);
-      },
+      };
 
-        //职位选择与清选
-        $scope.positionUtil = {
-          positionChoose: function (item) {
-            $scope.applicationEmployeeDetail.position = item.name;
-            $scope.applicationEmployeeDetail.position_id = item.value;
-            ;
-            $scope.positionModal.hide();
-          },
+      //职位选择与清选
+      $scope.positionUtil = {
+        positionChoose: function (item) {
+          $scope.applicationEmployeeDetail.position = item.name;
+          $scope.applicationEmployeeDetail.position_id = item.value;
+          ;
+          $scope.positionModal.hide();
+        },
 
-          clearPositionChoose: function () {
-            $scope.applicationEmployeeDetail.position = '';
-            $scope.applicationEmployeeDetail.position_id = '';
-            //$scope.config.position.value = '';
-            $scope.positionModal.hide();
-          },
+        clearPositionChoose: function () {
+          $scope.applicationEmployeeDetail.position = '';
+          $scope.applicationEmployeeDetail.position_id = '';
+          //$scope.config.position.value = '';
+          $scope.positionModal.hide();
+        },
 
-          closePositionModal: function () {
-            $scope.positionModal.hide();
-          },
+        closePositionModal: function () {
+          $scope.positionModal.hide();
+        },
 
-          getDepartmentData: function (unitId) {
-            var success = function (response) {
-              $scope.parent = response.parent[0];
-              $scope.child = response.child;
-              hmsPopup.hideLoading();
-            };
-            var error = function (response) {
-              hmsPopup.hideLoading();
-            };
-            hmsPopup.showLoading('获取部门信息');
-            workFLowListService.getUnitData(success, error, unitId);
-          },
+        getDepartmentData: function (unitId) {
+          var success = function (response) {
+            $scope.parent = response.parent[0];
+            $scope.child = response.child;
+            hmsPopup.hideLoading();
+          };
+          var error = function (response) {
+            hmsPopup.hideLoading();
+          };
+          hmsPopup.showLoading('获取部门信息');
+          workFLowListService.getUnitData(success, error, unitId);
+        },
 
-          getParentDepartmentData: function (unitId) {
-            var success = function (response) {
-              $scope.parent = response.parent[0];
-              $scope.child = response.child;
-              $scope.getPositionData($scope.parent.value);
-            };
-            var error = function (response) {
-            };
-            hmsPopup.showLoading('获取部门信息');
-            workFLowListService.getParentUnitData(success, error, unitId);
-          }
-        };
-
+        getParentDepartmentData: function (unitId) {
+          var success = function (response) {
+            $scope.parent = response.parent[0];
+            $scope.child = response.child;
+            $scope.getPositionData($scope.parent.value);
+          };
+          var error = function (response) {
+          };
+          hmsPopup.showLoading('获取部门信息');
+          workFLowListService.getParentUnitData(success, error, unitId);
+        }
+      };
 
       //选择值列表的数据
       $scope.selectData = function (data) {
@@ -368,16 +370,41 @@ angular.module('applicationModule')
           });
         },
         //保存转正信息
-        savePositiveBlock1: function (detail) {
+        savePositiveBlock1: function (Empdetail, Emptype) {
           if (baseConfig.debug) {
-            console.log('detail ' + angular.toJson(detail));
+            console.log('Empdetail ' + angular.toJson(Empdetail));
+            console.log('Emptype ' + angular.toJson(Emptype));
           }
 
-          return;
+          var trialResult;
+
+          if (Emptype.agree.selected) {
+            trialResult = Emptype.agree.value;
+          }
+          if (Emptype.reject.selected) {
+            trialResult = Emptype.reject.value;
+          }
+          if (Emptype.notChange.selected) {
+            trialResult = Emptype.notChange.value;
+          }
+
+          var params = {
+            "params": {
+              "p_instance_id": detail.instanceId + "",
+              "p_trial_result": trialResult,
+              "p_approve_date": Empdetail.trial_date,
+              "p_position_id": Empdetail.position_id
+            }
+          };
+
+          if (baseConfig.debug) {
+            console.log('savePositiveBlock1.params ' + angular.toJson(params));
+          }
 
           var success = function (result) {
             if (result.status == 'S') {
               hmsPopup.showPopup('保存转正信息成功!');
+              $scope.applicationEmployeeSaveFlag = true;//标记已经保存
             }
             else {
               hmsPopup.showPopup('保存转正信息失败!');
@@ -387,6 +414,71 @@ angular.module('applicationModule')
           };
           hmsPopup.showLoading('保存转正信息中');
           workFLowListService.savePositiveBlock1(success, error, params);
+        },
+        saveTrailResult: function (trailResult) {
+          if (baseConfig.debug) {
+            console.log('saveTrailResult.trailResult ' + angular.toJson(trailResult))
+          }
+          var trailField;
+          angular.forEach(trailResult, function (data) {
+            if (data.can_update == '1') {
+              trailField = data;
+            }
+          });
+
+          var success = function (result) {
+            if (result.status == 'S') {
+              hmsPopup.showPopup('保存转正评价成功!');
+            }
+            else {
+              hmsPopup.showPopup('保存转正评价失败!');
+            }
+          };
+          var error = function (response) {
+          };
+          hmsPopup.showLoading('保存转正评价中');
+          if (baseConfig.debug) {
+            console.log('saveTrailResult.trailField ' + angular.toJson(trailField));
+          }
+          workFLowListService.savePositiveBlock3(success, error, detail.instanceId, trailField.field_id, trailField.field_value);
+        },
+        saveAbility: function (ability) {
+          if (baseConfig.debug) {
+            console.log('saveTrailResult.saveAbility ' + angular.toJson(ability))
+          }
+
+          var validateFlag = true;
+
+          var abilityArray = [];
+          angular.forEach(ability, function (data) {
+            if (!data.element_value || data.element_value == '') {
+              validateFlag = false;
+            }
+            var abilityItem = {
+              "element_name": data.element_name,
+              "element_id": data.element_id,
+              "element_value": data.element_value
+            };
+            abilityArray.push(abilityItem);
+          });
+
+          if (!validateFlag) {
+            hmsPopup.showPopup('请填写完正的考评结果信息!');
+            return;
+          }
+
+          var success = function (result) {
+            if (result.status == 'S') {
+              hmsPopup.showPopup('保存考评结果成功!');
+            }
+            else {
+              hmsPopup.showPopup('保存考评结果失败!');
+            }
+          };
+          var error = function (response) {
+          };
+          hmsPopup.showLoading('保存考评结果中');
+          workFLowListService.savePositiveBlock2(success, error, detail.instanceId, abilityArray);
         }
       };
 
@@ -405,8 +497,21 @@ angular.module('applicationModule')
               if (result.workflow_data) {
                 $scope.applicationEmployeeDetail = result.workflow_data.details.detail;
                 $scope.applicationEmployeeDetail.showFlag = true;
+
+                if ($scope.applicationEmployeeDetail.comments) {
+                  if ($scope.applicationEmployeeDetail.comments == $scope.applicationEmployeeType.agree.value) {
+                    $scope.applicationEmployeeType.agree.selected = true;
+                  } else if ($scope.applicationEmployeeDetail.comments == $scope.applicationEmployeeType.reject.value) {
+                    $scope.applicationEmployeeType.reject.selected = true;
+                  } else if ($scope.applicationEmployeeDetail.comments == $scope.applicationEmployeeType.notChange.value) {
+                    $scope.applicationEmployeeType.notChange.selected = true;
+                  } else {
+                    $scope.applicationEmployeeType.agree.selected = true;
+                  }
+                }
                 try {
-                  if ($scope.applicationEmployeeDetail.trial_date == "") {
+                  if ($scope.applicationEmployeeDetail.trial_date != "") {
+                    $scope.applicationEmployeeSaveFlag = true;//标记已经保存
                     var dateString = $scope.applicationEmployeeDetail.trial_date.replace(/-/g, "/");
                     $scope.applicationEmployeeDetail.trialDate = new Date(dateString);
                   } else {
@@ -419,12 +524,30 @@ angular.module('applicationModule')
                 $scope.applicationEmployeeInfo = result.workflow_data.testResult.detail;
                 $scope.applicationEmployeeAbility = result.workflow_data.testResult.record;
                 $scope.applicationEmployeeTrial = result.workflow_data.trialSummary.summary;
+
+                angular.forEach($scope.applicationEmployeeAbility, function (data) {
+                  if (data.element_value == '100000') {
+                    data.element_desc = '优秀';
+                  }
+                  else if (data.element_value == '100001') {
+                    data.element_desc = '好';
+                  }
+                  else if (data.element_value == '100002') {
+                    data.element_desc = '达标';
+                  }
+                  else if (data.element_value == '100003') {
+                    data.element_desc = '待提高';
+                  }
+                  else if (data.element_value == '100004') {
+                    data.element_desc = '不满意';
+                  }
+                });
               }
             }
 
             $scope.LoadingModalData = false;
           };
-          workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
+          workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, workflowDetail.getSubmitFlag());
         };
         __self.init = function () {
 
@@ -501,6 +624,10 @@ angular.module('applicationModule')
 
       //通用工作流
       $scope.workflowDetailUtil = {
+
+        goUrl: function (url) {
+          window.open(url, '_system', 'location=yes');
+        },
         //对表单数据进行缩放
         showContent: function (array, $event) {
           var detail = $ionicScrollDelegate.$getByHandle('workflowDetailHandle').getScrollView();
@@ -574,6 +701,11 @@ angular.module('applicationModule')
             return '';
           }
 
+          if (actionType == $scope.actionType.back) {
+            workflowDetail().goBackAction();
+            return '';
+          }
+
           var employeeCode = window.localStorage.empno;
           var opinion = $scope.processExtroInfo.opinion;
           if (actionType == $scope.actionType.transmit) {
@@ -644,6 +776,89 @@ angular.module('applicationModule')
 
       var workflowDetail = function () {
         var self = {};
+
+        self.submitBackAction = function (backAction) {
+          if (baseConfig.debug) {
+            console.log('submitBackAction ' + angular.toJson(backAction))
+          }
+
+          var opinion = $scope.processExtroInfo.opinion;
+
+          var success = function (result) {
+            if (result.status == 'S') {
+              hmsPopup.showPopup('处理退回工作流成功!');
+              if ($stateParams.type == 'WORKFLOWDETAIL') {
+                workFLowListService.setRefreshWorkflowList(true);
+              }
+              $ionicHistory.goBack();
+            } else {
+              hmsPopup.showPopup('处理退回工作流失败!');
+            }
+          };
+          var error = function (response) {
+          };
+
+          var submit = function (buttonIndex) {
+            if (baseConfig.debug) {
+              console.log('You selected button ' + buttonIndex);
+            }
+            if (buttonIndex == 1) {
+              hmsPopup.showLoading('处理退回工作流中');
+              workFLowListService.backTo(success, error, detail.recordId, backAction.actionId, opinion);
+            } else {
+            }
+          }
+          hmsPopup.confirm('是否确认' + backAction.title + '?', '', submit);
+        };
+
+        self.goBackAction = function () {
+          var success = function (result) {
+            if (result.con_status == 'S' && result.backList && result.backList[0]) {
+
+              if (result.backList.length == 1) {
+                self.submitBackAction(result.backList[0]);
+              }
+
+              else {
+                if (baseConfig.nativeScreenFlag == true) {
+                  var buttons = []
+                  angular.forEach(result.backList, function (data) {
+                    buttons.push(data.title);
+                  });
+                  var options = {
+                    title: '选择返回的工作流列表',
+                    buttonLabels: buttons,
+                    addCancelButtonWithLabel: '取消',
+                    androidEnableCancelButton: true,
+                    winphoneEnableCancelButton: true
+                  };
+                  window.plugins.actionsheet.show(options, function (index) {
+                    self.submitBackAction(result.backList[index - 1]);
+                  });
+                } else {
+                  var buttons = []
+                  angular.forEach(result.backList, function (data) {
+                    buttons.push({
+                      "text": data.title
+                    });
+                  });
+                  $ionicActionSheet.show({
+                    buttons: buttons,
+                    titleText: '选择返回的工作流列表',
+                    cancelText: '取消',
+                    buttonClicked: function (index) {
+                      self.submitBackAction(result.backList[index]);
+                      return true;
+                    }
+                  });
+                }
+              }
+            }
+          };
+          var error = function (response) {
+          };
+          workFLowListService.getBackList(success, error, detail.nodeId);
+        };
         //验证工作
         self.setWorkflowDetailHistoryWidth = function (historyNum) {
           var historyWidth = document.body.clientWidth;
@@ -660,6 +875,13 @@ angular.module('applicationModule')
           if (detail.workflowId == 100728) {
             if (!$scope.renewContractSaveFlag) {
               hmsPopup.showPopup('请先保存合同续签方式!');
+              return false;
+            }
+          }
+
+          if (detail.workflowId == 10008) {
+            if (!$scope.applicationEmployeeSaveFlag) {
+              hmsPopup.showPopup('请先保存转正信息!');
               return false;
             }
           }
@@ -746,8 +968,20 @@ angular.module('applicationModule')
             }
             $scope.LoadingModalData = false;
           };
-          workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, 'Y');
+
+          workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, self.getSubmitFlag());
         };
+
+        self.getSubmitFlag = function () {
+          var submitFlag = '';
+          if (processedFlag.value == true) {
+            submitFlag = 'Y';
+          } else {
+            submitFlag = 'N';
+          }
+          return submitFlag;
+        };
+
         return self;
       };
 
@@ -768,11 +1002,11 @@ angular.module('applicationModule')
           var success = function (result) {
             //alert('initPushDetail.result ' + angular.toJson(result));
             if (result.returnData.processedFlag == 'Y') {
-              processedFlag = true;
+              processedFlag.value = true;
             } else {
-              processedFlag = false;
+              processedFlag.value = false;
             }
-            $scope.workflowActionShowFlag = !processedFlag;
+            $scope.workflowActionShowFlag = !processedFlag.value;
             detail.canApprove = result.returnData.canApprove;
             detail.canGoBack = result.returnData.canGoBack;
             detail.canBackTo = result.returnData.canBackTo;

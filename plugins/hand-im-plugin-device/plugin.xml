@@ -320,16 +320,21 @@
 
 
     <!-- resource   -->
-    <!<resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable" />
 
     <resource-file src="src/ios/plugins/image" />
-
+    <resource-file src="src/ios/plugins/fmdb" />
     <!--源码 -->
     <header-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.h" />
     <source-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.m" />
 
     <header-file src="src/ios/plugins/CDVIMPlugin.h"/>
     <source-file src="src/ios/plugins/CDVIMPlugin.m"/>
+
+    <header-file src="src/ios/plugins/DataBaseTool.h"/>
+    <source-file src="src/ios/plugins/DataBaseTool.m"/>
+
+    <header-file src="src/ios/plugins/TimeTool.h"/>
+    <source-file src="src/ios/plugins/TimeTool.m"/>
 
     <header-file src="src/ios/plugins/CDVIMPluginChattingViewController.h"/>
     <source-file src="src/ios/plugins/CDVIMPluginChattingViewController.m"/>
@@ -363,12 +368,6 @@
     <framework src="libc++.tbd" />
     <framework src="libsqlite3.0.tbd" />
     <framework src="libz.tbd" />
-
-    <!--        <framework src="src/ios/plugins/RongIMKit.framework " />-->
-    <!--        <framework src="src/ios/plugins/RongIMLib.framework "  />-->
-    <!--        <framework src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/libopencore-amrnb.a "  />-->
-
-
 
   </platform>
 </plugin>
