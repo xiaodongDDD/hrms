@@ -870,6 +870,7 @@ angular.module('applicationModule')
             "width": historyWidth
           };
         };
+
         self.validateWorkFlowAction = function (actionType) {
 
           if (detail.workflowId == 100728) {
@@ -918,6 +919,7 @@ angular.module('applicationModule')
             return false;
           }
         };
+
         self.processLine = function (line) {
           var oneLine = {
             title: line.line_big_title,
@@ -940,7 +942,8 @@ angular.module('applicationModule')
             oneLine.currentArray = currentList;
           }
           return oneLine;
-        }
+        };
+
         self.getWorkflowDetail = function () {
           var success = function (result) {
             if (baseConfig.debug) {
@@ -985,9 +988,13 @@ angular.module('applicationModule')
         return self;
       };
 
+      var wrokflowIdSpecail = {
+        "renewContractWorkflowId": "100729"
+      }
+
       var init = {
         initDataModal: function () {
-          if (detail.workflowId == 100728) { //合同续签地址维护
+          if (detail.workflowId == wrokflowIdSpecail.renewContractWorkflowId) { //合同续签地址维护
             $scope.showList.contractRenewShowFlag = true;
             renewContract().query();
             workflowDetail().getWorkflowDetail();
@@ -1023,6 +1030,7 @@ angular.module('applicationModule')
           };
           var error = function (response) {
           };
+          
           var recordId = '';
           var workflowId = '';
           var instanceId = '';
