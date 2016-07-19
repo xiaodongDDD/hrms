@@ -1,0 +1,70 @@
+  <ion-popover-view   class="popover-filter">
+    <ion-header-bar align-title="center" class="bar-stable" style="border-radius: 0px;">
+
+      <button class="button button-icon" ng-click="closePopover()">
+        <span class="back-text">返回</span>
+      </button>
+      <h1 class="title">拼车</h1>
+      <button class="button button-icon" ng-click="">
+          <span class="back-text">确定</span>
+        </button>
+      </button>
+    </ion-header-bar>
+    <ion-content class="filter-content">
+      <div class="row set-end">
+        <div class="col col-50 col-time-start">
+          <ion-item class="time-start">
+            <div class="time-start-font">
+            <span style="font-size: 13px; color: #9b9b9b;">
+              出发时间
+            </span>
+            </div>
+            <div class="row-time-start">
+              2016-7-7&nbsp;&nbsp;&nbsp;&nbsp;9:00
+            </div>
+          </ion-item>
+        </div>
+        <div class="col col-1">
+          <div class="time-start-divider"></div>
+        </div>
+        <div class="col col-49">
+          <ion-item class="time-start">
+            <div class="time-start-font">
+            <span style="font-size: 13px; color: #9b9b9b;">
+              出发时间
+            </span>
+            </div>
+            <div class="row-time-start">
+              2016-7-7&nbsp;&nbsp;&nbsp;&nbsp;9:00
+            </div>
+          </ion-item>
+        </div>
+      </div>
+      <div class="row filter-location-choose">
+        <div class="icon-start-end">
+          <div class="circle-up"></div>
+          <div class="line-center"></div>
+          <div class="circle-down"></div>
+        </div>
+
+        <div class="col col-83"  style="padding: 12px;">
+          <div class="start-text-up" style="width:100%;height: 16px;padding-left: 5px">
+            <input type="text" class="input-text-up" placeholder="青浦区汇联路" >
+          </div>
+          <div class="input-center-line"></div>
+          <div class="start-text-down" style="width:100%;height: 16px;padding-left: 5px">
+            <input type="text" class="input-text-up" placeholder="青浦区汇联路" >
+          </div>
+        </div>
+
+        <div class="col col-17 icon-exchange">
+          <img src="build/img/application/carpooling/exchange-G@3x.png" style="width: 23px;height: 23px;"/>
+        </div>
+      </div>
+      <div class="row filter-seat-choose" style="padding-left: 10%;">
+          <input type="tel" placeholder="请输入座位数" class="input-seat-number">
+      </div>
+    </ion-content>
+  </ion-popover-view>
+
+

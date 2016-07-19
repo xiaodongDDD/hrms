@@ -1,243 +1,81 @@
-
 <ion-view view-title="拼车列表" class="carpooling-list">
 
   <ion-header-bar align-title="center" class="bar-stable">
-
-    <!--<div ng-switch='show-header-bar'>-->
-      <!--<div ng-switch-with='bar-default'>-->
-        <!--<div class="buttons">-->
-        <!--<button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">-->
-          <!--<span class="back-text">返回</span>-->
-        <!--</button>-->
-      <!--</div>-->
-        <!--<h1 class="title">拼车</h1>-->
-        <!--<div class="buttons" ng-click="choose_where()">-->
-          <!--<button class="button button-icon icon ion-ios-location">-->
-            <!--<span class="back-text">上海</span>-->
-          <!--</button>-->
-        <!--</div>-->
-      <!--</div>-->
-
-
-      <!--<div ng-switch-with='bar-search'>-->
-        <!--<div class="search">-->
-          <!--<div class="input1">-->
-            <!--<i class="ion-ios-search search-i" style="margin-left: 1px"></i>-->
-            <!--<input name="" placeholder="搜索" style="border: 1px;width: 90%;">-->
-          <!--</div>-->
-          <!--<div style="float: right;width: 13%;margin-right: 2.5%;margin-top: 13px">-->
-            <!--<div  class="button-filter">筛选</div>-->
-          <!--</div>-->
-          <!--<div style="clear:both"></div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div ng-switch-with='bar-filter'>-->
-          <!-- -->
-      <!--</div>-->
-    <!--</div>-->
-    <div class="buttons">
-      <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
-        <span class="back-text">返回</span>
-      </button>
+    <div class="" ng-if="!showSearchTop">
+      <div class="buttons" >
+        <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
+          <span class="back-text">返回</span>
+        </button>
+      </div>
+      <h1 class="title">拼车</h1>
+      <div class="buttons">
+        <div class="button-location icon ion-ios-location">
+          <span class="back-text" style="font-size: 15px;">上海</span>
+        </div>
+      </div>
     </div>
-    <h1 class="title">拼车</h1>
-    <div class="buttons" ng-click="choose_where()">
-      <button class="button button-icon icon ion-ios-location">
-        <span class="back-text">上海</span>
-      </button>
+    <!--上滑搜索框显示在状态栏-->
+    <div class="row no-padding search-input" ng-if="showSearchTop" style="margin: 3px 3% 0px 5%;">
+      <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
+             ng-click="goModalInput()"/>
+      <div class="button button-icon" style="width: 60px;color: white;margin-top: -3px;" ng-click="openPopover($event)">筛选</div>
     </div>
-
-
   </ion-header-bar>
 
 
-
-  <ion-content  class="body">
-
-    <div class="search">
+  <ion-content  class="body" on-scroll="watchTopScroll()"  delegate-handle="watchTopScroll">
+    <div class="search" >
       <div class="input1">
         <i class="ion-ios-search search-i" style="margin-left: 1px"></i>
-        <input name="" placeholder="搜索" style="border: 1px;width: 90%;">
+        <input name="" placeholder="搜索" ng-readonly="true"   ng-click="goModalInput()" class="search-input-content">
       </div>
       <div style="float: right;width: 13%;margin-right: 2.5%;margin-top: 13px">
-        <div  class="button-filter">筛选</div>
+        <div  class="button-filter" ng-click="openPopover($event)">筛选</div>
       </div>
       <div style="clear:both"></div>
     </div>
 
-    <ion-refresher on-refresh="" ng-if="true" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
-    </ion-refresher>
+    <!--<ion-refresher on-refresh="" ng-if="true" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">-->
+    <!--</ion-refresher>-->
 
     <div class="search-list">
-      <div class="car-list" style="margin-top: 0px;padding: 0px 25px 0px 25px">
-        <div class="car-start">
-            <div class="logo-car">
-              <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo">
-              <div class="carpooling-font">预计2015-10-20&nbsp;&nbsp;出发</div>
+      <ion-list >
+        <ion-item class=list-item ng-repeat="x in items" ng-click="viewListDetail($index)">
+          <div class="car-list" style="padding: 0px 25px 0px 25px">
+            <div class="car-start">
+              <div class="logo-car">
+                <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo">
+                <div class="carpooling-font">预计{{x.departureTime}}&nbsp;&nbsp;出发</div>
+              </div>
             </div>
-        </div>
-        <div class="car-location">
-            <div class="car-from text-over-hidder">
-              <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
-              <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">起点：</i>&nbsp;&nbsp;<i class="font-color1">青浦区汇联路33号</i> </span>
+            <div class="car-location">
+              <div class="car-from text-over-hidder">
+                <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
+                <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">起点：</i>&nbsp;&nbsp;<i class="font-color1">{{x.startAddr}}</i> </span>
+              </div>
+              <div class="vertical-line"></div>
+              <div class="car-to  text-over-hidder">
+                <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
+                <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color1">{{x.targetAddr}}</i> </span>
+              </div>
             </div>
-            <div class="vertical-line"></div>
-          <div class="car-to  text-over-hidder">
-            <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
-            <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color1">上海市闵行区申虹路虹桥火车站</i> </span>
-          </div>
-        </div>
-        <div class="horizontal-line1" style=" width: 100%; height: 1px; background-color: #D2D2D2; margin-top: 12px;"></div>
-        <div class="set-out">
-          <div class="on-time">
-            <span style="color: #F99D32;font-size: 16px;">准时出发</span>
-          </div>
-          <div class="remain">
-            <div class="remain-seat">
-              <img src="build/img/application/carpooling/seat@3x.png" style="width: 13px;height: 12px;">
-              <span style="color: #9B9B9B;">剩余空位</span>
+            <div class="horizontal-line1" style=" width: 100%; height: 1px; background-color: #D2D2D2; margin-top: 12px;"></div>
+            <div class="set-out">
+              <div class="on-time">
+                <span style="color: #B95756;font-size: 16px;">{{x.departurePreference}}</span>
+              </div>
+              <div class="remain">
+                <div class="remain-seat">
+                  <img src="build/img/application/carpooling/seat@3x.png" style="width: 13px;height: 12px;">
+                  <span style="color: #9B9B9B;">剩余空位</span>
+                </div>
+                <div class="remain-number"><span style="font-size: 16px;color:#24559C;">{{x.availableSeats}}</span></div>
+              </div>
             </div>
-            <div class="remain-number"><span style="font-size: 16px;color:#24559C;">4</span></div>
           </div>
-        </div>
-      </div>
-
-
-      <div class="car-list" style="padding: 0px 25px 0px 25px">
-        <div class="car-start">
-          <div class="logo-car">
-            <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo">
-            <div class="carpooling-font">预计2015-10-20&nbsp;&nbsp;出发</div>
-          </div>
-        </div>
-        <div class="car-location">
-          <div class="car-from text-over-hidder">
-            <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
-            <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">起点：</i>&nbsp;&nbsp;<i class="font-color1">青浦区汇联路33号</i> </span>
-          </div>
-          <div class="vertical-line"></div>
-          <div class="car-to  text-over-hidder">
-            <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
-            <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color1">上海市闵行区申虹路虹桥火车站</i> </span>
-          </div>
-        </div>
-        <div class="horizontal-line1" style=" width: 100%; height: 1px; background-color: #D2D2D2; margin-top: 12px;"></div>
-        <div class="set-out">
-          <div class="on-time">
-            <span style="color: #B95756;font-size: 16px;">不要迟到</span>
-          </div>
-          <div class="remain">
-            <div class="remain-seat">
-              <img src="build/img/application/carpooling/seat@3x.png" style="width: 13px;height: 12px;">
-              <span style="color: #9B9B9B;">剩余空位</span>
-            </div>
-            <div class="remain-number"><span style="font-size: 16px;color:#24559C;">2</span></div>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="car-list" style="padding: 0px 25px 0px 25px">
-        <div class="car-start">
-          <div class="logo-car">
-            <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo">
-            <div class="carpooling-font">预计2015-10-20&nbsp;&nbsp;出发</div>
-          </div>
-        </div>
-        <div class="car-location">
-          <div class="car-from text-over-hidder">
-            <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
-            <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">起点：</i>&nbsp;&nbsp;<i class="font-color1">青浦区汇联路33号</i> </span>
-          </div>
-          <div class="vertical-line"></div>
-          <div class="car-to  text-over-hidder">
-            <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
-            <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color1">上海市闵行区申虹路虹桥火车站</i> </span>
-          </div>
-        </div>
-        <div class="horizontal-line1" style=" width: 100%; height: 1px; background-color: #D2D2D2; margin-top: 12px;"></div>
-        <div class="set-out">
-          <div class="on-time">
-            <span style="color: #73BBA2;font-size: 16px;">稍等十分钟之内</span>
-          </div>
-          <div class="remain">
-            <div class="remain-seat">
-              <img src="build/img/application/carpooling/seat@3x.png" style="width: 13px;height: 12px;">
-              <span style="color: #9B9B9B;">剩余空位</span>
-            </div>
-            <div class="remain-number"><span style="font-size: 16px;color:#24559C;">4</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="car-list" style="padding: 0px 25px 0px 25px">
-        <div class="car-start">
-          <div class="logo-car">
-            <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo">
-            <div class="carpooling-font">预计2015-10-20&nbsp;&nbsp;出发</div>
-          </div>
-        </div>
-        <div class="car-location">
-          <div class="car-from text-over-hidder">
-            <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
-            <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">起点：</i>&nbsp;&nbsp;<i class="font-color1">青浦区汇联路33号</i> </span>
-          </div>
-          <div class="vertical-line"></div>
-          <div class="car-to  text-over-hidder">
-            <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
-            <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color1">上海市闵行区申虹路虹桥火车站</i> </span>
-          </div>
-        </div>
-        <div class="horizontal-line1" style=" width: 100%; height: 1px; background-color: #D2D2D2; margin-top: 12px;"></div>
-        <div class="set-out">
-          <div class="on-time">
-            <span style="color: #B95756;font-size: 16px;">不要迟到</span>
-          </div>
-          <div class="remain">
-            <div class="remain-seat">
-              <img src="build/img/application/carpooling/seat@3x.png" style="width: 13px;height: 12px;">
-              <span style="color: #9B9B9B;">剩余空位</span>
-            </div>
-            <div class="remain-number"><span style="font-size: 16px;color:#24559C;">2</span></div>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="car-list" style="padding: 0px 25px 0px 25px">
-        <div class="car-start">
-          <div class="logo-car">
-            <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo">
-            <div class="carpooling-font">预计2015-10-20&nbsp;&nbsp;出发</div>
-          </div>
-        </div>
-        <div class="car-location">
-          <div class="car-from text-over-hidder">
-            <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
-            <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">起点：</i>&nbsp;&nbsp;<i class="font-color1">青浦区汇联路33号</i> </span>
-          </div>
-          <div class="vertical-line"></div>
-          <div class="car-to  text-over-hidder">
-            <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
-            <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color1">上海市闵行区申虹路虹桥火车站</i> </span>
-          </div>
-        </div>
-        <div class="horizontal-line1" style=" width: 100%; height: 1px; background-color: #D2D2D2; margin-top: 12px;"></div>
-        <div class="set-out">
-          <div class="on-time">
-            <span style="color: #73BBA2;font-size: 16px;">稍等十分钟之内</span>
-          </div>
-          <div class="remain">
-            <div class="remain-seat">
-              <img src="build/img/application/carpooling/seat@3x.png" style="width: 13px;height: 12px;">
-              <span style="color: #9B9B9B;">剩余空位</span>
-            </div>
-            <div class="remain-number"><span style="font-size: 16px;color:#24559C;">4</span></div>
-          </div>
-        </div>
-      </div>
+        </ion-item>
+      </ion-list>
     </div>
-
   </ion-content>
 
 </ion-view>

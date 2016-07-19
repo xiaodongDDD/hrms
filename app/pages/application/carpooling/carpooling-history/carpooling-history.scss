@@ -82,21 +82,46 @@
       line-height: 39px;
       margin-left: 15px;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    .content-has-footer{
+      bottom: 46px;
+    }
   }
+  .content-has-footer{
+    bottom: 46px;
+  }
+  .ion-ios-location:before {
+    content: "";
+    font-size: 18px;
+  }
+  .button-location{
+    line-height: 32px;
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #ffffff;
+  }
+  .history-backtext{
+    font-size: 15px;
+  }
+  .stausColorBlue{
+    color: #4871AC;
+  }
+  .stausColorOrange{
+    color: #F9A03A;
+  }
+  .item-style{
+    padding: 0px;
+    background-color: transparent;
+    border-color: transparent;
+  }
+  .carpooling-map{
+    width: 100%;
+    height: 100px;
+    margin-top: 6px;
+  }
+  .img-starting-ending{
+    height: 18px;
+    float: left;
+  }
+
 }
