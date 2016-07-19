@@ -4,106 +4,45 @@
 
     <div class="buttons">
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
-        <span class="back-text">返回</span>
+        <span class="history-backtext">返回</span>
       </button>
     </div>
     <h1 class="title">拼车记录</h1>
-    <div class="buttons" ng-click="choose_where()">
-      <button class="button button-icon icon ion-ios-location">
+    <div class="buttons" ng-click="choose_location()">
+      <div class="button-location icon ion-ios-location">
         <span class="back-text">上海</span>
-      </button>
+      </div>
     </div>
-
-
   </ion-header-bar>
-
-  <ion-content  class="body">
-    <ion-refresher on-refresh="" ng-if="true" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
-    </ion-refresher>
-    <div class="car-list1" style="margin-top: 4px;">
-
-      <div class="car-start1">
-        <div class="logo-car1">
-          <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo1">
-          <div class="carpooling-font1">预计2015-10-20&nbsp;&nbsp;出发</div>
+  <ion-content  class="body has-header">
+    <ion-list>
+      <ion-item class="item-style" ng-repeat="x in items" ng-click="viewHistoryDetail($index)">
+        <div class="car-list1" style="margin-top: 4px;">
+          <div class="car-start1">
+            <div class="logo-car1">
+              <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo1">
+              <div class="carpooling-font1">{{x.departureTime}}&nbsp;&nbsp;&nbsp;&nbsp;<i ng-class="{'stausColorBlue':x.statusColor,'stausColorOrange':!x.statusColor}">{{x.status}}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            </div>
+          </div>
+          <div class="car-location1">
+            <div class="car-from1 text-over-hidder1">
+              <img src="build/img/application/carpooling/starting@3x.png" class="img-starting-ending">
+              <span style="font-size: 14px; margin-left: 9px"><i class="font-color21">起点：</i>&nbsp;&nbsp;<i class="font-color11">{{x.startAddr}}</i> </span>
+            </div>
+            <div class="vertical-line1"></div>
+            <div class="car-to1  text-over-hidder1">
+              <img src="build/img/application/carpooling/ending@3x.png" class="img-starting-ending">
+              <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color11">{{x.targetAddr}}</i> </span>
+            </div>
+          </div>
+          <div class="carpooling-map" >
+            <img src="build/img/application/carpooling/map.jpg" style="width: 100%;height: 100%;">
+          </div>
+          <div class="carpooling-number">
+            <span class="font-color21">行程编号：<i class="font-color11">{{x.shareNo}}</i></span>
+          </div>
         </div>
-      </div>
-
-      <div class="car-location1">
-        <div class="car-from1 text-over-hidder1">
-          <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
-          <span style="font-size: 14px; margin-left: 9px"><i class="font-color21">起点：</i>&nbsp;&nbsp;<i class="font-color11">青浦区汇联路33号</i> </span>
-        </div>
-        <div class="vertical-line1"></div>
-        <div class="car-to1  text-over-hidder1">
-          <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
-          <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color11">上海市闵行区申虹路虹桥火车站</i> </span>
-        </div>
-      </div>
-      <div class="carpooling-map" style=" width: 100%; height: 100px; margin-top: 6px;">
-        <img src="build/img/application/carpooling/map.jpg" style="width: 100%;height: 100%;">
-      </div>
-        <div class="carpooling-number">
-         <span class="font-color21">行程编号：<i class="font-color11">30019281</i></span>
-        </div>
-      </div>
-
-    <div class="car-list1" style="margin-top: 4px;">
-
-      <div class="car-start1">
-        <div class="logo-car1">
-          <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo1">
-          <div class="carpooling-font1">预计2015-10-20&nbsp;&nbsp;出发</div>
-        </div>
-      </div>
-
-      <div class="car-location1">
-        <div class="car-from1 text-over-hidder1">
-          <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
-          <span style="font-size: 14px; margin-left: 9px"><i class="font-color21">起点：</i>&nbsp;&nbsp;<i class="font-color11">青浦区汇联路33号</i> </span>
-        </div>
-        <div class="vertical-line1"></div>
-        <div class="car-to1  text-over-hidder1">
-          <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
-          <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color11">上海市闵行区申虹路虹桥火车站</i> </span>
-        </div>
-      </div>
-      <div class="carpooling-map" style=" width: 100%; height: 100px; margin-top: 6px;">
-        <img src="build/img/application/carpooling/map.jpg" style="width: 100%;height: 100%;">
-      </div>
-      <div class="carpooling-number">
-        <span class="font-color21">行程编号：<i class="font-color11">30019281</i></span>
-      </div>
-    </div>
-
-    <div class="car-list1" style="margin-top: 4px;">
-
-      <div class="car-start1">
-        <div class="logo-car1">
-          <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo1">
-          <div class="carpooling-font1">预计2015-10-20&nbsp;&nbsp;出发</div>
-        </div>
-      </div>
-
-      <div class="car-location1">
-        <div class="car-from1 text-over-hidder1">
-          <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
-          <span style="font-size: 14px; margin-left: 9px"><i class="font-color21">起点：</i>&nbsp;&nbsp;<i class="font-color11">青浦区汇联路33号</i> </span>
-        </div>
-        <div class="vertical-line1"></div>
-        <div class="car-to1  text-over-hidder1">
-          <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
-          <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color11">上海市闵行区申虹路虹桥火车站</i> </span>
-        </div>
-      </div>
-      <div class="carpooling-map" style=" width: 100%; height: 100px; margin-top: 6px;">
-        <img src="build/img/application/carpooling/map.jpg" style="width: 100%;height: 100%;">
-      </div>
-      <div class="carpooling-number">
-        <span class="font-color21">行程编号：<i class="font-color11">30019281</i></span>
-      </div>
-    </div>
-
+      </ion-item>
+    </ion-list>
   </ion-content>
-
 </ion-view>

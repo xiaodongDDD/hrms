@@ -1,0 +1,76 @@
+<ion-view view-title="拼成记录详情" class="carpooling-history-detail">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="history-backtext">返回</span>
+      </button>
+    </div>
+    <h1 class="title">拼车记录详情</h1>
+    </div>
+  </ion-header-bar>
+  <ion-content  class=" has-header">
+    <div class="body">
+      <img src="build/img/application/carpooling/map.jpg" class="static-map">
+      <div class="start-end">
+        <div class="row detail-location-choose">
+          <div class="detail-icon-start-end">
+            <div class="detail-circle-up"></div>
+            <div class="detail-line-center"></div>
+            <div class="detail-circle-down"></div>
+          </div>
+          <div class="col col-83"  style="padding-left: 12px;">
+            <div class="detail-start-text">
+              <span class="detail-start-text-style text-over-hidden">起点：<i class="gray-text">{{historyInfo.startAddr}}</i></span>
+            </div>
+            <div class="input-center-line"></div>
+            <div class="detail-end-text">
+              <span class="detail-start-text-style text-over-hidden" >终点：<i class="gray-text">{{historyInfo.targetAddr}}</i> </span>
+            </div>
+          </div>
+      </div>
+      <div class="detail-time">
+        <div class="detail-start">
+          <span class="detail-start-time">{{historyInfo.departureTime}}&nbsp;&nbsp;&nbsp;&nbsp;出发</span>
+          <span class="detail-start-perference">{{historyInfo.departurePreference}}</span>
+        </div>
+      </div>
+        <div class="detail-vertical-line"></div>
+        <div class="detail-seat">
+          <div class="detail-remain-seat">
+            <img src="build/img/application/carpooling/seat-1@3x.png" class="detail-img-seat">
+            <span class="detail-seat-number">成行人数&nbsp;&nbsp;<i style="color: #0D4391;"> {{historyInfo.lockSeats}}</i></span>
+          </div>
+          <div class="detail-total">
+            <img src="build/img/application/carpooling/car-g@3x.png" class="detail-total-car">
+            <span class="detail-total-font">共{{historyInfo.carType}}座</span>
+          </div>
+        </div>
+        <div class="detail-enjoy-people">
+          <div class="detail-img-people">
+            <img src="build/img/application/carpooling/profile-2@3x.png" class="detail-img-people-icon"/>
+            <span class="detail-img-people-name">顾森林</span>
+          </div>
+          <div class="detail-img-people">
+            <img src="build/img/application/carpooling/profile@3x.png" class="detail-img-people-icon"/>
+            <span class="detail-img-people-name">成志唯</span>
+          </div>
+          <div class="detail-img-people">
+            <img src="build/img/application/carpooling/seat-2@3x.png" class="detail-img-people-icon"/>
+            <span class="detail-img-people-name-empty">空位</span>
+          </div>
+          <div class="detail-img-people">
+            <img src="build/img/application/carpooling/seat-2@3x.png" class="detail-img-people-icon"/>
+            <span class="detail-img-people-name-empty">空位</span>
+          </div>
+        </div>
+        <div class="detail-vertical-line" style="margin-top: 10px"></div>
+        <div class="detail-cost-plain">
+          <img class="detail-cost-icon" src="build/img/application/carpooling/charge@3x.png">
+          <span class="detail-cost-text">费用计划</span>
+        </div>
+        <div class="detail-cost-perference"><span>{{historyInfo.departurePreference}}</span></div>
+      </div>
+    </div>
+  </div>
+  </ion-content>
+</ion-view>

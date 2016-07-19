@@ -29,6 +29,11 @@
         text-align:center;
         line-height: 30px;
       }
+      .search-input-content{
+        border: 1px;
+        width: 90%;
+        background-color: transparent;
+        }
     }
 
   }
@@ -120,4 +125,36 @@
   .font-color2{
     color:#4A4A4A;
   }
+  .content-has-footer{
+    bottom: 46px;
+  }
+  .ion-ios-location:before {
+    content: "";
+    font-size: 18px;
+  }
+  .button-location{
+    line-height: 32px;
+  }
+  .list-item{
+    border: none;
+    border-color: white;
+    padding: 0px;
+    margin: 0px;
+    border-width: 0px;
+    background-color:#FAFAFA;
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #FAFAFA;
+  }
+  //.car-list.ng-enter{
+  //  -webkit-animation: rotateInUpLeft 0.4s;
+  //  animation: rotateInUpLeft .4s;
+  //}
+  //.car-list.ng-enter-stagger{
+  //  -webkit-animation-delay: 120ms;
+  //  animation-delay: 120ms;
+  //  -webkit-animation-duration: 0ms;
+  //  animation-duration: 0ms;
+  //}
 }

@@ -137,9 +137,9 @@ angular.module('applicationModule')
               destUrl: "tab.dorm-apply"
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "拼车",
+              imageUrl: "build/img/application/application/carpooling@3x.png",
+              destUrl: "tab.carpooling",
             },
             {
               appName: "",
