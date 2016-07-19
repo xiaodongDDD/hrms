@@ -130,8 +130,8 @@
               </div>
             </div>
           </div>
-          <a class="hms-application-member-button" ng-if="!processedFlag"
-             ng-click="applicationFullMemberUtil.savePositiveBlock1(applicationEmployeeDetail)">保存</a>
+          <a class="hms-application-member-button" ng-if="workflowActionShowFlag"
+             ng-click="applicationFullMemberUtil.savePositiveBlock1(applicationEmployeeDetail,applicationEmployeeType)">保存</a>
           <div class="hms-singal-array-sub-header">
             <div class="hms-singal-array-name">
               试用期信息
@@ -145,21 +145,24 @@
               </div>
             </div>
           </div>
-          <div class="hms-singal-array-sub-header">
-            <div class="hms-singal-array-name">
-              考评结果
-            </div>
-          </div>
-          <div class="hms-singal-array-content">
-            <div class="hms-singal-array-line" ng-repeat="ability in applicationEmployeeAbility"
-                 ng-click="applicationFullMemberUtil.showEmployeeGrade(ability)">
-              <div class="hms-singal-array-key" ng-bind="ability.element_name">
-              </div>
-              <div class="hms-singal-array-value" ng-bind="ability.element_desc">
+          <div ng-if="!workflowActionShowFlag || currentDetail.nodeId==10031">
+            <div class="hms-singal-array-sub-header">
+              <div class="hms-singal-array-name">
+                考评结果
               </div>
             </div>
+            <div class="hms-singal-array-content">
+              <div class="hms-singal-array-line" ng-repeat="ability in applicationEmployeeAbility"
+                   ng-click="applicationFullMemberUtil.showEmployeeGrade(ability)">
+                <div class="hms-singal-array-key" ng-bind="ability.element_name">
+                </div>
+                <div class="hms-singal-array-value" ng-bind="ability.element_desc">
+                </div>
+              </div>
+            </div>
+            <a class="hms-application-member-button" ng-if="workflowActionShowFlag"
+               ng-click="applicationFullMemberUtil.saveAbility(applicationEmployeeAbility)">保存</a>
           </div>
-          <a class="hms-application-member-button" ng-if="!processedFlag">保存</a>
           <div class="hms-singal-array-sub-header">
             <div class="hms-singal-array-name">
               试用期总结
@@ -174,7 +177,8 @@
               <textarea ng-model="trial.field_value" ng-if="trial.can_update==1"></textarea>
             </div>
           </div>
-          <a class="hms-application-member-button" ng-if="!processedFlag">保存</a>
+          <a class="hms-application-member-button" ng-if="workflowActionShowFlag"
+             ng-click="applicationFullMemberUtil.saveTrailResult(applicationEmployeeTrial)">保存</a>
         </div>
       </div>
 
@@ -192,7 +196,12 @@
           <div class="hms-singal-array-line" ng-repeat="arrayItem in array.detail" ng-if="true">
             <div class="hms-singal-array-key" ng-bind="arrayItem.item_name">
             </div>
-            <div class="hms-singal-array-value" ng-bind="arrayItem.item_value">
+            <div class="hms-singal-array-key" ng-if="arrayItem.item_name.substring(0,2) == '附件'"
+                 ng-click="workflowDetailUtil.goUrl(arrayItem.item_value)">
+              <i class="ion-android-attach"></i>
+            </div>
+            <div class="hms-singal-array-value" ng-bind="arrayItem.item_value"
+                 ng-if="arrayItem.item_name.substring(0,2) != '附件'">
             </div>
           </div>
         </div>
@@ -200,27 +209,30 @@
 
       <!--多维数组-->
       <div class="hms-workflow-array" ng-repeat="array in multipleLine">
-        <div class="hms-singal-array-header">
+        <div class="hms-multiple-array-header">
           <div class="hms-singal-array-name">
             <i class="ion-record"></i>{{array.title}};
           </div>
-          <div class="hms-singal-array-link">
-            <a class="hms-array-selector">共{{array.arrayList.length}}条</a>
-            <a class="hms-array-selector" ng-click="workflowDetailUtil.toBack(array)"
-               ng-class="{'true':'no-activated'}[array.currentPage==1]">上一条</a>
-            <a class="hms-array-selector" ng-click="workflowDetailUtil.goForward(array)"
-               ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
-          </div>
-          <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
-            <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
+          <div class="hms-multiple-array-sub-header">
+            <div class="hms-singal-array-link">
+              <a class="hms-array-selector">共{{array.arrayList.length}}条</a>
+              <a class="hms-array-selector" ng-click="workflowDetailUtil.toBack(array)"
+                 ng-class="{'true':'no-activated'}[array.currentPage==1]">上一条</a>
+              <a class="hms-array-selector" ng-click="workflowDetailUtil.goForward(array)"
+                 ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
+            </div>
+            <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
+              <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
+            </div>
           </div>
         </div>
         <div class="hms-singal-array-content" ng-if="array.showFlag">
           <div class="hms-singal-array-line" ng-repeat="item in array.currentArray">
             <div class="hms-singal-array-key" ng-bind="item.name">
             </div>
-            <div class="hms-singal-array-value" ng-if="item.name.substring(0,2) =='附件'" ng-click="goUrl(item.value)">
-              <i>ion-android-attach</i>
+            <div class="hms-singal-array-value" ng-if="item.name.substring(0,2) =='附件'"
+                 ng-click="workflowDetailUtil.goUrl(item.value)">
+              <i class="ion-android-attach"></i>
             </div>
             <div class="hms-singal-array-value" ng-bind="item.value" ng-if="item.name.substring(0,2) !='附件'">
             </div>
@@ -255,7 +267,7 @@
     <div class="hms-workflow-reject">
       <div class="hms-workflow-reject-content" ng-click="workflowDetailUtil.submitAction(actionType.reject)"
            ng-if="currentDetail.canRefuse=='Y'">
-        <span >拒绝</span>
+        <span>拒绝</span>
       </div>
     </div>
     <div class="hms-workflow-other">
@@ -279,8 +291,8 @@
       </div>
     </div>
     <div class="hms-workflow-back">
-      <div class="hms-workflow-back-content"> <!--ng-click="workflowDetailUtil.submitAction(actionType.back)"-->
-      <span ng-if="currentDetail.canGoBack=='Y'"></span>
+      <div class="hms-workflow-back-content" ng-click="workflowDetailUtil.submitAction(actionType.back)">
+        <span ng-if="currentDetail.canBackTo=='Y'">退回</span>
       </div>
     </div>
   </div>

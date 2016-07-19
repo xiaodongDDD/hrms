@@ -46,7 +46,7 @@
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
                 <div class="app-item-content">
-                  <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
+                  <div class="app-extra" ng-if="appItemTimeOff.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
                        ng-bind="appItem.count">
                   </div>
                   <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">

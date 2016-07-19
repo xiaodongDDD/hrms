@@ -7,29 +7,44 @@
       <input name="" placeholder="搜索">
     </div>
   </ion-header-bar>
-  <ion-content style="bottom:48px;">
+  <ion-content style="bottom:48px;" id="messageList">
     <ion-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </ion-refresher>
 
-    <div class="message-item" ng-click="chatWithYou(message)" ng-repeat="message in messageList">
-      <div class="message-introduce">
-        <img class="message-has-logo" src="{{message.imgUrl}}">
-        </img>
-      </div>
-      <div class="message-content">
-        <div class="message-title" ng-bind="message.name">
+    <ion-list show-delete="shouldShowDelete"
+              can-swipe="true">
+      <ion-item ng-repeat="message in messageList" class="message-list-item">
+
+        <div class="message-item" ng-click="chatWithYou(message)">
+          <div class="message-introduce">
+            <img class="message-has-logo" src="{{message.imgUrl}}">
+            </img>
+          </div>
+          <div class="message-content">
+            <div class="message-title" ng-bind="message.name">
+            </div>
+            <div class="message-line" ng-bind="message.content">
+            </div>
+          </div>
+          <div class="message-extro">
+            <div class="message-date" ng-bind="message.time">
+              3小时前
+            </div>
+            <div class="message-qty" ng-bind="message.count">
+            </div>
+          </div>
         </div>
-        <div class="message-line" ng-bind="message.content">
-        </div>
-      </div>
-      <div class="message-extro">
-        <div class="message-date" ng-bind="message.time">
-          3小时前
-        </div>
-        <div class="message-qty" ng-bind="message.count">
-        </div>
-      </div>
-    </div>
+        <ion-option-button class="button-assertive"
+                           ng-click="deleteMessage(message)" style="margin:0;padding: 0">
+          <div class="delete-button">
+            <div class="delete-item">
+              <i class="delete-icon ion-ios-trash-outline"></i>
+            </div>
+            <div class="delete-text">删除</div>
+          </div>
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
 
   </ion-content>
 </ion-view>
