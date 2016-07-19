@@ -17,7 +17,7 @@ static FMDatabase *db;
 +(void)initialize
 {
     NSString *dbPath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-    dbPath = [dbPath stringByAppendingPathComponent:@"messages2.0.0.sqlite"];
+    dbPath = [dbPath stringByAppendingPathComponent:@"messages2.0.8.sqlite"];
     NSLog(@"创建数据库,数据库路径:%@",dbPath);
     db = [FMDatabase databaseWithPath:dbPath];
     //创建表 消息表
@@ -115,7 +115,7 @@ static FMDatabase *db;
         NSString *insertSql= [NSString stringWithFormat:
                               @"INSERT INTO  Messages_Table(type, send_id, content, received_id,send_time, received_time, flag ,current_user_id , friend_id) VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')", messageType,sendId,content,receivedId,sendTime,receiveTime,flag,sendId,receivedId];
         BOOL res = [db executeUpdate:insertSql];
-        
+
         if (!res) {
             NSLog(@"error when insert db table");
         } else {
@@ -133,7 +133,7 @@ static FMDatabase *db;
         NSString *insertSql= [NSString stringWithFormat:
                               @"INSERT INTO  Messages_Table(type, send_id, content, received_id,send_time, received_time, flag ,current_user_id , friend_id) VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')", messageType,sendId,content,receivedId,sendTime,receiveTime,flag,receivedId,sendId];
         BOOL res = [db executeUpdate:insertSql];
-        
+
         if (!res) {
             NSLog(@"error when insert db table");
         } else {
@@ -170,7 +170,7 @@ static FMDatabase *db;
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from Messages_Table where friend_id = '%@'",friendId];
         BOOL res = [db executeUpdate:deleteSql];
-        
+
         if (!res) {
             NSLog(@"error when delete db table");
         } else {
@@ -178,6 +178,6 @@ static FMDatabase *db;
         }
         [db close];
     }
-    
+
 }
 @end

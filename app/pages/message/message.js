@@ -49,28 +49,35 @@ angular.module('messageModule')
         }
         if (HandIMPlugin && fetchData) {
           HandIMPlugin.returnConversationList(function success(result) {
-            if(baseConfig){
+            if (baseConfig.debug) {
               console.log('returnConversationList result ' + angular.toJson(result));
             }
+
             var needFresh = false;
-            if(result.message.length != $scope.messageList.length){
+            if (result.message.length != $scope.messageList.length) {
               needFresh = true;
             }
-            angular.forEach(result.message,function (data,i) {
-              if($scope.messageList[i]){
-                if(data.message.sendId == $scope.messageList[i].employee && data.message.messageNum == $scope.messageList[i].count){
-                }else{
+            angular.forEach(result.message, function (data, i) {
+              if ($scope.messageList[i]) {
+                if (data.message.sendId == $scope.messageList[i].employee && data.message.messageNum == $scope.messageList[i].count) {
+                } else {
                   needFresh = true;
                 }
-              }else{
+              } else {
                 needFresh = true;
               }
             });
 
-            if(needFresh){
+            if (needFresh) {
               $scope.messageList = [];
               angular.forEach(result.message, function (data) {
                 var user = userInfo[data.message.sendId];
+                if (!user) {
+                  user = {
+                    "name": data.message.sendId,
+                    "imgUrl": ""
+                  };
+                }
                 var item = {
                   "name": user.name,
                   "content": data.message.content,
@@ -89,9 +96,8 @@ angular.module('messageModule')
 
         $timeout(function () {
           loop();
-        }, 1000);
+        }, 4000);
       };
-
 
 
       var loop = function () {
@@ -104,15 +110,15 @@ angular.module('messageModule')
 
       /*var element = angular.element(document.querySelector('#messageList'));
 
-      $ionicGesture.on("touch", function (e) {
-        fetchData = false;
-      }, element);
+       $ionicGesture.on("touch", function (e) {
+       fetchData = false;
+       }, element);
 
-      $ionicGesture.on("release", function (e) {
-        $timeout(function () {
-          fetchData = true;
-        }, 5000);
-      }, element);*/
+       $ionicGesture.on("release", function (e) {
+       $timeout(function () {
+       fetchData = true;
+       }, 5000);
+       }, element);*/
 
 
       /*$scope.messageList = [
