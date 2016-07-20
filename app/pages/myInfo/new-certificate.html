@@ -28,14 +28,14 @@
        <label class="upload-label">证书上传</label>
      </div>
      <div class="row label-row" style="margin-top: 5px">
-       <label class="upload-description-label">提示：最多上传10张图片，长点击编辑图片</label>
+       <label class="upload-description-label">提示：最多上传10张图片</label>
      </div>
      <!--第一行--><div class="row label-row" ng-show="judgeRow(0)">
       <div class="col col-25 no-space">
        <ion-item class="image-square-item" ng-show="matrix[0][0]">
-          <i class="ion-ios-close delete-icon" ng-show="imageList[0].deleteMode" ng-click="deleteImage(0)"></i>
+          <i class="ion-ios-close delete-icon" ng-show="imageList[0].selected" ng-click="deleteImage(0)"></i>
           <img ng-hide="imageList[0].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(0)"/>
-          <img ng-show="imageList[0].selected" ng-src="{{imageList[0].uri}}" on-hold="enterDeleteMode(0)" on-tap="showBigPicture(0)" class="common-image"/>
+          <img ng-show="imageList[0].selected" ng-src="{{imageList[0].uri}}" on-tap="showBigPicture(0)" class="common-image"/>
           <!--<div ng-show="imageList[0].deleteMode" ng-click="leaveDeleteModel(0)" class="black-shelter"></div>-->
        </ion-item>
       </div>
@@ -43,9 +43,9 @@
       </div>
       <div class="col col-25 no-space">
         <ion-item class="image-square-item" ng-show="matrix[0][1]">
-          <i class="ion-ios-close delete-icon"  ng-show="imageList[1].deleteMode" ng-click="deleteImage(1)"></i>
+          <i class="ion-ios-close delete-icon" ng-show="imageList[1].selected" ng-click="deleteImage(1)"></i>
           <img ng-hide="imageList[1].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(1)"/>
-          <img ng-show="imageList[1].selected" ng-src="{{imageList[1].uri}}" on-hold="enterDeleteMode(1)" on-tap="showBigPicture(1)" class="common-image"/>
+          <img ng-show="imageList[1].selected" ng-src="{{imageList[1].uri}}" on-tap="showBigPicture(1)" class="common-image"/>
           <!--<div ng-show="imageList[1].deleteMode" ng-click="leaveDeleteModel(1)" class="black-shelter"></div>-->
         </ion-item>
       </div>
@@ -53,9 +53,9 @@
        </div>
        <div class="col col-25 no-space">
          <ion-item class="image-square-item" ng-show="matrix[0][2]">
-           <i class="ion-ios-close delete-icon" ng-show="imageList[2].deleteMode" ng-click="deleteImage(2)"></i>
+           <i class="ion-ios-close delete-icon" ng-show="imageList[2].selected" ng-click="deleteImage(2)"></i>
            <img ng-hide="imageList[2].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(2)"/>
-           <img ng-show="imageList[2].selected" ng-src="{{imageList[2].uri}}" on-hold="enterDeleteMode(2)" on-tap="showBigPicture(2)" class="common-image"/>
+           <img ng-show="imageList[2].selected" ng-src="{{imageList[2].uri}}" on-tap="showBigPicture(2)" class="common-image"/>
            <!--<div ng-show="imageList[2].deleteMode" ng-click="leaveDeleteModel(2)" class="black-shelter"></div>-->
          </ion-item>
        </div>
@@ -65,9 +65,9 @@
       <!--第二行--><div class="row label-row" ng-show="judgeRow(1)">
         <div class="col col-25 no-space">
           <ion-item class="image-square-item" ng-show="matrix[1][0]">
-            <i class="ion-ios-close delete-icon" ng-show="imageList[3].deleteMode" ng-click="deleteImage(3)"></i>
+            <i class="ion-ios-close delete-icon" ng-show="imageList[3].selected" ng-click="deleteImage(3)"></i>
             <img ng-hide="imageList[3].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(3)"/>
-            <img ng-show="imageList[3].selected" ng-src="{{imageList[3].uri}}" on-hold="enterDeleteMode(3)" on-tap="showBigPicture(3)" class="common-image"/>
+            <img ng-show="imageList[3].selected" ng-src="{{imageList[3].uri}}" on-tap="showBigPicture(3)" class="common-image"/>
             <!--<div ng-show="imageList[3].deleteMode" ng-click="leaveDeleteModel(3)" class="black-shelter"></div>-->
           </ion-item>
         </div>
@@ -75,9 +75,9 @@
         </div>
         <div class="col col-25 no-space">
           <ion-item class="image-square-item" ng-show="matrix[1][1]">
-            <i class="ion-ios-close delete-icon" ng-show="imageList[4].deleteMode" ng-click="deleteImage(4)"></i>
+            <i class="ion-ios-close delete-icon" ng-show="imageList[4].selected" ng-click="deleteImage(4)"></i>
             <img ng-hide="imageList[4].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(4)"/>
-            <img ng-show="imageList[4].selected" ng-src="{{imageList[4].uri}}" on-hold="enterDeleteMode(4)" on-tap="showBigPicture(4)" class="common-image"/>
+            <img ng-show="imageList[4].selected" ng-src="{{imageList[4].uri}}" on-tap="showBigPicture(4)" class="common-image"/>
             <!--<div ng-show="imageList[4].deleteMode" ng-click="leaveDeleteModel(4)" class="black-shelter"></div>-->
           </ion-item>
         </div>
@@ -85,9 +85,9 @@
         </div>
         <div class="col col-25 no-space">
           <ion-item class="image-square-item" ng-show="matrix[1][2]">
-            <i class="ion-ios-close delete-icon" ng-show="imageList[5].deleteMode" ng-click="deleteImage(5)"></i>
+            <i class="ion-ios-close delete-icon" ng-show="imageList[5].selected" ng-click="deleteImage(5)"></i>
             <img ng-hide="imageList[5].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(5)"/>
-            <img ng-show="imageList[5].selected" ng-src="{{imageList[5].uri}}" on-hold="enterDeleteMode(5)" on-tap="showBigPicture(5)" class="common-image"/>
+            <img ng-show="imageList[5].selected" ng-src="{{imageList[5].uri}}" on-tap="showBigPicture(5)" class="common-image"/>
             <!--<div ng-show="imageList[5].deleteMode" ng-click="leaveDeleteModel(5)" class="black-shelter"></div>-->
           </ion-item>
         </div>
@@ -97,9 +97,9 @@
       <!--第三行--><div class="row label-row" ng-show="judgeRow(2)">
         <div class="col col-25 no-space">
           <ion-item class="image-square-item" ng-show="matrix[2][0]">
-            <i class="ion-ios-close delete-icon" ng-show="imageList[6].deleteMode" ng-click="deleteImage(6)"></i>
+            <i class="ion-ios-close delete-icon" ng-show="imageList[6].selected" ng-click="deleteImage(6)"></i>
             <img ng-hide="imageList[6].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(6)"/>
-            <img ng-show="imageList[6].selected" ng-src="{{imageList[6].uri}}" on-hold="enterDeleteMode(6)" on-tap="showBigPicture(6)" class="common-image"/>
+            <img ng-show="imageList[6].selected" ng-src="{{imageList[6].uri}}" on-tap="showBigPicture(6)" class="common-image"/>
             <!--<div ng-show="imageList[6].deleteMode" ng-click="leaveDeleteModel(6)" class="black-shelter"></div>-->
           </ion-item>
         </div>
@@ -107,9 +107,9 @@
         </div>
         <div class="col col-25 no-space">
           <ion-item class="image-square-item" ng-show="matrix[2][1]">
-            <i class="ion-ios-close delete-icon" ng-show="imageList[7].deleteMode" ng-click="deleteImage(7)"></i>
+            <i class="ion-ios-close delete-icon" ng-show="imageList[7].selected" ng-click="deleteImage(7)"></i>
             <img ng-hide="imageList[7].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(7)"/>
-            <img ng-show="imageList[7].selected" ng-src="{{imageList[7].uri}}" on-hold="enterDeleteMode(7)" on-tap="showBigPicture(7)" class="common-image"/>
+            <img ng-show="imageList[7].selected" ng-src="{{imageList[7].uri}}" on-tap="showBigPicture(7)" class="common-image"/>
             <!--<div ng-show="imageList[7].deleteMode" ng-click="leaveDeleteModel(7)" class="black-shelter"></div>-->
           </ion-item>
         </div>
@@ -117,9 +117,9 @@
         </div>
         <div class="col col-25 no-space">
           <ion-item class="image-square-item" ng-show="matrix[2][2]">
-            <i class="ion-ios-close delete-icon" ng-show="imageList[8].deleteMode" ng-click="deleteImage(8)"></i>
+            <i class="ion-ios-close delete-icon" ng-show="imageList[8].selected" ng-click="deleteImage(8)"></i>
             <img ng-hide="imageList[8].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(8)"/>
-            <img ng-show="imageList[8].selected" ng-src="{{imageList[8].uri}}" on-hold="enterDeleteMode(8)" on-tap="showBigPicture(8)" class="common-image"/>
+            <img ng-show="imageList[8].selected" ng-src="{{imageList[8].uri}}" on-tap="showBigPicture(8)" class="common-image"/>
             <!--<div ng-show="imageList[8].deleteMode" ng-click="leaveDeleteModel(8)" class="black-shelter"></div>-->
           </ion-item>
         </div>
@@ -129,9 +129,9 @@
       <!--第四行--><div class="row label-row" ng-show="judgeRow(3)">
       <div class="col col-25 no-space">
         <ion-item class="image-square-item" ng-show="matrix[3][0]">
-          <i class="ion-ios-close delete-icon" ng-show="imageList[9].deleteMode" ng-click="deleteImage(9)"></i>
+          <i class="ion-ios-close delete-icon" ng-show="imageList[9].selected" ng-click="deleteImage(9)"></i>
           <img ng-hide="imageList[9].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(9)"/>
-          <img ng-show="imageList[9].selected" ng-src="{{imageList[9].uri}}"  on-hold="enterDeleteMode(9)" on-tap="showBigPicture(9)" class="common-image"/>
+          <img ng-show="imageList[9].selected" ng-src="{{imageList[9].uri}}" on-tap="showBigPicture(9)" class="common-image"/>
           <!--<div ng-show="imageList[9].deleteMode" ng-click="leaveDeleteModel(9)" class="black-shelter"></div>-->
         </ion-item>
       </div>
