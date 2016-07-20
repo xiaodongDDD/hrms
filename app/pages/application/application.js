@@ -142,9 +142,9 @@ angular.module('applicationModule')
               destUrl: "tab.carpooling",
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "房屋转租",
+              imageUrl: "build/img/application/application/housingrental@3x.png",
+              destUrl: "tab.houses-tab",
             },
             {
               appName: "",

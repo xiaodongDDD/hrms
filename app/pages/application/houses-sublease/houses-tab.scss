@@ -1,0 +1,22 @@
+.housesTab{
+  @mixin tab-icon($imgUrl) {
+    background: url($imgUrl) no-repeat center;
+    background-size: contain;
+    width: 23px;
+  }
+
+  .list-on {
+    @include tab-icon("./../img/application/houses-sublease/list-b@3x.png");
+  }
+  .list-off {
+    @include tab-icon("./../img/application/houses-sublease/list-G@3x.png");
+  }
+  .history-on {
+    @include tab-icon("./../img/application/houses-sublease/history-B@3x.png");
+  }
+  .history-off {
+    @include tab-icon("./../img/application/houses-sublease/history-G@3x.png");
+
+  }
+
+}
