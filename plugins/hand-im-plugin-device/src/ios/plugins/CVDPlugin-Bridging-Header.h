@@ -12,6 +12,7 @@
 
 #define appKey @"0vnjpoadnd4cz"
 #define appSecret @"5g2v4RnSnGU"
+#define CDVIMPluginPushNotification @"CDVIMPluginPushNotification"
 
 #endif /* CVDPlugin_Bridging_Header_h */
 

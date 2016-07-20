@@ -1,0 +1,276 @@
+<style>
+  .xbr-ion-list-flag-cc .save-button {
+    width: 100%;
+    height: 40px;
+    color: white;
+    font-size: 17px;
+    background-color: #F9A453
+  }
+
+  .xbr-ion-list-flag-cc .upload-button {
+    width: 100%;
+    height: 40px;
+    color: white;
+    font-size: 17px;
+    background-color: #3E7DCA
+  }
+
+  .xbr-ion-list-flag-cc .row-child {
+    width: 47%;
+    margin-left: 2%
+  }
+
+  .xbr-ion-list-flag-cc .row {
+    padding: 0;
+    height: 44px;
+    text-align: center;
+    line-height: 40px;
+    color: white;
+    background-color: #E5E5E5
+  }
+
+  .xbr-ion-list-flag-cc .xbr-cc-item {
+    padding: 0;
+    border: none;
+    margin-top: 20px
+  }
+
+  .accountDetail-view input {
+    background: none!important;
+    border: none!important;
+  }
+  .accountDetail-view .ion-ios-camera{
+    font-size: 26px;
+    position: relative;
+    top: -7px;
+  }
+</style>
+<ion-view title="{{title}}" hide-tabs="true" class="accountDetail-view">
+
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title" ng-bind="title"></h1>
+
+    <div class="buttons">
+      <div class="xbr-flag-c" ng-click="addPicture()"
+           ng-controller="photosController" ng-show="canEdit">
+        <!--<img src="build/img/application/expense/takePhoto.png">-->
+        <i class="ion-ios-camera"></i>
+      </div>
+    </div>
+  </ion-header-bar>
+
+  <form name="detailForm">
+    <ion-content class="detail" scroll="true" overflow-scroll="false" padding="true">
+      <ion-list>
+        <ion-item class="xbr-ion-item">
+          <div ng-controller="photosController">
+            <div class="xbr-ng-repeat" ng-repeat="photo in photos" on-hold="showConfirmPhoto($index)"
+                 ng-click="showAlertPhoto(photo.photo_src)">
+              <img ng-src="{{photo.photo_src}}">
+            </div>
+            <div class="xbr-flag-d" ng-show="canEdit">
+              <div ng-hide="accountDetail.photos.length==0">
+                <img src="build/img/application/expense/cemera.png" ng-click="addPicture()">
+              </div>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item class="xbr-flag-item-ion">
+          <div class="item totolAmount">
+            <div class="row">
+              <div class="col xbr-flag-col">
+                <label><span>总金额：</span><span>CNY</span></label>
+                <label
+                  ng-class="{invisible:accountDetail.expense_price==NULL||accountDetail.expense_quantity==NULL||accountDetail.exchange_rate==NULL}">
+                  {{(accountDetail.expense_price*accountDetail.expense_quantity*accountDetail.exchange_rate).toFixed(2)}}</label>
+                <input type="text" ng-readonly="true" ng-change="valueChange()"
+                       ng-model="accountDetail.photos.length">
+              </div>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+
+      <ion-list>
+        <ion-item class="item list-item-container xbr-flag-22">
+          <div class="row xbr-flag-dd-row">
+            <div class="col col-10">
+              <div><img src="build/img/application/expense/money.png"></div>
+            </div>
+            <div class="col col-40">
+              <input type="number" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     ng-change="valueChange()" required ng-model="accountDetail.expense_price"
+                     placeholder="金额">
+            </div>
+            <div class="col col-10">
+              <label>
+                <div class="xbr-flag-bizhong">币种：</div>
+              </label>
+            </div>
+            <div class="col col-40 " ng-click="openCurrencyList()">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     required ng-model="accountDetail.currency_code_desc">
+            </div>
+          </div>
+        </ion-item>
+
+
+        <ion-item class="item list-item-container xbr-list-item-container-flag">
+          <div class="row">
+            <div class="col col-10">
+              <div><img src="build/img/application/expense/amount.png"></div>
+            </div>
+            <div class="col col-40">
+              <input type="number" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     ng-change="valueChange()" required ng-model="accountDetail.expense_quantity" placeholder="数量">
+            </div>
+            <div class="col col-10">
+              <label>
+                <div>汇率：</div>
+              </label>
+            </div>
+            <div class="col col-40">
+              <input type="number" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     required ng-model="accountDetail.exchange_rate">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container xbr-flag-xxx">
+          <div class="row">
+            <div class="col col-10">
+              <div class="xbr-m-top"><img src="build/img/application/expense/billAmount.png"></div>
+            </div>
+            <div class="col col-90">
+              <input type="number" class="text-input--underbar width-full" ng-readonly="false" ng-change="valueChange()"
+                     ng-model="accountDetail.invoice_quantity"
+                     placeholder="发票数量">
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <ion-list class="xbr-flag-ion-list-4">
+        <ion-item class="item list-item-container xbr-ion-item-4">
+          <div class="row">
+            <div class="col col-10">
+              <div><img src="build/img/application/expense/projectName.png"></div>
+            </div>
+            <div class="col col-90" ng-click="openExpenseObjectList()">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     required ng-model="accountDetail.expenseObject_desc"
+                     placeholder="项目名称">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container">
+          <div class="row">
+            <div class="col col-10">
+              <div><img src="build/img/application/expense/expense.png"></div>
+            </div>
+            <div class="col col-90" ng-click="openExpenseItemList()">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     required ng-model="accountDetail.expense_item_desc"
+                     placeholder="费用类型">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container">
+          <div class="row">
+            <div class="col col-10">
+              <div><img src="build/img/application/expense/rentApply.png"></div>
+            </div>
+            <div class="col col-90" ng-click="openCostObjectList()">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="true" ng-change="valueChange()"
+                     ng-model="accountDetail.costObject_desc"
+                     placeholder="租房或预报销申请">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container">
+          <div class="row">
+            <div class="col col-10">
+              <div class="xbr-margin-top"><img src="build/img/application/expense/adress.png"></div>
+            </div>
+            <div class="col col-90">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     ng-change="valueChange()" required ng-model="accountDetail.expense_place"
+                     placeholder="地点">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container">
+          <div class="row">
+            <div>
+              <div><img src="build/img/application/expense/date.png"></div>
+            </div>
+            <div>
+              <input type="date" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     required ng-change="valueChange()" ng-model="accountDetail.expense_date_from">
+            </div>
+            <div>
+              <div>--</div>
+            </div>
+            <div>
+              <input type="date" class="text-input--underbar width-full" ng-readonly="!canEdit"
+                     required ng-change="valueChange()" ng-model="accountDetail.expense_date_to">
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <ion-list class="xbr-ion-list-flag-bb">
+        <ion-item class="item list-item-container">
+          <div class="row">
+            <div class="col col-10">
+              <div><img src="build/img/application/expense/remark.png"></div>
+            </div>
+            <div class="col col-90">
+                            <textarea class="textarea textarea--transparent width-full"
+                                      ng-readonly="!canEdit" ng-change="valueChange()"
+                                      ng-model="accountDetail.description" placeholder="备注">
+                            </textarea>
+            </div>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <ion-list class="xbr-ion-list-flag-cc">
+        <ion-item class="xbr-cc-item">
+        <div ng-class="{invisible:accountDetail.local_status=='UPLOADED'}">
+          <div class="row">
+            <div class="row-child">
+              <button class="button button-stable save-button" ng-show="true"
+                      ng-disabled="false || (!detailForm.$valid)"
+                      ng-click="saveData()">保 存
+              </button>
+            </div>
+            <div class="row-child">
+              <button class="button button-stable upload-button" ng-show="true"
+                      ng-disabled="(!canUpload) || (!detailForm.$valid )"
+                      ng-click="uploadDataTest()">上 传
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="xbr-cc-item-child-2" ng-class="{invisible:accountDetail.local_status!='UPLOADED'}">
+          <p><strong>已上传</strong></p>
+        </div>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </form>
+</ion-view>

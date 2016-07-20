@@ -1,0 +1,193 @@
+<style>
+  .xbr-ion-list-flag-cc .save-button {
+    width: 100%;
+    height: 40px;
+    color: white;
+    font-size: 17px;
+    background-color: #F9A453
+  }
+
+  .xbr-ion-list-flag-cc .upload-button {
+    width: 100%;
+    height: 40px;
+    color: white;
+    font-size: 17px;
+    background-color: #3E7DCA
+  }
+
+  .xbr-ion-list-flag-cc .row-child {
+    width: 47%;
+    margin-left: 2%
+  }
+
+  .xbr-ion-list-flag-cc .row {
+    padding: 0;
+    height: 44px;
+    text-align: center;
+    line-height: 40px;
+    color: white;
+    background-color: #E5E5E5
+  }
+
+  .xbr-ion-list-flag-cc .xbr-cc-item {
+    padding: 0;
+    border: none;
+    margin-top: 20px
+  }
+
+  .accountDetail-view input {
+    background: none!important;
+    border: none!important;
+  }
+</style>
+<ion-view view-title="报销申请" hide-nav-bar="navBar" class="expenseDetail-view">
+  <img class="xbr-f-img" src="build/img/application/expense/example@3x.png" ng-click="hide()" ng-show="isshow"/>
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">报销申请</h1>
+
+    <div class="buttons">
+    </div>
+  </ion-header-bar>
+
+  <ion-content>
+    <form name="detailForm">
+      <ion-list>
+        <ion-item class="item list-item-container xbr-f-a">
+          <div class="row">
+            <div class="col col-20">
+              <label>申请编号:</label>
+            </div>
+            <div class="col col-80">
+              <input type="text" class="text-input--underbar width-full" ng-readonly="true"
+                     ng-change="valueChange()" ng-model="detailData.expHeaderId">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container xbr-f-b">
+          <div class="row">
+            <div class="col col-20">
+              <label>项目名称:</label>
+            </div>
+            <div class="col col-80">
+              <input type="text" class="text-input--underbar width-full" required
+                     ng-readonly="true"
+                     ng-click="openExpenseObjectList()" ng-change="valueChange()"
+                     ng-model="detailData.expenseObject_desc">
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="item list-item-container xbr-f-c">
+          <div class="row">
+            <div class="col col-20">
+              <label>总金额:</label>
+            </div>
+            <div class="col col-80">
+              <input type="number" class="text-input--underbar width-full" ng-readonly="true"
+                     ng-model="detailData.sum">
+            </div>
+          </div>
+        </ion-item>
+        <ion-item class="item list-item-container xbr-f-d">
+          <div class="row">
+            <div class="col col-20">
+              <label>描述:</label>
+
+            </div>
+
+            <div class="col col-80">
+                              <textarea class="textarea textarea--transparent width-full" ng-readonly="!canEdit"
+                                        ng-change="valueChange()"
+                                        ng-model="detailData.description">
+                              </textarea>
+            </div>
+          </div>
+        </ion-item>
+
+        <ion-item class="xbr-f-e"
+                  class="item-icon-right"
+                  ng-click="openSelectDetail()">
+          从记一笔选择
+          <i class="icon ion-ios-arrow-right"></i>
+        </ion-item>
+
+        <ion-item modifier="chevron" class="item-area xbr-f-f" ng-click="openReportLines($index)"
+                  ng-repeat="item in detailData.lines">
+          <div class="xbr-f-child1">
+            <div class="f-child1-1">
+              <div class="f-child1-2">
+                <i class="icon ion-ios-calendar-outline"></i>{{item.dateFrom}}
+              </div>
+              <div class="f-child1-3">
+                至
+              </div>
+              <div class="f-child1-4">
+                {{item.dateTo}}
+              </div>
+            </div>
+            <br/>
+
+            <div class="f-child1-5">
+              <div>
+                {{item.expObject_desc}}
+              </div>
+              <dvi>
+                <i class="icon ion-social-yen-outline"></i>{{item.amount}}元
+              </dvi>
+            </div>
+            <div class="f-child1-6">
+              {{item.memo}}
+            </div>
+          </div>
+          <ion-option-button class="button-assertive" ng-click="removeLine(canEdit,$index)">
+            删除
+          </ion-option-button>
+        </ion-item>
+        <div class="accountDetail-view">
+          <div class="xbr-ion-list-flag-cc">
+            <div class="xbr-cc-item">
+              <div ng-class="{invisible:expenseDetail.local_status=='UPLOADED'}">
+                <div class="row" style="background: none;">
+                  <div class="row-child">
+                    <button class="button button-stable save-button"
+                            ng-disabled="!canEdit"
+                            ng-click="saveData()">保 存
+                    </button>
+                  </div>
+                  <div class="row-child">
+                    <button class="button button-stable upload-button"
+                            ng-disabled="(!canUpload) ||(!canEdit)"
+                            ng-click="submitData()" ng-show="detailForm.$valid">提 交
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="button-area" ng-class="{invisible:expenseDetail.local_status=='UPLOADED'}">-->
+          <!--<div class="row">-->
+            <!--<div class="col-45 col-offset-3">-->
+              <!--<button class="xbr-f-btn-1" class="button button-block" ng-click="saveData()"-->
+                      <!--ng-disabled="!canEdit" ng-show="detailForm.$valid">保 存-->
+              <!--</button>-->
+
+            <!--</div>-->
+            <!--<div class="col-45 col-offset-5">-->
+              <!--<button class="xbr-f-btn-2" class="button button-block " ng-click="submitData()"-->
+                      <!--ng-disabled="(!canUpload) ||(!canEdit)" ng-show="detailForm.$valid">提 交-->
+              <!--</button>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      </ion-list>
+    </form>
+  </ion-content>
+</ion-view>

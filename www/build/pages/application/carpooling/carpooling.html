@@ -1,0 +1,15 @@
+<ion-view class="myTab" id="myTabId">
+  <div class="carpooling-list" ng-include="'build/pages/application/carpooling/carpooling-list/carpooling-list.html'"      ng-controller="CarpoolingListCtrl" ng-show="tabs[0].isActive" ></div>
+  <div class="carpooling-create" ng-include="'build/pages/application/carpooling/carpooling-create/carpooling-create.html'"  ng-controller="CarpoolingCreateCtrl"  ng-if="tabs[1].isActive" ></div>
+  <div class="carpooling-history" ng-include="'build/pages/application/carpooling/carpooling-history/carpooling-history.html'"ng-controller="CarpoolingHistoryCtrl" ng-if="tabs[2].isActive" ></div>
+
+  <ion-footer-bar  style="z-index: 11;">
+    <div  style="margin-left: -5px;">
+      <div  ng-repeat="tab in tabs" ng-click="clickTab(tab)" class="repeat-click-tab">
+         <div class="icon list-on" ng-class="tab.isActive?tab.onClass:tab.offClass" style="width: 23px;height: 20px;float: left;"></div>
+         <div class="repeat-font-style">{{tab.isActive?tab.name:""}}</div>
+      </div>
+    </div>
+  </ion-footer-bar>
+
+</ion-view>

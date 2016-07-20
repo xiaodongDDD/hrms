@@ -314,7 +314,11 @@ angular.module('loginModule')
       };
 
       $scope.goToWechat = function () {//调用微信登录
-        weixinLogin();
+        wei.weiLogin(function(msg){
+          alert(msg);
+        },function(msg){
+          alert(msg);
+        });
       };
 
       $scope.$on('$ionicView.enter', function (e) {

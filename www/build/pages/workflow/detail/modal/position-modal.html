@@ -1,0 +1,85 @@
+<style>
+  #positionModal .card {
+    margin: 10px;
+  }
+
+  #positionModal .item-header {
+    padding: 8px 16px;
+    min-height: 30px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    border-color: #fff;
+    background-color: #f5f5f5;
+  }
+
+  #positionModal .item-radio .item-content {
+    padding: 8px 49px 8px 16px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  #positionModal .item-radio .radio-icon {
+    padding: 2px 14px;
+    font-size: 20px;
+    color: #666;
+  }
+
+  #positionModal .scroll {
+    height: 100%;
+  }
+
+  #positionModal .col {
+    padding: 0;
+  }
+</style>
+
+<ion-modal-view id="positionModal" style="top: 0;">
+  <ion-header-bar style="background-color: #f8f8f8">
+    <button class="button button-clear" ng-click="positionUtil.closePositionModal()" style="color: #333">返回</button>
+    <h1 class="title">职位选择</h1>
+    <button class="button button-clear" ng-click="positionUtil.clearPositionChoose()" style="color: #333">清选</button>
+  </ion-header-bar>
+  <ion-content scroll="false">
+    <div style="height: 44%">
+      <div class="list card" style="height: 100%">
+        <div class="item item-header row">
+          <span class="col col-80">{{parent.name}}</span>
+
+          <div class="col col-20" style="text-align: right">
+            <button class="button button-clear" ng-click="positionUtil.getParentDepartmentData(parent.value)"
+                    style="max-height: none;min-height: 0;height: 20px;line-height: 0;min-width: 0">
+              <i class="ion-reply" style="font-size: 20px"></i>
+            </button>
+          </div>
+        </div>
+        <ion-scroll style="height: 100%">
+          <ion-radio ng-repeat="item in child"
+                     ng-value="item.value"
+                     name="department"
+                     ng-click="positionUtil.getDepartmentData(item.value);getPositionData(item.value)">
+            {{item.name}}
+          </ion-radio>
+          <div style="height: 34px"></div>
+        </ion-scroll>
+      </div>
+    </div>
+    <div style="height: 50%">
+      <div class="list card" style="height: 100%">
+        <div class="item item-header">
+          职位
+        </div>
+        <ion-scroll style="height: 100%">
+          <ion-radio ng-repeat="item in position"
+                     ng-value="item.value"
+                     ng-model="config.position.value"
+                     name="position"
+                     ng-click="positionUtil.positionChoose(item)">
+            {{item.name}}
+          </ion-radio>
+          <div style="height: 34px"></div>
+        </ion-scroll>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,20 @@
+<ion-view class="housesTab">
+  <div ng-include="'build/pages/application/houses-sublease/houses-sublease.html'" ng-controller="HousesSubleaseCtrl"
+       ng-show="tabs[0].isActive"></div>
+  <div ng-include="'build/pages/application/houses-sublease/release-record.html'" ng-controller="releaseRecordCtrl"
+       ng-if="tabs[1].isActive"></div>
+
+  <!--<div class="bar bar-footer" style="z-index: 11;">-->
+  <ion-footer-bar class="foot-bar" style="bottom: 0px;">
+    <div style="margin-left: -5px;">
+      <div ng-repeat="tab in tabs" ng-click="clickTab(tab)" style="float: left;margin-top: 10px; height: 50px">
+        <div class="icon list-on" ng-class="tab.isActive?tab.onClass:tab.offClass"
+             style="width: 23px;height: 20px;margin-left:24px;float: left;"></div>
+        <div style="color:#24559C;float: left;margin-left: 5px;">{{tab.isActive?tab.name:""}}</div>
+      </div>
+    </div>
+  </ion-footer-bar>
+  <!--</div>-->
+
+</ion-view>
+

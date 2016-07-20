@@ -1,0 +1,118 @@
+<ion-view view-title="住宿详情" class="dorm-apply-detail-a">
+  <!--双层header-->
+  <div class="tall-header" style="background: url('build/img/application/dorm-apply/navi-bar-tall.png');">
+  <ion-header-bar align-title="center" class="bar-tall-header">
+      <div class="buttons">
+        <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+          <span class="back-button-text">返回</span>
+        </button>
+      </div>
+      <h1 class="title title-color">住宿详情</h1>
+  </ion-header-bar>
+  <div class="bar-tall-bottom">
+   <div class="row time-line-row">
+     <div class="col no-padding-or-margin">
+       <div class="row no-padding-or-margin">
+         <div class="time-line-circle-done left-circle"></div><!--左圆-->
+         <div class="horizontal-line"></div>
+       </div>
+     </div>
+     <div class="col no-padding-or-margin">
+       <div class="row no-padding-or-margin">
+        <div class="horizontal-line-half"></div>
+        <div class="time-line-circle-done center-circle"></div><!--中圆-->
+        <div class="horizontal-line-half"></div>
+       </div>
+     </div>
+     <div class="col no-padding-or-margin">
+       <div class="row no-padding-or-margin">
+        <div class="horizontal-line"></div>
+        <div class="right-circle" ng-class="{'time-line-circle-undone':approving,'time-line-circle-done':rejected || checkingin}"></div><!--右圆-->
+       </div>
+     </div>
+   </div>
+   <div class="row time-line-description-row">
+     <div class="col no-padding-or-margin">
+       <div class="row no-padding-or-margin time-line-up-row">
+        <label class="time-line-left-up-label">住宿申请</label>
+       </div>
+       <div class="row no-padding-or-margin time-line-down-row">
+         <label class="time-line-left-down-label">已提交</label>
+       </div>
+     </div>
+     <div class="col no-padding-or-margin">
+       <div class="row no-padding-or-margin time-line-up-row">
+         <label class="time-line-center-up-label">住宿审批</label>
+       </div>
+       <div class="row no-padding-or-margin" class="time-line-down-row">
+         <label class="time-line-center-down-label">审批中</label>
+       </div>
+     </div>
+     <div class="col no-padding-or-margin">
+       <div class="row no-padding-or-margin time-line-up-row">
+         <label class="time-line-right-up-label">审批结果</label>
+       </div>
+       <div class="row no-padding-or-margin time-line-down-row">
+         <label class="time-line-right-down-label" ng-bind="approvedResult"></label>
+       </div>
+     </div>
+   </div>
+  </div>
+  </div>
+  <ion-content class="content-style" style="top: 126px;">
+    <ion-item class="apply-card">
+      <div class="row image-row">
+        <img src="build/img/application/dorm-apply/back-hand.png" class="figure-image"/>
+      </div>
+      <label class="roomnum-figure">房间号{{applyInfo.roomNumber}}</label>
+      <div class="row card-row" style="margin-top: 10px;">
+        <div class="col no-padding-or-margin put-left">
+          <label class="left-label">入住时间:</label>
+        </div>
+        <div class="col no-padding-or-margin put-right">
+          <label class="right-label">{{applyInfo.checkinDate}}</label>
+        </div>
+      </div>
+      <div class="row card-row">
+        <div class="col no-padding-or-margin put-left">
+          <label class="left-label">结束时间:</label>
+        </div>
+        <div class="col no-padding-or-margin put-right">
+          <label class="right-label">{{applyInfo.checkoutDate}}</label>
+        </div>
+      </div>
+      <div class="room-label-shelter">
+        <label class="room-label">房间信息</label>
+      </div>
+      <div class="row card-row" style="margin-top: 5px">
+        <div class="col no-padding-or-margin put-left">
+          <label class="left-label">申请类型:</label>
+        </div>
+        <div class="col no-padding-or-margin put-right">
+          <label class="right-label">{{applyInfo.applyType}}</label>
+        </div>
+      </div>
+      <div class="row card-row">
+        <div class="col no-padding-or-margin put-left">
+          <label class="left-label">楼层:</label>
+        </div>
+        <div class="col no-padding-or-margin put-right">
+          <label class="right-label">{{applyInfo.floorNumber}}</label>
+        </div>
+      </div>
+      <div class="row card-row" style="border: none">
+        <div class="col no-padding-or-margin put-left">
+          <label class="left-label">房间类型:</label>
+        </div>
+        <div class="col no-padding-or-margin put-right">
+          <label class="right-label">{{applyInfo.roomType}}</label>
+        </div>
+      </div>
+      <div ng-class="{'cut-line':approving,'real-line':rejected || checkingin}"></div>
+      <button class="button button-block confirm-button" ng-click="cancelApply()" ng-show="approving">取消申请</button>
+    </ion-item>
+    <img src="build/img/application/dorm-apply/big-stamp-approving.png" class="image-stamp" ng-show="approving"/>
+    <img src="build/img/application/dorm-apply/big-stamp-rejected.png" class="image-stamp" ng-show="rejected"/>
+    <img src="build/img/application/dorm-apply/big-stamp-checkingin.png" class="image-stamp" ng-show="checkingin"/>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,21 @@
+<ion-view view-title="发布">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">发布</h1>
+  </ion-header-bar>
+  <ion-content style="background-color: #fafafa;">
+      <div style="float: left; margin-top: 15px; margin-left: 25px " ng-repeat="img in housesPhoto">
+        <img src="{{img.objectUrl}}" style="width: 150px; height: 120px; border: 1px solid #D2D2D2; display:inline-block">
+      </div>
+
+      <div style="width: 150px; height: 120px; border: 1px solid #D2D2D2; margin-top: 15px; margin-left: 25px; text-align: center">
+        <img src="build/img/application/houses-sublease/add@2x.png"
+             style="width: 80px; height: 80px; margin-top: 18px" ng-click="takePicture()">
+      </div>
+
+  </ion-content>
+</ion-view>

@@ -1,0 +1,60 @@
+<ion-view view-title="预报销费用" class="costList-view">
+
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title" >报销单列表</h1>
+    <div class="buttons">
+      <button class="button button-clear icon-left" ng-click="createCostApply()">
+        <i class="icon ion-plus "></i>
+      </button>
+    </div>
+  </ion-header-bar>
+
+  <ion-header-bar class="bar-subheader">
+    <div class="button-bar bar-light">
+      <div id="noApprove" class="button approve-button"
+           ng-click="changeTabButton('toSubmit')">未提交
+      </div>
+      <div id="alreadyApprove" class="button approve-button"
+           ng-click="changeTabButton('submitted')">已提交
+      </div>
+    </div>
+  </ion-header-bar>
+
+  <ion-content id="timesheetapproveContent" class="has-header has-subheader">
+    <ion-list id="timesheetPeopleList">
+
+      <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+
+      <ion-item modifier="chevron" class="plan list-item-container" ng-repeat="item in applyList "
+                ng-click="openCostDetail(item.status,$index)">
+        <div class="row">
+
+          <div class="col plan-list">
+            <div class="plan-info">
+              <header>
+                <span class="item-title" ng-bind="item.cost_type_name"></span>
+                <span class="item-title xbr-item-title">¥ {{item.cost_amount}}</span>
+                <span class="item-label" ng-class="{'uploaded':item.status=='SUBMITTED','new':item.status=='NEW'}"
+                      ng-bind="item.status"></span>
+              </header>
+
+              <p class="item-desc" ng-bind="item.cost_project_name"></p>
+
+              <p class="item-desc" ng-bind="item.description"></p>
+            </div>
+          </div>
+
+        </div>
+      </ion-item>
+
+    </ion-list>
+  </ion-content>
+
+
+</ion-view>
+

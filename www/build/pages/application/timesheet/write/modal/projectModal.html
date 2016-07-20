@@ -1,0 +1,19 @@
+<ion-modal-view class="">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="title">
+      <div>项目列表</div>
+    </div>
+    <div class="buttons">
+      <button class="button button-icon icon" ng-click="hideProjectModal()">
+        <span class="back-text">取消</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="project-modal">
+    <ion-list>
+      <ion-item ng-repeat="project in projectList" ng-click="selectProject(project)">
+        {{project.project_name}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,88 @@
+<ion-view view-title="房屋详情">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">房屋详情</h1>
+
+    <div class="buttons">
+      <button class="button button-clear" style="font-size: 26px" ng-click="share()">
+        <i class="ion-android-share-alt"></i>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content style="background-color: #fafafa">
+    <ion-slide-box on-slide-changed="slideChanged(index)" style="width: 100%;height: 274px;">
+      <ion-slide ng-repeat="item in housesSubDetail.imgs">
+        <img ng-src="{{item.objectUrl}}" style="width: 100%;height: 274px;"/>
+      </ion-slide>
+    </ion-slide-box>
+
+    <div style="border-bottom: 1px solid #F0F0F0">
+      <div class="row"
+           style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 18px; color: #4A4A4A;">
+        {{housesSubDetail.houseTitle}}
+      </div>
+      <div class="row"
+           style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 22px; color: #F99D32">
+        {{housesSubDetail.rent}}元/月
+      </div>
+      <div class="row">
+        <div class="col-50"
+             style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 12px; color: #9B9B9B">
+          发布日期：{{housesSubDetail.publishDate}}
+        </div>
+        <div class="col"
+             style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 14px; color: #24559C">
+          {{(housesSubDetail.expireDate).substr(5,2);}}月到期
+        </div>
+        <div class="col"
+             style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 14px; color: #9B9B9B">
+          {{housesSubDetail.area}}
+        </div>
+      </div>
+    </div>
+
+    <div style="border-bottom: 1px solid #F0F0F0; border-top: 1px solid #F0F0F0; margin-top: 10px">
+      <div class="row">
+        <div class="col col-50"
+             style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 16px; color: #4A4A4A;">厅室
+          <span style="color: #9B9B9B; margin-left: 10px">{{housesSubDetail.houseTypeRoom}}室{{housesSubDetail.houseTypeHall}}厅{{housesSubDetail.houseTypeBathRoom}}卫</span>
+        </div>
+        <div class="col col-50"
+             style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 18px; color: #4A4A4A;">面积
+          <span style="color: #9B9B9B; margin-left: 10px">{{housesSubDetail.square}}㎡</span></div>
+      </div>
+      <div class="row">
+        <div class="col"
+             style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 16px; color: #4A4A4A;">描述
+        </div>
+      </div>
+      <div class="row">
+        <div class="col"
+             style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; margin-right: 15px; font-size: 16px; color: #9B9B9B;">
+          {{housesSubDetail.houseSubject}}
+        </div>
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar class="foot-bar" style="bottom: 0px; padding: 0px">
+    <div style="font-size: 17px; color: #24559C; width: 35%; text-align: center">
+      <img src="build/img/application/houses-sublease/profile@3x.png"
+           style="width:28px; height: 28px; float: left; margin-left: 10px; margin-top: 11px">
+      <span style="font-size: 14px; color: #4A4A4A; margin-left: 5px; margin-top: 13px; float: left">何鑫铭</span>
+      <img src="build/img/application/houses-sublease/Back Arrow Copy 6 + Back Arrow Copy 6 Copy@3x.png"
+           style="width:28px; height: 28px; margin-left: 5px; margin-top: 13px">
+    </div>
+    <div style="margin-top: 15px; width: 20%; text-align: center">
+      <img src="build/img/application/houses-sublease/dial-2@3x.png" style="width:20px; height: 20px">
+    </div>
+    <div class="button"
+         style="width: 45%; height: 100%; background-color: #6BB9F0; color: #FFFFFF; font-size: 16px; line-height: 45px;">
+      发起会话
+    </div>
+  </ion-footer-bar>
+</ion-view>
+

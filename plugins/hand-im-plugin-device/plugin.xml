@@ -216,8 +216,8 @@
     <source-file src="src/android/layout/drawable-hdpi/iv_face.xml" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/layout/drawable-hdpi/gxs.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/layout/drawable-hdpi/gxt.png" target-dir="res/drawable-hdpi"/>
-    <source-file src="src/android/layout/drawable-hdpi/record.xml" target-dir="res/drawable-hdpi"/>
-    <source-file src="src/android/layout/drawable-hdpi/record_pressed.xml" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/record.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/record_pressed.png" target-dir="res/drawable-hdpi"/>
 
     <source-file src="src/android/libs/armeabi/libRongIMLib.so" target-dir="libs/armeabi/" />
     <source-file src="src/android/libs/arm64-v8a/libRongIMLib.so" target-dir="libs/arm64-v8a/" />
@@ -317,10 +317,7 @@
     </config-file>
 
     <!-- 配置-info.plist    -->
-
-
     <!-- resource   -->
-
     <resource-file src="src/ios/plugins/image" />
     <resource-file src="src/ios/plugins/fmdb" />
     <!--源码 -->

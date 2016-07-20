@@ -1,0 +1,10 @@
+<ion-popover-view class="light-bg timesheet">
+  <ion-content>
+    <div class="timesheet-year-list">
+      <div class="timesheet-year-item" ng-repeat="mode in timesheetProcessModeList" ng-click="selectMode(mode)"
+           ng-class="{true:'selected',false:''}[mode.selected]">
+        {{mode.value}}
+      </div>
+    </div>
+  </ion-content>
+</ion-popover-view>
