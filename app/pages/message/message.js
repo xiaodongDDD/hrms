@@ -11,17 +11,13 @@ angular.module('messageModule')
     'imService',
     'checkVersionService',
     'baseConfig',
-    '$ionicGesture',
-    '$q',
     function ($scope,
               $state,
               $timeout,
               $ionicPlatform,
               imService,
               checkVersionService,
-              baseConfig,
-              $ionicGesture,
-              $q) {
+              baseConfig) {
 
       $scope.messageList = [];
       var fetchData = true;
@@ -43,157 +39,77 @@ angular.module('messageModule')
         HandIMPlugin.deleteConversationList(success, error, message.employee);
       };
 
+      document.addEventListener('IMPush.openNotification', function (result) {
+        console.log('IMPush.openNotification result ' + angular.toJson(result));
+        getMessage(result);
+      }, false);
+
+      var getMessage = function (result) {
+        $scope.messageList = [];
+        angular.forEach(result.message, function (data) {
+          var user = userInfo[data.message.sendId];
+          if (!user) {
+            user = {
+              "name": data.message.sendId,
+              "imgUrl": ""
+            };
+          }
+          var item = {
+            "name": user.name,
+            "content": data.message.content,
+            "imgUrl": user.imgUrl,
+            "count": data.message.messageNum,
+            "employee": data.message.sendId,
+            "time": data.message.sendTime
+          };
+          $scope.messageList.push(item);
+        });
+        $scope.$apply();
+      };
+
       var getMessageList = function () {
         if (baseConfig.debug) {
           console.log('in getMessageList');
         }
-        if (HandIMPlugin && fetchData) {
+        if (HandIMPlugin) {
           HandIMPlugin.returnConversationList(function success(result) {
             if (baseConfig.debug) {
               console.log('returnConversationList result ' + angular.toJson(result));
             }
+            var needFresh = true;
 
-            var needFresh = false;
-            if (result.message.length != $scope.messageList.length) {
-              needFresh = true;
-            }
-            angular.forEach(result.message, function (data, i) {
-              if ($scope.messageList[i]) {
-                if (data.message.sendId == $scope.messageList[i].employee && data.message.messageNum == $scope.messageList[i].count) {
-                } else {
-                  needFresh = true;
-                }
-              } else {
-                needFresh = true;
-              }
-            });
+            /*var needFresh = false;
+             if (result.message.length != $scope.messageList.length) {
+             needFresh = true;
+             }
+             angular.forEach(result.message, function (data, i) {
+             if ($scope.messageList[i]) {
+             if (data.message.sendId == $scope.messageList[i].employee && data.message.messageNum == $scope.messageList[i].count) {
+             } else {
+             needFresh = true;
+             }
+             } else {
+             needFresh = true;
+             }
+             });*/
 
             if (needFresh) {
-              $scope.messageList = [];
-              angular.forEach(result.message, function (data) {
-                var user = userInfo[data.message.sendId];
-                if (!user) {
-                  user = {
-                    "name": data.message.sendId,
-                    "imgUrl": ""
-                  };
-                }
-                var item = {
-                  "name": user.name,
-                  "content": data.message.content,
-                  "imgUrl": user.imgUrl,
-                  "count": data.message.messageNum,
-                  "employee": data.message.sendId,
-                  "time": data.message.sendTime
-                };
-                $scope.messageList.push(item);
-              });
-              $scope.$apply();
+              getMessage(result);
             }
-          }, function error() {
+            $scope.$broadcast("scroll.refreshComplete");
+          }, function error(result) {
+            if (baseConfig.debug) {
+              console.log('returnConversationList error result ' + angular.toJson(result));
+            }
+            $scope.$broadcast("scroll.refreshComplete");
           }, '');
         }
-
-        $timeout(function () {
-          loop();
-        }, 4000);
       };
-
-
-      var loop = function () {
-        getMessageList();
-      };
-
       $timeout(function () {
-        loop();
-      }, 1000);
-
-      /*var element = angular.element(document.querySelector('#messageList'));
-
-       $ionicGesture.on("touch", function (e) {
-       fetchData = false;
-       }, element);
-
-       $ionicGesture.on("release", function (e) {
-       $timeout(function () {
-       fetchData = true;
-       }, 5000);
-       }, element);*/
-
+        getMessageList();
+      },1000);
 
       /*$scope.messageList = [
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "11111"
-       },
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "11111"
-       },
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "11111"
-       },
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "11111"
-       },
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "11111"
-       },
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "11111"
-       },
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "11111"
-       },
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "11111"
-       },
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "11111"
-       },
        {
        "name": "11111",
        "content": "11111",
@@ -589,9 +505,7 @@ angular.module('messageModule')
       };
 
       $scope.refresh = function () {
-        $timeout(function () {
-          $scope.$broadcast("scroll.refreshComplete");
-        }, 700);
+        getMessageList();
       };
 
       console.log('messageCtrl.enter');
@@ -602,6 +516,8 @@ angular.module('messageModule')
 
       $scope.$on('$destroy', function (e) {
         console.log('messageCtrl.$destroy');
+        document.removeEventListener('IMPush.openNotification', function (result) {
+        }, false);
       });
     }
   ]);

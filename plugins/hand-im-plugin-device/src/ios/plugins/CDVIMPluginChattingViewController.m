@@ -9,7 +9,11 @@
 #import "CDVIMPluginChattingViewController.h"
 #import "CVDPlugin-Bridging-Header.h"
 #import "DataBaseTool.h"
-@interface CDVIMPluginChattingViewController ()
+
+@interface CDVIMPluginChattingViewController ()<RCChatSessionInputBarControlDelegate>
+{
+    UIPanGestureRecognizer *panRecognizer;
+}
 
 @end
 
@@ -19,12 +23,20 @@
 {
     [super viewDidLoad];
     
+    //阴影视图背景
+    [self.navigationController.view.layer setShadowColor:[UIColor grayColor].CGColor];
+    [self.navigationController.view.layer setShadowOffset:CGSizeMake(-5, 0)];
+    [self.navigationController.view.layer setShadowOpacity:1.0];
+    [self.navigationController.view.layer setShadowRadius:5.0];
+    
     [DataBaseTool updateDataType:nil SendId:self.targetId];
     
-    //关闭navigation自带的侧滑手势
-    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    [self.chatSessionInputBarControl.recordButton addTarget:self action:@selector(TouchDown:) forControlEvents:UIControlEventTouchDown];
+    [self.chatSessionInputBarControl.recordButton addTarget:self action:@selector(UpInside:) forControlEvents:UIControlEventTouchDragExit];
+    //导航statusBar
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
     
-    UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMethord:)];
+    panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMethord:)];
     [self.navigationController.view addGestureRecognizer:panRecognizer];
     
     
@@ -40,16 +52,28 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     
-    //      self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back"] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
-    
+    // UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back@2x"] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+    //  self.navigationItem.leftBarButtonItems = @[backBtn];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithCGImage:[UIImage imageNamed:@"dial_2x.png"].CGImage scale:1.6 orientation:UIImageOrientationUp] style:UIBarButtonItemStyleDone target:self action:@selector(call:)];
+}
+
+//按钮按下会触发
+- (void)TouchDown:(UIButton *)sender
+{
+    panRecognizer.enabled = NO;
+}
+
+//点击拖出按钮范围触发
+- (void)UpInside:(UIButton *)sender
+{
+    panRecognizer.enabled = YES;
 }
 
 - (void)panMethord:(UIPanGestureRecognizer *)recognizer
 {
     // CGPoint touchingPoint = [recognizer locationInView:self.navigationController.view];
     CGPoint movePoint = [recognizer translationInView:self.view];
-    
+    // NSLog(@"movePoint:%lf",movePoint.x);
     if (movePoint.x>=0) {
         [self.navigationController.view setTransform:CGAffineTransformMakeTranslation(movePoint.x, 0)];
     }
@@ -63,22 +87,19 @@
             [self dismiss];
         }
     }
-    
-    //    NSLog(@"touchingPoint:%@ movePoint:%@",NSStringFromCGPoint(touchingPoint),NSStringFromCGPoint(movePoint));
-    //    NSLog(@"111:%lf  state:%li",self.navigationController.view.transform.tx,recognizer.state);
 }
 
 
 //点击返回调用的方法
 - (void)dismiss
 {
-   // NSLog(@"come :%@",self.navigationController);
     //自定义pop动画
-    
-    [UIView animateWithDuration:0.35 delay:0.1 usingSpringWithDamping:0 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         [self.navigationController.view setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width*3/2, [UIScreen mainScreen].bounds.size.height/2)];
-    } completion:^(BOOL finished) {
+    }completion:^(BOOL finished) {
         [self.navigationController.view removeFromSuperview];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+        // [self.navigationController dismissViewControllerAnimated:NO completion:nil];
     }];
 }
 //点击电话调用的方法
@@ -139,6 +160,7 @@
             content = @"[语音]";
             type = @"voice";
         } else if ([messageContent isKindOfClass:[RCLocationMessage class]]){
+            // RCLocationMessage *locationMessage = (RCLocationMessage *)messageContent;
             content = @"[位置]";
             type = @"location";
         }
@@ -156,7 +178,6 @@
 {
     [DataBaseTool insetSendDataType:type SendId:[[NSUserDefaults standardUserDefaults] objectForKey:@"userId"] ReceivedId:self.targetId Content:content SendTime:[NSString stringWithFormat:@"%lf",[[NSDate date] timeIntervalSince1970]*1000] ReceiveTime:nil Flag:@"Y"];
 }
-
 /*!
  发送图片消息
  
@@ -281,6 +302,7 @@
  */
 - (void)didLongPressCellPortrait:(NSString *)userId
 {
-    
+    //RCChatSessionInputBarControl
+    //super.RCChatSessionInputBarControl
 }
 @end
