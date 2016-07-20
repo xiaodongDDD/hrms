@@ -119,23 +119,25 @@ angular.module('myInfoModule')
           });
         }else if(selectedMethod == "相册"){
           window.imagePicker.getPictures(function(results){
-            $scope.imageList[currentPictureNumber].uri=results[0];//获取相册图片Uri
-            $scope.imageList[currentPictureNumber].selected=true;
-            if(($scope.imageList[currentPictureNumber].num%3)!=0){
-              if(currentRow < 3){
-                currentCol=currentCol+1;
+            if(results[0]!==undefined && results[0]!=""){
+              $scope.imageList[currentPictureNumber].uri=results[0];//获取相册图片Uri
+              $scope.imageList[currentPictureNumber].selected=true;
+              if(($scope.imageList[currentPictureNumber].num%3)!=0){
+                if(currentRow < 3){
+                  currentCol=currentCol+1;
+                  $scope.matrix[currentRow][currentCol]=true;
+                  $scope.imageList[currentPictureNumber].selected=true;
+                }else if(currentRow == 3){
+                  $scope.imageList[currentPictureNumber].selected=true;
+                }
+              }else if(($scope.imageList[currentPictureNumber].num%3)==0){
+                currentCol=0;
+                currentRow=currentRow+1;
                 $scope.matrix[currentRow][currentCol]=true;
                 $scope.imageList[currentPictureNumber].selected=true;
-              }else if(currentRow == 3){
-                $scope.imageList[currentPictureNumber].selected=true;
               }
-            }else if(($scope.imageList[currentPictureNumber].num%3)==0){
-              currentCol=0;
-              currentRow=currentRow+1;
-              $scope.matrix[currentRow][currentCol]=true;
-              $scope.imageList[currentPictureNumber].selected=true;
+              $scope.$apply();
             }
-            $scope.$apply();
           },function(error){
 
           },{
@@ -143,7 +145,7 @@ angular.module('myInfoModule')
           width: 480,
           height: 480,
           quality: 60
-          })
+          });
           }
         $scope.choosePictureMethodPopup.hide();
       };
@@ -169,7 +171,8 @@ angular.module('myInfoModule')
             var fileTransfer = new FileTransfer();
             fileTransfer.upload(
               $scope.imageList[i].uri,
-              encodeURI(baseConfig.queryPath+"/objectUpload?access_token="+window.localStorage.token),//上传服务器的接口地址
+              //encodeURI(baseConfig.queryPath+"/objectUpload?access_token="+window.localStorage.token),//上传服务器的接口地址
+              encodeURI(baseConfig.queryPath+"/objectUpload?access_token="+window.localStorage.token),
               win,
               fail,
               options,
@@ -196,24 +199,24 @@ angular.module('myInfoModule')
           hmsHttp.post(url,param).success(function(result){
             $scope.showLoading=false;
               if(result.status == "S"){
-              hmsPopup.showPopup("图片上传成功");//图片上传成功后发送广播并返回上一界面
+              hmsPopup.showPopup("证书生成成功");//图片上传成功后发送广播并返回上一界面
               $rootScope.$broadcast("CERTIFICATE_REFRESH");
               $ionicHistory.goBack();
             }else if(result.status != "S"){
-              hmsPopup.showPopup("图片上传失败");
+              hmsPopup.showPopup("证书生成失败");
             }
           }).error(function(error,status){
             console.log("失败："+angular.toJson(error));
             $scope.showLoading=false;
-            hmsPopup.showPopup("图片上传失败");
+            hmsPopup.showPopup("证书生成失败");
           });
         }
-      }
+      };
       var fail=function(error){//图片上传失败
         //如果有Loading的话记得隐藏loading
         $scope.showLoading=false;
-        hmsPopup.showPopup("图片上传失败");
-      }
+        hmsPopup.showPopup("证书生成失败");
+      };
       $scope.judgeRow=function(num){
         if(num==0){
          if($scope.matrix[0][0]==true){
@@ -242,9 +245,9 @@ angular.module('myInfoModule')
         }
       };
 
-      $scope.enterDeleteMode=function(num){//长点击进入删除模式，或者长点击退出删除模式
-        $scope.imageList[num].deleteMode=!$scope.imageList[num].deleteMode;
-      };
+      //$scope.enterDeleteMode=function(num){//长点击进入删除模式，或者长点击退出删除模式
+      //  $scope.imageList[num].deleteMode=!$scope.imageList[num].deleteMode;
+      //};
 
       $scope.deleteImage=function(num){
         $scope.imageList.splice(num,1);
@@ -300,9 +303,9 @@ angular.module('myInfoModule')
       };
 
       $scope.showBigPicture=function(num){//显示大图
-       if($scope.imageList[num].deleteMode == true){
-         $scope.imageList[num].deleteMode=false;
-       }else if($scope.imageList[num].deleteMode == false){
+       //if($scope.imageList[num].deleteMode == true){
+       //  $scope.imageList[num].deleteMode=false;
+       //}else if($scope.imageList[num].deleteMode == false){
          $scope.pictureAppearance=true;
          $scope.extensionPicture=$scope.imageList[num].uri;
          $timeout(function(){
@@ -310,10 +313,10 @@ angular.module('myInfoModule')
            var picHeight=bigPicture.offsetHeight;
            var picWidth=bigPicture.offsetWidth;
            var screenWidth = window.screen.width;
+           var screenHeight = window.screen.height;
            if(picHeight>picWidth){
-             bigPicture.style.width=100+"%";
-             bigPicture.style.height=100+"%";
-             bigPicture.style.marginTop=10+"px";
+             bigPicture.style.width=screenWidth+"px";
+             bigPicture.style.height=screenHeight+"px";
            }else if(picHeight<picWidth){
              bigPicture.style.width=100+"%";
              if(screenWidth>310 && screenWidth<=350){
@@ -331,7 +334,7 @@ angular.module('myInfoModule')
              }
            }
          },100);
-       }
+       //}
       };
 
       $scope.commitInfo=function(){//提交图片

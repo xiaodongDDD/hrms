@@ -91,6 +91,11 @@ angular.module('myInfoModule')
         hmsPopup.showPopup("本功能下一版本上线");
       };
 
+      $scope.checkHelp=function(){
+        var helpUrl="http://g.eqxiu.com/s/sRGxXCQn";
+        var ref = window.open(helpUrl, '_system', 'location=yes');
+      };
+
       $scope.checkMyInfo=function(){//进入查看我的信息界面
         var info=$scope.personalInfo;
         var param={

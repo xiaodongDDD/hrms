@@ -140,11 +140,6 @@ angular.module('myInfoModule')
          }
        }
       };
-      $scope.enterDeleteMode=function(num){//长点击进入删除模式，或者长点击退出删除模式
-        if($scope.buttonText!="编辑"){
-          $scope.imageList[num].deleteMode=!$scope.imageList[num].deleteMode;
-        }
-      };
       $scope.showCertificateTypeModal=function(){
         if($scope.buttonText!="编辑"){
           $scope.chooseTypePopup.show();
@@ -192,23 +187,25 @@ angular.module('myInfoModule')
           });
         }else if(selectedMethod == "相册"){
           window.imagePicker.getPictures(function(results){
-            $scope.imageList[currentPictureNumber].uri=results[0];//获取相册图片Uri
-            $scope.imageList[currentPictureNumber].selected=true;
-            if(($scope.imageList[currentPictureNumber].num%3)!=0){
-              if(currentRow < 3){
-                currentCol=currentCol+1;
-                $scope.matrix[currentRow][currentCol]=true;
-                $scope.imageList[currentPictureNumber].selected=true;
-              }else if(currentRow == 3){
-                $scope.imageList[currentPictureNumber].selected=true;
+            if(results[0]!==undefined && results[0]!="") {
+              $scope.imageList[currentPictureNumber].uri = results[0];//获取相册图片Uri
+              $scope.imageList[currentPictureNumber].selected = true;
+              if (($scope.imageList[currentPictureNumber].num % 3) != 0) {
+                if (currentRow < 3) {
+                  currentCol = currentCol + 1;
+                  $scope.matrix[currentRow][currentCol] = true;
+                  $scope.imageList[currentPictureNumber].selected = true;
+                } else if (currentRow == 3) {
+                  $scope.imageList[currentPictureNumber].selected = true;
+                }
+              } else if (($scope.imageList[currentPictureNumber].num % 3) == 0) {
+                currentCol = 0;
+                currentRow = currentRow + 1;
+                $scope.matrix[currentRow][currentCol] = true;
+                $scope.imageList[currentPictureNumber].selected = true;
               }
-            }else if(($scope.imageList[currentPictureNumber].num%3)==0){
-              currentCol=0;
-              currentRow=currentRow+1;
-              $scope.matrix[currentRow][currentCol]=true;
-              $scope.imageList[currentPictureNumber].selected=true;
+              $scope.$apply();
             }
-            $scope.$apply();
           },function(error){
 
           },{
@@ -230,12 +227,23 @@ angular.module('myInfoModule')
           $timeout(function(){
             var bigPicture=document.getElementById('check-my-big-picture');
             var screenWidth = window.screen.width;
+            var screenHeight = window.screen.height;
             var picHeight=bigPicture.offsetHeight;
             var picWidth=bigPicture.offsetWidth;
             if(picHeight>picWidth){
-              bigPicture.style.width=100+"%";
-              bigPicture.style.height=100+"%";
-              bigPicture.style.marginTop=10+"px";
+              bigPicture.style.width=screenWidth+"px";
+              bigPicture.style.height=screenHeight+"px";
+              //if(judgePicHeight<picHeight){
+              //  bigPicture.style.marginTop=(picHeight-judgePicHeight)/2+'px';
+              //}else if(judgePicHeight>=picHeight){
+              //  if(ionic.Platform.isAndroid()){
+              //    bigPicture.style.marginTop=10+"px";
+              //  }else if(ionic.Platform.isIOS()){
+              //    bigPicture.style.marginTop=0+"px";
+              //  }else if(ionic.Platform.isWebView()){
+              //    bigPicture.style.marginTop=10+"px";
+              //  }
+              //}
             }else if(picHeight<picWidth){
               bigPicture.style.width=100+"%";
               if(screenWidth>310 && screenWidth<=350){
@@ -360,12 +368,12 @@ angular.module('myInfoModule')
             hmsPopup.showPopup("信息更改失败");
           });
         }
-      }
+      };
       var fail=function(error){//图片上传失败
         //如果有Loading的话记得隐藏loading
         $scope.showLoading=false;
-        hmsPopup.showPopup("图片上传失败");
-      }
+        hmsPopup.showPopup("信息更改失败");
+      };
 
       $scope.commitInfo=function(){//提交图片
         if($scope.imageList[0].selected != true){
@@ -425,13 +433,13 @@ angular.module('myInfoModule')
           }
         }
       };
-      $scope.enterDeleteMode=function(num){//长点击进入删除模式，或者长点击退出删除模式
-        if($scope.buttonText!="编辑"){
-          $scope.imageList[num].deleteMode=!$scope.imageList[num].deleteMode;
-        }else if($scope.buttonText=="编辑"){
-          hmsPopup.showPopup("点击右上角编辑按钮进入编辑模式");
-        }
-      };
+      //$scope.enterDeleteMode=function(num){//长点击进入删除模式，或者长点击退出删除模式
+      //  if($scope.buttonText!="编辑"){
+      //    $scope.imageList[num].deleteMode=!$scope.imageList[num].deleteMode;
+      //  }else if($scope.buttonText=="编辑"){
+      //    hmsPopup.showPopup("点击右上角编辑按钮进入编辑模式");
+      //  }
+      //};
       $scope.deleteImage=function(num){//删除图片时，会校验删除的是否为服务器上获取的图片
         for(var i=0;i<images.length;i++){
           if($scope.imageList[num].uri == images[i].objectUrl){
