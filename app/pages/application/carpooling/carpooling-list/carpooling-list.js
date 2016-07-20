@@ -37,6 +37,7 @@ angular.module('applicationModule')
     ) {
       //顶部搜索栏
       $scope.showSearchTop = false;
+      $scope.fetchServerFlag = true;
 
       $scope.goBack=function(){
         $ionicHistory.goBack();
@@ -59,7 +60,7 @@ angular.module('applicationModule')
           "page": 1,
           "pageSize":5
         };
-        hmsPopup.showLoading('请稍候');
+        //hmsPopup.showLoading('请稍候');
 
         hmsHttp.post(url, param).success(function (result) {
           hmsPopup.hideLoading();
@@ -110,6 +111,7 @@ angular.module('applicationModule')
           }
         });
       }
+      $scope.fetchServerFlag = false;
 
       $scope.viewListDetail = function (num) {//跳转到拼车详情界面
         var info=$scope.items[num];

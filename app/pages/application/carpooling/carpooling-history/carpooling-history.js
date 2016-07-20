@@ -28,6 +28,7 @@ angular.module('applicationModule')
               hmsHttp,
               hmsPopup) {
       $scope.items=[];//历史列表中的数据
+      $scope.fetchServerFlag= true;
       $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
       searchHistoryApplyListAutomatically();
       function searchHistoryApplyListAutomatically() {
@@ -37,10 +38,10 @@ angular.module('applicationModule')
             "page": 1,
             "pageSize":5
         };
-        hmsPopup.showLoading('请稍候');
+        //hmsPopup.showLoading('请稍候');
 
         hmsHttp.post(url, param).success(function (result) {
-          hmsPopup.hideLoading();
+          //hmsPopup.hideLoading();
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }
@@ -80,12 +81,15 @@ angular.module('applicationModule')
             });
           }
         }).error(function (error, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast("网络连接出错");
+          //hmsPopup.hideLoading();
+          //hmsPopup.showShortCenterToast("网络连接出错");
           if (baseConfig.debug) {
             console.log("response error " + angular.toJson(error));
           }
         });
+
+        $scope.fetchServerFlag= false;
+
       }
 
       $scope.viewHistoryDetail = function (num) {//跳转到申请详情界面

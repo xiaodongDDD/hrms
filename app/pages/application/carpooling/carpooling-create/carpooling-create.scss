@@ -1,8 +1,30 @@
+.platform-android{
+  .carpooling-create-header-bar {
+    .platform-status-bar {
+      width: 100%;
+      height: 0px;
+    }
+  }
+  .create-content {
+    top: 170px;
+  }
+}
+.platform-ios{
+  .carpooling-create-header-bar {
+    .platform-status-bar {
+      width: 100%;
+      height: 20px;
+    }
+  }
+  .create-content {
+    top: 190px;
+  }
+}
+
 .carpooling-create {
   background-color:#FAFAFA;
   .has-header{
     top: 200px;
-
   }
   .carpooling-create-header-bar {
     position: absolute;

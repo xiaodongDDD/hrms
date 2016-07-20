@@ -1,16 +1,14 @@
 <ion-view view-title="拼车列表" class="carpooling-list">
-
   <ion-header-bar align-title="center" class="bar-stable">
-    <div class="" ng-if="!showSearchTop">
-      <div class="buttons" >
+      <div class="buttons" ng-if="!showSearchTop">
         <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
           <span class="back-text">返回</span>
         </button>
-      </div>
-      <h1 class="title">拼车</h1>
+       </div>
+      <h1 class="title"  ng-if="!showSearchTop">拼车</h1>
       <div class="buttons">
-        <div class="button-location icon ion-ios-location">
-          <span class="back-text" style="font-size: 15px;">上海</span>
+        <div class="button-location icon ion-ios-location"  ng-if="!showSearchTop">
+          <span style="font-size: 15px;">上海</span>
         </div>
       </div>
     </div>
@@ -23,7 +21,10 @@
   </ion-header-bar>
 
 
-  <ion-content  class="body" on-scroll="watchTopScroll()"  delegate-handle="watchTopScroll">
+  <ion-content  class="carpooling-list-content" on-scroll="watchTopScroll()"  delegate-handle="watchTopScroll">
+    <div class="hms-hide-content" ng-if="fetchServerFlag">
+      <hms-loading></hms-loading>
+    </div>
     <div class="search" >
       <div class="input1">
         <i class="ion-ios-search search-i" style="margin-left: 1px"></i>

@@ -1,5 +1,5 @@
 .carpooling-list {
-  .body {
+  .carpooling-list-content {
     background-color: #FAFAFA;
     .search {
       width: 100%;
@@ -128,8 +128,7 @@
   .content-has-footer{
     bottom: 46px;
   }
-  .ion-ios-location:before {
-    content: "";
+  .carpooling-list .ion-ios-location:before {
     font-size: 18px;
   }
   .button-location{

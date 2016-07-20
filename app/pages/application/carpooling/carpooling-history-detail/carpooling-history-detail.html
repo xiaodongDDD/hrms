@@ -9,6 +9,9 @@
     </div>
   </ion-header-bar>
   <ion-content  class=" has-header">
+    <div class="hms-hide-content" ng-if="fetchServerFlag">
+      <hms-loading></hms-loading>
+    </div>
     <div class="body">
       <img src="build/img/application/carpooling/map.jpg" class="static-map">
       <div class="start-end">

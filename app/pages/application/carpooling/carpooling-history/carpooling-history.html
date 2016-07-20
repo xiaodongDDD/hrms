@@ -1,7 +1,6 @@
 <ion-view view-title="拼车记录" class="carpooling-history">
 
   <ion-header-bar align-title="center" class="bar-stable">
-
     <div class="buttons">
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
         <span class="history-backtext">返回</span>
@@ -10,11 +9,14 @@
     <h1 class="title">拼车记录</h1>
     <div class="buttons" ng-click="choose_location()">
       <div class="button-location icon ion-ios-location">
-        <span class="back-text">上海</span>
+        <span style="font-size: 15px;">上海</span>
       </div>
     </div>
   </ion-header-bar>
   <ion-content  class="body has-header">
+    <div class="hms-hide-content" ng-if="fetchServerFlag">
+      <hms-loading></hms-loading>
+    </div>
     <ion-list>
       <ion-item class="item-style" ng-repeat="x in items" ng-click="viewHistoryDetail($index)">
         <div class="car-list1" style="margin-top: 4px;">
