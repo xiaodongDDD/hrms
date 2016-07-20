@@ -1,14 +1,21 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.hand.china.hrms2.research" version="1.9.20" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>汉得移动内测版</name>
-    <description>
-      汉得移动内测版
+<widget id="com.hand.china.hrms2.research" version="1.9.20" xmlns="http://www.w3.org/ns/widgets"
+        xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>汉得移动内测版</name>
+  <description>
+    汉得移动内测版
   </description>
   <author email="senlin.gu@hand-china.com" href="http://example.com.com/">
     顾森林
   </author>
   <content src="index.html"/>
   <access origin="*"/>
+  <access origin="mailto:*" launch-external="yes"/>
+  <access origin="tel:*" launch-external="yes"/>
+  <allow-intent href="mailto:*"/>
+  <allow-intent href="tel:*"/>
+  <allow-navigation href="mailto:*"/>
+  <allow-navigation href="tel:*"/>
   <access launch-external="yes" origin="tel:*"/>
   <access launch-external="yes" origin="sms:*"/>
   <preference name="webviewbounce" value="false"/>
@@ -20,7 +27,7 @@
   <preference name="SplashScreenDelay" value="6000"/>
   <preference name="android-windowSoftInputMode" value="adjustPan|stateAlwaysHidden"/>
   <preference name="Fullscreen" value="false"/>
-  <preference name="KeyboardDisplayRequiresUserAction" value="true"/>
+  <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>

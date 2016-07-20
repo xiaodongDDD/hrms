@@ -266,8 +266,8 @@ gulp.task('copy-prod', function () {
 
 //自动观察代码变化
 gulp.task('watch', function () {
-  gulp.watch(['app/**/*'], ["rebuild-dev"]);
-  console.log("----have file change -----");
+  gulp.watch(['app/**/*'], ["run-dev"]);
+  console.log("----watch file change -----");
 });
 
 //手动更新www/build代码

@@ -5,6 +5,132 @@
     <js-module name="HmsCalendar" src="www/HmsCalendar.js">
         <clobbers target="HmsCalendar" />
     </js-module>
+
+<platform name="android">
+        <source-file src="src/android/CalendarListViewPlugin.java" target-dir="src/hand"/>
+        <source-file src="src/android/CalendarActivity.java" target-dir="src/hand"/>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="HmsCalendar">
+                <param name="android-package" value="hand.CalendarListViewPlugin"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/timessquare/CalendarCellDecorator.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/CalendarCellView.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/CalendarGridView.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/CalendarPickerView.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/CalendarRowView.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/DayViewAdapter.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/DefaultDayViewAdapter.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/Logr.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/LunarCalendar.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/MonthCellDescriptor.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/MonthDescriptor.java" target-dir="src/timessquare"/>
+        <source-file src="src/android/timessquare/MonthView.java" target-dir="src/timessquare"/>
+
+
+        <source-file src="src/android/libs/android-support-v4.jar" target-dir="libs" />
+
+        <source-file src="src/android/color/calendar_text_selector.xml" target-dir="res/color" />
+        <source-file src="src/android/drawable/calendar_bg_selector.xml" target-dir="res/drawable" />
+        <source-file src="src/android/drawable/shapering.xml" target-dir="res/drawable" />
+        
+        <source-file src="src/android/drawable-hdpi/head.jpg" target-dir="res/drawable-hdpi" />
+        <source-file src="src/android/drawable-hdpi/ic_back.png" target-dir="res/drawable-hdpi" />
+        <source-file src="src/android/drawable-hdpi/relax.jpg" target-dir="res/drawable-hdpi" />
+        <source-file src="src/android/drawable-hdpi/selected.png" target-dir="res/drawable-hdpi" />
+        <source-file src="src/android/drawable-hdpi/selected_relax.png" target-dir="res/drawable-hdpi" />
+        <source-file src="src/android/drawable-hdpi/selected_work.png" target-dir="res/drawable-hdpi" />
+        <source-file src="src/android/drawable-hdpi/unselected_relax.png" target-dir="res/drawable-hdpi" />
+        <source-file src="src/android/drawable-hdpi/unselected_work.png" target-dir="res/drawable-hdpi" />
+        <source-file src="src/android/drawable-hdpi/work.jpg" target-dir="res/drawable-hdpi" />
+        <source-file src="src/android/drawable-xhdpi/head.jpg" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/drawable-xhdpi/relax.jpg" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/drawable-xhdpi/work.jpg" target-dir="res/drawable-xhdpi" />
+
+        <source-file src="src/android/layout/month.xml" target-dir="res/layout" />
+        <source-file src="src/android/layout/mycalender.xml" target-dir="res/layout" />
+        <source-file src="src/android/layout/week.xml" target-dir="res/layout" />
+        <source-file src="src/android/layout/activity_calendar.xml" target-dir="res/layout" />
+
+        <source-file src="src/android/values/attrs.xml" target-dir="res/values" />
+        <!-- <source-file src="src/android/values/strings.xml" target-dir="res/values" /> -->
+        <source-file src="src/android/values/colors.xml" target-dir="res/values" />
+        <source-file src="src/android/values/dimens.xml" target-dir="res/values" />
+        <source-file src="src/android/values/styles.xml" target-dir="res/values" />
+        <source-file src="src/android/values/ids.xml" target-dir="res/values" />
+
+        <config-file target="res/values/strings.xml" parent="/resources">
+         <string name="day_name_format">EEE</string>
+         <string name="invalid_date">Date must be between %1$s and %2$s.</string>
+         <string name="month_name_format">yyyy年M月</string>
+         <string name="YYYY_MM_DD_format">yyyy-MM-DD</string>
+        </config-file>
+
+        <config-file target="res/values/dimens.xml" parent="/resources">
+          <dimen name="calendar_day_headers_paddingbottom">4dp</dimen>
+          <dimen name="calendar_month_topmargin">16dp</dimen>
+          <dimen name="calendar_month_title_bottommargin">4dp</dimen>
+          <dimen name="calendar_text_medium">18sp</dimen>
+          <dimen name="calendar_text_small">14sp</dimen>
+        </config-file>
+        <config-file target="res/values/colors.xml" parent="/resources">
+          <color name="colorPrimary">#3F51B5</color>
+          <color name="colorPrimaryDark">#303F9F</color>
+          <color name="colorAccent">#FF4081</color>
+
+          <color name="calendar_active_month_bg">#ffffffff</color>  <!-- 当月的背景颜色-->
+          <color name="calendar_bg">#ffffffff</color>
+          <color name="calendar_divider">#ffbababa</color>          <!-- 周线的颜色-->
+          <color name="calendar_inactive_month_bg">#ffffffff</color> <!-- 非当月的背景颜色-->
+         <color name="calendar_selected_day_bg">#ff379bff</color>
+         <color name="calendar_highlighted_day_bg">#ccffcc</color>
+         <color name="calendar_selected_range_bg">#ff96caff</color>
+         <color name="calendar_text_inactive">#40778088</color>
+         <color name="calendar_text_active">#000</color>  <!-- 当天日期未选时-->
+        <color name="calendar_text_active1">#ffffffff</color>   <!-- 当天日期未选时背景的颜色-->
+        <color name="calendar_text_selected">#ffffffff</color>  <!-- 选中时字的颜色-->
+        <color name="calendar_text_unselectable">#7f778088</color>
+        <color name="calendar_text_highlighted">#ff379bff</color>
+
+        <color name="calendar_text_head">#23539A</color>
+        <color name="colorl_457ABC">#458ABC</color>
+        <color name="color_black">#000</color>
+        <color name="colorbreak">#73BBA2</color>
+        <color name="colorwork">#B95756</color>
+        </config-file>
+        <config-file target="res/values/attrs.xml" parent="/resources">
+          <declare-styleable name="CalendarPickerView">
+             <attr name="android:background"/>
+             <attr name="tsquare_dividerColor" format="color"/>
+             <attr name="tsquare_dayBackground" format="reference"/>
+             <attr name="tsquare_dayTextColor" format="color"/>
+             <attr name="tsquare_titleTextColor" format="color"/>
+             <attr name="tsquare_displayHeader" format="boolean"/>
+             <attr name="tsquare_headerTextColor" format="color"/>
+         </declare-styleable>
+
+          <declare-styleable name="calendar_cell">
+            <attr name="tsquare_state_selectable" format="boolean" />
+            <attr name="tsquare_state_current_month" format="boolean" />
+            <attr name="tsquare_state_today" format="boolean" />
+            <attr name="tsquare_state_range_first" format="boolean" />
+            <attr name="tsquare_state_range_middle" format="boolean" />
+            <attr name="tsquare_state_range_last" format="boolean" />
+            <attr name="tsquare_state_highlighted" format="boolean" />
+            <attr name="tsquare_state_holiday" format="boolean" />
+            <attr name="tsquare_state_relax" format="boolean" />
+            <attr name="tsquare_state_work" format="boolean" />
+          </declare-styleable>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+         <activity android:name="hand.CalendarActivity"
+            android:launchMode="singleTop"></activity>
+        
+        </config-file>
+    </platform>
+
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="HmsCalendar">

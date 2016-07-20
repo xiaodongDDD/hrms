@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="day_name_format">EEE</string>
+    <string name="invalid_date">Date must be between %1$s and %2$s.</string>
+    <string name="month_name_format">yyyy年M月</string>
+    <string name="YYYY_MM_DD_format">yyyy-MM-DD</string>
+
+</resources>

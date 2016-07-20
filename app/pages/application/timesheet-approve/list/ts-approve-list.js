@@ -97,7 +97,7 @@ angular.module('tsApproveModule')
             "p_project_id": "",
             "p_project_person_number": "",
             "p_page": 1,
-            "p_page_size": 6
+            "p_page_size": 50
           }
         };
         var tsActionParams = { //审批拒绝/通过的参数
@@ -215,7 +215,7 @@ angular.module('tsApproveModule')
         var error = function (response) {
         };
 
-        if (ionic.Platform.isIOS()) {
+        if (ionic.Platform.isWebView()) {
           HmsCalendar.openCalendar(success, error, '1');
         }
       };
@@ -610,7 +610,7 @@ angular.module('tsApproveModule')
                 _self.listArray = [];
                 _self.scope.$broadcast('scroll.refreshComplete');
                 //hmsPopup.showShortCenterToast("没有相关数据!");
-              } else if (response.count <= 6) {
+              } else if (response.count <= 50) {
                 _self.busy = false;
               } else {
                 _self.busy = true;

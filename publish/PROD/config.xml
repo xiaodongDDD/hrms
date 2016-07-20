@@ -9,6 +9,12 @@
   </author>
   <content src="index.html"/>
   <access origin="*"/>
+  <access origin="mailto:*" launch-external="yes"/>
+  <access origin="tel:*" launch-external="yes"/>
+  <allow-intent href="mailto:*"/>
+  <allow-intent href="tel:*"/>
+  <allow-navigation href="mailto:*"/>
+  <allow-navigation href="tel:*"/>
   <access launch-external="yes" origin="tel:*"/>
   <access launch-external="yes" origin="sms:*"/>
   <preference name="webviewbounce" value="false"/>
@@ -17,10 +23,10 @@
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="4000"/>
+  <preference name="SplashScreenDelay" value="6000"/>
   <preference name="android-windowSoftInputMode" value="adjustPan|stateAlwaysHidden"/>
   <preference name="Fullscreen" value="false"/>
-  <preference name="KeyboardDisplayRequiresUserAction" value="true"/>
+  <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>

@@ -1,4 +1,4 @@
-<ion-modal-view class="transmit-person-modal" ng-controller="employeeModalCtl">
+<ion-view class="transmit-person-modal">
   <ion-header-bar align-title="center" class="bar-stable">
     <div class="transmit-search">
       <div class="transmit-button">
@@ -54,11 +54,11 @@
         <div class="row mail-tel" ng-bind="i.emp_mobil">
         </div>
       </div>
-      <div class="tel-img" ng-click="telNumber($event,i,'search')"></div>
+      <div class="tel-img" ng-click="telSaveNumber($event,i)"></div>
     </div>
     <ion-infinite-scroll on-infinite="loadMore()"
                          ng-if="showInfinite"
                          distance="0.5%">
     </ion-infinite-scroll>
   </ion-content>
-</ion-modal-view>
+</ion-view>
