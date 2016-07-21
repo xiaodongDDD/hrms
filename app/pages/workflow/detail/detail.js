@@ -1099,7 +1099,7 @@ angular.module('applicationModule')
                   $scope.multipleLine.push(self.processLine(data));
                 });
 
-                if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId) {
+                if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId && result.workflow_data.project_data) {
                   openProject().init(result.workflow_data.project_data);
                 }
 
