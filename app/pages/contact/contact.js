@@ -60,7 +60,7 @@ angular.module('contactModule')
       };
 
       function dealScanData(msg) { //处理名片扫描插件的返回数据
-        alert("msg " + jsonFormat(JSON.parse(msg)));
+        // alert("msg " + jsonFormat(JSON.parse(msg)));
         try {
           if (JSON.parse(msg)) {
             var manInfo = {
@@ -102,8 +102,10 @@ angular.module('contactModule')
             } catch (e) {
             }
           }
+          hmsPopup.hideLoading();
         } catch (e) {
           hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
+          hmsPopup.hideLoading();
         }
       };
 
@@ -118,18 +120,22 @@ angular.module('contactModule')
               cancelText: 'Cancel',
               buttonClicked: function (index) {
                 if (index == 0) {
+                  hmsPopup.showLoading('请稍后...');
                   scanCard.takePicturefun(function (msg) {
                     dealScanData(msg);
                   }, function (error) {
                     hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
+                    hmsPopup.hideLoading();
                   });
                   return true;
                 }
                 if (index == 1) {
+                  hmsPopup.showLoading('请稍后...');
                   scanCard.choosePicturefun(function (msg) {
                     dealScanData(msg);
                   }, function (error) {
                     hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
+                    hmsPopup.hideLoading();
                   });
                   return true;
                 }

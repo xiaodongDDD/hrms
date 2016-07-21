@@ -47,9 +47,9 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
      * init var section
      */
     {
-      if(ionic.Platform.isIOS()) {
-        angular.element('.ae-detail-head').css('marginTop','64px');
-        angular.element('#approveDetailContent').css('top','64px');
+      if (ionic.Platform.isIOS()) {
+        angular.element('.ae-detail-head').css('marginTop', '64px');
+        angular.element('#approveDetailContent').css('top', '64px');
       }
       var selectItem = []; //初始化点击全部条目为false
       var clickSelectAll = false; //默认没有点击全选
