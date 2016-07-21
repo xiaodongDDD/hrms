@@ -69,9 +69,6 @@
     <source-file src="src/android/layout/drawable/shape_right_chat_item.xml" target-dir="res/drawable"/>
     <source-file src="src/android/layout/drawable/select_voice_click.xml" target-dir="res/drawable"/>
 
-    <source-file src="src/android/layout/drawable-hdpi/chat_record_len_left.png" target-dir="res/drawable-hdpi"/>
-    <source-file src="src/android/layout/drawable-hdpi/chat_record_len_right.png" target-dir="res/drawable-hdpi"/>
-
     <source-file src="src/android/layout/drawable-hdpi/album_2x.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/layout/drawable-hdpi/album_blue.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/layout/drawable-hdpi/back.png" target-dir="res/drawable-hdpi"/>
@@ -218,6 +215,8 @@
     <source-file src="src/android/layout/drawable-hdpi/gxt.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/layout/drawable-hdpi/record.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/layout/drawable-hdpi/record_pressed.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/chat_record_len_left.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/chat_record_len_right.png" target-dir="res/drawable-hdpi"/>
 
     <source-file src="src/android/libs/armeabi/libRongIMLib.so" target-dir="libs/armeabi/" />
     <source-file src="src/android/libs/arm64-v8a/libRongIMLib.so" target-dir="libs/arm64-v8a/" />
@@ -317,9 +316,37 @@
     </config-file>
 
     <!-- 配置-info.plist    -->
+    <config-file target="*-Info.plist"  parent="View controller-based status bar appearance">
+      <false>NO</false>
+    </config-file>
+
     <!-- resource   -->
-    <resource-file src="src/ios/plugins/image" />
-    <resource-file src="src/ios/plugins/fmdb" />
+    <resource-file src="src/ios/plugins/images/back@2x.png" />
+    <resource-file src="src/ios/plugins/images/back@3x.png" />
+
+    <!-- IMKit -->
+    <!--        <resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/Emoji.plist" />-->
+    <!--        <resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/zh-Hans.lproj/RongCloudKit.strings" />-->
+    <!--        <source-file src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/libopencore-amrnb.a" framework="ture"/>-->
+    <!--        <framework src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/RongIMKit.framework" custom="true"/>-->
+    <!--        <framework src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/RongIMLib.framework" custom="true"/>-->
+    <!--        <resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/RongCloud.bundle" />-->
+    <!--        <resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/RCConfig.plist" />-->
+
+    <!-- fmdb  fmdb -->
+    <header-file src="src/ios/plugins/fmdb/FMDB.h" />
+    <header-file src="src/ios/plugins/fmdb/FMDatabase.h" />
+    <source-file src="src/ios/plugins/fmdb/FMDatabase.m" />
+    <header-file src="src/ios/plugins/fmdb/FMDatabaseAdditions.h" />
+    <source-file src="src/ios/plugins/fmdb/FMDatabaseAdditions.m" />
+    <header-file src="src/ios/plugins/fmdb/FMDatabasePool.h" />
+    <source-file src="src/ios/plugins/fmdb/FMDatabasePool.m" />
+    <header-file src="src/ios/plugins/fmdb/FMDatabaseQueue.h" />
+    <source-file src="src/ios/plugins/fmdb/FMDatabaseQueue.m" />
+    <header-file src="src/ios/plugins/fmdb/FMResultSet.h" />
+    <source-file src="src/ios/plugins/fmdb/FMResultSet.m" />
+
+
     <!--源码 -->
     <header-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.h" />
     <source-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.m" />
@@ -336,8 +363,8 @@
     <header-file src="src/ios/plugins/CDVIMPluginChattingViewController.h"/>
     <source-file src="src/ios/plugins/CDVIMPluginChattingViewController.m"/>
 
-    <!--<header-file src="src/ios/plugins/UIColor+Hex.h"/>
-    <header-file src="src/ios/plugins/UIColor+Hex.m"/>-->
+    <header-file src="src/ios/plugins/UIColor+Hex.h"/>
+    <header-file src="src/ios/plugins/UIColor+Hex.m"/>
 
     <header-file src="src/ios/plugins/CVDPlugin-Bridging-Header.h"/>
 
@@ -354,17 +381,17 @@
     <framework src="CoreTelephony.framework" />
     <framework src="CoreVideo.framework" />
     <framework src="ImageIO.framework" />
-    <framework src="libc++abi.tbd" />
-    <framework src="libstdc++.tbd" />
-    <framework src="libxml2.tbd" />
+    <framework src="libc++abi.tbd"  weak="true"/>
+    <framework src="libstdc++.tbd" weak="true" />
+    <framework src="libxml2.tbd" weak="true"/>
     <framework src="MapKit.framework" />
     <framework src="OpenGLES.framework" />
     <framework src="QuartzCore.framework" />
     <framework src="SystemConfiguration.framework" />
     <framework src="AssetsLibrary.framework" />
-    <framework src="libc++.tbd" />
-    <framework src="libsqlite3.0.tbd" />
-    <framework src="libz.tbd" />
+    <framework src="libc++.tbd" weak="true"/>
+    <framework src="libsqlite3.0.tbd" weak="true"/>
+    <framework src="libz.tbd" weak="true"/>
 
   </platform>
 </plugin>

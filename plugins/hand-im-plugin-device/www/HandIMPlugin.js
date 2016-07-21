@@ -34,13 +34,24 @@ var HandIMPlugin = {
     }
     exec(successCallback, errorCallback, "HandIMPlugin", "toChatAct", [options]);
   },
-  
+
   returnConversationList: function (successCallback, errorCallback) {
     exec(successCallback, errorCallback, "HandIMPlugin", "returnConversationList", []);
   },
 
   deleteConversationList: function (successCallback, errorCallback, friendId) {
     exec(successCallback, errorCallback, "HandIMPlugin", "deleteConversationList", [friendId]);
+  },
+
+  openNotificationInAndroidCallback: function(data){
+    try {
+      data = JSON.stringify(data);
+      var bToObj = JSON.parse(data);
+      this.openNotification = bToObj;
+      cordova.fireDocumentEvent('IMPush.openNotification', this.openNotification);
+    } catch(exception) {
+      console.log(exception);
+    }
   }
 };
 

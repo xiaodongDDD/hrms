@@ -25,6 +25,10 @@
     }
   }
 
+  .list {
+    margin-top: 5px;
+  }
+
   .message-list-item {
     padding: 0;
     margin: 0;
@@ -37,16 +41,23 @@
     }
   }
 
-  .delete-button{
-    width: 100%;height: 55px;text-align: center; margin-top: auto;margin-bottom: auto;
-    .delete-item{
-      height: 35px;line-height: 35px;
-      .delete-icon{
+  .delete-button {
+    width: 100%;
+    height: 55px;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    .delete-item {
+      height: 35px;
+      line-height: 35px;
+      .delete-icon {
         font-size: 26px;
       }
     }
-    .delete-text{
-      height: 20px;line-height: 20px;font-size: 12px
+    .delete-text {
+      height: 20px;
+      line-height: 20px;
+      font-size: 12px
     }
   }
 
@@ -133,9 +144,10 @@
         line-height: 20px;
         font-size: 13px;
         color: white;
-        background: #6BB9F0;
+        background: #EB5F02;
         border-radius: 10px;
         box-shadow: 0px 0px 4px #DBDBDB;
+        float: right;
       }
     }
   }

@@ -107,7 +107,7 @@ angular.module('messageModule')
       };
       $timeout(function () {
         getMessageList();
-      },1000);
+      },500);
 
       /*$scope.messageList = [
        {
@@ -116,7 +116,7 @@ angular.module('messageModule')
        "imgUrl": "11111",
        "count": "11111",
        "employee": "11111",
-       "time": "11111"
+       "time": "111111111111111111111111"
        }
        ];*/
 

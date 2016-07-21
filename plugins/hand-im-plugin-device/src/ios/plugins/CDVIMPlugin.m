@@ -42,22 +42,22 @@
     nav = [[UINavigationController alloc] initWithRootViewController:cdvIMChattingVC];
      cdvIMChattingVC.targetId = friendId;
      cdvIMChattingVC.navTitle = friendName;
-
+    
     //自定义push动画
     CATransition *animation = [CATransition animation];
     animation.duration = 0.3;
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     animation.type = kCATransitionFade;
     animation.subtype = kCATransitionFromRight;
-
+    
     [animation setFillMode:kCAFillModeBackwards];
     animation.removedOnCompletion = YES;
     [self.viewController.view.superview.layer addAnimation:animation forKey:@"animation"];
-
+    
     [self.viewController.view addSubview:nav.view];
-
+    
     //   [self.viewController presentViewController:nav animated:NO completion:nil];
-
+    
 }
 
 
@@ -68,7 +68,7 @@
     CDVPluginResult *result;
     result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"message":[DataBaseTool getAllMessagesData]}];
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-
+    
 }
 
 -(void)deleteConversationList:(CDVInvokedUrlCommand *)command
@@ -106,18 +106,18 @@
                           name:CDVIMPluginPushNotification
                         object:nil];
     NSLog(@"come initNotifications");
-
+    
 }
 
 - (void)IMPluginDidReceiveMessage:(NSNotification *)notification
 {
     NSLog(@"come IMPluginDidReceiveMessage");
-
-    NSData *jsonStrData = [NSJSONSerialization dataWithJSONObject:@{@"message":[DataBaseTool getAllMessagesData]} options:NSJSONWritingPrettyPrinted error:nil];
+    
+    NSData *jsonStrData = [NSJSONSerialization dataWithJSONObject:@{@"messages":[DataBaseTool getAllMessagesData]} options:NSJSONWritingPrettyPrinted error:nil];
     NSString *jsonStr = [[NSString alloc] initWithData:jsonStrData encoding:NSUTF8StringEncoding];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('IMPush.openNotification',%@)",jsonStr]];
-
+        
     });
 }
 
