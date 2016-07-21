@@ -2,8 +2,12 @@
 # http://git-scm.com/docs/gitignore
 
 node_modules/
-platforms/
-plugins/
+/platforms/
+/plugins/ios.json
+/plugins/android.json
 app/lib/
 .DS_Store
 .idea
+www/build/
+/config.xml
+app/scripts/baseConfig.js
