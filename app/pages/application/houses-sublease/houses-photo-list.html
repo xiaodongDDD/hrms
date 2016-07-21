@@ -8,14 +8,21 @@
     <h1 class="title">发布</h1>
   </ion-header-bar>
   <ion-content style="background-color: #fafafa;">
-      <div style="float: left; margin-top: 15px; margin-left: 25px " ng-repeat="img in housesPhoto">
-        <img src="{{img.objectUrl}}" style="width: 150px; height: 120px; border: 1px solid #D2D2D2; display:inline-block">
+      <div style="float: left; margin-top: 15px; margin-left: 7%; width: 40% " ng-repeat="img in housesPhoto">
+        <img src="{{img.objectUrl}}" style="width: 100%; height: 120px; border: 1px solid #D2D2D2; display:inline-block" on-tap="showBigPicture(img.objectUrl)">
       </div>
 
-      <div style="width: 150px; height: 120px; border: 1px solid #D2D2D2; margin-top: 15px; margin-left: 25px; text-align: center">
+      <div style="width: 40%; height: 120px; border: 1px solid #D2D2D2; margin-top: 15px; margin-left: 7%; text-align: center; float: left">
         <img src="build/img/application/houses-sublease/add@2x.png"
              style="width: 80px; height: 80px; margin-top: 18px" ng-click="takePicture()">
       </div>
 
   </ion-content>
+  <div class="black-page" ng-if="pictureAppearance" ng-click="hideBigPicture()">
+    <ion-scroll has-bouncing="false" class="scroll-height">
+      <div class="flank">
+        <img id="my-big-picture" ng-src="{{extensionPicture}}" class="picture-position"/>
+      </div>
+    </ion-scroll>
+  </div>
 </ion-view>

@@ -15,8 +15,11 @@
   </ion-header-bar>
   <ion-content style="background-color: #fafafa">
     <ion-slide-box on-slide-changed="slideChanged(index)" style="width: 100%;height: 274px;">
-      <ion-slide ng-repeat="item in housesSubDetail.imgs">
+      <ion-slide ng-repeat="item in housesSubDetail.imgs" ng-if="housesSubDetail.imgs != ''">
         <img ng-src="{{item.objectUrl}}" style="width: 100%;height: 274px;"/>
+      </ion-slide>
+      <ion-slide ng-if="housesSubDetail.imgs == ''">
+        <img ng-src="build/img/application/houses-sublease/default2@3x.png" style="width: 100%;height: 274px;"/>
       </ion-slide>
     </ion-slide-box>
 
@@ -35,12 +38,12 @@
           发布日期：{{housesSubDetail.publishDate}}
         </div>
         <div class="col"
-             style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 14px; color: #24559C">
-          {{(housesSubDetail.expireDate).substr(5,2);}}月到期
+             style="padding: 0px; margin: 0px; margin-top: 16px; font-size: 14px; color: #24559C; text-align: right">
+          <div>{{(housesSubDetail.expireDate).substr(5,2);}}月到期</div>
         </div>
         <div class="col"
-             style="padding: 0px; margin: 0px; margin-top: 16px; margin-left: 15px; font-size: 14px; color: #9B9B9B">
-          {{housesSubDetail.area}}
+             style="padding: 0px; margin: 0px; margin-top: 16px; font-size: 14px; color: #9B9B9B; text-align: right">
+          <div style="margin-right: 15px">{{housesSubDetail.area}}</div>
         </div>
       </div>
     </div>
