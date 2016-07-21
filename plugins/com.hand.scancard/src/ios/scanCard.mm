@@ -68,7 +68,7 @@
 
 - (void)returnMess:(CDVInvokedUrlCommand *)command
           andError:(NSString *)error
-        andSuccess:(NSDictionary *)successMsg
+        andSuccess:(NSString *)successMsg
           andError:(NSString *)errorMsg {
     //   测试回调
     
@@ -79,11 +79,16 @@
     
     if (error == nil) {
         
-        NSLog(@"the 心思 是%@", successMsg);
         
         
+        //    正确消息是传入的字典，比较常用
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
-                                   messageAsDictionary  :successMsg];
+                                   messageAsString:successMsg];
+        //  也可以传入字符串
+        
+        //        pluginResult       = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+        //                                               messageAsString:errorMsg];
+        
     } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
                                          messageAsString:errorMsg];
@@ -96,7 +101,7 @@
 
 //调用网络接口，并返回识别结果
 
-- (NSDictionary *)postRequestWithURL:(NSString *)url  // IN
+- (NSString *)postRequestWithURL:(NSString *)url  // IN
                           postParems:(NSMutableDictionary *)postParems // IN
                              picFile:(UIImage *)uiImage // IN;  // IN
 {
@@ -114,7 +119,9 @@
     //得到图片的data
     NSData *imaData;
     //    data = UIImagePNGRepresentation(uiImage);
-    imaData = UIImageJPEGRepresentation(uiImage, 0.1);
+    imaData = [self compressImage:uiImage toMaxFileSize:50000];
+    
+    //    imaData=UIImageJPEGRepresentation(uiImage, 0.1);
     NSLog(@"the image is %@", uiImage);
     //http body的字符串
     NSMutableString *body = [[NSMutableString alloc] init];
@@ -177,13 +184,15 @@
     
     NSData *resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
     
-    //    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
+    NSString *result = [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
     //    if([urlResponese statusCode] >=200&&[urlResponese statusCode]<300){
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingAllowFragments error:nil];
-    
-    
-    //    NSLog(@"返回结果=====%@",result);
-    return dic;
+    //
+    if (dic==nil) {
+        result=@"";
+    }
+    NSLog(@"返回结果=====%@", result);
+    return result;
     //    }
     
 }
@@ -194,6 +203,19 @@
      {
          [self reconizeCardWithCardImage:image];
      }];
+}
+
+#pragma mark 压缩图片
+- (NSData *)compressImage:(UIImage *)image toMaxFileSize:(NSInteger)maxFileSize {
+    CGFloat compression = 0.9f;
+    CGFloat maxCompression = 0.1f;
+    NSData *imageData = UIImageJPEGRepresentation(image, compression);
+    while ([imageData length] > maxFileSize && compression > maxCompression) {
+        compression -= 0.1;
+        imageData = UIImageJPEGRepresentation(image, compression);
+    }
+    
+    return imageData;
 }
 
 - (void)reconizeCardWithCardImage:(UIImage *)image {
@@ -207,191 +229,224 @@
     
     
     //第一步，创建URL
-    NSString *url = @"http://bcr2.intsig.net/BCRService/BCR_VCF2?user=mobile.hand@vip.hand-china.com&pass=T6LD4LTJG8GK5RT3&lang=15&json=1";
+    NSString *url = @"http://bcr2.intsig.net/BCRService/BCR_VCF2?user=yanjun.li@hand-china.com&pass=T6LD4LTJG8GK5RT3&lang=15&json=1";
     //    NSMutableDictionary * dir=[[NSMutableDictionary alloc] init];
-    //    [dir setValue:@"yanjun.li@hand-china.com" forKey:@"user"];
+    //    [dir setValue:@"mobile.hand@vip.hand-china.com" forKey:@"user"];
     //    [dir setValue:@"T6LD4LTJG8GK5RT3" forKey:@"pass"];
     //    [dir setValue:@"28" forKey:@"lang"];
     //    [dir setValue:@"1" forKey:@"json"];
-    NSDictionary *resultDict = [self postRequestWithURL:url postParems:nil picFile:image];
-    NSLog(@"返回的字典是%@", resultDict);
+//    NSDictionary *resultDict = [self postRequestWithURL:url postParems:nil picFile:image];
+//    NSLog(@"返回的字典是%@", resultDict);
+        NSString* result=[self postRequestWithURL:url postParems:nil picFile:image];
     
-    if (resultDict != nil) {
-        //可变字典
-        NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-        //        姓名
-        for (NSDictionary *item in  [resultDict objectForKey:@"name"]) {
-            
-            NSDictionary *name = [item objectForKey:@"item"];
-            
-            [dic setObject:[NSString stringWithFormat:@"%@", [name objectForKey:@"family_name"]]
-                    forKey:@"lastName"];
-            [dic setObject:[NSString stringWithFormat:@"%@", [name objectForKey:@"given_name"]]
-                    forKey:@"firstName"];
-            
-        }
-        
-        
-        //        电话
-        NSMutableArray *phones = [[NSMutableArray alloc] init
-                                  ];
-        
-        for (NSDictionary *item in  [resultDict objectForKey:@"telephone"]) {
-            
-            NSDictionary *phone = [item objectForKey:@"item"];
-            NSString *type = [NSString stringWithFormat:@"%@", [phone objectForKey:@"type"]];
-            NSRange pos = [type rangeOfString:@"cellular"];
-            if (pos.length > 0) {
-                type = @"CELL";
-            } else {
-                type = @"WORK";
-            }
-            NSDictionary *dic1 = @{@"itemInfo" : [NSString stringWithFormat:@"%@", [phone objectForKey:@"number"]],
-                                   @"itemLabel" : type};
-            [phones addObject:dic1];
-            
-            
-        }
-        
-        [dic setObject:phones forKey:@"phones"];
-        
-        
-        
-        //        email
-        NSMutableArray *emails = [[NSMutableArray alloc] init
-                                  ];
-        
-        for (NSDictionary *item in  [resultDict objectForKey:@"email"]) {
-            
-            NSString *email = [NSString stringWithFormat:@"%@", [item objectForKey:@"item"]];
-            NSLog(@"email is %@", email);
-            NSDictionary *dic1 = @{@"itemInfo" : email,
-                                   @"itemLabel" : @"WORK"};
-            [emails addObject:dic1];
-            
-            
-        }
-        
-        [dic setObject:emails forKey:@"emails"];
-        
-        
-        //        company
-        NSMutableArray *companys = [[NSMutableArray alloc] init
-                                    ];
-        
-        for (NSDictionary *item in  [resultDict objectForKey:@"organization"]) {
-            
-            
-            NSDictionary *company = [item objectForKey:@"item"];
-            NSString *name = [NSString stringWithFormat:@"%@", [company objectForKey:@"name"]];
-            NSLog(@"name=%@", name);
-            if ([name isEqualToString:@"(null)"]) {
-                
-            } else {
-                
-                NSDictionary *dic1 = @{@"company" : name,
-                                       @"department" :  [NSString stringWithFormat:@"%@", [company objectForKey:@"unit"]]};
-                [companys addObject:dic1];
-                
-                
-            }
-            
-            
-        }
-        
-        [dic setObject:companys forKey:@"companys"];
-        
-        
-        //        jobtitle
-        NSMutableArray *jobtitles = [[NSMutableArray alloc] init
-                                     ];
-        
-        for (NSDictionary *item in  [resultDict objectForKey:@"title"]) {
-            
-            NSString *jobtitle = [NSString stringWithFormat:@"%@", [item objectForKey:@"item"]];
-            NSLog(@"email is %@", jobtitle);
-            
-            NSDictionary *dic1 = @{@"jobtitle" : jobtitle};
-            [jobtitles addObject:dic1];
-            
-            
-        }
-        
-        [dic setObject:jobtitles forKey:@"jobtitles"];
-        
-        
-        
-        //        address
-        
-        NSMutableArray *addresses = [[NSMutableArray alloc] init
-                                     ];
-        
-        
-        for (NSDictionary *item in  [resultDict objectForKey:@"address"]) {
-            
-            NSDictionary *addre = [item objectForKey:@"item"];
-            
-            
-            NSString *type = [NSString stringWithFormat:@"%@", [addre objectForKey:@"type"]];
-            NSRange pos = [type rangeOfString:@"work"];
-            if (pos.length > 0) {
-                type = @"WORK";
-            }
-            
-            NSDictionary *dic1 = @{@"lable" : type,
-                                   @"country" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"country"]],
-                                   @"province" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"locality"]],
-                                   @"city" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"locality"]],
-                                   @"street" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"street"]],
-                                   @"street2" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"street"]],
-                                   @"postcode" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"postal_code"]]};
-            
-            
-            [addresses addObject:dic1];
-            
-        }
-        
-        [dic setObject:addresses forKey:@"addresses"];
-        
-        
-        
-        NSMutableArray *url = [[NSMutableArray alloc] init
-                               ];
-        
-        
-        for (NSDictionary *item in  [resultDict objectForKey:@"url"]) {
-            
-            NSString *urlItem = [NSString stringWithFormat:@"%@", [item objectForKey:@"item"]];
-            
-            
-            NSDictionary *dic1 = @{@"itemInfo" : urlItem,
-                                   @"itemLabel" :@"HOMEPAGE"};
-            
-            [url addObject:dic1];
-            
-        }
-        
-        [dic setObject:url forKey:@"url"];
-        
-        
-        self.dict = dic;
-        NSLog(@"dic =%@", dic);
-        
-    } else {
+    if ([result isEqualToString:@""]) {
         _errorflag = @"1";
-        _errorMsg = @"没有返回结果";
+                _errorMsg = @"没有返回结果";
     }
     
-    
-    
-    
     [self returnMess:self._command
-            andError:_errorflag
-          andSuccess:self.dict
-            andError:self.errorMsg];
-    //    NSLog(@"the result is %@",result);
-    
+                 andError:_errorflag
+               andSuccess:result
+                 andError:self.errorMsg];
     
 }
+
+//- (void)reconizeCardWithCardImage:(UIImage *)image {
+//    //    webView *p=[[webView alloc] init];
+//
+//    NSLog(@"reconize");
+//
+//
+//
+//
+//
+//
+//    //第一步，创建URL
+//    NSString *url = @"http://bcr2.intsig.net/BCRService/BCR_VCF2?user=yanjun.li@hand-china.com&pass=T6LD4LTJG8GK5RT3&lang=15&json=1";
+//    //    NSMutableDictionary * dir=[[NSMutableDictionary alloc] init];
+//    //    [dir setValue:@"mobile.hand@vip.hand-china.com" forKey:@"user"];
+//    //    [dir setValue:@"T6LD4LTJG8GK5RT3" forKey:@"pass"];
+//    //    [dir setValue:@"28" forKey:@"lang"];
+//    //    [dir setValue:@"1" forKey:@"json"];
+//    NSDictionary *resultDict = [self postRequestWithURL:url postParems:nil picFile:image];
+//    NSLog(@"返回的字典是%@", resultDict);
+//
+//    if (resultDict != nil) {
+//        //可变字典
+//        NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+//        //        姓名
+//        for (NSDictionary *item in  [resultDict objectForKey:@"name"]) {
+//
+//            NSDictionary *name = [item objectForKey:@"item"];
+//
+//            [dic setObject:[NSString stringWithFormat:@"%@", [name objectForKey:@"family_name"]]
+//                    forKey:@"lastName"];
+//            [dic setObject:[NSString stringWithFormat:@"%@", [name objectForKey:@"given_name"]]
+//                    forKey:@"firstName"];
+//
+//        }
+//
+//
+//        //        电话
+//        NSMutableArray *phones = [[NSMutableArray alloc] init
+//                                  ];
+//
+//        for (NSDictionary *item in  [resultDict objectForKey:@"telephone"]) {
+//
+//            NSDictionary *phone = [item objectForKey:@"item"];
+//            NSString *type = [NSString stringWithFormat:@"%@", [phone objectForKey:@"type"]];
+//            NSRange pos = [type rangeOfString:@"cellular"];
+//            if (pos.length > 0) {
+//                type = @"CELL";
+//            } else {
+//                type = @"WORK";
+//            }
+//            NSDictionary *dic1 = @{@"itemInfo" : [NSString stringWithFormat:@"%@", [phone objectForKey:@"number"]],
+//                                   @"itemLabel" : type};
+//            [phones addObject:dic1];
+//
+//
+//        }
+//
+//        [dic setObject:phones forKey:@"phones"];
+//
+//
+//
+//        //        email
+//        NSMutableArray *emails = [[NSMutableArray alloc] init
+//                                  ];
+//
+//        for (NSDictionary *item in  [resultDict objectForKey:@"email"]) {
+//
+//            NSString *email = [NSString stringWithFormat:@"%@", [item objectForKey:@"item"]];
+//            NSLog(@"email is %@", email);
+//            NSDictionary *dic1 = @{@"itemInfo" : email,
+//                                   @"itemLabel" : @"WORK"};
+//            [emails addObject:dic1];
+//
+//
+//        }
+//
+//        [dic setObject:emails forKey:@"emails"];
+//
+//
+//        //        company
+//        NSMutableArray *companys = [[NSMutableArray alloc] init
+//                                    ];
+//
+//        for (NSDictionary *item in  [resultDict objectForKey:@"organization"]) {
+//
+//
+//            NSDictionary *company = [item objectForKey:@"item"];
+//            NSString *name = [NSString stringWithFormat:@"%@", [company objectForKey:@"name"]];
+//            NSLog(@"name=%@", name);
+//            if ([name isEqualToString:@"(null)"]) {
+//
+//            } else {
+//
+//                NSDictionary *dic1 = @{@"company" : name,
+//                                       @"department" :  [NSString stringWithFormat:@"%@", [company objectForKey:@"unit"]]};
+//                [companys addObject:dic1];
+//
+//
+//            }
+//
+//
+//        }
+//
+//        [dic setObject:companys forKey:@"companys"];
+//
+//
+//        //        jobtitle
+//        NSMutableArray *jobtitles = [[NSMutableArray alloc] init
+//                                     ];
+//
+//        for (NSDictionary *item in  [resultDict objectForKey:@"title"]) {
+//
+//            NSString *jobtitle = [NSString stringWithFormat:@"%@", [item objectForKey:@"item"]];
+//            NSLog(@"email is %@", jobtitle);
+//
+//            NSDictionary *dic1 = @{@"jobtitle" : jobtitle};
+//            [jobtitles addObject:dic1];
+//
+//
+//        }
+//
+//        [dic setObject:jobtitles forKey:@"jobtitles"];
+//
+//
+//
+//        //        address
+//
+//        NSMutableArray *addresses = [[NSMutableArray alloc] init
+//                                     ];
+//
+//
+//        for (NSDictionary *item in  [resultDict objectForKey:@"address"]) {
+//
+//            NSDictionary *addre = [item objectForKey:@"item"];
+//
+//
+//            NSString *type = [NSString stringWithFormat:@"%@", [addre objectForKey:@"type"]];
+//            NSRange pos = [type rangeOfString:@"work"];
+//            if (pos.length > 0) {
+//                type = @"WORK";
+//            }
+//
+//            NSDictionary *dic1 = @{@"lable" : type,
+//                                   @"country" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"country"]],
+//                                   @"province" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"locality"]],
+//                                   @"city" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"locality"]],
+//                                   @"street" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"street"]],
+//                                   @"street2" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"street"]],
+//                                   @"postcode" :  [NSString stringWithFormat:@"%@", [addre objectForKey:@"postal_code"]]};
+//
+//
+//            [addresses addObject:dic1];
+//
+//        }
+//
+//        [dic setObject:addresses forKey:@"addresses"];
+//
+//
+//
+//        NSMutableArray *url = [[NSMutableArray alloc] init
+//                               ];
+//
+//
+//        for (NSDictionary *item in  [resultDict objectForKey:@"url"]) {
+//
+//            NSString *urlItem = [NSString stringWithFormat:@"%@", [item objectForKey:@"item"]];
+//
+//
+//            NSDictionary *dic1 = @{@"itemInfo" : urlItem,
+//                                   @"itemLabel" :@"HOMEPAGE"};
+//
+//            [url addObject:dic1];
+//
+//        }
+//
+//        [dic setObject:url forKey:@"url"];
+//
+//
+//        self.dict = dic;
+//        NSLog(@"dic =%@", dic);
+//
+//    } else {
+//        _errorflag = @"1";
+//        _errorMsg = @"没有返回结果";
+//    }
+//
+//
+//
+//
+//    [self returnMess:self._command
+//            andError:_errorflag
+//          andSuccess:self.dict
+//            andError:self.errorMsg];
+//    //    NSLog(@"the result is %@",result);
+//
+//
+//}
 
 @end
