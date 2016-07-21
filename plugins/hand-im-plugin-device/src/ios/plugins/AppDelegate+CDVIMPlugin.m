@@ -83,7 +83,7 @@
 {
     //Z0UlKIjcWqYbOshfngwNC1lLUTMDagqb7z8dTqJKoTt0JHVAabLVUf/TjGkBDUrTmen/J3gPG+6UiAfZePpL3A==
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-    [[RCIM sharedRCIM] connectWithToken:@"Z0UlKIjcWqYbOshfngwNC1lLUTMDagqb7z8dTqJKoTt0JHVAabLVUf/TjGkBDUrTmen/J3gPG+6UiAfZePpL3A==" success:^(NSString *userId) {
+    [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
         //设置用户信息提供者,页面展现的用户头像及昵称都会从此代理取
         //   [[RCIM sharedRCIM] setUserInfoDataSource:self];
         NSLog(@"Login successfully with userId: %@", userId);

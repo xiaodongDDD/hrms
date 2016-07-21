@@ -24,8 +24,8 @@
     [super viewDidLoad];
     
     //阴影视图背景
-    [self.navigationController.view.layer setShadowColor:[UIColor grayColor].CGColor];
-    [self.navigationController.view.layer setShadowOffset:CGSizeMake(-5, 0)];
+    [self.navigationController.view.layer setShadowColor:[UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:0.6].CGColor];
+    [self.navigationController.view.layer setShadowOffset:CGSizeMake(-2, 0)];
     [self.navigationController.view.layer setShadowOpacity:1.0];
     [self.navigationController.view.layer setShadowRadius:5.0];
     
@@ -50,11 +50,11 @@
     
     [self.navigationController.navigationBar setTintColor:[UIColor  colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0]];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     
-    // UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back@2x"] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
-    //  self.navigationItem.leftBarButtonItems = @[backBtn];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithCGImage:[UIImage imageNamed:@"dial_2x.png"].CGImage scale:1.6 orientation:UIImageOrientationUp] style:UIBarButtonItemStyleDone target:self action:@selector(call:)];
+     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back@2x"] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+      self.navigationItem.leftBarButtonItems = @[backBtn];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithCGImage:[UIImage imageNamed:@"dial_2x.png"].CGImage scale:1.6 orientation:UIImageOrientationUp] style:UIBarButtonItemStyleDone target:self action:@selector(call:)];
 }
 
 //按钮按下会触发
