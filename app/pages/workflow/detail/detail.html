@@ -240,26 +240,84 @@
         </div>
       </div>
 
-      <!--处理意见和转交人-->
-      <div class="hms-extra-info" ng-if="workflowActionShowFlag">
-        <div class="hms-opinion">
-          <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
-          </input>
+
+      <!--新开项目-->
+      <div class="hms-workflow-array">
+        <div class="hms-singal-array-header">
+          <div class="hms-singal-array-name">
+            <i class="ion-record"></i>确认信息
+          </div>
+          <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(openProjectDetail,$event)">
+            <i
+              ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[openProjectDetail.showFlag]"></i>
+          </div>
         </div>
-        <div class="hms-transmit" ng-click="workflowDetailUtil.chooseTransmitPerson()">
-          <div class="row row-col-no-padding">
-            <div class="col col-20 transmit-title row-col-no-padding">
-              转交人
+        <div class="hms-singal-array-content" ng-if="openProjectDetail.showFlag">
+          <div class="hms-singal-array-line">
+            <div class="hms-singal-array-key">
+              合同销售金额
             </div>
-            <div class="col col-66 transmit-person row-col-no-padding">
-              {{processExtroInfo.transmitPerson.name}}
+            <input class="hms-singal-array-value" placeholder="合同金额"
+                   ng-model="openProjectDetail.amount" style="height: 18px;">
+            </input>
+          </div>
+          <div class="hms-singal-array-line" ng-click="openProjectUtil.openProjectTypeShow()">
+            <div class="hms-singal-array-key">
+              是否新开项目
             </div>
-            <div class="col col-10 row-col-no-padding">
-              <img src="build/img/workflow/select@3x.png"/>
+            <div class="hms-singal-array-value" ng-bind="openProjectDetail.openProjectTypeDesc">
+            </div>
+          </div>
+          <div class="hms-singal-array-line">
+            <div class="hms-singal-array-key">
+              项目代码
+            </div>
+            <input class="hms-singal-array-value" placeholder="项目代码" ng-if="openProjectDetail.openNewProjectFlag == '0'"
+                   ng-model="openProjectDetail.projectCode" style="height: 18px;">
+            </input>
+            <div class="hms-singal-array-value" ng-bind="openProjectDetail.projectCode" ng-click="showOpenProjectModal()"
+                 ng-if="openProjectDetail.openNewProjectFlag=='1'">
+            </div>
+          </div>
+          <div class="hms-singal-array-line">
+            <div class="hms-singal-array-key">
+              项目名称
+            </div>
+            <input class="hms-singal-array-value" placeholder="项目名称"
+                   ng-if="openProjectDetail.openNewProjectFlag =='0'"
+                   ng-model="openProjectDetail.projectName" style="height: 18px;">
+            </input>
+            <div class="hms-singal-array-value" ng-bind="openProjectDetail.projectName"
+                 ng-if="openProjectDetail.openNewProjectFlag=='1'">
             </div>
           </div>
         </div>
+        <a class="hms-application-member-button" ng-if="workflowActionShowFlag"
+           ng-click="openProjectUtil.saveOpenProject(openProjectDetail)">保存</a>
       </div>
+    </div>
+
+
+    <!--处理意见和转交人-->
+    <div class="hms-extra-info" ng-if="workflowActionShowFlag">
+      <div class="hms-opinion">
+        <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
+        </input>
+      </div>
+      <div class="hms-transmit" ng-click="workflowDetailUtil.chooseTransmitPerson()">
+        <div class="row row-col-no-padding">
+          <div class="col col-20 transmit-title row-col-no-padding">
+            转交人
+          </div>
+          <div class="col col-66 transmit-person row-col-no-padding">
+            {{processExtroInfo.transmitPerson.name}}
+          </div>
+          <div class="col col-10 row-col-no-padding">
+            <img src="build/img/workflow/select@3x.png"/>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   </ion-content>
 
@@ -297,3 +355,96 @@
     </div>
   </div>
 </ion-view>
+
+
+<script id="project-modal.html" type="text/ng-template">
+
+  <style>
+    #projectModal .header-search {
+      width: 100%;
+      height: 3.125rem;
+      background-color: #f8f8f8;
+      padding: 0.5rem 0.75rem;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+
+    #projectModal .input-search {
+      width: 100%;
+      height: 2rem;
+      padding: 0.25rem;
+      font-size: 0.875rem;
+      line-height: 1.42857143;
+      color: #555;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+    }
+
+    #projectModal .input-left {
+      padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+      font-size: 1.5rem;
+      color: #555;
+      text-align: center;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-right: none;
+      border-radius: 0.375rem 0 0 0.375rem;
+    }
+
+    #projectModal .input-right {
+      height: 2rem;
+      text-align: center;
+      background-color: #f8f8f8;
+      border: 1px solid #ccc;
+      border-radius: 0 0.375rem 0.375rem 0;
+      padding: 0.25rem;
+    }
+
+    #projectModal .font-search {
+      height: 1.5rem;
+      line-height: 1.5rem;
+      font-size: 1rem;
+      color: #999;
+    }
+
+    #projectModal .input-right.active,
+    #projectModal .input-right.activated {
+      background-color: #eee;
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+  </style>
+
+  <ion-modal-view id="projectModal" style="top: 0;">
+    <ion-header-bar style="background-color: #f8f8f8">
+      <button class="button button-clear" ng-click="closeOpenProjectModal()" style="color: #333">返回</button>
+      <h1 class="title">合并项目选择</h1>
+      <button class="button button-clear" ng-click="clearOpenProjectChoose()" style="color: #333">清选</button>
+    </ion-header-bar>
+    <ion-content>
+      <!--<ion-refresher pulling-text="下拉刷新" on-refresh=""></ion-refresher>-->
+      <div class="row header-search">
+        <div class="input-left" style="width: 10%;"><i class="ion-ios-search"></i></div>
+        <div style="width: 70%;">
+          <input class="input-search" placeholder="输入项目代码或名称" ng-model='openProjectDetail.condition'/>
+        </div>
+        <div class="input-right" style="width: 20%;" ng-click="openProjectSearch()">
+          <span class="font-search">查询</span>
+        </div>
+      </div>
+      <ion-list>
+        <ion-item style="padding: 0.25rem 0.5rem" ng-repeat="item in projectItems">
+          <div class="row" ng-click="openProjectChoose(item)">
+            <span style="font-size: 0.875rem;white-space:normal;">({{item.value}}) {{item.name}}</span>
+          </div>
+        </ion-item>
+      </ion-list>
+      <!--<ion-infinite-scroll on-infinite="" ng-if="" immediate-check="false"></ion-infinite-scroll>-->
+    </ion-content>
+  </ion-modal-view>
+
+</script>
