@@ -14,8 +14,9 @@
                 style="padding: 0px; margin: 0px; width: 97%; margin-left: 1.5%; border: none; margin-top: 8px">
         <div class="row"
              style="padding: 0px; margin: 0px; width: 100%; margin-left: 10px; border-bottom: 2px solid #e8e8e8;">
-          <div class="col col-33" style="padding: 0px; margin: 0px; margin-top: 10px; margin-bottom: 10px; width: 124px;">
-            <img style="width: 104px; height: 76px" ng-src="{{item.imgs[0].objectUrl}}">
+          <div class="col col-33" style="padding: 0px; margin: 0px; margin-top: 10px; margin-bottom: 10px;">
+            <img style="width: 86%; height: 76px" ng-if="item.imgs == ''" ng-src="build/img/application/houses-sublease/default@3x.png">
+            <img style="width: 86%; height: 76px" ng-if="item.imgs != ''" ng-src="{{item.imgs[0].objectUrl}}">
           </div>
           <div class="col col-67" style="padding: 0px; margin: 0px; margin-top: 10px; margin-bottom: 10px">
             <div class="row" style="padding: 0px;margin: 0px;font-size: 14px;color: #4A4A4A;">{{item.houseTitle}}</div>

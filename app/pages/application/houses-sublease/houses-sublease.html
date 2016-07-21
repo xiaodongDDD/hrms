@@ -16,23 +16,28 @@
           <div class="row"
                style="padding: 0px; margin: 0px; width: 100%; margin-left: 10px; border-bottom: 2px solid #e8e8e8;">
             <div class="col col-33"
-                 style="padding: 0px; margin: 0px; margin-top: 10px; margin-bottom: 10px; width: 124px;">
-              <img style="width: 104px; height: 76px" ng-src="{{item.houseImg}}">
+                 style="padding: 0px; margin: 0px; margin-top: 10px; margin-bottom: 10px;">
+              <img style="width: 86%; height: 76px" ng-if="item.houseImg == null" ng-src="build/img/application/houses-sublease/default@3x.png">
+              <img style="width: 86%; height: 76px" ng-if="item.houseImg != null" ng-src="{{item.houseImg}}">
             </div>
             <div class="col col-67" style="padding: 0px; margin: 0px; margin-top: 10px; margin-bottom: 10px">
               <div class="row" style="padding: 0px;margin: 0px;font-size: 14px;color: #4A4A4A;">{{item.houseTitle}}
               </div>
               <div class="row" style="padding: 0px; margin: 0px; font-size: 12px; color: #9B9B9B">{{item.trafficInfo}}
               </div>
-              <div class="row" style="padding: 0px; margin: 0px; font-size: 12px; color: #9B9B9B; height: 18px"></div>
+              <div class="row" style="padding: 0px; margin: 0px; font-size: 12px; color: #9B9B9B; height: 18px">
+                <div class="col" style="padding: 0px; margin: 0px; text-align: right; margin-right: 10%" ng-if="item.houseStatus == 'N'">
+                  <img src="build/img/application/houses-sublease/outofdate@3x.png" style="width: 46px; height: 46px; margin-top: -15%">
+                </div>
+              </div>
               <div class="row" style="padding: 0px; margin: 0px;">
                 <div class="col" style="padding: 0px; margin: 0px; font-size: 16px; color: #F99D32">{{item.rent}}元/月
                 </div>
-                <div class="col" style="padding: 0px; margin: 0px; font-size: 14px; color: #24559C; margin-left: 35px;">
-                  {{(item.expireData).substr(5,2);}}月到期
+                <div class="col" style="padding: 0px; margin: 0px; font-size: 14px; color: #24559C; text-align: right">
+                  <div>{{(item.expireData).substr(5,2);}}月到期</div>
                 </div>
-                <div class="col" style="padding: 0px; margin: 0px; font-size: 14px; color: #9B9B9B; margin-left: 5px;">
-                  {{item.area}}
+                <div class="col" style="padding: 0px; margin: 0px; font-size: 14px; color: #9B9B9B; margin-left: 5px; text-align: right;">
+                  <div style="margin-right: 20px">{{item.area}}</div>
                 </div>
               </div>
             </div>

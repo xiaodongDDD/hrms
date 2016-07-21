@@ -50,7 +50,7 @@ angular.module('applicationModule')
         //{"objectUrl": 'build/img/application/houses-sublease/IMG_2202@3x.png'},
         //{"objectUrl": 'build/img/application/houses-sublease/default@3x.png'}
       ];
-      angular.forEach($stateParams.housesImageList, function(data, index, array){
+      angular.forEach($stateParams.housesImageList, function (data, index, array) {
         $scope.housesPhoto.push(array[index]);
       });
 
@@ -153,5 +153,39 @@ angular.module('applicationModule')
         $rootScope.$broadcast("housesReleasePhoto", $scope.housesPhoto);
         //console.log("111111111111111111");
         $ionicHistory.goBack();
+      };
+
+      $scope.showBigPicture = function (picUrl) {//显示大图
+        $scope.pictureAppearance = true;
+        $scope.extensionPicture = picUrl;
+        $timeout(function () {
+          var bigPicture = document.getElementById('my-big-picture');
+          var picHeight = bigPicture.offsetHeight;
+          var picWidth = bigPicture.offsetWidth;
+          var screenWidth = window.screen.width;
+          if (picHeight > picWidth) {
+            bigPicture.style.width = 100 + "%";
+            bigPicture.style.height = 100 + "%";
+            bigPicture.style.marginTop = 10 + "px";
+          } else if (picHeight < picWidth) {
+            bigPicture.style.width = 100 + "%";
+            if (screenWidth > 310 && screenWidth <= 350) {
+              bigPicture.style.height = 170 + "px";
+              bigPicture.style.marginTop = 150 + "px";
+            } else if (screenWidth > 350 && screenWidth <= 380) {
+              bigPicture.style.height = 225 + "px";
+              bigPicture.style.marginTop = 180 + "px";
+            } else if (screenWidth > 380 && screenWidth <= 420) {
+              bigPicture.style.height = 240 + "px";
+              bigPicture.style.marginTop = 210 + "px";
+            } else if (screenWidth > 420) {
+              bigPicture.style.height = 255 + "px";
+              bigPicture.style.marginTop = 240 + "px";
+            }
+          }
+        }, 100);
+      };
+      $scope.hideBigPicture = function () {//隐藏大图
+        $scope.pictureAppearance = false;
       };
     }]);
