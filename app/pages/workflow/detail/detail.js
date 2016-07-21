@@ -122,6 +122,12 @@ angular.module('applicationModule')
 
       var historyEachWidth = 102;
 
+      var workflowIdSpecial = {
+        "renewContractWorkflowId": "100729",
+        "applicationFullMemberWorkflowId": "10008",
+        "openProjectWorkflowId": "10206"
+      }
+
       $scope.LoadingPushData = true;
       $scope.LoadingModalData = true;
 
@@ -153,6 +159,7 @@ angular.module('applicationModule')
       };
       $scope.renewContractMethodList = [];
       $scope.renewContractSaveFlag = false;
+      $scope.newOpenProjectSaveFlag = false;
       $scope.renewContractEditable = false;
 
       $scope.historyList = [];
@@ -193,6 +200,9 @@ angular.module('applicationModule')
       ];
       $scope.currentApplicationEmployeeAbility = {};
       /*------------------转正申请数据源------------------*/
+
+
+      $scope.openProjectDetail = {};
 
       var contractRenewal = {
         queryData: function () {
@@ -243,6 +253,47 @@ angular.module('applicationModule')
       }).then(function (modal) {
         $scope.transmitPersonModal = modal;
       });
+
+
+      // 合并项目选择 modal
+      $ionicModal.fromTemplateUrl('project-modal.html', {
+        scope: $scope,
+      }).then(function (modal) {
+        $scope.openProjectModal = modal;
+      });
+      $scope.showOpenProjectModal = function () {
+        $scope.openProjectModal.show();
+      };
+      $scope.closeOpenProjectModal = function () {
+        $scope.openProjectModal.hide();
+      };
+
+      $scope.openProjectSearch = function () {
+        if ($scope.openProjectDetail.condition == "" || $scope.openProjectDetail.condition == undefined || $scope.openProjectDetail.condition == null) {
+          hmsPopup.showShortCenterToast('请输入查询条件!');
+        } else {
+
+          var success = function (result) {
+            $scope.projectItems = result.project;
+          };
+          var error = function (response) {
+          }
+          hmsPopup.showLoading('查询项目中');
+          workFLowListService.getProjectData(success, error, $scope.openProjectDetail.condition);
+        }
+      };
+
+      //项目选择与清选
+      $scope.openProjectChoose = function (item) {
+        $scope.openProjectDetail.projectCode = item.value;
+        $scope.openProjectDetail.projectName = item.name;
+        $scope.openProjectModal.hide();
+      };
+      $scope.clearOpenProjectChoose = function () {
+        $scope.openProjectDetail.projectCode = '';
+        $scope.openProjectDetail.projectName = '';
+        $scope.openProjectModal.hide();
+      };
 
 
       // 职位选择 modal
@@ -320,14 +371,22 @@ angular.module('applicationModule')
 
       //选择值列表的数据
       $scope.selectData = function (data) {
-        $scope.renewContract.method = data.item;
-        if (data.value == "") {
-          $scope.renewContractEditable = true;
-        } else {
-          $scope.renewContract.address = data.value;
-          $scope.renewContractEditable = false;
+        if (detail.workflowId == workflowIdSpecial.renewContractWorkflowId) { //合同续签地址维护
+          $scope.renewContract.method = data.item;
+          if (data.value == "") {
+            $scope.renewContractEditable = true;
+          } else {
+            $scope.renewContract.address = data.value;
+            $scope.renewContractEditable = false;
+          }
+          $scope.dataListModal.hide();
+        } else if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId) {
+          $scope.openProjectDetail.openNewProjectFlag = data.value;
+          $scope.openProjectDetail.openProjectTypeDesc = data.item;
+          $scope.openProjectDetail.projectCode = '';
+          $scope.openProjectDetail.projectName = '';
+          $scope.dataListModal.hide();
         }
-        $scope.dataListModal.hide();
       };
 
       //转正申请功能
@@ -622,6 +681,76 @@ angular.module('applicationModule')
         return __self;
       };
 
+      //新建项目
+      $scope.openProjectUtil = {
+        openProjectTypeShow: function () {
+          $scope.dataTitle = '新开项目或者合并项目';
+          $scope.dataList = [{
+            "item": "新开项目",
+            "value": "0"
+          },
+            {
+              "item": "合并项目",
+              "value": "1"
+            }];
+          $scope.dataListModal.show();
+        },
+        saveOpenProject: function (openProjectDetail) {
+          if (baseConfig.debug) {
+            console.log('saveOpenProject.openProjectDetail ' + angular.toJson(openProjectDetail));
+          }
+
+          if (openProjectDetail.projectCode == '' || !openProjectDetail.projectCode ||
+            openProjectDetail.projectName == '' || !openProjectDetail.projectName) {
+            hmsPopup.showPopup('请填写完整的新建项目信息!');
+            return;
+          }
+
+          var success = function (response) {
+            if (response.status == 'S') {
+              hmsPopup.showPopup('提交新建项目信息成功!');
+              $scope.newOpenProjectSaveFlag = true;
+            }
+            else {
+              hmsPopup.showPopup('提交新建项目信息失败!');
+            }
+          };
+          var error = function (response) {
+          };
+          hmsPopup.showLoading('提交新建项目信息中');
+          workFLowListService.saveNewProjectApplyData(success, error, detail.instanceId,
+            openProjectDetail.projectCode, openProjectDetail.projectName,
+            openProjectDetail.amount, openProjectDetail.openNewProjectFlag);
+        }
+      };
+
+      //新建项目
+      var openProject = function () {
+        var self = {};
+        self.init = function (projectData) {
+          $scope.openProjectDetail.amount = projectData.expenses;
+          $scope.openProjectDetail.projectCode = projectData.pact_code;
+          $scope.openProjectDetail.projectName = projectData.project_name;
+          $scope.openProjectDetail.showFlag = true;
+          if (projectData.pact_code && projectData.pact_code != '') {
+            $scope.newOpenProjectSaveFlag = true;
+          }
+          if (projectData.merge_flag == '0') {
+            $scope.openProjectDetail.openProjectTypeDesc = '新开项目';
+            $scope.openProjectDetail.openNewProjectFlag = '0';
+          }
+          else if (projectData.merge_flag == '1') {
+            $scope.openProjectDetail.openProjectTypeDesc = '合并项目';
+            $scope.openProjectDetail.openNewProjectFlag = '1';
+          }
+          else {
+            $scope.openProjectDetail.openProjectTypeDesc = '新开项目';
+            $scope.openProjectDetail.openNewProjectFlag = '0';
+          }
+        };
+        return self;
+      };
+
       //通用工作流
       $scope.workflowDetailUtil = {
 
@@ -873,16 +1002,23 @@ angular.module('applicationModule')
 
         self.validateWorkFlowAction = function (actionType) {
 
-          if (detail.workflowId == 100728) {
+          if (detail.workflowId == workflowIdSpecial.renewContractWorkflowId) {
             if (!$scope.renewContractSaveFlag) {
               hmsPopup.showPopup('请先保存合同续签方式!');
               return false;
             }
           }
 
-          if (detail.workflowId == 10008) {
+          if (detail.workflowId == workflowIdSpecial.applicationFullMemberWorkflowId) {
             if (!$scope.applicationEmployeeSaveFlag) {
               hmsPopup.showPopup('请先保存转正信息!');
+              return false;
+            }
+          }
+
+          if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId) {
+            if (!$scope.newOpenProjectSaveFlag) {
+              hmsPopup.showPopup('请先保存新建项目信息!');
               return false;
             }
           }
@@ -963,6 +1099,11 @@ angular.module('applicationModule')
                   $scope.multipleLine.push(self.processLine(data));
                 });
 
+                if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId) {
+                  openProject().init(result.workflow_data.project_data);
+                }
+
+
                 if (baseConfig.debug) {
                   console.log('$scope.multipleLine ' + angular.toJson($scope.multipleLine));
                   console.log('$scope.singalArrayList ' + angular.toJson($scope.singalArrayList));
@@ -988,17 +1129,13 @@ angular.module('applicationModule')
         return self;
       };
 
-      var wrokflowIdSpecail = {
-        "renewContractWorkflowId": "100729"
-      }
-
       var init = {
         initDataModal: function () {
-          if (detail.workflowId == wrokflowIdSpecail.renewContractWorkflowId) { //合同续签地址维护
+          if (detail.workflowId == workflowIdSpecial.renewContractWorkflowId) { //合同续签地址维护
             $scope.showList.contractRenewShowFlag = true;
             renewContract().query();
             workflowDetail().getWorkflowDetail();
-          } else if (detail.workflowId == 10008) { //合同续签地址维护
+          } else if (detail.workflowId == workflowIdSpecial.applicationFullMemberWorkflowId) { //转正申请
             $scope.showList.applicationFullMemberShowFlag = true;
             applicationFullMember().query();
           } else {
@@ -1030,7 +1167,7 @@ angular.module('applicationModule')
           };
           var error = function (response) {
           };
-          
+
           var recordId = '';
           var workflowId = '';
           var instanceId = '';

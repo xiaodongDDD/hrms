@@ -235,5 +235,35 @@ angular.module('applicationModule')
             hmsPopup.hideLoading();
             error(response);
           });
-        }
+        };
+
+
+        // 获取项目信息（新开项目申请工作流）
+        this.getProjectData= function (success, error, condition) {
+          var url = baseConfig.businessPath + "/get_workflow_data/get_project_data";
+          var params = '{"params":{"p_param":"' + condition + '"}}';
+
+          hmsHttp.post(url, params).success(function (result) {
+            hmsPopup.hideLoading();
+            success(result);
+          }).error(function (response) {
+            hmsPopup.hideLoading();
+            error(response);
+          });
+        };
+
+
+        // 保存新开项目申请信息（新开项目申请工作流）
+        this.saveNewProjectApplyData = function (success, error,instanceId, pactCode, projectName, expenses, mergeFlag) {
+          var url = baseConfig.businessPath +  "/wfl_save_action/save_new_project_apply_data";
+          var params = '{"params":{"p_instance_id":"' + instanceId + '","p_pact_code":"' + pactCode + '","p_project_name":"' + projectName + '","p_expenses":"' + expenses + '","p_merge_flag":"' + mergeFlag + '"}}';
+
+          hmsHttp.post(url, params).success(function (result) {
+            hmsPopup.hideLoading();
+            success(result);
+          }).error(function (response) {
+            hmsPopup.hideLoading();
+            error(response);
+          });
+        };
       }]);

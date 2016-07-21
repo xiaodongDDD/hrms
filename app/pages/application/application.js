@@ -78,7 +78,7 @@ angular.module('applicationModule')
               appName: "工作流",
               imageUrl: "build/img/application/application/schedule@3x.png",
               destUrl: "tab.workflow-list",
-              hasWorkflowNum: "true",
+              hasWorkflowNum: true,
               count: 0
             },
             {
