@@ -72,7 +72,7 @@
             <div class="hms-singal-array-value" ng-bind="renewContract.address" ng-if="!renewContractEditable">
             </div>
             <input class="hms-singal-array-value" placeholder="请填写邮寄地址"
-                   ng-model="renewContract.address" ng-if="renewContractEditable" style="height: 18px;">
+                   ng-model="renewContract.address" ng-if="renewContractEditable" style="height: 22px;border:0;">
             </input>
           </div>
         </div>
@@ -196,7 +196,7 @@
           <div class="hms-singal-array-line" ng-repeat="arrayItem in array.detail" ng-if="true">
             <div class="hms-singal-array-key" ng-bind="arrayItem.item_name">
             </div>
-            <div class="hms-singal-array-key" ng-if="arrayItem.item_name.substring(0,2) == '附件'"
+            <div class="hms-singal-array-value" ng-if="arrayItem.item_name.substring(0,2) == '附件'"
                  ng-click="workflowDetailUtil.goUrl(arrayItem.item_value)">
               <i class="ion-android-attach"></i>
             </div>
@@ -258,7 +258,7 @@
               合同销售金额
             </div>
             <input class="hms-singal-array-value" placeholder="合同金额"
-                   ng-model="openProjectDetail.amount" style="height: 18px;">
+                   ng-model="openProjectDetail.amount" style="height: 22px; border:0;">
             </input>
           </div>
           <div class="hms-singal-array-line" ng-click="openProjectUtil.openProjectTypeShow()">
@@ -273,7 +273,7 @@
               项目代码
             </div>
             <input class="hms-singal-array-value" placeholder="项目代码" ng-if="openProjectDetail.openNewProjectFlag == '0'"
-                   ng-model="openProjectDetail.projectCode" style="height: 18px;">
+                   ng-model="openProjectDetail.projectCode" style="height: 22px; border:0;">
             </input>
             <div class="hms-singal-array-value" ng-bind="openProjectDetail.projectCode" ng-click="showOpenProjectModal()"
                  ng-if="openProjectDetail.openNewProjectFlag=='1'">
@@ -285,7 +285,7 @@
             </div>
             <input class="hms-singal-array-value" placeholder="项目名称"
                    ng-if="openProjectDetail.openNewProjectFlag =='0'"
-                   ng-model="openProjectDetail.projectName" style="height: 18px;">
+                   ng-model="openProjectDetail.projectName" style="height: 22px; border:0;">
             </input>
             <div class="hms-singal-array-value" ng-bind="openProjectDetail.projectName"
                  ng-if="openProjectDetail.openNewProjectFlag=='1'">
