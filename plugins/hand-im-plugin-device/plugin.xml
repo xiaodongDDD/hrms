@@ -336,8 +336,8 @@
     <header-file src="src/ios/plugins/CDVIMPluginChattingViewController.h"/>
     <source-file src="src/ios/plugins/CDVIMPluginChattingViewController.m"/>
 
-    <header-file src="src/ios/plugins/UIColor+Hex.h"/>
-    <header-file src="src/ios/plugins/UIColor+Hex.m"/>
+    <!--<header-file src="src/ios/plugins/UIColor+Hex.h"/>
+    <header-file src="src/ios/plugins/UIColor+Hex.m"/>-->
 
     <header-file src="src/ios/plugins/CVDPlugin-Bridging-Header.h"/>
 
