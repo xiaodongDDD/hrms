@@ -6,7 +6,7 @@ angular.module('myApp')
           url: '/houses-tab',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/houses-sublease/houses-tab.html',
+              templateUrl: 'build/pages/application/houses-sublease/houses-Tab.html',
               controller: 'HousesTabCtrl'
             }
           }
