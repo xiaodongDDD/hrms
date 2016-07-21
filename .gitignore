@@ -1,4 +1,14 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
-
+node_modules/
+/platforms/
+/plugins/ios.json
+/plugins/android.json
+/plugins/jpush-phonegap-plugin
+app/lib/
+.DS_Store
+.idea
+www/build/
+/config.xml
+app/scripts/baseConfig.js
 
