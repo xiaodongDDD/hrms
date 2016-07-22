@@ -13,7 +13,7 @@ angular.module('myApp')
               controller: 'HousesSubleaseDetailCtrl'
             }
           },
-          params:{
+          params: {
             housesSubId: ''
           }
         })
@@ -31,6 +31,8 @@ angular.module('applicationModule')
     '$ionicSlideBoxDelegate',
     '$timeout',
     '$stateParams',
+    '$ionicActionSheet',
+    'imService',
     function ($scope,
               $rootScope,
               $state,
@@ -40,7 +42,9 @@ angular.module('applicationModule')
               hmsPopup,
               $ionicSlideBoxDelegate,
               $timeout,
-              $stateParams) {
+              $stateParams,
+              $ionicActionSheet,
+              imService) {
       $scope.housesId = $stateParams.housesSubId;
       $scope.goBack = function () {//返回按钮
         $ionicHistory.goBack();
@@ -92,11 +96,12 @@ angular.module('applicationModule')
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }
+          console.log("result success " + angular.toJson(result));
           $scope.housesSubDetail = result.returnData;
 
           $ionicSlideBoxDelegate.update();
+          getStaffDetails();
 
-          //console.log("result success111111111111 " + angular.toJson($scope.housesSubDetail));
         }).error(function (error, status) {
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast("网络连接出错");
@@ -106,10 +111,71 @@ angular.module('applicationModule')
         });
       };
 
-      $scope.slideChanged = function(index) {
+      $scope.slideChanged = function (index) {
+      };
 
+      function getStaffDetails() {//拉取员工详情信息
+        var url = baseConfig.queryPath + "/staff/detail";
+        var param = {
+          "key": $scope.housesSubDetail.publishEmp
+        };
+        hmsHttp.post(url, param).success(function (result) {
+          if (baseConfig.debug) {
+            console.log("result success " + angular.toJson(result));
+          }
+          $scope.staffInfoDetail = result.rows;
+          console.log("result success " + angular.toJson($scope.staffInfoDetail));
+        }).error(function (error, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showShortCenterToast("网络连接出错");
+          if (baseConfig.debug) {
+            console.log("response error " + angular.toJson(error));
+          }
+        });
+      }
+
+      $scope.telNumber = function (event, telNum) { //拨打电话按钮的响应事件
+        event.stopPropagation(); //阻止事件冒泡
+        try {
+          $ionicActionSheet.show({
+            buttons: [
+              {text: '拨打电话'}
+            ],
+            cancelText: 'Cancel',
+            buttonClicked: function (index) {
+              window.location.href = "tel:" + telNum.replace(/\s+/g, "");
+              return true;
+            }
+          });
+        } catch (e) {
+          alert(e);
+        }
       };
-      $scope.goHourseSubDetail = function(){
-        $state.go("tab.houses-sublease-detail");
+
+      $scope.goEmployeeDetail = function (publishEmployeeNumber) { //跳到个人详情界面
+        //$state.go('tab.employeeDetail', {employeeNumber: publishEmployeeNumber});
       };
+
+      $scope.goImTalk = function (employeeInfo) {//即使通讯
+        //employeeBaseInfo = {
+        //  tel: $scope.employeeInfo.mobil.replace(/\s+/g,""),
+        //  name: $scope.employeeInfo.emp_name,
+        //  employeeNumber: $scope.employeeInfo.emp_code,
+        //  imgUrl: $scope.employeeInfo.avatar
+        //};
+        //if (employeeBaseInfo.name) {
+        //  storeCommonLinkman(employeeBaseInfo);
+        //}
+        //go native page --im talk
+        if (ionic.Platform.isWebView()) {
+          var emp = {
+            "friendId": employeeInfo.emp_code,
+            "friendName": employeeInfo.emp_name
+          };
+          imService.toNativeChatPage(emp);
+        } else {
+          hmsPopup.showShortCenterToast('不支持网页聊天!');
+        }
+      };
+
     }]);
