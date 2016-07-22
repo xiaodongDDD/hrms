@@ -50,7 +50,6 @@ angular.module('myInfoModule')
       $scope.imageList=[];//图片列表
       var objectUrl=[];//收集每次调用图片上传接口时返回的ObjectUrl，最终在传文字接口时以数组形式发送过去
       var imageTotalLength=0;//选择了的图片总长度
-      $scope.showLoading=false;
       $scope.matrix=[[true,false,false],[false,false,false],[false,false,false],[false]];//四行三列，共10个
       var currentPictureNumber=0;//图片上传到第几张，0-9
       var currentRow=0;//matrix的下标一维
@@ -150,7 +149,7 @@ angular.module('myInfoModule')
         $scope.choosePictureMethodPopup.hide();
       };
       var uploadImage=function(){//上传图片
-        $scope.showLoading=true;
+        hmsPopup.showLoadingWithoutBackdrop('上传信息中，请稍候');
         for(var i=0;i<$scope.imageList.length;i++){
           if($scope.imageList[i].uri!=""){
             var nowDates = Date.parse(new Date()) / 1000;
@@ -197,7 +196,7 @@ angular.module('myInfoModule')
             "objects":objectUrl
           };
           hmsHttp.post(url,param).success(function(result){
-            $scope.showLoading=false;
+            hmsPopup.hideLoading();
               if(result.status == "S"){
               hmsPopup.showPopup("证书生成成功");//图片上传成功后发送广播并返回上一界面
               $rootScope.$broadcast("CERTIFICATE_REFRESH");
@@ -207,14 +206,14 @@ angular.module('myInfoModule')
             }
           }).error(function(error,status){
             console.log("失败："+angular.toJson(error));
-            $scope.showLoading=false;
+            hmsPopup.hideLoading();
             hmsPopup.showPopup("证书生成失败");
           });
         }
       };
       var fail=function(error){//图片上传失败
         //如果有Loading的话记得隐藏loading
-        $scope.showLoading=false;
+        hmsPopup.hideLoading();
         hmsPopup.showPopup("证书生成失败");
       };
       $scope.judgeRow=function(num){
@@ -363,8 +362,6 @@ angular.module('myInfoModule')
       };
 
       $scope.goBack=function(){//返回按钮
-        if($scope.showLoading==false){
           $ionicHistory.goBack();
-        }
       };
     }]);
