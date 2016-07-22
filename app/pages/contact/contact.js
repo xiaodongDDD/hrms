@@ -12,6 +12,7 @@ angular.module('contactModule')
     '$state',
     '$ionicActionSheet',
     'contactService',
+    'getInitStructureInfo',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -19,7 +20,8 @@ angular.module('contactModule')
               hmsPopup,
               $state,
               $ionicActionSheet,
-              contactService) {
+              contactService,
+              getInitStructureInfo) {
       /**
        * var section
        */
@@ -29,6 +31,7 @@ angular.module('contactModule')
         var CONTACT_TAG = 'contact:\n';
         var position = ''; //记录滚动条的位置--
         var LINK_MAN = 'common_linkman2';
+        getInitStructureInfo.getCurrentStructure();
       }
 
       function getCommonLinkMan() { //获取常用联系人
@@ -98,7 +101,7 @@ angular.module('contactModule')
             }
             try {
               $scope.$apply();
-                contactService.contactLocal(manInfo);
+              contactService.contactLocal(manInfo);
             } catch (e) {
             }
           }
@@ -120,7 +123,7 @@ angular.module('contactModule')
               cancelText: 'Cancel',
               buttonClicked: function (index) {
                 if (index == 0) {
-                  hmsPopup.showLoading('请稍后...');
+                  // hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.takePicturefun(function (msg) {
                     dealScanData(msg);
                   }, function (error) {
@@ -130,7 +133,7 @@ angular.module('contactModule')
                   return true;
                 }
                 if (index == 1) {
-                  hmsPopup.showLoading('请稍后...');
+                  // hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.choosePicturefun(function (msg) {
                     dealScanData(msg);
                   }, function (error) {
@@ -142,7 +145,7 @@ angular.module('contactModule')
               }
             });
           } catch (e) {
-            alert(e);
+            // alert(e);
           }
         } else {
           hmsPopup.showShortCenterToast('暂不支持网页端的名片扫描!');
@@ -162,11 +165,25 @@ angular.module('contactModule')
 
       $scope.goStructure = function () {
         hmsPopup.showPopup("本功能下一版本上线");
+        // $state.go('tab.contactStructure');
       };
 
       $scope.goDetailInfo = function (newEmployeeNumber) {
         $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
       };
 
-    }]);
+    }])
+  .service('getInitStructureInfo', ['hmsHttp', 'baseConfig', function (hmsHttp, baseConfig) {
+    var _currentStructureUrl = baseConfig.queryPath + '/dept/getStaffDeptInfo';
+    return {
+      getCurrentStructure: function () {
+        hmsHttp.post(_currentStructureUrl).success(function (response) {
+
+        }).error(function (error) {
+
+        });
+      }
+    }
+  }]);
+
 
