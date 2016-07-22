@@ -269,7 +269,8 @@ angular.module('myInfoModule')
       };
 
       function uploadImage(){
-        $scope.showLoading=true;
+        //$scope.showLoading=true;
+        hmsPopup.showLoadingWithoutBackdrop('上传信息中，请稍候');
         if(addImage.length==0){//不新增图片时，只考虑知否删除图片的情况
           var deleteIdArray=[];
           for(var i=0;i<deletedImage.length;i++){
@@ -288,7 +289,8 @@ angular.module('myInfoModule')
           };
           console.log(angular.toJson("没有增加图片的参数是："+angular.toJson(param)));
           hmsHttp.post(url,param).success(function(result){
-            $scope.showLoading=false;
+            //$scope.showLoading=false;
+            hmsPopup.hideLoading();
             if(result.status == "S"){
               hmsPopup.showPopup("信息更改成功");//图片上传成功后发送广播并返回上一界面
               $rootScope.$broadcast("CERTIFICATE_REFRESH");
@@ -298,7 +300,8 @@ angular.module('myInfoModule')
             }
           }).error(function(error,status){
             console.log("失败："+angular.toJson(error));
-            $scope.showLoading=false;
+            //$scope.showLoading=false;
+            hmsPopup.hideLoading();
             hmsPopup.showPopup("信息更改失败");
           });
         }else if(addImage.length>0){//新增图片大于0时才会调用FileTransfer插件
@@ -354,7 +357,8 @@ angular.module('myInfoModule')
           };
           console.log(angular.toJson("增加图片的参数是："+angular.toJson(param)));
           hmsHttp.post(url,param).success(function(result){
-            $scope.showLoading=false;
+            //$scope.showLoading=false;
+            hmsPopup.hideLoading();
             if(result.status == "S"){
               hmsPopup.showPopup("信息更改成功");//图片上传成功后发送广播并返回上一界面
               $rootScope.$broadcast("CERTIFICATE_REFRESH");
@@ -364,14 +368,16 @@ angular.module('myInfoModule')
             }
           }).error(function(error,status){
             console.log("失败："+angular.toJson(error));
-            $scope.showLoading=false;
+            //$scope.showLoading=false;
+            hmsPopup.hideLoading();
             hmsPopup.showPopup("信息更改失败");
           });
         }
       };
       var fail=function(error){//图片上传失败
         //如果有Loading的话记得隐藏loading
-        $scope.showLoading=false;
+        //$scope.showLoading=false;
+        hmsPopup.hideLoading();
         hmsPopup.showPopup("信息更改失败");
       };
 
