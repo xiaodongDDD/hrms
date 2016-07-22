@@ -140,7 +140,7 @@ angular.module('applicationModule')
           for (var i = 0; i < $scope.pictureList.length; i++) {
             $scope.pictureList[i].flag = "edit"
           }
-          console.log("标记后的图片数组：" + angular.toJson($scope.pictureList));
+          //console.log("标记后的图片数组：" + angular.toJson($scope.pictureList));
         }
         $state.go("tab.houses-photo-list", {'housesImageList': $scope.pictureList});
       };
@@ -150,6 +150,7 @@ angular.module('applicationModule')
       };
       var pictureNumber = 0;
       var uploadImage = function () {//上传图片
+        hmsPopup.showLoading('请稍候');
         $scope.showLoading = true;
         //console.log("333333333333333" + angular.toJson($scope.imageList));
         if (!$scope.imageList) {
@@ -211,14 +212,15 @@ angular.module('applicationModule')
       var fail = function (error) {//图片上传失败
         //如果有Loading的话记得隐藏loading
         $scope.showLoading = false;
+        hmsPopup.hideLoading();
         hmsPopup.showPopup("图片上传失败");
       };
 
       function releaseHousesInfo() {//调用发布接口
-        console.log("房屋发布信息：" + angular.toJson($scope.housesReleaseInfo));
+        //console.log("房屋发布信息：" + angular.toJson($scope.housesReleaseInfo));
         var url = baseConfig.queryPath + "/house/publish";
         //var url = 'http://10.211.103.145:9090/hrmsv2/v2/api/house/publish';
-        hmsPopup.showLoading('请稍候');
+        //hmsPopup.showLoading('请稍候');
         hmsHttp.post(url, $scope.housesReleaseInfo).success(function (result) {
           hmsPopup.hideLoading();
           if (baseConfig.debug) {

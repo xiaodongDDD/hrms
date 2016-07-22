@@ -72,18 +72,18 @@
     </div>
   </ion-content>
   <ion-footer-bar class="foot-bar" style="bottom: 0px; padding: 0px">
-    <div style="font-size: 17px; color: #24559C; width: 35%; text-align: center">
-      <img src="build/img/application/houses-sublease/profile@3x.png"
-           style="width:28px; height: 28px; float: left; margin-left: 10px; margin-top: 11px">
-      <span style="font-size: 14px; color: #4A4A4A; margin-left: 5px; margin-top: 13px; float: left">何鑫铭</span>
+    <div style="font-size: 17px; color: #24559C; width: 40%; text-align: center" ng-click="goEmployeeDetail(housesSubDetail.publishEmp)">
+      <img ng-src={{staffInfoDetail[0].avatar}}
+           style="width:28px; height: 28px; float: left; margin-left: 10px; margin-top: 11px; border-radius: 14px">
+      <span style="font-size: 14px; color: #4A4A4A; margin-left: 12px; margin-top: 15px; float: left">{{staffInfoDetail[0].emp_name}}</span>
       <img src="build/img/application/houses-sublease/Back Arrow Copy 6 + Back Arrow Copy 6 Copy@3x.png"
-           style="width:28px; height: 28px; margin-left: 5px; margin-top: 13px">
+           style="width:28px; height: 28px; margin-top: 13px">
     </div>
-    <div style="margin-top: 15px; width: 20%; text-align: center">
+    <div style="margin-top: 15px; width: 15%; text-align: center" ng-click="telNumber($event,staffInfoDetail[0].mobil)">
       <img src="build/img/application/houses-sublease/dial-2@3x.png" style="width:20px; height: 20px">
     </div>
     <div class="button"
-         style="width: 45%; height: 100%; background-color: #6BB9F0; color: #FFFFFF; font-size: 16px; line-height: 45px;">
+         style="width: 45%; height: 100%; background-color: #6BB9F0; color: #FFFFFF; font-size: 16px; line-height: 45px; border-radius: 0px" ng-click="goImTalk(staffInfoDetail[0])">
       发起会话
     </div>
   </ion-footer-bar>

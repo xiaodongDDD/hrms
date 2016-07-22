@@ -149,7 +149,7 @@ angular.module('applicationModule')
           angular.forEach($scope.housesSubInfo, function(data, index, array){
             $scope.housesSubInfos.push(array[index]);
           });
-          console.log("11111111:" + angular.toJson($scope.housesSubInfos));
+          //console.log("11111111:" + angular.toJson($scope.housesSubInfos));
           if($scope.housesSubInfo.length == 0){
             $scope.moreDataCanBeLoaded=false;
           }
