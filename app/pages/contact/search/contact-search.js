@@ -70,8 +70,15 @@ angular.module('contactModule')
           cordova.plugins.Keyboard.show();
         }
         var item = document.getElementById("employeeInputSearch");
-        item.focus();
-        $scope.$apply();
+        if(ionic.Platform.isAndroid()) {
+          $timeout(function () {
+            item.focus();
+            $scope.$apply();
+          },400);
+        } else {
+          item.focus();
+          $scope.$apply();
+        }
       });
 
       function dealHistory(newEmployee) { //存储成功搜索历史记录的方法
