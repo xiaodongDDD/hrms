@@ -25,7 +25,13 @@ angular.module('HmsModule')
           appCode: 'RONGCLOUD',
           empNo: window.localStorage.empno
         };
+        if (baseConfig.debug) {
+          hmsPopup.showPopup('init2Cloud.getImTokenParams ' + angular.toJson(getImTokenParams));
+        }
         hmsHttp.post(getImTokenUrl, getImTokenParams).success(function (result) {
+          if (baseConfig.debug) {
+            hmsPopup.showPopup('init2Cloud.success ' + angular.toJson(result));
+          }
           try {
             var imParams = {
               token: result.rows[0].token,
@@ -35,16 +41,35 @@ angular.module('HmsModule')
           } catch (e) {
             imParams = {token: '', userId: ''};
           }
-          if (HandIMPlugin) {
-            HandIMPlugin.getChatList(function success(msg) {
-              //hmsPopup.showShortCenterToast(msg);
-            }, function error(error) {
-              //hmsPopup.showShortCenterToast(error);
-            }, imParams);
-          }
+          getImChatList();
         }).error(function () {
           //hmsPopup.showShortCenterToast('error 2');
         });
+      };
+
+      var getImChatList = function () {
+        var newImParams = {
+          "userId": window.localStorage.empno,
+          "access_token": window.localStorage.token,
+          "RCToken": window.localStorage.access_token
+        };
+        if (baseConfig.debug) {
+          hmsPopup.showPopup('newImParams ' + angular.toJson(newImParams));
+        }
+        if (HandIMPlugin) {
+          HandIMPlugin.getChatList(function success(msg) {
+            //hmsPopup.showShortCenterToast(msg);
+            if (baseConfig.debug) {
+              console.log('HandIMPlugin.getChatList success!');
+            }
+            return msg;
+          }, function error(error) {
+            //hmsPopup.showShortCenterToast(error);
+            if (baseConfig.debug) {
+              console.log('HandIMPlugin.getChatList error!');
+            }
+          }, newImParams);
+        }
       };
 
       return {
@@ -53,18 +78,7 @@ angular.module('HmsModule')
           init2Cloud(getImTokenUrl);
         },
         getImChatList: function () {
-          var newImParams = {
-            "userId": window.localStorage.empno,
-            "token": window.localStorage.access_token
-          };
-          if (HandIMPlugin) {
-            HandIMPlugin.getChatList(function success(msg) {
-              //hmsPopup.showShortCenterToast(msg);
-              return msg;
-            }, function error(error) {
-              //hmsPopup.showShortCenterToast(error);
-            }, newImParams);
-          }
+          return getImChatList;
         },
         toNativeChatPage: function (newEmpNum) { //传入工号
           if (HandIMPlugin) {

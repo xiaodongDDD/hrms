@@ -17,11 +17,12 @@
 /*!
  * 根据工号获取员工Name
  */
-+(NSString *)getNameByWorkerId;
++(NSString *)getNameByWorkerId:(NSString *)userId;
 /*!
  * 根据工号获取员工图像
  */
-+(NSString *)getImageUrlByWorkerId;
++(NSString *)getImageUrlByWorkerId:(NSString *)userId;
+
 /*!
  * 插入数据数据
  */
@@ -35,5 +36,20 @@
  * 删除聊天列表by id
  */
 +(void)deleteDataListBy:(NSString *)friendId;
-
+/*!
+ * 插入员工详细信息
+ */
++ (void)insertPersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon;
+/*!
+ * 更新员工详细信息
+ */
++ (void)updatePersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon;
+/*!
+ * 查询相同员工详细信息
+ */
++ (void)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon;
+/*!
+ * 获得所有员工详细信息
+ */
++ (NSMutableArray *)getAllUsersInfo;
 @end

@@ -28,6 +28,9 @@
         "cordova-plugin-contacts": {
             "PACKAGE_NAME": "com.hand.china.hrms2.research"
         },
+        "cordova-plugin-crosswalk-webview": {
+            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+        },
         "cordova-plugin-datepicker": {
             "PACKAGE_NAME": "com.hand.china.hrms2.research"
         },

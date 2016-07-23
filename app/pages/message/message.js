@@ -45,19 +45,20 @@ angular.module('messageModule')
       }, false);
 
       var getMessage = function (result) {
+        var userIcon;
+        var userName;
         $scope.messageList = [];
         angular.forEach(result.message, function (data) {
-          var user = userInfo[data.message.sendId];
-          if (!user) {
-            user = {
-              "name": data.message.sendId,
-              "imgUrl": ""
-            };
+          userIcon = data.message.userIcon;
+          userName = data.message.userName;
+          if (!userName || userName == '') {
+            userIcon = '';
+            userName = data.message.sendId;
           }
           var item = {
-            "name": user.name,
+            "name": userName,
             "content": data.message.content,
-            "imgUrl": user.imgUrl,
+            "imgUrl": userIcon,
             "count": data.message.messageNum,
             "employee": data.message.sendId,
             "time": data.message.sendTime
@@ -107,7 +108,7 @@ angular.module('messageModule')
       };
       $timeout(function () {
         getMessageList();
-      },500);
+      }, 500);
 
       /*$scope.messageList = [
        {
@@ -494,9 +495,14 @@ angular.module('messageModule')
         }
         var emp = {
           "friendId": message.employee,
-          "friendName": message.name
-        }
+          "friendName": message.name,
+          "friendIcon": message.imgUrl
+        };
         imService.toNativeChatPage(emp);
+
+        $timeout(function () {
+          getMessageList();
+        }, 1000);
       };
 
       $scope.talk = function (message) {

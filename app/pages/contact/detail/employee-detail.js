@@ -154,7 +154,8 @@ angular.module('contactModule')
         if (ionic.Platform.isWebView()) {
           var emp = {
             "friendId": $scope.employeeInfo.emp_code,
-            "friendName": $scope.employeeInfo.emp_name
+            "friendName": $scope.employeeInfo.emp_name,
+            "friendIcon": $scope.employeeInfo.avatar
           };
           imService.toNativeChatPage(emp);
         } else {

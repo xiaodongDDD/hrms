@@ -63,13 +63,13 @@ public class CalendarPickerView extends ListView {
   }
 
   private final CalendarPickerView.MonthAdapter adapter;
-  private final List<List<List<MonthCellDescriptor>>> cells = new ArrayList<>();
+  private final List<List<List<MonthCellDescriptor>>> cells = new ArrayList<MonthCellDescriptor>();//update by gusenlin
   final MonthView.Listener listener = new CellClickedListener();
-  final List<MonthDescriptor> months = new ArrayList<>();
-  final List<MonthCellDescriptor> selectedCells = new ArrayList<>();
-  final List<MonthCellDescriptor> highlightedCells = new ArrayList<>();
-  final List<Calendar> selectedCals = new ArrayList<>();
-  final List<Calendar> highlightedCals = new ArrayList<>();
+  final List<MonthDescriptor> months = new ArrayList<MonthDescriptor>();
+  final List<MonthCellDescriptor> selectedCells = new ArrayList<MonthCellDescriptor>();
+  final List<MonthCellDescriptor> highlightedCells = new ArrayList<MonthCellDescriptor>();
+  final List<Calendar> selectedCals = new ArrayList<Calendar>();
+  final List<Calendar> highlightedCals = new ArrayList<Calendar>();
   private Locale locale;
   private DateFormat monthNameFormat;
   private DateFormat weekdayNameFormat;
@@ -477,7 +477,7 @@ public class CalendarPickerView extends ListView {
   }
 
   public List<Date> getSelectedDates() {
-    List<Date> selectedDates = new ArrayList<>();
+    List<Date> selectedDates = new ArrayList<Date>();
     for (MonthCellDescriptor cal : selectedCells) {
       selectedDates.add(cal.getDate());
     }
@@ -791,7 +791,7 @@ public class CalendarPickerView extends ListView {
   List<List<MonthCellDescriptor>> getMonthCells(MonthDescriptor month, Calendar startCal) {
     Calendar cal = Calendar.getInstance(locale);
     cal.setTime(startCal.getTime());
-    List<List<MonthCellDescriptor>> cells = new ArrayList<>();
+    List<List<MonthCellDescriptor>> cells = new ArrayList<MonthCellDescriptor>();
     cal.set(DAY_OF_MONTH, 1);
     int firstDayOfWeek = cal.get(DAY_OF_WEEK);
     int offset = cal.getFirstDayOfWeek() - firstDayOfWeek;
@@ -806,7 +806,7 @@ public class CalendarPickerView extends ListView {
     while ((cal.get(MONTH) < month.getMonth() + 1 || cal.get(YEAR) < month.getYear()) //
         && cal.get(YEAR) <= month.getYear()) {
       Logr.d("Building week row starting at %s", cal.getTime());
-      List<MonthCellDescriptor> weekCells = new ArrayList<>();
+      List<MonthCellDescriptor> weekCells = new ArrayList<MonthCellDescriptor>();
       cells.add(weekCells);
       for (int c = 0; c < 7; c++) {
         Date date = cal.getTime();
@@ -992,7 +992,7 @@ public class CalendarPickerView extends ListView {
       Toast.makeText(getContext(), errMessage, Toast.LENGTH_SHORT).show();
     }
   }
-  
+
   private int[] getStyleableArryId(String styleableName){
       try {
           Class<?> loadClass = mContext.getClassLoader().loadClass(mContext.getPackageName() + ".R");
@@ -1013,14 +1013,14 @@ public class CalendarPickerView extends ListView {
                   }
               }
           }
-          
+
       } catch (Exception e) {
           // TODO Auto-generated catch block
           e.printStackTrace();
       }
       return null;
   }
-  
+
   private int getStyleableId(String styleableName) {
     try {
       Class<?> loadClass = mContext.getClassLoader().loadClass(mContext.getPackageName() + ".R");
@@ -1039,9 +1039,9 @@ public class CalendarPickerView extends ListView {
     return 0;
   }
   private int getColorId(String colorName){
-    
+
     return mContext.getResources().getIdentifier(colorName, "color", mContext.getPackageName());
-  } 
+  }
   private int getDrawableId(String drawableName){
     return mContext.getResources().getIdentifier(drawableName, "drawable", mContext.getPackageName());
   }

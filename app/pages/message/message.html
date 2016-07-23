@@ -28,9 +28,8 @@
           </div>
           <div class="message-extro">
             <div class="message-date" ng-bind="message.time">
-              3小时前
             </div>
-            <div class="message-qty" ng-bind="message.count">
+            <div class="message-qty" ng-bind="message.count" ng-if="message.count != '0' ">
             </div>
           </div>
         </div>

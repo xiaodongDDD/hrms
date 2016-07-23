@@ -17,7 +17,7 @@ static FMDatabase *db;
 +(void)initialize
 {
     NSString *dbPath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-    dbPath = [dbPath stringByAppendingPathComponent:@"messages2.0.10.sqlite"];
+    dbPath = [dbPath stringByAppendingPathComponent:@"messages2.1.1.sqlite"];
     NSLog(@"创建数据库,数据库路径:%@",dbPath);
     db = [FMDatabase databaseWithPath:dbPath];
     //创建表 消息表
@@ -44,36 +44,56 @@ static FMDatabase *db;
     }
 }
 
-+(NSString *)getNameByWorkerId
++(void)insertPersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon
 {
+    NSLog(@"插入员工信息");
+    //添加数据
+    if ([db open]) {
+        NSString *insertSql= [NSString stringWithFormat:
+                              @"INSERT INTO  Workers_Table(worker_id, name, image_url) VALUES ('%@', '%@', '%@')", userId,userName,userIcon];
+        BOOL res = [db executeUpdate:insertSql];
+
+        if (!res) {
+            NSLog(@"error when insert db table");
+        } else {
+            NSLog(@"success to insert db table");
+        }
+        [db close];
+    }
+}
+
++(NSString *)getNameByWorkerId:(NSString *)userId
+{
+    NSLog(@"获取员工姓名");
     NSString *NameByWorkerId;
     if ([db open]) {
         NSString * sql = [NSString stringWithFormat:
-                          @"SELECT * FROM Workers_Table"];
+                          @"SELECT worker_id, name FROM Workers_Table WHERE worker_id = '%@' ",userId];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next]) {
-            NSString *workId = [rs stringForColumn:@"worker_id"];
+            NSString * worker_id = [rs stringForColumn:@"worker_id"];
             NSString * name = [rs stringForColumn:@"name"];
             NameByWorkerId = name;
-            NSLog(@"根据id获取姓名 workId = %@, name = %@ ", workId, name);
+            NSLog(@"根据id获取姓名 worker_id = %@, name = %@ ", worker_id, name);
         }
         [db close];
     }
     return NameByWorkerId;
 }
 
-+(NSString *)getImageUrlByWorkerId
++(NSString *)getImageUrlByWorkerId:(NSString *)userId
 {
+    NSLog(@"获取员工头像");
     NSString *imageUrlByWorkerId;
     if ([db open]) {
         NSString * sql = [NSString stringWithFormat:
-                          @"SELECT * FROM Workers_Table"];
+                          @"SELECT image_url, worker_id FROM Workers_Table WHERE worker_id = '%@' ",userId];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next]) {
-            NSString *workId = [rs stringForColumn:@"worker_id"];
-            NSString * imageUrl = [rs stringForColumn:@"image_url"];
-            imageUrlByWorkerId = imageUrl;
-            NSLog(@"根据id获取头像 workId = %@, imageUrl = %@ ", workId, imageUrl);
+            NSString *worker_id = [rs stringForColumn:@"worker_id"];
+            NSString * image_url = [rs stringForColumn:@"image_url"];
+            imageUrlByWorkerId = image_url;
+            NSLog(@"根据id获取头像 workId = %@, imageUrl = %@ ", worker_id, image_url);
         }
         [db close];
     }
@@ -99,7 +119,7 @@ static FMDatabase *db;
             NSString *content = [rs stringForColumn:@"content"];
             NSString *messageNum = [rs stringForColumn:@"message_num"];
             NSLog(@"sendID = %@ , content = %@, sendTime = %@, messageNum = %@",sendId,content,sendTime,messageNum );
-            NSDictionary *dictMessage = [NSDictionary dictionaryWithObjects:@[@{@"sendId":sendId,@"content":content,@"sendTime":sendTime,@"messageNum":messageNum}] forKeys:@[@"message"]];
+            NSDictionary *dictMessage = [NSDictionary dictionaryWithObjects:@[@{@"sendId":sendId,@"userName":[DataBaseTool getNameByWorkerId:sendId],@"userIcon":[DataBaseTool getImageUrlByWorkerId:sendId],@"content":content,@"sendTime":sendTime,@"messageNum":messageNum}] forKeys:@[@"message"]];
             [array addObject:dictMessage];
         }
         [db close];
@@ -109,13 +129,13 @@ static FMDatabase *db;
 
 +(void)insetSendDataType:(NSString *)messageType SendId:(NSString *)sendId ReceivedId:(NSString *)receivedId Content:(NSString *)content SendTime:(NSString *)sendTime ReceiveTime:(NSString *)receiveTime Flag:(NSString *)flag
 {
-    NSLog(@"添加数据");
+    NSLog(@"添加数据SendData");
     //添加数据
     if ([db open]) {
         NSString *insertSql= [NSString stringWithFormat:
                               @"INSERT INTO  Messages_Table(type, send_id, content, received_id,send_time, received_time, flag ,current_user_id , friend_id) VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')", messageType,sendId,content,receivedId,sendTime,receiveTime,flag,sendId,receivedId];
         BOOL res = [db executeUpdate:insertSql];
-        
+
         if (!res) {
             NSLog(@"error when insert db table");
         } else {
@@ -127,13 +147,13 @@ static FMDatabase *db;
 
 +(void)insetReceivedDataType:(NSString *)messageType SendId:(NSString *)sendId ReceivedId:(NSString *)receivedId Content:(NSString *)content SendTime:(NSString *)sendTime ReceiveTime:(NSString *)receiveTime Flag:(NSString *)flag
 {
-    NSLog(@"添加数据");
+    NSLog(@"添加数据ReceivedData");
     //添加数据
     if ([db open]) {
         NSString *insertSql= [NSString stringWithFormat:
                               @"INSERT INTO  Messages_Table(type, send_id, content, received_id,send_time, received_time, flag ,current_user_id , friend_id) VALUES ('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@')", messageType,sendId,content,receivedId,sendTime,receiveTime,flag,receivedId,sendId];
         BOOL res = [db executeUpdate:insertSql];
-        
+
         if (!res) {
             NSLog(@"error when insert db table");
         } else {
@@ -163,14 +183,15 @@ static FMDatabase *db;
     }
 }
 
-+(void)deleteDataListBy:(NSString *)friendId
+//删除聊天列表里的某条记录
++ (void)deleteDataListBy:(NSString *)friendId
 {
     NSLog(@"删除数据库");
     if ([db open]) {
         NSString *deleteSql = [NSString stringWithFormat:
                                @"delete from Messages_Table where friend_id = '%@'",friendId];
         BOOL res = [db executeUpdate:deleteSql];
-        
+
         if (!res) {
             NSLog(@"error when delete db table");
         } else {
@@ -178,6 +199,73 @@ static FMDatabase *db;
         }
         [db close];
     }
-    
 }
+
+
++ (void)updatePersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon
+{
+    NSLog(@"更新联系人信息");
+    //修改数据
+    if ([db open]) {
+        NSString *updateSql = [NSString stringWithFormat:
+                               @"UPDATE Workers_Table SET name = '%@',image_url = '%@' WHERE worker_id = '%@' ",userId,userName,userIcon];
+        BOOL res = [db executeUpdate:updateSql];
+        if (!res) {
+            NSLog(@"error when update db table");
+        } else {
+            NSLog(@"success to update db table");
+        }
+        [db close];
+    }
+
+}
+
++(void)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon
+{
+    NSLog(@"查询相同信息");
+
+    if ([db open]) {
+        NSString * sql = [NSString stringWithFormat:@"SELECT * FROM Workers_Table WHERE worker_id = '%@ '",userId];
+        FMResultSet * rs = [db executeQuery:sql];
+        while ([rs next]) {
+            NSString * image_url = [rs stringForColumn:@"image_url"];
+            if (image_url!=userIcon) {
+                //可以更新
+                [DataBaseTool updatePersonDetailInformationWithId:userId Name:userName ImageUrl:userId];
+            }
+        }
+        if (!rs) {
+            //没有一个相同
+            //一个没找到 可以插入新联系人
+            [DataBaseTool insertPersonDetailInformationWithId:userId Name:userName ImageUrl:userIcon];
+        }
+
+        [db close];
+    }
+
+}
+
++(NSMutableArray *)getAllUsersInfo
+{
+    NSLog(@"查询所有联系人信息");
+    NSMutableArray *array = [NSMutableArray array];
+    //修改数据
+    if ([db open]) {
+        NSString *updateSql = [NSString stringWithFormat:
+                               @"SELECT worker_id, name, image_url  FROM Workers_Table  "];
+        FMResultSet *rs = [db executeQuery:updateSql];
+
+        while ([rs next]) {
+            NSString * work_id = [rs stringForColumn:@"worker_id"];
+            NSString * name = [rs stringForColumn:@"name"];
+            NSString * image_url = [rs stringForColumn:@"image_url"];
+            NSDictionary *userInfo = @{@"work_id":work_id, @"name":name, @"image_url":image_url};
+            [array addObject:userInfo];
+        }
+
+        [db close];
+    }
+    return array;
+}
+
 @end

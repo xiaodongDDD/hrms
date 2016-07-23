@@ -7,6 +7,9 @@ angular.module('HmsModule')
     function (baseConfig) {
 
       this.init = function (state) {
+        if (baseConfig.debug) {
+          alert('hmsJpushService.init!! ');
+        }
         if (window.plugins.jPushPlugin) {
           var getRegistrationID = function () {
             window.plugins.jPushPlugin.getRegistrationID(onGetRegistrationID);

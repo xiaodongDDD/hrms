@@ -9,9 +9,10 @@
 #import <RongIMKit/RongIMKit.h>
 
 #ifndef CVDPlugin_Bridging_Header_h
-
+// 测试0vnjpoadnd4cz
+// e5t4ouvptpsaa
 #define appKey @"0vnjpoadnd4cz"
-#define appSecret @"5g2v4RnSnGU"
+#define appSecret @"0vnjpoadnd4cz"
 #define CDVIMPluginPushNotification @"CDVIMPluginPushNotification"
 
 #endif /* CVDPlugin_Bridging_Header_h */
