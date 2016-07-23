@@ -79,8 +79,8 @@ angular.module('myApp')
 
         $timeout(function () {
           if (baseConfig.debug) {
-            alert('window.localStorage.token ' + window.localStorage.token);
-            alert('window.localStorage.access_token ' + window.localStorage.access_token);
+            hmsPopup.showPopup('window.localStorage.token ' + window.localStorage.token);
+            hmsPopup.showPopup('window.localStorage.access_token ' + window.localStorage.access_token);
           }
           if (!window.localStorage.token || window.localStorage.token == '') {
           } else {
