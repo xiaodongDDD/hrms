@@ -29,6 +29,7 @@ angular.module('myApp')
     'imService',
     'hmsJpushService',
     'sqliteService',
+    'hmsPopup',
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -36,12 +37,8 @@ angular.module('myApp')
               $state,
               imService,
               hmsJpushService,
-              sqliteService) {
-
-      if (window.localStorage.token === '' || angular.isUndefined(window.localStorage.token)) {
-      } else {
-        checkVersionService.checkAppVersion();
-      }
+              sqliteService,
+              hmsPopup) {
 
       $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -55,45 +52,71 @@ angular.module('myApp')
         }
 
         /*var analyze = function (currentState) {
-          if (currentState.views) {
-            if (currentState.views['tab-application']) {
-              return 'tab.tab-application-';
-            } else if (currentState.views['tab-message']) {
-              return 'tab.tab-message-';
-            } else if (currentState.views['tab-contact']) {
-              return 'tab.tab-contact-';
-            } else if (currentState.views['tab-myInfo']) {
-              return 'tab.tab-myInfo-';
-            }
-          }
-          return '';
-        };
+         if (currentState.views) {
+         if (currentState.views['tab-application']) {
+         return 'tab.tab-application-';
+         } else if (currentState.views['tab-message']) {
+         return 'tab.tab-message-';
+         } else if (currentState.views['tab-contact']) {
+         return 'tab.tab-contact-';
+         } else if (currentState.views['tab-myInfo']) {
+         return 'tab.tab-myInfo-';
+         }
+         }
+         return '';
+         };
 
-        var goToPushDetail = function () {
-          $state.go(analyze($state.current) + 'pushDetail', {content: {"stateName": $state.current}});
-        };
-        $timeout(function () {
-          goToPushDetail();
-        },10000);
-        $timeout(function () {
-          goToPushDetail();
-        },20000);
-        $timeout(function () {
-          goToPushDetail();
-        },30000);
-        $timeout(function () {
-          goToPushDetail();
-        },40000);*/
+         var goToPushDetail = function () {
+         $state.go(analyze($state.current) + 'pushDetail', {content: {"stateName": $state.current}});
+         };
+         $timeout(function () {
+         goToPushDetail();
+         },10000);
+         */
 
         hmsJpushService.init($state);
         sqliteService.buildExpenseSql();
 
-        if (window.localStorage.access_token === '' || angular.isUndefined(window.localStorage.access_token)) {
-        } else {
-          if (ionic.Platform.isWebView()) {
-            imService.getImChatList();
+        $timeout(function () {
+          if (baseConfig.debug) {
+            alert('window.localStorage.token ' + window.localStorage.token);
+            alert('window.localStorage.access_token ' + window.localStorage.access_token);
           }
-        }
+          if (!window.localStorage.token || window.localStorage.token == '') {
+          } else {
+            checkVersionService.checkAppVersion();
+          }
+
+          var initImChatList = function () {
+            var newImParams = {
+              "userId": window.localStorage.empno,
+              "access_token": window.localStorage.token,
+              "RCToken": window.localStorage.access_token
+            };
+            if (baseConfig.debug) {
+              hmsPopup.showPopup('newImParams ' + angular.toJson(newImParams));
+            }
+            if (HandIMPlugin) {
+              HandIMPlugin.getChatList(function success(msg) {
+                if (baseConfig.debug) {
+                  console.log('HandIMPlugin.getChatList success!');
+                }
+                return msg;
+              }, function error(error) {
+                if (baseConfig.debug) {
+                  console.log('HandIMPlugin.getChatList error!');
+                }
+              }, newImParams);
+            }
+          };
+
+          if (!window.localStorage.access_token || window.localStorage.access_token == '') {
+          } else {
+            if (ionic.Platform.isWebView()) {
+              initImChatList();
+            }
+          }
+        });
 
         var rootConfig = {
           dbName: baseConfig.dbName,
@@ -102,7 +125,6 @@ angular.module('myApp')
         };
 
         if (ionic.Platform.isWebView()) {
-
         }
       });
     }]);
@@ -223,9 +245,9 @@ angular.module('myApp')
           controller: 'loginCtrl'
         });
 
-      if(!window.localStorage.needGuid || window.localStorage.needGuid =="true"){
+      if (!window.localStorage.needGuid || window.localStorage.needGuid == "true") {
         $urlRouterProvider.otherwise('/guide');
-      }else{
+      } else {
         if (window.localStorage.token && window.localStorage.token != "") {
           $urlRouterProvider.otherwise('/tab/message');
         } else {

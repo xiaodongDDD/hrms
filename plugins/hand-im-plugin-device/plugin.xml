@@ -43,8 +43,8 @@
 
     <source-file src="src/android/layout/values/rc_configuration.xml" target-dir="res/values"/>
     <source-file src="src/android/layout/values/rc_strings.xml" target-dir="res/values"/>
-    <source-file src="src/android/layout/values-en" target-dir="res/"/>
-    <source-file src="src/android/layout/values-sw" target-dir="res/"/>
+    <!--<source-file src="src/android/layout/values-en" target-dir="res/"/>-->
+    <!--<source-file src="src/android/layout/values-sw" target-dir="res/"/>-->
     <source-file src="src/android/layout/raw" target-dir="res/"/>
     <source-file src="src/android/layout/values-480x320" target-dir="res/"/>
     <source-file src="src/android/layout/values-800x480" target-dir="res/"/>
@@ -68,6 +68,13 @@
     <source-file src="src/android/layout/drawable/shape_left_chat_item.xml" target-dir="res/drawable"/>
     <source-file src="src/android/layout/drawable/shape_right_chat_item.xml" target-dir="res/drawable"/>
     <source-file src="src/android/layout/drawable/select_voice_click.xml" target-dir="res/drawable"/>
+
+    <source-file src="src/android/layout/values-de/strings_de.xml" target-dir="res/values-de"/>
+    <source-file src="src/android/layout/values-es/strings_es.xml" target-dir="res/values-es"/>
+    <source-file src="src/android/layout/values-fr/strings_fr.xml" target-dir="res/values-fr"/>
+    <source-file src="src/android/layout/values-hu/strings_hu.xml" target-dir="res/values-hu"/>
+    <source-file src="src/android/layout/values-ja/strings_ja.xml" target-dir="res/values-ja"/>
+    <source-file src="src/android/layout/values-ko/strings_ko.xml" target-dir="res/values-ko"/>
 
     <source-file src="src/android/layout/drawable-hdpi/album_2x.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/layout/drawable-hdpi/album_blue.png" target-dir="res/drawable-hdpi"/>
@@ -323,6 +330,8 @@
     <!-- resource   -->
     <resource-file src="src/ios/plugins/images/back@2x.png" />
     <resource-file src="src/ios/plugins/images/back@3x.png" />
+    <resource-file src="src/ios/plugins/images/image_placehold.png" />
+    <resource-file src="src/ios/plugins/images/default_mic.caf" />
 
     <!-- IMKit -->
     <!--        <resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMKit_SDK_v2_6_5_stable/Emoji.plist" />-->
@@ -362,9 +371,6 @@
 
     <header-file src="src/ios/plugins/CDVIMPluginChattingViewController.h"/>
     <source-file src="src/ios/plugins/CDVIMPluginChattingViewController.m"/>
-
-    <header-file src="src/ios/plugins/UIColor+Hex.h"/>
-    <header-file src="src/ios/plugins/UIColor+Hex.m"/>
 
     <header-file src="src/ios/plugins/CVDPlugin-Bridging-Header.h"/>
 

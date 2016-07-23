@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
 public class HandChatContentAdapter extends BaseAdapter{
     private List<HandChatActivity.ChatContant> data;
     private LayoutInflater inflater;
+    private String iconUrl;
     private Context context;
     private ViewHolder viewHolder;
     private DisplayImageOptions options;
@@ -38,9 +39,10 @@ public class HandChatContentAdapter extends BaseAdapter{
     //线程池
     private ExecutorService mImageThreadPool = Executors.newFixedThreadPool(3);
 
-    public HandChatContentAdapter(Context context,List<HandChatActivity.ChatContant> chats,String userId,String friendId){
+    public HandChatContentAdapter(Context context,List<HandChatActivity.ChatContant> chats,String userId,String friendId,String iconUrl){
         this.data = chats;
         this.context = context;
+        this.iconUrl = iconUrl;
         inflater = LayoutInflater.from(context);
         this.userId = userId;
         this.friendId = friendId;
@@ -95,9 +97,12 @@ public class HandChatContentAdapter extends BaseAdapter{
             viewHolder.imgv_right_voice = (ImageView) convertView.findViewById(Util.getRS("imgv_right_voice","id",context));
             convertView.setTag(viewHolder);
         }
+        if(!iconUrl.isEmpty()){
+            ImageLoader.getInstance().displayImage(iconUrl, viewHolder.imgv_chat_left_head_portrait, options);
+        }
         if(data.get(position).getType().equals(IMG)){
-            viewHolder.imgv_chat_img.setVisibility(View.VISIBLE);
-            viewHolder.imgv_chat_right_img.setVisibility(View.VISIBLE);
+            viewHolder.imgv_chat_img.setVisibility(View.GONE);
+            viewHolder.imgv_chat_right_img.setVisibility(View.GONE);
             viewHolder.textv_chat_content.setVisibility(View.GONE);
             viewHolder.textv_chat_right_content.setVisibility(View.GONE);
             viewHolder.imgv_left_voice.setVisibility(View.GONE);
@@ -138,8 +143,8 @@ public class HandChatContentAdapter extends BaseAdapter{
             viewHolder.imgv_chat_right_img.setVisibility(View.GONE);
             viewHolder.imgv_left_voice.setVisibility(View.GONE);
             viewHolder.imgv_right_voice.setVisibility(View.GONE);
-            viewHolder.textv_chat_content.setVisibility(View.VISIBLE);
-            viewHolder.textv_chat_right_content.setVisibility(View.VISIBLE);
+            viewHolder.textv_chat_content.setVisibility(View.GONE);
+            viewHolder.textv_chat_right_content.setVisibility(View.GONE);
             //单聊对象的ID
             if(data.get(position).getFromUser().equals(friendId)){
                 viewHolder.imgv_chat_left_head_portrait.setVisibility(View.VISIBLE);
@@ -158,8 +163,8 @@ public class HandChatContentAdapter extends BaseAdapter{
         }else if(data.get(position).getType().equals(VOICE)){
             viewHolder.imgv_chat_img.setVisibility(View.GONE);
             viewHolder.imgv_chat_right_img.setVisibility(View.GONE);
-            viewHolder.imgv_left_voice.setVisibility(View.VISIBLE);
-            viewHolder.imgv_right_voice.setVisibility(View.VISIBLE);
+            viewHolder.imgv_left_voice.setVisibility(View.GONE);
+            viewHolder.imgv_right_voice.setVisibility(View.GONE);
             viewHolder.textv_chat_content.setVisibility(View.GONE);
             viewHolder.textv_chat_right_content.setVisibility(View.GONE);
             if(data.get(position).getFromUser().equals(friendId)){

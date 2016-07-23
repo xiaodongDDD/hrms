@@ -23,7 +23,7 @@
 {
     [super viewDidLoad];
     
-    //阴影视图背景
+    //视图边缘阴影
     [self.navigationController.view.layer setShadowColor:[UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:0.6].CGColor];
     [self.navigationController.view.layer setShadowOffset:CGSizeMake(-2, 0)];
     [self.navigationController.view.layer setShadowOpacity:1.0];
@@ -33,8 +33,6 @@
     
     [self.chatSessionInputBarControl.recordButton addTarget:self action:@selector(TouchDown:) forControlEvents:UIControlEventTouchDown];
     [self.chatSessionInputBarControl.recordButton addTarget:self action:@selector(UpInside:) forControlEvents:UIControlEventTouchDragExit];
-    //导航statusBar
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
     
     panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMethord:)];
     [self.navigationController.view addGestureRecognizer:panRecognizer];
@@ -50,13 +48,18 @@
     
     [self.navigationController.navigationBar setTintColor:[UIColor  colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0]];
     
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+    UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back@2x"] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+    self.navigationItem.leftBarButtonItems = @[backBtn];
+    //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithCGImage:[UIImage imageNamed:@"dial_2x.png"].CGImage scale:1.6 orientation:UIImageOrientationUp] style:UIBarButtonItemStyleDone target:self action:@selector(call:)];
     
-     UIBarButtonItem *backBtn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back@2x"] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
-      self.navigationItem.leftBarButtonItems = @[backBtn];
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithCGImage:[UIImage imageNamed:@"dial_2x.png"].CGImage scale:1.6 orientation:UIImageOrientationUp] style:UIBarButtonItemStyleDone target:self action:@selector(call:)];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    //导航statusBar
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
+}
 //按钮按下会触发
 - (void)TouchDown:(UIButton *)sender
 {
@@ -145,6 +148,14 @@
 - (void)sendMessage:(RCMessageContent *)messageContent
         pushContent:(NSString *)pushContent
 {
+    
+    NSString *userId   = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
+    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+    NSString *userIcon = [[NSUserDefaults standardUserDefaults] objectForKey:@"userIcon"];
+    
+    RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:userId name:userName portrait:userIcon];
+    [messageContent setSenderUserInfo:userInfo];
+    
     [[RCIM sharedRCIM] sendMessage:ConversationType_PRIVATE targetId:self.targetId content:messageContent pushContent:pushContent pushData:nil success:^(long messageId) {
         NSLog(@"成功发送消息回调：%li   %@  时间:%@",messageId,messageContent,[TimeTool timeStr:[[NSDate date] timeIntervalSince1970]*1000]);
         NSString *content;
@@ -195,6 +206,13 @@
 - (void)sendImageMessage:(RCImageMessage *)imageMessage
              pushContent:(NSString *)pushContent
 {
+    NSString *userId   = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
+    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+    NSString *userIcon = [[NSUserDefaults standardUserDefaults] objectForKey:@"userIcon"];
+    
+    RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:userId name:userName portrait:userIcon];
+    [imageMessage setSenderUserInfo:userInfo];
+    
     [[RCIM sharedRCIM] sendImageMessage:ConversationType_PRIVATE targetId:self.targetId content:imageMessage pushContent:pushContent pushData:nil progress:^(int progress, long messageId) {
         NSLog(@"progress:%i,%li ",progress,messageId);
     } success:^(long messageId) {
@@ -305,4 +323,5 @@
     //RCChatSessionInputBarControl
     //super.RCChatSessionInputBarControl
 }
+
 @end

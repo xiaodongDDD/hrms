@@ -1101,6 +1101,7 @@ angular.module('applicationModule')
 
                 if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId && result.workflow_data.project_data) {
                   openProject().init(result.workflow_data.project_data);
+                  $scope.showList.newOpenProjectShowFlag = true;
                 }
 
 
