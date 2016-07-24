@@ -67,6 +67,7 @@ public class HandIMPlugin extends CordovaPlugin{
     private static String friendIcon="";
     private CallbackContext mCallbackContext;
     private List<myConversation> myConversations;
+    private DBhelper dBhelper;
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         //初始化基本数据和界面数据
@@ -86,6 +87,7 @@ public class HandIMPlugin extends CordovaPlugin{
                 token = obj.getString("RCToken");
                 access_token = obj.getString("access_token");
             }}
+            dBhelper = new DBhelper(context);
 //            userId="9606";
 //            access_token = "3ba35dce-8663-419a-9321-4038843f8c13";
 //            token = "xHCvuVLxmtDnm9olDVt+oRtMy4gibP9YNyGiOUps1grOsi9QUt9gNBegKFZmpznoT32yuE+T64baEzkJ31AZdA==";
@@ -174,6 +176,7 @@ public class HandIMPlugin extends CordovaPlugin{
                 Toast.makeText(context,"没有用户数据",Toast.LENGTH_SHORT).show();
                 return true;
             }
+            dBhelper.addUserInfo(friendId,friendName,friendIcon);
             if(getRmConnect()){
                 Intent intent = new Intent(cordova.getActivity(),HandChatActivity.class);
                 intent.putExtra("TYPE","NORMAL");
@@ -325,6 +328,12 @@ public class HandIMPlugin extends CordovaPlugin{
                 @Override
                 public void onSuccess(Integer integer) {
 //                  int totalUnreadCount = integer;
+                    MessageContent theMC = message.getContent();
+                    //收到消息 肯定是别人发的
+                    UserInfo mcInfo = theMC.getUserInfo();
+                    if (mcInfo != null) {
+                        dBhelper.addUserInfo(mcInfo.getUserId(), mcInfo.getName(), mcInfo.getPortraitUri().toString());
+                        }
                     getChatListInfo();
                     //解析message
                     MessageContent mc = message.getContent();
@@ -460,53 +469,45 @@ public class HandIMPlugin extends CordovaPlugin{
     private void getChatListInfo(){
     //拉取会话列表提供给前端刷新数据
     RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
-        @Override
         public void onSuccess(List<Conversation> conversations) {
-            //清空之前列表
-            myConversations.clear();
-            //消息为空需要判断
-            if (conversations == null || conversations.size() == 0) {
-                return;
-            }
-            for (int i = 0; i < conversations.size(); i++) {
-                Conversation conversation = conversations.get(i);
-                String targetId = conversation.getTargetId();
-                //本回话最后一条消息
-                MessageContent messageContent = conversation.getLatestMessage();
-                //获取消息发送的用户姓名
-                UserInfo userinfo = messageContent.getUserInfo();
-                String sendUserName="";
-                Uri sendUserIconUrl=null;
-                if(userinfo!=null){
-                    sendUserName = userinfo.getName();
-                    //获取消息发送的用户像
-                    sendUserIconUrl = userinfo.getPortraitUri();}
-                String txt = "";
-                //如果是文本消息获取最后一条消息的文本内容
-                if (messageContent instanceof TextMessage) {
-                    TextMessage tm = (TextMessage) messageContent;
-                    txt = tm.getContent();
-                } else if(messageContent instanceof ImageMessage){
-                    txt = "图片";
-                } else if(messageContent instanceof VoiceMessage){
-                    txt = "语音";
+                    //清空之前列表
+                    myConversations.clear();
+                    //消息为空需要判断
+                    if (conversations == null || conversations.size() == 0) {
+                        return;
+                    }
+                    for (int i = 0; i < conversations.size(); i++) {
+                        Conversation conversation = conversations.get(i);
+                        String targetId = conversation.getTargetId();
+                        //本回话最后一条消息
+                        MessageContent messageContent = conversation.getLatestMessage();
+                        //获取消息发送的用户姓名
+                        String sendUserName="";
+                        String iconPath = "";
+                        DBhelper.MyConversation mc = dBhelper.getUserInfo(targetId);
+                        sendUserName = mc.getTargetName();
+                        iconPath = mc.getTargetIconUrl();
+                        String txt = "";
+                        //如果是文本消息获取最后一条消息的文本内容
+                        if (messageContent instanceof TextMessage) {
+                            TextMessage tm = (TextMessage) messageContent;
+                            txt = tm.getContent();
+                        } else if(messageContent instanceof ImageMessage){
+                            txt = "图片";
+                        } else if(messageContent instanceof VoiceMessage){
+                            txt = "语音";
+                        }
+                        long time = conversation.getSentTime();
+                        Date date = new Date(time);
+                        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String mTime = sd.format(date);
+                        //获取未读消息数量
+                        int num = conversation.getUnreadMessageCount();
+                        myConversation myCon = new myConversation(txt, targetId,mTime,String.valueOf(num),sendUserName,iconPath);
+                        myConversations.add(myCon);
+                    }
+                    putChatList(myConversations);
                 }
-                long time = conversation.getSentTime();
-                Date date = new Date(time);
-                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String mTime = sd.format(date);
-                //获取未读消息数量
-                int num = conversation.getUnreadMessageCount();
-                String iconPath = "";
-                if(sendUserIconUrl!=null){
-                    iconPath = sendUserIconUrl.toString();
-                }else{
-                }
-                myConversation mc = new myConversation(txt, targetId,mTime,String.valueOf(num),sendUserName,iconPath);
-                myConversations.add(mc);
-            }
-            putChatList(myConversations);
-        }
         @Override
         public void onError(RongIMClient.ErrorCode errorCode) {
         }

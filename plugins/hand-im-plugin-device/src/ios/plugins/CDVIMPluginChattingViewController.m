@@ -29,7 +29,8 @@
     [self.navigationController.view.layer setShadowOpacity:1.0];
     [self.navigationController.view.layer setShadowRadius:5.0];
     
-    [DataBaseTool updateDataType:nil SendId:self.targetId];
+    // [DataBaseTool updateDataType:nil SendId:self.targetId];
+    [self setDisplayUserNameInCell:NO];//隐藏发送者name
     
     [self.chatSessionInputBarControl.recordButton addTarget:self action:@selector(TouchDown:) forControlEvents:UIControlEventTouchDown];
     [self.chatSessionInputBarControl.recordButton addTarget:self action:@selector(UpInside:) forControlEvents:UIControlEventTouchDragExit];
@@ -155,6 +156,7 @@
     
     RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:userId name:userName portrait:userIcon];
     [messageContent setSenderUserInfo:userInfo];
+    NSLog(@"sendMessage:%@ ,targetID:%@",userInfo,self.targetId);
     
     [[RCIM sharedRCIM] sendMessage:ConversationType_PRIVATE targetId:self.targetId content:messageContent pushContent:pushContent pushData:nil success:^(long messageId) {
         NSLog(@"成功发送消息回调：%li   %@  时间:%@",messageId,messageContent,[TimeTool timeStr:[[NSDate date] timeIntervalSince1970]*1000]);
@@ -175,10 +177,10 @@
             content = @"[位置]";
             type = @"location";
         }
-        NSLog(@"RCLocationMessage:%@",content);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self insertDataBaseMesaageType:type Content:content];
-        });
+        //        NSLog(@"RCLocationMessage:%@",content);
+        //        dispatch_async(dispatch_get_main_queue(), ^{
+        //            [self insertDataBaseMesaageType:type Content:content];
+        //        });
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"失败发送回调：%li,messageId:%li",nErrorCode,messageId);
     }];

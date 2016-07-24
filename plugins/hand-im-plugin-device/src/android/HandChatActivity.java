@@ -147,8 +147,9 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
             friendName = intent.getStringExtra("MFRIENDNAME");
             friendIcon = intent.getStringExtra("MFRIENDICON");
         }
-        android.net.Uri uri = Uri.parse(friendIcon);
-        uinfo = new UserInfo(friendId,friendName,uri);
+        if(iconUrl!=null){
+                android.net.Uri uri = Uri.parse(iconUrl);
+                uinfo = new UserInfo(userId,userName,uri);}
         emojis = FaceConversionUtil.getInstace(HandChatActivity.this).emojiLists;
         initView();
         initEditTextViewListener();

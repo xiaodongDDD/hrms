@@ -1,13 +1,17 @@
 <ion-view view-title="消息" class="message-list">
   <ion-header-bar align-title="left" class="bar-stable">
-    <div class="message-search">
+    <div class="message-search" ng-class="{true: 'has-employee-list', false: ''}[showFilter]">
       <div class="message-button">
         <i class="ion-ios-search search-i"></i>
       </div>
-      <input name="" placeholder="搜索">
+      <input placeholder="搜索" ng-blur="messageHandle.blur()" ng-focus="messageHandle.focus()"
+             ng-change="messageHandle.search(false)" ng-model="empFilterValue">
+    </div>
+    <div class="cancel-button" ng-click="messageHandle.cancel()" ng-if="showFilter">
+      取消
     </div>
   </ion-header-bar>
-  <ion-content style="bottom:48px;" id="messageList">
+  <ion-content style="bottom:48px;" class="messages" ng-class="{true: 'has-employee-list', false: ''}[showFilter]">
     <ion-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </ion-refresher>
 
@@ -45,5 +49,40 @@
       </ion-item>
     </ion-list>
 
+  </ion-content>
+
+  <ion-content style="bottom:58px;" delegate-handle="employeeListHandle"
+               class="employee-list overflow-scroll  has-header has-tabs"
+               ng-if="showFilter">
+    <ion-list>
+      <div class="search-result-item row"
+           ng-repeat="i in employeeList">
+        <img class="human-img" ng-cloak ng-src="{{i.avatar | filterImg:i.gender}}" ng-click="messageHandle.chatWithNative(i)"/>
+        <div class="col col-80 col-padding" ng-click="messageHandle.chatWithNative(i)">
+          <div class="row name" ng-cloak>
+            <span ng-bind="i.emp_name"></span>
+            <span ng-bind-html="'('+i.emp_code+')'"></span>
+            <span class="employee-status" ng-bind="i.status"></span>
+          </div>
+          <div class="row mail-tel" ng-bind="i.email">
+          </div>
+          <div class="row mail-tel" ng-bind="i.emp_mobil">
+          </div>
+        </div>
+        <div class="tel-img" ng-click="messageHandle.telSaveNumber($event,i)"></div>
+      </div>
+    </ion-list>
+    <div class="loading-more" ng-if="loadMoreFlag">
+      <div style="height:28px; line-height:28px; text-align: center;" ng-if="!loadingMoreFlag"
+           ng-click="messageHandle.search(true)">加载更多
+      </div>
+      <div style="height:28px; line-height:28px; text-align: center;" ng-if="loadingMoreFlag">
+        <ion-spinner icon="ios" class="spinner spinner-ios spinner-stable">
+      </div>
+    </div>
+
+    <!--<ion-infinite-scroll on-infinite="messageHandle.search(true)"
+                         ng-if="loadMoreFlag">
+    </ion-infinite-scroll>-->
   </ion-content>
 </ion-view>

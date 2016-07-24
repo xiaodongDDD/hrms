@@ -26,11 +26,11 @@ angular.module('HmsModule')
           empNo: window.localStorage.empno
         };
         if (baseConfig.debug) {
-          hmsPopup.showPopup('init2Cloud.getImTokenParams ' + angular.toJson(getImTokenParams));
+          alert('init2Cloud.getImTokenParams ' + angular.toJson(getImTokenParams));
         }
         hmsHttp.post(getImTokenUrl, getImTokenParams).success(function (result) {
           if (baseConfig.debug) {
-            hmsPopup.showPopup('init2Cloud.success ' + angular.toJson(result));
+            alert('init2Cloud.success ' + angular.toJson(result));
           }
           try {
             var imParams = {
@@ -54,7 +54,7 @@ angular.module('HmsModule')
           "RCToken": window.localStorage.access_token
         };
         if (baseConfig.debug) {
-          hmsPopup.showPopup('newImParams ' + angular.toJson(newImParams));
+          alert('newImParams ' + angular.toJson(newImParams));
         }
         if (HandIMPlugin) {
           HandIMPlugin.getChatList(function success(msg) {

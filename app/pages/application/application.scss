@@ -1,6 +1,11 @@
 $applicationColor: white !default;
 
 .mainApplication {
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   .header {
     background: $applicationColor;
   }

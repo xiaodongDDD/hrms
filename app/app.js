@@ -110,7 +110,8 @@ angular.module('myApp')
             }
           };
 
-          if (!window.localStorage.access_token || window.localStorage.access_token == '') {
+          if (!window.localStorage.access_token || window.localStorage.access_token == '' ||
+            !window.localStorage.token || window.localStorage.token == '') {
           } else {
             if (ionic.Platform.isWebView()) {
               initImChatList();

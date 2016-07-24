@@ -47,7 +47,7 @@
 /*!
  * 查询相同员工详细信息
  */
-+ (void)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon;
++(BOOL)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon;
 /*!
  * 获得所有员工详细信息
  */

@@ -29,22 +29,33 @@
     <div class="hms-hide-content" ng-if="fetchDataFlag">
       <hms-loading></hms-loading>
     </div>
-    <ion-list>
-      <hms-workflow-list ng-if="!fetchDataFlag&&!pullRefreshDataFlag" ng-repeat="item in list"
-                         workflow-title='item.title1'
-                         workflow-icon='item.icon'
-                         workflow-type='item.type'
-                         workflow-type-value='item.typeValue'
-                         workflow-node='item.node'
-                         workflow-node-value='item.nodeValue'
-                         workflow-submit='item.submit'
-                         workflow-submit-person='item.submitPerson' ng-click="enterWorkflowDetail(item)">
-      </hms-workflow-list>
+    <ion-list can-swipe="listStatus.todo.selected">
+      <ion-item class="workflow-list" ng-repeat="item in list">
+        <hms-workflow-list ng-if="!fetchDataFlag&&!pullRefreshDataFlag"
+                           workflow-title='item.title1'
+                           workflow-icon='item.icon'
+                           workflow-type='item.type'
+                           workflow-type-value='item.typeValue'
+                           workflow-node='item.node'
+                           workflow-node-value='item.nodeValue'
+                           workflow-submit='item.submit'
+                           workflow-submit-person='item.submitPerson' ng-click="enterWorkflowDetail(item)">
+        </hms-workflow-list>
+        <ion-option-button class="hms-swipe-left-action">
+          <div class="row approve-row" ng-click="workflowActionHandle.approveWorkflow(item)">
+            <img class="status-img"
+                 ng-src="build/img/application/timesheet-approve/list/approval@3x.png"/>
+          </div>
+          <div class="row refuse-row" ng-click="workflowActionHandle.rejectWorkflow(item)">
+            <img class="status-img" style="width: 61px;"
+                 ng-src="build/img/application/timesheet-approve/list/refuse@3x.png"/>
+          </div>
+        </ion-option-button>
+      </ion-item>
     </ion-list>
     <ion-infinite-scroll ng-if="loadMoreDataFlag" on-infinite="loadMoreData()"
                          distance="1%">
     </ion-infinite-scroll>
-
     <!--<a class="workflow-list" ng-repeat="item in list">
       <div class="workflow-list-logo">
         <img src="build/img/application/profile@3x.png"/>
