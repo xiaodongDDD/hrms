@@ -96,7 +96,7 @@ public class HandIMPlugin extends CordovaPlugin{
                     public void run() {
                         try {
                             int code = 0;
-                            URL url = new URL("http://wechat.hand-china.com/hrmsv2/v2/api/staff/detail?access_token="+access_token);
+                            URL url = new URL("http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/detail?access_token="+access_token);
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                             connection.setRequestMethod("POST");
                             connection.setConnectTimeout(5000);
@@ -559,7 +559,7 @@ public class HandIMPlugin extends CordovaPlugin{
                 public void onError(RongIMClient.ErrorCode errorCode) {
                 }
             });}
-            
+
         }
     }
 

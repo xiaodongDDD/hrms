@@ -9,6 +9,7 @@ angular.module('messageModule')
     '$timeout',
     '$ionicPlatform',
     '$ionicScrollDelegate',
+    '$ionicActionSheet',
     'imService',
     'checkVersionService',
     'baseConfig',
@@ -19,6 +20,7 @@ angular.module('messageModule')
               $timeout,
               $ionicPlatform,
               $ionicScrollDelegate,
+              $ionicActionSheet,
               imService,
               checkVersionService,
               baseConfig,
@@ -123,10 +125,10 @@ angular.module('messageModule')
           }, '');
         }
       };
+
       $timeout(function () {
         getMessageList();
-      }, 500);
-
+      }, 1000);
 
       $scope.messageHandle = {
         blur: function () {
@@ -165,10 +167,49 @@ angular.module('messageModule')
           }
         },
 
-        telNumber: function (event, baseInfo) { //拨打电话按钮的响应事件
+        telSaveNumber: function (event, baseInfo) { //拨打电话按钮的响应事件
           event.stopPropagation(); //阻止事件冒泡
-          //常用联系人拨打电话
-          window.location.href = "tel:" + baseInfo.replace(/\s+/g, "");
+          try {
+            $ionicActionSheet.show({
+              buttons: [
+                {text: '拨打电话'},
+                {text: '增加到通讯录'},
+              ],
+              cancelText: 'Cancel',
+              buttonClicked: function (index) {
+                if (index == 0) {
+                  window.location.href = "tel:" + 88888888888; //不明觉厉--
+                  window.location.href = "tel:" + baseInfo.mobil.replace(/\s+/g, "");
+                  var imgUrl = baseInfo.avatar;
+                  if (baseInfo.avatar != '' || baseInfo.avatar) {
+                  } else {
+                    if (baseInfo.gender == "男") {//根据性别判定头像男女
+                      imgUrl = "build/img/myInfo/man-portrait.png";
+                    } else if (baseInfo.gender == "女") {
+                      imgUrl = "build/img/myInfo/woman-portrait.png";
+                    }
+                  }
+
+                  var employeeBaseInfo = {
+                    tel: baseInfo.mobil.replace(/\s+/g, ""),
+                    name: baseInfo.emp_name,
+                    employeeNumber: baseInfo.emp_code,
+                    imgUrl: imgUrl
+                  };
+                  if (employeeBaseInfo.name) {
+                    dealCommonLinkMan(employeeBaseInfo);
+                  }
+                  return true;
+                }
+                if (index == 1) {
+                  contactService.contactLocal(baseInfo);
+                  return true;
+                }
+              }
+            });
+          } catch (e) {
+            //alert(e);
+          }
         },
 
         search: function (loadMoreFlag) {

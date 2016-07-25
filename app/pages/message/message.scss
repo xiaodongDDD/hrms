@@ -227,6 +227,7 @@
       input {
         float: right;
         width: 85%;
+        padding-left: 10%;
         height: 20px;
         line-height: 20px;
         margin-top: 4px;
@@ -240,8 +241,10 @@
       padding-left: 45%;
       margin-top: 5px;
       font-size: 18px;
+      z-index: 10;
     }
     input {
+      position: absolute;
       float: left;
       width: 88%;
       height: 20px;
@@ -249,6 +252,8 @@
       margin-top: 4px;
       margin-bottom: 4px;
       border: none;
+      z-index: 20;
+      background: none;
     }
   }
 
