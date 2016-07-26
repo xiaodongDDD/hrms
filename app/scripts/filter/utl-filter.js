@@ -41,7 +41,7 @@ HmsModule.filter('weekDay', function () {
 //图片过滤器
 HmsModule.filter('filterImg', function () {
   return function (data, gender) {
-    if (data != '' || data) {
+    if (data && data != '') {
       return data;
     } else {
       if (gender == "男") {//根据性别判定头像男女

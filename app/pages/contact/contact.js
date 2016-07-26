@@ -28,11 +28,30 @@ angular.module('contactModule')
       {
         $scope.customContactsInfo = [];
         $scope.showTopInput = false; // 默认不显示bar上的搜索框
+        $scope.structureName = ''; //当前员工所属层级的名字
+        $scope.currentStructure = {};
         var CONTACT_TAG = 'contact:\n';
         var position = ''; //记录滚动条的位置--
         var LINK_MAN = 'common_linkman2';
-        getInitStructureInfo.getCurrentStructure();
       }
+
+      function getCurrentDepartInfo(result) {
+        try {
+          if (Object.keys(result).length !== 0) { //枚举
+            $scope.currentStructure = result;
+            for (var i = 1; i < result.deptInfo.length; i++) {
+              if (i === (result.deptInfo.length - 1)) {
+                $scope.structureName += result.deptInfo[i].name;
+              } else {
+                $scope.structureName += result.deptInfo[i].name + '-';
+              }
+            }
+          }
+        } catch (e) {
+        }
+      };
+
+      getInitStructureInfo.getCurrentStructure(getCurrentDepartInfo);
 
       function getCommonLinkMan() { //获取常用联系人
         $scope.customContactsInfo = unique_better(storedb(LINK_MAN).find(), 'employeeNumber');
@@ -163,9 +182,16 @@ angular.module('contactModule')
         $state.go('tab.contactSearch');
       };
 
-      $scope.goStructure = function () {
-        hmsPopup.showPopup("本功能下一版本上线");
-        // $state.go('tab.contactStructure');
+      $scope.goStructure = function (flag) {
+        if (angular.equals(flag, 'current')) {
+          $state.go('tab.contactStructure', {
+            routeId: "currentDepartment",
+            structureId: "1",
+            currentDepartInfo: $scope.currentStructure
+          });
+        } else {
+          $state.go('tab.contactStructure');
+        }
       };
 
       $scope.goDetailInfo = function (newEmployeeNumber) {
@@ -175,12 +201,32 @@ angular.module('contactModule')
     }])
   .service('getInitStructureInfo', ['hmsHttp', 'baseConfig', function (hmsHttp, baseConfig) {
     var _currentStructureUrl = baseConfig.queryPath + '/dept/getStaffDeptInfo';
+    var _structureUrl = baseConfig.queryPath + '/dept/getDetail';
+    this._returnData = {};
     return {
-      getCurrentStructure: function () {
+      getCurrentStructure: function (callback) {
         hmsHttp.post(_currentStructureUrl).success(function (response) {
-
+          if (response.returnData) {
+          } else {
+            response.returnData = {};
+          }
+          callback(response.returnData);
         }).error(function (error) {
+        });
+      },
+      getStructure: function (callback, newId) {
+        var params = {
+          "id": newId
+        };
 
+        hmsHttp.post(_structureUrl, params).success(function (response) {
+          try {
+            this._returnData = response.returnData;
+          } catch (e) {
+            this._returnData = {};
+          }
+          callback(this._returnData);
+        }.bind(this)).error(function (error) {
         });
       }
     }

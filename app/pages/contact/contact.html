@@ -24,37 +24,36 @@
         <div class="col col-15 item-logo">
           <img class="contact-item-logo" src="build/img/login/login-hand.png"/>
         </div>
-        <div class="col col-85 item-name">
+        <div class="col col-75 item-name">
           上海汉得信息技术股份有限公司
         </div>
         <div class="item-line"></div>
         <div class="item-arrow"></div>
       </div>
-      <div class="contact-item row no-padding" ng-click="goStructure()" ng-if="false">
+      <div class="contact-item row no-padding" ng-click="goStructure('current')">
         <div class="col col-15 item-logo">
-          <img class="contact-item-logo" src="build/img/application/profile@3x.png"/>
-        <div class="col col-85 item-name">
-          TECH-移动技术中心
+          <img class="contact-item-logo" src="build/img/contact/line@3x.png"/>
+        </div>
+        <div class="col col-75 item-name" ng-bind="structureName">
         </div>
         <div class="item-arrow"></div>
       </div>
     </div>
-    <div class="custom-link-man">
+    <div class="custom-link-man" ng-if="customContactsInfo.length !== 0">
       常用联系人
     </div>
-    <div>
-      <div class="contact-item row no-padding"
-           ng-repeat="i in customContactsInfo"
-           ng-click="goDetailInfo(i.employeeNumber)"
-        >
-        <div class="col col-15 item-logo">
-          <img class="contact-item-logo" ng-cloak ng-src="{{i.imgUrl | filterImg}}"/>
-        </div>
-        <div class="col col-85 item-name" ng-bind="i.name">
-        </div>
-        <div class="item-line"></div>
-        <div class="tel-img" ng-click="telNumber($event,i.tel)"></div>
+    <div class="contact-item row no-padding"
+         ng-repeat="i in customContactsInfo"
+         ng-click="goDetailInfo(i.employeeNumber)"
+    >
+      <div class="col col-15 item-logo">
+        <img class="contact-item-logo" ng-cloak ng-src="{{i.imgUrl | filterImg}}"/>
       </div>
+      <div class="col col-85 item-name" ng-bind="i.name">
+      </div>
+      <div class="item-line"></div>
+      <div class="tel-img" ng-click="telNumber($event,i.tel)"></div>
     </div>
+
   </ion-content>
 </ion-view>
