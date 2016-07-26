@@ -1,0 +1,42 @@
+<div class="ts-filter-bg">
+  <ion-modal-view class="ts-filter-modal">
+    <ion-header-bar align-title="center" class="bar-modal modal-height">
+      <div class="buttons modal-button-margin">
+        <button class="button button-clear" ng-click="cancelFilter()">取消</button>
+      </div>
+      <h1 class="title modal-button-margin" style="color: white;" ng-click="clearFilterParams()">清空筛选</h1>
+
+      <div class="buttons modal-button-margin">
+        <button class="button button-clear" ng-click="confirmFilter()">确定</button>
+      </div>
+    </ion-header-bar>
+    <ion-content overflow-scroll="true" style="overflow: hidden;top:44px!important;">
+      <div class="row filter-items-row">
+        <div class="select-items">
+          <div id="project-name" class="project-name" ng-click="selectScreening('projectName')">
+            项目名称
+          </div>
+          <div id="person-select" class="person-select" ng-click="selectScreening('personSelect')">
+            人员选择
+          </div>
+        </div>
+        <ion-scroll class="items-bg">
+          <div id="projectName{{$index}}" class="items-detail" ng-show="showProjectName"
+               ng-repeat="i in projectList track by $index"
+               ng-class="{'select-item-color':isClickedProject[$index]}"
+               ng-cloak
+               ng-click="selectFilterItem('projectName',$index,i.project_id)">
+            {{i.project_name}}
+          </div>
+          <div id="personSelect{{$index}}" class="items-detail" ng-hide="showProjectName"
+               ng-repeat="i in personList track by $index"
+               ng-class="{'select-item-color':isClickedPerson[$index]}"
+               ng-cloak
+               ng-click="selectFilterItem('personSelect',$index,i.employee_number)">
+            {{i.employee_name}}
+          </div>
+        </ion-scroll>
+      </div>
+    </ion-content>
+  </ion-modal-view>
+</div>

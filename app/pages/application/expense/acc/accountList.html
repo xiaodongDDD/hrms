@@ -1,0 +1,97 @@
+<ion-view title="记一笔列表" class="accountList-view">
+    <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">记一笔列表</h1>
+    <div class="buttons">
+
+    </div>
+  </ion-header-bar>
+
+  <ion-content>
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+    <ion-list ng-repeat="account in accountList">
+      <div class="item item-divider">
+        <div ></div>
+        <div class="title">{{account.time}}</div>
+      </div>
+      <ion-item modifier="chevron" class="item-icon-right xbr-item-ion-ll" ng-repeat="a in account.list" ng-click="openDetail($event)">
+        <div class="xbr-flag-abc" lineId="{{a.line_id}}" status="{{a.local_status}}"
+             timestamp="{{a.timestamp}}">
+            <div class="xbr-width-full" lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+
+              <div class="xbr-width-full"lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                <div class="xbr-width-full xbr-aaa desc" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                     timestamp="{{a.timestamp}}">
+                  <div class="xbr-flab-bbb" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                       timestamp="{{a.timestamp}}">
+                    {{a.expense_date_from}}
+                  </div>
+                  <div class="xbr-flab-cccc" lineId="{{a.line_id}}"
+                       status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    至
+                  </div>
+                  <div class="xbr-flab-dddd" lineId="{{a.line_id}}"
+                       status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    {{a.expense_date_to}}
+                  </div>
+                </div>
+                <br/>
+
+                <div class="xbr-flag-local-status" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                     timestamp="{{a.timestamp}}" align="center"
+                     ng-class="{'uploaded':a.local_status=='UPLOADED','new':a.local_status=='NEW'}">
+                  {{a.local_status}}
+                </div>
+                <br/>
+
+                <div class="xbr-width-full name xbr-flag-eeee" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                     timestamp="{{a.timestamp}}">
+                  <div class="xbr-flag-ffff">
+                    {{a.expense_type_desc}}{{a.expense_item_desc}}
+                  </div>
+
+                  <div class="location xbr-location-flag"
+                       lineId="{{a.line_id}}" status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    <i class="icon ion-ios-location"></i>
+                  </div>
+
+                  <div class="location xbr-location-45" lineId="{{a.line_id}}"
+                       status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    <div class="fa fa-map-marker" lineId="{{a.line_id}}" status="{{a.local_status}}"
+                         timestamp="{{a.timestamp}}">{{a.expense_place}}
+                    </div>
+                  </div>
+
+                  <div class="xbr-flag-gggg" lineId="{{a.line_id}}"
+                       status="{{a.local_status}}" timestamp="{{a.timestamp}}">
+                    {{a.total_amount.toFixed(2)}}元
+                  </div>
+                </div>
+                <!--新增描述字段-->
+                <br/>
+
+                <div class="description xbr-width-full xbr-flag-desc" lineId="{{a.line_id}}"
+                     status="{{a.local_status}}">
+                  <div>
+                    {{a.description}}
+                  </div>
+                </div>
+
+              </div>
+              <br/>
+            </div>
+        </div>
+
+        <i class="icon ion-ios-arrow-right" ></i>
+        <ion-option-button class="button-assertive" ng-click="removeData($event)" lineId="{{a.line_id}}" timestamp="{{a.timestamp}}">删除
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+
+</ion-view>

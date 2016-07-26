@@ -6,10 +6,8 @@
 
 var gulp = require('gulp');
 
-// Include Plugins
+//Include Plugins
 var del = require('del');
-var gulpif = require('gulp-if');
-var gulpIgnore = require('gulp-ignore');
 var jshint = require('gulp-jshint');
 var useref = require('gulp-useref');
 var lazypipe = require('lazypipe');
@@ -18,97 +16,179 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var nano = require('gulp-cssnano');
-var runSequence = require('run-sequence');
+var runSequence = require('gulp-run-sequence');
 var sourcemaps = require('gulp-sourcemaps');
+var clean = require('gulp-clean');
 var notify = require('gulp-notify');//提示信息
 var gulpNgConfig = require('gulp-ng-config');//提示信息
 
-var jsFilePath = ['app/scripts/*.js','app/scripts/*/*.js','app/app.js','app/pages/**/*.js','app/pages/**/**/*.js'];
-var htmlFilePath = ['app/pages/**/*.html','app/pages/**/**/*.html'];
+var jsFilePath = [
+  'app/scripts/*.js',
+  'app/scripts/*/*.js',
+  'app/app.js',
+  'app/pages/**/*.js',
+  'app/pages/**/**/*.js',
+  'app/pages/**/**/**/*.js'];
 
-// Clean Task
+var htmlFilePath = [
+  'app/pages/**/*.html',
+  'app/pages/**/**/*.html',
+  'app/pages/**/**/**/*.html',
+  'app/pages/**/**/**/**/*.html'];
+
+var libDevFilePath = [
+  'app/lib/**/*.*',
+  'app/lib/**/**/*.*',
+  'app/lib/**/**/**/*.*'];
+
+var libPublishFilePath = [
+  'app/lib/**/css/ionic.min.css',
+  'app/lib/**/fonts/*.*',
+  'app/lib/**/js/ionic.bundle.min.js',
+  'app/lib/**/rollups/md5.js',
+  'app/lib/**/dist/jquery.min.js',
+  'app/lib/**/dist/ng-cordova.js'];
+
+var imgFilePath = [
+  'app/img/**/*.png',
+  'app/img/**/**/*.*',
+  'app/img/**/**/**/*.png',
+  'app/img/*.gif'];
+
+var configDEVPath = [
+  'publish/TEST/config.xml'];
+
+var configPRODPath = [
+  'publish/PROD/config.xml'];
+
+var configiOSAppStorePath = [
+  'publish/IOSAPPSTORE/config.xml'
+]
+
+var pluginDEVPath = [
+  'publish/TEST/plugins/*.*',
+  'publish/TEST/plugins/**/*.*',
+  'publish/TEST/plugins/**/**/*.*',
+  'publish/TEST/plugins/**/**/**/*.*',
+  'publish/TEST/plugins/**/**/**/**/*.*',
+  'publish/TEST/plugins/**/**/**/**/**/*.*'];
+var pluginPRODPath = [
+  'publish/PROD/plugins/*.*',
+  'publish/PROD/plugins/**/*.*',
+  'publish/PROD/plugins/**/**/*.*',
+  'publish/PROD/plugins/**/**/**/*.*',
+  'publish/PROD/plugins/**/**/**/**/*.*',
+  'publish/PROD/plugins/**/**/**/**/**/*.*'];
+
+//清除自动生成的目录文件
 gulp.task('clean', function () {
-    del(['www/build/*','www/lib/*','app/scripts/baseConfig.js']);
+  return gulp.src(['www/build/*','app/scripts/baseConfig.js', 'config.xml'
+    /*,'plugins/com.handmobile.cordovaplugin.hotpatch/*', 'plugins/hand-im-plugin-device/*'*/]).pipe(clean());
 });
 
-// Lint Task
-gulp.task('lint', function() {
+gulp.task('clean-code', function () {
+  return gulp.src(['www/build/css/*','www/build/img/*','www/build/pages/*','www/build/app.bundle.js']).pipe(clean());
+});
+
+gulp.task('clean-bundle-js', function () {
+  return gulp.src(['www/build/app.bundle.js']).pipe(clean());
+});
+
+//语法检查
+gulp.task('lint', function () {
   return gulp.src(jsFilePath)
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
 
-// Handle HTML
-gulp.task('pagesHtml', function(){
+//复制页面到运行目录
+gulp.task('pagesHtml', function () {
   return gulp.src(htmlFilePath)
-    .pipe(useref({noAssets:true}, lazypipe().pipe(sourcemaps.init, { loadMaps: true })))
+    .pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('www/build/pages'));
 });
 
-gulp.task('rootHtml', function(){
+//
+gulp.task('rootHtml', function () {
   return gulp.src('src/*.html')
-    .pipe(useref({noAssets:true}, lazypipe().pipe(sourcemaps.init, { loadMaps: true })))
+    .pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('www'));
 });
 
+//新建复制页面任务
 gulp.task('html', [/*'rootHtml',*/ 'pagesHtml']);
 
-// Copy Ionic Lib
-gulp.task('copy-css-lib', function() {
-  return gulp.src('app/lib/ionic/css/ionic.css')
-    .pipe(gulp.dest('www/build/lib/ionic/css'));
+//复制开发环境的依赖库文件
+gulp.task('copy-dev-libs', function () {
+  return gulp.src(libDevFilePath)
+    //.pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
+    //.pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('www/build/lib'));
 });
 
-gulp.task('copy-js-lib', function() {
-  return gulp.src('app/lib/ionic/js/ionic.bundle.js')
-    .pipe(gulp.dest('www/build/lib/ionic/js'));
+//复制发布环境的依赖库文件
+gulp.task('copy-publish-libs', function () {
+  return gulp.src(libPublishFilePath)
+    //.pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
+    //.pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('www/build/lib'));
 });
 
-gulp.task('copy-font-lib', function() {
-  return gulp.src('app/lib/ionic/fonts/*.*')
-    .pipe(gulp.dest('www/build/lib/ionic/fonts'));
-});
-
-gulp.task('copy-ng-cordova-lib', function() {
-  return gulp.src('app/lib/ngCordova/dist/ng-cordova.js')
-    .pipe(gulp.dest('www/build/lib/ngCordova/dist'));
-});
-
-gulp.task('copy-cryptojs-lib-components', function() {
-  return gulp.src('app/lib/cryptojslib/components/*.js')
-    .pipe(gulp.dest('www/build/lib/cryptojslib/components'));
-});
-
-gulp.task('copy-cryptojs-lib-rollups', function() {
-  return gulp.src('app/lib/cryptojslib/rollups/*.js')
-    .pipe(gulp.dest('www/build/lib/cryptojslib/rollups'));
-});
-
-gulp.task('copy-img-all', function() {
-  return gulp.src('app/img/*.*')
+//复制图片文件
+gulp.task('copy-img', function () {
+  return gulp.src(imgFilePath)
     .pipe(gulp.dest('www/build/img'));
 });
-gulp.task('copy-img-tabs', function() {
-  return gulp.src('app/img/tabs/*.*')
-    .pipe(gulp.dest('www/build/img/tabs'));
-});
-gulp.task('copy-img-application', function() {
-  return gulp.src('app/img/application/*.*')
-    .pipe(gulp.dest('www/build/img/application'));
-});
-gulp.task('copy-img', ['copy-img-all', 'copy-img-tabs','copy-img-application']);
 
-gulp.task('copy-lib', ['copy-css-lib', 'copy-js-lib','copy-font-lib','copy-ng-cordova-lib','copy-cryptojs-lib-components','copy-cryptojs-lib-rollups','copy-img']);
-
-// Compile Sass
-gulp.task('sass', function() {
-    return gulp.src('app/theme/*.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('www/build/css'));
+//复制开发环境 config.xml
+gulp.task('copy-dev-config', function () {
+  return gulp.src(configDEVPath)
+    .pipe(gulp.dest(''));
 });
 
+//复制发布环境 config.xml
+gulp.task('copy-prod-config', function () {
+  return gulp.src(configPRODPath)
+    .pipe(gulp.dest(''));
+});
+
+//复制发布环境 config.xml
+gulp.task('copy-ios-appStore-config', function () {
+  return gulp.src(configiOSAppStorePath)
+    .pipe(gulp.dest(''));
+});
+
+/*
+ gulp.task('copy-dev-plugin', function () {
+ return gulp.src(pluginDEVPath)
+ .pipe(gulp.dest('plugins'));
+ });
+ gulp.task('copy-prod-plugin', function () {
+ return gulp.src(pluginPRODPath)
+ .pipe(gulp.dest('plugins'));
+ });
+ */
+//定义开发环境的依赖库文件任务
+gulp.task('copy-dev-lib', function (callback) {
+  runSequence('copy-dev-libs', 'copy-img', callback);
+});
+
+//定义发布环境的依赖库文件任务
+gulp.task('copy-publish-lib', function (callback) {
+  runSequence('copy-publish-libs', 'copy-img', callback);
+});
+
+//合并压缩css文件
+gulp.task('sass', function () {
+  return gulp.src(['app/theme/*.scss'])
+    .pipe(sass())
+    .pipe(gulp.dest('www/build/css'));
+});
+
+
+//生成开发环境环境配置文件
 gulp.task('config-dev', function () {
   gulp.src('app/config/devConfig.json')
     .pipe(gulpNgConfig('baseConfig'))
@@ -116,80 +196,100 @@ gulp.task('config-dev', function () {
     .pipe(gulp.dest('app/scripts'))
 });
 
-// Minify CSS
+//生成发布环境环境配置文件
+gulp.task('config-prod', function () {
+  gulp.src('app/config/prodConfig.json')
+    .pipe(gulpNgConfig('baseConfig'))
+    .pipe(rename("baseConfig.js"))
+    .pipe(gulp.dest('app/scripts'))
+});
+
+//生成iOS商店发布环境环境配置文件
+gulp.task('config-ios-appStore-prod', function () {
+  gulp.src('app/config/iOSAppStoreConfig.json')
+    .pipe(gulpNgConfig('baseConfig'))
+    .pipe(rename("baseConfig.js"))
+    .pipe(gulp.dest('app/scripts'))
+});
+
+//生成iOS发布环境环境配置文件
+gulp.task('config-prod', function () {
+  gulp.src('app/config/prodConfig.json')
+    .pipe(gulpNgConfig('baseConfig'))
+    .pipe(rename("baseConfig.js"))
+    .pipe(gulp.dest('app/scripts'))
+});
+
+//复制开发环境 config.xml
+gulp.task('copy-iosAppStore-config', function () {
+  return gulp.src(configIosAppStorePath)
+    .pipe(gulp.dest(''));
+});
+
+//压缩css
 gulp.task('css', function () {
-    return gulp.src('src/css/**/*.css')
-            .pipe(sourcemaps.init())
-            .pipe(gulp.dest('www/css'))  // write source file for debug
-            .pipe(nano({reduceIdents: false}))
-            .pipe(rename({
-                suffix: '.min'
-            }))
-            .pipe(sourcemaps.write('.', {includeContent: false, sourceRoot: '.'}))
-            .pipe(gulp.dest('www/css'));
+  return gulp.src('src/css/**/*.css')
+    .pipe(sourcemaps.init())
+    .pipe(gulp.dest('www/css'))  // write source file for debug
+    .pipe(nano({reduceIdents: false}))
+    .pipe(rename({
+      suffix: '.min'
+    }))
+    .pipe(sourcemaps.write('.', {includeContent: false, sourceRoot: '.'}))
+    .pipe(gulp.dest('www/css'));
 });
 
-// Concat And Uglify JS
+//合并压缩丑化Js
 gulp.task('scripts', function () {
-    return gulp.src(jsFilePath)
-            //.pipe(sourcemaps.init())
-            .pipe(concat('app.bundle.js'))
-            .pipe(gulp.dest('www/build'))  // write source file for debug
-            .pipe(uglify({mangle: true}))  // for debug, do not mangle variable name
-            .pipe(rename({
-                suffix: '.min'
-            }))
-            .pipe(sourcemaps.write('.', {includeContent: false, sourceRoot: '.'}))
-            .pipe(gulp.dest('www/build'));
-            //.pipe(notify({ message: 'scripts task ok' }));
+  return gulp.src(jsFilePath)
+    .pipe(concat('app.bundle.js'))
+    .pipe(gulp.dest('www/build'));// write source file for debug
+    //.pipe(rename({suffix: '.min'}))   //rename压缩后的文件名
+    //.pipe(uglify())    //压缩
+    //.pipe(gulp.dest('www/build'));  //输出
 });
 
-// copy all files
-gulp.task('copy-dev', function () {
+//
+gulp.task('copy-prod', function () {
   return gulp.src([
       'src/**/*',
       '!src/index.html',
+      '!src/**/*.ts',
+      '!src/**/*.less',
+      '!src/**/*.sass',
+      '!src/**/*.styl',
+      '!src/css/*',
+      '!src/**/*.md',
       '!src/scripts/*'])
     .pipe(gulp.dest('www'));
 });
 
-// copy product env files, ignore source and useless files
-gulp.task('copy-prod', function () {
-    return gulp.src([
-        'src/**/*',
-        '!src/index.html',
-        '!src/**/*.ts',
-        '!src/**/*.less',
-        '!src/**/*.sass',
-        '!src/**/*.styl',
-        '!src/css/*',
-        '!src/**/*.md',
-        '!src/scripts/*'])
-            .pipe(gulp.dest('www'));
-});
-
-// Watch Files For Changes
+//自动观察代码变化
 gulp.task('watch', function () {
-    gulp.watch(['src/**/*'], ["copy-dev"]);
+  gulp.watch(['app/**/*'], ["run-dev"]);
+  console.log("----watch file change -----");
 });
 
-gulp.task('build-dev', function (callback) {
-    runSequence('copy-dev', ['lint','copy-lib' ,'sass' , 'scripts', 'html'], callback);
+//手动更新www/build代码
+gulp.task('rebuild', function (callback) {
+  runSequence('clean-code', ['copy-img', 'sass', 'scripts', 'html'], callback);
 });
 
-gulp.task('build-prod', function (callback) {
-    runSequence('copy-prod', ['lint', 'copy-lib','sass', 'scripts', 'html'], callback);
-});
-
-// Default Task
-gulp.task('default', ['run-dev']);
-
-// Default Task
+//生成开发环境代码目录
 gulp.task('run-dev', function (callback) {
-    runSequence('clean', 'build-dev', callback);
+  runSequence('clean', 'config-dev', /*'lint',*/ 'copy-dev-config', 'copy-publish-lib', ['sass', 'scripts', 'html'], callback);
 });
 
-// Default Task
+//生成发布环境代码目录
 gulp.task('run-prod', function (callback) {
-    runSequence('clean', 'build-prod', callback);
+  runSequence('clean', 'config-prod', /*'lint',*/ 'copy-prod-config', 'copy-publish-lib', ['sass', 'scripts', 'html'], callback);
 });
+
+//生成发布环境代码目录
+gulp.task('run-ios-prod', function (callback) {
+  runSequence('clean', 'config-ios-appStore-prod', /*'lint',*/ 'copy-ios-appStore-config', 'copy-publish-lib', ['sass', 'scripts', 'html'], callback);
+});
+
+
+//默认任务
+gulp.task('default', ['run-dev']);

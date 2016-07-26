@@ -1,0 +1,107 @@
+<ion-view view-title="假期管理">
+  <div class="time-off-header-bg">
+    <div class="platform-status-bar"></div>
+    <div class="time-off-header-bar">
+      <div class="buttons">
+        <button class="button button-icon icon ion-ios-arrow-back left-button" ng-click="$ionicGoBack()">
+          <span class="back-text">返回</span>
+        </button>
+      </div>
+      <h1 class="title">休假管理</h1>
+
+      <div class="buttons">
+        <button class="button button-icon icon ion-ios-plus-outline right-button" ng-click="timeOffCreate()">
+        </button>
+      </div>
+      <div class="row time-off-sub-header">
+
+        <div class="col col-33 time-off-col">
+          <div class="circle-warp">
+            <div class="hrms-circle">
+              <div class="shelter left">
+                <div id="left-paid-holiday" class="circle left-circle paid-holiday"></div>
+              </div>
+              <div class="shelter right">
+                <div id="right-paid-holiday" class="circle right-circle paid-holiday"></div>
+              </div>
+              <span class="up-title">剩余</span>
+              <span class="center-title paid-holiday">{{timeOffHeader.paidHoliday}}天</span>
+            </div>
+          </div>
+          <div>
+            <span class="bottom-title">带薪年假</span>
+            <span class="bottom-title">已用天数{{timeOffHeader.usedPaidHoliday}}天</span>
+          </div>
+        </div>
+
+        <div class="col col-33 time-off-col">
+          <div class="circle-warp">
+            <div class="hrms-circle">
+              <div class="shelter left">
+                <div id="left-paid-sick-leave" class="circle left-circle paid-sick-leave"></div>
+              </div>
+              <div class="shelter right">
+                <div id="right-paid-sick-leave" class="circle right-circle paid-sick-leave"></div>
+              </div>
+              <span class="up-title">剩余</span>
+              <span class="center-title paid-sick-leave">{{timeOffHeader.paidSickLeave}}天</span>
+            </div>
+          </div>
+          <div>
+            <span class="bottom-title">带薪病假</span>
+            <span class="bottom-title">已用天数{{timeOffHeader.usedPaidSickLeave}}天</span>
+          </div>
+        </div>
+
+        <div class="col col-33 time-off-col">
+          <div class="circle-warp">
+            <div class="hrms-circle">
+              <div class="shelter left">
+                <div id="left-ext-paid-holiday" class="circle left-circle ext-paid-holiday"></div>
+              </div>
+              <div class="shelter right">
+                <div id="right-ext-paid-holiday" class="circle right-circle ext-paid-holiday"></div>
+              </div>
+              <span class="up-title">剩余</span>
+              <span class="center-title ext-paid-holiday">{{timeOffHeader.extPaidHoliday}}天</span>
+            </div>
+          </div>
+          <div>
+            <span class="bottom-title">额外福利年假</span>
+            <span class="bottom-title">已用天数{{timeOffHeader.usedExtPaidHoliday}}天</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <ion-content class="time-off-content"
+               circle-rotate="time-off-manage ,left-paid-sick-leave,right-paid-sick-leave,left-ext-paid-holiday,right-ext-paid-holiday">
+    <div class="hms-hide-content" ng-if="fetchDataFlag">
+      <hms-loading></hms-loading>
+    </div>
+    <div ng-if="!fetchDataFlag">
+      <div class="time-off-list-title">休假记录</div>
+
+      <div class="time-off-item" ng-repeat="item in timeOffHistoryList" ng-click="processTimeOff(item)">
+
+        <img class="time-off-item-left {{item.timeOffTypeClass}}" ng-src="{{item.holidayIcon}}" }>
+
+        <div class="time-off-item-middle">
+          <div class="item-off-item-title {{item.timeOffTypeClass}}">{{item.timeOffTypeMeaning}}</div>
+          <div class="item-off-item-text">{{item.datetimeFrom}}</div>
+          <div class="item-off-item-text">至</div>
+          <div class="item-off-item-text">{{item.datetimeTo}}</div>
+        </div>
+
+        <div class="time-off-item-right">
+          <div class="time-circle {{item.timeOffTypeClass}}">
+            <div class="time-leave-text">{{item.timeLeave}}</div>
+          </div>
+          <div class="approve-status {{item.approveStatusClass}}">{{item.approveStatusMeaning}}</div>
+          <img class="back-arrow" src="build/img/application/time-off-manage/BackArrow@3x.png">
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

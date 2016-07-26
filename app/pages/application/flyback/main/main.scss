@@ -1,0 +1,51 @@
+.flyback-main-view{
+  ion-content{
+      margin-top: -20px;
+  }
+  .fbnav-img {
+    left: 0px;
+    top: -20px;
+  }
+
+  .fbnav-button-block { 
+    position: fixed;
+    width: 94%;
+    height: 170px;
+    top: 33%;
+    margin-left: 3%;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    box-shadow: 0 1px #cccccc;
+  }
+  .fbnav-button {
+    margin-left: 10%;
+    width: 80%;
+    height:50px;
+    line-height: 50px;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 16px;
+  }
+}
+.flyback-main-view{
+  ion-content{
+    overflow: hidden;
+  }
+  .fbnav-img{
+    img{
+        width: 100%;
+    }
+  }
+  .fbnav-button-block{
+    div:nth-child(1){
+      margin-top: 30px;
+      background-color: #FFBE00;
+    }
+    div:nth-child(2){
+      margin-top: 10px;
+      background-color: #FF9B00;
+    }
+  }
+}

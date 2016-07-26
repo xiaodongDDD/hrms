@@ -5,12 +5,6 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var loginModule = angular.module('loginModule', []);
-var messageModule = angular.module('messageModule', []);
-var contactModule = angular.module('contactModule', []);
-var applicationModule = angular.module('applicationModule', []);
-var myInfoModule = angular.module('myInfoModule', []);
-
 angular.module('myApp', [
   'ionic',
   'ngCordova',
@@ -20,36 +14,132 @@ angular.module('myApp', [
   'contactModule',
   'applicationModule',
   'myInfoModule',
-  'utilModule'
+  'utilModule',
+  'tsApproveModule',
+  'HmsModule'
 ]);
 
 angular.module('myApp')
-  .run(function ($ionicPlatform) {
-    $ionicPlatform.ready(function () {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
-      if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-        cordova.plugins.Keyboard.disableScroll(true);
+  .run([
+    '$ionicPlatform',
+    '$timeout',
+    'baseConfig',
+    'checkVersionService',
+    '$state',
+    'imService',
+    'hmsJpushService',
+    'sqliteService',
+    'hmsPopup',
+    function ($ionicPlatform,
+              $timeout,
+              baseConfig,
+              checkVersionService,
+              $state,
+              imService,
+              hmsJpushService,
+              sqliteService,
+              hmsPopup) {
 
-      }
-      if (window.StatusBar) {
-        // org.apache.cordova.statusbar required
-        StatusBar.styleDefault();
-      }
+      $ionicPlatform.ready(function () {
+        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+        // for form inputs)
+        if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
+          cordova.plugins.Keyboard.disableScroll(true);
+        }
+        if (window.StatusBar) {
+          StatusBar.styleLightContent();
+        }
 
-    });
-  });
+        /*var analyze = function (currentState) {
+         if (currentState.views) {
+         if (currentState.views['tab-application']) {
+         return 'tab.tab-application-';
+         } else if (currentState.views['tab-message']) {
+         return 'tab.tab-message-';
+         } else if (currentState.views['tab-contact']) {
+         return 'tab.tab-contact-';
+         } else if (currentState.views['tab-myInfo']) {
+         return 'tab.tab-myInfo-';
+         }
+         }
+         return '';
+         };
+
+         var goToPushDetail = function () {
+         $state.go(analyze($state.current) + 'pushDetail', {content: {"stateName": $state.current}});
+         };
+         $timeout(function () {
+         goToPushDetail();
+         },10000);
+         */
+
+        hmsJpushService.init($state);
+        sqliteService.buildExpenseSql();
+
+        $timeout(function () {
+          if (baseConfig.debug) {
+            hmsPopup.showPopup('window.localStorage.token ' + window.localStorage.token);
+            hmsPopup.showPopup('window.localStorage.access_token ' + window.localStorage.access_token);
+          }
+          if (!window.localStorage.token || window.localStorage.token == '') {
+          } else {
+            checkVersionService.checkAppVersion();
+          }
+
+          var initImChatList = function () {
+            var newImParams = {
+              "userId": window.localStorage.empno,
+              "access_token": window.localStorage.token,
+              "RCToken": window.localStorage.access_token
+            };
+            if (baseConfig.debug) {
+              hmsPopup.showPopup('newImParams ' + angular.toJson(newImParams));
+            }
+            if (HandIMPlugin) {
+              HandIMPlugin.getChatList(function success(msg) {
+                if (baseConfig.debug) {
+                  console.log('HandIMPlugin.getChatList success!');
+                }
+                return msg;
+              }, function error(error) {
+                if (baseConfig.debug) {
+                  console.log('HandIMPlugin.getChatList error!');
+                }
+              }, newImParams);
+            }
+          };
+
+          if (!window.localStorage.access_token || window.localStorage.access_token == '' ||
+            !window.localStorage.token || window.localStorage.token == '') {
+          } else {
+            if (ionic.Platform.isWebView()) {
+              initImChatList();
+            }
+          }
+        });
+
+        var rootConfig = {
+          dbName: baseConfig.dbName,
+          dbLocation: 0,
+          appRootFile: 'helloCordova'
+        };
+
+        if (ionic.Platform.isWebView()) {
+        }
+      });
+    }]);
 
 angular.module('myApp')
-  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider',
-    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider', 'baseConfig',
+    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider, baseConfig) {
       // Ionic uses AngularUI Router which uses the concept of states
       // Learn more here: https://github.com/angular-ui/ui-router
       // Set up the various states which the app can be in.
       // Each state's controller can be found in controllers.js
 
       $httpProvider.interceptors.push('httpRequestHeader');//注册过滤器
+      //$httpProvider.interceptors[0] = $httpProvider.interceptors[0] + "access_token=" + window.localStorage.token;
       $ionicConfigProvider.platform.ios.tabs.style('standard');
       $ionicConfigProvider.platform.ios.tabs.position('bottom');
       $ionicConfigProvider.platform.android.tabs.style('standard');
@@ -68,12 +158,13 @@ angular.module('myApp')
       // setup an abstract state for the tabs directive
         .state('tab', {
           url: '/tab',
+          caches: true,
           abstract: true,
-          templateUrl: 'build/pages/tab/tabs.html'
+          templateUrl: 'build/pages/tab/tabs.html',
+          controller: 'TabsCtrl'
         })
 
         // Each tab has its own nav history stack:
-
         .state('tab.message', {
           url: '/message',
           views: {
@@ -95,12 +186,22 @@ angular.module('myApp')
           }
         })
 
+        .state('tab.myTimesheet', {
+          url: '/myTimesheet',
+          views: {
+            'tab-message': {
+              templateUrl: 'build/pages/application/timesheet/query/query.html',
+              controller: 'TimeSheetQueryCtrl'
+            }
+          }
+        })
+
         .state('tab.contact', {
           url: '/contact',
           views: {
             'tab-contact': {
               templateUrl: 'build/pages/contact/contact.html',
-              controller: 'contactCtrl'
+              controller: 'ContactCtrl'
             }
           }
         })
@@ -131,13 +232,28 @@ angular.module('myApp')
           controller: 'guideCtrl'
         })
 
+        .state('pushDetail', {
+          url: '/pushDetail',
+          cache: false,
+          params: {"detail": {}, "processedFlag": {}, "type": ""},
+          templateUrl: 'build/pages/workflow/detail/detail.html',
+          controller: 'WorkFLowDetailCtrl'
+        })
+
         .state('login', {
-          url: '/guide',
+          url: '/login',
           templateUrl: 'build/pages/login/login.html',
           controller: 'loginCtrl'
         });
 
-      // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/guide');
+      if (!window.localStorage.needGuid || window.localStorage.needGuid == "true") {
+        $urlRouterProvider.otherwise('/guide');
+      } else {
+        if (window.localStorage.token && window.localStorage.token != "") {
+          $urlRouterProvider.otherwise('/tab/message');
+        } else {
+          $urlRouterProvider.otherwise('/login');
+        }
+      }
 
     }]);

@@ -1,0 +1,198 @@
+<ion-view view-title="发布">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">发布</h1>
+  </ion-header-bar>
+  <ion-content style="background-color: #fafafa">
+    <div style="background-image: url('build/img/application/houses-sublease/BG@3x.png'); width: 100%; height: 175px; background-size: 100% 175px">
+      <img src="build/img/application/houses-sublease/image@3x.png"
+           style="height: 87px; width: 87px; margin-left: 38.5%; margin-top: 22px" ng-click="goHousesPhotoList()">
+
+      <div style="text-align: center; font-size: 16px; color: #FFFFFF">请上传房屋照片</div>
+    </div>
+    <ion-item
+      style="margin: 0px;padding: 0px;width: 97%;margin-left: 1.5%;margin-top: 8px;box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);border: none; border-bottom-right-radius: 30px;">
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;border-bottom: 1px solid #e8e8e8;">
+        <div class="col col-40" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">城市：</label>
+        </div>
+        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <input type="text"
+                 style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;right: 15px"
+                 placeholder="请输入" ng-model="housesReleaseInfo.city"/>
+        </div>
+      </div>
+
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;border-bottom: 1px solid #e8e8e8;">
+        <div class="col col-40" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">区域：</label>
+        </div>
+        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <input type="text"
+                 style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;right: 15px"
+                 placeholder="请输入" ng-model="housesReleaseInfo.area"/>
+        </div>
+      </div>
+
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;border-bottom: 1px solid #e8e8e8;">
+        <div class="col col-40" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">地铁线路：</label>
+        </div>
+        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <input type="text"
+                 style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;right: 15px"
+                 placeholder="请输入" ng-model="housesReleaseInfo.trafficInfo"/>
+        </div>
+      </div>
+
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;border-bottom: 1px solid #e8e8e8;">
+        <div class="col col-33" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">户型：</label>
+        </div>
+        <div class="col col-10" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <input type="text"
+                 style="color: #9B9B9B;font-size: 1em;background-color: transparent; width: 30px; height: 24px; line-height: normal;text-align: right;position: absolute;"
+                 ng-model="housesReleaseInfo.houseTypeRoom"/>
+        </div>
+        <div class="col col-10" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <div
+            style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute; margin-top: 2px">
+            室
+          </div>
+        </div>
+        <div class="col col-10" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <input type="text"
+                 style="color: #9B9B9B;font-size: 1em;background-color: transparent; width: 30px; height: 24px; line-height: normal;text-align: right;position: absolute;"
+                 ng-model="housesReleaseInfo.houseTypeHall"/>
+        </div>
+        <div class="col col-10" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <div
+            style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;margin-top: 2px">
+            厅
+          </div>
+        </div>
+        <div class="col col-10" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <input type="text"
+                 style="color: #9B9B9B;font-size: 1em;background-color: transparent; width: 30px; height: 24px; line-height: normal;text-align: right;position: absolute;"
+                 ng-model="housesReleaseInfo.houseTypeBathRoom"/>
+        </div>
+        <div class="col col-10" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <div
+            style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;margin-top: 2px">
+            卫
+          </div>
+        </div>
+      </div>
+
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;border-bottom: 1px solid #e8e8e8;">
+        <div class="col col-40" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">面积：</label>
+        </div>
+        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <label style="font-size: 16px">
+            <input type="text"
+                   style="color: #9B9B9B;font-size: 1em;background-color: transparent; width: 33%; height: 24px; line-height: normal;text-align: right;position: absolute;"
+                   ng-model="housesReleaseInfo.square"/>
+
+            <div
+              style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;right: 15px; margin-top: 2px">
+              平方米
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;border-bottom: 1px solid #e8e8e8;">
+        <div class="col col-40" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">租金：</label>
+        </div>
+        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <label style="font-size: 16px">
+            <input type="text"
+                   style="color: #9B9B9B;font-size: 1em;background-color: transparent; width: 33%; height: 24px; line-height: normal;text-align: right;position: absolute;"
+                   ng-model="housesReleaseInfo.rent"/>
+
+            <div
+              style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;right: 15px; margin-top: 2px">
+              元/月
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;border-bottom: 1px solid #e8e8e8;">
+        <div class="col col-40" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">到期日期：</label>
+        </div>
+        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px"
+             ng-click="selectTime();">
+          <div
+            style="color: #9B9B9B;font-size: 1em;background-color: transparent; width: 50%; height: 24px; line-height: normal;text-align: right;position: absolute;"
+            ng-bind="housesReleaseInfo.expireDate"></div>
+        </div>
+      </div>
+
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;border-bottom: 1px solid #e8e8e8;">
+        <div class="col col-40" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">有效天数：</label>
+        </div>
+        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <label style="font-size: 16px">
+            <input type="text"
+                   style="color: #9B9B9B;font-size: 1em;background-color: transparent; width: 33%; height: 24px; line-height: normal;text-align: right;position: absolute;"
+                   ng-model="housesReleaseInfo.effectiveDays"/>
+
+            <div
+              style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;right: 15px; margin-top: 2px">
+              天
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;border-bottom: 1px solid #e8e8e8;">
+        <div class="col col-20" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">标题：</label>
+        </div>
+        <div class="col col-80" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+          <input type="text"
+                 style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; width: 70%; line-height: normal;text-align: right;position: absolute;right: 15px"
+                 placeholder="请输入标题(30字内)" ng-model="housesReleaseInfo.houseTitle"/>
+        </div>
+      </div>
+
+      <div class="row" style="padding: 0px;margin: 0px;width: 100%;height: 38.5px;margin-left: 15px;">
+        <div class="col" style="padding: 0px; margin: 0px; margin-top: 9.5px">
+          <label style="text-align: center; font-size: 16px; color: #4A4A4A">标题：</label>
+        </div>
+      </div>
+      <div class="row"
+           style="padding: 0px;margin: 0px;width: 100%;height: 150px;margin-left: 15px;">
+        <div class="col" style="padding: 0px; margin: 0px;">
+          <textarea
+            style="color: #9B9B9B;font-size: 1em;background-color: transparent; width: 95%; height: 130px; line-height: normal;position: absolute;"
+            placeholder="请输入描述(交通 周边等)" ng-model="housesReleaseInfo.houseSubject"></textarea>
+        </div>
+      </div>
+    </ion-item>
+    <div style="margin-top: 21px; text-align: center; margin-bottom: 50px" ng-click="housesRelease(housesReleaseInfo)">
+      <div class="button"
+           style="width: 50%; height: 45px; min-height: 45px; background-color: #F5A623; border-radius: 45px; line-height: 44px; color: white;">
+        发布
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

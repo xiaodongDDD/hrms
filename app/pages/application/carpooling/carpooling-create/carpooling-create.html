@@ -1,0 +1,133 @@
+<ion-view view-title="创建拼车">
+    <div class="carpooling-create-header-bar">
+      <div class="platform-status-bar"></div>
+      <ion-header-bar class="bar-ion-header"align-title="center" >
+        <h1 class="title header-title-color">创建拼车</h1>
+        <div class="buttons">
+        <button class="button button-icon ion-location" ng-click="get_location()">
+          <span class="back-button-text">上海</span>
+        </button>
+      </div>
+      </ion-header-bar>
+
+    <div class="set-end row">
+      <div class="carpooling-header-oval col-13">
+        <div style="width: 8px;height: 61px;text-align: center;margin-left: 35px">
+          <img src="build/img/application/carpooling/Oval@3x.png" class="oval-img">
+          <div class="oval-line"></div>
+          <img src="build/img/application/carpooling/Oval@3x.png" class="oval-img">
+        </div>
+      </div>
+
+      <div class="carpooling-header-oval-fill-in col-65">
+        <div class="fill-in-set row">
+          <input type="text" placeholder="请输入起点" class="creater-oval-start-text">
+        </div>
+        <div class="fill-in-line"></div>
+        <div class="fill-in-end row">
+          <input type="text" placeholder="请输入终点" class="creater-oval-end-text">
+        </div>
+      </div>
+      <div class="carpooling-header-oval-exchange col-21">
+        <div style="text-align: center">
+          <img src="build/img/application/carpooling/exchange@3x.png" class="img-exchange">
+        </div>
+      </div>
+    </div>
+    <div class="choose-car row">
+        <div class="select-car col col-40 col-offset-5 col-center">
+            <div class="white-bg-car">
+              <img src="build/img/application/carpooling/car-B@3x.png" style="width: 30px;">
+            </div>
+            <div class="business-car">
+              <img src="build/img/application/carpooling/Business Vehicle-G@3x.png" style="width: 35px;">
+            </div>
+        </div>
+        <div class="select-passenger col col-60 col-offset-64">
+          <div class="circle-passenger">
+            <span >4人</span>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <ion-content class="create-content" style="top: 200px;">
+   <div class="create-detail">
+        <div  class="rectangle71">
+          <span style="font-size: 14px;">时间及同行</span>
+        </div>
+        <div class="detail-particular">
+          <span style="color: #4a4a4a;font-size: 16px;">出发时间：</span>
+          <div style="float: right;margin-right: 10px;"><span style="color: #9b9b9b;">请选择</span></div>
+        </div>
+        <div class="detail-particular">
+         <span style="color: #4a4a4a;font-size: 16px;">时间偏好：</span>
+         <div style="float: right;margin-right: 10px;"><span style="color: #9b9b9b;">准时出发</span></div>
+       </div>
+
+     <div class="create-detail-particular">
+       <div  style="height:44px;">
+         <div  style="margin-left: -5px;">
+           <span style="color: #4a4a4a;font-size: 16px;">其他说明：</span>
+         </div>
+       </div>
+       <div class="create-input ">
+         <input type="text"  class="create-input-explain" placeholder="请输入其他说明"/>
+       </div>
+     </div>
+     <div class="create-detail-particular">
+       <div class="create-cost-up">
+         <div class="create-cost-text" >
+           <span class="create-cost-plan">费用计划：</span>
+         </div>
+         <div class="create-cost-perference" >
+           <div class="cost-plan-text" style="margin-left: 0px;background: #24559C;color: white"><span>免费</span></div>
+           <div class="cost-plan-text"><span>&nbsp;AA&nbsp;</span></div>
+           <div class="cost-plan-text"><span>一口价</span></div>
+         </div>
+       </div>
+       <div class="create-other-cost-plan">
+         <input type="text" class="create-other-cost-input" placeholder="或输入其他费用计划">
+       </div>
+     </div>
+
+
+
+     <div class="create-detail-particular" style="height: 130px;">
+       <div class="create-peer">
+         <span class="create-peer-staff">同行人员：</span>
+         <div class="create-img-add">
+            <img src="build/img/application/carpooling/add@3x.png" style="width: 17px;height: 17px;">
+         </div>
+         <span class="create-peer-add-text">还可添加一位</span>
+       </div>
+      <div class="create-peer-list">
+        <div class="create-peer-list-item">
+          <img class="create-peer-icon" src="build/img/application/carpooling/profile@3x.png">
+          <span class="create-peer-name-enjoy">成志唯</span>
+          <span class="create-peer-name-enjoy"></span>
+        </div>
+        <div class="create-peer-list-item">
+          <img class="create-peer-icon" src="build/img/application/carpooling/locked seat@3x.png">
+          <span class="create-peer-locked">已锁定</span>
+          <span class="create-peer-locked">解锁</span>
+        </div>
+        <div class="create-peer-list-item">
+          <img class="create-peer-icon" src="build/img/application/carpooling/seat-2@3x.png">
+          <span class="create-peer-name-enjoy">空位</span>
+          <span class="create-peer-name-enjoy">锁定</span>
+        </div>
+        <!--<div class="create-peer-list-item">-->
+          <!--<img class="create-peer-icon" src="build/img/application/carpooling/seat-2@3x.png">-->
+          <!--<span class="create-peer-name-enjoy">空位</span>-->
+          <!--<span class="create-peer-name-enjoy">锁定</span>-->
+        <!--</div>-->
+
+      </div>
+     </div>
+     <div class="button-release">
+       <button type="button" style="width: 47.7%;height: 30px;background-color: #f5a623;border-radius: 20px;border: none;color: #ffffff;font-size: 16px;">发布</button>
+     </div>
+   </div>
+  </ion-content>
+</ion-view>

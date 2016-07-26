@@ -1,0 +1,122 @@
+/**
+ * costDetail.html
+ */
+.costDetail-view ion-content{
+    .xbr-f-a{
+        .row:nth-child(1){
+            line-height: 30px;
+        }
+        textarea{
+            height: 80px;
+        }
+    }
+    .xbr-flag-p-wrapper{
+        p{
+            color: red ;text-align: center;
+        }
+    }
+    .button-area{
+        .xbt-but-f-1{
+            width:100%;background-color: #1cd4c6;
+        }
+        .xbt-but-f-2{
+            width:100%;background-color: #1cd4c6;
+        }
+    }
+    .xbr-f-p-1{
+        color: red ;text-align: center;
+    }
+    .xbr-f-p-2{
+        color: red ;text-align: center;
+    }
+}
+
+/**
+ * costList.html
+ */
+.costList-view{
+  .uploaded {
+    color: red;
+  }
+
+  .new {
+    color: green;
+  }
+  .ion-plus{
+    color: #20CBD3;font-size: 5px;
+  }
+  .bar-subheader{
+      background-color: #20CBD3;
+      .button-bar{
+          width: 60%;margin: 1px auto;
+      }
+      #noApprove{
+          color: #20CBD3;background-color: #D1F4F6;border-bottom-left-radius: 5px;border-top-left-radius: 5px;
+      }
+      #alreadyApprove{
+          color: white;background-color: #20CBD3;border-bottom-right-radius: 5px;border-top-right-radius: 5px;
+      }
+  }
+  ion-content{
+      top: 110px;
+      .xbr-item-title{
+          color: #007069;
+      }
+  }
+}
+
+/**
+ * costObjectList.html
+ */
+.costObjectList-view ion-content{
+    input{
+        width: 96%; margin: 6px auto 6px auto;
+    }
+    .airport-name{
+        white-space: normal; line-height: 25px;
+    }
+    .xbr-f-lable-1{
+        line-height: 25px;
+    }
+    .xbr-f-lable-2{
+        line-height: 15px;
+    }
+}
+
+/**
+ * costProjectItemList.html
+ */
+.costProjectItemList-view{
+  .airport-list{
+    ion-item:nth-child(1){
+      border-top: 0px;
+    }
+  }
+  .item-input-inset{
+      border-bottom: 1px solid #dddddd;
+      .item-input{
+          border: 0px;
+      }
+      input{
+          width: 96%; margin: 6px auto 6px auto;
+      }
+  }
+}
+
+
+/**
+ * costTypeItemList.html
+ */
+.costTypeItemList-view{
+    .item-input-inset{
+        border-bottom: 1px solid #dddddd;
+        .item-input{
+            border: 0px;
+        }
+        input{
+            width: 96%; margin: 6px auto 6px auto;
+        }
+    }
+}
+
+

@@ -1,0 +1,187 @@
+$workflow-bule: #2A5BA1;
+$workflow-bule-content: #24559C;
+$workflow-black: #4A4A4A;
+$workflow-gray: #9B9B9B;
+$workflow-gray-line: #D2D2D2;
+
+.workflow {
+  background: #fafafa;
+  .workflow-filter {
+    display: block;
+    padding-top: 7px;
+    width: 160px;
+    height: 44px;
+    margin-left: auto;
+    margin-right: auto;
+    .selected{
+      background: white;
+      color: $workflow-bule;
+    }
+    .no-selected{
+      background: none;
+      color: white;
+      &.activated{
+        background: #64ACFF;
+        color: white;
+        opacity: 0.8;
+      }
+    }
+    .to-do-list {
+      border: 1px solid white;
+      float: left;
+      width: 76px;
+      height: 29px;
+      line-height: 29px;
+      border-bottom-left-radius: 15px;
+      border-top-left-radius: 15px;
+      font-size: 13px;
+    }
+    .done-list {
+      border-top: 1px solid white;
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
+      float: left;
+      width: 76px;
+      height: 29px;
+      line-height: 29px;
+      border-bottom-right-radius: 15px;
+      border-top-right-radius: 15px;
+      font-size: 13px;
+    }
+  }
+
+  .hms-swipe-left-action {
+    width: 100px;
+    background-color: $color-base;
+    .approve-row {
+      height: 55px;
+      width: 85px;
+      position: absolute;
+      padding: 0px 0px 0px 5px;
+    }
+    .approve-row.activated {
+      opacity: 0.9;
+      transform: scale(0.9,0.9);
+      -webkit-transform: scale(0.9,0.9);
+    }
+    .refuse-row {
+      height: 55px;
+      width: 85px;
+      position: absolute;
+      margin-top: 55%;
+      padding: 0px 0px 0px 5px;
+    }
+    .refuse-row.activated {
+      opacity: 0.9;
+      transform: scale(0.9,0.9);
+      -webkit-transform: scale(0.9,0.9);
+      background-color: $color-base;
+    }
+    .status-img {
+      width: 62px;
+      height: 17px;
+      align-self: center;
+    }
+  }
+}
+
+.workflow-list.ng-enter {
+  -webkit-animation: fadeIn 0.5s;
+  animation: fadeIn .5s;
+}
+
+.workflow-list.ng-enter-stagger {
+  -webkit-animation-delay: 90ms;
+  animation-delay: 90ms;
+  /* override to make sure it's not inherited from other styles */
+  -webkit-animation-duration: 0;
+  animation-duration: 0;
+}
+
+
+.workflow-list {
+  position: relative;
+  background: white;
+  margin-top: 10px;
+  margin-left: 18px;
+  margin-right: 5px;
+  border-bottom-right-radius: 25px;
+  box-shadow: 0px 0px 4px $workflow-gray-line;
+
+
+  .workflow-list-item{
+    display: block;
+    &.activated {
+      background: #f8f8f8;
+    }
+  }
+
+  &.item{
+    overflow: visible;
+  }
+  .item-content{
+    overflow: visible;
+    border-bottom-right-radius: 25px;
+    padding: 0px;
+    border: none;
+  }
+
+  .item-options .button{
+    border-bottom-right-radius: 25px;
+  }
+
+
+  .color-title {
+    color: $workflow-bule-content;
+  }
+  .color-type {
+    font-weight: bold;
+    font-size: 14px;
+    color: $workflow-black;
+  }
+  .color-content {
+    font-size: 14px;
+    color: $workflow-gray;
+    overflow: hidden;
+    white-space: nowrap;
+    white-space: pre-wrap;
+  }
+
+  .no-padding {
+    padding: 0;
+    margin: 0;
+  }
+
+  .workflow-list-logo {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    padding: 4px;
+    background: white;
+    position: absolute;
+    top: -5px;
+    left: -12px;
+    img {
+      height: 42px;
+      width: 42px;
+      border-radius: 21px;
+    }
+  }
+
+  .workflow-list-header {
+    margin-left: 55px;
+    height: 40px;
+    border-bottom: 2px dotted $workflow-gray-line;
+    color: $workflow-bule-content;
+  }
+  .workflow-list-content {
+    padding: 12px;
+    .workflow-list-select {
+      img {
+        float: right;
+        width: 21px;
+        height: 21px;
+      }
+    }
+  }
+}

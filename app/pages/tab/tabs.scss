@@ -1,14 +1,10 @@
-.bar.bar-stable {
-  border-color: #b2b2b2;
-  //background-color: #f8f8f8;
-  //background-image: linear-gradient(0deg, #b2b2b2, #b2b2b2 50%, transparent 50%);
-  color: white;
-  background-image: url("../img/NaviBar@3x.png");
-  background-size: cover;
-}
+$tab-item-size: 24px;
+$tab-item-small-size: 21px;
 
-.bar.bar-stable .title {
-  color: white;
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active,
+ion-tabs.tabs-color-active-positive .tab-item.active,
+ion-tabs.tabs-color-active-positive .tab-item.activated {
+  color: #1D4D95;
 }
 
 .tabs-icon-top {
@@ -16,55 +12,82 @@
     background-image: url("../img/tabs/message-f@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 29%;
+    background-size: $tab-item-size;
   }
 
   .message-off {
     background-image: url("../img/tabs/message-G@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 29%;
+    background-size: $tab-item-size;
+  }
+
+  .tab-item.activated {
+    .message-off {
+      background-image: url("../img/tabs/message-f@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: $tab-item-size;
+    }
+    .application-off {
+      background-image: url("../img/tabs/application-F@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: $tab-item-small-size;
+    }
+    .contact-off {
+      background-image: url("../img/tabs/contact-B@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: $tab-item-small-size;
+    }
+    .mine-off {
+      background-image: url("../img/tabs/mine-B@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: $tab-item-size;
+    }
   }
 
   .application-on {
     background-image: url("../img/tabs/application-F@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 26%;
+    background-size: $tab-item-small-size;
   }
 
   .application-off {
     background-image: url("../img/tabs/application-G@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 26%;
+    background-size: $tab-item-small-size;
   }
 
   .contact-on {
     background-image: url("../img/tabs/contact-B@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 26%;
+    background-size: $tab-item-small-size;
   }
 
   .contact-off {
     background-image: url("../img/tabs/contact-G@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 26%;
+    background-size: $tab-item-small-size;
   }
 
   .mine-on {
     background-image: url("../img/tabs/mine-B@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 30%;
+    background-size: $tab-item-size;
   }
 
   .mine-off {
     background-image: url("../img/tabs/mine-G@3x.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 30%;
+    background-size: $tab-item-size;
   }
 }

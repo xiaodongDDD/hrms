@@ -1,0 +1,185 @@
+<ion-view view-title="订票信息" hide-tabs="true" class="flyback-detail-view">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">订票信息</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="delete()">
+        删除
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form name="detailForm">
+      <div class="fb-area-title">
+        <div class="fb-input">
+          <div class="ion-ios-calendar-outline fb-input-label">
+            &nbsp;
+          </div>
+          <a>{{flybackline.projName}}</a>
+        </div>
+      </div>
+      <div class="fb-area">
+        <!--订票类型-->
+        <label class="fb-item-input2 fb-item-select" ng-click="openModal('ticketType')">
+          <div class="ion-paper-airplane fb-input-label1">
+            &nbsp;
+          </div>
+          <div class="fb-item-select a">
+            <input type="text"  ng-readonly="true" required ng-model="flybackline.ticketTypeName"
+                    placeholder="订票类型">
+          </div>
+        </label>
+        <!--订票行程-->
+        <label class="fb-item-input2 fb-item-select" ng-click="openModal('routeType')">
+          <div class="ion-ios-calendar fb-input-label1">
+            &nbsp;
+          </div>
+          <div class="fb-item-select a">
+            <input type="text" ng-readonly="true" required ng-model="flybackline.routeTypeName"
+                   placeholder="订票行程">
+          </div>
+        </label>
+        <!--Flyback1-->
+        <label class="fb-item-input2 fb-item-select" ng-click="openModal('flyback1')"
+               ng-show="(flybackline.ticket_type=='10'||flybackline.ticket_type=='20')">
+          <div class="ion-plane fb-input-label1">
+            &nbsp;
+          </div>
+          <div class="fb-item-select a">
+            <input type="text" ng-readonly="true"
+                   ng-required="(flybackline.ticket_type==='10'||flybackline.ticket_type=='20')"
+                   ng-model="flybackline.flyback1" placeholder="Flyback1">
+          </div>
+        </label>
+        <!--Flyback2-->
+        <label class="fb-item-input2 fb-item-select" ng-click="openModal('flyback2')"
+               ng-show="(flybackline.ticket_type=='10'||flybackline.ticket_type=='20')">
+          <div class="ion-plane fb-input-label1">
+            &nbsp;
+          </div>
+          <div class="fb-item-select a">
+            <input type="text" ng-readonly="true"
+                   ng-required="false"
+                   ng-model="flybackline.flyback2"
+                   placeholder="Flyback2">
+          </div>
+        </label>
+      </div>
+      <div class="fb-area">
+        <!--起始地-->
+        <label class="fb-item-input2 fb-item-select">
+          <div class="ion-ios-location fb-input-label1">
+            &nbsp;
+          </div>
+          <div class="fb-item-select a">
+            <input type="text" ng-readonly="!canEdit" required ng-model="flybackline.from_place"
+                   placeholder="起始地">
+          </div>
+        </label>
+        <!--arrow-->
+        <div class="xbr-arrow">
+          <img src="build/img/application/flyback/arrow1.png">
+        </div>
+        <!--目的地-->
+        <label class="fb-item-input2 fb-item-select">
+          <div class="ion-flag fb-input-label1">
+            &nbsp;
+          </div>
+          <div class="fb-item-select a">
+            <input type="text" ng-readonly="!canEdit" required ng-model="flybackline.go_place"
+                   placeholder="目的地">
+          </div>
+        </label>
+      </div>
+      <div class="fb-area">
+        <!--航班日期-->
+        <label class="fb-item-input2 fb-item-select">
+          <div class="ion-ios-calendar-outline fb-input-label1">
+            &nbsp;
+          </div>
+          <div class="fb-item-select a">
+            <!--日历插件 datepicker popup-->
+            <ionic-datepicker input-obj="datepickerObjectPopup">
+              <input type="text" required ng-readonly="true" class="text-input--underbar width-full" placeholder="航班日期" ng-model="flybackline.flight_date | date:'yyyy-MM-dd' "/>
+            </ionic-datepicker>
+
+          </div>
+        </label>
+        <!--航班号及时间-->
+        <label class="fb-item-input2 fb-item-select">
+          <div class="ion-ios-clock fb-input-label1">
+            &nbsp;
+          </div>
+          <div class="fb-item-select a">
+            <input type="text" ng-readonly="!canEdit" required ng-model="flybackline.flight_time"
+                   placeholder="航班号及时间">
+          </div>
+        </label>
+      </div>
+      <!--更多信息-->
+      <div class="xbr-more-info">
+        -- 更多信息 --
+      </div>
+      <div class="fb-area xbr1">
+        <!--项目地-->
+        <label class="fb-item-input2 fb-item-select" ng-click="openModal('place')">
+          <div class="fb-input-label2">
+            项目地
+          </div>
+          <input type="text" ng-readonly="!canEdit" ng-model="flybackline.place"
+                 placeholder="项目地">
+        </label>
+        <!--乘机人-->
+        <label class="fb-item-input2 fb-item-select" ng-click="openModal('passenger')">
+          <div class="fb-input-label2">
+            乘机人
+          </div>
+          <input type="text" ng-readonly="true" required ng-model="flybackline.passenger"
+                 placeholder="乘机人">
+          </select>
+        </label>
+
+        <!--证件-->
+        <label class="fb-item-input2 fb-item-select">
+          <div class="fb-input-label2">
+            证件
+          </div>
+          <input type="text" ng-readonly="true" required ng-model="flybackline.certificate_code"
+                 placeholder="证件">
+          </select>
+        </label>
+        <!--其他-->
+        <div class="fb-item-input2 xbr2-other">
+          <div class="fb-input-label2">其他</div>
+          <div id="customerpaid" ng-click="customerPaid()">
+            <div class="{{customerpaid.style}}"><span class="fb-span">客户承担</span></div>
+          </div>
+          <div id="ticketonly" ng-click="ticketOnly()">
+            <div class="{{ticketonly.style}}"><span class="fb-span">机票补录</span></div>
+          </div>
+          <div>
+            <span class="fb-span">{{remark.allow}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="fb-area xbr3">
+        <label class="fb-item-input2">
+          <textarea type="text" placeholder="描述" ng-model="flybackline.description"></textarea>
+        </label>
+      </div>
+      <div class="xbr4" align-title="left"
+           ng-show="canEdit">
+        <button class="button button-clear"
+                ng-click="confirm()"
+                ng-disabled="false || (!detailForm.$valid)">
+          确认
+        </button>
+      </div>
+    </form>
+  </ion-content>
+
+</ion-view>

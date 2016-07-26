@@ -1,0 +1,87 @@
+$contactDivLineColor: #f2f2f2 !default;
+$contactItemLineColor: #e8e8e8 !default;
+$bgColor: #fafafa !default;
+$contactContent: #24559C !default;
+
+.contact-structure {
+  .bar {
+    &.bar-stable {
+      .title {
+        left: 70px !important;
+        right: 70px !important;
+      }
+    }
+  }
+  .title-contact {
+  }
+  background-color: $bgColor;
+  .title-filter {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .children-dept {
+    width: 100%;
+    background-color: #ffffff;
+    border-top: 1px solid $contactDivLineColor;
+    border-bottom: 1px solid $contactDivLineColor;
+    .dept-item {
+      opacity: 1;
+      margin: 0px;
+      padding: 0px;
+      border: none;
+      height: 46px;
+      border-bottom: 1px solid $contactItemLineColor;
+      margin-left: 20px;
+      .dept-item-row {
+        padding: 0px;
+        margin: 0px;
+        height: 100%;
+        .dept-label {
+          font-size: 0.875rem;
+          color: #4a4a4a;
+          margin-top: 13px;
+        }
+        .dept-label-number {
+          position: absolute;
+          right: 30px;
+          margin-top: 14px;
+        }
+      }
+
+      .arrow-icon {
+        position: absolute;
+        top: 18px;
+        right: 15px;
+        width: 6px;
+        height: 12px;
+      }
+    }
+    .dept-item-end {
+      border-bottom: none;
+    }
+  }
+  .dept-scroll-contact {
+    width: 100%;
+    .row-scroll-contact {
+      width: 100%;
+    }
+    .dept-stack {
+      display: flex;
+      display: -webkit-flex;
+      padding: 0px 5px 0px 5px;
+      color: $contactContent;
+      .dept-stack-name {
+        padding-right: 10px;
+      }
+      .end-dept-stack-name {
+        color: #444;
+      }
+    }
+  }
+
+  .no-padding {
+    padding: 0px;
+    margin: 0px;
+  }
+}

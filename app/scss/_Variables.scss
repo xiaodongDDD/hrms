@@ -1,0 +1,119 @@
+/**
+* 基础字体大小
+*/
+$font-size-small: 14px !default;
+$font-size: 15px !default;
+$font-size-big: 17px !default;
+$color-base: white !default;
+//下面是列表的常用色
+//突出色
+$color-text-key: #24559C !default;
+//主色
+$color-text-main: #9B9B9B !default;
+//副色
+$color-text-assistant: #4A4A4A !default;
+
+$global-background: #f8f8f8 !default;
+
+
+/**
+* 背景色
+*/
+.hrms-pancel-corlor {
+  background: #f8f8f8;
+}
+
+/*
+* 导航栏 bar
+*/
+
+//背景
+.bar {
+  &.bar-stable {
+    border-color: #b2b2b2;
+    //background-color: #f8f8f8;
+    //background-image: linear-gradient(0deg, #b2b2b2, #b2b2b2 50%, transparent 50%);
+    color: $color-base;
+    background-image: url("../img/NaviBar@3x.png");
+    background-size: cover;
+  }
+  &.bar-modal {
+    height: 40px;
+    background-color: #26579E;
+    font-size: 16/17*$font-size-big;
+  }
+}
+
+//标题
+.bar {
+  &.bar-stable {
+    .title {
+      color: $color-base;
+      font-size: $font-size-big;
+      left: 0px !important;
+      right: 0px !important;
+    }
+  }
+}
+
+//导航栏按钮
+.bar {
+  .buttons {
+    .button {
+      color: $color-base;
+      font-size: $font-size-big;
+    }
+  }
+}
+
+//导航栏返回按钮文字位置微调整
+.back-button-text {
+  padding-left: 2px;
+  padding-top: 1px;
+}
+
+//导航栏右侧按钮字体调整
+.bar-right-button {
+  font-size: 16/17*$font-size-big;
+  padding-right: 5px;
+}
+
+//自定义按钮点击的样式
+.button.activated{
+  opacity: 0.6;
+  transform: scale(0.95,0.95);
+  -webkit-transform: scale(0.95,0.95);
+}
+
+.loading-hand{
+  background: url('./../img/loading.gif');
+  background-size: 70px 70px;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 70px;
+  width: 100%;
+  margin-top: 5%;
+  position: fixed;
+  z-index: 1000;
+}
+
+.nodata-img-hand {
+  background: url('./../img/no_datas@3x.png');
+  background-size: 190px 190px;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 190px;
+  width: 100%;
+  margin-top: 23%;
+  position: fixed;
+  z-index: 1000;
+}
+
+.nodata-text{
+  color: $color-text-main;
+  font-size: $font-size-small;
+  text-align: center;
+  margin-top: 65%;
+  z-index: 1000;
+  position: relative;
+}

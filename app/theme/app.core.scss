@@ -6,10 +6,39 @@
 // By default each design mode includes these shared imports.
 // App Shared Sass variables belong in app.variables.scss.
 
+@import "../scss/_Variables.scss";
+@import "../scss/_Minxin.scss";
+@import "../scss/animate.scss";
+@import "../scss/loading.scss";
 @import "../pages/application/application";
+@import "../pages/application/time-off-manage/time-off-manage-list";
+@import "../pages/application/time-off-manage/time-off-manage-detail";
+@import "../pages/application/timesheet-approve/ts-approve";
+@import "../pages/application/dorm-apply/dorm-apply.scss";
+@import "../pages/application/timesheet/query/query";
+@import "../pages/application/timesheet/write/write";
+@import "../pages/application/timesheet/timesheet";
+@import "../pages/application/personnel-policy/personner-policy.scss";
+@import "../pages/application/resources-query/resources-query.scss";
+@import "../pages/application/carpooling/carpooling-list/carpooling-list.scss";
+@import "../pages/application/carpooling/carpooling-list-detail/carpooling-list-detail.scss";
+@import "../pages/application/carpooling/carpooling-create/carpooling-create.scss";
+@import "../pages/application/carpooling/carpooling-history/carpooling-history.scss";
+@import "../pages/application/carpooling/carpooling-history-detail/carpooling-history-detail.scss";
+@import "../pages/application/carpooling/carpooling.scss";
+@import "../pages/application/carpooling/popover/carpooling-filter-popover.scss";
+@import "../pages/application/houses-sublease/houses-tab.scss";
+@import "../pages/public/hms-filter-modal.scss";
+@import "../pages/workflow/list/workflow-list";
+@import "../pages/workflow/detail/detail";
+@import "../pages/application/flyback/flyback.scss";
+@import "../pages/application/expense/expense.scss";
 @import "../pages/contact/contact";
+@import "../pages/contact/structure/contact-structure.scss";
 @import "../pages/login/login";
 @import "../pages/message/message";
 @import "../pages/myInfo/myInfo";
 @import "../pages/guide/guide";
 @import "../pages/tab/tabs";
+
+

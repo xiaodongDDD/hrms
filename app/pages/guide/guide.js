@@ -6,21 +6,52 @@ angular.module('loginModule')
   .controller('guideCtrl', [
     '$scope',
     '$state',
+    'baseConfig',
+    'checkVersionService',
     function ($scope,
-              $state) {
+              $state,
+              baseConfig,
+              checkVersionService) {
 
       console.log('loginCtrl.enter');
 
-      $scope.toLogin = function () {
-        console.log("跳过导航页到登陆页");
-        $state.go("login");
+      window.localStorage.needGuid = "false";
+
+      $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
+
+      $scope.skipGuide = function () {
+        if (baseConfig.debug) {
+          console.log("跳过导航页到登陆页");
+        }
+        goToMain();
       };
 
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('guideCtrl.$ionicView.enter');
+      $scope.toLogin = function () {
+        if (baseConfig.debug) {
+          console.log("跳过导航页到登陆页");
+        }
+        goToMain();
+      };
+
+      var goToMain = function () {
+        $state.go("login");
+        /*if (window.localStorage.token && window.localStorage.token != "") {
+          checkVersionService.checkAppVersion();
+          $state.go("tab.message");
+        } else {
+          $state.go("login");
+        }*/
+      };
+
+      $scope.$on('$ionicView.enter', function () {
+        if (baseConfig.debug) {
+          console.log('guideCtrl.$ionicView.enter');
+        }
       });
 
-      $scope.$on('$destroy', function (e) {
-        console.log('guideCtrl.$destroy');
+      $scope.$on('$destroy', function () {
+        if (baseConfig.debug) {
+          console.log('guideCtrl.$destroy');
+        }
       });
     }]);

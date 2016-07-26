@@ -1,0 +1,39 @@
+<ion-view view-title="我的证书" class="my-certificate">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">我的证书</h1>
+    <div class="buttons">
+      <button class="button button-icon" ng-click="createNewCertificate()">
+        <img class="add-icon" src="build/img/myInfo/my-certificate-add.png"/>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content delegate-handle="certificateScroll" class="content-style">
+    <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
+    <div ng-if="showData">
+    <ion-list>
+      <ion-item class="certificate-item" ng-click="checkMyCertificate($index)" ng-repeat="x in certificateList">
+       <div class="row certificate-row">
+         <label class="certificate-label">{{x.certificateName}}</label>
+       </div>
+       <img src="build/img/myInfo/my-certificate-orange-arrow.png" class="orange-arrow-image"/>
+       <img src="build/img/myInfo/rectangle.png" class="add-image">
+      </ion-item>
+    </ion-list>
+    </div>
+    <div ng-if="showNoData">
+      <div class="no-data-shelter">
+        <div class="row no-data-no-space">
+          <img src="build/img/application/dorm-apply/no-data.png" class="no-data-image"/>
+        </div>
+        <div class="row no-data-no-space-label-row">
+          <label class="no-data-label">未添加证书</label>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

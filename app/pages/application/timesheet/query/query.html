@@ -1,0 +1,109 @@
+<ion-view view-title="TimeSheet" class="timesheet">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title" ng-click="openTimesheetMode($event)">{{timesheetProcessMode}}&nbsp;<i
+      class="ion-chevron-down"></i>
+    </h1>
+    <div class="buttons" ng-click="openPopover($event)">
+      <button class="button button-clear">
+        <span class="barRightButton">{{currentYear}}</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content delegate-handle="timeSheetHandle" has-bouncing="false">
+    <!--<hmsslidecalendar>
+    </hmsslidecalendar>-->
+    <div class="calendar-month">
+      <ion-scroll delegate-handle="timeSheetMonthHandle" direction="x" scrollbar-x="false" scrollbar-y="false"
+                  style="height:50px;">
+        <div style="height: 40px;width: 720px;">
+          <div class="month-item" ng-click="getTimeSheet(currentYear,month)"
+               ng-repeat="month in monthList" ng-class="{true:'selected',false:''}[month.selected]">
+            {{month.value}}月
+          </div>
+        </div>
+      </ion-scroll>
+    </div>
+    <div class="calendar-day">
+      <div class="calendar-lock-screen" ng-if="loadingDataFlag">
+        <!--<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>-->
+        <hms-loading></hms-loading>
+      </div>
+      <div class="calendar-title">
+        <div class="title-item" ng-repeat="title in weekTitleList">
+          {{title}}
+        </div>
+      </div>
+      <div id="timesheetCalandar">
+        <div class="calendar-week" ng-repeat="week in calendar">
+          <a class="{{day.style_color}}" ng-repeat="day in week.list" ng-click="writeTimesheet(day)"
+             ng-class="{true:'choosed',false:''}[day.choosed]">
+            <div class="lock-item" ng-if="day.lockFlag">
+            </div>
+            <div class="{{day.style_outline}}">{{day.day}}</div>
+            <div class="money">{{day.money}}</div>
+            <div class="project">{{day.project}}</div>
+          </a>
+        </div>
+      </div>
+      <div class="allowance">
+        <div class="batch-process" ng-class="{true:'selected',false:''}[slippingFlag&&slippingEnableFlag&&startSlippingFlag]"
+             ng-click="changeSlippingMode()">
+        </div>
+        <a class="allowance-click" ng-click="processAllowance()">
+          <div class="allowance-button">
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="allowance-content">
+      <div class="allowance-title">
+        津贴状态
+      </div>
+      <div class="allowance-detail" ng-repeat="allowance in allowanceList">
+        <div class="allowance-project-info">
+          <div class="row no-padding">
+            <div class="col col-10 no-padding">
+              <div class="sequence">{{$index + 1}}
+              </div>
+            </div>
+            <div class="col col-90 no-padding allowance-project" ng-bind="allowance.project">
+            </div>
+          </div>
+          <div class="row no-padding allowance-dotted">
+            <div class="col col-10 no-padding">
+            </div>
+            <div class="col col-20 no-padding" ng-bind="allowance.type">
+            </div>
+            <div class="col col-20 no-padding allowance-status" ng-bind="allowance.status">
+            </div>
+            <div class="col col-50 no-padding" ng-bind="allowance.period">
+            </div>
+          </div>
+          <div class="allowance-dashed">
+            <div class="line"></div>
+          </div>
+          <div class="row no-padding">
+            <div class="col col-10 no-padding">
+
+            </div>
+            <div class="col col-20 no-padding">
+              金额:{{allowance.allow}}
+            </div>
+            <div class="col col-20 no-padding">
+              天数:{{allowance.days}}
+            </div>
+            <div class="col col-50 no-padding allowance-cash">
+              ¥{{allowance.amount}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

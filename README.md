@@ -21,10 +21,10 @@ learning course.
 
 ```bash
 # clone repo
-$ git clone https://github.com/HandMobileForce/ionic-tab-template.git
+$ git clone http://hpm.hand-china.com/diffusion/HRMSTWO/hrms.git
 
 # change directory to app root
-$ cd ionic-tab-template
+$ cd hrms
 
 # install the dependencies with npm
 $ npm install
@@ -32,11 +32,14 @@ $ npm install
 # install the dependencies with bower
 $ bower install
 
-# run with clean mode
-$ gulp clean
-
 # run with dev mode
 $ gulp run-dev
+
+# rebuild the www env
+$ gulp rebuild
+
+# run the app
+$ ionic serve
 ```
 
 If everything goes right, chrome browser will open with url [http://localhost:8384/index.html](http://localhost:8384/index.html)
@@ -59,39 +62,23 @@ otherwise you should open it manually.
 What you need to run this app:
 * `node` and `npm`
 
-## Installing
-
-* `npm install` to install build environment dependencies
-* `bower install` to install javascript library dependencies
-
-## Running the app
-
-Using NetBeans build-in server to run / debug
-
-## Developing
-
-### Build files
-
-* clean distribution (www) folder
+## Git Operation
 ```bash
-gulp clean:
-```
+st=>start: 开始
+e=>end: 结束
+clone=>operation: git clone url
+pullA=>operation: git pull origin develop:develop
+checkoutA=>operation: git checkout -b feature/A
+code=>operation: 编写代码/修改代码
+add=>operation: git add
+commit=>operation: git commit
+checkoutB=>operation: git checkout develop
+pullB=>operation: git pull origin develop:develop
+merge=>operation: git merge feature/A
+conflict=>operation: 如果有冲突，解决冲突
+push=>operation: git push origin develop:develop
 
-* developing build:
-```bash
-gulp build-dev
-```
-* production build:
-```bash
-gulp build-prod:
-```
-
-* watch changes
-```bash
-gulp watch
-```
-
-
+st->clone->pullA->checkoutA->code->add->commit->checkoutB->pullB->merge->conflict->push->e
 
 ### IDE
 WebStorm

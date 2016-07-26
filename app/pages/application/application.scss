@@ -1,32 +1,312 @@
-$applicationColor:  white !default;
+$applicationColor: white !default;
 
-.mainApplication{
-  .header{
+.mainApplication {
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  .header {
     background: $applicationColor;
   }
 
-  .appRegion{
+  .hms-animated {
+    -webkit-animation-duration: 0.6s;
+    animation-duration: .6s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
 
-    .appTitle{
+  .application-setting-outer {
+    position: absolute;
+    top: 200px;
+    width: 70%;
+    left: 15%;
+    right: 15%;
+  }
 
+  .application-setting{
+    position: relative;
+    z-index: 100;
+  }
+
+  @-webkit-keyframes bounceIn {
+    from, 20%, 40%, 60%, 80%, to {
+      -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
     }
-    .appArea{
 
-      .appList{
-        height: 150px;
-        width: 100%;
-        .appItem{
-          width: 25%;
-          float: left;
-          img{
-            height: 100px;
-            width: 100px;
-            margin-left: auto;
-            margin-right: auto;
-          }
-        }
-      }
+    0% {
+      opacity: 0;
+      -webkit-transform: scale3d(.3, .3, .3);
+      transform: scale3d(.3, .3, .3);
+    }
 
+    40% {
+      -webkit-transform: scale3d(.9, .9, .9);
+      transform: scale3d(.9, .9, .9);
+    }
+
+    60% {
+      opacity: 1;
+      -webkit-transform: scale3d(1.03, 1.03, 1.03);
+      transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    80% {
+      -webkit-transform: scale3d(.97, .97, .97);
+      transform: scale3d(.97, .97, .97);
+    }
+
+    to {
+      opacity: 1;
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
     }
   }
+
+  @keyframes bounceIn {
+    from, 20%, 40%, 60%, 80%, to {
+      -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+
+    0% {
+      opacity: 0;
+      -webkit-transform: scale3d(.3, .3, .3);
+      transform: scale3d(.3, .3, .3);
+    }
+
+    40% {
+      -webkit-transform: scale3d(.9, .9, .9);
+      transform: scale3d(.9, .9, .9);
+    }
+
+    60% {
+      opacity: 1;
+      -webkit-transform: scale3d(1.03, 1.03, 1.03);
+      transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    80% {
+      -webkit-transform: scale3d(.97, .97, .97);
+      transform: scale3d(.97, .97, .97);
+    }
+
+    to {
+      opacity: 1;
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  }
+
+  .application-setting.ng-enter {
+    -webkit-animation: bounceIn 0.6s;
+    animation: bounceIn 0.6s;
+  }
+
+  .application-setting.ng-enter-stagger {
+    -webkit-animation-delay: 90ms;
+    animation-delay: 90ms;
+    /* override to make sure it's not inherited from other styles */
+    -webkit-animation-duration: 0;
+    animation-duration: 0;
+  }
+
+  @-webkit-keyframes open {
+    from, 20%, 40%, 60%, 80%, to {
+      -webkit-animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
+      animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
+    }
+    from {
+      transform: rotateY(0deg);
+      -webkit-transform: rotateY(0deg);
+    }
+
+    90% {
+      transform: rotateY(85deg);
+      -webkit-transform: rotateY(85deg);
+    }
+
+    to {
+      transform: rotateY(75deg);
+      -webkit-transform: rotateY(75deg);
+    }
+  }
+  @keyframes open {
+    from, 20%, 40%, 60%, 85%, to {
+      -webkit-animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
+      animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
+    }
+    from {
+      transform: rotateY(0deg);
+      -webkit-transform: rotateY(0deg);
+    }
+
+    90% {
+      transform: rotateY(85deg);
+      -webkit-transform: rotateY(85deg);
+    }
+
+    to {
+      transform: rotateY(75deg);
+      -webkit-transform: rotateY(75deg);
+    }
+  }
+
+  @-webkit-keyframes leave {
+    from {
+      transform: rotateY(0deg);
+      -webkit-transform: rotateY(0deg);
+    }
+    95% {
+      transform: rotateY(-85deg);
+      -webkit-transform: rotateY(-85deg);
+    }
+    to {
+      transform: rotateY(-75deg);
+      -webkit-transform: rotateY(-75deg);
+    }
+  }
+
+  @keyframes leave {
+    from, 20%, 40%, 60%, 85%, to {
+      -webkit-animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
+      animation-timing-function: cubic-bezier(1, 0.22, 0, 0.84);
+    }
+    from {
+      transform: rotateY(0deg);
+      -webkit-transform: rotateY(0deg);
+    }
+    90% {
+      transform: rotateY(-85deg);
+      -webkit-transform: rotateY(-85deg);
+    }
+    to {
+      transform: rotateY(-75deg);
+      -webkit-transform: rotateY(-75deg);
+    }
+  }
+
+  .application-outer {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    perspective: 300;
+    -webkit-perspective: 300; /* Safari and Chrome */
+    .application-left {
+      width: 50%;
+      left: 0;
+      position: absolute;
+      transform-origin: left;
+      -webkit-transform-origin: left;
+      &.start {
+        -webkit-animation-name: open;
+        animation-name: open;
+      }
+    }
+    .application-right {
+      width: 50%;
+      right: 0;
+      position: absolute;
+      transform-origin: right;
+      -webkit-transform-origin: right;
+      &.start {
+        -webkit-animation-name: leave;
+        animation-name: leave;
+      }
+    }
+  }
+
+  .appRegion {
+    .appTitle {
+      padding-left: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      height: 22px;
+      line-height: 22px;
+      &.office {
+        border-left: 4px solid #4A90E2;
+        color: #4A90E2;
+      }
+      &.project {
+        border-left: 4px solid #F99D32;
+        color: #F99D32;
+      }
+      &.employee {
+        border-left: 4px solid #5CB281;
+        color: #5CB281;
+      }
+    }
+
+    .appArea {
+      width: 100%;
+      height: 95px;
+      .appList {
+        height: 95px;
+        width: 50%;
+        float: left;
+        border-right: 1px solid #DBDBDB;
+        border-bottom: 1px solid #DBDBDB;
+        background: white;
+        .appItem {
+          margin-top: 10px;
+          height: 60px;
+          width: 60px;
+          margin-left: auto;
+          margin-right: auto;
+          &.activated{
+            background: #f8f8f8;
+          }
+          .app-item-content{
+            height: 60px;
+            width: 60px;
+            position: relative;
+            .app-extra{
+              position: absolute;
+              top: -6px;
+              right: -12px;
+              width: 24px;
+              height: 16px;
+              line-height: 12px;
+              padding: 2px;
+              border-radius: 8px;
+              font-size: 10px;
+              background: #6BB9F0;
+              color: white;
+              text-align: center;
+            }
+            .app-extra-refresh {
+              position: absolute;
+              top: -6px;
+              right: -12px;
+              width: 24px;
+              height: 16px;
+              line-height: 16px;
+              border-radius: 8px;
+              background: #6BB9F0;
+              text-align: center;
+            }
+            .app-extra-refresh .spinner svg {
+              width: 14px;
+              height: 14px;
+              stroke: white;
+              fill:  white;
+            }
+            img {
+              height: 60px;
+              width: 60px;
+            }
+          }
+
+        }
+        .appText {
+          text-align: center;
+          font-size: 10px;
+        }
+      }
+    }
+  }
+
 }
