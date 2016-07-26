@@ -7,43 +7,55 @@
     </div>
     <div class="title">
       <div class="workflow-filter">
-        <a class="to-do-list" ng-click="fetchTodoList()"
+        <a class="to-do-list" ng-click="fetchTodoList(false)"
            ng-class="{true: 'selected', false: 'no-selected'}[listStatus.todo.selected]">
           待处理
         </a>
-        <a class="done-list" ng-click="fetchDoneList()"
+        <a class="done-list" ng-click="fetchDoneList(false)"
            ng-class="{true: 'selected', false: 'no-selected'}[listStatus.done.selected]">
           已处理
         </a>
       </div>
     </div>
-
     <div class="buttons">
       <button class="button button-clear" style="font-size: 26px">
         <i class="ion-ios-help-outline"></i>
       </button>
     </div>
   </ion-header-bar>
-  <ion-content delegate-handle="workflowListHandle">
+  <ion-content delegate-handle="workflowListHandle" style="bottom:55px">
     <ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </ion-refresher>
     <div class="hms-hide-content" ng-if="fetchDataFlag">
-      <!--<div class="content">获取代办事项数据中</div>-->
-      <!--<div class="hide-icon">-->
-      <!--<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>-->
-      <!--</div>-->
       <hms-loading></hms-loading>
     </div>
-    <hms-workflow-list ng-if="!fetchDataFlag&&!pullRefreshDataFlag" ng-repeat="item in list"
-                       workflow-title='item.title1'
-                       workflow-icon='item.icon'
-                       workflow-type='item.type'
-                       workflow-type-value='item.typeValue'
-                       workflow-node='item.node'
-                       workflow-node-value='item.nodeValue'
-                       workflow-submit='item.submit'
-                       workflow-submit-person='item.submitPerson' ng-click="enterWorkflowDetail(item)">
-    </hms-workflow-list>
+    <ion-list can-swipe="listStatus.todo.selected">
+      <ion-item class="workflow-list" ng-repeat="item in list">
+        <hms-workflow-list ng-if="!fetchDataFlag&&!pullRefreshDataFlag"
+                           workflow-title='item.title1'
+                           workflow-icon='item.icon'
+                           workflow-type='item.type'
+                           workflow-type-value='item.typeValue'
+                           workflow-node='item.node'
+                           workflow-node-value='item.nodeValue'
+                           workflow-submit='item.submit'
+                           workflow-submit-person='item.submitPerson' ng-click="enterWorkflowDetail(item)">
+        </hms-workflow-list>
+        <ion-option-button class="hms-swipe-left-action">
+          <div class="row approve-row" ng-click="workflowActionHandle.approveWorkflow(item)">
+            <img class="status-img"
+                 ng-src="build/img/application/timesheet-approve/list/approval@3x.png"/>
+          </div>
+          <div class="row refuse-row" ng-click="workflowActionHandle.rejectWorkflow(item)">
+            <img class="status-img" style="width: 61px;"
+                 ng-src="build/img/application/timesheet-approve/list/refuse@3x.png"/>
+          </div>
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll ng-if="loadMoreDataFlag" on-infinite="loadMoreData()"
+                         distance="1%">
+    </ion-infinite-scroll>
     <!--<a class="workflow-list" ng-repeat="item in list">
       <div class="workflow-list-logo">
         <img src="build/img/application/profile@3x.png"/>
@@ -86,11 +98,11 @@
       </div>
     </a>-->
   </ion-content>
-  <!--<ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="showDetailArrow">
+  <ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="true">
     <div class="buttons">
-      <button class="button button-clear filter-icon" ng-click="filterTsInfo()">
+      <button class="button button-clear filter-icon" ng-click="filterWorkFlowInfo()">
       </button>
-      <div class="filter-text" ng-click="filterTsInfo()">筛选</div>
+      <div class="filter-text" ng-click="filterWorkFlowInfo()">筛选</div>
     </div>
-  </ion-footer-bar>-->
+  </ion-footer-bar>
 </ion-view>

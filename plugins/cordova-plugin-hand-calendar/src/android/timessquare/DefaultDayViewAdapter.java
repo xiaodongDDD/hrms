@@ -19,7 +19,7 @@ public class DefaultDayViewAdapter implements DayViewAdapter {
       textView.setDuplicateParentStateEnabled(true);
       textView.setTextColor(Color.rgb(255, 255, 255));
 
-      TextView textView1 = new TextView(       //“ı¿˙
+      TextView textView1 = new TextView(       //
               new ContextThemeWrapper(parent.getContext(), getStyleId("CalendarCell_CalendarDate")));
       textView1.setDuplicateParentStateEnabled(true);
       textView1.setTextSize(14);

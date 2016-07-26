@@ -8,19 +8,34 @@ angular.module('messageModule')
     '$state',
     '$timeout',
     '$ionicPlatform',
+    '$ionicScrollDelegate',
+    '$ionicActionSheet',
     'imService',
     'checkVersionService',
     'baseConfig',
+    'hmsHttp',
+    'hmsPopup',
     function ($scope,
               $state,
               $timeout,
               $ionicPlatform,
+              $ionicScrollDelegate,
+              $ionicActionSheet,
               imService,
               checkVersionService,
-              baseConfig) {
+              baseConfig,
+              hmsHttp,
+              hmsPopup) {
 
       $scope.messageList = [];
       var fetchData = true;
+      $scope.showFilter = false;
+      var page = 1;
+      $scope.loadMoreFlag = false;
+      $scope.empFilterValue = '';
+      $scope.employeeList = [];
+
+      $scope.loadingMoreFlag = false;
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
@@ -41,23 +56,26 @@ angular.module('messageModule')
 
       document.addEventListener('IMPush.openNotification', function (result) {
         console.log('IMPush.openNotification result ' + angular.toJson(result));
-        getMessage(result);
+        if(result&&result.message&&angular.isArray(result.message)){
+          getMessage(result);
+        }
       }, false);
 
       var getMessage = function (result) {
+        var userIcon;
+        var userName;
         $scope.messageList = [];
         angular.forEach(result.message, function (data) {
-          var user = userInfo[data.message.sendId];
-          if (!user) {
-            user = {
-              "name": data.message.sendId,
-              "imgUrl": ""
-            };
+          userIcon = data.message.userIcon;
+          userName = data.message.userName;
+          if (!userName || userName == '') {
+            userIcon = '';
+            userName = data.message.sendId;
           }
           var item = {
-            "name": user.name,
+            "name": userName,
             "content": data.message.content,
-            "imgUrl": user.imgUrl,
+            "imgUrl": userIcon,
             "count": data.message.messageNum,
             "employee": data.message.sendId,
             "time": data.message.sendTime
@@ -94,7 +112,9 @@ angular.module('messageModule')
              });*/
 
             if (needFresh) {
-              getMessage(result);
+              if(result&&result.message&&angular.isArray(result.message)){
+                getMessage(result);
+              }
             }
             $scope.$broadcast("scroll.refreshComplete");
           }, function error(result) {
@@ -105,20 +125,155 @@ angular.module('messageModule')
           }, '');
         }
       };
+
       $timeout(function () {
         getMessageList();
-      },500);
+      }, 1000);
+
+      $scope.messageHandle = {
+        blur: function () {
+          if (baseConfig.debug) {
+            console.log('messageHandle.blur');
+          }
+        },
+        focus: function () {
+          if (baseConfig.debug) {
+            console.log('messageHandle.focus');
+          }
+          $scope.showFilter = true;
+        },
+        cancel: function () {
+          $scope.showFilter = false;
+          $scope.employeeList = [];
+          $scope.loadMoreFlag = false;
+          $scope.empFilterValue = '';
+          $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
+        },
+
+        chatWithNative: function (item) {
+          if (baseConfig.debug) {
+            console.log('item ' + angular.toJson(item));
+          }
+          //go native page --im talk
+          if (ionic.Platform.isWebView()) {
+            var emp = {
+              "friendId": item.emp_code,
+              "friendName": item.emp_name,
+              "friendIcon": item.avatar
+            };
+            imService.toNativeChatPage(emp);
+          } else {
+            hmsPopup.showShortCenterToast('不支持网页聊天!');
+          }
+        },
+
+        telSaveNumber: function (event, baseInfo) { //拨打电话按钮的响应事件
+          event.stopPropagation(); //阻止事件冒泡
+          try {
+            $ionicActionSheet.show({
+              buttons: [
+                {text: '拨打电话'},
+                {text: '增加到通讯录'},
+              ],
+              cancelText: 'Cancel',
+              buttonClicked: function (index) {
+                if (index == 0) {
+                  window.location.href = "tel:" + 88888888888; //不明觉厉--
+                  window.location.href = "tel:" + baseInfo.mobil.replace(/\s+/g, "");
+                  var imgUrl = baseInfo.avatar;
+                  if (baseInfo.avatar != '' || baseInfo.avatar) {
+                  } else {
+                    if (baseInfo.gender == "男") {//根据性别判定头像男女
+                      imgUrl = "build/img/myInfo/man-portrait.png";
+                    } else if (baseInfo.gender == "女") {
+                      imgUrl = "build/img/myInfo/woman-portrait.png";
+                    }
+                  }
+
+                  var employeeBaseInfo = {
+                    tel: baseInfo.mobil.replace(/\s+/g, ""),
+                    name: baseInfo.emp_name,
+                    employeeNumber: baseInfo.emp_code,
+                    imgUrl: imgUrl
+                  };
+                  if (employeeBaseInfo.name) {
+                    dealCommonLinkMan(employeeBaseInfo);
+                  }
+                  return true;
+                }
+                if (index == 1) {
+                  contactService.contactLocal(baseInfo);
+                  return true;
+                }
+              }
+            });
+          } catch (e) {
+            //alert(e);
+          }
+        },
+
+        search: function (loadMoreFlag) {
+          if (!$scope.empFilterValue || $scope.empFilterValue == '') {
+            return;
+          }
+          if (!loadMoreFlag) {
+            page = 1;
+            $scope.employeeList = [];
+            $scope.loadMoreFlag = false;
+            $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
+          } else {
+            $scope.loadingMoreFlag = true;
+            page = page + 1;
+          }
+          var url = baseConfig.queryPath + '/staff/query';
+          var params = {
+            "key": $scope.empFilterValue + "",
+            "page": page + "",
+            "pageSize": "30"
+          };
+
+          hmsHttp.post(url, params).success(function (response) {
+            if (response.success == true) {
+              if (response.total && response.total > 0) {
+                angular.forEach(response.rows, function (data) {
+                  $scope.employeeList.push(data);
+                });
+
+                if (response.total == 30) {
+                  $scope.loadMoreFlag = true;
+                  $scope.loadingMoreFlag = false;
+                }
+                else {
+                  $scope.loadMoreFlag = false;
+                }
+                $ionicScrollDelegate.$getByHandle('employeeListHandle').resize();
+              }
+              else {
+                $scope.loadMoreFlag = false;
+              }
+            }
+            else {
+              $scope.loadMoreFlag = false;
+            }
+            if (loadMoreFlag) {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+          }).error(function (error) {
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+          });
+        }
+      };
 
       /*$scope.messageList = [
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "111111111111111111111111"
-       }
-       ];*/
+        {
+          "name": "11111",
+          "content": "11111",
+          "imgUrl": "11111",
+          "count": "11111",
+          "employee": "11111",
+          "time": "111111111111111111111111"
+        }
+      ];*/
 
       var userInfo = {
         "9403": {
@@ -494,9 +649,14 @@ angular.module('messageModule')
         }
         var emp = {
           "friendId": message.employee,
-          "friendName": message.name
-        }
+          "friendName": message.name,
+          "friendIcon": message.imgUrl
+        };
         imService.toNativeChatPage(emp);
+
+        $timeout(function () {
+          getMessageList();
+        }, 1000);
       };
 
       $scope.talk = function (message) {
@@ -511,6 +671,7 @@ angular.module('messageModule')
       console.log('messageCtrl.enter');
 
       $scope.$on('$ionicView.enter', function (e) {
+        getMessageList();
         console.log('messageCtrl.$ionicView.enter');
       });
 

@@ -18,7 +18,7 @@ HmsModule.directive('hmsWorkflowList', function () {
       submitPerson: '=workflowSubmitPerson'
     },
 
-    template: '<a class="workflow-list">' +
+    template: '<a class="workflow-list-item">' +
     '<div class="workflow-list-logo">' +
     '<img src="{{icon}}"/>' +
     '</div>' +

@@ -13,6 +13,7 @@
 #import "DataBaseTool.h"
 #import <AudioToolbox/AudioToolbox.h>
 
+static NSMutableArray *usersInfo;
 @implementation AppDelegate (CDVIMPlugin)
 +(void)load
 {
@@ -39,111 +40,107 @@
 - (void)applicationDidIMLaunch:(NSNotification *)notification
 {
     _launchOptions = notification.userInfo;
-    
     [[RCIM sharedRCIM] initWithAppKey:appKey];
     [[RCIM sharedRCIM] setReceiveMessageDelegate:self];
-    [self loginRongCloud];
+    [[RCIM sharedRCIM] setEnableMessageAttachUserInfo:YES];
+    [[RCIM sharedRCIM] setEnablePersistentUserInfoCache:YES];
     
-    if ([[UIApplication sharedApplication]
-         respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        //注册推送, 用于iOS8以及iOS8之后的系统
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings
-                                                settingsForTypes:(UIUserNotificationTypeBadge |
-                                                                  UIUserNotificationTypeSound |
-                                                                  UIUserNotificationTypeAlert)
-                                                categories:nil];
+    
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationType type =  UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound;
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:type
+                                                                                 categories:nil];
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    } else {
-        //注册推送，用于iOS8之前的系统
-        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge |
-        UIRemoteNotificationTypeAlert |
-        UIRemoteNotificationTypeSound;
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //获取数据库 -------------***********----------------可能会有内存问题
+        usersInfo = [DataBaseTool getAllUsersInfo];
+        NSLog(@"applicationDidIMLaunch获取数据库,count:%li",usersInfo.count);
+    });
+    
     //融云即时通讯
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(didReceiveMessageNotification:)
                                                 name:RCKitDispatchMessageNotification
                                               object:nil];
     
     [[RCIM sharedRCIM] setConnectionStatusDelegate:self];
-    
-    
-    //     NSDictionary *remoteNotificationUserInfo =
-    //    _launchOptions[@"UIApplicationLaunchOptionsRemoteNotificationKey"];
-    //
-    //    if (remoteNotificationUserInfo) {
-    //      //  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    //    }
-    //  NSLog(@"来了这里remoteNotificationUserInfo:%@",remoteNotificationUserInfo);
-    
-}
-
-//程序一启动就连接融云服务器
--(void)loginRongCloud
-{
-    //Z0UlKIjcWqYbOshfngwNC1lLUTMDagqb7z8dTqJKoTt0JHVAabLVUf/TjGkBDUrTmen/J3gPG+6UiAfZePpL3A==
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-    [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
-        //设置用户信息提供者,页面展现的用户头像及昵称都会从此代理取
-        //   [[RCIM sharedRCIM] setUserInfoDataSource:self];
-        NSLog(@"Login successfully with userId: %@", userId);
-    } error:^(RCConnectErrorCode status) {
-        NSLog(@"login error status: %ld.", (long)status);
-    } tokenIncorrect:^{
-        NSLog(@"token 无效 ，请确保生成token 使用的appkey 和初始化时的appkey 一致");
-    }];
-    
     [[RCIM sharedRCIM] setDisableMessageNotificaiton:YES];
     [[RCIM sharedRCIM] setDisableMessageAlertSound:YES];
-    
 }
 
 - (void)didReceiveMessageNotification:(NSNotification *)notification
 {
-    AudioServicesPlaySystemSound(1003);
-    NSLog(@"收到了一条新消息");
-    RCMessage *message = (RCMessage *)[notification.object content];
+    SystemSoundID soundID;
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"default_mic" ofType:@"caf"];
+    CFURLRef urlRef = (__bridge CFURLRef )[NSURL fileURLWithPath:path];
+    AudioServicesCreateSystemSoundID(urlRef, &soundID);
+    AudioServicesPlaySystemSound(soundID);
+    RCMessage *message = (RCMessage *)notification.object;
+    NSLog(@"收到了新消息 %@  message:%@",[message content] ,[notification.object targetId]);
+    NSLog(@"message:%@ notification.object :%@ [notification.object content]:%@",message,notification.object,[notification.object content]);
+    NSString *body;
     //每次收到消息就把数据存在本地数据库
-    
-    NSDictionary *msgDic;
-    if ([message isKindOfClass:[RCTextMessage class]]) {
-        //文本消息
-        NSLog(@"[TimeTool  timeStr:[notification.object sentTime]]:%@",[TimeTool  timeStr:[notification.object sentTime]]);
-        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"text",@"sendId":[notification.object senderUserId],@"content":[message content],@"sendTime":[NSString  stringWithFormat:@"%lli",[notification.object sentTime]],@"receiveTime":[NSString  stringWithFormat:@"%lli",[notification.object receivedTime]]}] forKeys:@[@"message"]];
-        
-    } else if ([ message isKindOfClass:[RCImageMessage class]]){
-        //图片消息
-        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"img" ,@"sendId":[notification.object senderUserId],@"content":@"[图片]",@"sendTime":[NSString  stringWithFormat:@"%lli",[notification.object sentTime]],@"receiveTime":[NSString  stringWithFormat:@"%lli",[notification.object receivedTime]]}] forKeys:@[@"message"]];
-        
-    } else if ([message isKindOfClass:[RCVoiceMessage class]]){
-        //语音消息
-        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"voice",@"sendId":[notification.object senderUserId],@"content":@"[语音]",@"sendTime":[NSString  stringWithFormat:@"%lli",[notification.object sentTime]],@"receiveTime":[NSString  stringWithFormat:@"%lli",[notification.object receivedTime]]}] forKeys:@[@"message"]];
-        
-    } else if ([message isKindOfClass:[RCLocationMessage class]]){
-        //位置消息
-        msgDic = [NSDictionary dictionaryWithObjects:@[@{@"messageType":@"location",@"sendId":[notification.object senderUserId],@"content":@"[语音]",@"sendTime":[NSString  stringWithFormat:@"%lli",[notification.object sentTime]],@"receiveTime":[NSString  stringWithFormat:@"%lli",[notification.object receivedTime]]}] forKeys:@[@"message"]];
+    if ([message.content isKindOfClass:[RCTextMessage class]]) {
+        RCTextMessage *textMessage = (RCTextMessage *) message.content;
+        if ([message.content senderUserInfo]) {
+            body = [NSString stringWithFormat:@"%@:%@",[textMessage senderUserInfo].name,[textMessage content]];
+            NSLog(@"body:%@",body);
+        }else{
+            body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,textMessage.content];
+        }
+    }else if([message.content isKindOfClass:[RCImageMessage class]]){
+        RCImageMessage *imageMessage = (RCImageMessage *)[message content];
+        if ([message.content senderUserInfo]) {
+            body = [NSString stringWithFormat:@"%@:%@",[imageMessage senderUserInfo].name,@"[图片]"];
+        }else{
+            body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,@"[图片]"];
+        }
+    }else if ([message.content isKindOfClass:[RCVoiceMessage class]]){
+        RCVoiceMessage *voiceMessage = (RCVoiceMessage *)message.content;
+        if ([message.content senderUserInfo]) {
+            body = [NSString stringWithFormat:@"%@:%@",[voiceMessage senderUserInfo].name,@"[语音]"];
+        }else{
+            body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,@"[语音]"];
+        }
+    }else if ([message.content isKindOfClass:[RCLocationMessage class]]){
+        RCLocationMessage *locationMessage = (RCLocationMessage *)[message content];
+        if ([message.content senderUserInfo]) {
+            body = [NSString stringWithFormat:@"%@:%@",[locationMessage senderUserInfo].name,@"[位置]"];
+        }else{
+            body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,@"[位置]"];
+        }
     }
-    //写入数据库
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [DataBaseTool insetReceivedDataType:msgDic[@"message"][@"messageType"] SendId:msgDic[@"message"][@"sendId"] ReceivedId:[[NSUserDefaults standardUserDefaults]objectForKey:@"userId"] Content:msgDic[@"message"][@"content"] SendTime:msgDic[@"message"][@"sendTime"] ReceiveTime:msgDic[@"message"][@"receiveTime"] Flag:@"N"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:CDVIMPluginPushNotification object:notification.userInfo];
-    });
     
     //弹出提示框
-    //    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
-    //       UILocalNotification *localNotification = [[UILocalNotification alloc]init];
-    //        [localNotification setAlertBody:[NSString stringWithFormat:@"%@给你发来了一条新消息",[notification.object senderUserId]]];
-    //        localNotification.userInfo = @{@"id":[notification.object senderUserId]};
-    //        [localNotification setAlertTitle:[[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"]];
-    //        [localNotification setFireDate:[NSDate date]];
-    //        [localNotification setSoundName:UILocalNotificationDefaultSoundName];
-    //        //UIApplication启动通知
-    //        [[UIApplication sharedApplication]scheduleLocalNotification:localNotification];
-    //    }
-    //  [UIApplication sharedApplication].applicationIconBadgeNumber =
-    // [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+    UILocalNotification *localNotification ;
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+        localNotification = [[UILocalNotification alloc] init];
+        [localNotification setAlertTitle:[[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"]];
+        [localNotification setAlertBody:body];
+        [localNotification setFireDate:[NSDate date]];
+        [localNotification setSoundName:UILocalNotificationDefaultSoundName];
+    }
     
-    NSLog(@"来了个消息，开始注册通知");
+    RCUserInfo *senderUserInfo ;
+    if ([[notification.object content] senderUserInfo]) {
+        senderUserInfo = [[notification.object content] senderUserInfo];
+    }
+    // NSLog(@"senderUserInfo:%@",[[[notification.object content] senderUserInfo] name]);
+    //做下缓存处理  //插入员工详细信息
+    if (senderUserInfo!=nil) {
+        if (senderUserInfo.portraitUri==nil) {
+            senderUserInfo.portraitUri = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"image_placehold" ofType:@"png"]].absoluteString;
+        }
+        NSDictionary *sendInfo = @{@"work_id":senderUserInfo.userId, @"name":senderUserInfo.name, @"image_url":senderUserInfo.portraitUri};
+        [self hasSameUserInfo:sendInfo];
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CDVIMPluginPushNotification object:nil];
+    }else{
+        //
+    }
+    
+    NSLog(@"收到了新消息 userID:%@,name:%@,头像:%@",senderUserInfo.userId,senderUserInfo.name,senderUserInfo.portraitUri);
 }
 
 /*!
@@ -178,41 +175,36 @@
     }
 }
 
-//注册用户通知设置
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
-    // register to receive notifications
-    [application registerForRemoteNotifications];
-}
-
-
-//程序进入后台2分钟之前 和 处于活跃
-- (void)application:(UIApplication *)application
-didReceiveLocalNotification:(UILocalNotification *)notification {
-    // notification为本地通知的内容
-    //  NSLog(@"notification为本地通知的内容:%@",notification.userInfo[@"id"]);
-    CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:notification.userInfo[@"id"]];
-    cdvIMChattingVC.targetId = notification.userInfo[@"id"];
-    cdvIMChattingVC.navTitle = notification.userInfo[@"id"];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:cdvIMChattingVC];
-    [self.viewController presentViewController:nav animated:YES completion:nil];
-    //  [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-}
-
 
 #pragma mark - ReceiveMessageDelegate
 - (void)onRCIMReceiveMessage:(RCMessage *)message
                         left:(int)left
 {
-    NSLog(@"onRCIMReceiveMessage:%@,%d",message,left);
+    // NSLog(@"onRCIMReceiveMessage:%@,%d",message,left);
     
 }
 
 
 -(void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-    //    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"系统提示" message:@"您的手机应用内存不足" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
-    //    [alertView show];
     [[RCIM sharedRCIM] clearUserInfoCache];
+}
+
+- (BOOL)hasSameUserInfo:(NSDictionary *)object
+{
+    for (NSDictionary * userInfo in usersInfo) {
+        if (userInfo[@"work_id"]==object[@"work_id"]) {
+            if (userInfo[@"image_url"]==object[@"image_url"]) {
+                return YES;
+            }else{
+                [DataBaseTool updatePersonDetailInformationWithId:userInfo[@"work_id"] Name:userInfo[@"name"] ImageUrl:userInfo[@"image_url"]];
+                return YES;
+            }
+        }
+    }
+    [DataBaseTool insertPersonDetailInformationWithId:object[@"work_id"] Name:object[@"name"] ImageUrl:object[@"image_url"]];
+    
+    return NO;
 }
 
 @end

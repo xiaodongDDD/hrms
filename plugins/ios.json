@@ -8,80 +8,83 @@
     },
     "installed_plugins": {
         "com.hand.scancard": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "com.handmobile.cordovaplugin.hotpatch": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-actionsheet": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-contacts": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
+        },
+        "cordova-plugin-crosswalk-webview": {
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-datepicker": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-hand-calendar": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-image-picker": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-plugin-x-toast": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "cordova-sqlite-storage": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "hand-im-plugin-device": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "hand.wei": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         },
         "jpush-phonegap-plugin": {
             "API_KEY": "22b25063349b6beef7bde524",
-            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+            "PACKAGE_NAME": "com.hand-china.hrms"
         }
     },
     "dependent_plugins": {}

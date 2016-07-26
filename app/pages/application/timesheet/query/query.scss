@@ -6,6 +6,9 @@ $timesheet-cover: #E3F5F0 !default;
 
 
 .timesheet {
+  ::-webkit-scrollbar {
+    display: none;
+  }
   background: $global-background;
   .calendar-month {
     margin-top: 8px;
@@ -54,7 +57,7 @@ $timesheet-cover: #E3F5F0 !default;
     .calendar-lock-screen {
       position: absolute;
       text-align: center;
-      background: white none repeat scroll !important;;
+      background: white none repeat scroll !important;
       padding-top: 180px;
       border-radius: 10px;
       opacity: 0.7;

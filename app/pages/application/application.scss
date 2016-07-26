@@ -1,6 +1,11 @@
 $applicationColor: white !default;
 
 .mainApplication {
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   .header {
     background: $applicationColor;
   }
@@ -194,6 +199,7 @@ $applicationColor: white !default;
       left: 0;
       position: absolute;
       transform-origin: left;
+      -webkit-transform-origin: left;
       &.start {
         -webkit-animation-name: open;
         animation-name: open;
@@ -204,6 +210,7 @@ $applicationColor: white !default;
       right: 0;
       position: absolute;
       transform-origin: right;
+      -webkit-transform-origin: right;
       &.start {
         -webkit-animation-name: leave;
         animation-name: leave;

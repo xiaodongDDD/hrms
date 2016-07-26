@@ -188,7 +188,7 @@ angular.module('loginModule')
           $scope.focusUsername = false;
           $scope.fillUsername = false;
         }
-        if($scope.fillPassword == false){
+        if ($scope.fillPassword == false) {
           $scope.showBigPortrait = true;
           $scope.showLittlePortrait = false;
           $scope.bigPortrait = "build/img/login/login-hand.png";
@@ -205,7 +205,7 @@ angular.module('loginModule')
           $scope.focusPassword = false;
           $scope.fillPassword = false;
         }
-        if($scope.fillUsername == false){
+        if ($scope.fillUsername == false) {
           $scope.showBigPortrait = true;
           $scope.showLittlePortrait = false;
           $scope.bigPortrait = "build/img/login/login-hand.png";
@@ -283,9 +283,9 @@ angular.module('loginModule')
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
               checkVersionService.checkAppVersion();
-              //if(ionic.Platform.isWebView()) {
-              imService.initImData();
-              //}
+              if (ionic.Platform.isWebView()) {
+                imService.initImData();
+              }
               $state.go("tab.message");
             } else {
               $scope.bigPortrait = "build/img/login/login-hand.png";
@@ -314,9 +314,9 @@ angular.module('loginModule')
       };
 
       $scope.goToWechat = function () {//调用微信登录
-        wei.weiLogin(function(msg){
+        wei.weiLogin(function (msg) {
           alert(msg);
-        },function(msg){
+        }, function (msg) {
           alert(msg);
         });
       };

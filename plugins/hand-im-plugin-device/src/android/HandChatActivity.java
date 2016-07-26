@@ -43,6 +43,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +55,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
+import io.rong.imlib.model.UserInfo;
 import io.rong.message.ImageMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
@@ -65,12 +70,17 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
     private static final int PHOTO_GRAPH = 1;// 拍照
     private static final int PHOTO_LIST = 2; // 相册界面
     private static String mSdRootPath = Environment.getExternalStorageDirectory().getPath();
-    //当前的用户ID
-    private String userId="";
-    //单聊消息接收者的ID
-    private String friendId="";
-    //token防止连接中断需要重新连接的操作
-    private String token="";
+    //用户信息
+    private static String userId="";
+    private static String token="";
+    private static String access_token="";
+    private static String userName="";
+    //头像url
+    private static String iconUrl="";
+    //聊天对象信息
+    private static String friendId="";
+    private static String friendName="";
+    private static String friendIcon="";
     //发送按钮
     private TextView send;
     //输入内容
@@ -110,7 +120,8 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
     private OnCorpusSelectedListener mListener;
     //拍照图片保存地址
     private String cameraUrl = "";
-
+    //用户信息
+    private UserInfo uinfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,18 +131,33 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
         Intent intent = getIntent();
         String type = intent.getStringExtra("TYPE");
         if(type !=null && type.equals("NORMAL")){
-        userId = intent.getStringExtra("USERID");
-        friendId = intent.getStringExtra("FRIENDID");
-        token = intent.getStringExtra("TOKEN");
+            userId = intent.getStringExtra("USERID");
+            userName = intent.getStringExtra("USERNAME");
+            iconUrl = intent.getStringExtra("ICONURL");
+            token = intent.getStringExtra("TOKEN");
+            friendId = intent.getStringExtra("FRIENDID");
+            friendName = intent.getStringExtra("FRIENDNAME");
+            friendIcon = intent.getStringExtra("FRIENDICON");
         }else if(type !=null && type.equals("NOTICE")){
             userId = intent.getStringExtra("MUSERID");
-            friendId = intent.getStringExtra("MFRIENDID");
+            userName = intent.getStringExtra("MUSERNAME");
+            iconUrl = intent.getStringExtra("MICONURL");
             token = intent.getStringExtra("MTOKEN");
+            friendId = intent.getStringExtra("MFRIENDID");
+            friendName = intent.getStringExtra("MFRIENDNAME");
+            friendIcon = intent.getStringExtra("MFRIENDICON");
         }
+        if(iconUrl!=null){
+                android.net.Uri uri = Uri.parse(iconUrl);
+                uinfo = new UserInfo(userId,userName,uri);}
         emojis = FaceConversionUtil.getInstace(HandChatActivity.this).emojiLists;
         initView();
         initEditTextViewListener();
-        //单聊对象的ID 获取消息记录 这里只区分图片消息和文本消息
+        initMyRongIM();
+    }
+    //加载融云
+    private void initMyRongIM(){
+        //单聊对象的ID 获取消息记录
         RongIMClient.getInstance().getLatestMessages(Conversation.ConversationType.PRIVATE,friendId, Integer.MAX_VALUE, new RongIMClient.ResultCallback<List<Message>>() {
             @Override
             public void onSuccess(List<Message> messages) {
@@ -195,13 +221,16 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                 adapter.notifyDataSetChanged();
                 listv_content.setSelection(listv_content.getBottom());
                 edit_content.setText("");
+                TextMessage tm = TextMessage.obtain(content);
+                tm.setUserInfo(uinfo);
                 //发送测试消息
                 //单聊对象的ID
                 RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, friendId,
-                        TextMessage.obtain(content), null, null, new RongIMClient.SendMessageCallback() {
+                        tm, null, null, new RongIMClient.SendMessageCallback() {
                             @Override
                             public void onSuccess(Integer integer) {
                             }
+
                             @Override
                             public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
                             }
@@ -233,12 +262,13 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
 //        listv_content.addHeaderView(LayoutInflater.from(this).inflate( R.layout.chat_header_view, null),null,false);
         send = (TextView) findViewById(Util.getRS("btn_send","id",HandChatActivity.this));
         contentList = new ArrayList<ChatContant>();
-        adapter = new HandChatContentAdapter(HandChatActivity.this,contentList,userId,friendId);
+        adapter = new HandChatContentAdapter(HandChatActivity.this,contentList,userId,friendId,friendIcon);
         listv_content.setAdapter(adapter);
         listv_content.setSelection(listv_content.getBottom());
         vp_face = (ViewPager) findViewById(Util.getRS("vp_contains","id",HandChatActivity.this));
         layout_point = (LinearLayout) findViewById(Util.getRS("iv_image","id",HandChatActivity.this));
         view = findViewById(Util.getRS("ll_facechoose","id",HandChatActivity.this));
+        textv_name.setText(friendName);
         Init_viewPager();
         Init_Point();
         Init_Data();
@@ -408,6 +438,9 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
         int imgv_album_id = Util.getRS("imgv_album","id",HandChatActivity.this);
         int imgv_camera_id = Util.getRS("imgv_camera","id",HandChatActivity.this);
         if(v.getId() == textv_back_id){
+            Intent intent = getIntent();
+            intent.putExtra("FID",friendId);
+            setResult(0x0000,intent);
             //返回
             this.finish();
         }else if(v.getId() == imgv_call_id){
@@ -473,80 +506,6 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                 Toast.makeText(HandChatActivity.this, "没有SD卡", Toast.LENGTH_LONG).show();
             }
         }
-//
-//        switch (v.getId()){
-//            case R.id.textv_back:
-//                //返回
-//                this.finish();
-//                break;
-//            case R.id.imgv_call:
-//                //拨打电话
-//                Toast.makeText(HandChatActivity.this, "敬请期待", Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.imgv_emjoe:
-//                //隐藏软键盘
-//                View pdView = getWindow().peekDecorView();
-//                if (pdView != null) {
-//                    InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    inputmanger.hideSoftInputFromWindow(pdView.getWindowToken(), 0);
-//                }
-//                if(voice_layout.getVisibility() == View.VISIBLE){
-//                    voice_layout.setVisibility(View.GONE);
-//                }
-//                // 表情选择框
-//                if (view.getVisibility() == View.VISIBLE) {
-//                    view.setVisibility(View.GONE);
-//                } else {
-//                    view.setVisibility(View.VISIBLE);
-//                }
-//                break;
-//            case R.id.imgv_record:
-//                //隐藏软键盘
-//                View pdView1 = getWindow().peekDecorView();
-//                if (pdView1 != null) {
-//                    InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    inputmanger.hideSoftInputFromWindow(pdView1.getWindowToken(), 0);
-//                }
-//                if (view.getVisibility() == View.VISIBLE) {
-//                    view.setVisibility(View.GONE);
-//                }
-//                if(voice_layout.getVisibility() == View.VISIBLE){
-//                    voice_layout.setVisibility(View.GONE);
-//                }else{
-//                    voice_layout.setVisibility(View.VISIBLE);
-//                }
-//                break;
-//            case R.id.imgv_album:
-//                if(!HandIMPlugin.getRmConnect()){
-//                    //获取token 建立连接
-//                    Toast.makeText(HandChatActivity.this,"连接中断，准备重连",Toast.LENGTH_SHORT).show();
-//                    connect(token);
-//                    return;
-//                }
-//                //相册选择
-//                Intent albumIntent = new Intent(Intent.ACTION_PICK, null);
-//                albumIntent.setType(IMAGE_UNSPECIFIED);
-//                startActivityForResult(albumIntent, PHOTO_LIST);
-//                break;
-//            case R.id.imgv_camera:
-//                if(!HandIMPlugin.getRmConnect()){
-//                    //获取token 建立连接
-//                    Toast.makeText(HandChatActivity.this,"连接中断，准备重连",Toast.LENGTH_SHORT).show();
-//                    connect(token);
-//                    return;
-//                }
-//                //调用系统拍照功能 拍照
-//                String state = Environment.getExternalStorageState();
-//                if (state.equals(Environment.MEDIA_MOUNTED)) {
-//                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    cameraUrl = mSdRootPath+"/hand.jpg";
-//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(cameraUrl)));
-//                    startActivityForResult(intent, PHOTO_GRAPH);
-//                } else {
-//                    Toast.makeText(HandChatActivity.this, "没有SD卡", Toast.LENGTH_LONG).show();
-//                }
-//                break;
-//        }
     }
 
     @Override
@@ -628,7 +587,6 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
             return false;
         }
     }
-
     public class ChatContant {
         private String fromUser;
         private String txt;
@@ -781,6 +739,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
             return;
         }
         ImageMessage imgMsg = ImageMessage.obtain(Uri.fromFile(imageFileThumb), Uri.fromFile(imageFileSource));
+        imgMsg.setUserInfo(uinfo);
         RongIMClient.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, friendId, imgMsg, "", "", new RongIMClient.SendImageMessageCallback() {
             @Override
             public void onAttached(Message message) {
@@ -845,6 +804,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                 e.printStackTrace();
             }
             VoiceMessage vocMsg = VoiceMessage.obtain(Uri.fromFile(voiceFile), time);
+            vocMsg.setUserInfo(uinfo);
             if(!HandIMPlugin.getRmConnect()){
                 //获取token 建立连接
                 Toast.makeText(HandChatActivity.this,"连接中断，准备重连",Toast.LENGTH_SHORT).show();

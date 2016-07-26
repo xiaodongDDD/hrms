@@ -21,9 +21,17 @@ angular.module('applicationModule')
           return refreshWorkflowList;
         };
 
-        this.getTodoList = function (flag, success, error) {
-          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list";
-          var params = {'params': {'p_employee_code': window.localStorage.empno, 'p_flag': flag + ''}};
+        this.getTodoList = function (flag, worklfowId, submitterId, page, success, error) {
+          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list_v2";
+          var params = {
+            'params': {
+              "p_employee_code": window.localStorage.empno,
+              "p_flag": flag + "",
+              "p_submitter_key": submitterId,
+              "p_workflow_key": worklfowId,
+              "p_page": page
+            }
+          };
           hmsHttp.post(url, params).success(function (result) {
             success(result)
           }).error(function (response, status) {
@@ -239,7 +247,7 @@ angular.module('applicationModule')
 
 
         // 获取项目信息（新开项目申请工作流）
-        this.getProjectData= function (success, error, condition) {
+        this.getProjectData = function (success, error, condition) {
           var url = baseConfig.businessPath + "/get_workflow_data/get_project_data";
           var params = '{"params":{"p_param":"' + condition + '"}}';
 
@@ -254,8 +262,8 @@ angular.module('applicationModule')
 
 
         // 保存新开项目申请信息（新开项目申请工作流）
-        this.saveNewProjectApplyData = function (success, error,instanceId, pactCode, projectName, expenses, mergeFlag) {
-          var url = baseConfig.businessPath +  "/wfl_save_action/save_new_project_apply_data";
+        this.saveNewProjectApplyData = function (success, error, instanceId, pactCode, projectName, expenses, mergeFlag) {
+          var url = baseConfig.businessPath + "/wfl_save_action/save_new_project_apply_data";
           var params = '{"params":{"p_instance_id":"' + instanceId + '","p_pact_code":"' + pactCode + '","p_project_name":"' + projectName + '","p_expenses":"' + expenses + '","p_merge_flag":"' + mergeFlag + '"}}';
 
           hmsHttp.post(url, params).success(function (result) {
@@ -263,6 +271,22 @@ angular.module('applicationModule')
             success(result);
           }).error(function (response) {
             hmsPopup.hideLoading();
+            error(response);
+          });
+        };
+
+        // 保存新开项目申请信息（新开项目申请工作流）
+        this.get_workflow_filter = function (success, error, processedFlag) {
+          var url = baseConfig.businessPath + "/api_workflow_common/get_workflow_filter";
+          var params = {
+            "params": {
+              "p_employee": window.localStorage.empno,
+              "p_processed_flag": processedFlag
+            }
+          };
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response) {
             error(response);
           });
         };
