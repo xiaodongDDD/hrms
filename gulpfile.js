@@ -94,6 +94,23 @@ gulp.task('clean-bundle-js', function () {
   return gulp.src(['www/build/app.bundle.js']).pipe(clean());
 });
 
+
+//动态配置android 即时通讯的
+gulp.task('clean-android-im-config', function () {
+  return gulp.src(['plugins/hand-im-plugin-device/plugin.xml']).pipe(clean());
+});
+
+gulp.task('copy-prod-android-im-config', function () {
+  return gulp.src('publish/PROD/hand-im-plugin-device/plugin.xml')
+    .pipe(gulp.dest('plugins/hand-im-plugin-device'));
+});
+
+gulp.task('config-prod-android-im-config', function (callback) {
+  runSequence('clean-android-im-config', 'copy-prod-android-im-config', callback);
+});
+
+
+
 //语法检查
 gulp.task('lint', function () {
   return gulp.src(jsFilePath)
