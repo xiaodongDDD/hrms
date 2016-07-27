@@ -4,7 +4,9 @@ angular.module('myApp')
       $stateProvider
         .state('tab.flybackDetail', {
           url: '/flyback-detail/:param',
-          params: {},
+          params: {
+            'param':''
+          },
           views: {
             'tab-application': {
               templateUrl: 'build/pages/application/flyback/detail/detail.html',
@@ -17,7 +19,7 @@ angular.module('myApp')
 angular.module("applicationModule")
   .controller('FlyBackDetailCtrl', [
     '$scope',
-    '$rootScope', 
+    '$rootScope',
     '$state',
     'baseConfig',
     '$ionicHistory',
@@ -27,11 +29,12 @@ angular.module("applicationModule")
     'flaybackService',
     'hmsPopup',
     '$stateParams',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory,
       $timeout, HttpAppService, $ionicModal, fbService,
       Prompter, $stateParams){
         //  $scope.canEdit = true;
         // 获取页面参数
+        console.log(angular.toJson($stateParams.param));
         $scope.pageParam = JSON.parse($stateParams.param);
         $scope.canEdit = $scope.pageParam.canEdit;//页面是否可编辑
         var dataSource = $scope.pageParam.dataSource;//页面数据来源
@@ -93,9 +96,14 @@ angular.module("applicationModule")
               $scope.flybackline.route_type = $scope.routeTypeList[0].value;
             }
           }
-          Prompter.showLoading("Loading...");
+          Prompter.showLoading("请稍候");
           var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list2";
-          var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_code":"' + $scope.flybackline.projCode + '"}}';
+          var paramValueList={
+            'params':{
+              'p_employee':window.localStorage.empno,
+              'p_project_code':$scope.flybackline.projCode
+            }
+          };
           console.log("");
           HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
             if (response.status == "S") {
@@ -324,7 +332,7 @@ angular.module("applicationModule")
             //  var flight_date = getFormatDate(new Date($scope.flybackline.flight_date));
             //  $scope.flybackline.flight_date = flight_date;
             if ($scope.flybackline.apply_detail_id !== "") {
-              Prompter.showLoading("Loading...");
+              Prompter.showLoading("请稍候");
               var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_line";
               var paramValueList = '{"params":{"p_apply_id":"' + applyId + '","p_apply_detail_id":"' + $scope.flybackline.apply_detail_id + '"}}';
               console.log("paramValueList =" + paramValueList);
