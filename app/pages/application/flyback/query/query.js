@@ -28,8 +28,8 @@ angular.module("applicationModule")
     'flaybackService',
     'hmsPopup',
     'hmsHttp',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
-      $timeout, $ionicModal, $ionicScrollDelegate, hmsHttp, 
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory,
+      $timeout, $ionicModal, $ionicScrollDelegate, hmsHttp,
       flaybackService, hmsPopup, HttpAppService){
 
         var strDate = flaybackService.getNowFormatDate();
@@ -52,7 +52,7 @@ angular.module("applicationModule")
           } else {
             var dateFrom = flaybackService.getFormatDate(new Date($scope.param.reqDateFrom));
             var dateTo = flaybackService.getFormatDate(new Date($scope.param.reqDateTo));
-            hmsPopup.showLoading("Loading...");
+            hmsPopup.showLoading("请稍候");
             var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_lists";
             var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
               + '","p_project_code":"' + $scope.param.projectCode
@@ -82,7 +82,7 @@ angular.module("applicationModule")
         });
 
         //获取项目列表
-        hmsPopup.showLoading("Loading...");
+        hmsPopup.showLoading("请稍候");
         var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_project_list";
         var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
         HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
@@ -151,7 +151,7 @@ angular.module("applicationModule")
 
         // 删除fyback
         $scope.deleteFB = function (applyId, index) {
-          hmsPopup.showLoading("Loading...");
+          hmsPopup.showLoading("请稍候");
           var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
           var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + applyId + '"}}';
           HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {

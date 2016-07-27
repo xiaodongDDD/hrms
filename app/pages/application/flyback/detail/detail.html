@@ -19,7 +19,7 @@
           <div class="ion-ios-calendar-outline fb-input-label">
             &nbsp;
           </div>
-          <a>{{flybackline.projName}}</a>
+          <a style="color: #ffffff">{{flybackline.projName}}</a>
         </div>
       </div>
       <div class="fb-area">
@@ -69,11 +69,10 @@
           </div>
         </label>
       </div>
-      <div class="fb-area">
+      <ion-item style="padding: 0px;margin: 0px;border: none" class="fb-area">
         <!--起始地-->
-        <label class="fb-item-input2 fb-item-select">
-          <div class="ion-ios-location fb-input-label1">
-            &nbsp;
+        <label class="fb-item-input2 fb-item-select" style="padding-left: 65px;border-bottom: none">
+          <div class="ion-ios-location fb-input-label1" style="position: absolute;left: 11px;top:3px;">
           </div>
           <div class="fb-item-select a">
             <input type="text" ng-readonly="!canEdit" required ng-model="flybackline.from_place"
@@ -81,20 +80,19 @@
           </div>
         </label>
         <!--arrow-->
-        <div class="xbr-arrow">
-          <img src="build/img/application/flyback/arrow1.png">
-        </div>
+        <!--<div class="xbr-arrow" style="position: absolute;left: 16px;top: 38px;">-->
+          <img style="position: absolute;left: 26px;top: 32px;width: 8px;height: 25px;" src="build/img/application/flyback/arrow1.png">
+        <!--</div>-->
         <!--目的地-->
-        <label class="fb-item-input2 fb-item-select">
-          <div class="ion-flag fb-input-label1">
-            &nbsp;
+        <label class="fb-item-input2 fb-item-select" style="padding-left: 65px;">
+          <div class="ion-flag fb-input-label1" style="position: absolute;left: 14px;top: 3px;">
           </div>
           <div class="fb-item-select a">
             <input type="text" ng-readonly="!canEdit" required ng-model="flybackline.go_place"
                    placeholder="目的地">
           </div>
         </label>
-      </div>
+      </ion-item>
       <div class="fb-area">
         <!--航班日期-->
         <label class="fb-item-input2 fb-item-select">
@@ -126,12 +124,12 @@
       </div>
       <div class="fb-area xbr1">
         <!--项目地-->
-        <label class="fb-item-input2 fb-item-select" ng-click="openModal('place')">
+        <label class="fb-item-input2 fb-item-select" ng-click="openModal('place')" style="margin-left: 0px;">
           <div class="fb-input-label2">
             项目地
           </div>
           <input type="text" ng-readonly="!canEdit" ng-model="flybackline.place"
-                 placeholder="项目地">
+                 placeholder="项目地" style="margin-left: 10px;">
         </label>
         <!--乘机人-->
         <label class="fb-item-input2 fb-item-select" ng-click="openModal('passenger')">
@@ -175,7 +173,7 @@
            ng-show="canEdit">
         <button class="button button-clear"
                 ng-click="confirm()"
-                ng-disabled="false || (!detailForm.$valid)">
+                ng-disabled="false || (!detailForm.$valid)" style="color: #ffffff">
           确认
         </button>
       </div>

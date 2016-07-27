@@ -1,11 +1,11 @@
 <ion-view view-title="{{viewtitle}}" class="flayback-apply-view">
 
   <ion-header-bar align-title="center" class="bar-stable">
-    <div class="buttons"> 
+    <div class="buttons">
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
         <span class="back-text">返回</span>
       </button>
-    </div> 
+    </div>
     <h1 class="title" ng-bind="viewtitle"></h1>
     <div class="buttons">
       <button class="button button-clear" ng-click="deleteFB()">
@@ -17,13 +17,13 @@
   <div class="bar bar-subheader">
     <div class="row fbSelectproject">
       <div class="col col-10">
-        <img src="build/img/application/flyback/iconProject.png">
+        <img src="build/img/application/flyback/iconProject.png" style="margin-top: 7px;">
       </div>
-      <div class="col col-15">项目:</div>
+      <div class="col col-15"><lable style="color: #ffffff;line-height: 1.4rem;">项目:</lable></div>
       <div class="col col-75" ng-click="openProjectList()">
         <input type="text" ng-readonly="true"
                required ng-model="flybackHeader.projName"
-               placeholder="--请选择项目--"/>
+               placeholder="--请选择项目--" style="color: #ffffff;width: 100%"/>
       </div>
     </div>
   </div>
@@ -51,17 +51,19 @@
       添加更多订票信息
     </button>
   </ion-content>
-  <ion-footer-bar align-title="left" class="bar-assertive first"
+  <ion-footer-bar align-title="left" class="first"
                   ng-show="canEdit">
-    <button class="button button-clear" ng-click="save()">保存</button>
+    <button class="button button-clear" ng-click="save()" style="color: #ffffff">保存</button>
     <div class="fbSeparator"></div>
     <button class="button button-clear" ng-click="submit()"
-            ng-disabled="flybackHeader.applyId==''||flybacklines.length==0">
+            ng-disabled="flybackHeader.applyId==''||flybacklines.length==0" style="color: #ffffff;">
       提交
     </button>
   </ion-footer-bar>
-  <ion-footer-bar align-title="left" class="bar-assertive second"
+  <ion-footer-bar align-title="left" class="second"
                   ng-hide="canEdit">
-    <div>——已提交——</div>
+    <div style="width: 100%;text-align: center;">
+      <label style="margin-left: auto;margin-right: auto;color: #ffffff;font-size: 1.125rem;">——已提交——</label>
+    </div>
   </ion-footer-bar>
 </ion-view>
