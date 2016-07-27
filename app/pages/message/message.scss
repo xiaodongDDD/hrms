@@ -64,10 +64,10 @@
 
   .messages {
     &.has-employee-list {
-      background: rgba(255, 255, 255, 0.6) !important;
+      background: rgba(255, 255, 255, 0.5) !important;
       -ms-filter: blur(25px);
-      filter: blur(25px) brightness(0.9);
-      -webkit-filter: blur(25px) brightness(.9);
+      filter: blur(25px) brightness(1);
+      -webkit-filter: blur(25px) brightness(1);
     }
 
     ::-webkit-scrollbar {
@@ -238,7 +238,7 @@
     }
     .message-button {
       position: absolute;
-      padding-left: 45%;
+      padding-left: 15%;
       margin-top: 5px;
       font-size: 18px;
       z-index: 10;

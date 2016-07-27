@@ -78,6 +78,7 @@ angular.module('HmsModule')
                   hmsPopup.confirm(serveVersionParams.updateContent, "大版本更新", selectAction);
                 } else {
                   //go appleStore--
+                  hmsPopup.showPopup('AppStore有新版APP！快去更新吧！');
                 }
               } else {
                 alert(serveVersionParams.updateContent);

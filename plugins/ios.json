@@ -8,83 +8,83 @@
     },
     "installed_plugins": {
         "com.hand.scancard": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "com.handmobile.cordovaplugin.hotpatch": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-actionsheet": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-compat": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-contacts": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-crosswalk-webview": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-datepicker": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-hand-calendar": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-image-picker": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-plugin-x-toast": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "cordova-sqlite-storage": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "hand-im-plugin-device": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "hand.wei": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "PACKAGE_NAME": "com.hand-china.mobile"
         },
         "jpush-phonegap-plugin": {
-            "API_KEY": "22b25063349b6beef7bde524",
-            "PACKAGE_NAME": "com.hand-china.hrms"
+            "API_KEY": "28ff89acc7f718ba07290be4",
+            "PACKAGE_NAME": "com.hand-china.mobile"
         }
     },
     "dependent_plugins": {}
