@@ -15,6 +15,7 @@ angular.module('messageModule')
     'baseConfig',
     'hmsHttp',
     'hmsPopup',
+    'contactService',
     function ($scope,
               $state,
               $timeout,
@@ -25,7 +26,8 @@ angular.module('messageModule')
               checkVersionService,
               baseConfig,
               hmsHttp,
-              hmsPopup) {
+              hmsPopup,
+              contactService) {
 
       $scope.messageList = [];
       var fetchData = true;
@@ -129,6 +131,19 @@ angular.module('messageModule')
       $timeout(function () {
         getMessageList();
       }, 1000);
+
+      function dealCommonLinkMan(newObject) { //存储常用联系人最多15个
+        storedb(LINK_MAN).insert(newObject, function (err) {
+          if (!err) {
+            $scope.customContactsInfo = unique_better(storedb(LINK_MAN).find(), 'employeeNumber');
+          } else {
+            hmsPopup.showShortCenterToast(err);
+          }
+        });
+        if ($scope.customContactsInfo.length > 15) {
+          $scope.customContactsInfo = $scope.customContactsInfo.slice(0, 15);
+        }
+      };
 
       $scope.messageHandle = {
         blur: function () {
