@@ -30,6 +30,15 @@ angular.module('applicationModule')
       $scope.items=[];//历史列表中的数据
       $scope.fetchServerFlag= true;
       $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
+      //高德地图路径
+      $scope.map = "";
+      var  mapUrl = {
+        baseUrl: "http://restapi.amap.com/v3/staticmap?scale=2&zoom=10&size=300*100",
+        baseStyle:"&markers=-1,http://www.daxuequan.org/hrms-img/start@3x.png,0:",
+        baseStyle1:"|-1,http://www.daxuequan.org/hrms-img/end@3x.png,0:",
+        markey:"&key=ae514ce54a0fb9c009334423b9ab3f9a",
+      }
+
       searchHistoryApplyListAutomatically();
       function searchHistoryApplyListAutomatically() {
         $scope.items=[];
@@ -38,34 +47,8 @@ angular.module('applicationModule')
             "page": 1,
             "pageSize":5
         };
-        //hmsPopup.showLoading('请稍候');
-
         hmsHttp.post(url, param).success(function (result) {
-          //hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-
-          $scope.items = result.returnData;
-
-              //"id":"49dc96af-5e14-4463-84ef-465b9667cb60",
-              // "empNo":"4040",
-              // "shareNo":"SI2016071416164083",
-              // "city":"上海",
-              // "startAddr":"青浦园区",
-              // "targetAddr":"上海虹桥",
-              // "carType":"7",
-              // "departureTime":"2016-07-15 08:22:22",
-              // "departurePreference":"准时出发",
-              // "feeType":"AA",
-              // "availableSeats":6,
-              // "lockSeats":1,
-              // "otherDesc":null,
-              // "startLatitude":null,
-              // "startLongitude":null,
-              // "endLatitude":null,
-              // "endlongitude":null,
-              // "shareStatus":"wait"
+          $scope.items = result.returnData
           if ($scope.items.length == 0) {
             $scope.noData=false;
           } else if ($scope.items.length > 0) {
@@ -77,37 +60,43 @@ angular.module('applicationModule')
                 array[index].statusColor=true;
                 array[index].status = "已成行";
               }
-              console.log($scope.statusColor);
+              if(array[index].startLatitude && array[index].endLatitude){
+                array[index].listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+array[index].startLatitude +mapUrl.baseStyle1+array[index].endLatitude+mapUrl.markey;
+              }
             });
           }
         }).error(function (error, status) {
           //hmsPopup.hideLoading();
-          //hmsPopup.showShortCenterToast("网络连接出错");
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(error));
-          }
+          hmsPopup.showShortCenterToast("网络连接出错");
+        }).finally(function(){
+          $scope.fetchServerFlag= false;
         });
-
-        $scope.fetchServerFlag= false;
-
       }
 
       $scope.viewHistoryDetail = function (num) {//跳转到申请详情界面
         var info=$scope.items[num];
+        var listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+info.startLatitude +mapUrl.baseStyle1+info.endLatitude+mapUrl.markey;
+        var hasJoinedSeats = parseInt(info.carType )- info.availableSeats//已经参与拼车人数
+
         var param={
           startAddr:info.startAddr,//起点
           targetAddr:info.targetAddr,//终点
           departureTime:info.departureTime,//出发时间
           departurePreference:info.departurePreference,//出行偏好
-          lockSeats:info.lockSeats,//成行人数
+          hasJoinedSeats:hasJoinedSeats,//成行人数
           carType:info.carType,//车类型
-          room_type:info.room_type,//费用计划
+          feeType:info.feeType,//费用计划
+          startLatitude:info.startLatitude,//起点经纬度
+          endLatitude:info.endLatitude,//终点经纬度
+          map:listMapUrl,                 //地图地址
+          companies:info.companies,     //同行人数
+          lockSeats:info.lockSeats,//锁定座位数量
+          availableSeats:info.availableSeats,//空位数量
         };
           $state.go("tab.carpooling-history-detail",{
             'carpoolingHistoryDetailInfo':param
           });
       };
-
       $scope.goBack=function(){
         $ionicHistory.goBack();
       };

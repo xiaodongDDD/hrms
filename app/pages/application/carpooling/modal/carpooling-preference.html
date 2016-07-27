@@ -1,0 +1,11 @@
+<ion-modal-view class="carpooling-preference">
+  <ion-header-bar class="header-color">
+    <h1 class="title title-color">时间偏好</h1>
+  </ion-header-bar>
+  <ion-content class="back-color">
+    <div class="change-line"></div>
+    <div class="list">
+      <div ng-repeat="x in perferences" class="item certificate-item" ng-click="choosePerferences(x)">{{x}}</div>
+    </div>
+  </ion-content>
+</ion-modal-view>

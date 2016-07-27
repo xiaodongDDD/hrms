@@ -16,6 +16,7 @@ angular.module('myApp')
 
 angular.module('applicationModule')
   .controller('CarpoolingListCtrl', [
+    '$rootScope',
     '$scope',
     '$state',
     'baseConfig',
@@ -25,7 +26,10 @@ angular.module('applicationModule')
     '$ionicScrollDelegate',
     'hmsHttp',
     "hmsPopup",
-    function ($scope,
+    "$ionicModal",
+    function (
+              $rootScope,
+              $scope,
               $state,
               baseConfig,
               $ionicHistory,
@@ -33,66 +37,38 @@ angular.module('applicationModule')
               $timeout,
               $ionicScrollDelegate,
               hmsHttp,
-              hmsPopup
+              hmsPopup,
+              $ionicModal
     ) {
-      //顶部搜索栏
-      $scope.showSearchTop = false;
-      $scope.fetchServerFlag = true;
+      $scope.showSearchTop = false;//顶部搜索框
+      $scope.fetchServerFlag = true;//加载logo
+      $scope.fetching = false;//正在加载数据
+      var curPage = 0;
+      $scope.moreDataCanBeLoaded = true;
+      $scope.items= [];
+      $scope.map = "";
+      var  mapUrl = {
+        baseUrl: "http://restapi.amap.com/v3/staticmap?scale=2&zoom=10&size=300*100",
+        baseStyle:"&markers=-1,http://www.daxuequan.org/hrms-img/start@3x.png,0:",
+        baseStyle1:"|-1,http://www.daxuequan.org/hrms-img/end@3x.png,0:",
+        markey:"&key=ae514ce54a0fb9c009334423b9ab3f9a",
+      }
 
-      $scope.goBack=function(){
-        $ionicHistory.goBack();
-      };
-      $scope.watchTopScroll = function () {
-        position = $ionicScrollDelegate.$getByHandle('watchTopScroll').getScrollPosition().top;
-        $scope.$apply(function () {
-          if (position < 45) {
-            $scope.showSearchTop = false;
-          } else if (position >= 45) {
-            $scope.showSearchTop = true;
-          }
-        });
-      };
-      searchCarpoolingList();
+
+
       function searchCarpoolingList() {
-        $scope.items=[];
+        $scope.item = [];
         var url = baseConfig.queryPath + "/share/filtrateinfo";
         var param = {
-          "page": 1,
-          "pageSize":5
+          "page": curPage,
+          "pageSize": "5"
         };
-        //hmsPopup.showLoading('请稍候');
-
         hmsHttp.post(url, param).success(function (result) {
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
-          }
-
-          $scope.items = result.returnData;
-
-           //"id":"49dc96af-5e14-4463-84ef-465b9667cb60",
-           // "empNo":"4040",
-           // "shareNo":"SI2016071416164083",
-           // "city":"上海",
-           // "startAddr":"青浦园区",
-           // "targetAddr":"上海虹桥",
-           // "carType":"7",
-           // "departureTime":"2016-07-15 08:22:22",
-           // "departurePreference":"准时出发",
-           // "feeType":"AA",
-           // "availableSeats":6,
-           // "lockSeats":1,
-           // "otherDesc":null,
-           // "startLatitude":null,
-           // "startLongitude":null,
-           // "endLatitude":null,
-           // "endlongitude":null,
-           // "shareStatus":"wait"
-
-          if ($scope.items.length == 0) {
+          $scope.item = result.returnData;
+          if( $scope.item.length > 0){
             $scope.noData=false;
-          } else if ($scope.items.length > 0) {
-            angular.forEach($scope.items, function (data, index, array) {
+            angular.forEach($scope.item, function(data, index, array){
+              $scope.items.push(array[index]);
               if (array[index].shareStatus == 'wait') {
                 array[index].perferenceColor = false;
                 array[index].status = "等待成行";
@@ -100,29 +76,70 @@ angular.module('applicationModule')
                 array[index].statusColor=true;
                 array[index].status = "已成行";
               }
-              console.log($scope.statusColor);
+              if(array[index].startLatitude && array[index].endLatitude){
+                array[index].listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+array[index].startLatitude +mapUrl.baseStyle1+array[index].endLatitude+mapUrl.markey;
+              }
             });
+          }else{
+            $scope.noData=true;
           }
-        }).error(function (error, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast("网络连接出错");
-          if (baseConfig.debug) {
-            console.log("response error " + angular.toJson(error));
-          }
-        });
-      }
-      $scope.fetchServerFlag = false;
 
+          if($scope.item.length == 0){
+            $scope.moreDataCanBeLoaded=false;
+          }
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        })
+          .error(function (error, status) {
+          hmsPopup.showShortCenterToast("网络连接出错");
+           })
+          .finally(function(){
+              $scope.fetchServerFlag = false;
+              $scope.fetching = false;
+          });
+      };
+
+
+
+      $scope.loadMore = function() {//上拉加载
+        curPage++;
+        searchCarpoolingList();
+      };
+      $scope.doRefresh = function(){
+        $scope.items = [];
+        curPage = 1;
+        searchCarpoolingList();
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.moreDataCanBeLoaded = true;
+      }
+      $scope.goBack=function(){
+        $ionicHistory.goBack();
+      };
+      $rootScope.$on("RELEASE_SUCCESS", function () {
+        $scope.items = [];
+        curPage = 1;
+        searchCarpoolingList();
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.moreDataCanBeLoaded = true;
+      });
+
+      //跳转到拼车界面
       $scope.viewListDetail = function (num) {//跳转到拼车详情界面
         var info=$scope.items[num];
+        var listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+info.startLatitude +mapUrl.baseStyle1+info.endLatitude+mapUrl.markey;
+        var hasJoinedSeats = parseInt(info.carType)- info.availableSeats//已经参与拼车人数
         var param={
+          companies:info.companies,
           startAddr:info.startAddr,//起点
           targetAddr:info.targetAddr,//终点
           departureTime:info.departureTime,//出发时间
           departurePreference:info.departurePreference,//出行偏好
           lockSeats:info.lockSeats,//成行人数
           carType:info.carType,//车类型
-          room_type:info.room_type,//费用计划
+          feeType:info.feeType,//费用计划
+          map:listMapUrl,//生成地图的url
+          hasJoinedSeats:hasJoinedSeats,//已经成行人数
+          availableSeats:info.availableSeats,//空位
+          shareId:info.id//拼车主键
         };
         $state.go("tab.carpooling-list-detail",{
           'carpoolingListDetailInfo':param
@@ -131,6 +148,18 @@ angular.module('applicationModule')
 
 
 
+
+      //上滑
+      $scope.watchTopScroll = function () {
+        var  position = $ionicScrollDelegate.$getByHandle('watchTopScroll').getScrollPosition().top;
+        $scope.$apply(function () {
+          if (position < 45) {
+            $scope.showSearchTop = false;
+          } else if (position >= 45) {
+            $scope.showSearchTop = true;
+          }
+        });
+      };
       /**
        * modal-input
        */
@@ -147,13 +176,12 @@ angular.module('applicationModule')
       //  $scope.contactInputModal.show();
       //};
 
-
+      //弹出筛选框
       $ionicPopover.fromTemplateUrl("build/pages/application/carpooling/popover/carpooling-filter-popover.html", {
         scope: $scope
       }).then(function(popover){
           $scope.popover = popover;
         })
-
       $scope.openPopover = function($event) {
         $scope.popover.show($event);
       };
@@ -168,7 +196,29 @@ angular.module('applicationModule')
       $scope.$on("popover.removed", function() {
       });
 
-    }]
-);
+
+
+
+      /**
+       * modal input 方法区
+       */
+      function inputModal() {
+        $ionicModal.fromTemplateUrl('build/pages/carpooling/modal/carpooling-modal-search.html', {
+          scope: $scope,
+          animation: 'fadeInUp'
+        }).then(function (modal) {
+          $scope.carpoolingInputModal = modal;
+        });
+      }
+
+      inputModal();
+      $scope.goInputModal = function () {
+        $scope.$broadcast('carpooling-search');
+        $scope.carpoolingInputModal.show();
+      };
+
+
+
+    }]);
 
 

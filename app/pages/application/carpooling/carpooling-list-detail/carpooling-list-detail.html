@@ -9,8 +9,8 @@
     </div>
   </ion-header-bar>
   <ion-content  class=" has-header">
-    <div class="body">
-      <img src="build/img/application/carpooling/map.jpg" class="static-map">
+    <div class="body" ng-style="{height:sevenSeat?'465':'395'}">
+      <img ng-src="{{listInfo.map}}" class="static-map">
       <div class="start-end">
         <div class="row detail-location-choose">
           <div class="detail-icon-start-end">
@@ -38,7 +38,7 @@
         <div class="detail-seat">
           <div class="detail-remain-seat">
             <img src="build/img/application/carpooling/seat-1@3x.png" class="detail-img-seat">
-            <span class="detail-seat-number">成行人数&nbsp;&nbsp;<i style="color: #0D4391;"> {{listInfo.lockSeats}}</i></span>
+            <span class="detail-seat-number">成行人数&nbsp;&nbsp;<i style="color: #0D4391;"> {{listInfo.hasJoinedSeats}}</i></span>
           </div>
           <div class="detail-total">
             <img src="build/img/application/carpooling/car-g@3x.png" class="detail-total-car">
@@ -47,33 +47,48 @@
         </div>
         <div class="detail-enjoy-people">
           <div class="detail-img-people">
-            <img src="build/img/application/carpooling/profile-2@3x.png" class="detail-img-people-icon"/>
-            <span class="detail-img-people-name">顾森林</span>
+            <img ng-src="{{cp_number[0].avatar}}" class="detail-img-people-icon"/>
+            <span class="{{cp_number[0].font}}">{{cp_number[0].empName}}</span>
           </div>
           <div class="detail-img-people">
-            <img src="build/img/application/carpooling/profile@3x.png" class="detail-img-people-icon"/>
-            <span class="detail-img-people-name">成志唯</span>
+            <img  ng-src="{{cp_number[1].avatar}}" class="detail-img-people-icon"/>
+            <span class="{{cp_number[1].font}}">{{cp_number[1].empName}}</span>
           </div>
           <div class="detail-img-people">
-            <img src="build/img/application/carpooling/seat-2@3x.png" class="detail-img-people-icon"/>
-            <span class="detail-img-people-name-empty">空位</span>
+            <img  ng-src="{{cp_number[2].avatar}}" class="detail-img-people-icon"/>
+            <span class="{{cp_number[2].font}}">{{cp_number[2].empName}}</span>
           </div>
           <div class="detail-img-people">
-            <img src="build/img/application/carpooling/seat-2@3x.png" class="detail-img-people-icon"/>
-            <span class="detail-img-people-name-empty">空位</span>
+            <img  ng-src="{{cp_number[3].avatar}}" class="detail-img-people-icon"/>
+            <span class="{{cp_number[3].font}}">{{cp_number[3].empName}}</span>
           </div>
         </div>
-        <div class="detail-vertical-line" style="margin-top: 10px"></div>
+        <!--7人座-->
+        <div class="detail-enjoy-people" style="margin-top: 10px" ng-if="sevenSeat">
+          <div class="detail-img-people">
+            <img  ng-src="{{cp_number[4].avatar}}" class="detail-img-people-icon"/>
+            <span  class="{{cp_number[4].font}}">{{cp_number[4].empName}}</span>
+          </div>
+          <div class="detail-img-people">
+            <img  ng-src="{{cp_number[5].avatar}}" class="detail-img-people-icon"/>
+            <span  class="{{cp_number[5].font}}">{{cp_number[5].empName}}</span>
+          </div>
+          <div class="detail-img-people">
+            <img  ng-src="{{cp_number[6].avatar}}" class="detail-img-people-icon"/>
+            <span class="{{cp_number[6].font}}">{{cp_number[6].empName}}</span>
+          </div>
+        </div>
+        <div class="detail-vertical-line" style="margin-top: 10px" ng-if="sevenSeat"></div>
         <div class="detail-cost-plain">
           <img class="detail-cost-icon" src="build/img/application/carpooling/charge@3x.png">
           <span class="detail-cost-text">费用计划</span>
         </div>
-        <div class="detail-cost-perference"><span>{{listInfo.departurePreference}}</span></div>
+        <div class="detail-cost-perference"><span>{{listInfo.feeType}}</span></div>
       </div>
     </div>
     </div>
     <div class="button-release">
-      <button type="button" style="    width: 90%;margin-left: 5%;margin-top: 20px; height: 40px;background-color: #f5a623;border-radius: 20px;border: none;color: #ffffff;font-size: 16px;">发布</button>
+      <button type="button"  ng-if="!joinButtonHide" class="release-button" ng-click="joinCapooling()">加入</button>
     </div>
   </ion-content>
 </ion-view>

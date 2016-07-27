@@ -31,6 +31,22 @@ angular.module('applicationModule')
               hmsPopup,
               $stateParams) {
           $scope.historyInfo = $stateParams.carpoolingHistoryDetailInfo;
-    }]
+          $scope.sevenSeat =($scope.historyInfo.carType == 7);
+          var joinNumber = $scope.historyInfo.companies.length;//参与人数
+          var lockNumber = $scope.historyInfo.lockSeats;//锁定人数
+          var  availableSeats = $scope.historyInfo.availableSeats;//
+          $scope.cp_number = [];
+          angular.forEach( $scope.historyInfo.companies, function (data, index, array) {
+            $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+          });
+          for(var i=0;i < lockNumber;i++){
+            $scope.cp_number.push({"empName":"锁定","avatar":"build/img/application/carpooling/locked seat@3x.png","font":"detail-img-people-name"});
+          }
+          for(var i= 0;i <availableSeats;i++ ){
+            $scope.cp_number.push({"empName":"空位","avatar":"build/img/application/carpooling/seat-2@3x.png","font":"detail-img-people-empty"});
+          }
+    }
+  ]
 );
+
 

@@ -147,9 +147,9 @@ angular.module('applicationModule')
               destUrl: "tab.houses-tab",
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
+              appName: "班车信息",
+              imageUrl: "build/img/application/application/carpooling@3x.png",
+              destUrl: "tab.bus-information",
             }
           ]
         }

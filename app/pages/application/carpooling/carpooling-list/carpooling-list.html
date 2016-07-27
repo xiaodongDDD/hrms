@@ -19,26 +19,24 @@
       <div class="button button-icon" style="width: 60px;color: white;margin-top: -3px;" ng-click="openPopover($event)">筛选</div>
     </div>
   </ion-header-bar>
-
-
   <ion-content  class="carpooling-list-content" on-scroll="watchTopScroll()"  delegate-handle="watchTopScroll">
+
+    <div class="search" >
+      <div class="input1" ng-click="goInputModal()">
+        <i class="ion-ios-search search-i" style="margin-left: 1px"></i>
+        <input name="" placeholder="搜索" ng-readonly="true"    class="search-input-content">
+      </div>
+      <div style="float: right;width: 13%;margin-right: 2.5%;margin-top: 13px">
+        <!--ng-click="openPopover($event)"-->
+        <div  class="button-filter" >筛选</div>
+      </div>
+    </div>
+
     <div class="hms-hide-content" ng-if="fetchServerFlag">
       <hms-loading></hms-loading>
     </div>
-    <div class="search" >
-      <div class="input1">
-        <i class="ion-ios-search search-i" style="margin-left: 1px"></i>
-        <input name="" placeholder="搜索" ng-readonly="true"   ng-click="goModalInput()" class="search-input-content">
-      </div>
-      <div style="float: right;width: 13%;margin-right: 2.5%;margin-top: 13px">
-        <div  class="button-filter" ng-click="openPopover($event)">筛选</div>
-      </div>
-      <div style="clear:both"></div>
-    </div>
 
-    <!--<ion-refresher on-refresh="" ng-if="true" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">-->
-    <!--</ion-refresher>-->
-
+    <ion-refresher on-refresh="doRefresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop"></ion-refresher>
     <div class="search-list">
       <ion-list >
         <ion-item class=list-item ng-repeat="x in items" ng-click="viewListDetail($index)">
@@ -77,6 +75,7 @@
         </ion-item>
       </ion-list>
     </div>
+    <ion-infinite-scroll ng-if="moreDataCanBeLoaded" distance="1%"  on-infinite="loadMore()">
+    </ion-infinite-scroll>
   </ion-content>
-
 </ion-view>

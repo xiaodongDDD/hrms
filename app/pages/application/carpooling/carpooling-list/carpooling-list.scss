@@ -156,4 +156,9 @@
   //  -webkit-animation-duration: 0ms;
   //  animation-duration: 0ms;
   //}
+  //隐藏掉spinner
+  .spinner svg {
+   width: 0px;
+   height: 0px;
+ }
 }

@@ -1,0 +1,93 @@
+.bus-information{
+  background-color: white;
+  .bus-item {
+    width: 96%;
+    height: 175px;
+    margin-left: 2%;
+    margin-top: 10px;
+    .item-left{
+      height: 100%;
+      background-color: #3C6EBB;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+    }
+    .item-right{
+      height: 100%;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      box-shadow: 1px 1px 2px 1px rgba(155, 155, 155, 0.23);
+    }
+    .col-13{
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 13%;
+      -moz-box-flex: 0;
+      -moz-flex: 0 0 %13;
+      -ms-flex: 0 0 13%;
+      flex: 0 0 13%;
+      padding: 0px;
+    }
+    .col-87{
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 87%;
+      -moz-box-flex: 0;
+      -moz-flex: 0 0 %87;
+      -ms-flex: 0 0 87%;
+      flex: 0 0 87%;
+      padding: 0px;
+    }
+    .row{
+      height: 100%;
+    }
+    .half_circle{
+      z-index: 100;
+      width: 15px;
+      height: 30px;
+      background-color: white;
+      -webkit-border-radius: 0 30px 30px 0;
+      position: absolute;
+      margin-left: -5px;
+      margin-top: 70px;
+    }
+    .first-route{
+      height: 30%;
+      width: 100%;
+      border-bottom: 1px solid #f7f7f7;
+    }
+    .second-route{
+      height: 30%;
+      width: 100%;
+      border-top: 1px solid #f7f7f7;
+    }
+    .center-time{
+      height: 50%;
+      width: 100%;
+    }
+    .time-text{
+      position: absolute;
+      margin-left: 15px;
+      margin-top: 55px;
+      color: white;
+      font-size: 16px;
+    }
+    .add-text{
+      text-align: center;
+      margin: auto;
+      color: #d45b7a;
+      font-size: 16px;
+    }
+    .add-load{
+      text-align: center;
+      margin: auto;
+      border-right: 2px dotted #ebe9ea;
+      color: #888888;
+    }
+    .col-50{
+      margin: auto;
+    }
+    .col-20{
+      margin: auto;
+    }
+  }
+}

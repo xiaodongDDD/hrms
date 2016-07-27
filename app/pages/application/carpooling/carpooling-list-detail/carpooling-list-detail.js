@@ -19,18 +19,78 @@ angular.module('myApp')
 angular.module('applicationModule')
   .controller('ListDetailCtrl', [
     '$scope',
+    '$rootScope',
     '$state',
     'baseConfig',
     '$ionicHistory',
     'hmsPopup',
     '$stateParams',
+    'hmsHttp',
     function ($scope,
+              $rootScope,
               $state,
               baseConfig,
               $ionicHistory,
               hmsPopup,
-              $stateParams) {
-      $scope.listInfo = $stateParams.carpoolingListDetailInfo;
-    }]
+              $stateParams,
+              hmsHttp) {
+        $scope.listInfo = $stateParams.carpoolingListDetailInfo;
+      ///v2/api/share/addShareCompany
+        $scope.joinButtonHide = false;//加入按钮隐藏
+        var joinNumber = $scope.listInfo.companies.length;//参与人数
+        var lockNumber = $scope.listInfo.lockSeats;//锁定人数
+        var  availableSeats = $scope.listInfo.availableSeats;//空位
+        $scope.sevenSeat =($scope.listInfo.carType == 7);//七人座车
+          //打印人员信息，判断是否已经加入
+         var joins = [];
+         $scope.cp_number = [];
+        angular.forEach( $scope.listInfo.companies, function (data, index, array) {
+          joins.push(array[index].empNo);
+          $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+        });
+        for(var i=0;i < lockNumber;i++){
+          $scope.cp_number.push({"empName":"锁定","avatar":"build/img/application/carpooling/locked seat@3x.png","font":"detail-img-people-name"});
+        }
+        for(var i= 0;i <availableSeats;i++ ){
+          $scope.cp_number.push({"empName":"空位","avatar":"build/img/application/carpooling/seat-2@3x.png","font":"detail-img-people-name-empty"});
+       }
+
+      if(contains(joins,window.localStorage.empno || (availableSeats=0))){  //没有剩余座位或者没有空座位
+        $scope.joinButtonHide = true;
+      }
+
+      //加入拼车
+      $scope.joinInfo = {
+        "id":$scope.listInfo.shareId
+      };
+      $scope.joinCapooling = function(){
+          var url = baseConfig.queryPath + "/share/addShareCompany";
+          hmsPopup.showLoading('请稍候');
+          hmsHttp.post(url, $scope.joinInfo).success(function (result) {
+            hmsPopup.hideLoading();
+            if (result.status == "S") {
+              $rootScope.$broadcast("RELEASE_SUCCESS");
+              hmsPopup.showShortCenterToast("加入成功！");
+              $ionicHistory.goBack();
+            } else if (result.status == "E") {
+              hmsPopup.showShortCenterToast(result.message);
+            }
+          }).error(function (error, status) {
+            hmsPopup.hideLoading();
+            hmsPopup.showShortCenterToast("网络连接出错");
+          });
+      }
+      //包含
+      function contains(arr, obj) {
+        var i = arr.length;
+        while (i--) {
+          if (arr[i] === obj) {
+            return true;
+          }
+        }
+        return false;
+      }
+    }
+  ]
 );
 
