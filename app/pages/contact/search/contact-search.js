@@ -31,6 +31,7 @@ angular.module('contactModule')
     '$timeout',
     'hmsHttp',
     '$ionicHistory',
+    'commonContactService',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -41,7 +42,8 @@ angular.module('contactModule')
               contactService,
               $timeout,
               hmsHttp,
-              $ionicHistory) {
+              $ionicHistory,
+              commonContactService) {
       /**
        * var section
        */
@@ -209,13 +211,18 @@ angular.module('contactModule')
       };
 
 
-      $scope.selectEmployeeItem = function (newEmployeeName, newEmployeeNumber) { //跳到个人详情界面
-        dealHistory(newEmployeeName);
+      $scope.selectEmployeeItem = function (newEmp) { //跳到个人详情界面
+        dealHistory(newEmp.emp_name);
         $scope.showHistory = true;
         $scope.showClear = false;
         $scope.resultList = [];
         $scope.contactKey.getValue = '';
-        $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
+        if(commonContactService.getContactFlag() === 'carpooling-new-contactSearch') {
+          commonContactService.setEmpInfo(newEmp);
+          $ionicHistory.goBack();
+        } else {
+          $state.go('tab.employeeDetail', {employeeNumber: newEmp.emp_code});
+        }
       };
 
       $scope.telSaveNumber = function (event, baseInfo) { //拨打电话按钮的响应事件

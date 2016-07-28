@@ -13,11 +13,7 @@ angular.module('myApp')
             'tab-contact': {
               templateUrl: 'build/pages/contact/detail/employee-detail.html',
               controller: 'contactEmployeeDetailCtl'
-            },
-            'tab-application': {
-              templateUrl: 'build/pages/contact/detail/employee-detail.html',
-              controller: 'contactEmployeeDetailCtl'
-            },
+            }
           },
           params: {
             'employeeNumber': ""

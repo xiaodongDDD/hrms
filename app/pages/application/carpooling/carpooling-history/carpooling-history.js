@@ -21,12 +21,14 @@ angular.module('applicationModule')
     '$ionicHistory',
     'hmsHttp',
     'hmsPopup',
+    '$timeout',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
               hmsHttp,
-              hmsPopup) {
+              hmsPopup,
+              $timeout) {
       $scope.items=[];//历史列表中的数据
       $scope.fetchServerFlag= true;
       $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
@@ -69,7 +71,10 @@ angular.module('applicationModule')
           //hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast("网络连接出错");
         }).finally(function(){
-          $scope.fetchServerFlag= false;
+          $timeout(function () {
+            $scope.fetchServerFlag= false;
+          },2000)
+
         });
       }
 
