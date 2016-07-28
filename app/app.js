@@ -64,7 +64,9 @@ angular.module('myApp')
         ThreeDeeTouch.isAvailable(function (avail) {
           // alert("avail? " + avail)
           ThreeDeeTouch.onHomeIconPressed = function(payload) {
-            console.log("Icon pressed. Type: " + payload.type + ". Title: " + payload.title + ".");
+            if(baseConfig.debug){
+              console.log("Icon pressed. Type: " + payload.type + ". Title: " + payload.title + ".");
+            }
             if (payload.type == 'checkin') {
               $state.go('tab.myTimesheet');
             } else if (payload.type == 'saved') {
