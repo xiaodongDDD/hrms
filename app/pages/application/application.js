@@ -137,11 +137,6 @@ angular.module('applicationModule')
               destUrl: "tab.dorm-apply"
             },
             {
-              appName: "拼车",
-              imageUrl: "build/img/application/application/carpooling@3x.png",
-              destUrl: "tab.carpooling",
-            },
-            {
               appName: "房屋转租",
               imageUrl: "build/img/application/application/housingrental@3x.png",
               destUrl: "tab.houses-tab",
@@ -150,6 +145,11 @@ angular.module('applicationModule')
               appName: "班车信息",
               imageUrl: "build/img/application/application/carpooling@3x.png",
               destUrl: "tab.bus-information",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
             }
           ]
         }
