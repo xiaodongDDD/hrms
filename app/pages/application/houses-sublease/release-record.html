@@ -8,7 +8,8 @@
     <h1 class="title">发布记录</h1>
   </ion-header-bar>
   <ion-content style="background-color: #fafafa;" delegate-handle="recordScroll">
-    <!--<div style="margin-top: 8px">-->
+    <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
+    <ion-refresher on-refresh="doRefresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop"></ion-refresher>
     <ion-list>
       <ion-item ng-repeat="item in releaseRecordInfos"
                 style="padding: 0px; margin: 0px; width: 97%; margin-left: 1.5%; border: none; margin-top: 8px">
@@ -27,8 +28,6 @@
         <div class="row" style="border-bottom: 1px solid  #e8e8e8">
           <div class="col col-50" style="padding: 0px; border: 0px"></div>
           <div class="col col-50" style="padding: 0px; border: 0px">
-            <!--<div style="width: 67px; height: 24px; border-radius: 10px; border: 1px solid #B95756; color: #B95756; font-size: 14px; margin-top: 15px; margin-bottom: 5px; margin-left: 10%; text-align: center; float: left">删除</div>-->
-
             <div class="button" style="width: 67px; height: 24px; min-height: 24px; background-color: #FFFFFF; line-height: 24px; border-radius: 10px; border: 1px solid #24559C; color: #24559C; font-size: 14px; margin-top: 15px; margin-bottom: 5px; margin-left: 55%; text-align: center" ng-click="housesEdit(item)">编辑</div>
           </div>
         </div>
@@ -36,18 +35,14 @@
     </ion-list>
     <ion-infinite-scroll
       ng-if="moreDataCanBeLoaded"
-      distance="0%"
+      distance="1%"
       on-infinite="loadMore()">
     </ion-infinite-scroll>
-    <!--</div>-->
   </ion-content>
-
-  <!--<ion-footer-bar class="foot-bar" style="bottom: 0px;">-->
-    <!--<div style="margin-left: 50px; margin-top: 13px; font-size: 17px; color: #24559C">-->
-      <!--<img src="build/img/application/houses-sublease/history-G@3x.png" style="width: 21px; height: 22px">-->
-    <!--</div>-->
-    <!--<div style="margin-top: 15px; margin-left: 30px" ng-click="goReleaseRecord()">-->
-      <!--<img src="build/img/application/houses-sublease/history-G@3x.png" style="width: 21px; height: 22px">-->
-    <!--</div>-->
-  <!--</ion-footer-bar>-->
 </ion-view>
+<style>
+  .spinner svg {
+    width: 0px;
+    height: 0px;
+  }
+</style>

@@ -127,6 +127,7 @@ angular.module('applicationModule')
         }
       ];
 
+      $scope.showLoading=true;
       var nowPage = 0;
       $scope.moreDataCanBeLoaded = true;
       $scope.housesSubInfos = [];
@@ -145,12 +146,13 @@ angular.module('applicationModule')
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }
+          $scope.showLoading=false;
           $scope.housesSubInfo = result.returnData;
           angular.forEach($scope.housesSubInfo, function(data, index, array){
             $scope.housesSubInfos.push(array[index]);
           });
           //console.log("11111111:" + angular.toJson($scope.housesSubInfos));
-          if($scope.housesSubInfo.length == 0){
+          if($scope.housesSubInfo.length == 0 || $scope.housesSubInfo.length < param.pageSize){
             $scope.moreDataCanBeLoaded=false;
           }
           $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -163,13 +165,20 @@ angular.module('applicationModule')
         });
       };
 
-      $scope.loadMore = function() {//下拉加载
+      $scope.loadMore = function() {//上拉加载
         nowPage++;
         serchHousesSubleaseInfo();
       };
       //$scope.$on('$stateChangeSuccess', function() {
       //  $scope.loadMore();
       //});
+      $scope.doRefresh = function(){//下拉刷新
+        $scope.housesSubInfos = [];
+        nowPage = 1;
+        serchHousesSubleaseInfo();
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.moreDataCanBeLoaded = true;
+      };
 
       $scope.goHourseSubDetail = function (housesId) {//房屋详情页面
         $state.go("tab.houses-sublease-detail", {'housesSubId': housesId});
@@ -182,16 +191,24 @@ angular.module('applicationModule')
       };
 
       $rootScope.$on("RELEASE_SUCCESS",function(){//空房间申请成功时，返回查询界面自动刷新历史申请数据
-        nowPage = 1;
-        $scope.moreDataCanBeLoaded = true;
+        //nowPage = 1;
+        //$scope.moreDataCanBeLoaded = true;
+        //$scope.housesSubInfos = [];
+        //$timeout(function() {
+        //  $ionicScrollDelegate.$getByHandle('subleaseScroll').scrollTop(false);
+        //},200);
+        //serchHousesSubleaseInfo();//自动刷新数据
+        //$scope.loadMore = function() {//下拉加载
+        //  nowPage++;
+        //  serchHousesSubleaseInfo();
+        //};
         $scope.housesSubInfos = [];
+        nowPage = 1;
+        serchHousesSubleaseInfo();
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.moreDataCanBeLoaded = true;
         $timeout(function() {
           $ionicScrollDelegate.$getByHandle('subleaseScroll').scrollTop(false);
         },200);
-        serchHousesSubleaseInfo();//自动刷新数据
-        $scope.loadMore = function() {//下拉加载
-          nowPage++;
-          serchHousesSubleaseInfo();
-        };
       });
     }]);

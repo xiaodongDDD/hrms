@@ -35,18 +35,6 @@
         <param name="onload" value="true"/>
       </feature>
     </config-file>
-    <config-file target="*-Info.plist"  parent="UIApplicationShortcutItems">
-      <array>
-        <dict>
-          <key>UIApplicationShortcutItemIconFile</key>
-          <string>customicon</string>
-          <key>UIApplicationShortcutItemTitle</key>
-          <string>timesheet审批</string>
-          <key>UIApplicationShortcutItemType</key>
-          <string>saved</string>
-        </dict>
-      </array>
-    </config-file>
 
     <header-file src="src/ios/app/ThreeDeeTouch.h"/>
     <source-file src="src/ios/app/ThreeDeeTouch.m"/>

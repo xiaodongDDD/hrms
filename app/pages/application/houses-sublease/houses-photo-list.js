@@ -44,12 +44,8 @@ angular.module('applicationModule')
               $ionicActionSheet,
               $stateParams) {
 
-      $scope.housesPhoto = [
-        //{"objectUrl": ""}
-        //{"objectUrl": 'build/img/application/houses-sublease/IMG_2201 Copy@3x.png'},
-        //{"objectUrl": 'build/img/application/houses-sublease/IMG_2202@3x.png'},
-        //{"objectUrl": 'build/img/application/houses-sublease/default@3x.png'}
-      ];
+      $scope.housesPhoto = [];
+      $scope.deleteImageList = [];
       angular.forEach($stateParams.housesImageList, function (data, index, array) {
         $scope.housesPhoto.push(array[index]);
       });
@@ -117,45 +113,47 @@ angular.module('applicationModule')
             "objectUrl": imageUrl,
             "flag": "add"
           };
-          console.log("imageUrl: " + $scope.photoUrl);
+          //console.log("imageUrl: " + $scope.photoUrl);
           $scope.housesPhoto.push($scope.photoUrl);
           //console.log("imageUrl+++++++++: " + angular.toJson($scope.housesPhoto));
           $scope.$apply();
-          //imgUpLoad(imageUrl);
-          //image.src = "data:image/jpeg;base64," + imageData;
         }
-
         function onFail(message) {
-          alert('Failed because: ' + message);
+          //alert('Failed because: ' + message);
         }
-
-        //function imgUpLoad(imageUrl) {//图片上传
-        //  var url = baseConfig.queryPath + "/image/upload";
-        //  var options = new FileUploadOptions();
-        //  options.fileKey = "ffile";
-        //  options.fileName = imageUrl.substr(imageUrl.lastIndexOf('/') + 1);
-        //  options.mimeType = "image/jpeg";
-        //  //用params保存其他参数，例如昵称，年龄之类
-        //  var params = {};
-        //  //params['name'] = $scope.me.name;
-        //  options.params = params;
-        //  var ft = new FileTransfer();
-        //  ft.upload(imageUrl, encodeURI(url), uploadSuccess, uploadError, options);
-        //  function uploadSuccess(r) {
-        //
-        //  }
-        //
-        //  function uploadError(error) {
-        //  }
-        //}
       };
+
       $scope.goBack = function () {//返回按钮
+        //console.log("被删除的图片数组+++", angular.toJson($scope.deleteImageList));
         $rootScope.$broadcast("housesReleasePhoto", $scope.housesPhoto);
-        //console.log("111111111111111111");
         $ionicHistory.goBack();
       };
 
-      $scope.showBigPicture = function (picUrl) {//显示大图
+      $scope.operatePhoto = function (event, image) { //拨打电话按钮的响应事件
+        event.stopPropagation(); //阻止事件冒泡
+        try {
+          $ionicActionSheet.show({
+            buttons: [
+              {text: '显示原图'},
+              {text: '删除图片'}
+            ],
+            cancelText: '取消',
+            buttonClicked: function (index) {
+              if (index == 0) {
+                showBigPicture(image.objectUrl);
+                return true;
+              } else if (index == 1) {
+                deleteImage(image.objectUrl);
+                return true;
+              }
+            }
+          });
+        } catch (e) {
+          alert(e);
+        }
+      };
+
+      var showBigPicture = function (picUrl) {//显示大图
         $scope.pictureAppearance = true;
         $scope.extensionPicture = picUrl;
         $timeout(function () {
@@ -188,4 +186,12 @@ angular.module('applicationModule')
       $scope.hideBigPicture = function () {//隐藏大图
         $scope.pictureAppearance = false;
       };
+
+      var deleteImage = function(picUrl) {
+        for(var i = 0; i < $scope.housesPhoto.length; i++){
+          if(picUrl == $scope.housesPhoto[i].objectUrl){
+            $scope.housesPhoto[i].flag = 'del';
+          }
+        }
+      }
     }]);

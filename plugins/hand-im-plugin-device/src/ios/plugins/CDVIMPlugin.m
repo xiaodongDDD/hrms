@@ -200,7 +200,7 @@
 {
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://wechat.hand-china.com/hrmsv2/v2/api/staff/detail?access_token=%@",access_token]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/detail?access_token=%@",access_token]];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:url];
     [mutableRequest setHTTPMethod:@"POST"];
     NSDictionary *headers = @{
@@ -211,26 +211,28 @@
     NSData *httpBody = [NSJSONSerialization dataWithJSONObject:bodyDict options:NSJSONWritingPrettyPrinted error:nil];
     [mutableRequest setHTTPBody:httpBody];
     NSURLSessionDataTask *Task = [session dataTaskWithRequest:mutableRequest completionHandler:^(NSData * data, NSURLResponse *  response, NSError * error) {
+       if(!error){
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        //NSLog(@"SUCESS %@",json);
-        NSString *userId = json[@"rows"][0][@"emp_code"];//用户id
-        NSString *userIcon = json[@"rows"][0][@"avatar"];//小头像
-        NSString *userName = json[@"rows"][0][@"emp_name"];//用户名
-        if (userIcon==nil || [userIcon isEqual:[NSNull null]]) {
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"image_placehold" ofType:@"png"];
-            userIcon = [NSString stringWithFormat:@"%@",[NSURL fileURLWithPath:path]];
-        }
-        [[RCIM sharedRCIM] setCurrentUserInfo:[[RCUserInfo alloc] initWithUserId:userId name:userName portrait:userIcon]];
-        [[NSUserDefaults standardUserDefaults] setObject:userIcon forKey:@"userIcon"];
-        [[NSUserDefaults standardUserDefaults] setObject:userName forKey:@"userName"];
-        if (json[@"error"]) {
-          //[self showAlertView];
-            NSLog(@"获取头像失败,access_token可能过期了");
-        }else{
-            NSLog(@"下载头像成功:%@, 姓名：%@",userIcon,userName);
-            //存储联系人详细信息 userId userName userIcon
-            [DataBaseTool selectSameUserInfoWithId:userId Name:userName ImageUrl:userIcon];
-        }
+               //NSLog(@"SUCESS %@",json);
+               NSString *userId = json[@"rows"][0][@"emp_code"];//用户id
+               NSString *userIcon = json[@"rows"][0][@"avatar"];//小头像
+               NSString *userName = json[@"rows"][0][@"emp_name"];//用户名
+               if (userIcon==nil || [userIcon isEqual:[NSNull null]]) {
+                   NSString *path = [[NSBundle mainBundle] pathForResource:@"image_placehold" ofType:@"png"];
+                   userIcon = [NSString stringWithFormat:@"%@",[NSURL fileURLWithPath:path]];
+               }
+               [[RCIM sharedRCIM] setCurrentUserInfo:[[RCUserInfo alloc] initWithUserId:userId name:userName portrait:userIcon]];
+               [[NSUserDefaults standardUserDefaults] setObject:userIcon forKey:@"userIcon"];
+               [[NSUserDefaults standardUserDefaults] setObject:userName forKey:@"userName"];
+               if (json[@"error"]) {
+                 //[self showAlertView];
+                   NSLog(@"获取头像失败,access_token可能过期了");
+               }else{
+                   NSLog(@"下载头像成功:%@, 姓名：%@",userIcon,userName);
+                   //存储联系人详细信息 userId userName userIcon
+                   [DataBaseTool selectSameUserInfoWithId:userId Name:userName ImageUrl:userIcon];
+               }
+       }
     }];
     [Task resume];
 }
