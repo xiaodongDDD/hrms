@@ -9,7 +9,7 @@
   </ion-header-bar>
   <ion-content style="background-color: #fafafa;" delegate-handle="recordScroll">
     <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
-    <ion-refresher on-refresh="doRefresh()" pulling-text="正在刷新数据..." pulling-icon="ios-small"></ion-refresher>
+    <ion-refresher on-refresh="doRefresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop"></ion-refresher>
     <ion-list>
       <ion-item ng-repeat="item in releaseRecordInfos"
                 style="padding: 0px; margin: 0px; width: 97%; margin-left: 1.5%; border: none; margin-top: 8px">
