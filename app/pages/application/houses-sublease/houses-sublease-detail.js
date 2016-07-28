@@ -17,6 +17,18 @@ angular.module('myApp')
             housesSubId: ''
           }
         })
+        .state('tab.tab-application-house-employee', {
+          url: '/tab-application-house-employee',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/contact/detail/employee-detail.html',
+              controller: 'contactEmployeeDetailCtl'
+            }
+          },
+          params: {
+            'employeeNumber': ""
+          }
+        })
     }]);
 
 angular.module('applicationModule')
@@ -153,7 +165,7 @@ angular.module('applicationModule')
       };
 
       $scope.goEmployeeDetail = function (publishEmployeeNumber) { //跳到个人详情界面
-        //$state.go('tab.employeeDetail', {employeeNumber: publishEmployeeNumber});
+        $state.go('tab.tab-application-house-employee', {employeeNumber: publishEmployeeNumber});
       };
 
       $scope.goImTalk = function (employeeInfo) {//即使通讯
