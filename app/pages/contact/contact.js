@@ -230,6 +230,25 @@ angular.module('contactModule')
         });
       }
     }
+  }])
+  .factory('commonContactService',[function () {
+    var _pageName = '';
+    var _newEmp = {};
+
+    return{
+      setGoContactFlg: function (newPage) {
+        _pageName = newPage;
+      },
+      getContactFlag: function () {
+        return _pageName;
+      },
+      setEmpInfo:function (newEmp) {
+        _newEmp = newEmp;
+      },
+      getEmpInfo: function () {
+        return _newEmp;
+      }
+    }
   }]);
 
 

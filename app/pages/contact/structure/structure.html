@@ -14,7 +14,8 @@
       <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
              ng-click="goInputSearch()"/>
     </div>
-    <ion-scroll delegate-handle="contactStructureDelegate" scrollbar-x="false" direction="x" class="dept-scroll-contact">
+    <ion-scroll delegate-handle="contactStructureDelegate" scrollbar-x="false" direction="x"
+                class="dept-scroll-contact">
       <div class="row row-scroll-contact">
         <div ng-repeat="i in currentStackList" class="dept-stack">
           <div ng-bind="i.name" class="dept-stack-name"
@@ -25,6 +26,7 @@
         </div>
       </div>
     </ion-scroll>
+
     <div class="children-dept">
       <ion-item class="dept-item"
                 ng-class="$index == (childrenDept.length-1)?'dept-item-end':''"

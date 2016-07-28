@@ -51,6 +51,33 @@ angular.module('myApp')
           StatusBar.styleLightContent();
         }
 
+        ThreeDeeTouch.configureQuickActions([
+          {
+            type: 'checkin', // optional, but can be used in the onHomeIconPressed callback
+            title: 'timesheet填写', // mandatory
+
+            subtitle: '快速填写timesheet', // optional
+            iconType: 'compose' // optional
+          }
+        ]);
+
+        ThreeDeeTouch.isAvailable(function (avail) {
+          // alert("avail? " + avail)
+          ThreeDeeTouch.onHomeIconPressed = function(payload) {
+            console.log("Icon pressed. Type: " + payload.type + ". Title: " + payload.title + ".");
+            if (payload.type == 'checkin') {
+              $state.go('tab.myTimesheet');
+            } else if (payload.type == 'saved') {
+              $state.go('tab.tsApproveList');
+            } else {
+              // wrapping in a timeout, otherwise it collides with the splashscreen
+              setTimeout(function() {
+                // alert(JSON.stringify(payload));
+              }, 500);
+            }
+          }
+        });
+
         /*var analyze = function (currentState) {
          if (currentState.views) {
          if (currentState.views['tab-application']) {
@@ -110,8 +137,7 @@ angular.module('myApp')
             }
           };
 
-          if (!window.localStorage.access_token || window.localStorage.access_token == '' ||
-            !window.localStorage.token || window.localStorage.token == '') {
+          if (!window.localStorage.access_token || window.localStorage.access_token == '' || !window.localStorage.token || window.localStorage.token == '') {
           } else {
             if (ionic.Platform.isWebView()) {
               initImChatList();
