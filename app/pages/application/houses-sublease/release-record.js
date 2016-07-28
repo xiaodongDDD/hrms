@@ -157,11 +157,11 @@ angular.module('applicationModule')
         }
       ];
 
+      $scope.showLoading=true;
       var nowRecordPage = 0;
       $scope.moreDataCanBeLoaded = true;
       $scope.releaseRecordInfos = [];
 
-      //serchHousesRecordInfo();//自动获取房屋发布信息
       function serchHousesRecordInfo() {
         $scope.releaseRecordInfo = [];
         var url = baseConfig.queryPath + "/house/myHouse";
@@ -177,12 +177,13 @@ angular.module('applicationModule')
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }
+          $scope.showLoading=false;
           $scope.releaseRecordInfo = result.returnData;
           angular.forEach($scope.releaseRecordInfo, function(data, index, array){
             $scope.releaseRecordInfos.push(array[index]);
           });
           //console.log("11111111:" + angular.toJson($scope.releaseRecordInfos));
-          if($scope.releaseRecordInfo.length == 0){
+          if($scope.releaseRecordInfo.length == 0 || $scope.releaseRecordInfo.length < param.pageSize){
             $scope.moreDataCanBeLoaded=false;
           }
           $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -195,30 +196,43 @@ angular.module('applicationModule')
         });
       };
 
-      $scope.loadMore = function () {//下拉加载
+      $scope.loadMore = function () {//上拉加载
         nowRecordPage++;
         serchHousesRecordInfo();
-        //$scope.$broadcast('scroll.infiniteScrollComplete');
       };
-      //$scope.$on('$stateChangeSuccess', function () {
-      //  $scope.loadMore();
-      //});
+
+      $scope.doRefresh = function(){//下拉刷新
+        $scope.releaseRecordInfos = [];
+        nowRecordPage = 1;
+        serchHousesRecordInfo();
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.moreDataCanBeLoaded = true;
+      };
+
       $scope.housesEdit = function (param) {
         $state.go("tab.houses-release", {'housesReleaseInfo': param, 'flag': "EDIT"});
       };
 
       $rootScope.$on("RELEASEEDIT_SUCCESS", function(event){//空房间申请成功时，返回查询界面自动刷新历史申请数据
         //console.log("1111111111111111");
-        nowRecordPage = 1;
-        $scope.moreDataCanBeLoaded = true;
+        //nowRecordPage = 1;
+        //$scope.moreDataCanBeLoaded = true;
+        //$scope.releaseRecordInfos = [];
+        //$timeout(function() {
+        //  $ionicScrollDelegate.$getByHandle('recordScroll').scrollTop(false);
+        //},200);
+        //serchHousesRecordInfo();//自动刷新数据
+        //$scope.loadMore = function () {//下拉加载
+        //  nowRecordPage++;
+        //  serchHousesRecordInfo();
+        //};
         $scope.releaseRecordInfos = [];
+        nowRecordPage = 1;
+        serchHousesRecordInfo();
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.moreDataCanBeLoaded = true;
         $timeout(function() {
           $ionicScrollDelegate.$getByHandle('recordScroll').scrollTop(false);
         },200);
-        serchHousesRecordInfo();//自动刷新数据
-        $scope.loadMore = function () {//下拉加载
-          nowRecordPage++;
-          serchHousesRecordInfo();
-        };
       });
     }]);

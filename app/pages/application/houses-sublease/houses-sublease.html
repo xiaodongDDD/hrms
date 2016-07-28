@@ -8,6 +8,8 @@
     <h1 class="title">房屋转租</h1>
   </ion-header-bar>
   <ion-content style="background-color: #fafafa;" delegate-handle="subleaseScroll">
+    <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
+    <ion-refresher on-refresh="doRefresh()" pulling-text="正在刷新数据..." pulling-icon="ios-small"></ion-refresher>
     <ion-list>
       <div style=" margin-top: 8px">
         <ion-item ng-repeat="item in housesSubInfos"
@@ -51,24 +53,13 @@
       on-infinite="loadMore()">
     </ion-infinite-scroll>
   </ion-content>
-
-
   <div style="position: fixed; bottom: 58px; margin-left: 81%" ng-click="goHousesRelease()">
       <img src="build/img/application/houses-sublease/create@3x.png" style="width: 48px; height: 48px">
   </div>
-
-
-  <!--<ion-footer-bar class="foot-bar" style="bottom: 0px;">-->
-  <!--<div style="margin-left: 50px; margin-top: 13px; font-size: 17px; color: #24559C">-->
-  <!--<img src="build/img/application/houses-sublease/history-G@3x.png" style="width: 21px; height: 22px">-->
-  <!--</div>-->
-  <!--<div style="margin-top: 15px; margin-left: 30px" ng-click="goReleaseRecord()">-->
-  <!--<img src="build/img/application/houses-sublease/history-G@3x.png" style="width: 21px; height: 22px">-->
-  <!--</div>-->
-  <!--<div class="buttons">-->
-  <!--<button class="button button-clear filter-icon">-->
-  <!--</button>-->
-  <!--<div class="filter-text">时间</div>-->
-  <!--</div>-->
-  <!--</ion-footer-bar>-->
 </ion-view>
+<style>
+  .spinner svg {
+    width: 0px;
+    height: 0px;
+  }
+</style>
