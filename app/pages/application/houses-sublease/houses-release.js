@@ -33,6 +33,7 @@ angular.module('applicationModule')
     '$timeout',
     '$stateParams',
     '$cordovaDatePicker',
+    '$ionicSlideBoxDelegate',
     function ($scope,
               $rootScope,
               $state,
@@ -43,7 +44,8 @@ angular.module('applicationModule')
               $ionicScrollDelegate,
               $timeout,
               $stateParams,
-              $cordovaDatePicker) {
+              $cordovaDatePicker,
+              $ionicSlideBoxDelegate) {
       $scope.housesReleaseInfo = {//初始化房屋信息
         "empNo": "",
         "houseId": "",
@@ -63,26 +65,66 @@ angular.module('applicationModule')
         "effectiveDays": "",
         "imgs": []
       };
-
-      $rootScope.$on("housesReleasePhoto", function (event, data) {
-        $scope.imageList = [];
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].flag == 'add') {
-            $scope.imageList.push(data[i]);
-          }
-        }
-        //console.log("2222222222222222: " + angular.toJson($scope.imageList));
-      });
-
+      $scope.pictureList = []; //初始化图片数组
+      $scope.showImgList = []; //初始化用于页面图片展示的数组
 
       $scope.flag = $stateParams.flag;
-      console.log("页面功能" + $scope.flag);
+      //console.log("页面功能" + $scope.flag);
       if ($scope.flag == 'EDIT') {
         $scope.housesReleaseInfo = $stateParams.housesReleaseInfo;
+        angular.forEach($scope.housesReleaseInfo.imgs, function (data, index, array) {
+          $scope.pictureList.push(array[index]);
+        });
+        for (var i = 0; i < $scope.pictureList.length; i++) {//给图片添加标识
+          $scope.pictureList[i].flag = "edit"
+        }
+        angular.forEach($scope.pictureList, function (data, index, array) {
+          $scope.showImgList.push(array[index]);
+          $ionicSlideBoxDelegate.update();
+        });
       } else {
         $scope.housesReleaseInfo.empNo = window.localStorage.empno;
         $scope.housesReleaseInfo.expireDate = new Date().format('yyyy-MM-dd');
+        $scope.pictureList = [];
+        $scope.showImgList = [];
       }
+      //console.log("图片数组+++", angular.toJson($scope.pictureList));
+
+      $rootScope.$on("housesReleasePhoto", function (event, data) {//广播获取图片数组
+        setTimeout(function () {
+          $scope.pictureList = [];
+          angular.forEach(data, function (data, index, array) {
+            $scope.pictureList.push(array[index]);
+          });
+
+          $scope.showImgList = [];//初始化用于页面图片展示的数组
+          for(var j = 0; j < $scope.pictureList.length; j++){
+            if($scope.pictureList[j].flag != 'del') {
+              $scope.showImgList.push($scope.pictureList[j]);
+            }
+          }
+          $ionicSlideBoxDelegate.update();
+
+          $scope.imageList = [];//用于图片上传的数组
+          for (var i = 0; i < $scope.pictureList.length; i++) {
+            if ($scope.pictureList[i].flag == 'add') {
+              $scope.imageList.push($scope.pictureList[i]);
+            }
+          }
+          //console.log("图片数组+++", angular.toJson($scope.pictureList));
+          //console.log("页面展示图片数组---", angular.toJson($scope.showImgList));
+          //console.log("用于图片上传的数组: " + angular.toJson($scope.imageList));
+          $scope.$apply();
+        }, 100);
+      });
+
+      $scope.goHousesPhotoList = function () {
+        $state.go("tab.houses-photo-list", {'housesImageList': $scope.pictureList});
+      };
+
+      $scope.goBack = function () {//返回按钮
+        $ionicHistory.goBack();
+      };
 
       $scope.selectTime = function () { //时间选择
         if (ionic.Platform.isAndroid()) {
@@ -128,24 +170,14 @@ angular.module('applicationModule')
         });
       };
 
-      $scope.goBack = function () {//返回按钮
-        $ionicHistory.goBack();
-      };
-      $scope.goHousesPhotoList = function () {
-        $scope.pictureList = [];
-        if ($scope.housesReleaseInfo.imgs != 0) {
-          angular.forEach($scope.housesReleaseInfo.imgs, function(data, index, array){
-            $scope.pictureList.push(array[index]);
-          });
-          for (var i = 0; i < $scope.pictureList.length; i++) {
-            $scope.pictureList[i].flag = "edit"
-          }
-          //console.log("标记后的图片数组：" + angular.toJson($scope.pictureList));
-        }
-        $state.go("tab.houses-photo-list", {'housesImageList': $scope.pictureList});
-      };
-
       $scope.housesRelease = function () {//发布按钮
+        $scope.housesReleaseInfo.deleteImgs = [];
+        for (var i = 0; i < $scope.pictureList.length; i++) {
+          if ($scope.pictureList[i].flag == 'del') {
+            $scope.housesReleaseInfo.deleteImgs.push($scope.pictureList[i])
+          }
+        }
+        //console.log("被删除的图片数组+++", angular.toJson($scope.housesReleaseInfo.deleteImgs));
         uploadImage();
       };
       var pictureNumber = 0;
@@ -153,8 +185,7 @@ angular.module('applicationModule')
         hmsPopup.showLoading('请稍候');
         $scope.showLoading = true;
         //console.log("333333333333333" + angular.toJson($scope.imageList));
-        if (!$scope.imageList) {
-          //console.log("照片为空");
+        if (!$scope.imageList || $scope.imageList.length == 0) {//没有要上传图片的情况
           releaseHousesInfo();
         } else {
           for (var i = 0; i < $scope.imageList.length; i++) {
@@ -195,7 +226,7 @@ angular.module('applicationModule')
 
         var result = JSON.parse(res.response);
 
-        console.log("result " + angular.toJson(result));
+        //console.log("result " + angular.toJson(result));
         //hmsPopup.showPopup("图片上传成功");
         $scope.housesImage = {
           "objectUrl": result.returnData.objectUrl
@@ -219,7 +250,6 @@ angular.module('applicationModule')
       function releaseHousesInfo() {//调用发布接口
         //console.log("房屋发布信息：" + angular.toJson($scope.housesReleaseInfo));
         var url = baseConfig.queryPath + "/house/publish";
-        //var url = 'http://10.211.103.145:9090/hrmsv2/v2/api/house/publish';
         //hmsPopup.showLoading('请稍候');
         hmsHttp.post(url, $scope.housesReleaseInfo).success(function (result) {
           hmsPopup.hideLoading();

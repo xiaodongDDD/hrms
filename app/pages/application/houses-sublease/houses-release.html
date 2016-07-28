@@ -6,9 +6,20 @@
       </button>
     </div>
     <h1 class="title">发布</h1>
+    <div class="buttons">
+      <button class="button button-icon" ng-click="goHousesPhotoList()" ng-if="showImgList != ''">
+        <img style="width: 24px; height: 20px; margin-top: 6px" src="build/img/myInfo/camera.png"/>
+      </button>
+    </div>
   </ion-header-bar>
   <ion-content style="background-color: #fafafa">
-    <div style="background-image: url('build/img/application/houses-sublease/BG@3x.png'); width: 100%; height: 175px; background-size: 100% 175px">
+    <ion-slide-box on-slide-changed="slideChanged(index)" style="width: 100%;height: 175px;" ng-if="showImgList != ''">
+      <ion-slide ng-repeat="item in showImgList">
+        <img ng-src="{{item.objectUrl}}" style="width: 100%;height: 175px;"/>
+      </ion-slide>
+    </ion-slide-box>
+
+    <div style="background-image: url('build/img/application/houses-sublease/BG@3x.png'); width: 100%; height: 175px; background-size: 100% 175px" ng-if="showImgList == ''">
       <img src="build/img/application/houses-sublease/image@3x.png"
            style="height: 87px; width: 87px; margin-left: 38.5%; margin-top: 22px" ng-click="goHousesPhotoList()">
 
@@ -196,3 +207,19 @@
     </div>
   </ion-content>
 </ion-view>
+
+<style>
+  .slider-pager .slider-pager-page.active {
+    -webkit-transition: opacity 0.4s ease-in;
+    transition: opacity 0.4s ease-in;
+    opacity: 1;
+  }
+  .slider-pager .slider-pager-page {
+    display: inline-block;
+    margin: 0px 6px;
+    width: 8px;
+    color: #FAFAFA;
+    text-decoration: none;
+    opacity: 0.3;
+  }
+</style>
