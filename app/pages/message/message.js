@@ -50,6 +50,7 @@ angular.module('messageModule')
         var success = function () {
           var index = $scope.messageList.indexOf(message);
           $scope.messageList.splice(index, 1);
+          $scope.$apply();
         };
         var error = function () {
         };
