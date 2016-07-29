@@ -32,6 +32,7 @@ angular.module('applicationModule')
     '$timeout',
     '$ionicActionSheet',
     '$stateParams',
+    '$ionicModal',
     function ($scope,
               $rootScope,
               $state,
@@ -42,7 +43,8 @@ angular.module('applicationModule')
               $ionicScrollDelegate,
               $timeout,
               $ionicActionSheet,
-              $stateParams) {
+              $stateParams,
+              $ionicModal) {
 
       $scope.housesPhoto = [];
       $scope.deleteImageList = [];
@@ -152,39 +154,53 @@ angular.module('applicationModule')
           alert(e);
         }
       };
-
+      $scope.zoomMin = 1;
       var showBigPicture = function (picUrl) {//显示大图
-        $scope.pictureAppearance = true;
-        $scope.extensionPicture = picUrl;
-        $timeout(function () {
-          var bigPicture = document.getElementById('my-big-picture');
-          var picHeight = bigPicture.offsetHeight;
-          var picWidth = bigPicture.offsetWidth;
-          var screenWidth = window.screen.width;
-          if (picHeight > picWidth) {
-            bigPicture.style.width = 100 + "%";
-            bigPicture.style.height = 100 + "%";
-            bigPicture.style.marginTop = 10 + "px";
-          } else if (picHeight < picWidth) {
-            bigPicture.style.width = 100 + "%";
-            if (screenWidth > 310 && screenWidth <= 350) {
-              bigPicture.style.height = 170 + "px";
-              bigPicture.style.marginTop = 150 + "px";
-            } else if (screenWidth > 350 && screenWidth <= 380) {
-              bigPicture.style.height = 225 + "px";
-              bigPicture.style.marginTop = 180 + "px";
-            } else if (screenWidth > 380 && screenWidth <= 420) {
-              bigPicture.style.height = 240 + "px";
-              bigPicture.style.marginTop = 210 + "px";
-            } else if (screenWidth > 420) {
-              bigPicture.style.height = 255 + "px";
-              bigPicture.style.marginTop = 240 + "px";
-            }
-          }
-        }, 100);
+        $scope.photoZoomUrl = picUrl;
+        $scope.showModal('build/pages/application/houses-sublease/houses-photo-zoom.html');
+        //$scope.pictureAppearance = true;
+        //$scope.extensionPicture = picUrl;
+        //$timeout(function () {
+        //  var bigPicture = document.getElementById('my-big-picture');
+        //  var picHeight = bigPicture.offsetHeight;
+        //  var picWidth = bigPicture.offsetWidth;
+        //  var screenWidth = window.screen.width;
+        //  if (picHeight > picWidth) {
+        //    bigPicture.style.width = 100 + "%";
+        //    bigPicture.style.height = 100 + "%";
+        //    bigPicture.style.marginTop = 10 + "px";
+        //  } else if (picHeight < picWidth) {
+        //    bigPicture.style.width = 100 + "%";
+        //    if (screenWidth > 310 && screenWidth <= 350) {
+        //      bigPicture.style.height = 170 + "px";
+        //      bigPicture.style.marginTop = 150 + "px";
+        //    } else if (screenWidth > 350 && screenWidth <= 380) {
+        //      bigPicture.style.height = 225 + "px";
+        //      bigPicture.style.marginTop = 180 + "px";
+        //    } else if (screenWidth > 380 && screenWidth <= 420) {
+        //      bigPicture.style.height = 240 + "px";
+        //      bigPicture.style.marginTop = 210 + "px";
+        //    } else if (screenWidth > 420) {
+        //      bigPicture.style.height = 255 + "px";
+        //      bigPicture.style.marginTop = 240 + "px";
+        //    }
+        //  }
+        //}, 100);
       };
-      $scope.hideBigPicture = function () {//隐藏大图
-        $scope.pictureAppearance = false;
+      //$scope.hideBigPicture = function () {//隐藏大图
+      //  $scope.pictureAppearance = false;
+      //};
+      $scope.showModal = function(templateUrl) {
+        $ionicModal.fromTemplateUrl(templateUrl, {
+          scope: $scope
+        }).then(function(modal) {
+          $scope.modal = modal;
+          $scope.modal.show();
+        });
+      };
+      $scope.closeModal = function() {
+        $scope.modal.hide();
+        $scope.modal.remove()
       };
 
       var deleteImage = function(picUrl) {
