@@ -32,6 +32,7 @@ angular.module('contactModule')
     'hmsHttp',
     '$ionicHistory',
     'commonContactService',
+    '$rootScope',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -43,7 +44,8 @@ angular.module('contactModule')
               $timeout,
               hmsHttp,
               $ionicHistory,
-              commonContactService) {
+              commonContactService,
+              $rootScope) {
       /**
        * var section
        */
@@ -219,6 +221,7 @@ angular.module('contactModule')
         $scope.contactKey.getValue = '';
         if(commonContactService.getContactFlag() === 'carpooling-new-contactSearch') {
           commonContactService.setEmpInfo(newEmp);
+          $rootScope.$broadcast("SEND_EMP_INFO");
           $ionicHistory.goBack();
         } else {
           $state.go('tab.employeeDetail', {employeeNumber: newEmp.emp_code});
