@@ -196,9 +196,6 @@ angular.module('applicationModule')
       $scope.$on("popover.removed", function() {
       });
 
-
-
-
       /**
        * modal input 方法区
        */
@@ -216,9 +213,6 @@ angular.module('applicationModule')
         $scope.$broadcast('carpooling-search');
         $scope.carpoolingInputModal.show();
       };
-
-
-
     }]);
 
 

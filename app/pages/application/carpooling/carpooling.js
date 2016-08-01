@@ -21,12 +21,11 @@ angular.module('applicationModule')
     '$rootScope',
     '$state',
     '$ionicHistory',
-    function ($scope, $rootScope, $state,$ionicHistory) {
+    'commonContactService',
+    function ($scope, $rootScope, $state,$ionicHistory,commonContactService) {
       $rootScope.goBack = function () {
         $ionicHistory.goBack();
       };
-
-
       $scope.tabs = [{
         name: '列表',
         isActive: true,

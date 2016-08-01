@@ -20,12 +20,12 @@
 
 
       <div class="carpooling-header-oval-fill-in col-65">
-        <div class="fill-in-set row">
-          <input type="text" placeholder="请输入起点" class="creater-oval-start-text">
+        <div class="fill-in-set row" ng-click="goMap()">
+          <input type="text" placeholder="请输入起点" class="creater-oval-start-text" readOnly="true">
         </div>
         <div class="fill-in-line"></div>
-        <div class="fill-in-end row">
-          <input type="text" placeholder="请输入终点" class="creater-oval-end-text">
+        <div class="fill-in-end row" ng-click = goMap()>
+          <input type="text" placeholder="请输入终点" class="creater-oval-end-text" readOnly="true" >
         </div>
       </div>
       <div class="carpooling-header-oval-exchange col-21">
@@ -92,52 +92,90 @@
          <input type="text" id="inputOther"  ng-model="inputOther"   class="create-other-cost-input" style="background:transparent;" placeholder="或输入其他费用计划">
        </div>
      </div>
-     <div class="create-detail-particular" ng-style="{height:fourSeat?'130px':'210px'}">
+     <div class="create-detail-particular" ng-style="{height:fourSeat?'130px':'220px'}">
        <div class="create-peer">
          <span class="create-peer-staff">同行人员：</span>
-         <div class="create-img-add">
+         <div class="create-img-add" ng-click="addContact()">
             <img src="build/img/application/carpooling/add@3x.png" style="width: 17px;height: 17px;">
          </div>
-         <span class="create-peer-add-text">还可添加一位</span>
+         <span class="create-peer-add-text">还可添加{{availableSeats}}位</span>
        </div>
       <div class="create-peer-list">
         <div class="create-peer-list-item">
-          <img class="create-peer-icon" src="build/img/application/carpooling/seat-2@3x.png">
-          <span class="create-peer-name-enjoy">空位</span>
-          <span class="create-peer-name-enjoy"></span>
+          <img class="create-peer-icon" ng-src="{{carpoolingJoin[0].avatar}}">
+          <span class="{{carpoolingJoin[0].empFont}}" >{{carpoolingJoin[0].empName}}</span>
+        </div>
+
+        <div class="create-peer-list-item">
+          <img class="create-peer-icon" ng-src="{{carpoolingJoin[1].avatar}}">
+          <div ng-if="carpoolingJoin[1].flag" ng-click="deleteContact(1)">
+            <img class="create-delete-icon" src="build/img/application/carpooling/delete@3x.png" >
+          </div>
+          <span class="{{carpoolingJoin[1].empFont}}" >{{carpoolingJoin[1].empName}}</span>
+          <div ng-click="goLock(1)" ng-if="!carpoolingJoin[1].flag">
+            <img class="create-img-lock" ng-src="{{carpoolingJoin[1].lockIcon}}">
+            <span class="{{carpoolingJoin[1].lockFont}}">{{carpoolingJoin[1].lock}}</span>
+          </div>
+        </div>
+
+        <div class="create-peer-list-item">
+          <img class="create-peer-icon" ng-src="{{carpoolingJoin[2].avatar}}">
+          <div  ng-if="carpoolingJoin[2].flag" ng-click="deleteContact(2)">
+            <img class="create-delete-icon" src="build/img/application/carpooling/delete@3x.png">
+          </div>
+          <span class="{{carpoolingJoin[2].empFont}}" >{{carpoolingJoin[2].empName}}</span>
+          <div ng-click="goLock(2)" ng-if="!carpoolingJoin[2].flag">
+            <img class="create-img-lock" ng-src="{{carpoolingJoin[2].lockIcon}}">
+            <span class="{{carpoolingJoin[2].lockFont}}">{{carpoolingJoin[2].lock}}</span>
+          </div>
         </div>
         <div class="create-peer-list-item">
-          <img class="create-peer-icon" src="build/img/application/carpooling/seat-2@3x.png">
-          <span class="create-peer-name-enjoy">空位</span>
-          <span class="create-peer-enjoy"></span>
+          <img class="create-peer-icon" ng-src="{{carpoolingJoin[3].avatar}}">
+          <div ng-if="carpoolingJoin[3].flag" ng-click="deleteContact(3)">
+            <img class="create-delete-icon" src="build/img/application/carpooling/delete@3x.png" >
+          </div>
+          <span class="{{carpoolingJoin[3].empFont}}" >{{carpoolingJoin[3].empName}}</span>
+          <div ng-click="goLock(3)" ng-if="!carpoolingJoin[3].flag">
+            <img class="create-img-lock" ng-src="{{carpoolingJoin[3].lockIcon}}">
+            <span class="{{carpoolingJoin[3].lockFont}}">{{carpoolingJoin[3].lock}}</span>
+          </div>
         </div>
-        <div class="create-peer-list-item">
-          <img class="create-peer-icon" src="build/img/application/carpooling/seat-2@3x.png">
-          <span class="create-peer-name-enjoy">空位</span>
-          <span class="create-peer-name-enjoy"></span>
-        </div>
-        <div class="create-peer-list-item">
-          <img class="create-peer-icon" src="build/img/application/carpooling/seat-2@3x.png">
-          <span class="create-peer-name-enjoy">空位</span>
-          <span class="create-peer-name-enjoy"></span>
-        </div>
+
       </div>
        <!--七人座-->
-       <div class="create-peer-list" ng-if="!fourSeat">
+       <div class="create-peer-list" ng-if="!fourSeat" style="margin-top: 30px">
          <div class="create-peer-list-item">
-           <img class="create-peer-icon" src="build/img/application/carpooling/seat-2@3x.png">
-           <span class="create-peer-name-enjoy">空位</span>
-           <span class="create-peer-name-enjoy"></span>
+           <img class="create-peer-icon" ng-src="{{carpoolingJoin[4].avatar}}">
+           <div ng-if="carpoolingJoin[4].flag" ng-click="deleteContact(4)">
+             <img class="create-delete-icon" src="build/img/application/carpooling/delete@3x.png" >
+           </div>
+           <span class="{{carpoolingJoin[4].empFont}}" >{{carpoolingJoin[4].empName}}</span>
+           <div ng-click="goLock(4)" ng-if="!carpoolingJoin[4].flag">
+             <img class="create-img-lock" ng-src="{{carpoolingJoin[4].lockIcon}}">
+             <span class="{{carpoolingJoin[4].lockFont}}">{{carpoolingJoin[4].lock}}</span>
+           </div>
          </div>
          <div class="create-peer-list-item">
-           <img class="create-peer-icon" src="build/img/application/carpooling/seat-2@3x.png">
-           <span class="create-peer-name-enjoy">空位</span>
-           <span class="create-peer-enjoy"></span>
+           <img class="create-peer-icon" ng-src="{{carpoolingJoin[5].avatar}}">
+           <div ng-if="carpoolingJoin[5].flag" ng-click="deleteContact(5)">
+             <img class="create-delete-icon" src="build/img/application/carpooling/delete@3x.png" >
+           </div>
+           <span class="{{carpoolingJoin[5].empFont}}" >{{carpoolingJoin[5].empName}}</span>
+           <div ng-click="goLock(5)" ng-if="!carpoolingJoin[5].flag">
+             <img class="create-img-lock" ng-src="{{carpoolingJoin[5].lockIcon}}">
+             <span class="{{carpoolingJoin[5].lockFont}}">{{carpoolingJoin[5].lock}}</span>
+           </div>
          </div>
          <div class="create-peer-list-item">
-           <img class="create-peer-icon" src="build/img/application/carpooling/seat-2@3x.png">
-           <span class="create-peer-name-enjoy">空位</span>
-           <span class="create-peer-name-enjoy"></span>
+           <img class="create-peer-icon" ng-src="{{carpoolingJoin[6].avatar}}">
+           <div ng-click="deleteContact(6)" ng-if="carpoolingJoin[6].flag">
+             <img class="create-delete-icon" src="build/img/application/carpooling/delete@3x.png" >
+           </div>
+           <span class="{{carpoolingJoin[6].empFont}}" >{{carpoolingJoin[6].empName}}</span>
+           <div ng-click="goLock(6)" ng-if="!carpoolingJoin[6].flag">
+             <img class="create-img-lock" ng-src="{{carpoolingJoin[6].lockIcon}}">
+             <span class="{{carpoolingJoin[6].lockFont}}">{{carpoolingJoin[6].lock}}</span>
+           </div>
          </div>
        </div>
 

@@ -21,14 +21,12 @@ angular.module('applicationModule')
     '$ionicHistory',
     'hmsHttp',
     'hmsPopup',
-    '$timeout',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
               hmsHttp,
-              hmsPopup,
-              $timeout) {
+              hmsPopup) {
       $scope.items=[];//历史列表中的数据
       $scope.fetchServerFlag= true;
       $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
@@ -50,10 +48,8 @@ angular.module('applicationModule')
             "pageSize":5
         };
         hmsHttp.post(url, param).success(function (result) {
-          $scope.items = result.returnData
-          if ($scope.items.length == 0) {
-            $scope.noData=false;
-          } else if ($scope.items.length > 0) {
+          $scope.items = result.returnData;
+         if ($scope.items.length > 0) {
             angular.forEach($scope.items, function (data, index, array) {
               if (array[index].shareStatus == 'wait') {
                 array[index].statusColor = false;
@@ -68,13 +64,9 @@ angular.module('applicationModule')
             });
           }
         }).error(function (error, status) {
-          //hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast("网络连接出错");
         }).finally(function(){
-          $timeout(function () {
-            $scope.fetchServerFlag= false;
-          },2000)
-
+          $scope.fetchServerFlag= false;
         });
       }
 
