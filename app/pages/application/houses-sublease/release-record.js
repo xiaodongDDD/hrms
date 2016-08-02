@@ -27,6 +27,7 @@ angular.module('applicationModule')
     'hmsPopup',
     '$ionicScrollDelegate',
     '$timeout',
+    '$cordovaDialogs',
     function ($scope,
               $rootScope,
               $state,
@@ -35,7 +36,8 @@ angular.module('applicationModule')
               hmsHttp,
               hmsPopup,
               $ionicScrollDelegate,
-              $timeout) {
+              $timeout,
+              $cordovaDialogs) {
       $scope.goBack = function () {//返回按钮
         $ionicHistory.goBack();
       };
@@ -211,6 +213,42 @@ angular.module('applicationModule')
 
       $scope.housesEdit = function (param) {
         $state.go("tab.houses-release", {'housesReleaseInfo': param, 'flag': "EDIT"});
+      };
+
+      $scope.housesDelete = function(param) {
+        $cordovaDialogs.confirm('请确认是否删除这条记录？', '提示', ['确定', '取消']).then(function (deleteIndex) {
+          if (deleteIndex == 1) {
+            console.log("数据", angular.toJson(param));
+            param.effectiveDays = "-1";
+            var url = baseConfig.queryPath + "/house/publish";
+            //hmsPopup.showLoading('请稍候');
+            hmsHttp.post(url, param).success(function (result) {
+              hmsPopup.hideLoading();
+              if (baseConfig.debug) {
+                console.log("result success " + angular.toJson(result));
+              }
+              if (result.status == "S") {
+                $scope.releaseRecordInfos = [];
+                nowRecordPage = 1;
+                serchHousesRecordInfo();
+                $scope.$broadcast('scroll.refreshComplete');
+                $scope.moreDataCanBeLoaded = true;
+                $timeout(function() {
+                  $ionicScrollDelegate.$getByHandle('recordScroll').scrollTop(false);
+                },200);
+                hmsPopup.showShortCenterToast("删除成功");
+              } else if (result.status == "E") {
+                hmsPopup.showShortCenterToast("删除失败");
+              }
+            }).error(function (error, status) {
+              hmsPopup.hideLoading();
+              hmsPopup.showShortCenterToast("网络连接出错");
+              if (baseConfig.debug) {
+                console.log("response error " + angular.toJson(error));
+              }
+            });
+          }
+        });
       };
 
       $rootScope.$on("RELEASEEDIT_SUCCESS", function(event){//空房间申请成功时，返回查询界面自动刷新历史申请数据

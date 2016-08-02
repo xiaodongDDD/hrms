@@ -62,7 +62,7 @@ angular.module('applicationModule')
         //"publishEmp": "",
         "city": "",
         "area": "",
-        "effectiveDays": "",
+        "effectiveDays": 30,
         "imgs": []
       };
       $scope.pictureList = []; //初始化图片数组
@@ -183,7 +183,6 @@ angular.module('applicationModule')
       var pictureNumber = 0;
       var uploadImage = function () {//上传图片
         hmsPopup.showLoading('请稍候');
-        $scope.showLoading = true;
         //console.log("333333333333333" + angular.toJson($scope.imageList));
         if (!$scope.imageList || $scope.imageList.length == 0) {//没有要上传图片的情况
           releaseHousesInfo();
@@ -221,13 +220,7 @@ angular.module('applicationModule')
       };
 
       var win = function (res) {//图片上传成功
-        //如果有Loading的话记得隐藏loading
-        $scope.showLoading = false;
-
         var result = JSON.parse(res.response);
-
-        //console.log("result " + angular.toJson(result));
-        //hmsPopup.showPopup("图片上传成功");
         $scope.housesImage = {
           "objectUrl": result.returnData.objectUrl
         };
@@ -237,20 +230,16 @@ angular.module('applicationModule')
         //console.log("22222222222 " + angular.toJson(pictureNumber));
         if (pictureNumber == $scope.imageList.length) {
           releaseHousesInfo();
-          //hmsPopup.showPopup("图片上传成功");
         }
       };
       var fail = function (error) {//图片上传失败
-        //如果有Loading的话记得隐藏loading
-        $scope.showLoading = false;
         hmsPopup.hideLoading();
         hmsPopup.showPopup("图片上传失败");
       };
 
       function releaseHousesInfo() {//调用发布接口
-        //console.log("房屋发布信息：" + angular.toJson($scope.housesReleaseInfo));
+        console.log("房屋发布信息：" + angular.toJson($scope.housesReleaseInfo));
         var url = baseConfig.queryPath + "/house/publish";
-        //hmsPopup.showLoading('请稍候');
         hmsHttp.post(url, $scope.housesReleaseInfo).success(function (result) {
           hmsPopup.hideLoading();
           if (baseConfig.debug) {
@@ -262,8 +251,8 @@ angular.module('applicationModule')
             } else {
               $rootScope.$broadcast("RELEASE_SUCCESS");//触发上一界面重新刷新数据
             }
-            hmsPopup.showShortCenterToast("发布成功");
             $ionicHistory.goBack();//删除申请成功后返回上一界面
+            hmsPopup.showShortCenterToast("发布成功");
           } else if (result.status == "E") {
             hmsPopup.showShortCenterToast("发布失败");
           }
