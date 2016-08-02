@@ -27,13 +27,15 @@
         </div>
         <div class="row" style="border-bottom: 1px solid  #e8e8e8">
           <div class="col col-50" style="padding: 0px; border: 0px"></div>
-          <div class="col col-50" style="padding: 0px; border: 0px">
-            <div class="button" style="width: 67px; height: 24px; min-height: 24px; background-color: #FFFFFF; line-height: 24px; border-radius: 10px; border: 1px solid #24559C; color: #24559C; font-size: 14px; margin-top: 15px; margin-bottom: 5px; margin-left: 55%; text-align: center" ng-click="housesEdit(item)">编辑</div>
+          <div class="col col-50" style="padding: 0px; border: 0px; text-align: right">
+            <div class="button" style="width: 67px; height: 24px; min-height: 24px; background-color: #FFFFFF; line-height: 24px; border-radius: 10px; border: 1px solid #B95756; color: #B95756; font-size: 14px; margin-top: 15px; margin-bottom: 5px; text-align: center; margin-right: 10px" ng-click="housesDelete(item)">删除</div>
+            <div class="button" style="width: 67px; height: 24px; min-height: 24px; background-color: #FFFFFF; line-height: 24px; border-radius: 10px; border: 1px solid #24559C; color: #24559C; font-size: 14px; margin-top: 15px; margin-bottom: 5px; text-align: center; margin-right: 10px" ng-click="housesEdit(item)">编辑</div>
           </div>
         </div>
       </ion-item>
     </ion-list>
     <ion-infinite-scroll
+      class="recordSvg"
       ng-if="moreDataCanBeLoaded"
       distance="1%"
       on-infinite="loadMore()">
@@ -41,8 +43,9 @@
   </ion-content>
 </ion-view>
 <style>
-  .spinner svg {
+  .recordSvg .spinner svg {
     width: 0px;
     height: 0px;
   }
 </style>
+
