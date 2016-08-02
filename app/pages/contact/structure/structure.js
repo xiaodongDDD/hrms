@@ -90,6 +90,7 @@ angular.module('myApp')
       function getStructureInfo(result) { //获取数据的回调函数
         try {
           if (Object.keys(result).length !== 0) {
+            dynamicAddScrollWidth();
             $ionicScrollDelegate.$getByHandle('contactStructureDelegate').scrollBy(1000, 0, true);
             $scope.childrenDept = result.childrenDept;
             $scope.deptStaff = result.deptStaff;
@@ -101,7 +102,6 @@ angular.module('myApp')
             angular.forEach(result.deptInfo, function (data, index) {
               $scope.currentStackList.push(data);
             });
-            dynamicAddScrollWidth();
           }
         } catch (e) {
         }
@@ -162,7 +162,7 @@ angular.module('myApp')
           if (curr_page >= structureDelegate.getStructureId()) {
             curr_page = '';
           }
-          // structureDelegate.setStructureId(['1', '2']); //provider 在controller中的使用方法
+          structureDelegate.setStructureId(['1', '2']); //provider 在controller中的使用方法
           if ($scope.childrenDept.length != 0 || $scope.childrenDept.length) {
             $state.go("tab.contactStructure" + curr_page, {
               routeId: ++curr_page,
