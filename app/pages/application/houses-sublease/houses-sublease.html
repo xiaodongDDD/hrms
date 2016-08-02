@@ -48,6 +48,7 @@
       </div>
     </ion-list>
     <ion-infinite-scroll
+      class="subleaseSvg"
       ng-if="moreDataCanBeLoaded"
       distance="1%"
       on-infinite="loadMore()">
@@ -58,7 +59,7 @@
   </div>
 </ion-view>
 <style>
-  .spinner svg {
+  .subleaseSvg .spinner svg {
     width: 0px;
     height: 0px;
   }

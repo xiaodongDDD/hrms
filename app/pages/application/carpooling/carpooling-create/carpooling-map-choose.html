@@ -1,0 +1,41 @@
+<ion-view view-title="地图选择" class="carpooling-map-choose">
+  <div class="carpooling-map-header-bar">
+    <div class="platform-status-bar"></div>
+    <ion-header-bar class="bar-ion-header"align-title="center" >
+      <h1 class="title header-title-color">创建拼车</h1>
+      <div class="buttons">
+        <button class="button button-icon ion-location" ng-click="get_location()">
+          <span class="create-back-button-text">上海</span>
+        </button>
+      </div>
+    </ion-header-bar>
+    <div class="set-end row">
+      <div class="carpooling-header-oval col-13">
+        <div style="width: 8px;height: 61px;text-align: center;margin-left: 35px">
+          <img src="build/img/application/carpooling/Oval@3x.png" class="oval-img">
+          <div class="oval-line"></div>
+          <img src="build/img/application/carpooling/Oval@3x.png" class="oval-img">
+        </div>
+      </div>
+      <div class="carpooling-header-oval-fill-in col-65">
+        <div  class="fill-in-set row" ng-click="goMap()">
+          <input type="text" id="suggestId" placeholder="请输入起点" class="creater-oval-start-text" >
+        </div>
+        <div class="fill-in-line"></div>
+        <div class="fill-in-end row" ng-click = goMap()>
+          <input type="text" placeholder="请输入终点" class="creater-oval-end-text"  >
+        </div>
+      </div>
+      <div class="carpooling-header-oval-exchange col-21">
+        <div style="text-align: center">
+          <img src="build/img/application/carpooling/exchange@3x.png" class="img-exchange">
+        </div>
+      </div>
+    </div>
+  </div>
+  <ion-content class="map-content" style="top: 170px;">
+    <div id="l-map" class="map"></div>
+    <!--<div id="r-result" class="result">请输入:<input type="text" id="suggestId" size="20" value="百度" style="width:150px;" /></div>-->
+    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+  </ion-content>
+</ion-view>
