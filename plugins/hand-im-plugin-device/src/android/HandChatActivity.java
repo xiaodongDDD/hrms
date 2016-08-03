@@ -861,9 +861,10 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                 setResult(0x0000,intent);
                 //返回
                 this.finish();
+                return false;
             }
         }
-        return super.onKeyDown(keyCode, event);
+
     }
     private void sendMessage(final MessageContent msg) {
             RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, friendId, msg, null, null, new IRongCallback.ISendMessageCallback() {
