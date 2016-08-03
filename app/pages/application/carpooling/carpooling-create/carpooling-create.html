@@ -21,15 +21,15 @@
 
       <div class="carpooling-header-oval-fill-in col-65">
         <div class="fill-in-set row" ng-click="goMap()">
-          <input type="text" placeholder="请输入起点" class="creater-oval-start-text" readOnly="true">
+          <input type="text" id="create-departure" placeholder="请输入起点" class="creater-oval-start-text" readOnly="true">
         </div>
         <div class="fill-in-line"></div>
         <div class="fill-in-end row" ng-click = goMap()>
-          <input type="text" placeholder="请输入终点" class="creater-oval-end-text" readOnly="true" >
+          <input type="text" id="create-destination" placeholder="请输入终点" class="creater-oval-end-text" readOnly="true" >
         </div>
       </div>
       <div class="carpooling-header-oval-exchange col-21">
-        <div style="text-align: center">
+        <div style="text-align: center" ng-click="exchange()">
           <img src="build/img/application/carpooling/exchange@3x.png" class="img-exchange">
         </div>
       </div>

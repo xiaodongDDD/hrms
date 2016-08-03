@@ -108,6 +108,9 @@
       width: 100%;
       font-size: 16px;
       color: #AAB3C4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .creater-oval-end-text{
       background: transparent;
@@ -115,6 +118,9 @@
       width: 100%;
       font-size: 16px;
       color: #AAB3C4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
   .create-peer{

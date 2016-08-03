@@ -33,10 +33,9 @@ angular.module('applicationModule')
       //高德地图路径
       $scope.map = "";
       var  mapUrl = {
-        baseUrl: "http://restapi.amap.com/v3/staticmap?scale=2&zoom=10&size=300*100",
-        baseStyle:"&markers=-1,http://www.daxuequan.org/hrms-img/start@3x.png,0:",
-        baseStyle1:"|-1,http://www.daxuequan.org/hrms-img/end@3x.png,0:",
-        markey:"&key=ae514ce54a0fb9c009334423b9ab3f9a",
+        baseUrl: " http://api.map.baidu.com/staticimage/v2?ak=i6Ft7l8flPNq7Ub6O2vmcuGx",
+        baseStyle:"&width=400&height=100&zoom=11",
+        baseStyle1:"&markerStyles=-1,http://www.daxuequan.org/hrms-img/start@2x.png|-1,http://www.daxuequan.org/hrms-img/end@2x.png",
       }
 
       searchHistoryApplyListAutomatically();
@@ -59,7 +58,7 @@ angular.module('applicationModule')
                 array[index].status = "已成行";
               }
               if(array[index].startLatitude && array[index].endLatitude){
-                array[index].listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+array[index].startLatitude +mapUrl.baseStyle1+array[index].endLatitude+mapUrl.markey;
+                array[index].listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+"&markers="+array[index].startLatitude+"|"+array[index].endLatitude +mapUrl.baseStyle1;
               }
             });
           }

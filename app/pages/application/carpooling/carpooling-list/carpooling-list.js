@@ -47,13 +47,6 @@ angular.module('applicationModule')
       $scope.moreDataCanBeLoaded = true;
       $scope.items= [];
       $scope.map = "";
-      var  mapUrl = {
-        baseUrl: "http://restapi.amap.com/v3/staticmap?scale=2&zoom=10&size=300*100",
-        baseStyle:"&markers=-1,http://www.daxuequan.org/hrms-img/start@3x.png,0:",
-        baseStyle1:"|-1,http://www.daxuequan.org/hrms-img/end@3x.png,0:",
-        markey:"&key=ae514ce54a0fb9c009334423b9ab3f9a",
-      }
-
 
 
       function searchCarpoolingList() {
@@ -76,9 +69,7 @@ angular.module('applicationModule')
                 array[index].statusColor=true;
                 array[index].status = "已成行";
               }
-              if(array[index].startLatitude && array[index].endLatitude){
-                array[index].listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+array[index].startLatitude +mapUrl.baseStyle1+array[index].endLatitude+mapUrl.markey;
-              }
+
             });
           }else{
             $scope.noData=true;
@@ -125,7 +116,6 @@ angular.module('applicationModule')
       //跳转到拼车界面
       $scope.viewListDetail = function (num) {//跳转到拼车详情界面
         var info=$scope.items[num];
-        var listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+info.startLatitude +mapUrl.baseStyle1+info.endLatitude+mapUrl.markey;
         var hasJoinedSeats = parseInt(info.carType)- info.availableSeats//已经参与拼车人数
         var param={
           companies:info.companies,
@@ -136,10 +126,11 @@ angular.module('applicationModule')
           lockSeats:info.lockSeats,//成行人数
           carType:info.carType,//车类型
           feeType:info.feeType,//费用计划
-          map:listMapUrl,//生成地图的url
           hasJoinedSeats:hasJoinedSeats,//已经成行人数
           availableSeats:info.availableSeats,//空位
-          shareId:info.id//拼车主键
+          shareId:info.id,//拼车主键
+          startLat:info.startLatitude,//起点经纬度
+          endLat:info.endLatitude//终点经纬度
         };
         $state.go("tab.carpooling-list-detail",{
           'carpoolingListDetailInfo':param
