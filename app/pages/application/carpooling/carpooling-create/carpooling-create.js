@@ -43,6 +43,7 @@ angular.module('applicationModule')
     '$ionicModal',
     '$cordovaDatePicker',
     'commonContactService',
+    'carpoolingCreateService',
     '$rootScope',
     function ($scope,
               $state,
@@ -54,6 +55,7 @@ angular.module('applicationModule')
               $ionicModal,
               $cordovaDatePicker,
               commonContactService,
+              carpoolingCreateService,
               $rootScope
     ) {
       //选择座位
@@ -69,6 +71,13 @@ angular.module('applicationModule')
       $scope.timePreference = "选择偏好";
       $scope.carpoolingJoin = [];
       $scope.availableSeats = $scope.carTypes - ($scope.lockSeatNumber + $scope.contactSeatNumber);
+      $scope.startLng = "";
+      $scope.startLat = "";
+      $scope.endLng="";
+      $scope.endLat="";
+      $scope.start="";
+      $scope.end = "";
+      $scope.fetchFlag = false;
       var emp_codes = [];//记录所有加入者的ID
       var emp_index = [];//记录所有空位的索引
 
@@ -133,7 +142,6 @@ angular.module('applicationModule')
       //跳转地图选择
       $scope.goMap = function (){
         $state.go("tab.carpooling-map-myChoose");
-
       }
 
 
@@ -184,15 +192,13 @@ angular.module('applicationModule')
           selectTimeIOS();
         }
       };
-      function selectTimeIOS() {
-        var date = new Date($scope.createInfo.departureTime).format('yyyy/MM/dd hh:mm:ss');
-        selectTimeBasic(date);
-      }
-      function selectTimeAndroid() {
+
+
+
+
+
+      function selectTimeAndroid(date) {
         var date = new Date($scope.createInfo.departureTime).format('MM/dd/yyyy/hh/mm/ss');
-        selectTimeBasic(date);
-      }
-      function selectTimeBasic(date) {
         $cordovaDatePicker.show({
           date: date,
           allowOldDates: true,
@@ -201,8 +207,6 @@ angular.module('applicationModule')
           titleText: '',
           okText: '确定',               //android
           cancelText: '取消',           //android
-          doneButtonLabel: '确认',      // ios
-          cancelButtonLabel: '取消',    //ios
           androidTheme: datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT, // android： 3
           popoverArrowDirection: 'UP',
           locale: 'zh_cn'
@@ -213,7 +217,62 @@ angular.module('applicationModule')
             $scope.$apply();
           }
         });
-      };
+      }
+
+
+        function selectTimeIos(date) {
+          var date = new Date($scope.createInfo.departureTime).format('yyyy/MM/dd hh:mm:ss');
+          $cordovaDatePicker.show({
+            date: date,
+            allowOldDates: true,
+            allowFutureDates: true,
+            mode: 'date',
+            titleText: '',
+            doneButtonLabel: '确认',
+            cancelButtonLabel: '取消',
+            popoverArrowDirection: 'UP',
+            locale: 'zh_cn'
+          }).then(function (returnDate) {
+            var date1 = "";
+            var time1 ="";
+            date1 = returnDate.format("yyyy-MM-dd hh:mm:ss");
+            if (!$scope.$$phrese) {
+              $scope.$apply();
+            }
+            $cordovaDatePicker.show({
+              date: date,
+              allowOldDates: true,
+              allowFutureDates: true,
+              mode: 'time',
+              titleText: '',
+              doneButtonLabel: '确认',
+              cancelButtonLabel: '取消',
+              popoverArrowDirection: 'UP',
+              locale: 'zh_cn'
+            }).then(function (returnDate) {
+              time1 = returnDate.format("yyyy-MM-dd hh:mm:ss");
+              if (!$scope.$$phrese) {
+                $scope.$apply(function () {
+                  $scope.departureTime = date1+" "+time1;
+                });
+              }
+            });
+
+          });
+        };
+
+        //回调位置信息
+      $rootScope.$on("SET_LOCATION", function () {
+        var location = carpoolingCreateService.getLocation();
+        $scope.startLng = location.startLng;
+        $scope.startLat = location.startLat;
+        $scope.endLng=location.endLng;
+        $scope.endLat=location.endLat;
+        $scope.start=location.start;
+        $scope.end = location.end;
+        document.getElementById("create-departure").value =  $scope.start;
+        document.getElementById("create-destination").value =  $scope.end;
+      });
 
 
       //添加通讯录人员
@@ -351,19 +410,31 @@ angular.module('applicationModule')
         }
         return false;
       }
-
+      //exchange
+      $scope.exchange = function(){
+        var departure = document.getElementById("create-departure").value;
+        var destination = document.getElementById("create-destination").value;
+        document.getElementById("create-departure").value = destination;
+        document.getElementById("create-destination").value = departure;
+        exchangeStartEnd();
+      }
+      function exchangeStartEnd(){
+        $scope.start = [$scope.end,$scope.end=$scope.start][0];
+        $scope.startLat = [$scope.endLat,$scope.endLat=$scope.startLat][0];
+        $scope.startLng = [$scope.endLng,$scope.endLng=$scope.startLng][0];
+      }
 
       //发布
       $scope.createInfo = {
         "empNo": window.localStorage.empno,
         "city": "上海",
-        "startAddr": "上海汉得信息技术股份有限公司",
-        "targetAddr": "天安门广场",
+        "startAddr": "",
+        "targetAddr": "",
         "carType": "",
-        "startLatitude": "121.156627,31.168082",
-        "endLatitude": "116.397571,39.906049",
+        "startLatitude": "",
+        "endLatitude": "",
         "feeType": "",
-        "departureTime": "2016-7-15 10:02:22",
+        "departureTime": "2016-8-3 10:02:22",
         "departurePreference": "",
         "empNoList": [],
         "lockSeats": "",
@@ -392,23 +463,57 @@ angular.module('applicationModule')
         });
         $scope.createInfo.availableSeats = $scope.availableSeats;//允许座位数量
         $scope.createInfo.lockSeats  =   $scope.lockSeatNumber;//锁定座位数
-        console.log($scope.createInfo);
+        $scope.createInfo.startAddr = $scope.start ;
+        $scope.createInfo.targetAddr= $scope.end;
+        $scope.createInfo.startLatitude = $scope.startLng+","+$scope.startLat;
+        $scope.createInfo.endLatitude = $scope.endLng+","+$scope.endLat;
 
-        var url = baseConfig.queryPath + "/share/info";
-        hmsHttp.post(url, $scope.createInfo).success(function (result) {
-          hmsPopup.hideLoading();
-          console.log("result success " + angular.toJson(result));
-          if (result.status == "S") {
-            hmsPopup.showShortCenterToast("发布成功");
-          } else if (result.status == "E") {
-            hmsPopup.showShortCenterToast("发布失败");
-          } else if (result.status == "N") {
-            hmsPopup.showShortCenterToast(result.message);
+        if( ($scope.createInfo.startAddr != "") && ($scope.createInfo.endAddr != "") ){
+          if($scope.createInfo.departureTime != ""){
+            if($scope.createInfo.departurePreference != "选择偏好"){
+              if( $scope.createInfo.feeType!=""){
+                if($scope.createInfo.startLat != ""){
+                  if($scope.createInfo.endLat != ""){
+                    $scope.fetchFlag = true;
+                  }else{
+                    hmsPopup.showShortCenterToast("终点错误，请重新输入");
+                  }
+                }else{
+                  hmsPopup.showShortCenterToast("出发点错误，请重新输入");
+                }
+              }else{
+                hmsPopup.showShortCenterToast("费用类型错误，请重新输入");
+              }
+            }else{
+              hmsPopup.showShortCenterToast("请输入时间偏好");
+            }
+          }else{
+            hmsPopup.showShortCenterToast("请输入出发时间");
           }
-        }).error(function (error, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showShortCenterToast("网络连接出错");
-        });
+        }else{
+          hmsPopup.showShortCenterToast("请输入出发点和终点");
+        }
+
+
+        console.log($scope.createInfo);
+        var url = baseConfig.queryPath + "/share/info";
+        if($scope.fetchFlag){
+          hmsHttp.post(url, $scope.createInfo).success(function (result) {
+            hmsPopup.hideLoading();
+            console.log("result success " + angular.toJson(result));
+            if (result.status == "S") {
+              hmsPopup.showShortCenterToast("发布成功");
+              location.reload();
+            } else if (result.status == "E") {
+              hmsPopup.showShortCenterToast("发布失败");
+            } else if (result.status == "N") {
+              //hmsPopup.showShortCenterToast(result.message);
+            }
+          }).error(function (error, status) {
+            hmsPopup.hideLoading();
+            hmsPopup.showShortCenterToast("网络连接出错");
+          });
+        }
       }
     }
   ]);

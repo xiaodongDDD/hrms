@@ -2,6 +2,11 @@
   <div class="carpooling-map-header-bar">
     <div class="platform-status-bar"></div>
     <ion-header-bar class="bar-ion-header"align-title="center" >
+      <div class="buttons">
+        <button class="button" ng-click="myCallback()" style="background: transparent;">
+          <span class="create-back-button-text">确定</span>
+        </button>
+      </div>
       <h1 class="title header-title-color">创建拼车</h1>
       <div class="buttons">
         <button class="button button-icon ion-location" ng-click="get_location()">
@@ -19,15 +24,21 @@
       </div>
       <div class="carpooling-header-oval-fill-in col-65">
         <div  class="fill-in-set row" ng-click="goMap()">
-          <input type="text" id="suggestId" placeholder="请输入起点" class="creater-oval-start-text" >
+          <input type="text" id="input-departure" ng-change="search(1)"  ng-model="departure" placeholder="请输入起点" class="creater-oval-start-text" >
+        </div>
+        <div class="ion-list" ng-if="departureFlag" ng-repeat="x in items">
+          <ion-item class="assoc-item" ng-click="setMyPlace(1,x)">{{x}}</ion-item>
         </div>
         <div class="fill-in-line"></div>
         <div class="fill-in-end row" ng-click = goMap()>
-          <input type="text" placeholder="请输入终点" class="creater-oval-end-text"  >
+          <input type="text" id="input-destination" ng-change="search(2)" ng-model="destination" placeholder="请输入终点" class="creater-oval-end-text">
+        </div>
+        <div class="ion-list" ng-if="destinationFlag" ng-repeat="x in items">
+          <ion-item class="assoc-item" ng-click="setMyPlace(2,x)">{{x}}</ion-item>
         </div>
       </div>
       <div class="carpooling-header-oval-exchange col-21">
-        <div style="text-align: center">
+        <div style="text-align: center" ng-click="exchange()">
           <img src="build/img/application/carpooling/exchange@3x.png" class="img-exchange">
         </div>
       </div>
@@ -35,7 +46,5 @@
   </div>
   <ion-content class="map-content" style="top: 170px;">
     <div id="l-map" class="map"></div>
-    <!--<div id="r-result" class="result">请输入:<input type="text" id="suggestId" size="20" value="百度" style="width:150px;" /></div>-->
-    <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
   </ion-content>
 </ion-view>
