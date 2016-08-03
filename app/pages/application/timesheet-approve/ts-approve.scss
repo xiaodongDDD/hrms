@@ -207,7 +207,8 @@
     opacity: 1;
   }
 }
-.ts-approve-popover{
+
+.ts-approve-popover {
   margin-left: -11%;
 }
 
@@ -261,8 +262,8 @@
 
 @media screen and (max-width: 320px) and (min-width: 300px) {
   .platform-ios .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #a3bfe0);
-    background: linear-gradient(top, #17468F, #3D7BC4, #a3bfe0); /* 标准的语法 */
+    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #ACC6E3);
+    background: linear-gradient(top, #17468F, #3D7BC4, #ACC6E3); /* 标准的语法 */
   }
   .platform-android .custom-head-background {
     background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #89aed9);
@@ -533,8 +534,8 @@
     }
     .approve-row.activated {
       opacity: 0.9;
-      transform: scale(0.9,0.9);
-      -webkit-transform: scale(0.9,0.9);
+      transform: scale(0.9, 0.9);
+      -webkit-transform: scale(0.9, 0.9);
     }
     .refuse-row {
       height: 55px;
@@ -545,8 +546,8 @@
     }
     .refuse-row.activated {
       opacity: 0.9;
-      transform: scale(0.9,0.9);
-      -webkit-transform: scale(0.9,0.9);
+      transform: scale(0.9, 0.9);
+      -webkit-transform: scale(0.9, 0.9);
       background-color: $color-base;
     }
     .status-img {
@@ -557,8 +558,8 @@
   }
   .button.activated {
     opacity: 1;
-    transform: scale(1,1);
-    -webkit-transform: scale(1,1);
+    transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
     background-color: $color-base;
   }
   .item-options .button {
@@ -875,6 +876,7 @@
 .button:after {
   content: none;
 }
+
 ////自定义popup的样式
 //.popup-container {
 //  .popup {

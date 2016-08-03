@@ -34,6 +34,8 @@ angular.module('tsApproveModule')
     'ApproveDetailService',
     '$ionicPopover',
     '$ionicListDelegate',
+    'stackViewService',
+    '$ionicHistory',
     function ($scope,
               $state,
               baseConfig,
@@ -46,7 +48,9 @@ angular.module('tsApproveModule')
               hmsHttp,
               ApproveDetailService,
               $ionicPopover,
-              $ionicListDelegate) {
+              $ionicListDelegate,
+              stackViewService,
+              $ionicHistory) {
       /**
        * initial var section
        */
@@ -57,6 +61,10 @@ angular.module('tsApproveModule')
         } else if (ionic.Platform.isAndroid()) {
           angular.element('.ts-content-bottom').css('marginBottom', '60px');
         }
+
+        var viewTag = document.getElementsByTagName('ion-view');
+        var viewName = viewTag[viewTag.length - 1].attributes[0].value;
+
         $scope.showProjectName = true; //默认显示项目名称
         $scope.showRocket = false; //默认不显示小火箭image
         $scope.showConnectBlock = false; //默认不显示连接块
@@ -112,6 +120,7 @@ angular.module('tsApproveModule')
         };
         var currentDay = new Date().getDate();
         if (currentDay <= 10) {
+
           tsListParams.params.p_end_date = getLastMonthDate(new Date());
           $scope.endApproveDate = getMonthDay(getLastMonthDate(new Date())).replace(/\b(0+)/, '');
           $scope.selectEndItem = [true, false, false]; //控制点击选择截止日期条目的样式(modal-date)
@@ -125,6 +134,46 @@ angular.module('tsApproveModule')
           $scope.selectEndItem = [false, false, true];
         }
       }
+
+
+      $scope.goBackPage = function () { //响应返回按钮--
+        // stackViewService.getCurrentStack(viewName);
+        // stackViewService.view2BackState(viewName);
+        var stackItem = {
+          "viewId": "ion5",
+          "index": 0,
+          "historyId": "ion2",
+          "backViewId": null,
+          "forwardViewId": "ion6",
+          "stateId": "tab.application",
+          "stateName": "tab.application",
+          "url": "/tab/application",
+          "canSwipeBack": true
+        }
+        // $ionicHistory.backView();
+        // $ionicHistory.goBack();
+
+
+        var historyId = $ionicHistory.currentHistoryId();
+        var history = $ionicHistory.viewHistory().histories[historyId].stack;
+        var M = [{
+          "viewId": "ion5",
+          "index": 0,
+          "historyId": "ion2",
+          "backViewId": null,
+          "forwardViewId": "ion6",
+          "stateId": "tab.application",
+          "stateName": "tab.application",
+          "url": "/tab/application",
+          "canSwipeBack": true
+        }];
+        localStorage.applicationStack = history[0];
+        // for (var i = history.length - 1; i >= 1; i--) {
+        warn(history[0]);
+        $ionicHistory.backView(history[0]);
+        $ionicHistory.goBack();
+        // }
+      };
 
       /**
        * 立即执行 拉取数据的代码
@@ -414,7 +463,7 @@ angular.module('tsApproveModule')
         }
       };
 
-      function swipeAction(newObject){
+      function swipeAction(newObject) {
         approveList = {
           "approve_list": []
         };
@@ -558,18 +607,18 @@ angular.module('tsApproveModule')
         tsListParams.params.p_project_person_number = "";
       };
     }])
-/**
- * @params:
- *  1:scope  //controller的作用域
- *  2:url //请求地址
- *  3:params //请求的参数
- *  4: refurbishParam //控制操作按钮的参数
- *  5:busy //用于控制下拉刷新的flag
- *  6:totalNumber //获取的数据总数
- *  7:listArray //数据列表
- *  8:loading //数据加载标记
- *  9:actionFlag //控制--响应操作按钮的flag
- */
+  /**
+   * @params:
+   *  1:scope  //controller的作用域
+   *  2:url //请求地址
+   *  3:params //请求的参数
+   *  4: refurbishParam //控制操作按钮的参数
+   *  5:busy //用于控制下拉刷新的flag
+   *  6:totalNumber //获取的数据总数
+   *  7:listArray //数据列表
+   *  8:loading //数据加载标记
+   *  9:actionFlag //控制--响应操作按钮的flag
+   */
   .service('TsApproveListService', ['hmsHttp', 'baseConfig', 'hmsPopup', '$ionicScrollDelegate',
     function (hmsHttp, baseConfig, hmsPopup, $ionicScrollDelegate) {
       var TsApproveListService = function (scope, requestUrl, requestSearchParams, loadingFlag, actionFlag, refurbishParam) {

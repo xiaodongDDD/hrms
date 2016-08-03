@@ -157,7 +157,9 @@ angular.module('contactModule')
             "friendName": $scope.employeeInfo.emp_name,
             "friendIcon": $scope.employeeInfo.avatar
           };
-          imService.toNativeChatPage(emp);
+          try{
+            imService.toNativeChatPage(emp);
+          } catch (e) {}
         } else {
           hmsPopup.showShortCenterToast('不支持网页聊天!');
         }

@@ -22,29 +22,33 @@ angular.module('HmsModule')
 
       return {
         view2BackState: function (stateName) {
-          warn("history.length : " + _history.stack.length);
-          for (var i = _history.stack.length - 1; i >= 0; i--) {
+          warn("history.length : " + _history.length);
+          for (var i = _history.length - 1; i >= 0; i--) {
             warn("stateName " + _history[i].stateName);
-            $ionicHistory.backView(_history[i]);
-            $ionicHistory.goBack();
+
+              $ionicHistory.backView(_history[i]);
+              $ionicHistory.goBack();
+
           }
         },
         getCurrentStack: function (viewName) {
-          warn($ionicHistory.viewHistory());
+          if (baseConfig.debug) {
+            warn($ionicHistory.currentHistoryId());
+            warn(_history);
+            warn($ionicHistory.viewHistory());
+          }
           angular.forEach(_history, function (view, index) {
             warn('history stack:' + view.stateName);
             if (index === _history.length - 1) {
-              _color = 'back';
+              _color = 'black';
             }
             var _stackItem = {
               viewId: view.viewId,
               stateName: view.stateName,
-              title: view.title,
-              color: _color
-            }
+              url: view.url
+            };
             _stackList.push(_stackItem);
           });
-          _stackList[_stackList.length - 1].title = viewName;
           return _stackList;
         }
       }

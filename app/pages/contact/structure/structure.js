@@ -90,7 +90,6 @@ angular.module('myApp')
       function getStructureInfo(result) { //获取数据的回调函数
         try {
           if (Object.keys(result).length !== 0) {
-            dynamicAddScrollWidth();
             $ionicScrollDelegate.$getByHandle('contactStructureDelegate').scrollBy(1000, 0, true);
             $scope.childrenDept = result.childrenDept;
             $scope.deptStaff = result.deptStaff;
@@ -102,6 +101,7 @@ angular.module('myApp')
             angular.forEach(result.deptInfo, function (data, index) {
               $scope.currentStackList.push(data);
             });
+            dynamicAddScrollWidth();
           }
         } catch (e) {
         }
@@ -145,7 +145,7 @@ angular.module('myApp')
       $scope.goBackStack = function (index, length, newId) {
         if ($stateParams.routeId === 'currentDepartment') {
           getInitStructureInfo.getStructure(getStructureInfo, newId);
-          if(index === 0) {
+          if (index === 0) {
             $ionicHistory.goBack();
           }
         } else {
