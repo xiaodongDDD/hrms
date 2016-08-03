@@ -71,12 +71,14 @@ public class HandIMPlugin extends CordovaPlugin{
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         //初始化基本数据和界面数据
-        init();
-        initRY();
+        //init();
+        //initRY();
     }
     @Override
     public boolean execute(String action, JSONArray args,CallbackContext callbackContext) throws JSONException {
         context=cordova.getActivity().getApplicationContext();
+        init();
+        initRY();
         mCallbackContext = callbackContext;
         if(ACTION_GET_CHAT_LIST.equals(action)){
             //获取用户的id 这里定义上为进入初始化的操作 但是还是加了判断防止多次进入 如果已经接受过传来的用户数据不用重复获取
@@ -479,6 +481,9 @@ public class HandIMPlugin extends CordovaPlugin{
                     for (int i = 0; i < conversations.size(); i++) {
                         Conversation conversation = conversations.get(i);
                         String targetId = conversation.getTargetId();
+                        if(targetId==null || targetId.equals("")){
+                        continue;
+                        }
                         //本回话最后一条消息
                         MessageContent messageContent = conversation.getLatestMessage();
                         //获取消息发送的用户姓名
