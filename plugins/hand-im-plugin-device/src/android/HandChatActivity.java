@@ -855,6 +855,12 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
             if (view.getVisibility() == View.VISIBLE) {
                 view.setVisibility(View.GONE);
                 return false;
+            }else{
+                Intent intent = getIntent();
+                intent.putExtra("FID",friendId);
+                setResult(0x0000,intent);
+                //返回
+                this.finish();
             }
         }
         return super.onKeyDown(keyCode, event);
