@@ -52,8 +52,18 @@ angular.module('applicationModule')
       $scope.addressList = [];
       $scope.flybackList = [];
       var editable = 'N';
-      var uncheckedJson = {flag: false, style: unchecked};
-      var checkedJson = {flag: true, style: checked};
+      //var uncheckedJson = {flag: false, style: unchecked};
+      //var checkedJson = {flag: true, style: checked};
+
+      var uncheckedJson = function () {
+        var json = {flag: false, style: unchecked};
+        return json;
+      }
+
+      var checkedJson = function () {
+        var json = {flag: true, style: checked};
+        return json;
+      }
 
 
       //初始化timesheet填写界面字段
@@ -191,26 +201,26 @@ angular.module('applicationModule')
           }
 
           if (result.every_day.offbase == '1') {
-            $scope.timesheetDetail.travelingAllowance = checkedJson;
+            $scope.timesheetDetail.travelingAllowance = checkedJson();
           } else {
-            $scope.timesheetDetail.travelingAllowance = uncheckedJson;
+            $scope.timesheetDetail.travelingAllowance = uncheckedJson();
           }
           if (result.every_day.base == 'Y') {
-            $scope.timesheetDetail.normalAllowance = checkedJson;
+            $scope.timesheetDetail.normalAllowance = checkedJson();
           } else {
-            $scope.timesheetDetail.normalAllowance = uncheckedJson;
+            $scope.timesheetDetail.normalAllowance = uncheckedJson();
           }
 
           //判断内外部计费是否被选中
           if (result.every_day.internalcharge == '1') {
-            $scope.timesheetDetail.intCharge = checkedJson;
+            $scope.timesheetDetail.intCharge = checkedJson();
           } else {
-            $scope.timesheetDetail.intCharge = uncheckedJson;
+            $scope.timesheetDetail.intCharge = uncheckedJson();
           }
           if (result.every_day.externalcharge == '1') {
-            $scope.timesheetDetail.extCharge = checkedJson;
+            $scope.timesheetDetail.extCharge = checkedJson();
           } else {
-            $scope.timesheetDetail.extCharge = uncheckedJson;
+            $scope.timesheetDetail.extCharge = uncheckedJson();
           }
 
           $scope.timesheetDetail.currentDay = result.every_day.every_day;

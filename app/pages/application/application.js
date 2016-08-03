@@ -146,16 +146,16 @@ angular.module('applicationModule')
               imageUrl: "build/img/application/application/bus@3x.png",
               destUrl: "tab.bus-information",
             },
-            {
+            /*{
               appName: "",
               imageUrl: "",
               destUrl: "",
-            }
-            /*{
+            }*/
+            {
               appName: "拼车",
               imageUrl: "build/img/application/application/carpooling@3x.png",
               destUrl: "tab.carpooling",
-            }*/
+            }
           ]
         }
       ];
