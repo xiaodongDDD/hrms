@@ -854,17 +854,17 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
         if(keyCode == KeyEvent.KEYCODE_BACK){
             if (view.getVisibility() == View.VISIBLE) {
                 view.setVisibility(View.GONE);
-                return false;
+                return true;
             }else{
                 Intent intent = getIntent();
                 intent.putExtra("FID",friendId);
                 setResult(0x0000,intent);
                 //返回
                 this.finish();
-                return false;
+                return true;
             }
         }
-        return false;
+        return true;
     }
     private void sendMessage(final MessageContent msg) {
             RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, friendId, msg, null, null, new IRongCallback.ISendMessageCallback() {
