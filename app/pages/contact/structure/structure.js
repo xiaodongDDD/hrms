@@ -145,7 +145,7 @@ angular.module('myApp')
       $scope.goBackStack = function (index, length, newId) {
         if ($stateParams.routeId === 'currentDepartment') {
           getInitStructureInfo.getStructure(getStructureInfo, newId);
-          if(index === 0) {
+          if (index === 0) {
             $ionicHistory.goBack();
           }
         } else {
@@ -162,7 +162,7 @@ angular.module('myApp')
           if (curr_page >= structureDelegate.getStructureId()) {
             curr_page = '';
           }
-          // structureDelegate.setStructureId(['1', '2']); //provider 在controller中的使用方法
+          structureDelegate.setStructureId(['1', '2']); //provider 在controller中的使用方法
           if ($scope.childrenDept.length != 0 || $scope.childrenDept.length) {
             $state.go("tab.contactStructure" + curr_page, {
               routeId: ++curr_page,

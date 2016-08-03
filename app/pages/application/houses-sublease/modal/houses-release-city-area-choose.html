@@ -1,0 +1,11 @@
+<ion-modal-view class="houses-city-area-choose-modal">
+  <ion-header-bar class="header-color">
+    <h1 class="title title-color">请选择城市区域</h1>
+  </ion-header-bar>
+  <ion-content class="back-color">
+    <!--<div class="change-line"></div>-->
+    <div class="list">
+      <div ng-repeat="x in cityAreaList" class="item apply-item" ng-click="finishChoosingCityArea(x)">{{x.name}}</div>
+    </div>
+  </ion-content>
+</ion-modal-view>

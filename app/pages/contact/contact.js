@@ -184,15 +184,16 @@ angular.module('contactModule')
 
       $scope.goStructure = function (flag) {
         hmsPopup.showShortCenterToast('下一版本上线!');
-        // if (angular.equals(flag, 'current')) {
-        //   $state.go('tab.contactStructure', {
-        //     routeId: "currentDepartment",
-        //     structureId: "1",
-        //     currentDepartInfo: $scope.currentStructure
-        //   });
-        // } else {
-        //   $state.go('tab.contactStructure');
-        // }
+        return;
+        if (angular.equals(flag, 'current')) {
+          $state.go('tab.contactStructure', {
+            routeId: "currentDepartment",
+            structureId: "1",
+            currentDepartInfo: $scope.currentStructure
+          });
+        } else {
+          $state.go('tab.contactStructure');
+        }
       };
 
       $scope.goDetailInfo = function (newEmployeeNumber) {
