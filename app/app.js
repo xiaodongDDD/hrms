@@ -30,6 +30,7 @@ angular.module('myApp')
     'hmsJpushService',
     'sqliteService',
     'hmsPopup',
+    '$cordovaTouchID',
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -38,7 +39,8 @@ angular.module('myApp')
               imService,
               hmsJpushService,
               sqliteService,
-              hmsPopup) {
+              hmsPopup,
+              $cordovaTouchID) {
 
       $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -78,6 +80,18 @@ angular.module('myApp')
             }
           }
         });
+
+        // $cordovaTouchID.checkSupport().then(function() {
+        //   $cordovaTouchID.authenticate("").then(function() {
+        //     alert("enter??");
+        //     $state.go('tab.message');
+        //   }, function () {
+        //     // error
+        //   });
+        // }, function (error) {
+        // });
+
+
 
         /*var analyze = function (currentState) {
          if (currentState.views) {

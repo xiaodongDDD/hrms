@@ -33,6 +33,7 @@ angular.module('contactModule')
     'imService',
     '$ionicActionSheet',
     'contactService',
+    '$cordovaActionSheet',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -43,7 +44,8 @@ angular.module('contactModule')
               $stateParams,
               imService,
               $ionicActionSheet,
-              contactService) {
+              contactService,
+              $cordovaActionSheet) {
       /**
        * var section
        */
@@ -102,15 +104,20 @@ angular.module('contactModule')
       };
 
       $scope.telPhone = function () { //响应拨打电话按钮的方法
-        try {
-          $ionicActionSheet.show({
-            buttons: [
-              {text: '拨打电话'},
-              {text: '增加到通讯录'},
-            ],
-            cancelText: 'Cancel',
-            buttonClicked: function (index) {
-              if (index == 0) {
+        var options = {
+          buttonLabels: ['拨打电话', '增加到通讯录'],
+          addCancelButtonWithLabel: '取消',
+          androidEnableCancelButton : true,
+          androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT
+        };
+
+        document.addEventListener("deviceready", function () {
+          $cordovaActionSheet.show(options)
+            .then(function(btnIndex) {
+              if(baseConfig.debug) {
+                warn(btnIndex);
+              }
+              if (btnIndex == 1) {
                 window.location.href = "tel:" + 88888888888; //不明觉厉-!
                 window.location.href = "tel:" + $scope.employeeInfo.mobil.replace(/\s+/g,"");
                 employeeBaseInfo = {
@@ -123,8 +130,7 @@ angular.module('contactModule')
                   storeCommonLinkman(employeeBaseInfo);
                 }
                 return true;
-              }
-              if (index == 1) {
+              } else if (btnIndex == 2){
                 var baseInfo = {
                   mobil: $scope.employeeInfo.mobil.replace(/\s+/g,""),
                   email: $scope.employeeInfo.email,
@@ -133,11 +139,9 @@ angular.module('contactModule')
                 contactService.contactLocal(baseInfo);
                 return true;
               }
-            }
-          });
-        } catch (e) {
-          alert(e);
-        }
+            });
+        }, false);
+
       };
 
       $scope.goImTalk = function () {
