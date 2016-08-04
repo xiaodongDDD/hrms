@@ -34,8 +34,8 @@ angular.module('applicationModule')
       $scope.map = "";
       var  mapUrl = {
         baseUrl: " http://api.map.baidu.com/staticimage/v2?ak=i6Ft7l8flPNq7Ub6O2vmcuGx",
-        baseStyle:"&width=400&height=100&zoom=11",
-        baseStyle1:"&markerStyles=-1,http://www.daxuequan.org/hrms-img/start@2x.png|-1,http://www.daxuequan.org/hrms-img/end@2x.png",
+        baseStyle:"&width=400&height=100&zoom=11&scale=2",
+        baseStyle1:"&markerStyles=-1,http://www.daxuequan.org/hrms-img/start@3x.png|-1,http://www.daxuequan.org/hrms-img/end@3x.png",
       }
 
       searchHistoryApplyListAutomatically();

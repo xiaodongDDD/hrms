@@ -32,10 +32,10 @@
         <div class="col col-40" style="padding: 0px; margin: 0px; margin-top: 9.5px">
           <label style="text-align: center; font-size: 16px; color: #4A4A4A">城市：</label>
         </div>
-        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px" ng-click="chooseCity()">
           <input type="text"
                  style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;right: 15px"
-                 placeholder="请输入" ng-model="housesReleaseInfo.city"/>
+                 placeholder="请选择" ng-model="housesReleaseInfo.city" readonly/>
         </div>
       </div>
 
@@ -44,10 +44,10 @@
         <div class="col col-40" style="padding: 0px; margin: 0px; margin-top: 9.5px">
           <label style="text-align: center; font-size: 16px; color: #4A4A4A">区域：</label>
         </div>
-        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px">
+        <div class="col col-60" style="padding: 0px; margin: 0px; margin-top: 9.5px; font-size: 16px" ng-click="chooseCityArea()">
           <input type="text"
                  style="color: #9B9B9B;font-size: 1em;background-color: transparent; height: 24px; line-height: normal;text-align: right;position: absolute;right: 15px"
-                 placeholder="请输入" ng-model="housesReleaseInfo.area"/>
+                 placeholder="请选择" ng-model="housesReleaseInfo.area" readonly/>
         </div>
       </div>
 

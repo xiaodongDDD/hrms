@@ -194,10 +194,7 @@ angular.module('applicationModule')
       };
 
 
-
-
-
-      function selectTimeAndroid(date) {
+      function selectTimeAndroid() {
         var date = new Date($scope.createInfo.departureTime).format('MM/dd/yyyy/hh/mm/ss');
         $cordovaDatePicker.show({
           date: date,
@@ -220,27 +217,25 @@ angular.module('applicationModule')
       }
 
 
-        function selectTimeIos(date) {
-          var date = new Date($scope.createInfo.departureTime).format('yyyy/MM/dd hh:mm:ss');
-          $cordovaDatePicker.show({
-            date: date,
-            allowOldDates: true,
-            allowFutureDates: true,
-            mode: 'date',
-            titleText: '',
-            doneButtonLabel: '确认',
-            cancelButtonLabel: '取消',
-            popoverArrowDirection: 'UP',
-            locale: 'zh_cn'
-          }).then(function (returnDate) {
-            var date1 = "";
-            var time1 ="";
-            date1 = returnDate.format("yyyy-MM-dd hh:mm:ss");
-            if (!$scope.$$phrese) {
-              $scope.$apply();
-            }
+      function selectTimeIOS() {
+        var date = new Date($scope.createInfo.departureTime).format('yyyy/MM/dd hh:mm:ss');
+        $cordovaDatePicker.show({
+          date: new Date(),
+          allowOldDates: true,
+          allowFutureDates: true,
+          mode: 'date',
+          titleText: '',
+          doneButtonLabel: '确认',
+          cancelButtonLabel: '取消',
+          popoverArrowDirection: 'UP',
+          locale: 'zh_cn'
+        }).then(function (returnDate) {
+          var date1 = "";
+          var time1 ="";
+          date1 = returnDate.format("yyyy-MM-dd");
+          $timeout(function(){
             $cordovaDatePicker.show({
-              date: date,
+              date: new Date(),
               allowOldDates: true,
               allowFutureDates: true,
               mode: 'time',
@@ -250,18 +245,17 @@ angular.module('applicationModule')
               popoverArrowDirection: 'UP',
               locale: 'zh_cn'
             }).then(function (returnDate) {
-              time1 = returnDate.format("yyyy-MM-dd hh:mm:ss");
-              if (!$scope.$$phrese) {
-                $scope.$apply(function () {
-                  $scope.departureTime = date1+" "+time1;
-                });
-              }
+              time1 = returnDate.format("hh:mm:ss");
+              $scope.departureTime = "";
+              $scope.departureTime = date1+" "+time1;
+              $scope.$apply();
             });
+          },400);
+        });
+      };
 
-          });
-        };
 
-        //回调位置信息
+      //回调位置信息
       $rootScope.$on("SET_LOCATION", function () {
         var location = carpoolingCreateService.getLocation();
         $scope.startLng = location.startLng;
@@ -452,7 +446,7 @@ angular.module('applicationModule')
         $scope.createInfo.carType = $scope.carTypes;//车类型
         $scope.createInfo.otherDesc = explain//其他说明
         $scope.createInfo.departurePreference = $scope.timePreference;//时间偏好选择，需要判断
-        $scope.createInfo.departureTime = $scope.departureTime;//出行时间
+        //$scope.createInfo.departureTime = $scope.departureTime;//出行时间
         $scope.createInfo.empNoList = [];
         angular.forEach($scope.carpoolingJoin, function(data,index,array){  //加入座位列表
           if(data.empCode != ""){
@@ -503,7 +497,7 @@ angular.module('applicationModule')
             console.log("result success " + angular.toJson(result));
             if (result.status == "S") {
               hmsPopup.showShortCenterToast("发布成功");
-              location.reload();
+              $state.go("tab.carpooling-list");
             } else if (result.status == "E") {
               hmsPopup.showShortCenterToast("发布失败");
             } else if (result.status == "N") {

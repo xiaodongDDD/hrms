@@ -1,0 +1,21 @@
+<ion-modal-view class="houses-city-choose-modal">
+  <ion-header-bar class="header-color">
+    <h1 class="title title-color">请选择城市</h1>
+  </ion-header-bar>
+  <ion-content class="back-color" overflow-scroll="true" style="overflow: hidden">
+    <div class="row" style="padding: 0; margin: 0; height: 100%">
+      <ion-scroll direction="y" scrollbar-y="false" style="float: left; height: 100%; width: 50%"
+                  delegate-handle="provinceScroll">
+        <div class="list">
+          <div ng-repeat="x in province_enum" class="item apply-item" ng-click="finishChoosingProvince(x)">{{x.name}}
+          </div>
+        </div>
+      </ion-scroll>
+      <ion-scroll direction="y" scrollbar-y="false" style="height: 100%; width: 50%" delegate-handle="cityScroll">
+        <div class="list">
+          <div ng-repeat="x in cityList" class="item apply-item" ng-click="finishChoosingCity(x)">{{x.name}}</div>
+        </div>
+      </ion-scroll>
+    </div>
+  </ion-content>
+</ion-modal-view>

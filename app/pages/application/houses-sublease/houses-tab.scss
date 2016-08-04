@@ -18,5 +18,103 @@
     @include tab-icon("./../img/application/houses-sublease/history-G@3x.png");
 
   }
+}
 
+.houses-city-choose-modal{//房屋发布选择城市modal样式
+  position: absolute;
+  top: 60%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .header-color{
+    background-color: #ffffff;
+    border-bottom: 1px solid #3D7BC4;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+  }
+  .change-line{
+    width: 100%;
+    height: 1px;
+    background:-webkit-linear-gradient(right,#3D7BC4,#17468F,#3D7BC4);
+  }
+  .back-color {
+    background-color: #ffffff;
+  }
+  .list{
+    border: none;
+  }
+  .city-item{
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  .city-row{
+    padding: 0;
+    margin: 0;
+  }
+  .apply-item{
+    width: 70%;
+    margin-left: 15%;
+    color:#9b9b9b;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2;
+    text-align: center;
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #ffffff;
+  }
+}
+
+.houses-city-area-choose-modal{//新建住宿申请下的申请类型modal样式
+  position: absolute;
+  top: 60%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .header-color{
+    background-color: #ffffff;
+    border-bottom: 1px solid #3D7BC4;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+  }
+  .change-line{
+    width: 100%;
+    height: 1px;
+    background:-webkit-linear-gradient(right,#3D7BC4,#17468F,#3D7BC4);
+  }
+  .back-color {
+    background-color: #ffffff;
+  }
+  .list{
+    border: none;
+  }
+  .apply-item{
+    width: 70%;
+    margin-left: 15%;
+    color:#9b9b9b;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2;
+    text-align: center;
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #ffffff;
+  }
 }
