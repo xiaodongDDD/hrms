@@ -93,7 +93,12 @@ angular.module('contactModule')
       initEmployeeData();
 
       $scope.goBackPage = function () {
-        $ionicHistory.goBack();
+        var historyId = $ionicHistory.currentHistoryId();
+        var history = $ionicHistory.viewHistory().histories[historyId].stack;
+        for (var i = history.length - 1; i >0; i--) {
+          $ionicHistory.backView(history[i]);
+          $ionicHistory.goBack();
+        }
       };
 
       function storeCommonLinkman(newObject) { //存储为常用联系人
@@ -107,21 +112,21 @@ angular.module('contactModule')
         var options = {
           buttonLabels: ['拨打电话', '增加到通讯录'],
           addCancelButtonWithLabel: '取消',
-          androidEnableCancelButton : true,
+          androidEnableCancelButton: true,
           androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT
         };
 
         document.addEventListener("deviceready", function () {
           $cordovaActionSheet.show(options)
-            .then(function(btnIndex) {
-              if(baseConfig.debug) {
+            .then(function (btnIndex) {
+              if (baseConfig.debug) {
                 warn(btnIndex);
               }
               if (btnIndex == 1) {
                 window.location.href = "tel:" + 88888888888; //不明觉厉-!
-                window.location.href = "tel:" + $scope.employeeInfo.mobil.replace(/\s+/g,"");
+                window.location.href = "tel:" + $scope.employeeInfo.mobil.replace(/\s+/g, "");
                 employeeBaseInfo = {
-                  tel: $scope.employeeInfo.mobil.replace(/\s+/g,""),
+                  tel: $scope.employeeInfo.mobil.replace(/\s+/g, ""),
                   name: $scope.employeeInfo.emp_name,
                   employeeNumber: $scope.employeeInfo.emp_code,
                   imgUrl: $scope.employeeInfo.avatar
@@ -130,9 +135,9 @@ angular.module('contactModule')
                   storeCommonLinkman(employeeBaseInfo);
                 }
                 return true;
-              } else if (btnIndex == 2){
+              } else if (btnIndex == 2) {
                 var baseInfo = {
-                  mobil: $scope.employeeInfo.mobil.replace(/\s+/g,""),
+                  mobil: $scope.employeeInfo.mobil.replace(/\s+/g, ""),
                   email: $scope.employeeInfo.email,
                   emp_name: $scope.employeeInfo.emp_name
                 };
@@ -146,7 +151,7 @@ angular.module('contactModule')
 
       $scope.goImTalk = function () {
         employeeBaseInfo = {
-          tel: $scope.employeeInfo.mobil.replace(/\s+/g,""),
+          tel: $scope.employeeInfo.mobil.replace(/\s+/g, ""),
           name: $scope.employeeInfo.emp_name,
           employeeNumber: $scope.employeeInfo.emp_code,
           imgUrl: $scope.employeeInfo.avatar
@@ -161,9 +166,10 @@ angular.module('contactModule')
             "friendName": $scope.employeeInfo.emp_name,
             "friendIcon": $scope.employeeInfo.avatar
           };
-          try{
+          try {
             imService.toNativeChatPage(emp);
-          } catch (e) {}
+          } catch (e) {
+          }
         } else {
           hmsPopup.showShortCenterToast('不支持网页聊天!');
         }
