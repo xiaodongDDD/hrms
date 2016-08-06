@@ -31,6 +31,7 @@ angular.module('myInfoModule')
     '$timeout',
     '$cordovaCamera',
     '$rootScope',
+    '$ionicGesture',
     function ($scope,
               baseConfig,
               $ionicHistory,
@@ -40,7 +41,8 @@ angular.module('myInfoModule')
               $stateParams,
               $timeout,
               $cordovaCamera,
-              $rootScope) {
+              $rootScope,
+              $ionicGesture) {
       $ionicModal.fromTemplateUrl('build/pages/myInfo/modal/new-certificate-choose-type.html', {//定义证书类型modal
         scope: $scope
       }).then(function (modal1) {
@@ -226,40 +228,71 @@ angular.module('myInfoModule')
           $scope.extensionPicture=$scope.imageList[num].uri;
           $timeout(function(){
             var bigPicture=document.getElementById('check-my-big-picture');
+            var scaleShelter = document.getElementById('scaleShelter');
+            var shelter = angular.element(document.querySelector('#scaleShelter'));
             var screenWidth = window.screen.width;
             var screenHeight = window.screen.height;
-            var picHeight=bigPicture.offsetHeight;
-            var picWidth=bigPicture.offsetWidth;
-            if(picHeight>picWidth){
-              bigPicture.style.width=screenWidth+"px";
-              bigPicture.style.height=screenHeight+"px";
-              //if(judgePicHeight<picHeight){
-              //  bigPicture.style.marginTop=(picHeight-judgePicHeight)/2+'px';
-              //}else if(judgePicHeight>=picHeight){
-              //  if(ionic.Platform.isAndroid()){
-              //    bigPicture.style.marginTop=10+"px";
-              //  }else if(ionic.Platform.isIOS()){
-              //    bigPicture.style.marginTop=0+"px";
-              //  }else if(ionic.Platform.isWebView()){
-              //    bigPicture.style.marginTop=10+"px";
-              //  }
-              //}
-            }else if(picHeight<picWidth){
-              bigPicture.style.width=100+"%";
-              if(screenWidth>310 && screenWidth<=350){
-                bigPicture.style.height=170+"px";
-                bigPicture.style.marginTop=150+"px";
-              }else if(screenWidth >350 && screenWidth<=380){
-                bigPicture.style.height=225+"px";
-                bigPicture.style.marginTop=180+"px";
-              }else if(screenWidth >380 && screenWidth<=420){
-                bigPicture.style.height=240+"px";
-                bigPicture.style.marginTop=210+"px";
-              }else if(screenWidth>420){
-                bigPicture.style.height=255+"px";
-                bigPicture.style.marginTop=240+"px";
+            var picHeight = bigPicture.offsetHeight;
+            var picWidth = bigPicture.offsetWidth;
+            //console.debug(screenHeight+","+picHeight);
+            if(picHeight<screenHeight){
+              bigPicture.style.marginTop=(screenHeight-picHeight)/2+"px";
+            }
+            if(picWidth<screenWidth){
+              bigPicture.style.marginLeft=(screenWidth-picWidth)/2+"px";
+            }
+            if( (parseInt(picHeight/screenHeight)>3) || parseInt((picWidth/screenWidth)>3)){
+              bigPicture.style.height=picHeight*0.1+"px";
+              bigPicture.style.width=picWidth*0.1+"px";
+              if(bigPicture.offsetHeight<screenHeight){
+                bigPicture.style.marginTop=(screenHeight-bigPicture.offsetHeight)/2+"px";
+              }
+              if(bigPicture.offsetWidth<screenWidth){
+                bigPicture.style.marginLeft=(screenWidth-bigPicture.offsetWidth)/2+"px";
               }
             }
+            $ionicGesture.on("pinchin",function(e){
+                var scaleValue = e.gesture.scale;
+                if(parseInt(bigPicture.offsetWidth/screenWidth)>0.3){
+                  //bigPicture.style.webkitTransform="scale("+scaleValue+","+scaleValue+")";
+                  bigPicture.style.height=bigPicture.offsetHeight*scaleValue+"px";
+                  bigPicture.style.width=bigPicture.offsetWidth*scaleValue+"px";
+                  //console.debug(bigPicture.offsetHeight+","+bigPicture.offsetWidth);
+                  if(bigPicture.offsetHeight<screenHeight){
+                    bigPicture.style.marginTop=(screenHeight-bigPicture.offsetHeight)/2+"px";
+                    //console.debug(bigPicture.style.marginTop);
+                  }else if(bigPicture.offsetHeight>=screenHeight){
+                    bigPicture.style.marginTop=0+"px";
+                  }
+                  if(bigPicture.offsetWidth<screenWidth){
+                    bigPicture.style.marginLeft=(screenWidth-bigPicture.offsetWidth)/2+"px";
+                    //console.debug(bigPicture.style.marginLeft);
+                  }else if(bigPicture.offsetWidth>=screenWidth){
+                    bigPicture.style.marginLeft=0+"px";
+                  }
+                }
+            },shelter);
+            $ionicGesture.on("pinchout",function(e){
+              var scaleValue = e.gesture.scale;
+              if(parseInt(bigPicture.offsetWidth/screenWidth)<1.5){
+                //bigPicture.style.webkitTransform="scale("+scaleValue+","+scaleValue+")";
+                bigPicture.style.height=bigPicture.offsetHeight*scaleValue+"px";
+                bigPicture.style.width=bigPicture.offsetWidth*scaleValue+"px";
+                //console.debug(bigPicture.offsetHeight+","+bigPicture.offsetWidth);
+                if(bigPicture.offsetHeight<screenHeight){
+                  bigPicture.style.marginTop=(screenHeight-bigPicture.offsetHeight)/2+"px";
+                  //console.debug(bigPicture.style.marginTop);
+                }else if(bigPicture.offsetHeight>=screenHeight){
+                  bigPicture.style.marginTop=0+"px";
+                }
+                if(bigPicture.offsetWidth<screenWidth){
+                  bigPicture.style.marginLeft=(screenWidth-bigPicture.offsetWidth)/2+"px";
+                  //console.debug(bigPicture.style.marginLeft);
+                }else if(bigPicture.offsetWidth>=screenWidth){
+                  bigPicture.style.marginLeft=0+"px";
+                }
+              }
+            },shelter);
           },100);
         }
       };
