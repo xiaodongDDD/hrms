@@ -129,9 +129,9 @@ angular.module('messageModule')
         }
       };
 
-      $timeout(function () {
-        getMessageList();
-      }, 1000);
+      //$timeout(function () {
+      //  getMessageList();
+      //}, 1000);
 
       function dealCommonLinkMan(newObject) { //存储常用联系人最多15个
         storedb(LINK_MAN).insert(newObject, function (err) {
