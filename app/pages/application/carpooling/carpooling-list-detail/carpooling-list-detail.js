@@ -46,6 +46,13 @@ angular.module('applicationModule')
          $scope.cp_number = [];
         angular.forEach( $scope.listInfo.companies, function (data, index, array) {
           joins.push(array[index].empNo);
+          if(data.avatar == null){//设置默认头像
+            if(data.genderId=="1"){
+              data.avatar="build/img/myInfo/man-portrait.png";
+            }else if(data.genderId=="2"){
+              data.avatar="build/img/myInfo/woman-portrait.png";
+            }
+          }
           $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
         });
         for(var i=0;i < lockNumber;i++){
