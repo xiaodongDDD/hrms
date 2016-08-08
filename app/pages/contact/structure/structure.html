@@ -39,8 +39,7 @@
         <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
       </ion-item>
     </div>
-    <!--<hms-loading></hms-loading>-->
-
+    <hms-loading style="padding-top: 30%;" ng-if="showLoading"></hms-loading>
     <div class="contact-item row no-padding"
          ng-repeat="i in deptStaff"
          ng-click="goDetailInfo(i.accountNumber)">

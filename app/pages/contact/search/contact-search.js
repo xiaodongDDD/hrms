@@ -33,6 +33,7 @@ angular.module('contactModule')
     '$ionicHistory',
     'commonContactService',
     '$rootScope',
+    '$cordovaActionSheet',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -45,7 +46,8 @@ angular.module('contactModule')
               hmsHttp,
               $ionicHistory,
               commonContactService,
-              $rootScope) {
+              $rootScope,
+              $cordovaActionSheet) {
       /**
        * var section
        */
@@ -230,15 +232,21 @@ angular.module('contactModule')
 
       $scope.telSaveNumber = function (event, baseInfo) { //拨打电话按钮的响应事件
         event.stopPropagation(); //阻止事件冒泡
-        try {
-          $ionicActionSheet.show({
-            buttons: [
-              {text: '拨打电话'},
-              {text: '增加到通讯录'},
-            ],
-            cancelText: 'Cancel',
-            buttonClicked: function (index) {
-              if (index == 0) {
+
+        var options = {
+          buttonLabels: ['拨打电话', '增加到通讯录'],
+          addCancelButtonWithLabel: '取消',
+          androidEnableCancelButton : true,
+          androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT
+        };
+
+        document.addEventListener("deviceready", function () {
+          $cordovaActionSheet.show(options)
+            .then(function(btnIndex) {
+              if (baseConfig.debug) {
+                warn(btnIndex);
+              }
+              if (btnIndex == 1) {
                 window.location.href = "tel:" + 88888888888; //不明觉厉--
                 window.location.href = "tel:" + baseInfo.mobil.replace(/\s+/g, "");
                 var imgUrl = baseInfo.avatar;
@@ -261,16 +269,12 @@ angular.module('contactModule')
                   dealCommonLinkMan(employeeBaseInfo);
                 }
                 return true;
-              }
-              if (index == 1) {
+              } else if(btnIndex == 2){
                 contactService.contactLocal(baseInfo);
                 return true;
               }
-            }
-          });
-        } catch (e) {
-          alert(e);
-        }
+            });
+        }, false);
       };
     }])
   .factory('contactService', ['hmsPopup', function (hmsPopup) {

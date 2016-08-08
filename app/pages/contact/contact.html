@@ -34,6 +34,8 @@
         <div class="col col-15 item-logo">
           <img class="contact-item-logo" src="build/img/contact/line@3x.png"/>
         </div>
+        <ion-spinner icon="ios-small" style="align-self: center;padding-left: 30%;"
+                     ng-if="structureName === ''"></ion-spinner>
         <div class="col col-75 item-name" ng-bind="structureName">
         </div>
         <div class="item-arrow"></div>

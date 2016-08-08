@@ -63,6 +63,7 @@ angular.module('myApp')
         $scope.departmentName = ''; //当前组织所属层级的名字
         $scope.totalStaffNumber = ''; //当前组织所属层级的总人数(包括全部下级的人数)
         $scope.currentStackList = [{name: '通讯录', id: ''}]; //页栈列表
+        $scope.showLoading = true;
       }
 
       curr_page = $stateParams.routeId;
@@ -95,6 +96,7 @@ angular.module('myApp')
             $scope.deptStaff = result.deptStaff;
             $scope.departmentName = result.departmentName;
             $scope.totalStaffNumber = result.totalStaffNumber;
+            $scope.showLoading = false;
             if (curr_page === 'currentDepartment') {
               $scope.currentStackList = [{name: '通讯录', id: ''}];
             }
@@ -111,6 +113,7 @@ angular.module('myApp')
         var currentInfo = $stateParams.currentDepartInfo;
         $scope.childrenDept = [];
         $scope.deptStaff = currentInfo.deptStaff;
+        $scope.showLoading = false;
         for (var i = 1; i < currentInfo.deptInfo.length; i++) {
           if (i === (currentInfo.deptInfo.length - 1)) {
             $scope.departmentName += currentInfo.deptInfo[i].name;

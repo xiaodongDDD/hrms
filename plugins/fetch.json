@@ -30,7 +30,24 @@
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY": "28ff89acc7f718ba07290be4"
+            "API_KEY": "22b25063349b6beef7bde524"
         }
+    },
+    "cordova-plugin-touchid": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-touchid"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.handmobile.cordovaplugin.hotpatch": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

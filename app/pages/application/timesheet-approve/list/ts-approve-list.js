@@ -137,39 +137,10 @@ angular.module('tsApproveModule')
 
 
       $scope.goBackPage = function () { //响应返回按钮--
-        // stackViewService.getCurrentStack(viewName);
-        // stackViewService.view2BackState(viewName);
-        var stackItem = {
-          "viewId": "ion5",
-          "index": 0,
-          "historyId": "ion2",
-          "backViewId": null,
-          "forwardViewId": "ion6",
-          "stateId": "tab.application",
-          "stateName": "tab.application",
-          "url": "/tab/application",
-          "canSwipeBack": true
-        }
-        // $ionicHistory.backView();
-        // $ionicHistory.goBack();
-
-
         var historyId = $ionicHistory.currentHistoryId();
         var history = $ionicHistory.viewHistory().histories[historyId].stack;
-        var M = [{
-          "viewId": "ion5",
-          "index": 0,
-          "historyId": "ion2",
-          "backViewId": null,
-          "forwardViewId": "ion6",
-          "stateId": "tab.application",
-          "stateName": "tab.application",
-          "url": "/tab/application",
-          "canSwipeBack": true
-        }];
-        localStorage.applicationStack = history[0];
-        // for (var i = history.length - 1; i >= 1; i--) {
-        warn(history[0]);
+        // for (var i = history.length - 1; i >= 0; i--) {
+        // warn(history[0]);
         $ionicHistory.backView(history[0]);
         $ionicHistory.goBack();
         // }
