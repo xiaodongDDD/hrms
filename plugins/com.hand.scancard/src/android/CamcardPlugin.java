@@ -35,29 +35,29 @@ public class CamcardPlugin extends CordovaPlugin {
 	private static final int PHOTO_WITH_CAMERA = 0;
 	private static final int PHOTO_WITH_DATA = 1;
 	private CallbackContext mCallbackContext;
-	
+
 	private String imgName = "camcard.jpg";
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		this.mCallbackContext = callbackContext;
 		if("takePicture".equals(action)){
 			takePhoto();
-			
+
 			return true;
 		}else if("choosePicture".equals(action)){
 			pickPhoto();
-			
+
 			return true;
 		}
-		callbackContext.error("error");  
-        return false; 
+		callbackContext.error("error");
+        return false;
 	}
 	private void pickPhoto() {
 		Intent intent = new Intent();
 		intent.setType("image/*");  // 开启Pictures画面Type设定为image
-		intent.setAction(Intent.ACTION_GET_CONTENT); //使用Intent.ACTION_GET_CONTENT这个Action 
+		intent.setAction(Intent.ACTION_GET_CONTENT); //使用Intent.ACTION_GET_CONTENT这个Action
 		cordova.startActivityForResult(this,intent, PHOTO_WITH_DATA); //取得相片后返回到本画面
-		
+
 	}
 	/**
 	 * 启动相机拍照
@@ -68,28 +68,29 @@ public class CamcardPlugin extends CordovaPlugin {
 	    Uri imageUri = Uri.fromFile(new File(getCacheDir(),"image.jpg"));
 		//指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
 	    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-       
-	    //直接使用，没有缩小  
+
+	    //直接使用，没有缩小
         cordova.startActivityForResult(this,intent, PHOTO_WITH_CAMERA);  //用户点击了从相机获取
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+
 		if(resultCode == cordova.getActivity().RESULT_OK) {  //返回成功
 			switch (requestCode) {
 			case PHOTO_WITH_CAMERA:  {//拍照获取图片
 				String status = Environment.getExternalStorageState();
 				if(status.equals(Environment.MEDIA_MOUNTED)) { //是否有SD卡
-					
+
 					Bitmap bitmap = BitmapFactory.decodeFile(getCacheDir()+"image.jpg");
-					
+
 					//保存图片
 					savePhotoToSDCard(imgSavePath, imgName, bitmap);
 					Bitmap smallBitmap = getSmallBitmap(imgSavePath + "/"+imgName);
 					savePhotoToSDCard(imgSavePath, imgName, smallBitmap);
 					cardRecognize();
-	            	
+
 				}else {
 					mCallbackContext.error("请检查您的SD卡");
 				}
@@ -98,7 +99,7 @@ public class CamcardPlugin extends CordovaPlugin {
 				case PHOTO_WITH_DATA:  {//从图库中选择图片
 					ContentResolver resolver = cordova.getActivity().getContentResolver();
 					//照片的原始资源地址
-					Uri originalUri = data.getData();  
+					Uri originalUri = data.getData();
 
 					try {
 						 //使用ContentProvider通过URI获取原始图片
@@ -110,7 +111,7 @@ public class CamcardPlugin extends CordovaPlugin {
 						savePhotoToSDCard(imgSavePath, imgName, smallBitmap);
 						}
 						cardRecognize();
-		           
+
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
@@ -119,10 +120,12 @@ public class CamcardPlugin extends CordovaPlugin {
 				break;
 				}
 			}
+		}else{
+			mCallbackContext.error("cancel");//取消拍照或者取消从相册中选取照片
 		}
-		
+
 	}
-	
+
 	private void cardRecognize(){
 		new Thread(){
 			@Override
@@ -151,14 +154,14 @@ public class CamcardPlugin extends CordovaPlugin {
 					out.flush();
 					inputStream.close();
 					out.close();
-					
+
 					int code = con.getResponseCode();
 					Log.e("399","code="+code+ " url="+url);
 					if (code==200) {
 						InputStream inputStream2 = con.getInputStream();
 						ByteArrayOutputStream bos = new ByteArrayOutputStream();
 						while ((len = inputStream2.read(data))!= -1) {
-							bos.write(data, 0, len);					
+							bos.write(data, 0, len);
 						}
 //						Log.e("399", "result ="+bos.toString());
 						mCallbackContext.success(bos.toString());
@@ -176,9 +179,9 @@ public class CamcardPlugin extends CordovaPlugin {
 				}
 			};
 		}.start();
-		
+
 	}
-	
+
 	/**创建图片不同的文件名**/
 	private String createPhotoFileName() {
 		String fileName = "";
@@ -187,7 +190,7 @@ public class CamcardPlugin extends CordovaPlugin {
 		fileName = dateFormat.format(date) + ".jpg";
 		return fileName;
 	}
-	
+
 	/**
 	 * 保存照片到SDCard
 	 * @param path 需要保存的路径
@@ -227,7 +230,7 @@ public class CamcardPlugin extends CordovaPlugin {
 			}
 		}
 	}
-	
+
 	//计算图片的缩放值
 	public static int calculateInSampleSize(BitmapFactory.Options options,int reqWidth, int reqHeight) {
 	    final int height = options.outHeight;
@@ -256,12 +259,12 @@ public class CamcardPlugin extends CordovaPlugin {
 
 	    return BitmapFactory.decodeFile(filePath, options);
 	    }
-	
+
 	/** 获取缓存目录 */
 	public String getCacheDir() {
 		return getDir("cache");
 	}
-	
+
 	/** 获取应用目录，当SD卡存在时，获取SD卡上的目录，当SD卡不存在时，获取应用的cache目录 */
 	public String getDir(String name) {
 		StringBuilder sb = new StringBuilder();
