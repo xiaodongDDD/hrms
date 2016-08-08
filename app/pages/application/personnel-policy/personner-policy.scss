@@ -82,10 +82,13 @@ $padding-left:4%;
     margin-left: 4%;
     border-radius: 0px;
   }
+  .col-offset-4{
+    margin-left: 4%;
+  }
 }
 .platform-ios {
   .personnel-policy{
-    .col-offset-4{
+    .col-offset-5{
       margin-left: 0%;
     }
   }
@@ -94,7 +97,7 @@ $padding-left:4%;
 
 .platform-android {
   .personnel-policy{
-    .col-offset-4{
+    .col-offset-5{
       margin-left: 4%;
     }
   }

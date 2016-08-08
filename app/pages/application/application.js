@@ -148,15 +148,10 @@ angular.module('applicationModule')
               destUrl: "tab.bus-information",
             },
             {
-              appName: "",
-              imageUrl: "",
-              destUrl: "",
-            }
-            /*{
               appName: "拼车",
               imageUrl: "build/img/application/application/carpooling@3x.png",
               destUrl: "tab.carpooling",
-            }*/
+            }
           ]
         }
       ];

@@ -30,7 +30,6 @@ angular.module('applicationModule')
       $scope.items=[];//历史列表中的数据
       $scope.fetchServerFlag= true;
       $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
-      //高德地图路径
       $scope.map = "";
       var  mapUrl = {
         baseUrl: " http://api.map.baidu.com/staticimage/v2?ak=i6Ft7l8flPNq7Ub6O2vmcuGx",
