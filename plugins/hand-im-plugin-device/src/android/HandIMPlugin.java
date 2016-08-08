@@ -71,32 +71,26 @@ public class HandIMPlugin extends CordovaPlugin{
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         //初始化基本数据和界面数据
-        //init();
-        //initRY();
+        init();
+        initRY();
     }
     @Override
     public boolean execute(String action, JSONArray args,CallbackContext callbackContext) throws JSONException {
-        context=cordova.getActivity().getApplicationContext();
         mCallbackContext = callbackContext;
         if(ACTION_GET_CHAT_LIST.equals(action)){
-            init();
-            initRY();
             //获取用户的id 这里定义上为进入初始化的操作 但是还是加了判断防止多次进入 如果已经接受过传来的用户数据不用重复获取
-            if(userId.isEmpty() || token.isEmpty()){
             if(args!=null && args.length()>0){
                 JSONObject obj = args.getJSONObject(0);
                 userId = obj.getString("userId");
                 token = obj.getString("RCToken");
                 access_token = obj.getString("access_token");
-            }}
-            dBhelper = new DBhelper(context);
+            }
             if(!access_token.isEmpty()){
                 //开启线程 获取信息写入缓存
                 cordova.getThreadPool().execute(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            int code = 0;
                             URL url = new URL("http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/detail?access_token="+access_token);
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                             connection.setRequestMethod("POST");
@@ -230,6 +224,7 @@ public class HandIMPlugin extends CordovaPlugin{
     public void init(){
         context=cordova.getActivity().getApplicationContext();
         myConversations = new ArrayList<myConversation>();
+        dBhelper = new DBhelper(context);
         //初始化表情数据
         FaceConversionUtil.getInstace(cordova.getActivity().getApplicationContext()).getFileText(cordova.getActivity().getApplication());
         //初始化ImageLoader
@@ -378,7 +373,7 @@ public class HandIMPlugin extends CordovaPlugin{
     }
     //获取是否连接到融云
     public static final boolean getRmConnect(){
-            String msg = RongIMClient.getInstance().getCurrentConnectionStatus().getMessage();
+        String msg = RongIMClient.getInstance().getCurrentConnectionStatus().getMessage();
         if(msg.equals("Connect Success.")){
                 return true;
             }else{
@@ -448,6 +443,10 @@ public class HandIMPlugin extends CordovaPlugin{
         } else{
             initRY();
         }
+        if(!getRmConnect()){
+            //获取token 建立连接
+            connect(token);
+        }
     }
 
     @Override
@@ -462,6 +461,9 @@ public class HandIMPlugin extends CordovaPlugin{
     }
 
     private void getChatListInfo() throws Exception{
+        if(RongIMClient.getInstance() == null || !getRmConnect()){
+            return;
+        }
     //拉取会话列表提供给前端刷新数据
     RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
         public void onSuccess(List<Conversation> conversations) {
