@@ -93,12 +93,7 @@ angular.module('contactModule')
       initEmployeeData();
 
       $scope.goBackPage = function () {
-        var historyId = $ionicHistory.currentHistoryId();
-        var history = $ionicHistory.viewHistory().histories[historyId].stack;
-        for (var i = history.length - 1; i >0; i--) {
-          $ionicHistory.backView(history[i]);
-          $ionicHistory.goBack();
-        }
+       $ionicHistory.goBack();
       };
 
       function storeCommonLinkman(newObject) { //存储为常用联系人
