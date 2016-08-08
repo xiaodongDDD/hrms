@@ -142,7 +142,7 @@ angular.module('contactModule')
               cancelText: 'Cancel',
               buttonClicked: function (index) {
                 if (index == 0) {
-                  // hmsPopup.showLoading('名片扫描中,请稍后...');
+                  hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.takePicturefun(function (msg) {
                     dealScanData(msg);
                   }, function (error) {
@@ -152,7 +152,7 @@ angular.module('contactModule')
                   return true;
                 }
                 if (index == 1) {
-                  // hmsPopup.showLoading('名片扫描中,请稍后...');
+                  hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.choosePicturefun(function (msg) {
                     dealScanData(msg);
                   }, function (error) {
@@ -183,8 +183,8 @@ angular.module('contactModule')
       };
 
       $scope.goStructure = function (flag) {
-        //hmsPopup.showShortCenterToast('下一版本上线!');
-        //return;
+        // hmsPopup.showShortCenterToast('下一版本上线!');
+        // return;
         if (angular.equals(flag, 'current')) {
           $state.go('tab.contactStructure', {
             routeId: "currentDepartment",

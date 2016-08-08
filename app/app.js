@@ -82,18 +82,6 @@ angular.module('myApp')
           }
         });
 
-        // $cordovaTouchID.checkSupport().then(function() {
-        //   $cordovaTouchID.authenticate("").then(function() {
-        //     alert("enter??");
-        //     $state.go('tab.message');
-        //   }, function () {
-        //     // error
-        //   });
-        // }, function (error) {
-        // });
-
-
-
         /*var analyze = function (currentState) {
          if (currentState.views) {
          if (currentState.views['tab-application']) {

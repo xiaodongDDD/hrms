@@ -9,10 +9,10 @@
 #import "AppDelegate.h"
 #import "scanCard.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+@interface scanCard()<UIImagePickerControllerDelegate>
 
-
+@end
 @implementation scanCard
-
 
 
 - (void)takePicture:(CDVInvokedUrlCommand *)command;
@@ -39,6 +39,23 @@
     //   [self returnMess:self._command andError:nil andSuccess:@"我成功啦" andError:@"我失败了"];
 
 }
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    UIViewController *view = [self viewController];
+
+
+    [view dismissViewControllerAnimated:YES completion:NULL];
+
+
+        _errorflag = @"1";
+        _errorMsg = @"cancel";
+
+    [self returnMess:self._command
+            andError:_errorflag
+          andSuccess:@""
+            andError:self.errorMsg];
+
+};
 
 
 - (void)choosePicture:(CDVInvokedUrlCommand *)command;

@@ -78,8 +78,8 @@ angular.module('applicationModule')
       $scope.start="";
       $scope.end = "";
       $scope.fetchFlag = false;
-      var emp_codes = [];//记录所有加入者的ID
-      var emp_index = [];//记录所有空位的索引
+      var emp_codes = [];
+      var emp_index = [];
 
       var empty = {
         flag: false,
@@ -279,8 +279,8 @@ angular.module('applicationModule')
         }
       }
       $rootScope.$on("SEND_EMP_INFO", function () {
-        emp_index = [];//清掉数据
-        emp_codes = [];//清掉数据
+        emp_index = [];
+        emp_codes = [];
         var contact = commonContactService.getEmpInfo();
         angular.forEach($scope.carpoolingJoin, function(data,index,array){
           emp_codes.push(data.empCode);

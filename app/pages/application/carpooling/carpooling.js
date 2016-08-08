@@ -47,6 +47,8 @@ angular.module('applicationModule')
       }];
 
       $scope.clickTab = function (tab) {
+        //清掉flag
+        commonContactService.setGoContactFlg("");
         for (var i = 0; i < $scope.tabs.length; i++) {
           $scope.tabs[i].isActive = false;
         }

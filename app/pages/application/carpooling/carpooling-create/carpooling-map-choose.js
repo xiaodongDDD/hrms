@@ -163,9 +163,10 @@ angular.module('applicationModule')
           carpoolingCreateService.setLocation($scope.createLocation);
           $rootScope.$broadcast("SET_LOCATION");
           $ionicHistory.goBack();
-        }else{
-          hmsPopup.showShortCenterToast("起点或者终点没有填写");
         }
+        //else{
+        //  hmsPopup.showShortCenterToast("起点或者终点没有填写");
+        //}
       }
 
 
