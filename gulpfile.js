@@ -47,7 +47,8 @@ var libPublishFilePath = [
   'app/lib/**/js/ionic.bundle.min.js',
   'app/lib/**/rollups/md5.js',
   'app/lib/**/dist/jquery.min.js',
-  'app/lib/**/dist/ng-cordova.js'];
+  'app/lib/**/dist/ng-cordova.js',
+  'app/lib/**/dist/ionic-datepicker.bundle.min.js'];
 
 var imgFilePath = [
   'app/img/**/*.png',

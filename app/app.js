@@ -7,6 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('myApp', [
   'ionic',
+  'ionic-datepicker',
   'ngCordova',
   'loginModule',
   'baseConfig',
