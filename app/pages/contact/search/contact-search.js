@@ -34,6 +34,8 @@ angular.module('contactModule')
     'commonContactService',
     '$rootScope',
     '$cordovaActionSheet',
+    '$sce',
+    '$q',
     function ($scope,
               $ionicScrollDelegate,
               $ionicModal,
@@ -47,7 +49,9 @@ angular.module('contactModule')
               $ionicHistory,
               commonContactService,
               $rootScope,
-              $cordovaActionSheet) {
+              $cordovaActionSheet,
+              $sce,
+              $q) {
       /**
        * var section
        */
@@ -61,8 +65,8 @@ angular.module('contactModule')
         $scope.contactKey = {getValue: ''}; //绑定输入的关键字
         $scope.historys = []; //存储搜索历史的关键字
         $scope.newPage = 0;
-        var DB_NAME = 'key_history';
-        var getEmployeeUrl = baseConfig.queryPath + '/staff/query';
+        var DB_NAME = 'key_history1';
+        var getEmployeeUrl = baseConfig.queryPath + '/staff/queryHighLight';
         var employeeParams = {"key": "", "page": 1, "pageSize": "30"};
         var LINK_MAN = 'common_linkman2';
         $scope.historys = (storedb(DB_NAME).find()).arrUniq();
@@ -76,11 +80,11 @@ angular.module('contactModule')
           cordova.plugins.Keyboard.show();
         }
         var item = document.getElementById("employeeInputSearch");
-        if(ionic.Platform.isAndroid()) {
+        if (ionic.Platform.isAndroid()) {
           $timeout(function () {
             item.focus();
             $scope.$apply();
-          },400);
+          }, 400);
         } else {
           item.focus();
           $scope.$apply();
@@ -96,7 +100,7 @@ angular.module('contactModule')
         });
         storedb(DB_NAME).insert({historyItem: newEmployee}, function (err) {
           if (!err) {
-            $scope.historys = (storedb(DB_NAME).find()).arrUniq();
+            $scope.historys = unique_better(storedb(DB_NAME).find(), 'employeeNumber');
           } else {
             hmsPopup.showShortCenterToast(err);
           }
@@ -128,6 +132,7 @@ angular.module('contactModule')
       };
 
       $scope.getEmployeeData = function (moreFlag) { //获取搜索关键字的数据
+        var q = $q.defer();
         if (moreFlag === 'init') {
           employeeParams.page = 1;
         }
@@ -142,24 +147,30 @@ angular.module('contactModule')
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           } else {
-            if (response.total < 30) {
-              //hmsPopup.showShortCenterToast('加载完毕!');
-              $scope.$broadcast('scroll.infiniteScrollComplete');
-              if (moreFlag === 'init' || $scope.page === 1) {
-                $scope.resultList = [];
+              if (response.total < 30) {
+                //hmsPopup.showShortCenterToast('加载完毕!');
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                if (moreFlag === 'init' || $scope.page === 1) {
+                  $scope.resultList = [];
+                  angular.forEach(response.rows, function (data, index) {
+                    $scope.resultList.push(data);
+                  });
+                }
+                // $scope.resultList = $sce.trustAsHtml($scope.resultList);
+                q.resolve($scope.resultList);
+                $scope.showInfinite = false;
+              } else {
+                $scope.showInfinite = true;
                 angular.forEach(response.rows, function (data, index) {
                   $scope.resultList.push(data);
                 });
+                // $scope.resultList = $sce.trustAsHtml($scope.resultList);
+                $scope.$apply();
+                q.resolve($scope.resultList);
               }
-              $scope.showInfinite = false;
-            } else {
-              $scope.showInfinite = true;
-              angular.forEach(response.rows, function (data, index) {
-                $scope.resultList.push(data);
-              });
-            }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           }
+          return q.promise;
         }).error(function (error) {
           $scope.contactLoading = false;
           $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -182,8 +193,10 @@ angular.module('contactModule')
         $scope.showHistory = false;
         if ($scope.contactKey.getValue === '') {
           $scope.showHistory = true;
-          $scope.resultList = [];
           $scope.showClear = false;
+          $timeout(function () {
+            $scope.resultList = [];
+          }, 251); //防止过快啦 --凸凸凸
         } else {
           $scope.showClear = true;
         }
@@ -221,7 +234,7 @@ angular.module('contactModule')
         $scope.showClear = false;
         $scope.resultList = [];
         $scope.contactKey.getValue = '';
-        if(commonContactService.getContactFlag() === 'carpooling-new-contactSearch') {
+        if (commonContactService.getContactFlag() === 'carpooling-new-contactSearch') {
           commonContactService.setEmpInfo(newEmp);
           $rootScope.$broadcast("SEND_EMP_INFO");
           $ionicHistory.goBack();
@@ -236,13 +249,13 @@ angular.module('contactModule')
         var options = {
           buttonLabels: ['拨打电话', '增加到通讯录'],
           addCancelButtonWithLabel: '取消',
-          androidEnableCancelButton : true,
+          androidEnableCancelButton: true,
           androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT
         };
 
         document.addEventListener("deviceready", function () {
           $cordovaActionSheet.show(options)
-            .then(function(btnIndex) {
+            .then(function (btnIndex) {
               if (baseConfig.debug) {
                 warn(btnIndex);
               }
@@ -269,14 +282,15 @@ angular.module('contactModule')
                   dealCommonLinkMan(employeeBaseInfo);
                 }
                 return true;
-              } else if(btnIndex == 2){
+              } else if (btnIndex == 2) {
                 contactService.contactLocal(baseInfo);
                 return true;
               }
             });
         }, false);
       };
-    }])
+    }
+  ])
   .factory('contactService', ['hmsPopup', function (hmsPopup) {
     //for contact
     function onSaveContactSuccess(contacts) {

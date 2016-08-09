@@ -10,7 +10,7 @@ angular.module('contactModule')
     'baseConfig',
     'hmsPopup',
     '$state',
-    '$ionicActionSheet',
+    '$cordovaActionSheet',
     'contactService',
     'getInitStructureInfo',
     function ($scope,
@@ -19,7 +19,7 @@ angular.module('contactModule')
               baseConfig,
               hmsPopup,
               $state,
-              $ionicActionSheet,
+              $cordovaActionSheet,
               contactService,
               getInitStructureInfo) {
       /**
@@ -133,15 +133,20 @@ angular.module('contactModule')
 
       $scope.scanBusinessCard = function () { //名片扫描添加联系人到通讯录
         if (ionic.Platform.isWebView()) {
-          try {
-            $ionicActionSheet.show({
-              buttons: [
-                {text: '拍照'},
-                {text: '从相册中选择'},
-              ],
-              cancelText: 'Cancel',
-              buttonClicked: function (index) {
-                if (index == 0) {
+          var options = {
+            buttonLabels: ['拍照', '从相册中选择'],
+            addCancelButtonWithLabel: '取消',
+            androidEnableCancelButton : true,
+            androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT
+          };
+
+          document.addEventListener("deviceready", function () {
+            $cordovaActionSheet.show(options)
+              .then(function(btnIndex) {
+                if (baseConfig.debug) {
+                  warn(btnIndex);
+                }
+                if (btnIndex == 1) {
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.takePicturefun(function (msg) {
                     dealScanData(msg);
@@ -150,8 +155,7 @@ angular.module('contactModule')
                     hmsPopup.hideLoading();
                   });
                   return true;
-                }
-                if (index == 1) {
+                } else if(btnIndex == 2){
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.choosePicturefun(function (msg) {
                     dealScanData(msg);
@@ -161,11 +165,8 @@ angular.module('contactModule')
                   });
                   return true;
                 }
-              }
-            });
-          } catch (e) {
-            // alert(e);
-          }
+              });
+          }, false);
         } else {
           hmsPopup.showShortCenterToast('暂不支持网页端的名片扫描!');
         }

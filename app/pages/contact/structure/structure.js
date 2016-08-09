@@ -111,7 +111,7 @@ angular.module('myApp')
 
       if ($stateParams.routeId === 'currentDepartment') {
         var currentInfo = $stateParams.currentDepartInfo;
-        $scope.childrenDept = [];
+        $scope.childrenDept = currentInfo.childrenDeptInfo;
         $scope.deptStaff = currentInfo.deptStaff;
         $scope.showLoading = false;
         for (var i = 1; i < currentInfo.deptInfo.length; i++) {
@@ -125,10 +125,10 @@ angular.module('myApp')
         angular.forEach(currentInfo.deptInfo, function (data, index) {
           $scope.currentStackList.push(data);
         });
+        dynamicAddScrollWidth();
         $timeout(function () {
           $ionicScrollDelegate.$getByHandle('contactStructureDelegate').scrollBy(1000, 0, true);
         }, 300);
-        dynamicAddScrollWidth();
       } else {
         getInitStructureInfo.getStructure(getStructureInfo, curr_department_id);
       }
@@ -138,7 +138,9 @@ angular.module('myApp')
         $scope.currentStackList.pop();
         // warn(jsonFormat($scope.currentStackList));
         dynamicAddScrollWidth();
-        $ionicHistory.goBack();
+        $timeout(function () {
+          $ionicHistory.goBack();
+        }, 100);
       };
 
       $scope.goInputSearch = function () { //去搜索界面
