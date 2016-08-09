@@ -365,7 +365,6 @@ angular.module('applicationModule')
         $scope.timesheetPopover.show($event);
       };
 
-
       $ionicPopover.fromTemplateUrl('build/pages/application/timesheet/popover/years.html', {
         scope: $scope,
         animation: 'animated fadeIn'
@@ -557,10 +556,19 @@ angular.module('applicationModule')
       var slippingWriteTimesheet = function () {
         //var batchList = [];
         var dateArray = '';
+        var hasCopyedFlag = false;
         angular.forEach($scope.calendar, function (data) {
           angular.forEach(data.list, function (list) {
+
+            if (baseConfig.debug) {
+              console.log('slippingWriteTimesheet data.list ' + angular.toJson(list));
+            }
+
             if (list.choosed) {
               //batchList.push({"day": list.each_day});
+              if(list.project && list.project != ''){
+                hasCopyedFlag = true;
+              }
               if (dateArray == '') {
                 dateArray = dateArray + list.each_day;
               } else {
@@ -569,6 +577,14 @@ angular.module('applicationModule')
             }
           });
         });
+
+        if(!hasCopyedFlag){
+          var range = getUnfreezeDateRange();
+          $state.go('tab.timesheet-batch-write', {dayRange: range});
+          clearCalendarCache();
+          return;
+        }
+
         if (baseConfig.debug) {
           console.log('copyFromDay ' + angular.toJson(copyFromDay));
           console.log('dateArray ' + angular.toJson(dateArray));
@@ -939,6 +955,15 @@ angular.module('applicationModule')
       $scope.$on('$ionicView.beforeEnter', function (e) {
         if (baseConfig.debug) {
           console.log('TimeSheetQueryCtrl.$ionicView.beforeEnter');
+        }
+
+        if(TimeSheetService.getRefreshTimeSheetFlag() == true){
+          TimeSheetService.setRefreshTimeSheetFlag(false);
+          var timesheet = TimeSheetService.getTimeSheetList();
+          var timeSheetList = {
+            "timesheet": timesheet
+          }
+          fetchData(timeSheetList);
         }
       });
 
