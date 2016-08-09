@@ -146,19 +146,20 @@
     opacity: 0.4;
     background-color: #FAFAFA;
   }
-  //.car-list.ng-enter{
-  //  -webkit-animation: rotateInUpLeft 0.4s;
-  //  animation: rotateInUpLeft .4s;
-  //}
-  //.car-list.ng-enter-stagger{
-  //  -webkit-animation-delay: 120ms;
-  //  animation-delay: 120ms;
-  //  -webkit-animation-duration: 0ms;
-  //  animation-duration: 0ms;
-  //}
+
   //隐藏掉spinner
   .spinner svg {
    width: 0px;
    height: 0px;
  }
+}
+.platform-android{
+  .search-input{
+    margin: -2px 3% 0px 5%;
+  }
+}
+.platform-ios{
+  .search-input{
+    margin: 5px 3% 0px 5%;
+  }
 }

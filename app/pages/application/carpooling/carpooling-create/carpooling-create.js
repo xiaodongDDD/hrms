@@ -45,6 +45,7 @@ angular.module('applicationModule')
     'commonContactService',
     'carpoolingCreateService',
     '$rootScope',
+    '$timeout',
     function ($scope,
               $state,
               baseConfig,
@@ -56,7 +57,8 @@ angular.module('applicationModule')
               $cordovaDatePicker,
               commonContactService,
               carpoolingCreateService,
-              $rootScope
+              $rootScope,
+              $timeout
     ) {
       //选择座位
       //默认四人座情况
@@ -120,7 +122,14 @@ angular.module('applicationModule')
         };
         hmsHttp.post(url, param).success(function (result) {
           $scope.items = result.rows;
-          if (result.success == true) {
+          if (result.success == true) {//默认图片
+            if( $scope.items[0].thumbnail == null){//设置默认头像
+              if( $scope.items[0].gender=="男"){
+                $scope.items[0].thumbnail="build/img/myInfo/man-portrait.png";
+              }else if( $scope.items[0].gender=="女"){
+                $scope.items[0].thumbnail="build/img/myInfo/woman-portrait.png";
+              }
+            }
             var myInfo = {
               flag: true,
               locked: false,
@@ -192,8 +201,6 @@ angular.module('applicationModule')
           selectTimeIOS();
         }
       };
-
-
       function selectTimeAndroid() {
         var date = new Date($scope.createInfo.departureTime).format('MM/dd/yyyy/hh/mm/ss');
         $cordovaDatePicker.show({
@@ -215,8 +222,6 @@ angular.module('applicationModule')
           }
         });
       }
-
-
       function selectTimeIOS() {
         var date = new Date($scope.createInfo.departureTime).format('yyyy/MM/dd hh:mm:ss');
         $cordovaDatePicker.show({
@@ -290,6 +295,13 @@ angular.module('applicationModule')
             emp_index.push(index);//记录空位的索引
           }
         });
+        if(contact.avatar == "") {
+          if (contact.gender == "男") {
+            contact.avatar = "build/img/myInfo/man-portrait.png";
+          } else if (contact.gender == "女") {
+            contact.avatar = "build/img/myInfo/woman-portrait.png";
+          }
+        } 
         var obj = {
           flag: true,
           locked: false,
@@ -461,7 +473,6 @@ angular.module('applicationModule')
         $scope.createInfo.targetAddr= $scope.end;
         $scope.createInfo.startLatitude = $scope.startLng+","+$scope.startLat;
         $scope.createInfo.endLatitude = $scope.endLng+","+$scope.endLat;
-
         if( ($scope.createInfo.startAddr != "") && ($scope.createInfo.endAddr != "") ){
           if($scope.createInfo.departureTime != ""){
             if($scope.createInfo.departurePreference != "选择偏好"){
