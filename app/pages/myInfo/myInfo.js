@@ -12,6 +12,7 @@ angular.module('myInfoModule')
     'checkVersionService',
     '$ionicHistory',
     '$rootScope',
+    '$http',
     function ($scope,
               $state,
               baseConfig,
@@ -19,7 +20,8 @@ angular.module('myInfoModule')
               hmsPopup,
               checkVersionService,
               $ionicHistory,
-              $rootScope) {
+              $rootScope,
+              $http) {
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
       }

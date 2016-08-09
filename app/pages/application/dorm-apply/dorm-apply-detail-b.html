@@ -79,9 +79,16 @@
           </ion-item>
         </div>
       </div>
-      <!--<div class="row card-row" ng-show="allowApply">-->
-        <!-- -->
-      <!--</div>-->
+      <div class="row card-row" ng-show="allowApply">
+        <div class="col no-padding-or-margin put-left">
+          <label class="left-label">续住天数选择:</label>
+        </div>
+        <div class="col no-padding-or-margin put-right">
+          <ion-item class="calendar-item" ng-click="chooseMoreDays()">
+            <label class="right-label-could-click" ng-bind="defaultStaying"></label>
+          </ion-item>
+        </div>
+      </div>
       <div class="room-label-shelter">
         <label class="room-label">房间信息</label>
       </div>
