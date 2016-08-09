@@ -40,7 +40,12 @@ angular.module('applicationModule')
       function loadSet(){
         $scope.cp_number = [];
         angular.forEach( $scope.historyInfo.companies, function (data, index, array) {
-          $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+          if( $scope.historyInfo.empNo == data.empNo){//发起人
+            $scope.cp_number.splice(0,0,{"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+          }else {
+            $scope.cp_number.push({"empName": array[index].empName,"avatar": array[index].avatar,"font": "detail-img-people-name"
+            });
+          }
         });
         for(var i=0;i < lockNumber;i++){
           $scope.cp_number.push({"empName":"锁定","avatar":"build/img/application/carpooling/locked seat@3x.png","font":"detail-img-people-name"});

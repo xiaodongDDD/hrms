@@ -53,7 +53,11 @@ angular.module('applicationModule')
               data.avatar="build/img/myInfo/woman-portrait.png";
             }
           }
-          $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+          if( $scope.listInfo.empNo == data.empNo){
+            $scope.cp_number.splice(0,0,{"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+          }else{
+            $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+          }
         });
         for(var i=0;i < lockNumber;i++){
           $scope.cp_number.push({"empName":"锁定","avatar":"build/img/application/carpooling/locked seat@3x.png","font":"detail-img-people-name"});

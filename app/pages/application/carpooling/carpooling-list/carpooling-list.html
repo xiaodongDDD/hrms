@@ -13,10 +13,10 @@
       </div>
     </div>
     <!--上滑搜索框显示在状态栏-->
-    <div class="row no-padding search-input" ng-if="showSearchTop" style="margin: 3px 3% 0px 5%;">
+    <div class="row no-padding search-input" ng-if="showSearchTop">
       <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
              ng-click="goModalInput()"/>
-      <div class="button button-icon" style="width: 60px;color: white;margin-top: -3px;" ng-click="openPopover($event)">筛选</div>
+      <div class="button button-icon" style="font-size: 16px;width: 60px;color: white;margin-top: -3px;" ng-click="openPopover($event)">筛选</div>
     </div>
   </ion-header-bar>
   <ion-content  class="carpooling-list-content" on-scroll="watchTopScroll()"  delegate-handle="watchTopScroll">

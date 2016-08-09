@@ -98,6 +98,7 @@ angular.module('applicationModule')
           companies:info.companies,     //同行人数
           lockSeats:info.lockSeats,//锁定座位数量
           availableSeats:info.availableSeats,//空位数量
+          empNo:info.empNo,//拼车发起人
         };
           $state.go("tab.carpooling-history-detail",{
             'carpoolingHistoryDetailInfo':param
