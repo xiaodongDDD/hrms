@@ -36,28 +36,30 @@ angular.module('applicationModule')
           var lockNumber = $scope.historyInfo.lockSeats;//锁定人数
           var availableSeats = $scope.historyInfo.availableSeats;
 
-
-
-          $scope.cp_number = [];
-          angular.forEach( $scope.historyInfo.companies, function (data, index, array) {
-            $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
-          });
-          for(var i=0;i < lockNumber;i++){
-            $scope.cp_number.push({"empName":"锁定","avatar":"build/img/application/carpooling/locked seat@3x.png","font":"detail-img-people-name"});
-          }
-          for(var i= 0;i <availableSeats;i++ ){
-            $scope.cp_number.push({"empName":"空位","avatar":"build/img/application/carpooling/seat-2@3x.png","font":"detail-img-people-empty"});
-          }
-
-
-          var starts =  $scope.historyInfo.startLatitude.split(",");
-          var ends = $scope.historyInfo.endLatitude.split(",");
-          var map = new BMap.Map("allmap");
-          map.centerAndZoom(new BMap.Point(starts[0],starts[1]), 14);
-          var p1 = new BMap.Point(starts[0],starts[1]);
-          var p2 = new BMap.Point(ends[0],ends[1]);
-          var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-          driving.search(p1, p2);
+      loadSet();
+      function loadSet(){
+        $scope.cp_number = [];
+        angular.forEach( $scope.historyInfo.companies, function (data, index, array) {
+          $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+        });
+        for(var i=0;i < lockNumber;i++){
+          $scope.cp_number.push({"empName":"锁定","avatar":"build/img/application/carpooling/locked seat@3x.png","font":"detail-img-people-name"});
+        }
+        for(var i= 0;i <availableSeats;i++ ){
+          $scope.cp_number.push({"empName":"空位","avatar":"build/img/application/carpooling/seat-2@3x.png","font":"detail-img-people-empty"});
+        }
+      }
+      loadMap();
+      function loadMap(){
+        var starts =  $scope.historyInfo.startLatitude.split(",");
+        var ends = $scope.historyInfo.endLatitude.split(",");
+        var map = new BMap.Map("allmap");
+        map.centerAndZoom(new BMap.Point(starts[0],starts[1]), 14);
+        var p1 = new BMap.Point(starts[0],starts[1]);
+        var p2 = new BMap.Point(ends[0],ends[1]);
+        var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
+        driving.search(p1, p2);
+      }
     }]);
 
 

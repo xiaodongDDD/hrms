@@ -497,7 +497,11 @@ angular.module('applicationModule')
             console.log("result success " + angular.toJson(result));
             if (result.status == "S") {
               hmsPopup.showShortCenterToast("发布成功");
-              $state.go("tab.carpooling-list");
+              commonContactService.setGoContactFlg("");
+              for (var i = 0; i < $scope.$parent.tabs.length; i++) {
+                $scope.$parent.tabs[i].isActive = false;
+              }
+              $scope.$parent.tabs[0].isActive = true;
             } else if (result.status == "E") {
               hmsPopup.showShortCenterToast("发布失败");
             } else if (result.status == "N") {

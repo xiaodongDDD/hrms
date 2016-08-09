@@ -61,6 +61,9 @@
         "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "com.hand.china.hrms2.research"
         },
+        "cordova-plugin-touchid": {
+            "PACKAGE_NAME": "com.hand.china.hrms2.research"
+        },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.hand.china.hrms2.research"
         },
