@@ -76,7 +76,7 @@ angular.module('applicationModule')
             pathPlan($scope.start,$scope.end,$scope.startLng, $scope.startLat);
           }else{
             G("input-destination").value="";
-            hmsPopup.showShortCenterToast("轻点不正确");
+            hmsPopup.showShortCenterToast("起点不正确");
           }
         }
       }

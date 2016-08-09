@@ -11,7 +11,7 @@
 #import "DataBaseTool.h"
 #import "CVDPlugin-Bridging-Header.h"
 
-@interface CDVIMPlugin ()<RCIMUserInfoDataSource>
+@interface CDVIMPlugin ()<RCIMUserInfoDataSource,CDVIMPluginChattingViewControllerDelegate>
 {
     UINavigationController *nav;
     NSString *friendId ;
@@ -51,6 +51,7 @@
 
     CDVIMPluginChattingViewController *cdvIMChattingVC = [[CDVIMPluginChattingViewController alloc] initWithConversationType:ConversationType_PRIVATE targetId:friendId];
     NSLog(@"toChatAct:%@",friendId);
+    cdvIMChattingVC.delegate = self;
     nav = [[UINavigationController alloc] initWithRootViewController:cdvIMChattingVC];
 
     cdvIMChattingVC.targetId = friendId;
@@ -281,6 +282,10 @@
         RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:loginUserId name:userName portrait:userIcon];
         completion(userInfo);
     }
+}
+- (void)viewControllerDismiss
+{
+  [self IMPluginDidReceiveMessage:nil];
 }
 
 @end

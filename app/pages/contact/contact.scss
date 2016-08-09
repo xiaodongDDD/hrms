@@ -209,8 +209,8 @@ $bgColor: #fafafa !default;
     height: 150px;
     width: 100%;
     z-index: 99;
-    //-webkit-filter: blur(5px) brightness(0.7) sepia(0.5) opacity(0.9);
-    //filter: blur(5px) brightness(0.7) sepia(0.5) opacity(0.9);
+    -webkit-filter: blur(5px) brightness(0.7) opacity(0.9);
+    filter: blur(5px) brightness(0.7) opacity(0.9);
   }
   .img-section {
     height: 75px;

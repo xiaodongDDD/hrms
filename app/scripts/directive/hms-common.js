@@ -93,6 +93,7 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
           //  }
           //}
           image.style.height = newImageHeight + 'px';
+          $scope.$apply();
         });
       }
     }

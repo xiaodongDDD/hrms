@@ -118,7 +118,7 @@ angular.module('applicationModule')
         var info=$scope.items[num];
         var hasJoinedSeats = parseInt(info.carType)- info.availableSeats//已经参与拼车人数
         var param={
-          companies:info.companies,
+          companies:info.companies,//同行
           startAddr:info.startAddr,//起点
           targetAddr:info.targetAddr,//终点
           departureTime:info.departureTime,//出发时间
@@ -130,7 +130,8 @@ angular.module('applicationModule')
           availableSeats:info.availableSeats,//空位
           shareId:info.id,//拼车主键
           startLat:info.startLatitude,//起点经纬度
-          endLat:info.endLatitude//终点经纬度
+          endLat:info.endLatitude,//终点经纬度
+          empNo:info.empNo//拼车发起人
         };
         $state.go("tab.carpooling-list-detail",{
           'carpoolingListDetailInfo':param

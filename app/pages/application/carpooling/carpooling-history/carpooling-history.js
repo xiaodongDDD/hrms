@@ -49,6 +49,17 @@ angular.module('applicationModule')
           $scope.items = result.returnData;
          if ($scope.items.length > 0) {
             angular.forEach($scope.items, function (data, index, array) {
+              for(var i =0;i<data.companies.length;i++){
+                if(data.companies[i].avatar == null){//设置默认头像
+                  if(data.companies[i].genderId=="1"){
+                    data.companies[i].avatar="build/img/myInfo/man-portrait.png";
+                  }else if(data.companies[i].genderId=="2"){
+                    data.companies[i].avatar="build/img/myInfo/woman-portrait.png";
+                  }
+                }
+              }
+
+              //标志颜色
               if (array[index].shareStatus == 'wait') {
                 array[index].statusColor = false;
                 array[index].status = "等待成行";
@@ -87,6 +98,7 @@ angular.module('applicationModule')
           companies:info.companies,     //同行人数
           lockSeats:info.lockSeats,//锁定座位数量
           availableSeats:info.availableSeats,//空位数量
+          empNo:info.empNo,//拼车发起人
         };
           $state.go("tab.carpooling-history-detail",{
             'carpoolingHistoryDetailInfo':param
@@ -97,4 +109,5 @@ angular.module('applicationModule')
       };
     }]
 );
+
 

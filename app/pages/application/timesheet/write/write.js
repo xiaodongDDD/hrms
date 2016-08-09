@@ -344,8 +344,10 @@ angular.module('applicationModule')
           hmsPopup.hideLoading();
           if (result.status == 'S') {
             //hmsPopup.showPopup('提交Timesheet成功');
-            $rootScope.$broadcast('refreshTimesheet', 'parent');
+            //$rootScope.$broadcast('refreshTimesheet', 'parent');
             $ionicHistory.goBack();
+            TimeSheetService.setRefreshTimeSheetFlag(true);
+            TimeSheetService.cacheTimeSheetList(result.refresh_timesheet.timesheet);
           } else {
             hmsPopup.showPopup('提交Timesheet错误,错误原因为');
           }

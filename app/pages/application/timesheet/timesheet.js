@@ -9,6 +9,27 @@ angular.module('applicationModule')
     function (baseConfig,
               hmsHttp,
               hmsPopup) {
+
+      var needRefreshTimeSheet = false;
+
+      var timeSheetList = [];
+
+      this.getTimeSheetList = function () {
+        return timeSheetList;
+      };
+
+      this.cacheTimeSheetList = function (list) {
+        timeSheetList = list;
+      };
+
+      this.getRefreshTimeSheetFlag = function () {
+        return needRefreshTimeSheet;
+      };
+
+      this.setRefreshTimeSheetFlag = function (flag) {
+        needRefreshTimeSheet = flag;
+      };
+
       this.fetchCalendar = function (monthParams) {
 
         var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
@@ -70,7 +91,7 @@ angular.module('applicationModule')
         });
       };
 
-      this.generateAllowance = function (success,error,generateFlag, month) {
+      this.generateAllowance = function (success, error, generateFlag, month) {
         var url = baseConfig.businessPath + "/timesheet_process/generate_allowance";
         var params = {
           "params": {
@@ -87,7 +108,7 @@ angular.module('applicationModule')
         });
       };
 
-      this.slippingBatch = function (success,error,template,dateArray) {
+      this.slippingBatch = function (success, error, template, dateArray) {
         var url = baseConfig.businessPath + "/timesheet_process/slipping_batch1";
         var params = {
           "params": {
@@ -103,7 +124,7 @@ angular.module('applicationModule')
         });
       };
 
-      this.unfreezeTimesheet = function (success,error,dateFrom,dateTo) {
+      this.unfreezeTimesheet = function (success, error, dateFrom, dateTo) {
         var url = baseConfig.businessPath + "/api_timesheet_unfreeze/timesheet_unfreeze";
         var params = {
           "params": {
@@ -116,6 +137,31 @@ angular.module('applicationModule')
           success(result);
         }).error(function (response, status) {
           error(response);
+        });
+      };
+
+      this.fetchBatchProjectList = function (success) {
+        var url = baseConfig.businessPath + "/timesheet_process/fetch_projects_batch";
+        var params = {
+          "params": {
+            "p_employee_code": window.localStorage.empno
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (response) {
+          hmsPopup.hideLoading();
+        });
+      };
+
+      this.submitBatchWrite = function (success, params) {
+        var url = baseConfig.businessPath + "/timesheet_process/batch_timesheet1";
+        hmsHttp.post(url, params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (response) {
+          hmsPopup.hideLoading();
         });
       };
     }]);
