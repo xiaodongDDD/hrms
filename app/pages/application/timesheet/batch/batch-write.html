@@ -1,10 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<ion-view view-title="TimeSheet批量填写" class="timesheet-batch-write">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title" style="color: white">TimeSheet批量填写</h1>
+  </ion-header-bar>
+  <ion-content>
+    <div class="hms-input-list">
+      <a class="hms-input-item">
+        <div class="row no-padding">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/project@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content" ng-bind="timeSheetBatchDetail.dayRange.dayRangeDesc">
+          </div>
+          <!--<div class="col col-10 no-padding hms-input-link">
+            <div class="hms-input-link-img"></div>
+          </div>-->
+        </div>
+      </a>
 
-</body>
-</html>
+      <a class="hms-input-item" ng-click="timeSheetBatchHandle.showProjectModal()">
+        <div class="row no-padding ">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/project@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content">
+            {{timeSheetBatchDetail.currentProject.project_name}}
+          </div>
+          <div class="col col-10 no-padding hms-input-link">
+            <div class="hms-input-link-img"></div>
+          </div>
+        </div>
+      </a>
+
+      <a class="hms-input-item" ng-click="timeSheetBatchHandle.showAddressModal()">
+        <div class="row no-padding ">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/location@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content">
+            {{timeSheetBatchDetail.currentAddress.address_name}}
+          </div>
+          <div class="col col-10 no-padding hms-input-link">
+            <div class="hms-input-link-img"></div>
+          </div>
+        </div>
+      </a>
+
+      <a class="hms-input-item">
+        <div class="row no-padding ">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/approver@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content">
+            {{timeSheetBatchDetail.approver}}
+          </div>
+        </div>
+      </a>
+
+      <div class="hms-input-item">
+        <div class="row no-padding">
+          <div class="col col-15 no-padding checkbox-font-size"
+               ng-click="checkBoxChanged(timeSheetBatchDetail.travelingAllowance,'travelingAllowance')">
+            补助
+          </div>
+          <div class="col col-10 no-padding checkbox-size"
+               ng-click="checkBoxChanged(timeSheetBatchDetail.travelingAllowance,'travelingAllowance')">
+            <i class="{{timeSheetBatchDetail.travelingAllowance.style}}"></i>
+          </div>
+          <div class="col col-15 no-padding checkbox-font-size"
+               ng-click="checkBoxChanged(timeSheetBatchDetail.normalAllowance,'normalAllowance')">
+            津贴
+          </div>
+          <div class="col col-10 no-padding checkbox-size"
+               ng-click="checkBoxChanged(timeSheetBatchDetail.normalAllowance,'normalAllowance')">
+            <i class="{{timeSheetBatchDetail.normalAllowance.style}}"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="hms-input-item" ng-click="checkBoxChanged(timeSheetBatchDetail.includeWeekend,'charging')">
+        <div class="row no-padding">
+          <div class="col col-80 no-padding hms-input-content">
+            <div class="row no-padding">
+              <div class="col col-45 no-padding">
+                是否包含周末
+              </div>
+              <div class="col col-10 no-padding checkbox-size">
+                <i class="{{timeSheetBatchDetail.includeWeekend.style}}"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hms-input-item" ng-click="checkBoxChanged(timeSheetBatchDetail.extChargeIncludeWeekend,'charging')">
+        <div class="row no-padding">
+          <div class="col col-10 no-padding hms-input-icon">
+            <img src="build/img/application/timesheet/charging@3x.png">
+          </div>
+          <div class="col col-80 no-padding hms-input-content">
+            <div class="row no-padding">
+              <div class="col col-45 no-padding">
+                周末是否计费
+              </div>
+              <div class="col col-10 no-padding checkbox-size">
+                <i class="{{timeSheetBatchDetail.extChargeIncludeWeekend.style}}"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <textarea class="hms-textarea" type="text" placeholder="描述" ng-model="timeSheetBatchDetail.description">
+      </textarea>
+
+    </div>
+
+    <a class="timesheet-write-button" type="submit" ng-click="timeSheetBatchHandle.submitTimesheet(timeSheetBatchDetail)" ng-if="!lockFlag">提交
+    </a>
+  </ion-content>
+</ion-view>
