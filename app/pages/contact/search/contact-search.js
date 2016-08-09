@@ -66,7 +66,7 @@ angular.module('contactModule')
         $scope.historys = []; //存储搜索历史的关键字
         $scope.newPage = 0;
         var DB_NAME = 'key_history1';
-        var getEmployeeUrl = baseConfig.queryPath + '/staff/queryHighLight';
+        var getEmployeeUrl = baseConfig.queryPath + '/staff/query';
         var employeeParams = {"key": "", "page": 1, "pageSize": "30"};
         var LINK_MAN = 'common_linkman2';
         $scope.historys = (storedb(DB_NAME).find()).arrUniq();
