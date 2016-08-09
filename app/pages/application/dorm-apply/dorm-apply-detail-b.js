@@ -31,6 +31,7 @@ angular.module('applicationModule')
     '$timeout',
     '$stateParams',
     '$cordovaDatePicker',
+    '$ionicModal',
     function ($scope,
               $state,
               baseConfig,
@@ -40,13 +41,19 @@ angular.module('applicationModule')
               $rootScope,
               $timeout,
               $stateParams,
-              $cordovaDatePicker) {
+              $cordovaDatePicker,
+              $ionicModal) {
       /**
        * 续住和再次预定功能部分由于需要选择开始和结束时间
        * 所以目前设计成点击按钮后，提示用户选择开始于结束日期
        * 当再次点击续住的时候，会判断日期选择是否合法
        * 如果合法的话，就调用接口
        **/
+      $ionicModal.fromTemplateUrl('build/pages/application/dorm-apply/modal/renew-dorm-apply-choose-days.html', {//定义modal
+        scope: $scope
+      }).then(function (modal1) {
+        $scope.chooseDaysPopup = modal1;
+      });//初始化选择申请类型的modal
       $scope.applyInfo = $stateParams.dormApplyDetailInfo;
       $scope.checkIn = false;//审批中状态标志位
       $scope.checkOut = false;//已拒绝状态标识位
@@ -55,6 +62,8 @@ angular.module('applicationModule')
       $scope.leftDays=$scope.applyInfo.leftDays;//剩余天数
       $scope.allowApply=false;//由于续住和再次预定需要选择开始日期和结束日期，默认未选择日期
       $scope.totalDays=parseInt($scope.applyInfo.checkinDays);
+      $scope.defaultStaying=1;//默认续住天数
+      $scope.daystype=["30天","60天","90天"];//项目申请选项
       var todayDate = new Date();//用今天日期和明天日期初始化入住日期和结束日期
       var todayMonth = todayDate.getMonth()+1;
       var todayDay =todayDate.getDate();
@@ -162,6 +171,7 @@ angular.module('applicationModule')
           $scope.startDate.year=date.getFullYear();
           $scope.startDate.month=month;
           $scope.startDate.day=day;
+          $scope.defaultStaying="自定义";
           $scope.$apply();
         });
       };
@@ -192,10 +202,26 @@ angular.module('applicationModule')
           $scope.endDate.year=date.getFullYear();
           $scope.endDate.month=month;
           $scope.endDate.day=day;
+          $scope.defaultStaying="自定义";
           $scope.$apply();
         });
       };
 
+      $scope.chooseMoreDays=function(){//点击选择续住天数
+       $scope.chooseDaysPopup.show();
+      };
+
+      $scope.finishChoosingDays=function(param){
+        if(param=="30天"){
+          refreshEndDate(30);
+        }else if(param=="60天"){
+          refreshEndDate(60);
+        }else if(param=="90天"){
+          refreshEndDate(90);
+        }
+        $scope.defaultStaying=param;
+        $scope.chooseDaysPopup.hide();
+      };
       $scope.renewContract=function(){//续住
         var startYear=$scope.startDate.year;//开始日期年份
         var startMonth=$scope.startDate.month;//开始日期月份
