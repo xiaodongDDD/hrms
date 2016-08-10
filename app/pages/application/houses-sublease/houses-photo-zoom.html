@@ -39,9 +39,7 @@
   <ion-scroll overflow-scroll='false' direction="xy" scrollbar-x="false" scrollbar-y="false"
               zooming="true" min-zoom="{{zoomMin}}" style="width: 100%; height: 100%"
               delegate-handle="scrollHandle{{$index}}"> <!--ionic1.2版本后原生scroll代替javascript scroll造成scroll工作不正常, 加入overflow-scroll='false'取消原生滚动 -->
-
     <div class="image" style="background-image: url( {{photoZoomUrl}} )"></div>
-
   </ion-scroll>
 </div>
 </body>

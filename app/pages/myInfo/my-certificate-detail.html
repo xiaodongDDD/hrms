@@ -37,7 +37,7 @@
         <ion-item class="image-square-item" ng-show="matrix[0][0]">
           <i class="ion-ios-close delete-icon" ng-show="imageList[0].selected && !inputReadonly" ng-click="deleteImage(0)"></i>
           <img ng-hide="imageList[0].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(0)"/>
-          <img ng-show="imageList[0].selected" ng-src="{{imageList[0].uri}}" on-tap="showBigPicture(0)" class="common-image"/>
+          <div ng-show="imageList[0].selected" style="background-image: url({{imageList[0].uri}})" on-tap="showBigPicture(0)" class="common-image"></div>
         </ion-item>
       </div>
       <div class="col no-space">
@@ -46,7 +46,7 @@
         <ion-item class="image-square-item" ng-show="matrix[0][1]">
           <i class="ion-ios-close delete-icon"  ng-show="imageList[1].selected && !inputReadonly" ng-click="deleteImage(1)"></i>
           <img ng-hide="imageList[1].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(1)"/>
-          <img ng-show="imageList[1].selected" ng-src="{{imageList[1].uri}}" on-tap="showBigPicture(1)" class="common-image"/>
+          <div ng-show="imageList[1].selected" style="background-image: url({{imageList[1].uri}})" on-tap="showBigPicture(1)" class="common-image"></div>
         </ion-item>
       </div>
       <div class="col no-space">
@@ -55,7 +55,7 @@
         <ion-item class="image-square-item" ng-show="matrix[0][2]">
           <i class="ion-ios-close delete-icon" ng-show="imageList[2].selected && !inputReadonly" ng-click="deleteImage(2)"></i>
           <img ng-hide="imageList[2].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(2)"/>
-          <img ng-show="imageList[2].selected" ng-src="{{imageList[2].uri}}" on-tap="showBigPicture(2)" class="common-image"/>
+          <div ng-show="imageList[2].selected" style="background-image: url({{imageList[2].uri}})" on-tap="showBigPicture(2)" class="common-image"></div>
         </ion-item>
       </div>
     </div>
@@ -65,7 +65,7 @@
         <ion-item class="image-square-item" ng-show="matrix[1][0]">
           <i class="ion-ios-close delete-icon" ng-show="imageList[3].selected && !inputReadonly" ng-click="deleteImage(3)"></i>
           <img ng-hide="imageList[3].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(3)"/>
-          <img ng-show="imageList[3].selected" ng-src="{{imageList[3].uri}}" on-tap="showBigPicture(3)" class="common-image"/>
+          <div ng-show="imageList[3].selected" style="background-image: url({{imageList[3].uri}})" on-tap="showBigPicture(3)" class="common-image"></div>
         </ion-item>
       </div>
       <div class="col no-space">
@@ -74,7 +74,7 @@
         <ion-item class="image-square-item" ng-show="matrix[1][1]">
           <i class="ion-ios-close delete-icon"  ng-show="imageList[4].selected && !inputReadonly" ng-click="deleteImage(4)"></i>
           <img ng-hide="imageList[4].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(4)"/>
-          <img ng-show="imageList[4].selected" ng-src="{{imageList[4].uri}}" on-tap="showBigPicture(4)" class="common-image"/>
+          <div ng-show="imageList[4].selected" style="background-image: url({{imageList[4].uri}})" on-tap="showBigPicture(4)" class="common-image"></div>
         </ion-item>
       </div>
       <div class="col no-space">
@@ -83,7 +83,7 @@
         <ion-item class="image-square-item" ng-show="matrix[1][2]">
           <i class="ion-ios-close delete-icon" ng-show="imageList[5].selected && !inputReadonly" ng-click="deleteImage(5)"></i>
           <img ng-hide="imageList[5].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(5)"/>
-          <img ng-show="imageList[5].selected" ng-src="{{imageList[5].uri}}" on-tap="showBigPicture(5)" class="common-image"/>
+          <div ng-show="imageList[5].selected" style="background-image: url({{imageList[5].uri}})" on-tap="showBigPicture(5)" class="common-image"></div>
         </ion-item>
       </div>
     </div>
@@ -93,7 +93,7 @@
         <ion-item class="image-square-item" ng-show="matrix[2][0]">
           <i class="ion-ios-close delete-icon" ng-show="imageList[6].selected && !inputReadonly" ng-click="deleteImage(6)"></i>
           <img ng-hide="imageList[6].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(6)"/>
-          <img ng-show="imageList[6].selected" ng-src="{{imageList[6].uri}}" on-tap="showBigPicture(6)" class="common-image"/>
+          <div ng-show="imageList[6].selected" style="background-image: url({{imageList[6].uri}})" on-tap="showBigPicture(6)" class="common-image"></div>
         </ion-item>
       </div>
       <div class="col no-space">
@@ -102,7 +102,7 @@
         <ion-item class="image-square-item" ng-show="matrix[2][1]">
           <i class="ion-ios-close delete-icon"  ng-show="imageList[7].selected && !inputReadonly" ng-click="deleteImage(7)"></i>
           <img ng-hide="imageList[7].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(7)"/>
-          <img ng-show="imageList[7].selected" ng-src="{{imageList[7].uri}}" on-tap="showBigPicture(7)" class="common-image"/>
+          <div ng-show="imageList[7].selected" style="background-image: url({{imageList[7].uri}})" on-tap="showBigPicture(7)" class="common-image"></div>
         </ion-item>
       </div>
       <div class="col no-space">
@@ -111,7 +111,7 @@
         <ion-item class="image-square-item" ng-show="matrix[2][2]">
           <i class="ion-ios-close delete-icon" ng-show="imageList[8].selected && !inputReadonly" ng-click="deleteImage(8)"></i>
           <img ng-hide="imageList[8].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(8)"/>
-          <img ng-show="imageList[8].selected" ng-src="{{imageList[8].uri}}" on-tap="showBigPicture(8)" class="common-image"/>
+          <div ng-show="imageList[8].selected" style="background-image: url({{imageList[8].uri}})" on-tap="showBigPicture(8)" class="common-image"></div>
         </ion-item>
       </div>
     </div>
@@ -121,7 +121,7 @@
         <ion-item class="image-square-item" ng-show="matrix[3][0]">
           <i class="ion-ios-close delete-icon" ng-show="imageList[9].selected && !inputReadonly" ng-click="deleteImage(9)"></i>
           <img ng-hide="imageList[9].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(9)"/>
-          <img ng-show="imageList[9].selected" ng-src="{{imageList[9].uri}}"  on-tap="showBigPicture(9)" class="common-image"/>
+          <div ng-show="imageList[9].selected" style="background-image: url({{imageList[9].uri}})"  on-tap="showBigPicture(9)" class="common-image"></div>
         </ion-item>
       </div>
       <div class="col no-space">
@@ -141,9 +141,9 @@
         <!--<img class="cancel-button-image" src="build/img/application/dorm-apply/cancel-opacity.png"/>-->
       <!--</button>-->
     <!--</div>-->
-    <ion-scroll id="scaleShelter" has-bouncing="false" direction="xy" class="scroll-height">
+    <ion-scroll overflow-scroll="false"  direction="xy" scrollbar-x="false" scrollbar-y="false" zooming="true" min-zoom="1" class="scroll-height">
       <!--<ion-scroll direction="xy" class="flank">-->
-        <img id="check-my-big-picture" ng-src="{{extensionPicture}}" class="picture-position"/>
+        <div id="check-my-big-picture" class="picture-position" style="background-image: url({{extensionPicture}})"></div>
         <!--<div id="check-my-big-picture" style="background-size:cover;" class="piture-position"></div>-->
       <!--</ion-scroll>-->
       <!--<div class="scroll-bottom-line"></div>-->
