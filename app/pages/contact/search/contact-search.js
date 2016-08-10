@@ -75,7 +75,7 @@ angular.module('contactModule')
         }
       }
 
-      $scope.$on('$ionicView.enter', function () { //初始化input框-自动聚焦
+      $scope.$on('$ionicView.afterEnter', function () { //初始化input框-自动聚焦
         if (ionic.Platform.isWebView()) {
           cordova.plugins.Keyboard.show();
         }
