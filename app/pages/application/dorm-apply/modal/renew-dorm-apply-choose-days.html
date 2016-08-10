@@ -1,0 +1,11 @@
+<ion-modal-view class="renew-dorm-apply-choose-days-modal">
+  <ion-header-bar class="header-color">
+    <h1 class="title title-color">请选择续住天数</h1>
+  </ion-header-bar>
+  <ion-content class="back-color">
+    <div class="change-line"></div>
+    <div class="list">
+      <div ng-repeat="x in daystype" class="item apply-item" ng-click="finishChoosingDays(x)">{{x}}</div>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -704,6 +704,49 @@
     }
   }
 }
+.renew-dorm-apply-choose-days-modal{//新建住宿申请下的申请类型modal样式
+  position: absolute;
+  top: 66%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .header-color{
+    background-color: #ffffff;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none;
+  }
+  .change-line{
+    width: 100%;
+    height: 1px;
+    background:-webkit-linear-gradient(right,#3D7BC4,#17468F,#3D7BC4);
+  }
+  .back-color {
+    background-color: #ffffff;
+  }
+  .list{
+    border: none;
+  }
+  .apply-item{
+    width: 94%;
+    margin-left: 3%;
+    color:#9b9b9b;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #ffffff;
+  }
+}
 .platform-ios{
   .dorm-apply-detail-a {
     .time-line-row {
@@ -1002,7 +1045,7 @@
     padding: 0px;
     margin: 0px;
     width: 92%;
-    height:425px;
+    //height:425px;
     margin-left: 4%;
     border-radius: 10px;
     box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.18);
@@ -1062,6 +1105,7 @@
     width: 100%;
     height: 1px;
     border: 1px dashed #d2d2d2;
+    margin-bottom: 24px;
   }
   .room-label-shelter{
     width: 78px;
@@ -1095,7 +1139,7 @@
     min-height: 30px;
     line-height: 30px;
     margin-left: 22%;
-    margin-top: 24px;
+    margin-bottom: 10px;
     background-color: #ffffff;
     color: #24559c;
     border: 1px solid #24559c;
