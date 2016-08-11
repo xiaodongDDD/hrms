@@ -29,6 +29,7 @@ $bgColor: #fafafa !default;
   }
   .contact-content {
     //top: 44px;
+    bottom: 49px;
     background-color: $global-background;
     .input-height {
       height: 25px;
@@ -36,6 +37,7 @@ $bgColor: #fafafa !default;
     }
     .org-structure {
       margin-top: 15px;
+      box-shadow: 1px 1px 3px rgba(210,210,210,0.8);
     }
     .no-padding {
       padding: 0px;
@@ -79,7 +81,7 @@ $bgColor: #fafafa !default;
     position: absolute;
     height: 1px;
     width: 100%;
-    background-color: $contactLineColor;
+    background-color: rgba(221, 221, 221, 0.5);
     margin-top: 47px;
     margin-left: -84%;
   }

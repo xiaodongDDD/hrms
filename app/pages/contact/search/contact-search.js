@@ -67,9 +67,9 @@ angular.module('contactModule')
         $scope.newPage = 0;
         var DB_NAME = 'key_history1';
         var getEmployeeUrl = baseConfig.queryPath + '/staff/query';
-        var employeeParams = {"key": "", "page": 1, "pageSize": "30"};
+        var employeeParams = {"key": "", "page": 1, "pageSize": "10"};
         var LINK_MAN = 'common_linkman2';
-        $scope.historys = (storedb(DB_NAME).find()).arrUniq();
+        $scope.historys = unique_better(storedb(DB_NAME).find(), 'historyItem');
         if ($scope.historys.length > 10) {
           $scope.historys = $scope.historys.slice(0, 10);
         }
@@ -100,7 +100,7 @@ angular.module('contactModule')
         });
         storedb(DB_NAME).insert({historyItem: newEmployee}, function (err) {
           if (!err) {
-            $scope.historys = unique_better(storedb(DB_NAME).find(), 'employeeNumber');
+            $scope.historys = unique_better(storedb(DB_NAME).find(), 'historyItem');
           } else {
             hmsPopup.showShortCenterToast(err);
           }
@@ -147,7 +147,7 @@ angular.module('contactModule')
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           } else {
-            if (response.total < 30) {
+            if (response.total < 10) {
               //hmsPopup.showShortCenterToast('加载完毕!');
               $scope.$broadcast('scroll.infiniteScrollComplete');
               if (moreFlag === 'init' || $scope.page === 1) {

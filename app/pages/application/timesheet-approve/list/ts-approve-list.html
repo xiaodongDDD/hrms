@@ -21,7 +21,7 @@
                on-drag-up="onDragUp()"
                scrollbar-y="false"
                delegate-handle="approveListHandle"
-    >
+  >
     <hms-loading ng-if="listInfoArray.loading" style="padding-top: 110px"></hms-loading>
 
     <ion-refresher on-refresh="tsListRefresh('pull_down')" ng-if="pullDownFlag" pulling-text="正在刷新数据..."
@@ -70,7 +70,7 @@
       </ion-item>
 
     </ion-list>
-    <ion-infinite-scroll ng-if="listInfoArray.busy" on-infinite="listInfoArray.nextPage()"
+    <ion-infinite-scroll ng-if="listInfoArray.busy" on-infinite="listInfoArray.nextPage()" immediate-check="false"
                          distance="1%">
     </ion-infinite-scroll>
 
