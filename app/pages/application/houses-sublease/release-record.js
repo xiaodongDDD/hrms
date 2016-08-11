@@ -159,7 +159,7 @@ angular.module('applicationModule')
         }
       ];
 
-      $scope.showLoading=true;
+      //$scope.showLoading=true;
       var nowRecordPage = 0;
       $scope.moreDataCanBeLoaded = true;
       $scope.releaseRecordInfos = [];
@@ -175,11 +175,11 @@ angular.module('applicationModule')
         };
         //hmsPopup.showLoading('请稍候');
         hmsHttp.post(url, param).success(function (result) {
-          //hmsPopup.hideLoading();
+          hmsPopup.hideLoading();
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }
-          $scope.showLoading=false;
+          //$scope.showLoading=false;
           $scope.releaseRecordInfo = result.returnData;
           angular.forEach($scope.releaseRecordInfo, function(data, index, array){
             $scope.releaseRecordInfos.push(array[index]);
@@ -190,7 +190,7 @@ angular.module('applicationModule')
           }
           $scope.$broadcast('scroll.infiniteScrollComplete');
         }).error(function (error, status) {
-          //hmsPopup.hideLoading();
+          hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast("网络连接出错");
           if (baseConfig.debug) {
             console.log("response error " + angular.toJson(error));
