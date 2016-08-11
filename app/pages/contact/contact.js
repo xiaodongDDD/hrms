@@ -133,7 +133,7 @@ angular.module('contactModule')
                 'WebkitFilter': 'blur(5px) brightness(1)',
                 'filter': 'blur(5px) brightness(1)'
               });
-              // $scope.$apply();
+              $scope.$apply();
               $scope.scanCardModal.show();
             } catch (e) {
             }
