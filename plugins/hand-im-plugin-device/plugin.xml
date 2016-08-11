@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="hand-im-plugin-device" version="0.2.3">
+  <name>IM</name>
+  <author>Xiang Wang</author>
+  <description>hand IM plugin.</description>
+  <keywords>handim</keywords>
+  <license>GPLv2</license>
+  <js-module charset="utf-8" name="HandIMPlugin" src="www/HandIMPlugin.js">
+    <clobbers target="HandIMPlugin"/>
+  </js-module>
+  <platform name="android">
+    <config-file parent="/*" target="res/xml/config.xml">
+      <feature name="HandIMPlugin">
+        <param name="android-package" value="com.hand.im.HandIMPlugin"/>
+      </feature>
+    </config-file>
+
+    <source-file src="src/android/HandChatActivity.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/HandChatContentAdapter.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/HandIMPlugin.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/ChatEmoji.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/FaceAdapter.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/FaceConversionUtil.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/FileUtils.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/ImageActivity.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/ViewPagerAdapter.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/MediaPlayUtil.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/Util.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/VoiceLayout.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/DBhelper.java" target-dir="src/com/hand/im"/>
+
+    <source-file src="src/android/emoji" target-dir="assets/"/>
+
+
+    <source-file src="src/android/layout/chat_item_layout.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/hand_chat_act.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/chat_header_view.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/image_act.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/item_face.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/voice_view.xml" target-dir="res/layout"/>
+
+    <source-file src="src/android/uk" target-dir="src/"/>
+
+    <source-file src="src/android/layout/values/rc_configuration.xml" target-dir="res/values"/>
+    <source-file src="src/android/layout/values/rc_strings.xml" target-dir="res/values"/>
+    <!--<source-file src="src/android/layout/values-en" target-dir="res/"/>-->
+    <!--<source-file src="src/android/layout/values-sw" target-dir="res/"/>-->
+    <source-file src="src/android/layout/raw" target-dir="res/"/>
+    <source-file src="src/android/layout/values-480x320" target-dir="res/"/>
+    <source-file src="src/android/layout/values-800x480" target-dir="res/"/>
+    <source-file src="src/android/layout/values-854x480" target-dir="res/"/>
+    <source-file src="src/android/layout/values-960x540" target-dir="res/"/>
+    <source-file src="src/android/layout/values-1024x600" target-dir="res/"/>
+    <source-file src="src/android/layout/values-1024x768" target-dir="res/"/>
+    <source-file src="src/android/layout/values-1184x720" target-dir="res/"/>
+    <source-file src="src/android/layout/values-1196x720" target-dir="res/"/>
+    <source-file src="src/android/layout/values-1280x720" target-dir="res/"/>
+    <source-file src="src/android/layout/values-1280x800" target-dir="res/"/>
+    <source-file src="src/android/layout/values-1812x1080" target-dir="res/"/>
+    <source-file src="src/android/layout/values-1920x1080" target-dir="res/"/>
+    <source-file src="src/android/layout/values-2560x1440" target-dir="res/"/>
+
+    <source-file src="src/android/layout/drawable/selector_album.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/layout/drawable/selector_camera.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/layout/drawable/selector_emjoe.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/layout/drawable/selector_record.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/layout/drawable/selector_send_btn_bg.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/layout/drawable/shape_left_chat_item.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/layout/drawable/shape_right_chat_item.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/layout/drawable/select_voice_click.xml" target-dir="res/drawable"/>
+
+    <source-file src="src/android/layout/values-de/strings_de.xml" target-dir="res/values-de"/>
+    <source-file src="src/android/layout/values-es/strings_es.xml" target-dir="res/values-es"/>
+    <source-file src="src/android/layout/values-fr/strings_fr.xml" target-dir="res/values-fr"/>
+    <source-file src="src/android/layout/values-hu/strings_hu.xml" target-dir="res/values-hu"/>
+    <source-file src="src/android/layout/values-ja/strings_ja.xml" target-dir="res/values-ja"/>
+    <source-file src="src/android/layout/values-ko/strings_ko.xml" target-dir="res/values-ko"/>
+
+    <source-file src="src/android/layout/drawable-hdpi/album_2x.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/album_blue.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/back.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/btn_blue.9.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/btn_gb.9.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/btn_nor.9.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/camera_2x.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/camera_blue.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/cma.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/cmb.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/d1.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/d2.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/dial_2x.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emjoe.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emjoe_blue.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_1.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_2.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_3.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_4.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_5.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_6.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_7.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_8.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_9.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_10.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_11.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_12.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_13.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_14.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_15.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_16.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_17.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_18.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_19.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_20.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_21.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_22.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_23.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_24.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_25.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_26.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_27.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_28.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_29.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_30.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_31.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_32.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_33.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_34.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_35.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_36.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_37.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_38.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_39.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_40.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_41.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_42.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_43.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_44.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_45.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_46.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_47.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_48.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_49.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_50.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_51.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_52.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_53.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_54.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_55.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_56.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_57.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_58.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_59.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_60.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_61.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_62.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_63.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_64.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_65.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_66.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_67.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_68.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_69.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_70.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_71.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_179.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_180.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_181.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_182.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_183.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_184.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_185.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_186.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_187.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_188.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_189.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_190.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_191.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_192.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_193.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_194.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_195.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_196.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_197.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_198.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_199.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_200.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_201.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_202.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_203.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_204.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_205.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_206.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_207.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_208.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_209.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_210.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_211.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_212.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_213.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_214.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_215.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_216.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_217.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_218.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_219.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_220.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_221.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_222.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_223.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/emoji_224.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/face_del_ico_dafeult.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/face_del_ico_pressed.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/header.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/iv_face_pressed.9.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/picture_loading.9.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/pictures_no.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/record_2x.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/record_blue.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/face_del_icon.xml" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/iv_face.xml" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/gxs.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/gxt.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/record.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/record_pressed.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/chat_record_len_left.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/layout/drawable-hdpi/chat_record_len_right.png" target-dir="res/drawable-hdpi"/>
+
+    <source-file src="src/android/libs/armeabi/libRongIMLib.so" target-dir="libs/armeabi/" />
+    <source-file src="src/android/libs/arm64-v8a/libRongIMLib.so" target-dir="libs/arm64-v8a/" />
+    <source-file src="src/android/libs/armeabi-v7a/libRongIMLib.so" target-dir="libs/armeabi-v7a/" />
+    <source-file src="src/android/libs/x86/libRongIMLib.so" target-dir="libs/x86/" />
+    <source-file src="src/android/libs/Rong_IMLib_v2_6_4.jar" target-dir="libs/" />
+    <source-file src="src/android/libs/universal-image-loader-1.9.2.jar" target-dir="libs/" />
+
+    <framework src="com.android.support:support-v4:23.1.1" />
+
+    <config-file parent="/manifest" target="AndroidManifest.xml">
+      <uses-permission android:name="android.permission.INTERNET" />
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+      <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+      <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+      <uses-permission android:name="android.permission.RECORD_AUDIO" />
+      <uses-permission android:name="android.permission.GET_TASKS" />
+      <uses-permission android:name="android.permission.WAKE_LOCK" />
+      <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+      <uses-permission android:name="android.permission.VIBRATE" />
+      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+      <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+      <meta-data
+        android:name="RONG_CLOUD_APP_KEY"
+        android:value="e5t4ouvptpsaa" />
+
+      <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+                android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"
+                android:name="com.hand.im.HandChatActivity"
+                android:screenOrientation="portrait" />
+      <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+                android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"
+                android:name="com.hand.im.ImageActivity"
+                android:screenOrientation="portrait" />
+
+      <service
+        android:name="io.rong.imlib.ipc.RongService"
+        android:exported="true"
+        android:process=":ipc" />
+
+      <service android:name="io.rong.imlib.ReConnectService" />
+
+      <receiver android:name="io.rong.imlib.ConnectChangeReceiver" />
+
+      <receiver
+        android:name="io.rong.imlib.HeartbeatReceiver"
+        android:process=":ipc" />
+
+      <service
+        android:name="io.rong.push.core.PushRegistrationService"
+        android:exported="false">
+      </service>
+      <service
+        android:name="io.rong.push.PushService"
+        android:exported="false"
+        android:process="io.rong.push">
+      </service>
+
+      <service
+        android:name="io.rong.push.core.MessageHandleService"
+        android:exported="true">
+      </service>
+
+      <receiver
+        android:name="io.rong.push.PushReceiver"
+        android:process="io.rong.push">
+        <intent-filter>
+          <action android:name="io.rong.push.intent.action.HEART_BEAT" />
+        </intent-filter>
+        <intent-filter>
+          <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+        </intent-filter>
+        <intent-filter>
+          <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+        <intent-filter>
+          <action android:name="android.intent.action.USER_PRESENT" />
+          <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+          <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+        </intent-filter>
+      </receiver>
+    </config-file>
+
+  </platform>
+
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="HandIMPlugin">
+        <param name="ios-package" value="CDVIMPlugin"/>
+      </feature>
+    </config-file>
+
+    <!-- 配置-info.plist    -->
+    <config-file target="*-Info.plist"  parent="View controller-based status bar appearance">
+      <false>NO</false>
+    </config-file>
+
+    <!-- resource   -->
+    <resource-file src="src/ios/plugins/images/back@2x.png" />
+    <resource-file src="src/ios/plugins/images/back@3x.png" />
+    <resource-file src="src/ios/plugins/images/image_placehold.png" />
+    <resource-file src="src/ios/plugins/images/default_mic.caf" />
+
+
+    <!-- fmdb  fmdb -->
+    <header-file src="src/ios/plugins/fmdb/FMDB.h" />
+    <header-file src="src/ios/plugins/fmdb/FMDatabase.h" />
+    <source-file src="src/ios/plugins/fmdb/FMDatabase.m" />
+    <header-file src="src/ios/plugins/fmdb/FMDatabaseAdditions.h" />
+    <source-file src="src/ios/plugins/fmdb/FMDatabaseAdditions.m" />
+    <header-file src="src/ios/plugins/fmdb/FMDatabasePool.h" />
+    <source-file src="src/ios/plugins/fmdb/FMDatabasePool.m" />
+    <header-file src="src/ios/plugins/fmdb/FMDatabaseQueue.h" />
+    <source-file src="src/ios/plugins/fmdb/FMDatabaseQueue.m" />
+    <header-file src="src/ios/plugins/fmdb/FMResultSet.h" />
+    <source-file src="src/ios/plugins/fmdb/FMResultSet.m" />
+
+
+    <!--源码 -->
+    <header-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.h" />
+    <source-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.m" />
+
+    <header-file src="src/ios/plugins/CDVIMPlugin.h"/>
+    <source-file src="src/ios/plugins/CDVIMPlugin.m"/>
+
+    <header-file src="src/ios/plugins/DataBaseTool.h"/>
+    <source-file src="src/ios/plugins/DataBaseTool.m"/>
+
+    <header-file src="src/ios/plugins/TimeTool.h"/>
+    <source-file src="src/ios/plugins/TimeTool.m"/>
+
+    <header-file src="src/ios/plugins/CDVIMPluginChattingViewController.h"/>
+    <source-file src="src/ios/plugins/CDVIMPluginChattingViewController.m"/>
+
+    <header-file src="src/ios/plugins/CVDPlugin-Bridging-Header.h"/>
+
+    <!--框架-->
+    <framework src="Photos.framework"  />
+    <framework src="UIKit.framework"  />
+    <framework src="AudioToolbox.framework" />
+    <framework src="AVFoundation.framework" />
+    <framework src="CFNetwork.framework" />
+    <framework src="CoreAudio.framework" />
+    <framework src="CoreGraphics.framework" />
+    <framework src="CoreLocation.framework" />
+    <framework src="CoreMedia.framework" />
+    <framework src="CoreTelephony.framework" />
+    <framework src="CoreVideo.framework" />
+    <framework src="ImageIO.framework" />
+    <framework src="libc++abi.tbd"  weak="true"/>
+    <framework src="libstdc++.tbd" weak="true" />
+    <framework src="libxml2.tbd" weak="true"/>
+    <framework src="MapKit.framework" />
+    <framework src="OpenGLES.framework" />
+    <framework src="QuartzCore.framework" />
+    <framework src="SystemConfiguration.framework" />
+    <framework src="AssetsLibrary.framework" />
+    <framework src="libc++.tbd" weak="true"/>
+    <framework src="libsqlite3.0.tbd" weak="true"/>
+    <framework src="libz.tbd" weak="true"/>
+
+  </platform>
+</plugin>
