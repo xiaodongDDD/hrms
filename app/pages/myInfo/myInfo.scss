@@ -839,6 +839,10 @@
   .common-image{
     width: 90px;
     height: 90px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    background-color: #d2d2d2;
   }
   .black-shelter{
     width: 90px;
@@ -900,9 +904,10 @@
     background-color: transparent;
   }
   .picture-position{
-    border: none;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center, center;
   }
   .clear-back{
 
@@ -1044,6 +1049,10 @@
   .common-image{
     width: 90px;
     height: 90px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    background-color: #d2d2d2;
   }
   .black-shelter{
     width: 90px;
@@ -1106,9 +1115,10 @@
     font-size: 1rem;
   }
   .picture-position{
-    border: none;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center, center;
   }
   .clear-back{
 
