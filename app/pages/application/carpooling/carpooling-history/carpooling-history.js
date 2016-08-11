@@ -31,18 +31,20 @@ angular.module('applicationModule')
       $scope.fetchServerFlag= true;
       $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
       $scope.map = "";
+      $scope.moreDataCanBeLoaded = true;
+      var curPage = 1;
       var  mapUrl = {
         baseUrl: " http://api.map.baidu.com/staticimage/v2?ak=i6Ft7l8flPNq7Ub6O2vmcuGx",
         baseStyle:"&width=400&height=100&zoom=11&scale=2",
         baseStyle1:"&markerStyles=-1,http://www.daxuequan.org/hrms-img/start@3x.png|-1,http://www.daxuequan.org/hrms-img/end@3x.png",
       }
 
-      searchHistoryApplyListAutomatically();
-      function searchHistoryApplyListAutomatically() {
+      searchCarpoolingHistory();
+      function searchCarpoolingHistory() {
         $scope.items=[];
         var url = baseConfig.queryPath + "/share/infobyEmpNo";
         var param = {
-            "page": 1,
+            "page": curPage,
             "pageSize":5
         };
         hmsHttp.post(url, param).success(function (result) {
@@ -71,7 +73,9 @@ angular.module('applicationModule')
                 array[index].listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+"&markers="+array[index].startLatitude+"|"+array[index].endLatitude +mapUrl.baseStyle1;
               }
             });
-          }
+          }else{
+           $scope.moreDataCanBeLoaded=true;
+         }
         }).error(function (error, status) {
           hmsPopup.showShortCenterToast("网络连接出错");
         }).finally(function(){
@@ -106,6 +110,10 @@ angular.module('applicationModule')
       };
       $scope.goBack=function(){
         $ionicHistory.goBack();
+      };
+      $scope.loadMore = function() {//上拉加载
+        curPage++;
+        searchCarpoolingHistory();
       };
     }]
 );

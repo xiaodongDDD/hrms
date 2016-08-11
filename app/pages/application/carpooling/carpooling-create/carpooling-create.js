@@ -301,7 +301,7 @@ angular.module('applicationModule')
           } else if (contact.gender == "女") {
             contact.avatar = "build/img/myInfo/woman-portrait.png";
           }
-        } 
+        }
         var obj = {
           flag: true,
           locked: false,
@@ -458,7 +458,7 @@ angular.module('applicationModule')
         $scope.createInfo.carType = $scope.carTypes;//车类型
         $scope.createInfo.otherDesc = explain//其他说明
         $scope.createInfo.departurePreference = $scope.timePreference;//时间偏好选择，需要判断
-        //$scope.createInfo.departureTime = $scope.departureTime;//出行时间
+        $scope.createInfo.departureTime = $scope.departureTime;//出行时间
         $scope.createInfo.empNoList = [];
         angular.forEach($scope.carpoolingJoin, function(data,index,array){  //加入座位列表
           if(data.empCode != ""){
@@ -474,7 +474,7 @@ angular.module('applicationModule')
         $scope.createInfo.startLatitude = $scope.startLng+","+$scope.startLat;
         $scope.createInfo.endLatitude = $scope.endLng+","+$scope.endLat;
         if( ($scope.createInfo.startAddr != "") && ($scope.createInfo.endAddr != "") ){
-          if($scope.createInfo.departureTime != ""){
+          if($scope.createInfo.departureTime != "请选择"){
             if($scope.createInfo.departurePreference != "选择偏好"){
               if( $scope.createInfo.feeType!=""){
                 if($scope.createInfo.startLat != ""){
