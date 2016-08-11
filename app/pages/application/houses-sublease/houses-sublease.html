@@ -20,7 +20,8 @@
             <div class="col col-33"
                  style="padding: 0px; margin: 0px; margin-top: 10px; margin-bottom: 10px;">
               <img style="width: 86%; height: 76px" ng-if="item.houseImg == null" ng-src="build/img/application/houses-sublease/default@3x.png">
-              <img style="width: 86%; height: 76px" ng-if="item.houseImg != null" ng-src="{{item.houseImg}}">
+              <!--<img style="width: 86%; height: 76px" ng-if="item.houseImg != null" ng-src="{{item.houseImg}}">-->
+              <div style="width: 86%; height: 76px; background-color: #EEEEEE; background-image: url('{{item.houseImg}}'); background-size: cover; background-repeat: no-repeat; background-position: center center"  ng-if="item.houseImg != null"></div>
             </div>
             <div class="col col-67" style="padding: 0px; margin: 0px; margin-top: 10px; margin-bottom: 10px">
               <div class="row" style="padding: 0px;margin: 0px;font-size: 14px;color: #4A4A4A;">{{item.houseTitle}}
