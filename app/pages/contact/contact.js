@@ -85,42 +85,56 @@ angular.module('contactModule')
         // alert("msg " + jsonFormat(JSON.parse(msg)));
         try {
           if (JSON.parse(msg)) {
-            var manInfo = {
+            $scope.manInfo = {
               emp_name: '',
               mobil: '',
-              email: ''
+              email: '',
+              organization: ''
             };
             msg = JSON.parse(msg);
             try {
-              manInfo.emp_name = msg.formatted_name[0].item;
+              $scope.manInfo.emp_name = msg.formatted_name[0].item;
             } catch (e) {
               try {
-                manInfo.emp_name = msg.name[0].item.family_name + msg.name[0].item.given_name;
+                $scope.manInfo.emp_name = msg.name[0].item.family_name + msg.name[0].item.given_name;
               } catch (e) {
-                manInfo.emp_name = '';
+                $scope.manInfo.emp_name = '';
               }
             }
             try {
               var phones = msg.telephone;
               if (phones.length > 0) {
-                manInfo.mobil = phones[0].item.number;
+                $scope.manInfo.mobil = phones[0].item.number;
               } else {
-                manInfo.mobil = ""; //待测 --需要测试一个数据情况的json format
+                $scope.manInfo.mobil = "";
               }
             } catch (e) {
-              manInfo.mobil = '';
+              $scope.manInfo.mobil = '';
             }
             try {
               var emails = msg.email;
               if (emails.length > 0) {
-                manInfo.email = emails[0].item;
+                $scope.manInfo.email = emails[0].item;
               }
             } catch (e) {
-              manInfo.email = '';
+              $scope.manInfo.email = '';
             }
             try {
-              $scope.$apply();
-              contactService.contactLocal(manInfo);
+              var organization = msg.organization;
+              if (organization.length > 0) {
+                $scope.manInfo.organization = organization[0].item.name;
+              }
+            } catch (e) {
+              $scope.manInfo.organization = '';
+            }
+
+            try {
+              angular.element('.contact').css({
+                'WebkitFilter': 'blur(5px) brightness(1)',
+                'filter': 'blur(5px) brightness(1)'
+              });
+              // $scope.$apply();
+              $scope.scanCardModal.show();
             } catch (e) {
             }
           }
@@ -131,18 +145,39 @@ angular.module('contactModule')
         }
       };
 
+      // 创建名片扫描结果的modal现实页面
+      (function scanCardModal() {
+        $ionicModal.fromTemplateUrl('build/pages/contact/modal/scan-card-result.html', {
+          scope: $scope
+        }).then(function (modal) {
+          $scope.scanCardModal = modal;
+        });
+      })();
+
+      $scope.$on('modal.hidden', function () {
+        angular.element('.contact').css({'WebkitFilter': '', 'filter': ''});
+      });
+
+      $scope.set2localContact = function () {
+        contactService.contactLocal($scope.manInfo,$scope.scanCardModal);
+      };
+
+      $scope.resetScanCard = function () {
+        $scope.scanBusinessCard();
+      };
+
       $scope.scanBusinessCard = function () { //名片扫描添加联系人到通讯录
         if (ionic.Platform.isWebView()) {
           var options = {
             buttonLabels: ['拍照', '从相册中选择'],
             addCancelButtonWithLabel: '取消',
-            androidEnableCancelButton : true,
+            androidEnableCancelButton: true,
             androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT
           };
 
           document.addEventListener("deviceready", function () {
             $cordovaActionSheet.show(options)
-              .then(function(btnIndex) {
+              .then(function (btnIndex) {
                 if (baseConfig.debug) {
                   warn(btnIndex);
                 }
@@ -155,7 +190,7 @@ angular.module('contactModule')
                     hmsPopup.hideLoading();
                   });
                   return true;
-                } else if(btnIndex == 2){
+                } else if (btnIndex == 2) {
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.choosePicturefun(function (msg) {
                     dealScanData(msg);
@@ -171,7 +206,6 @@ angular.module('contactModule')
           hmsPopup.showShortCenterToast('暂不支持网页端的名片扫描!');
         }
       };
-
 
       $scope.telNumber = function (event, baseInfo) { //拨打电话按钮的响应事件
         event.stopPropagation(); //阻止事件冒泡
@@ -234,18 +268,18 @@ angular.module('contactModule')
       }
     }
   }])
-  .factory('commonContactService',[function () {
+  .factory('commonContactService', [function () {
     var _pageName = '';
     var _newEmp = {};
 
-    return{
+    return {
       setGoContactFlg: function (newPage) {
         _pageName = newPage;
       },
       getContactFlag: function () {
         return _pageName;
       },
-      setEmpInfo:function (newEmp) {
+      setEmpInfo: function (newEmp) {
         _newEmp = newEmp;
       },
       getEmpInfo: function () {

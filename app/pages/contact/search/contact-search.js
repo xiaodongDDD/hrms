@@ -147,27 +147,26 @@ angular.module('contactModule')
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           } else {
-              if (response.total < 30) {
-                //hmsPopup.showShortCenterToast('加载完毕!');
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-                if (moreFlag === 'init' || $scope.page === 1) {
-                  $scope.resultList = [];
-                  angular.forEach(response.rows, function (data, index) {
-                    $scope.resultList.push(data);
-                  });
-                }
-                // $scope.resultList = $sce.trustAsHtml($scope.resultList);
-                q.resolve($scope.resultList);
-                $scope.showInfinite = false;
-              } else {
-                $scope.showInfinite = true;
+            if (response.total < 30) {
+              //hmsPopup.showShortCenterToast('加载完毕!');
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              if (moreFlag === 'init' || $scope.page === 1) {
+                $scope.resultList = [];
                 angular.forEach(response.rows, function (data, index) {
                   $scope.resultList.push(data);
                 });
-                // $scope.resultList = $sce.trustAsHtml($scope.resultList);
-                $scope.$apply();
-                q.resolve($scope.resultList);
               }
+              // $scope.resultList = $sce.trustAsHtml($scope.resultList);
+              q.resolve($scope.resultList);
+              $scope.showInfinite = false;
+            } else {
+              $scope.showInfinite = true;
+              angular.forEach(response.rows, function (data, index) {
+                $scope.resultList.push(data);
+              });
+              // $scope.resultList = $sce.trustAsHtml($scope.resultList);
+              q.resolve($scope.resultList);
+            }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           }
           return q.promise;
@@ -293,21 +292,24 @@ angular.module('contactModule')
   ])
   .factory('contactService', ['hmsPopup', function (hmsPopup) {
     //for contact
-    function onSaveContactSuccess(contacts) {
+    function onSaveContactSuccess(scanCardModal) {
       hmsPopup.showShortCenterToast('添加成功!');
+      scanCardModal.hide();
     };
     //for contact
     function onSaveContactError(contactError) {
-      hmsPopup.showShortCenterToast('添加失败!');
+      hmsPopup.showShortCenterToast('添加失败,请重新扫描!');
     };
     return {  //联系人保存到本地--
-      contactLocal: function (baseInfo) {
+      contactLocal: function (baseInfo, scanCardModal) {
         if (ionic.Platform.isWebView()) {
           var newContact = navigator.contacts.create();
           var phoneNumbers = [];
           phoneNumbers[0] = new ContactField('mobile', baseInfo.mobil, true);
           var emails = [];
           emails[0] = new ContactField('email', baseInfo.email, true);
+          var organization = [];
+          organization[0] = new ContactField('organization', baseInfo.organization, true);
           if (ionic.Platform.isAndroid()) {
             newContact.displayName = baseInfo.emp_name; // ios 不支持 displayName
           }
@@ -319,7 +321,8 @@ angular.module('contactModule')
           }
           newContact.phoneNumbers = phoneNumbers;
           newContact.emails = emails;
-          newContact.save(onSaveContactSuccess, onSaveContactError);
+          newContact.organizations = organization;
+          newContact.save(onSaveContactSuccess(scanCardModal), onSaveContactError);
         }
       }
     }

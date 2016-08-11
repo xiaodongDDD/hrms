@@ -15,7 +15,7 @@
              ng-click="goInputSearch()"/>
     </div>
     <ion-scroll delegate-handle="contactStructureDelegate" scrollbar-x="false" direction="x"
-                class="dept-scroll-contact">
+                class="dept-scroll-contact" ng-if="showScroll">
       <div class="row row-scroll-contact">
         <div ng-repeat="i in currentStackList" class="dept-stack">
           <div ng-bind="i.name" class="dept-stack-name"
@@ -49,7 +49,7 @@
       <div class="col col-85 item-name" ng-bind="i.userName">
       </div>
       <div class="item-line"></div>
-      <!--<div class="tel-img" ng-click="telNumber($event,i.tel)"></div>-->
+      <div class="admin-content" ng-if="hasAdmin&&$index === 0">管理员</div>
     </div>
   </ion-content>
 </ion-view>

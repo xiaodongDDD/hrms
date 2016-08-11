@@ -58,11 +58,13 @@ angular.module('myApp')
         var structureParams = {
           "id": ""
         };
+        $scope.showScroll = true;
         $scope.childrenDept = []; //当前组织下一级的信息
         $scope.deptStaff = []; //当前这一级组织用户信息
         $scope.departmentName = ''; //当前组织所属层级的名字
         $scope.totalStaffNumber = ''; //当前组织所属层级的总人数(包括全部下级的人数)
         $scope.currentStackList = [{name: '通讯录', id: ''}]; //页栈列表
+        $scope.hasAdmin = false; //默认不是管理员
         $scope.showLoading = true;
       }
 
@@ -96,6 +98,7 @@ angular.module('myApp')
             $scope.deptStaff = result.deptStaff;
             $scope.departmentName = result.departmentName;
             $scope.totalStaffNumber = result.totalStaffNumber;
+            $scope.hasAdmin = result.hasAdmin;
             $scope.showLoading = false;
             if (curr_page === 'currentDepartment') {
               $scope.currentStackList = [{name: '通讯录', id: ''}];
@@ -113,14 +116,20 @@ angular.module('myApp')
         var currentInfo = $stateParams.currentDepartInfo;
         $scope.childrenDept = currentInfo.childrenDeptInfo;
         $scope.deptStaff = currentInfo.deptStaff;
+        $scope.hasAdmin = currentInfo.hasAdmin;
         $scope.showLoading = false;
-        for (var i = 1; i < currentInfo.deptInfo.length; i++) {
-          if (i === (currentInfo.deptInfo.length - 1)) {
-            $scope.departmentName += currentInfo.deptInfo[i].name;
-          } else {
-            $scope.departmentName += currentInfo.deptInfo[i].name + '-';
+        $scope.showScroll = false;
+        try {
+          for (var i = 1; i < currentInfo.deptInfo.length; i++) {
+            if (i === (currentInfo.deptInfo.length - 1)) {
+              $scope.departmentName += currentInfo.deptInfo[i].name;
+            } else {
+              $scope.departmentName += currentInfo.deptInfo[i].name + '-';
+            }
           }
+        } catch (e) {
         }
+
         $scope.totalStaffNumber = '';
         angular.forEach(currentInfo.deptInfo, function (data, index) {
           $scope.currentStackList.push(data);
@@ -140,7 +149,7 @@ angular.module('myApp')
         dynamicAddScrollWidth();
         $timeout(function () {
           $ionicHistory.goBack();
-        }, 100);
+        }, 251);
       };
 
       $scope.goInputSearch = function () { //去搜索界面
@@ -149,6 +158,7 @@ angular.module('myApp')
 
       $scope.goBackStack = function (index, length, newId) {
         if ($stateParams.routeId === 'currentDepartment') {
+          $scope.showLoading = true;
           getInitStructureInfo.getStructure(getStructureInfo, newId);
           if (index === 0) {
             $ionicHistory.goBack();
