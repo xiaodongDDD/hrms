@@ -48,13 +48,14 @@ angular.module('HmsModule')
             }
             var serveVersion = serveVersionParams.bigVersion.split('.');
             var localVersion = baseConfig.version.currentVersion.split('.');
-            function dealVersion(){
+
+            function dealVersion() {
               if (parseInt(localVersion[0]) < parseInt(serveVersion[0])) {
                 return true;
-              } else if (parseInt(localVersion[0]) == parseInt(serveVersion[0])){
+              } else if (parseInt(localVersion[0]) == parseInt(serveVersion[0])) {
                 if (parseInt(localVersion[1]) < parseInt(serveVersion[1])) {
                   return true;
-                } else if (parseInt(localVersion[1]) == parseInt(serveVersion[1])){
+                } else if (parseInt(localVersion[1]) == parseInt(serveVersion[1])) {
                   if (parseInt(localVersion[2]) < parseInt(serveVersion[2])) {
                     return true;
                   } else {
@@ -74,7 +75,7 @@ angular.module('HmsModule')
                     return;
                   }
                 };
-                if(!baseConfig.appStoreFlag) {
+                if (!baseConfig.appStoreFlag) {
                   hmsPopup.confirm(serveVersionParams.updateContent, "大版本更新", selectAction);
                 } else {
                   //go appleStore--
@@ -84,7 +85,7 @@ angular.module('HmsModule')
                 alert(serveVersionParams.updateContent);
               }
             } else {
-              if (serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
+              if (serveVersionParams.bigVersion === baseConfig.version.currentVersion && serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
                 if (ionic.Platform.isWebView()) {
                   function selectAction_min(buttonIndex) { // update from pgy
                     if (buttonIndex == 1) { //确认按钮
@@ -98,8 +99,8 @@ angular.module('HmsModule')
                   alert(serveVersionParams.updateContent);
                 }
               } else {
-                if(newName === 'MY_INFO')
-                hmsPopup.showShortCenterToast("当前为最新版本");
+                if (newName === 'MY_INFO')
+                  hmsPopup.showShortCenterToast("当前为最新版本");
               }
             }
           });
