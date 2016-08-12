@@ -123,7 +123,7 @@ angular.module('applicationModule')
       var historyEachWidth = 102;
 
       var workflowIdSpecial = {
-        "renewContractWorkflowId": "100729",
+        "renewContractWorkflowId": "100728",
         "applicationFullMemberWorkflowId": "10008",
         "openProjectWorkflowId": "10206"
       }
@@ -375,6 +375,7 @@ angular.module('applicationModule')
           $scope.renewContract.method = data.item;
           if (data.value == "") {
             $scope.renewContractEditable = true;
+            $scope.renewContract.address = '';
           } else {
             $scope.renewContract.address = data.value;
             $scope.renewContractEditable = false;
@@ -638,6 +639,7 @@ angular.module('applicationModule')
           var success = function (result) {
             if (result.returnCode == 'S') {
               $scope.renewContractSaveFlag = true;
+              hmsPopup.showPopup('保存邮寄地址成功!');
             }
             else {
             }
@@ -1135,7 +1137,7 @@ angular.module('applicationModule')
           if (detail.workflowId == workflowIdSpecial.renewContractWorkflowId) { //合同续签地址维护
             $scope.showList.contractRenewShowFlag = true;
             renewContract().query();
-            workflowDetail().getWorkflowDetail();
+            //workflowDetail().getWorkflowDetail();
           } else if (detail.workflowId == workflowIdSpecial.applicationFullMemberWorkflowId) { //转正申请
             $scope.showList.applicationFullMemberShowFlag = true;
             applicationFullMember().query();
