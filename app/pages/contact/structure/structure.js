@@ -144,8 +144,9 @@ angular.module('myApp')
 
 
       $scope.goLastPage = function () { //返回按钮的响应
-        $scope.currentStackList.pop();
-        // warn(jsonFormat($scope.currentStackList));
+        if ($scope.currentStackList.length > 2) {
+          $scope.currentStackList.pop();
+        }
         dynamicAddScrollWidth();
         $timeout(function () {
           $ionicHistory.goBack();
