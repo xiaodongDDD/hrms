@@ -156,6 +156,9 @@ angular.module('applicationModule')
       };
       $scope.zoomMin = 1;
       var showBigPicture = function (picUrl) {//显示大图
+        $scope.photoHight = {
+          "height": window.screen.height + "px"
+        };
         $scope.photoZoomUrl = picUrl;
         $scope.showModal('build/pages/application/houses-sublease/houses-photo-zoom.html');
         //$scope.pictureAppearance = true;
