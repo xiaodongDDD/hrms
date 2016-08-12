@@ -41,10 +41,12 @@ angular.module('applicationModule')
     'hmsHttp',
     'hmsPopup',
     '$ionicSlideBoxDelegate',
+    '$ionicScrollDelegate',
     '$timeout',
     '$stateParams',
     '$ionicActionSheet',
     'imService',
+    '$ionicModal',
     function ($scope,
               $rootScope,
               $state,
@@ -53,10 +55,12 @@ angular.module('applicationModule')
               hmsHttp,
               hmsPopup,
               $ionicSlideBoxDelegate,
+              $ionicScrollDelegate,
               $timeout,
               $stateParams,
               $ionicActionSheet,
-              imService) {
+              imService,
+              $ionicModal) {
       $scope.housesId = $stateParams.housesSubId;
       $scope.goBack = function () {//返回按钮
         $ionicHistory.goBack();
@@ -125,6 +129,32 @@ angular.module('applicationModule')
 
       $scope.slideChanged = function (index) {
       };
+
+      $scope.zoomMin = 1;
+      $scope.showImages = function(index) {
+        $scope.activeSlide = index;
+        $scope.showModal('build/pages/application/houses-sublease/modal/houses-detail-photo-zoom.html');
+      } ;
+      $scope.showModal = function(templateUrl) {//显示原图
+        $ionicModal.fromTemplateUrl(templateUrl, {
+          scope: $scope
+        }).then(function(modal) {
+          $scope.modal = modal;
+          $scope.modal.show();
+        });
+      };
+      $scope.closeModal = function() {
+        $scope.modal.hide();
+        $scope.modal.remove()
+      };
+      //$scope.updateSlideStatus = function(slide) {
+      //  var zoomFactor = $ionicScrollDelegate.$getByHandle('scrollHandle' + slide).getScrollPosition().zoom;
+      //  if(zoomFactor == $scope.zoomMin){
+      //    $ionicSlideBoxDelegate.enableSlide(true);
+      //  } else {
+      //    $ionicSlideBoxDelegate.enableSlide(false) ;
+      //  }
+      //} ;
 
       function getStaffDetails() {//拉取员工详情信息
         var url = baseConfig.queryPath + "/staff/detail";
