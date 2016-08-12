@@ -1,46 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title></title>
-</head>
-<body>
-<style>
-  .image-list-thumb {
-    padding: 2px 2px 2px 2px;
-    height: 150px;
-  }
+<ion-modal-view class="houses-photo-zoom">
+  <div class="modal image-modal transparent" on-swipe-down="closeModal()" ng-click="closeModal()">
+    <ion-scroll overflow-scroll='false' direction="xy" scrollbar-x="false" scrollbar-y="false"
+                zooming="true" min-zoom="{{zoomMin}}" style="width: 100%; height: 100%"
+                delegate-handle="scrollHandle{{$index}}">
+      <!--ionic1.2版本后原生scroll代替javascript scroll造成scroll工作不正常, 加入overflow-scroll='false'取消原生滚动 -->
+      <div class="image" style="background-image: url( {{photoZoomUrl}} )"></div>
+    </ion-scroll>
+  </div>
+</ion-modal-view>
 
-  .image-modal {
-    width: 100% !important;
-    height: 100%;
-    top: 0 !important;
-    left: 0 !important;
-  }
-
-  .transparent {
-    background: rgba(0, 0, 0, 0.7);
-  }
-
-  .slider {
-    width: 100%;
-    height: 100%;
-  }
-
-  .image {
-    width: 100%;
-    height: 600px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center, center;
-  }
-</style>
-<div class="modal image-modal transparent" on-swipe-down="closeModal()" ng-click="closeModal()">
-  <ion-scroll overflow-scroll='false' direction="xy" scrollbar-x="false" scrollbar-y="false"
-              zooming="true" min-zoom="{{zoomMin}}" style="width: 100%; height: 100%"
-              delegate-handle="scrollHandle{{$index}}"> <!--ionic1.2版本后原生scroll代替javascript scroll造成scroll工作不正常, 加入overflow-scroll='false'取消原生滚动 -->
-    <div class="image" style="background-image: url( {{photoZoomUrl}} )"></div>
-  </ion-scroll>
-</div>
-</body>
-</html>
