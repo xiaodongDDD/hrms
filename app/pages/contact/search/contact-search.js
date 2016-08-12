@@ -69,6 +69,7 @@ angular.module('contactModule')
         var getEmployeeUrl = baseConfig.queryPath + '/staff/query';
         var employeeParams = {"key": "", "page": 1, "pageSize": "10"};
         var LINK_MAN = 'common_linkman2';
+        var item = document.getElementById("employeeInputSearch");
         $scope.historys = unique_better(storedb(DB_NAME).find(), 'historyItem');
         if ($scope.historys.length > 10) {
           $scope.historys = $scope.historys.slice(0, 10);
@@ -79,7 +80,6 @@ angular.module('contactModule')
         if (ionic.Platform.isWebView()) {
           cordova.plugins.Keyboard.show();
         }
-        var item = document.getElementById("employeeInputSearch");
         if (ionic.Platform.isAndroid()) {
           $timeout(function () {
             item.focus();
@@ -186,6 +186,13 @@ angular.module('contactModule')
       $scope.clearInputContent = function () { //响应清除输入框文字按钮的方法
         $scope.contactKey.getValue = '';
         $scope.searchContacts();
+        if (ionic.Platform.isWebView()) {
+          cordova.plugins.Keyboard.show();
+        }
+        $timeout(function () {
+          item.focus();
+          $scope.$apply();
+        }, 400);
       };
 
       $scope.searchContacts = function () { //响应搜索输入框的方法
