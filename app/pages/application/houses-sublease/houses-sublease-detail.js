@@ -132,6 +132,9 @@ angular.module('applicationModule')
 
       $scope.zoomMin = 1;
       $scope.showImages = function(index) {
+        $scope.photoHight = {
+          "height": window.screen.height + "px"
+        };
         $scope.activeSlide = index;
         $scope.showModal('build/pages/application/houses-sublease/modal/houses-detail-photo-zoom.html');
       } ;
