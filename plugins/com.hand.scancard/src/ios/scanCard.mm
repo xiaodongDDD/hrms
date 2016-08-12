@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "scanCard.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-@interface scanCard()<UIImagePickerControllerDelegate>
+@interface scanCard ()<UIImagePickerControllerDelegate>
 
 @end
 @implementation scanCard
@@ -23,6 +23,8 @@
     //   [self setViewController:[super viewController]];
 
     self._command = command;
+    _errorflag = nil;
+    _errorMsg = @"";
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
     imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
     imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
@@ -40,15 +42,15 @@
 
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     UIViewController *view = [self viewController];
 
 
     [view dismissViewControllerAnimated:YES completion:NULL];
 
 
-        _errorflag = @"1";
-        _errorMsg = @"cancel";
+    _errorflag = @"1";
+    _errorMsg = @"cancel";
 
     [self returnMess:self._command
             andError:_errorflag
@@ -64,6 +66,8 @@
     //    UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"标题" message:@"打开相册" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     //    [alertview show];
     self._command = command;
+    _errorflag = nil;
+    _errorMsg = @"";
 
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
     imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -165,7 +169,7 @@
     NSData *imaData;
     //    data = UIImagePNGRepresentation(uiImage);
 
-    [self saveImageToPhotoAlbum:uiImage];
+    //    [self saveImageToPhotoAlbum:uiImage];
     CGSize size = CGSizeMake(1024, 768);
 
     UIImage *iamge2 = [self scaleFromImage:uiImage scaledToSize:size];
