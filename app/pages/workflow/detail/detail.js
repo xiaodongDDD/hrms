@@ -607,7 +607,7 @@ angular.module('applicationModule')
 
             $scope.LoadingModalData = false;
           };
-          workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, workflowDetail.getSubmitFlag());
+          workFLowListService.getWorkflowDetail(success, detail.workflowId, detail.instanceId, workflowDetail().getSubmitFlag());
         };
         __self.init = function () {
 
@@ -1011,14 +1011,15 @@ angular.module('applicationModule')
             }
           }
 
-          if (detail.workflowId == workflowIdSpecial.applicationFullMemberWorkflowId) {
+          if (detail.workflowId == workflowIdSpecial.applicationFullMemberWorkflowId){
             if (!$scope.applicationEmployeeSaveFlag) {
               hmsPopup.showPopup('请先保存转正信息!');
               return false;
             }
           }
 
-          if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId) {
+          if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId &&
+             (detail.nodeId == 100146 || detail.nodeId == 100148)) {
             if (!$scope.newOpenProjectSaveFlag) {
               hmsPopup.showPopup('请先保存新建项目信息!');
               return false;
