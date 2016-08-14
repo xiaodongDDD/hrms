@@ -301,11 +301,16 @@ angular.module('contactModule')
     //for contact
     function onSaveContactSuccess(scanCardModal) {
       hmsPopup.showShortCenterToast('添加成功!');
-      scanCardModal.hide();
+      try {
+        if (scanCardModal) {
+          scanCardModal.hide();
+        }
+      } catch (e) {
+      }
     };
     //for contact
     function onSaveContactError(contactError) {
-      hmsPopup.showShortCenterToast('添加失败,请重新扫描!');
+      hmsPopup.showShortCenterToast('添加失败,请重新操作!');
     };
     return {  //联系人保存到本地--
       contactLocal: function (baseInfo, scanCardModal) {
