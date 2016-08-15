@@ -19,7 +19,7 @@
       <div class="button button-icon" style="font-size: 16px;width: 60px;color: white;margin-top: -3px;" ng-click="openPopover($event)">筛选</div>
     </div>
   </ion-header-bar>
-  <ion-content  class="carpooling-list-content" on-scroll="watchTopScroll()"  delegate-handle="watchTopScroll">
+  <ion-content  class="carpooling-list-content" on-scroll="watchTopScroll()"  delegate-handle="watchTopScroll" scrollbar-y="false">
 
     <div class="search" >
       <div class="input1" ng-click="goSearch()">
@@ -31,11 +31,11 @@
       </div>
     </div>
 
-    <div class="hms-hide-content" ng-if="fetchServerFlag">
+    <div class="hms-hide-content" ng-if="listLoading">
       <hms-loading></hms-loading>
     </div>
 
-    <div ng-if="noData">
+    <div ng-if="showNoData">
       <div class="no-data-shelter">
         <div class="row no-data-no-space">
           <img src="build/img/application/dorm-apply/no-data.png" class="no-data-image">
@@ -47,7 +47,7 @@
     </div>
     <ion-refresher on-refresh="doRefresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop"></ion-refresher>
       <ion-list >
-        <ion-item class=list-item ng-repeat="x in items" ng-click="viewListDetail($index)">
+        <ion-item class=list-item ng-repeat="x in resultList" ng-click="viewListDetail($index)">
           <div class="car-list" style="padding: 0px 25px 0px 25px">
             <div class="car-start">
               <div class="logo-car">
@@ -83,6 +83,6 @@
         </ion-item>
       </ion-list>
     </div>
-    <ion-infinite-scroll ng-if="moreDataCanBeLoaded" distance="1%"  on-infinite="loadMore()" immediate-check="false"></ion-infinite-scroll>
+    <ion-infinite-scroll ng-if="showInfinite" distance="1%"  on-infinite="loadMore()" immediate-check="false"></ion-infinite-scroll>
   </ion-content>
 </ion-view>

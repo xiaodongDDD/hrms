@@ -90,18 +90,18 @@ angular.module('applicationModule')
         empCode:"",
         empFont: "create-name-empty",
         avatar: "build/img/application/carpooling/seat-2@3x.png",
-        lock: "锁定",
+        lock: "占位",
         lockIcon: "build/img/application/carpooling/lock@3x.png",
         lockFont: "create-locked-empty"
       };
       var locked = {
         flag: false,
         locked: true,
-        empName: "已锁定",
+        empName: "已占位",
         empCode:"",
         empFont: "create-name-enjoy",
         avatar: " build/img/application/carpooling/locked seat@3x.png",
-        lock: "解锁",
+        lock: "解除",
         lockIcon: "build/img/application/carpooling/unlock@3x.png",
         lockFont: "create-locked-enjoy"
       };

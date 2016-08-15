@@ -1,12 +1,11 @@
-<ion-view class="transmit-person-modal">
+<ion-view class="carpooling-search">
   <ion-header-bar align-title="center" class="bar-stable">
     <div class="transmit-search">
       <div class="transmit-button">
         <i class="ion-ios-search search-i"></i>
       </div>
-      <input id="employeeInputSearch" placeholder="搜索" autofocus="true"
-             ng-model="contactKey.getValue"
-             ng-change="searchContacts()">
+      <input id="carpoolingInputSearch" placeholder="搜索" autofocus="true"
+             ng-model="key" ng-change="searchCarpooling()">
       <img src="build/img/login/login-clear.png" class="employee-clear-img"
            ng-if="showClear"
            ng-click="clearInputContent()"/>
@@ -18,47 +17,46 @@
     </div>
   </ion-header-bar>
   <ion-content class="employee-search-content">
-    <div ng-if="showHistory">
-      <div class="row history">
-        <img ng-src="build/img/contact/history@3x.png"/>
-        <span class="col-25 history-logo">历史纪录</span>
-        <label class="col-80 history-line"></label>
-      </div>
-      <ion-list>
-        <ion-item class="employee-item" ng-repeat="values in historys track by $index"
-                  ng-class="{'no-top-border-color':$index===0}"
-                  ng-click="getHistoryItem(values)"
-                  ng-cloak>
-          {{values.historyItem}}
-        </ion-item>
-      </ion-list>
-      <div class="clear-button">
-        <div class="button button-clear" ng-if="historys.length !== 0" ng-click="deleteHistory()">清除历史数据</div>
-      </div>
-    </div>
     <hms-loading ng-if="contactLoading" style="padding-top: 80px"></hms-loading>
-    <div class="search-result-item row"
-         ng-class="{'first-item':$index === 0}"
-         ng-repeat="i in resultList"
-         ng-click="selectEmployeeItem(i)">
-      <img class="human-img" ng-cloak ng-src="{{i.avatar | filterImg:i.gender}}"/>
-      <div class="col col-80 col-padding">
-        <div class="row name" ng-cloak>
-          <span ng-bind="i.emp_name"></span>
-          <span ng-bind-html="'('+i.emp_code+')'"></span>
-          <!--{{i.emp_name}}({{i.emp_code}})-->
-          <span class="employee-status" ng-bind="i.status"></span>
+    <ion-list >
+      <ion-item class=list-item ng-repeat="x in resultList" ng-click="viewListDetail($index)">
+        <div class="car-list" style="padding: 0px 25px 0px 25px">
+          <div class="car-start">
+            <div class="logo-car">
+              <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo">
+              <div class="carpooling-font">预计{{x.departureTime}}&nbsp;&nbsp;出发</div>
+            </div>
+          </div>
+          <div class="car-location">
+            <div class="car-from text-over-hidder">
+              <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
+              <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">起点：</i>&nbsp;&nbsp;<i class="font-color1">{{x.startAddr}}</i> </span>
+            </div>
+            <div class="vertical-line"></div>
+            <div class="car-to  text-over-hidder">
+              <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
+              <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color1">{{x.targetAddr}}</i> </span>
+            </div>
+          </div>
+          <div class="horizontal-line1" style=" width: 100%; height: 1px; background-color: #D2D2D2; margin-top: 12px;"></div>
+          <div class="set-out">
+            <div class="on-time">
+              <span style="color: #B95756;font-size: 16px;">{{x.departurePreference}}</span>
+            </div>
+            <div class="remain">
+              <div class="remain-seat">
+                <img src="build/img/application/carpooling/seat@3x.png" style="width: 13px;height: 12px;">
+                <span style="color: #9B9B9B;">剩余空位</span>
+              </div>
+              <div class="remain-number"><span style="font-size: 16px;color:#24559C;">{{x.availableSeats}}</span></div>
+            </div>
+          </div>
         </div>
-        <div class="row mail-tel" ng-bind="i.email">
-        </div>
-        <div class="row mail-tel" ng-bind="i.emp_mobil">
-        </div>
-      </div>
-      <div class="tel-img" ng-click="telSaveNumber($event,i)"></div>
-    </div>
+      </ion-item>
+    </ion-list>
     <ion-infinite-scroll on-infinite="loadMore()"
                          ng-if="showInfinite"
-                         distance="0.5%">
+                         distance="1%">
     </ion-infinite-scroll>
   </ion-content>
 </ion-view>
