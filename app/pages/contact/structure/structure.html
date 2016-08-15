@@ -49,7 +49,10 @@
       <div class="col col-85 item-name" ng-bind="i.userName">
       </div>
       <div class="item-line"></div>
-      <div class="admin-content" ng-if="hasAdmin&&$index === 0">管理员</div>
+      <div class="admin-content" ng-if="hasAdmin&&$index === 0">
+        <!--<i class="icon ion-ios-star"></i>-->
+        <img ng-src="build/img/contact/star@3x.png" style="width: 13px;height: 15px;"/>
+      </div>
     </div>
   </ion-content>
 </ion-view>
