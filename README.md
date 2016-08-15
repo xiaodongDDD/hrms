@@ -35,9 +35,6 @@ $ bower install
 # run with dev mode
 $ gulp run-dev
 
-# rebuild the www env
-$ gulp rebuild
-
 # run the app
 $ ionic serve
 ```
