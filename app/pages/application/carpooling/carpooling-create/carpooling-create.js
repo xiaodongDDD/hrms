@@ -90,18 +90,18 @@ angular.module('applicationModule')
         empCode:"",
         empFont: "create-name-empty",
         avatar: "build/img/application/carpooling/seat-2@3x.png",
-        lock: "锁定",
+        lock: "占位",
         lockIcon: "build/img/application/carpooling/lock@3x.png",
         lockFont: "create-locked-empty"
       };
       var locked = {
         flag: false,
         locked: true,
-        empName: "已锁定",
+        empName: "已占位",
         empCode:"",
         empFont: "create-name-enjoy",
         avatar: " build/img/application/carpooling/locked seat@3x.png",
-        lock: "解锁",
+        lock: "解除",
         lockIcon: "build/img/application/carpooling/unlock@3x.png",
         lockFont: "create-locked-enjoy"
       };
@@ -301,7 +301,7 @@ angular.module('applicationModule')
           } else if (contact.gender == "女") {
             contact.avatar = "build/img/myInfo/woman-portrait.png";
           }
-        } 
+        }
         var obj = {
           flag: true,
           locked: false,
@@ -458,7 +458,7 @@ angular.module('applicationModule')
         $scope.createInfo.carType = $scope.carTypes;//车类型
         $scope.createInfo.otherDesc = explain//其他说明
         $scope.createInfo.departurePreference = $scope.timePreference;//时间偏好选择，需要判断
-        //$scope.createInfo.departureTime = $scope.departureTime;//出行时间
+        $scope.createInfo.departureTime = $scope.departureTime;//出行时间
         $scope.createInfo.empNoList = [];
         angular.forEach($scope.carpoolingJoin, function(data,index,array){  //加入座位列表
           if(data.empCode != ""){
@@ -474,7 +474,7 @@ angular.module('applicationModule')
         $scope.createInfo.startLatitude = $scope.startLng+","+$scope.startLat;
         $scope.createInfo.endLatitude = $scope.endLng+","+$scope.endLat;
         if( ($scope.createInfo.startAddr != "") && ($scope.createInfo.endAddr != "") ){
-          if($scope.createInfo.departureTime != ""){
+          if($scope.createInfo.departureTime != "请选择"){
             if($scope.createInfo.departurePreference != "选择偏好"){
               if( $scope.createInfo.feeType!=""){
                 if($scope.createInfo.startLat != ""){

@@ -13,8 +13,9 @@
     </div>
 
     <!--上滑搜索框显示在状态栏-->
-    <div class="row no-padding search-input" ng-if="showSearchTop">
+    <div class="row no-padding search-input  search-input-location" ng-if="showSearchTop">
       <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
+<<<<<<< HEAD
              ng-click="goModalInput()"/>
       <div class="button button-icon" style="font-size: 16px;width: 60px;color: white;margin-top: -3px;"
            ng-click="openPopover($event)">筛选
@@ -31,17 +32,47 @@
       <div style="float: right;width: 13%;margin-right: 2.5%;margin-top: 13px">
         <!--ng-click="openPopover($event)"-->
         <div class="button-filter">筛选</div>
+=======
+             ng-click="goSearch()"/>
+      <div class="button button-icon" style="font-size: 16px;width: 60px;color: white;margin-top: -3px;" ng-click="openPopover($event)">筛选</div>
+    </div>
+  </ion-header-bar>
+  <ion-content  class="carpooling-list-content" on-scroll="watchTopScroll()"  delegate-handle="watchTopScroll" scrollbar-y="false">
+
+    <div class="search" >
+      <div class="input1" ng-click="goSearch()">
+        <i class="ion-ios-search search-i" style="margin-left: 1px"></i>
+        <input name="" placeholder="搜索" ng-readonly="true"   class="search-input-content">
+      </div>
+      <div style="float: right;width: 13%;margin-right: 2.5%;margin-top: 13px">
+        <div  class="button-filter" ng-click="openPopover($event)">筛选</div>
+>>>>>>> jinshan
       </div>
     </div>
 
-    <div class="hms-hide-content" ng-if="fetchServerFlag">
+    <div class="hms-hide-content" ng-if="listLoading">
       <hms-loading></hms-loading>
     </div>
 
+    <div ng-if="showNoData">
+      <div class="no-data-shelter">
+        <div class="row no-data-no-space">
+          <img src="build/img/application/dorm-apply/no-data.png" class="no-data-image">
+        </div>
+        <div class="row no-data-no-space-label-row">
+          <label class="no-data-label">{{promptText}}</label>
+        </div>
+      </div>
+    </div>
     <ion-refresher on-refresh="doRefresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop"></ion-refresher>
+<<<<<<< HEAD
     <div class="search-list">
       <ion-list>
         <ion-item class=list-item ng-repeat="x in items" ng-click="viewListDetail($index)">
+=======
+      <ion-list >
+        <ion-item class=list-item ng-repeat="x in resultList" ng-click="viewListDetail($index)">
+>>>>>>> jinshan
           <div class="car-list" style="padding: 0px 25px 0px 25px">
             <div class="car-start">
               <div class="logo-car">
@@ -81,7 +112,11 @@
         </ion-item>
       </ion-list>
     </div>
+<<<<<<< HEAD
     <ion-infinite-scroll ng-if="moreDataCanBeLoaded" distance="1%" on-infinite="loadMore()">
     </ion-infinite-scroll>
+=======
+    <ion-infinite-scroll ng-if="showInfinite" distance="1%"  on-infinite="loadMore()" immediate-check="false"></ion-infinite-scroll>
+>>>>>>> jinshan
   </ion-content>
 </ion-view>

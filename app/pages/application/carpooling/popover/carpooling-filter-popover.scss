@@ -1,19 +1,13 @@
 .popover-filter{
   position: absolute!important;
-  margin-top: 12px;
+  margin-top: 32px;
   left: 0px!important;
   width: 100%!important;
   height: 244px;
-  -webkit-animation:my-enter 0.4s 0s 1  linear;
+  -webkit-animation:my-enter 0.3s 0s 1  linear;
   -webkit-animation-fill-mode:forwards;
   .back-text{
     color: white;
-  }
-  .filter-content{
-    background-color: #FAFAFA;
-    height: 200px;
-    border-radius: 0px;
-    padding: 8px 10px 12px 10px;
   }
   .set-end{
     height: 55px;
@@ -69,7 +63,6 @@
     background-color: #f6f6f4;
   }
   .input-text-up{
-    color: #9b9b9b;
     width: 100%;
     font-size: 16px;
     height: 1.5rem;
@@ -165,5 +158,46 @@
     -ms-flex: 0 0 16.41%;
     flex: 0 0  16.41%;
   }
+  .popover-arrow{
+    display: none;
+  }
 }
 
+.platform-android {
+  .popover-filter{
+    .filter-content {
+      margin-top: 44px;
+      background-color: #FAFAFA;
+      height: 200px;
+      border-radius: 0px;
+      padding: 8px 10px 12px 10px;
+    }
+  }
+}
+
+.platform-ios{
+  .popover-filter{
+    .filter-content{
+      margin-top: 20px;
+      background-color: #FAFAFA;
+      height: 200px;
+      border-radius: 0px;
+      padding: 8px 10px 12px 10px;
+    }
+  }
+}
+.platform-android{
+  .popover-filter{
+    .carpooling-header-search{
+      border-radius: 0px;
+      top: 44px;
+    }
+  }
+}
+.platform-ios {
+  .popover-filter {
+    .carpooling-header-search {
+      border-radius: 0px;
+    }
+  }
+}

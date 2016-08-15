@@ -11,7 +11,7 @@ angular.module('myApp')
               controller: 'CarpoolingListCtrl'
             }
           }
-        })
+        });
     }]);
 
 angular.module('applicationModule')
@@ -26,7 +26,7 @@ angular.module('applicationModule')
     '$ionicScrollDelegate',
     'hmsHttp',
     "hmsPopup",
-    "$ionicModal",
+    "$cordovaDatePicker",
     function (
               $rootScope,
               $scope,
@@ -38,84 +38,148 @@ angular.module('applicationModule')
               $ionicScrollDelegate,
               hmsHttp,
               hmsPopup,
-              $ionicModal
+              $cordovaDatePicker
     ) {
       $scope.showSearchTop = false;//顶部搜索框
-      $scope.fetchServerFlag = true;//加载logo
-      $scope.fetching = false;//正在加载数据
-      var curPage = 0;
-      $scope.moreDataCanBeLoaded = true;
-      $scope.items= [];
+      $scope.listLoading = true;//加载logo
+      var curPage = 1;
+      $scope.showInfinite = false;//上拉加载
       $scope.map = "";
+      $scope.filterTime=getNowTime();
+      $scope.startTimeText=getNowTime();
+      $scope.endTimeText=getNowTime();
+      $scope.resultList = [];
+      $scope.status = "list";//判断是否在筛选状态
+      var filterPage = 1;
 
 
-      function searchCarpoolingList() {
-        $scope.item = [];
+
+
+      searchCarpoolingList("list","init","还没有人拼车");
+      /*
+       1.status:list,filter
+       2.moreFlag:init(init,doRefresh),loadMore
+       3.promtext:showNoData时展示的文字
+       */
+
+      function searchCarpoolingList(status,moreFlag,promtext) {
+        var param;
+        if(status == "filter"){//是否筛选状态
+          param = {
+            city:"上海",
+            "departureTime":$scope.endTimeText+":00",
+            //"departureTime":"2016-07-03 13:10:00",
+            "endTime":$scope.startTimeText+":00",
+            //"endTime":"2016-08-12 16:10:00",
+            "startAddr": $scope.start,
+            "targetAddr":$scope.end,
+            "availableSeats":$scope.seats,
+            "page":filterPage,
+            "pageSize":5,
+          };
+          if (moreFlag == 'init') {
+            filterPage = 1;
+          }
+        }else {
+          param = {"page": curPage, "pageSize": 5};
+          if (moreFlag == 'init') {
+            curPage = 1;
+          }
+        }
+
+
         var url = baseConfig.queryPath + "/share/filtrateinfo";
-        var param = {
-          "page": curPage,
-          "pageSize": "5"
-        };
-        hmsHttp.post(url, param).success(function (result) {
-          $scope.item = result.returnData;
-          if( $scope.item.length > 0){
-            $scope.noData=false;
-            angular.forEach($scope.item, function(data, index, array){
-              $scope.items.push(array[index]);
-              if (array[index].shareStatus == 'wait') {
-                array[index].perferenceColor = false;
-                array[index].status = "等待成行";
-              } else  {
-                array[index].statusColor=true;
-                array[index].status = "已成行";
+
+        hmsHttp.post(url, param).success(function (response) {
+          $scope.listLoading = false;
+          if (response.total == 0) {//没有数据
+            $scope.showInfinite = false;
+            if (moreFlag == 'loadMore') {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            } else {//init
+              $scope.showNoData = true;
+              $scope.promText = promtext;
+              $scope.resultList = [];
+            }
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+          } else {//total>0
+             $scope.showNoData=false;
+            if (response.total < 5) {
+              $scope.showInfinite = false;
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+              if (moreFlag == 'init' || $scope.page == 1) { //初始化，或者在第一页没满
+                $scope.resultList = [];
+                angular.forEach(response.returnData, function (data, index) {
+                      if (data.shareStatus == 'wait') {
+                        data.perferenceColor = false;
+                        data.status = "等待成行";
+                      } else  {
+                        data.statusColor=true;
+                        data.status = "已成行";
+                      }
+                  $scope.resultList.push(data);
+                });
               }
-
-            });
-          }else{
-            $scope.noData=true;
+            } else {
+              angular.forEach(response.returnData, function (data, index) {
+                if (data.shareStatus == 'wait') {
+                  data.perferenceColor = false;
+                  data.status = "等待成行";
+                } else  {
+                  data.statusColor=true;
+                  data.status = "已成行";
+                }
+                $scope.resultList.push(data);
+              });
+            }
+            $scope.showInfinite = true;
           }
-
-          if($scope.item.length == 0){
-            $scope.moreDataCanBeLoaded=false;
-          }
+        }).error(function (error) {
+          $scope.listLoading = false;
           $scope.$broadcast('scroll.infiniteScrollComplete');
-        })
-          .error(function (error, status) {
-          hmsPopup.showShortCenterToast("网络连接出错");
-           })
-          .finally(function(){
-              $scope.fetchServerFlag = false;
-              $scope.fetching = false;
-          });
+        });
       };
-
-
 
       $scope.loadMore = function() {//上拉加载
-        curPage++;
-        searchCarpoolingList();
+        if($scope.status == "filter"){
+          filterPage++;
+          searchCarpoolingList("filter","loadMore","");
+        }else{
+          curPage++;
+          searchCarpoolingList("list","loadMore","");
+        }
+        $scope.$broadcast('scroll.infiniteScrollComplete');
       };
+
+
       $scope.doRefresh = function(){
-        $scope.items = [];
+        $scope.resultList = [];
         curPage = 1;
-        searchCarpoolingList();
+        searchCarpoolingList("list","init","还没有人拼车");
         $scope.$broadcast('scroll.refreshComplete');
-        $scope.moreDataCanBeLoaded = true;
+        $scope.status = "list";
+        //$timeout(function(){
+        //  $scope.moreDataCanBeLoaded= true;
+        //},1000);
       }
+
+
       $scope.goBack=function(){
         $ionicHistory.goBack();
       };
+
+
       $rootScope.$on("RELEASE_SUCCESS", function () {
-        $scope.items = [];
+        $scope.resultList = [];
         curPage = 1;
-        searchCarpoolingList();
+        searchCarpoolingList("list","init","还没有拼车数据");
         $scope.$broadcast('scroll.refreshComplete');
-        $scope.moreDataCanBeLoaded = true;
       });
+
 
       //跳转到拼车界面
       $scope.viewListDetail = function (num) {//跳转到拼车详情界面
-        var info=$scope.items[num];
+        var info=$scope.resultList[num];
         var hasJoinedSeats = parseInt(info.carType)- info.availableSeats//已经参与拼车人数
         var param={
           companies:info.companies,//同行
@@ -152,21 +216,7 @@ angular.module('applicationModule')
           }
         });
       };
-      /**
-       * modal-input
-       */
-      //function modalInput(){
-      //  $ionicModal.fromTemplateUrl('build/pages/application/carpooling/modal/carpooling-modal-search.html', {
-      //    scope: $scope,
-      //    animation: 'fadeInUp'
-      //  }).then(function (modal) {
-      //    $scope.contactInputModal = modal;
-      //  });
-      //}
-      //modalInput();
-      //$scope.goModalInput = function () {
-      //  $scope.contactInputModal.show();
-      //};
+
 
       //弹出筛选框
       $ionicPopover.fromTemplateUrl("build/pages/application/carpooling/popover/carpooling-filter-popover.html", {
@@ -188,23 +238,146 @@ angular.module('applicationModule')
       $scope.$on("popover.removed", function() {
       });
 
-      /**
-       * modal input 方法区
-       */
-      function inputModal() {
-        $ionicModal.fromTemplateUrl('build/pages/carpooling/modal/carpooling-modal-search.html', {
-          scope: $scope,
-          animation: 'fadeInUp'
-        }).then(function (modal) {
-          $scope.carpoolingInputModal = modal;
+
+
+
+      //时间选择模块
+      $scope.popoverChooseTime = function (index) {
+       var index = index;
+        if (ionic.Platform.isAndroid()) {
+          selectTimeAndroid(index);
+        } else {
+          selectTimeIOS(index);
+        }
+      };
+      function selectTimeAndroid(index) {
+        var date = new Date($scope.filterTime).format('MM/dd/yyyy/hh/mm/ss');
+        $cordovaDatePicker.show({
+          date: date,
+          allowOldDates: true,
+          allowFutureDates: true,
+          mode: 'datetime',
+          titleText: '',
+          okText: '确定',               //android
+          cancelText: '取消',           //android
+          androidTheme: datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT, // android： 3
+          popoverArrowDirection: 'UP',
+          locale: 'zh_cn'
+        }).then(function (returnDate) {
+          var time = returnDate.format("yyyy-MM-dd hh:mm:ss");
+          if(index == "1"){
+            $scope.startTimeText = timeText(time);
+          }else{
+            $scope.endTimeText = timeText(time);
+          }
+          if (!$scope.$$phrese) {
+            $scope.$apply();
+          }
         });
       }
-
-      inputModal();
-      $scope.goInputModal = function () {
-        $scope.$broadcast('carpooling-search');
-        $scope.carpoolingInputModal.show();
+      function selectTimeIOS(index) {
+        var date = new Date($scope.filterTime).format('yyyy/MM/dd hh:mm:ss');
+        $cordovaDatePicker.show({
+          date: new Date(),
+          allowOldDates: true,
+          allowFutureDates: true,
+          mode: 'date',
+          titleText: '',
+          doneButtonLabel: '确认',
+          cancelButtonLabel: '取消',
+          popoverArrowDirection: 'UP',
+          locale: 'zh_cn'
+        }).then(function (returnDate) {
+          var date1 = "";
+          var time1 ="";
+          date1 = returnDate.format("yyyy-MM-dd");
+          $timeout(function(){
+            $cordovaDatePicker.show({
+              date: new Date(),
+              allowOldDates: true,
+              allowFutureDates: true,
+              mode: 'time',
+              titleText: '',
+              doneButtonLabel: '确认',
+              cancelButtonLabel: '取消',
+              popoverArrowDirection: 'UP',
+              locale: 'zh_cn'
+            }).then(function (returnDate) {
+              time1 = returnDate.format("hh:mm:ss");
+              if(index == "1"){
+                var time2 = date1+" "+time1;
+                $scope.startTimeText = timeText(time2);
+              }else{
+                var time2 = date1+" "+time1;
+                $scope.endTimeText = timeText(time2);
+              }
+              $scope.$apply();
+            });
+          },400);
+        });
       };
+
+
+
+      //exchange
+      $scope.exchange = function(){
+        $scope.start = document.getElementById("departure").value;
+        $scope.end = document.getElementById("destination").value;
+        document.getElementById("departure").value =  $scope.end;
+        document.getElementById("destination").value = $scope.start;
+        $scope.start = [$scope.end,$scope.end=$scope.start][0];
+      }
+
+
+
+      //发送请求
+      $scope.filter=function() {
+        $scope.status = "filter";
+        $scope.seats = document.getElementById("seats").value;
+        if (($scope.seats=="")||(($scope.seats < 8) && ($scope.seats >= 0))) {
+          $scope.resultList = [];
+          searchCarpoolingList("filter","init","没有符合条件的拼车信息");
+          $scope.popover.hide();
+        }else {
+          hmsPopup.showShortCenterToast("请输入正确的座位数");
+        }
+      }
+
+
+      //获取当前时间
+        function getNowTime() {
+          var date = new Date();
+          var seperator1 = "-";
+          var seperator2 = ":";
+          var month = date.getMonth() + 1;
+          var strDate = date.getDate();
+          if (month >= 1 && month <= 9) {
+            month = "0" + month;
+          }
+          if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+          }
+          var minutes = date.getMinutes();
+          if(minutes < 10){
+            minutes = "0"+minutes;
+          }
+          var hours = date.getHours();
+          if(hours<10){
+            hours = "0" + hours;
+          }
+          var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + hours + seperator2 + minutes;
+          return currentdate;
+        }
+      //搜索
+      $scope.goSearch = function(){
+        $state.go('tab.carpoolingSearch');
+      }
+      //去除秒
+      function timeText(time){
+        var index = time.lastIndexOf(":");
+        return time.substring(0,index);
+      }
     }]);
 
 
