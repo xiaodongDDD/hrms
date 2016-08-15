@@ -118,6 +118,7 @@ angular.module('applicationModule')
             error(response);
           });
         };
+        
         // 获取职位信息（转正审批工作流）
         this.getPositionData = function (success, error, unitId) {
           var url = baseConfig.businessPath + "/get_workflow_data/get_position_data";
@@ -129,6 +130,7 @@ angular.module('applicationModule')
             error(response);
           });
         };
+        
         // 获取上层部门信息（转正审批工作流）
         this.getParentUnitData = function (success, error, unitId) {
           var url = baseConfig.businessPath + "/get_workflow_data/get_parent_unit_data";
@@ -139,7 +141,6 @@ angular.module('applicationModule')
             error(response);
           });
         };
-
 
         // 保存转正信息（转正审批工作流）
         this.savePositiveBlock1 = function (success, error, params) {
