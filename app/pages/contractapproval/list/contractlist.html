@@ -1,0 +1,52 @@
+<ion-view view-title="合同管理" class="workflow">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">合同管理</h1>
+  </ion-header-bar>
+
+  <ion-header-bar style="top:40px;padding:0px;height:40px;">
+    <div>
+      <div id="contractSubheader" class="contract-subheader">
+        <ion-scroll class="contract-subheader-scroll" direction="x" has-bouncing="true" overflow-scroll="false">
+          <div id='contractSubheaderScroll' class="row padding-zero" style="width:1000px;">
+            <div class="contractSubheaderMarker" ng-click="clickSubheader(i)" ng-repeat="i in subheaderTitleKey" style="padding:6px;">
+              <label ng-bind="subheaderTitleValue[i]" ng-class="{true:'hrms-color-blue'}[subheaderSelectFlag[i]]"></label>
+              <div ng-class="{true:'contract-subheader-marker-selected hrms-bg-blue',
+                            false:'contract-subheader-marker-deselected hrms-bg-blue'}
+                            [subheaderSelectFlag[i]]" class="contract-subheader-marker">
+              </div>
+            </div>
+          </div>
+        </ion-scroll>
+      </div>
+    </div>
+  </ion-header-bar>
+
+  <ion-content delegate-handle="workflowListHandle" style="top:80px; bottom:55px">
+    <ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
+    </ion-refresher>
+    <div class="hms-hide-content" ng-if="fetchDataFlag">
+      <hms-loading></hms-loading>
+    </div>
+    <ion-list>
+      <ion-item class="workflow-list" ng-repeat="item in list | limitTo: (pageNum * pageNumLimit)">
+        <hms-workflow-list workflow-title='item.title1' workflow-icon='item.icon' workflow-type='item.type' workflow-type-value='item.typeValue' workflow-node='item.node' workflow-node-value='item.nodeValue' workflow-submit='item.submit' workflow-submit-person='item.submitPerson'
+          ng-click="enterWorkflowDetail(item)">
+        </hms-workflow-list>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll ng-if="loadMoreDataFlag" on-infinite="loadMoreData()" distance="1%">
+    </ion-infinite-scroll>
+  </ion-content>
+  <ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="true">
+    <div class="buttons">
+      <button class="button button-clear filter-icon" ng-click="filterWorkFlowInfo()">
+      </button>
+      <div class="filter-text" ng-click="filterWorkFlowInfo()">筛选</div>
+    </div>
+  </ion-footer-bar>
+</ion-view>

@@ -1,11 +1,9 @@
 // http://ionicframework.com/docs/v2/theming/
-
 // App Shared Imports
 // --------------------------------------------------
 // These are the various page imports which make up this app.
 // By default each design mode includes these shared imports.
 // App Shared Sass variables belong in app.variables.scss.
-
 @import "../scss/_Variables.scss";
 @import "../scss/_Minxin.scss";
 @import "../scss/animate.scss";
@@ -36,6 +34,7 @@
 @import "../pages/public/hms-filter-modal.scss";
 @import "../pages/workflow/list/workflow-list";
 @import "../pages/workflow/detail/detail";
+@import "../pages/contractapproval/list/contractlist.scss";
 @import "../pages/application/flyback/flyback.scss";
 @import "../pages/application/expense/expense.scss";
 @import "../pages/contact/contact";
@@ -45,5 +44,3 @@
 @import "../pages/myInfo/myInfo";
 @import "../pages/guide/guide";
 @import "../pages/tab/tabs";
-
-
