@@ -63,6 +63,7 @@ angular.module('applicationModule')
        */
 
       function searchCarpoolingList(status,moreFlag,promtext) {
+        $scope.promptText = promtext;
         var param;
         if(status == "filter"){//是否筛选状态
           param = {
