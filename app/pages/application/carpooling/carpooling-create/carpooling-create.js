@@ -269,8 +269,10 @@ angular.module('applicationModule')
         $scope.endLat=location.endLat;
         $scope.start=location.start;
         $scope.end = location.end;
-        document.getElementById("create-departure").value =  $scope.start;
-        document.getElementById("create-destination").value =  $scope.end;
+        if($scope.start!= ""&&  $scope.end!=""){
+          document.getElementById("create-departure").value =  $scope.start;
+          document.getElementById("create-destination").value =  $scope.end;
+        }
       });
 
 
@@ -319,6 +321,14 @@ angular.module('applicationModule')
           hmsPopup.showShortCenterToast("选择的乘客已经加入拼车");
         }
       });
+
+   //通过头像添加人员
+      $scope.imgAdd = function(index){
+        if( !($scope.carpoolingJoin[index].flag ||  $scope.carpoolingJoin[index].locked)){
+          commonContactService.setGoContactFlg('carpooling-new-contactSearch');
+          $state.go("tab.carpooling-create-contactSearch");
+        }
+      }
 
       //删除通讯录人员
       $scope.deleteContact = function(index){

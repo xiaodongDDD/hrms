@@ -99,6 +99,7 @@ angular.module('applicationModule')
     }
     contractListService.check(successCheckContract);
 
+<<<<<<< HEAD
     //项目门户
     $scope.projectApp = [{
       list: [{
@@ -119,6 +120,40 @@ angular.module('applicationModule')
         destUrl: "",
       }]
     }];
+=======
+      //员工社区
+      $scope.employeeApp = [
+        {
+          list: [
+            {
+              appName: "住宿申请",
+              imageUrl: "build/img/application/application/dormApply@3x.png",
+              destUrl: "tab.dorm-apply"
+            },
+            {
+              appName: "房屋转租",
+              imageUrl: "build/img/application/application/housingrental@3x.png",
+              destUrl: "tab.houses-tab",
+            },
+            {
+              appName: "班车信息",
+              imageUrl: "build/img/application/application/bus@3x.png",
+              destUrl: "tab.bus-information",
+            },
+            //{
+            //  appName: "",
+            //  imageUrl: "",
+            //  destUrl: "",
+            //}
+            {
+              appName: "拼车",
+              imageUrl: "build/img/application/application/carpooling@3x.png",
+              destUrl: "tab.carpooling",
+            }
+          ]
+        }
+      ];
+>>>>>>> jinshan
 
     //员工社区
     $scope.employeeApp = [{

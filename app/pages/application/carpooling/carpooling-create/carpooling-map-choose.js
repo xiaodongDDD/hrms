@@ -53,12 +53,17 @@ angular.module('applicationModule')
         hmsHttp.get(url).success(function (result) {
           var inSta = result.indexOf("{");
           var inEnd =  result.indexOf("}")+1;
-          var datas =  JSON.parse( result.slice(inSta,inEnd)).s;
-          angular.forEach(datas,function(data,index,array){
-            var objs =  data.replace("$$","").split("$");
-            var obj = objs[0]+objs[1];
-            $scope.items.push(obj);
-          });
+          var datas="";
+          if(inSta!="" && inEnd!=""){
+            datas =  JSON.parse( result.slice(inSta,inEnd)).s;
+            angular.forEach(datas,function(data,index,array){
+              var objs =  data.replace("$$","").split("$");
+              var obj = objs[0]+objs[1];
+              if (obj != ""){
+                $scope.items.push(obj);
+              }
+            });
+          }
         });
       }
       //选中
@@ -76,7 +81,7 @@ angular.module('applicationModule')
             pathPlan($scope.start,$scope.end,$scope.startLng, $scope.startLat);
           }else{
             G("input-destination").value="";
-            hmsPopup.showShortCenterToast("起点不正确");
+            hmsPopup.showShortCenterToast("无法获取该地点经纬度，请重新选择");
           }
         }
       }
@@ -121,6 +126,7 @@ angular.module('applicationModule')
         var keyword = addr;
         localSearch.setSearchCompleteCallback(function (searchResult) {
           var poi = searchResult.getPoi(0);
+          console.debug(poi.point.lng);
           map.centerAndZoom(poi.point, 16);
           $scope.startLng = poi.point.lng;
           $scope.startLat = poi.point.lat;
@@ -150,7 +156,7 @@ angular.module('applicationModule')
 
     //myCallback
       $scope.myCallback = function(){
-        if(($scope.start!="")&&($scope.end!="")){
+        //if(($scope.start!="")&&($scope.end!="")){
           $scope.createLocation={
             startLng:$scope.startLng,
             startLat:$scope.startLat,
@@ -159,13 +165,9 @@ angular.module('applicationModule')
             start:   $scope.start,
             end:     $scope.end
           }
-          console.debug($scope.createLocation);
           carpoolingCreateService.setLocation($scope.createLocation);
           $rootScope.$broadcast("SET_LOCATION");
           $ionicHistory.goBack();
-        }
-        //else{
-        //  hmsPopup.showShortCenterToast("起点或者终点没有填写");
         //}
       }
 
