@@ -277,7 +277,7 @@ angular.module('applicationModule')
 
 
       //添加通讯录人员
-      $scope.addContact = function () {//空位添加
+      $scope.addContact = function () {
         $scope.addIndex = 0;
         if($scope.availableSeats > 0 ){//如果通讯录人员未满的话
           commonContactService.setGoContactFlg('carpooling-new-contactSearch');
