@@ -25,7 +25,7 @@ angular.module('myInfoModule')
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
       }
-      $scope.currentVersion =  baseConfig.version.currentversionName + '-' + baseConfig.version.currentSubVersion; // 获得当前版本号
+      $scope.currentVersion =  baseConfig.version.currentversionName + ' - ' + baseConfig.version.currentSubVersion; // 获得当前版本号
       $scope.personalInfo="";
       $scope.showLoading=true;//默认显示loading
       var portraitBackground = document.getElementById('portrait-image');
