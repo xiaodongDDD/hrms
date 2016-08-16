@@ -1,0 +1,56 @@
+/************************************
+滑动导航栏
+*/
+
+.workflow {
+  .padding-zero {
+    padding: 0px;
+  }
+  .size-filling {
+    height: 100%;
+    width: 100%;
+  }
+  .hrms-bg-blue {
+    background: #24559C;
+  }
+  .contract-subheader {
+    background: white;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 40px;
+  }
+  .contract-subheader-scroll {
+    height: 50px;
+    width: 100%;
+  }
+  .contract-subheader-marker {
+    margin-top: 4px;
+    height: 4px;
+  }
+  .contract-subheader-marker-selected {
+    -webkit-animation: subheader-selected 0.5s;
+  }
+  @-webkit-keyframes subheader-selected {
+    0% {
+      width: 0%;
+      margin-left: 50%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+  .contract-subheader-marker-deselected {
+    width: 0%;
+    //-webkit-animation: subheader-deselected 0.5s;
+  }
+  @-webkit-keyframes subheader-deselected {
+    0% {
+      width: 100%;
+    }
+    100% {
+      width: 0%;
+      margin-left: 50%;
+    }
+  }
+}
