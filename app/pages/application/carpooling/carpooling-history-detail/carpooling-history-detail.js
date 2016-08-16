@@ -48,7 +48,7 @@ angular.module('applicationModule')
           }
         });
         for(var i=0;i < lockNumber;i++){
-          $scope.cp_number.push({"empName":"锁定","avatar":"build/img/application/carpooling/locked seat@3x.png","font":"detail-img-people-name"});
+          $scope.cp_number.push({"empName":"占位","avatar":"build/img/application/carpooling/locked seat@3x.png","font":"detail-img-people-name"});
         }
         for(var i= 0;i <availableSeats;i++ ){
           $scope.cp_number.push({"empName":"空位","avatar":"build/img/application/carpooling/seat-2@3x.png","font":"detail-img-people-empty"});

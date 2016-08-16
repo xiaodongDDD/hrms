@@ -14,11 +14,22 @@
     </div>
   </ion-header-bar>
   <ion-content  class="body has-header">
-    <div class="hms-hide-content" ng-if="fetchServerFlag">
+    <div class="hms-hide-content" ng-if="historyLoading">
       <hms-loading></hms-loading>
     </div>
+    <div ng-if="showNoData">
+      <div class="no-data-shelter">
+        <div class="row no-data-no-space">
+          <img src="build/img/application/dorm-apply/no-data.png" class="no-data-image">
+        </div>
+        <div class="row no-data-no-space-label-row">
+          <label class="no-data-label">还没有加入拼车</label>
+        </div>
+      </div>
+    </div>
+
     <ion-list>
-      <ion-item class="item-style" ng-repeat="x in items" ng-click="viewHistoryDetail($index)">
+      <ion-item class="item-style" ng-repeat="x in resultList" ng-click="viewHistoryDetail($index)">
         <div class="car-list1" style="margin-top: 4px;">
           <div class="car-start1">
             <div class="logo-car1">
@@ -46,5 +57,6 @@
         </div>
       </ion-item>
     </ion-list>
+    <ion-infinite-scroll ng-if="showInfinite" distance="10%" immediate-check="false" on-infinite="loadMore()"></ion-infinite-scroll>
   </ion-content>
 </ion-view>

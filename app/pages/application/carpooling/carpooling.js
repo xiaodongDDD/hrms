@@ -14,7 +14,6 @@ angular.module('myApp')
         })
     }]);
 
-'use strict';
 angular.module('applicationModule')
   .controller('CarpoolingCtrl', [
     '$scope',

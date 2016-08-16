@@ -26,14 +26,14 @@
         <div  class="fill-in-set row" ng-click="goMap()">
           <input type="text" id="input-departure" ng-change="search(1)"  ng-model="departure" placeholder="请输入起点" class="creater-oval-start-text" >
         </div>
-        <div class="ion-list" ng-if="departureFlag" ng-repeat="x in items">
+        <div class="ion-list" ng-if="departureFlag" ng-repeat="x in items track by $index">
           <ion-item class="assoc-item" ng-click="setMyPlace(1,x)">{{x}}</ion-item>
         </div>
         <div class="fill-in-line"></div>
         <div class="fill-in-end row" ng-click = goMap()>
           <input type="text" id="input-destination" ng-change="search(2)" ng-model="destination" placeholder="请输入终点" class="creater-oval-end-text">
         </div>
-        <div class="ion-list" ng-if="destinationFlag" ng-repeat="x in items">
+        <div class="ion-list" ng-if="destinationFlag" ng-repeat="x in items track by $index">
           <ion-item class="assoc-item" ng-click="setMyPlace(2,x)">{{x}}</ion-item>
         </div>
       </div>
