@@ -37,6 +37,7 @@ angular.module('myInfoModule')
            "p_employee_code":window.localStorage.empno
          }
       };
+
       hmsHttp.post(url,param).success(function (result) {
         $scope.showLoading=false;
         var message=result.message;

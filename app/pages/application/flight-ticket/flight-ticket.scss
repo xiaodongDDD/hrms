@@ -1,0 +1,129 @@
+.flight-ticket-search{
+  .has-header{
+    top: 155px;
+  }
+  .title-color{
+    color: #ffffff;
+    font-size: 1.0625rem;
+  }
+  .scroll-content{
+    top: 155px;
+  }
+  .tall-header{
+    width: 100%;
+    height: 155px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+  }
+  .bar-tall-header{
+    background-color: transparent;
+    background-size:100% 0px;
+  }
+  .bar-tall-bottom{
+    width: 100%;
+    height: 111px;
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    z-index: 200;
+    background-color: transparent;
+  }
+  .purple-text{
+    color: #24559C;
+  }
+  .content-style{
+    background-color: #fafafa;
+  }
+  .selected-button{
+    padding: 0px;
+    margin: 0px;
+    min-height: 52px;
+    line-height: 52px;
+    background-color: transparent;
+    border:none;
+    color:#ffffff;
+    font-size: 0.875rem;
+  }
+  .unselected-button{
+    padding: 0px;
+    margin: 0px;
+    min-height: 52px;
+    line-height: 52px;
+    background-color: transparent;
+    border:none;
+    color:#ffffff;
+    font-size: 0.875rem;
+    opacity: 0.6;
+  }
+  .tab-bar-left{
+    height: 5px;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #24559c;
+    border-radius: 100px;
+  }
+  .tab-bar-right{
+    height: 5px;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #24559c;
+    border-radius: 100px;
+  }
+  .tab-bar-left.ng-enter{
+    animation: tab-bar-animation2 0.3s ease-in;
+    -webkit-animation: tab-bar-animation2 0.3s ease-in;
+    animation-fill-mode: both;
+    -webkit-animation-fill-mode: both;
+  }
+  .tab-bar-right.ng-enter{
+    animation: tab-bar-animation1 0.3s ease-in;
+    -webkit-animation: tab-bar-animation1 0.3s ease-in;
+    animation-fill-mode: both;
+    -webkit-animation-fill-mode: both;
+  }
+
+  @keyframes tab-bar-animation1 {
+    from{
+      transform: translate(-150%,0);
+      -webkit-transform: translate(-150%,0);
+    }
+    to{
+      transform: translate(0,0);
+      -webkit-transform: translate(0,0);
+    }
+  }
+  @-webkit-keyframes tab-bar-animation1 {
+    from{
+      transform: translate(-150%,0);
+      -webkit-transform: translate(-150%,0);
+    }
+    to{
+      transform: translate(0,0);
+      -webkit-transform: translate(0,0);
+    }
+  }
+  @keyframes tab-bar-animation2 {
+    from{
+      transform: translate(150%,0);
+      -webkit-transform: translate(150%,0);
+    }
+    to{
+      transform: translate(0,0);
+      -webkit-transform: translate(0,0);
+    }
+  }
+  @-webkit-keyframes tab-bar-animation2 {
+    from{
+      transform: translate(150%,0);
+      -webkit-transform: translate(150%,0);
+    }
+    to{
+      transform: translate(0,0);
+      -webkit-transform: translate(0,0);
+    }
+  }
+}
