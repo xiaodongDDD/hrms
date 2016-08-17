@@ -1,0 +1,38 @@
+<ion-view view-title="机票查询" class="flight-ticket-search">
+  <div class="tall-header" style="background: url({{weatherInfo.backUrl}});background-size: 100% 100%;background-color: #fafafa">
+    <ion-header-bar align-title="center" class="bar-tall-header">
+      <div class="buttons">
+        <button class="button button-icon ion-ios-arrow-back" style="color: #24559c" ng-click="goBack()">
+          <span class="back-button-text purple-text">返回</span>
+        </button>
+      </div>
+    </ion-header-bar>
+    <div class="bar-tall-bottom">
+      <label style="position: absolute;top: 13px;right: 170px;color: #4a4a4a;font-size: 1.125rem;">上海</label>
+      <label style="position: absolute;top: 13px;right: 121px;color: #4a4a4a;font-size: 1.125rem;margin-left: 11px;">{{weatherInfo.temperature}}℃</label>
+      <label style="position: absolute;top: 16px;right: 78px;color: #4a4a4a;font-size: 0.875rem;">{{weatherInfo.weatherName}}</label>
+      <img ng-src="{{weatherInfo.iconUrl}}" style="width: 50px;height: 48px;position: absolute;top: -6px;right: 20px;"/>
+      <div style="position: absolute;bottom: 0px;left: 0;height: 52px;width: 100%;background-color: rgba(7,8,18,0.5);">
+        <div class="row" style="padding: 0px;margin: 0px;height: 100%;width: 100%">
+          <div class="col" style="padding: 0px;margin: 0px;text-align: center">
+            <button ng-class="{'button button-block selected-button':buttonTabs[0],'button button-block unselected-button':!buttonTabs[0]}" ng-click="clickButtonTabs(0)">单程</button>
+          </div>
+          <div class="col" style="padding: 0px;margin: 0px;text-align: center;">
+            <button ng-class="{'button button-block selected-button':buttonTabs[1],'button button-block unselected-button':!buttonTabs[1]}" ng-click="clickButtonTabs(1)">往返</button>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 0px;margin: 0px;width: 100%;height:5px;background-color: transparent;position: absolute;left: 0px;bottom: -2px;">
+        <div class="col" style="padding: 0px;margin: 0px;text-align: center;">
+          <div class="tab-bar-left" ng-if="buttonTabs[0]"></div>
+        </div>
+        <div class="col" style="padding: 0px;margin: 0px;text-align: center;">
+          <div class="tab-bar-right" ng-if="buttonTabs[1]"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ion-content class="content-style" style="top: 155px;">
+
+  </ion-content>
+</ion-view>

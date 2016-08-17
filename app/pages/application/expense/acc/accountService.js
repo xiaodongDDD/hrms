@@ -6,7 +6,46 @@
 angular.module("applicationModule")
   .factory('keepAccount', function ($http,hmsHttp, $q, $window,$ionicHistory, baseConfig) {
 
+    var EXPENSE_ITEM_CODE = {
+      OfficeExpenses: '02',               // 办公费 02
+      ElectricityGasWater: '04',               // 水电燃气费 04
+      HouseRent: '14',               // 租房租金费用 14
+      Telephone: '20',               //固定通讯费  20
+      MiscellaneousAccommodation: '21',         //住宿杂项费 21
+      LandlordDeposit: '45'         // 赔偿房东押金  45
 
+    };
+    function isNeedHouseApply(expense_item_code) {
+      var checkDataValid = false;
+      ///*
+      switch (expense_item_code) {
+        case EXPENSE_ITEM_CODE.HouseRent:
+          checkDataValid = true;
+          break;
+        case EXPENSE_ITEM_CODE.MiscellaneousAccommodation:
+          checkDataValid = true;
+          break;
+        case EXPENSE_ITEM_CODE.ElectricityGasWater:
+          checkDataValid = true;
+          break;
+        case EXPENSE_ITEM_CODE.Telephone:
+          checkDataValid = true;
+          break;
+        case EXPENSE_ITEM_CODE.LandlordDeposit:
+          checkDataValid = true;
+          break;
+        default :
+          break;
+
+      }
+
+      // showMessage("是否需要 租房信息 －" + checkDataValid);
+
+      console.log("是否需要 租房信息 －" + checkDataValid);
+      //*/
+      return checkDataValid;
+
+    }
     // 上传附件
     function doPostHttp(form, deferred) {
       //showMessage("doPostHttp");
