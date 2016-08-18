@@ -66,7 +66,7 @@ angular.module('applicationModule')
           $scope.cp_number.push({"empName":"空位","avatar":"build/img/application/carpooling/seat-2@3x.png","font":"detail-img-people-name-empty"});
        }
 
-      if(contains(joins,window.localStorage.empno )){  //没有剩余座位或者没有空座位
+      if(contains(joins,window.localStorage.empno )  || availableSeats<1){  //没有剩余座位或者没有空座位
         $scope.joinButtonHide = true;
       }
 

@@ -530,6 +530,8 @@ angular.module('applicationModule')
             if (result.status == "S") {
               hmsPopup.showShortCenterToast("发布成功");
               commonContactService.setGoContactFlg("");
+              $scope.carpoolingJoin = [];//手动清除warning，warning
+              carpoolingCreateService.clear();
               for (var i = 0; i < $scope.$parent.tabs.length; i++) {
                 $scope.$parent.tabs[i].isActive = false;
               }

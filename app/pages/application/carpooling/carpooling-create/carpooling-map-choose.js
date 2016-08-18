@@ -205,6 +205,9 @@ angular.module('applicationModule')
       },
       setLocation:function(location){
         createLocation = location;
+      },
+      clear:function(){
+        createLocation = {};
       }
     }
     }]);
