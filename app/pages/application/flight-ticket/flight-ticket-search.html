@@ -2,37 +2,140 @@
   <div class="tall-header" style="background: url({{weatherInfo.backUrl}});background-size: 100% 100%;background-color: #fafafa">
     <ion-header-bar align-title="center" class="bar-tall-header">
       <div class="buttons">
-        <button class="button button-icon ion-ios-arrow-back" style="color: #24559c" ng-click="goBack()">
-          <span class="back-button-text purple-text">返回</span>
+        <button class="button button-icon ion-ios-arrow-back" ng-style="colorVariable" ng-click="goBack()">
+          <span class="back-button-text purple-text" ng-style="colorVariable">返回</span>
         </button>
       </div>
     </ion-header-bar>
     <div class="bar-tall-bottom">
-      <label style="position: absolute;top: 13px;right: 170px;color: #4a4a4a;font-size: 1.125rem;">上海</label>
-      <label style="position: absolute;top: 13px;right: 121px;color: #4a4a4a;font-size: 1.125rem;margin-left: 11px;">{{weatherInfo.temperature}}℃</label>
-      <label style="position: absolute;top: 16px;right: 78px;color: #4a4a4a;font-size: 0.875rem;">{{weatherInfo.weatherName}}</label>
-      <img ng-src="{{weatherInfo.iconUrl}}" style="width: 50px;height: 48px;position: absolute;top: -6px;right: 20px;"/>
-      <div style="position: absolute;bottom: 0px;left: 0;height: 52px;width: 100%;background-color: rgba(7,8,18,0.5);">
-        <div class="row" style="padding: 0px;margin: 0px;height: 100%;width: 100%">
-          <div class="col" style="padding: 0px;margin: 0px;text-align: center">
+      <label class="weather-city" ng-style="fontVariable">{{weatherInfo.cityName}}</label>
+      <label class="weather-temperature" ng-style="fontVariable">{{weatherInfo.temperature}}℃</label>
+      <label class="weather-name" ng-style="fontVariable">{{weatherInfo.weatherName}}</label>
+      <img ng-src="{{weatherInfo.iconUrl}}" class="weather-img"/>
+      <div class="tab-bar-shelter">
+        <div class="row tab-bar-row">
+          <div class="col tab-bar-col">
             <button ng-class="{'button button-block selected-button':buttonTabs[0],'button button-block unselected-button':!buttonTabs[0]}" ng-click="clickButtonTabs(0)">单程</button>
           </div>
-          <div class="col" style="padding: 0px;margin: 0px;text-align: center;">
+          <div class="col tab-bar-col">
             <button ng-class="{'button button-block selected-button':buttonTabs[1],'button button-block unselected-button':!buttonTabs[1]}" ng-click="clickButtonTabs(1)">往返</button>
           </div>
         </div>
       </div>
-      <div class="row" style="padding: 0px;margin: 0px;width: 100%;height:5px;background-color: transparent;position: absolute;left: 0px;bottom: -2px;">
-        <div class="col" style="padding: 0px;margin: 0px;text-align: center;">
-          <div class="tab-bar-left" ng-if="buttonTabs[0]"></div>
+      <div class="row scroll-tab">
+        <div class="col scroll-shelter-left">
+          <!--<div class="tab-bar-left" ng-if="buttonTabs[0]"></div>-->
+          <div ng-class="{true:'tab-bar-left',false:''}[buttonTabs[0]]"></div>
         </div>
-        <div class="col" style="padding: 0px;margin: 0px;text-align: center;">
-          <div class="tab-bar-right" ng-if="buttonTabs[1]"></div>
+        <div class="col scroll-shelter-right">
+          <!--<div class="tab-bar-right" ng-if="buttonTabs[1]"></div>-->
+          <div ng-class="{true:'tab-bar-right',false:''}[buttonTabs[1]]"></div>
         </div>
       </div>
     </div>
   </div>
   <ion-content class="content-style" style="top: 155px;">
-
+    <ion-item class="place-item">
+      <div class="row place-first-row">
+        <div class="col no-padding-col">
+          <label class="departure-label">出发</label>
+        </div>
+        <div class="col no-padding-col">
+          <label class="departure-label">到达</label>
+        </div>
+      </div>
+      <div class="row place-second-row">
+        <div class="col no-padding-col">
+          <ion-item class="normal-item" ng-click="">
+            <label class="place-label">乌鲁木齐</label>
+          </ion-item>
+        </div>
+        <div class="col no-padding-col">
+          <ion-item class="normal-item" ng-click="">
+            <label class="place-label">呼和浩特</label>
+          </ion-item>
+        </div>
+      </div>
+      <div class="row place-third-row">
+        <div class="col no-padding-col">
+          <label class="province-label">新疆，中国</label>
+        </div>
+        <div class="col no-padding-col">
+          <label class="province-label">内蒙古，中国</label>
+        </div>
+      </div>
+      <button class="button button-icon place-switch-button">
+        <img src="build/img/application/flight-ticket/arrow.png" class="place-switch-image"/>
+      </button>
+    </ion-item>
+    <ion-item class="item-backwards">
+      <div class="row date-first-row">
+        <div class="col no-padding-col">
+          <label class="date-text-label">去程日期</label>
+        </div>
+        <div class="col no-padding-col">
+          <label class="date-text-label">回程日期</label>
+        </div>
+      </div>
+      <div class="row date-second-row">
+        <div class="col no-padding-col">
+          <ion-item class="normal-item" ng-click="">
+            <label class="date-detail-label">07.28</label>
+          </ion-item>
+        </div>
+        <div class="col no-padding-col">
+          <ion-item class="normal-item" ng-click="">
+            <label class="date-detail-label">10.16</label>
+          </ion-item>
+        </div>
+      </div>
+      <div class="row date-third-row">
+        <div class="col no-padding-col">
+          <label class="date-week-label">星期一 2016</label>
+        </div>
+        <div class="col no-padding-col">
+          <label class="date-week-label">星期五 2016</label>
+        </div>
+      </div>
+      <div class="vertical-line"></div>
+      <div class="calendar-shelter">
+        <img src="build/img/application/flight-ticket/calendar.png" class="calendar-image"/>
+      </div>
+    </ion-item>
+    <div class="item-backwards project-toppart">
+      <div class="item project-first-item" ng-click="">
+        <div class="project-left-label">项目名称：</div>
+        <div class="project-right-label">请选择项目</div>
+      </div>
+      <div class="item project-second-item" ng-click="">
+        <div class="project-left-label">机票类型：</div>
+        <div class="project-right-label">Flyback机票</div>
+      </div>
+    </div>
+    <div class="row flyback-row">
+      <div class="col no-padding-col">
+        <div class="row no-padding-col">
+          <img src="build/img/application/flight-ticket/orange-plane.png" class="orange-plane"/>
+          <input type="text" class="flyback-input" placeholder="请输入flyback号码"/>
+        </div>
+      </div>
+      <div class="col no-padding-col">
+        <div class="row no-padding-col">
+          <img src="build/img/application/flight-ticket/orange-plane.png" class="orange-plane"/>
+          <input type="text" class="flyback-input" placeholder="请输入flyback号码"/>
+        </div>
+      </div>
+    </div>
+    <div class="item-backwards project-bottompart">
+      <div class="item project-first-item" ng-click="">
+        <div class="project-left-label">去程航班号：</div>
+        <input type="text" class="project-input" placeholder="请输入航班号"/>
+      </div>
+      <div class="item project-second-item" ng-click="">
+        <div class="project-left-label">回程航班号：</div>
+        <input type="text" class="project-input" placeholder="请输入航班号"/>
+      </div>
+    </div>
+    <button class="button button-block confirm-button" ng-click="">填写个人信息</button>
   </ion-content>
 </ion-view>
