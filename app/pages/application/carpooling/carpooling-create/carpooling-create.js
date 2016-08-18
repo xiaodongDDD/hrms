@@ -269,10 +269,15 @@ angular.module('applicationModule')
         $scope.endLat=location.endLat;
         $scope.start=location.start;
         $scope.end = location.end;
-        if($scope.start!= ""&&  $scope.end!=""){
+        if(($scope.start != undefined) && ($scope.end != undefined) ){
           document.getElementById("create-departure").value =  $scope.start;
           document.getElementById("create-destination").value =  $scope.end;
+        }else if(($scope.start != undefined)&&($scope.end == undefined)){
+          document.getElementById("create-departure").value =  $scope.start;
+        }else if (($scope.end != undefined)&&($scope.start == undefined)){
+          document.getElementById("create-destination").value =  $scope.end;
         }
+
       });
 
 
@@ -517,8 +522,6 @@ angular.module('applicationModule')
           hmsPopup.showShortCenterToast("请输入出发点和终点");
         }
 
-
-        console.log($scope.createInfo);
         var url = baseConfig.queryPath + "/share/info";
         if($scope.fetchFlag){
           hmsHttp.post(url, $scope.createInfo).success(function (result) {

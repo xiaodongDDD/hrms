@@ -38,6 +38,9 @@ angular.module('applicationModule')
       $scope.destLocLng = "";
       $scope.exchangeFlag = false;
 
+
+      init();//载入时判断是否有数据
+
       var windowsArr = [];
       //var marker = [];
       var mapObj = new AMap.Map("mapContainer", {
@@ -86,10 +89,10 @@ angular.module('applicationModule')
         };
         destinationComplete= new AMap.Autocomplete(destination);
         AMap.event.addListener(destinationComplete, "select", function(e){  //坑爹的API必须写两套fuck！
-          if(e.poi.location == undefined){
+          if(e.poi.location == undefined || e.poi.location==""){
             //geocoder(e.poi.name);
             hmsPopup.showShortCenterToast("该地址不合法，请重新选择!");
-          }else {
+          }else if(e.poi.location){
             marker.setPosition(e.poi.location);
             $scope.destLocLng = e.poi.location.lng;
             $scope.destLocLat = e.poi.location.lat;
@@ -102,6 +105,7 @@ angular.module('applicationModule')
             }
           }
         });
+
 
 
         //function geocoder(address){//提示值没有带经纬度
@@ -122,6 +126,9 @@ angular.module('applicationModule')
         //      }
         //    })
         //}
+        //init
+
+
 
         //exchange
         $scope.exchange = function() {
@@ -159,6 +166,26 @@ angular.module('applicationModule')
         $ionicHistory.goBack();
         //}
       }
+
+      function init(){
+        var location = carpoolingCreateService.getLocation();
+        $scope.depaLocLng = location.startLng;
+        $scope.depaLocLat = location.startLat;
+        $scope.destLocLng=location.endLng;
+        $scope.destLocLat=location.endLat;
+        $scope.departure=location.start;
+        $scope.destination = location.end;
+        if(($scope.departure != undefined) && ($scope.destination != undefined) ){
+          document.getElementById("departure").value =  $scope.departure;
+          document.getElementById("destination").value =  $scope.destination;
+        }else if(($scope.departure != undefined)&&($scope.destination == undefined)){
+          document.getElementById("departure").value =  $scope.departure;
+        }else if (($scope.destination != undefined)&&($scope.departure == undefined)){
+          document.getElementById("destination").value =  $scope.destination;
+        }
+      }
+
+
 
       function G(id){
         return  document.getElementById(id);
