@@ -1,0 +1,594 @@
+.contract-detail *{
+  font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+}
+
+.contract-detail{
+  background: #e9e9e9;
+}
+
+.contract-detail ion-header-bar{
+  background: #3366ab !important;
+  z-index: 4;
+}
+
+.contract-detail ion-header-bar *{
+  color: white !important;
+}
+
+.contract-detail .background{
+  position: fixed;
+  height: calc(100vh - 44px);
+  top: 44px;
+  width: 100vw;
+  background: linear-gradient(#3366ab, rgba(149, 196, 250, 0.93));
+}
+
+.contract-detail .cover{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background: rgba(0,0,0,0.7);
+  z-index: 5;
+  transition: all 0.5s;
+  opacity: 0;
+}
+
+.contract-detail .cover.show{
+  opacity: 1;
+}
+
+.contract-detail .contract-processes{
+  width: 80vw;
+  height: auto;
+  max-height: 80vh;
+  min-height: 10vh;
+  position: fixed;
+  top: 50%;
+  left: 10vw;
+  z-index: 10;
+  transform: translateY(-60vh);
+  transition: all 0.5s;
+  opacity: 0;
+  padding: 20px 5vw;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-radius: 10px;
+  background: transparent;
+}
+
+.contract-detail .contract-processes.show{
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+.contract-detail .contract-processes .proc-item{
+  width: 100%;
+  height: 125px;
+  line-height: 125px;
+  position: relative;
+}
+
+.contract-detail .contract-processes .proc-item .proc-point{
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  box-shadow: 0 0 0 5px #d99037;
+  color: #d99037;
+  vertical-align: middle;
+  background: #cac6c6;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.contract-detail .contract-processes .proc-item .proc-point .currentStage{
+  color: #d99037;
+  font-size: 1.5em;
+  line-height: 40px;
+  vertical-align: middle;
+}
+
+.contract-detail .contract-processes .proc-item .proc-point .currentStage i:before,.contract-detail .contract-processes .proc-item .proc-point .currentStage i{
+  vertical-align: middle;
+}
+
+
+.contract-detail .contract-processes .proc-item .proc-stage{
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 5vw;
+  padding: 3vw;
+  width: auto;
+  max-width: calc(45vw - 40px);
+  height: auto;
+  line-height: 1.5em;
+  background: transparent;
+  border-radius: 0.5em;
+  position: relative;
+  font-size: 1.2em;
+  color: white;
+}
+
+.contract-detail .contract-processes .proc-item .proc-line{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  left: 18px;
+  background: #d99037;
+  z-index: -1;
+}
+
+.contract-detail .contract-processes .proc-item:first-child .proc-line{
+  top: calc(50% - 20px);
+}
+
+.contract-detail .contract-processes .proc-item:last-child .proc-line{
+  bottom: calc(50% - 20px);
+}
+
+.contract-detail .contract-processes .proc-item .proc-line.not{
+  background: white;
+}
+
+.contract-detail .contract-processes .proc-item .proc-point.not{
+  box-shadow: 0 0 0 5px white;
+  color: white;
+}
+
+.contract-detail .stages-container{
+  height: 120px;
+  width: 100vw;
+  font-size: 0;
+}
+
+.contract-detail .stages-container .left-arrow{
+  position: absolute;
+  left: 0;
+  top: 25px;
+  height: 60px;
+  width: 30px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 0 100% 100% 0 / 50%;
+  line-height: 60px;
+  z-index: 10;
+  padding-left: 5px;
+}
+
+.contract-detail .stages-container .left-arrow i {
+  color: #a58b67;
+  font-size: 20px;
+}
+
+.contract-detail .contract-stages{
+  height: 120px;
+  width: auto;
+  white-space: nowrap;
+}
+
+.contract-detail .contract-stages .stages-left{
+  display: inline-block;
+  width: 20px;
+  height: 70px;
+}
+
+.contract-detail .contract-stages .stages-left .left-line{
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  top: 54px;
+  background: rgba(255,255,255,0.7);
+}
+
+.contract-detail .contract-stages .stages-item{
+  height: 100%;
+  width: 100px;
+  color: rgba(255,255,255,0.7);
+  display: inline-block;
+}
+
+.contract-detail .contract-stages .stages-item .stages-time{
+  height: 30px;
+  width: 100%;
+  text-align: center;
+  line-height: 13px;
+  font-size: 8px;
+  padding: 3px;
+}
+
+.contract-detail .contract-stages .stages-item .stages-main{
+  position: relative;
+  height: 50px;
+  width: 100%;
+  text-align: center;
+  line-height: 50px;
+  font-size: 0;
+}
+
+.contract-detail .contract-stages .stages-item .stages-main .stages-point{
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #ffad4f;
+  z-index: 9;
+  text-align: center;
+  line-height: 25px;
+  box-shadow: 0 2px 1px 1px #666;
+}
+
+.contract-detail .contract-stages .stages-item .stages-main .stages-point i{
+  display: inline-block;
+  color: white;
+}
+
+.contract-detail .contract-stages .stages-item .stages-main .stages-point i:before{
+  vertical-align: middle;
+  font-size: 25px;
+}
+
+.contract-detail .contract-stages .stages-item .stages-main .stages-line{
+  position: absolute;
+  height: 2px;
+  top: 24px;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,0.7);
+  z-index: 0;
+}
+
+.contract-detail .contract-stages .stages-item .stages-main .stages-line.last{
+  right: 50%;
+}
+
+.contract-detail .contract-stages .stages-item .stages-content{
+  height: 40px;
+  width: 100%;
+  text-align: center;
+  line-height: 15px;
+  font-size: 12px;
+  padding: 5px;
+}
+
+.contract-detail .info{
+  position: relative;
+  width: 90vw;
+  margin-left: 5vw;
+  background: white;
+  padding: 10px 0;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.contract-detail .info .info-title{
+  position: relative;
+  padding-left: calc(5vw + 10px);
+  width:  auto;
+  background: rgba(82, 138, 203, 0.11);
+  color: #528acb;
+  height: 40px;
+  line-height: 40px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.contract-detail .info .info-title:before{
+  content:"";
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #528acb;
+}
+
+.contract-detail .info .icon-title{
+  position: absolute;
+  font-size: 20px;
+  color: #528acb;
+  right: 5vw;
+  top: 20px;
+}
+
+.contract-detail .info .info-item{
+  height: 35px;
+  color: grey;
+  border-left: 5vw solid white;
+  border-right: 5vw solid white;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.contract-detail .info .info-item .info-item-title{
+  display: inline-block;
+  height: 35px;
+  line-height: 35px;
+  background-clip: padding-box;
+}
+
+.contract-detail .info .info-item .info-item-content{
+  float: right;
+  display: inline-block;
+  height: 35px;
+  line-height: 35px;
+  overflow-x: scroll;
+  white-space: nowrap;
+  max-width: 70%;
+}
+
+.contract-detail .info .item-operate{
+  height: 30px;
+  line-height: 30px;
+  padding: 0 5vw;
+  color: #528acb;
+}
+
+.contract-detail .info .item-operate .no-data{
+  color: grey;
+}
+
+.contract-detail .info .icon-operate{
+  top: 55px;
+}
+
+.contract-detail .info .info-operate{
+  width: 100%;
+}
+
+.contract-detail .desc-div{
+  position: fixed;
+  top: 50%;
+  left: 10vw;
+  transform: translateY(-60vh);
+  width: 80vw;
+  z-index: 9;
+  transition: all 0.5s;
+  opacity: 0;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.contract-detail .desc-div.show{
+  transform: translateY(-50%);
+  opacity: 1;
+}
+
+
+.contract-detail .desc-div .desc-title{
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  font-weight: bold;
+  font-size: 1.1em;
+  background: rgba(82, 138, 203, 0.11);
+  color: #3366ab;
+  text-align: center;
+}
+
+.contract-detail .desc-div .desc-item{
+  width: 70vw;
+  margin-left: 5vw;
+  background: white;
+  padding: 10px 0;
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.contract-detail .desc-div .desc-item:last-child{
+  border-bottom: 0;
+}
+
+.contract-detail .desc-div .desc-item .desc-key{
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  color: black;
+}
+
+.contract-detail .desc-div .desc-item .desc-value{
+  height: 30px;
+  line-height: 30px;
+  color: grey;
+  float: right;
+  text-align: right;
+}
+
+.contract-detail .cover .cover-header{
+  height: 60px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(rgba(225,225,225,0.4), rgba(225,225,225,0));
+}
+
+.contract-detail .cover .cover-header .cover-close{
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  right: 15px;
+  top: 15px;
+  color: white;
+  border-radius: 50%;
+  font-size: 25px;
+  box-shadow: 0 0 0 2px white;
+  text-align: center;
+  line-height: 30px;
+}
+
+.contract-detail .proc-title{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 5vh;
+  height: 30px;
+  font-size: 1.2em;
+  line-height: 30px;
+  color: white;
+  text-align: center;
+  z-index: 9;
+}
+
+.contract-detail .loading{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  z-index: 100;
+}
+
+.contract-detail .operate-button{
+  margin-left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  height: 40px;
+  padding: 10px 10vw;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 20px;
+  color: #d99037;
+  background: white;
+  border: 1px solid #e9e9e9;
+  box-shadow: 0 2px 2px 2px grey;
+}
+
+.contract-detail .operate-div{
+  margin-top: 10px;
+  width: 90vw;
+  background: white;
+  padding: 10px 5vw;
+  margin-left: 5vw;
+  border-radius: 10px;
+}
+
+.contract-detail .operate-div .message{
+  display: inline-block;
+  width: 80vw;
+  height: 40px;
+  padding: 5px 0;
+  line-height: 30px;
+  border: 0;
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.contract-detail .operate-div .transpond{
+  width: 80vw;
+  padding: 5px 0;
+  height: 40px;
+}
+
+
+.contract-detail .operate-div .transpond .transpond-title{
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  width: 15vw;
+}
+
+.contract-detail .operate-div .transpond .transpond-content{
+  display: inline-block;
+  max-height: 30px;
+  line-height: 15px;
+  font-size: 12px;
+  color: grey;
+  width: 55vw;
+  overflow: hidden;
+  vertical-align: middle;
+  margin-right: 4vw;
+}
+
+.contract-detail .operate-div .transpond .transpond-more{
+  width: 5vw;
+  display: inline-block;
+  color: #d99037;
+  font-size: 20px;
+  line-height: 30px;
+  height: 30px;
+}
+
+.contract-detail .trans-search{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  z-index: 20;
+  transition: all 0.5s;
+  transform: translateY(100%);
+}
+
+.contract-detail .trans-search.show{
+  transform: translateY(0);
+}
+
+.contract-detail .trans-search .trans-header{
+  position: relative;
+  width: 100%;
+  height: 40px;
+  padding: 5px 5vw;
+  background: #3366ab;
+}
+
+.contract-detail .trans-search .trans-header .search-input{
+  display: inline-block;
+  height: 30px;
+  width: 73vw;
+  line-height: 30px;
+  padding: 0 10vw;
+  border: 1px solid #e9e9e9;
+  border-radius: 15px;
+  vertical-align: top;
+}
+
+.contract-detail .trans-search .trans-header .search-button{
+  display: inline-block;
+  height: 30px;
+  width: 15vw;
+  border: 0;
+  background: transparent;
+  line-height: 30px;
+  color: white;
+}
+
+.contract-detail .trans-search .trans-header i{
+  position: absolute;
+  left: calc(5vw + 10px);
+  top: 10px;
+  font-size: 20px;
+  color: grey;
+}
+
+.contract-detail .trans-search .trans-item{
+  width: 100vw;
+  height: 60px;
+  padding: 5px 5vw;
+  line-height: 30px;
+  border-bottom: 1px solid #e9e9e9;
+  font-size: 1.2em;
+}
+
+.contract-detail .trans-search .trans-item .trans-name{
+  height: 50px;
+  line-height: 50px;
+}
+
+.contract-detail .trans-search .trans-item .trans-id{
+  height: 50px;
+  line-height: 50px;
+  float: right;
+}
+
+.contract-detail .trans-search .trans-content{
+  overflow: scroll;
+  width: 100vw;
+  height: calc(100vh - 60px);
+}

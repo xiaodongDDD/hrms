@@ -232,7 +232,25 @@ angular.module('loginModule')
           }
         }
       };
-
+      function loginPost(){//后台采用HAP后更改成包含Content-type的方式，账号密码采用encodeURIComponent()转换，这样可以传特殊符号
+        var deviceInfo="";
+        if(ionic.Platform.isAndroid()){
+          deviceInfo="Android"
+        }else if(ionic.Platform.isIOS()){
+          deviceInfo="iOS";
+        }else{
+          deviceInfo="PC";
+        }
+        var url=baseConfig.loginPath+"username=" + encodeURIComponent($scope.loginInfo.username) + "&password=" + encodeURIComponent($scope.loginInfo.password) + "&device_info=" + deviceInfo;
+        console.log(url);
+        return $http({
+          method:'POST',
+          headers:{
+            'Content-type':"application/x-www-form-urlencoded"
+          },
+          url:url
+        })
+      }
       $scope.login = function () {//登录功能
         if (window.localStorage.empno != $scope.loginInfo.username) {
           localStorage.removeItem('key_history1');
@@ -261,13 +279,13 @@ angular.module('loginModule')
             return;
           }
 
-          var url = baseConfig.loginPath;
-          var phoneNumber = "PC";
-          var params = "username=" + $scope.loginInfo.username + "&password=" + $scope.loginInfo.password + "&p_phone_no=" + phoneNumber;
+          //var url = baseConfig.loginPath;
+          //var phoneNumber = "PC";
+          //var params = "username=" + encodeURIComponent($scope.loginInfo.username) + "&password=" + encodeURIComponent($scope.loginInfo.password) + "&p_phone_no=" + phoneNumber;
 
-          hmsPopup.showLoading('登陆中...');
+          hmsPopup.showLoading('登录中...');
 
-          $http.post(url + params).success(function (result) {
+          loginPost().success(function (result) {
             hmsPopup.hideLoading();
             if (baseConfig.debug) {
               console.log("result success " + angular.toJson(result));
@@ -291,7 +309,7 @@ angular.module('loginModule')
               $scope.bigPortrait = "build/img/login/login-hand.png";
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
-              hmsPopup.showPopup('登陆失败,请确认密码是否正确!');
+              hmsPopup.showPopup('登录失败,请确认密码是否正确!');
             }
           }).error(function (response, status) {
             hmsPopup.hideLoading();
@@ -299,12 +317,12 @@ angular.module('loginModule')
               $scope.bigPortrait = "build/img/login/login-hand.png";
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
-              hmsPopup.showPopup('登陆失败,请确认密码是否正确!');
+              hmsPopup.showPopup('登录失败,请确认密码是否正确!');
             } else {
               $scope.bigPortrait = "build/img/login/login-hand.png";
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
-              hmsPopup.showPopup('登陆失败,请确认网络连接是否正常,或者联系管理员');
+              hmsPopup.showPopup('登录失败,请确认网络连接是否正常,或者联系管理员');
               if (baseConfig.debug) {
                 console.log("response error " + angular.toJson(response));
               }

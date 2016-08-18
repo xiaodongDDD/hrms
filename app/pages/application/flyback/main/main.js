@@ -2,7 +2,7 @@ angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.flyback', { 
+        .state('tab.flyback', {
           url: '/flyback-main',
           params: {},
           views: {
@@ -24,7 +24,7 @@ angular.module("applicationModule")
     '$timeout',
     'hmsHttp',
     'flaybackService',
-    function ($scope, $rootScope, $state, baseConfig, $ionicHistory, 
+    function ($scope, $rootScope, $state, baseConfig, $ionicHistory,
       $timeout, hmsHttp, fbService){
 
         $scope.createFlightBook = function(){
@@ -34,6 +34,9 @@ angular.module("applicationModule")
         };
         $scope.queryFlightBook = function(){
           $state.go("tab.flybackQuery");
+        };
+        $scope.checkNewEdition=function(){
+          $state.go("tab.flight-ticket-search");
         };
 
     }]);

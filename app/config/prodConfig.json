@@ -19,10 +19,10 @@
     "appRootFile": "helloCordova",
     "appUpId":"com.hand-china.hrms",
     "version":{
-      "currentVersion": "2.0.15",
-      "currentversionName": "此版本为正式版本2.0.15",
-      "currentSubVersion": "5",
-      "currentSubVersionName": "资源增量包5"
+      "currentVersion": "2.0.16",
+      "currentversionName": "此版本为正式版本2.0.16",
+      "currentSubVersion": "1",
+      "currentSubVersionName": "资源增量包1"
     }
   }
 }
