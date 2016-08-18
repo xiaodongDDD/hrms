@@ -55,7 +55,7 @@ angular.module('applicationModule')
       var filterOption = {
         "currentSelectType": "ALL",
         "currentSubmitterFilter": "",
-        "submitterFilter": [],
+        "submitterFilter": []
       };
 
       var defaultIcon = 'build/img/application/profile@3x.png';
@@ -481,9 +481,8 @@ angular.module('applicationModule')
 
       $scope.enterWorkflowDetail = function(detail) {
         console.log(detail.originData);
-        //$state.go('详情页路由', { "键": detail.originData})
+        $state.go('tab.contractDetail', {data:detail.originData})
       }
-
 
     }
   ])
