@@ -90,14 +90,21 @@ angular.module('applicationModule')
     }];
     var successCheckContract = function(result) {
       if (result.result == 'S') {
-        $scope.officeApp[1].list[3] = {
-          appName: "合同管理",
-          imageUrl: "build/img/application/application/schedule@3x.png",
-          destUrl: "tab.contractlist",
+        var successGetTodoCount = function(result) {
+          if (result.result == 'S') {
+            $scope.officeApp[1].list[3] = {
+              appName: "合同管理",
+              imageUrl: "build/img/application/application/schedule@3x.png",
+              destUrl: "tab.contractlist",
+              hasWorkflowNum: true,
+              count: 0
+            }
+            $scope.officeApp[1].list[3].count = result.procSize;
+          }
         }
+        contractListService.getTodoCount(successGetTodoCount);
       }
     }
-    contractListService.check(successCheckContract);
 
     //项目门户
     $scope.projectApp = [{
@@ -180,6 +187,7 @@ angular.module('applicationModule')
             });
           });
         }
+        contractListService.check(successCheckContract);
         $scope.fetchWorkflowData = false;
       };
       var error = function() {
@@ -190,6 +198,7 @@ angular.module('applicationModule')
             }
           });
         });
+        contractListService.check(successCheckContract);
         $scope.fetchWorkflowData = false;
       }
       workFLowListService.getNoticeListCount(success, error);
