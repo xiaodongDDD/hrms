@@ -63,14 +63,13 @@ angular.module('applicationModule')
        */
 
       function searchCarpoolingList(status,moreFlag,promtext) {
+        $scope.promptText = promtext;
         var param;
         if(status == "filter"){//是否筛选状态
           param = {
             city:"上海",
             "departureTime":$scope.endTimeText+":00",
-            //"departureTime":"2016-07-03 13:10:00",
             "endTime":$scope.startTimeText+":00",
-            //"endTime":"2016-08-12 16:10:00",
             "startAddr": $scope.start,
             "targetAddr":$scope.end,
             "availableSeats":$scope.seats,

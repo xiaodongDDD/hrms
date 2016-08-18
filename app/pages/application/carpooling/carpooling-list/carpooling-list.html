@@ -1,38 +1,20 @@
 <ion-view view-title="拼车列表" class="carpooling-list">
   <ion-header-bar align-title="center" class="bar-stable">
-    <div class="buttons" ng-if="!showSearchTop">
-      <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
-        <span class="back-text">返回</span>
-      </button>
-    </div>
-    <h1 class="title" ng-if="!showSearchTop">拼车</h1>
-    <div class="buttons">
-      <div class="button-location icon ion-ios-location" ng-if="!showSearchTop">
-        <span style="font-size: 15px;">上海</span>
+      <div class="buttons" ng-if="!showSearchTop">
+        <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
+          <span class="back-text">返回</span>
+        </button>
+       </div>
+      <h1 class="title"  ng-if="!showSearchTop">拼车</h1>
+      <div class="buttons">
+        <div class="button-location icon ion-ios-location"  ng-if="!showSearchTop">
+          <span style="font-size: 15px;">上海</span>
+        </div>
       </div>
     </div>
-
     <!--上滑搜索框显示在状态栏-->
     <div class="row no-padding search-input  search-input-location" ng-if="showSearchTop">
       <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
-<<<<<<< HEAD
-             ng-click="goModalInput()"/>
-      <div class="button button-icon" style="font-size: 16px;width: 60px;color: white;margin-top: -3px;"
-           ng-click="openPopover($event)">筛选
-      </div>
-    </div>
-  </ion-header-bar>
-  <ion-content class="carpooling-list-content" on-scroll="watchTopScroll()" delegate-handle="watchTopScroll">
-
-    <div class="search">
-      <div class="input1" ng-click="goInputModal()">
-        <i class="ion-ios-search search-i" style="margin-left: 1px"></i>
-        <input name="" placeholder="搜索" ng-readonly="true" class="search-input-content">
-      </div>
-      <div style="float: right;width: 13%;margin-right: 2.5%;margin-top: 13px">
-        <!--ng-click="openPopover($event)"-->
-        <div class="button-filter">筛选</div>
-=======
              ng-click="goSearch()"/>
       <div class="button button-icon" style="font-size: 16px;width: 60px;color: white;margin-top: -3px;" ng-click="openPopover($event)">筛选</div>
     </div>
@@ -46,7 +28,6 @@
       </div>
       <div style="float: right;width: 13%;margin-right: 2.5%;margin-top: 13px">
         <div  class="button-filter" ng-click="openPopover($event)">筛选</div>
->>>>>>> jinshan
       </div>
     </div>
 
@@ -65,14 +46,8 @@
       </div>
     </div>
     <ion-refresher on-refresh="doRefresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop"></ion-refresher>
-<<<<<<< HEAD
-    <div class="search-list">
-      <ion-list>
-        <ion-item class=list-item ng-repeat="x in items" ng-click="viewListDetail($index)">
-=======
       <ion-list >
         <ion-item class=list-item ng-repeat="x in resultList" ng-click="viewListDetail($index)">
->>>>>>> jinshan
           <div class="car-list" style="padding: 0px 25px 0px 25px">
             <div class="car-start">
               <div class="logo-car">
@@ -83,18 +58,15 @@
             <div class="car-location">
               <div class="car-from text-over-hidder">
                 <img src="build/img/application/carpooling/starting@3x.png" style="height: 18px;float: left;">
-                <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">起点：</i>&nbsp;&nbsp;<i
-                  class="font-color1">{{x.startAddr}}</i> </span>
+                <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">起点：</i>&nbsp;&nbsp;<i class="font-color1">{{x.startAddr}}</i> </span>
               </div>
               <div class="vertical-line"></div>
               <div class="car-to  text-over-hidder">
                 <img src="build/img/application/carpooling/ending@3x.png" style="height: 18px;float: left;">
-                <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i
-                  class="font-color1">{{x.targetAddr}}</i> </span>
+                <span style="font-size: 14px; margin-left: 9px"><i class="font-color2">终点：</i>&nbsp;&nbsp;<i class="font-color1">{{x.targetAddr}}</i> </span>
               </div>
             </div>
-            <div class="horizontal-line1"
-                 style=" width: 100%; height: 1px; background-color: #D2D2D2; margin-top: 12px;"></div>
+            <div class="horizontal-line1" style=" width: 100%; height: 1px; background-color: #D2D2D2; margin-top: 12px;"></div>
             <div class="set-out">
               <div class="on-time">
                 <span style="color: #B95756;font-size: 16px;">{{x.departurePreference}}</span>
@@ -104,19 +76,13 @@
                   <img src="build/img/application/carpooling/seat@3x.png" style="width: 13px;height: 12px;">
                   <span style="color: #9B9B9B;">剩余空位</span>
                 </div>
-                <div class="remain-number"><span style="font-size: 16px;color:#24559C;">{{x.availableSeats}}</span>
-                </div>
+                <div class="remain-number"><span style="font-size: 16px;color:#24559C;">{{x.availableSeats}}</span></div>
               </div>
             </div>
           </div>
         </ion-item>
       </ion-list>
     </div>
-<<<<<<< HEAD
-    <ion-infinite-scroll ng-if="moreDataCanBeLoaded" distance="1%" on-infinite="loadMore()">
-    </ion-infinite-scroll>
-=======
     <ion-infinite-scroll ng-if="showInfinite" distance="1%"  on-infinite="loadMore()" immediate-check="false"></ion-infinite-scroll>
->>>>>>> jinshan
   </ion-content>
 </ion-view>

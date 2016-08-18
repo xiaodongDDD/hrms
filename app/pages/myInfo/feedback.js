@@ -64,7 +64,7 @@ angular.module('myInfoModule')
         }else if($scope.feedbackInfo.info==""){
           hmsPopup.showShortCenterToast('请填写产品质量问题反馈');
         }else if( (i<$scope.qualityIssue.length) && ($scope.feedbackInfo.info!="") ){
-          var url=baseConfig.businessPath+"/api_feedback/submit_feedback_info";
+          var url=baseConfig.queryPath+"/feedback/add";
           var param={
            params:{
              p_employee_number: window.localStorage.empno,
@@ -82,15 +82,15 @@ angular.module('myInfoModule')
             param.params.p_feedback_type="其他问题";
           }
           hmsPopup.showLoading('请稍候');
-          hmsHttp.post(url, param).success(function (result) {
+          hmsHttp.post(url,param).success(function (result) {
             //hmsPopup.hideLoading();
-            var message=result.returnMsg;
+            var message=result.returnData;
             if (baseConfig.debug) {
               console.log("result success " + angular.toJson(result));
             }
             hmsPopup.hideLoading();
             hmsPopup.showVeryShortCenterToast(message);
-            if(result.returnCode=="S"){
+            if(result.status=="S"){
               $ionicHistory.goBack();
             }
           }).error(function(error,status){
