@@ -1,0 +1,142 @@
+<ion-view class="contract-detail">
+
+  <link href="css/contract-detail.css" rel="stylesheet"/>
+  <ion-header-bar align-title="center" class="bar-positive">
+    <button class="button button-clear" ng-click="$ionicGoBack()"><i class="icon ion-chevron-left"></i>&nbsp;返回</button>
+    <h1 class="title"><b>审批详情</b></h1>
+    <button class="button button-clear" ng-click="showProcDiv()"><i class="icon ion-more"></i></button>
+  </ion-header-bar>
+
+  <div class="cover" ng-show="showCover" ng-class="{true:'show'}[showCover]" ng-click="closeCover()">
+    <div class="cover-header"><span class="cover-close" ng-click="closeCover()"><i class="icon ion-android-close"></i></span></div>
+  </div>
+
+  <div class="proc-title" ng-show="showProc">合同审批流程</div>
+  <div class="contract-processes" ng-class="{true:'show'}[showProc]" ng-show="showProc">
+    <div>
+      <div class="proc-item" ng-repeat="item in data.stages">
+        <div class="proc-line" ng-class="{false:'not'}[item.highLight]"></div>
+        <div class="proc-point" ng-class="{false:'not'}[item.highLight]"><i ng-class="{true:'currentStage'}[item.currentStage]" class="icon ion-android-star-outline" ng-show="item.currentStage"></i>{{item.currentStage ? '' : $index}}</div><span class="proc-stage">{{item.stage}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="background"></div>
+
+  <ion-content overflow-scroll="true">
+
+    <div class="loading" ng-if="fetchDataFlag">
+      <div class="hms-hide-content">
+        <hms-loading></hms-loading>
+      </div>
+    </div>
+
+    <div class="stages-container">
+
+      <div class="left-arrow">
+        <i class="icon ion-chevron-right"></i>
+      </div>
+
+      <div class="contract-stages" on-drag="onDrag($event)" on-release="onRelease($event)">
+
+        <div class="stages-left">
+          <div class="left-line"></div>
+        </div>
+
+        <div class="stages-item" ng-repeat="stagesItem in data.historyData">
+          <div class="stages-time">{{stagesItem.receiveDate}}<br>{{stagesItem.receiveTime}}</div>
+          <div class="stages-main">
+            <div class="stages-line"></div>
+            <span class="stages-point" ng-click="showDescDiv(stagesItem)"><i class="icon ion-android-more-vertical"></i></span>
+          </div>
+          <div class="stages-content">{{stagesItem.event}}<br>{{stagesItem.actor}}</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="info">
+      <div class="info-title">{{data.processInfo.detail_title}}：</div>
+      <i class="icon ion-ios-minus-outline icon-title" ng-show="showProcessFlag" ng-click="hideProcess()"></i>
+      <i class="icon ion-ios-plus-outline icon-title" ng-hide="showProcessFlag" ng-click="showProcess()"></i>
+      <div class="info-item" ng-repeat="item in data.processInfo.detail" ng-show="showProcessFlag">
+        <span class="info-item-title">{{item.item_name}}</span>
+        <span class="info-item-content">{{item.item_value}}</span>
+      </div>
+    </div>
+
+    <div class="info" ng-repeat="line in data.contractInfo.lines">
+      <div class="info-title info-operate">{{line.line_big_title}}</div>
+      <i class="icon ion-ios-minus-outline icon-title icon-operate" ng-show="showContractFlag" ng-click="hideContract()"></i>
+      <i class="icon ion-ios-plus-outline icon-title icon-operate" ng-hide="showContractFlag" ng-click="showContract()"></i>
+      <div class="item-operate">
+        共{{line.line.length}}条&nbsp;&nbsp;
+        <span ng-class="{0:'no-data'}[nowContractInfoNum]" ng-click="toLast()">上一条</span>&nbsp;&nbsp;
+        <span ng-class="{true:'no-data'}[noNextDataFlag]" ng-click="toNext()">下一条</span>&nbsp;&nbsp;
+        <span ng-click="showEssenceDiv()">查看合同要素</span>
+      </div>
+      <div class="info-item" ng-repeat="line_title in line.line_title" ng-show="showContractFlag">
+        <span class="info-item-title">{{line_title.line_title}}</span>
+        <span class="info-item-content">{{nowContractInfo[$index].line_value}}</span>
+      </div>
+    </div>
+
+    <div class="operate-div">
+      <input class="message" type="text" placeholder="请输入意见" ng-model="submitMessage.text"/>
+      <div class="transpond" ng-click="showTransDiv()">
+        <span class="transpond-title">转交人</span>
+        <span class="transpond-content">{{transpondId}}&nbsp;&nbsp;{{transpondName}}</span>
+        <span class="transpind-more"><i class="icon ion-chevron-right"></i></span>
+      </div>
+    </div>
+
+    <button class="operate-button" ng-click="showOperate()">操作</button>
+
+  </ion-content>
+
+  <div class="trans-search" ng-show="showTransFlag" ng-class="{true:'show'}[showTransFlag]">
+    <div class="trans-header">
+      <input class="search-input" type="text" placeholder="搜索" ng-model="searchKey" ng-change="shiftTranspond()"/><i class="iconn ion-android-search"></i>
+      <button class="search-button" ng-click="showTransDiv()">取消</button>
+    </div>
+    <div class="trans-content">
+      <div class="hms-hide-content" ng-if="fetchTranspondData">
+        <hms-loading></hms-loading>
+      </div>
+      <div class="trans-item" ng-repeat="transpond in transponds" ng-click="selectTranspond(transpond.name,transpond.id)">
+        <span class="trans-name">{{transpond.name}}</span>
+        <span class="trans-id">{{transpond.id}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="desc-div" ng-show="showDesc" ng-class="{true:'show'}[showDesc]">
+    <div class="desc-title">处理意见</div>
+    <div class="desc-item">
+      <div class="desc-key">处理节点</div>
+      <div class="desc-value">{{nowDesc.processNode}}</div>
+    </div>
+    <div class="desc-item">
+      <div class="desc-key">接收人</div>
+      <div class="desc-value">{{nowDesc.actor}}</div>
+    </div>
+    <div class="desc-item">
+      <div class="desc-key">接受时间</div>
+      <div class="desc-value">{{nowDesc.receiveDate}}</div>
+    </div>
+    <div class="desc-item">
+      <div class="desc-key">处理意见</div>
+      <div class="desc-value">{{nowDesc.detail}}</div>
+    </div>
+  </div>
+
+  <div class="desc-div" ng-show="showEssence" ng-class="{true:'show'}[showEssence]">
+    <div class="desc-title">处理意见</div>
+    <div class="desc-item" ng-repeat="item in essenceData.essences">
+      <div class="desc-key">{{item.eName}}</div>
+      <div class="desc-value">{{item.eValue}}</div>
+    </div>
+  </div>
+
+</ion-view>
