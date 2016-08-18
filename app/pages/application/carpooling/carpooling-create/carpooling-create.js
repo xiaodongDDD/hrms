@@ -181,11 +181,11 @@ angular.module('applicationModule')
 
       //解锁和锁定
       $scope.goLock = function (index) {
-        if (!$scope.carpoolingJoin[index].locked) {
+        if (!$scope.carpoolingJoin[index].locked && !$scope.carpoolingJoin[index].flag) {
           $scope.carpoolingJoin.splice(index, 1);
           $scope.carpoolingJoin.splice(index, 0, locked);
           $scope.lockSeatNumber++;
-        } else {
+        } else if($scope.carpoolingJoin[index].locked){
           $scope.carpoolingJoin.splice(index, 1);
           $scope.carpoolingJoin.splice(index, 0, empty);
           $scope.lockSeatNumber--;
