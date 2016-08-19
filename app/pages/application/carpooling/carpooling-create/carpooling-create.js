@@ -106,6 +106,7 @@ angular.module('applicationModule')
         lockFont: "create-locked-enjoy"
       };
       getLoginInfo();
+      carpoolingCreateService.clear();//载入手动清除service
       addSeats($scope.carTypes);//增加座位
       function addSeats(carTypes) {
         for (var i = 1; i < carTypes; i++) {
@@ -531,7 +532,7 @@ angular.module('applicationModule')
               hmsPopup.showShortCenterToast("发布成功");
               commonContactService.setGoContactFlg("");
               $scope.carpoolingJoin = [];//手动清除warning，warning
-              carpoolingCreateService.clear();
+              carpoolingCreateService.clear();//清除service
               for (var i = 0; i < $scope.$parent.tabs.length; i++) {
                 $scope.$parent.tabs[i].isActive = false;
               }
