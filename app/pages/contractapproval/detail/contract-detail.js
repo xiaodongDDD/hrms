@@ -38,6 +38,7 @@ angular.module('applicationModule')
       $scope.essenceData.result = 'E';
       $scope.essenceData.message = "没有数据";
       $scope.contractId = '';
+      $scope.showHint = false;
 
       //合同要素数据成功返回后
       var essenceSuccess = function(responce){
@@ -62,8 +63,16 @@ angular.module('applicationModule')
             $scope.data.historyData[i].receiveTime = $scope.data.historyData[i].receveTime.split(" ")[2];
           }
         }
+        if(!window.localStorage.contractDetailHintFlag){
+          $timeout(function(){
+            $scope.showHint = true;
+            window.localStorage.contractDetailHintFlag = "true";
+          },1000);
+        }
         console.log($scope.nowContractInfo);
         $scope.contractId = $scope.nowContractInfo[8].line_value;
+        if($scope.data.contractInfo.lines[0].line.length < 2)
+          $scope.noNextDataFlag = true;
         contractDetailService.getEssence(essenceSuccess,$scope.contractId);
       };
 
