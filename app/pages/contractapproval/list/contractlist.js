@@ -245,6 +245,7 @@ angular.module('applicationModule')
             console.log('processTodoList $scope.loadMoreDataFlag = true;');
           }
           dataFilterUtil().query();
+          $scope.fetchTodoList(true);
           showList();
         } else {
           hmsPopup.showShortCenterToast('获取审批列表失败,请退出页面重试获取或联系管理员!');
@@ -311,7 +312,7 @@ angular.module('applicationModule')
           //getTodoList(false);
           $scope.list = $scope.listBackup.concat();
           $scope.lists[$scope.type] = $scope.list;
-          if (filterOption.currentSelectType == 'PERSON' && filterOption.currentSubmitterFilter != '全部') {
+          if (filterOption.currentSelectType == 'PERSON' && filterOption.currentSubmitterFilter != '全部' && filterOption.currentSubmitterFilter != '_default') {
             for (var i = $scope.list.length - 1; i >= 0; i--) {
               console.log($scope.list[i].nodeValue + ' vs ' + dataFilterUtil().fetchFilterCondition().itemDesc);
               if ($scope.list[i].nodeValue != dataFilterUtil().fetchFilterCondition().itemDesc) {
@@ -381,8 +382,17 @@ angular.module('applicationModule')
       };
 
       $scope.refresh = function() {
-        $scope.clickSubheader($scope.type);
-        $scope.$broadcast('scroll.refreshComplete');
+        if (!$scope.fetchDataFlag) {
+          dataFilterUtil().clearFilterCondition();
+          $scope.list = [];
+          $scope.$apply();
+          $timeout(function() {
+            $scope.clickSubheader($scope.type);
+            $scope.$broadcast('scroll.refreshComplete');
+          }, 0);
+        } else {
+          $scope.$broadcast('scroll.refreshComplete');
+        }
       };
 
       // 筛选上拉菜单句柄
@@ -492,7 +502,7 @@ angular.module('applicationModule')
               filterOption.submitterFilter = [];
               filterOption.noConditionFilter = [];
               $scope.filterItemList = [];
-              filterOption.currentSubmitterFilter = '';
+              filterOption.currentSubmitterFilter = '_default';
               var noCondition = {
                 "itemCode": '',
                 "itemDesc": '全部',
@@ -586,7 +596,7 @@ angular.module('applicationModule')
 
       $scope.enterWorkflowDetail = function(detail) {
         console.log(detail.originData);
-        $state.go('tab.contractDetail', {data:detail.originData})
+        $state.go('tab.contractDetail', { data: detail.originData })
       }
 
     }
