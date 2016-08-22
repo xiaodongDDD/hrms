@@ -255,7 +255,7 @@
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <meta-data
         android:name="RONG_CLOUD_APP_KEY"
-        android:value="e5t4ouvptpsaa" />
+        android:value="0vnjpoadnd4cz" />
 
       <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
                 android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"
