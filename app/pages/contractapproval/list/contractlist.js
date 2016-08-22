@@ -1,3 +1,5 @@
+// created by yufei.lu 2016-08-15
+// 修改selectedUrl变量以更换调用地址
 angular.module('myApp')
   .config(['$stateProvider',
     function($stateProvider) {
@@ -13,8 +15,7 @@ angular.module('myApp')
         });
     }
   ]);
-// created by yufei.lu 2016-08-15
-// 整个contractList实质上是由workflow改过来的
+
 angular.module('applicationModule')
   .controller('contractlistCtrl', [
     '$scope',
@@ -39,7 +40,6 @@ angular.module('applicationModule')
       $ionicSlideBoxDelegate) {
 
       $scope.list = [];
-      $scope.slideIndex = 0;
       $scope.listBackup = []; //备份列表数据，在筛选时使用。
       var cashList = [];
       $scope.fetchDataFlag = true;
@@ -51,9 +51,9 @@ angular.module('applicationModule')
         }
       };
 
-      $scope.pageNumLimit = 10;
-      $scope.loadMoreDataFlag = false;
-      $scope.pageNum = 0;
+      $scope.pageNumLimit = 10; //默认显示数目 & 每次上拉加载增多的最大数目
+      $scope.loadMoreDataFlag = false; //是否允许'上拉加载更多'
+      $scope.pageNum = 0; //上拉(成功执行的)次数
 
       var filterOption = {
         "currentSelectType": "ALL",
@@ -61,7 +61,7 @@ angular.module('applicationModule')
         "submitterFilter": []
       };
 
-      var defaultIcon = 'build/img/application/profile@3x.png';
+      var defaultIcon = 'build/img/application/profile@3x.png'; //默认头像
       var startTime = '开始时间';
       var author = '发起人';
       var desc = '说明';
@@ -100,8 +100,8 @@ angular.module('applicationModule')
       }
       initLists();
 
-      $scope.fadeStyle = function(index) {
-        if ($scope.pageNum > 1) {
+      $scope.fadeStyle = function(index) { //循序出现，循序fadein
+        if ($scope.pageNum > 1) { //如果是上拉加载出来的，只要新加载项循序出现，旧项不作处理
           if (index >= $scope.pageNumLimit * ($scope.pageNum - 1)) {
             return {
               '-webkit-animation': 'fadeIn 0.5s forwards',
@@ -122,7 +122,6 @@ angular.module('applicationModule')
         }
 
       }
-      $scope.ngClass = true;
 
       $scope.subheaderTitleKey = ['myStart_undo', 'myStart_do', 'myTask_todo', 'myTask_unfin', 'myTask_fin'];
       $scope.type = $scope.subheaderTitleKey[0];
@@ -147,44 +146,45 @@ angular.module('applicationModule')
       }
 
       $scope.clickSubheader = function(title) {
-        initLists();
-        for (i in $scope.subheaderSelectFlag) {
-          $scope.subheaderSelectFlag[i] = false;
-        }
-        $scope.subheaderSelectFlag[title] = true;
-        var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
-        for (var i = 0; i < $scope.subheaderTitleKey.length; i++) {
-          if ($scope.subheaderTitleKey[i] == title) {
-            var scroll = subheaderTitles[i].offsetLeft - document.getElementById('contractSubheader').clientWidth / 2 + subheaderTitles[i].clientWidth / 2;
-            $ionicScrollDelegate.$getByHandle('subheaderHandle').scrollTo(scroll, 0, true);
-
-            $ionicSlideBoxDelegate.slide(i);
+          initLists();
+          for (i in $scope.subheaderSelectFlag) {
+            $scope.subheaderSelectFlag[i] = false;
           }
-        }
-        $scope.list = [];
-        $scope.slideIndex = 0;
-        $scope.listBackup = []; //备份列表数据，在筛选时使用。
-        $scope.fetchDataFlag = true;
-        $scope.pullRefreshDataFlag = false;
-        $scope.showDetailArrow = true;
-        $scope.listStatus = {
-          todo: {
-            selected: true
+          $scope.subheaderSelectFlag[title] = true;
+
+          var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
+          for (var i = 0; i < $scope.subheaderTitleKey.length; i++) {
+            if ($scope.subheaderTitleKey[i] == title) {
+              var scroll = subheaderTitles[i].offsetLeft - document.getElementById('contractSubheader').clientWidth / 2 + subheaderTitles[i].clientWidth / 2;
+              $ionicScrollDelegate.$getByHandle('subheaderHandle').scrollTo(scroll, 0, true);
+
+              $ionicSlideBoxDelegate.slide(i);
+            }
           }
-        };
-        $scope.pageNumLimit = 10;
-        $scope.loadMoreDataFlag = false;
-        $scope.pageNum = 0;
-        var filterOption = {
-          "currentSelectType": "ALL",
-          "currentSubmitterFilter": "",
-          "submitterFilter": [],
-        };
-        $scope.type = title;
 
-        getTodoList(false);
-      }
+          $scope.list = [];
+          $scope.listBackup = []; //备份列表数据，在筛选时使用。
+          $scope.fetchDataFlag = true;
+          $scope.pullRefreshDataFlag = false;
+          $scope.showDetailArrow = true;
+          $scope.listStatus = {
+            todo: {
+              selected: true
+            }
+          };
+          $scope.pageNumLimit = 10;
+          $scope.loadMoreDataFlag = false;
+          $scope.pageNum = 0;
+          var filterOption = {
+            "currentSelectType": "ALL",
+            "currentSubmitterFilter": "",
+            "submitterFilter": [],
+          };
+          $scope.type = title;
 
+          getTodoList(false);
+        }
+        //刚进入页面时调用
       var refreshTodoList = function() {
         $scope.fetchDataFlag = true;
         $scope.pullRefreshDataFlag = false;
@@ -198,14 +198,14 @@ angular.module('applicationModule')
         $timeout(
           function() {
             $scope.fetchDataFlag = false;
-            $ionicScrollDelegate.scrollTo(0, 0, false);
             var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
+            var scroll = 0;
             for (var i = 0; i < $scope.subheaderTitleKey.length; i++) {
               if ($scope.subheaderTitleKey[i] == $scope.type) {
-                var scroll = subheaderTitles[i].offsetLeft - document.getElementById('contractSubheader').clientWidth / 2 + subheaderTitles[i].clientWidth / 2;
-                $ionicScrollDelegate.$getByHandle('subheaderHandle').scrollTo(scroll, 0, false);
+                scroll = subheaderTitles[i].offsetLeft - document.getElementById('contractSubheader').clientWidth / 2 + subheaderTitles[i].clientWidth / 2;
               }
             }
+            $ionicScrollDelegate.scrollTo(scroll, 0, false);
           }, 100
         );
       };
@@ -320,24 +320,26 @@ angular.module('applicationModule')
               }
             }
           }
-          if ($scope.list.length > $scope.pageNumLimit * $scope.pageNum) {
-            $scope.loadMoreDataFlag = true;
-            $scope.setLoadMoreDataFlags[$scope.type];
-            console.log('processTodoList $scope.loadMoreDataFlag = true;');
-          }
           if (!refreshFlag) {
             dataFilterUtil().query();
           }
 
         }
-        $ionicScrollDelegate.scrollTo(0, 0, false);
+        if ($scope.list.length > $scope.pageNumLimit * $scope.pageNum) {
+          $scope.loadMoreDataFlag = true;
+          $scope.setLoadMoreDataFlags[$scope.type];
+          console.log('processTodoList $scope.loadMoreDataFlag = true;');
+        }
+
         var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
+        var scroll = 0;
         for (var i = 0; i < $scope.subheaderTitleKey.length; i++) {
           if ($scope.subheaderTitleKey[i] == $scope.type) {
-            var scroll = subheaderTitles[i].offsetLeft - document.getElementById('contractSubheader').clientWidth / 2 + subheaderTitles[i].clientWidth / 2;
-            $ionicScrollDelegate.$getByHandle('subheaderHandle').scrollTo(scroll, 0, false);
+            scroll = subheaderTitles[i].offsetLeft - document.getElementById('contractSubheader').clientWidth / 2 + subheaderTitles[i].clientWidth / 2;
           }
         }
+        $ionicScrollDelegate.scrollTo(scroll, 0, false);
+
         showList();
 
         /////////////////
@@ -620,31 +622,103 @@ angular.module('applicationModule')
       return refreshWorkflowList;
     };
 
-    var baseUrlInner = 'http://172.20.0.206:8080/webportal/urlInterface/mobile/handcontract_mobile';
-    var baseUrlOuter = 'http://edb.hand-china.com:8080/webportal/urlInterface/mobile/handcontract_mobile';
-    this.check = function(success) {
-      var url = baseUrlInner + '/' + window.localStorage.empno + '/checkUser';
+    //修改这个变量以改变调用地址
+    var selectedUrl = 'baseUrlInner';
 
-      var params = {
-        userId: window.localStorage.empno,
-      };
+    var urls = {
+      //url
+      //内网地址
+      baseUrlInner: 'http://172.20.0.206:8080/webportal/urlInterface/mobile/handcontract_mobile',
+      //外网地址
+      baseUrlOuter: 'http://edb.hand-china.com:8080/webportal/urlInterface/mobile/handcontract_mobile',
+
+      //透传
+      //测试地址
+      baseUrlTest: 'http://wechat.hand-china.com/hrmsv2/v2/api/handcontract',
+      //中台url
+      baseUrlZhongtai: 'http://mobile-app.hand-china.com/hrmsv2/v2/api/handcontract'
+    };
+
+    // check、 getTodoCount、 getTodoList如果urls[selectedUrl]取不到值则取baseUrlInner
+    this.check = function(success) {
+      console.log('check user');
+      var url = '';
+      var params = {};
+
+      if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
+        console.log('check user with baseUrlTest or baseUrlZhongtai');
+        url = urls[selectedUrl];
+
+        params = {
+          userId: window.localStorage.empno,
+          method: 'checkUser'
+        };
+      } else {
+        if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
+          console.log('check user with baseUrlInner or baseUrlOuter');
+          url = urls[selectedUrl] + '/' + window.localStorage.empno + '/checkUser';
+
+          params = {
+            userId: window.localStorage.empno
+          };
+        } else {
+          url = urls.baseUrlInner + '/' + window.localStorage.empno + '/checkUser';
+
+          params = {
+            userId: window.localStorage.empno
+          };
+        }
+      }
+
+      console.log('调用地址：' + url);
+      console.log('调用参数：');
+      console.log(params)
 
       hmsHttp.get(url, params).success(function(result) {
+        console.log('check user success');
         success(result);
       }).error(function(response, status) {
-        hmsPopup.showPopup(response);
+        console.log('check user error');
+        //hmsPopup.showPopup(response);
         console.log(response);
       });
     }
 
     this.getTodoList = function(flag, user, type, page, success, error) {
+      var url = '';
+      var params = {};
       var user = (user) ? user : window.localStorage.empno;
       var type = (type) ? type : 'myStart_undo';
-      var url = baseUrlInner + '/' + user + '/processes/' + type;
 
-      var params = {
-        type: type,
-      };
+      if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
+        console.log('get todoList with baseUrlTest or baseUrlZhongtai');
+        url = urls[selectedUrl];
+
+        params = {
+          userId: window.localStorage.empno,
+          method: 'processes',
+          type: type
+        }
+      } else {
+        if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
+          console.log('get todoList with baseUrlInner or baseUrlOuter');
+          url = urls[selectedUrl] + '/' + user + '/processes/' + type;
+
+          params = {
+            type: type,
+          };
+        } else {
+          url = urls.baseUrlInner + '/' + user + '/processes/' + type;
+
+          params = {
+            type: type,
+          };
+        }
+      }
+
+      console.log('调用地址：' + url);
+      console.log('调用参数：');
+      console.log(params)
 
       hmsHttp.get(url, params).success(function(result) {
         result.status = result.result;
@@ -658,13 +732,43 @@ angular.module('applicationModule')
 
     this.getTodoCount = function(success) {
       var user = (user) ? user : window.localStorage.empno;
-      var url = baseUrlInner + '/' + user + '/getMyToDoSize';
+      var url = ''
+      var params = {};
 
-      hmsHttp.get(url).success(function(result) {
-        success(result);
-      }).error(function(response, status) {
-        error(response);
-      });
+      if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
+        console.log('get todoCount with baseUrlTest or baseUrlZhongtai');
+        url = urls[selectedUrl];
+
+        params = {
+          userId: window.localStorage.empno,
+          method: 'getMyToDoSize'
+        }
+        console.log('调用地址：' + url);
+        console.log('调用参数：');
+        console.log(params)
+
+        hmsHttp.get(url, params).success(function(result) {
+          success(result);
+        }).error(function(response, status) {
+          error(response);
+        });
+      } else {
+        if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
+          console.log('get todoCount with baseUrlInner or baseUrlOuter');
+          url = urls[selectedUrl] + '/' + user + '/getMyToDoSize';
+        } else {
+          url = urls.baseUrlInner + '/' + user + '/getMyToDoSize';
+        }
+        console.log('调用地址：' + url);
+        console.log('没有传参数');
+
+        hmsHttp.get(url).success(function(result) {
+          success(result);
+        }).error(function(response, status) {
+          error(response);
+        });
+      }
+
     };
   }
 ]);

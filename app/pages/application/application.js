@@ -90,15 +90,15 @@ angular.module('applicationModule')
     }];
     var successCheckContract = function(result) {
       if (result.result == 'S') {
+        $scope.officeApp[1].list[3] = {
+          appName: "合同管理",
+          imageUrl: "build/img/application/application/schedule@3x.png",
+          destUrl: "tab.contractlist",
+          hasWorkflowNum: true,
+          count: 0
+        }
         var successGetTodoCount = function(result) {
           if (result.result == 'S') {
-            $scope.officeApp[1].list[3] = {
-              appName: "合同管理",
-              imageUrl: "build/img/application/application/schedule@3x.png",
-              destUrl: "tab.contractlist",
-              hasWorkflowNum: true,
-              count: 0
-            }
             $scope.officeApp[1].list[3].count = result.procSize;
           }
         }
@@ -130,23 +130,22 @@ angular.module('applicationModule')
     //员工社区
     $scope.employeeApp = [{
       list: [{
-          appName: "住宿申请",
-          imageUrl: "build/img/application/application/dormApply@3x.png",
-          destUrl: "tab.dorm-apply"
-        }, {
-          appName: "房屋转租",
-          imageUrl: "build/img/application/application/housingrental@3x.png",
-          destUrl: "tab.houses-tab",
-        }, {
-          appName: "班车信息",
-          imageUrl: "build/img/application/application/bus@3x.png",
-          destUrl: "tab.bus-information",
-        },   {
+        appName: "住宿申请",
+        imageUrl: "build/img/application/application/dormApply@3x.png",
+        destUrl: "tab.dorm-apply"
+      }, {
+        appName: "房屋转租",
+        imageUrl: "build/img/application/application/housingrental@3x.png",
+        destUrl: "tab.houses-tab",
+      }, {
+        appName: "班车信息",
+        imageUrl: "build/img/application/application/bus@3x.png",
+        destUrl: "tab.bus-information",
+      }, {
         appName: "拼车",
         imageUrl: "build/img/application/application/carpooling@3x.png",
         destUrl: "tab.carpooling",
-      }
-      ]
+      }]
     }];
 
     $scope.openSetting = function() {
