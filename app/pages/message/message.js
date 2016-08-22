@@ -94,7 +94,7 @@ angular.module('messageModule')
         if (baseConfig.debug) {
           console.log('in getMessageList');
         }
-        if (angular.isUndefined(HandIMPlugin)) {
+        if (!angular.isUndefined(HandIMPlugin)) {
           HandIMPlugin.returnConversationList(function success(result) {
             if (baseConfig.debug) {
               console.log('returnConversationList result ' + angular.toJson(result));
