@@ -55,7 +55,7 @@ Xcode
 
 
 # 开发规范
-```
+
 *所有文件名，文件夹都以中划线分隔 ,全部小写 比如 contact-us
 *html 尽量不要有style=“”
 *javascript代码变量第二个单词首字母大写  比如 timeOffManagment
@@ -73,4 +73,3 @@ Xcode
 *代码里面一定要有注释
 *angularJS项目 逻辑功能不要全部写在controller里面，因该写在service里面
 *在一个controller 里面，变量都在最上面，函数在下面，因为js执行的时候，他也会自动先去执行变量的定义
-```
