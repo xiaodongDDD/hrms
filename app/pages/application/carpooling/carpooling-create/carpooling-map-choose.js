@@ -86,7 +86,8 @@ angular.module('applicationModule')
 
                 $scope.depaLocLng = location.lng;
                 $scope.depaLocLat = location.lat;
-                $scope.departure = result.tips[1].name;
+                //$scope.departure = result.tips[1].name;
+                $scope.departure = G('departure').value;
                 pathPlan();
               }else{
                 hmsPopup.showShortCenterToast("地址无效请重新选择");
@@ -118,7 +119,8 @@ angular.module('applicationModule')
                   mapObj.setCenter(marker.getPosition());
                   $scope.destLocLng = location.lng;
                   $scope.destLocLat = location.lat;
-                  $scope.destination = result.tips[1].name;
+                  //$scope.destination = result.tips[1].name;//destination名称跟输入框
+                 $scope.destination = G('destination').value;
                   pathPlan();
               }else{
                 hmsPopup.showShortCenterToast("地址无效，请重新选择");
@@ -174,6 +176,11 @@ angular.module('applicationModule')
         var departure = G("departure").value;
         var destination = G("destination").value;
         var state = true;
+
+        //console.debug("输入框起点："+departure);
+        //console.debug("请求值起点："+$scope.departure);
+        //console.debug("输入框终点："+destination);
+        //console.debug("请求值终点："+$scope.destination);
 
 
         if(departure == ""){//清掉输入框则清空数据
