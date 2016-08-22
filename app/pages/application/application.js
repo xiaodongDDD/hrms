@@ -176,13 +176,12 @@ angular.module('applicationModule')
           var count = result.workflowcount;
           angular.forEach($scope.officeApp, function(data) {
             angular.forEach(data.list, function(detail) {
-              if (detail.hasWorkflowNum) {
+              if (detail.hasWorkflowNum && detail.appName == '工作流') {
                 detail.count = count;
               }
             });
           });
         }
-        contractListService.check(successCheckContract);
         $scope.fetchWorkflowData = false;
       };
       var error = function() {
@@ -193,7 +192,6 @@ angular.module('applicationModule')
             }
           });
         });
-        contractListService.check(successCheckContract);
         $scope.fetchWorkflowData = false;
       }
       workFLowListService.getNoticeListCount(success, error);
@@ -205,6 +203,7 @@ angular.module('applicationModule')
       }
       initSetting();
       getWorkflowNum();
+      contractListService.check(successCheckContract);
       $scope.openDoor = 0;
     });
 

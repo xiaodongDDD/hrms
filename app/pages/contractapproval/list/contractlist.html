@@ -29,8 +29,8 @@
   <ion-slide-box on-slide-changed="changeSlide($index)" class="size-filling" style="position:absolute;">
     <ion-slide ng-repeat="k in subheaderTitleKey">
       <ion-content style="top:80px; bottom:55px">
-        <ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
-        </ion-refresher>
+        <!--<ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
+        </ion-refresher>-->
         <div class="hms-hide-content" ng-if="fetchDataFlag">
           <hms-loading></hms-loading>
         </div>

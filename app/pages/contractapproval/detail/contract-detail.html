@@ -25,6 +25,11 @@
 
   <ion-content overflow-scroll="true">
 
+    <div class="hint-div" ng-class="{true:'show'}[showHint]" ng-click="showHint = false">
+      <img src="build/img/contract/arrow.png" class="hint-pic"/>
+      <div class="hint-content">点击查看审批意见</div>
+    </div>
+
     <div class="loading" ng-if="fetchDataFlag">
       <div class="hms-hide-content">
         <hms-loading></hms-loading>
@@ -58,8 +63,12 @@
 
     <div class="info">
       <div class="info-title">{{data.processInfo.detail_title}}：</div>
-      <i class="icon ion-ios-minus-outline icon-title" ng-show="showProcessFlag" ng-click="hideProcess()"></i>
-      <i class="icon ion-ios-plus-outline icon-title" ng-hide="showProcessFlag" ng-click="showProcess()"></i>
+      <div class="icon-div"  ng-click="hideProcess()" ng-show="showProcessFlag">
+        <i class="icon ion-ios-minus-outline icon-title"></i>
+      </div>
+      <div class="icon-div"  ng-click="showProcess()" ng-hide="showProcessFlag">
+        <i class="icon ion-ios-plus-outline icon-title"></i>
+      </div>
       <div class="info-item" ng-repeat="item in data.processInfo.detail" ng-show="showProcessFlag">
         <span class="info-item-title">{{item.item_name}}</span>
         <span class="info-item-content">{{item.item_value}}</span>
@@ -68,8 +77,12 @@
 
     <div class="info" ng-repeat="line in data.contractInfo.lines">
       <div class="info-title info-operate">{{line.line_big_title}}</div>
-      <i class="icon ion-ios-minus-outline icon-title icon-operate" ng-show="showContractFlag" ng-click="hideContract()"></i>
-      <i class="icon ion-ios-plus-outline icon-title icon-operate" ng-hide="showContractFlag" ng-click="showContract()"></i>
+      <div class="icon-div" ng-show="showContractFlag" ng-click="hideContract()">
+        <i class="icon ion-ios-minus-outline icon-title"></i>
+      </div>
+      <div class="icon-div" ng-hide="showContractFlag" ng-click="showContract()">
+        <i class="icon ion-ios-plus-outline icon-title"></i>
+      </div>
       <div class="item-operate">
         共{{line.line.length}}条&nbsp;&nbsp;
         <span ng-class="{0:'no-data'}[nowContractInfoNum]" ng-click="toLast()">上一条</span>&nbsp;&nbsp;

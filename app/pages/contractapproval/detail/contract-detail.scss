@@ -287,12 +287,21 @@
   background: #528acb;
 }
 
-.contract-detail .info .icon-title{
+.contract-detail .info .icon-div{
   position: absolute;
-  font-size: 20px;
-  color: #528acb;
-  right: 5vw;
-  top: 20px;
+  width: 40px;
+  height: 40px;
+  top: 10px;
+  right: calc(5vw - 20px);
+  text-align: center;
+  line-height: 40px;
+}
+
+.contract-detail .info .icon-title{
+   font-size: 20px;
+   color: #528acb;
+   right: 5vw;
+   top: 20px;
 }
 
 .contract-detail .info .info-item{
@@ -329,10 +338,6 @@
 
 .contract-detail .info .item-operate .no-data{
   color: grey;
-}
-
-.contract-detail .info .icon-operate{
-  top: 55px;
 }
 
 .contract-detail .info .info-operate{
@@ -591,4 +596,37 @@
   overflow: scroll;
   width: 100vw;
   height: calc(100vh - 60px);
+}
+
+.contract-detail .hint-div{
+  position: fixed;
+  top: 60px;
+  left: 85px;
+  opacity: 0;
+  transition: all 1s;
+}
+
+.contract-detail .hint-div .hint-pic{
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.contract-detail .hint-div .hint-content{
+  position: relative;
+  margin-top: 29px;
+  margin-left: -15px;
+  line-height: 30px;
+  height: 30px;
+  border-radius: 10px;
+  padding: 0 10px;
+  background: rgba(0,0,0,0.3);
+  box-shadow: 0 0 0 2px #ffb303;
+  color: white;
+}
+
+.contract-detail .hint-div.show{
+  opacity: 1;
 }
