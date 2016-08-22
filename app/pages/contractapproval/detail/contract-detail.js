@@ -273,39 +273,39 @@ angular.module('applicationModule')
 
 .service('contractDetailService', ['hmsHttp',
   'hmsPopup',
+  'baseConfig',
   function(hmsHttp,
-           hmsPopup) {
+           hmsPopup,
+           baseConfig) {
 
-    var baseUrlInner = 'http://172.20.0.206:8080/webportal/urlInterface/mobile/handcontract_mobile';
-    var baseUrlOuter = 'http://edb.hand-china.com:8080/webportal/urlInterface/mobile/handcontract_mobile';
+    //var baseUrlTest = "http://wechat.hand-china.com/hrmsv2/v2/api/handcontract";
+    var baseUrlTest = baseConfig.queryPath + '/handcontract';
+    var baseUrlZhong = "http://mobile-app.hand-china.com/hrmsv2/v2/api/handcontract";
 
-    this.check = function(success,actInstId) {
-      var url = baseUrlInner + '/' + window.localStorage.empno + '/processInfo/' + actInstId;
+    this.check = function(success,activityId) {
 
       var params = {
         userId: window.localStorage.empno,
-        actInstId: actInstId
+        method: "processInfo",
+        activityId: activityId
       };
-
-      hmsHttp.get(url, params).success(function(result) {
+      hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
         hmsPopup.showPopup(response);
         console.log(response);
       });
+
     };
 
     this.getEssence = function(success,contractId) {
-      var url = baseUrlInner + '/' + window.localStorage.empno + '/essence/' + contractId;
-
-      console.log(url);
 
       var params = {
         userId: window.localStorage.empno,
+        method: "essence",
         contractId: contractId
       };
-
-      hmsHttp.get(url, params).success(function(result) {
+      hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
         //hmsPopup.showPopup(response);
@@ -314,52 +314,55 @@ angular.module('applicationModule')
     };
 
     this.getTranspond = function(success) {
-      var url = baseUrlInner + '/' + window.localStorage.empno + '/transpondUsers';
-
-      hmsHttp.get(url).success(function(result) {
+      var params = {
+        userId: window.localStorage.empno,
+        method: "transpondUsers"
+      };
+      hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
         //hmsPopup.showPopup(response);
         console.log(response);
       });
+
     };
 
     this.submit = function(success,procInstId,actInstId,submitKey,comment) {
-      var url = baseUrlInner + '/' + window.localStorage.empno + '/submit';
 
       var params = {
         userId: window.localStorage.empno,
+        method: "submit",
         procInstId: procInstId,
         actInstId: actInstId,
         submitKey: submitKey,
         comment: comment
       };
-
-      hmsHttp.post(url, params).success(function(result) {
+      hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
         //hmsPopup.showPopup(response);
         console.log(response);
       });
+
     };
 
     this.transpond = function(success,procInstId,actInstId,transpondUser,message) {
-      var url = baseUrlInner + '/' + window.localStorage.empno + '/transpond';
 
       var params = {
         userId: window.localStorage.empno,
+        method: "transpond",
         procInstId: procInstId,
         actInstId: actInstId,
         transpondUser: transpondUser,
         message: message
       };
-
-      hmsHttp.post(url, params).success(function(result) {
+      hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
         //hmsPopup.showPopup(response);
         console.log(response);
       });
+
     };
 
   }
