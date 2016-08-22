@@ -273,10 +273,17 @@ angular.module('applicationModule')
 
 .service('contractDetailService', ['hmsHttp',
   'hmsPopup',
+  'baseConfig',
   function(hmsHttp,
-           hmsPopup) {
+           hmsPopup,
+           baseConfig) {
 
+<<<<<<< HEAD
     var baseUrlTest = "http://wechat.hand-china.com/hrmsv2/v2/api/handcontract";
+=======
+    //var baseUrlTest = "http://wechat.hand-china.com/hrmsv2/v2/api/handcontract";
+    var baseUrlTest = baseConfig.queryPath + '/handcontract';
+>>>>>>> luyufei/007
     var baseUrlZhong = "http://mobile-app.hand-china.com/hrmsv2/v2/api/handcontract";
 
     this.check = function(success,activityId) {

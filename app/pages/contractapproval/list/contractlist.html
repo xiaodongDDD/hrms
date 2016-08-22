@@ -1,20 +1,18 @@
 <ion-view view-title="合同管理" class="workflow">
-  <ion-header-bar align-title="center" class="bar-stable">
+  <ion-header-bar align-title="center" class="bar-stable padding-zero" style="height:80px;">
     <div class="buttons">
-      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+      <button class="button button-icon icon ion-ios-arrow-back" style="height:34px;" ng-click="$ionicGoBack()">
         <span class="back-text">返回</span>
       </button>
     </div>
-    <h1 class="title">合同管理</h1>
-  </ion-header-bar>
+    <h1 class="title">合同列表</h1>
 
-  <ion-header-bar style="top:40px;padding:0px;height:40px;">
-    <div>
+    <div style="left:0px;top:40px;padding:0px;width:100%;height:40px;position:absolute;">
       <div id="contractSubheader" class="contract-subheader">
         <ion-scroll class="contract-subheader-scroll" delegate-handle="subheaderHandle" direction="x" has-bouncing="true" overflow-scroll="false">
           <div id='contractSubheaderScroll' class="row padding-zero" style="width:1000px;">
             <div class="contractSubheaderMarker" ng-click="clickSubheader(i)" ng-repeat="i in subheaderTitleKey" style="padding:6px;">
-              <label ng-bind="subheaderTitleValue[i]" ng-class="{true:'hrms-color-blue'}[subheaderSelectFlag[i]]"></label>
+              <label ng-bind="subheaderTitleValue[i]" style="color:black;"></label>
               <div ng-class="{true:'contract-subheader-marker-selected hrms-bg-blue',
                             false:'contract-subheader-marker-deselected hrms-bg-blue'}
                             [subheaderSelectFlag[i]]" class="contract-subheader-marker">
