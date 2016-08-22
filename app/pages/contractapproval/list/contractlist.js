@@ -623,7 +623,7 @@ angular.module('applicationModule')
     };
 
     //修改这个变量以改变调用地址
-    var selectedUrl = 'baseUrlInner';
+    var selectedUrl = 'baseUrlTest';
 
     var urls = {
       //url
@@ -653,6 +653,15 @@ angular.module('applicationModule')
           userId: window.localStorage.empno,
           method: 'checkUser'
         };
+
+        hmsHttp.post(url, params).success(function(result) {
+          console.log('check user success');
+          success(result);
+        }).error(function(response, status) {
+          console.log('check user error');
+          //hmsPopup.showPopup(response);
+          console.log(response);
+        });
       } else {
         if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
           console.log('check user with baseUrlInner or baseUrlOuter');
@@ -668,20 +677,20 @@ angular.module('applicationModule')
             userId: window.localStorage.empno
           };
         }
+
+        hmsHttp.get(url, params).success(function(result) {
+          console.log('check user success');
+          success(result);
+        }).error(function(response, status) {
+          console.log('check user error');
+          //hmsPopup.showPopup(response);
+          console.log(response);
+        });
       }
 
       console.log('调用地址：' + url);
       console.log('调用参数：');
-      console.log(params)
-
-      hmsHttp.get(url, params).success(function(result) {
-        console.log('check user success');
-        success(result);
-      }).error(function(response, status) {
-        console.log('check user error');
-        //hmsPopup.showPopup(response);
-        console.log(response);
-      });
+      console.log(params);
     }
 
     this.getTodoList = function(flag, user, type, page, success, error) {
@@ -699,6 +708,15 @@ angular.module('applicationModule')
           method: 'processes',
           type: type
         }
+
+        hmsHttp.post(url, params).success(function(result) {
+          result.status = result.result;
+          result.unprocessedWorkflowList = result.procList.detail;
+          success(result);
+        }).error(function(response, status) {
+          //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+          error(response);
+        });
       } else {
         if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
           console.log('get todoList with baseUrlInner or baseUrlOuter');
@@ -714,20 +732,20 @@ angular.module('applicationModule')
             type: type,
           };
         }
+
+        hmsHttp.get(url, params).success(function(result) {
+          result.status = result.result;
+          result.unprocessedWorkflowList = result.procList.detail;
+          success(result);
+        }).error(function(response, status) {
+          //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+          error(response);
+        });
       }
 
       console.log('调用地址：' + url);
       console.log('调用参数：');
-      console.log(params)
-
-      hmsHttp.get(url, params).success(function(result) {
-        result.status = result.result;
-        result.unprocessedWorkflowList = result.procList.detail;
-        success(result);
-      }).error(function(response, status) {
-        //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-        error(response);
-      });
+      console.log(params);
     };
 
     this.getTodoCount = function(success) {
@@ -747,7 +765,7 @@ angular.module('applicationModule')
         console.log('调用参数：');
         console.log(params)
 
-        hmsHttp.get(url, params).success(function(result) {
+        hmsHttp.post(url, params).success(function(result) {
           success(result);
         }).error(function(response, status) {
           error(response);
