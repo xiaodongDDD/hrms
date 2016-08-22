@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "CVDPlugin-Bridging-Header.h"
 
-static NSDictionary *_launchOptions;
-@interface AppDelegate (CDVIMPlugin)<RCIMReceiveMessageDelegate,RCIMConnectionStatusDelegate>
+static NSDictionary *launchOptions;
+@interface AppDelegate (CDVIMPlugin)<RCIMClientReceiveMessageDelegate>
 
 @end
