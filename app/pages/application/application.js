@@ -89,8 +89,10 @@ angular.module('applicationModule')
       }]
     }];
     var successCheckContract = function(result) {
+      var indexRow = 1; //第二行
+      var indexCol = 3; //第四列
       if (result.result == 'S') {
-        $scope.officeApp[1].list[3] = {
+        $scope.officeApp[indexRow].list[indexCol] = {
           appName: "合同管理",
           imageUrl: "build/img/application/application/schedule@3x.png",
           destUrl: "tab.contractlist",
@@ -99,7 +101,7 @@ angular.module('applicationModule')
         }
         var successGetTodoCount = function(result) {
           if (result.result == 'S') {
-            $scope.officeApp[1].list[3].count = result.procSize;
+            $scope.officeApp[indexRow].list[indexCol].count = result.procSize;
           }
         }
         contractListService.getTodoCount(successGetTodoCount);
