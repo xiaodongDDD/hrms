@@ -12,8 +12,9 @@
     </div>
   </ion-header-bar>
   <ion-content style="bottom:48px;" class="messages" ng-class="{true: 'has-employee-list', false: ''}[showFilter]">
-    <ion-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
-    </ion-refresher>
+
+    <hms-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
+    </hms-refresher>
 
     <ion-list show-delete="shouldShowDelete"
               can-swipe="true" class="message-list-content">

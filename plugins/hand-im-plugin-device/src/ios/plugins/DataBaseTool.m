@@ -17,7 +17,7 @@ static FMDatabase *db;
 +(void)initialize
 {
     NSString *dbPath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-    dbPath = [dbPath stringByAppendingPathComponent:@"messages2.0.1.sqlite"];
+    dbPath = [dbPath stringByAppendingPathComponent:@"messages3.0.0.sqlite"];
     NSLog(@"创建数据库,数据库路径:%@",dbPath);
     db = [FMDatabase databaseWithPath:dbPath];
     //创建表 人员表
@@ -62,7 +62,7 @@ static FMDatabase *db;
             NSString * worker_id = [rs stringForColumn:@"worker_id"];
             NSString * name = [rs stringForColumn:@"name"];
             NameByWorkerId = name;
-            //   NSLog(@"根据id获取姓名 worker_id = %@, name = %@ ", worker_id, name);
+         //   NSLog(@"根据id获取姓名 worker_id = %@, name = %@ ", worker_id, name);
         }
         [db close];
     }
@@ -81,7 +81,7 @@ static FMDatabase *db;
             NSString *worker_id = [rs stringForColumn:@"worker_id"];
             NSString * image_url = [rs stringForColumn:@"image_url"];
             imageUrlByWorkerId = image_url;
-            //     NSLog(@"根据id获取头像 workId = %@, imageUrl = %@ ", worker_id, image_url);
+       //     NSLog(@"根据id获取头像 workId = %@, imageUrl = %@ ", worker_id, image_url);
         }
         [db close];
     }
@@ -206,8 +206,6 @@ static FMDatabase *db;
         }
         [db close];
     }
-    RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:userId name:userName portrait:userIcon];
-    [[RCIM sharedRCIM] refreshUserInfoCache:userInfo withUserId:userId];
 }
 
 +(BOOL)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon
@@ -231,8 +229,8 @@ static FMDatabase *db;
             [DataBaseTool updatePersonDetailInformationWithId:userId Name:userName ImageUrl:userId];
             NSLog(@"更新联系人");
         }
-        
         [db close];
+        
     }
     return flag;
 }

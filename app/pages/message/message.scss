@@ -1,5 +1,14 @@
 .message-list {
 
+  .scroll-refresher.active.refreshing .hms-spinner {
+    display: none;
+  }
+
+  .icon-refreshing .spinner svg {
+    width: 24px;
+    height: 24px;
+  }
+
   .employee-list {
     bottom: 48px;
 

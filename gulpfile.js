@@ -44,7 +44,7 @@ var libDevFilePath = [
 var libPublishFilePath = [
   'app/lib/**/css/ionic.min.css',
   'app/lib/**/fonts/*.*',
-  'app/lib/**/js/ionic.bundle.min.js',
+  'app/lib/**/js/ionic.bundle.js',
   'app/lib/**/rollups/md5.js',
   'app/lib/**/dist/jquery.min.js',
   'app/lib/**/dist/ng-cordova.js',
