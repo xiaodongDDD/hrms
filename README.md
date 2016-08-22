@@ -1,66 +1,36 @@
-# ionic-tab-template
+# HRMSv2研发项目
 
-[![Dependency Status](https://david-dm.org/snipking/angular1-onsen/status.svg)](https://david-dm.org/snipking/angular1-onsen#info=dependencies) [![devDependency Status](https://david-dm.org/snipking/angular1-onsen/dev-status.svg)](https://david-dm.org/snipking/angular1-onsen#info=devDependencies)
+一个基于 ionic v1 + angular v2 的 Hybrid app环境
 
-A seed template for angular1 & ionic project
+>建议: 推荐 Cordova 5.4.1以及以上 + gulp + bower
 
-This project is a starting point for building Angular 1.x applications with ionic. Also for further
+# 环境搭建
 
-1. ionic-tab
-2. ionic-tab-webpack
-3. ionic2-tab
-4. ionic2-tab-webpack
-
-learning course.
-
->Warning: Make sure you're using the latest version of Node.js and NPM
-
-### Quick start
-
-> Clone/Download the repo
-
-```bash
-# clone repo
+```
+# 下载源代码
 $ git clone http://hpm.hand-china.com/diffusion/HRMSTWO/hrms.git
 
-# change directory to app root
+# 切换到根目录
 $ cd hrms
 
-# install the dependencies with npm
+# 切换到develop 分支下载最新代码
+$ git checkout develop
+
+# 安装gulp构建环境
 $ npm install
 
-# install the dependencies with bower
+# 安装js依赖库
 $ bower install
 
-# run with dev mode
+# 构建测试环境开发目录
 $ gulp run-dev
 
-# run the app
+# 浏览器运行app程序
 $ ionic serve
 ```
 
-If everything goes right, chrome browser will open with url [http://localhost:8384/index.html](http://localhost:8384/index.html)
-otherwise you should open it manually.
-
-# Table of Contents
-
-* [Getting Started](#getting-started)
-    * [Dependencies](#dependencies)
-    * [Installing](#installing)
-    * [Running the app](#running-the-app)
-    * [Developing](#developing)
-    * [Testing](#testing)
-* [License](#license)
-
-# Getting Started
-
-## Dependencies
-
-What you need to run this app:
-* `node` and `npm`
-
-## Git Operation
-```bash
+# Git 操作规范
+```
 st=>start: 开始
 e=>end: 结束
 clone=>operation: git clone url
@@ -76,16 +46,31 @@ conflict=>operation: 如果有冲突，解决冲突
 push=>operation: git push origin develop:develop
 
 st->clone->pullA->checkoutA->code->add->commit->checkoutB->pullB->merge->conflict->push->e
+```
 
-### IDE
+# IDE
 WebStorm
+Android Studio
+Xcode
 
-## Testing
 
-#### 1. Unit Tests
-
-_TODO_
-
-# License
-
-[APACHE](/LICENSE)
+# 开发规范
+```
+*所有文件名，文件夹都以中划线分隔 ,全部小写 比如 contact-us
+*html 尽量不要有style=“”
+*javascript代码变量第二个单词首字母大写  比如 timeOffManagment
+*javascript代码字符串定义用单引号  比如 var target=''
+*angular的对象里面不要使用闭包
+*angular的controller和service 用注入的时候，都要进行申明，目的是为了压缩混淆，如 angular.modal.controller('TabCtrl’,[‘$scope’,function($scope){}]);
+*尽量谨慎使用$rootScope.$broadcast  因为$rootScope 不会在controller销毁的时候被回收
+*scss的规范写法
+   approve-list {
+     ##
+     .approve-item{
+     ##
+     }
+   }
+*代码里面一定要有注释
+*angularJS项目 逻辑功能不要全部写在controller里面，因该写在service里面
+*在一个controller 里面，变量都在最上面，函数在下面，因为js执行的时候，他也会自动先去执行变量的定义
+```
