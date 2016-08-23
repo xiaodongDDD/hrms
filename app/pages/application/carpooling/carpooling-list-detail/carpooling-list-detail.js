@@ -111,6 +111,14 @@ angular.module('applicationModule')
         }
         return false;
       }
+
+      $scope.chatComp = function(index){
+        if( ($scope.cp_number[index].empName != "空位") && ($scope.cp_number[index].empName != "占位")){
+          var emp_code =  $scope.listInfo.companies[index].empNo;
+          console.debug($scope.listInfo.companies[index]);
+          $state.go('tab.tab-application-carpooling-employee', {employeeNumber:emp_code});
+        }
+      }
     }
 
   ]);

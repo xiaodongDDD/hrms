@@ -46,8 +46,8 @@ angular.module('applicationModule')
       $scope.showInfinite = false;//上拉加载
       $scope.map = "";
       $scope.filterTime=getNowTime();
-      $scope.startTimeText=getNowTime();
-      $scope.endTimeText=getNowTime();
+      $scope.startTimeText=getNowTime(true);
+      $scope.endTimeText=getNowTime(false);
       $scope.resultList = [];
       $scope.status = "list";//判断是否在筛选状态
       var filterPage = 1;
@@ -121,12 +121,12 @@ angular.module('applicationModule')
               }
             } else {
               angular.forEach(response.returnData, function (data, index) {
-                if (data.shareStatus == 'wait') {
-                  data.perferenceColor = false;
-                  data.status = "等待成行";
-                } else  {
-                  data.statusColor=true;
-                  data.status = "已成行";
+                if (data.departurePreference== '准时出发') {
+                  data.departurePreferenceColor = "on-time-color";
+                } else  if(data.departurePreference=="不要迟到"){
+                  data.departurePreferenceColor = "no-delay-color";
+                }else{
+                  data.departurePreferenceColor = "permit-delay-color";
                 }
                 $scope.resultList.push(data);
               });
@@ -344,23 +344,37 @@ angular.module('applicationModule')
 
 
       //获取当前时间
-        function getNowTime() {
+        function getNowTime(flag) {
           var date = new Date();
           var seperator1 = "-";
           var seperator2 = ":";
           var month = date.getMonth() + 1;
-          var strDate = date.getDate();
+          var  strDate;
+          var minutes="";
+          var hours="";
+
+          if(flag){
+            minutes = date.getMinutes();
+            hours = date.getHours();
+            strDate = date.getDate();
+          }else{
+            minutes = 0;
+            hours = 0;
+            strDate = date.getDate()+1;
+          }
+
+
           if (month >= 1 && month <= 9) {
             month = "0" + month;
           }
+
           if (strDate >= 0 && strDate <= 9) {
             strDate = "0" + strDate;
           }
-          var minutes = date.getMinutes();
+
           if(minutes < 10){
             minutes = "0"+minutes;
           }
-          var hours = date.getHours();
           if(hours<10){
             hours = "0" + hours;
           }
@@ -368,6 +382,7 @@ angular.module('applicationModule')
             + " " + hours + seperator2 + minutes;
           return currentdate;
         }
+
       //搜索
       $scope.goSearch = function(){
         $state.go('tab.carpoolingSearch');

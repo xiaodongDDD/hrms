@@ -193,6 +193,10 @@
       top: 44px;
     }
   }
+
+ .popover-backdrop.active {
+    background-color: rgba(0,0,0,0.1);
+  }
 }
 .platform-ios {
   .popover-filter {

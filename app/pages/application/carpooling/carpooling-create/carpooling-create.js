@@ -46,6 +46,7 @@ angular.module('applicationModule')
     'carpoolingCreateService',
     '$rootScope',
     '$timeout',
+    '$http',
     function ($scope,
               $state,
               baseConfig,
@@ -58,7 +59,8 @@ angular.module('applicationModule')
               commonContactService,
               carpoolingCreateService,
               $rootScope,
-              $timeout
+              $timeout,
+              $http
     ) {
       //选择座位
       //默认四人座情况
@@ -80,6 +82,7 @@ angular.module('applicationModule')
       $scope.start="";
       $scope.end = "";
       $scope.fetchFlag = false;
+      $scope.nowTime = getNowTime();//时间选择器默认时间
       var emp_codes = [];
       var emp_index = [];
 
@@ -203,7 +206,7 @@ angular.module('applicationModule')
         }
       };
       function selectTimeAndroid() {
-        var date = new Date($scope.createInfo.departureTime).format('MM/dd/yyyy/hh/mm/ss');
+        var date = new Date($scope.nowTime ).format('MM/dd/yyyy/hh/mm/ss');
         $cordovaDatePicker.show({
           date: date,
           allowOldDates: true,
@@ -224,7 +227,7 @@ angular.module('applicationModule')
         });
       }
       function selectTimeIOS() {
-        var date = new Date($scope.createInfo.departureTime).format('yyyy/MM/dd hh:mm:ss');
+        var date = new Date($scope.nowTime ).format('yyyy/MM/dd hh:mm:ss');
         $cordovaDatePicker.show({
           date: new Date(),
           allowOldDates: true,
@@ -447,6 +450,7 @@ angular.module('applicationModule')
         document.getElementById("create-departure").value = destination;
         document.getElementById("create-destination").value = departure;
         exchangeStartEnd();
+        coordTrans();
       }
       function exchangeStartEnd(){
         $scope.start = [$scope.end,$scope.end=$scope.start][0];
@@ -482,7 +486,8 @@ angular.module('applicationModule')
         $scope.createInfo.carType = $scope.carTypes;//车类型
         $scope.createInfo.otherDesc = explain//其他说明
         $scope.createInfo.departurePreference = $scope.timePreference;//时间偏好选择，需要判断
-        $scope.createInfo.departureTime = $scope.departureTime;//出行时间
+        //$scope.createInfo.departureTime = $scope.departureTime;//出行时间
+        $scope.createInfo.departureTime = "2016-09-05 12:23:25";
         $scope.createInfo.empNoList = [];
         angular.forEach($scope.carpoolingJoin, function(data,index,array){  //加入座位列表
           if(data.empCode != ""){
@@ -495,6 +500,7 @@ angular.module('applicationModule')
         $scope.createInfo.lockSeats  =   $scope.lockSeatNumber;//锁定座位数
         $scope.createInfo.startAddr = $scope.start ;
         $scope.createInfo.targetAddr= $scope.end;
+        coordTrans($scope.startLng,$scope.startLat,$scope.endLng,$scope.endLat);//转换百度地图的经纬度上传
         $scope.createInfo.startLatitude = $scope.startLng+","+$scope.startLat;
         $scope.createInfo.endLatitude = $scope.endLng+","+$scope.endLat;
         if( ($scope.createInfo.startAddr != "") && ($scope.createInfo.endAddr != "") ){
@@ -523,11 +529,13 @@ angular.module('applicationModule')
           hmsPopup.showShortCenterToast("请输入出发点和终点");
         }
 
+
         var url = baseConfig.queryPath + "/share/info";
+
+
         if($scope.fetchFlag){
           hmsHttp.post(url, $scope.createInfo).success(function (result) {
             hmsPopup.hideLoading();
-            console.log("result success " + angular.toJson(result));
             if (result.status == "S") {
               hmsPopup.showShortCenterToast("发布成功");
               commonContactService.setGoContactFlg("");
@@ -540,13 +548,67 @@ angular.module('applicationModule')
             } else if (result.status == "E") {
               hmsPopup.showShortCenterToast("发布失败");
             } else if (result.status == "N") {
-              //hmsPopup.showShortCenterToast(result.message);
+              hmsPopup.showShortCenterToast("发布失败");
             }
           }).error(function (error, status) {
             hmsPopup.hideLoading();
             hmsPopup.showShortCenterToast("网络连接出错");
           });
         }
+      }
+
+
+
+
+
+      //经纬度转换
+      function coordTrans(depaLocLng,depaLocLat,destLocLng,destLoclat) {
+        url = "http://api.map.baidu.com/geoconv/v1/?coords=" + depaLocLng + "," + depaLocLat + ";" + destLocLng + "," + destLoclat+"&from=3&to=5&ak=i6Ft7l8flPNq7Ub6O2vmcuGx";
+        $http.get(url).success(function (response) {
+          var results = response.result;
+          console.debug(url);
+          console.debug(depaLocLng,depaLocLat,destLocLng,destLoclat);
+          $scope.startLng = results[0].x;
+          $scope.startLat = results[0].y;
+          $scope.endLng = results[1].x;
+          $scope.endLat = results[1].y;
+          console.debug($scope.startLng+","+$scope.startLat+","+$scope.endLng+","+$scope.endLat);
+        }).error(function (response, status) {
+        });
+      }
+
+
+
+      //当前时间
+      //获取当前时间
+      function getNowTime() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+          month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+          strDate = "0" + strDate;
+        }
+        var minutes = date.getMinutes();
+        if(minutes < 10){
+          minutes = "0"+minutes;
+        }
+        var hours = date.getHours();
+        if(hours<10){
+          hours = "0" + hours;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+          + " " + hours + seperator2 + minutes;
+        return currentdate;
+      }
+      //去除秒
+      function timeText(time){
+        var index = time.lastIndexOf(":");
+        return time.substring(0,index);
       }
     }
   ]);

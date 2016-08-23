@@ -15,6 +15,19 @@ angular.module('myApp')
             carpoolingHistoryDetailInfo:''
           }
         })
+        .state('tab.tab-application-carpooling-employee', {
+          url: '/tab-application-carpooling-employee',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/contact/detail/employee-detail.html',
+              controller: 'contactEmployeeDetailCtl'
+            }
+          },
+          params: {
+            'employeeNumber': ""
+          }
+        })
+
     }]);
 angular.module('applicationModule')
   .controller('HistoryDetailCtrl', [
@@ -64,6 +77,13 @@ angular.module('applicationModule')
         var p2 = new BMap.Point(ends[0],ends[1]);
         var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
         driving.search(p1, p2);
+      }
+
+      $scope.companionChat = function(index){
+        if( ($scope.cp_number[index].empName != "空位") && ($scope.cp_number[index].empName != "占位")){
+          var emp_code =  $scope.historyInfo.companies[index].empNo;
+          $state.go('tab.tab-application-carpooling-employee', {employeeNumber:emp_code});
+        }
       }
     }]);
 
