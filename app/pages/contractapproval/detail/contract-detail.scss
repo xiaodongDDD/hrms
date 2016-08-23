@@ -239,7 +239,18 @@
   top: 24px;
   left: 0;
   right: 0;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0);
+  z-index: 0;
+}
+
+.center-line{
+  position: absolute;
+  height: 2px;
+  top: 54px;
+  left: 0;
+  right: 0;
+  width: 100vh;
+  background: rgba(255,255,255,1);
   z-index: 0;
 }
 
@@ -540,6 +551,13 @@
 .contract-detail .trans-search.show{
   transform: translateY(0);
   -webkit-transform: translateY(0);
+}
+
+.contract-detail .trans-search .ios-header{
+  height: 20px;
+  width: 100%;
+  margin: 0;
+  background: #3366ab;
 }
 
 .contract-detail .trans-search .trans-header{
