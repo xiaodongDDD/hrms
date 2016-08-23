@@ -2,7 +2,7 @@
 滑动导航栏
 */
 
-.workflow {
+.contractflow {
   .transparent {
     opacity: 0;
   }
@@ -13,25 +13,37 @@
     height: 100%;
     width: 100%;
   }
+  .height-filling {
+    top: 0px;
+    bottom: 0px;
+  }
+  .hrms-color-blue {
+    color: #24559C;
+  }
+  .hrms-color-gray {
+    color: gray;
+  }
   .hrms-bg-blue {
     background: #24559C;
   }
   .contract-subheader {
-    background: white;
+    background: #D2D2D2;
     position: absolute;
-    overflow: hidden;
     width: 100%;
-    height: 40px;
+    height: 34px;
   }
   .contract-subheader-scroll {
-    height: 50px;
+    height: 34px;
     width: 100%;
+    background: white;
+    overflow: visible;
   }
   .contract-subheader-marker {
-    margin-top: 4px;
-    height: 4px;
+    margin-top: 6px;
+    height: 3px;
   }
   .contract-subheader-marker-selected {
+    animation: subheader-selected 0.5s;
     -webkit-animation: subheader-selected 0.5s;
   }
   @-webkit-keyframes subheader-selected {
@@ -43,17 +55,17 @@
       width: 100%;
     }
   }
-  .contract-subheader-marker-deselected {
-    width: 0%;
-    //-webkit-animation: subheader-deselected 0.5s;
-  }
-  @-webkit-keyframes subheader-deselected {
+  @keyframes subheader-selected {
     0% {
-      width: 100%;
-    }
-    100% {
       width: 0%;
       margin-left: 50%;
     }
+    100% {
+      width: 100%;
+    }
+  }
+  .contract-subheader-marker-deselected {
+    width: 0%;
+    //-webkit-animation: subheader-deselected 0.5s;
   }
 }

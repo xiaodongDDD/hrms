@@ -564,6 +564,11 @@ angular.module('applicationModule')
           console.log('contractListCtrl.$ionicView.afterEnter');
         }
 
+        if (ionic.Platform.isIOS()) {
+          document.getElementById('contractlist-div-subheader').style.top = '63px';
+          document.getElementById('contractlist-div-slidebox').style.top = '63px';
+        }
+
         //设置头部导航按钮宽度
         var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
         var subheadereWidth = 0;
