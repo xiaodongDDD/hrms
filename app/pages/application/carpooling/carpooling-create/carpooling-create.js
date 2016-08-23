@@ -486,8 +486,8 @@ angular.module('applicationModule')
         $scope.createInfo.carType = $scope.carTypes;//车类型
         $scope.createInfo.otherDesc = explain//其他说明
         $scope.createInfo.departurePreference = $scope.timePreference;//时间偏好选择，需要判断
-        //$scope.createInfo.departureTime = $scope.departureTime;//出行时间
-        $scope.createInfo.departureTime = "2016-09-05 12:23:25";
+        $scope.createInfo.departureTime = $scope.departureTime;//出行时间
+        //$scope.createInfo.departureTime = "2016-09-05 12:23:25";
         $scope.createInfo.empNoList = [];
         angular.forEach($scope.carpoolingJoin, function(data,index,array){  //加入座位列表
           if(data.empCode != ""){
