@@ -8,12 +8,12 @@
     <h1 class="title">合同管理</h1>
   </ion-header-bar>
 
-  <div id="contractlist-div-subheader" style="left:0px;top:43px;padding:0px;width:100%;height:34px;position:fixed;z-index:4;">
+  <div id="contractlist-div-subheader" class="div-subheader">
     <div id="contractSubheader" class="contract-subheader">
       <ion-scroll class="contract-subheader-scroll" delegate-handle="subheaderHandle" direction="x" scrollbar-x="false" has-bouncing="true" overflow-scroll="false">
         <div id='contractSubheaderScroll' class="row padding-zero" style="width:1000px; overflow:hidden;">
           <div class="contractSubheaderMarker" ng-click="clickSubheader(i)" ng-repeat="i in subheaderTitleKey" style="padding:6px; padding-bottom:0px;">
-            <label ng-bind="subheaderTitleValue[i]" ng-class="{true:'hrms-color-blue',false:'hrms-color-gray'}[subheaderSelectFlag[i]]"></label>
+            <label ng-bind="subheaderTitleValue[i]" ng-class="{true:'hrms-color-blue',false:'hrms-color-gray'}[subheaderSelectFlag[i]]" style="white-space: nowrap;"></label>
             <div ng-class="{true:'contract-subheader-marker-selected hrms-bg-blue',
                             false:'contract-subheader-marker-deselected hrms-bg-blue'}
                             [subheaderSelectFlag[i]]" class="contract-subheader-marker">
@@ -23,13 +23,13 @@
       </ion-scroll>
     </div>
   </div>
-  <div id="contractlist-div-slidebox" style="left:0px;top:43px;bottom:50px;padding:0px;width:100%;position:fixed;">
+  <div id="contractlist-div-slidebox" class="div-slide">
     <ion-slide-box on-slide-changed="changeSlide($index)" show-pager="false" style="width:100%;height:100%;">
       <ion-slide ng-repeat="k in subheaderTitleKey">
         <ion-content style="top:34px; bottom:0px;">
           <!--<ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
           </ion-refresher>-->
-          <div class="hms-hide-content" ng-if="fetchDataFlag">
+          <div class="hms-hide-content" ng-if="fetchDataFlag && subheaderSelectFlag[k]">
             <hms-loading></hms-loading>
           </div>
           <ion-list ng-if="k == type">

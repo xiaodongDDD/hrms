@@ -42,9 +42,12 @@ angular.module('applicationModule')
       $scope.list = [];
       $scope.listBackup = []; //备份列表数据，在筛选时使用。
       var cashList = [];
+      $scope.isIos = false;
+      $scope.hasBouncing = 'false';
       $scope.fetchDataFlag = true;
       $scope.pullRefreshDataFlag = false;
       $scope.showDetailArrow = true;
+      var slideToChangePage = true;
       $scope.listStatus = {
         todo: {
           selected: true
@@ -138,45 +141,48 @@ angular.module('applicationModule')
       }
 
       $scope.clickSubheader = function(title) {
-          initLists();
-          for (i in $scope.subheaderSelectFlag) {
-            $scope.subheaderSelectFlag[i] = false;
-          }
-          $scope.subheaderSelectFlag[title] = true;
-
-          var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
-          for (var i = 0; i < $scope.subheaderTitleKey.length; i++) {
-            if ($scope.subheaderTitleKey[i] == title) {
-              var scroll = subheaderTitles[i].offsetLeft - document.getElementById('contractSubheader').clientWidth / 2 + subheaderTitles[i].clientWidth / 2;
-              $ionicScrollDelegate.$getByHandle('subheaderHandle').scrollTo(scroll, 0, true);
-
-              $ionicSlideBoxDelegate.slide(i);
-            }
-          }
-
-          $scope.list = [];
-          $scope.listBackup = []; //备份列表数据，在筛选时使用。
-          $scope.fetchDataFlag = true;
-          $scope.pullRefreshDataFlag = false;
-          $scope.showDetailArrow = true;
-          $scope.listStatus = {
-            todo: {
-              selected: true
-            }
-          };
-          $scope.pageNumLimit = 10;
-          $scope.loadMoreDataFlag = false;
-          $scope.pageNum = 0;
-          var filterOption = {
-            "currentSelectType": "ALL",
-            "currentSubmitterFilter": "",
-            "submitterFilter": [],
-          };
-          $scope.type = title;
-
-          getTodoList(false);
+        console.log('clickSubheader');
+        slideToChangePage = false;
+        initLists();
+        for (i in $scope.subheaderSelectFlag) {
+          $scope.subheaderSelectFlag[i] = false;
         }
-        //刚进入页面时调用
+        $scope.subheaderSelectFlag[title] = true;
+
+        var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
+        for (var i = 0; i < $scope.subheaderTitleKey.length; i++) {
+          if ($scope.subheaderTitleKey[i] == title) {
+            var scroll = subheaderTitles[i].offsetLeft - document.getElementById('contractSubheader').clientWidth / 2 + subheaderTitles[i].clientWidth / 2;
+            $ionicScrollDelegate.$getByHandle('subheaderHandle').scrollTo(scroll, 0, true);
+
+            $ionicSlideBoxDelegate.slide(i);
+          }
+        }
+
+        $scope.list = [];
+        $scope.listBackup = []; //备份列表数据，在筛选时使用。
+        $scope.fetchDataFlag = true;
+        $scope.pullRefreshDataFlag = false;
+        $scope.showDetailArrow = true;
+        $scope.listStatus = {
+          todo: {
+            selected: true
+          }
+        };
+        $scope.pageNumLimit = 10;
+        $scope.loadMoreDataFlag = false;
+        $scope.pageNum = 0;
+        var filterOption = {
+          "currentSelectType": "ALL",
+          "currentSubmitterFilter": "",
+          "submitterFilter": [],
+        };
+        $scope.type = title;
+
+        getTodoList(false);
+      }
+
+      //刚进入页面时调用
       var refreshTodoList = function() {
         $scope.fetchDataFlag = true;
         $scope.pullRefreshDataFlag = false;
@@ -234,14 +240,13 @@ angular.module('applicationModule')
           $scope.lists[$scope.type] = $scope.list;
           if ($scope.list.length > $scope.pageNumLimit * $scope.pageNum) {
             $scope.loadMoreDataFlag = true;
-            $scope.setLoadMoreDataFlags[$scope.type];
-            console.log('processTodoList $scope.loadMoreDataFlag = true;');
+            $scope.setLoadMoreDataFlags($scope.type);
           }
           dataFilterUtil().query();
           $scope.fetchTodoList(true);
           showList();
         } else {
-          hmsPopup.showShortCenterToast('获取合同列表失败,请退出页面重试获取或联系管理员!');
+          //hmsPopup.showShortCenterToast('获取合同列表失败,请退出页面重试获取或联系管理员!');
           showList();
         }
       };
@@ -271,14 +276,15 @@ angular.module('applicationModule')
             $scope.$broadcast('scroll.refreshComplete');
           }
           processTodoList(result);
-          console.log('todo var success = function(result) {');
         };
         var error = function(result) {
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-          showList();
+          $timeout(function() {
+            if (pullRefresh) {
+              $scope.pullRefreshDataFlag = false;
+              $scope.$broadcast('scroll.refreshComplete');
+            }
+            showList();
+          }, 1000);
         };
 
         var filterCondition = dataFilterUtil().fetchFilterCondition();
@@ -307,7 +313,6 @@ angular.module('applicationModule')
           $scope.lists[$scope.type] = $scope.list;
           if (filterOption.currentSelectType == 'PERSON' && filterOption.currentSubmitterFilter != '全部' && filterOption.currentSubmitterFilter != '_default') {
             for (var i = $scope.list.length - 1; i >= 0; i--) {
-              console.log($scope.list[i].nodeValue + ' vs ' + dataFilterUtil().fetchFilterCondition().itemDesc);
               if ($scope.list[i].nodeValue != dataFilterUtil().fetchFilterCondition().itemDesc) {
                 $scope.list.splice(i, 1);
               }
@@ -320,8 +325,7 @@ angular.module('applicationModule')
         }
         if ($scope.list.length > $scope.pageNumLimit * $scope.pageNum) {
           $scope.loadMoreDataFlag = true;
-          $scope.setLoadMoreDataFlags[$scope.type];
-          console.log('processTodoList $scope.loadMoreDataFlag = true;');
+          $scope.setLoadMoreDataFlags($scope.type);
         }
 
         var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
@@ -342,11 +346,9 @@ angular.module('applicationModule')
       // 下拉加载更多数据，这里只是变了限数，
       var loadMoreFetchTodoList = function() {
         var success = function(result) {
-          console.log('var loadMoreFetchTodoList = function() {');
           if ($scope.list.length < $scope.pageNumLimit * $scope.pageNum) {
             $scope.loadMoreDataFlag = false;
             $scope.setLoadMoreDataFlags();
-            console.log('$scope.loadMoreDataFlag = false;');
           }
           $scope.$broadcast('scroll.infiniteScrollComplete');
         };
@@ -356,10 +358,7 @@ angular.module('applicationModule')
       };
 
       $scope.loadMoreData = function() {
-        console.log('$scope.loadMoreData = function() {');
         if ($scope.loadMoreDataFlag) {
-          console.log('has load flag');
-          console.log('can log');
           $scope.pageNum = $scope.pageNum + 1;
           loadMoreFetchTodoList();
         }
@@ -409,7 +408,6 @@ angular.module('applicationModule')
           }
 
           if ($scope.listStatus.todo.selected) {
-            console.log('$scope.dataFilterHandle = { $scope.fetchTodoList(true);');
             $scope.fetchTodoList(true);
           } else {
             $scope.fetchDoneList(true);
@@ -425,7 +423,6 @@ angular.module('applicationModule')
           });
           type.selected = true;
           $scope.filterItemList = [];
-          console.log($ionicScrollDelegate.$getByHandle('hmsFilterCondition'));
           $ionicScrollDelegate.$getByHandle('hmsFilterCondition').scrollTop();
 
 
@@ -523,14 +520,10 @@ angular.module('applicationModule')
               if (baseConfig.debug) {
                 console.log('self.filterOption.submitterFilter ' + angular.toJson(filterOption.submitterFilter));
               }
-
-              //$scope.$apply();
             }
           };
           var error = function(response) {};
           var processedFlag = 'N';
-          console.log('ready to function success()');
-          console.log($scope.filterPersonList);
           success($scope.filterPersonList);
         };
         return self;
@@ -550,6 +543,13 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.beforeEnter');
         }
+        if (ionic.Platform.isIOS()) {
+          $scope.isIos = true;
+          $scope.shouldDisableBouncing = true;
+          $scope.hasBouncing = 'true';
+          document.getElementById('contractlist-div-subheader').style.top = '63px';
+          document.getElementById('contractlist-div-slidebox').style.top = '63px';
+        }
         if (contractListService.getRefreshWorkflowList().flag == true) {
           contractListService.setRefreshWorkflowList(false);
           if (baseConfig.debug) {
@@ -562,11 +562,6 @@ angular.module('applicationModule')
       $scope.$on('$ionicView.afterEnter', function() {
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.afterEnter');
-        }
-
-        if (ionic.Platform.isIOS()) {
-          document.getElementById('contractlist-div-subheader').style.top = '63px';
-          document.getElementById('contractlist-div-slidebox').style.top = '63px';
         }
 
         //设置头部导航按钮宽度
@@ -591,11 +586,14 @@ angular.module('applicationModule')
       });
 
       $scope.changeSlide = function(index) {
-        $scope.clickSubheader($scope.subheaderTitleKey[index]);
+        console.log('changeSlide');
+        if (slideToChangePage) {
+          $scope.clickSubheader($scope.subheaderTitleKey[index]);
+        }
+        slideToChangePage = true;
       }
 
       $scope.enterWorkflowDetail = function(detail) {
-        console.log(detail.originData);
         $state.go('tab.contractDetail', { data: detail.originData })
       }
 
@@ -612,6 +610,10 @@ angular.module('applicationModule')
       flag: false
     };
 
+    var checkUserFlag = {
+      flag: false
+    }
+
     this.setRefreshWorkflowList = function(flag) {
       refreshWorkflowList.flag = flag;
     };
@@ -620,26 +622,10 @@ angular.module('applicationModule')
       return refreshWorkflowList;
     };
 
-    //修改这个变量以改变调用地址
-    var selectedUrl = 'baseUrlOuter';
-
-    var urls = {
-      //url
-      //内网地址
-      baseUrlInner: 'http://172.20.0.206:8080/webportal/urlInterface/mobile/handcontract_mobile',
-      //外网地址
-      baseUrlOuter: 'http://edb.hand-china.com:8080/webportal/urlInterface/mobile/handcontract_mobile',
-
-      //透传
-      //测试地址
-      baseUrlTest: 'http://wechat.hand-china.com/hrmsv2/v2/api/handcontract',
-      //中台url
-      baseUrlZhongtai: 'http://mobile-app.hand-china.com/hrmsv2/v2/api/handcontract'
-    };
-
-    // check、 getTodoCount、 getTodoList如果urls[selectedUrl]取不到值则取baseUrlInner
     this.check = function(success) {
-      console.log('check user');
+      if (baseConfig.debug) {
+        console.log('check user');
+      }
       var url = '';
       var params = {};
 
@@ -652,187 +638,87 @@ angular.module('applicationModule')
 
       hmsHttp.post(url, params).success(function(result) {
         console.log('check user success');
-        success(result);
-      }).error(function(response, status) {
-        console.log('check user error');
-        //hmsPopup.showPopup(response);
-        console.log(response);
-      });
-
-      // if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
-      //   console.log('check user with baseUrlTest or baseUrlZhongtai');
-      //   url = urls[selectedUrl];
-
-      //   params = {
-      //     userId: window.localStorage.empno,
-      //     method: 'checkUser'
-      //   };
-
-      //   hmsHttp.post(url, params).success(function(result) {
-      //     console.log('check user success');
-      //     success(result);
-      //   }).error(function(response, status) {
-      //     console.log('check user error');
-      //     //hmsPopup.showPopup(response);
-      //     console.log(response);
-      //   });
-      // } else {
-      //   if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
-      //     console.log('check user with baseUrlInner or baseUrlOuter');
-      //     url = urls[selectedUrl] + '/' + window.localStorage.empno + '/checkUser';
-
-      //     params = {
-      //       userId: window.localStorage.empno
-      //     };
-      //   } else {
-      //     url = urls.baseUrlInner + '/' + window.localStorage.empno + '/checkUser';
-
-      //     params = {
-      //       userId: window.localStorage.empno
-      //     };
-      //   }
-
-      //   hmsHttp.get(url, params).success(function(result) {
-      //     console.log('check user success');
-      //     success(result);
-      //   }).error(function(response, status) {
-      //     console.log('check user error');
-      //     //hmsPopup.showPopup(response);
-      //     console.log(response);
-      //   });
-
-      console.log('调用地址：' + url);
-      console.log('调用参数：');
-      console.log(params);
-    }
-
-    this.getTodoList = function(flag, user, type, page, success, error) {
-      var url = '';
-      var params = {};
-      var user = (user) ? user : window.localStorage.empno;
-      var type = (type) ? type : 'myStart_undo';
-
-      url = baseConfig.queryPath + '/handcontract';
-
-      params = {
-        userId: window.localStorage.empno,
-        method: 'processes',
-        type: type
-      };
-      hmsHttp.post(url, params).success(function(result) {
-        if (result.result == 'E') {
-          result.unprocessedWorkflowList = [];
+        if (result.result == 'S') {
+          checkUserFlag.flag = true;
         } else {
-          result.status = result.result;
-          result.unprocessedWorkflowList = result.procList.detail;
+          checkUserFlag.flag = false;
         }
         success(result);
       }).error(function(response, status) {
-        //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-        error(response);
+        if (baseConfig.debug) {
+          console.log('check user error');
+          console.log(response);
+        }
       });
+      if (baseConfig.debug) {
+        console.log('调用地址：' + url);
+        console.log('调用参数：');
+        console.log(params);
+      }
+    }
 
-      // if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
-      //   console.log('get todoList with baseUrlTest or baseUrlZhongtai');
-      //   url = urls[selectedUrl];
+    this.getCheckFlag = function() {
+      return checkUserFlag.flag;
+    }
 
-      //   params = {
-      //     userId: window.localStorage.empno,
-      //     method: 'processes',
-      //     type: type
-      //   }
+    this.getTodoList = function(flag, user, type, page, success, error) {
+      if (this.getCheckFlag()) {
+        var url = '';
+        var params = {};
+        var user = (user) ? user : window.localStorage.empno;
+        var type = (type) ? type : 'myStart_undo';
 
-      //   hmsHttp.post(url, params).success(function(result) {
-      //     result.status = result.result;
-      //     result.unprocessedWorkflowList = result.procList.detail;
-      //     success(result);
-      //   }).error(function(response, status) {
-      //     //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-      //     error(response);
-      //   });
-      // } else {
-      //   if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
-      //     console.log('get todoList with baseUrlInner or baseUrlOuter');
-      //     url = urls[selectedUrl] + '/' + user + '/processes/' + type;
+        url = baseConfig.queryPath + '/handcontract';
 
-      //     params = {
-      //       type: type,
-      //     };
-      //   } else {
-      //     url = urls.baseUrlInner + '/' + user + '/processes/' + type;
-
-      //     params = {
-      //       type: type,
-      //     };
-      //   }
-
-      //   hmsHttp.get(url, params).success(function(result) {
-      //     result.status = result.result;
-      //     result.unprocessedWorkflowList = result.procList.detail;
-      //     success(result);
-      //   }).error(function(response, status) {
-      //     //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-      //     error(response);
-      //   });
-      //  }
-
-      console.log('调用地址：' + url);
-      console.log('调用参数：');
-      console.log(params);
+        params = {
+          userId: window.localStorage.empno,
+          method: 'processes',
+          type: type
+        };
+        console.log('post: getTodoList');
+        hmsHttp.post(url, params).success(function(result) {
+          if (result.result == 'E') {
+            result.unprocessedWorkflowList = [];
+          } else {
+            result.status = result.result;
+            result.unprocessedWorkflowList = result.procList.detail;
+          }
+          success(result);
+        }).error(function(response, status) {
+          console.log('post: getTodoList error');
+        });
+        if (baseConfig.debug) {
+          console.log('调用地址：' + url);
+          console.log('调用参数：');
+          console.log(params);
+        }
+      } else {
+        console.log('不应该被调用getTodoList()');
+        error();
+      }
     };
 
     this.getTodoCount = function(success) {
-      var user = (user) ? user : window.localStorage.empno;
-      var url = ''
-      var params = {};
+      if (this.getCheckFlag()) {
+        var user = (user) ? user : window.localStorage.empno;
+        var url = ''
+        var params = {};
 
-      url = baseConfig.queryPath + '/handcontract';
+        url = baseConfig.queryPath + '/handcontract';
 
-      params = {
-        userId: window.localStorage.empno,
-        method: 'getMyToDoSize'
+        params = {
+          userId: window.localStorage.empno,
+          method: 'getMyToDoSize'
+        }
+        console.log('post: getTodoCount');
+        hmsHttp.post(url, params).success(function(result) {
+          success(result);
+        }).error(function(response, status) {
+          console.log('post: getTodoCount error');
+        });
+      } else {
+        console.log('不应该被调用getTodoCount()');
       }
-
-      hmsHttp.post(url, params).success(function(result) {
-        success(result);
-      }).error(function(response, status) {
-        error(response);
-      });
-
-      // if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
-      //   console.log('get todoCount with baseUrlTest or baseUrlZhongtai');
-      //   url = urls[selectedUrl];
-
-      //   params = {
-      //     userId: window.localStorage.empno,
-      //     method: 'getMyToDoSize'
-      //   }
-      //   console.log('调用地址：' + url);
-      //   console.log('调用参数：');
-      //   console.log(params)
-
-      //   hmsHttp.post(url, params).success(function(result) {
-      //     success(result);
-      //   }).error(function(response, status) {
-      //     error(response);
-      //   });
-      // } else {
-      //   if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
-      //     console.log('get todoCount with baseUrlInner or baseUrlOuter');
-      //     url = urls[selectedUrl] + '/' + user + '/getMyToDoSize';
-      //   } else {
-      //     url = urls.baseUrlInner + '/' + user + '/getMyToDoSize';
-      //   }
-      //   console.log('调用地址：' + url);
-      //   console.log('没有传参数');
-
-      //   hmsHttp.get(url).success(function(result) {
-      //     success(result);
-      //   }).error(function(response, status) {
-      //     error(response);
-      //   });
-      // }
-
     };
   }
 ]);

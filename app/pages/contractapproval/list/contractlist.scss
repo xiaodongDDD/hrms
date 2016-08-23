@@ -26,6 +26,23 @@
   .hrms-bg-blue {
     background: #24559C;
   }
+  .div-slide {
+    left: 0px;
+    top: 43px;
+    bottom: 50px;
+    padding: 0px;
+    width: 100%;
+    position: fixed;
+  }
+  .div-subheader {
+    left: 0px;
+    top: 43px;
+    padding: 0px;
+    width: 100%;
+    height: 34px;
+    position: fixed;
+    z-index: 4;
+  }
   .contract-subheader {
     background: #D2D2D2;
     position: absolute;
