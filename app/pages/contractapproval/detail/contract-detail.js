@@ -39,6 +39,7 @@ angular.module('applicationModule')
       $scope.essenceData.message = "没有数据";
       $scope.contractId = '';
       $scope.showHint = false;
+      $scope.showIosHeader = ionic.Platform.isIOS();
 
       //合同要素数据成功返回后
       var essenceSuccess = function(responce) {
@@ -113,19 +114,9 @@ angular.module('applicationModule')
         $scope.noNextDataFlag = ($scope.nowContractInfoNum == $scope.data.contractInfo.lines[0].line.length - 1);
       };
 
-      //上方历史记录拖动事件
-      $scope.x = 0;
-      $scope.onDrag = function($event) {
-        var contractStages = document.getElementsByClassName("contract-stages")[0];
-        if ($scope.x + $event.gesture.deltaX >= 0 || $scope.x + $event.gesture.deltaX <= -contractStages.scrollWidth + contractStages.clientWidth)
-          return 0;
-        contractStages.setAttribute("style", "transform:translateX(" + ($scope.x + $event.gesture.deltaX) + "px);" +
-          "-webkit-transform:translateX(" + ($scope.x + $event.gesture.deltaX) + "px)");
-      };
-
-      //上方历史记录释放事件
-      $scope.onRelease = function($event) {
-        $scope.x += $event.gesture.deltaX;
+      $scope.workflowDetailScroll = {
+        "width": document.body.clientWidth,
+        "height": 137
       };
 
       $scope.showProc = false;

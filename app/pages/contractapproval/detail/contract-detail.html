@@ -35,28 +35,49 @@
       </div>
     </div>
 
+
     <div class="stages-container">
 
       <div class="left-arrow">
         <i class="icon ion-chevron-right"></i>
       </div>
 
-      <div class="contract-stages" on-drag="onDrag($event)" on-release="onRelease($event)">
+      <div class="center-line"></div>
 
-        <div class="stages-left">
-          <div class="left-line"></div>
-        </div>
+      <ion-scroll direction="x" scrollbar-x="false" scrollbar-y="false" ng-style="workflowDetailScroll">
+        <div class="contract-stages">
 
-        <div class="stages-item" ng-repeat="stagesItem in data.historyData">
-          <div class="stages-time">{{stagesItem.receiveDate}}<br>{{stagesItem.receiveTime}}</div>
-          <div class="stages-main">
-            <div class="stages-line"></div>
-            <span class="stages-point" ng-click="showDescDiv(stagesItem)"><i class="icon ion-android-more-vertical"></i></span>
+          <div class="stages-left">
+            <div class="left-line"></div>
           </div>
-          <div class="stages-content">{{stagesItem.event}}<br>{{stagesItem.actor}}</div>
-        </div>
 
-      </div>
+          <div class="stages-item" ng-repeat="stagesItem in data.historyData">
+            <div class="stages-time">{{stagesItem.receiveDate}}<br>{{stagesItem.receiveTime}}</div>
+            <div class="stages-main">
+              <div class="stages-line"></div>
+              <span class="stages-point" ng-click="showDescDiv(stagesItem)"><i class="icon ion-android-more-vertical"></i></span>
+            </div>
+            <div class="stages-content">{{stagesItem.event}}<br>{{stagesItem.actor}}</div>
+          </div>
+          <div class="stages-item" ng-repeat="stagesItem in data.historyData">
+            <div class="stages-time">{{stagesItem.receiveDate}}<br>{{stagesItem.receiveTime}}</div>
+            <div class="stages-main">
+              <div class="stages-line"></div>
+              <span class="stages-point" ng-click="showDescDiv(stagesItem)"><i class="icon ion-android-more-vertical"></i></span>
+            </div>
+            <div class="stages-content">{{stagesItem.event}}<br>{{stagesItem.actor}}</div>
+          </div>
+          <div class="stages-item" ng-repeat="stagesItem in data.historyData">
+            <div class="stages-time">{{stagesItem.receiveDate}}<br>{{stagesItem.receiveTime}}</div>
+            <div class="stages-main">
+              <div class="stages-line"></div>
+              <span class="stages-point" ng-click="showDescDiv(stagesItem)"><i class="icon ion-android-more-vertical"></i></span>
+            </div>
+            <div class="stages-content">{{stagesItem.event}}<br>{{stagesItem.actor}}</div>
+          </div>
+
+        </div>
+      </ion-scroll>
 
     </div>
 
@@ -108,6 +129,7 @@
   </ion-content>
 
   <div class="trans-search" ng-show="showTransFlag" ng-class="{true:'show'}[showTransFlag]">
+    <div class="ios-header" ng-if="showIosHeader"></div>
     <div class="trans-header">
       <input class="search-input" type="text" placeholder="搜索" ng-model="searchKey" ng-change="shiftTranspond()" /><i class="iconn ion-android-search"></i>
       <button class="search-button" ng-click="showTransDiv()">取消</button>
