@@ -103,7 +103,7 @@
       </div>
     </div>
 
-    <button class="operate-button" ng-click="showOperate()">操作</button>
+    <button class="operate-button" ng-click="showOperate()" ng-show="showOperateButton">操作</button>
 
   </ion-content>
 
@@ -144,7 +144,7 @@
   </div>
 
   <div class="desc-div" ng-show="showEssence" ng-class="{true:'show'}[showEssence]">
-    <div class="desc-title">处理意见</div>
+    <div class="desc-title">合同要素</div>
     <div class="desc-item" ng-repeat="item in essenceData.essences">
       <div class="desc-key">{{item.eName}}</div>
       <div class="desc-value">{{item.eValue}}</div>

@@ -73,6 +73,9 @@ angular.module('applicationModule')
         $scope.contractId = $scope.nowContractInfo[8].line_value;
         if ($scope.data.contractInfo.lines[0].line.length < 2)
           $scope.noNextDataFlag = true;
+        $scope.showOperateButton = true;
+        if($scope.data.approvalAction.length == 0)
+          $scope.showOperateButton = false;
         contractDetailService.getEssence(essenceSuccess, $scope.contractId);
       };
 
@@ -116,7 +119,8 @@ angular.module('applicationModule')
         var contractStages = document.getElementsByClassName("contract-stages")[0];
         if ($scope.x + $event.gesture.deltaX >= 0 || $scope.x + $event.gesture.deltaX <= -contractStages.scrollWidth + contractStages.clientWidth)
           return 0;
-        contractStages.setAttribute("style", "transform:translateX(" + ($scope.x + $event.gesture.deltaX) + "px);");
+        contractStages.setAttribute("style", "transform:translateX(" + ($scope.x + $event.gesture.deltaX) + "px);" +
+          "-webkit-transform:translateX(" + ($scope.x + $event.gesture.deltaX) + "px)");
       };
 
       //上方历史记录释放事件
