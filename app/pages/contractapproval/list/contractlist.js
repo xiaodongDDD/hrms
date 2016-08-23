@@ -101,22 +101,14 @@ angular.module('applicationModule')
       initLists();
 
       $scope.fadeStyle = function(index) { //循序出现，循序fadein
-        if ($scope.pageNum > 1) { //如果是上拉加载出来的，只要新加载项循序出现，旧项不作处理
-          if (index >= $scope.pageNumLimit * ($scope.pageNum - 1)) {
-            return {
-              '-webkit-animation': 'fadeIn 0.5s forwards',
-              '-webkit-animation-delay': (index - $scope.pageNumLimit * ($scope.pageNum - 1) - 1) * 90 + 'ms',
-              '-webkit-animation-duration': '0'
-            }
-          } else {
-            return {
-              'opacity': 1
-            }
+        if ($scope.pageNum > 1) { //如果是上拉加载出来的
+          return {
+            'opacity': 1
           }
         } else {
           return {
             '-webkit-animation': 'fadeIn 0.5s forwards',
-            '-webkit-animation-delay': index * 90 + 'ms',
+            '-webkit-animation-delay': (index + 1) * 90 + 'ms',
             '-webkit-animation-duration': '0'
           }
         }
@@ -206,6 +198,7 @@ angular.module('applicationModule')
               }
             }
             $ionicScrollDelegate.scrollTo(scroll, 0, false);
+            $scope.$apply();
           }, 100
         );
       };
@@ -248,7 +241,7 @@ angular.module('applicationModule')
           $scope.fetchTodoList(true);
           showList();
         } else {
-          hmsPopup.showShortCenterToast('获取审批列表失败,请退出页面重试获取或联系管理员!');
+          hmsPopup.showShortCenterToast('获取合同列表失败,请退出页面重试获取或联系管理员!');
           showList();
         }
       };
@@ -571,6 +564,11 @@ angular.module('applicationModule')
           console.log('contractListCtrl.$ionicView.afterEnter');
         }
 
+        if (ionic.Platform.isIOS()) {
+          document.getElementById('contractlist-div-subheader').style.top = '63px';
+          document.getElementById('contractlist-div-slidebox').style.top = '63px';
+        }
+
         //设置头部导航按钮宽度
         var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
         var subheadereWidth = 0;
@@ -623,7 +621,7 @@ angular.module('applicationModule')
     };
 
     //修改这个变量以改变调用地址
-    var selectedUrl = 'baseUrlTest';
+    var selectedUrl = 'baseUrlOuter';
 
     var urls = {
       //url
@@ -645,48 +643,63 @@ angular.module('applicationModule')
       var url = '';
       var params = {};
 
-      if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
-        console.log('check user with baseUrlTest or baseUrlZhongtai');
-        url = urls[selectedUrl];
+      url = baseConfig.queryPath + '/handcontract';
 
-        params = {
-          userId: window.localStorage.empno,
-          method: 'checkUser'
-        };
+      params = {
+        userId: window.localStorage.empno,
+        method: 'checkUser'
+      };
 
-        hmsHttp.post(url, params).success(function(result) {
-          console.log('check user success');
-          success(result);
-        }).error(function(response, status) {
-          console.log('check user error');
-          //hmsPopup.showPopup(response);
-          console.log(response);
-        });
-      } else {
-        if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
-          console.log('check user with baseUrlInner or baseUrlOuter');
-          url = urls[selectedUrl] + '/' + window.localStorage.empno + '/checkUser';
+      hmsHttp.post(url, params).success(function(result) {
+        console.log('check user success');
+        success(result);
+      }).error(function(response, status) {
+        console.log('check user error');
+        //hmsPopup.showPopup(response);
+        console.log(response);
+      });
 
-          params = {
-            userId: window.localStorage.empno
-          };
-        } else {
-          url = urls.baseUrlInner + '/' + window.localStorage.empno + '/checkUser';
+      // if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
+      //   console.log('check user with baseUrlTest or baseUrlZhongtai');
+      //   url = urls[selectedUrl];
 
-          params = {
-            userId: window.localStorage.empno
-          };
-        }
+      //   params = {
+      //     userId: window.localStorage.empno,
+      //     method: 'checkUser'
+      //   };
 
-        hmsHttp.get(url, params).success(function(result) {
-          console.log('check user success');
-          success(result);
-        }).error(function(response, status) {
-          console.log('check user error');
-          //hmsPopup.showPopup(response);
-          console.log(response);
-        });
-      }
+      //   hmsHttp.post(url, params).success(function(result) {
+      //     console.log('check user success');
+      //     success(result);
+      //   }).error(function(response, status) {
+      //     console.log('check user error');
+      //     //hmsPopup.showPopup(response);
+      //     console.log(response);
+      //   });
+      // } else {
+      //   if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
+      //     console.log('check user with baseUrlInner or baseUrlOuter');
+      //     url = urls[selectedUrl] + '/' + window.localStorage.empno + '/checkUser';
+
+      //     params = {
+      //       userId: window.localStorage.empno
+      //     };
+      //   } else {
+      //     url = urls.baseUrlInner + '/' + window.localStorage.empno + '/checkUser';
+
+      //     params = {
+      //       userId: window.localStorage.empno
+      //     };
+      //   }
+
+      //   hmsHttp.get(url, params).success(function(result) {
+      //     console.log('check user success');
+      //     success(result);
+      //   }).error(function(response, status) {
+      //     console.log('check user error');
+      //     //hmsPopup.showPopup(response);
+      //     console.log(response);
+      //   });
 
       console.log('调用地址：' + url);
       console.log('调用参数：');
@@ -699,49 +712,69 @@ angular.module('applicationModule')
       var user = (user) ? user : window.localStorage.empno;
       var type = (type) ? type : 'myStart_undo';
 
-      if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
-        console.log('get todoList with baseUrlTest or baseUrlZhongtai');
-        url = urls[selectedUrl];
+      url = baseConfig.queryPath + '/handcontract';
 
-        params = {
-          userId: window.localStorage.empno,
-          method: 'processes',
-          type: type
-        }
-
-        hmsHttp.post(url, params).success(function(result) {
-          result.status = result.result;
-          result.unprocessedWorkflowList = result.procList.detail;
-          success(result);
-        }).error(function(response, status) {
-          //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-          error(response);
-        });
-      } else {
-        if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
-          console.log('get todoList with baseUrlInner or baseUrlOuter');
-          url = urls[selectedUrl] + '/' + user + '/processes/' + type;
-
-          params = {
-            type: type,
-          };
+      params = {
+        userId: window.localStorage.empno,
+        method: 'processes',
+        type: type
+      };
+      hmsHttp.post(url, params).success(function(result) {
+        if (result.result == 'E') {
+          result.unprocessedWorkflowList = [];
         } else {
-          url = urls.baseUrlInner + '/' + user + '/processes/' + type;
-
-          params = {
-            type: type,
-          };
-        }
-
-        hmsHttp.get(url, params).success(function(result) {
           result.status = result.result;
           result.unprocessedWorkflowList = result.procList.detail;
-          success(result);
-        }).error(function(response, status) {
-          //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
-          error(response);
-        });
-      }
+        }
+        success(result);
+      }).error(function(response, status) {
+        //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+        error(response);
+      });
+
+      // if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
+      //   console.log('get todoList with baseUrlTest or baseUrlZhongtai');
+      //   url = urls[selectedUrl];
+
+      //   params = {
+      //     userId: window.localStorage.empno,
+      //     method: 'processes',
+      //     type: type
+      //   }
+
+      //   hmsHttp.post(url, params).success(function(result) {
+      //     result.status = result.result;
+      //     result.unprocessedWorkflowList = result.procList.detail;
+      //     success(result);
+      //   }).error(function(response, status) {
+      //     //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+      //     error(response);
+      //   });
+      // } else {
+      //   if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
+      //     console.log('get todoList with baseUrlInner or baseUrlOuter');
+      //     url = urls[selectedUrl] + '/' + user + '/processes/' + type;
+
+      //     params = {
+      //       type: type,
+      //     };
+      //   } else {
+      //     url = urls.baseUrlInner + '/' + user + '/processes/' + type;
+
+      //     params = {
+      //       type: type,
+      //     };
+      //   }
+
+      //   hmsHttp.get(url, params).success(function(result) {
+      //     result.status = result.result;
+      //     result.unprocessedWorkflowList = result.procList.detail;
+      //     success(result);
+      //   }).error(function(response, status) {
+      //     //hmsPopup.showPopup('获取代办事项出错,可能是网络问题!');
+      //     error(response);
+      //   });
+      //  }
 
       console.log('调用地址：' + url);
       console.log('调用参数：');
@@ -753,39 +786,52 @@ angular.module('applicationModule')
       var url = ''
       var params = {};
 
-      if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
-        console.log('get todoCount with baseUrlTest or baseUrlZhongtai');
-        url = urls[selectedUrl];
+      url = baseConfig.queryPath + '/handcontract';
 
-        params = {
-          userId: window.localStorage.empno,
-          method: 'getMyToDoSize'
-        }
-        console.log('调用地址：' + url);
-        console.log('调用参数：');
-        console.log(params)
-
-        hmsHttp.post(url, params).success(function(result) {
-          success(result);
-        }).error(function(response, status) {
-          error(response);
-        });
-      } else {
-        if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
-          console.log('get todoCount with baseUrlInner or baseUrlOuter');
-          url = urls[selectedUrl] + '/' + user + '/getMyToDoSize';
-        } else {
-          url = urls.baseUrlInner + '/' + user + '/getMyToDoSize';
-        }
-        console.log('调用地址：' + url);
-        console.log('没有传参数');
-
-        hmsHttp.get(url).success(function(result) {
-          success(result);
-        }).error(function(response, status) {
-          error(response);
-        });
+      params = {
+        userId: window.localStorage.empno,
+        method: 'getMyToDoSize'
       }
+
+      hmsHttp.post(url, params).success(function(result) {
+        success(result);
+      }).error(function(response, status) {
+        error(response);
+      });
+
+      // if (selectedUrl == 'baseUrlTest' || selectedUrl == 'baseUrlZhongtai') {
+      //   console.log('get todoCount with baseUrlTest or baseUrlZhongtai');
+      //   url = urls[selectedUrl];
+
+      //   params = {
+      //     userId: window.localStorage.empno,
+      //     method: 'getMyToDoSize'
+      //   }
+      //   console.log('调用地址：' + url);
+      //   console.log('调用参数：');
+      //   console.log(params)
+
+      //   hmsHttp.post(url, params).success(function(result) {
+      //     success(result);
+      //   }).error(function(response, status) {
+      //     error(response);
+      //   });
+      // } else {
+      //   if (selectedUrl == 'baseUrlInner' || selectedUrl == 'baseUrlOuter') {
+      //     console.log('get todoCount with baseUrlInner or baseUrlOuter');
+      //     url = urls[selectedUrl] + '/' + user + '/getMyToDoSize';
+      //   } else {
+      //     url = urls.baseUrlInner + '/' + user + '/getMyToDoSize';
+      //   }
+      //   console.log('调用地址：' + url);
+      //   console.log('没有传参数');
+
+      //   hmsHttp.get(url).success(function(result) {
+      //     success(result);
+      //   }).error(function(response, status) {
+      //     error(response);
+      //   });
+      // }
 
     };
   }

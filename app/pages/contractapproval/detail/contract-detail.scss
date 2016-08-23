@@ -47,6 +47,7 @@
   left: 10vw;
   z-index: 10;
   transform: translateY(-60vh);
+  -webkit-transform: translateY(-60vh);
   transition: all 0.5s;
   opacity: 0;
   padding: 20px 5vw;
@@ -58,6 +59,7 @@
 
 .contract-detail .contract-processes.show{
   transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
   opacity: 1;
 }
 
@@ -237,7 +239,18 @@
   top: 24px;
   left: 0;
   right: 0;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0);
+  z-index: 0;
+}
+
+.center-line{
+  position: absolute;
+  height: 2px;
+  top: 54px;
+  left: 0;
+  right: 0;
+  width: 100vh;
+  background: rgba(255,255,255,1);
   z-index: 0;
 }
 
@@ -349,6 +362,7 @@
   top: 50%;
   left: 10vw;
   transform: translateY(-60vh);
+  -webkit-transform: translateY(-60vh);
   width: 80vw;
   z-index: 9;
   transition: all 0.5s;
@@ -360,6 +374,7 @@
 
 .contract-detail .desc-div.show{
   transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
   opacity: 1;
 }
 
@@ -451,6 +466,7 @@
 .contract-detail .operate-button{
   margin-left: 50%;
   transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
   display: block;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -529,10 +545,19 @@
   z-index: 20;
   transition: all 0.5s;
   transform: translateY(100%);
+  -webkit-transform: translateY(100%);
 }
 
 .contract-detail .trans-search.show{
   transform: translateY(0);
+  -webkit-transform: translateY(0);
+}
+
+.contract-detail .trans-search .ios-header{
+  height: 20px;
+  width: 100%;
+  margin: 0;
+  background: #3366ab;
 }
 
 .contract-detail .trans-search .trans-header{

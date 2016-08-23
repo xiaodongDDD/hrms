@@ -169,7 +169,7 @@ HmsModule
         isOverscrolling = false,
         dragOffset = 0,
         lastOverscroll = 0,
-        ptrThreshold = 60,
+        ptrThreshold = 81, //设置下拉刷新的长度
         activated = false,
         scrollTime = 500,
         startY = null,
@@ -201,18 +201,22 @@ HmsModule
         $onPulling: '&onPulling'
       });
 
-      $scope.svgLine1 = {"opacity": "0"};
-      $scope.svgLine2 = {"opacity": "0"};
-      $scope.svgLine3 = {"opacity": "0"};
-      $scope.svgLine4 = {"opacity": "0"};
-      $scope.svgLine5 = {"opacity": "0"};
-      $scope.svgLine6 = {"opacity": "0"};
-      $scope.svgLine7 = {"opacity": "0"};
-      $scope.svgLine8 = {"opacity": "0"};
-      $scope.svgLine9 = {"opacity": "0"};
-      $scope.svgLine10 = {"opacity": "0"};
-      $scope.svgLine11 = {"opacity": "0"};
-      $scope.svgLine12 = {"opacity": "0"};
+      function initSvgLine() {
+        $scope.svgLine1 = {"opacity": "0"};
+        $scope.svgLine2 = {"opacity": "0"};
+        $scope.svgLine3 = {"opacity": "0"};
+        $scope.svgLine4 = {"opacity": "0"};
+        $scope.svgLine5 = {"opacity": "0"};
+        $scope.svgLine6 = {"opacity": "0"};
+        $scope.svgLine7 = {"opacity": "0"};
+        $scope.svgLine8 = {"opacity": "0"};
+        $scope.svgLine9 = {"opacity": "0"};
+        $scope.svgLine10 = {"opacity": "0"};
+        $scope.svgLine11 = {"opacity": "0"};
+        $scope.svgLine12 = {"opacity": "0"};
+      }
+
+      initSvgLine();
 
       function handleMousedown(e) {
         e.touches = e.touches || [{
@@ -330,12 +334,19 @@ HmsModule
 
         // update the icon accordingly
         if (!activated && lastOverscroll > ptrThreshold) {
+
           activated = true;
           ionic.requestAnimationFrame(activate);
 
         } else if (activated && lastOverscroll < ptrThreshold) {
           activated = false;
           ionic.requestAnimationFrame(deactivate);
+        } else if (!activated && lastOverscroll <= ptrThreshold){
+          if(baseConfig.debug){
+            console.log('handleTouchmove lastOverscroll ' + lastOverscroll );
+            console.log('handleTouchmove ptrThreshold ' + ptrThreshold );
+          }
+          loadingRefreshAnimate(-lastOverscroll);
         }
       }
 
@@ -523,7 +534,7 @@ HmsModule
 
       function loadingRefreshAnimate(distance) {
         if(baseConfig.debug){
-          console.log('$ionicRefresher.activate distance ' + distance);
+          console.log('hmsRefresherCtrl.loadingRefreshAnimate distance ' + distance);
         }
         //changeSvgLines(5);
         $scope.pullingText = '';
@@ -542,11 +553,17 @@ HmsModule
       }
 
       function activate() {
+        if(baseConfig.debug){
+          console.log('hmsRefresherCtrl.activate ');
+        }
         $element[0].classList.add('active');
         $scope.$onPulling();
       }
 
       function deactivate() {
+        if(baseConfig.debug){
+          console.log('hmsRefresherCtrl.deactivate ');
+        }
         // give tail 150ms to finish
         $timeout(function () {
           // deactivateCallback
@@ -556,6 +573,9 @@ HmsModule
       }
 
       function start() {
+        if(baseConfig.debug){
+          console.log('hmsRefresherCtrl.start ');
+        }
         // startCallback
         $element[0].classList.add('refreshing');
         var q = $scope.$onRefresh();
@@ -568,16 +588,26 @@ HmsModule
       }
 
       function show() {
+        if(baseConfig.debug){
+          console.log('hmsRefresherCtrl.show ');
+        }
+        initSvgLine();
         // showCallback
         $element[0].classList.remove('invisible');
       }
 
       function hide() {
+        if(baseConfig.debug){
+          console.log('hmsRefresherCtrl.hide ');
+        }
         // showCallback
         $element[0].classList.add('invisible');
       }
 
       function tail() {
+        if(baseConfig.debug){
+          console.log('hmsRefresherCtrl.tail ');
+        }
         // tailCallback
         $element[0].classList.add('refreshing-tail');
       }

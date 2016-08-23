@@ -29,7 +29,7 @@ angular.module('applicationModule')
     '$ionicActionSheet',
     'hmsPopup',
     'contractDetailService',
-    function($scope,$stateParams,$timeout,$ionicHistory,$ionicActionSheet,hmsPopup,contractDetailService) {
+    function($scope, $stateParams, $timeout, $ionicHistory, $ionicActionSheet, hmsPopup, contractDetailService) {
       $scope.nowContractInfoNum = 0;
       $scope.nowContractInfo = {};
       $scope.noNextDataFlag = false;
@@ -39,17 +39,18 @@ angular.module('applicationModule')
       $scope.essenceData.message = "没有数据";
       $scope.contractId = '';
       $scope.showHint = false;
+      $scope.showIosHeader = ionic.Platform.isIOS();
 
       //合同要素数据成功返回后
-      var essenceSuccess = function(responce){
+      var essenceSuccess = function(responce) {
         $scope.essenceData = responce;
       };
 
       //初始化页面所需数据
-      var httpSuccess = function(response){
+      var httpSuccess = function(response) {
         $scope.data = response;
         $scope.fetchDataFlag = false;
-        if($scope.data.result == "E"){
+        if ($scope.data.result == "E") {
           $ionicHistory.goBack();
           hmsPopup.showPopup($scope.data.message);
           return 0;
@@ -57,31 +58,34 @@ angular.module('applicationModule')
         $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[0].line_values;
         console.log($scope.data);
         //原date格式为 yyyy-MM-dd At hh:mm:ss ,拆分为两个字段并保存
-        if($scope.data.historyData){
-          for(var i = 0; i < $scope.data.historyData.length; i++){
+        if ($scope.data.historyData) {
+          for (var i = 0; i < $scope.data.historyData.length; i++) {
             $scope.data.historyData[i].receiveDate = $scope.data.historyData[i].receveTime.split(" ")[0];
             $scope.data.historyData[i].receiveTime = $scope.data.historyData[i].receveTime.split(" ")[2];
           }
         }
-        if(!window.localStorage.contractDetailHintFlag){
-          $timeout(function(){
+        if (!window.localStorage.contractDetailHintFlag) {
+          $timeout(function() {
             $scope.showHint = true;
             window.localStorage.contractDetailHintFlag = "true";
-          },1000);
+          }, 1000);
         }
         console.log($scope.nowContractInfo);
         $scope.contractId = $scope.nowContractInfo[8].line_value;
-        if($scope.data.contractInfo.lines[0].line.length < 2)
+        if ($scope.data.contractInfo.lines[0].line.length < 2)
           $scope.noNextDataFlag = true;
-        contractDetailService.getEssence(essenceSuccess,$scope.contractId);
+        $scope.showOperateButton = true;
+        if($scope.data.approvalAction.length == 0)
+          $scope.showOperateButton = false;
+        contractDetailService.getEssence(essenceSuccess, $scope.contractId);
       };
 
       //取初始化页面所需数据
-      contractDetailService.check(httpSuccess,$stateParams.data.activityId);
+      contractDetailService.check(httpSuccess, $stateParams.data.activityId);
 
       //显示合同要素弹出框
-      $scope.showEssenceDiv = function(){
-        if($scope.essenceData.result == "E"){
+      $scope.showEssenceDiv = function() {
+        if ($scope.essenceData.result == "E") {
           hmsPopup.showPopup($scope.essenceData.message);
           return 0;
         } else {
@@ -93,8 +97,8 @@ angular.module('applicationModule')
       };
 
       //合同信息上一页
-      $scope.toLast = function(){
-        if($scope.nowContractInfoNum == 0)
+      $scope.toLast = function() {
+        if ($scope.nowContractInfoNum == 0)
           return 0;
         $scope.nowContractInfoNum--;
         $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[$scope.nowContractInfoNum].line_values;
@@ -110,27 +114,18 @@ angular.module('applicationModule')
         $scope.noNextDataFlag = ($scope.nowContractInfoNum == $scope.data.contractInfo.lines[0].line.length - 1);
       };
 
-      //上方历史记录拖动事件
-      $scope.x = 0;
-      $scope.onDrag = function($event){
-        var contractStages = document.getElementsByClassName("contract-stages")[0];
-        if($scope.x + $event.gesture.deltaX >= 0 || $scope.x + $event.gesture.deltaX <= -contractStages.scrollWidth + contractStages.clientWidth)
-          return 0;
-        contractStages.setAttribute("style","transform:translateX(" + ($scope.x + $event.gesture.deltaX) + "px);");
-      };
-
-      //上方历史记录释放事件
-      $scope.onRelease = function($event){
-        $scope.x += $event.gesture.deltaX;
+      $scope.workflowDetailScroll = {
+        "width": document.body.clientWidth,
+        "height": 137
       };
 
       $scope.showProc = false;
-      $scope.showCover =false;
+      $scope.showCover = false;
       $scope.showDesc = false;
       $scope.showEssence = false;
 
       //显示流程弹出框
-      $scope.showProcDiv= function(){
+      $scope.showProcDiv = function() {
         $scope.showEssence = false;
         $scope.showDesc = false;
         $scope.showProc = !$scope.showProc;
@@ -138,15 +133,15 @@ angular.module('applicationModule')
       };
 
       //关闭页面所有弹出框及遮罩层
-      $scope.closeCover = function(){
+      $scope.closeCover = function() {
         $scope.showProc = false;
-        $scope.showCover =false;
+        $scope.showCover = false;
         $scope.showDesc = false;
         $scope.showEssence = false;
       };
 
       //显示流程信息弹出框
-      $scope.showDescDiv= function(stageItem){
+      $scope.showDescDiv = function(stageItem) {
         $scope.showEssence = false;
         $scope.showProc = false;
         $scope.showDesc = !$scope.showProc;
@@ -157,27 +152,27 @@ angular.module('applicationModule')
 
       $scope.showProcessFlag = true;
 
-      $scope.hideProcess = function(){
+      $scope.hideProcess = function() {
         $scope.showProcessFlag = false;
       };
 
-      $scope.showProcess = function(){
+      $scope.showProcess = function() {
         $scope.showProcessFlag = true;
       };
 
       $scope.showContractFlag = true;
 
-      $scope.hideContract = function(){
+      $scope.hideContract = function() {
         $scope.showContractFlag = false;
       };
 
-      $scope.showContract = function(){
+      $scope.showContract = function() {
         $scope.showContractFlag = true;
       };
 
       //提交操作后的回掉
-      var submitSuccess = function(response){
-        if(response.result == "S"){
+      var submitSuccess = function(response) {
+        if (response.result == "S") {
           hmsPopup.showPopup('操作成功');
           $ionicHistory.goBack();
         } else {
@@ -185,11 +180,11 @@ angular.module('applicationModule')
         }
       };
 
-      $scope.submitMessage = {text:""};
+      $scope.submitMessage = { text: "" };
       //显示操作action sheet
       $scope.showOperate = function() {
         var buttonText = [];
-        for(var i = 0; i < $scope.data.approvalAction.length; i++){
+        for (var i = 0; i < $scope.data.approvalAction.length; i++) {
           buttonText[i] = { text: $scope.data.approvalAction[i].action_value };
         }
         $ionicActionSheet.show({
@@ -199,18 +194,17 @@ angular.module('applicationModule')
           buttonClicked: function(index) {
             var key = $scope.data.approvalAction[index].action_key;
             console.log($scope.message);
-            if(key == '$TRANSPOND$'){
-              if($scope.transpondId == ''){
+            if (key == '$TRANSPOND$') {
+              if ($scope.transpondId == '') {
                 hmsPopup.showPopup('请选择转交人');
-              }
-              else if($scope.submitMessage.text == ''){
+              } else if ($scope.submitMessage.text == '') {
                 hmsPopup.showPopup('请输入转交原因');
                 return 0;
-              } else{
-                contractDetailService.transpond(submitSuccess,$stateParams.data.procId,$stateParams.data.activityId,$scope.transpondId,$scope.submitMessage.text);
+              } else {
+                contractDetailService.transpond(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, $scope.transpondId, $scope.submitMessage.text);
               }
             } else {
-              contractDetailService.submit(submitSuccess,$stateParams.data.procId,$stateParams.data.activityId,key,$scope.submitMessage.text);
+              contractDetailService.submit(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, key, $scope.submitMessage.text);
             }
           }
         });
@@ -227,21 +221,21 @@ angular.module('applicationModule')
       }
 
       //取得转交人数据成功的回调
-      var transpondSuccess= function(response){
+      var transpondSuccess = function(response) {
         $scope.fetchTranspondData = false;
         $scope.transpondsData = response.transpondUsers;
         $scope.transponds = [];
-        for(var item in $scope.transpondsData){
-          var transpond = {name: $scope.transpondsData[item],id: item};
+        for (var item in $scope.transpondsData) {
+          var transpond = { name: $scope.transpondsData[item], id: item };
           $scope.transponds.push(transpond);
         }
-        if($scope.transponds.length == 0)
-          $scope.transponds.push({name:"没有找到相关转交人",id:""});
+        if ($scope.transponds.length == 0)
+          $scope.transponds.push({ name: "没有找到相关转交人", id: "" });
       };
 
       //显示转交人弹出框
-      $scope.showTransDiv = function(){
-        if($scope.transponds.length == 0){
+      $scope.showTransDiv = function() {
+        if ($scope.transponds.length == 0) {
           $scope.fetchTranspondData = true;
           contractDetailService.getTranspond(transpondSuccess);
         }
@@ -249,11 +243,11 @@ angular.module('applicationModule')
       };
 
       //筛选符合搜索框输入条件的转交人
-      $scope.shiftTranspond = function(){
+      $scope.shiftTranspond = function() {
         $scope.transponds = [];
-        for(var item in $scope.transpondsData){
-          if(isContains($scope.transpondsData[item],$scope.searchKey) || isContains(item,$scope.searchKey)){
-            var transpond = {name: $scope.transpondsData[item],id: item};
+        for (var item in $scope.transpondsData) {
+          if (isContains($scope.transpondsData[item], $scope.searchKey) || isContains(item, $scope.searchKey)) {
+            var transpond = { name: $scope.transpondsData[item], id: item };
             $scope.transponds.push(transpond);
           }
         }
@@ -263,23 +257,27 @@ angular.module('applicationModule')
       $scope.transpondId = "";
 
       //选择转交人
-      $scope.selectTranspond = function(name,id){
+      $scope.selectTranspond = function(name, id) {
         $scope.transpondName = name;
         $scope.transpondId = id;
         $scope.showTransDiv();
       };
 
-  }])
+    }
+  ])
 
 .service('contractDetailService', ['hmsHttp',
   'hmsPopup',
+  'baseConfig',
   function(hmsHttp,
-           hmsPopup) {
+    hmsPopup,
+    baseConfig) {
 
-    var baseUrlTest = "http://wechat.hand-china.com/hrmsv2/v2/api/handcontract";
+    var baseUrlTest = baseConfig.queryPath + '/handcontract';
+
     var baseUrlZhong = "http://mobile-app.hand-china.com/hrmsv2/v2/api/handcontract";
 
-    this.check = function(success,activityId) {
+    this.check = function(success, activityId) {
 
       var params = {
         userId: window.localStorage.empno,
@@ -295,7 +293,7 @@ angular.module('applicationModule')
 
     };
 
-    this.getEssence = function(success,contractId) {
+    this.getEssence = function(success, contractId) {
 
       var params = {
         userId: window.localStorage.empno,
@@ -324,7 +322,7 @@ angular.module('applicationModule')
 
     };
 
-    this.submit = function(success,procInstId,actInstId,submitKey,comment) {
+    this.submit = function(success, procInstId, actInstId, submitKey, comment) {
 
       var params = {
         userId: window.localStorage.empno,
@@ -343,7 +341,7 @@ angular.module('applicationModule')
 
     };
 
-    this.transpond = function(success,procInstId,actInstId,transpondUser,message) {
+    this.transpond = function(success, procInstId, actInstId, transpondUser, message) {
 
       var params = {
         userId: window.localStorage.empno,
@@ -364,4 +362,3 @@ angular.module('applicationModule')
 
   }
 ]);
-
