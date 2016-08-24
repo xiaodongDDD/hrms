@@ -54,9 +54,9 @@ angular.module('applicationModule')
         $scope.cp_number = [];
         angular.forEach( $scope.historyInfo.companies, function (data, index, array) {
           if( $scope.historyInfo.empNo == data.empNo){//发起人
-            $scope.cp_number.splice(0,0,{"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+            $scope.cp_number.splice(0,0,{"empName":array[index].empName,"avatar":array[index].avatar,"empNo":data.empNo,"font":"detail-img-people-name"});
           }else {
-            $scope.cp_number.push({"empName": array[index].empName,"avatar": array[index].avatar,"font": "detail-img-people-name"
+            $scope.cp_number.push({"empName": array[index].empName,"avatar": array[index].avatar,"empNo":data.empNo,"font": "detail-img-people-name"
             });
           }
         });
@@ -81,7 +81,7 @@ angular.module('applicationModule')
 
       $scope.companionChat = function(index){
         if( ($scope.cp_number[index].empName != "空位") && ($scope.cp_number[index].empName != "占位")){
-          var emp_code =  $scope.historyInfo.companies[index].empNo;
+          var emp_code =  $scope.cp_number[index].empNo;
           $state.go('tab.tab-application-carpooling-employee', {employeeNumber:emp_code});
         }
       }

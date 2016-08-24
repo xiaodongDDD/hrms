@@ -20,13 +20,11 @@ angular.module('applicationModule')
     'baseConfig',
     '$ionicHistory',
     'hmsHttp',
-    'hmsPopup',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
-              hmsHttp,
-              hmsPopup) {
+              hmsHttp) {
       $scope.items=[];//历史列表中的数据
       $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
       $scope.map = "";
@@ -36,9 +34,10 @@ angular.module('applicationModule')
 
       var curPage = 1;
       var  mapUrl = {
-        baseUrl: " http://api.map.baidu.com/staticimage/v2?ak=i6Ft7l8flPNq7Ub6O2vmcuGx",
-        baseStyle:"&width=400&height=100&zoom=11&scale=2",
-        baseStyle1:"&markerStyles=-1,http://www.daxuequan.org/hrms-img/start@3x.png|-1,http://www.daxuequan.org/hrms-img/end@3x.png",
+        baseUrl: "http://restapi.amap.com/v3/staticmap?scale=2&size=300*100",
+        baseStyle:"&markers=-1,http://www.daxuequan.org/hrms-img/start@3x.png,0:",
+        baseStyle1:"|-1,http://www.daxuequan.org/hrms-img/end@3x.png,0:",
+        markey:"&key=ae514ce54a0fb9c009334423b9ab3f9a",
       }
 
       searchCarpoolingHistory("init");
@@ -86,11 +85,11 @@ angular.module('applicationModule')
                       data.statusColor=true;
                       data.status = "已成行";
                     }
-                    if(data.startLatitude && data.endLatitude){
-                      data.listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+"&markers="+data.startLatitude+"|"+data.endLatitude +mapUrl.baseStyle1;
-                    }
-                  $scope.resultList.push(data);
 
+                  if(data.startLatitude && data.endLatitude){
+                    data.listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+data.startLatitude +mapUrl.baseStyle1+data.endLatitude+mapUrl.markey;
+                  }
+                  $scope.resultList.push(data);
                 });
               }
               $scope.showInfinite = false;
@@ -116,7 +115,7 @@ angular.module('applicationModule')
                   data.status = "已成行";
                 }
                 if(data.startLatitude && data.endLatitude){
-                  data.listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+"&markers="+data.startLatitude+"|"+data.endLatitude +mapUrl.baseStyle1;
+                  data.listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+data.startLatitude +mapUrl.baseStyle1+data.endLatitude+mapUrl.markey;
                 }
                 $scope.resultList.push(data);
               });
@@ -132,7 +131,6 @@ angular.module('applicationModule')
 
       $scope.viewHistoryDetail = function (num) {//跳转到申请详情界面
         var info=$scope.resultList[num];
-        var listMapUrl =mapUrl.baseUrl+mapUrl.baseStyle+info.startLatitude +mapUrl.baseStyle1+info.endLatitude+mapUrl.markey;
         var hasJoinedSeats = parseInt(info.carType )- info.availableSeats//已经参与拼车人数
 
         var param={
@@ -145,7 +143,7 @@ angular.module('applicationModule')
           feeType:info.feeType,//费用计划
           startLatitude:info.startLatitude,//起点经纬度
           endLatitude:info.endLatitude,//终点经纬度
-          map:listMapUrl,                 //地图地址
+          map:info.listMapUrl,                 //地图地址
           companies:info.companies,     //同行人数
           lockSeats:info.lockSeats,//锁定座位数量
           availableSeats:info.availableSeats,//空位数量

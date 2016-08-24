@@ -566,13 +566,12 @@ angular.module('applicationModule')
         url = "http://api.map.baidu.com/geoconv/v1/?coords=" + depaLocLng + "," + depaLocLat + ";" + destLocLng + "," + destLoclat+"&from=3&to=5&ak=i6Ft7l8flPNq7Ub6O2vmcuGx";
         $http.get(url).success(function (response) {
           var results = response.result;
-          console.debug(url);
-          console.debug(depaLocLng,depaLocLat,destLocLng,destLoclat);
-          $scope.startLng = results[0].x;
-          $scope.startLat = results[0].y;
-          $scope.endLng = results[1].x;
-          $scope.endLat = results[1].y;
-          console.debug($scope.startLng+","+$scope.startLat+","+$scope.endLng+","+$scope.endLat);
+          //console.debug(url);
+          //console.debug(depaLocLng,depaLocLat,destLocLng,destLoclat);
+          //$scope.startLng = results[0].x;
+          //$scope.startLat = results[0].y;
+          //$scope.endLng = results[1].x;
+          //$scope.endLat = results[1].y;
         }).error(function (response, status) {
         });
       }

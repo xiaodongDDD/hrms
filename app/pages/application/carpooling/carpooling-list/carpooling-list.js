@@ -45,7 +45,7 @@ angular.module('applicationModule')
       var curPage = 1;
       $scope.showInfinite = false;//上拉加载
       $scope.map = "";
-      $scope.filterTime=getNowTime();
+      $scope.filterTime=getNowTime(true);
       $scope.startTimeText=getNowTime(true);
       $scope.endTimeText=getNowTime(false);
       $scope.resultList = [];
@@ -66,19 +66,19 @@ angular.module('applicationModule')
         $scope.promptText = promtext;
         var param;
         if(status == "filter"){//是否筛选状态
+          if (moreFlag == 'init') {
+            filterPage = 1;
+          }
           param = {
-            city:"上海",
-            "departureTime":$scope.endTimeText+":00",
-            "endTime":$scope.startTimeText+":00",
+             city:"上海",
+            "departureTime":$scope.startTimeText+":00",
+            "endTime":$scope.endTimeText+":00",
             "startAddr": $scope.start,
             "targetAddr":$scope.end,
             "availableSeats":$scope.seats,
             "page":filterPage,
             "pageSize":5,
           };
-          if (moreFlag == 'init') {
-            filterPage = 1;
-          }
         }else {
           param = {"page": curPage, "pageSize": 5};
           if (moreFlag == 'init') {
@@ -391,6 +391,9 @@ angular.module('applicationModule')
       function timeText(time){
         var index = time.lastIndexOf(":");
         return time.substring(0,index);
+      }
+      function G(id){
+        return  document.getElementById(id).value;
       }
     }]);
 
