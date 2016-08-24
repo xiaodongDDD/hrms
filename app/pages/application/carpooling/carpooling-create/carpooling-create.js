@@ -85,6 +85,8 @@ angular.module('applicationModule')
       $scope.nowTime = getNowTime();//时间选择器默认时间
       var emp_codes = [];
       var emp_index = [];
+      $scope.showLocation = false;//展示当前位置
+
 
       var empty = {
         flag: false,
@@ -109,6 +111,7 @@ angular.module('applicationModule')
         lockFont: "create-locked-enjoy"
       };
       getLoginInfo();
+      locCity();
       carpoolingCreateService.clear();//载入手动清除service
       addSeats($scope.carTypes);//增加座位
       function addSeats(carTypes) {
@@ -125,13 +128,14 @@ angular.module('applicationModule')
           "pageSize": "1"
         };
         hmsHttp.post(url, param).success(function (result) {
+          console.debug(result.rows);
           $scope.items = result.rows;
           if (result.success == true) {//默认图片
-            if( $scope.items[0].thumbnail == null){//设置默认头像
+            if( $scope.items[0].avatar == null){//设置默认头像
               if( $scope.items[0].gender=="男"){
-                $scope.items[0].thumbnail="build/img/myInfo/man-portrait.png";
+                $scope.items[0].avatar="build/img/myInfo/man-portrait.png";
               }else if( $scope.items[0].gender=="女"){
-                $scope.items[0].thumbnail="build/img/myInfo/woman-portrait.png";
+                $scope.items[0].avatar="build/img/myInfo/woman-portrait.png";
               }
             }
             var myInfo = {
@@ -140,7 +144,7 @@ angular.module('applicationModule')
               empCode:$scope.items[0].emp_code,
               empName: $scope.items[0].emp_name,
               empFont: "create-name-enjoy",
-              avatar: $scope.items[0].thumbnail,
+              avatar: $scope.items[0].avatar,
             };
             if ($scope.carpoolingJoin.length != 0) {
               $scope.carpoolingJoin.unshift(myInfo);
@@ -534,8 +538,8 @@ angular.module('applicationModule')
 
 
         if($scope.fetchFlag){
+          hmsPopup.showLoading('请稍候');
           hmsHttp.post(url, $scope.createInfo).success(function (result) {
-            hmsPopup.hideLoading();
             if (result.status == "S") {
               hmsPopup.showShortCenterToast("发布成功");
               commonContactService.setGoContactFlg("");
@@ -550,6 +554,7 @@ angular.module('applicationModule')
             } else if (result.status == "N") {
               hmsPopup.showShortCenterToast("发布失败");
             }
+            hmsPopup.hideLoading();
           }).error(function (error, status) {
             hmsPopup.hideLoading();
             hmsPopup.showShortCenterToast("网络连接出错");
@@ -566,12 +571,6 @@ angular.module('applicationModule')
         url = "http://api.map.baidu.com/geoconv/v1/?coords=" + depaLocLng + "," + depaLocLat + ";" + destLocLng + "," + destLoclat+"&from=3&to=5&ak=i6Ft7l8flPNq7Ub6O2vmcuGx";
         $http.get(url).success(function (response) {
           var results = response.result;
-          //console.debug(url);
-          //console.debug(depaLocLng,depaLocLat,destLocLng,destLoclat);
-          //$scope.startLng = results[0].x;
-          //$scope.startLat = results[0].y;
-          //$scope.endLng = results[1].x;
-          //$scope.endLat = results[1].y;
         }).error(function (response, status) {
         });
       }
@@ -608,6 +607,13 @@ angular.module('applicationModule')
       function timeText(time){
         var index = time.lastIndexOf(":");
         return time.substring(0,index);
+      }
+      //定位城市
+      function  locCity(){
+        if(window.localStorage && window.localStorage.searchCity){
+          $scope.showLocation = true;
+          $scope.cityCode = window.localStorage.locCity;
+        }
       }
     }
   ]);

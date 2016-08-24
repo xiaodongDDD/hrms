@@ -92,12 +92,32 @@ angular.module('applicationModule')
       //路径地图
       var starts =  $scope.listInfo.startLat.split(",");
       var ends = $scope.listInfo.endLat.split(",");
-      var map = new BMap.Map("allmap");
-      map.centerAndZoom(new BMap.Point(starts[0],starts[1]), 14);
-      var p1 = new BMap.Point(starts[0],starts[1]);
-      var p2 = new BMap.Point(ends[0],ends[1]);
-      var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-      driving.search(p1, p2);
+
+      var depaLng  = starts[0];
+      var depalat = starts[1];
+      var destLng = ends[0];
+      var destLat = ends[1];
+
+      var map = new AMap.Map("allmap", {
+        resizeEnable: true,
+      });
+      AMap.service(["AMap.Driving"], function() {
+        var driving = new AMap.Driving({
+          map: map,
+          zoom: 13,
+        });
+        driving.search([depaLng,depalat], [destLng,destLat], function(status, result){});
+      });
+
+
+
+
+      //var map = new BMap.Map("allmap");
+      //map.centerAndZoom(new BMap.Point(starts[0],starts[1]), 14);
+      //var p1 = new BMap.Point(starts[0],starts[1]);
+      //var p2 = new BMap.Point(ends[0],ends[1]);
+      //var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
+      //driving.search(p1, p2);
 
 
       //包含

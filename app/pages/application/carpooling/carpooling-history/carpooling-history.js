@@ -31,6 +31,7 @@ angular.module('applicationModule')
       $scope.resultList = [];
       $scope.historyLoading  = true;
       $scope.showNoData = false;
+      $scope.showLocation = false;//
 
       var curPage = 1;
       var  mapUrl = {
@@ -41,6 +42,7 @@ angular.module('applicationModule')
       }
 
       searchCarpoolingHistory("init");
+      locCity();
       function searchCarpoolingHistory(moreFlag) {
         if (moreFlag === 'init') {
           curPage = 1;
@@ -159,7 +161,14 @@ angular.module('applicationModule')
       $scope.loadMore = function() {//上拉加载
         curPage++;
         searchCarpoolingHistory("loadMore");
-      };
+      }
+      //定位城市
+      function  locCity(){
+        if(window.localStorage && window.localStorage.searchCity){
+          $scope.showLocation = true;
+          $scope.cityCode = window.localStorage.locCity;
+        }
+      }
     }]
 );
 

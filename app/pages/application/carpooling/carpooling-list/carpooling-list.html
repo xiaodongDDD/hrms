@@ -6,9 +6,13 @@
         </button>
        </div>
       <h1 class="title"  ng-if="!showSearchTop">拼车</h1>
-      <div class="buttons">
+    <div ng-if="!showLocation">
+      <ion-spinner icon="ripple" class="spinner spinner-ios" style=" position: absolute;right: 10px;margin-top: 3px;width: 20px;height: 20px;" ></ion-spinner>
+    </div>
+
+      <div class="buttons" ng-if="showLocation">
         <div class="button-location icon ion-ios-location"  ng-if="!showSearchTop">
-          <span style="font-size: 15px;">上海</span>
+          <span style="font-size: 15px;">{{cityCode}}</span>
         </div>
       </div>
     </div>

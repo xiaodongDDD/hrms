@@ -7,9 +7,12 @@
       </button>
     </div>
     <h1 class="title">拼车记录</h1>
-    <div class="buttons" ng-click="choose_location()">
+    <div ng-if="!showLocation">
+      <ion-spinner icon="ripple" class="spinner spinner-ios" style=" position: absolute;right: 10px;margin-top: 3px;width: 20px;height: 20px;" ></ion-spinner>
+    </div>
+    <div class="buttons" ng-if="showLocation">
       <div class="button-location icon ion-ios-location">
-        <span style="font-size: 15px;">上海</span>
+        <span style="font-size: 15px;">{{cityCode}}</span>
       </div>
     </div>
   </ion-header-bar>
@@ -49,7 +52,7 @@
             </div>
           </div>
           <div class="carpooling-map" >
-            <img ng-src="{{x.listMapUrl}}" style="width: 100%;height: 100%;">
+            <img src="{{x.listMapUrl}}" style="width: 100%;height: 100%;">
           </div>
           <div class="carpooling-number">
             <span class="font-color21">行程编号：<i class="font-color11">{{x.shareNo}}</i></span>

@@ -50,12 +50,14 @@ angular.module('applicationModule')
       $scope.endTimeText=getNowTime(false);
       $scope.resultList = [];
       $scope.status = "list";//判断是否在筛选状态
+      $scope.showLocation = false;//初始不展示定位
       var filterPage = 1;
 
 
 
 
       searchCarpoolingList("list","init","还没有人拼车");
+      showCityInfo();
       /*
        1.status:list,filter
        2.moreFlag:init(init,doRefresh),loadMore
@@ -395,6 +397,33 @@ angular.module('applicationModule')
       function G(id){
         return  document.getElementById(id).value;
       }
+
+      //地图定位当前城市
+      function showCityInfo() {
+        AMap.service(["AMap.CitySearch"], function() {
+          var citysearch = new AMap.CitySearch();
+          citysearch.getLocalCity(function(status, result){
+            if(status === 'complete' && result.info === 'OK'){
+              if(result && result.city && result.bounds) {
+                var cityinfo = result.city;
+                var citybounds = result.bounds;
+                city = cityinfo;
+                citycode = cityinfo.replace("市","");
+                $scope.cityCode = cityinfo.replace("市","");
+                $scope.showLocation = true;
+                if(window.localStorage){
+                  window.localStorage.searchCity = true;
+                  window.localStorage.locCity = $scope.cityCode;
+                }
+              }
+            }else{
+              $scope.showLocation = false;
+            }
+          });
+        });
+      }
+
+
     }]);
 
 

@@ -37,6 +37,8 @@ angular.module('applicationModule')
       $scope.destLocLat = "";
       $scope.destLocLng = "";
       $scope.exchangeFlag = false;
+      $scope.showLocation = false;
+
 
 
 
@@ -44,12 +46,12 @@ angular.module('applicationModule')
       //var marker = [];
       var mapObj = new AMap.Map("mapContainer", {
         resizeEnable: true,
-        center: [121.473562,31.230312],
         zoom: 10,
         keyboardEnable: false
       });
 
       init();//载入时判断是否有数据
+      locCity();
 
       AMap.plugin(['AMap.Autocomplete','AMap.Driving','AMap.PlaceSearch'],function(){
         var marker = new AMap.Marker({
@@ -177,10 +179,6 @@ angular.module('applicationModule')
         var destination = G("destination").value;
         var state = true;
 
-        //console.debug("输入框起点："+departure);
-        //console.debug("请求值起点："+$scope.departure);
-        //console.debug("输入框终点："+destination);
-        //console.debug("请求值终点："+$scope.destination);
 
 
         if(departure == ""){//清掉输入框则清空数据
@@ -250,6 +248,16 @@ angular.module('applicationModule')
         $scope.depaLocLat = [$scope.destLocLat,$scope.destLocLat=$scope.depaLocLat][0];
         $scope.depaLocLng = [$scope.destLocLng,$scope.destLocLng=$scope.depaLocLng][0];
         $scope.departure = [$scope.destination,$scope.destination=$scope.departure][0];
+      }
+      //定位城市
+      function locCity(){
+        if(window.localStorage && window.localStorage.searchCity){
+          $scope.showLocation = true;
+          $scope.cityCode = window.localStorage.locCity;
+          mapObj.setCity($scope.cityCode);
+        }else {
+          mapObj.setCity("上海");//如果获取不到当前位置则默认为上海
+        }
       }
     }])
     .factory('carpoolingCreateService',[function () {
