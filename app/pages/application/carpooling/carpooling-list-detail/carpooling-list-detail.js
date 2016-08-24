@@ -35,7 +35,6 @@ angular.module('applicationModule')
               $stateParams,
               hmsHttp) {
         $scope.listInfo = $stateParams.carpoolingListDetailInfo;
-      ///v2/api/share/addShareCompany
         $scope.joinButtonHide = false;//加入按钮隐藏
         var joinNumber = $scope.listInfo.companies.length;//参与人数
         var lockNumber = $scope.listInfo.lockSeats;//锁定人数
@@ -54,9 +53,9 @@ angular.module('applicationModule')
             }
           }
           if( $scope.listInfo.empNo == data.empNo){
-            $scope.cp_number.splice(0,0,{"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+            $scope.cp_number.splice(0,0,{"empName":array[index].empName,"avatar":array[index].avatar,"empNo":data.empNo,"font":"detail-img-people-name"});
           }else{
-            $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"font":"detail-img-people-name"});
+            $scope.cp_number.push({"empName":array[index].empName,"avatar":array[index].avatar,"empNo":data.empNo,"font":"detail-img-people-name"});
           }
         });
         for(var i=0;i < lockNumber;i++){
@@ -114,8 +113,7 @@ angular.module('applicationModule')
 
       $scope.chatComp = function(index){
         if( ($scope.cp_number[index].empName != "空位") && ($scope.cp_number[index].empName != "占位")){
-          var emp_code =  $scope.listInfo.companies[index].empNo;
-          console.debug($scope.listInfo.companies[index]);
+          var emp_code = $scope.cp_number[index].empNo;
           $state.go('tab.tab-application-carpooling-employee', {employeeNumber:emp_code});
         }
       }
