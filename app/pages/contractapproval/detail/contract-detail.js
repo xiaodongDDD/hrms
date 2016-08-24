@@ -74,9 +74,7 @@ angular.module('applicationModule')
         $scope.contractId = $scope.nowContractInfo[8].line_value;
         if ($scope.data.contractInfo.lines[0].line.length < 2)
           $scope.noNextDataFlag = true;
-        $scope.showOperateButton = true;
-        if($scope.data.approvalAction.length == 0)
-          $scope.showOperateButton = false;
+        $scope.showOperateButton = ($scope.data.approvalAction.length != 0);
         contractDetailService.getEssence(essenceSuccess, $scope.contractId);
       };
 
@@ -149,7 +147,6 @@ angular.module('applicationModule')
         $scope.nowDesc = stageItem;
       };
 
-
       $scope.showProcessFlag = true;
 
       $scope.hideProcess = function() {
@@ -193,12 +190,9 @@ angular.module('applicationModule')
           cancelText: '取消',
           buttonClicked: function(index) {
             var key = $scope.data.approvalAction[index].action_key;
-            console.log($scope.message);
             if (key == '$TRANSPOND$') {
               if ($scope.transpondId == '') {
                 hmsPopup.showPopup('请选择转交人');
-              } else if ($scope.submitMessage.text == '') {
-                hmsPopup.showPopup('请输入转交原因');
                 return 0;
               } else {
                 contractDetailService.transpond(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, $scope.transpondId, $scope.submitMessage.text);
@@ -288,7 +282,6 @@ angular.module('applicationModule')
         success(result);
       }).error(function(response, status) {
         hmsPopup.showPopup(response);
-        console.log(response);
       });
 
     };
@@ -303,8 +296,7 @@ angular.module('applicationModule')
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        //hmsPopup.showPopup(response);
-        console.log(response);
+        hmsPopup.showPopup(response);
       });
     };
 
@@ -316,8 +308,7 @@ angular.module('applicationModule')
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        //hmsPopup.showPopup(response);
-        console.log(response);
+        hmsPopup.showPopup(response);
       });
 
     };
@@ -335,8 +326,7 @@ angular.module('applicationModule')
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        //hmsPopup.showPopup(response);
-        console.log(response);
+        hmsPopup.showPopup(response);
       });
 
     };
@@ -354,8 +344,7 @@ angular.module('applicationModule')
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        //hmsPopup.showPopup(response);
-        console.log(response);
+        hmsPopup.showPopup(response);
       });
 
     };

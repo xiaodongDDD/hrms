@@ -410,11 +410,12 @@
 }
 
 .contract-detail .desc-div .desc-item .desc-value{
-  height: 30px;
+  min-height: 30px;
   line-height: 30px;
   color: grey;
   float: right;
   text-align: right;
+  width: 60%;
 }
 
 .contract-detail .cover .cover-header{
