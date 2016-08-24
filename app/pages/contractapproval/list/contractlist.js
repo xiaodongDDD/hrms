@@ -28,6 +28,7 @@ angular.module('applicationModule')
     'contractListService',
     '$ionicScrollDelegate',
     '$ionicSlideBoxDelegate',
+    '$ionicHistory',
     function($scope,
       $state,
       $stateParams,
@@ -37,7 +38,8 @@ angular.module('applicationModule')
       baseConfig,
       contractListService,
       $ionicScrollDelegate,
-      $ionicSlideBoxDelegate) {
+      $ionicSlideBoxDelegate,
+      $ionicHistory) {
 
       $scope.list = [];
       $scope.listBackup = []; //备份列表数据，在筛选时使用。
@@ -178,6 +180,7 @@ angular.module('applicationModule')
           "submitterFilter": [],
         };
         $scope.type = title;
+        contractListService.setListType($scope.type);
 
         getTodoList(false);
       }
@@ -550,6 +553,7 @@ angular.module('applicationModule')
           document.getElementById('contractlist-div-subheader').style.top = '63px';
           document.getElementById('contractlist-div-slidebox').style.top = '63px';
         }
+        $scope.type = contractListService.getListType();
         if (contractListService.getRefreshWorkflowList().flag == true) {
           contractListService.setRefreshWorkflowList(false);
           if (baseConfig.debug) {
@@ -597,6 +601,11 @@ angular.module('applicationModule')
         $state.go('tab.contractDetail', { data: detail.originData })
       }
 
+      $scope.goBack = function() {
+        contractListService.setListType();
+        $ionicHistory.goBack();
+      }
+
     }
   ])
 
@@ -612,6 +621,20 @@ angular.module('applicationModule')
 
     var checkUserFlag = {
       flag: false
+    };
+
+    var listType = {
+      data: 'myStart_undo'
+    };
+
+    this.setListType = function(type) {
+      if (type) { //
+        listType.data = type;
+      }
+    }
+
+    this.getListType = function() {
+      return listType.data;
     }
 
     this.setRefreshWorkflowList = function(flag) {
