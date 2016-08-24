@@ -81,8 +81,8 @@ angular.module('applicationModule')
 
       //取初始化页面所需数据
       contractDetailService.check(httpSuccess,
-        $stateParams.data.activityId ? "" : $stateParams.data.activityId ,
-        $stateParams.data.procId ? "" : $stateParams.data.procId);
+        $stateParams.data.activityId ? $stateParams.data.activityId : "" ,
+        $stateParams.data.procId ? $stateParams.data.procId : "");
 
       //显示合同要素弹出框
       $scope.showEssenceDiv = function() {
