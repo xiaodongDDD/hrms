@@ -52,6 +52,7 @@ angular.module('applicationModule')
         $scope.fetchDataFlag = false;
         if ($scope.data.result == "E") {
           $ionicHistory.goBack();
+          console.log($scope.data.message);
           hmsPopup.showPopup($scope.data.message);
           return 0;
         }
@@ -79,7 +80,9 @@ angular.module('applicationModule')
       };
 
       //取初始化页面所需数据
-      contractDetailService.check(httpSuccess, $stateParams.data.activityId);
+      contractDetailService.check(httpSuccess,
+        $stateParams.data.activityId ? $stateParams.data.activityId : "" ,
+        $stateParams.data.procId ? $stateParams.data.procId : "");
 
       //显示合同要素弹出框
       $scope.showEssenceDiv = function() {
@@ -169,9 +172,10 @@ angular.module('applicationModule')
 
       //提交操作后的回掉
       var submitSuccess = function(response) {
+        console.log(response);
         if (response.result == "S") {
-          hmsPopup.showPopup('操作成功');
           $ionicHistory.goBack();
+          hmsPopup.showPopup('操作成功');
         } else {
           hmsPopup.showPopup(response.message);
         }
@@ -271,12 +275,14 @@ angular.module('applicationModule')
 
     var baseUrlZhong = "http://mobile-app.hand-china.com/hrmsv2/v2/api/handcontract";
 
-    this.check = function(success, activityId) {
+    this.check = function(success, activityId, procId) {
 
       var params = {
         userId: window.localStorage.empno,
         method: "processInfo",
-        activityId: activityId
+        activityId: activityId,
+        procInstId: procId,
+        procId: procId
       };
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
