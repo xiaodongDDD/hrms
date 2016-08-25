@@ -53,12 +53,10 @@ angular.module('applicationModule')
         $scope.fetchDataFlag = false;
         if ($scope.data.result == "E") {
           $ionicHistory.goBack();
-          console.log($scope.data.message);
           hmsPopup.showPopup($scope.data.message);
           return 0;
         }
         $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[0].line_values;
-        console.log($scope.data);
         //原date格式为 yyyy-MM-dd At hh:mm:ss ,拆分为两个字段并保存
         if ($scope.data.historyData) {
           for (var i = 0; i < $scope.data.historyData.length; i++) {
@@ -73,11 +71,9 @@ angular.module('applicationModule')
           }, 1000);
         }
         $scope.contractId = $scope.nowContractInfo[8].line_value;
-        console.log($scope.contractId);
         if ($scope.data.contractInfo.lines[0].line.length < 2)
           $scope.noNextDataFlag = true;
         $scope.showOperateButton = $scope.data.approvalAction ? true : false;
-        console.log($scope.showOperateButton + " " + $scope.data.approvalAction);
         contractDetailService.getEssence(essenceSuccess, $scope.contractId);
       };
 
@@ -88,7 +84,6 @@ angular.module('applicationModule')
 
       //显示合同要素弹出框
       $scope.showEssenceDiv = function() {
-        console.log($scope.essenceData);
         if ($scope.essenceData.result == "E") {
           hmsPopup.showPopup($scope.essenceData.message);
           return 0;
@@ -298,7 +293,6 @@ angular.module('applicationModule')
         };
       }
 
-      console.log(params);
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
