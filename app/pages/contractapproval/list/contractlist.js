@@ -541,7 +541,7 @@ angular.module('applicationModule')
         //从子页面返回时进入的
         else {
           console.log('从子页面返回时进入的');
-          if (contractListService.getItemRemoveFlag) {
+          if (contractListService.getItemRemoveFlag()) {
             $scope.list.splice($scope.enteringIndex, 1);
           }
           if ($scope.type != contractListService.getListType()) { //如果详情页要求返回时跳到别的分页里
