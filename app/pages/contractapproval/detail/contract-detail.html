@@ -22,7 +22,7 @@
 
   <div class="background"></div>
 
-  <ion-content overflow-scroll="true">
+  <ion-content>
 
     <div class="hint-div" ng-class="{true:'show'}[showHint]" ng-click="showHint = false">
       <img src="build/img/contract/arrow.png" class="hint-pic" />
@@ -112,7 +112,7 @@
 
   </ion-content>
 
-  <div class="trans-search" ng-show="showTransFlag" ng-class="{true:'show'}[showTransFlag]">
+  <div class="trans-search" ng-class="{'show':showTransFlag[2],'transHide':showTransFlag[1],'':showTransFlag[0]}">
     <div class="ios-header" ng-if="showIosHeader"></div>
     <div class="trans-header">
       <input class="search-input" type="text" placeholder="搜索" ng-model="searchKey" ng-change="shiftTranspond()" /><i class="iconn ion-android-search"></i>

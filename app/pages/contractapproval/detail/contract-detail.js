@@ -207,7 +207,7 @@ angular.module('applicationModule')
       };
 
       $scope.fetchTranspondData = false;
-      $scope.showTransFlag = false;
+      $scope.showTransFlag = [true,false,false];
       $scope.transponds = [];
       $scope.searchKey = "";
 
@@ -235,7 +235,20 @@ angular.module('applicationModule')
           $scope.fetchTranspondData = true;
           contractDetailService.getTranspond(transpondSuccess);
         }
-        $scope.showTransFlag = !$scope.showTransFlag;
+        if($scope.showTransFlag[0]){
+          $scope.showTransFlag[0] = false;
+          $scope.showTransFlag[2] = true;
+          return 0;
+        }
+        if($scope.showTransFlag[2]){
+          $scope.showTransFlag[2] = false;
+          $scope.showTransFlag[1] = true;
+          return 0;
+        }
+        if($scope.showTransFlag[1]){
+          $scope.showTransFlag[1] = false;
+          $scope.showTransFlag[2] = true;
+        }
       };
 
       //筛选符合搜索框输入条件的转交人
