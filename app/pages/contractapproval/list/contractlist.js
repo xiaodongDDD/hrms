@@ -271,8 +271,9 @@ angular.module('applicationModule')
 
         var filterCondition = dataFilterUtil().fetchFilterCondition();
         //post请求
-        contractListService.getTodoList('N', filterCondition.workflowId, $scope.type, $scope.pageNum, success, error);
-
+        $timeout(function() {
+          contractListService.getTodoList('N', filterCondition.workflowId, $scope.type, $scope.pageNum, success, error);
+        }, 550);
       };
 
       // 筛选列表，每次先从备份数据中拷贝一份，然后进行删除操作
