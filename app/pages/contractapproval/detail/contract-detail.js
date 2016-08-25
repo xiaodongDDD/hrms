@@ -29,7 +29,8 @@ angular.module('applicationModule')
     '$ionicActionSheet',
     'hmsPopup',
     'contractDetailService',
-    function($scope, $stateParams, $timeout, $ionicHistory, $ionicActionSheet, hmsPopup, contractDetailService) {
+    'contractListService',
+    function($scope, $stateParams, $timeout, $ionicHistory, $ionicActionSheet, hmsPopup, contractDetailService,contractListService) {
       $scope.nowContractInfoNum = 0;
       $scope.nowContractInfo = {};
       $scope.noNextDataFlag = false;
@@ -71,11 +72,12 @@ angular.module('applicationModule')
             window.localStorage.contractDetailHintFlag = "true";
           }, 1000);
         }
-        console.log($scope.nowContractInfo);
         $scope.contractId = $scope.nowContractInfo[8].line_value;
+        console.log($scope.contractId);
         if ($scope.data.contractInfo.lines[0].line.length < 2)
           $scope.noNextDataFlag = true;
-        $scope.showOperateButton = ($scope.data.approvalAction.length != 0);
+        $scope.showOperateButton = $scope.data.approvalAction ? true : false;
+        console.log($scope.showOperateButton + " " + $scope.data.approvalAction);
         contractDetailService.getEssence(essenceSuccess, $scope.contractId);
       };
 
@@ -86,6 +88,7 @@ angular.module('applicationModule')
 
       //显示合同要素弹出框
       $scope.showEssenceDiv = function() {
+        console.log($scope.essenceData);
         if ($scope.essenceData.result == "E") {
           hmsPopup.showPopup($scope.essenceData.message);
           return 0;
@@ -172,8 +175,8 @@ angular.module('applicationModule')
 
       //提交操作后的回掉
       var submitSuccess = function(response) {
-        console.log(response);
         if (response.result == "S") {
+          contractListService.removeItem();
           $ionicHistory.goBack();
           hmsPopup.showPopup('操作成功');
         } else {
@@ -267,23 +270,35 @@ angular.module('applicationModule')
 .service('contractDetailService', ['hmsHttp',
   'hmsPopup',
   'baseConfig',
+  'contractListService',
   function(hmsHttp,
     hmsPopup,
-    baseConfig) {
+    baseConfig,
+    contractListService) {
 
     var baseUrlTest = baseConfig.queryPath + '/handcontract';
 
-    var baseUrlZhong = "http://mobile-app.hand-china.com/hrmsv2/v2/api/handcontract";
-
     this.check = function(success, activityId, procId) {
 
-      var params = {
-        userId: window.localStorage.empno,
-        method: "processInfo",
-        activityId: activityId,
-        procInstId: procId,
-        procId: procId
-      };
+      var needActInstId = contractListService.getListType() == 'myTask_todo';
+      var params;
+
+      if(needActInstId){
+        params = {
+          userId: window.localStorage.empno,
+          method: "processInfoByAct",
+          actInstId: activityId
+        };
+      }
+      else{
+        params = {
+          userId: window.localStorage.empno,
+          method: "processInfoByProc",
+          procInstId: procId
+        };
+      }
+
+      console.log(params);
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
