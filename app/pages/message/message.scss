@@ -120,11 +120,11 @@
     }
 
     .message-item {
-      height: 78.5px;
-      padding-top: 15.5px;
-      padding-bottom: 20px;
-      padding-left: 15px;
-      padding-right: 12px;
+      height: 70.5px;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      padding-left: 8px;
+      padding-right: 8px;
       position: relative;
       .message-introduce {
         position: absolute;
@@ -181,6 +181,10 @@
           color: #9B9B9B;
           height: 18px;
           line-height: 18px;
+          display: block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
       .message-extro {
@@ -196,7 +200,7 @@
         }
         .message-qty {
           text-align: center;
-          margin-top: 8px;
+          margin-top: 6px;
           width: 45px;
           height: 20px;
           line-height: 20px;
@@ -274,4 +278,64 @@
     text-align: center;
   }
 
+}
+
+
+.messageDetail{
+  background: #f8f8f8;
+
+  .message-block{
+    margin:10px;
+
+    .message-time-line{
+      width: 110px;
+      font-size: 10px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      color: #6e6e6e;
+      //border:1px solid #e5e5e5;
+      //border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .message-content{
+      background: white;
+      border: 1px #e5e5e5 solid;
+      border-radius: 4px;
+      padding: 6px 8px;
+
+      .message-title{
+        color:#1D4D95;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-size: 16px;
+      }
+
+      .message-time{
+        height: 28px;
+        line-height: 28px;
+        color: #999999;
+      }
+
+      .message-item{
+        color: #6e6e6e;
+        border-bottom: 1px #cccccc dashed;
+        padding-top: 2px;
+        padding-bottom: 5px;
+      }
+
+      .message-detail{
+        height: 28px;
+        line-height: 28px;
+        color: #6e6e6e;
+        .no-padding{
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
+  }
 }

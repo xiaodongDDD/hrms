@@ -9,29 +9,42 @@
       <div class="workflow-filter">
         <a class="to-do-list" ng-click="fetchTodoList(false)"
            ng-class="{true: 'selected', false: 'no-selected'}[listStatus.todo.selected]">
-          待处理
+          待办
         </a>
         <a class="done-list" ng-click="fetchDoneList(false)"
            ng-class="{true: 'selected', false: 'no-selected'}[listStatus.done.selected]">
-          已处理
+          已办
+        </a>
+        <a class="mine-list" ng-click="fetchMineList(false)"
+           ng-class="{true: 'selected', false: 'no-selected'}[listStatus.mine.selected]">
+          我的
         </a>
       </div>
     </div>
-    <div class="buttons">
-      <button class="button button-clear" style="font-size: 26px">
-        <i class="ion-ios-help-outline"></i>
+    <div class="buttons" ng-click="changeBatchProcess()">
+      <button class="button button-clear" style="font-size: 16px">
+        <span ng-if="batchProcessFlag">取消</span>
+        <span ng-if="!batchProcessFlag">操作</span>
       </button>
     </div>
   </ion-header-bar>
   <ion-content delegate-handle="workflowListHandle" style="bottom:55px">
-    <ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
+
+    <ion-refresher on-refresh="refresh()"
+                   ng-if="!batchProcessFlag && !fetchDataFlag"
+                   pulling-text="正在刷新数据..."
+                   pulling-icon="ion-ios-loop">
     </ion-refresher>
-    <div class="hms-hide-content" ng-if="fetchDataFlag">
+
+    <div class="hms-hide-content" ng-if="!batchProcessFlag && fetchDataFlag">
       <hms-loading></hms-loading>
     </div>
-    <ion-list can-swipe="listStatus.todo.selected">
+
+    <ion-list can-swipe="listStatus.todo.selected && !batchProcessFlag">
       <ion-item class="workflow-list" ng-repeat="item in list">
         <hms-workflow-list ng-if="!fetchDataFlag&&!pullRefreshDataFlag"
+                           workflow-selected-flag='item.selectedFlag'
+                           workflow-show-checked-flag='item.showCheckedFlag'
                            workflow-title='item.title1'
                            workflow-icon='item.icon'
                            workflow-type='item.type'
@@ -41,6 +54,7 @@
                            workflow-submit='item.submit'
                            workflow-submit-person='item.submitPerson' ng-click="enterWorkflowDetail(item)">
         </hms-workflow-list>
+
         <ion-option-button class="hms-swipe-left-action">
           <div class="row approve-row" ng-click="workflowActionHandle.approveWorkflow(item)">
             <img class="status-img"
@@ -56,53 +70,19 @@
     <ion-infinite-scroll ng-if="loadMoreDataFlag" on-infinite="loadMoreData()"
                          distance="1%">
     </ion-infinite-scroll>
-    <!--<a class="workflow-list" ng-repeat="item in list">
-      <div class="workflow-list-logo">
-        <img src="build/img/application/profile@3x.png"/>
-      </div>
-      <div class="workflow-list-header">
-        Timesheet解冻申请
-      </div>
-      <div class="workflow-list-content">
-        <div class="row no-padding">
-          <div class="col col-90 no-padding">
-            <div class="row no-padding">
-              <div class="col col-33 no-padding color-type">
-                工作流类型
-              </div>
-              <div class="col col-67 no-padding color-content">
-                Timesheet解冻申请
-              </div>
-            </div>
-            <div class="row no-padding">
-              <div class="col col-33 no-padding color-type">
-                当前节点
-              </div>
-              <div class="col col-67 no-padding color-content">
-                项目经理审批
-              </div>
-            </div>
-            <div class="row no-padding">
-              <div class="col col-33 no-padding color-type">
-                提交人
-              </div>
-              <div class="col col-67 no-padding color-content">
-                成志唯
-              </div>
-            </div>
-          </div>
-          <div class="col col-10 no-padding col-center workflow-list-select">
-            <img src="build/img/workflow/select@3x.png"/>
-          </div>
-        </div>
-      </div>
-    </a>-->
   </ion-content>
-  <ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="true">
+  <ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="!batchProcessFlag">
     <div class="buttons">
       <button class="button button-clear filter-icon" ng-click="filterWorkFlowInfo()">
       </button>
       <div class="filter-text" ng-click="filterWorkFlowInfo()">筛选</div>
     </div>
   </ion-footer-bar>
+  <footer-select
+    style="bottom: 0px;"
+    ng-if="batchProcessFlag"
+    select-all-item="selectAll()"
+    pass-through="processBatchWorkflow(0)"
+    refuse="processBatchWorkflow(-1)"
+  </footer-select>
 </ion-view>

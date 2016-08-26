@@ -1041,9 +1041,7 @@ angular.module('applicationModule')
               hmsPopup.showPopup('请输入转交原因!');
               return false;
             }
-            else {
-              return true;
-            }
+            
             if ($scope.processExtroInfo.transmitPerson.code == '') {
               hmsPopup.showPopup('请输入转交人!');
               return false;

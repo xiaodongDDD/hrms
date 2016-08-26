@@ -17,10 +17,44 @@
     </hms-refresher>
 
     <ion-list show-delete="shouldShowDelete"
-              can-swipe="true" class="message-list-content">
-      <ion-item ng-repeat="message in messageList" class="message-list-item">
+              can-swipe="false" class="message-list-content">
+      <ion-item ng-repeat="message in notifyMessageList" class="message-list-item">
 
-        <div class="message-item" ng-click="chatWithYou(message)">
+        <div class="message-item" ng-click="messageHandle.notifyMessageDetail(message)">
+          <div class="message-introduce">
+            <img class="message-has-logo" src="{{message.imgUrl}}">
+            </img>
+          </div>
+          <div class="message-content">
+            <div class="message-title" ng-bind="message.name">
+            </div>
+            <div class="message-line" ng-bind="message.content">
+            </div>
+          </div>
+          <div class="message-extro">
+            <div class="message-date" ng-bind="message.time">
+            </div>
+            <div class="message-qty" ng-bind="message.count" ng-if="message.count != '0' ">
+            </div>
+          </div>
+        </div>
+        <ion-option-button class="button-assertive"
+                           ng-click="messageHandle.deleteMessage(message)" style="margin:0;padding: 0">
+          <div class="delete-button">
+            <div class="delete-item">
+              <i class="delete-icon ion-ios-trash-outline"></i>
+            </div>
+            <div class="delete-text">删除</div>
+          </div>
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+
+    <ion-list show-delete="shouldShowDelete"
+              can-swipe="true" class="message-list-content">
+      <ion-item ng-repeat="message in messageList" class="employeeMessageList">
+
+        <div class="message-item" ng-click="messageHandle.chatWithYou(message)">
           <div class="message-introduce">
             <img class="message-has-logo" src="{{message.imgUrl}}">
             </img>
@@ -52,13 +86,14 @@
 
   </ion-content>
 
-  <ion-content style="bottom:58px;" delegate-handle="employeeListHandle"
-               class="employee-list overflow-scroll  has-header has-tabs"
-               ng-if="showFilter">
+  <div style="bottom:58px;" delegate-handle="employeeListHandle"
+       class="employee-list overflow-scroll  has-header has-tabs"
+       ng-if="showFilter">
     <ion-list>
       <div class="search-result-item row"
            ng-repeat="i in employeeList">
-        <img class="human-img" ng-cloak ng-src="{{i.avatar | filterImg:i.gender}}" ng-click="messageHandle.chatWithNative(i)"/>
+        <img class="human-img" ng-cloak ng-src="{{i.avatar | filterImg:i.gender}}"
+             ng-click="messageHandle.chatWithNative(i)"/>
         <div class="col col-80 col-padding" ng-click="messageHandle.chatWithNative(i)">
           <div class="row name" ng-cloak>
             <span ng-bind="i.emp_name"></span>
@@ -81,5 +116,5 @@
         <ion-spinner icon="ios" class="spinner spinner-ios spinner-stable">
       </div>
     </div>
-  </ion-content>
+  </div>
 </ion-view>
