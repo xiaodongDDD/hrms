@@ -44,25 +44,45 @@ angular.module('applicationModule')
               workFLowListService,
               $ionicScrollDelegate) {
 
-      $scope.list = [];
+      //缓存工作流列表
       var cashList = [];
+
+      //每个页面分页的数据
+      var pageNumLimit = 10;
+
+      //当前所处的页面
+      var pageNum = 1;
+
+      //是否全选
+      $scope.selectAll = {flag: false};
+
+      //双向绑定工作流列表
+      $scope.list = [];
+
       $scope.fetchDataFlag = true;
+
       $scope.pullRefreshDataFlag = false;
+
       $scope.showDetailArrow = true;
+
+      //加载更多数据的标志
+      $scope.loadMoreDataFlag = false;
+
+      //批量审批功能按钮
+      $scope.batchProcessFlag = false;
+
+      //待办-已办-我的三个列表的切换
       $scope.listStatus = {
         todo: {
           selected: true
         },
         done: {
           selected: false
+        },
+        mine: {
+          selected: false
         }
       };
-
-      var pageNumLimit = 10;
-
-      $scope.loadMoreDataFlag = false;
-
-      var pageNum = 1;
 
       var filterOption = {
         "currentSelectType": "ALL",
@@ -72,164 +92,40 @@ angular.module('applicationModule')
         "workflowNameFilter": []
       };
 
-      var workflowDefaultIcon = 'build/img/application/profile@3x.png';
-      var workflowType = '申请名称';
-      var workflowNode = '当前节点';
-      var workflowPerson = '提交人';
-
       var refreshTodoList = function () {
         $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
         $scope.fetchDataFlag = true;
         $scope.pullRefreshDataFlag = false;
         $scope.listStatus.todo.selected = true;
         $scope.listStatus.done.selected = false;
+        $scope.listStatus.mine.selected = false;
         $timeout(function () {
           getTodoList(false);
-        }, 500);
+        }, 300);
       };
 
-      var showList = function () {
-        $timeout(
-          function () {
-            $scope.fetchDataFlag = false;
-          }, 100
-        );
-      };
-
-      var processTodoList = function (result) {
-        if (result.status == 'S') {
-          var list = result.unprocessedWorkflowList;
-          angular.forEach(list, function (data) {
-            var employeeImg = data.employee_img;
-            if (!employeeImg || employeeImg == "") {
-              employeeImg = workflowDefaultIcon;
-            }
-            var item = {
-              title1: data.workflow_name,
-              icon: employeeImg,
-              type: workflowType,
-              typeValue: data.instance_desc,
-              node: workflowNode,
-              nodeValue: data.current_node,
-              submit: workflowPerson,
-              submitPerson: data.employee_name,
-              workflowId: data.workflow_id,
-              instanceId: data.instance_id,
-              recordId: data.record_id,
-              nodeId: data.node_id,
-              canApprove: data.approve,
-              canBackTo: data.backTo,
-              canGoBack: data.goBack,
-              canRefuse: data.refuse,
-              canTransmit: data.toOther,
-              employeeCode: data.employee_code
-            };
-            $scope.list.push(item);
-          });
+      $scope.changeBatchProcess = function () {
+        if(!$scope.listStatus.todo.selected){
+          return;
         }
-        else {
-          hmsPopup.showShortCenterToast('获取审批列表失败,请退出页面重试获取或联系管理员!');
-        }
-      };
 
-      var processDoneList = function (result) {
-        if (result.status == 'S') {
-          var list = result.processedWorkflowList;
-          angular.forEach(list, function (data) {
-            var employeeImg = data.employee_img;
-            if (!employeeImg || employeeImg == "") {
-              employeeImg = workflowDefaultIcon;
-            }
-            var item = {
-              title1: data.workflow_name,
-              icon: employeeImg,
-              type: workflowType,
-              typeValue: data.instance_desc,
-              node: workflowNode,
-              nodeValue: data.status_name,
-              submit: workflowPerson,
-              submitPerson: data.created_by_name,
-              workflowId: data.workflow_id,
-              instanceId: data.instance_id,
-              employeeCode: data.employee_code
-            };
-            $scope.list.push(item);
-          });
+        if ($scope.batchProcessFlag) {
+          $scope.batchProcessFlag = false;
         } else {
-          hmsPopup.showShortCenterToast('获取审批列表失败,请退出页面重试获取或联系管理员!');
+          $scope.batchProcessFlag = true;
         }
-      };
 
-      var getTodoList = function (pullRefresh) {
-        $scope.loadMoreDataFlag = false;
-        pageNum = 1;
-        $scope.list = [];
-        if (pullRefresh) {
-          $scope.fetchDataFlag = false;
-          $scope.pullRefreshDataFlag = true;
-        } else {
-          $scope.fetchDataFlag = true;
-        }
-        var success = function (result) {
-          processTodoList(result);
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-          if (!result.unprocessedWorkflowList || result.unprocessedWorkflowList.length == pageNumLimit) {
-            $scope.loadMoreDataFlag = true;
-          }
-          showList();
-        };
-        var error = function (result) {
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-          showList();
-        };
-        $timeout(function () {
-          var filterCondition = dataFilterUtil().fetchFilterCondition();
-          workFLowListService.getTodoList('N', filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
-        }, 0);
-      };
-
-      var getDoneList = function (pullRefresh) {
-        $scope.loadMoreDataFlag = false;
-        pageNum = 1;
-        $scope.list = [];
-        cashList = [];
-        if (pullRefresh) {
-          $scope.fetchDataFlag = false;
-          $scope.pullRefreshDataFlag = true;
-        } else {
-          $scope.fetchDataFlag = true;
-        }
-        var success = function (result) {
-          processDoneList(result);
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-          if (!result.processedWorkflowList || result.processedWorkflowList.length == pageNumLimit) {
-            $scope.loadMoreDataFlag = true;
-          }
-          showList();
-        };
-        var error = function (result) {
-          if (pullRefresh) {
-            $scope.pullRefreshDataFlag = false;
-            $scope.$broadcast('scroll.refreshComplete');
-          }
-          showList();
-        }
-        $timeout(function () {
-          var filterCondition = dataFilterUtil().fetchFilterCondition();
-          workFLowListService.getTodoList('Y', filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
-        }, 0);
+        angular.forEach($scope.list, function (data) {
+          data.selectedFlag = false;
+          data.showCheckedFlag = $scope.batchProcessFlag;
+        });
       };
 
       $scope.fetchTodoList = function (refreshFlag) {
+        if($scope.batchProcessFlag){
+          return;
+        }
+
         if (baseConfig.debug) {
           console.log('$scope.fetchTodoList ');
         }
@@ -240,11 +136,13 @@ angular.module('applicationModule')
         $timeout(function () {
 
           if ($scope.listStatus.todo.selected && !refreshFlag) {
+
           } else {
             if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
               $scope.listStatus.todo.selected = true;
               $scope.listStatus.done.selected = false;
-              getTodoList(false);
+              $scope.listStatus.mine.selected = false;
+              workFLowListService.getTodoListQuery($scope, pageNum, cashList, false, dataFilterUtil());
               if (!refreshFlag) {
                 dataFilterUtil().query();
               }
@@ -254,6 +152,11 @@ angular.module('applicationModule')
       };
 
       $scope.fetchDoneList = function (refreshFlag) {
+
+        if($scope.batchProcessFlag){
+          return;
+        }
+
         if (!refreshFlag) {
           dataFilterUtil().clearFilterCondition();
         }
@@ -264,7 +167,8 @@ angular.module('applicationModule')
             if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
               $scope.listStatus.done.selected = true;
               $scope.listStatus.todo.selected = false;
-              getDoneList(false);
+              $scope.listStatus.mine.selected = false;
+              workFLowListService.getDoneListQuery($scope, pageNum, cashList, false, dataFilterUtil());
               if (!refreshFlag) {
                 dataFilterUtil().query();
               }
@@ -273,52 +177,62 @@ angular.module('applicationModule')
         }, 100);
       };
 
-      var loadMoreFetchTodoList = function () {
-        var success = function (result) {
-          processTodoList(result);
-          if (result.unprocessedWorkflowList.length < pageNumLimit) {
-            $scope.loadMoreDataFlag = false;
-          }
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-        };
-        var error = function (result) {
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-        };
-        var filterCondition = dataFilterUtil().fetchFilterCondition();
-        workFLowListService.getTodoList('N', filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
-      };
+      $scope.fetchMineList = function (refreshFlag) {
 
-      var loadMoreFetchDoneList = function () {
-        var success = function (result) {
-          processDoneList(result);
-          if (result.processedWorkflowList.length < pageNumLimit) {
-            $scope.loadMoreDataFlag = false;
-          }
-          $scope.$broadcast('scroll.infiniteScrollComplete');
+        if($scope.batchProcessFlag){
+          return;
+        }
 
-        };
-        var error = function (result) {
-          $scope.$broadcast('scroll.infiniteScrollComplete');
-        };
-        var filterCondition = dataFilterUtil().fetchFilterCondition();
-        workFLowListService.getTodoList('Y', filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
+        if (!refreshFlag) {
+          dataFilterUtil().clearFilterCondition();
+        }
+        $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
+        $timeout(function () {
+          if ($scope.listStatus.mine.selected && !refreshFlag) {
+          } else {
+            if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+              $scope.listStatus.mine.selected = true;
+              $scope.listStatus.done.selected = false;
+              $scope.listStatus.todo.selected = false;
+              workFLowListService.getMineListQuery($scope, pageNum, cashList, false, dataFilterUtil());
+              if (!refreshFlag) {
+                dataFilterUtil().query();
+              }
+            }
+          }
+        }, 100);
       };
 
       $scope.loadMoreData = function () {
         pageNum = pageNum + 1;
         if ($scope.listStatus.done.selected) {
-          loadMoreFetchDoneList();
+          workFLowListService.loadMoreFetchDoneList($scope, dataFilterUtil(), pageNum);
+        } else if ($scope.listStatus.todo.selected) {
+          workFLowListService.loadMoreFetchTodoList($scope, dataFilterUtil(), pageNum);
         } else {
-          loadMoreFetchTodoList();
+          workFLowListService.loadMoreFetchMineList($scope, dataFilterUtil(), pageNum);
         }
       };
 
       $scope.enterWorkflowDetail = function (detail) {
-        var processedFlag = {value: false};
-        if ($scope.listStatus.done.selected) {
-          processedFlag.value = true;
+        if ($scope.batchProcessFlag) {
+          //批量审批
+          if (detail.selectedFlag) {
+            detail.selectedFlag = false;
+          } else {
+            detail.selectedFlag = true;
+          }
+        } else {
+          var processedFlag = {value: false};
+          if ($scope.listStatus.done.selected || $scope.listStatus.mine.selected) {
+            processedFlag.value = true;
+          }
+          $state.go('tab.workflow-detail', {
+            "detail": detail,
+            "processedFlag": processedFlag,
+            "type": "WORKFLOWDETAIL"
+          });
         }
-        $state.go('tab.workflow-detail', {"detail": detail, "processedFlag": processedFlag, "type": "WORKFLOWDETAIL"})
       }
 
       $ionicModal.fromTemplateUrl('build/pages/public/modal/hms-filter-modal.html', { //筛选modal
@@ -332,20 +246,98 @@ angular.module('applicationModule')
       };
 
       $scope.refresh = function () {
-        if (!$scope.fetchDataFlag) {
+        if (!$scope.batchProcessFlag && !$scope.fetchDataFlag) {
           dataFilterUtil().clearFilterCondition();
           $scope.list = [];
           $scope.$apply();
           $timeout(function () {
             if ($scope.listStatus.todo.selected) {
-              getTodoList(true);
+              workFLowListService.getTodoListQuery($scope, pageNum, cashList, true, dataFilterUtil());
+            } else if ($scope.listStatus.done.selected) {
+              workFLowListService.getDoneListQuery($scope, pageNum, cashList, true, dataFilterUtil());
             } else {
-              getDoneList(true);
+              workFLowListService.getMineListQuery($scope, pageNum, cashList, true, dataFilterUtil());
             }
           }, 0);
         } else {
           $scope.$broadcast('scroll.refreshComplete');
         }
+      };
+
+      //全选工作流
+      $scope.selectAll = function () {
+        if ($scope.selectAll.flag) {
+          $scope.selectAll.flag = false;
+        }
+        else {
+          $scope.selectAll.flag = true;
+        }
+        angular.forEach($scope.list, function (data) {
+          data.selectedFlag = $scope.selectAll.flag;
+        });
+      };
+
+
+      //全部处理
+      $scope.processBatchWorkflow = function (action) {
+        var approveList = [];
+        angular.forEach($scope.list,function (data) {
+          if(data.selectedFlag){
+            var approveItem = {
+              "p_record_id": data.recordId + ""
+            }
+            approveList.push(approveItem);
+          }
+        });
+
+        if(approveList.length == 0){
+          hmsPopup.showPopup('请至少选择一条要审批的工作流!');
+          return;
+        }
+
+        if(baseConfig.debug){
+          console.log('processBatchWorkflow.approveList ' + angular.toJson(approveList))
+        }
+
+        var approveListJson = {"approve_list": approveList};
+        var comment = '移动HRMS批量拒绝';
+        if(action == 0){
+          comment = '移动HRMS批量审批';
+        }
+        var params =
+        {
+          "params": {
+            "p_approve_flag": action + "",
+            "p_comment": comment,
+            "p_employee_number": window.localStorage.empno,
+            "p_param_json": JSON.stringify(approveListJson)
+          }
+        }
+
+        var success = function (result) {
+          if(result.status == 'S'){
+            hmsPopup.showPopup('批量处理工作流成功!');
+            $scope.batchProcessFlag = false;
+            $scope.fetchTodoList(true);
+          }else{
+            hmsPopup.showPopup('批量处理工作流失败!');
+          }
+        };
+
+        var error = function(){
+        };
+
+        var submit = function (buttonIndex) {
+          if (baseConfig.debug) {
+            console.log('You selected button ' + buttonIndex);
+          }
+          if (buttonIndex == 1) {
+            hmsPopup.showLoading('批量处理工作流中');
+            workFLowListService.batchProcessWorkflow(success,error,params);
+          } else {
+          }
+        }
+        hmsPopup.confirm("是否确认批量处理工作流?", "", submit);
       };
 
       var submitAction = function (actionType, item) {
@@ -580,13 +572,14 @@ angular.module('applicationModule')
           workFLowListService.get_workflow_filter(success, error, processedFlag);
 
         };
+
         return self;
       };
 
       $timeout(function () {
-        getTodoList(false);
+        workFLowListService.getTodoListQuery($scope, pageNum, cashList, false, dataFilterUtil());
         dataFilterUtil().query();
-      }, 400);
+      }, 300);
 
       $scope.$on('$ionicView.enter', function (e) {
         if (baseConfig.debug) {

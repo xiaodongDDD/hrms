@@ -129,7 +129,6 @@ HmsModule
       '</div>' +
       '</div>',
       link: function ($scope, $element, $attrs, ctrls) {
-
         // JS Scrolling uses the scroll controller
         var scrollCtrl = ctrls[0],
           refresherCtrl = ctrls[1];
@@ -169,7 +168,7 @@ HmsModule
         isOverscrolling = false,
         dragOffset = 0,
         lastOverscroll = 0,
-        ptrThreshold = 81, //设置下拉刷新的长度
+        ptrThreshold = 93, //设置下拉刷新的长度
         activated = false,
         scrollTime = 500,
         startY = null,
@@ -539,12 +538,13 @@ HmsModule
         //changeSvgLines(5);
         $scope.pullingText = '';
         for (var i = 0; i < 12; i++) {
-          if (-distance >= 45 + (i * 3) && -distance <= 45 + (i + 1) * 4) {
+          if (-distance >= 45 + (i * 4) && -distance <= 45 + ((i + 1) * 4)) {
             changeSvgLines(i + 1);
           }
         }
         $scope.pullingText = '下拉刷新';
-        if (-distance >= 80) {
+        if (-distance >= 90) {
+          changeSvgLines(12);
           $scope.pullingText = '松开下拉刷新';
         }
         $scope.$apply();
@@ -567,6 +567,7 @@ HmsModule
         // give tail 150ms to finish
         $timeout(function () {
           // deactivateCallback
+          initSvgLine();
           $element.removeClass('active refreshing refreshing-tail');
           if (activated) activated = false;
         }, 150);
@@ -591,7 +592,6 @@ HmsModule
         if(baseConfig.debug){
           console.log('hmsRefresherCtrl.show ');
         }
-        initSvgLine();
         // showCallback
         $element[0].classList.remove('invisible');
       }
@@ -600,6 +600,7 @@ HmsModule
         if(baseConfig.debug){
           console.log('hmsRefresherCtrl.hide ');
         }
+        initSvgLine();
         // showCallback
         $element[0].classList.add('invisible');
       }
@@ -608,6 +609,7 @@ HmsModule
         if(baseConfig.debug){
           console.log('hmsRefresherCtrl.tail ');
         }
+        initSvgLine();
         // tailCallback
         $element[0].classList.add('refreshing-tail');
       }

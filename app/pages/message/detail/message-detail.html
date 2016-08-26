@@ -1,0 +1,50 @@
+<ion-view view-title="消息列表" class="messageDetail">
+  <ion-header-bar align-title="center" style="">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()" style="color: #1D4D95">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title" ng-bind="detailTitle"></h1>
+    <div class="buttons">
+      <button class="button button-clear" style="font-size: 26px">
+        <i class="ion-ios-help-outline"></i>
+      </button>
+    </div>
+  </ion-header-bar>
+  <div class="bar bar-subheader"
+       style="padding:0px;height:1px; background: -webkit-linear-gradient(left,#1D4D95,#6BB9F0)"></div>
+  <ion-content>
+    <div class="message-block" ng-repeat="messageDetail in messageDetailList">
+      <div class="message-time-line">
+        星期二 上午11:48
+      </div>
+      <div class="message-content">
+        <div class="message-title" ng-bind="messageDetail.messageContent">
+        </div>
+        <div class="message-time">
+          8月23日
+        </div>
+        <div class="message-item">
+          <div class="message-item-line" ng-repeat="item in messageDetail.messageDetailDesc">
+            {{item.name}} : {{item.value}}
+          </div>
+        </div>
+        <div class="message-detail">
+          <div class="row no-padding">
+            <div class="col col-90 no-padding">
+              查看详细信息
+            </div>
+            <div class="col col-10 no-padding" style="text-align: right;font-size: 16px;color: #D2E0E6">
+              <i class="ion-ios-arrow-right"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <ion-infinite-scroll ng-if="loadMoreDataFlag" on-infinite="loadMoreData()"
+                         distance="1%">
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

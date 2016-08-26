@@ -16,6 +16,7 @@ angular.module('messageModule')
     'baseConfig',
     'hmsHttp',
     'hmsPopup',
+    'messageService',
     'contactService',
     function ($scope,
               $state,
@@ -29,17 +30,63 @@ angular.module('messageModule')
               baseConfig,
               hmsHttp,
               hmsPopup,
+              messageService,
               contactService) {
 
+      //消息列表
       $scope.messageList = [];
-      var fetchData = true;
+
+      //是否弹出员工查询过滤层
       $scope.showFilter = false;
-      var page = 1;
+
+      //员工查询界面加载更多数据标志
       $scope.loadMoreFlag = false;
+
       $scope.empFilterValue = '';
-      $scope.employeeList = [];
+
+      //即时通讯消息列表
+      $scope.employeeMessageList = [];
+
+      //特殊数据消息列表
+      $scope.notifyMessageList = [
+        {
+          "name": "待办事项",
+          "content": "",
+          "imgUrl": "build/img/message/todo@3x.png",
+          "count": "0",
+          "type": "work_flow",
+          "time": "3月20日"
+        },
+        {
+          "name": "住宿申请",
+          "content": "",
+          "imgUrl": "build/img/message/dorm@3x.png",
+          "count": "0",
+          "type": "room",
+          "time": "3月20日"
+        },
+        {
+          "name": "重要推送",
+          "content": "",
+          "imgUrl": "build/img/message/timesheet@3x.png",
+          "count": "0",
+          "type": "share",
+          "time": "3月20日"
+        },
+        {
+          "name": "公司公告",
+          "content": "",
+          "imgUrl": "build/img/message/announcement@3x.png",
+          "count": "0",
+          "type": "",
+          "time": "3月20日"
+        }
+      ];
 
       $scope.loadingMoreFlag = false;
+
+      //分页
+      var page = 1;
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
@@ -48,77 +95,27 @@ angular.module('messageModule')
         }
       });
 
-      $scope.deleteMessage = function (message) {
-        var success = function () {
-          var index = $scope.messageList.indexOf(message);
-          $scope.messageList.splice(index, 1);
-          $scope.$apply();
-        };
-        var error = function () {
-        };
-        HandIMPlugin.deleteConversationList(success, error, message.employee);
-      };
-
       document.addEventListener('IMPush.openNotification', function (result) {
         console.log('IMPush.openNotification result ' + angular.toJson(result));
         if (result && result.message && angular.isArray(result.message)) {
-          getMessage(result);
+          messageService.getEmployeeMessageList($scope, result);
         }
       }, false);
 
-      var getMessage = function (result) {
-        var userIcon;
-        var userName;
-        $scope.messageList = [];
-        angular.forEach(result.message, function (data) {
-          userIcon = data.message.userIcon;
-          userName = data.message.userName;
-          if (!userName || userName == '') {
-            userIcon = '';
-            userName = data.message.sendId;
-          }
-          var item = {
-            "name": userName,
-            "content": data.message.content,
-            "imgUrl": userIcon,
-            "count": data.message.messageNum,
-            "employee": data.message.sendId,
-            "time": data.message.sendTime
-          };
-          $scope.messageList.push(item);
-        });
-        $scope.$apply();
-      };
-
-      var getMessageList = function () {
+      var getEmployeeMessageList = function () {
         if (baseConfig.debug) {
           console.log('in getMessageList');
         }
-        if (!angular.isUndefined(HandIMPlugin)) {
+        if (baseConfig.isMobilePlatform) {
           HandIMPlugin.returnConversationList(function success(result) {
             if (baseConfig.debug) {
               console.log('returnConversationList result ' + angular.toJson(result));
             }
             var needFresh = true;
 
-            /*var needFresh = false;
-             if (result.message.length != $scope.messageList.length) {
-             needFresh = true;
-             }
-             angular.forEach(result.message, function (data, i) {
-             if ($scope.messageList[i]) {
-             if (data.message.sendId == $scope.messageList[i].employee && data.message.messageNum == $scope.messageList[i].count) {
-             } else {
-             needFresh = true;
-             }
-             } else {
-             needFresh = true;
-             }
-             });*/
-
             if (needFresh) {
               if (result && result.message && angular.isArray(result.message)) {
-                getMessage(result);
+                messageService.getEmployeeMessageList($scope, result);
               }
             }
             $scope.$broadcast("scroll.refreshComplete");
@@ -135,31 +132,20 @@ angular.module('messageModule')
       //  getMessageList();
       //}, 1000);
 
-      function dealCommonLinkMan(newObject) { //存储常用联系人最多15个
-        storedb(LINK_MAN).insert(newObject, function (err) {
-          if (!err) {
-            $scope.customContactsInfo = unique_better(storedb(LINK_MAN).find(), 'employeeNumber');
-          } else {
-            hmsPopup.showShortCenterToast(err);
-          }
-        });
-        if ($scope.customContactsInfo.length > 15) {
-          $scope.customContactsInfo = $scope.customContactsInfo.slice(0, 15);
-        }
-      };
-
       $scope.messageHandle = {
         blur: function () {
           if (baseConfig.debug) {
             console.log('messageHandle.blur');
           }
         },
+
         focus: function () {
           if (baseConfig.debug) {
             console.log('messageHandle.focus');
           }
           $scope.showFilter = true;
         },
+
         cancel: function () {
           $scope.showFilter = false;
           $scope.employeeList = [];
@@ -200,115 +186,37 @@ angular.module('messageModule')
               if (baseConfig.debug) {
                 warn(btnIndex);
               }
-              if (btnIndex == 1) {
-                window.location.href = "tel:" + 88888888888; //不明觉厉--
-                window.location.href = "tel:" + baseInfo.mobil.replace(/\s+/g, "");
-                var imgUrl = baseInfo.avatar;
-                if (baseInfo.avatar != '' || baseInfo.avatar) {
-                } else {
-                  if (baseInfo.gender == "男") {//根据性别判定头像男女
-                    imgUrl = "build/img/myInfo/man-portrait.png";
-                  } else if (baseInfo.gender == "女") {
-                    imgUrl = "build/img/myInfo/woman-portrait.png";
-                  }
-                }
-
-                var employeeBaseInfo = {
-                  tel: baseInfo.mobil.replace(/\s+/g, ""),
-                  name: baseInfo.emp_name,
-                  employeeNumber: baseInfo.emp_code,
-                  imgUrl: imgUrl
-                };
-                if (employeeBaseInfo.name) {
-                  dealCommonLinkMan(employeeBaseInfo);
-                }
-                return true;
-              } else if (btnIndex == 2) {
-                contactService.contactLocal(baseInfo);
-                return true;
-              }
+              messageService.contactPerson($scope, baseInfo, btnIndex);
             });
         },
 
-        search: function (loadMoreFlag) {
-          if (!$scope.empFilterValue || $scope.empFilterValue == '') {
-            return;
+        deleteMessage: function (message) {
+          messageService.deletePluginMessage($scope, message);
+        },
+
+        chatWithYou: function (message) {
+          if (baseConfig.debug) {
+            console.log('message ' + angular.toJson(message));
           }
-          if (!loadMoreFlag) {
-            page = 1;
-            $scope.employeeList = [];
-            $scope.loadMoreFlag = false;
-            $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
-          } else {
-            $scope.loadingMoreFlag = true;
-            page = page + 1;
-          }
-          var url = baseConfig.queryPath + '/staff/query';
-          var params = {
-            "key": $scope.empFilterValue + "",
-            "page": page + "",
-            "pageSize": "30"
+          var emp = {
+            "friendId": message.employee,
+            "friendName": message.name,
+            "friendIcon": message.imgUrl
           };
+          imService.toNativeChatPage(emp);
 
-          hmsHttp.post(url, params).success(function (response) {
-            if (response.success == true) {
-              if (response.total && response.total > 0) {
-                angular.forEach(response.rows, function (data) {
-                  $scope.employeeList.push(data);
-                });
+          $timeout(function () {
+            getMessageList();
+          }, 1000);
+        },
 
-                if (response.total == 30) {
-                  $scope.loadMoreFlag = true;
-                  $scope.loadingMoreFlag = false;
-                }
-                else {
-                  $scope.loadMoreFlag = false;
-                }
-                $ionicScrollDelegate.$getByHandle('employeeListHandle').resize();
-              }
-              else {
-                $scope.loadMoreFlag = false;
-              }
-            }
-            else {
-              $scope.loadMoreFlag = false;
-            }
-            if (loadMoreFlag) {
-              $scope.$broadcast('scroll.infiniteScrollComplete');
-            }
-          }).error(function (error) {
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-          });
+        search: function (loadMoreFlag) {
+          messageService.searchEmployee($scope,page,loadMoreFlag);
+        },
+
+        notifyMessageDetail: function (messageDetail) {
+          $state.go('tab.message-detail',{"messageDetail": messageDetail});
         }
-      };
-
-      /*$scope.messageList = [
-       {
-       "name": "11111",
-       "content": "11111",
-       "imgUrl": "11111",
-       "count": "11111",
-       "employee": "11111",
-       "time": "111111111111111111111111"
-       }
-       ];*/
-
-      var userInfo = {};
-
-      $scope.chatWithYou = function (message) {
-        if (baseConfig.debug) {
-          console.log('message ' + angular.toJson(message));
-        }
-        var emp = {
-          "friendId": message.employee,
-          "friendName": message.name,
-          "friendIcon": message.imgUrl
-        };
-        imService.toNativeChatPage(emp);
-
-        $timeout(function () {
-          getMessageList();
-        }, 1000);
       };
 
       $scope.talk = function (message) {
@@ -317,18 +225,26 @@ angular.module('messageModule')
       };
 
       $scope.refresh = function () {
-        getMessageList();
+        getEmployeeMessageList();
+        messageService.getNotifyMessageList($scope);
       };
 
-      console.log('messageCtrl.enter');
+      if(baseConfig.debug) {
+        console.log('messageCtrl.enter');
+      }
 
       $scope.$on('$ionicView.enter', function (e) {
-        getMessageList();
-        console.log('messageCtrl.$ionicView.enter');
+        getEmployeeMessageList();
+        messageService.getNotifyMessageList($scope);
+        if(baseConfig.debug) {
+          console.log('messageCtrl.$ionicView.enter');
+        }
       });
 
       $scope.$on('$destroy', function (e) {
-        console.log('messageCtrl.$destroy');
+        if(baseConfig.debug) {
+          console.log('messageCtrl.$destroy');
+        }
         document.removeEventListener('IMPush.openNotification', function (result) {
         }, false);
       });

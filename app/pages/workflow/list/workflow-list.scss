@@ -29,9 +29,10 @@ $workflow-gray-line: #D2D2D2;
     .to-do-list {
       border: 1px solid white;
       float: left;
-      width: 76px;
-      height: 29px;
-      line-height: 29px;
+      width: 52px;
+      margin-top: 2px;
+      height: 26px;
+      line-height: 26px;
       border-bottom-left-radius: 15px;
       border-top-left-radius: 15px;
       font-size: 13px;
@@ -41,9 +42,21 @@ $workflow-gray-line: #D2D2D2;
       border-bottom: 1px solid white;
       border-right: 1px solid white;
       float: left;
-      width: 76px;
-      height: 29px;
-      line-height: 29px;
+      margin-top: 2px;
+      width: 52px;
+      height: 26px;
+      line-height: 26px;
+      font-size: 13px;
+    }
+    .mine-list {
+      border-top: 1px solid white;
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
+      float: left;
+      margin-top: 2px;
+      width: 52px;
+      height: 26px;
+      line-height: 26px;
       border-bottom-right-radius: 15px;
       border-top-right-radius: 15px;
       font-size: 13px;
@@ -57,6 +70,7 @@ $workflow-gray-line: #D2D2D2;
       height: 55px;
       width: 85px;
       position: absolute;
+      top:20px;
       padding: 0px 0px 0px 5px;
     }
     .approve-row.activated {
@@ -68,7 +82,7 @@ $workflow-gray-line: #D2D2D2;
       height: 55px;
       width: 85px;
       position: absolute;
-      margin-top: 55%;
+      top:85px;
       padding: 0px 0px 0px 5px;
     }
     .refuse-row.activated {

@@ -33,6 +33,9 @@ angular.module('applicationModule')
       }
     };
 
+
+    console.log('navigator.userAgent  ' + navigator.userAgent )
+
     $scope.changeSlippingSetting = function() {
       if ($scope.slippingEnableFlag == true) {
         $scope.slippingEnableFlag = false;
@@ -90,6 +93,7 @@ angular.module('applicationModule')
         destUrl: "",
       }]
     }];
+
     var successCheckContract = function(result) {
       var indexRow = 1; //第二行
       var indexCol = 3; //第四列
