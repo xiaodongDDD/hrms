@@ -224,12 +224,17 @@ angular.module('applicationModule')
           }
         } else {
           var processedFlag = {value: false};
+          var myPrsonalApplicationFlag = false;
           if ($scope.listStatus.done.selected || $scope.listStatus.mine.selected) {
             processedFlag.value = true;
+          }
+          if ($scope.listStatus.mine.selected) {
+            myPrsonalApplicationFlag = true;
           }
           $state.go('tab.workflow-detail', {
             "detail": detail,
             "processedFlag": processedFlag,
+            "myPrsonalApplicationFlag": myPrsonalApplicationFlag,
             "type": "WORKFLOWDETAIL"
           });
         }
@@ -388,6 +393,9 @@ angular.module('applicationModule')
         },
         rejectWorkflow: function (item) {
           submitAction('-1', item);
+        },
+        cancelWorkflow: function (item) {
+          workFLowListService.cancelMyWorkflow(item.instanceId,item);
         }
       };
 

@@ -99,10 +99,10 @@ angular.module('applicationModule')
         };
 
         var processMineList = function (myscope, result) {
-          if (result.status == 'S') {
-            var list = result.processedWorkflowList;
+          if (result.returncode == 'S') {
+            var list = result.returndata;
             angular.forEach(list, function (data) {
-              var employeeImg = data.employee_img;
+              var employeeImg = '';// data.employee_img;
               if (!employeeImg || employeeImg == "") {
                 employeeImg = workflowDefaultIcon;
               }
@@ -119,7 +119,9 @@ angular.module('applicationModule')
                 submitPerson: data.created_by_name,
                 workflowId: data.workflow_id,
                 instanceId: data.instance_id,
-                employeeCode: data.employee_code
+                employeeCode: window.localStorage.empno,
+                allow_cancel: data.allow_cancel,
+                status: data.status
               };
               myscope.list.push(item);
             });
@@ -147,15 +149,13 @@ angular.module('applicationModule')
           });
         };
 
-        var getMineListService = function (flag, worklfowId, submitterId, page, success, error) {
-          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list_v2";
+        var getMineListService = function (worklfowId, submitterId, page, success, error) {
+          var url = baseConfig.businessPath + "/wfl_per_application/get_personal_applications";
           var params = {
             'params': {
-              "p_employee_code": window.localStorage.empno,
-              "p_flag": flag + "",
-              "p_submitter_key": submitterId,
-              "p_workflow_key": worklfowId,
-              "p_page": page
+              "p_employee_number": window.localStorage.empno,
+              "p_page": page,
+              "p_page_size": 10
             }
           };
           hmsHttp.post(url, params).success(function (result) {
@@ -185,7 +185,7 @@ angular.module('applicationModule')
             myscope.fetchDataFlag = true;
           }
           var success = function (result) {
-            processTodoList(myscope,result);
+            processTodoList(myscope, result);
             if (pullRefresh) {
               myscope.pullRefreshDataFlag = false;
               myscope.$broadcast('scroll.refreshComplete');
@@ -274,13 +274,13 @@ angular.module('applicationModule')
           }
           $timeout(function () {
             var filterCondition = dataFilterUtil.fetchFilterCondition();
-            getTodoListService('Y', filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
+            getMineListService(filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
           }, 0);
         };
 
-        this.loadMoreFetchTodoList = function (myscope,dataFilterUtil,pageNum) {
+        this.loadMoreFetchTodoList = function (myscope, dataFilterUtil, pageNum) {
           var success = function (result) {
-            processTodoList(myscope,result);
+            processTodoList(myscope, result);
             if (result.unprocessedWorkflowList.length < pageNumLimit) {
               myscope.loadMoreDataFlag = false;
             }
@@ -293,7 +293,7 @@ angular.module('applicationModule')
           getTodoListService('N', filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
         };
 
-        this.loadMoreFetchDoneList = function (myscope,dataFilterUtil,pageNum) {
+        this.loadMoreFetchDoneList = function (myscope, dataFilterUtil, pageNum) {
           var success = function (result) {
             processDoneList(result);
             if (result.processedWorkflowList.length < pageNumLimit) {
@@ -309,10 +309,10 @@ angular.module('applicationModule')
           getTodoListService('Y', filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
         };
 
-        this.loadMoreFetchMineList = function (myscope,dataFilterUtil,pageNum) {
+        this.loadMoreFetchMineList = function (myscope, dataFilterUtil, pageNum) {
           var success = function (result) {
-            processMineList(result);
-            if (result.processedWorkflowList.length < pageNumLimit) {
+            processMineList(myscope, result);
+            if (result.returndata.length < pageNumLimit) {
               myscope.loadMoreDataFlag = false;
             }
             myscope.$broadcast('scroll.infiniteScrollComplete');
@@ -322,7 +322,7 @@ angular.module('applicationModule')
             myscope.$broadcast('scroll.infiniteScrollComplete');
           };
           var filterCondition = dataFilterUtil.fetchFilterCondition();
-          getMineListService('Y', filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
+          getMineListService(filterCondition.workflowId, filterCondition.submitterId, pageNum, success, error);
         };
 
         this.getWorkflowDetail = function (success, workflowId, recordId, submitFlag) {
@@ -586,6 +586,34 @@ angular.module('applicationModule')
           }).error(function (response) {
             hmsPopup.hideLoading();
             error(response);
+          });
+        };
+
+        //退回我的申请
+        this.cancelMyWorkflow = function (p_instance_id,detail) {
+          var url = baseConfig.businessPath + "/wfl_per_application/wfl_batch_back";
+          var backList = {
+            "p_back_list": [{"p_instance_id": p_instance_id}]
+          };
+          var params = {
+            "params": {
+              "p_employee_number": window.localStorage.empno,
+              "p_param_json": JSON.stringify(backList)
+            }
+          };
+          hmsPopup.showLoading('退回我的申请中');
+          hmsHttp.post(url, params).success(function (result) {
+            hmsPopup.hideLoading();
+            if(result.returnCode  == 'S'){
+              detail.status = -1000;
+              detail.nodeValue = "取消";
+              hmsPopup.showPopup('个人申请撤回成功!');
+            }
+            else{
+              hmsPopup.showPopup('个人申请撤回失败!');
+            }
+          }).error(function (response) {
+            hmsPopup.hideLoading();
           });
         };
       }]);
