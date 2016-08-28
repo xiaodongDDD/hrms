@@ -20,11 +20,13 @@ angular.module('applicationModule')
     'baseConfig',
     '$ionicHistory',
     'hmsHttp',
+    '$rootScope',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
-              hmsHttp) {
+              hmsHttp,
+              $rootScope) {
       $scope.items=[];//历史列表中的数据
       $scope.noData = true;//默认是有数据的，无数据时显示无数据提示
       $scope.map = "";
@@ -150,6 +152,7 @@ angular.module('applicationModule')
           lockSeats:info.lockSeats,//锁定座位数量
           availableSeats:info.availableSeats,//空位数量
           empNo:info.empNo,//拼车发起人
+          shareId:info.id,//拼车主键
         };
           $state.go("tab.carpooling-history-detail",{
             'carpoolingHistoryDetailInfo':param
@@ -162,11 +165,19 @@ angular.module('applicationModule')
         curPage++;
         searchCarpoolingHistory("loadMore");
       }
+      $rootScope.$on("RELEASE_SUCCESS", function () {
+        $scope.resultList = [];
+        curPage = 1;
+        searchCarpoolingHistory("init");
+        $scope.$broadcast('scroll.refreshComplete');
+      });
       //定位城市
       function  locCity(){
-        if(window.localStorage && window.localStorage.searchCity){
+        if(window.localStorage && (window.localStorage.searchCity!= "false") ){
           $scope.showLocation = true;
           $scope.cityCode = window.localStorage.locCity;
+        }else{
+          $scope.showLocation = false;
         }
       }
     }]

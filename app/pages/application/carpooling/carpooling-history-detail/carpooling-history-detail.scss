@@ -194,4 +194,25 @@
     background: #24559C;
     margin-left: 35px;
   }
+  .button-release{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    margin-top: 5px;
+    text-align: center;
+  }
+  .release-button{
+    width: 90%;
+    margin-top: 20px;
+    height: 40px;
+    background-color: #f5a623;
+    border-radius: 20px;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    &.activated{
+      background-color: #f5a623;
+      opacity: 0.4;
+    }
+  }
 }

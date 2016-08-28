@@ -73,21 +73,47 @@ angular.module('applicationModule')
       $scope.joinInfo = {
         "id":$scope.listInfo.shareId
       };
+      $scope.outInfo = {
+        "shareId":$scope.listInfo.shareId
+      };
       $scope.joinCapooling = function(){
-          var url = baseConfig.queryPath + "/share/addShareCompany";
-          hmsPopup.showLoading('请稍候');
-          hmsHttp.post(url, $scope.joinInfo).success(function (result) {
-            hmsPopup.hideLoading();
-            if (result.status == "S") {
-              $rootScope.$broadcast("RELEASE_SUCCESS");
-              hmsPopup.showShortCenterToast("加入成功！");
-              $ionicHistory.goBack();
-            } else if (result.status == "E") {
-            }
-          }).error(function (error, status) {
-            hmsPopup.hideLoading();
-            hmsPopup.showShortCenterToast("网络连接出错");
-          });
+        var url = baseConfig.queryPath + "/share/addShareCompany";
+        hmsPopup.showLoading('请稍候');
+        hmsHttp.post(url, $scope.joinInfo).success(function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == "S") {
+            $rootScope.$broadcast("RELEASE_SUCCESS");
+            hmsPopup.showShortCenterToast("加入成功！");
+            $ionicHistory.goBack();
+          } else if (result.status == "E") {
+            hmsPopup.showShortCenterToast("退出失败");
+          }else if (result.status == "N") {
+            hmsPopup.showShortCenterToast("退出失败！");
+          }
+        }).error(function (error, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showShortCenterToast("网络连接出错");
+        });
+      }
+
+      $scope.outCapooling = function(){//退出拼车
+        var url = baseConfig.queryPath + "/share/delete";
+        hmsPopup.showLoading('请稍候');
+        hmsHttp.post(url, $scope.outInfo).success(function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == "S") {
+            $rootScope.$broadcast("RELEASE_SUCCESS");
+            hmsPopup.showShortCenterToast("退出成功！");
+            $ionicHistory.goBack();
+          } else if (result.status == "N") {
+            hmsPopup.showShortCenterToast("退出失败");
+          }else if (result.status == "E") {
+            hmsPopup.showShortCenterToast("退出失败");
+          }
+        }).error(function (error, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showShortCenterToast("网络连接出错");
+        });
       }
       //路径地图
       var starts =  $scope.listInfo.startLat.split(",");
@@ -111,13 +137,6 @@ angular.module('applicationModule')
 
 
 
-
-      //var map = new BMap.Map("allmap");
-      //map.centerAndZoom(new BMap.Point(starts[0],starts[1]), 14);
-      //var p1 = new BMap.Point(starts[0],starts[1]);
-      //var p2 = new BMap.Point(ends[0],ends[1]);
-      //var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-      //driving.search(p1, p2);
 
 
       //包含

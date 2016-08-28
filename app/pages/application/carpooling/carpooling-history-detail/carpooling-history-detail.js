@@ -37,17 +37,22 @@ angular.module('applicationModule')
     '$ionicHistory',
     'hmsPopup',
     '$stateParams',
+    'hmsHttp',
+    '$rootScope',
     function ($scope,
               $state,
               baseConfig,
               $ionicHistory,
               hmsPopup,
-              $stateParams) {
+              $stateParams,
+              hmsHttp,
+              $rootScope) {
           $scope.historyInfo = $stateParams.carpoolingHistoryDetailInfo;
           $scope.sevenSeat =($scope.historyInfo.carType == 7);
           var joinNumber = $scope.historyInfo.companies.length;//参与人数
           var lockNumber = $scope.historyInfo.lockSeats;//锁定人数
           var availableSeats = $scope.historyInfo.availableSeats;
+          $scope.canOut = $scope.historyInfo.departureTime > getNowTime();
 
       loadSet();
       function loadSet(){
@@ -86,13 +91,29 @@ angular.module('applicationModule')
           });
           driving.search([depaLng,depalat], [destLng,destLat], function(status, result){});
         });
+      }
 
-        //var map = new BMap.Map("allmap");
-        //map.centerAndZoom(new BMap.Point(starts[0],starts[1]), 14);
-        //var p1 = new BMap.Point(starts[0],starts[1]);
-        //var p2 = new BMap.Point(ends[0],ends[1]);
-        //var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-        //driving.search(p1, p2);
+      $scope.outInfo = {
+        shareId: $scope.historyInfo.shareId
+      }
+      $scope.outCapooling = function(){//退出拼车
+        var url = baseConfig.queryPath + "/share/delete";
+        hmsPopup.showLoading('请稍候');
+        hmsHttp.post(url, $scope.outInfo).success(function (result) {
+          hmsPopup.hideLoading();
+          if (result.status == "S") {
+            $rootScope.$broadcast("RELEASE_SUCCESS");
+            //hmsPopup.showShortCenterToast("退出成功！");
+            $ionicHistory.goBack();
+          } else if (result.status == "N") {
+            hmsPopup.showShortCenterToast("退出失败");
+          }else if (result.status == "E") {
+            hmsPopup.showShortCenterToast("退出失败");
+          }
+        }).error(function (error, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showShortCenterToast("网络连接出错");
+        });
       }
 
       $scope.companionChat = function(index){
@@ -101,6 +122,32 @@ angular.module('applicationModule')
           $state.go('tab.tab-application-carpooling-employee', {employeeNumber:emp_code});
         }
       }
+
+      function getNowTime() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+          month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+          strDate = "0" + strDate;
+        }
+        var minutes = date.getMinutes();
+        if(minutes < 10){
+          minutes = "0"+minutes;
+        }
+        var hours = date.getHours();
+        if(hours<10){
+          hours = "0" + hours;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+          + " " + hours + seperator2 + minutes;
+        return currentdate;
+      }
+
     }]);
 
 

@@ -39,7 +39,7 @@
   }
   .car-list {
     width: 97.4%;
-    height: 158px;
+    height: 180px;
     margin: 4px 1.3% 0px 1.3%;
     background-color: white;
     border: 1px solid white;
@@ -142,9 +142,10 @@
     border-width: 0px;
     background-color:#FAFAFA;
   }
-  .item.activated{
-    opacity: 0.4;
-    background-color: #FAFAFA;
+  .item{
+    &.activated {
+      background-color: #f8f8f8;
+    }
   }
 
   .text-input {

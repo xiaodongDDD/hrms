@@ -250,12 +250,15 @@ angular.module('applicationModule')
         $scope.departure = [$scope.destination,$scope.destination=$scope.departure][0];
       }
       //定位城市
-      function locCity(){
-        if(window.localStorage && window.localStorage.searchCity){
+
+      function  locCity(){
+        if(window.localStorage && (window.localStorage.searchCity!= "false") ){
           $scope.showLocation = true;
           $scope.cityCode = window.localStorage.locCity;
           mapObj.setCity($scope.cityCode);
-        }else {
+        }else{
+          $scope.showLocation = true;
+          $scope.cityCode = "上海";
           mapObj.setCity("上海");//如果获取不到当前位置则默认为上海
         }
       }

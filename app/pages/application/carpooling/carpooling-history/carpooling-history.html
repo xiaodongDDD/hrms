@@ -7,9 +7,6 @@
       </button>
     </div>
     <h1 class="title">拼车记录</h1>
-    <div ng-if="!showLocation">
-      <ion-spinner icon="ripple" class="spinner spinner-ios" style=" position: absolute;right: 10px;margin-top: 3px;width: 20px;height: 20px;" ></ion-spinner>
-    </div>
     <div class="buttons" ng-if="showLocation">
       <div class="button-location icon ion-ios-location">
         <span style="font-size: 15px;">{{cityCode}}</span>
@@ -32,8 +29,7 @@
     </div>
 
     <ion-list>
-      <ion-item class="item-style" ng-repeat="x in resultList" ng-click="viewHistoryDetail($index)">
-        <div class="car-list1" style="margin-top: 4px;">
+      <ion-item class="car-list1" style="margin-top: 4px;" ng-repeat="x in resultList" ng-click="viewHistoryDetail($index)">
           <div class="car-start1">
             <div class="logo-car1">
               <img src="build/img/application/carpooling/car@3x.png" class="carpooling-logo1">
@@ -57,7 +53,6 @@
           <div class="carpooling-number">
             <span class="font-color21">行程编号：<i class="font-color11">{{x.shareNo}}</i></span>
           </div>
-        </div>
       </ion-item>
     </ion-list>
     <ion-infinite-scroll ng-if="showInfinite" distance="10%" immediate-check="false" on-infinite="loadMore()"></ion-infinite-scroll>

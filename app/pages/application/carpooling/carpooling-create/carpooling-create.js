@@ -128,7 +128,6 @@ angular.module('applicationModule')
           "pageSize": "1"
         };
         hmsHttp.post(url, param).success(function (result) {
-          console.debug(result.rows);
           $scope.items = result.rows;
           if (result.success == true) {//默认图片
             if( $scope.items[0].avatar == null){//设置默认头像
@@ -224,7 +223,12 @@ angular.module('applicationModule')
           locale: 'zh_cn'
         }).then(function (returnDate) {
           var time = returnDate.format("yyyy-MM-dd hh:mm:ss");
-          $scope.departureTime = time;
+          if(time > getNowTime()){
+            $scope.departureTime = time;
+          }else{
+            hmsPopup.showShortCenterToast("不能早于当前时间");
+            $scope.departureTime = "请选择";
+          }
           if (!$scope.$$phrese) {
             $scope.$apply();
           }
@@ -260,7 +264,13 @@ angular.module('applicationModule')
             }).then(function (returnDate) {
               time1 = returnDate.format("hh:mm:ss");
               $scope.departureTime = "";
-              $scope.departureTime = date1+" "+time1;
+              var datime = date1+" "+time1;
+              if(time > timeText(getNowTime())){
+                $scope.departureTime = time;
+              }else{
+                hmsPopup.showShortCenterToast("不能早于当前时间");
+                $scope.departureTime = "请选择";
+              }
               $scope.$apply();
             });
           },400);
@@ -491,7 +501,6 @@ angular.module('applicationModule')
         $scope.createInfo.otherDesc = explain//其他说明
         $scope.createInfo.departurePreference = $scope.timePreference;//时间偏好选择，需要判断
         $scope.createInfo.departureTime = $scope.departureTime;//出行时间
-        //$scope.createInfo.departureTime = "2016-09-05 12:23:25";
         $scope.createInfo.empNoList = [];
         angular.forEach($scope.carpoolingJoin, function(data,index,array){  //加入座位列表
           if(data.empCode != ""){
@@ -541,6 +550,7 @@ angular.module('applicationModule')
           hmsPopup.showLoading('请稍候');
           hmsHttp.post(url, $scope.createInfo).success(function (result) {
             if (result.status == "S") {
+              $rootScope.$broadcast("RELEASE_SUCCESS");
               hmsPopup.showShortCenterToast("发布成功");
               commonContactService.setGoContactFlg("");
               $scope.carpoolingJoin = [];//手动清除warning，warning
@@ -610,9 +620,11 @@ angular.module('applicationModule')
       }
       //定位城市
       function  locCity(){
-        if(window.localStorage && window.localStorage.searchCity){
+        if(window.localStorage && (window.localStorage.searchCity!= "false") ){
           $scope.showLocation = true;
           $scope.cityCode = window.localStorage.locCity;
+        }else{
+          $scope.showLocation = false;
         }
       }
     }

@@ -52,6 +52,7 @@ angular.module('applicationModule')
       $scope.status = "list";//判断是否在筛选状态
       $scope.showLocation = false;//初始不展示定位
       var filterPage = 1;
+      $scope.showLocations = false;
 
 
 
@@ -118,16 +119,32 @@ angular.module('applicationModule')
                         data.statusColor=true;
                         data.status = "已成行";
                       }
+
+                      if (data.departurePreference == '准时出发') {
+                        data.departurePreferenceColor = "on-time-color";
+                      } else  if(data.departurePreference =="不要迟到"){
+                        data.departurePreferenceColor = "no-delay-color";
+                      }else if(data.departurePreference == "稍等十分钟之内"){
+                        data.departurePreferenceColor = "permit-delay-color";
+                      }
                   $scope.resultList.push(data);
                 });
               }
             } else {
               angular.forEach(response.returnData, function (data, index) {
-                if (data.departurePreference== '准时出发') {
+                if (data.shareStatus == 'wait') {
+                  data.perferenceColor = false;
+                  data.status = "等待成行";
+                } else  {
+                  data.statusColor=true;
+                  data.status = "已成行";
+                }
+
+                if (data.departurePreference == '准时出发') {
                   data.departurePreferenceColor = "on-time-color";
-                } else  if(data.departurePreference=="不要迟到"){
+                } else  if(data.departurePreference =="不要迟到"){
                   data.departurePreferenceColor = "no-delay-color";
-                }else{
+                }else if(data.departurePreference == "稍等十分钟之内"){
                   data.departurePreferenceColor = "permit-delay-color";
                 }
                 $scope.resultList.push(data);
@@ -400,27 +417,61 @@ angular.module('applicationModule')
 
       //地图定位当前城市
       function showCityInfo() {
-        AMap.service(["AMap.CitySearch"], function() {
-          var citysearch = new AMap.CitySearch();
-          citysearch.getLocalCity(function(status, result){
-            if(status === 'complete' && result.info === 'OK'){
-              if(result && result.city && result.bounds) {
-                var cityinfo = result.city;
-                var citybounds = result.bounds;
-                city = cityinfo;
-                citycode = cityinfo.replace("市","");
-                $scope.cityCode = cityinfo.replace("市","");
-                $scope.showLocation = true;
-                if(window.localStorage){
-                  window.localStorage.searchCity = true;
-                  window.localStorage.locCity = $scope.cityCode;
-                }
-              }
-            }else{
-              $scope.showLocation = false;
-            }
-          });
-        });
+        //AMap.service(["AMap.CitySearch"], function() {
+        //  var citysearch = new AMap.CitySearch();
+        //  citysearch.getLocalCity(function(status, result){
+        //    if(status === 'complete' && result.info === 'OK'){
+        //      if(result && result.city && result.bounds) {
+        //        var cityinfo = result.city;
+        //        var citybounds = result.bounds;
+        //        city = cityinfo;
+        //        citycode = cityinfo.replace("市","");
+        //        $scope.cityCode = cityinfo.replace("市","");
+        //        $scope.showLocation = true;
+        //        if(window.localStorage){
+        //          window.localStorage.searchCity = true;
+        //          window.localStorage.locCity = $scope.cityCode;
+        //        }
+        //      }
+        //    }else{
+        //      $scope.showLocation = false;
+        //    }
+        //  });
+        //});
+
+        if (ionic.Platform.isAndroid()) {
+          //var successCallback = function () {
+          //  alert("定位成功");
+          //};
+          //
+          //var errorCallback = function(error) {
+          //  alert("定位失败");
+          //}
+          //
+          //cordova.plugins.GaoDeLocationPlugin.startLocation(successCallback,errorCallback)
+          //
+
+        } else if (ionic.Platform.isIOS()) {
+          //var onSuccess = function (position) {
+          //  alert('Latitude: ' + position.coords.latitude + '\n' +
+          //    'Longitude: ' + position.coords.longitude + '\n' +
+          //    'Altitude: ' + position.coords.altitude + '\n' +
+          //    'Accuracy: ' + position.coords.accuracy + '\n' +
+          //    'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+          //    'Heading: ' + position.coords.heading + '\n' +
+          //    'Speed: ' + position.coords.speed + '\n' +
+          //    'Timestamp: ' + position.timestamp + '\n');
+          //};
+          //
+          //var onError = function(error) {
+
+          //}
+
+          //navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        }
+        window.localStorage.searchCity = false;
+        $scope.showLocation = false;
+
       }
 
 
