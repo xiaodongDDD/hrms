@@ -114,9 +114,14 @@ angular.module('applicationModule')
                 type: workflowType,
                 typeValue: data.instance_desc,
                 node: workflowNode,
-                nodeValue: data.status_name,
-                submit: workflowPerson,
-                submitPerson: data.created_by_name,
+                nodeValue: data.node_name,
+                submit: '处理者',
+                submitPerson: data.employee_name,
+                key1: '最后审批人',
+                value1: data.last_update_by_name,
+                key2: '状态',
+                value2: data.status_name,
+                showExtraFlag: true,
                 workflowId: data.workflow_id,
                 instanceId: data.instance_id,
                 employeeCode: window.localStorage.empno,
@@ -593,7 +598,7 @@ angular.module('applicationModule')
         this.cancelMyWorkflow = function (p_instance_id,detail) {
           var url = baseConfig.businessPath + "/wfl_per_application/wfl_batch_back";
           var backList = {
-            "p_back_list": [{"p_instance_id": p_instance_id}]
+            "p_back_list": [{"p_instance_id": p_instance_id + ""}]
           };
           var params = {
             "params": {

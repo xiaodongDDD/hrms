@@ -17,7 +17,12 @@ HmsModule.directive('hmsWorkflowList', function () {
       node: '=workflowNode',
       nodeValue: '=workflowNodeValue',
       submit: '=workflowSubmit',
-      submitPerson: '=workflowSubmitPerson'
+      submitPerson: '=workflowSubmitPerson',
+      key1: '=workflowKey1',
+      value1: '=workflowValue1',
+      key2: '=workflowKey2',
+      value2: '=workflowValue2',
+      showExtraFlag: '=showExtraFlag'
     },
 
     template: '<a class="workflow-list-item">' +
@@ -44,6 +49,14 @@ HmsModule.directive('hmsWorkflowList', function () {
     '        <div class="col col-33 no-padding color-type">{{submit}}</div>' +
     '        <div class="col col-67 no-padding color-content">{{submitPerson}}</div>' +
     '      </div>' +
+    '      <div class="row no-padding" ng-if="showExtraFlag"> ' +
+    '        <div class="col col-33 no-padding color-type">{{key1}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{value1}}</div>' +
+    '      </div>' +
+    '      <div class="row no-padding" ng-if="showExtraFlag">' +
+    '        <div class="col col-33 no-padding color-type">{{key2}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{value2}}</div>' +
+    '      </div>' +
     '    </div>' +
     '    <div class="col col-90 no-padding" ng-if="!showCheckedFlag">' +
     '      <div class="row no-padding"> ' +
@@ -57,6 +70,14 @@ HmsModule.directive('hmsWorkflowList', function () {
     '      <div class="row no-padding">' +
     '        <div class="col col-33 no-padding color-type">{{submit}}</div>' +
     '        <div class="col col-67 no-padding color-content">{{submitPerson}}</div>' +
+    '      </div>' +
+    '      <div class="row no-padding" ng-if="showExtraFlag"> ' +
+    '        <div class="col col-33 no-padding color-type">{{key1}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{value1}}</div>' +
+    '      </div>' +
+    '      <div class="row no-padding" ng-if="showExtraFlag">' +
+    '        <div class="col col-33 no-padding color-type">{{key2}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{value2}}</div>' +
     '      </div>' +
     '    </div>' +
     '    <div class="col col-10 no-padding col-center workflow-list-select">' +

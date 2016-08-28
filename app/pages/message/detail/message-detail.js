@@ -27,12 +27,14 @@ angular.module('messageModule')
     '$state',
     '$stateParams',
     '$ionicHistory',
+    '$ionicPlatform',
     'baseConfig',
     'messageService',
     function ($scope,
               $state,
               $stateParams,
               $ionicHistory,
+              $ionicPlatform,
               baseConfig,
               messageService) {
 
@@ -46,6 +48,13 @@ angular.module('messageModule')
 
       var currentPage = 1;
 
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleDefault();
+        }
+      });
+
       function getDetail(loadMoreFlag) {
         var success = function (result) {
           if (result.returnCode == 'S') {
@@ -54,6 +63,8 @@ angular.module('messageModule')
               var message = {
                 "messageId": data.messageId,
                 "pushMessageId": data.pushMessageId,
+                "sendTime": data.sendTime,
+                "status": data.status,
                 "messageContent": data.messageContent,
               };
 
@@ -93,12 +104,52 @@ angular.module('messageModule')
         messageService.getMessageDetail(success, error, messageDetail.type, currentPage);
       }
 
+      $scope.readMessage = function (messageDetail) {
+        if(messageDetail.status == 'COMPLETE'){
+          return;
+        }
+        var messageList = [
+          {
+            "messageId": messageDetail.messageId,
+            "actionCode": "change"
+          }
+        ]
+        var success = function (result) {
+          if(baseConfig.debug){
+            console.log('messageService.getMessageProcess success result')
+          }
+          if(result.returnCode == 'S'){
+            messageDetail.status = 'COMPLETE';
+            changeBadgeNumber();
+          }
+        };
+        var error = function (response) {
+        };
+        messageService.getMessageProcess(success,error,messageList);
+      };
+
+      var changeBadgeNumber = function () {
+        window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function(data) {
+          if(baseConfig.debug) {
+            console.log("changeBadgeNumber data " + angular.toJson(data));
+          }
+          var badgeNumber;
+
+          if(parseInt(data) > 0){
+            badgeNumber= parseInt(data) -1;
+          }else{
+            badgeNumber = 0;
+          }
+          window.plugins.jPushPlugin.setApplicationIconBadgeNumber(badgeNumber);
+        });
+      }
+
       getDetail(false);
 
       $scope.loadMoreData = function () {
         currentPage = currentPage + 1;
         getDetail(true);
-      }
+      };
 
       if (baseConfig.debug) {
         console.log('messageDetail : ' + angular.toJson(messageDetail));

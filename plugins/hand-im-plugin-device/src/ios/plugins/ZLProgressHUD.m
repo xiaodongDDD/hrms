@@ -55,5 +55,12 @@
 {
     [self removeFromSuperview];
 }
-
+-(BOOL)isShowing
+{
+    if (self ==nil) {
+        return NO;
+    }else{
+        return YES;
+    }
+}
 @end
