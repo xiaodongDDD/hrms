@@ -189,6 +189,7 @@
   width: 100px;
   color: rgba(255,255,255,0.7);
   display: inline-block;
+  vertical-align: top;
 }
 
 .contract-detail .contract-stages .stages-item .stages-time{
@@ -407,6 +408,8 @@
   height: 30px;
   line-height: 30px;
   color: black;
+  max-width: 50%;
+  overflow-x: scroll;
 }
 
 .contract-detail .desc-div .desc-item .desc-value{
@@ -415,7 +418,8 @@
   color: grey;
   float: right;
   text-align: right;
-  width: 60%;
+  max-width: 50%;
+  overflow-x: scroll;
 }
 
 .contract-detail .cover .cover-header{
@@ -550,8 +554,51 @@
 }
 
 .contract-detail .trans-search.show{
-  transform: translateY(0);
-  -webkit-transform: translateY(0);
+  animation: slideToUp forwards 0.5s;
+  -webkit-animation: slideToUp forwards 0.5s;
+}
+
+.contract-detail .trans-search.transHide{
+  animation: slideToBottom forwards 0.5s;
+  -webkit-animation: slideToBottom forwards 0.5s;
+}
+
+@keyframes slideToUp
+{
+  from {transform: translateY(100%);
+    -webkit-transform: translateY(100%);display: block}
+  to {transform: translateY(0);
+    -webkit-transform: translateY(0);display: block}
+}
+
+@keyframes slideToBottom
+{
+  0%   {transform: translateY(0);
+        -webkit-transform: translateY(0);}
+  99%  {transform: translateY(100%);
+        -webkit-transform: translateY(100%);}
+  100% {transform: translateY(100%);
+        -webkit-transform: translateY(100%);
+        display: none}
+}
+
+@-webkit-keyframes slideToUp
+{
+  from {transform: translateY(100%);
+    -webkit-transform: translateY(100%);display: block}
+  to {transform: translateY(0);
+    -webkit-transform: translateY(0);display: block}
+}
+
+@-webkit-keyframes slideToBottom
+{
+  0%   {transform: translateY(0);
+    -webkit-transform: translateY(0);}
+  99%  {transform: translateY(100%);
+    -webkit-transform: translateY(100%);}
+  100% {transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    display: none}
 }
 
 .contract-detail .trans-search .ios-header{

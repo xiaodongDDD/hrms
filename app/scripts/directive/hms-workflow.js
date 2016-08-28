@@ -8,6 +8,8 @@ HmsModule.directive('hmsWorkflowList', function () {
     replace: true,
     transclude: true,
     scope: {
+      selectedFlag: '=workflowSelectedFlag',
+      showCheckedFlag: '=workflowShowCheckedFlag',
       title: '=workflowTitle',
       icon: '=workflowIcon',
       type: '=workflowType',
@@ -24,27 +26,44 @@ HmsModule.directive('hmsWorkflowList', function () {
     '</div>' +
     '<div class="workflow-list-header">{{title}}</div>' +
     '<div class="workflow-list-content">' +
-    '<div class="row no-padding">' +
-    '<div class="col col-90 no-padding">' +
-    '<div class="row no-padding"> ' +
-    '<div class="col col-33 no-padding color-type">{{type}}</div>' +
-    '<div class="col col-67 no-padding color-content">{{typeValue}}</div>' +
-    '</div>' +
-    '<div class="row no-padding">' +
-    '<div class="col col-33 no-padding color-type">{{node}}</div>' +
-    '<div class="col col-67 no-padding color-content">{{nodeValue}}</div>' +
-    '</div>' +
-    '<div class="row no-padding">' +
-    '<div class="col col-33 no-padding color-type">{{submit}}</div>' +
-    '<div class="col col-67 no-padding color-content">{{submitPerson}}</div>' +
-    '</div>' +
-    '</div>' +
-    '<div class="col col-10 no-padding col-center workflow-list-select">' +
-    '<img src="build/img/workflow/select@3x.png"/>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</a>',
+    '  <div class="row no-padding">' +
+    '    <div class="col col-10 col-center no-padding" ng-if="showCheckedFlag" style="color: #1D4D95;font-size: 18px">' +
+    '      <i class="ion-ios-checkmark" ng-if="selectedFlag"></i>' +
+    '      <i class="ion-ios-circle-outline" ng-if="!selectedFlag"></i>' +
+    '    </div>' +
+    '    <div class="col col-80 no-padding" ng-if="showCheckedFlag">' +
+    '      <div class="row no-padding"> ' +
+    '        <div class="col col-33 no-padding color-type">{{type}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{typeValue}}</div>' +
+    '      </div>' +
+    '      <div class="row no-padding">' +
+    '        <div class="col col-33 no-padding color-type">{{node}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{nodeValue}}</div>' +
+    '      </div>' +
+    '      <div class="row no-padding">' +
+    '        <div class="col col-33 no-padding color-type">{{submit}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{submitPerson}}</div>' +
+    '      </div>' +
+    '    </div>' +
+    '    <div class="col col-90 no-padding" ng-if="!showCheckedFlag">' +
+    '      <div class="row no-padding"> ' +
+    '        <div class="col col-33 no-padding color-type">{{type}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{typeValue}}</div>' +
+    '      </div>' +
+    '      <div class="row no-padding">' +
+    '        <div class="col col-33 no-padding color-type">{{node}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{nodeValue}}</div>' +
+    '      </div>' +
+    '      <div class="row no-padding">' +
+    '        <div class="col col-33 no-padding color-type">{{submit}}</div>' +
+    '        <div class="col col-67 no-padding color-content">{{submitPerson}}</div>' +
+    '      </div>' +
+    '    </div>' +
+    '    <div class="col col-10 no-padding col-center workflow-list-select">' +
+    '      <img src="build/img/workflow/select@3x.png"/>' +
+    '    </div>' +
+    '  </div>' +
+    '</div></a>',
     controller: ["$scope", function ($scope) {
     }],
     link: function (scope, element, attrs) {

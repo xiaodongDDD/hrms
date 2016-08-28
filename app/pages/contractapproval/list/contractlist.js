@@ -41,15 +41,17 @@ angular.module('applicationModule')
       $ionicSlideBoxDelegate,
       $ionicHistory) {
 
-      $scope.list = [];
+      $scope.list = []; //用于显示列表的列表数据
       $scope.listBackup = []; //备份列表数据，在筛选时使用。
-      var cashList = [];
-      $scope.isIos = false;
+      $scope.isIos = false; //平台
+      var slideToChangePage = true; //是否是滑动来换页的
+      $scope.enteringIndex = 0;
+
       $scope.hasBouncing = 'false';
       $scope.fetchDataFlag = true;
       $scope.pullRefreshDataFlag = false;
       $scope.showDetailArrow = true;
-      var slideToChangePage = true;
+
       $scope.listStatus = {
         todo: {
           selected: true
@@ -67,25 +69,18 @@ angular.module('applicationModule')
       };
 
       var defaultIcon = 'build/img/application/profile@3x.png'; //默认头像
-      var startTime = '开始时间';
+      var startTime = '开始时间'; //各项数据标题
       var author = '发起人';
       var desc = '说明';
 
-      $scope.listHandle = {
-        myStart_undo: 'myStart_undoHandle',
-        myStart_do: 'myStart_doHandle',
-        myTask_todo: 'myTask_todoHandle',
-        myTask_unfin: 'myTask_unfinHandle',
-        myTask_fin: 'myTask_finHandle'
-      };
-      $scope.loadMoreDataFlags = {
+      $scope.loadMoreDataFlags = { //是否可以上拉加载
         myStart_undo: true,
         myStart_do: false,
         myTask_todo: false,
         myTask_unfin: false,
         myTask_fin: false
       };
-      $scope.setLoadMoreDataFlags = function(key) {
+      $scope.setLoadMoreDataFlags = function(key) { //设置是否可以上拉加载
         for (var i in $scope.loadMoreDataFlags) {
           $scope.loadMoreDataFlags[i] = false;
         }
@@ -93,17 +88,6 @@ angular.module('applicationModule')
           $scope.loadMoreDataFlags[key] = true;
         }
       }
-
-      var initLists = function() {
-        $scope.lists = {
-          myStart_undo: [],
-          myStart_do: [],
-          myTask_todo: [],
-          myTask_unfin: [],
-          myTask_fin: []
-        }
-      }
-      initLists();
 
       $scope.fadeStyle = function(index) { //循序出现，循序fadein
         if ($scope.pageNum > 1) { //如果是上拉加载出来的
@@ -120,9 +104,10 @@ angular.module('applicationModule')
 
       }
 
+      //导航栏各项分页按钮对应的键
       $scope.subheaderTitleKey = ['myStart_undo', 'myStart_do', 'myTask_todo', 'myTask_unfin', 'myTask_fin'];
-      $scope.type = $scope.subheaderTitleKey[0];
-      $scope.subheaderTitleValue = {
+      $scope.type = $scope.subheaderTitleKey[0]; //当前应该在哪个分页下
+      $scope.subheaderTitleValue = { //分页按钮的显示文本
         myStart_undo: '我发起的未完成',
         myStart_do: '我发起的已完成',
         myTask_todo: '待办已签收',
@@ -130,7 +115,7 @@ angular.module('applicationModule')
         myTask_fin: '待办已完成'
       };
 
-      $scope.subheaderSelectFlag = {
+      $scope.subheaderSelectFlag = { //分页的状态（选中与未选中）
         myStart_undo: true,
         myStart_do: false,
         myTask_todo: false,
@@ -138,31 +123,28 @@ angular.module('applicationModule')
         myTask_fin: false
       };
 
-      $scope.ifShow = function(index) {
-        return index < $scope.pageNum * $scope.pageNumLimit;
-      }
-
+      //按了导航栏的按钮
       $scope.clickSubheader = function(title) {
         console.log('clickSubheader');
         slideToChangePage = false;
-        initLists();
+        //设置分页的状态（选中与未选中）
         for (i in $scope.subheaderSelectFlag) {
           $scope.subheaderSelectFlag[i] = false;
         }
         $scope.subheaderSelectFlag[title] = true;
-
+        //设置偏移
         var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
         for (var i = 0; i < $scope.subheaderTitleKey.length; i++) {
           if ($scope.subheaderTitleKey[i] == title) {
             var scroll = subheaderTitles[i].offsetLeft - document.getElementById('contractSubheader').clientWidth / 2 + subheaderTitles[i].clientWidth / 2;
             $ionicScrollDelegate.$getByHandle('subheaderHandle').scrollTo(scroll, 0, true);
 
-            $ionicSlideBoxDelegate.slide(i);
+            $ionicSlideBoxDelegate.slide(i); //滑动换页
           }
         }
-
+        //重新初始化一些变量
         $scope.list = [];
-        $scope.listBackup = []; //备份列表数据，在筛选时使用。
+        $scope.listBackup = [];
         $scope.fetchDataFlag = true;
         $scope.pullRefreshDataFlag = false;
         $scope.showDetailArrow = true;
@@ -174,26 +156,18 @@ angular.module('applicationModule')
         $scope.pageNumLimit = 10;
         $scope.loadMoreDataFlag = false;
         $scope.pageNum = 0;
-        var filterOption = {
+        var filterOption = { //筛选器
           "currentSelectType": "ALL",
           "currentSubmitterFilter": "",
           "submitterFilter": [],
         };
+        //选中的分页
         $scope.type = title;
+        //这个选中的分页在从详情页中回来时，刷新选中页的数据（例如提交动作之后，这一项应该从这个分页移动到另一个分页了，因此从这个分页中移除
         contractListService.setListType($scope.type);
 
         getTodoList(false);
       }
-
-      //刚进入页面时调用
-      var refreshTodoList = function() {
-        $scope.fetchDataFlag = true;
-        $scope.pullRefreshDataFlag = false;
-        $scope.listStatus.todo.selected = true;
-        $timeout(function() {
-          getTodoList(false);
-        }, 500);
-      };
 
       var showList = function() {
         $timeout(
@@ -218,10 +192,12 @@ angular.module('applicationModule')
           $scope.list = [];
           var list = result.unprocessedWorkflowList;
           angular.forEach(list, function(data) {
+            //头像，合同工作流中没有头像
             var employeeImg = data.employee_img;
             if (!employeeImg || employeeImg == "") {
               employeeImg = defaultIcon;
             }
+            //这个item被<hms-workflow-list>所使用
             var item = {
               title1: data.procDescr,
               icon: employeeImg,
@@ -237,14 +213,16 @@ angular.module('applicationModule')
             if (!$scope.filterPersonList.returnData.personList[data.author]) {
               $scope.filterPersonList.returnData.personList[data.author] = true;
             }
+            //处理的每一项压进显示用的数组中
             $scope.list.push(item);
           });
           $scope.listBackup = $scope.list.concat();
-          $scope.lists[$scope.type] = $scope.list;
+          //是否可以上拉加载更多
           if ($scope.list.length > $scope.pageNumLimit * $scope.pageNum) {
             $scope.loadMoreDataFlag = true;
             $scope.setLoadMoreDataFlags($scope.type);
           }
+          //生成筛选器
           dataFilterUtil().query();
           $scope.fetchTodoList(true);
           showList();
@@ -256,11 +234,12 @@ angular.module('applicationModule')
 
       //获取数据列表
       var getTodoList = function(pullRefresh) {
+        //重置一些变量
         $scope.firstLoadFlag = true;
         $scope.loadMoreDataFlag = false;
         $scope.setLoadMoreDataFlags();
         $scope.pageNum = 0;
-
+        //重置筛选器中数据
         $scope.filterPersonList = {
           returnStatus: 'S',
           returnData: {
@@ -291,11 +270,13 @@ angular.module('applicationModule')
         };
 
         var filterCondition = dataFilterUtil().fetchFilterCondition();
-        contractListService.getTodoList('N', filterCondition.workflowId, $scope.type, $scope.pageNum, success, error);
-
+        //post请求
+        $timeout(function() {
+          contractListService.getTodoList('N', filterCondition.workflowId, $scope.type, $scope.pageNum, success, error);
+        }, 550);
       };
 
-      // 筛选列表，每次先从备份数据中深度拷贝一份，然后进行删除操作
+      // 筛选列表，每次先从备份数据中拷贝一份，然后进行删除操作
       $scope.fetchTodoList = function(refreshFlag) {
         $scope.loadMoreDataFlag = false;
         $scope.setLoadMoreDataFlags();
@@ -311,9 +292,8 @@ angular.module('applicationModule')
 
         if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
           $scope.listStatus.todo.selected = true;
-          //getTodoList(false);
           $scope.list = $scope.listBackup.concat();
-          $scope.lists[$scope.type] = $scope.list;
+          //筛选人的时候，且不是选择全部，也不是没选筛选项，则进行筛选
           if (filterOption.currentSelectType == 'PERSON' && filterOption.currentSubmitterFilter != '全部' && filterOption.currentSubmitterFilter != '_default') {
             for (var i = $scope.list.length - 1; i >= 0; i--) {
               if ($scope.list[i].nodeValue != dataFilterUtil().fetchFilterCondition().itemDesc) {
@@ -326,6 +306,7 @@ angular.module('applicationModule')
           }
 
         }
+        //能否上拉加载更多
         if ($scope.list.length > $scope.pageNumLimit * $scope.pageNum) {
           $scope.loadMoreDataFlag = true;
           $scope.setLoadMoreDataFlags($scope.type);
@@ -346,7 +327,7 @@ angular.module('applicationModule')
 
       };
 
-      // 下拉加载更多数据，这里只是变了限数，
+      // 上拉加载更多数据
       var loadMoreFetchTodoList = function() {
         var success = function(result) {
           if ($scope.list.length < $scope.pageNumLimit * $scope.pageNum) {
@@ -359,23 +340,11 @@ angular.module('applicationModule')
           success();
         }, 2000);
       };
-
       $scope.loadMoreData = function() {
         if ($scope.loadMoreDataFlag) {
           $scope.pageNum = $scope.pageNum + 1;
           loadMoreFetchTodoList();
         }
-      };
-
-      // 筛选上拉菜单模型
-      $ionicModal.fromTemplateUrl('build/pages/public/modal/hms-filter-modal.html', { //筛选modal
-        scope: $scope
-      }).then(function(modal) {
-        $scope.filterModal = modal;
-      });
-
-      $scope.filterWorkFlowInfo = function() { //响应筛选按钮的方法
-        $scope.filterModal.show();
       };
 
       $scope.refresh = function() {
@@ -390,6 +359,17 @@ angular.module('applicationModule')
         } else {
           $scope.$broadcast('scroll.refreshComplete');
         }
+      };
+
+      // 筛选上拉菜单模型
+      $ionicModal.fromTemplateUrl('build/pages/public/modal/hms-filter-modal.html', { //筛选modal
+        scope: $scope
+      }).then(function(modal) {
+        $scope.filterModal = modal;
+      });
+
+      $scope.filterWorkFlowInfo = function() { //响应筛选按钮的方法
+        $scope.filterModal.show();
       };
 
       // 筛选上拉菜单句柄
@@ -491,9 +471,7 @@ angular.module('applicationModule')
                 "name": "提交人",
                 "selected": false
               }];
-              if (baseConfig.debug) {
-                console.log('dataFilterUtil.cashList ' + angular.toJson(cashList));
-              }
+
               filterOption.submitterFilter = [];
               filterOption.noConditionFilter = [];
               $scope.filterItemList = [];
@@ -546,6 +524,7 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.beforeEnter');
         }
+        //iOS的时候，top:0px在状态栏内部
         if (ionic.Platform.isIOS()) {
           $scope.isIos = true;
           $scope.shouldDisableBouncing = true;
@@ -553,13 +532,21 @@ angular.module('applicationModule')
           document.getElementById('contractlist-div-subheader').style.top = '63px';
           document.getElementById('contractlist-div-slidebox').style.top = '63px';
         }
+        //应该显示哪个分页
         $scope.type = contractListService.getListType();
-        if (contractListService.getRefreshWorkflowList().flag == true) {
-          contractListService.setRefreshWorkflowList(false);
-          if (baseConfig.debug) {
-            console.log('refresh contract list');
+        //从上级页面进入的
+        if (contractListService.IsFromParent() == true) {
+          contractListService.setIsFromParent(false);
+        }
+        //从子页面返回时进入的
+        else {
+          console.log('从子页面返回时进入的');
+          if (contractListService.getItemRemoveFlag()) {
+            $scope.list.splice($scope.enteringIndex, 1);
           }
-          refreshTodoList();
+          if ($scope.type != contractListService.getListType()) { //如果详情页要求返回时跳到别的分页里
+            $scope.clickSubheader(contractListService.getListType());
+          }
         }
       });
 
@@ -589,20 +576,27 @@ angular.module('applicationModule')
         }
       });
 
+      //滑动换页时
       $scope.changeSlide = function(index) {
         console.log('changeSlide');
+        //如果是按了导航按钮，那么会调用$scope.clickSubheader，然后代码控制换页，进入这个函数，但不会进入这个if，
+        //如果是滑动换页，则进入这个if，来调用$scope.clickSubheader。因为if中的$scope.clickSubheader会设slideToChangePage = false;
+        //这样是防止按导航按钮时调用两次$scope.clickSubheader。
         if (slideToChangePage) {
           $scope.clickSubheader($scope.subheaderTitleKey[index]);
         }
         slideToChangePage = true;
       }
 
-      $scope.enterWorkflowDetail = function(detail) {
+      $scope.enterWorkflowDetail = function(detail, index) {
+        $scope.enteringIndex = index;
+        contractListService.initRemoveItemFlag();
         $state.go('tab.contractDetail', { data: detail.originData })
       }
 
       $scope.goBack = function() {
-        contractListService.setListType();
+        contractListService.setIsFromParent(true); //当做没进来过这个页面
+        contractListService.setListType('myStart_undo'); //如果回到上一级，那么下次进来就进第一分页
         $ionicHistory.goBack();
       }
 
@@ -615,9 +609,13 @@ angular.module('applicationModule')
   function(hmsHttp,
     baseConfig,
     hmsPopup) {
-    var refreshWorkflowList = {
-      flag: false
+    var fromParentFlag = {
+      flag: true
     };
+
+    var removeItemFlag = {
+      flag: false
+    }
 
     var checkUserFlag = {
       flag: false
@@ -633,18 +631,32 @@ angular.module('applicationModule')
       }
     }
 
+    //合同详情页中如果操作了这项合同，直接调用 contractListService.removeItem() 就可以告知合同列表这项合同已经被移到别的分类下了。
+    this.removeItem = function() {
+      removeItemFlag.flag = true;
+    }
+
+    this.initRemoveItemFlag = function() {
+      removeItemFlag.flag = false;
+    }
+
+    this.getItemRemoveFlag = function() {
+      return removeItemFlag.flag;
+    }
+
     this.getListType = function() {
       return listType.data;
     }
 
-    this.setRefreshWorkflowList = function(flag) {
-      refreshWorkflowList.flag = flag;
+    this.setIsFromParent = function(flag) {
+      fromParentFlag.flag = flag;
     };
 
-    this.getRefreshWorkflowList = function() {
-      return refreshWorkflowList;
+    this.IsFromParent = function() {
+      return fromParentFlag.flag;
     };
 
+    //现在如果checkUser不通过，则getTodoList和getTodoCount不会被执行post请求。
     this.check = function(success) {
       if (baseConfig.debug) {
         console.log('check user');

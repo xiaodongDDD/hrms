@@ -4,7 +4,7 @@ angular.module('myApp')
       $stateProvider
         .state('tab.workflow-detail', {
           url: '/workflow-detail',
-          params: {"detail": {}, "processedFlag": {}, "type": ""},
+          params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": ""},
           views: {
             'tab-application': {
               templateUrl: 'build/pages/workflow/detail/detail.html',
@@ -1041,9 +1041,7 @@ angular.module('applicationModule')
               hmsPopup.showPopup('请输入转交原因!');
               return false;
             }
-            else {
-              return true;
-            }
+
             if ($scope.processExtroInfo.transmitPerson.code == '') {
               hmsPopup.showPopup('请输入转交人!');
               return false;
@@ -1127,6 +1125,22 @@ angular.module('applicationModule')
           } else {
             submitFlag = 'N';
           }
+
+          if(baseConfig.debug){
+            console.log('$stateParams.myPrsonalApplicationFlag ' + $stateParams.myPrsonalApplicationFlag);
+          }
+
+          if ($stateParams.myPrsonalApplicationFlag && $stateParams.myPrsonalApplicationFlag == true){
+            if(detail.status){
+              if(detail.status == 1){
+                submitFlag = 'N';
+              }else{
+                submitFlag = 'Y';
+              }
+            }else{
+              submitFlag = 'Y';
+            }
+          }
           return submitFlag;
         };
 
@@ -1200,6 +1214,4 @@ angular.module('applicationModule')
         $scope.LoadingPushData = false;
         init.initDataModal();
       }
-
-
     }]);

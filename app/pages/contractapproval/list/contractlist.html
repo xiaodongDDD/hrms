@@ -26,7 +26,7 @@
   <div id="contractlist-div-slidebox" class="div-slide">
     <ion-slide-box on-slide-changed="changeSlide($index)" show-pager="false" style="width:100%;height:100%;">
       <ion-slide ng-repeat="k in subheaderTitleKey">
-        <ion-content style="top:34px; bottom:0px;">
+        <ion-content style="top:34px; bottom:4px;">
           <!--<ion-refresher ng-if="!fetchDataFlag" on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
           </ion-refresher>-->
           <div class="hms-hide-content" ng-if="fetchDataFlag && subheaderSelectFlag[k]">
@@ -35,7 +35,7 @@
           <ion-list ng-if="k == type">
             <ion-item class="workflow-list padding-zero transparent" ng-style="fadeStyle($index)" ng-repeat="item in list | limitTo: (pageNum * pageNumLimit) track by $index">
               <hms-workflow-list workflow-title='item.title1' workflow-icon='item.icon' workflow-type='item.type' workflow-type-value='item.typeValue' workflow-node='item.node' workflow-node-value='item.nodeValue' workflow-submit='item.submit' workflow-submit-person='item.submitPerson'
-                ng-click="enterWorkflowDetail(item)">
+                ng-click="enterWorkflowDetail(item, $index)">
               </hms-workflow-list>
             </ion-item>
           </ion-list>
