@@ -51,13 +51,17 @@ angular.module('applicationModule')
 
         this.deletePluginMessage = function (myscope, message) {
           var success = function () {
-            var index = myscope.messageList.indexOf(message);
-            myscope.messageList.splice(index, 1);
+            var index = myscope.employeeMessageList.indexOf(message);
+            myscope.employeeMessageList.splice(index, 1);
             myscope.$apply();
           };
           var error = function () {
           };
-          HandIMPlugin.deleteConversationList(success, error, message.employee);
+          var group = {
+            "conversationId": message.employee,
+            "conversationType": message.conversationType
+          };
+          HandIMPlugin.deleteConversationList(success, error, group);
         };
 
         this.getEmployeeMessageList = function (myscope, result) {
@@ -77,7 +81,8 @@ angular.module('applicationModule')
               "imgUrl": userIcon,
               "count": data.message.messageNum,
               "employee": data.message.sendId,
-              "time": data.message.sendTime
+              "time": data.message.sendTime,
+              "conversationType": data.message.conversationType
             };
             myscope.employeeMessageList.push(item);
           });
@@ -132,10 +137,8 @@ angular.module('applicationModule')
         this.getMessageSummary = function (success, error) {
           var url = baseConfig.queryPath + "/message/summary";
           var params = {
-            'params': {
-              "employeeCode": window.localStorage.empno,
-              "interfaceCode": "summary"
-            }
+            "employeeCode": window.localStorage.empno,
+            "interfaceCode": "summary"
           };
           hmsHttp.post(url, params).success(function (result) {
             success(result)
@@ -144,13 +147,27 @@ angular.module('applicationModule')
           });
         };
 
-        this.getMessageDetail = function (success, error,type,page) {
+        this.getMessageProcess = function (success, error, messageList) {
+          var url = baseConfig.queryPath + "/message/process";
+          var params = {
+            "employeeCode": window.localStorage.empno,
+            "interfaceCode": "process",
+            "messageList": messageList
+          };
+          hmsHttp.post(url, params).success(function (result) {
+            success(result)
+          }).error(function (response, status) {
+            error(response);
+          });
+        };
+
+        this.getMessageDetail = function (success, error, type, page) {
           var url = baseConfig.queryPath + "/message/detail";
           var params = {
-              "employeeCode": window.localStorage.empno,
-              "interfaceCode": "detail",
-              "messageType": type,
-              "page": page
+            "employeeCode": window.localStorage.empno,
+            "interfaceCode": "detail",
+            "messageType": type,
+            "page": page
           };
           hmsHttp.post(url, params).success(function (result) {
             success(result)

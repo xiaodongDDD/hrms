@@ -15,15 +15,21 @@
   <div class="bar bar-subheader"
        style="padding:0px;height:1px; background: -webkit-linear-gradient(left,#1D4D95,#6BB9F0)"></div>
   <ion-content>
-    <div class="message-block" ng-repeat="messageDetail in messageDetailList">
-      <div class="message-time-line">
-        星期二 上午11:48
+    <div class="message-block" ng-repeat="messageDetail in messageDetailList" ng-click="readMessage(messageDetail)">
+      <div class="message-time-line" ng-bind="messageDetail.sendTime">
       </div>
       <div class="message-content">
-        <div class="message-title" ng-bind="messageDetail.messageContent">
+        <div class="row no-padding">
+          <div class="col no-padding" ng-class="{true: 'col-90', false: 'col-100'}[messageDetail.status == 'NOREAD']">
+            <div class="message-title" ng-bind="messageDetail.messageContent">
+            </div>
+          </div>
+          <div class="col col-10 no-padding" ng-if="messageDetail.status == 'NOREAD'"
+               style="padding-top: 8px;text-align: center;color: #ECAF38;">
+            <div class="ion-ios-circle-filled"></div>
+          </div>
         </div>
-        <div class="message-time">
-          8月23日
+        <div class="message-time" ng-bind="messageDetail.sendTime">
         </div>
         <div class="message-item">
           <div class="message-item-line" ng-repeat="item in messageDetail.messageDetailDesc">

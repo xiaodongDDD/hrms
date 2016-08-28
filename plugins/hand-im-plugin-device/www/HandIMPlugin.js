@@ -43,6 +43,14 @@ var HandIMPlugin = {
     exec(successCallback, errorCallback, "HandIMPlugin", "deleteConversationList", [friendId]);
   },
 
+  createGroupChat: function(successCallBack, errorCallBack, options) {
+  exec(successCallBack,errorCallBack, "HandIMPlugin", "toCreateGroupChat", [options]);
+  },
+
+  toDiscussionGroup: function(successCallBack, errorCallBack, options) {
+  exec(successCallBack,errorCallBack, "HandIMPlugin", "toDiscussionGroup", [options]);
+  },
+
   openNotificationInAndroidCallback: function(data){
     try {
       data = JSON.stringify(data);
