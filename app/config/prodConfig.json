@@ -1,6 +1,6 @@
 {
   "baseConfig": {
-    "debug": true,
+    "debug": false,
     "isMobilePlatform": true,
     "clearTable": true,
     "nativeScreenFlag":true,
