@@ -128,10 +128,6 @@ angular.module('messageModule')
         }
       };
 
-      //$timeout(function () {
-      //  getMessageList();
-      //}, 1000);
-
       $scope.messageHandle = {
         blur: function () {
           if (baseConfig.debug) {
@@ -205,19 +201,26 @@ angular.module('messageModule')
             console.log('message ' + angular.toJson(message));
           }
 
-          if (message.conversationType == 1) {
-            var emp = {
-              "friendId": message.employee,
-              "friendName": message.name,
-              "friendIcon": message.imgUrl
-            };
-            imService.toNativeChatPage(emp);
-          }
-          else {
-            HandIMPlugin.toDiscussionGroup(function () {
-            }, function () {
-            }, {"discussionId": message.employee});
-          }
+          var emp = {
+            "friendId": message.employee,
+            "friendName": message.name,
+            "friendIcon": message.imgUrl
+          };
+          imService.toNativeChatPage(emp);
+
+          /*if (!message.conversationType || message.conversationType == 1) {
+           var emp = {
+           "friendId": message.employee,
+           "friendName": message.name,
+           "friendIcon": message.imgUrl
+           };
+           imService.toNativeChatPage(emp);
+           }
+           else {
+           HandIMPlugin.toDiscussionGroup(function () {
+           }, function () {
+           }, {"discussionId": message.employee});
+           }*/
 
           //imService.toNativeChatPage(emp);
           $timeout(function () {
@@ -255,7 +258,10 @@ angular.module('messageModule')
             StatusBar.styleLightContent();
           }
         });
-        getEmployeeMessageList();
+
+        $timeout(function () {
+          getEmployeeMessageList();
+        }, 1000);
         messageService.getNotifyMessageList($scope);
         if (baseConfig.debug) {
           console.log('messageCtrl.$ionicView.enter');

@@ -69,18 +69,34 @@ angular.module('messageModule')
               };
 
               if (data.messageDetail) {
-                message.detail = {
-                  "instanceId": "3771193",
-                  "nodeId": "100140",
-                  "recordId": "2422700",
-                  "workflowId": "10205"
-                };
-                message.messageDetailDesc = [
-                  {"name": "申请人", "value": "顾森林"},
-                  {"name": "申请日期", "value": "2016-08-23"},
-                  {"name": "描述", "value": "timesheet解冻申请"}
-                ];
+                message.messageDetailDesc = data.messageDetail;
               }
+
+              if (data.messageSecret) {
+                message.detail = {
+                  "instanceId": "",
+                  "nodeId": "",
+                  "recordId": "",
+                  "workflowId": ""
+                };
+                angular.forEach(data.messageSecret,function (data) {
+                  if(data.name == 'instanceId'){
+                    message.detail.instanceId = data.value;
+                  }
+                  if(data.name == 'nodeId'){
+                    message.detail.nodeId = data.value;
+                  }
+                  if(data.name == 'recordId'){
+                    message.detail.recordId = data.value;
+                  }
+                  if(data.name == 'workflowId'){
+                    message.detail.workflowId = data.value;
+                  }
+                });
+
+                message.messageDetailDesc = data.messageDetail;
+              }
+
               $scope.messageDetailList.push(message);
             });
 
@@ -102,7 +118,24 @@ angular.module('messageModule')
           }
         };
         messageService.getMessageDetail(success, error, messageDetail.type, currentPage);
-      }
+      };
+
+
+      $scope.goWorkflowDetail = function (workflowDetail) {
+        if(workflowDetail.detail){
+          var detail = {
+            "recordId": workflowDetail.detail.recordId,
+            "workflowId": workflowDetail.detail.workflowId,
+            "instanceId": workflowDetail.detail.instanceId,
+            "nodeId": workflowDetail.detail.nodeId
+          };
+          $state.go('tab.tab-message-pushDetail', {
+            "detail": detail,
+            "processedFlag": {value: true},
+            "type": "PUSHDETAIL"
+          });
+        }
+      };
 
       $scope.readMessage = function (messageDetail) {
         if(messageDetail.status == 'COMPLETE'){
@@ -120,29 +153,16 @@ angular.module('messageModule')
           }
           if(result.returnCode == 'S'){
             messageDetail.status = 'COMPLETE';
-            changeBadgeNumber();
+
+            if(ionic.Platform.isIOS()) {
+              messageService.changeBadgeNumber();
+            }
           }
         };
         var error = function (response) {
         };
         messageService.getMessageProcess(success,error,messageList);
       };
-
-      var changeBadgeNumber = function () {
-        window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function(data) {
-          if(baseConfig.debug) {
-            console.log("changeBadgeNumber data " + angular.toJson(data));
-          }
-          var badgeNumber;
-
-          if(parseInt(data) > 0){
-            badgeNumber= parseInt(data) -1;
-          }else{
-            badgeNumber = 0;
-          }
-          window.plugins.jPushPlugin.setApplicationIconBadgeNumber(badgeNumber);
-        });
-      }
 
       getDetail(false);
 

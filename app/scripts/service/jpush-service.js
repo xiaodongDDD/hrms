@@ -4,7 +4,9 @@
 angular.module('HmsModule')
   .service('hmsJpushService', [
     'baseConfig',
-    function (baseConfig) {
+    'messageService',
+    function (baseConfig,
+              messageService) {
 
       this.init = function (state) {
         if (baseConfig.debug) {
@@ -62,6 +64,29 @@ angular.module('HmsModule')
             return '';
           };
 
+
+          var readMessage = function (messageId) {
+            var messageList = [
+              {
+                "messageId": messageId,
+                "actionCode": "change"
+              }
+            ]
+            var success = function (result) {
+              if(baseConfig.debug){
+                console.log('messageService.getMessageProcess success result')
+              }
+              if(result.returnCode == 'S'){
+                if(ionic.Platform.isIOS()) {
+                  messageService.changeBadgeNumber();
+                }
+              }
+            };
+            var error = function (response) {
+            };
+            messageService.getMessageProcess(success,error,messageList);
+          };
+
           var onOpenNotification = function (event) {
             try {
               var alertContent;
@@ -69,7 +94,7 @@ angular.module('HmsModule')
               var detail;
 
               //alert('event ' + angular.toJson(event));
-              //alert('window.plugins.jPushPlugin ' + angular.toJson(window.plugins.jPushPlugin));
+              alert('window.plugins.jPushPlugin ' + angular.toJson(window.plugins.jPushPlugin));
               //alert('detail ' + angular.toJson(detail));
 
               if (device.platform == "Android") {
@@ -104,11 +129,18 @@ angular.module('HmsModule')
               /*workFLowListService.getDetailBase(success, error, detailId.recordId,
                detailId.workflowId, detailId.instanceId, detailId.nodeId);*/
 
-              state.go(analyze(state.current) + 'pushDetail', {
-                "detail": detail,
-                "processedFlag": {value: true},
-                "type": "PUSHDETAIL"
-              });
+              if(window.plugins.jPushPlugin.openNotification.extras.source_type == "WORKFLOW"){
+                state.go(analyze(state.current) + 'pushDetail', {
+                  "detail": detail,
+                  "processedFlag": {value: true},
+                  "type": "PUSHDETAIL"
+                });
+
+                if(ionic.Platform.isIOS()) {
+                  readMessage(window.plugins.jPushPlugin.openNotification.extras.source_message_id);
+                }
+              }
+
               //state.go('detail', {content: result});
               //state.go('push.pushDetail',{content:alertContent});
 

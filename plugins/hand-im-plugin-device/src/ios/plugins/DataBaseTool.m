@@ -8,6 +8,7 @@
 
 #import "DataBaseTool.h"
 #import "FMDB.h"
+#import "CVDPlugin-Bridging-Header.h"
 
 static FMDatabase *db;
 
@@ -30,54 +31,6 @@ static FMDatabase *db;
         }
         [db close];
     }
-    //创建表 讨论组头像表
-    if ([db open]) {
-        NSString *sqlCreateTable =  @"CREATE TABLE IF NOT EXISTS Discussion_Table(id INTEGER PRIMARY KEY AUTOINCREMENT, discussionId TEXT,image_url TEXT)";
-        BOOL res = [db executeUpdate:sqlCreateTable];
-        if (!res) {
-            NSLog(@"error when creating db table");
-        } else {
-            NSLog(@"success to creating db table");
-        }
-        [db close];
-    }
-}
-
-+ (void)insertDiscussionGroupInformation:(NSString *)discussionId PortraitUri:(NSString *)portraitUri
-{
-    NSLog(@"插入讨论组信息");
-    //添加数据
-    //添加数据
-    if ([db open]) {
-        NSString *insertSql= [NSString stringWithFormat:
-                              @"INSERT INTO  Discussion_Table(discussionId, image_url) VALUES ('%@', '%@')", discussionId,portraitUri];
-        BOOL res = [db executeUpdate:insertSql];
-        if (!res) {
-            NSLog(@"error when insert db table");
-        } else {
-            NSLog(@"成功插入讨论组信息id:%@,imageUrl:%@",discussionId,portraitUri);
-        }
-        [db close];
-    }
-}
-
-+ (NSString *)getDiscussionPortraitUriById:(NSString *)discussionId
-{
-    NSLog(@"获取讨论组头像url");
-    NSLog(@"获取员工姓名");
-    NSString *portraitUri ;
-    if ([db open]) {
-        NSString * sql = [NSString stringWithFormat:
-                          @"SELECT image_url FROM Discussion_Table WHERE discussionId = '%@' ",discussionId];
-        FMResultSet * rs = [db executeQuery:sql];
-        while ([rs next]) {
-            NSString * imageURL = [rs stringForColumn:@"image_url"];
-            portraitUri = imageURL;
-            //   NSLog(@"根据id获取姓名 worker_id = %@, name = %@ ", worker_id, name);
-        }
-        [db close];
-    }
-    return portraitUri;
 }
 
 +(void)insertPersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon
@@ -219,7 +172,7 @@ static FMDatabase *db;
 }
 
 //删除聊天列表里的某条记录
-+ (void)deleteDataListBy:(NSString *)friendId Type:(RCConversationType)type
++ (void)deleteDataListBy:(NSString *)friendId
 {
     //    NSLog(@"删除数据库");
     //    if ([db open]) {
@@ -234,7 +187,7 @@ static FMDatabase *db;
     //        }
     //        [db close];
     //    }
-    [[RCIMClient sharedRCIMClient] removeConversation:type targetId:friendId];
+    [[RCIMClient sharedRCIMClient] removeConversation:ConversationType_PRIVATE targetId:friendId];
 }
 
 

@@ -32,7 +32,12 @@ angular.module('applicationModule')
         this.getNotifyMessageList = function (myscope) {
           var success = function (result) {
             if (result.returnCode == 'S') {
+
+              var totalMessageCount = 0;
               angular.forEach(result.returnData, function (messageDetail) {
+
+                totalMessageCount = totalMessageCount + parseInt(messageDetail.messageNum);
+
                 angular.forEach(myscope.notifyMessageList, function (data) {
                   if (messageDetail.messageTypeCode == data.type) {
                     data.count = messageDetail.messageNum;
@@ -41,7 +46,10 @@ angular.module('applicationModule')
                   }
                 });
               });
-              //myscope.$apply();
+
+              if(ionic.Platform.isIOS()) {
+                window.plugins.jPushPlugin.setApplicationIconBadgeNumber(totalMessageCount);
+              }
             }
           };
           var error = function (response) {
@@ -57,11 +65,16 @@ angular.module('applicationModule')
           };
           var error = function () {
           };
-          var group = {
-            "conversationId": message.employee,
-            "conversationType": message.conversationType
-          };
-          HandIMPlugin.deleteConversationList(success, error, group);
+          HandIMPlugin.deleteConversationList(success, error, message.employee);
+          /*if(ionic.Platform.isIOS()){
+           var group = {
+           "conversationId": message.employee,
+           "conversationType": message.conversationType
+           };
+           HandIMPlugin.deleteConversationList(success, error, group);
+           }else{
+           HandIMPlugin.deleteConversationList(success, error, message.employee);
+           }*/
         };
 
         this.getEmployeeMessageList = function (myscope, result) {
@@ -81,8 +94,8 @@ angular.module('applicationModule')
               "imgUrl": userIcon,
               "count": data.message.messageNum,
               "employee": data.message.sendId,
-              "time": data.message.sendTime,
-              "conversationType": data.message.conversationType
+              "time": data.message.sendTime
+              //"conversationType": data.message.conversationType
             };
             myscope.employeeMessageList.push(item);
           });
@@ -146,6 +159,23 @@ angular.module('applicationModule')
             error(response);
           });
         };
+
+        this.changeBadgeNumber = function () {
+          window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function(data) {
+            if(baseConfig.debug) {
+              console.log("changeBadgeNumber data " + angular.toJson(data));
+            }
+
+            var badgeNumber;
+
+            if(parseInt(data) > 0){
+              badgeNumber= parseInt(data) -1;
+            }else{
+              badgeNumber = 0;
+            }
+            window.plugins.jPushPlugin.setApplicationIconBadgeNumber(badgeNumber);
+          });
+        }
 
         this.getMessageProcess = function (success, error, messageList) {
           var url = baseConfig.queryPath + "/message/process";
