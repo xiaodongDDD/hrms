@@ -92,12 +92,17 @@ angular.module('HmsModule')
               var alertContent;
               var result;
               var detail;
+              var messageId = '';
+              var messageType = '';
 
               //alert('event ' + angular.toJson(event));
-              alert('window.plugins.jPushPlugin ' + angular.toJson(window.plugins.jPushPlugin));
+              alert('window.plugins.jPushPlugin ' + angular.toJson(event));
               //alert('detail ' + angular.toJson(detail));
 
               if (device.platform == "Android") {
+                messageId = window.plugins.jPushPlugin.openNotification.extras.message_id;
+                messageType = window.plugins.jPushPlugin.openNotification.extras.message_type;
+
                 alertContent = window.plugins.jPushPlugin.openNotification.alert;
                 result = {
                   "type": typeof(window.plugins.jPushPlugin),
@@ -110,6 +115,10 @@ angular.module('HmsModule')
                   "nodeId": window.plugins.jPushPlugin.openNotification.extras.source_node_id
                 };
               } else {
+
+                messageId = event.extras.message_id;
+                messageType = event.extras.message_type;
+
                 alertContent = event.aps.alert;
                 result = {
                   "type": typeof(event),
@@ -129,15 +138,14 @@ angular.module('HmsModule')
               /*workFLowListService.getDetailBase(success, error, detailId.recordId,
                detailId.workflowId, detailId.instanceId, detailId.nodeId);*/
 
-              if(window.plugins.jPushPlugin.openNotification.extras.source_type == "WORKFLOW"){
+              if(messageType == "work_flow"){
                 state.go(analyze(state.current) + 'pushDetail', {
                   "detail": detail,
                   "processedFlag": {value: true},
                   "type": "PUSHDETAIL"
                 });
-
                 if(ionic.Platform.isIOS()) {
-                  readMessage(window.plugins.jPushPlugin.openNotification.extras.source_message_id);
+                  readMessage(messageId);
                 }
               }
 
