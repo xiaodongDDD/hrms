@@ -33,7 +33,7 @@
             <hms-loading></hms-loading>
           </div>
           <ion-list ng-if="k == type">
-            <ion-item class="workflow-list padding-zero transparent" ng-style="fadeStyle($index)" ng-repeat="item in list | limitTo: (pageNum * pageNumLimit) track by $index">
+            <ion-item class="workflow-list padding-zero opacity-zero" ng-style="fadeStyle($index)" ng-repeat="item in list | limitTo: (pageNum * pageNumLimit) track by $index">
               <hms-workflow-list workflow-title='item.title1' workflow-icon='item.icon' workflow-type='item.type' workflow-type-value='item.typeValue' workflow-node='item.node' workflow-node-value='item.nodeValue' workflow-submit='item.submit' workflow-submit-person='item.submitPerson'
                 ng-click="enterWorkflowDetail(item, $index)">
               </hms-workflow-list>

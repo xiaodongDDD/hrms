@@ -3,7 +3,7 @@
 */
 
 .contractflow {
-  .transparent {
+  .opacity-zero {
     opacity: 0;
   }
   .padding-zero {
@@ -79,6 +79,25 @@
     }
     100% {
       width: 100%;
+    }
+  }
+
+  
+
+  @-webkit-keyframes contract-fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes contract-fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
   .contract-subheader-marker-deselected {
