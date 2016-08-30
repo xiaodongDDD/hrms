@@ -40,6 +40,14 @@
         "is_top_level": true,
         "variables": {}
     },
+    "cordova-plugin-geolocation": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-geolocation"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "jpush-phonegap-plugin": {
         "source": {
             "type": "registry",
@@ -49,13 +57,5 @@
         "variables": {
             "API_KEY": "6e0b08078306f45ac8331d54"
         }
-    },
-    "cordova-plugin-geolocation": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-geolocation"
-        },
-        "is_top_level": true,
-        "variables": {}
     }
 }

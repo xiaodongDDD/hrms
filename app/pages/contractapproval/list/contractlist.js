@@ -90,18 +90,26 @@ angular.module('applicationModule')
       }
 
       $scope.fadeStyle = function(index) { //循序出现，循序fadein
-        if ($scope.pageNum > 1) { //如果是上拉加载出来的
+        if (contractListService.IsFromParent()) { //如果是从上级页面进入的
+          if ($scope.pageNum > 1) { //如果是上拉加载出来的
+            return {
+              'opacity': 1
+            }
+          } else {
+            return {
+              'animation': 'contract-fadeIn forwards 0.5s',
+              '-webkit-animation': 'contract-fadeIn forwards 0.5s',
+              'animation-delay': (index + 1) * 90 + 'ms',
+              '-webkit-animation-delay': (index + 1) * 90 + 'ms',
+              'animation-duration': '0',
+              '-webkit-animation-duration': '0'
+            }
+          }
+        } else { //如果是从子级页面返回的
           return {
             'opacity': 1
           }
-        } else {
-          return {
-            '-webkit-animation': 'fadeIn 0.5s forwards',
-            '-webkit-animation-delay': (index + 1) * 90 + 'ms',
-            '-webkit-animation-duration': '0'
-          }
         }
-
       }
 
       //导航栏各项分页按钮对应的键
@@ -125,7 +133,9 @@ angular.module('applicationModule')
 
       //按了导航栏的按钮
       $scope.clickSubheader = function(title) {
-        console.log('clickSubheader');
+        if (!contractListService.IsFromParent()) {
+          contractListService.setIsFromParent(true);
+        }
         slideToChangePage = false;
         //设置分页的状态（选中与未选中）
         for (i in $scope.subheaderSelectFlag) {
@@ -535,8 +545,8 @@ angular.module('applicationModule')
         //应该显示哪个分页
         $scope.type = contractListService.getListType();
         //从上级页面进入的
-        if (contractListService.IsFromParent() == true) {
-          contractListService.setIsFromParent(false);
+        if (contractListService.IsFromParent()) {
+
         }
         //从子页面返回时进入的
         else {
@@ -578,7 +588,6 @@ angular.module('applicationModule')
 
       //滑动换页时
       $scope.changeSlide = function(index) {
-        console.log('changeSlide');
         //如果是按了导航按钮，那么会调用$scope.clickSubheader，然后代码控制换页，进入这个函数，但不会进入这个if，
         //如果是滑动换页，则进入这个if，来调用$scope.clickSubheader。因为if中的$scope.clickSubheader会设slideToChangePage = false;
         //这样是防止按导航按钮时调用两次$scope.clickSubheader。
@@ -589,6 +598,7 @@ angular.module('applicationModule')
       }
 
       $scope.enterWorkflowDetail = function(detail, index) {
+        contractListService.setIsFromParent(false);
         $scope.enteringIndex = index;
         contractListService.initRemoveItemFlag();
         $state.go('tab.contractDetail', { data: detail.originData })
@@ -710,7 +720,6 @@ angular.module('applicationModule')
           method: 'processes',
           type: type
         };
-        console.log('post: getTodoList');
         hmsHttp.post(url, params).success(function(result) {
           if (result.result == 'E') {
             result.unprocessedWorkflowList = [];
@@ -720,7 +729,7 @@ angular.module('applicationModule')
           }
           success(result);
         }).error(function(response, status) {
-          console.log('post: getTodoList error');
+          console.log('post: getTodoList() error');
         });
         if (baseConfig.debug) {
           console.log('调用地址：' + url);
@@ -745,11 +754,10 @@ angular.module('applicationModule')
           userId: window.localStorage.empno,
           method: 'getMyToDoSize'
         }
-        console.log('post: getTodoCount');
         hmsHttp.post(url, params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          console.log('post: getTodoCount error');
+          console.log('post: getTodoCount() error');
         });
       } else {
         console.log('不应该被调用getTodoCount()');
@@ -757,3 +765,4 @@ angular.module('applicationModule')
     };
   }
 ]);
+

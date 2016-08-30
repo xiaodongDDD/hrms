@@ -27,12 +27,14 @@ angular.module('messageModule')
     '$state',
     '$stateParams',
     '$ionicHistory',
+    '$ionicPlatform',
     'baseConfig',
     'messageService',
     function ($scope,
               $state,
               $stateParams,
               $ionicHistory,
+              $ionicPlatform,
               baseConfig,
               messageService) {
 
@@ -46,6 +48,13 @@ angular.module('messageModule')
 
       var currentPage = 1;
 
+      //将页面的导航bar设置成白色
+      $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+          StatusBar.styleDefault();
+        }
+      });
+
       function getDetail(loadMoreFlag) {
         var success = function (result) {
           if (result.returnCode == 'S') {
@@ -54,22 +63,40 @@ angular.module('messageModule')
               var message = {
                 "messageId": data.messageId,
                 "pushMessageId": data.pushMessageId,
+                "sendTime": data.sendTime,
+                "status": data.status,
                 "messageContent": data.messageContent,
               };
 
               if (data.messageDetail) {
-                message.detail = {
-                  "instanceId": "3771193",
-                  "nodeId": "100140",
-                  "recordId": "2422700",
-                  "workflowId": "10205"
-                };
-                message.messageDetailDesc = [
-                  {"name": "申请人", "value": "顾森林"},
-                  {"name": "申请日期", "value": "2016-08-23"},
-                  {"name": "描述", "value": "timesheet解冻申请"}
-                ];
+                message.messageDetailDesc = data.messageDetail;
               }
+
+              if (data.messageSecret) {
+                message.detail = {
+                  "instanceId": "",
+                  "nodeId": "",
+                  "recordId": "",
+                  "workflowId": ""
+                };
+                angular.forEach(data.messageSecret,function (data) {
+                  if(data.name == 'instanceId'){
+                    message.detail.instanceId = data.value;
+                  }
+                  if(data.name == 'nodeId'){
+                    message.detail.nodeId = data.value;
+                  }
+                  if(data.name == 'recordId'){
+                    message.detail.recordId = data.value;
+                  }
+                  if(data.name == 'workflowId'){
+                    message.detail.workflowId = data.value;
+                  }
+                });
+
+                message.messageDetailDesc = data.messageDetail;
+              }
+
               $scope.messageDetailList.push(message);
             });
 
@@ -91,14 +118,58 @@ angular.module('messageModule')
           }
         };
         messageService.getMessageDetail(success, error, messageDetail.type, currentPage);
-      }
+      };
+
+
+      $scope.goWorkflowDetail = function (workflowDetail) {
+        if(workflowDetail.detail){
+          var detail = {
+            "recordId": workflowDetail.detail.recordId,
+            "workflowId": workflowDetail.detail.workflowId,
+            "instanceId": workflowDetail.detail.instanceId,
+            "nodeId": workflowDetail.detail.nodeId
+          };
+          $state.go('tab.tab-message-pushDetail', {
+            "detail": detail,
+            "processedFlag": {value: true},
+            "type": "PUSHDETAIL"
+          });
+        }
+      };
+
+      $scope.readMessage = function (messageDetail) {
+        if(messageDetail.status == 'COMPLETE'){
+          return;
+        }
+        var messageList = [
+          {
+            "messageId": messageDetail.messageId,
+            "actionCode": "change"
+          }
+        ]
+        var success = function (result) {
+          if(baseConfig.debug){
+            console.log('messageService.getMessageProcess success result')
+          }
+          if(result.returnCode == 'S'){
+            messageDetail.status = 'COMPLETE';
+
+            if(ionic.Platform.isIOS()) {
+              messageService.changeBadgeNumber();
+            }
+          }
+        };
+        var error = function (response) {
+        };
+        messageService.getMessageProcess(success,error,messageList);
+      };
 
       getDetail(false);
 
       $scope.loadMoreData = function () {
         currentPage = currentPage + 1;
         getDetail(true);
-      }
+      };
 
       if (baseConfig.debug) {
         console.log('messageDetail : ' + angular.toJson(messageDetail));

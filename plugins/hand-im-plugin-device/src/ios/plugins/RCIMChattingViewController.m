@@ -94,8 +94,8 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 
     //设置导航下面渐变色
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor] size:CGSizeMake(screenWidth, 44+22)]
-                                                      forBarPosition:UIBarPositionAny
-                               barMetrics:UIBarMetricsDefault];
+                                                 forBarPosition:UIBarPositionAny
+                                                     barMetrics:UIBarMetricsDefault];
     NSArray *colors = @[[UIColor colorWithRed:0/255.0 green:60/255.0 blue:167/255.0 alpha:1.0],[UIColor colorWithRed:47/255.0 green:192/255.0 blue:247/255.0 alpha:1.0]];
     [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:colors withSize:CGSizeMake(screenWidth, 1.0)]];
 
@@ -103,8 +103,10 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     NSLog(@"getLatestMessages:%@ targetId:%@",array,self.target_id);
     //反向遍历
     [array enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        RCMessage *messsage  = obj;
         MessageFrame *msgFrame = [[MessageFrame alloc] init];
-        msgFrame.message = obj;
+        msgFrame.message = messsage;
+        [[RCIMClient sharedRCIMClient] setMessageReceivedStatus:messsage.messageId receivedStatus:ReceivedStatus_READ];
         [self.dataSource addObject:msgFrame];
         [self.ChatTableView reloadData];
         [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -130,6 +132,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RCIMLibReceivedMessageNotification object:nil];
 }
 -(void)viewDidLoad
 {
@@ -144,6 +147,8 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     self.navigationItem.leftBarButtonItem = left;//mobile@3x.png
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageWithCGImage:[UIImage imageNamed:@"mobile@3x.png"].CGImage scale:2.0 orientation:UIImageOrientationUp] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(call)];
     self.navigationItem.rightBarButtonItem = right;
+    //所有消息变为已读
+
     //设置通知监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedMessageNotification:) name:RCIMLibReceivedMessageNotification object:nil];
 }
@@ -151,9 +156,8 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 {
     [self.inputBarControl.inputField resignFirstResponder];
     [self scrollToBottom];
-    [self dismissViewControllerAnimated:NO completion:nil];
-    [self.delegate dismissViewController];
     [[NSNotificationCenter defaultCenter] postNotificationName:RCIMChattingViewControllerNotification object:nil];
+    [self.navigationController dismissViewControllerAnimated:NO completion:nil];
 }
 - (void)setUI
 {   //聊天界面
@@ -176,7 +180,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     //下面附属视图
     _attachView = [[UIView alloc] initWithFrame:CGRectMake(0, screenHeight, screenWidth, 216)];
     _attachView.hidden = YES;
- //   [_attachView setBackgroundColor:[UIColor grayColor]];
+    //   [_attachView setBackgroundColor:[UIColor grayColor]];
     [self.view addSubview:_attachView];
 
     //每次加载历史消息
@@ -238,6 +242,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     [cell setMsgFrame:messageFrame];
 
     NSString *userIcon = [[NSUserDefaults standardUserDefaults] objectForKey:@"userIcon"];
+    NSLog(@"userIcon:%@",userIcon);
     if (messageFrame.message.messageDirection==MessageDirection_SEND) {
         [cell.iconImageView sd_setImageWithURL:[NSURL URLWithString:userIcon] placeholderImage:[UIImage imageNamed:@"default_portrait_msg@2x.png"] options:SDWebImageProgressiveDownload];
     }else{
@@ -253,7 +258,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         [self didLongPressAction:block_cell];
     };
 
-  //  [cell setBackgroundColor:[UIColor lightGrayColor]];
+    //  [cell setBackgroundColor:[UIColor lightGrayColor]];
     return cell;
 }
 
@@ -326,7 +331,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
  */
 - (void)touchCamera:(UIButton *)sender
 {
-     [self.inputBarControl.inputField resignFirstResponder];
+    [self.inputBarControl.inputField resignFirstResponder];
     [UIView animateWithDuration:0.25 animations:^{
     } completion:^(BOOL finished) {
         [self scrollToBottom];
@@ -432,7 +437,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     if (self.phoneNums.count) {
         NSString *telphoneStr = @"";
         for (int i=0;i<self.phoneNums.count;i++) {
-           telphoneStr = [telphoneStr stringByAppendingString:[NSString stringWithFormat:@"%@|",self.phoneNums[i]]];
+            telphoneStr = [telphoneStr stringByAppendingString:[NSString stringWithFormat:@"%@|",self.phoneNums[i]]];
         }
         [textMessage setExtra:telphoneStr];
     }
@@ -478,8 +483,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
             [self sendImage:ConversationType_PRIVATE Content:imageMessage targetId:messageFrame.message.targetId index:index-1 MessageFrame:messageFrame];
         });
     }
-    [self.ChatTableView reloadData];
-    [self.ChatTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+    [self.ChatTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
     [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     NSLog(@"发送图片消息接口:%@",array);
 }
@@ -573,7 +577,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         //5s 252 6p271  6s258
         [self.inputBarControl setFrame:CGRectMake(0, self.view.bounds.size.height-keyboardheight-80, screenWidth, 80)];
         [self.ChatTableView setFrame:CGRectMake(0, 0, screenWidth, self.view.bounds.size.height-keyboardheight-80)];
-     //   NSLog(@"notification:%@",notification.userInfo);
+        //   NSLog(@"notification:%@",notification.userInfo);
         if (_dataSource.count) {
             [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
         }
@@ -590,7 +594,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
             [self.ChatTableView setFrame:CGRectMake(0, 0, screenWidth, self.view.bounds.size.height-80)];
         }];
     }
-   // NSLog(@"YChange:%f ,%f",YChange,duration);//216
+    // NSLog(@"YChange:%f ,%f",YChange,duration);//216
 }
 
 - (void)removeAllOtherView:(RCKeyboardShowType)type
@@ -703,7 +707,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 
 -(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self ];
 }
 
 #pragma mark -RecorderViewControllerDelegate录音代理
@@ -821,7 +825,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 - (void)didLongPressAction:(ChatCell *)cell
 {
     UIMenuItem *copyLink = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyAction:)];
-     UIMenuItem *pasteLink = [[UIMenuItem alloc] initWithTitle:@"粘贴" action:@selector(pasteAction:)];
+    UIMenuItem *pasteLink = [[UIMenuItem alloc] initWithTitle:@"粘贴" action:@selector(pasteAction:)];
     UIMenuItem *deleteLink = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteAction:)];
     [[UIMenuController sharedMenuController] setMenuItems:@[copyLink,pasteLink,deleteLink]];
     [[UIMenuController sharedMenuController] setTargetRect:cell.messageLabel.frame inView:cell.messageLabel.superview];
@@ -881,9 +885,13 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     //主要判断条件
     if (message.senderUserId.integerValue==self.target_id.integerValue) {
         MessageFrame *messageFrame = [[MessageFrame alloc] init];
+         NSLog(@"messageId:%lu ++status:%lu",message.messageId,message.receivedStatus);
+        [[RCIMClient sharedRCIMClient] setMessageReceivedStatus:message.messageId receivedStatus:ReceivedStatus_READ];
+        NSLog(@"messageId:%lu --status:%lu",message.messageId,message.receivedStatus);
         [messageFrame setMessage:message];
         [self.dataSource addObject:messageFrame];
         [self.ChatTableView reloadData];
+
         [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
     NSLog(@"didReceivedMessageNotification:%@",message);

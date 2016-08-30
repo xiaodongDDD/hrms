@@ -13,6 +13,7 @@ angular.module('myInfoModule')
     '$ionicHistory',
     '$rootScope',
     '$http',
+    'hmsJpushService',
     function ($scope,
               $state,
               baseConfig,
@@ -21,7 +22,8 @@ angular.module('myInfoModule')
               checkVersionService,
               $ionicHistory,
               $rootScope,
-              $http) {
+              $http,
+              hmsJpushService) {
       if(baseConfig.debug){
         console.log('myInfoCtrl.enter');
       }
@@ -64,6 +66,8 @@ angular.module('myInfoModule')
         //hmsPopup.showShortCenterToast("网络连接出错");
       });
       $scope.logout = function(){//注销登录
+        //取消绑定推送服务
+        hmsJpushService.bind(window.localStorage.empno + 'LOGOUT');
         window.localStorage.token = "";
         window.localStorage.password = "";
         window.localStorage.checkboxSavePwd = "";

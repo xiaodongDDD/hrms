@@ -66,19 +66,19 @@ angular.module('messageModule')
           "time": "3月20日"
         },
         {
-          "name": "重要推送",
+          "name": "timesheet未填提醒",
           "content": "",
           "imgUrl": "build/img/message/timesheet@3x.png",
           "count": "0",
-          "type": "share",
+          "type": "timesheet",
           "time": "3月20日"
         },
         {
-          "name": "公司公告",
+          "name": "日常提醒",
           "content": "",
           "imgUrl": "build/img/message/announcement@3x.png",
           "count": "0",
-          "type": "",
+          "type": "other",
           "time": "3月20日"
         }
       ];
@@ -128,10 +128,6 @@ angular.module('messageModule')
         }
       };
 
-      //$timeout(function () {
-      //  getMessageList();
-      //}, 1000);
-
       $scope.messageHandle = {
         blur: function () {
           if (baseConfig.debug) {
@@ -171,6 +167,12 @@ angular.module('messageModule')
           }
         },
 
+        createGroupChat: function () {
+          HandIMPlugin.createGroupChat(function success() {
+          }, function error() {
+          });
+        },
+
         telSaveNumber: function (event, baseInfo) { //拨打电话按钮的响应事件
           event.stopPropagation(); //阻止事件冒泡
 
@@ -198,6 +200,7 @@ angular.module('messageModule')
           if (baseConfig.debug) {
             console.log('message ' + angular.toJson(message));
           }
+
           var emp = {
             "friendId": message.employee,
             "friendName": message.name,
@@ -205,17 +208,32 @@ angular.module('messageModule')
           };
           imService.toNativeChatPage(emp);
 
+          /*if (!message.conversationType || message.conversationType == 1) {
+           var emp = {
+           "friendId": message.employee,
+           "friendName": message.name,
+           "friendIcon": message.imgUrl
+           };
+           imService.toNativeChatPage(emp);
+           }
+           else {
+           HandIMPlugin.toDiscussionGroup(function () {
+           }, function () {
+           }, {"discussionId": message.employee});
+           }*/
+
+          //imService.toNativeChatPage(emp);
           $timeout(function () {
-            getMessageList();
+            //getMessageList();
           }, 1000);
         },
 
         search: function (loadMoreFlag) {
-          messageService.searchEmployee($scope,page,loadMoreFlag);
+          messageService.searchEmployee($scope, page, loadMoreFlag);
         },
 
         notifyMessageDetail: function (messageDetail) {
-          $state.go('tab.message-detail',{"messageDetail": messageDetail});
+          $state.go('tab.message-detail', {"messageDetail": messageDetail});
         }
       };
 
@@ -229,20 +247,29 @@ angular.module('messageModule')
         messageService.getNotifyMessageList($scope);
       };
 
-      if(baseConfig.debug) {
+      if (baseConfig.debug) {
         console.log('messageCtrl.enter');
       }
 
       $scope.$on('$ionicView.enter', function (e) {
-        getEmployeeMessageList();
+        //将页面的导航bar设置成白色
+        $ionicPlatform.ready(function () {
+          if (window.StatusBar) {
+            StatusBar.styleLightContent();
+          }
+        });
+
+        $timeout(function () {
+          getEmployeeMessageList();
+        }, 1000);
         messageService.getNotifyMessageList($scope);
-        if(baseConfig.debug) {
+        if (baseConfig.debug) {
           console.log('messageCtrl.$ionicView.enter');
         }
       });
 
       $scope.$on('$destroy', function (e) {
-        if(baseConfig.debug) {
+        if (baseConfig.debug) {
           console.log('messageCtrl.$destroy');
         }
         document.removeEventListener('IMPush.openNotification', function (result) {

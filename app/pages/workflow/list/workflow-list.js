@@ -247,6 +247,9 @@ angular.module('applicationModule')
       });
 
       $scope.filterWorkFlowInfo = function () { //响应筛选按钮的方法
+        if($scope.listStatus.mine.selected == true){
+          return;
+        }
         $scope.workflowFilterModal.show();
       };
 

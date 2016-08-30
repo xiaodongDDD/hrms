@@ -21,7 +21,7 @@
         </a>
       </div>
     </div>
-    <div class="buttons" ng-click="changeBatchProcess()">
+    <div class="buttons" ng-click="changeBatchProcess()" ng-if="listStatus.todo.selected">
       <button class="button button-clear" style="font-size: 16px">
         <span ng-if="batchProcessFlag">取消</span>
         <span ng-if="!batchProcessFlag">操作</span>
@@ -52,7 +52,13 @@
                            workflow-node='item.node'
                            workflow-node-value='item.nodeValue'
                            workflow-submit='item.submit'
-                           workflow-submit-person='item.submitPerson' ng-click="enterWorkflowDetail(item)">
+                           workflow-submit-person='item.submitPerson'
+                           workflow-key1='item.key1'
+                           workflow-value1='item.value1'
+                           workflow-key2='item.key2'
+                           workflow-value2='item.value2'
+                           show-extra-flag="item.showExtraFlag"
+                           ng-click="enterWorkflowDetail(item)">
         </hms-workflow-list>
 
         <ion-option-button class="hms-swipe-left-action">

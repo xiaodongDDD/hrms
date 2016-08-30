@@ -32,7 +32,12 @@ angular.module('applicationModule')
         this.getNotifyMessageList = function (myscope) {
           var success = function (result) {
             if (result.returnCode == 'S') {
+
+              var totalMessageCount = 0;
               angular.forEach(result.returnData, function (messageDetail) {
+
+                totalMessageCount = totalMessageCount + parseInt(messageDetail.messageNum);
+
                 angular.forEach(myscope.notifyMessageList, function (data) {
                   if (messageDetail.messageTypeCode == data.type) {
                     data.count = messageDetail.messageNum;
@@ -41,7 +46,10 @@ angular.module('applicationModule')
                   }
                 });
               });
-              //myscope.$apply();
+
+              if(ionic.Platform.isIOS()) {
+                window.plugins.jPushPlugin.setApplicationIconBadgeNumber(totalMessageCount);
+              }
             }
           };
           var error = function (response) {
@@ -51,13 +59,22 @@ angular.module('applicationModule')
 
         this.deletePluginMessage = function (myscope, message) {
           var success = function () {
-            var index = myscope.messageList.indexOf(message);
-            myscope.messageList.splice(index, 1);
+            var index = myscope.employeeMessageList.indexOf(message);
+            myscope.employeeMessageList.splice(index, 1);
             myscope.$apply();
           };
           var error = function () {
           };
           HandIMPlugin.deleteConversationList(success, error, message.employee);
+          /*if(ionic.Platform.isIOS()){
+           var group = {
+           "conversationId": message.employee,
+           "conversationType": message.conversationType
+           };
+           HandIMPlugin.deleteConversationList(success, error, group);
+           }else{
+           HandIMPlugin.deleteConversationList(success, error, message.employee);
+           }*/
         };
 
         this.getEmployeeMessageList = function (myscope, result) {
@@ -78,6 +95,7 @@ angular.module('applicationModule')
               "count": data.message.messageNum,
               "employee": data.message.sendId,
               "time": data.message.sendTime
+              //"conversationType": data.message.conversationType
             };
             myscope.employeeMessageList.push(item);
           });
@@ -132,10 +150,8 @@ angular.module('applicationModule')
         this.getMessageSummary = function (success, error) {
           var url = baseConfig.queryPath + "/message/summary";
           var params = {
-            'params': {
-              "employeeCode": window.localStorage.empno,
-              "interfaceCode": "summary"
-            }
+            "employeeCode": window.localStorage.empno,
+            "interfaceCode": "summary"
           };
           hmsHttp.post(url, params).success(function (result) {
             success(result)
@@ -144,13 +160,44 @@ angular.module('applicationModule')
           });
         };
 
-        this.getMessageDetail = function (success, error,type,page) {
+        this.changeBadgeNumber = function () {
+          window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function(data) {
+            if(baseConfig.debug) {
+              console.log("changeBadgeNumber data " + angular.toJson(data));
+            }
+
+            var badgeNumber;
+
+            if(parseInt(data) > 0){
+              badgeNumber= parseInt(data) -1;
+            }else{
+              badgeNumber = 0;
+            }
+            window.plugins.jPushPlugin.setApplicationIconBadgeNumber(badgeNumber);
+          });
+        }
+
+        this.getMessageProcess = function (success, error, messageList) {
+          var url = baseConfig.queryPath + "/message/process";
+          var params = {
+            "employeeCode": window.localStorage.empno,
+            "interfaceCode": "process",
+            "messageList": messageList
+          };
+          hmsHttp.post(url, params).success(function (result) {
+            success(result)
+          }).error(function (response, status) {
+            error(response);
+          });
+        };
+
+        this.getMessageDetail = function (success, error, type, page) {
           var url = baseConfig.queryPath + "/message/detail";
           var params = {
-              "employeeCode": window.localStorage.empno,
-              "interfaceCode": "detail",
-              "messageType": type,
-              "page": page
+            "employeeCode": window.localStorage.empno,
+            "interfaceCode": "detail",
+            "messageType": type,
+            "page": page
           };
           hmsHttp.post(url, params).success(function (result) {
             success(result)
