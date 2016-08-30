@@ -18,11 +18,29 @@ angular.module('myApp')
           }
         });
     }
+  ])
+  .config(['$stateProvider',
+    function($stateProvider) {
+      $stateProvider
+        .state('tab.contractDetail-employeeDetail', {
+          url: '/contract-detail/authorDetail',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/contact/detail/employee-detail.html',
+              controller: 'contactEmployeeDetailCtl'
+            }
+          },
+          params: {
+            'employeeNumber': ""
+          }
+        });
+    }
   ]);
 
 angular.module('applicationModule')
   .controller('ContractDetailCtrl', [
     '$scope',
+    '$state',
     '$stateParams',
     '$timeout',
     '$ionicHistory',
@@ -30,7 +48,7 @@ angular.module('applicationModule')
     'hmsPopup',
     'contractDetailService',
     'contractListService',
-    function($scope, $stateParams, $timeout, $ionicHistory, $ionicActionSheet, hmsPopup, contractDetailService,contractListService) {
+    function($scope, $state, $stateParams, $timeout, $ionicHistory, $ionicActionSheet, hmsPopup, contractDetailService, contractListService) {
       $scope.nowContractInfoNum = 0;
       $scope.nowContractInfo = {};
       $scope.noNextDataFlag = false;
@@ -41,6 +59,8 @@ angular.module('applicationModule')
       $scope.contractId = '';
       $scope.showHint = false;
       $scope.showIosHeader = ionic.Platform.isIOS();
+      $scope.hisBluring = false;
+      $scope.afterEnter = false;
 
       //合同要素数据成功返回后
       var essenceSuccess = function(responce) {
@@ -79,7 +99,7 @@ angular.module('applicationModule')
 
       //取初始化页面所需数据
       contractDetailService.check(httpSuccess,
-        $stateParams.data.activityId ? $stateParams.data.activityId : "" ,
+        $stateParams.data.activityId ? $stateParams.data.activityId : "",
         $stateParams.data.procId ? $stateParams.data.procId : "");
 
       //显示合同要素弹出框
@@ -115,7 +135,7 @@ angular.module('applicationModule')
 
       $scope.workflowDetailScroll = {
         "width": document.body.clientWidth,
-        "height": 137
+        "height": 105
       };
 
       $scope.showProc = false;
@@ -123,12 +143,16 @@ angular.module('applicationModule')
       $scope.showDesc = false;
       $scope.showEssence = false;
 
+      $scope.filterBlur = false;
+
       //显示流程弹出框
       $scope.showProcDiv = function() {
         $scope.showEssence = false;
         $scope.showDesc = false;
         $scope.showProc = !$scope.showProc;
         $scope.showCover = !$scope.showCover;
+        $scope.filterBlur = true;
+        $scope.hisBluring = true;
       };
 
       //关闭页面所有弹出框及遮罩层
@@ -137,6 +161,8 @@ angular.module('applicationModule')
         $scope.showCover = false;
         $scope.showDesc = false;
         $scope.showEssence = false;
+        $scope.filterBlur = false;
+        $scope.hisBluring = false;
       };
 
       //显示流程信息弹出框
@@ -207,7 +233,7 @@ angular.module('applicationModule')
       };
 
       $scope.fetchTranspondData = false;
-      $scope.showTransFlag = [true,false,false];
+      $scope.showTransFlag = [true, false, false];
       $scope.transponds = [];
       $scope.searchKey = "";
 
@@ -235,17 +261,17 @@ angular.module('applicationModule')
           $scope.fetchTranspondData = true;
           contractDetailService.getTranspond(transpondSuccess);
         }
-        if($scope.showTransFlag[0]){
+        if ($scope.showTransFlag[0]) {
           $scope.showTransFlag[0] = false;
           $scope.showTransFlag[2] = true;
           return 0;
         }
-        if($scope.showTransFlag[2]){
+        if ($scope.showTransFlag[2]) {
           $scope.showTransFlag[2] = false;
           $scope.showTransFlag[1] = true;
           return 0;
         }
-        if($scope.showTransFlag[1]){
+        if ($scope.showTransFlag[1]) {
           $scope.showTransFlag[1] = false;
           $scope.showTransFlag[2] = true;
         }
@@ -272,6 +298,54 @@ angular.module('applicationModule')
         $scope.showTransDiv();
       };
 
+      //add by luyufei 2016-8-26
+      $scope.isFirst = function(index) {
+        if (index == 0) {
+          return true;
+        }
+        return false;
+      }
+
+      $scope.isLast = function(index) {
+        if (index == $scope.data.stages.length - 1) {
+          return true;
+        }
+        return false;
+      }
+
+      $scope.isHighlight = function(item) {
+        return item.highLight;
+      }
+
+      $scope.hisMakerStyle = function(index) {
+        return {
+          'top': (index * 70 + 21) + 'px'
+        }
+      }
+
+      $scope.filterBlurStyle = function(flag) {
+        if (flag) {
+          return {
+            'filter': 'blur(5px)',
+            '-webkit-filter': 'blur(5px)'
+          }
+        } else {
+          return {}
+        }
+      }
+
+      $scope.goToAuthorPage = function(id) {
+        if (id) {
+          $state.go('tab.contractDetail-employeeDetail', { employeeNumber: id });
+        } else {
+          $state.go('tab.contractDetail-employeeDetail', { employeeNumber: 1876 });
+        }
+      }
+
+      $scope.$on('$ionicView.afterEnter', function() {
+        $scope.afterEnter = true;
+      });
+
     }
   ])
 
@@ -291,14 +365,13 @@ angular.module('applicationModule')
       var needActInstId = contractListService.getListType() == 'myTask_todo';
       var params;
 
-      if(needActInstId){
+      if (needActInstId) {
         params = {
           userId: window.localStorage.empno,
           method: "processInfoByAct",
           actInstId: activityId
         };
-      }
-      else{
+      } else {
         params = {
           userId: window.localStorage.empno,
           method: "processInfoByProc",
