@@ -542,8 +542,13 @@ angular.module('applicationModule')
           hmsPopup.showShortCenterToast("请输入出发点和终点");
         }
 
+        if($scope.createInfo.departureTime < getNowTime()){
+          hmsPopup.showShortCenterToast("出发时间不得早于当前时间！");
+        }
 
-        var url = baseConfig.queryPath + "/share/info";
+
+
+          var url = baseConfig.queryPath + "/share/info";
 
 
         if($scope.fetchFlag){
