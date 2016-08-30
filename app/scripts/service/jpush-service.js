@@ -144,16 +144,17 @@ angular.module('HmsModule')
                   "processedFlag": {value: true},
                   "type": "PUSHDETAIL"
                 });
-                if(ionic.Platform.isIOS()) {
-                  readMessage(messageId);
-                }
               }
 
+              if(ionic.Platform.isIOS()) {
+                readMessage(messageId);
+              }
               //state.go('detail', {content: result});
               //state.go('push.pushDetail',{content:alertContent});
-
             } catch (exception) {
-              console.log("JPushPlugin:onOpenNotification" + exception);
+              if(baseConfig.debug){
+                console.log("JPushPlugin:onOpenNotification" + exception);
+              }
             }
           };
           document.addEventListener("jpush.openNotification", onOpenNotification, false);
