@@ -516,34 +516,36 @@ angular.module('applicationModule')
         coordTrans($scope.startLng,$scope.startLat,$scope.endLng,$scope.endLat);//转换百度地图的经纬度上传
         $scope.createInfo.startLatitude = $scope.startLng+","+$scope.startLat;
         $scope.createInfo.endLatitude = $scope.endLng+","+$scope.endLat;
-        if( ($scope.createInfo.startAddr != "") && ($scope.createInfo.endAddr != "") ){
-          if($scope.createInfo.departureTime != "请选择"){
-            if($scope.createInfo.departurePreference != "选择偏好"){
-              if( $scope.createInfo.feeType!=""){
-                if($scope.createInfo.startLat != ""){
-                  if($scope.createInfo.endLat != ""){
-                    $scope.fetchFlag = true;
+
+
+        if($scope.createInfo.departureTime > getNowTime()){
+          if( ($scope.createInfo.startAddr != "") && ($scope.createInfo.endAddr != "") ){
+            if($scope.createInfo.departureTime != "请选择"){
+              if($scope.createInfo.departurePreference != "选择偏好"){
+                if( $scope.createInfo.feeType!=""){
+                  if($scope.createInfo.startLat != ""){
+                    if($scope.createInfo.endLat != ""){
+                      $scope.fetchFlag = true;
+                    }else{
+                      hmsPopup.showShortCenterToast("终点错误，请重新输入");
+                    }
                   }else{
-                    hmsPopup.showShortCenterToast("终点错误，请重新输入");
+                    hmsPopup.showShortCenterToast("出发点错误，请重新输入");
                   }
                 }else{
-                  hmsPopup.showShortCenterToast("出发点错误，请重新输入");
+                  hmsPopup.showShortCenterToast("费用计划错误，请重新输入");
                 }
               }else{
-                hmsPopup.showShortCenterToast("费用类型错误，请重新输入");
+                hmsPopup.showShortCenterToast("请输入时间偏好");
               }
             }else{
-              hmsPopup.showShortCenterToast("请输入时间偏好");
+              hmsPopup.showShortCenterToast("请输入出发时间");
             }
           }else{
-            hmsPopup.showShortCenterToast("请输入出发时间");
+            hmsPopup.showShortCenterToast("请输入出发点和终点");
           }
         }else{
-          hmsPopup.showShortCenterToast("请输入出发点和终点");
-        }
-
-        if($scope.createInfo.departureTime < getNowTime()){
-          hmsPopup.showShortCenterToast("出发时间不得早于当前时间！");
+          hmsPopup.showShortCenterToast("出发时间不得早于当前时间");
         }
 
 

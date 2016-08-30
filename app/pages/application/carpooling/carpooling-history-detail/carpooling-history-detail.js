@@ -103,7 +103,7 @@ angular.module('applicationModule')
           hmsPopup.hideLoading();
           if (result.status == "S") {
             $rootScope.$broadcast("RELEASE_SUCCESS");
-            //hmsPopup.showShortCenterToast("退出成功！");
+            hmsPopup.showShortCenterToast("退出成功！");
             $ionicHistory.goBack();
           } else if (result.status == "N") {
             hmsPopup.showShortCenterToast("退出失败");

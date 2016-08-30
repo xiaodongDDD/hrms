@@ -83,12 +83,12 @@ angular.module('applicationModule')
           hmsPopup.hideLoading();
           if (result.status == "S") {
             $rootScope.$broadcast("RELEASE_SUCCESS");
-            hmsPopup.showShortCenterToast("加入成功！");
+            hmsPopup.showShortCenterToast("加入成功");
             $ionicHistory.goBack();
           } else if (result.status == "E") {
-            hmsPopup.showShortCenterToast("退出失败");
+            hmsPopup.showShortCenterToast("加入失败");
           }else if (result.status == "N") {
-            hmsPopup.showShortCenterToast("退出失败！");
+            hmsPopup.showShortCenterToast("加入失败");
           }
         }).error(function (error, status) {
           hmsPopup.hideLoading();
@@ -103,7 +103,7 @@ angular.module('applicationModule')
           hmsPopup.hideLoading();
           if (result.status == "S") {
             $rootScope.$broadcast("RELEASE_SUCCESS");
-            hmsPopup.showShortCenterToast("退出成功！");
+            hmsPopup.showShortCenterToast("退出成功");
             $ionicHistory.goBack();
           } else if (result.status == "N") {
             hmsPopup.showShortCenterToast("退出失败");
