@@ -30,15 +30,16 @@
     NSString *userId = [command.arguments[0] objectForKey:@"userId"];
     NSString *access_token = [command.arguments[0] objectForKey:@"access_token"];
     NSString *Token = [command.arguments[0] objectForKey:@"RCToken"];
-
+    
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:@"userId"];
     [[NSUserDefaults standardUserDefaults] setObject:Token forKey:@"RCToken"];
     [[NSUserDefaults standardUserDefaults] setObject:access_token forKey:@"access_token"];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self loginRCWebService];//登陆融云
         [self requestUserNameAndUrlById:userId ByToken:access_token];//请求登录用户信息
     });
+     [self performSelector:@selector(IMPluginDidReceiveMessage:) withObject:nil afterDelay:3.0];
 }
 
 //开启单人会话
@@ -50,10 +51,10 @@
         friendName = command.arguments[0][@"friendName"];
         friendIcon = command.arguments[0][@"friendIcon"];
         telephoneNumbers = command.arguments[0][@"telephoneNumbers"];
-        [DataBaseTool selectSameUserInfoWithId:friendId Name:friendName ImageUrl:friendIcon];
+        //  [DataBaseTool selectSameUserInfoWithId:friendId Name:friendName ImageUrl:friendIcon];
         UINavigationController *nav = [[UINavigationController alloc] initWithTargetId:friendId FriendName:friendName Icon:friendIcon PhoneNumbers:telephoneNumbers];
         [self.viewController presentViewController:nav animated:NO completion:nil];
-
+        
         //消失回调
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatViewDismiss) name:RCIMChattingViewControllerNotification object:nil];
     }else{
@@ -66,7 +67,7 @@
     CDVPluginResult *result;
     NSLog(@"----获取某个会话中指定数量的最新消息实体---------");//message
     NSArray * conversationList = [[RCIMClient sharedRCIMClient] getConversationList:@[@(ConversationType_PRIVATE)]];
-
+    
     NSMutableArray *returnArray = [NSMutableArray array];
     NSString * content;
     for (RCConversation * conversation in conversationList) {
@@ -85,7 +86,7 @@
         }else{
             //其他
         }
-
+        
         NSString *name = [DataBaseTool getNameByWorkerId:conversation.targetId];
         NSString *icon = [DataBaseTool getImageUrlByWorkerId:conversation.targetId];
         NSLog(@"targetUserInfo:name %@, id %@ ,icon %@",name,conversation.targetId,icon);
@@ -117,7 +118,7 @@
         //可以重新请求一次
         NSLog(@"token 无效 ，请确保生成token 使用的appkey 和初始化时的appkey 一致");
     }];
-
+    
 }
 
 -(void)deleteConversationList:(CDVInvokedUrlCommand *)command
@@ -154,13 +155,13 @@
                           name:CDVIMPluginPushNotification
                         object:nil];
     NSLog(@"come initNotifications");
-
+    
 }
 - (void)IMPluginDidReceiveMessage:(NSNotification *)notification
 {
     NSLog(@"come IMPluginDidReceiveMessage");
     NSArray * conversationList = [[RCIMClient sharedRCIMClient] getConversationList:@[@(ConversationType_PRIVATE)]];
-
+    
     NSMutableArray *returnArray = [NSMutableArray array];
     NSString * content;
     for (RCConversation * conversation in conversationList) {
@@ -213,7 +214,7 @@
     NSData *httpBody = [NSJSONSerialization dataWithJSONObject:bodyDict options:NSJSONWritingPrettyPrinted error:nil];
     [mutableRequest setHTTPBody:httpBody];
     NSURLSessionDataTask *Task = [session dataTaskWithRequest:mutableRequest completionHandler:^(NSData * data, NSURLResponse *  response, NSError * error) {
-
+        
         if (!error) {
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
             NSString *userId = json[@"rows"][0][@"emp_code"];//用户id

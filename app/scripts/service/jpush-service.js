@@ -144,11 +144,12 @@ angular.module('HmsModule')
                   "processedFlag": {value: true},
                   "type": "PUSHDETAIL"
                 });
+
+                if(ionic.Platform.isIOS()) {
+                  readMessage(messageId);
+                }
               }
 
-              if(ionic.Platform.isIOS()) {
-                readMessage(messageId);
-              }
               //state.go('detail', {content: result});
               //state.go('push.pushDetail',{content:alertContent});
             } catch (exception) {
