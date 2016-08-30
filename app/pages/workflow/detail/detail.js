@@ -1209,9 +1209,13 @@ angular.module('applicationModule')
 
       if ($stateParams.type == 'PUSHDETAIL') { //消息推送过来的
         init.initPushDetail(detail);
-        init.initDataModal();
+        $timeout(function () {
+          init.initDataModal();
+        },250);
       } else if ($stateParams.type == 'WORKFLOWDETAIL') {
         $scope.LoadingPushData = false;
-        init.initDataModal();
+        $timeout(function () {
+          init.initDataModal();
+        },250);
       }
     }]);
