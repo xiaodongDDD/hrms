@@ -265,8 +265,8 @@ angular.module('applicationModule')
               time1 = returnDate.format("hh:mm:ss");
               $scope.departureTime = "";
               var datime = date1+" "+time1;
-              if(time > timeText(getNowTime())){
-                $scope.departureTime = time;
+              if(datime > timeText(getNowTime())){
+                $scope.departureTime = datime;
               }else{
                 hmsPopup.showShortCenterToast("不能早于当前时间");
                 $scope.departureTime = "请选择";
