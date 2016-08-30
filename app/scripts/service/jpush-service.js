@@ -96,7 +96,7 @@ angular.module('HmsModule')
               var messageType = '';
 
               //alert('event ' + angular.toJson(event));
-              alert('window.plugins.jPushPlugin ' + angular.toJson(event));
+              //alert('window.plugins.jPushPlugin ' + angular.toJson(event));
               //alert('detail ' + angular.toJson(detail));
 
               if (device.platform == "Android") {
@@ -116,8 +116,8 @@ angular.module('HmsModule')
                 };
               } else {
 
-                messageId = event.extras.message_id;
-                messageType = event.extras.message_type;
+                messageId = event.message_id;
+                messageType = event.message_type;
 
                 alertContent = event.aps.alert;
                 result = {

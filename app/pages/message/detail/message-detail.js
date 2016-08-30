@@ -80,7 +80,7 @@ angular.module('messageModule')
                   "workflowId": ""
                 };
                 angular.forEach(data.messageSecret,function (data) {
-                  if(data.name == 'instanceId'){
+                  if(data.name == 'sourceInstanceId'){
                     message.detail.instanceId = data.value;
                   }
                   if(data.name == 'nodeId'){
