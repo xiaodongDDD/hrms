@@ -435,6 +435,9 @@
     <header-file src="src/ios/plugins/ImageCell.h"/>
     <source-file src="src/ios/plugins/ImageCell.m"/>
 
+    <header-file src="src/ios/plugins/SDBaseProgressView.h"/>
+    <source-file src="src/ios/plugins/SDBaseProgressView.m"/>
+
     <header-file src="src/ios/plugins/SDBallProgressView.h"/>
     <source-file src="src/ios/plugins/SDBallProgressView.m"/>
 
@@ -590,5 +593,6 @@
     <framework src="libc++.tbd" weak="true" />
     <framework src="libsqlite3.0.tbd" weak="true" />
     <framework src="libz.tbd" weak="true" />
+
   </platform>
 </plugin>

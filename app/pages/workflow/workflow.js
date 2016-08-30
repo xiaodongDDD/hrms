@@ -119,8 +119,10 @@ angular.module('applicationModule')
                 submitPerson: data.employee_name,
                 key1: '最后审批人',
                 value1: data.last_update_by_name,
-                key2: '状态',
-                value2: data.status_name,
+                key2: '申请时间',
+                value2: data.creation_date,
+                key3: '状态',
+                value3: data.status_name,
                 showExtraFlag: true,
                 workflowId: data.workflow_id,
                 instanceId: data.instance_id,
@@ -611,7 +613,7 @@ angular.module('applicationModule')
             hmsPopup.hideLoading();
             if(result.returnCode  == 'S'){
               detail.status = -1000;
-              detail.nodeValue = "取消";
+              detail.value3 = "取消";
               hmsPopup.showPopup('个人申请撤回成功!');
             }
             else{

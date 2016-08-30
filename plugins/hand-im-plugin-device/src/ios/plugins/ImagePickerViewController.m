@@ -44,6 +44,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     //设置长按拖动手势
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressCell:)];
+    [longPress setMinimumPressDuration:0.10];//设置时间极短就变成了滑动
     [_imageCollectionView addGestureRecognizer:longPress];
     [_imageCollectionView setShowsHorizontalScrollIndicator:NO];
     [_imageCollectionView setShowsVerticalScrollIndicator:NO];

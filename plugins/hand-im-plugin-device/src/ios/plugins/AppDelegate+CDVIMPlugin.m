@@ -153,7 +153,7 @@ static NSMutableArray *usersInfo;
     if (message.content.senderUserInfo) {
         senderUserInfo = message.content.senderUserInfo;
     }
-    // NSLog(@"senderUserInfo:%@",[[[notification.object content] senderUserInfo] name]);
+     NSLog(@"senderUserInfo:%@",message.content.senderUserInfo.name);
     //做下缓存处理  //插入员工详细信息
     if (senderUserInfo!=nil) {
         if (senderUserInfo.portraitUri==nil) {
@@ -170,6 +170,7 @@ static NSMutableArray *usersInfo;
     
     NSLog(@"还剩余的未接收的消息数：%d", nLeft);
 }
+
 - (BOOL)hasSameUserInfo:(NSDictionary *)object
 {
     for (NSDictionary * userInfo in usersInfo) {
@@ -186,6 +187,7 @@ static NSMutableArray *usersInfo;
     
     return NO;
 }
+
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
     NSLog(@"点击了通知:%@",notification.userInfo);
