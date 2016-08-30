@@ -70,7 +70,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // [self setUI];
+        [self setUI];
     }
     return self;
 }
@@ -87,10 +87,8 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 20)];
-    titleView.attributedText = [[NSAttributedString alloc] initWithString:self.navtitle attributes:@{NSForegroundColorAttributeName:[UIColor colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0],NSFontAttributeName:[UIFont systemFontOfSize:17]}];
-    self.navigationItem.titleView = titleView;
+    self.navigationItem.title = self.navtitle;
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0],NSForegroundColorAttributeName:[UIColor colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0]}];
     
     self.attachView.frame = CGRectMake(0, screenHeight, screenWidth, 216);
     
@@ -103,16 +101,17 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     
     NSArray *array = [[RCIMClient sharedRCIMClient] getLatestMessages:ConversationType_PRIVATE targetId:self.target_id count:10];
     NSLog(@"getLatestMessages:%@ targetId:%@",array,self.target_id);
-    //清除所有未读消息
-    [[RCIMClient sharedRCIMClient] clearMessagesUnreadStatus:ConversationType_PRIVATE targetId:self.target_id];
     //反向遍历
     [array enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        RCMessage *messsage  = obj;
         MessageFrame *msgFrame = [[MessageFrame alloc] init];
-        msgFrame.message = obj;
+        msgFrame.message = messsage;
+        [[RCIMClient sharedRCIMClient] setMessageReceivedStatus:messsage.messageId receivedStatus:ReceivedStatus_READ];
         [self.dataSource addObject:msgFrame];
         [self.ChatTableView reloadData];
-        [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }];
+    [self.inputBarControl.inputField becomeFirstResponder];
     //请求电话的归属地
     for (int idx=0; idx<self.phoneNums.count; idx++) {
         [[BelongPlaceManager sharedInsance] APIRequest:self.phoneNums[idx]];
@@ -133,11 +132,12 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RCIMLibReceivedMessageNotification object:nil];
 }
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.inputBarControl.inputField becomeFirstResponder];
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     //监听键盘变动
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -147,19 +147,17 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     self.navigationItem.leftBarButtonItem = left;//mobile@3x.png
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageWithCGImage:[UIImage imageNamed:@"mobile@3x.png"].CGImage scale:2.0 orientation:UIImageOrientationUp] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(call)];
     self.navigationItem.rightBarButtonItem = right;
+    //所有消息变为已读
+    
     //设置通知监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedMessageNotification:) name:RCIMLibReceivedMessageNotification object:nil];
-    
-    [self setUI];
-    [self performSelector:@selector(scrollToBottom) withObject:nil afterDelay:0.2f];
 }
 - (void)dismiss
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:RCIMChattingViewControllerNotification object:nil];
     [self.inputBarControl.inputField resignFirstResponder];
     [self scrollToBottom];
-    [self dismissViewControllerAnimated:NO completion:nil];
-    [self.delegate dismissViewController];
+    [[NSNotificationCenter defaultCenter] postNotificationName:RCIMChattingViewControllerNotification object:nil];
+    [self.navigationController dismissViewControllerAnimated:NO completion:nil];
 }
 - (void)setUI
 {   //聊天界面
@@ -218,6 +216,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     if (historyArray.count) {
         [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:historyArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
+    
     NSLog(@"updateHistoryMessage");
 }
 
@@ -246,6 +245,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     [cell setMsgFrame:messageFrame];
     
     NSString *userIcon = [[NSUserDefaults standardUserDefaults] objectForKey:@"userIcon"];
+    NSLog(@"userIcon:%@",userIcon);
     if (messageFrame.message.messageDirection==MessageDirection_SEND) {
         [cell.iconImageView sd_setImageWithURL:[NSURL URLWithString:userIcon] placeholderImage:[UIImage imageNamed:@"default_portrait_msg@2x.png"] options:SDWebImageProgressiveDownload];
     }else{
@@ -416,7 +416,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         [UIView animateWithDuration:0.25 animations:^{
             [self scrollToTop:RCKeyboardShowRecorderType];
         }];
-    }else{
+    } else{
         [UIView animateWithDuration:0.25 animations:^{
             [self scrollToBottom];
         } completion:^(BOOL finished) {
@@ -442,22 +442,20 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:user_id name:user_name portrait:user_portrait];
     [textMessage setSenderUserInfo:userInfo];
     [textMessage setContent:object ];
+    messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_PRIVATE targetId:self.target_id direction:MessageDirection_SEND messageId:message_id content:textMessage];
     if (self.phoneNums.count) {
         NSString *telphoneStr = @"";
         for (int i=0;i<self.phoneNums.count;i++) {
             telphoneStr = [telphoneStr stringByAppendingString:[NSString stringWithFormat:@"%@|",self.phoneNums[i]]];
         }
-        //设置附加信息 电话。。
         [textMessage setExtra:telphoneStr];
     }
-    messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_PRIVATE targetId:self.target_id direction:MessageDirection_SEND messageId:message_id content:textMessage];
     NSLog(@"setExtra:%@",messageFrame.message.extra);
     [self.dataSource addObject:messageFrame];
     //发送消息
     [[RCIMClient sharedRCIMClient] sendMessage:messageFrame.message.conversationType targetId:messageFrame.message.targetId content:messageFrame.message.content pushContent:nil pushData:nil success:^(long messageId) {
         messageFrame.message.messageId = messageId;
         NSLog(@"消息发送成功回调：%lu , targetId:%@ , messageFrameID:%lu",messageId,self.target_id,messageFrame.message.messageId);
-        NSLog(@"userInfo:%@",user_name);
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"消息发送失败回调,错误码:%li 消息Id:%lu",nErrorCode,messageId);
     }];
@@ -479,6 +477,8 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         NSString *user_portrait = [[NSUserDefaults standardUserDefaults] objectForKey:@"userIcon"];
         RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:user_id name:user_name portrait:user_portrait];
         [imageMessage setSenderUserInfo:userInfo];
+        messageFrame  = [[MessageFrame alloc] init];
+        messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_PRIVATE targetId:self.target_id direction:MessageDirection_SEND messageId:message_id content:imageMessage];
         if (self.phoneNums.count) {
             NSString *telphoneStr = @"";
             for (int i=0;i<self.phoneNums.count;i++) {
@@ -486,16 +486,13 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
             }
             [imageMessage setExtra:telphoneStr];
         }
-        messageFrame  = [[MessageFrame alloc] init];
-        messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_PRIVATE targetId:self.target_id direction:MessageDirection_SEND messageId:message_id content:imageMessage];
         [self.dataSource addObject:messageFrame];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSInteger index = self.dataSource.count;
             [self sendImage:ConversationType_PRIVATE Content:imageMessage targetId:messageFrame.message.targetId index:index-1 MessageFrame:messageFrame];
         });
     }
-    [self.ChatTableView reloadData];
-    [self.ChatTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+    [self.ChatTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
     [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     NSLog(@"发送图片消息接口:%@",array);
 }
@@ -719,7 +716,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 
 -(void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self ];
 }
 
 #pragma mark -RecorderViewControllerDelegate录音代理
@@ -750,6 +747,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         NSString *user_portrait = [[NSUserDefaults standardUserDefaults] objectForKey:@"userIcon"];
         RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:user_id name:user_name portrait:user_portrait];
         [voiceMessage setSenderUserInfo:userInfo];
+        messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_PRIVATE targetId:self.target_id direction:MessageDirection_SEND messageId:message_id content:voiceMessage];
         if (self.phoneNums.count) {
             NSString *telphoneStr = @"";
             for (int i=0;i<self.phoneNums.count;i++) {
@@ -757,8 +755,6 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
             }
             [voiceMessage setExtra:telphoneStr];
         }
-        messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_PRIVATE targetId:self.target_id direction:MessageDirection_SEND messageId:message_id content:voiceMessage];
-        
         [self.dataSource addObject:messageFrame];
         NSLog(@"voiceMessage:%@  wav:%@  duration:%lu",voiceMessage,fileName,voiceMessage.duration);
         //发送语音
@@ -885,7 +881,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 {
     UIPasteboard *pasteboard = [UIPasteboard pasteboardWithName:@"com.hand.handMobile.pboard" create:YES];
     self.inputBarControl.inputField.text = [self.inputBarControl.inputField.text stringByAppendingString:pasteboard.string];
-    NSLog(@"deleteAction");
+    NSLog(@"pasteAction");
 }
 //删除
 - (void)deleteAction:(UIMenuController *)menuController
@@ -898,13 +894,15 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 {
     RCMessage *message = notification.object;
     //主要判断条件
-    if ((message.senderUserId.integerValue==self.target_id.integerValue) && (message.conversationType==ConversationType_PRIVATE)) {
+    if (message.senderUserId.integerValue==self.target_id.integerValue) {
         MessageFrame *messageFrame = [[MessageFrame alloc] init];
-        [messageFrame setMessage:message];
-        //清除所有未读消息
+         NSLog(@"messageId:%lu ++status:%lu",message.messageId,message.receivedStatus);
         [[RCIMClient sharedRCIMClient] setMessageReceivedStatus:message.messageId receivedStatus:ReceivedStatus_READ];
+        NSLog(@"messageId:%lu --status:%lu",message.messageId,message.receivedStatus);
+        [messageFrame setMessage:message];
         [self.dataSource addObject:messageFrame];
         [self.ChatTableView reloadData];
+
         [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
     NSLog(@"didReceivedMessageNotification:%@",message);

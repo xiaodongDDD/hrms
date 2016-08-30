@@ -85,7 +85,7 @@ $workflow-gray-line: #D2D2D2;
       height: 55px;
       width: 85px;
       position: absolute;
-      top:20px;
+      top:10px;
       padding: 0px 0px 0px 5px;
     }
     .approve-row.activated {
@@ -97,7 +97,7 @@ $workflow-gray-line: #D2D2D2;
       height: 55px;
       width: 85px;
       position: absolute;
-      top:85px;
+      top:70px;
       padding: 0px 0px 0px 5px;
     }
     .refuse-row.activated {
@@ -109,6 +109,12 @@ $workflow-gray-line: #D2D2D2;
     .status-img {
       width: 62px;
       height: 17px;
+      align-self: center;
+    }
+    .status-img2 {
+      width: 30px;
+      height: 30px;
+      margin-left: 10px;
       align-self: center;
     }
   }
@@ -200,6 +206,7 @@ $workflow-gray-line: #D2D2D2;
   .workflow-list-header {
     margin-left: 55px;
     height: 40px;
+    line-height: 40px;
     border-bottom: 2px dotted $workflow-gray-line;
     color: $workflow-bule-content;
   }

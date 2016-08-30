@@ -30,7 +30,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     //滚动相册
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
@@ -41,10 +41,10 @@ static NSString * const reuseIdentifier = @"Cell";
     [_imageCollectionView registerClass:[ImageCell class] forCellWithReuseIdentifier:reuseIdentifier];
     _imageCollectionView.dataSource = self;
     _imageCollectionView.delegate = self;
-
+    
     //设置长按拖动手势
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressCell:)];
-    [longPress setMinimumPressDuration:0.04];//设置时间极短就变成了滑动
+    [longPress setMinimumPressDuration:0.10];//设置时间极短就变成了滑动
     [_imageCollectionView addGestureRecognizer:longPress];
     [_imageCollectionView setShowsHorizontalScrollIndicator:NO];
     [_imageCollectionView setShowsVerticalScrollIndicator:NO];
@@ -111,7 +111,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-
+    
     if ([selectedItems containsObject:@(indexPath.row)]) {
         imageCell.isSelected = YES;
     }else{
@@ -119,7 +119,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     [imageCell setCell:dataSource[indexPath.row] Index:indexPath.row];
     imageCell.imageCellBlock = ^(NSInteger itemIndex){
-
+    
         if ([selectedItems containsObject:@(itemIndex)]) {
             [selectedItems removeObject:@(itemIndex)];
         }else{
@@ -166,7 +166,7 @@ static NSString * const reuseIdentifier = @"Cell";
     NSIndexPath *indexPath = [self.imageCollectionView indexPathForItemAtPoint:location];
     static UIView       *snapshot = nil;
     static NSIndexPath  *sourceIndexPath = nil;
-
+    
     switch (state) {
             // 已经开始按下
         case UIGestureRecognizerStateBegan: {
@@ -190,11 +190,11 @@ static NSString * const reuseIdentifier = @"Cell";
                     snapshot.transform = CGAffineTransformMakeScale(1.05, 1.05);
                     snapshot.alpha = 0.98;
                     cell.imageView.alpha = 0.0;
-
+                    
                 } completion:^(BOOL finished) {
-
+                    
                     cell.imageView.hidden = YES;
-
+                    
                 }];
             }
             break;
@@ -217,7 +217,7 @@ static NSString * const reuseIdentifier = @"Cell";
             snapshot.center = center;
 //            NSLog(@"%@---%f----%@", self.touchPoints, moveX, NSStringFromCGPoint(center));
             NSLog(@"移动中%@", NSStringFromCGRect(snapshot.frame));
-
+            
             break;
         }
             // 长按手势取消状态
@@ -229,19 +229,19 @@ static NSString * const reuseIdentifier = @"Cell";
                 ImageCell *cell = (ImageCell *)[self.imageCollectionView cellForItemAtIndexPath:sourceIndexPath];
                 cell.imageView.hidden = NO;
                 cell.imageView.alpha = 0.0;
-
+                
                 // 将快照恢复到初始状态
                 [UIView animateWithDuration:0.25 animations:^{
                     snapshot.center = CGPointMake(cell.center.x-self.imageCollectionView.contentOffset.x, cell.center.y);
                     snapshot.transform = CGAffineTransformIdentity;
                     snapshot.alpha = 0.0;
                     cell.imageView.alpha = 1.0;
-
+                    
                 } completion:^(BOOL finished) {
                     sourceIndexPath = nil;
                     [snapshot removeFromSuperview];
                     snapshot = nil;
-
+                    
                 }];
             }else{
                 // 清除操作
@@ -255,7 +255,7 @@ static NSString * const reuseIdentifier = @"Cell";
             break;
         }
     }
-
+    
 }
 //上滑发图
 - (void)panGestureSendImageMessage:(NSInteger)index WithView:(UIView *)snapshot Cell:(ImageCell*)cell
@@ -290,38 +290,38 @@ static NSString * const reuseIdentifier = @"Cell";
 - (NSArray<PHAsset *> *)getAllAssetInPhotoAblumWithAscending:(BOOL)ascending
 {
     NSMutableArray<PHAsset *> *assets = [NSMutableArray array];
-
+    
     PHFetchOptions *option = [[PHFetchOptions alloc] init];
     //ascending 为YES时，按照照片的创建时间升序排列;为NO时，则降序排列
     option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:ascending]];
-
+    
     PHFetchResult *result = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:option];
-
+    
     [result enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         PHAsset *asset = (PHAsset *)obj;
         [assets addObject:asset];
     }];
-
+    
     return assets;
 }
 
 - (UIImage *)scaleImage:(UIImage*)image byScalingToSize:(CGSize)targetSize {
-
+    
     UIImage *sourceImage = image;
     UIImage *newImage = nil;
-
+    
     UIGraphicsBeginImageContext(targetSize);
-
+    
     CGRect thumbnailRect = CGRectZero;
     thumbnailRect.origin = CGPointZero;
     thumbnailRect.size.width  = targetSize.width;
     thumbnailRect.size.height = targetSize.height;
-
+    
     [sourceImage drawInRect:thumbnailRect];
-
+    
     newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-
+    
     return newImage ;
 }
 
@@ -330,7 +330,7 @@ static NSString * const reuseIdentifier = @"Cell";
     PHImageRequestOptions *option = [[PHImageRequestOptions alloc] init];
     option.resizeMode = resizeMode;//控制照片尺寸
     option.networkAccessAllowed = YES;
-
+    
     [[PHCachingImageManager defaultManager] requestImageDataForAsset:asset options:option resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
         BOOL downloadFinined = ![[info objectForKey:PHImageCancelledKey] boolValue] && ![info objectForKey:PHImageErrorKey] && ![[info objectForKey:PHImageResultIsDegradedKey] boolValue];
         if (downloadFinined && completion) {

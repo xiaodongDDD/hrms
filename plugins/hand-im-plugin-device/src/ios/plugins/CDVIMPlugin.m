@@ -30,7 +30,7 @@
     NSString *userId = [command.arguments[0] objectForKey:@"userId"];
     NSString *access_token = [command.arguments[0] objectForKey:@"access_token"];
     NSString *Token = [command.arguments[0] objectForKey:@"RCToken"];
-    
+    NSLog(@"access_token----------：%@",access_token);
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:@"userId"];
     [[NSUserDefaults standardUserDefaults] setObject:Token forKey:@"RCToken"];
     [[NSUserDefaults standardUserDefaults] setObject:access_token forKey:@"access_token"];
@@ -39,7 +39,7 @@
         [self loginRCWebService];//登陆融云
         [self requestUserNameAndUrlById:userId ByToken:access_token];//请求登录用户信息
     });
-     [self performSelector:@selector(IMPluginDidReceiveMessage:) withObject:nil afterDelay:3.0];
+      [self performSelector:@selector(IMPluginDidReceiveMessage:) withObject:nil afterDelay:3.0];
 }
 
 //开启单人会话
@@ -51,7 +51,7 @@
         friendName = command.arguments[0][@"friendName"];
         friendIcon = command.arguments[0][@"friendIcon"];
         telephoneNumbers = command.arguments[0][@"telephoneNumbers"];
-        //  [DataBaseTool selectSameUserInfoWithId:friendId Name:friendName ImageUrl:friendIcon];
+          [DataBaseTool selectSameUserInfoWithId:friendId Name:friendName ImageUrl:friendIcon];
         UINavigationController *nav = [[UINavigationController alloc] initWithTargetId:friendId FriendName:friendName Icon:friendIcon PhoneNumbers:telephoneNumbers];
         [self.viewController presentViewController:nav animated:NO completion:nil];
         
@@ -159,6 +159,9 @@
 }
 - (void)IMPluginDidReceiveMessage:(NSNotification *)notification
 {
+    RCMessage *message = notification.object;
+    [[RCIMClient sharedRCIMClient] setMessageReceivedStatus:message.messageId receivedStatus:ReceivedStatus_UNREAD];
+    
     NSLog(@"come IMPluginDidReceiveMessage");
     NSArray * conversationList = [[RCIMClient sharedRCIMClient] getConversationList:@[@(ConversationType_PRIVATE)]];
     

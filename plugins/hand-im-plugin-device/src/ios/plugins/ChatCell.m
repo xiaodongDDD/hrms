@@ -37,6 +37,10 @@ static NSString * lastTime = nil;
         //消息label
         self.messageLabel = [[YYLabel alloc] init];
         self.messageLabel.numberOfLines = 0;
+        //设置emoji解析器
+        YYTextSimpleEmoticonParser *emojiParser = [YYTextSimpleEmoticonParser new];
+//        NSMutableDictionary *mapper = [NSMutableDictionary new];
+//        mapper 
         [self.messageLabel setFont:[UIFont systemFontOfSize:textMesaageFont]];
         [self.messageLabel setTextContainerInset:UIEdgeInsetsMake( textMesaageFont/2.0, textLeftRightSpace, textMesaageFont/2.0, textLeftRightSpace)];
         [self.messageLabel.layer setCornerRadius:18];//聊天消息圆角度数

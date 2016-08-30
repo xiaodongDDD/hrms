@@ -22,8 +22,7 @@
  */
 -(void)returnConversationList:(CDVInvokedUrlCommand *)command;
 /*
- * 删除单人会话列表
+ * 删除会话列表 
  */
 -(void)deleteConversationList:(CDVInvokedUrlCommand *)command;
-
 @end
