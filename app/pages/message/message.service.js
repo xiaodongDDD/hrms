@@ -47,7 +47,7 @@ angular.module('applicationModule')
                 });
               });
 
-              if(ionic.Platform.isIOS()) {
+              if(ionic.Platform.isWebView() && ionic.Platform.isIOS()) {
                 window.plugins.jPushPlugin.setApplicationIconBadgeNumber(totalMessageCount);
               }
             }

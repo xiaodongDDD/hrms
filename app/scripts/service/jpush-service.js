@@ -96,7 +96,7 @@ angular.module('HmsModule')
               var messageType = '';
 
               //alert('event ' + angular.toJson(event));
-              alert('window.plugins.jPushPlugin ' + angular.toJson(event));
+              //alert('window.plugins.jPushPlugin ' + angular.toJson(event));
               //alert('detail ' + angular.toJson(detail));
 
               if (device.platform == "Android") {
@@ -116,8 +116,8 @@ angular.module('HmsModule')
                 };
               } else {
 
-                messageId = event.extras.message_id;
-                messageType = event.extras.message_type;
+                messageId = event.message_id;
+                messageType = event.message_type;
 
                 alertContent = event.aps.alert;
                 result = {
@@ -144,16 +144,17 @@ angular.module('HmsModule')
                   "processedFlag": {value: true},
                   "type": "PUSHDETAIL"
                 });
-                if(ionic.Platform.isIOS()) {
-                  readMessage(messageId);
-                }
               }
 
+              if(ionic.Platform.isIOS()) {
+                readMessage(messageId);
+              }
               //state.go('detail', {content: result});
               //state.go('push.pushDetail',{content:alertContent});
-
             } catch (exception) {
-              console.log("JPushPlugin:onOpenNotification" + exception);
+              if(baseConfig.debug){
+                console.log("JPushPlugin:onOpenNotification" + exception);
+              }
             }
           };
           document.addEventListener("jpush.openNotification", onOpenNotification, false);
