@@ -39,7 +39,7 @@
         [self loginRCWebService];//登陆融云
         [self requestUserNameAndUrlById:userId ByToken:access_token];//请求登录用户信息
     });
-      [self performSelector:@selector(IMPluginDidReceiveMessage:) withObject:nil afterDelay:3.0];
+    [self performSelector:@selector(IMPluginDidReceiveMessage:) withObject:nil afterDelay:3.0];
 }
 
 //开启单人会话
@@ -51,7 +51,7 @@
         friendName = command.arguments[0][@"friendName"];
         friendIcon = command.arguments[0][@"friendIcon"];
         telephoneNumbers = command.arguments[0][@"telephoneNumbers"];
-          [DataBaseTool selectSameUserInfoWithId:friendId Name:friendName ImageUrl:friendIcon];
+        [DataBaseTool selectSameUserInfoWithId:friendId Name:friendName ImageUrl:friendIcon];
         UINavigationController *nav = [[UINavigationController alloc] initWithTargetId:friendId FriendName:friendName Icon:friendIcon PhoneNumbers:telephoneNumbers];
         [self.viewController presentViewController:nav animated:NO completion:nil];
         
@@ -91,7 +91,7 @@
         NSString *icon = [DataBaseTool getImageUrlByWorkerId:conversation.targetId];
         NSLog(@"targetUserInfo:name %@, id %@ ,icon %@",name,conversation.targetId,icon);
         if (icon!=nil) {
-            NSDictionary *dictConversa = [NSDictionary dictionaryWithObjects:@[conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content] forKeys:@[@"sendId",@"userName",@"userIcon",@"sendTime",@"messageNum",@"content"]];
+            NSDictionary *dictConversa = [NSDictionary dictionaryWithObjects:@[conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content,[TimeTool sortTime:conversation.receivedTime]] forKeys:@[@"sendId",@"userName",@"userIcon",@"sendTime",@"messageNum",@"content",@"sortTime"]];
             [returnArray addObject:@{@"message":dictConversa}];
         }
     }
@@ -159,10 +159,8 @@
 }
 - (void)IMPluginDidReceiveMessage:(NSNotification *)notification
 {
-    RCMessage *message = notification.object;
-    [[RCIMClient sharedRCIMClient] setMessageReceivedStatus:message.messageId receivedStatus:ReceivedStatus_UNREAD];
     
-    NSLog(@"come IMPluginDidReceiveMessage");
+    NSLog(@"----推送---------");//message
     NSArray * conversationList = [[RCIMClient sharedRCIMClient] getConversationList:@[@(ConversationType_PRIVATE)]];
     
     NSMutableArray *returnArray = [NSMutableArray array];
@@ -183,15 +181,16 @@
         }else{
             //其他
         }
-        //  RCUserInfo *targetUserInfo = [[RCIM sharedRCIM] getUserInfoCache:conversation.targetId];
+        
         NSString *name = [DataBaseTool getNameByWorkerId:conversation.targetId];
         NSString *icon = [DataBaseTool getImageUrlByWorkerId:conversation.targetId];
         NSLog(@"targetUserInfo:name %@, id %@ ,icon %@",name,conversation.targetId,icon);
         if (icon!=nil) {
-            NSDictionary *dictConversa = [NSDictionary dictionaryWithObjects:@[conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content] forKeys:@[@"sendId",@"userName",@"userIcon",@"sendTime",@"messageNum",@"content"]];
+            NSDictionary *dictConversa = [NSDictionary dictionaryWithObjects:@[conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content,[TimeTool sortTime:conversation.receivedTime]] forKeys:@[@"sendId",@"userName",@"userIcon",@"sendTime",@"messageNum",@"content",@"sortTime"]];
             [returnArray addObject:@{@"message":dictConversa}];
         }
     }
+    
     if (returnArray.count) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *jsonDict = [NSDictionary dictionaryWithObject:returnArray forKey:@"message"];

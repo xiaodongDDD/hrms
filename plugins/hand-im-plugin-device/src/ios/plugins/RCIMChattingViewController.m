@@ -106,7 +106,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         RCMessage *messsage  = obj;
         MessageFrame *msgFrame = [[MessageFrame alloc] init];
         msgFrame.message = messsage;
-        [[RCIMClient sharedRCIMClient] setMessageReceivedStatus:messsage.messageId receivedStatus:ReceivedStatus_READ];
+        [[RCIMClient sharedRCIMClient] clearMessagesUnreadStatus:ConversationType_PRIVATE targetId:self.target_id];
         [self.dataSource addObject:msgFrame];
         [self.ChatTableView reloadData];
         [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -843,8 +843,6 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     if ([cell.msgFrame.message.content isKindOfClass:[RCTextMessage class]]) {
         RCTextMessage *textMessage = (RCTextMessage *)cell.msgFrame.message.content;
         copyStr = textMessage.content;
-    }else{
-        copyStr = @" ";
     }
     NSLog(@"didLongPressAction");
 }

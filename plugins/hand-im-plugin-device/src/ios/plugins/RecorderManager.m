@@ -39,6 +39,12 @@ static RecorderManager *recorderManager;
     //文件类型 AVFormatIDKey
     //采集样   AVSampleRateKey
     //文件质量  AVEncoderAudioQualityKey
+   // AVAudioSession（AVAudioSession是用来控制audio会话的），因此真机测试的时候有些问题（iOS7.1.1）
+    NSError *error1;
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error1];
+    [session setActive:YES error:&error1];
+    
     NSDictionary *settings = @{AVFormatIDKey: @(kAudioFormatLinearPCM),
                                AVSampleRateKey: @8000.00f,
                                AVNumberOfChannelsKey: @1,
@@ -50,6 +56,7 @@ static RecorderManager *recorderManager;
     NSURL *urlPath = [NSURL fileURLWithPath:fileName];
     _recorder = [[AVAudioRecorder alloc] initWithURL:urlPath settings:settings error:&error];
     _recorder.delegate = self;
+    _recorder.meteringEnabled = YES;
     dateStartRecordering = [NSDate date];
     if ([_recorder prepareToRecord]) {
         [_recorder record];

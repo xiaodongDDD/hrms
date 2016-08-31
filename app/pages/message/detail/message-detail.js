@@ -117,7 +117,7 @@ angular.module('messageModule')
             $scope.$broadcast('scroll.infiniteScrollComplete');
           }
         };
-        messageService.getMessageDetail(success, error, messageDetail.type, currentPage);
+        messageService.getMessageDetail(success, error, messageDetail.conversationType, currentPage);
       };
 
 

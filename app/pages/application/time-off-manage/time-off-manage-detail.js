@@ -373,7 +373,7 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('requestParams ' + angular.toJson(requestParams));
         }
-
+        hmsPopup.showLoading("处理休假申请中");
         hmsHttp.post(requestUrl, requestParams).success(function (response) {
           hmsPopup.hideLoading();
           if (hmsHttp.isSuccessfull(response.status)) {
