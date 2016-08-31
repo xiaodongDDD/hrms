@@ -381,55 +381,92 @@ public class HandIMPlugin extends CordovaPlugin{
             }
         }
     //内部类 传给前端界面的数据
-    public class myConversation{
-        private String content;
-        private String sendId;
-        private String sendTime;
-        private String messageNum;
-        private String userName;
-        private String userIcon;
-        public myConversation(){}
-        public myConversation(String txt,String id,String time,String num,String userName,String userIcon){
-            this.content = txt;
-            this.sendId = id;
-            this.sendTime = time;
-            this.messageNum = num;
-            this.userName = userName;
-            this.userIcon = userIcon;
+    public class myConversation {
+            private String content;
+            private String sendId;
+            private String sendTime;
+            private String messageNum;
+            private String userName;
+            private String userIcon;
+            private String conversationType;
+            private String sortTime;
+
+            public myConversation() {
+            }
+
+            public myConversation(String txt, String id, String time,String sortTime, String num, String userName, String userIcon) {
+                this.content = txt;
+                this.sendId = id;
+                this.sendTime = time;
+                this.sortTime = sortTime;
+                this.messageNum = num;
+                this.userName = userName;
+                this.userIcon = userIcon;
+            }
+
+            public void setSortTime(String sortTime){
+                this.sortTime = sortTime;
+            }
+            public String getSortTime(){
+                return sortTime;
+            }
+
+            public void setContent(String txt) {
+                this.content = txt;
+            }
+
+            public void setSendId(String id) {
+                this.sendId = id;
+            }
+
+            public void setSendTime(String time) {
+                this.sendTime = time;
+            }
+
+            public void setMessageNum(String num) {
+                this.messageNum = num;
+            }
+
+            public void setUserName(String userName) {
+                this.userName = userName;
+            }
+
+            public void setUserIcon(String userIcon) {
+                this.userIcon = userIcon;
+            }
+
+            public String getConten() {
+                return content;
+            }
+
+            public String getSendId() {
+                return sendId;
+            }
+
+            public String getSendTime() {
+                return sendTime;
+            }
+
+            public String getMessageNum() {
+                return messageNum;
+            }
+
+            public String getUserName() {
+                return userName;
+            }
+
+            public String getUserIcon() {
+                return userIcon;
+            }
+
+            public String getConversationType() {
+                return conversationType;
+            }
+
+            public void setConversationType(String conversationType) {
+                this.conversationType = conversationType;
+            }
         }
-        public void setContent(String txt){
-            this.content = txt;
-        }
-        public void setSendId(String id){
-            this.sendId = id;
-        }
-        public void setSendTime(String time){this.sendTime = time;}
-        public void setMessageNum(String num){this.messageNum = num;}
-        public void setUserName(String userName){
-            this.userName = userName;
-        }
-        public void setUserIcon(String userIcon){
-            this.userIcon = userIcon;
-        }
-        public String getConten(){
-            return content;
-        }
-        public String getSendId(){
-            return sendId;
-        }
-        public String getSendTime(){
-            return sendTime;
-        }
-        public String getMessageNum(){
-            return messageNum;
-        }
-        public String getUserName(){
-            return userName;
-        }
-        public String getUserIcon(){
-            return userIcon;
-        }
-    }
 
     @Override
     public void onStart() {
@@ -501,10 +538,12 @@ public class HandIMPlugin extends CordovaPlugin{
                         long time = conversation.getSentTime();
                         Date date = new Date(time);
                         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String mTime = sd.format(date);
+                                            String mTime = sd.format(date);
+                                            SimpleDateFormat sortTimeFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                                            String sortTime = sortTimeFormat.format(date);
                         //获取未读消息数量
                         int num = conversation.getUnreadMessageCount();
-                        myConversation myCon = new myConversation(txt, targetId,mTime,String.valueOf(num),sendUserName,iconPath);
+                        myConversation myCon = new myConversation(txt, targetId,mTime,sortTime,String.valueOf(num),sendUserName,iconPath);
                         myConversations.add(myCon);
                     }
                     putChatList(myConversations);
@@ -525,6 +564,7 @@ public class HandIMPlugin extends CordovaPlugin{
                 obj.put("sendId", list.get(i).getSendId());
                 obj.put("content", list.get(i).getConten());
                 obj.put("sendTime", list.get(i).getSendTime());
+                obj.put("sortTime", list.get(i).getSortTime());
                 obj.put("messageNum", list.get(i).getMessageNum());
                 obj.put("userName",list.get(i).getUserName());
                 obj.put("userIcon",list.get(i).getUserIcon());
