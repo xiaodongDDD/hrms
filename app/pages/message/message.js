@@ -104,7 +104,7 @@ angular.module('messageModule')
           "employee": '',
           "time": '23:54',
           "messageType": 'MESSAGE',
-          "sortTime": "20160822234401",
+          "sortTime": "2016:01",
           "conversationType": ""
         },
         {
@@ -148,6 +148,8 @@ angular.module('messageModule')
         }
       });
 
+      $scope.firstRefresh = false;
+
       /*$timeout(function () {
        messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, messageCacheList1);
        },3000);
@@ -165,6 +167,23 @@ angular.module('messageModule')
           messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, friendList);
         }
       }, false);
+
+      document.addEventListener('jpush.receiveNotification', function (result) {
+        if (baseConfig.debug) {
+          console.log('jpush.receiveNotification ' + angular.toJson(result));
+        }
+        refreshMessageList();
+        if (result.message_type == 'work_flow') {
+          hmsPopup.showPopup('你有一个待办事项要处理,请进入工作流列表进行处理!');
+        }
+      }, false);
+
+      /*document.addEventListener('jpush.receiveMessage', function (result) {
+       //if (baseConfig.debug) {
+       alert('jpush.receiveMessage ' + angular.toJson(result));
+       //}
+       refreshMessageList();
+       }, false);*/
 
       //刷新消息列表
       var refreshMessageList = function () {
@@ -372,12 +391,10 @@ angular.module('messageModule')
           }
         });
 
-        /*$timeout(function () {
-         refreshMessageList(true);
-         }, 1000);*/
-        if (baseConfig.debug) {
-          console.log('messageCtrl.$ionicView.enter');
+        if ($scope.firstRefresh) {
+          refreshMessageList(true);
         }
+        $scope.firstRefresh = true;
       });
 
       $scope.$on('$destroy', function (e) {
