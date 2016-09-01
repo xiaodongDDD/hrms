@@ -118,7 +118,7 @@ angular.module('applicationModule')
       $scope.subheaderTitleValue = { //分页按钮的显示文本
         myStart_undo: '我发起的未完成',
         myStart_do: '我发起的已完成',
-        myTask_todo: '待办已签收',
+        myTask_todo: '待处理',
         myTask_unfin: '待办已处理',
         myTask_fin: '待办已完成'
       };
@@ -212,7 +212,7 @@ angular.module('applicationModule')
               title1: data.procDescr,
               icon: employeeImg,
               type: startTime,
-              typeValue: data.startDate,
+              typeValue: data.startDate.split('.')[0],
               node: author,
               nodeValue: data.author,
               submit: desc,
