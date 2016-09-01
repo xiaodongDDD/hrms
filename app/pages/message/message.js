@@ -164,7 +164,7 @@ angular.module('messageModule')
         }
         if (result && result.message) {
           var friendList = [];
-          if(angular.isArray(result.message)){
+          if (angular.isArray(result.message)) {
             friendList = messageService.getEmployeeMessageList(result);
           }
           messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, friendList);
@@ -207,7 +207,7 @@ angular.module('messageModule')
             }
             if (result && result.message) {
               var friendList = [];
-              if(angular.isArray(result.message)){
+              if (angular.isArray(result.message)) {
                 friendList = messageService.getEmployeeMessageList(result);
               }
               $scope.messageList = messageService.mergeNotifyToFriendList(notifyList, friendList);
@@ -397,8 +397,12 @@ angular.module('messageModule')
           }
         });
 
-        if ($scope.firstRefresh) {
-          refreshMessageList(true);
+        if (!$scope.firstRefresh) {
+          $timeout(function () {
+            refreshMessageList();
+          }, 1500);
+        } else {
+          refreshMessageList();
         }
         $scope.firstRefresh = true;
       });
