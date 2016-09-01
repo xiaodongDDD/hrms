@@ -162,8 +162,11 @@ angular.module('messageModule')
         if (baseConfig.debug) {
           console.log('IMPush.openNotification result ' + angular.toJson(result));
         }
-        if (result && result.message && angular.isArray(result.message)) {
-          var friendList = messageService.getEmployeeMessageList(result);
+        if (result && result.message) {
+          var friendList = [];
+          if(angular.isArray(result.message)){
+            friendList = messageService.getEmployeeMessageList(result);
+          }
           messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, friendList);
         }
       }, false);
@@ -202,8 +205,11 @@ angular.module('messageModule')
             if (baseConfig.debug) {
               console.log('returnConversationList result ' + angular.toJson(result));
             }
-            if (result && result.message && angular.isArray(result.message)) {
-              var friendList = messageService.getEmployeeMessageList(result);
+            if (result && result.message) {
+              var friendList = [];
+              if(angular.isArray(result.message)){
+                friendList = messageService.getEmployeeMessageList(result);
+              }
               $scope.messageList = messageService.mergeNotifyToFriendList(notifyList, friendList);
             }
             $scope.$broadcast("scroll.refreshComplete");
