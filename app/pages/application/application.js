@@ -74,7 +74,6 @@ angular.module('applicationModule')
       }/*, {
         list: [
           {
-            //2016-08-15：此项用作合同管理的隐藏入口，如果需要征用此项，请在下方successCheckContract函数重设合同管理入口
             appName: "合同管理",
             imageUrl: "build/img/application/application/schedule@3x.png",
             destUrl: "tab.contractlist",
@@ -101,12 +100,16 @@ angular.module('applicationModule')
       ];
 
       var successCheckContract = function (result) {
-        var indexRow = 1; //第二行
-        var indexCol = 3; //第四列
         if (result.result == 'S') {
           var successGetTodoCount = function (result) {
             if (result.result == 'S') {
-              $scope.officeApp[indexRow].list[indexCol].count = result.procSize;
+              angular.forEach($scope.officeApp, function (data) {
+                angular.forEach(data.list, function (detail) {
+                  if (detail.hasWorkflowNum && detail.appName == '合同管理') {
+                    detail.count = result.procSize;
+                  }
+                });
+              });
             }
           }
           contractListService.getTodoCount(successGetTodoCount);
