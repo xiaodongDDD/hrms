@@ -27,7 +27,7 @@
     CGFloat msgYear = components.year;
     CGFloat msgMonth = components.month;
     CGFloat msgDay = components.day;
-
+    
     // 判断
     NSDateFormatter *dateFmt = [[NSDateFormatter alloc] init];
     if (currentYear == msgYear && currentMonth == msgMonth && currentDay == msgDay) {
@@ -42,24 +42,5 @@
     }
     
     return [dateFmt stringFromDate:msgDate];
-}
-
-+ (NSString *)sortTime:(long long)timestamp
-{
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    // 获取消息发送时间的年、月、日
-    // 获取当前时间的年、月、日
-    NSDateComponents *components ;
-    NSDate *msgDate = [NSDate dateWithTimeIntervalSince1970:timestamp/1000.0];
-    components = [calendar components:NSCalendarUnitYear| NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:msgDate];
-    CGFloat msgYear = components.year;
-    CGFloat msgMonth = components.month;
-    CGFloat msgDay = components.day;
-    CGFloat msgHour = components.hour;
-    CGFloat msgMin = components.minute;
-    CGFloat msgSec = components.second;
-    
-    return [NSString stringWithFormat:@"%4.0f%02.0f%02.0f%02.0f%02.0f%02.0f",msgYear,msgMonth,msgDay,msgHour,msgMin,msgSec];
 }
 @end

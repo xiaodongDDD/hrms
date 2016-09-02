@@ -12,12 +12,11 @@
 
 // 测试0vnjpoadnd4cz
 // e5t4ouvptpsaa
-#define appKey @"e5t4ouvptpsaa"
+#define appKey @"0vnjpoadnd4cz"
 #define appSecret @"e5t4ouvptpsaa"
 #define CDVIMPluginPushNotification @"CDVIMPluginPushNotification"
 #define localService @"http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/detail?"
-// 测试环境 http://wechat.hand-china.com/hrmsv2/v2/api/staff/detail?
-//正式环境  http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/detail?
+
 /*!
  *头像左间距
  */

@@ -15,5 +15,4 @@
  *  @param timestamp 时间戳
  */
 + (NSString *)timeStr:(long long)timestamp;
-+ (NSString *)sortTime:(long long)timestamp;
 @end

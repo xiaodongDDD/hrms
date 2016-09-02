@@ -21,8 +21,5 @@
  * 返回会话列表 刷新列表
  */
 -(void)returnConversationList:(CDVInvokedUrlCommand *)command;
-/*
- * 删除会话列表 
- */
--(void)deleteConversationList:(CDVInvokedUrlCommand *)command;
+
 @end

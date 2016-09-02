@@ -318,7 +318,7 @@ angular.module('messageModule')
         },
 
         createGroupChat: function () {
-          HandIMPlugin.createGroupChat(function success() {
+          HandIMPlugin.createDiscussion(function success() {
           }, function error() {
           });
         },
@@ -360,12 +360,19 @@ angular.module('messageModule')
             console.log('messageDetail ' + angular.toJson(messageDetail));
           }
           if (messageDetail.messageType == 'MESSAGE') {
-            var emp = {
-              "friendId": messageDetail.employee,
-              "friendName": messageDetail.name,
-              "friendIcon": messageDetail.imgUrl
-            };
-            imService.toNativeChatPage(emp);
+            if (messageDetail.conversationType == '1' || messageDetail.conversationType == 'private') {
+              var emp = {
+                "friendId": messageDetail.employee,
+                "friendName": messageDetail.name,
+                "friendIcon": messageDetail.imgUrl
+              };
+              imService.toNativeChatPage(emp);
+            } else if (messageDetail.conversationType == '2' || messageDetail.conversationType == 'discussion') {
+              var discussion = {"discussionId": messageDetail.employee};
+              HandIMPlugin.openDiscussion(function () {
+              }, function () {
+              }, discussion);
+            }
           } else {
             $state.go('tab.message-detail', {"messageDetail": messageDetail});
           }

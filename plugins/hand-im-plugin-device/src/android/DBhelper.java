@@ -39,7 +39,7 @@ public class DBhelper extends SQLiteOpenHelper{
     public MyConversation getUserInfo(String targetId){
         MyConversation mc = new MyConversation("","","");
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select "+TARGET_ID+","+TARGET_NAME+","+TARGET_ICON_URL+" from " + TABLE_NAME + " where "+TARGET_ID+"="+targetId+"", null);
+        Cursor cursor = db.rawQuery("select "+TARGET_ID+","+TARGET_NAME+","+TARGET_ICON_URL+" from " + TABLE_NAME + " where "+TARGET_ID+"='"+targetId+"'", null);
         while (cursor.moveToNext()){
             String id = cursor.getString(cursor.getColumnIndex(TARGET_ID));
             String name = cursor.getString(cursor.getColumnIndex(TARGET_NAME));

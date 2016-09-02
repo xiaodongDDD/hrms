@@ -35,8 +35,8 @@
 //        [self.sendBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //        [self.sendBtn setFrame:CGRectMake(CGRectGetMaxX(self.inputField.frame)+iconLeftSpace, 5,[UIScreen mainScreen].bounds.size.width-CGRectGetWidth(self.inputField.frame)-3*iconLeftSpace, CGRectGetHeight(self.inputField.frame))];
 //        [self addSubview:self.sendBtn];
-
-
+    
+        
         //启动相机
         self.cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.cameraBtn setBackgroundImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
@@ -44,7 +44,7 @@
         [self.cameraBtn addTarget:self action:@selector(didTapCamera:) forControlEvents:UIControlEventTouchUpInside];
         [self.cameraBtn setFrame:CGRectMake(screenWidth-standardSpaceX-24, CGRectGetHeight(self.frame)-standardSpaceY-18, 24, 18)];
         [self addSubview:self.cameraBtn];
-
+    
         //启动图库
         self.imagePickerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.imagePickerBtn setBackgroundImage:[UIImage imageNamed:@"album.png"] forState:UIControlStateNormal];
@@ -52,15 +52,15 @@
         [self.imagePickerBtn addTarget:self action:@selector(didTapImagePicker:) forControlEvents:UIControlEventTouchUpInside];
         [self.imagePickerBtn setFrame:CGRectMake(CGRectGetMinX(self.cameraBtn.frame)-standardSpaceX-24, CGRectGetHeight(self.frame)-standardSpaceY-20, 24, 20)];
         [self addSubview:self.imagePickerBtn];
-
+    
         //启动录音
         self.recorderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.recorderBtn setBackgroundImage:[UIImage imageNamed:@"record.png"] forState:UIControlStateNormal];
         [self.recorderBtn setBackgroundImage:[UIImage imageNamed:@"record-B.png"] forState:UIControlStateSelected];
         [self.recorderBtn addTarget:self action:@selector(didTapRecorder:) forControlEvents:UIControlEventTouchUpInside];
-        [self.recorderBtn setFrame:CGRectMake(CGRectGetMinX(self.imagePickerBtn.frame)-standardSpaceX-21, CGRectGetHeight(self.frame)-standardSpaceY-21, 21, 21)];
+        [self.recorderBtn setFrame:CGRectMake(CGRectGetMinX(self.imagePickerBtn.frame)-standardSpaceX-12, CGRectGetHeight(self.frame)-standardSpaceY-21, 12, 21)];
         [self addSubview:self.recorderBtn];
-
+    
         //打开emoj
         self.emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.emojiBtn setBackgroundImage:[UIImage imageNamed:@"chatting_biaoqing_btn_normal.png"] forState:UIControlStateNormal];
@@ -68,14 +68,14 @@
         [self.emojiBtn setFrame:CGRectMake(CGRectGetMinX(self.recorderBtn.frame)-standardSpaceX-standardSpaceX, CGRectGetHeight(self.frame)-standardSpaceY-standardSpaceX, standardSpaceX, standardSpaceX)];
         [self.emojiBtn addTarget:self action:@selector(didTapEmoji:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.emojiBtn];
-
+    
         ////视图边缘阴影
 //        [self.layer setShadowColor:[UIColor colorWithRed:210/255.0 green:210/255.0 blue:210/255.0 alpha:1.0].CGColor];
 //        [self.layer setShadowOffset:CGSizeMake(0, -1)];
 //        [self.layer setShadowOpacity:1.0];
 //        [self.layer setShadowRadius:5.0];
-
-
+    
+    
         [self setBackgroundColor:[UIColor colorWithWhite:0.95 alpha:0.9]];
         return self;
 }

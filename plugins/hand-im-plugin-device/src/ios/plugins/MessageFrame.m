@@ -9,16 +9,12 @@
 #import "MessageFrame.h"
 #import "TimeTool.h"
 #import "YYText.h"
-static NSArray *emojiList =nil;
 @implementation MessageFrame
+
 -(void)setMessage:(RCMessage *)message
 {
     _message = message;
     
-    if (emojiList==nil) {
-        emojiList = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Emoji" ofType:@"plist"]];
-    }
-
     if (message.messageDirection==MessageDirection_RECEIVE) {
         //消息接受
         CGSize timeSize  = [[TimeTool timeStr:message.receivedTime] boundingRectWithSize:[UIScreen mainScreen].bounds.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0]} context:nil].size;
@@ -28,48 +24,8 @@ static NSArray *emojiList =nil;
         if ([message.content  isKindOfClass:[RCTextMessage class]]) {
             //文字消息
             RCTextMessage *txtMessage = (RCTextMessage *)message.content;
-//            NSString *text = txtMessage.content;
-            //表情转换
-            NSString *formStr = txtMessage.content;
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[可爱]" withString:emojiList[0]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[笑脸]" withString:emojiList[13]];
-            
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[囧]" withString:emojiList[17]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[生气]" withString:emojiList[16]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[鬼脸]" withString:emojiList[12]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[花心]" withString:emojiList[2]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[害怕]" withString:emojiList[34]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[我汗]" withString:emojiList[27]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[尴尬]" withString:emojiList[9]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[哼哼]" withString:emojiList[32]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[忧郁]" withString:emojiList[6]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[呲牙]" withString:emojiList[47]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[媚眼]" withString:emojiList[21]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[累]" withString:emojiList[18]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[苦逼]" withString:emojiList[35]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[瞌睡]" withString:emojiList[40]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[哎呀]" withString:emojiList[26]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[刺瞎]" withString:emojiList[7]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[哭]" withString:emojiList[5]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[激动]" withString:emojiList[29]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[难过]" withString:emojiList[9]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[高兴]" withString:emojiList[13]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[愤怒]" withString:emojiList[11]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[亲]" withString:emojiList[39]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[飞吻]" withString:emojiList[30]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[得意]" withString:emojiList[6]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[惊恐]" withString:emojiList[1]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[口罩]" withString:emojiList[48]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[惊讶]" withString:emojiList[3]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[委屈]" withString:emojiList[31]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[生病]" withString:emojiList[24]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[心碎]" withString:emojiList[113]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[玫瑰]" withString:emojiList[104]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[外星人]" withString:emojiList[115]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[嘴唇]" withString:emojiList[109]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[电话]" withString:emojiList[97]];
-            formStr = [formStr stringByReplacingOccurrencesOfString:@"[向日葵]" withString:emojiList[92]];
-            CGSize textSize = [formStr boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width-2*(self.iconSize.size.width+iconLeftSpace+iconRightSpace+textLeftRightSpace), MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:textMesaageFont]} context:nil].size;
+            NSString *text = txtMessage.content;
+            CGSize textSize = [text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width-2*(self.iconSize.size.width+iconLeftSpace+iconRightSpace+textLeftRightSpace), MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:textMesaageFont]} context:nil].size;
             self.messageLabelSize = CGRectMake(CGRectGetMaxX(self.iconSize)+iconRightSpace, self.iconSize.origin.y+2, textSize.width+textLeftRightSpace*2, textSize.height+textMesaageFont);
             
         }else if ([message.content isKindOfClass:[RCImageMessage class]]){

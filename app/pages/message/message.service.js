@@ -64,7 +64,7 @@ angular.module('applicationModule')
         };
 
         this.mergeNotifyToFriendList = function (notifyList, friendList) {
-          if(baseConfig.debug){
+          if (baseConfig.debug) {
             console.log('mergeNotifyToFriendList.notifyList ' + angular.toJson(notifyList));
             console.log('mergeNotifyToFriendList.friendList ' + angular.toJson(friendList));
           }
@@ -107,7 +107,7 @@ angular.module('applicationModule')
               "time": data.message.sendTime,
               "messageType": messageType.message,
               "sortTime": data.message.sortTime,
-              "conversationType": ""
+              "conversationType": data.message.conversationType,
             };
             employeeMessageList.push(item);
           });
@@ -160,6 +160,13 @@ angular.module('applicationModule')
         };
 
         this.deletePluginMessage = function (myscope, message) {
+          var optsList = {
+            "friendId": message.employee,
+            "conversationType": message.conversationType
+          };
+          if (baseConfig.debug) {
+            alert('deletePluginMessage.optsList ' + angular.toJson(optsList));
+          }
           var success = function () {
             var index = myscope.messageList.indexOf(message);
             myscope.messageList.splice(index, 1);
@@ -167,7 +174,7 @@ angular.module('applicationModule')
           };
           var error = function () {
           };
-          HandIMPlugin.deleteConversationList(success, error, message.employee);
+          HandIMPlugin.deleteConversationList(success, error, optsList);
           /*if(ionic.Platform.isIOS()){
            var group = {
            "conversationId": message.employee,
