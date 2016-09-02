@@ -66,5 +66,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-youtuishare": {
+        "source": {
+            "type": "local",
+            "path": "C:\\Users\\lifi\\Desktop\\cordova-plugin-youtuishare"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

@@ -1,0 +1,33 @@
+# To enable ProGuard in your project, edit project.properties
+# to define the proguard.config property as described in that file.
+# 微信：
+-keep class com.tencent.mm.sdk.openapi.WXMediaMessage { *;}
+-keep class com.tencent.mm.sdk.openapi.** implements com.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject {*;}
+-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage { *;}
+-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+
+# qq和qq空间:
+-keep class com.tencent.open.TDialog$*
+-keep class com.tencent.open.TDialog$* {*;}
+-keep class com.tencent.open.PKDialog
+-keep class com.tencent.open.PKDialog {*;}
+-keep class com.tencent.open.PKDialog$*
+-keep class com.tencent.open.PKDialog$* {*;}
+
+# 易信
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+
+# 腾讯微博需要使用到的HttpClient混淆
+-dontwarn org.apache.commons.httpclient.**  
+-keep public class org.apache.commons.httpclient.** {*;} 
+-keep public class org.apache.commons.httpclient.auth.** {*;} 
+-keep public class org.apache.commons.httpclient.cookie.** {*;} 
+-keep public class org.apache.commons.httpclient.methods.** {*;} 
+-keep public class org.apache.commons.httpclient.params.** {*;} 
+-keep public class org.apache.commons.httpclient.util.** {*;} 
+-keep public class org.apache.commons.codec.net.** {*;} 
+-keep public class org.apache.commons.logging.** {*;} 
+-keep public class org.apache.commons.logging.impl.** {*;} 
+-keep public class org.apache.commons.codec.** {*;} 
+-keep public class org.apache.commons.codec.binary.** {*;}
