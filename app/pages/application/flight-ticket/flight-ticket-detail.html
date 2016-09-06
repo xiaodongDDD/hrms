@@ -1,0 +1,114 @@
+<ion-view view-title="申请详情" class="flight-ticket-detail">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">申请详情</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-if="editAble" ng-click="enterEditMode()">
+        <span class="bar-right-button">编辑</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="content-style">
+    <hms-loading ng-if="showLoading" style="padding-top: 180px"></hms-loading>
+    <div class="apply-detail-card">
+     <div class="header-picture" style="background: url('build/img/application/flight-ticket/flight-map.png');background-position: center;background-size: contain;"></div>
+     <div class="bottom-part">
+       <div class="item apply-detail-item">
+         <div class="apply-left-label">申请状态：</div>
+         <div class="apply-right-red-label" ng-bind="judgeDetailInfo().status"></div>
+       </div>
+       <div class="item apply-detail-item" ng-click="changeFlightType()">
+         <div class="apply-left-label">机票类型：</div>
+         <div class="apply-right-label" ng-bind="detailInfo.flight_type"></div>
+       </div>
+       <div class="item apply-detail-item" ng-click="changeCity(0)">
+         <div class="apply-left-label">出发地：</div>
+         <div class="apply-right-label" ng-bind="detailInfo.departure_place"></div>
+       </div>
+       <div class="item apply-detail-item" ng-click="changeCity(1)">
+         <div class="apply-left-label">目的地：</div>
+         <div class="apply-right-label" ng-bind="detailInfo.destination_place"></div>
+       </div>
+       <div class="item apply-detail-item" ng-click="chooseDate()">
+         <div class="apply-left-label">出发时间：</div>
+         <div class="apply-right-label" ng-class="{'edit-mark':endorseMode}" ng-bind="detailInfo.departure_date"></div>
+       </div>
+       <div class="item apply-detail-item" ng-click="changeProject()">
+         <div class="apply-left-label">项目名称：</div>
+         <div class="apply-right-label" ng-bind="detailInfo.project_name"></div>
+       </div>
+       <div class="item apply-detail-item">
+         <div class="apply-left-label">航班号：</div>
+         <input type="text" class="apply-item-input" ng-class="{'edit-mark':endorseMode}" placeholder="请输入航班号" ng-model="detailInfo.departure_flight_number" ng-readonly="!editMode && !endorseMode"/>
+       </div>
+       <div class="item apply-detail-item" ng-if="!judgeProjectType()" ng-click="changeFlyback()">
+         <div class="apply-left-label">flyback号码：</div>
+         <div class="apply-right-label" ng-bind="detailInfo.departure_flyback_number"></div>
+       </div>
+       <div class="item apply-detail-item" ng-click="changePassenger()">
+         <div class="apply-left-label">乘机人：</div>
+         <div class="apply-right-label" ng-bind="detailInfo.passenger_name"></div>
+       </div>
+       <div class="item apply-checkbox-item">
+         <div class="row apply-checkbox-row">
+           <label class="apply-checkbox-left-label">客户承担：</label>
+           <div ng-class="{'selected-checkbox left-checkbox':booleanSet.customerPay,'non-selected-checkbox left-checkbox':!booleanSet.customerPay}" ng-click="switchCustomerPay(0)"></div>
+           <label class="apply-checkbox-right-label checkbox-active-position" ng-click="switchCustomerPay(0)">是</label>
+           <div ng-class="{'selected-checkbox right-checkbox':!booleanSet.customerPay,'non-selected-checkbox right-checkbox':booleanSet.customerPay}" ng-click="switchCustomerPay(1)"></div>
+           <label class="apply-checkbox-right-label checkbox-negative-position" ng-click="switchCustomerPay(1)">否</label>
+         </div>
+       </div>
+       <div class="item apply-checkbox-item">
+         <div class="row apply-checkbox-row">
+           <label class="apply-checkbox-left-label">机票补录：</label>
+           <div ng-class="{'selected-checkbox left-checkbox':booleanSet.ticketSupplement,'non-selected-checkbox left-checkbox':!booleanSet.ticketSupplement}" ng-click="switchTicketSupplement(0)"></div>
+           <label class="apply-checkbox-right-label checkbox-active-position" ng-click="switchTicketSupplement(0)">是</label>
+           <div ng-class="{'selected-checkbox right-checkbox':!booleanSet.ticketSupplement,'non-selected-checkbox right-checkbox':booleanSet.ticketSupplement}" ng-click="switchTicketSupplement(1)"></div>
+           <label class="apply-checkbox-right-label checkbox-negative-position" ng-click="switchTicketSupplement(1)">否</label>
+         </div>
+       </div>
+       <div class="item apply-checkbox-item" ng-if="changeMode">
+         <div class="row apply-checkbox-row">
+           <label class="apply-checkbox-left-label">改签说明：</label>
+           <div ng-class="{'selected-checkbox new-left-checkbox':booleanSet.changeScheduleReason[0],'non-selected-checkbox new-left-checkbox':!booleanSet.changeScheduleReason[0]}" ng-click="switchChangeScheduleReason(0)"></div>
+           <label class="apply-checkbox-right-label checkbox-active-position" ng-click="switchChangeScheduleReason(0)">个人</label>
+           <div ng-class="{'selected-checkbox new-right-checkbox':booleanSet.changeScheduleReason[1],'non-selected-checkbox new-right-checkbox':!booleanSet.changeScheduleReason[1]}" ng-click="switchChangeScheduleReason(1)"></div>
+           <label class="apply-checkbox-right-label checkbox-negative-position" ng-click="switchChangeScheduleReason(1)">项目</label>
+         </div>
+       </div>
+       <div class="item apply-checkbox-item" ng-if="returnMode">
+         <div class="row apply-checkbox-row">
+           <label class="apply-checkbox-left-label">退票说明：</label>
+           <div ng-class="{'selected-checkbox new-left-checkbox':booleanSet.returnReason[0],'non-selected-checkbox new-left-checkbox':!booleanSet.returnReason[0]}" ng-click="switchReturnReason(0)"></div>
+           <label class="apply-checkbox-right-label checkbox-active-position" ng-click="switchReturnReason(0)">个人</label>
+           <div ng-class="{'selected-checkbox new-right-checkbox':booleanSet.returnReason[1],'non-selected-checkbox new-right-checkbox':!booleanSet.returnReason[1]}" ng-click="switchReturnReason(1)"></div>
+           <label class="apply-checkbox-right-label checkbox-negative-position" ng-click="switchReturnReason(1)">项目</label>
+         </div>
+       </div>
+       <div class="item apply-detail-item" style="border-bottom: none;" ng-if="!returnMode && !changeMode">
+         <div class="apply-left-label">备注信息：</div>
+         <textarea class="apply-textarea" placeholder="备注信息为空" ng-class="{'edit-mark':endorseMode}" ng-model="detailInfo.backup_description" ng-readonly="!editMode"></textarea>
+       </div>
+       <div class="item apply-detail-item" style="border-bottom: none;" ng-if="changeMode">
+         <div class="apply-left-label">改签原因：</div>
+         <textarea class="apply-textarea" placeholder="请详细说明改签原因" ng-class="{'edit-mark':endorseMode}" ng-model="reasonInputDetail.changeInput" ng-readonly="!endorseMode"></textarea>
+       </div>
+       <div class="item apply-detail-item" style="border-bottom: none;" ng-if="returnMode">
+         <div class="apply-left-label">退票原因：</div>
+         <textarea class="apply-textarea" placeholder="请详细说明退票原因" ng-class="{'edit-mark':endorseMode}" ng-model="reasonInputDetail.returnInput" ng-readonly="!endorseMode"></textarea>
+       </div>
+     </div>
+     <div class="row button-row" ng-if="editMode">
+       <button class="button button-block change-button" ng-click="confirmToChange()">确认更改</button>
+     </div>
+     <div class="row button-row" ng-if="endorseMode">
+       <button class="button button-block endorse-button" ng-click="changeSchedule()">改签</button>
+       <button class="button button-block return-button" ng-click="returnTicket()">退票</button>
+     </div>
+    </div>
+  </ion-content>
+</ion-view>

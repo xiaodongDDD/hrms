@@ -66,7 +66,7 @@ angular.module('applicationModule')
       list: [{
         appName: "机票预定",
         imageUrl: "build/img/application/application/flightBooking@3x.png",
-        destUrl: "tab.flyback",
+        destUrl: "tab.flight-ticket-list",
       }, {
         appName: "工作流",
         imageUrl: "build/img/application/application/schedule@3x.png",
