@@ -1,0 +1,91 @@
+<ion-view view-title="机票申请" class="flight-ticket-list">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">机票申请</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="goCheckPassenger()">
+        <span class="bar-right-button">受益人</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="content-style" delegate-handle="applyScroll">
+    <hms-loading ng-if="showLoading" style="padding-top: 180px"></hms-loading>
+    <button class="button button-block create-button" ng-click="createNewFlightApply()">
+      <div class="row create-button-row-plugin">
+        <img src="build/img/application/dorm-apply/create.png" class="create-button-span">
+        <label class="create-button-text">新建机票申请</label>
+      </div>
+    </button>
+    <div ng-if="!showData">
+      <div class="no-data-shelter">
+        <div class="row no-data-no-space">
+          <img src="build/img/application/dorm-apply/no-data.png" class="no-data-image"/>
+        </div>
+        <div class="row no-data-no-space-label-row">
+          <label class="no-data-label">无机票申请记录</label>
+        </div>
+      </div>
+    </div>
+    <div ng-if="showData">
+      <ion-list>
+        <ion-item class="apply-item" ng-repeat="x in items" ng-click="checkDetail($index)">
+          <div class="row first-row">
+            <label class="passenger">乘机人:</label>
+            <label class="passenger-name">{{x.passenger_name}}</label>
+          </div>
+          <div class="row second-row">
+            <label class="double-key-first">出发地:</label>
+            <label class="double-key-first-text">{{x.departure_place}}</label>
+            <label class="double-key-second">目的地:</label>
+            <label class="double-key-second-text">{{x.destination_place}}</label>
+          </div>
+          <div class="row second-row">
+            <label class="double-key-first">去程日期:</label>
+            <label class="double-key-first-text">{{x.departure_date}}</label>
+            <label class="double-key-second" ng-if="judgeDepartureType($index).double">回程日期:</label>
+            <label class="double-key-second-text" ng-if="judgeDepartureType($index).double">{{x.back_date}}</label>
+          </div>
+          <div class="row second-row">
+            <label class="double-key-first">机票类型:</label>
+            <label class="double-key-first-text">{{x.flight_type}}</label>
+          </div>
+          <div class="row second-row" ng-if="judgeFlightType($index).projectType">
+            <label class="double-key-first">项目名称:</label>
+            <label class="double-key-first-text" style="width: 60%;white-space: normal;text-align: left;">{{x.project_name}}</label>
+          </div>
+          <div class="row second-row" ng-if="!judgeFlightType($index).projectType">
+            <label class="double-key-first">去程flyback号码:</label>
+            <label class="double-key-first-text">{{x.departure_flyback_number}}</label>
+          </div>
+          <div class="row second-row" ng-if="judgeDepartureType($index).double && !judgeFlightType($index).projectType">
+            <label class="double-key-first" >回程flyback号码:</label>
+            <label class="double-key-first-text">{{x.back_flyback_number}}</label>
+          </div>
+          <div class="row second-row">
+            <label class="double-key-first">去程航班号:</label>
+            <label class="double-key-first-text">{{x.departure_flight_number}}</label>
+          </div>
+          <div class="row second-row" ng-if="judgeDepartureType($index).double">
+            <label class="double-key-first" >回程航班号:</label>
+            <label class="double-key-first-text">{{x.back_flight_number}}</label>
+          </div>
+          <div class="bottom-line"></div>
+          <img ng-src="{{judgeStatusIcon($index)}}" class="stamp-picture"/>
+          <ion-option-button ng-if="judgeOptionButton($index).swipeable">
+           <div class="row option-button-row1" ng-if="judgeOptionButton($index).doubleButton">
+            <button class="button button-block option-cancel-button" ng-click="getBack($event,$index)">撤销</button>
+           </div>
+           <div class="row option-button-row2" ng-style="judgeOptionButton($index).optionButtonStyle">
+            <button class="button button-block option-hurry-button" ng-click="hurryDone($event,$index)">催办</button>
+           </div>
+          </ion-option-button>
+        </ion-item>
+      </ion-list>
+      <ion-infinite-scroll ng-if="scrollBusy" on-infinite="loadMore()" immediate-check="false"></ion-infinite-scroll>
+    </div>
+  </ion-content>
+</ion-view>

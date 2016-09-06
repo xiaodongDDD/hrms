@@ -162,6 +162,21 @@ angular.module('HmsModule')
           });
         }
       };
+      this.showLongCenterToast = function (content) {
+        if (!baseConfig.nativeScreenFlag) {
+          $ionicLoading.show({
+            template: (angular.isDefined(content) ? content : "操作失败"),
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            duration: 3000
+          });
+        } else {
+          $cordovaToast.showLongBottom((angular.isDefined(content) ? content : "操作失败")).then(function (success) {
+          }, function (error) {
+          });
+        }
+      };
       //弹出确认弹出框
       this.showPopup = function (template, title) {
         if (!baseConfig.nativeScreenFlag) {
@@ -230,7 +245,13 @@ angular.module('HmsModule')
             okText: '确定',
             okType: 'button-cux-popup-confirm'
           });
-          confirmPopup.then(onConfirm);
+          confirmPopup.then(function(res){
+            if(res){
+             onConfirm();
+            }else{
+
+            }
+          });
         } else {
           navigator.notification.confirm(
             message, // message
