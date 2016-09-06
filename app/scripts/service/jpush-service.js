@@ -4,7 +4,9 @@
 angular.module('HmsModule')
   .service('hmsJpushService', [
     'baseConfig',
-    function (baseConfig) {
+    'messageService',
+    function (baseConfig,
+              messageService) {
 
       this.init = function (state) {
         if (baseConfig.debug) {
@@ -62,17 +64,45 @@ angular.module('HmsModule')
             return '';
           };
 
+
+          var readMessage = function (messageId) {
+            var messageList = [
+              {
+                "messageId": messageId,
+                "actionCode": "change"
+              }
+            ]
+            var success = function (result) {
+              if(baseConfig.debug){
+                console.log('messageService.getMessageProcess success result')
+              }
+              if(result.returnCode == 'S'){
+                if(ionic.Platform.isIOS()) {
+                  messageService.changeBadgeNumber();
+                }
+              }
+            };
+            var error = function (response) {
+            };
+            messageService.getMessageProcess(success,error,messageList);
+          };
+
           var onOpenNotification = function (event) {
             try {
               var alertContent;
               var result;
               var detail;
+              var messageId = '';
+              var messageType = '';
 
               //alert('event ' + angular.toJson(event));
-              //alert('window.plugins.jPushPlugin ' + angular.toJson(window.plugins.jPushPlugin));
+              //alert('window.plugins.jPushPlugin ' + angular.toJson(event));
               //alert('detail ' + angular.toJson(detail));
 
               if (device.platform == "Android") {
+                messageId = window.plugins.jPushPlugin.openNotification.extras.message_id;
+                messageType = window.plugins.jPushPlugin.openNotification.extras.message_type;
+
                 alertContent = window.plugins.jPushPlugin.openNotification.alert;
                 result = {
                   "type": typeof(window.plugins.jPushPlugin),
@@ -85,6 +115,10 @@ angular.module('HmsModule')
                   "nodeId": window.plugins.jPushPlugin.openNotification.extras.source_node_id
                 };
               } else {
+
+                messageId = event.message_id;
+                messageType = event.message_type;
+
                 alertContent = event.aps.alert;
                 result = {
                   "type": typeof(event),
@@ -104,16 +138,24 @@ angular.module('HmsModule')
               /*workFLowListService.getDetailBase(success, error, detailId.recordId,
                detailId.workflowId, detailId.instanceId, detailId.nodeId);*/
 
-              state.go(analyze(state.current) + 'pushDetail', {
-                "detail": detail,
-                "processedFlag": {value: true},
-                "type": "PUSHDETAIL"
-              });
+              if(messageType == "work_flow"){
+                state.go(analyze(state.current) + 'pushDetail', {
+                  "detail": detail,
+                  "processedFlag": {value: true},
+                  "type": "PUSHDETAIL"
+                });
+
+                if(ionic.Platform.isIOS()) {
+                  readMessage(messageId);
+                }
+              }
+
               //state.go('detail', {content: result});
               //state.go('push.pushDetail',{content:alertContent});
-
             } catch (exception) {
-              console.log("JPushPlugin:onOpenNotification" + exception);
+              if(baseConfig.debug){
+                console.log("JPushPlugin:onOpenNotification" + exception);
+              }
             }
           };
           document.addEventListener("jpush.openNotification", onOpenNotification, false);

@@ -1,71 +1,78 @@
 <ion-view class="contract-detail">
 
   <ion-header-bar align-title="center" class="bar-positive">
-    <button class="button button-clear" ng-click="$ionicGoBack()"><i class="icon ion-chevron-left"></i>&nbsp;返回</button>
-    <h1 class="title"><b>审批详情</b></h1>
-    <button class="button button-clear" ng-click="showProcDiv()"><i class="icon ion-more"></i></button>
+    <button ng-style="filterBlurStyle(filterBlur)" class="button button-clear" ng-click="$ionicGoBack()"><i class="icon ion-chevron-left"></i>&nbsp;返回</button>
+    <h1 ng-style="filterBlurStyle(filterBlur)" class="title"><b>审批详情</b></h1>
+    <button ng-style="filterBlurStyle(filterBlur)" class="button button-clear" ng-click="showProcDiv()"><i class="icon ion-more"></i></button>
   </ion-header-bar>
 
+  <!--右上角-->
+  <div class="contract-processes" ng-class="{true:'show'}[showProc]" ng-show="showProc">
+    <div class="left-h-line"></div>
+  </div>
+  <div class="contract-processes" ng-class="{true:'show'}[showProc]" ng-show="showProc">
+    <div>
+      <div class="proc-item" ng-repeat="item in data.historyData track by $index">
+        <div class="row item-row">
+          <div class="hisMaker"></div>
+          <div class="col col-20">
+          </div>
+          <div class="col col-80">
+            <div class="row">
+              <div class="col-xs-6" style="width:50%;">
+                <label ng-if="item.processNode" style="font-size:13px; color:white;" ng-bind="item.processNode"></label>
+              </div>
+              <div class="col-xs-6" style="width:50%; white-space:normal;text-align:right;">
+                <label ng-if="item.receveTime" style="font-size:11px; text-align:right; color:white;">{{item.receiveDate}}&nbsp;{{item.receiveTime}}</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-9" style="width:75%; white-space:normal; display:inline;">
+                <label ng-if="item.actor" style="font-size:12px; color:#f5a623;" ng-bind="item.actor"></label>
+                <label ng-if="item.detail" style="font-size:12px; color:white;">：{{item.detail}}</label>
+              </div>
+              <div class="col-xs-3" style="position:relative;width:25%;">
+                <img ng-if="item.userId" style="position:absolute;bottom:0px;right:0px;" height="18" width="18" src="build/img/tabs/contact-G@3x.png" ng-click="goToAuthorPage(item.userId)" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="proc-title" ng-show="showProc">审批历史记录</div>
   <div class="cover" ng-show="showCover" ng-class="{true:'show'}[showCover]" ng-click="closeCover()">
     <div class="cover-header"><span class="cover-close" ng-click="closeCover()"><i class="icon ion-android-close"></i></span></div>
   </div>
 
-  <div class="proc-title" ng-show="showProc">合同审批流程</div>
-  <div class="contract-processes" ng-class="{true:'show'}[showProc]" ng-show="showProc">
-    <div>
-      <div class="proc-item" ng-repeat="item in data.stages">
-        <div class="proc-line" ng-class="{false:'not'}[item.highLight]"></div>
-        <div class="proc-point" ng-class="{false:'not'}[item.highLight]"><i ng-class="{true:'currentStage'}[item.currentStage]" class="icon ion-android-star-outline" ng-show="item.currentStage"></i>{{item.currentStage ? '' : $index}}</div><span class="proc-stage">{{item.stage}}</span>
-      </div>
-    </div>
-  </div>
-
   <div class="background"></div>
 
-  <ion-content>
-
-    <div class="hint-div" ng-class="{true:'show'}[showHint]" ng-click="showHint = false">
-      <img src="build/img/contract/arrow.png" class="hint-pic" />
-      <div class="hint-content">点击查看审批意见</div>
-    </div>
-
+  <ion-content ng-style="filterBlurStyle(filterBlur)">
     <div class="loading" ng-if="fetchDataFlag">
       <div class="hms-hide-content">
         <hms-loading></hms-loading>
       </div>
     </div>
 
-
+    <!--横向流程-->
     <div class="stages-container">
-
-      <div class="left-arrow">
-        <i class="icon ion-chevron-right"></i>
-      </div>
-
-      <div class="center-line"></div>
-
       <ion-scroll direction="x" scrollbar-x="false" scrollbar-y="false" ng-style="workflowDetailScroll">
         <div class="contract-stages">
-
-          <div class="stages-left">
-            <div class="left-line"></div>
-          </div>
-
-          <div class="stages-item" ng-repeat="stagesItem in data.historyData">
-            <div class="stages-time">{{stagesItem.receiveDate}}<br>{{stagesItem.receiveTime}}</div>
+          <div class="stages-item" ng-repeat="stagesItem in data.stages track by $index">
+            <div class="stages-time"><br>{{stagesItem.stage}}</div>
             <div class="stages-main">
-              <div class="stages-line"></div>
-              <span class="stages-point" ng-click="showDescDiv(stagesItem)"><i class="icon ion-android-more-vertical"></i></span>
+              <div class="stages-line" ng-class="{'highlight':isHighlight(stagesItem),'stages-line-first':isFirst($index),'stages-line-last':isLast($index)}"></div>
+              <span ng-class="{'stages-point-normal':!isHighlight(stagesItem),'stages-point-highlight':isHighlight(stagesItem)}">
+                <i ng-class="{true:'currentStage'}[stagesItem.currentStage]" class="icon ion-android-star-outline" ng-if="stagesItem.currentStage"></i>
+                <label style="line-height:25px;">{{stagesItem.currentStage ? '' : $index}}</label>
+              </span>
             </div>
-            <div class="stages-content">{{stagesItem.event}}<br>{{stagesItem.actor}}</div>
           </div>
-
         </div>
       </ion-scroll>
-
     </div>
 
-    <div class="info">
+    <div class="info" ng-show="data.processInfo.detail_title">
       <div class="info-title">{{data.processInfo.detail_title}}：</div>
       <div class="icon-div" ng-click="hideProcess()" ng-show="showProcessFlag">
         <i class="icon ion-ios-minus-outline icon-title"></i>
@@ -126,26 +133,6 @@
         <span class="trans-name">{{transpond.name}}</span>
         <span class="trans-id">{{transpond.id}}</span>
       </div>
-    </div>
-  </div>
-
-  <div class="desc-div" ng-show="showDesc" ng-class="{true:'show'}[showDesc]">
-    <div class="desc-title">处理意见</div>
-    <div class="desc-item">
-      <div class="desc-key">处理节点</div>
-      <div class="desc-value">{{nowDesc.processNode}}</div>
-    </div>
-    <div class="desc-item">
-      <div class="desc-key">接收人</div>
-      <div class="desc-value">{{nowDesc.actor}}</div>
-    </div>
-    <div class="desc-item">
-      <div class="desc-key">接受时间</div>
-      <div class="desc-value">{{nowDesc.receiveDate}}</div>
-    </div>
-    <div class="desc-item">
-      <div class="desc-key">处理意见</div>
-      <div class="desc-value">{{nowDesc.detail}}</div>
     </div>
   </div>
 

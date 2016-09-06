@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -37,6 +39,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hand.im.activity.CallActivity;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -50,6 +54,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.calllib.RongCallClient;
+import io.rong.calllib.RongCallCommon;
+import io.rong.calllib.RongCallSession;
 import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -158,29 +165,29 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
     //加载融云
     private void initMyRongIM(){
         //单聊对象的ID 获取消息记录
-        RongIMClient.getInstance().getLatestMessages(Conversation.ConversationType.PRIVATE,friendId, Integer.MAX_VALUE, new RongIMClient.ResultCallback<List<Message>>() {
+        RongIMClient.getInstance().getLatestMessages(Conversation.ConversationType.PRIVATE, friendId, Integer.MAX_VALUE, new RongIMClient.ResultCallback<List<Message>>() {
             @Override
             public void onSuccess(List<Message> messages) {
                 if (messages != null) {
-                    for (int i = (messages.size()-1); i >= 0; i--) {
+                    for (int i = (messages.size() - 1); i >= 0; i--) {
                         String senderUserId = messages.get(i).getSenderUserId();
-                        if(messages.get(i).getContent() instanceof ImageMessage){
+                        if (messages.get(i).getContent() instanceof ImageMessage) {
                             ImageMessage im = (ImageMessage) messages.get(i).getContent();
                             Uri mThumUri = im.getThumUri();
                             Uri mLocalUri = im.getLocalUri();
                             Uri ryUri = im.getRemoteUri();
-                            ChatContant md = new ChatContant(senderUserId,mThumUri,mLocalUri,ryUri,IMG);
+                            ChatContant md = new ChatContant(senderUserId, mThumUri, mLocalUri, ryUri, IMG);
                             contentList.add(md);
-                        }else if(messages.get(i).getContent() instanceof TextMessage){
+                        } else if (messages.get(i).getContent() instanceof TextMessage) {
                             TextMessage tm = (TextMessage) messages.get(i).getContent();
                             String msg = tm.getContent();
-                            ChatContant md = new ChatContant(senderUserId,msg,TXT);
+                            ChatContant md = new ChatContant(senderUserId, msg, TXT);
                             contentList.add(md);
-                        }else if(messages.get(i).getContent() instanceof VoiceMessage){
+                        } else if (messages.get(i).getContent() instanceof VoiceMessage) {
                             VoiceMessage voiceMessage = (VoiceMessage) messages.get(i).getContent();
                             Uri voiceUri = voiceMessage.getUri();
                             int duration = voiceMessage.getDuration();
-                            ChatContant md = new ChatContant(senderUserId,voiceUri,VOICE,duration);
+                            ChatContant md = new ChatContant(senderUserId, voiceUri, VOICE, duration);
                             contentList.add(md);
                         }
                     }
@@ -188,6 +195,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                     listv_content.setSelection(listv_content.getBottom());
                 }
             }
+
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
                 Log.d(TAG, "getLatestMessages" + errorCode.getMessage());
@@ -199,24 +207,24 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!HandIMPlugin.getRmConnect()){
+                if (!HandIMPlugin.getRmConnect()) {
                     //获取token 建立连接
-                    Toast.makeText(HandChatActivity.this,"连接中断，准备重连",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HandChatActivity.this, "连接中断，准备重连", Toast.LENGTH_SHORT).show();
                     connect(token);
                     return;
                 }
                 if (view.getVisibility() == View.VISIBLE) {
                     view.setVisibility(View.GONE);
                 }
-                if(voice_layout.getVisibility() == View.VISIBLE){
+                if (voice_layout.getVisibility() == View.VISIBLE) {
                     voice_layout.setVisibility(View.GONE);
                 }
                 final String content = edit_content.getText().toString();
-                if(content==null || content.isEmpty()){
+                if (content == null || content.isEmpty()) {
                     return;
                 }
                 //登录用户ID
-                ChatContant md = new ChatContant(userId,content,TXT);
+                ChatContant md = new ChatContant(userId, content, TXT);
                 contentList.add(md);
                 adapter.notifyDataSetChanged();
                 listv_content.setSelection(listv_content.getBottom());
@@ -445,7 +453,33 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
             this.finish();
         }else if(v.getId() == imgv_call_id){
             //拨打电话
-            Toast.makeText(HandChatActivity.this, "敬请期待", Toast.LENGTH_SHORT).show();
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (networkInfo == null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
+                Toast.makeText(this, "当前网络不可用，请检查您的网络设置", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            RongCallSession profile = RongCallClient.getInstance().getCallSession();
+            if (profile != null && profile.getActiveTime() > 0) {//当前正在通话中
+                Intent intent = new Intent(this, CallActivity.class);
+                intent.putExtra("targetId",friendId);
+                intent.putExtra("friendName",friendName);
+                intent.putExtra("friendIcon",friendIcon);
+                intent.putExtra("callerUserId",userId);
+                intent.putExtra("isOnThePhone",true);//正在通话中
+                intent.putExtra("time",profile.getActiveTime());//通话的时长
+                startActivity(intent);
+                return;
+            }
+
+            startCall();//发起语音通话
+            Intent intent = new Intent(this, CallActivity.class);
+            intent.putExtra("targetId",friendId);
+            intent.putExtra("friendName",friendName);
+            intent.putExtra("friendIcon",friendIcon);
+            intent.putExtra("callerUserId",userId);
+            startActivity(intent);
+
         }else if(v.getId() == imgv_emjoe_id){
             //隐藏软键盘
             View pdView = getWindow().peekDecorView();
@@ -506,6 +540,15 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                 Toast.makeText(HandChatActivity.this, "没有SD卡", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    /**
+     * 拨打语音电话
+     */
+    private void startCall() {
+        List<String> userIds = new ArrayList<String>();
+        userIds.add(friendId);
+        RongCallClient.getInstance().startCall(Conversation.ConversationType.PRIVATE, friendId, userIds, RongCallCommon.CallMediaType.AUDIO, null);
     }
 
     @Override

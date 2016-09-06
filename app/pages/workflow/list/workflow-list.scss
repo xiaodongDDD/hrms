@@ -6,10 +6,25 @@ $workflow-gray-line: #D2D2D2;
 
 .workflow {
   background: #fafafa;
+
+  .show-back-button{
+    @media screen and (min-width: 0px) and (max-width: 359px) {
+      span{
+        display: none;
+      }
+    }
+
+    @media screen and (min-width: 360px) and (max-width: 3220px) {
+      span{
+        display: inline-block;
+      }
+    }
+  }
+
   .workflow-filter {
     display: block;
     padding-top: 7px;
-    width: 160px;
+    width: 210px;
     height: 44px;
     margin-left: auto;
     margin-right: auto;
@@ -29,10 +44,10 @@ $workflow-gray-line: #D2D2D2;
     .to-do-list {
       border: 1px solid white;
       float: left;
-      width: 52px;
-      margin-top: 2px;
-      height: 26px;
-      line-height: 26px;
+      width: 70px;
+      margin-top: 0px;
+      height: 30px;
+      line-height: 30px;
       border-bottom-left-radius: 15px;
       border-top-left-radius: 15px;
       font-size: 13px;
@@ -42,10 +57,10 @@ $workflow-gray-line: #D2D2D2;
       border-bottom: 1px solid white;
       border-right: 1px solid white;
       float: left;
-      margin-top: 2px;
-      width: 52px;
-      height: 26px;
-      line-height: 26px;
+      margin-top: 0px;
+      width: 70px;
+      height: 30px;
+      line-height: 30px;
       font-size: 13px;
     }
     .mine-list {
@@ -53,10 +68,10 @@ $workflow-gray-line: #D2D2D2;
       border-bottom: 1px solid white;
       border-right: 1px solid white;
       float: left;
-      margin-top: 2px;
-      width: 52px;
-      height: 26px;
-      line-height: 26px;
+      margin-top: 0px;
+      width: 70px;
+      height: 30px;
+      line-height: 30px;
       border-bottom-right-radius: 15px;
       border-top-right-radius: 15px;
       font-size: 13px;
@@ -70,7 +85,7 @@ $workflow-gray-line: #D2D2D2;
       height: 55px;
       width: 85px;
       position: absolute;
-      top:20px;
+      top:10px;
       padding: 0px 0px 0px 5px;
     }
     .approve-row.activated {
@@ -82,7 +97,7 @@ $workflow-gray-line: #D2D2D2;
       height: 55px;
       width: 85px;
       position: absolute;
-      top:85px;
+      top:70px;
       padding: 0px 0px 0px 5px;
     }
     .refuse-row.activated {
@@ -94,6 +109,12 @@ $workflow-gray-line: #D2D2D2;
     .status-img {
       width: 62px;
       height: 17px;
+      align-self: center;
+    }
+    .status-img2 {
+      width: 30px;
+      height: 30px;
+      margin-left: 10px;
       align-self: center;
     }
   }
@@ -185,6 +206,7 @@ $workflow-gray-line: #D2D2D2;
   .workflow-list-header {
     margin-left: 55px;
     height: 40px;
+    line-height: 40px;
     border-bottom: 2px dotted $workflow-gray-line;
     color: $workflow-bule-content;
   }

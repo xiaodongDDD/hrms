@@ -231,6 +231,7 @@ angular.module('applicationModule')
           angular.forEach(projectList, function (data) {
             if (data.selected_flag === 'Y') {
               $scope.timesheetDetail.currentProject = data;
+              $scope.timesheetDetail.approver = data.approver;
               return;
             }
           });

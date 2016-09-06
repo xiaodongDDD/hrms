@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#f2f2f2"
+  android:orientation="vertical"
+  >
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="#ffffff"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+    <TextView
+      android:id="@+id/textv_back"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="#24559C"
+      android:text="返回"
+      android:textSize="16sp"
+      android:gravity="center_vertical"
+      android:drawableLeft="@drawable/back"
+      android:drawableStart="@drawable/back"
+      android:layout_marginLeft="8dp"
+      android:layout_marginStart="8dp"
+      />
+    <TextView
+      android:id="@+id/textv_name"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_marginRight="40dp"
+      android:text="设置"
+      android:gravity="center"
+      android:textSize="19sp"
+      android:textColor="#4A4A4A"/>
+  </LinearLayout>
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="#FF003CA7"/>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginTop="1dp"
+        android:background="#f2f2f2"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerVertical="true"
+          android:text="讨论组成员"
+          android:textColor="#000000" />
+        <TextView
+          android:id="@+id/txtGroupNo"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:text="0人"
+          android:textColor="#000000"
+          android:layout_centerVertical="true" />
+
+      </RelativeLayout>
+        <com.hand.im.noScrollGridView
+            android:id="@+id/grvGroupInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:horizontalSpacing="1pt"
+            android:numColumns="4"
+            android:padding="10dp"
+            android:verticalSpacing="1pt" />
+      <RelativeLayout
+        android:id="@+id/rltUpdateGroupName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="#ffffff"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerVertical="true"
+          android:text="讨论组名称"
+          android:textColor="#000000" />
+        <TextView
+          android:id="@+id/txtGroupName"
+          android:layout_alignParentRight="true"
+          android:layout_toLeftOf="@+id/btn_next"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="#929292"
+          android:layout_centerVertical="true"
+          android:layout_marginRight="40dp"
+          android:text="讨论组"
+          />
+        <ImageView
+          android:id="@+id/btn_next"
+          android:src="@drawable/btn_next"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:layout_centerVertical="true" />
+      </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="#ffffff"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="消息免打扰"
+                android:textColor="#000000" />
+
+            <Switch
+                android:id="@+id/switchConvTip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="#ffffff"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="置顶消息"
+                android:textColor="#000000" />
+
+            <Switch
+                android:id="@+id/switchConvTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <Button
+            android:id="@+id/btnQuitDiscussion"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/exit_button_shape"
+            android:text="删除并退出"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+    </LinearLayout>
+
+</ScrollView>
+</LinearLayout>

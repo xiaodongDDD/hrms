@@ -16,6 +16,32 @@ angular.module('applicationModule')
                 hmsPopup,
                 contactService) {
 
+        var messageType = {
+          message: 'MESSAGE',
+          notify: 'NOTIFY'
+        };
+
+        var notifyType = {
+          "work_flow": {
+            "name": "待办事项",
+            "imgUrl": "build/img/message/todo@3x.png",
+          },
+          "room": {
+            "name": "住宿申请",
+            "imgUrl": "build/img/message/dorm@3x.png",
+          },
+          "timesheet": {
+            "name": "timesheet未填提醒",
+            "imgUrl": "build/img/message/timesheet@3x.png",
+          },
+          "other": {
+            "name": "日常提醒",
+            "imgUrl": "build/img/message/announcement@3x.png",
+          }
+        }
+
+        var messageDefaultIcon = 'build/img/application/profile@3x.png';
+
         function dealCommonLinkMan(myscope, newObject) { //存储常用联系人最多15个
           storedb(LINK_MAN).insert(newObject, function (err) {
             if (!err) {
@@ -27,52 +53,49 @@ angular.module('applicationModule')
           if (myscope.customContactsInfo.length > 15) {
             myscope.customContactsInfo = myscope.customContactsInfo.slice(0, 15);
           }
+        }
+
+        var filterData = function (data) {
+          var result = '';
+          if (data && data != "null" || data == "") {
+            result = data;
+          }
+          return result;
         };
 
-        this.getNotifyMessageList = function (myscope) {
-          var success = function (result) {
-            if (result.returnCode == 'S') {
-              angular.forEach(result.returnData, function (messageDetail) {
-                angular.forEach(myscope.notifyMessageList, function (data) {
-                  if (messageDetail.messageTypeCode == data.type) {
-                    data.count = messageDetail.messageNum;
-                    data.content = messageDetail.messageContent;
-                    return;
-                  }
-                });
-              });
-              //myscope.$apply();
+        this.mergeNotifyToFriendList = function (notifyList, friendList) {
+          if (baseConfig.debug) {
+            console.log('mergeNotifyToFriendList.notifyList ' + angular.toJson(notifyList));
+            console.log('mergeNotifyToFriendList.friendList ' + angular.toJson(friendList));
+          }
+          var messageList = [];
+          for (var i = 0; i < friendList.length; i++) {
+            for (var j = 0; j < notifyList.length; j++) {
+              if (parseInt(friendList[i].sortTime) < parseInt(notifyList[j].sortTime) && !notifyList[j].selected) {
+                messageList.push(notifyList[j]);
+                notifyList[j].selected = true;
+              }
             }
-          };
-          var error = function (response) {
-          };
-          this.getMessageSummary(success, error);
+            messageList.push(friendList[i]);
+          }
+          for (var ii = 0; ii < notifyList.length; ii++) {
+            if (!notifyList[ii].selected) {
+              messageList.push(notifyList[ii]);
+            }
+          }
+          return messageList;
         };
 
-        this.deletePluginMessage = function (myscope, message) {
-          var success = function () {
-            var index = myscope.employeeMessageList.indexOf(message);
-            myscope.employeeMessageList.splice(index, 1);
-            myscope.$apply();
-          };
-          var error = function () {
-          };
-          var group = {
-            "conversationId": message.employee,
-            "conversationType": message.conversationType
-          };
-          HandIMPlugin.deleteConversationList(success, error, group);
-        };
-
-        this.getEmployeeMessageList = function (myscope, result) {
+        this.getEmployeeMessageList = function (result) {
           var userIcon;
           var userName;
-          myscope.employeeMessageList = [];
+          var employeeMessageList = [];
+
           angular.forEach(result.message, function (data) {
             userIcon = data.message.userIcon;
             userName = data.message.userName;
             if (!userName || userName == '') {
-              userIcon = '';
+              userIcon = messageDefaultIcon;
               userName = data.message.sendId;
             }
             var item = {
@@ -82,11 +105,85 @@ angular.module('applicationModule')
               "count": data.message.messageNum,
               "employee": data.message.sendId,
               "time": data.message.sendTime,
-              "conversationType": data.message.conversationType
+              "messageType": messageType.message,
+              "sortTime": data.message.sortTime,
+              "conversationType": data.message.conversationType,
             };
-            myscope.employeeMessageList.push(item);
+            employeeMessageList.push(item);
           });
-          myscope.$apply();
+          return employeeMessageList;
+        };
+
+        this.getNotifyMessageList = function (mergeMessageAndNotifyList, mergeOnlyMessageList, AutoRefresh, friendList) {
+          var success = function (result) {
+            if (baseConfig.debug) {
+              console.log('in getNotifyMessageList.getTime ' + new Date().getTime());
+            }
+            if (result.returnCode == 'S') {
+              var totalMessageCount = 0;
+              var messageList = [];
+              angular.forEach(result.returnData, function (messageDetail) {
+                totalMessageCount = totalMessageCount + parseInt(messageDetail.messageNum);
+
+                var notify = {
+                  "name": notifyType[messageDetail.messageTypeCode].name,
+                  "content": messageDetail.messageContent,
+                  "imgUrl": notifyType[messageDetail.messageTypeCode].imgUrl,
+                  "count": messageDetail.messageNum,
+                  "employee": "",
+                  "time": messageDetail.compareTime,
+                  "messageType": messageType.notify,
+                  "sortTime": filterData(messageDetail.latestMessageTime),
+                  "conversationType": messageDetail.messageTypeCode
+                };
+                messageList.push(notify);
+              });
+
+              if (AutoRefresh) {
+                mergeMessageAndNotifyList(messageList);
+              } else {
+                mergeMessageAndNotifyList(messageList, friendList);
+              }
+              if (ionic.Platform.isWebView() && ionic.Platform.isIOS()) {
+                window.plugins.jPushPlugin.setApplicationIconBadgeNumber(totalMessageCount);
+              }
+            }
+          };
+          var error = function (response) {
+            if (AutoRefresh) {
+              mergeMessageAndNotifyList();
+            } else {
+              mergeMessageAndNotifyList(friendList);
+            }
+          };
+          this.getMessageSummary(success, error);
+        };
+
+        this.deletePluginMessage = function (myscope, message) {
+          var optsList = {
+            "friendId": message.employee,
+            "conversationType": message.conversationType
+          };
+          if (baseConfig.debug) {
+            alert('deletePluginMessage.optsList ' + angular.toJson(optsList));
+          }
+          var success = function () {
+            var index = myscope.messageList.indexOf(message);
+            myscope.messageList.splice(index, 1);
+            myscope.$apply();
+          };
+          var error = function () {
+          };
+          HandIMPlugin.deleteConversationList(success, error, optsList);
+          /*if(ionic.Platform.isIOS()){
+           var group = {
+           "conversationId": message.employee,
+           "conversationType": message.conversationType
+           };
+           HandIMPlugin.deleteConversationList(success, error, group);
+           }else{
+           HandIMPlugin.deleteConversationList(success, error, message.employee);
+           }*/
         };
 
         this.contactPerson = function (myscope, baseInfo, btnIndex) {
@@ -146,6 +243,23 @@ angular.module('applicationModule')
             error(response);
           });
         };
+
+        this.changeBadgeNumber = function () {
+          window.plugins.jPushPlugin.getApplicationIconBadgeNumber(function (data) {
+            if (baseConfig.debug) {
+              console.log("changeBadgeNumber data " + angular.toJson(data));
+            }
+
+            var badgeNumber;
+
+            if (parseInt(data) > 0) {
+              badgeNumber = parseInt(data) - 1;
+            } else {
+              badgeNumber = 0;
+            }
+            window.plugins.jPushPlugin.setApplicationIconBadgeNumber(badgeNumber);
+          });
+        }
 
         this.getMessageProcess = function (success, error, messageList) {
           var url = baseConfig.queryPath + "/message/process";

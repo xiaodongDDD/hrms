@@ -93,6 +93,7 @@ angular.module('applicationModule')
       };
 
       var refreshTodoList = function () {
+        pageNum = 1;
         $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();
         $scope.fetchDataFlag = true;
         $scope.pullRefreshDataFlag = false;
@@ -100,7 +101,7 @@ angular.module('applicationModule')
         $scope.listStatus.done.selected = false;
         $scope.listStatus.mine.selected = false;
         $timeout(function () {
-          getTodoList(false);
+          workFLowListService.getTodoListQuery($scope, pageNum, cashList, false, dataFilterUtil());
         }, 300);
       };
 
@@ -247,6 +248,9 @@ angular.module('applicationModule')
       });
 
       $scope.filterWorkFlowInfo = function () { //响应筛选按钮的方法
+        if($scope.listStatus.mine.selected == true){
+          return;
+        }
         $scope.workflowFilterModal.show();
       };
 

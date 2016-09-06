@@ -44,49 +44,102 @@ angular.module('messageModule')
 
       $scope.empFilterValue = '';
 
-      //即时通讯消息列表
-      $scope.employeeMessageList = [];
-
-      //特殊数据消息列表
-      $scope.notifyMessageList = [
-        {
-          "name": "待办事项",
-          "content": "",
-          "imgUrl": "build/img/message/todo@3x.png",
-          "count": "0",
-          "type": "work_flow",
-          "time": "3月20日"
-        },
-        {
-          "name": "住宿申请",
-          "content": "",
-          "imgUrl": "build/img/message/dorm@3x.png",
-          "count": "0",
-          "type": "room",
-          "time": "3月20日"
-        },
-        {
-          "name": "timesheet未填提醒",
-          "content": "",
-          "imgUrl": "build/img/message/timesheet@3x.png",
-          "count": "0",
-          "type": "timesheet",
-          "time": "3月20日"
-        },
-        {
-          "name": "日常提醒",
-          "content": "",
-          "imgUrl": "build/img/message/announcement@3x.png",
-          "count": "0",
-          "type": "other",
-          "time": "3月20日"
-        }
-      ];
-
       $scope.loadingMoreFlag = false;
 
       //分页
       var page = 1;
+
+      var messageCacheList1 = [
+        {
+          "name": '顾森林',
+          "content": '你最近怎么样1?',
+          "imgUrl": 'build/img/application/profile@3x.png',
+          "count": 3,
+          "employee": '',
+          "time": '23:54',
+          "messageType": 'MESSAGE',
+          "sortTime": "20160830145901",
+          "conversationType": ""
+        },
+        {
+          "name": '石顺',
+          "content": '你最近怎么样2?',
+          "imgUrl": 'build/img/application/profile@3x.png',
+          "count": 4,
+          "employee": '',
+          "time": '23:54',
+          "messageType": 'MESSAGE',
+          "sortTime": "20160830145911",
+          "conversationType": ""
+        }, {
+          "name": '马云飞',
+          "content": '你最近怎么样3?',
+          "imgUrl": 'build/img/application/profile@3x.png',
+          "count": 5,
+          "employee": '',
+          "time": '23:54',
+          "messageType": 'MESSAGE4',
+          "sortTime": "20160830145931",
+          "conversationType": ""
+        },
+        {
+          "name": '成志唯',
+          "content": '你最近怎么样5?',
+          "imgUrl": 'build/img/application/profile@3x.png',
+          "count": 6,
+          "employee": '',
+          "time": '23:54',
+          "messageType": 'MESSAGE',
+          "sortTime": "20160830145941",
+          "conversationType": ""
+        }
+      ];
+
+      var messageCacheList = [
+        {
+          "name": '顾森林',
+          "content": '你最近怎么样1?',
+          "imgUrl": 'build/img/application/profile@3x.png',
+          "count": 3,
+          "employee": '',
+          "time": '23:54',
+          "messageType": 'MESSAGE',
+          "sortTime": "2016:01",
+          "conversationType": ""
+        },
+        {
+          "name": '石顺',
+          "content": '你最近怎么样2?',
+          "imgUrl": 'build/img/application/profile@3x.png',
+          "count": 4,
+          "employee": '',
+          "time": '23:54',
+          "messageType": 'MESSAGE',
+          "sortTime": "20160822234412",
+          "conversationType": ""
+        }, {
+          "name": '马云飞',
+          "content": '你最近怎么样3?',
+          "imgUrl": 'build/img/application/profile@3x.png',
+          "count": 5,
+          "employee": '',
+          "time": '23:54',
+          "messageType": 'MESSAGE4',
+          "sortTime": "20160822234421",
+          "conversationType": ""
+        },
+        {
+          "name": '成志唯',
+          "content": '你最近怎么样5?',
+          "imgUrl": 'build/img/application/profile@3x.png',
+          "count": 6,
+          "employee": '',
+          "time": '23:54',
+          "messageType": 'MESSAGE',
+          "sortTime": "20160822234424",
+          "conversationType": ""
+        }
+      ];
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
@@ -95,28 +148,69 @@ angular.module('messageModule')
         }
       });
 
+      $scope.firstRefresh = false;
+
+      /*$timeout(function () {
+       messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, messageCacheList1);
+       },3000);
+
+       $timeout(function () {
+       messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, messageCacheList);
+       },6000);*/
+
       document.addEventListener('IMPush.openNotification', function (result) {
-        console.log('IMPush.openNotification result ' + angular.toJson(result));
-        if (result && result.message && angular.isArray(result.message)) {
-          messageService.getEmployeeMessageList($scope, result);
+        if (baseConfig.debug) {
+          console.log('IMPush.openNotification result ' + angular.toJson(result));
+        }
+        if (result && result.message) {
+          var friendList = [];
+          if (angular.isArray(result.message)) {
+            friendList = messageService.getEmployeeMessageList(result);
+          }
+          messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, friendList);
         }
       }, false);
 
-      var getEmployeeMessageList = function () {
+      document.addEventListener('jpush.receiveNotification', function (result) {
         if (baseConfig.debug) {
-          console.log('in getMessageList');
+          console.log('jpush.receiveNotification ' + angular.toJson(result));
+        }
+        refreshMessageList();
+        if (result.message_type == 'work_flow') {
+          hmsPopup.showPopup('你有一个待办事项要处理,请进入工作流列表进行处理!');
+        }
+      }, false);
+
+      /*document.addEventListener('jpush.receiveMessage', function (result) {
+       //if (baseConfig.debug) {
+       alert('jpush.receiveMessage ' + angular.toJson(result));
+       //}
+       refreshMessageList();
+       }, false);*/
+
+      //刷新消息列表
+      var refreshMessageList = function () {
+        if (baseConfig.debug) {
+          console.log('in refreshMessageList.getTime ' + new Date().getTime());
+        }
+        messageService.getNotifyMessageList(refreshPluginMessageAndNotify, refreshPluginOnlyMessage, true, []);
+      };
+
+      var refreshPluginMessageAndNotify = function (notifyList) {
+        if (baseConfig.debug) {
+          console.log('in refreshPluginMessageAndNotify');
         }
         if (baseConfig.isMobilePlatform) {
           HandIMPlugin.returnConversationList(function success(result) {
             if (baseConfig.debug) {
               console.log('returnConversationList result ' + angular.toJson(result));
             }
-            var needFresh = true;
-
-            if (needFresh) {
-              if (result && result.message && angular.isArray(result.message)) {
-                messageService.getEmployeeMessageList($scope, result);
+            if (result && result.message) {
+              var friendList = [];
+              if (angular.isArray(result.message)) {
+                friendList = messageService.getEmployeeMessageList(result);
               }
+              $scope.messageList = messageService.mergeNotifyToFriendList(notifyList, friendList);
             }
             $scope.$broadcast("scroll.refreshComplete");
           }, function error(result) {
@@ -125,12 +219,64 @@ angular.module('messageModule')
             }
             $scope.$broadcast("scroll.refreshComplete");
           }, '');
+        } else {
+          var friendList = messageCacheList;
+          angular.forEach(friendList, function (data) {
+            data.sortTime = parseInt(data.sortTime);
+            data.time = data.sortTime;
+          });
+          $scope.messageList = messageService.mergeNotifyToFriendList(notifyList, friendList);
+          $scope.$broadcast("scroll.refreshComplete");
+          if (baseConfig.debug) {
+            console.log('in refreshPluginMessageAndNotify.getTime ' + new Date().getTime());
+          }
         }
       };
 
-      //$timeout(function () {
-      //  getMessageList();
-      //}, 1000);
+      var refreshPluginOnlyMessage = function () {
+        if (baseConfig.debug) {
+          console.log('in refreshPluginOnlyMessage');
+        }
+        if (baseConfig.isMobilePlatform) {
+          HandIMPlugin.returnConversationList(function success(result) {
+            if (baseConfig.debug) {
+              console.log('returnConversationList result ' + angular.toJson(result));
+            }
+            if (result && result.message && angular.isArray(result.message)) {
+              $scope.messageList = messageService.getEmployeeMessageList(result);
+            }
+            $scope.$broadcast("scroll.refreshComplete");
+          }, function error(result) {
+            if (baseConfig.debug) {
+              console.log('returnConversationList error result ' + angular.toJson(result));
+            }
+            $scope.$broadcast("scroll.refreshComplete");
+          }, '');
+        } else {
+          var messageList = messageCacheList;
+          angular.forEach(messageList, function (data) {
+            data.sortTime = parseInt(data.sortTime);
+            data.time = data.sortTime;
+          });
+          $scope.messageList = messageList;
+          $scope.$broadcast("scroll.refreshComplete");
+        }
+      };
+
+      var refreshMessageAndNotify = function (notifyList, friendList) {
+        if (baseConfig.debug) {
+          console.log('in refreshMessageAndNotify');
+        }
+        $scope.messageList = messageService.mergeNotifyToFriendList(notifyList, friendList);
+      };
+
+      var refreshOnlyMessage = function (friendList) {
+        if (baseConfig.debug) {
+          console.log('in refreshOnlyMessage');
+        }
+        $scope.messageList = friendList;
+
+      };
 
       $scope.messageHandle = {
         blur: function () {
@@ -172,7 +318,7 @@ angular.module('messageModule')
         },
 
         createGroupChat: function () {
-          HandIMPlugin.createGroupChat(function success() {
+          HandIMPlugin.createDiscussion(function success() {
           }, function error() {
           });
         },
@@ -197,36 +343,39 @@ angular.module('messageModule')
         },
 
         deleteMessage: function (message) {
-          messageService.deletePluginMessage($scope, message);
-        },
-
-        chatWithYou: function (message) {
-          if (baseConfig.debug) {
-            console.log('message ' + angular.toJson(message));
+          if (message.messageType == 'MESSAGE') {
+            messageService.deletePluginMessage($scope, message);
+          } else {
+            var index = $scope.messageList.indexOf(message);
+            $scope.messageList.splice(index, 1);
           }
-
-          if (message.conversationType == 1) {
-            var emp = {
-              "friendId": message.employee,
-              "friendName": message.name,
-              "friendIcon": message.imgUrl
-            };
-            imService.toNativeChatPage(emp);
-          }
-          else {
-            HandIMPlugin.toDiscussionGroup(function () {
-            }, function () {
-            }, {"discussionId": message.employee});
-          }
-
-          //imService.toNativeChatPage(emp);
-          $timeout(function () {
-            //getMessageList();
-          }, 1000);
         },
 
         search: function (loadMoreFlag) {
           messageService.searchEmployee($scope, page, loadMoreFlag);
+        },
+
+        goMessageDetail: function (messageDetail) {
+          if (baseConfig.debug) {
+            console.log('messageDetail ' + angular.toJson(messageDetail));
+          }
+          if (messageDetail.messageType == 'MESSAGE') {
+            if (messageDetail.conversationType == '1' || messageDetail.conversationType == 'private') {
+              var emp = {
+                "friendId": messageDetail.employee,
+                "friendName": messageDetail.name,
+                "friendIcon": messageDetail.imgUrl
+              };
+              imService.toNativeChatPage(emp);
+            } else if (messageDetail.conversationType == '2' || messageDetail.conversationType == 'discussion') {
+              var discussion = {"discussionId": messageDetail.employee};
+              HandIMPlugin.openDiscussion(function () {
+              }, function () {
+              }, discussion);
+            }
+          } else {
+            $state.go('tab.message-detail', {"messageDetail": messageDetail});
+          }
         },
 
         notifyMessageDetail: function (messageDetail) {
@@ -240,8 +389,7 @@ angular.module('messageModule')
       };
 
       $scope.refresh = function () {
-        getEmployeeMessageList();
-        messageService.getNotifyMessageList($scope);
+        refreshMessageList();
       };
 
       if (baseConfig.debug) {
@@ -255,11 +403,15 @@ angular.module('messageModule')
             StatusBar.styleLightContent();
           }
         });
-        getEmployeeMessageList();
-        messageService.getNotifyMessageList($scope);
-        if (baseConfig.debug) {
-          console.log('messageCtrl.$ionicView.enter');
+
+        if (!$scope.firstRefresh) {
+          $timeout(function () {
+            refreshMessageList();
+          }, 1500);
+        } else {
+          refreshMessageList();
         }
+        $scope.firstRefresh = true;
       });
 
       $scope.$on('$destroy', function (e) {

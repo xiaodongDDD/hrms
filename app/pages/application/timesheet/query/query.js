@@ -394,7 +394,7 @@ angular.module('applicationModule')
       }
 
       $scope.writeTimesheet = function (day) {
-        if (day.day && day.day !== "") {
+        if (day.day && day.day !== "" && slippingMode != unfreezeMode) {
           $state.go('tab.timesheet-write', {day: day});
         }
       };

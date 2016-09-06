@@ -40,6 +40,14 @@
         "is_top_level": true,
         "variables": {}
     },
+    "cordova-plugin-geolocation": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-geolocation"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "jpush-phonegap-plugin": {
         "source": {
             "type": "registry",
@@ -47,13 +55,22 @@
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY": "6e0b08078306f45ac8331d54"
+            "API_KEY": "28ff89acc7f718ba07290be4"
         }
     },
-    "cordova-plugin-geolocation": {
+    "hand-im-plugin-device": {
         "source": {
-            "type": "registry",
-            "id": "cordova-plugin-geolocation"
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-youtuishare": {
+        "source": {
+            "type": "local",
+            "path": "C:\\Users\\lifi\\Desktop\\cordova-plugin-youtuishare"
         },
         "is_top_level": true,
         "variables": {}

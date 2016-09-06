@@ -14,7 +14,7 @@
     </div>
   </ion-header-bar>
   <ion-content style="background-color: #fafafa">
-    <ion-slide-box on-slide-changed="slideChanged(index)" style="width: 100%;height: 274px;">
+    <ion-slide-box on-slide-changed="slideChanged($index)" style="width: 100%;height: 274px;">
       <ion-slide ng-repeat="item in housesSubDetail.imgs" ng-if="housesSubDetail.imgs != ''" ng-click = "showImages($index)" >
         <!--<img ng-src="{{item.objectUrl}}" style="width: 100%;height: 274px;"/>-->
         <div style="width: 100%;height: 274px; background-color: #EEEEEE; background-image: url('{{item.objectUrl}}'); background-size: cover; background-repeat: no-repeat; background-position: center center"></div>

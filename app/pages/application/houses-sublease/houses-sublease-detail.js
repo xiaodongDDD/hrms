@@ -95,6 +95,37 @@ angular.module('applicationModule')
         "imgs": [],
         "publishUrl": ""
       };
+      $scope.slideIndex = 0;
+
+      function success(success) {
+        if(success.code=='0'){
+          //分享成功
+        }    
+      }
+      function fail(error) {
+        if(error.code=='-1'){
+          //分享失败
+        }else if(error.code=='-2'){
+          //用户取消
+        }
+      }
+
+      function share(){
+        //分享显示的图片，默认
+        var imgurl = 'http://youtui.mobi/media/image/youtui.png';
+        //分享显示的图片，取转租信息中的第一张照片
+        if ($scope.housesSubDetail.imgs.length > 0) {
+          imgurl = $scope.housesSubDetail.imgs[$scope.slideIndex].objectUrl;
+        }
+
+        var youtuiShare = window.plugins.youtuiShare;
+          youtuiShare.share(success, fail, [
+            '汉得房屋转租',   //标题
+            $scope.housesSubDetail.publishUrl, //链接
+            $scope.housesSubDetail.houseTitle, //描述
+            imgurl  //图片
+          ]);
+      }
 
       serchHousesSubleaseDetailInfo();//自动获取房屋转租信息
       function serchHousesSubleaseDetailInfo() {
@@ -128,6 +159,7 @@ angular.module('applicationModule')
       };
 
       $scope.slideChanged = function (index) {
+        $scope.slideIndex = index;
       };
 
       $scope.zoomMin = 1;
