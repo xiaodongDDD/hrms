@@ -841,7 +841,7 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
                     }
                 }else if(resultCode==2){
                     conversationType = Conversation.ConversationType.DISCUSSION;
-                }else if(requestCode==0x0000){
+                }else if(resultCode==0x0000){
                     conversationType = Conversation.ConversationType.PRIVATE;
                 }
                 if(conversationType!=null) {

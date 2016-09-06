@@ -12,11 +12,13 @@
 
 // 测试0vnjpoadnd4cz
 // e5t4ouvptpsaa
-#define appKey @"0vnjpoadnd4cz"
+#define AppKey @"0vnjpoadnd4cz"
 #define appSecret @"e5t4ouvptpsaa"
 #define CDVIMPluginPushNotification @"CDVIMPluginPushNotification"
-#define localService @"http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/detail?"
-
+#define localService @"http://wechat.hand-china.com/hrmsv2/v2/api/staff/detail?"
+#define localServiceQuery @"http://wechat.hand-china.com/hrmsv2/v2/api/staff/query?"
+#define localServiceUpload @"http://wechat.hand-china.com/hrmsv2/v2/api/objectUpload?"
+#define discussionGroup @"http://zhouzybk.img-cn-shanghai.aliyuncs.com/"
 /*!
  *头像左间距
  */

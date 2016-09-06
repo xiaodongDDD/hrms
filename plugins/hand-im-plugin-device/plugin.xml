@@ -48,14 +48,7 @@
 	<source-file src="src/android/contact/PinyinUtils.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/contact/SideBar.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/contact/SortAdapter.java" target-dir="src/com/hand/im/contact"/>
-	
-	<source-file src="src/android/volley/HBRequest.java" target-dir="src/com/hand/im/volley"/>
-	<source-file src="src/android/volley/HttpUtil.java" target-dir="src/com/hand/im/volley"/>
-	<source-file src="src/android/volley/MyApplication.java" target-dir="src/com/hand/im/volley"/>
-	<source-file src="src/android/volley/NetWorkUtil.java" target-dir="src/com/hand/im/volley"/>
-	<source-file src="src/android/volley/NormalJSONObjectRequest.java" target-dir="src/com/hand/im/volley"/>
-	<source-file src="src/android/volley/NormalStringRequest.java" target-dir="src/com/hand/im/volley"/>
-	
+	<source-file src="src/android/okhttp/OkHttpClientManager.java" target-dir="src/com/hand/im/okhttp"/>
 	<source-file src="src/android/GroupInfoActivity.java" target-dir="src/com/hand/im"/>
 	<source-file src="src/android/GroupInfoAdapter.java" target-dir="src/com/hand/im"/>
 	<source-file src="src/android/HandMulChatActivity.java" target-dir="src/com/hand/im"/>
@@ -66,12 +59,17 @@
 	
 	<source-file src="src/android/drawable/exit_button_shape.xml" target-dir="res/drawable"/>
 	<source-file src="src/android/drawable/item_check_box.xml" target-dir="res/drawable"/>
+	<source-file src="src/android/drawable/switch_thumb.xml" target-dir="res/drawable"/>
+	<source-file src="src/android/drawable/switch_track.xml" target-dir="res/drawable"/>
+	<source-file src="src/android/drawable/switch_track_off.xml" target-dir="res/drawable"/>
+	<source-file src="src/android/drawable/switch_track_on.xml" target-dir="res/drawable"/>
 	<source-file src="src/android/drawable/ok_button_shape.xml" target-dir="res/drawable"/>
 	<source-file src="src/android/drawable-hdpi/avatar_default.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/btn_next.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/group_add.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/group_info.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/search.png" target-dir="res/drawable-hdpi"/>
+	<source-file src="src/android/drawable-hdpi/arrow_back.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-xxhdpi/check.png" target-dir="res/drawable-xxhdpi"/>
 	<source-file src="src/android/drawable-xxhdpi/uncheck.png" target-dir="res/drawable-xxhdpi"/>
 	
@@ -84,6 +82,7 @@
 
 	<source-file src="src/android/libs/library-1.0.19.jar" target-dir="libs/"/>
 	<source-file src="src/android/libs/pinyin4j-2.5.0.jar" target-dir="libs/"/>
+	
 	<!--add by panxu end-->
 
     <source-file src="src/android/assets/emoji" target-dir="assets/"/>
@@ -463,18 +462,22 @@
 
   </platform>
 
-  <platform name="ios">
+<platform name="ios">
     <config-file target="config.xml" parent="/*">
-      <feature name="HandIMPlugin">
-        <param name="ios-package" value="CDVIMPlugin"/>
-      </feature>
+        <feature name="HandIMPlugin">
+            <param name="ios-package" value="CDVIMPlugin"/>
+        </feature>
     </config-file>
-
+    
     <!-- 配置-info.plist    -->
     <config-file target="*-Info.plist"  parent="Localized resources can be mixed">
-      <true>YES</true>
+        <true>YES</true>
     </config-file>
-
+    <config-file target="*-Info.plist"  parent="CFBundleDevelopmentRegion">
+        <string>zh_CN</string>
+        
+    </config-file>
+    
     <!-- resource   -->
     <resource-file src="src/ios/plugins/images/aio_image_default@2x.png" />
     <resource-file src="src/ios/plugins/images/group_reward_transcode_fail@2x.png" />
@@ -514,14 +517,29 @@
     <resource-file src="src/ios/plugins/images/album@3x.png"/>
     <resource-file src="src/ios/plugins/images/album@2x.png"/>
     <resource-file src="src/ios/plugins/images/Back Arrow Copy 6 + Back Arrow Copy 6@2x.png"/>
-
+    
     <resource-file src="src/ios/plugins/images/Back Arrow Copy 6 + Back Arrow Copy 6@3x.png"/>
     <resource-file src="src/ios/plugins/images/camera@2x.png"/>
     <resource-file src="src/ios/plugins/images/camera@3x.png"/>
     <resource-file src="src/ios/plugins/images/mobile@3x.png"/>
     <resource-file src="src/ios/plugins/images/record@3x.png"/>
-    <resource-file src="src/ios/plugins/images/record@2x.png"/>                                                                                                <resource-file src="src/ios/plugins/images/default_mic.caf" />
-
+    <resource-file src="src/ios/plugins/images/record@2x.png"/>
+    <resource-file src="src/ios/plugins/images/default_mic.caf" />
+    <resource-file src="src/ios/plugins/images/red_background@2x.png"/>
+    <resource-file src="src/ios/plugins/images/profile-2@3x.png"/>
+    <resource-file src="src/ios/plugins/images/buddy_header_icon_group@2x.png"/>
+    <resource-file src="src/ios/plugins/images/add_members@2x.png"/>
+    <resource-file src="src/ios/plugins/images/add_icon_friend@2x.png"/>
+    
+    
+    <source-file src="src/ios/plugins/libopencore-amrnb.a" framework="true" />
+    <resource-file src="src/ios/plugins/RCConfig.plist" />
+    <resource-file src="src/ios/plugins/Emoji.plist" />
+    <resource-file src="src/ios/plugins/RongCloud.bundle" />
+    <resource-file src="src/ios/plugins/en.lproj" />
+    <resource-file src="src/ios/plugins/zh-Hans.lproj" />
+    
+    
     <!-- fmdb  fmdb -->
     <header-file src="src/ios/plugins/fmdb/FMDB.h" />
     <header-file src="src/ios/plugins/fmdb/FMDatabase.h" />
@@ -534,142 +552,126 @@
     <source-file src="src/ios/plugins/fmdb/FMDatabaseQueue.m" />
     <header-file src="src/ios/plugins/fmdb/FMResultSet.h" />
     <source-file src="src/ios/plugins/fmdb/FMResultSet.m" />
-
+    
     <!--源码 -->
     <header-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.h" />
     <source-file src="src/ios/plugins/AppDelegate+CDVIMPlugin.m" />
-
+    
     <header-file src="src/ios/plugins/CDVIMPlugin.h"/>
     <source-file src="src/ios/plugins/CDVIMPlugin.m"/>
-
+    
     <header-file src="src/ios/plugins/DataBaseTool.h"/>
     <source-file src="src/ios/plugins/DataBaseTool.m"/>
-
+    
     <header-file src="src/ios/plugins/TimeTool.h"/>
     <source-file src="src/ios/plugins/TimeTool.m"/>
-
+    
     <header-file src="src/ios/plugins/UINavigationController+RCIMChatNavigationController.h"/>
     <source-file src="src/ios/plugins/UINavigationController+RCIMChatNavigationController.m"/>
-
+    
     <header-file src="src/ios/plugins/RCIMChattingViewController.h"/>
     <source-file src="src/ios/plugins/RCIMChattingViewController.m"/>
     <header-file src="src/ios/plugins/ChatCell.h"/>
     <source-file src="src/ios/plugins/ChatCell.m"/>
     <header-file src="src/ios/plugins/MessageFrame.h"/>
     <source-file src="src/ios/plugins/MessageFrame.m"/>
-
+    
     <header-file src="src/ios/plugins/ChatInputBarControl.h"/>
     <source-file src="src/ios/plugins/ChatInputBarControl.m"/>
-
+    
     <header-file src="src/ios/plugins/BelongPlaceManager.h"/>
     <source-file src="src/ios/plugins/BelongPlaceManager.m"/>
-
+    
     <header-file src="src/ios/plugins/WSShowBigImage.h"/>
     <source-file src="src/ios/plugins/WSShowBigImage.m"/>
-
+    
     <header-file src="src/ios/plugins/UIImage+UIColor.h"/>
     <source-file src="src/ios/plugins/UIImage+UIColor.m"/>
-
+    
     <header-file src="src/ios/plugins/EmotionViewController.h"/>
     <source-file src="src/ios/plugins/EmotionViewController.m"/>
-
+    
     <header-file src="src/ios/plugins/EmojiCell.h"/>
     <source-file src="src/ios/plugins/EmojiCell.m"/>
-
+    
     <header-file src="src/ios/plugins/ImagePickerViewController.h"/>
     <source-file src="src/ios/plugins/ImagePickerViewController.m"/>
-
+    
     <header-file src="src/ios/plugins/ImageCell.h"/>
     <source-file src="src/ios/plugins/ImageCell.m"/>
-
+    
     <header-file src="src/ios/plugins/SDBaseProgressView.h"/>
     <source-file src="src/ios/plugins/SDBaseProgressView.m"/>
-
+    
     <header-file src="src/ios/plugins/SDBallProgressView.h"/>
     <source-file src="src/ios/plugins/SDBallProgressView.m"/>
-
+    
     <header-file src="src/ios/plugins/RCImageModel.h"/>
     <source-file src="src/ios/plugins/RCImageModel.m"/>
-
+    
     <header-file src="src/ios/plugins/ToastUtils.h"/>
     <source-file src="src/ios/plugins/ToastUtils.m"/>
-
+    
     <header-file src="src/ios/plugins/ZLDefine.h"/>
-
+    
     <header-file src="src/ios/plugins/ZLProgressHUD.h"/>
     <source-file src="src/ios/plugins/ZLProgressHUD.m"/>
-
+    
     <header-file src="src/ios/plugins/WSPhotosTool.h"/>
     <source-file src="src/ios/plugins/WSPhotosTool.m"/>
-
+    
     <header-file src="src/ios/plugins/RecoderViewController.h"/>
     <source-file src="src/ios/plugins/RecoderViewController.m"/>
     <header-file src="src/ios/plugins/RecorderManager.h"/>
     <source-file src="src/ios/plugins/RecorderManager.m"/>
-
+    
     <header-file src="src/ios/plugins/PlayerManager.h"/>
     <source-file src="src/ios/plugins/PlayerManager.m"/>
-
+    
     <header-file src="src/ios/plugins/ChattingTableView.h"/>
     <source-file src="src/ios/plugins/ChattingTableView.m"/>
-
+    <!--        配置文件-->
     <header-file src="src/ios/plugins/CVDPlugin-Bridging-Header.h"/>
-
-    <!--YYText-->
-    <!--Component-->
-    <!--        <header-file src="src/ios/plugins/YYText/Component/YYTextContainerView.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Component/YYTextContainerView.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Component/YYTextDebugOption.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Component/YYTextDebugOption.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Component/YYTextEffectWindow.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Component/YYTextEffectWindow.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Component/YYTextInput.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Component/YYTextInput.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Component/YYTextKeyboardManager.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Component/YYTextKeyboardManager.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Component/YYTextLayout.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Component/YYTextLayout.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Component/YYTextLine.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Component/YYTextLine.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Component/YYTextMagnifier.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Component/YYTextMagnifier.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Component/YYTextSelectionView.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Component/YYTextSelectionView.m"/>-->
-    <!--String-->
-    <!--        <header-file src="src/ios/plugins/YYText/String/YYTextArchiver.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/String/YYTextArchiver.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/String/YYTextAttribute.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/String/YYTextAttribute.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/String/YYTextParser.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/String/YYTextParser.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/String/YYTextRubyAnnotation.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/String/YYTextRubyAnnotation.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/String/YYTextRunDelegate.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/String/YYTextRunDelegate.m"/>-->
-    <!--Utility-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/NSAttributedString+YYText.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Utility/NSAttributedString+YYText.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/NSParagraphStyle+YYText.h"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/NSParagraphStyle+YYText.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/UIPasteboard+YYText.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Utility/UIPasteboard+YYText.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/UIView+YYText.h"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/UIView+YYText.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/YYTextAsyncLayer.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Utility/YYTextAsyncLayer.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/YYTextTransaction.h"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/YYTextTransaction.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/YYTextUtilities.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/Utility/YYTextUtilities.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/YYTextWeakProxy.h"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/Utility/YYTextWeakProxy.m"/>-->
-    <!---->
-    <!--        <header-file src="src/ios/plugins/YYText/YYLabel.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/YYLabel.m"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/YYText.h"/>-->
-    <!--        <header-file src="src/ios/plugins/YYText/YYTextView.h"/>-->
-    <!--        <source-file src="src/ios/plugins/YYText/YYTextView.m"/>-->
-
+    
+    <!--        多人聊天-->
+    <header-file src="src/ios/plugins/RCIMGroupChatViewController.h"/>
+    <source-file src="src/ios/plugins/RCIMGroupChatViewController.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionSettingViewController.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionSettingViewController.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionGroupNameDetailSetting.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionGroupNameDetailSetting.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionGroupAddMemberController.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionGroupAddMemberController.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionGroupEditViewController.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionGroupEditViewController.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionGroupAllMembersList.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionGroupAllMembersList.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionGroupAllMembersListCell.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionGroupAllMembersListCell.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionGroupAddMemberCell.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionGroupAddMemberCell.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionGroupNameCell.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionGroupNameCell.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionDefaultCell.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionDefaultCell.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionSwitchCell.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionSwitchCell.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionGroupMemberCell.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionGroupMemberCell.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionCell.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionCell.m"/>
+    <header-file src="src/ios/plugins/RCIMDiscussionMessageFrame.h"/>
+    <source-file src="src/ios/plugins/RCIMDiscussionMessageFrame.m"/>
+    <!-- MJRefresh-->
+    <resource-file src="src/ios/plugins/MJRefresh/MJRefresh.bundle"/>
+    <header-file src="src/ios/plugins/MJRefresh/MJRefresh.h"/>
+    <header-file src="src/ios/plugins/MJRefresh/MJRefreshBaseView.h"/>
+    <source-file src="src/ios/plugins/MJRefresh/MJRefreshBaseView.m"/>
+    <header-file src="src/ios/plugins/MJRefresh/MJRefreshFooterView.h"/>
+    <source-file src="src/ios/plugins/MJRefresh/MJRefreshFooterView.m"/>
+    <header-file src="src/ios/plugins/MJRefresh/MJRefreshHeaderView.h"/>
+    <source-file src="src/ios/plugins/MJRefresh/MJRefreshHeaderView.m"/>
+    
     <!--SDWebImage-->
     <header-file src="src/ios/plugins/SDWebImage/MKAnnotationView+WebCache.h"/>
     <source-file src="src/ios/plugins/SDWebImage/MKAnnotationView+WebCache.m"/>
@@ -696,7 +698,7 @@
     <source-file src="src/ios/plugins/SDWebImage/UIImage+GIF.m"/>
     <header-file src="src/ios/plugins/SDWebImage/UIImage+MultiFormat.h"/>
     <source-file src="src/ios/plugins/SDWebImage/UIImage+MultiFormat.m"/>
-
+    
     <header-file src="src/ios/plugins/SDWebImage/UIImage+WebP.h"/>
     <source-file src="src/ios/plugins/SDWebImage/UIImage+WebP.m"/>
     <header-file src="src/ios/plugins/SDWebImage/UIImageView+HighlightedWebCache.h"/>
@@ -705,14 +707,16 @@
     <source-file src="src/ios/plugins/SDWebImage/UIImageView+WebCache.m"/>
     <header-file src="src/ios/plugins/SDWebImage/UIView+WebCacheOperation.h"/>
     <source-file src="src/ios/plugins/SDWebImage/UIView+WebCacheOperation.m"/>
-
-    <!--Rong_Cloud_iOS_IMLib_SDK_v2_6_5_stable-->
-    <!--        <resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMLib_SDK_v2_6_5_stable/Emoji.plist" />-->
-    <!--        <resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMLib_SDK_v2_6_5_stable/libopencore-amrnb.a" />-->
-    <!--        <resource-file src="src/ios/plugins/Rong_Cloud_iOS_IMLib_SDK_v2_6_5_stable/RCConfig.plist" />-->
-    <!--        <framework src="src/ios/plugins/Rong_Cloud_iOS_IMLib_SDK_v2_6_5_stable/RongIMLib.framework" custom="true" />-->
-
+    
     <!--框架-->
+    <framework src="src/ios/plugins/RongIMLib.framework" custom="true"/>
+    <framework src="src/ios/plugins/RongIMKit.framework" custom="true"/>
+    <framework src="src/ios/plugins/AgoraRtcEngineKit.framework" custom="true"/>
+    <framework src="src/ios/plugins/RongCallKit.framework" custom="true"/>
+    <framework src="src/ios/plugins/RongCallLib.framework" custom="true"/>
+    
+    <framework src="CoreMotion.framework"/>
+    <framework src="VideoToolbox.framework"/>
     <framework src="MobileCoreServices.framework" />
     <framework src="Accelerate.framework" />
     <framework src="CoreText.framework" />
@@ -740,6 +744,6 @@
     <framework src="libc++.tbd" weak="true" />
     <framework src="libsqlite3.0.tbd" weak="true" />
     <framework src="libz.tbd" weak="true" />
-
-  </platform>
+    
+</platform>
 </plugin>

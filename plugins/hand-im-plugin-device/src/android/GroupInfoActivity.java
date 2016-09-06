@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.hand.im.bean.UserInfo;
 import com.hand.im.contact.ContactActivity;
-import com.hand.im.volley.HttpUtil;
+import com.hand.im.okhttp.OkHttpClientManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +35,7 @@ import java.util.Map;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Discussion;
+import okhttp3.Call;
 
 /**
  * Created by panx on 2016/8/23.
@@ -100,7 +101,6 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
       new RongIMClient.ResultCallback<Conversation>() {
         @Override
         public void onSuccess(Conversation conversation) {
-          Log.e("Top Status Boolean", conversation.isTop() + "");
           switchConvTop.setChecked(conversation.isTop());
         }
 
@@ -133,48 +133,55 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
       }
     });
   }
-  private void dealData(){
-    n=0;
-    for (int i = 0; i < data.size() - 2; i++) {
-      Map<String, String> hashMap = new HashMap<String, String>();
-      hashMap.put("key", data.get(i).getEmp_name());
-      HttpUtil.JSONObjectPost(LoginInfo.baseUrl+"/hrmsv2/v2/api/staff/detail?" +
-        "access_token=" + LoginInfo.access_token, hashMap, this, handlerObject);
-    }
-  }
-  private int n=0;
-  public Handler handlerObject = new Handler() {
-    @Override
-    public void handleMessage(Message msg) {
-      super.handleMessage(msg);
-      JSONObject object = null;
+  private void dealData() {
+
+    String url = LoginInfo.baseUrl+"/hrmsv2/v2/api/staff/detail?" + "access_token=" + LoginInfo.access_token;
+    for(int i=0;i<data.size()-2;i++){
+      JSONObject object = new JSONObject();
       try {
-        object = new JSONObject(msg.getData().getString("message"));
-        JSONArray array = new JSONArray(object.getString("rows"));
-        JSONObject object1 = new JSONObject(array.get(0).toString());
-
-        for (int i = 0; i < data.size() - 2; i++) {
-          if (data.get(i).getEmp_name().equals(object1.getString("emp_code"))) {
-            data.get(i).setEmp_name(object1.getString("emp_name"));
-            data.get(i).setEmp_code(object1.getString("emp_code"));
-            data.get(i).setAvatar(object1.getString("avatar"));
-            n++;
-            if(n%5==0){
-              adapter.notifyDataSetChanged();
-            }
-            if(n==data.size()-2){
-              adapter.notifyDataSetChanged();
-            }
-            break;
-          }
-        }
-
+        object.put("key",data.get(i).getEmp_name());
       } catch (JSONException e) {
         e.printStackTrace();
       }
-
+      OkHttpClientManager.postAsyn(url, object, new OkHttpClientManager.ResultCallback<String>() {
+        @Override
+        public void onError(Call call, Exception e) {
+        }
+        @Override
+        public void onResponse(String response) {
+          dealDataList(response);
+        }
+      });
     }
-  };
+  }
+  private int n=0;
+  private void dealDataList(String str){
+    JSONObject object = null;
+    try {
+      object = new JSONObject(str);
+      JSONArray array = new JSONArray(object.getString("rows"));
+      JSONObject object1 = new JSONObject(array.get(0).toString());
+
+      for (int i = 0; i < data.size() - 2; i++) {
+        if (data.get(i).getEmp_name().equals(object1.getString("emp_code"))) {
+          data.get(i).setEmp_name(object1.getString("emp_name"));
+          data.get(i).setEmp_code(object1.getString("emp_code"));
+          data.get(i).setAvatar(object1.getString("avatar"));
+          n++;
+          if(n%5==0){
+            adapter.notifyDataSetChanged();
+          }
+          if(n==data.size()-2){
+            adapter.notifyDataSetChanged();
+          }
+          break;
+        }
+      }
+
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+  }
   private ArrayList<UserInfo> getData(Discussion discussion) {
     data.clear();
     for (int i = 0; i < discussion.getMemberIdList().size(); i++) {

@@ -71,7 +71,7 @@ angular.module('applicationModule')
             hasWorkflowNum: true,
             count: 0
           }]
-      }/*, {
+      }, {
         list: [
           {
             //2016-08-15：此项用作合同管理的隐藏入口，如果需要征用此项，请在下方successCheckContract函数重设合同管理入口
@@ -97,7 +97,7 @@ angular.module('applicationModule')
             destUrl: "",
           }
         ]
-      }*/
+      }
       ];
 
       var successCheckContract = function (result) {

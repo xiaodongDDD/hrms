@@ -1,15 +1,9 @@
-//
-//  AppDelegate+CDVIMPlugin.h
-//  IMTest
-//
-//  Created by wangsheng on 16/7/11.
-//
-//
-
 #import "AppDelegate.h"
 #import "CVDPlugin-Bridging-Header.h"
+#import <RongIMKit/RongIMKit.h>
+#import <RongIMLib/RongIMLib.h>
 
 static NSDictionary *launchOptions;
-@interface AppDelegate (CDVIMPlugin)<RCIMClientReceiveMessageDelegate>
+@interface AppDelegate (CDVIMPlugin)<RCIMClientReceiveMessageDelegate,RCIMUserInfoDataSource>
 
 @end
