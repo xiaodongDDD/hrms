@@ -343,6 +343,10 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
     RongIMClient.getInstance().getDiscussion(friendId, new RongIMClient.ResultCallback<Discussion>() {
       @Override
       public void onSuccess(Discussion discussion) {
+		DBhelper dBhelper = new DBhelper(getApplicationContext());
+        DBhelper.MyConversation mc = dBhelper.getUserInfo(friendId);
+        String iconUrl = mc.getTargetIconUrl();
+        dBhelper.addUserInfo(friendId,discussion.getName(),iconUrl);
         if (discussion.getName().length() > 5)
           textv_name.setText(discussion.getName().substring(0, 5) + "...(" + discussion.getMemberIdList().size() + ")");
         else
@@ -533,7 +537,7 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
     if (v.getId() == textv_back_id) {
       Intent intent = getIntent();
       intent.putExtra("FID", friendId);
-      setResult(0x0000, intent);
+      setResult(2, intent);
       //返回
       this.finish();
     } else if (v.getId() == imgv_call_id) {

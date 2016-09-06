@@ -18,8 +18,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.hand.im.bean.UserInfo;
 import com.hand.im.contact.PersonBean;
-import com.hand.im.volley.HttpUtil;
-import com.hand.im.volley.MyApplication;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,35 +40,31 @@ public class GroupInfoAdapter extends BaseAdapter {
   private LayoutInflater layoutInflater;
   private String createrId;
   //private List<View> viewList = new ArrayList<View>();
-
+  private DisplayImageOptions options;
   public GroupInfoAdapter(Context context, ArrayList<UserInfo> data, String createrId) {
     this.context = context;
     this.data = data;
     layoutInflater = LayoutInflater.from(context);
     this.createrId = createrId;
+     initOptions();
+
     //initData();
   }
 
-
-
-
-  private void setImageView(final ImageView imageView, String url) {
-    if (url == null) {
-      return;
+    private void initOptions() {
+        options = new DisplayImageOptions.Builder()
+//                .showImageOnLoading(R.drawable.picture_loading)
+//                .showImageOnFail(R.drawable.pictures_no)
+                .showImageOnLoading(Util.getRS("picture_loading", "drawable", context))
+                .showImageOnFail(Util.getRS("pictures_no", "drawable", context))
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
+                //  .displayer(new RoundedBitmapDisplayer(100)) // 设置成圆角图片
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .resetViewBeforeLoading(true)
+                .build();
     }
-    ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
-      @Override
-      public void onResponse(Bitmap bitmap) {
-        imageView.setImageBitmap(bitmap);
-      }
-    }, 0, 0, Bitmap.Config.RGB_565, new Response.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError volleyError) {
-        imageView.setImageResource(Util.getRS("avatar_default", "drawable", context));
-      }
-    });
-    MyApplication.getHttpQueue(context).add(imageRequest);
-  }
+
 
   @Override
   public int getCount() {
@@ -112,8 +108,11 @@ public class GroupInfoAdapter extends BaseAdapter {
         txtTmpName.setText(data.get(i).getEmp_name());
       }
 //      viewList.set(i,view);
-      if(data.get(i).getAvatar()!=null){
-        setImageView(imgAvatar,data.get(i).getAvatar());
+      if(data.get(i).getAvatar()!=null&&!data.get(i).getAvatar().equals("null")){
+          Log.e("---url----",data.get(i).getAvatar()+"url");
+          ImageLoader.getInstance().displayImage(data.get(i).getAvatar(), imgAvatar, options);
+      }else if(i<data.size()-2){
+          imgAvatar.setImageResource(Util.getRS("avatar_default","drawable",context));
       }
       return view;
   }

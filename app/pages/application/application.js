@@ -72,7 +72,7 @@ angular.module('applicationModule')
             hasWorkflowNum: true,
             count: 0
           }]
-      }/*, {
+      }, {
         list: [
           {
             appName: "合同管理",
@@ -97,7 +97,7 @@ angular.module('applicationModule')
             destUrl: "",
           }
         ]
-      }*/
+      }
       ];
 
       var successCheckContract = function (result) {

@@ -89,6 +89,7 @@ static NSString * const reuseIdentifier = @"Cell";
                 //获取原始图   缩略图
             RCImageMessage *imageMessage = [RCImageMessage messageWithImage:image];
             imageMessage.thumbnailImage = [self scaleImage:image byScalingToSize:CGSizeMake(162, 160)];
+            imageMessage.originalImage = image;
             imageMessage.imageUrl = asset.localIdentifier;
             [array addObject:imageMessage];
             if (i==selectedItems.count-1) {

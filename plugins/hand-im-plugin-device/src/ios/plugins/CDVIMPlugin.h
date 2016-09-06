@@ -18,8 +18,19 @@
  */
 - (void)toChatAct:(CDVInvokedUrlCommand *)command;
 /*
+ * 删除某个会话
+ */
+-(void)deleteConversationList:(CDVInvokedUrlCommand *)command;
+/*
  * 返回会话列表 刷新列表
  */
 -(void)returnConversationList:(CDVInvokedUrlCommand *)command;
-
+/*
+ *   创建讨论组
+ */
+- (void)createDiscussion:(CDVInvokedUrlCommand *)command;
+/*
+ *   开启多人聊天
+ */
+- (void)openDiscussion:(CDVInvokedUrlCommand *)commmand;
 @end

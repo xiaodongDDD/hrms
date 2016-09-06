@@ -18,4 +18,6 @@
 
 @property (nonatomic,strong)RCMessage *message;
 @property (nonatomic,assign)CGFloat heightForCell;
+
+@property (nonatomic,assign)BOOL isHiddenTime;
 @end

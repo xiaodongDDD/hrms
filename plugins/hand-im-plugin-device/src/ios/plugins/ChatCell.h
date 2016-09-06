@@ -36,4 +36,5 @@
  */
 @property (nonatomic,strong)MessageFrame *msgFrame;
 
+@property (nonatomic,assign)BOOL isHiddenTime;
 @end

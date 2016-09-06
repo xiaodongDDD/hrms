@@ -592,9 +592,10 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                 @Override
                 public void onSuccess(Integer integer) {
                     int totalUnreadCount = integer;
+					String targetId = message.getTargetId();
                     String senderUserId = message.getSenderUserId();
                     //如果是单聊对象发来的消息 则加入到列表中
-                    if(senderUserId.equals(friendId)){
+                    if(targetId.equals(friendId)){
                         if(message.getContent() instanceof ImageMessage){
                             ImageMessage im = (ImageMessage) message.getContent();
                             Uri mThumUri = im.getThumUri();

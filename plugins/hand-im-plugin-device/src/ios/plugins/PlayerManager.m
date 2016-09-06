@@ -30,6 +30,7 @@ static PlayerManager *playerManager;
 {
     NSError *error;
     player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:filePath] error:&error];
+    
     player.delegate = self;
     if ([player prepareToPlay]) {
         [player play];
@@ -50,8 +51,13 @@ static PlayerManager *playerManager;
 -(void)startPlayData:(NSData *)fileData
 {
     NSError *error;
-    
+    //真机测试一定要加上这句话
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    [audioSession setActive:YES error:nil];
     player = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
+     player.volume = 1.0;
+    player.numberOfLoops = 0;
     player.delegate = self;
     if ([player prepareToPlay]) {
         [player play];

@@ -8,7 +8,7 @@ var HandIMPlugin = {
             }
         }
         if (typeof errorCallback != "function") {
-
+            //
             return
         }
         if (typeof successCallback != "function") {
