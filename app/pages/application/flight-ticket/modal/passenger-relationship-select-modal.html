@@ -1,0 +1,12 @@
+<ion-modal-view class="project-select-modal">
+  <ion-header-bar class="header-color">
+    <h1 class="title title-color">请选择乘机人关系</h1>
+  </ion-header-bar>
+  <ion-content class="back-color">
+    <ion-scroll diretion="y" scrollbar-y="false" class="height-percentage">
+      <div class="list">
+        <div ng-repeat="y in relationshipList" class="item apply-item non-selected-font" ng-click="finishChoosingRelationship(y)">{{y}}</div>
+      </div>
+    </ion-scroll>
+  </ion-content>
+</ion-modal-view>
