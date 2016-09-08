@@ -121,7 +121,7 @@ angular.module('messageModule')
       };
 
 
-      $scope.goWorkflowDetail = function (workflowDetail) {
+      var goWorkflowDetail = function (workflowDetail) {
         if(workflowDetail.detail){
           var detail = {
             "recordId": workflowDetail.detail.recordId,
@@ -138,6 +138,7 @@ angular.module('messageModule')
       };
 
       $scope.readMessage = function (messageDetail) {
+        goWorkflowDetail(messageDetail);
         if(messageDetail.status == 'COMPLETE'){
           return;
         }
