@@ -48,6 +48,14 @@
         "is_top_level": true,
         "variables": {}
     },
+    "cordova-plugin-youtuishare": {
+        "source": {
+            "type": "local",
+            "path": "C:\\Users\\lifi\\Desktop\\cordova-plugin-youtuishare"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "jpush-phonegap-plugin": {
         "source": {
             "type": "registry",
@@ -63,14 +71,6 @@
             "type": "git",
             "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
             "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-youtuishare": {
-        "source": {
-            "type": "local",
-            "path": "C:\\Users\\lifi\\Desktop\\cordova-plugin-youtuishare"
         },
         "is_top_level": true,
         "variables": {}
