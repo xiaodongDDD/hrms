@@ -736,32 +736,39 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
                         conversationType="2";
                     }
                     //如果是文本消息获取最后一条消息的文本内容
-                                        if (messageContent instanceof TextMessage) {
-                                            TextMessage tm = (TextMessage) messageContent;
-                                            userInfoName = "";
-                                            if (tm.getUserInfo() != null) {
-                                                userInfoName = tm.getUserInfo().getName();
-                                            }
-                                            txt = userInfoName + ":" + tm.getContent();
-                                        } else if (messageContent instanceof ImageMessage) {
-                                            ImageMessage im = (ImageMessage) messageContent;
-                                            userInfoName = "";
-                                            if (im.getUserInfo() != null) {
-                                                userInfoName = im.getUserInfo().getName();
-                                            }
-                                            txt = userInfoName + ":图片";
-                                        } else if (messageContent instanceof VoiceMessage) {
-                                            VoiceMessage vm = (VoiceMessage) messageContent;
-                                            userInfoName = "";
-                                            if (vm.getUserInfo() != null) {
-                                                userInfoName = vm.getUserInfo().getName();
-                                            }
-                                            txt = userInfoName + ":语音";
-                                        }
+					if (messageContent instanceof TextMessage) {
+						TextMessage tm = (TextMessage) messageContent;
+						userInfoName = "";
+						if (tm.getUserInfo() != null) {
+							userInfoName = tm.getUserInfo().getName();
+						}
+						txt = userInfoName + ":" + tm.getContent();
+					} else if (messageContent instanceof ImageMessage) {
+						ImageMessage im = (ImageMessage) messageContent;
+						userInfoName = "";
+						if (im.getUserInfo() != null) {
+							userInfoName = im.getUserInfo().getName();
+						}
+						txt = userInfoName + ":图片";
+					} else if (messageContent instanceof VoiceMessage) {
+						VoiceMessage vm = (VoiceMessage) messageContent;
+						userInfoName = "";
+						if (vm.getUserInfo() != null) {
+							userInfoName = vm.getUserInfo().getName();
+						}
+						txt = userInfoName + ":语音";
+					}
 
                     long time = conversation.getSentTime();
                     Date date = new Date(time);
+					Date currentDate = new Date();
                     SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					if(date.getYear()==currentDate.getYear()&&date.getMonth()==currentDate.getMonth()&&date.getDate()==currentDate.getDate()){
+                        sd = new SimpleDateFormat("HH:mm");
+                    }else if(date.getYear()==currentDate.getYear()&&date.getMonth()==currentDate.getMonth()){
+                        sd = new SimpleDateFormat("MM-dd HH:mm");
+                    }
+					
                     String mTime = sd.format(date);
                     SimpleDateFormat sortTimeFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                     String sortTime = sortTimeFormat.format(date);

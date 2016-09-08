@@ -327,6 +327,7 @@ angular.module('applicationModule')
            }else if($scope.editItem[0].passenger_gender=="female"){
              param.params.p_passenger_gender=1;
            }
+           //console.debug(angular.toJson(param));
            hmsHttp.post(url,param).success(function(result){
              console.log(angular.toJson(result,true));
              $scope.showLoading=false;
@@ -371,6 +372,7 @@ angular.module('applicationModule')
            }else if($scope.createItem[0].passenger_gender=="female"){
              param.params.p_passenger_gender=1;
            }
+           //console.debug(angular.toJson(param));
            hmsHttp.post(url,param).success(function(result){
              console.log(angular.toJson(result,true));
              $scope.showLoading=false;

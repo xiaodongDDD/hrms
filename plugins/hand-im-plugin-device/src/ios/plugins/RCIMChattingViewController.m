@@ -206,24 +206,28 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 //刷新历史消息
 - (void)updateHistoryMessage:(UIRefreshControl *)control
 {
-    MessageFrame *messageFrame  = _dataSource[0];
+    MessageFrame *messageFrame;
+    if (self.dataSource.count) {
+         messageFrame  = _dataSource[0];
+    }
     RCMessage * oldestMessage = messageFrame.message;
     NSLog(@"targetId:%lu,",oldestMessage.messageId);
     //在这里请求数据 加载里历时消息
     NSArray *historyArray = [[RCIMClient sharedRCIMClient] getHistoryMessages:ConversationType_PRIVATE targetId:oldestMessage.targetId oldestMessageId:oldestMessage.messageId count:10];
-    
+   __block NSInteger index = 0;
     [historyArray enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         MessageFrame *msgFrame = [[MessageFrame alloc] init];
         msgFrame.message = obj;
         if (![msgFrame.message.objectName isEqualToString:@"RC:VCSummary"]) {
             [self.dataSource insertObject:msgFrame atIndex:0];
+            index++;
         }
     }];
     
     [control endRefreshing];
     [self.ChatTableView reloadData];
-    if (historyArray.count) {
-        [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:historyArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    if (index) {
+        [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
     
     NSLog(@"updateHistoryMessage:%li",historyArray.count);

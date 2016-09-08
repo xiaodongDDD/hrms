@@ -186,6 +186,7 @@ angular.module('applicationModule')
        if($scope.editAble==true){
          if($scope.detailInfo.apply_status == "applied"){
            $scope.editMode = true;
+           hmsPopup.showLongCenterToast("进入编辑模式");
          }else if($scope.detailInfo.apply_status == "finished"){
            $scope.endorseMode = true;
            hmsPopup.showLongCenterToast("改签请填写改签后出发日期和航班，退票直接点击退票按钮");
