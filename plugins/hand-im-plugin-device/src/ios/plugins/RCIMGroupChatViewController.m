@@ -93,6 +93,10 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0],NSForegroundColorAttributeName:[UIColor colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0]}];
     
     
+    //监听键盘变动
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillDismiss:) name:UIKeyboardWillHideNotification object:nil];
+    
     //设置导航下面渐变色
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor] size:CGSizeMake(screenWidth, 44+22)]
                                                  forBarPosition:UIBarPositionAny
@@ -124,9 +128,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     self.discussionImageName = [DataBaseTool getDiscussionPortraitUriById:self.discussionId];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    //监听键盘变动
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillDismiss:) name:UIKeyboardWillHideNotification object:nil];
+    
     //设置左右导航按钮
     UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     self.navigationItem.leftBarButtonItem = left;//mobile@3x.png
@@ -163,7 +165,11 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     //从服务器获取用户信息
     [[RCIMClient sharedRCIMClient] getDiscussion:self.discussionId success:^(RCDiscussion *discussion) {
         for (NSString *memberId in discussion.memberIdList) {
-            [self connectToService:memberId];
+            NSOperationQueue *operationQueue = [NSOperationQueue mainQueue];
+            [operationQueue addOperationWithBlock:^{
+                [self connectToService:memberId];
+            }];
+            [operationQueue setMaxConcurrentOperationCount:1];
         }
     } error:^(RCErrorCode status) {
         NSLog(@"%@-拉取讨论组成员信息失败:%li",self.class,status);
@@ -242,18 +248,22 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 //刷新历史消息
 - (void)updateHistoryMessage:(UIRefreshControl *)control
 {
-    RCIMDiscussionMessageFrame *messageFrame  = _dataSource[0];
+    RCIMDiscussionMessageFrame *messageFrame;
+    if (self.dataSource.count) {
+        messageFrame  = _dataSource[0];
+    }
     RCMessage * oldestMessage = messageFrame.message;
     NSLog(@"targetId:%lu,",oldestMessage.messageId);
     //在这里请求数据 加载历史消息
     NSArray *historyArray = [[RCIMClient sharedRCIMClient] getHistoryMessages:ConversationType_DISCUSSION targetId:self.discussionId oldestMessageId:oldestMessage.messageId count:10];
-    
+   __block NSInteger index = 0;
     [historyArray enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         RCIMDiscussionMessageFrame *msgFrame = [[RCIMDiscussionMessageFrame alloc] init];
         msgFrame.message = obj;
-        if (![msgFrame.message.content isKindOfClass:[RCDiscussionNotificationMessage class]]) {
+        if (![msgFrame.message.content isKindOfClass:[RCDiscussionNotificationMessage class]]&&![msgFrame.message.objectName isEqualToString:@"RC:VCSummary"]) {
             //通知消息暂时不作显示处理
             [self.dataSource insertObject:msgFrame atIndex:0];
+            index++;
         }
         
     }];
@@ -261,8 +271,8 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     [control endRefreshing];
     [self.ChatTableView reloadData];
     //每次下拉刷新 先刷出来一个
-    if (historyArray.count) {
-        [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:historyArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    if (index) {
+        [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
     
     NSLog(@"updateHistoryMessage：%li",self.dataSource.count);
