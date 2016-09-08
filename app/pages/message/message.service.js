@@ -290,6 +290,19 @@ angular.module('applicationModule')
           });
         };
 
+        this.readAllMessage = function (type) {
+          var url = baseConfig.queryPath + "/message/readAllByType";
+          var params =
+          {
+            "MessageTypeCode": type
+          };
+          hmsHttp.post(url, params).success(function (result) {
+          }).error(function (response, status) {
+          });
+        }
+        ;
+
+
         this.searchEmployee = function (myscope, page, loadMoreFlag) {
           if (!myscope.empFilterValue || myscope.empFilterValue == '') {
             return;
@@ -342,4 +355,5 @@ angular.module('applicationModule')
             myscope.$broadcast('scroll.infiniteScrollComplete');
           });
         }
-      }]);
+      }])
+;

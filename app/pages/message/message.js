@@ -348,6 +348,7 @@ angular.module('messageModule')
           } else {
             var index = $scope.messageList.indexOf(message);
             $scope.messageList.splice(index, 1);
+            messageService.readAllMessage(message.conversationType);
           }
         },
 
