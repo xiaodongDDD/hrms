@@ -18,7 +18,7 @@
     <div class="message-block" ng-repeat="messageDetail in messageDetailList" ng-click="readMessage(messageDetail)">
       <div class="message-time-line" ng-bind="messageDetail.sendTime">
       </div>
-      <div class="message-content">
+      <div class="message-content content-selected">
         <div class="row no-padding">
           <div class="col no-padding" ng-class="{true: 'col-90', false: 'col-100'}[messageDetail.status == 'NOREAD']">
             <div class="message-title" ng-bind="messageDetail.messageContent">
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="message-detail">
-          <div class="row no-padding" ng-click="goWorkflowDetail(messageDetail)">
+          <div class="row no-padding">
             <div class="col col-90 no-padding">
               查看详细信息
             </div>
