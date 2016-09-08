@@ -95,7 +95,8 @@ angular.module('myInfoModule')
           var cameraoptions = {
               quality: 50,
               destinationType: Camera.DestinationType.FILE_URI,
-              sourceType: Camera.PictureSourceType.CAMERA
+              sourceType: Camera.PictureSourceType.CAMERA,
+              correctOrientation:true
           };
           $cordovaCamera.getPicture(cameraoptions).then(function(imageURI) {
             $scope.imageList[currentPictureNumber].uri=imageURI;//获取相机图片Uri
