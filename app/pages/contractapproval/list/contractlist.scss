@@ -58,50 +58,46 @@
   .contract-subheader-marker {
     margin-top: 6px;
     height: 3px;
+    width: 100%;
+    transform: scaleX(0);
+    -webkit-transform: scaleX(0);
+    transform-origin:50% 50%;
+    -webkit-transform-origin:50% 50%;
   }
   .contract-subheader-marker-selected {
-    animation: subheader-selected 0.5s;
-    -webkit-animation: subheader-selected 0.5s;
+    animation: subheader-selected forwards 0.5s;
+    -webkit-animation: subheader-selected forwards 0.5s;
   }
   @-webkit-keyframes subheader-selected {
-    0% {
-      width: 0%;
-      margin-left: 50%;
+    from {
+      // width: 0%;
+      // margin-left: 50%;
+      transform: scaleX(0);
+      -webkit-transform: scaleX(0);
     }
-    100% {
-      width: 100%;
+    to {
+      transform: scaleX(1);
+      -webkit-transform: scaleX(1);
     }
   }
   @keyframes subheader-selected {
-    0% {
-      width: 0%;
-      margin-left: 50%;
-    }
-    100% {
-      width: 100%;
-    }
-  }
-
-  
-
-  @-webkit-keyframes contract-fadeIn {
     from {
-      opacity: 0;
+      // width: 0%;
+      // margin-left: 50%;
+      transform: scaleX(0);
+      -webkit-transform: scaleX(0);
     }
     to {
-      opacity: 1;
+      // width: 100%;
+      transform: scaleX(1);
+      -webkit-transform: scaleX(1);
     }
   }
-  @keyframes contract-fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  .contract-subheader-marker-init{
+    animation: subheader-deselected forwards 0s;
+    -webkit-animation: subheader-deselected forwards 0s;
   }
   .contract-subheader-marker-deselected {
     width: 0%;
-    //-webkit-animation: subheader-deselected 0.5s;
   }
 }

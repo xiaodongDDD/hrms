@@ -550,7 +550,9 @@ angular.module('applicationModule')
         }
         //从子页面返回时进入的
         else {
-          console.log('从子页面返回时进入的');
+          if (baseConfig.debug) {
+            console.log('从子页面返回时进入的');
+          }
           if (contractListService.getItemRemoveFlag()) {
             $scope.list.splice($scope.enteringIndex, 1);
           }
@@ -682,7 +684,9 @@ angular.module('applicationModule')
       };
 
       hmsHttp.post(url, params).success(function(result) {
-        console.log('check user success');
+        if (baseConfig.debug) {
+          console.log('check user success');
+        }
         if (result.result == 'S') {
           checkUserFlag.flag = true;
         } else {
@@ -729,7 +733,9 @@ angular.module('applicationModule')
           }
           success(result);
         }).error(function(response, status) {
-          console.log('post: getTodoList() error');
+          if (baseConfig.debug) {
+            console.log('post: getTodoList() error');
+          }
         });
         if (baseConfig.debug) {
           console.log('调用地址：' + url);
@@ -737,7 +743,9 @@ angular.module('applicationModule')
           console.log(params);
         }
       } else {
-        console.log('不应该被调用getTodoList()');
+        if (baseConfig.debug) {
+          console.log('不应该被调用getTodoList()');
+        }
         error();
       }
     };
@@ -757,10 +765,14 @@ angular.module('applicationModule')
         hmsHttp.post(url, params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          console.log('post: getTodoCount() error');
+          if (baseConfig.debug) {
+            console.log('post: getTodoCount() error');
+          }
         });
       } else {
-        console.log('不应该被调用getTodoCount()');
+        if (baseConfig.debug) {
+          console.log('不应该被调用getTodoCount()');
+        }
       }
     };
   }
