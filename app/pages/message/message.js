@@ -167,7 +167,10 @@ angular.module('messageModule')
           if (angular.isArray(result.message)) {
             friendList = messageService.getEmployeeMessageList(result);
           }
-          messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, friendList);
+          //messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, friendList);
+          var notifyList = messageService.getCachedNotifyList()
+          $scope.messageList = messageService.mergeNotifyToFriendList(notifyList, friendList);
+          $scope.$apply();
         }
       }, false);
 

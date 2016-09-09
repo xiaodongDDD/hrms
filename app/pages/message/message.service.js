@@ -38,7 +38,9 @@ angular.module('applicationModule')
             "name": "日常提醒",
             "imgUrl": "build/img/message/announcement@3x.png",
           }
-        }
+        };
+
+        var notifyList = [];
 
         var messageDefaultIcon = 'build/img/application/profile@3x.png';
 
@@ -62,6 +64,19 @@ angular.module('applicationModule')
           }
           return result;
         };
+
+        var setCachedNotifyList = function (list) {
+          notifyList = list
+        };
+
+        this.getCachedNotifyList = function () {
+          var list = [];
+          angular.forEach(notifyList,function (data) {
+            data.selected = false;
+            list.push(data);
+          })
+          return list;
+        }
 
         this.mergeNotifyToFriendList = function (notifyList, friendList) {
           if (baseConfig.debug) {
@@ -138,6 +153,8 @@ angular.module('applicationModule')
                 };
                 messageList.push(notify);
               });
+
+              setCachedNotifyList(messageList);
 
               if (AutoRefresh) {
                 mergeMessageAndNotifyList(messageList);
