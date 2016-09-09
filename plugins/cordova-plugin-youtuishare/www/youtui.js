@@ -4,7 +4,7 @@ var youtuiShare = function() {
 
 
 youtuiShare.prototype.share = function(successCallback, errorCallback, options) {
-    console.log("youtuiShare");
+    // console.log("youtuiShare");
     if (errorCallback == null) { errorCallback = function() {}}
     if (typeof errorCallback != "function")  {
 
@@ -22,7 +22,7 @@ if(!window.plugins) {
 }
 
 if (!window.plugins.youtuiShare) {
-    alert("No window.plugins.youtuiShare.");
+    // alert("No window.plugins.youtuiShare.");
     window.plugins.youtuiShare = new youtuiShare();
 }
 
