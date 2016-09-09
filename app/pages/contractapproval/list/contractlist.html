@@ -14,9 +14,9 @@
         <div id='contractSubheaderScroll' class="row padding-zero" style="width:1000px; overflow:hidden;">
           <div class="contractSubheaderMarker" ng-click="clickSubheader(i)" ng-repeat="i in subheaderTitleKey" style="padding:6px; padding-bottom:0px;">
             <label ng-bind="subheaderTitleValue[i]" ng-class="{true:'hrms-color-blue',false:'hrms-color-gray'}[subheaderSelectFlag[i]]" style="white-space: nowrap;"></label>
-            <div ng-class="{true:'contract-subheader-marker-selected hrms-bg-blue',
-                            false:'contract-subheader-marker-deselected hrms-bg-blue'}
-                            [subheaderSelectFlag[i]]" class="contract-subheader-marker">
+            <div ng-class="{'contract-subheader-marker-selected hrms-bg-blue':subheaderSelectFlag[i],
+                            'contract-subheader-marker-deselected hrms-bg-blue':subheadereAnimaFlag&&subheaderDeselectAnimaFlag[i]}" 
+                            class="contract-subheader-marker">
             </div>
           </div>
         </div>

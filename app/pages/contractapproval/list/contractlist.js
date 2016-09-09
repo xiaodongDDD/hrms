@@ -46,6 +46,7 @@ angular.module('applicationModule')
       $scope.isIos = false; //平台
       var slideToChangePage = true; //是否是滑动来换页的
       $scope.enteringIndex = 0;
+      $scope.subheadereAnimaFlag = false;
 
       $scope.hasBouncing = 'false';
       $scope.fetchDataFlag = true;
@@ -130,6 +131,13 @@ angular.module('applicationModule')
         myTask_unfin: false,
         myTask_fin: false
       };
+      $scope.subheaderDeselectAnimaFlag = { //前一个被选中的项的收缩动画
+        myStart_undo: false,
+        myStart_do: false,
+        myTask_todo: false,
+        myTask_unfin: false,
+        myTask_fin: false
+      };
 
       //按了导航栏的按钮
       $scope.clickSubheader = function(title) {
@@ -137,9 +145,13 @@ angular.module('applicationModule')
           contractListService.setIsFromParent(true);
         }
         slideToChangePage = false;
+
         //设置分页的状态（选中与未选中）
-        for (i in $scope.subheaderSelectFlag) {
-          $scope.subheaderSelectFlag[i] = false;
+        for(k in $scope.subheaderSelectFlag){
+          $scope.subheaderDeselectAnimaFlag[k] = $scope.subheaderSelectFlag[k];
+        }
+        for (k in $scope.subheaderSelectFlag) {
+          $scope.subheaderSelectFlag[k] = false;
         }
         $scope.subheaderSelectFlag[title] = true;
         //设置偏移
@@ -546,14 +558,14 @@ angular.module('applicationModule')
         $scope.type = contractListService.getListType();
         //从上级页面进入的
         if (contractListService.IsFromParent()) {
-
+          $scope.subheadereAnimaFlag = true;
         }
         //从子页面返回时进入的
         else {
           if (baseConfig.debug) {
             console.log('从子页面返回时进入的');
           }
-          if (contractListService.getItemRemoveFlag()) {
+          if (contractListService.getItemRemoveFlag()) {//如果在详情页操作了待处理项，则应该把它从待处理页移除掉
             $scope.list.splice($scope.enteringIndex, 1);
           }
           if ($scope.type != contractListService.getListType()) { //如果详情页要求返回时跳到别的分页里
@@ -580,6 +592,12 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.beforeLeave');
         }
+      });
+      $scope.$on('$ionicView.afterLeave', function() {
+        if (baseConfig.debug) {
+          console.log('contractListCtrl.$ionicView.afterLeave');
+        }
+        $scope.subheadereAnimaFlag = false;
       });
 
       $scope.$on('$destroy', function(e) {
