@@ -281,7 +281,11 @@ angular.module('myApp')
         $urlRouterProvider.otherwise('/guide');
       } else {
         if (window.localStorage.token && window.localStorage.token != "") {
-          $urlRouterProvider.otherwise('/tab/message');
+          if( window.localStorage.getItem('gesturePassword') &&window.localStorage.getItem('gesturePassword') != ''){
+            $urlRouterProvider.otherwise('/gesture-lock');
+          } else {
+            $urlRouterProvider.otherwise('/tab/message');
+          }
         } else {
           $urlRouterProvider.otherwise('/login');
         }
