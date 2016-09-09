@@ -126,6 +126,11 @@
       padding-left: 8px;
       padding-right: 8px;
       position: relative;
+
+      &.activated{
+        background: #f5f5f5;
+      }
+
       .message-introduce {
         position: absolute;
         left: 15px;
@@ -292,6 +297,13 @@
 
   .message-block{
     margin:10px;
+
+    &.activated{
+      .content-selected{
+        background: #f5f5f5;
+      }
+    }
+
 
     .message-time-line{
       width: 100%;

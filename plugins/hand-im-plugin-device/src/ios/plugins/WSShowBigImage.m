@@ -85,7 +85,7 @@ static CGRect newFrame;
 {
     UIView *backgroundView = tap.view;
     [UIView animateWithDuration:0.3 animations:^{
-        _imageView.frame = newFrame;
+        _imageView.transform = CGAffineTransformMakeScale(2.0, 2.0);
         backgroundView.alpha = 0;
     } completion:^(BOOL finished) {
         [backgroundView   removeFromSuperview];

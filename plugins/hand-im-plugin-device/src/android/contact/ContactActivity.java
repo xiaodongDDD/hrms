@@ -1,7 +1,10 @@
 package com.hand.im.contact;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,19 +24,23 @@ import com.hand.im.DBhelper;
 import com.hand.im.HandMulChatActivity;
 import com.hand.im.LoginInfo;
 import com.hand.im.Util;
-import com.hand.im.volley.HttpUtil;
+import com.hand.im.okhttp.OkHttpClientManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.SynchronousQueue;
 
 import io.rong.imlib.RongIMClient;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by panx on 2016/8/24.
@@ -48,19 +55,19 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     private ImageView btnSearch;
     private Button btnOK;
     private String targetId;
+    private ImageView imgBack;
 
     private String TYPE;
     private String USERID;
     private String USERNAME;
     private String ICONURL;
     private String TOKEN;
-    //查询联系人是否结束
-    private boolean isRequestFinish = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(Util.getRS("activity_contact","layout",this));
+        setContentView(Util.getRS("activity_contact", "layout", this));
         targetId = getIntent().getStringExtra("targetId");
 
         TYPE = getIntent().getStringExtra("TYPE");
@@ -68,41 +75,60 @@ public class ContactActivity extends Activity implements View.OnClickListener {
         USERNAME = getIntent().getStringExtra("USERNAME");
         ICONURL = getIntent().getStringExtra("ICONURL");
         TOKEN = getIntent().getStringExtra("TOKEN");
-
         initView();
         init();
     }
 
     private void initView() {
-        sidebar = (SideBar) findViewById(Util.getRS("sidebar","id",this));
-        listView = (ListView) findViewById(Util.getRS("listview","id",this));
-        dialog = (TextView) findViewById(Util.getRS("dialog","id",this));
-        edtSearch = (EditText) findViewById(Util.getRS("edtSearch","id",this));
-        btnOK = (Button) findViewById(Util.getRS("btnOK","id",this));
+        imgBack = (ImageView) findViewById(Util.getRS("arrow_back", "id", this));
+        imgBack.setOnClickListener(this);
+        sidebar = (SideBar) findViewById(Util.getRS("sidebar", "id", this));
+        listView = (ListView) findViewById(Util.getRS("listview", "id", this));
+        listView.setEmptyView(findViewById(Util.getRS("empty_view", "id", this)));
+        dialog = (TextView) findViewById(Util.getRS("dialog", "id", this));
+        edtSearch = (EditText) findViewById(Util.getRS("edtSearch", "id", this));
+        btnOK = (Button) findViewById(Util.getRS("btnOK", "id", this));
         btnOK.setOnClickListener(this);
-        btnSearch = (ImageView) findViewById(Util.getRS("imgSearch","id",this));
+        btnSearch = (ImageView) findViewById(Util.getRS("imgSearch", "id", this));
         btnSearch.setOnClickListener(this);
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
                 data.clear();
-                Map<String, String> hashMap = new HashMap<String, String>();
-                hashMap.put("key", edtSearch.getText().toString());
-                hashMap.put("page", "1");
-                hashMap.put("pageSize", "30");
-                HttpUtil.JSONObjectPost(LoginInfo.baseUrl+"/hrmsv2/v2/api/staff/query?" +
-                        "access_token="+ LoginInfo.access_token, hashMap, getApplicationContext(), handlerObject);
+                updateDataList();
             }
         });
     }
+    private void updateDataList(){
+        String url = LoginInfo.baseUrl + "/hrmsv2/v2/api/staff/query?" + "access_token=" + LoginInfo.access_token;
+        JSONObject object = new JSONObject();
+        try {
+            object.put("key", edtSearch.getText().toString());
+            object.put("page", "1");
+            object.put("pageSize", "30");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        OkHttpClientManager.postAsyn(url, object, new OkHttpClientManager.ResultCallback<String>() {
+            @Override
+            public void onError(Call call, Exception e) {
+            }
+            @Override
+            public void onResponse(String response) {
+                dealDataList(response);
+            }
+        });
+    }
     private List<PersonBean> getData(String[] data) {
         List<PersonBean> listarray = new ArrayList<PersonBean>();
         for (int i = 0; i < data.length; i++) {
@@ -141,11 +167,11 @@ public class ContactActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onTouchingLetterChanged(String s) {
-            // TODO Auto-generated method stub
-            int position = sortadapter.getPositionForSelection(s.charAt(0));
-            if (position != -1) {
-                listView.setSelection(position);
-            }
+                // TODO Auto-generated method stub
+                int position = sortadapter.getPositionForSelection(s.charAt(0));
+                if (position != -1) {
+                    listView.setSelection(position);
+                }
             }
         });
         data = new ArrayList<PersonBean>();
@@ -156,57 +182,48 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        int idImgSearch = Util.getRS("imgSearch","id",this);
-        int idBtnOK = Util.getRS("btnOK","id",this);
-        if(id==idImgSearch){
-            if (!isRequestFinish) {
-                return;
-            }
-            Log.e("search.......","..................");
-            isRequestFinish = false;
-            data.clear();
-            Map<String, String> hashMap = new HashMap<String, String>();
-            hashMap.put("key", edtSearch.getText().toString());
-            hashMap.put("page", "1");
-            hashMap.put("pageSize", "30");
-            HttpUtil.JSONObjectPost(LoginInfo.baseUrl+"/hrmsv2/v2/api/staff/query?" +
-                    "access_token="+ LoginInfo.access_token, hashMap, this, handlerObject);
-            //Log.e("access_token",LoginInfo.access_token);
-            dialog.setVisibility(View.VISIBLE);
-            dialog.setText("加载中...");
-            dialog.setTextSize(10);
-        }else if(id==idBtnOK){
+        int idImgSearch = Util.getRS("imgSearch", "id", this);
+        int idBtnOK = Util.getRS("btnOK", "id", this);
+        int idImgBack = Util.getRS("arrow_back", "id", this);
+        if (id == idImgSearch) {
+            updateDataList();
+        } else if (id == idBtnOK) {
             dialog.setVisibility(View.VISIBLE);
             dialog.setText("保存中...");
             dialog.setTextSize(10);
             ArrayList<String> members = sortadapter.getDealMember();
-            if(targetId==null){
+            if (targetId == null) {
                 createNewDiscussion(members);
-            }else {
+            } else {
                 inviteNewMember(members);
             }
+        } else if (id == idImgBack) {
+            finish();
         }
     }
-    private void inviteNewMember(final ArrayList<String> members){
+
+    private void inviteNewMember(final ArrayList<String> members) {
         RongIMClient.getInstance().addMemberToDiscussion(targetId, members, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
-                Toast.makeText(getApplicationContext(),"已邀请"+members.size()+"位新成员加入群聊",
+                Toast.makeText(getApplicationContext(), "已邀请" + members.size() + "位新成员加入群聊",
                         Toast.LENGTH_SHORT).show();
                 setResult(1);
                 dialog.setVisibility(View.INVISIBLE);
                 dialog.setTextSize(30);
                 finish();
             }
+
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                Toast.makeText(getApplicationContext(),"邀请失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "邀请失败", Toast.LENGTH_SHORT).show();
                 dialog.setVisibility(View.INVISIBLE);
                 dialog.setTextSize(30);
             }
         });
     }
-    private void createNewDiscussion(final ArrayList<String> members){
+
+    private void createNewDiscussion(final ArrayList<String> members) {
         final String title = sortadapter.getTitle();
         if (RongIMClient.getInstance() != null) {
             RongIMClient.getInstance().createDiscussion(title, members, new RongIMClient.CreateDiscussionCallback() {
@@ -214,9 +231,9 @@ public class ContactActivity extends Activity implements View.OnClickListener {
                 public void onSuccess(String s) {
                     dialog.setVisibility(View.INVISIBLE);
                     dialog.setTextSize(30);
-					DBhelper dBhelper = new DBhelper(getApplicationContext());
+                    DBhelper dBhelper = new DBhelper(getApplicationContext());
                     dBhelper.addUserInfo(s, title, "http://zhouzybk.img-cn-shanghai.aliyuncs.com/discussionGroupImage1472535269374.png");
-                    Toast.makeText(getApplicationContext(),"讨论组创建成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "讨论组创建成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ContactActivity.this, HandMulChatActivity.class);
                     intent.putExtra("TYPE", "NORMAL");
                     intent.putExtra("USERID", USERID);//用户Id
@@ -229,25 +246,22 @@ public class ContactActivity extends Activity implements View.OnClickListener {
                     startActivity(intent);
                     finish();
                 }
+
                 @Override
                 public void onError(RongIMClient.ErrorCode errorCode) {
                     dialog.setVisibility(View.INVISIBLE);
                     dialog.setTextSize(30);
-                    Toast.makeText(getApplicationContext(),"fail:"+errorCode, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "fail:" + errorCode, Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
-
-    public Handler handlerObject = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            dialog.setVisibility(View.INVISIBLE);
-            dialog.setTextSize(30);
-            try {
-                JSONObject object = new JSONObject(msg.getData().getString("message"));
+    public void dealDataList(String str)  {
+        JSONObject object = null;
+        try {
+            synchronized (ContactActivity.class) {
+                data.clear();
+                object = new JSONObject(str);
                 JSONArray array = new JSONArray(object.getString("rows"));
                 for (int i = 0; i < array.length(); i++) {
                     PersonBean person = new PersonBean();
@@ -261,13 +275,25 @@ public class ContactActivity extends Activity implements View.OnClickListener {
                 data = dealData(data);
                 Collections.sort(data, new PinyinComparator());
                 sortadapter.notifyDataSetChanged();
-                isRequestFinish = true;
-            } catch (JSONException e) {
-                isRequestFinish = true;
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(),"请检查您的网络连接状态",Toast.LENGTH_SHORT).show();
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager == null) {
+                Toast.makeText(getApplicationContext(), "请检查您的网络连接状态", Toast.LENGTH_SHORT).show();
+            }
+            NetworkInfo[] networkInfos = connectivityManager.getAllNetworkInfo();
+            if (networkInfos != null && networkInfos.length > 0) {
+                for (int i = 0; i < networkInfos.length; i++) {
+                    if (networkInfos[i].getState() == NetworkInfo.State.CONNECTED) {
+                        Toast.makeText(getApplicationContext(), "与服务器连接失败", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+            }
+            Toast.makeText(getApplicationContext(), "请检查您的网络连接状态", Toast.LENGTH_SHORT).show();
         }
-    };
+
+    }
 
 }

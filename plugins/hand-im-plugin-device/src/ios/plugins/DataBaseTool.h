@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TimeTool.h"
+#import "CVDPlugin-Bridging-Header.h"
 
 @interface DataBaseTool : NSObject
 /*!
@@ -27,15 +28,16 @@
  * 插入数据数据
  */
 +(void)insetSendDataType:(NSString *)messageType SendId:(NSString *)sendId ReceivedId:(NSString *)receivedId Content:(NSString *)content SendTime:(NSString *)sendTime ReceiveTime:(NSString *)receiveTime Flag:(NSString *)flag;
+
 +(void)insetReceivedDataType:(NSString *)messageType SendId:(NSString *)sendId ReceivedId:(NSString *)receivedId Content:(NSString *)content SendTime:(NSString *)sendTime ReceiveTime:(NSString *)receiveTime Flag:(NSString *)flag;
 /*!
  * 修改数据数据 标记 是否已读
  */
 +(void)updateDataType:(NSString *)messageType SendId:(NSString *)sendId;
 /*!
- * 删除聊天列表by id
+ * 删除聊天列表by id type
  */
-+(void)deleteDataListBy:(NSString *)friendId;
++ (void)deleteDataListBy:(NSString *)friendId Type:(RCConversationType)type;
 /*!
  * 插入员工详细信息
  */
@@ -52,4 +54,16 @@
  * 获得所有员工详细信息
  */
 + (NSMutableArray *)getAllUsersInfo;
+/*!
+ * 插入讨论组信息
+ */
++ (void)insertDiscussionGroupInformation:(NSString *)discussionId PortraitUri:(NSString *)portraitUri;
+/*!
+ * 获取讨论组头像的urlStr
+ */
++ (NSString *)getDiscussionPortraitUriById:(NSString *)discussionId;
+/*!
+ * 根据工号查询是否有此人
+ */
++(BOOL)hasPerson:(NSString*)userId;
 @end

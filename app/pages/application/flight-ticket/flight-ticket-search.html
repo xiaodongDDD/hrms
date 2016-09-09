@@ -1,4 +1,4 @@
-<ion-view view-title="机票查询" class="flight-ticket-search">
+<ion-view view-title="新建申请" class="flight-ticket-search">
   <div class="tall-header" style="background: url({{weatherInfo.backUrl}});background-size: 100% 100%;background-color: #fafafa">
     <ion-header-bar align-title="center" class="bar-tall-header">
       <div class="buttons">
@@ -9,7 +9,7 @@
     </ion-header-bar>
     <div class="bar-tall-bottom">
       <label class="weather-city" ng-style="fontVariable">{{weatherInfo.cityName}}</label>
-      <label class="weather-temperature" ng-style="fontVariable">{{weatherInfo.temperature}}℃</label>
+      <label class="weather-temperature" ng-style="fontVariable">{{weatherInfo.temperature}}</label>
       <label class="weather-name" ng-style="fontVariable">{{weatherInfo.weatherName}}</label>
       <img ng-src="{{weatherInfo.iconUrl}}" class="weather-img"/>
       <div class="tab-bar-shelter">
@@ -35,6 +35,7 @@
     </div>
   </div>
   <ion-content class="content-style" style="top: 155px;">
+    <hms-loading ng-if="showLoading" style="padding-top: 180px"></hms-loading>
     <ion-item class="place-item">
       <div class="row place-first-row">
         <div class="col no-padding-col">
@@ -46,29 +47,29 @@
       </div>
       <div class="row place-second-row">
         <div class="col no-padding-col">
-          <ion-item class="normal-item" ng-click="">
-            <label class="place-label">乌鲁木齐</label>
+          <ion-item class="normal-item" ng-click="showCityModal(0)">
+            <label class="place-label" ng-bind="applyInfo.fromCity"></label>
           </ion-item>
         </div>
         <div class="col no-padding-col">
-          <ion-item class="normal-item" ng-click="">
-            <label class="place-label">呼和浩特</label>
+          <ion-item class="normal-item" ng-click="showCityModal(1)">
+            <label class="place-label" ng-bind="applyInfo.toCity"></label>
           </ion-item>
         </div>
       </div>
       <div class="row place-third-row">
         <div class="col no-padding-col">
-          <label class="province-label">新疆，中国</label>
+          <label class="province-label" ng-bind="applyInfo.fromProvince"></label>
         </div>
         <div class="col no-padding-col">
-          <label class="province-label">内蒙古，中国</label>
+          <label class="province-label" ng-bind="applyInfo.toProvince"></label>
         </div>
       </div>
-      <button class="button button-icon place-switch-button">
+      <button class="button button-icon place-switch-button" ng-click="switchPlaces()">
         <img src="build/img/application/flight-ticket/arrow.png" class="place-switch-image"/>
       </button>
     </ion-item>
-    <ion-item class="item-backwards">
+    <ion-item class="item-backwards" ng-if="buttonTabs[1]">
       <div class="row date-first-row">
         <div class="col no-padding-col">
           <label class="date-text-label">去程日期</label>
@@ -79,22 +80,22 @@
       </div>
       <div class="row date-second-row">
         <div class="col no-padding-col">
-          <ion-item class="normal-item" ng-click="">
-            <label class="date-detail-label">07.28</label>
+          <ion-item class="normal-item" ng-click="chooseDepartureDate()">
+            <label class="date-detail-label">{{applyInfo.departureDate.month}}.{{applyInfo.departureDate.day}}</label>
           </ion-item>
         </div>
         <div class="col no-padding-col">
-          <ion-item class="normal-item" ng-click="">
-            <label class="date-detail-label">10.16</label>
+          <ion-item class="normal-item" ng-click="chooseComeBackDate()">
+            <label class="date-detail-label">{{applyInfo.comeBackDate.month}}.{{applyInfo.comeBackDate.day}}</label>
           </ion-item>
         </div>
       </div>
       <div class="row date-third-row">
         <div class="col no-padding-col">
-          <label class="date-week-label">星期一 2016</label>
+          <label class="date-week-label">{{applyInfo.departureDate.weekday}} {{applyInfo.departureDate.year}}</label>
         </div>
         <div class="col no-padding-col">
-          <label class="date-week-label">星期五 2016</label>
+          <label class="date-week-label">{{applyInfo.comeBackDate.weekday}} {{applyInfo.comeBackDate.year}}</label>
         </div>
       </div>
       <div class="vertical-line"></div>
@@ -103,39 +104,71 @@
       </div>
     </ion-item>
     <div class="item-backwards project-toppart">
-      <div class="item project-first-item" ng-click="">
-        <div class="project-left-label">项目名称：</div>
-        <div class="project-right-label">请选择项目</div>
+      <div class="item project-special-item" ng-if="buttonTabs[0]" ng-click="chooseDepartureDate()">
+        <div class="project-left-label">去程日期：</div>
+        <div class="project-right-label">{{applyInfo.departureDate.year}}-{{applyInfo.departureDate.month}}-{{applyInfo.departureDate.day}}</div>
       </div>
-      <div class="item project-second-item" ng-click="">
+      <div class="item project-first-item" ng-click="showFlightTypeModal()">
         <div class="project-left-label">机票类型：</div>
-        <div class="project-right-label">Flyback机票</div>
+        <div class="project-right-label" ng-bind="applyInfo.flightType"></div>
       </div>
-    </div>
-    <div class="row flyback-row">
-      <div class="col no-padding-col">
-        <div class="row no-padding-col">
-          <img src="build/img/application/flight-ticket/orange-plane.png" class="orange-plane"/>
-          <input type="text" class="flyback-input" placeholder="请输入flyback号码"/>
+      <div class="item project-second-item" ng-click="showProjectListModal()">
+        <div class="project-left-label">项目名称：</div>
+        <div class="project-right-label" ng-bind="applyInfo.projectName"></div>
+      </div>
+      <div class="item project-checkbox-item">
+        <div class="row project-checkbox-row">
+          <label class="project-checkbox-left-label">客户承担：</label>
+          <div ng-class="{'selected-checkbox left-checkbox':applyInfo.customerPay,'non-selected-checkbox left-checkbox':!applyInfo.customerPay}" ng-click="switchCustomerPay(0)"></div>
+          <label class="project-checkbox-right-label checkbox-active-position" ng-click="switchCustomerPay(0)">是</label>
+          <div ng-class="{'selected-checkbox right-checkbox':!applyInfo.customerPay,'non-selected-checkbox right-checkbox':applyInfo.customerPay}" ng-click="switchCustomerPay(1)"></div>
+          <label class="project-checkbox-right-label checkbox-negative-position" ng-click="switchCustomerPay(1)">否</label>
         </div>
       </div>
+      <div class="item project-checkbox-item">
+        <div class="row project-checkbox-row">
+          <label class="project-checkbox-left-label">机票补录：</label>
+          <div ng-class="{'selected-checkbox left-checkbox':applyInfo.ticketSupplement,'non-selected-checkbox left-checkbox':!applyInfo.ticketSupplement}" ng-click="switchTicketSupplement(0)"></div>
+          <label class="project-checkbox-right-label checkbox-active-position" ng-click="switchTicketSupplement(0)">是</label>
+          <div ng-class="{'selected-checkbox right-checkbox':!applyInfo.ticketSupplement,'non-selected-checkbox right-checkbox':applyInfo.ticketSupplement}" ng-click="switchTicketSupplement(1)"></div>
+          <label class="project-checkbox-right-label checkbox-negative-position" ng-click="switchTicketSupplement(1)">否</label>
+        </div>
+      </div>
+      <div class="item project-second-item">
+        <div class="project-left-label" style="margin-top: 1px">备注信息：</div>
+        <textarea class="project-textarea" placeholder="请输入备注信息" ng-model="applyInfo.backupDescription"></textarea>
+      </div>
+    </div>
+    <div class="row flyback-row" ng-if="!applyInfo.projectFlightFlag">
       <div class="col no-padding-col">
-        <div class="row no-padding-col">
+        <div class="item row no-padding-col new-item" ng-click="showFlybackListModal(0)">
           <img src="build/img/application/flight-ticket/orange-plane.png" class="orange-plane"/>
-          <input type="text" class="flyback-input" placeholder="请输入flyback号码"/>
+          <div class="flyback-label" ng-bind="applyInfo.departureFlybackNumber"></div>
+          <!--<input type="text" class="flyback-input" placeholder="去程flyback号码" ng-model="applyInfo.departureFlybackNumber"/>-->
+        </div>
+      </div>
+      <div class="col no-padding-col" ng-if="buttonTabs[1]">
+        <div class="item row no-padding-col new-item" ng-click="showFlybackListModal(1)">
+          <img src="build/img/application/flight-ticket/orange-plane.png" class="orange-plane"/>
+          <div class="flyback-label" ng-bind="applyInfo.comeBackFlybackNumber"></div>
+          <!--<input type="text" class="flyback-input" placeholder="回程flyback号码" ng-model="applyInfo.comeBackFlybackNumber"/>-->
         </div>
       </div>
     </div>
     <div class="item-backwards project-bottompart">
-      <div class="item project-first-item" ng-click="">
+      <div class="item project-first-item">
         <div class="project-left-label">去程航班号：</div>
-        <input type="text" class="project-input" placeholder="请输入航班号"/>
+        <input type="text" class="project-input" placeholder="请输入航班号" ng-model="applyInfo.departureFlightNumber"/>
       </div>
-      <div class="item project-second-item" ng-click="">
+      <div class="item project-second-item" ng-if="buttonTabs[1]">
         <div class="project-left-label">回程航班号：</div>
-        <input type="text" class="project-input" placeholder="请输入航班号"/>
+        <input type="text" class="project-input" placeholder="请输入航班号" ng-model="applyInfo.comeBackFlightNumber"/>
+      </div>
+      <div class="item project-second-item" ng-click="showPassengerListModal()">
+        <div class="project-left-label">乘机人：</div>
+        <div class="project-right-label" ng-bind="applyInfo.passengerName"></div>
       </div>
     </div>
-    <button class="button button-block confirm-button" ng-click="">填写个人信息</button>
+    <button class="button button-block confirm-button" ng-click="commit()">提交</button>
   </ion-content>
 </ion-view>

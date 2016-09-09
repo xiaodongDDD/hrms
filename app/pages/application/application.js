@@ -44,6 +44,7 @@ angular.module('applicationModule')
           $scope.slippingEnableFlag = true;
           window.localStorage.slippingEnableFlag = "true";
         }
+
       };
 
       //个人办公
@@ -62,7 +63,7 @@ angular.module('applicationModule')
           {
             appName: "机票预定",
             imageUrl: "build/img/application/application/flightBooking@3x.png",
-            destUrl: "tab.flyback",
+            destUrl: "tab.flight-ticket-list",
           },
           {
             appName: "工作流",
@@ -71,7 +72,7 @@ angular.module('applicationModule')
             hasWorkflowNum: true,
             count: 0
           }]
-      }/*, {
+      }, {
         list: [
           {
             appName: "合同管理",
@@ -96,7 +97,7 @@ angular.module('applicationModule')
             destUrl: "",
           }
         ]
-      }*/
+      }
       ];
 
       var successCheckContract = function (result) {

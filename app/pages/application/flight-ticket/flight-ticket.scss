@@ -1,3 +1,215 @@
+.popup-body{//更改ionic中popup标题文字不居中问题
+  text-align: center;
+}
+.flight-ticket-list{
+  //@mixin try{尝试@mixin和@include用法
+  //  font-size: 1rem;
+  //  color: #ffffff;
+  //}
+  //.new-try{
+  //  @include try;
+  //  margin-left: 10px;
+  //  margin-top: 20px;
+  //}
+  .content-style{
+    background-color: #fafafa;
+  }
+  .create-button{
+    width: 92%;
+    height: 45px;
+    background-color: #ffffff;
+    line-height: 45px;
+    padding: 0px;
+    margin: 0px;
+    border-radius: 45px;
+    margin-left:4%;
+    margin-top: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
+    opacity: 1;
+    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+  }
+  .button.activated{
+    opacity: 0.6;
+    transform: scale(0.95,0.95);
+    -webkit-transform: scale(0.95,0.95);
+  }
+  .create-button-row-plugin{
+    padding: 0px;
+    margin: 0px;
+    height: 45px
+  }
+  .create-button-span{
+    width: 34px;
+    height: 34px;
+    margin-left: 27.2%;
+    margin-top: 7px;
+  }
+  .create-button-text{
+    color: #3964a4;
+    font-size: 1rem;
+    margin-left: 15px;
+    margin-top: 12px;
+  }
+  .no-data-shelter{
+    position: absolute;
+    top: 100px;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 250px;
+  }
+  .no-data-no-space{
+    padding:0px;
+    margin: 0px;
+    text-align: center;
+  }
+  .no-data-image{
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+  }
+  .no-data-label{
+    font-size: 1.125rem;
+    color: #245597;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .no-data-no-space-label-row{
+    padding:0px;
+    margin: 0px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .apply-item{
+    opacity: 1;
+    margin: 0px;
+    padding: 0px;
+    width: 92%;
+    margin-top: 15px;
+    margin-left: 4%;
+    border: none;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    border-bottom-right-radius: 30px;
+  }
+  .apply-item.ng-enter{
+    -webkit-animation: zoomInUp 0.5s;
+    animation: zoomInUp .5s;
+  }
+  .apply-item.ng-enter-stagger{
+    -webkit-animation-delay: 150ms;
+    animation-delay: 150ms;
+    -webkit-animation-duration: 0ms;
+    animation-duration: 0ms;
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #ffffff;
+  }
+  .item.activated.item-complex>.item-content{
+    background-color: #ffffff;
+  }
+  .item-content{
+    padding: 0px;
+    background-color: #ffffff;
+  }
+  .stamp-picture{
+    width: 59px;
+    height: 59px;
+    position: absolute;
+    right: 1px;
+    bottom: 0px;
+  }
+  .first-row{
+    margin: 0px;
+    padding: 0px;
+    height: 20px;
+    margin-top: 10px;
+  }
+  .second-row{
+    margin: 0px;
+    padding: 0px;
+    //height: 18px;
+    margin-top: 9px;
+  }
+  .passenger{
+    font-size: 0.9375rem;
+    color: #3964a4;
+    margin-left: 10px;
+  }
+  .passenger-name{
+    font-size: 0.9375rem;
+    color: #3964a4;
+    margin-left: 5px;
+  }
+  .departure-type{
+    font-size: 0.9375rem;
+    color: #f99d32;
+    margin-left: 27px;
+  }
+  .double-key-first{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    margin-left: 10px;
+  }
+  .double-key-first-text{
+    font-size: 0.8125rem;
+    color: #9b9b9b;
+    margin-left: 5px;
+  }
+  .double-key-second{
+    font-size: 0.8125rem;
+    color: #4a4a4a;
+    margin-left: 10px
+  }
+  .double-key-second-text{
+    font-size: 0.8125rem;
+    color: #9b9b9b;
+    margin-left: 5px;
+  }
+  .bottom-line{
+    width: 100%;
+    height: 15px;
+    background-color: transparent;
+  }
+  .option-button-row1{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 50%;
+    background-color: #ffffff;
+  }
+  .option-button-row2{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    height: 50%;
+    background-color: #ffffff;
+  }
+  .option-cancel-button{
+    padding: 0px;
+    margin: 0px;
+    color: #b95756;
+    font-size: 1.125rem;
+    background-color: #ffffff;
+  }
+  .option-hurry-button{
+    padding: 0px;
+    margin: 0px;
+    color: #f99d32;
+    font-size: 1.125rem;
+    background-color: #ffffff;
+  }
+}
 .flight-ticket-search{
   .has-header{
     top: 155px;
@@ -224,7 +436,7 @@
     border: none;
     min-height: 40px;
     line-height: 40px;
-    width: 18px;
+    width: 38px;
     z-index: 999;
   }
   .place-switch-image{
@@ -302,7 +514,7 @@
     padding-left: 25px;
     border: none;
   }
-  .project-first-item{
+  .project-special-item{
     width: 100%;
     margin: 0px;
     padding: 0px;
@@ -314,7 +526,10 @@
     display: flex;
     line-height: 1rem;
   }
-  .project-second-item{
+  .item{
+    white-space: normal;
+  }
+  .project-first-item{
     width: 100%;
     margin: 0px;
     padding: 0px;
@@ -324,6 +539,79 @@
     padding-right: 20px;
     display: flex;
     line-height: 1rem;
+  }
+  .project-second-item{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    border-top: 1px solid #d2d2d2;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    padding-right: 20px;
+    display: flex;
+    line-height: 1rem;
+  }
+  .project-checkbox-item{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    border-top: 1px solid #d2d2d2;
+    height: 39px;
+  }
+  .project-checkbox-row{
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+  }
+  .selected-checkbox{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #24559c;
+    border: 1px solid #9b9b9b;
+  }
+  .non-selected-checkbox{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1px solid #9b9b9b;
+  }
+  .left-checkbox{
+   position: absolute;
+   right: 115px;
+   top: 10px;
+  }
+  .right-checkbox{
+    position: absolute;
+    right: 45px;
+    top: 10px;
+  }
+  .project-checkbox-left-label{
+    margin-top: 8px;
+    font-size: 1rem;
+    color: #4a4a4a;
+  }
+  .project-checkbox-right-label{
+    font-size: 1rem;
+    color: #9b9b9b;
+  }
+  .checkbox-active-position{
+    position: absolute;
+    padding-left: 25px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    right: 90px;
+  }
+  .checkbox-negative-position{
+    position: absolute;
+    padding-left: 25px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    right: 20px;
   }
   .project-left-label{
     font-size: 1rem;
@@ -346,19 +634,29 @@
     background-color: #f4f4f8;
     padding-left: 25px;
   }
+  .flyback-row.ng-enter{
+    -webkit-animation: fadeInRight 0.4s;
+    animation: fadeInRight .4s;
+  }
   .orange-plane{
     width: 17px;
     height: 17px;
     padding: 2px;
     margin-top: 12px;
   }
-  .flyback-input{
-    width: 85%;
+  .new-item{
+    border: none;
+    background: transparent;
+    white-space: normal;
+  }
+  .new-item.activated{
+    opacity: 0.4;
+  }
+  .flyback-label{
+    margin-left: 5px;
+    margin-top: 10px;
     color:#9b9b9b;
     font-size: 1rem;
-    background-color: transparent;
-    margin-top: 3px;
-    margin-left: 7px;
   }
   .project-input{
     background-color: transparent;
@@ -367,8 +665,18 @@
     width: 60%;
     float: left;
     text-align: right;
-    height: 16px;
+    height: 20px;
     line-height: normal;
+  }
+  .project-textarea{
+    resize: none;
+    background-color: transparent;
+    font-size: 1rem;
+    color: #9b9b9b;
+    width: 60%;
+    float: left;
+    text-align: right;
+    height: 60px;
   }
   .confirm-button{
     margin: 0px;
@@ -383,6 +691,7 @@
     color: #ffffff;
     border-radius: 4px;
     margin-top: 20px;
+    margin-bottom: 10px;
   }
   //.tab-bar-left.ng-enter{
   //  animation: tab-bar-animation2 0.3s ease-in;
@@ -438,3 +747,608 @@
     }
   }
 }
+.flight-passenger-list{
+  .content-style{
+    background-color: #fafafa;
+  }
+  .passenger-item{
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    background-color: #ffffff;
+    width: 97.4%;
+    margin-left: 1.3%;
+    margin-top: 8px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
+  }
+  .passenger-edit-item{
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    background-color: #ffffff;
+    width: 97.4%;
+    margin-left: 1.3%;
+    margin-top: 8px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
+  }
+  .passenger-item.ng-enter{
+    -webkit-animation: rotateInDownLeft 0.4s;
+    animation: rotateInDownLeft .4s;
+  }
+  .passenger-item.ng-enter-stagger{
+    -webkit-animation-delay: 120ms;
+    animation-delay: 120ms;
+    -webkit-animation-duration: 0ms;
+    animation-duration: 0ms;
+  }
+  //.passenger-item.ng-leave{
+  //  -webkit-animation: rotateOutUpLeft 0.4s;
+  //  animation: rotateOutUpLeft .4s;
+  //}
+  //.passenger-item.ng-leave-stagger{
+  //  -webkit-animation-delay: 60ms;
+  //  animation-delay: 60ms;
+  //  -webkit-animation-duration: 0ms;
+  //  animation-duration: 0ms;
+  //}
+  .passenger-edit-item.ng-enter{
+    -webkit-animation: rotateInUpLeft 0.4s;
+    animation: rotateInUpLeft 0.4s;
+  }
+  .passenger-name-row{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 20px;
+    margin-top: 15px;
+  }
+  .passenger-id-row{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 20px;
+    margin-top: 10px;
+  }
+  .passenger-passport-row{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  .passenger-name{
+    font-size: 1rem;
+    color: #24559c;
+    margin-left: 24px;
+  }
+  .passenger-name-text{
+    font-size: 1rem;
+    color: #24559c;
+    margin-left: 5px;
+  }
+  .passenger-id{
+    font-size: 0.9375rem;
+    color: #4a4a4a;
+    margin-left: 24px;
+  }
+  .passenger-id-text{
+    font-size: 0.9375rem;
+    color: #9b9b9b;
+    margin-left: 5px;
+  }
+  .option-button-row1{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 50%;
+    background-color: #ffffff;
+  }
+  .option-button-row2{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    height: 50%;
+    background-color: #ffffff;
+  }
+  .option-button-full-row{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    background-color: #ffffff;
+  }
+  .first-option-button{
+    padding: 0px;
+    margin: 0px;
+    color: #b95756;
+    font-size: 1.125rem;
+    background-color: #ffffff;
+  }
+  .second-option-button{
+    padding: 0px;
+    margin: 0px;
+    color: #f99d32;
+    font-size: 1.125rem;
+    background-color: #ffffff;
+  }
+  .item-content{
+    padding: 0px;
+  }
+  .add-icon{
+    width: 24px;
+    height: 24px;
+    margin-top: 5px;
+  }
+  .no-data-shelter{
+    position: absolute;
+    top: 100px;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 250px;
+  }
+  .no-data-no-space{
+    padding:0px;
+    margin: 0px;
+    text-align: center;
+  }
+  .no-data-image{
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+  }
+  .no-data-label{
+    font-size: 1.125rem;
+    color: #245597;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .no-data-no-space-label-row{
+    padding:0px;
+    margin: 0px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .confirm-button{
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    min-height: 50px;
+    line-height: 50px;
+    width: 92%;
+    margin-left: 4%;
+    background-color: #24559c;
+    font-size: 1rem;
+    color: #ffffff;
+    border-radius: 20px;
+    margin-top: 20px;
+  }
+  .first-input{
+    font-size: 1rem;
+    color: #24559c;
+    background-color: transparent;
+    height: 20px;
+    line-height: normal;
+  }
+  .second-input{
+    font-size: 0.9375rem;
+    color: #9b9b9b;
+    background-color: transparent;
+    height: 20px;
+    line-height: normal;
+  }
+  .selected-checkbox{
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #24559c;
+    border: 1px solid #9b9b9b;
+  }
+  .non-selected-checkbox{
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1px solid #9b9b9b;
+  }
+  .checkbox-label{
+    font-size: 0.9375rem;
+    color: #9b9b9b;
+    padding-left: 15px;
+    padding-right: 30px;
+  }
+  .checkbox-active-position{
+    margin-left: 5px;
+    margin-top: 2px;
+  }
+  .checkbox-negative-position{
+    margin-top: 2px;
+  }
+}
+.flight-ticket-detail{
+  .content-style{
+    background-color: #fafafa;
+  }
+  .apply-detail-card{
+    padding: 0px;
+    margin: 0px;
+    width: 92%;
+    background-color: #ffffff;
+    margin-left: 4%;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.18);
+    margin-top: 15px;
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #ffffff;
+  }
+  .bottom-part{
+    padding-left: 10px;
+    width: 100%;
+  }
+  .header-picture{
+    width: 100%;
+    height: 110px;
+    padding: 0px;
+  }
+  .apply-detail-item{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    border-bottom: 1px solid #d2d2d2;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    padding-right: 15px;
+    display: flex;
+    line-height: 1rem;
+  }
+  .apply-left-label{
+    font-size: 1rem;
+    color: #4a4a4a;
+    width: 40%;
+    float: left;
+    padding-left: 5px;
+  }
+  .apply-right-label{
+    font-size: 1rem;
+    color: #9b9b9b;
+    width: 60%;
+    float: left;
+    text-align: right;
+    white-space:normal
+  }
+  .apply-right-red-label{
+    font-size: 1rem;
+    color: #b95756;
+    width: 60%;
+    float: left;
+    text-align: right;
+  }
+  .apply-item-input{
+    background-color: transparent;
+    font-size: 1rem;
+    color: #9b9b9b;
+    width: 60%;
+    float: left;
+    text-align: right;
+    height: 20px;
+    line-height: normal;
+  }
+  input[readonly]:not(.cloned-text-input){
+    background-color: transparent;
+  }
+  textarea[readonly]:not(.cloned-text-input){
+    background-color: transparent;
+  }
+  .apply-checkbox-item{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    border-bottom: 1px solid #d2d2d2;
+    height: 39px;
+  }
+  .apply-checkbox-row{
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+  }
+  .selected-checkbox{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #24559c;
+    border: 1px solid #9b9b9b;
+  }
+  .non-selected-checkbox{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1px solid #9b9b9b;
+  }
+  .left-checkbox{
+    position: absolute;
+    right: 115px;
+    top: 10px;
+  }
+  .right-checkbox{
+    position: absolute;
+    right: 45px;
+    top: 10px;
+  }
+  .new-left-checkbox{
+    position: absolute;
+    right: 125px;
+    top: 10px;
+  }
+  .new-right-checkbox{
+    position: absolute;
+    right: 55px;
+    top: 10px;
+  }
+  .apply-checkbox-left-label{
+    margin-top: 8px;
+    font-size: 1rem;
+    color: #4a4a4a;
+    padding-left: 5px;
+  }
+  .apply-checkbox-right-label{
+    font-size: 1rem;
+    color: #9b9b9b;
+  }
+  .checkbox-active-position{
+    position: absolute;
+    padding-left: 25px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    right: 90px;
+  }
+  .checkbox-negative-position{
+    position: absolute;
+    padding-left: 25px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    right: 20px;
+  }
+  .apply-textarea{
+    resize: none;
+    background-color: transparent;
+    font-size: 1rem;
+    color: #9b9b9b;
+    width: 60%;
+    float: left;
+    text-align: right;
+    height: 60px;
+  }
+  .button-row{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+  }
+  .change-button{
+    opacity: 1;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    width: 56%;
+    min-height: 30px;
+    line-height: 30px;
+    margin-left: 22%;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    color: #24559c;
+    border: 1px solid #24559c;
+    font-size: 1rem;
+    border-radius: 20px;
+  }
+  .endorse-button{
+    opacity: 1;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    width: 42.5%;
+    min-height: 30px;
+    line-height: 30px;
+    margin-left: 5%;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    color: #24559c;
+    border: 1px solid #24559c;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+  .return-button{
+    opacity: 1;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    width: 42.5%;
+    min-height: 30px;
+    line-height: 30px;
+    margin-left: 5%;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    color: #b95756;
+    border: 1px solid #b95756;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+  .edit-mark{
+    color: #24559C;
+  }
+}
+.cities-select-modal{
+  position: absolute;
+  top: 40%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .header-color{
+    background-color: #ffffff;
+    border-bottom: 1px solid #24559c;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none;
+  }
+  .back-color {
+    background-color: #ffffff;
+  }
+  .list{
+    border: none;
+  }
+  .apply-item{
+    width: 94%;
+    margin-left: 3%;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2
+  }
+  .non-selected-font{
+    color:#9b9b9b;
+  }
+  .selected-font{
+    color:#24559c;
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #ffffff;
+  }
+  .scroll{
+    height: 100%;
+  }
+  .height-percentage{
+    height: 100%;
+  }
+  .list-col{
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+  }
+  .list-row{
+    margin:0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+  }
+}
+.flight-select-modal{
+  position: absolute;
+  top: 60%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .header-color{
+    background-color: #ffffff;
+    border-bottom: 1px solid #24559c;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none;
+  }
+  .back-color {
+    background-color: #ffffff;
+  }
+  .list{
+    border: none;
+  }
+  .apply-item{
+    width: 94%;
+    margin-left: 3%;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #ffffff;
+  }
+  .height-percentage{
+    height: 100%;
+  }
+  .scroll{
+    height: 100%;
+  }
+  .non-selected-font{
+    color:#9b9b9b;
+  }
+}
+.project-select-modal{
+  position: absolute;
+  top: 40%;
+  bottom: 0%;
+  min-height: 270px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  .header-color{
+    background-color: #ffffff;
+    border-bottom: 1px solid #24559c;
+  }
+  .title-color{
+    color: #26579e;
+    font-size: 1rem;
+    border-bottom: none;
+  }
+  .back-color {
+    background-color: #ffffff;
+  }
+  .list{
+    border: none;
+  }
+  .apply-item{
+    width: 94%;
+    margin-left: 3%;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: none;border-right: none;
+    border-bottom: 1px solid #d2d2d2
+  }
+  .non-selected-font{
+    color:#9b9b9b;
+  }
+  .item.activated{
+    opacity: 0.4;
+    background-color: #ffffff;
+  }
+  .scroll{
+    height: 100%;
+  }
+  .height-percentage{
+    height: 100%;
+  }
+}
+

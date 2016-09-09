@@ -19,7 +19,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.hand.im.LoginInfo;
 import com.hand.im.Util;
-import com.hand.im.volley.MyApplication;
+import com.hand.im.okhttp.OkHttpClientManager;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +33,8 @@ public class SortAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private static List<Boolean> checkList = new ArrayList<Boolean>();
     private List<ImageView> imgList = new ArrayList<ImageView>();
-    private List<Bitmap> bitmapList = new ArrayList<Bitmap>();
     private Button btnOK;
+    private DisplayImageOptions options;
 
     public SortAdapter(Context context, List<PersonBean> persons, Button btnOK) {
         this.context = context;
@@ -41,6 +44,7 @@ public class SortAdapter extends BaseAdapter {
         for (int i = 0; i < persons.size(); i++) {
             checkList.add(false);
         }
+        initOptions();
     }
 
     @Override
@@ -60,7 +64,19 @@ public class SortAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         return position;
     }
-
+    private void initOptions() {
+        options = new DisplayImageOptions.Builder()
+//                .showImageOnLoading(R.drawable.picture_loading)
+//                .showImageOnFail(R.drawable.pictures_no)
+                .showImageOnLoading(Util.getRS("picture_loading", "drawable", context))
+                .showImageOnFail(Util.getRS("pictures_no", "drawable", context))
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
+              //  .displayer(new RoundedBitmapDisplayer(100)) // 设置成圆角图片
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .resetViewBeforeLoading(true)
+                .build();
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewholder = null;
@@ -91,9 +107,9 @@ public class SortAdapter extends BaseAdapter {
         }
 
         viewholder.tv_name.setText(person.getName());
-        if (person.getAvatar() != null) {
-            setImageView(viewholder.imgAvatar, person.getAvatar());
-        } else {
+        if (person.getAvatar() != null&&!person.getAvatar().equals("")) {
+            ImageLoader.getInstance().displayImage(person.getAvatar(), viewholder.imgAvatar, options);
+        }else{
             viewholder.imgAvatar.setImageResource(Util.getRS("avatar_default","drawable",context));
         }
         viewholder.checkToGroup.setChecked(checkList.get(position));
@@ -147,30 +163,11 @@ public class SortAdapter extends BaseAdapter {
         CheckBox checkToGroup;
     }
 
-    private void setImageView(final ImageView imageView, String url) {
-        if (url == null) {
-            return;
-        }
-        ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
-            @Override
-            public void onResponse(Bitmap bitmap) {
-                imageView.setImageBitmap(bitmap);
-            }
-        }, 0, 0, Bitmap.Config.RGB_565, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                imageView.setImageResource(Util.getRS("avatar_default","drawable",context));
-            }
-        });
-        MyApplication.getHttpQueue(context).add(imageRequest);
-    }
-
     @Override
     public void notifyDataSetChanged() {
         checkList.clear();
         imgList.clear();
         super.notifyDataSetChanged();
-        Log.e("person size",persons.size()+"");
         for (int i = 0; i < persons.size(); i++) {
             checkList.add(false);
         }

@@ -58,7 +58,7 @@
         [self.recorderBtn setBackgroundImage:[UIImage imageNamed:@"record.png"] forState:UIControlStateNormal];
         [self.recorderBtn setBackgroundImage:[UIImage imageNamed:@"record-B.png"] forState:UIControlStateSelected];
         [self.recorderBtn addTarget:self action:@selector(didTapRecorder:) forControlEvents:UIControlEventTouchUpInside];
-        [self.recorderBtn setFrame:CGRectMake(CGRectGetMinX(self.imagePickerBtn.frame)-standardSpaceX-12, CGRectGetHeight(self.frame)-standardSpaceY-21, 12, 21)];
+        [self.recorderBtn setFrame:CGRectMake(CGRectGetMinX(self.imagePickerBtn.frame)-standardSpaceX-21, CGRectGetHeight(self.frame)-standardSpaceY-21, 21, 21)];
         [self addSubview:self.recorderBtn];
     
         //打开emoj

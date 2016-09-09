@@ -36,7 +36,7 @@ angular.module("applicationModule")
           $state.go("tab.flybackQuery");
         };
         $scope.checkNewEdition=function(){
-          $state.go("tab.flight-ticket-search");
+          $state.go("tab.flight-ticket-list");
         };
 
     }]);

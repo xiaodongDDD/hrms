@@ -37,6 +37,8 @@ angular.module('applicationModule')
               var employeeImg = data.employee_img;
               if (!employeeImg || employeeImg == "") {
                 employeeImg = workflowDefaultIcon;
+              }else{
+                employeeImg = employeeImg + '64';
               }
               var item = {
                 selectedFlag: false,
@@ -75,6 +77,8 @@ angular.module('applicationModule')
               var employeeImg = data.employee_img;
               if (!employeeImg || employeeImg == "") {
                 employeeImg = workflowDefaultIcon;
+              }else{
+                employeeImg = employeeImg + '64';
               }
               var item = {
                 selectedFlag: false,
@@ -105,6 +109,8 @@ angular.module('applicationModule')
               var employeeImg = '';// data.employee_img;
               if (!employeeImg || employeeImg == "") {
                 employeeImg = workflowDefaultIcon;
+              }else{
+                employeeImg = employeeImg + '64';
               }
               var item = {
                 selectedFlag: false,
