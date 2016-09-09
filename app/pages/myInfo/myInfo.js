@@ -74,6 +74,8 @@ angular.module('myInfoModule')
         window.localStorage.timesheetAuto="";
         window.localStorage.messagePush="";
         window.localStorage.access_token = "";
+        window.localStorage.gestureLock = false;
+        window.localStorage.removeItem('gesturePassword');
         $state.go('login');
       };
 

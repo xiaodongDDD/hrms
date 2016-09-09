@@ -25,12 +25,31 @@
       </div>
       <div class="message-toggle-position">
         <label class="toggle toggle-positive">
-          <input type="checkbox" ng-checked="messagePush" ng-click="clickMessagePush()">
+          <input type="checkbox" ng-model="messagePush" ng-click="clickMessagePush()">
            <div class="track setup-track">
              <div class="handle setup-handle"></div>
            </div>
         </label>
       </div>
+
+
+    </ion-item>
+    <ion-item class="setup-panel">
+      <div class="row setup-panel-row1">
+        <label class="setup-label">手势密码</label>
+      </div>
+      <div class="ts-toggle-position">
+        <label class="toggle toggle-positive">
+          <input type="checkbox" ng-model="gesture.lock" ng-click="clickGestureLock()">
+          <div class="track setup-track">
+            <div class="handle setup-handle"></div>
+          </div>
+        </label>
+      </div>
+      <div class="row setup-panel-row1"  ng-if="gesture.lock" ng-click="clickChangePassword()">
+        <label class="setup-label">修改手势密码</label>
+      </div>
+
     </ion-item>
   </ion-content>
 </ion-view>
