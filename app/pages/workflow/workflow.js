@@ -147,7 +147,7 @@ angular.module('applicationModule')
           var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list_v2";
           var params = {
             'params': {
-              "p_employee_code": window.localStorage.empno,
+              "p_employee_code": "11859",//window.localStorage.empno,
               "p_flag": flag + "",
               "p_submitter_key": submitterId,
               "p_workflow_key": worklfowId,
