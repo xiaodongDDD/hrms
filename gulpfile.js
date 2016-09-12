@@ -39,6 +39,7 @@ var htmlFilePath = [
 var libDevFilePath = [
   'app/lib/**/*.*',
   'app/lib/**/**/*.*',
+  'app/common/**/**/*.*',
   'app/lib/**/**/**/*.*'];
 
 var libPublishFilePath = [
