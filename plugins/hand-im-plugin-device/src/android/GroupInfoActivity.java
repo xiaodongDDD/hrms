@@ -48,6 +48,7 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
   private Switch switchConvTop;
   private Button btnQuitDiscussion;
   private ArrayList<UserInfo> data = new ArrayList<UserInfo>();
+  private String[] GroupArray;
   private TextView txtGroupNo;
   private TextView txtBack;
   private TextView txtGroupName;
@@ -184,9 +185,11 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
   }
   private ArrayList<UserInfo> getData(Discussion discussion) {
     data.clear();
+	GroupArray = new String[discussion.getMemberIdList().size()];
     for (int i = 0; i < discussion.getMemberIdList().size(); i++) {
       UserInfo userInfo = new UserInfo();
       userInfo.setEmp_name(discussion.getMemberIdList().get(i));
+	  GroupArray[i] = discussion.getMemberIdList().get(i);
       data.add(userInfo);
     }
     txtGroupNo.setText(data.size()+"人");
@@ -258,9 +261,9 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
         }
       });
     }else if(id == idBack){
-      finish();
+      setResult(1);
+	  finish();
     }else if(id == idBtnUpdateName){
-      Toast.makeText(this,"123",Toast.LENGTH_SHORT).show();
       Intent intent = new Intent(GroupInfoActivity.this,UpdateDisNameActivity.class);
       intent.putExtra("targetId",targetId);
       startActivityForResult(intent,0);
@@ -275,6 +278,7 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
       Intent intent = new Intent(GroupInfoActivity.this, ContactActivity.class);
       intent.putExtra("targetId", targetId);
       //startActivity(intent);
+	  intent.putExtra("GroupArray",GroupArray);
       startActivityForResult(intent, 0);
     }
   }
@@ -313,5 +317,10 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
         }
       });
     }
+  }
+    @Override
+  public void onBackPressed() {
+    setResult(1);
+    super.onBackPressed();
   }
 }

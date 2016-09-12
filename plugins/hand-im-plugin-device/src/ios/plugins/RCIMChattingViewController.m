@@ -126,6 +126,9 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
             [phoneNumPlace addObject:str];
         };
     }
+    
+    //设置通知监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedMessageNotification:) name:RCIMLibReceivedMessageNotification object:nil];
 }
 //重写控制状态栏方法
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -139,7 +142,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:RCIMLibReceivedMessageNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 -(void)viewDidLoad
 {
@@ -154,10 +157,6 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     self.navigationItem.leftBarButtonItem = left;//mobile@3x.png
     UIBarButtonItem *right = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageWithCGImage:[UIImage imageNamed:@"mobile@3x.png"].CGImage scale:2.0 orientation:UIImageOrientationUp] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(call)];
     self.navigationItem.rightBarButtonItem = right;
-    
-    
-    //设置通知监听
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedMessageNotification:) name:RCIMLibReceivedMessageNotification object:nil];
 }
 - (void)dismiss
 {
@@ -384,7 +383,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     //相机是否可用
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
-        [imagePicker setAllowsEditing:YES];
+        [imagePicker setAllowsEditing:NO];
         [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
         [self presentViewController:imagePicker animated:YES completion:nil];
     }
@@ -393,7 +392,6 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo
 {
-    
     [self dismissViewControllerAnimated:YES completion:^{
         RCImageMessage *imageMessage = [RCImageMessage messageWithImage:editingInfo[@"UIImagePickerControllerOriginalImage"]];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -405,8 +403,9 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [self scrollToBottom];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self scrollToBottom];
+    }];
 }
 /*!
  * emoji表情按钮点击回调
@@ -483,13 +482,8 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     [textMessage setSenderUserInfo:userInfo];
     [textMessage setContent:object ];
     messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_PRIVATE targetId:self.target_id direction:MessageDirection_SEND messageId:message_id content:textMessage];
-    if (self.phoneNums.count) {
-        NSString *telphoneStr = @"";
-        for (int i=0;i<self.phoneNums.count;i++) {
-            telphoneStr = [telphoneStr stringByAppendingString:[NSString stringWithFormat:@"%@|",self.phoneNums[i]]];
-        }
-        [textMessage setExtra:telphoneStr];
-    }
+    NSString *tel = [[NSUserDefaults standardUserDefaults] objectForKey:@"tel"];
+    [textMessage setExtra:tel];
     NSLog(@"setExtra:%@",messageFrame.message.extra);
     [self.dataSource addObject:messageFrame];
     //发送消息
@@ -519,13 +513,9 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         [imageMessage setSenderUserInfo:userInfo];
         messageFrame  = [[MessageFrame alloc] init];
         messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_PRIVATE targetId:self.target_id direction:MessageDirection_SEND messageId:message_id content:imageMessage];
-        if (self.phoneNums.count) {
-            NSString *telphoneStr = @"";
-            for (int i=0;i<self.phoneNums.count;i++) {
-                telphoneStr = [telphoneStr stringByAppendingString:[NSString stringWithFormat:@"%@|",self.phoneNums[i]]];
-            }
-            [imageMessage setExtra:telphoneStr];
-        }
+        //携带电话
+        NSString *tel = [[NSUserDefaults standardUserDefaults] objectForKey:@"tel"];
+        [imageMessage setExtra:tel];
         [self.dataSource addObject:messageFrame];
         dispatch_async(dispatch_get_main_queue(), ^{
             NSInteger index = self.dataSource.count;
@@ -789,13 +779,9 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:user_id name:user_name portrait:user_portrait];
         [voiceMessage setSenderUserInfo:userInfo];
         messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_PRIVATE targetId:self.target_id direction:MessageDirection_SEND messageId:message_id content:voiceMessage];
-        if (self.phoneNums.count) {
-            NSString *telphoneStr = @"";
-            for (int i=0;i<self.phoneNums.count;i++) {
-                telphoneStr = [telphoneStr stringByAppendingString:[NSString stringWithFormat:@"%@|",self.phoneNums[i]]];
-            }
-            [voiceMessage setExtra:telphoneStr];
-        }
+        //携带电话
+        NSString *tel = [[NSUserDefaults standardUserDefaults] objectForKey:@"tel"];
+        [voiceMessage setExtra:tel];
         [self.dataSource addObject:messageFrame];
         NSLog(@"voiceMessage:%@  wav:%@  duration:%lu",voiceMessage,fileName,voiceMessage.duration);
         //发送语音

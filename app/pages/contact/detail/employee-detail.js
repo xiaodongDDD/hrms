@@ -160,8 +160,13 @@ angular.module('contactModule')
           var emp = {
             "friendId": $scope.employeeInfo.emp_code,
             "friendName": $scope.employeeInfo.emp_name,
-            "friendIcon": $scope.employeeInfo.avatar
+            "friendIcon": $scope.employeeInfo.avatar,
+            "telephoneNumbers": $scope.employeeInfo.mobil
           };
+          if(baseConfig.debug)
+          {
+            console.log('goImTalk.emp ' + angular.toJson(emp))
+          }
           try {
             imService.toNativeChatPage(emp);
           } catch (e) {

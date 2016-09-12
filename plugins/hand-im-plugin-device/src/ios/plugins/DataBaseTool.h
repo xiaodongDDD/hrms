@@ -41,15 +41,15 @@
 /*!
  * 插入员工详细信息
  */
-+ (void)insertPersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon;
++ (void)insertPersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon Tel:(NSString *)tel;
 /*!
  * 更新员工详细信息
  */
-+ (void)updatePersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon;
++ (void)updatePersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon Tel:(NSString *)tel;
 /*!
  * 查询相同员工详细信息
  */
-+(BOOL)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon;
++(BOOL)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon Tel:(NSString *)tel;
 /*!
  * 获得所有员工详细信息
  */
@@ -66,4 +66,8 @@
  * 根据工号查询是否有此人
  */
 +(BOOL)hasPerson:(NSString*)userId;
+/*!
+ * 根据工号查询员工电话
+ */
++(NSString *)getTelPhoneByWorkerId:(NSString *)userId;
 @end

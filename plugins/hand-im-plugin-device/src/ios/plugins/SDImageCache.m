@@ -25,7 +25,6 @@ BOOL ImageDataHasPNGPreffix(NSData *data) {
             return YES;
         }
     }
-
     return NO;
 }
 

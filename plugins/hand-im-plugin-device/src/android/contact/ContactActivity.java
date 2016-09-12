@@ -49,6 +49,7 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     private ListView listView;
     private SortAdapter sortadapter;
     private List<PersonBean> data;
+	private String[] GroupArray;
     private SideBar sidebar;
     private TextView dialog;
     private EditText edtSearch;
@@ -56,7 +57,7 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     private Button btnOK;
     private String targetId;
     private ImageView imgBack;
-
+	
     private String TYPE;
     private String USERID;
     private String USERNAME;
@@ -69,7 +70,7 @@ public class ContactActivity extends Activity implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(Util.getRS("activity_contact", "layout", this));
         targetId = getIntent().getStringExtra("targetId");
-
+		GroupArray = getIntent().getExtras().getStringArray("GroupArray");
         TYPE = getIntent().getStringExtra("TYPE");
         USERID = getIntent().getStringExtra("USERID");
         USERNAME = getIntent().getStringExtra("USERNAME");
@@ -175,7 +176,7 @@ public class ContactActivity extends Activity implements View.OnClickListener {
             }
         });
         data = new ArrayList<PersonBean>();
-        sortadapter = new SortAdapter(this, data, btnOK);
+        sortadapter = new SortAdapter(this, data, btnOK, GroupArray);
         listView.setAdapter(sortadapter);
     }
 

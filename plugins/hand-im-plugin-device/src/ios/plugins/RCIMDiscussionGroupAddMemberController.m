@@ -17,7 +17,7 @@
 #import "ToastUtils.h"
 #import "DataBaseTool.h"
 
-@interface RCIMDiscussionGroupAddMemberController ()<UISearchResultsUpdating,UISearchControllerDelegate,UITableViewDelegate,UITableViewDataSource,RCIMDiscussionGroupAllMembersListDeleagte>
+@interface RCIMDiscussionGroupAddMemberController ()<UISearchResultsUpdating,UISearchControllerDelegate,UITableViewDelegate,UITableViewDataSource,RCIMDiscussionGroupAllMembersListDeleagte,UISearchBarDelegate>
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)UISearchController *searchController;
 @property (nonatomic,strong)NSMutableArray *dataSource;
@@ -75,7 +75,7 @@ static NSString *reusableCellID = @"RCIMDiscussionGroupAddMemberCell";
         _searchController.searchBar.frame = CGRectMake(0, 0, screenWidth, 44);
         
         [self.searchController.searchBar sizeToFit];
-        
+        self.searchController.searchBar.delegate = self;
         self.searchController.delegate = self;
         self.definesPresentationContext = YES;
     }
@@ -177,8 +177,27 @@ static NSString *reusableCellID = @"RCIMDiscussionGroupAddMemberCell";
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     [self connectToService:searchController.searchBar.text];
+
     NSLog(@"changed");
 }
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    for (id searchbuttons in [searchBar.subviews[0] subviews])
+        //只需在此处修改即可
+        if ([searchbuttons isKindOfClass:[UIButton class]]) {
+            UIButton *cancelButton = (UIButton*)searchbuttons;
+            // 修改文字颜色
+            [cancelButton setTitleColor:[UIColor colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0] forState:UIControlStateNormal];
+            if (searchBar.text.length==0) {
+                [cancelButton setTitle:@"返回"forState:UIControlStateNormal];
+            }else{
+                [cancelButton setTitle:@"确定"forState:UIControlStateNormal];
+            }
+        }
+    NSLog(@"textDidChange");
+}
+
 
 - (void)connectToService:(NSString *)text
 {
@@ -295,7 +314,11 @@ static NSString *reusableCellID = @"RCIMDiscussionGroupAddMemberCell";
         if (avatar==nil||[avatar isEqualToString:@""]||[avatar isEqual:[NSNull null]]) {
             avatar = @"profile-2@3x.png";
         }
-        [DataBaseTool selectSameUserInfoWithId:[userInfo objectForKey:@"emp_code"] Name:[userInfo objectForKey:@"emp_name"] ImageUrl:[userInfo objectForKey:@"avatar"]];
+        NSString *mobile = [userInfo objectForKey:@"mobil"];
+        if (mobile==nil||[mobile isEqualToString:@""]||[mobile isEqual:[NSNull null]]) {
+            mobile = @"null";
+        }
+        [DataBaseTool selectSameUserInfoWithId:[userInfo objectForKey:@"emp_code"] Name:[userInfo objectForKey:@"emp_name"] ImageUrl:[userInfo objectForKey:@"avatar"] Tel:[userInfo objectForKey:@"mobile"]];
     }
 }
 

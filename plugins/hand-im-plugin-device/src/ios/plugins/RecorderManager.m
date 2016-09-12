@@ -61,6 +61,8 @@ static RecorderManager *recorderManager;
     if ([_recorder prepareToRecord]) {
         [_recorder record];
     }
+    [_recorder updateMeters];
+    [_recorder peakPowerForChannel:1];
     NSLog(@"manager startRecording");
 }
 

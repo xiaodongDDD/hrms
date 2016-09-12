@@ -20,6 +20,7 @@ static NSArray *emojiList =nil;
     }
 
     if (message.messageDirection==MessageDirection_RECEIVE) {
+
         //消息接受
         CGSize timeSize  = [[TimeTool timeStr:message.receivedTime] boundingRectWithSize:[UIScreen mainScreen].bounds.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0]} context:nil].size;
         self.timeLineSize = CGRectMake(([UIScreen mainScreen].bounds.size.width-timeSize.width)/2, iconLeftSpace, timeSize.width, 13);
