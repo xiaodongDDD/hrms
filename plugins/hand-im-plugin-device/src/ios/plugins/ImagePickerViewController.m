@@ -44,6 +44,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     //设置长按拖动手势
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressCell:)];
+    [longPress setMinimumPressDuration:0.20f];
     [_imageCollectionView addGestureRecognizer:longPress];
     [_imageCollectionView setShowsHorizontalScrollIndicator:NO];
     [_imageCollectionView setShowsVerticalScrollIndicator:NO];
@@ -177,25 +178,19 @@ static NSString * const reuseIdentifier = @"Cell";
                 self.touchPoints = [NSMutableArray array];
                 // 为拖动的cell添加一个快照
                 snapshot = [self customSnapshoFromView:cell];
-                // 添加快照至collectView中
+                // 添加快照至collectionView中
                 __block CGPoint center = CGPointMake(cell.center.x-self.imageCollectionView.contentOffset.x, cell.center.y);
                 snapshot.center = center;
                 snapshot.alpha = 0.0;
                 //将快照放在最上层
                 [self.view addSubview:snapshot];
-                // 按下的瞬间执行动画
-                [UIView animateWithDuration:0.25 animations:^{
-                    center.y = location.y;
-                    snapshot.center = center;
-                    snapshot.transform = CGAffineTransformMakeScale(1.05, 1.05);
-                    snapshot.alpha = 0.98;
-                    cell.imageView.alpha = 0.0;
-                    
-                } completion:^(BOOL finished) {
-                    
-                    cell.imageView.hidden = YES;
-                    
-                }];
+                // 按下的瞬间执行
+                center.y = location.y;
+                snapshot.center = center;
+                snapshot.transform = CGAffineTransformMakeScale(1.05, 1.05);
+                snapshot.alpha = 0.98;
+                cell.imageView.alpha = 0.0;
+                cell.imageView.hidden = YES;
             }
             break;
         }
@@ -220,18 +215,21 @@ static NSString * const reuseIdentifier = @"Cell";
             
             break;
         }
-            // 长按手势取消状态
+
+
+        // 长按手势取消状态
         default: {
+            NSLog(@"长按手势取消状态");
             if (CGRectIntersectsRect(self.imageCollectionView.frame, snapshot.frame)) {
                 // 清除操作
                 // 清空数组，非常重要，不然会发生坐标突变！
                 [self.touchPoints removeAllObjects];
                 ImageCell *cell = (ImageCell *)[self.imageCollectionView cellForItemAtIndexPath:sourceIndexPath];
                 cell.imageView.hidden = NO;
-                cell.imageView.alpha = 0.0;
+                cell.imageView.alpha = 0;
                 
                 // 将快照恢复到初始状态
-                [UIView animateWithDuration:0.25 animations:^{
+                [UIView animateWithDuration:0.05 animations:^{
                     snapshot.center = CGPointMake(cell.center.x-self.imageCollectionView.contentOffset.x, cell.center.y);
                     snapshot.transform = CGAffineTransformIdentity;
                     snapshot.alpha = 0.0;

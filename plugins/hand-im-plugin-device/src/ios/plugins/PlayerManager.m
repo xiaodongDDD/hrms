@@ -35,6 +35,7 @@ static PlayerManager *playerManager;
     if ([player prepareToPlay]) {
         [player play];
     }
+    player.volume = 1.0;
     NSLog(@"开始播放了%@",error);
 }
 - (void)stopPlay

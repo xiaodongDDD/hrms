@@ -48,6 +48,7 @@ static NSMutableArray *usersInfo;
     [[RCIMClient sharedRCIMClient] initWithAppKey:AppKey];
     [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
     [RCIM sharedRCIM].userInfoDataSource = self;
+
     NSLog(@"IMApplicationDidLaunch");
 }
 
@@ -91,9 +92,10 @@ static NSMutableArray *usersInfo;
     if (!([message.objectName isEqualToString:@"RC:DizNtf"]||[message.objectName isEqualToString:@"RC:VCSummary"])) {
         [[NSNotificationCenter defaultCenter] postNotificationName:RCIMLibReceivedMessageNotification object:message];
     }
-    
     if(message.conversationType==ConversationType_PRIVATE){
+        
         //单聊
+        NSString *telePhone;
         //收到新消息 发送通知
         if (![message.objectName isEqualToString:@"RC:VCSummary"]) {
             SystemSoundID soundID;
@@ -101,75 +103,11 @@ static NSMutableArray *usersInfo;
             CFURLRef urlRef = (__bridge CFURLRef )[NSURL fileURLWithPath:path];
             AudioServicesCreateSystemSoundID(urlRef, &soundID);
             AudioServicesPlaySystemSound(soundID);
-            NSLog(@"收到了新消息啦----：%@",message.content);
+            NSLog(@"收到了新消息啦-from:%@--：%@",message.content,message.senderUserId);
             
             //弹出提示框
             UILocalNotification *localNotification ;
-            if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
-                NSString *body;
-                NSDictionary *userInfoAndExtra;
-                //每次收到消息就把数据存在本地数据库
-                if ([message.content isKindOfClass:[RCTextMessage class]]) {
-                    RCTextMessage *textMessage = (RCTextMessage *) message.content;
-                    NSLog(@"Appdelegate+CDVIMPlugin收到消息了来自%@,%@-%@-%@",message.senderUserId,textMessage.senderUserInfo.userId,textMessage.senderUserInfo.name,textMessage.senderUserInfo.portraitUri);
-                    if (textMessage.extra!=nil) {
             
-                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":textMessage.senderUserInfo.userId,@"name":textMessage.senderUserInfo.name,@"portraitUri":textMessage.senderUserInfo.portraitUri},@"extra":textMessage.extra,@"conversationType":@(message.conversationType)};
-                    
-                    }else{
-                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":textMessage.senderUserInfo.userId,@"name":textMessage.senderUserInfo.name,@"portraitUri":textMessage.senderUserInfo.portraitUri},@"extra":@"null",@"conversationType":@(message.conversationType)};
-                    }
-                    if ([message.content senderUserInfo]) {
-                        body = [NSString stringWithFormat:@"%@:%@",[textMessage senderUserInfo].name,[textMessage content]];
-                        NSLog(@"body:%@",body);
-                        
-                    }else{//发送者没有携带用户信息 显示userid
-                        body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,textMessage.content];
-                    }
-                }else if([message.content isKindOfClass:[RCImageMessage class]]){
-                    RCImageMessage *imageMessage = (RCImageMessage *)[message content];
-                    if (imageMessage.extra!=nil) {
-                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":imageMessage.senderUserInfo.userId,@"name":imageMessage.senderUserInfo.name,@"portraitUri":imageMessage.senderUserInfo.portraitUri},@"extra":imageMessage.extra,@"conversationType":@(message.conversationType)};
-                    }else{
-                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":imageMessage.senderUserInfo.userId,@"name":imageMessage.senderUserInfo.name,@"portraitUri":imageMessage.senderUserInfo.portraitUri},@"extra":@"null",@"conversationType":@(message.conversationType)};
-                    }
-                    if ([message.content senderUserInfo]) {
-                        body = [NSString stringWithFormat:@"%@:%@",[imageMessage senderUserInfo].name,@"[图片]"];
-                    }else{
-                        body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,@"[图片]"];
-                    }
-                }else if ([message.content isKindOfClass:[RCVoiceMessage class]]){
-                    RCVoiceMessage *voiceMessage = (RCVoiceMessage *)message.content;
-                    if (voiceMessage.extra!=nil) {
-                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":voiceMessage.senderUserInfo.userId,@"name":voiceMessage.senderUserInfo.name,@"portraitUri":voiceMessage.senderUserInfo.portraitUri},@"extra":voiceMessage.extra,@"conversationType":@(message.conversationType)};
-                    }else{
-                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":voiceMessage.senderUserInfo.userId,@"name":voiceMessage.senderUserInfo.name,@"portraitUri":voiceMessage.senderUserInfo.portraitUri},@"extra":@"null",@"conversationType":@(message.conversationType)};
-                    }
-                    if ([message.content senderUserInfo]) {
-                        body = [NSString stringWithFormat:@"%@:%@",[voiceMessage senderUserInfo].name,@"[语音]"];
-                    }else{
-                        body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,@"[语音]"];
-                    }
-                }else if ([message.content isKindOfClass:[RCLocationMessage class]]){
-                    RCLocationMessage *locationMessage = (RCLocationMessage *)[message content];
-                    if (locationMessage.extra!=nil) {
-                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":locationMessage.senderUserInfo.userId,@"name":locationMessage.senderUserInfo.name,@"portraitUri":locationMessage.senderUserInfo.portraitUri},@"extra":locationMessage.extra,@"conversationType":@(message.conversationType)};
-                    }else{
-                        NSString *extra = nil;
-                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":locationMessage.senderUserInfo.userId,@"name":locationMessage.senderUserInfo.name,@"portraitUri":locationMessage.senderUserInfo.portraitUri},@"extra":extra,@"conversationType":@(message.conversationType)};
-                    }
-                    if ([message.content senderUserInfo]) {
-                        body = [NSString stringWithFormat:@"%@:%@",[locationMessage senderUserInfo].name,@"[位置]"];
-                    }else{
-                        body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,@"[位置]"];
-                    }
-                }
-                localNotification = [[UILocalNotification alloc] init];
-                [localNotification setAlertTitle:[[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"]];
-                [localNotification setAlertBody:body];
-                [localNotification setUserInfo:userInfoAndExtra];
-                [localNotification setSoundName:UILocalNotificationDefaultSoundName];
-            }
             
             RCUserInfo *senderUserInfo ;
             if (message.content.senderUserInfo) {
@@ -180,18 +118,19 @@ static NSMutableArray *usersInfo;
                 if (senderUserInfo.portraitUri==nil) {
                     senderUserInfo.portraitUri = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"profile-2@3x.png" ofType:@"png"]].absoluteString;
                 }
-                NSDictionary *sendInfo = @{@"work_id":senderUserInfo.userId, @"name":senderUserInfo.name, @"image_url":senderUserInfo.portraitUri};
+                NSDictionary *sendInfo = @{@"work_id":senderUserInfo.userId, @"name":senderUserInfo.name, @"image_url":senderUserInfo.portraitUri,@"tel":telePhone};
                 [self hasSameUserInfo:sendInfo];
                 //弹起通知栏
                 [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
                 //主动发给js端推送
                 [[NSNotificationCenter defaultCenter] postNotificationName:CDVIMPluginPushNotification object:message];
             }
-  
+            
         }
         
     }else if (message.conversationType==ConversationType_DISCUSSION){
         //讨论组 群聊
+        NSLog(@"ConversationType_DISCUSSION");
         if (![message.content isKindOfClass:[RCDiscussionNotificationMessage class]]) {
             
             if ([UIApplication sharedApplication].applicationState==UIApplicationStateBackground) {
@@ -218,20 +157,22 @@ static NSMutableArray *usersInfo;
                     [self insertDiscussionImageByDiscussionId:message.targetId ImageStr:voiceMsg.extra];
                     [self comeUpLocalNotificationWith:body UserInfo:userInfo];//唤醒通知
                 }else{//其他类型的message
+                    NSLog(@"其他类型的message:%@",message.content);
                 }
                 
             }else{
+                
                 //活跃
+                NSLog(@"活跃");
             }
-            
+            NSLog(@"");
             //主动发给js端推送
             [[NSNotificationCenter defaultCenter] postNotificationName:CDVIMPluginPushNotification object:message];
         }
         
     }
-    
-    
-    NSLog(@"还剩余的未接收的消息数：%d 本条消息类型:%li", nLeft,message.conversationType);
+    NSLog(@"onReceived");
+    NSLog(@"还剩余的未接收的消息数：%d 本条消息类型:%lu", nLeft,message.conversationType);
 }
 
 - (void)comeUpLocalNotificationWith:(NSString *)body UserInfo:(NSDictionary *)userInfo
@@ -255,19 +196,7 @@ static NSMutableArray *usersInfo;
 #pragma mark -检查是否有相同联系人
 - (BOOL)hasSameUserInfo:(NSDictionary *)object
 {
-    for (NSDictionary * userInfo in usersInfo) {
-        if (userInfo[@"work_id"]==object[@"work_id"]) {
-            if (userInfo[@"image_url"]==object[@"image_url"]) {
-                return YES;
-            }else{
-                [DataBaseTool updatePersonDetailInformationWithId:userInfo[@"work_id"] Name:userInfo[@"name"] ImageUrl:userInfo[@"image_url"]];
-                return YES;
-            }
-        }
-    }
-    [DataBaseTool insertPersonDetailInformationWithId:object[@"work_id"] Name:object[@"name"] ImageUrl:object[@"image_url"]];
-    
-    return NO;
+    return [DataBaseTool selectSameUserInfoWithId:object[@"work_id"] Name:object[@"name"] ImageUrl:object[@"image_url"] Tel:[object objectForKey:@"tel"]];
 }
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
@@ -278,13 +207,15 @@ static NSMutableArray *usersInfo;
         //这里要跳转到相应的界面 单聊
         NSDictionary *userInfo = notification.userInfo[@"senderUserInfo"];
         NSString *extara = notification.userInfo[@"extra"];
-        NSMutableArray *telephones = (NSMutableArray *)[extara componentsSeparatedByString:@"|"];
-        NSLog(@"--telephones:%@",telephones);
-        for (id obj in telephones) {
-            if ([telephones containsObject:@""]||[telephones containsObject:[NSNull null]]) {
-                [telephones removeObject:obj];
-            }
+        NSArray *telephones;
+        if ([extara rangeOfString:@"|"].location != NSNotFound) {
+             telephones = (NSMutableArray *)[extara componentsSeparatedByString:@"|"];
+            
+        }else{
+            telephones = @[extara];
         }
+        NSLog(@"--telephones:%@",telephones);
+    
         UINavigationController *nav = [[UINavigationController alloc] initWithTargetId:userInfo[@"userId"] FriendName:userInfo[@"name"] Icon:userInfo[@"portraitUri"] PhoneNumbers:telephones];
         
         [self.viewController presentViewController:nav animated:NO completion:nil];
@@ -294,6 +225,7 @@ static NSMutableArray *usersInfo;
         
     }
 }
+
 #pragma makr--提供userInfo
 -(void)getUserInfoWithUserId:(NSString *)userId completion:(void (^)(RCUserInfo *))completion {
     NSString *loginUserId = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
@@ -324,7 +256,7 @@ static NSMutableArray *usersInfo;
                 if (avatar==nil||[avatar isEqual:[NSNull null]]||[avatar isEqualToString:@""]) {
                     avatar = @"profile-2@3x.png";
                 }
-                NSLog(@"id:%@ -- name:%@ -- icon:%@",[person objectForKey:@"emp_code"],[person objectForKey:@"emp_name"],avatar);
+                NSLog(@"id:%@ f:%@ -- icon:%@",[person objectForKey:@"emp_code"],[person objectForKey:@"emp_name"],avatar);
                 RCUserInfo *info =[[RCUserInfo alloc]initWithUserId:[person objectForKey:@"emp_code"]
                                                                name:[person objectForKey:@"emp_name"]
                                                            portrait:avatar];

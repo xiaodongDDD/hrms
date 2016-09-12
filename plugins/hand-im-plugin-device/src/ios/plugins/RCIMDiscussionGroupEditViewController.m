@@ -102,7 +102,11 @@
             });
         } error:^(RCErrorCode status) {
             NSLog(@"创建讨论组失败：%li",status);
-            [ToastUtils showLong:@"请检查手机的当前网络是否正常"];
+            if (status==30001||status==30002) {
+                [ToastUtils showLong:@"请检查手机的当前网络是否正常"];
+            }else if (status==1||status==-1){
+                [ToastUtils showLong:@"创建讨论组必须两个人以上"];
+            }
             [progress hide];
         }];
         if ([progress isShowing]) {
@@ -121,7 +125,11 @@
         if (avatar==nil||[avatar isEqualToString:@""]||[avatar isEqual:[NSNull null]]) {
             avatar = @"profile-2@3x.png";
         }
-        [DataBaseTool selectSameUserInfoWithId:[userInfo objectForKey:@"emp_code"] Name:[userInfo objectForKey:@"emp_name"] ImageUrl:[userInfo objectForKey:@"avatar"]];
+        NSString *mobile = [userInfo objectForKey:@"mobil"];
+        if (mobile==nil||[mobile isEqualToString:@""]||[mobile isEqual:[NSNull null]]) {
+            mobile = @"null";
+        }
+        [DataBaseTool selectSameUserInfoWithId:[userInfo objectForKey:@"emp_code"] Name:[userInfo objectForKey:@"emp_name"] ImageUrl:[userInfo objectForKey:@"avatar"] Tel:mobile];
     }
 }
 

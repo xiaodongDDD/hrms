@@ -12,10 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.hand.im.bean.UserInfo;
 import com.hand.im.contact.PersonBean;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -59,7 +56,7 @@ public class GroupInfoAdapter extends BaseAdapter {
                 .showImageOnFail(Util.getRS("pictures_no", "drawable", context))
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
-                //  .displayer(new RoundedBitmapDisplayer(100)) // 设置成圆角图片
+                .displayer(new RoundedBitmapDisplayer(100)) // 设置成圆角图片
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .resetViewBeforeLoading(true)
                 .build();
@@ -104,7 +101,7 @@ public class GroupInfoAdapter extends BaseAdapter {
         view.setVisibility(View.GONE);
         // }
       } else {
-        imgAvatar.setImageResource(Util.getRS("avatar_default", "drawable", context));
+        imgAvatar.setImageResource(Util.getRS("head_1", "drawable", context));
         txtTmpName.setText(data.get(i).getEmp_name());
       }
 //      viewList.set(i,view);
@@ -112,7 +109,7 @@ public class GroupInfoAdapter extends BaseAdapter {
           Log.e("---url----",data.get(i).getAvatar()+"url");
           ImageLoader.getInstance().displayImage(data.get(i).getAvatar(), imgAvatar, options);
       }else if(i<data.size()-2){
-          imgAvatar.setImageResource(Util.getRS("avatar_default","drawable",context));
+          imgAvatar.setImageResource(Util.getRS("head_1","drawable",context));
       }
       return view;
   }

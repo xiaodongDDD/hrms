@@ -36,6 +36,7 @@ static CGFloat keyboardheight;
     UIWindow *recorderWindow;
     NSString *copyStr;
     NSMutableArray *userInfos;
+    NSOperationQueue *mainQueue;
 }
 /*!
  *  message消息数据源
@@ -165,11 +166,12 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     //从服务器获取用户信息
     [[RCIMClient sharedRCIMClient] getDiscussion:self.discussionId success:^(RCDiscussion *discussion) {
         for (NSString *memberId in discussion.memberIdList) {
-            NSOperationQueue *operationQueue = [NSOperationQueue mainQueue];
-            [operationQueue addOperationWithBlock:^{
-                [self connectToService:memberId];
-            }];
-            [operationQueue setMaxConcurrentOperationCount:1];
+//            NSOperationQueue *operationQueue = [NSOperationQueue mainQueue];
+//            [operationQueue addOperationWithBlock:^{
+//                [self connectToService:memberId];
+//            }];
+//            [operationQueue setMaxConcurrentOperationCount:1];
+            [self connectToService:memberId];
         }
     } error:^(RCErrorCode status) {
         NSLog(@"%@-拉取讨论组成员信息失败:%li",self.class,status);
@@ -392,7 +394,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     //相机是否可用
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
-        [imagePicker setAllowsEditing:YES];
+        [imagePicker setAllowsEditing:NO];
         [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
         [self presentViewController:imagePicker animated:YES completion:nil];
     }
@@ -403,14 +405,17 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 {
     [self dismissViewControllerAnimated:YES completion:^{
         RCImageMessage *imageMessage = [RCImageMessage messageWithImage:editingInfo[@"UIImagePickerControllerOriginalImage"]];
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+        UIImageWriteToSavedPhotosAlbum(editingInfo[@"UIImagePickerControllerOriginalImage"], self, nil, NULL);
+        });
         [self clickedSendImageMessage:@[imageMessage]];
     }];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [self scrollToBottom];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self scrollToBottom];
+    }];
 }
 /*!
  * emoji表情按钮点击回调
@@ -965,11 +970,22 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
             NSArray *returnArray = [json objectForKey:@"rows"];
             NSDictionary *userInfo = returnArray[0];
             [userInfos addObject:userInfo];
-            NSString *imageUrlString = [userInfo objectForKey:@"avatar"];
-            if (imageUrlString==nil) {
-                imageUrlString = @"profile-2@3x.png";
+            
+            NSString *avatar = [userInfo objectForKey:@"avatar"];
+            if (avatar==nil||[avatar isEqualToString:@""]||[avatar isEqual:[NSNull null]]) {
+                avatar = @"profile-2@3x.png";
             }
-            [DataBaseTool selectSameUserInfoWithId:[userInfo objectForKey:@"emp_code"] Name:[userInfo objectForKey:@"emp_name"] ImageUrl:imageUrlString];
+            NSString *mobile = [userInfo objectForKey:@"mobile"];
+            if (mobile==nil||[mobile isEqualToString:@""]||[mobile isEqual:[NSNull null]]) {
+                mobile = @"null";
+            }
+            if (mainQueue==nil) {
+                mainQueue = [NSOperationQueue mainQueue];
+            }
+            NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+                [DataBaseTool selectSameUserInfoWithId:[userInfo objectForKey:@"emp_code"] Name:[userInfo objectForKey:@"emp_name"] ImageUrl:avatar Tel:mobile];
+            }];
+            [mainQueue addOperations:@[operation] waitUntilFinished:YES];
         }else{
             NSLog(@"data:%@,error:%@",data,error);
         }

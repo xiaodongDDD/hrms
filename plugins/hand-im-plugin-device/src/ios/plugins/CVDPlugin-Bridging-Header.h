@@ -15,9 +15,12 @@
 #define AppKey @"0vnjpoadnd4cz"
 #define appSecret @"e5t4ouvptpsaa"
 #define CDVIMPluginPushNotification @"CDVIMPluginPushNotification"
-#define localService @"http://wechat.hand-china.com/hrmsv2/v2/api/staff/detail?"
-#define localServiceQuery @"http://wechat.hand-china.com/hrmsv2/v2/api/staff/query?"
-#define localServiceUpload @"http://wechat.hand-china.com/hrmsv2/v2/api/objectUpload?"
+
+#define rootService @"http://wechat.hand-china.com"
+
+#define localService [NSString stringWithFormat:@"%@/hrmsv2/v2/api/staff/detail?",rootService]
+#define localServiceQuery [NSString stringWithFormat:@"%@/hrmsv2/v2/api/staff/query?",rootService]
+#define localServiceUpload [NSString stringWithFormat:@"%@/hrmsv2/v2/api/objectUpload?",rootService]
 #define discussionGroup @"http://zhouzybk.img-cn-shanghai.aliyuncs.com/"
 /*!
  *头像左间距

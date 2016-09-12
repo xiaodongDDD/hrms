@@ -67,7 +67,7 @@
 	<source-file src="src/android/drawable-hdpi/avatar_default.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/btn_next.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/group_add.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/group_info.png" target-dir="res/drawable-hdpi"/>
+	<source-file src="src/android/drawable-xxhdpi/group_info.png" target-dir="res/drawable-xxhdpi"/>
 	<source-file src="src/android/drawable-hdpi/search.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/arrow_back.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-xxhdpi/check.png" target-dir="res/drawable-xxhdpi"/>
@@ -80,7 +80,6 @@
 	<source-file src="src/android/layout/item_group_info.xml" target-dir="res/layout"/>
 	<source-file src="src/android/layout/list_item.xml" target-dir="res/layout"/>
 
-	<source-file src="src/android/libs/library-1.0.19.jar" target-dir="libs/"/>
 	<source-file src="src/android/libs/pinyin4j-2.5.0.jar" target-dir="libs/"/>
 	
 	<!--add by panxu end-->
@@ -599,9 +598,9 @@
     
     <header-file src="src/ios/plugins/ImageCell.h"/>
     <source-file src="src/ios/plugins/ImageCell.m"/>
-    
-    <header-file src="src/ios/plugins/SDBaseProgressView.h"/>
-    <source-file src="src/ios/plugins/SDBaseProgressView.m"/>
+
+    <!--<header-file src="src/ios/plugins/SDBaseProgressView.h"/>
+    <source-file src="src/ios/plugins/SDBaseProgressView.m"/>-->
     
     <header-file src="src/ios/plugins/SDBallProgressView.h"/>
     <source-file src="src/ios/plugins/SDBallProgressView.m"/>

@@ -10,18 +10,17 @@
 #import "FMDB.h"
 
 static FMDatabase *db;
-
 @implementation DataBaseTool
 
 +(void)initialize
 {
     NSString *dbPath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-    dbPath = [dbPath stringByAppendingPathComponent:@"messages3.0.0.sqlite"];
+    dbPath = [dbPath stringByAppendingPathComponent:@"messages4.0.0.sqlite"];
     NSLog(@"创建数据库,数据库路径:%@",dbPath);
     db = [FMDatabase databaseWithPath:dbPath];
     //创建表 人员表
     if ([db open]) {
-        NSString *sqlCreateTable =  @"CREATE TABLE IF NOT EXISTS Workers_Table(id INTEGER PRIMARY KEY AUTOINCREMENT, worker_id TEXT, name TEXT,image_url TEXT)";
+        NSString *sqlCreateTable =  @"CREATE TABLE IF NOT EXISTS Workers_Table(id INTEGER PRIMARY KEY AUTOINCREMENT, worker_id TEXT, name TEXT,image_url TEXT,tel TEXT)";
         BOOL res = [db executeUpdate:sqlCreateTable];
         if (!res) {
             NSLog(@"error when creating db table");
@@ -79,13 +78,13 @@ static FMDatabase *db;
     return portraitUri;
 }
 
-+(void)insertPersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon
++(void)insertPersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon Tel:(NSString *)telphone
 {
     NSLog(@"插入员工信息");
     //添加数据
     if ([db open]) {
         NSString *insertSql= [NSString stringWithFormat:
-                              @"INSERT INTO  Workers_Table(worker_id, name, image_url) VALUES ('%@', '%@', '%@')", userId,userName,userIcon];
+                              @"INSERT INTO  Workers_Table(worker_id, name, image_url, tel) VALUES ('%@', '%@', '%@', '%@')", userId,userName,userIcon,telphone];
         BOOL res = [db executeUpdate:insertSql];
         if (!res) {
             NSLog(@"error when insert db table");
@@ -102,7 +101,7 @@ static FMDatabase *db;
     NSString *NameByWorkerId ;
     if ([db open]) {
         NSString * sql = [NSString stringWithFormat:
-                          @"SELECT worker_id, name FROM Workers_Table WHERE worker_id = '%@' ",userId];
+                          @"SELECT name FROM Workers_Table WHERE worker_id = '%@' ",userId];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next]) {
             NSString * name = [rs stringForColumn:@"name"];
@@ -120,10 +119,9 @@ static FMDatabase *db;
     NSString *imageUrlByWorkerId;
     if ([db open]) {
         NSString * sql = [NSString stringWithFormat:
-                          @"SELECT image_url, worker_id FROM Workers_Table WHERE worker_id = '%@' ",userId];
+                          @"SELECT image_url FROM Workers_Table WHERE worker_id = '%@' ",userId];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next]) {
-            NSString *worker_id = [rs stringForColumn:@"worker_id"];
             NSString * image_url = [rs stringForColumn:@"image_url"];
             imageUrlByWorkerId = image_url;
             //     NSLog(@"根据id获取头像 workId = %@, imageUrl = %@ ", worker_id, image_url);
@@ -133,6 +131,22 @@ static FMDatabase *db;
     return imageUrlByWorkerId;
 }
 
++(NSString *)getTelPhoneByWorkerId:(NSString *)userId
+{
+    NSLog(@"获取员工电话");
+    NSString *telPhone;
+    if ([db open]) {
+        NSString * sql = [NSString stringWithFormat:
+                          @"SELECT tel FROM Workers_Table WHERE worker_id = '%@' ",userId];
+        FMResultSet * rs = [db executeQuery:sql];
+        while ([rs next]) {
+            NSString *tel = [rs stringForColumn:@"tel"];
+            telPhone = tel;
+        }
+        [db close];
+    }
+    return telPhone;
+}
 
 +(NSMutableArray *)getAllMessagesData
 {
@@ -197,8 +211,6 @@ static FMDatabase *db;
 }
 
 
-
-
 +(void)updateDataType:(NSString *)messageType SendId:(NSString *)sendId
 {
     NSLog(@"修改数据库");
@@ -236,13 +248,13 @@ static FMDatabase *db;
 }
 
 
-+ (void)updatePersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon
++ (void)updatePersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon Tel:(NSString *)tel
 {
     NSLog(@"更新联系人信息");
     //修改数据
     if ([db open]) {
         NSString *updateSql = [NSString stringWithFormat:
-                               @"UPDATE Workers_Table SET name = '%@',image_url = '%@' WHERE worker_id = '%@' ",userId,userName,userIcon];
+                               @"UPDATE Workers_Table SET image_url = '%@', tel = '%@' WHERE worker_id = '%@' ",userIcon,tel,userId];
         BOOL res = [db executeUpdate:updateSql];
         if (!res) {
             NSLog(@"error when update db table");
@@ -270,29 +282,31 @@ static FMDatabase *db;
     return flag;
 }
 
-+(BOOL)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon
++(BOOL)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon Tel:(NSString *)tel
 {
     NSLog(@"查询相同信息");
-    BOOL flag = NO;
-    if ([db open]) {
-        NSString * sql = [NSString stringWithFormat:@"SELECT * FROM Workers_Table WHERE worker_id = '%@ '",userId];
-        FMResultSet * rs = [db executeQuery:sql];
-        while ([rs next]) {
-            //    NSString * image_url = [rs stringForColumn:@"image_url"];
-            flag = YES;
-        }
-        [db close];
-    }
+//    BOOL flag = NO;
+//    if ([db open]) {
+//        NSString * sql = [NSString stringWithFormat:@"SELECT * FROM Workers_Table WHERE worker_id = '%@ '",userId];
+//        FMResultSet * rs = [db executeQuery:sql];
+//        while ([rs next]) {
+//            //    NSString * image_url = [rs stringForColumn:@"image_url"];
+//            flag = YES;
+//        }
+//        [db close];
+//    }
+    BOOL flag = [DataBaseTool hasPerson:userId];
     if (!flag) {
         //没有一个相同
         //一个没找到 可以插入新联系人
-        [self insertPersonDetailInformationWithId:userId Name:userName ImageUrl:userIcon];
+        [self insertPersonDetailInformationWithId:userId Name:userName ImageUrl:userIcon Tel:tel];
         NSLog(@"插入新联系人");
     }else{
         //可以更新
-        [self updatePersonDetailInformationWithId:userId Name:userName ImageUrl:userId];
+        [self updatePersonDetailInformationWithId:userId Name:userName ImageUrl:userId Tel:tel];
         NSLog(@"更新联系人");
     }
+    
     return flag;
 }
 

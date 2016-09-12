@@ -55,7 +55,7 @@
     
         //启动录音
         self.recorderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.recorderBtn setBackgroundImage:[UIImage imageNamed:@"record.png"] forState:UIControlStateNormal];
+        [self.recorderBtn setBackgroundImage:[UIImage imageNamed:@"record@3x.png"] forState:UIControlStateNormal];
         [self.recorderBtn setBackgroundImage:[UIImage imageNamed:@"record-B.png"] forState:UIControlStateSelected];
         [self.recorderBtn addTarget:self action:@selector(didTapRecorder:) forControlEvents:UIControlEventTouchUpInside];
         [self.recorderBtn setFrame:CGRectMake(CGRectGetMinX(self.imagePickerBtn.frame)-standardSpaceX-21, CGRectGetHeight(self.frame)-standardSpaceY-21, 21, 21)];

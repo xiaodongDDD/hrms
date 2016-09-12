@@ -860,7 +860,7 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if(requestCode == 0){
+    if(requestCode == 0&& resultCode == 1){
       RongIMClient.getInstance().getDiscussion(friendId, new RongIMClient.ResultCallback<Discussion>() {
         @Override
         public void onSuccess(Discussion discussion) {

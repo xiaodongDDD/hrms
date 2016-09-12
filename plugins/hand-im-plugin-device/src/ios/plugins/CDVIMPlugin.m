@@ -19,7 +19,7 @@
     NSString *friendId;
     NSString *friendName;
     NSString *friendIcon;
-    NSArray *telephoneNumbers;
+    NSString *telephoneNumbers;
     BOOL isSuccessFulConnect;
 }
 
@@ -29,11 +29,11 @@
 
 //程序点击登陆的时候调用
 -(void)getChatList:(CDVInvokedUrlCommand *)command
-{
+{ [NSString stringWithFormat:@"%@/hrmsv2/v2/api/staff/detail?",rootService];
     NSString *userId = [command.arguments[0] objectForKey:@"userId"];
     NSString *access_token = [command.arguments[0] objectForKey:@"access_token"];
     NSString *Token = [command.arguments[0] objectForKey:@"RCToken"];
-    NSLog(@"%@,%@,%@",userId,access_token,Token);
+    NSLog(@"%@,%@,token----%@",userId,access_token,Token);
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:@"userId"];
     [[NSUserDefaults standardUserDefaults] setObject:Token forKey:@"RCToken"];
     [[NSUserDefaults standardUserDefaults] setObject:access_token forKey:@"access_token"];
@@ -42,7 +42,7 @@
         [self loginRCWebService];//登陆融云
         [self requestUserNameAndUrlById:userId ByToken:access_token];//请求登录用户信息
     });
-    [self performSelector:@selector(IMPluginDidReceiveMessage:) withObject:nil afterDelay:3.0];
+    [self performSelector:@selector(IMPluginDidReceiveMessage:) withObject:nil afterDelay:2.0];
 }
 
 //开启单人会话
@@ -54,10 +54,21 @@
         friendName = command.arguments[0][@"friendName"];
         friendIcon = command.arguments[0][@"friendIcon"];
         telephoneNumbers = command.arguments[0][@"telephoneNumbers"];
-        
-        [DataBaseTool selectSameUserInfoWithId:friendId Name:friendName ImageUrl:friendIcon];
-        
-        UINavigationController *nav = [[UINavigationController alloc] initWithTargetId:friendId FriendName:friendName Icon:friendIcon PhoneNumbers:telephoneNumbers];
+
+        if (![DataBaseTool hasPerson:friendId]) {
+            [DataBaseTool selectSameUserInfoWithId:friendId Name:friendName ImageUrl:friendIcon Tel:telephoneNumbers];
+        }
+        NSArray *telephones;
+        if ([telephoneNumbers rangeOfString:@"|"].location != NSNotFound) {
+            //包含
+            telephones = [telephoneNumbers componentsSeparatedByString:@"|"];
+            NSLog(@"tele-%@",telephoneNumbers);
+        }else if(telephoneNumbers!=nil&&![telephoneNumbers isEqualToString:@""]){
+            telephones = @[telephoneNumbers];
+        }else{
+            telephones = @[@"null"];
+        }
+        UINavigationController *nav = [[UINavigationController alloc] initWithTargetId:friendId FriendName:friendName Icon:friendIcon PhoneNumbers:telephones];
         [self.viewController presentViewController:nav animated:NO completion:nil];
         
     }else{
@@ -189,7 +200,7 @@
         
     }
     
-    
+    NSLog(@"returnArray.count");
     if (returnArray.count) {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"message":returnArray}];
     }else{
@@ -386,21 +397,25 @@
             NSString *userId = json[@"rows"][0][@"emp_code"];//用户id
             NSString *userIcon = json[@"rows"][0][@"avatar"];//小头像
             NSString *userName = json[@"rows"][0][@"emp_name"];//用户名
-            NSLog(@"userId:%@,userIcon:%@,userName:%@,JSON:%@",userId,userIcon,userName,json);
+            NSString *tel = json[@"rows"][0][@"mobil"];
+           // NSLog(@"userId:%@,userIcon:%@,userName:%@,tel:%@,obj:%@",userId,userIcon,userName,tel,json[@"rows"][0]);
             if (userIcon==nil || [userIcon isEqual:[NSNull null]]||[userIcon isEqualToString:@""]) {
                 NSString *path = @"profile-2@3x.png";
                 userIcon = [NSString stringWithFormat:@"%@",[NSURL fileURLWithPath:path]];
             }
+            if (tel==nil || [tel isEqual:[NSNull null]]||[tel isEqualToString:@""]) {
+                tel = @"null";
+            }
             [[NSUserDefaults standardUserDefaults] setObject:userIcon forKey:@"userIcon"];
             [[NSUserDefaults standardUserDefaults] setObject:userName forKey:@"userName"];
-            
+            [[NSUserDefaults standardUserDefaults] setObject:tel forKey:@"tel"];
             if (json[@"error"]) {
                 //  [self showAlertView];
                 NSLog(@"获取头像失败,access_token可能过期了");
             }else{
                 NSLog(@"下载头像成功:%@, 姓名：%@",userIcon,userName);
-                //存储联系人详细信息 userId userName userIcon
-                [DataBaseTool selectSameUserInfoWithId:userId Name:userName ImageUrl:userIcon];
+                //存储联系人详细信息 userId userName userIcon tel
+                [DataBaseTool selectSameUserInfoWithId:userId Name:userName ImageUrl:userIcon Tel:tel];
             }
         }
     }];
