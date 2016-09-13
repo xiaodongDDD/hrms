@@ -76,7 +76,7 @@
   .filter-item-list {
     background-color: $color-base;
     width: 72%;
-    overflow-y: hidden;
+    overflow: visible;
     height: 65%;
     .filter-item-detail {
       border-bottom: 1px solid #d2d2d2;

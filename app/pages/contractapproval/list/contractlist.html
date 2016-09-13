@@ -1,4 +1,5 @@
 <ion-view view-title="合同管理" class="workflow contractflow">
+  
   <ion-header-bar align-title="center" class="bar-stable padding-zero">
     <div class="buttons">
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
@@ -14,9 +15,12 @@
         <div id='contractSubheaderScroll' class="row padding-zero" style="width:1000px; overflow:hidden;">
           <div class="contractSubheaderMarker" ng-click="clickSubheader(i)" ng-repeat="i in subheaderTitleKey" style="padding:6px; padding-bottom:0px;">
             <label ng-bind="subheaderTitleValue[i]" ng-class="{true:'hrms-color-blue',false:'hrms-color-gray'}[subheaderSelectFlag[i]]" style="white-space: nowrap;"></label>
-            <div ng-class="{'contract-subheader-marker-selected hrms-bg-blue':subheaderSelectFlag[i],
-                            'contract-subheader-marker-deselected hrms-bg-blue':subheadereAnimaFlag&&subheaderDeselectAnimaFlag[i]}" 
+            <div ng-class="{'contract-subheader-marker-selected hrms-bg-blue':subheadereAnimaFlag&&subheaderSelectFlag[i],
+                            'contract-subheader-marker-deselected hrms-bg-blue':subheadereAnimaFlag&&subheaderDeselectAnimaFlag[i],
+                            'contract-subheader-marker-show hrms-bg-blue':!subheadereAnimaFlag&&subheaderSelectFlag[i],
+                            'contract-subheader-marker-hide':!subheadereAnimaFlag&&!subheaderSelectFlag[i]}" 
                             class="contract-subheader-marker">
+                            <!--4个class分别为。selected，选中时动画；deselected：反选时动画；show：从子页返回时，无动画地显示（选中）；hide：从子页返回时，无动画地隐藏（未选中）-->
             </div>
           </div>
         </div>

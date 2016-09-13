@@ -17,7 +17,7 @@
                ng-class="{true: 'selected', false: 'no-selected'}[type.selected]">
           </div>
         </div>
-        <ion-scroll class="filter-item-list" delegate-handle="hmsFilterCondition" direction="y">
+        <ion-scroll class="filter-item-list" delegate-handle="hmsFilterCondition" direction="y" overflow-scroll="false">
             <div class="filter-item-detail row no-padding" ng-repeat="item in filterItemList"
                  ng-click="dataFilterHandle.selectFilterItem(item)"
                  ng-class="{true: 'selected', false: 'no-selected'}[item.selected]">

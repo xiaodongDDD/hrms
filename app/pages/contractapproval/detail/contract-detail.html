@@ -1,9 +1,17 @@
-<ion-view class="contract-detail">
+<ion-view class="contract-detail workflow-detail">
 
-  <ion-header-bar align-title="center" class="bar-positive">
-    <button ng-style="filterBlurStyle(filterBlur)" class="button button-clear" ng-click="$ionicGoBack()"><i class="icon ion-chevron-left"></i>&nbsp;返回</button>
-    <h1 ng-style="filterBlurStyle(filterBlur)" class="title"><b>审批详情</b></h1>
-    <button ng-style="filterBlurStyle(filterBlur)" class="button button-clear" ng-click="showProcDiv()"><i class="icon ion-more"></i></button>
+  <ion-header-bar align-title="center" class="bar-stable" style="background:none">
+    <div class="buttons">
+      <button ng-style="filterBlurStyle(filterBlur)" ng-click="$ionicGoBack()" class="button button-icon icon ion-ios-arrow-back" style="padding:0px;">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 ng-style="filterBlurStyle(filterBlur)" class="title">审批详情</h1>
+    <div class="buttons">
+      <button ng-style="filterBlurStyle(filterBlur)" class="button button-clear" ng-click="showProcDiv()">
+        <i class="icon ion-more" style="color: white;font-size: 30px"></i>
+      </button>
+    </div>
   </ion-header-bar>
 
   <!--右上角-->
@@ -11,7 +19,7 @@
     <div class="left-h-line"></div>
   </div>
   <ion-scroll class="contract-processes" ng-class="{true:'show'}[showProc]" ng-show="showProc">
-    <div>
+    <!--<div>-->
       <div class="proc-item" ng-repeat="item in data.historyData track by $index">
         <div class="row item-row">
           <div class="hisMaker"></div>
@@ -38,16 +46,16 @@
           </div>
         </div>
       </div>
-    </div>
+    <!--</div>-->
   </ion-scroll>
   <div class="proc-title" ng-show="showProc">审批历史记录</div>
   <div class="cover" ng-show="showCover" ng-class="{true:'show'}[showCover]" ng-click="closeCover()">
     <div class="cover-header"><span class="cover-close" ng-click="closeCover()"><i class="icon ion-android-close"></i></span></div>
   </div>
 
-  <div class="background"></div>
+  <!--<div class="background"></div>-->
 
-  <ion-content ng-style="filterBlurStyle(filterBlur)">
+  <ion-content ng-style="filterBlurStyle(filterBlur)" delegate-handle="workflowDetailHandle">
     <div class="loading" ng-if="fetchDataFlag">
       <div class="hms-hide-content">
         <hms-loading></hms-loading>
@@ -59,7 +67,9 @@
       <ion-scroll direction="x" scrollbar-x="false" overflow-scroll="false" ng-style="workflowDetailScroll">
         <div class="contract-stages">
           <div class="stages-item" ng-repeat="stagesItem in data.stages track by $index">
-            <div class="stages-time"><br>{{stagesItem.stage}}</div>
+            <div class="stages-time">
+              {{stagesItem.stage}}
+            </div>
             <div class="stages-main">
               <div class="stages-line" ng-class="{'highlight':isHighlight(stagesItem),'stages-line-first':isFirst($index),'stages-line-last':isLast($index)}"></div>
               <span ng-class="{'stages-point-normal':!isHighlight(stagesItem),'stages-point-highlight':isHighlight(stagesItem)}">
@@ -72,7 +82,58 @@
       </ion-scroll>
     </div>
 
-    <div class="info" ng-show="data.processInfo.detail_title">
+    <div class="hms-workflow-array" ng-show="data.processInfo.detail_title" style="margin-left:5%; margin-right:5%; margin:top:10px;">
+      <div class="hms-singal-array-header">
+        <div class="hms-singal-array-name">
+          <i class="ion-record"></i>{{data.processInfo.detail_title}}
+        </div>
+        <div class="hms-singal-array-operation ion-ios-minus-outline" ng-click="hideProcess($event)" ng-if="showProcessFlag">
+        </div>
+        <div class="hms-singal-array-operation ion-ios-plus-outline" ng-click="showProcess($event)" ng-if="!showProcessFlag">
+        </div>
+      </div>
+      <div class="hms-singal-array-content" ng-if="showProcessFlag">
+        <div class="hms-singal-array-line" ng-repeat="arrayItem in data.processInfo.detail">
+          <div class="hms-singal-array-key" ng-bind="arrayItem.item_name">
+          </div>
+          <div class="hms-singal-array-value" ng-bind="arrayItem.item_value">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hms-workflow-array" ng-repeat="array in data.contractInfo.lines" style="margin-left:5%; margin-right:5%; margin:top:10px;">
+      <div class="hms-singal-array-header">
+        <div class="hms-singal-array-name">
+          <i class="ion-record"></i>{{array.line_big_title}}
+        </div>
+        <div class="hms-singal-array-operation ion-ios-plus-outline" ng-click="showContract($event)" ng-if="!showContractFlag">
+        </div>
+        <div class="hms-singal-array-operation ion-ios-minus-outline" ng-click="hideContract($event)" ng-if="showContractFlag">
+        </div>
+        <div class="hms-multiple-array-sub-header" ng-if="showContractFlag">
+          <div class="hms-singal-array-link">
+            <a class="hms-array-selector">共{{array.line.length}}条</a>
+            <a class="hms-array-selector" ng-click="toLast()"
+                ng-class="{true:'no-activated'}[nowContractInfoNum == 0]">上一条</a>
+            <a class="hms-array-selector" ng-click="toNext()"
+                ng-class="{true:'no-activated'}[noNextDataFlag]">下一条</a>
+            <a class="hms-array-selector" ng-click="showEssenceDiv()">查看合同要素</a>
+          </div>
+          
+        </div>
+      </div>
+      <div class="hms-singal-array-content" ng-if="showContractFlag">
+        <div class="hms-singal-array-line" ng-repeat="arrayItem in array.line_title">
+          <div class="hms-singal-array-key" ng-bind="arrayItem.line_title">
+          </div>
+          <div class="hms-singal-array-value" ng-bind="nowContractInfo[$index].line_value">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--scroll bug on iOS-->
+    <!--<div class="info" ng-show="data.processInfo.detail_title">
       <div class="info-title">{{data.processInfo.detail_title}}：</div>
       <div class="icon-div" ng-click="hideProcess()" ng-show="showProcessFlag">
         <i class="icon ion-ios-minus-outline icon-title"></i>
@@ -82,13 +143,8 @@
       </div>
       <div class="info-item" ng-repeat="item in data.processInfo.detail" ng-show="showProcessFlag">
         <span class="info-item-title">{{item.item_name}}</span>
-        <ion-scroll class="scroll-body" direction="x" scrollbar-x="false">
-          <label class="scroll-label">{{item.item_value}}</label>
-        </ion-scroll>
-        <!--<span class="info-item-content">{{item.item_value}}</span>-->
       </div>
     </div>
-
     <div class="info" ng-repeat="line in data.contractInfo.lines">
       <div class="info-title info-operate">{{line.line_big_title}}</div>
       <div class="icon-div" ng-show="showContractFlag" ng-click="hideContract()">
@@ -105,12 +161,9 @@
       </div>
       <div class="info-item" ng-repeat="line_title in line.line_title" ng-show="showContractFlag" ng-if="line_title.line_title != '存储编号'">
         <span class="info-item-title">{{line_title.line_title}}</span>
-        <ion-scroll class="scroll-body" direction="x" scrollbar-x="false">
-          <label class="scroll-label">{{nowContractInfo[$index].line_value}}</label>
-        </ion-scroll>
-        <!--<span class="info-item-content">{{nowContractInfo[$index].line_value}}</span>-->
+        <span class="info-item-content">{{nowContractInfo[$index].line_value}}</span>
       </div>
-    </div>
+    </div>-->
 
     <div class="operate-div" ng-show="showOperateButton">
       <input class="message" type="text" placeholder="请输入意见" ng-model="submitMessage.text" />
@@ -144,12 +197,9 @@
 
   <div class="desc-div" ng-show="showEssence" ng-class="{true:'show'}[showEssence]">
     <div class="desc-title">合同要素</div>
-    <div class="desc-item" ng-repeat="item in essenceData.essences">
-      <div class="desc-key">{{item.eName}}</div>
-      <ion-scroll class="scroll-body" direction="x" scrollbar-x="false">
-        <label class="scroll-label">{{item.eValue}}</label>
-      </ion-scroll>
-      <!--<div class="desc-value">{{item.eValue}}</div>-->
+    <div class="row desc-item" ng-repeat="item in essenceData[nowContractInfoNum].essences">
+      <div class="col desc-key">{{item.eName}}</div>
+      <div class="col desc-value">{{item.eValue}}</div>
     </div>
   </div>
 
