@@ -45,8 +45,8 @@ angular.module('myInfoModule')
             || document.documentElement.clientWidth
             || document.body.clientWidth;
           var config = {
-            height: w,
-            width: w,
+            height: w * 8 /10,
+            width: w * 8 /10,
             miniHeight: w / 10 * 3,
             miniWidth: w / 10 * 3,
             operation: $scope.operation,

@@ -32,8 +32,8 @@ angular.module('myInfoModule')
             || document.documentElement.clientWidth
             || document.body.clientWidth;
           var config = {
-            height: w,
-            width: w,
+            height:  w * 8 /10,
+            width:  w * 8 /10,
             operation: $scope.operation,
             descID: 'description',
             canvasID: 'container',
