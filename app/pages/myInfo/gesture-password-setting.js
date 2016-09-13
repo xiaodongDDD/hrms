@@ -47,8 +47,8 @@ angular.module('myInfoModule')
           var config = {
             height: w,
             width: w,
-            miniHeight: w / 5 * 2,
-            miniWidth: w / 5 * 2,
+            miniHeight: w / 10 * 3,
+            miniWidth: w / 10 * 3,
             operation: $scope.operation,
             canvasID: 'setting-container',
             descID: 'setting-description',

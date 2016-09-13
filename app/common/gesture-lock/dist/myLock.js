@@ -65,7 +65,7 @@ H5lock.prototype.createCircle = function () {// 创建解锁点的坐标，根�
   this.restPoint = [];            //存储所有未滑过的圆圈
   this.r = this.ctx.canvas.width / (1 + 3 * n);// 公式计算  this.ctx.canvas画布对象(最左边两个半径大小距离，剩下的为4×n个距离)
   var r = this.r;
-  if( this.miniCanvasID && ( this.step == 0 || ( this.step == 1 && this.operation == this.CHANGE_PASSWORD )) ){       //包含小九宫格的初始化
+  if( this.miniCtx && ( this.step == 0 || ( this.step == 1 && this.operation == this.CHANGE_PASSWORD )) ){       //包含小九宫格的初始化
     this.miniR = this.miniCtx.canvas.width / (1 + 3 * n);
     var miniR = this.miniR;
     for (var i = 0; i < n; i++) {         //初始化圆圈数组对象以及未滑过的圆圈数组对象
@@ -133,7 +133,7 @@ H5lock.prototype.drawPoint = function () {                                      
     this.ctx.arc(this.lastPoint[i].x, this.lastPoint[i].y, this.r / 3, 0, Math.PI * 2, true);
     this.ctx.closePath();
     this.ctx.fill();
-    if ( this.miniCanvasID && ( this.operation == this.INIT_PASSWORD || this.operation == this.CHANGE_PASSWORD ) ){
+    if ( this.miniCtx && ( ( this.operation == this.INIT_PASSWORD && this.step == 0 ) || ( this.operation == this.CHANGE_PASSWORD && this.step != 2 ) ) ){
       this.miniCtx.fillStyle = this.fillStyle;
       this.miniCtx.beginPath();
       this.miniCtx.arc(this.lastPoint[i].miniX, this.lastPoint[i].miniY, this.miniR, 0, Math.PI * 2, true);
@@ -156,8 +156,53 @@ H5lock.prototype.drawLine = function (po, lastPoint) {                          
   this.ctx.closePath();                                                            //创建从当前点回到起始点的路径
 };
 
+H5lock.prototype.drawTriangle = function (fromPt, toPt) {                          //绘制三角形箭头
+  this.ctx.beginPath();
+  this.ctx.fillStyle = this.fillStyle;
+  if ( fromPt.x == toPt.x ){                                                       //两点平行于y轴的情况
+    if( fromPt.y < toPt.y ){
+      this.ctx.moveTo(fromPt.x, fromPt.y + this.r * 5 / 6);
+      this.ctx.lineTo(fromPt.x + this.r / 4, fromPt.y + this.r / 2);
+      this.ctx.lineTo(fromPt.x - this.r / 4, fromPt.y + this.r / 2);
+      this.ctx.closePath();
+      this.ctx.fill();
+    } else {
+      this.ctx.moveTo(fromPt.x, fromPt.y - this.r * 5 / 6);
+      this.ctx.lineTo(fromPt.x + this.r / 4, fromPt.y - this.r / 2);
+      this.ctx.lineTo(fromPt.x - this.r / 4, fromPt.y - this.r / 2);
+      this.ctx.closePath();
+      this.ctx.fill();
+    }
+  } else if ( fromPt.y == toPt.y ){                                                //两点平行于x轴的情况
+    if( fromPt.x < toPt.x ){
+      this.ctx.moveTo(fromPt.x + this.r * 5 / 6, fromPt.y);
+      this.ctx.lineTo(fromPt.x + this.r / 2, fromPt.y + this.r / 4);
+      this.ctx.lineTo(fromPt.x + this.r / 2, fromPt.y - this.r / 4);
+      this.ctx.closePath();
+      this.ctx.fill();
+    } else {
+      this.ctx.moveTo(fromPt.x - this.r * 5 / 6, fromPt.y);
+      this.ctx.lineTo(fromPt.x - this.r / 2, fromPt.y + this.r / 4);
+      this.ctx.lineTo(fromPt.x - this.r / 2, fromPt.y - this.r / 4);
+      this.ctx.closePath();
+      this.ctx.fill();
+    }
+  } else {
+    var dis = getDis(fromPt, toPt);
+    var sin = ( toPt.y - fromPt.y ) / dis;
+    var cos = ( toPt.x - fromPt.x ) / dis;
+    this.ctx.moveTo(fromPt.x + this.r * 5 / 6 * cos , fromPt.y + this.r * 5 / 6 * sin );
+    var tempX = fromPt.x + this.r / 2 * cos;
+    var tempY = fromPt.y + this.r / 2 * sin;
+    this.ctx.lineTo(tempX + this.r / 4 * sin, tempY - this.r / 4 *cos);
+    this.ctx.lineTo(tempX - this.r / 4 * sin, tempY + this.r / 4 *cos);
+    this.ctx.closePath();
+    this.ctx.fill();
+  }
+};
+
 H5lock.prototype.pickPoints = function (fromPt, toPt) {
-  var lineLength = getDis(fromPt, toPt);                         //首先获取两个点左边之间的直线距离
+  var lineLength = Math.round(getDis(fromPt, toPt));                         //首先获取两个点左边之间的直线距离
   var dir = toPt.index > fromPt.index ? 1 : -1;                  //如果是从小到大，则dir为1，否则dir为2
 
   var len = this.restPoint.length;                             //剩余节点数量
@@ -169,7 +214,7 @@ H5lock.prototype.pickPoints = function (fromPt, toPt) {
     if (!pt){
       break;
     }
-    if (getDis(pt, fromPt) + getDis(pt, toPt) === lineLength) {      //如果剩余节点中有跟起始和终点节点在一条直线上的，则将其放入滑过的节点中
+    if ( Math.round(getDis(pt, fromPt) + getDis(pt, toPt)) === lineLength) {      //如果剩余节点中有跟起始和终点节点在一条直线上的，则将其放入滑过的节点中
       this.drawPoint(pt.x, pt.y);                             //画出刚加入的节点圆心
       this.lastPoint.push(pt);                               //滑过的节点数组添加刚加入的节点
       this.restPoint.splice(i, 1);                           //剩余的节点数组删除掉刚加入的节点
@@ -187,22 +232,32 @@ H5lock.prototype.pickPoints = function (fromPt, toPt) {
 
 H5lock.prototype.update = function (po) {                                         //核心变换方法在touchmove时候调用
   this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+  if( this.miniCtx && ( ( this.operation == this.INIT_PASSWORD && this.step == 0 ) || ( this.operation == this.CHANGE_PASSWORD && this.step != 2 ) ) ){
+    this.miniCtx.clearRect(0, 0, this.miniCtx.canvas.width, this.miniCtx.canvas.height);
+  }
 
-  for (i = 0; i < this.arr.length; i++) {                                         //每帧先把面板画出来
+  for (var i = 0; i < this.arr.length; i++) {                                         //每帧先把面板画出来
     this.drawCle(this.arr[i].x, this.arr[i].y, false);
-    if( this.miniCanvasID ){
+    if( this.miniCtx ){
       this.drawCle(this.arr[i].miniX, this.arr[i].miniY, true);
     }
+  }
+
+  for( i = 0; i < this.lastPoint.length - 1; i++){
+    this.drawTriangle(this.lastPoint[i], this.lastPoint[i + 1]);
   }
 
   this.drawPoint(this.lastPoint);                                                 //每帧画圆心
   this.drawLine(po, this.lastPoint);                                              //每帧花轨迹
 
-  for (var i = 0; i < this.restPoint.length; i++) {                              //更新的时候判断移动到的点是否在剩余节点数组里面
+  for (i = 0; i < this.restPoint.length; i++) {                              //更新的时候判断移动到的点是否在剩余节点数组里面
     var pt = this.restPoint[i];
     if ( getDis(po, pt) < this.r) {
       this.drawPoint(pt.x, pt.y);                                                   //如果来到一个新的圆圈，我们需要把圆心画出来
       this.pickPoints(this.lastPoint[this.lastPoint.length - 1], pt);
+      if( this.lastPoint.length > 1){
+        this.drawTriangle(this.lastPoint[this.lastPoint.length - 2], pt);        //画三角形箭头
+      }
       break;
     }
   }
@@ -243,11 +298,13 @@ H5lock.prototype.init = function () {                                           
   this.step = 0;
   this.canvas = document.getElementById(this.canvasID);                            //获取ID为canvas的对象
   this.ctx = this.canvas.getContext('2d');                                          //canvas元素本身并没有绘制能力，必须使用脚本来完成实际的绘图，返回一个对象，该对象提供了用于画布上绘图的方法和属性
+  this.ctx.globalCompositeOperation = 'source-atop';
   this.canvas.width = this.width;
   this.canvas.height = this.height;
-  if( this.miniCanvasID ){
+  if( this.miniCanvasID && ( this.operation == this.INIT_PASSWORD || this.operation == this.CHANGE_PASSWORD ) ){
     this.miniCanvas = document.getElementById(this.miniCanvasID);                   //获取小九宫格canvas
     this.miniCtx = this.miniCanvas.getContext('2d');
+    this.miniCtx.globalCompositeOperation = 'source-atop';
     this.miniCanvas.width = this.miniWidth;
     this.miniCanvas.height = this.miniHeight;
   }
