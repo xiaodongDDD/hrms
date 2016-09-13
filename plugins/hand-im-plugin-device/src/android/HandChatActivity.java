@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -129,11 +130,16 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
     private String cameraUrl = "";
     //用户信息
     private UserInfo uinfo;
+    private SharedPreferences sp;
+    private String telephoneNumbers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //setContentView(R.layout.hand_chat_act);
+        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+        telephoneNumbers = sp.getString("telephoneNumbers", "");
         setContentView(Util.getRS("hand_chat_act", "layout", HandChatActivity.this));
         Intent intent = getIntent();
         String type = intent.getStringExtra("TYPE");
@@ -231,6 +237,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                 edit_content.setText("");
                 TextMessage tm = TextMessage.obtain(content);
                 tm.setUserInfo(uinfo);
+                tm.setExtra(telephoneNumbers);
                 //发送测试消息
                 //单聊对象的ID
                 RongIMClient.getInstance().sendMessage(Conversation.ConversationType.PRIVATE, friendId,
@@ -592,7 +599,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
                 @Override
                 public void onSuccess(Integer integer) {
                     int totalUnreadCount = integer;
-					String targetId = message.getTargetId();
+                    String targetId = message.getTargetId();
                     String senderUserId = message.getSenderUserId();
                     //如果是单聊对象发来的消息 则加入到列表中
                     if(targetId.equals(friendId)){
@@ -784,6 +791,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
         }
         ImageMessage imgMsg = ImageMessage.obtain(Uri.fromFile(imageFileThumb), Uri.fromFile(imageFileSource));
         imgMsg.setUserInfo(uinfo);
+        imgMsg.setExtra(telephoneNumbers);
         RongIMClient.getInstance().sendImageMessage(Conversation.ConversationType.PRIVATE, friendId, imgMsg, "", "", new RongIMClient.SendImageMessageCallback() {
             @Override
             public void onAttached(Message message) {
@@ -849,6 +857,7 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
             }
             VoiceMessage vocMsg = VoiceMessage.obtain(Uri.fromFile(voiceFile), time);
             vocMsg.setUserInfo(uinfo);
+            vocMsg.setExtra(telephoneNumbers);
             if(!HandIMPlugin.getRmConnect()){
                 //获取token 建立连接
                 Toast.makeText(HandChatActivity.this,"连接中断，准备重连",Toast.LENGTH_SHORT).show();

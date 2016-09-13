@@ -29,11 +29,14 @@
 
 //程序点击登陆的时候调用
 -(void)getChatList:(CDVInvokedUrlCommand *)command
-{ [NSString stringWithFormat:@"%@/hrmsv2/v2/api/staff/detail?",rootService];
+{
+    NSString *baseUrl = [command.arguments[0] objectForKey:@"businessUrl"];
+    [[NSUserDefaults standardUserDefaults] setObject:baseUrl forKey:@"businessUrl"];
+    
     NSString *userId = [command.arguments[0] objectForKey:@"userId"];
     NSString *access_token = [command.arguments[0] objectForKey:@"access_token"];
     NSString *Token = [command.arguments[0] objectForKey:@"RCToken"];
-    NSLog(@"%@,%@,token----%@",userId,access_token,Token);
+//    NSLog(@"%@,%@,token----%@",userId,access_token,Token);
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:@"userId"];
     [[NSUserDefaults standardUserDefaults] setObject:Token forKey:@"RCToken"];
     [[NSUserDefaults standardUserDefaults] setObject:access_token forKey:@"access_token"];
@@ -301,8 +304,8 @@
             
             NSString *name = [DataBaseTool getNameByWorkerId:conversation.targetId];
             NSString *icon = [DataBaseTool getImageUrlByWorkerId:conversation.targetId];
-            
             NSLog(@"t-id:%@,name:%@,icon:%@,time:%@,unreadCount:%@,content:%@,sortTIme:%@,conversationType:%@",conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content,[TimeTool sortTime:conversation.receivedTime],@(conversation.conversationType));
+           
             if (name!=nil&&icon!=nil) {
                 NSDictionary *dictConversa = [NSDictionary dictionaryWithObjects:@[conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content,[TimeTool sortTime:conversation.receivedTime],@(conversation.conversationType)] forKeys:@[@"sendId",@"userName",@"userIcon",@"sendTime",@"messageNum",@"content",@"sortTime",@"conversationType"]];
                 [returnArray addObject:@{@"message":dictConversa}];

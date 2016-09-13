@@ -73,7 +73,7 @@ static NSString *reusableCellID = @"RCIMDiscussionGroupAddMemberCell";
         _searchController.hidesNavigationBarDuringPresentation = YES;
         
         _searchController.searchBar.frame = CGRectMake(0, 0, screenWidth, 44);
-        
+        _searchController.searchBar.tintColor = [UIColor colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0] ;          // 修改文字颜色
         [self.searchController.searchBar sizeToFit];
         self.searchController.searchBar.delegate = self;
         self.searchController.delegate = self;
@@ -187,8 +187,6 @@ static NSString *reusableCellID = @"RCIMDiscussionGroupAddMemberCell";
         //只需在此处修改即可
         if ([searchbuttons isKindOfClass:[UIButton class]]) {
             UIButton *cancelButton = (UIButton*)searchbuttons;
-            // 修改文字颜色
-            [cancelButton setTitleColor:[UIColor colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0] forState:UIControlStateNormal];
             if (searchBar.text.length==0) {
                 [cancelButton setTitle:@"返回"forState:UIControlStateNormal];
             }else{

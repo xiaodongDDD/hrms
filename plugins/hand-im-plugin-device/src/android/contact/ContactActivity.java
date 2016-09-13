@@ -3,6 +3,7 @@ package com.hand.im.contact;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -49,15 +50,14 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     private ListView listView;
     private SortAdapter sortadapter;
     private List<PersonBean> data;
-	private String[] GroupArray;
+    private String[] GroupArray;
     private SideBar sidebar;
     private TextView dialog;
     private EditText edtSearch;
     private ImageView btnSearch;
     private Button btnOK;
     private String targetId;
-    private ImageView imgBack;
-	
+    private TextView imgBack;
     private String TYPE;
     private String USERID;
     private String USERNAME;
@@ -70,7 +70,7 @@ public class ContactActivity extends Activity implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(Util.getRS("activity_contact", "layout", this));
         targetId = getIntent().getStringExtra("targetId");
-		GroupArray = getIntent().getExtras().getStringArray("GroupArray");
+        GroupArray = getIntent().getExtras().getStringArray("GroupArray");
         TYPE = getIntent().getStringExtra("TYPE");
         USERID = getIntent().getStringExtra("USERID");
         USERNAME = getIntent().getStringExtra("USERNAME");
@@ -81,7 +81,7 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     }
 
     private void initView() {
-        imgBack = (ImageView) findViewById(Util.getRS("arrow_back", "id", this));
+        imgBack = (TextView) findViewById(Util.getRS("arrow_back", "id", this));
         imgBack.setOnClickListener(this);
         sidebar = (SideBar) findViewById(Util.getRS("sidebar", "id", this));
         listView = (ListView) findViewById(Util.getRS("listview", "id", this));
@@ -111,6 +111,9 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     }
     private void updateDataList(){
         String url = LoginInfo.baseUrl + "/hrmsv2/v2/api/staff/query?" + "access_token=" + LoginInfo.access_token;
+//        SharedPreferences sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+//        String url = "http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/query?access_token="+ sp.getString("access_token", "");
+
         JSONObject object = new JSONObject();
         try {
             object.put("key", edtSearch.getText().toString());
@@ -229,19 +232,20 @@ public class ContactActivity extends Activity implements View.OnClickListener {
         if (RongIMClient.getInstance() != null) {
             RongIMClient.getInstance().createDiscussion(title, members, new RongIMClient.CreateDiscussionCallback() {
                 @Override
-                public void onSuccess(String s) {
+                public void onSuccess(String targetId) {
+                    Log.e("399","targetId:" + targetId);
                     dialog.setVisibility(View.INVISIBLE);
                     dialog.setTextSize(30);
                     DBhelper dBhelper = new DBhelper(getApplicationContext());
-                    dBhelper.addUserInfo(s, title, "http://zhouzybk.img-cn-shanghai.aliyuncs.com/discussionGroupImage1472535269374.png");
-                    Toast.makeText(getApplicationContext(), "讨论组创建成功", Toast.LENGTH_SHORT).show();
+                    dBhelper.addUserInfo(targetId, title, "http://zhouzybk.img-cn-shanghai.aliyuncs.com/discussionGroupImage1472535269374.png");
+                    Toast.makeText(getApplicationContext(),"讨论组创建成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ContactActivity.this, HandMulChatActivity.class);
                     intent.putExtra("TYPE", "NORMAL");
                     intent.putExtra("USERID", USERID);//用户Id
                     intent.putExtra("USERNAME", USERNAME);//用户姓名
                     intent.putExtra("ICONURL", ICONURL);//用户头像
                     intent.putExtra("TOKEN", TOKEN);
-                    intent.putExtra("TARGETID", s);
+                    intent.putExtra("TARGETID", targetId);
                     intent.putExtra("GROUPNAME", title);
                     intent.putExtra("GROUPICON", members);
                     startActivity(intent);

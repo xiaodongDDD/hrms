@@ -141,15 +141,6 @@
     return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
 }
 
-//获取某个字符串或者汉字的首字母.
-- (NSString *)firstCharactorWithString:(NSString *)string
-{
-    NSMutableString *str = [NSMutableString stringWithString:string];
-    CFStringTransform((CFMutableStringRef) str, NULL, kCFStringTransformMandarinLatin, NO);
-    CFStringTransform((CFMutableStringRef)str, NULL, kCFStringTransformStripDiacritics, NO);
-    NSString *pinYin = [str capitalizedString];
-    return [pinYin substringToIndex:1];
-}
 - (UIImage *)imageWithTitle:(NSString *)sting Size:(CGSize)size
 {
     UIGraphicsBeginImageContext(size);
@@ -159,8 +150,8 @@
     //写文字
     CGContextSetLineWidth(context, 1.0);
     CGContextSetRGBFillColor (context, 1.0, 1.0, 1.0, 1.0);
-    UIFont  *font = [UIFont systemFontOfSize:18.0];
-    [sting drawInRect:CGRectMake(size.width/2.0-10, size.height/2.0-10, 20, 20) withAttributes:@{NSFontAttributeName:font}];
+    UIFont  *font = [UIFont systemFontOfSize:25.0];
+    [sting drawInRect:CGRectMake(size.width/2.0-14, size.height/2.0-14, 30, 30) withAttributes:@{NSFontAttributeName:font}];
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return img;

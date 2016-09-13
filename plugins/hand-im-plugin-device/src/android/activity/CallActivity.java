@@ -19,7 +19,6 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.hand.im.LoginInfo;
 import com.hand.im.Util;
 import com.hand.im.control.PlayControl;
 import com.hand.im.model.NameModel;
@@ -46,8 +46,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import io.rong.calllib.IRongCallListener;
@@ -87,21 +85,19 @@ public class CallActivity extends BaseActivity implements IRongCallListener, Vie
     private LinearLayout mAcceptCallContainer;
     private ImageButton mAcceptCallImageButton;
     private ImageButton mHangUpCallImageButton;
+    private static SharedPreferences sp;
     private String callerUserId;//呼叫方id
     private boolean isReceiverCall;//是否是接到来电
     private boolean isOnThePhone;//是否正在通话中
     private PlayControl playControl;
-    private boolean isMuteImageButtonSelect = false;//静音按钮是否按下
-    private boolean isHandFreeImageButtonSelect = false;//免提按钮是否按下
-    private Vibrator vibrator;
+//    private boolean isMuteImageButtonSelect = false;//静音按钮是否按下
+//    private boolean isHandFreeImageButtonSelect = false;//免提按钮是否按下
     private ServiceConnection connection;
-    private int time = 0;//通话时长
     private String friendName;
     private String friendIcon;
     private DisplayImageOptions options;
     private OkHttpClient mOkHttpClient;
     private String net_state;
-    private static SharedPreferences sp;
     private AlertDialog alertDialog;
 
     @Override
@@ -268,46 +264,6 @@ public class CallActivity extends BaseActivity implements IRongCallListener, Vie
             finish();
         }
 
-        /*switch (view.getId()) {
-            case R.id.ib_call_cancel://挂断电话
-                String userId;
-                if (isReceiverCall || isOnThePhone) {
-                    userId = callerUserId;
-                } else {
-                    userId = targetId;
-                }
-                RongCallClient.getInstance().hangUpCall(userId);
-                break;
-            case R.id.ib_mute://静音
-                mMuteImageButton.setSelected(isMuteImageButtonSelect ? false : true);
-                isMuteImageButtonSelect = !isMuteImageButtonSelect;
-                RongCallClient.getInstance().setEnableLocalAudio(!isMuteImageButtonSelect);
-                break;
-            case R.id.ib_hand_free://免提
-                mHandFreeImageButton.setSelected(isHandFreeImageButtonSelect ? false : true);
-                isHandFreeImageButtonSelect = !isHandFreeImageButtonSelect;
-                RongCallClient.getInstance().setEnableSpeakerphone(isHandFreeImageButtonSelect);
-                break;
-            case R.id.ib_accept_call://接听
-                RongCallClient.getInstance().acceptCall(callerUserId);
-                if (playControl != null) {
-                    playControl.stop();
-                }
-                controlViewVisibility();
-                break;
-            case R.id.bt_hang_up_call://拒绝接听
-                RongCallClient.getInstance().hangUpCall(callerUserId);
-                if (playControl != null) {
-                    playControl.stop();
-                }
-                finish();
-                break;
-            case R.id.iv_minimize://最小化窗口
-                Log.e("399", "friendIcon::" + friendIcon);
-                CallFloatBoxView.showFloatBox(getApplication(), time, targetId, callerUserId, friendName, friendIcon);//启动悬浮窗口
-                finish();
-                break;
-        }*/
     }
     ////////////////////////////////////////////////////////////////////////////
 
@@ -461,7 +417,8 @@ public class CallActivity extends BaseActivity implements IRongCallListener, Vie
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
 
         Request request = new Request.Builder()
-                .url("http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/query?access_token=" + sp.getString("access_token", ""))
+//                .url("http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/query?access_token=" + sp.getString("access_token", ""))
+                .url(LoginInfo.baseUrl + "/hrmsv2/v2/api/staff/detail?" + "access_token=" + LoginInfo.access_token)
                 .header("content-type", "application/json")
                 .post(body)
                 .build();
@@ -510,51 +467,6 @@ public class CallActivity extends BaseActivity implements IRongCallListener, Vie
                 }
             }
         });
-    }
-
-    /**
-     * 设置通话时长
-     *
-     * @param timeView
-     */
-    public void setupTime(final TextView timeView) {
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        time++;
-                        if (time >= 3600) {
-                            timeView.setText(String.format("%d:%02d:%02d", time / 3600, (time % 3600) / 60, (time % 60)));
-                        } else {
-                            timeView.setText(String.format("%02d:%02d", (time % 3600) / 60, (time % 60)));
-                        }
-                    }
-                });
-            }
-        };
-
-        Timer timer = new Timer();
-        timer.schedule(task, 0, 1000);
-    }
-
-    /**
-     * 开始震动
-     */
-    private void startVibrator() {
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = {1000, 1500, 1000, 1500}; // 停止 开启 停止 开启
-        vibrator.vibrate(pattern, 2); //重复两次上面的pattern 如果只想震动一次，index设为-1
-    }
-
-    /**
-     * 取消震动
-     */
-    private void cancelVibrator() {
-        if (vibrator != null) {
-            vibrator.cancel();
-        }
     }
 
     /**

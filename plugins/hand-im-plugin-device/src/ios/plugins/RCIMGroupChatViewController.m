@@ -111,6 +111,12 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     if (self.dataSource.count) {
         [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
+    [[RCIM sharedRCIM] getDiscussion:self.discussionId success:^(RCDiscussion *discussion) {
+        NSLog(@"%@-获取讨论组更新信息:%@",self.class,discussion.discussionName);
+        self.navigationItem.title = discussion.discussionName;  
+    } error:^(RCErrorCode status) {
+        NSLog(@"%@-获取讨论组更新信息失败",self.class);
+    }];
 }
 
 //重写控制状态栏方法
@@ -166,11 +172,6 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     //从服务器获取用户信息
     [[RCIMClient sharedRCIMClient] getDiscussion:self.discussionId success:^(RCDiscussion *discussion) {
         for (NSString *memberId in discussion.memberIdList) {
-//            NSOperationQueue *operationQueue = [NSOperationQueue mainQueue];
-//            [operationQueue addOperationWithBlock:^{
-//                [self connectToService:memberId];
-//            }];
-//            [operationQueue setMaxConcurrentOperationCount:1];
             [self connectToService:memberId];
         }
     } error:^(RCErrorCode status) {

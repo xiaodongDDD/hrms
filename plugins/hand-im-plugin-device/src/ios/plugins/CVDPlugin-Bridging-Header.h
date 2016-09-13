@@ -15,8 +15,9 @@
 #define AppKey @"0vnjpoadnd4cz"
 #define appSecret @"e5t4ouvptpsaa"
 #define CDVIMPluginPushNotification @"CDVIMPluginPushNotification"
-
-#define rootService @"http://wechat.hand-china.com"
+//[[NSUserDefaults standardUserDefaults] objectForKey:@"baseUrl"]
+//#define rootService @"http://wechat.hand-china.com"
+#define rootService [[NSUserDefaults standardUserDefaults] objectForKey:@"businessUrl"]
 
 #define localService [NSString stringWithFormat:@"%@/hrmsv2/v2/api/staff/detail?",rootService]
 #define localServiceQuery [NSString stringWithFormat:@"%@/hrmsv2/v2/api/staff/query?",rootService]
