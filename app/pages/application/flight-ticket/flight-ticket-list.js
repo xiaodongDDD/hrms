@@ -73,7 +73,7 @@ angular.module('applicationModule')
              $scope.showLoading = false;//数据加载完成
              console.log(angular.toJson(result,true));
              $scope.items = result.applyResult.result;
-             projectList = result.projectResult.result;
+             projectList = result.projectResult;
              passengerService.setPassengerList(result.passengerResult.result);
              if($scope.items.length == 0){//申请列表为空
                $scope.showData = false;

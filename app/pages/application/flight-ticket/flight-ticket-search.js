@@ -74,6 +74,11 @@ angular.module('applicationModule')
       }).then(function (modal5) {
         $scope.chooseFlybackModal = modal5;
       });
+      $ionicModal.fromTemplateUrl('build/pages/application/flight-ticket/modal/project-type-select-modal.html', {//项目类型选择modal
+        scope: $scope
+      }).then(function (modal6) {
+        $scope.chooseProjectTypeModal = modal6;
+      });
       $timeout(function () {//获取省份列表滚动条
         $scope.provinceScroll = $ionicScrollDelegate.$getByHandle('provinceScroll');
       }, 300);
@@ -82,10 +87,12 @@ angular.module('applicationModule')
       $scope.citiesDetailInfo=citiesService[0].city;//默认城市信息列表为北京
       $scope.colorList=[];//记录选择省份，选择就变颜色
       $scope.flightTypeList=["项目内机票","flyback机票"];
+      $scope.projectTypeList=["客户项目","预销售","内部项目"];//项目类型列表
       $scope.passengerList=passengerService.getPassengerList();//乘客列表
       $scope.flybackList=[];//flyback编号列表
       var flybackStatus="";//标志flyback获取状态的，因为flyback列表获取为单独接口
-      $scope.projectList=$stateParams.projectList;//获取项目列表
+      var wholeProjectList=$stateParams.projectList;//获取项目列表
+      $scope.projectList=[];//项目列表默认为空
       for(var i=0;i<$scope.citiesInfo.length;i++){
         $scope.colorList.push(false);
       }
@@ -125,6 +132,7 @@ angular.module('applicationModule')
         projectFlightFlag:true,//项目内机票flag
         projectName:"请选择项目名称",//项目名称
         projectId:"",//所选择项目的ID
+        projectType:"请选择项目类型",//项目类型
         departureFlybackNumber:"去程flyback号码",//去程flyback号码,显示用
         comeBackFlybackNumber:"回程flyback号码",//回程flyback号码，显示用
         departureFlybackCode:"",//去程flybackCode，传值用
@@ -426,10 +434,26 @@ angular.module('applicationModule')
        $scope.chooseFlightTypeModal.show();
      };
      $scope.showProjectListModal=function(){//显示项目选择modal
-       $scope.chooseProjectModal.show();
+       if($scope.applyInfo.projectType=="客户项目"){
+         $scope.projectList=wholeProjectList.customer_project;
+       }else if($scope.applyInfo.projectType=="预销售"){
+         $scope.projectList=wholeProjectList.pre_sale;
+       }else if($scope.applyInfo.projectType=="内部项目"){
+         $scope.projectList=wholeProjectList.internal_project;
+       }
+       if($scope.projectList.length==0 && $scope.applyInfo.projectType=="请选择项目类型"){
+         hmsPopup.showVeryShortCenterToast("请选择项目类型");
+       }else if($scope.projectList.length==0 && $scope.applyInfo.projectType!="请选择项目类型"){
+         hmsPopup.showVeryShortCenterToast("此类型无可选择项目");
+       }else if($scope.projectList.length>0){
+         $scope.chooseProjectModal.show();
+       }
      };
      $scope.showPassengerListModal=function(){//显示乘客的modal
        $scope.choosePassengerModal.show();
+     };
+     $scope.showProjectTypeListModal=function(){//显示项目类型的modal
+       $scope.chooseProjectTypeModal.show();
      };
      $scope.showFlybackListModal=function(num){//显示flyback选择modal
        flybackType = num;
@@ -483,8 +507,8 @@ angular.module('applicationModule')
        $scope.chooseFlightTypeModal.hide();
      };
      $scope.finishChoosingProject=function(num){//选择项目完毕
-       $scope.applyInfo.projectName = $scope.projectList[num].project_name;
-       $scope.applyInfo.projectId = $scope.projectList[num].project_id;
+       $scope.applyInfo.projectName=$scope.projectList[num].project_name;
+       $scope.applyInfo.projectId=$scope.projectList[num].project_id;
        if($scope.applyInfo.projectFlightFlag == false){//如果是flyback机票
          //自动查询该项目可用的flyback列表
          flybackStatus="查询中";
@@ -520,6 +544,14 @@ angular.module('applicationModule')
        $scope.applyInfo.passengerId = $scope.passengerList[num].passenger_id;
        //$scope.applyInfo.passengerPassport = $scope.passengerList[num].passenger_passport;
        $scope.choosePassengerModal.hide();
+     };
+     $scope.finishChoosingProjectType=function(param){//完成选择项目类型
+       if($scope.applyInfo.projectType!=param){
+         $scope.applyInfo.projectType=param;
+         $scope.applyInfo.projectName="请选择项目名称";
+         $scope.applyInfo.projectId="";
+       }
+       $scope.chooseProjectTypeModal.hide();
      };
      $scope.finishChoosingFlybackNumber=function(num){//flyback号码选择完毕
        if(flybackType == 0){
