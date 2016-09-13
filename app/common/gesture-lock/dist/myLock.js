@@ -10,25 +10,24 @@ var H5lock = function (obj) {                                 //初始化H5加�
   this.CHANGE_PASSWORD = 1;
   this.UNLOCK = 2;
   this.RMLOCK = 3;
-  this.height = obj.height;
-  this.width = obj.width;
+  this.height = obj.height * 2;                               //扩展画布提高精细度已抗锯齿
+  this.width = obj.width * 2;
   this.miniHeight = obj.miniHeight;
   this.miniWidth = obj.miniWidth;
   this.fillStyle = obj.fillStyle || '#1992EA';
   this.strokeStyle = obj.strokeStyle || '#1992EA';
   this.lineWidth = obj.lineWidth || 2;
-  this.drawLineWidth = obj.drawLineWidth || 2;
   this.canvasID = obj.canvasID || 'canvas';
   this.resetID = obj.resetID || '';
   this.descID = obj.descID || '';
   this.miniCanvasID = obj.miniCanvasID || '';
   this.chooseType = obj.chooseType || 3;
   this.operation = obj.operation || this.INIT_PASSWORD;       //当前操作
-  this.successInitCallback = obj.successInitCallback;
-  this.successChangeCallback = obj.successChangeCallback;
-  this.successUnlockCallback = obj.successUnlockCallback;
-  this.successRmLockCallback = obj.successRmLockCallback;
-  this.errorCallback = obj.errorCallback;
+  this.successInitCallback = obj.successInitCallback;           //成功初始化手势密码的回调函数
+  this.successChangeCallback = obj.successChangeCallback;       //成功修改密码的回调函数
+  this.successUnlockCallback = obj.successUnlockCallback;       //成功解锁的回调函数
+  this.successRmLockCallback = obj.successRmLockCallback;       //成功解除密码的回调函数
+  this.errorCallback = obj.errorCallback;                         //出错调用的函数
   this.step = 0;                                              //当前绘制密码次数
 };
 
@@ -51,8 +50,8 @@ H5lock.prototype.checkPass = function (psw1, psw2) {             // 检测密码
 H5lock.prototype.getPosition = function (e) {                                     //获取touch点相对于canvas的坐标
   var rect = e.currentTarget.getBoundingClientRect();
   var po = {
-    x: e.touches[0].clientX - rect.left,
-    y: e.touches[0].clientY - rect.top
+    x: (e.touches[0].clientX - rect.left) * 2,
+    y: (e.touches[0].clientY - rect.top) * 2
   };
   return po;
 };
@@ -146,7 +145,7 @@ H5lock.prototype.drawPoint = function () {                                      
 H5lock.prototype.drawLine = function (po, lastPoint) {                            // 解锁轨迹
   this.ctx.beginPath();
   this.ctx.strokeStyle = this.fillStyle;                                        //设置或返回用于笔触的颜色、渐变或模式
-  this.ctx.lineWidth = this.drawLineWidth;                                      //初始化解锁轨迹的线条宽度
+  this.ctx.lineWidth = this.lineWidth;                                      //初始化解锁轨迹的线条宽度
   this.ctx.moveTo(lastPoint[0].x, lastPoint[0].y);                                  //把路径移动到画布中的指定点，不创建线条
   for (var i = 1; i < this.lastPoint.length; i++) {
     this.ctx.lineTo(this.lastPoint[i].x, this.lastPoint[i].y);
@@ -292,7 +291,7 @@ H5lock.prototype.setDesc = function ( desc ){                                   
 };
 
 H5lock.prototype.init = function () {                                               //程序入口
-  this.password = window.localStorage.getItem('gesturePassword') ? window.localStorage.getItem('gesturePassword') : '';
+  this.password = window.localStorage.getItem('gesturePassword') ? window.localStorage.getItem('gesturePassword') : '';         //是否已经初始化密码
   this.lastPoint = [];
   this.touchFlag = false;                                                           //是否开始手势解锁
   this.step = 0;
