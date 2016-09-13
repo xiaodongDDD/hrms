@@ -35,7 +35,7 @@ static BelongPlaceManager *belongPlaceManager;
             NSDictionary *result = jsonDic[@"result"];
             if (result!=nil&&![result isEqual:[NSNull null]]) {
                 NSLog(@"result:%@,%@,%@,%@,%@,%@",result[@"areacode"],result[@"card"],result[@"city"],result[@"company"],result[@"province"],result[@"zip"]);
-                formatStr = [NSString stringWithFormat:@"%@%@ %@",result[@"province"],result[@"city"],[result[@"company"] substringWithRange:NSMakeRange(2, 2)]];
+                formatStr = [NSString stringWithFormat:@"%@(%@%@ %@)",phoneNumber,result[@"province"],result[@"city"],[result[@"company"] substringWithRange:NSMakeRange(2, 2)]];
                 self.successCall(formatStr);
             }
             

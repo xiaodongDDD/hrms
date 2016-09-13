@@ -312,7 +312,8 @@ angular.module('messageModule')
             var emp = {
               "friendId": item.emp_code,
               "friendName": item.emp_name,
-              "friendIcon": item.avatar
+              "friendIcon": item.avatar,
+              "telephoneNumbers": item.mobil
             };
             imService.toNativeChatPage(emp);
           } else {

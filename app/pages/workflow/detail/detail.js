@@ -90,6 +90,7 @@ angular.module('applicationModule')
     '$timeout',
     '$ionicScrollDelegate',
     '$ionicActionSheet',
+    '$filter',
     'baseConfig',
     'TimeSheetService',
     'workFLowListService',
@@ -103,6 +104,7 @@ angular.module('applicationModule')
               $timeout,
               $ionicScrollDelegate,
               $ionicActionSheet,
+              $filter,
               baseConfig,
               TimeSheetService,
               workFLowListService,
@@ -902,6 +904,72 @@ angular.module('applicationModule')
             };
             workFLowListService.getTransmitPerson(success, error, $scope.transmitPersonFilter.value);
           }
+        },
+
+        needSave: function () {
+          var needs = [];
+          var lov, datepicker;
+          var canSave = true;
+          for (var i = 0; i < $scope.needList.length; i++) {
+            if ($scope.needList[i].required == 'Y' && ($scope.needList[i].value == '' || $scope.needList[i].value == null)) {
+              canSave = false;
+              hmsPopup.showPopup('保存失败：必输项不能为空');
+              break;
+            }
+            if ($scope.needList[i].type == 'lov') {
+              lov = {
+                default: '',
+                name: '',
+                required: '',
+                title: '',
+                type: '',
+                value: ''
+              };
+              lov.default = $scope.needList[i].default;
+              lov.name = $scope.needList[i].name;
+              lov.required = $scope.needList[i].required;
+              lov.title = $scope.needList[i].title;
+              lov.type = $scope.needList[i].type;
+              lov.value = $scope.needList[i].value;
+              needs.push(lov);
+            } else if ($scope.needList[i].type == 'datepicker') {
+              datepicker = {
+                default: '',
+                name: '',
+                required: '',
+                title: '',
+                type: '',
+                value: ''
+              };
+              datepicker.default = $scope.needList[i].default;
+              datepicker.name = $scope.needList[i].name;
+              datepicker.required = $scope.needList[i].required;
+              datepicker.title = $scope.needList[i].title;
+              datepicker.type = $scope.needList[i].type;
+              datepicker.value = $scope.needList[i].value;
+              needs.push(datepicker);
+            } else {
+              needs.push($scope.needList[i]);
+            }
+          }
+          if (canSave) {
+            var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/workflow_save_action";
+            var params = {
+              params: {
+                "p_instance_id": detail.instanceId,
+                "p_param_json": {"need": +JSON.stringify(needs)}
+              }
+            };
+            hmsHttp.post(url, params).success(function (result) {
+              if (result.status == 'S') {
+                hmsPopup.showPopup('确认信息保存成功');
+              } else {
+                hmsPopup.showPopup('确认信息保存失败 ' + result.errmsg);
+              }
+            }).error(function () {
+              hmsPopup.showPopup('确认信息保存失败,可能是网络错误');
+            });
+          }
         }
       };
 
@@ -1011,7 +1079,7 @@ angular.module('applicationModule')
             }
           }
 
-          if (detail.workflowId == workflowIdSpecial.applicationFullMemberWorkflowId){
+          if (detail.workflowId == workflowIdSpecial.applicationFullMemberWorkflowId) {
             if (!$scope.applicationEmployeeSaveFlag) {
               hmsPopup.showPopup('请先保存转正信息!');
               return false;
@@ -1019,7 +1087,7 @@ angular.module('applicationModule')
           }
 
           if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId &&
-             (detail.nodeId == 100146 || detail.nodeId == 100148)) {
+            (detail.nodeId == 100146 || detail.nodeId == 100148)) {
             if (!$scope.newOpenProjectSaveFlag) {
               hmsPopup.showPopup('请先保存新建项目信息!');
               return false;
@@ -1110,6 +1178,60 @@ angular.module('applicationModule')
                   console.log('$scope.multipleLine ' + angular.toJson($scope.multipleLine));
                   console.log('$scope.singalArrayList ' + angular.toJson($scope.singalArrayList));
                 }
+
+                $scope.needList = response.workflow_data.need;
+                //lov、datepicker类型额外处理
+                if ($scope.needList) {
+                  var lovIndex, dpIndex, defaultValue;
+                  for (var i = 0; i < $scope.needList.length; i++) {
+                    if ($scope.needList[i].type == 'lov') {
+                      lovIndex = i;
+                      $scope.needList[i].options = [];
+
+                      var url = baseConfig.businessPath + "/" + $scope.needList[i].default.procedure + "/" + $scope.needList[i].default.function;
+                      var params = {"params": {"p_instance_id": detail.instanceId}}
+                      hmsHttp.post(url, params).success(function (result) {
+                        if (result.status == 'S') {
+                          $scope.needList[lovIndex].options = result.lov;
+                        } else {
+                        }
+                      }).error(function () {
+                        hmsPopup.showPopup('获取值列表信息错误!');
+                      });
+                    }
+                    if ($scope.needList[i].type == 'datepicker') {
+                      dpIndex = i;
+                      defaultValue = $scope.needList[i].value;
+                      $scope.needList[i].datepickerObject = {
+                        titleLabel: '日期选择',  //Optional
+                        todayLabel: '今天',  //Optional
+                        closeLabel: '关闭',  //Optional
+                        setLabel: '确定',  //Optional
+                        setButtonType: 'button-assertive',  //Optional
+                        todayButtonType: 'button',  //Optional
+                        closeButtonType: 'button',  //Optional
+                        inputDate: new Date(), //Optional
+                        mondayFirst: true,  //Optional
+                        disabledDates: [], //Optional
+                        weekDaysList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
+                        monthList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"], //Optional
+                        templateType: 'popup', //Optional
+                        showTodayButton: 'true', //Optional
+                        modalHeaderColor: 'bar-positive', //Optional
+                        modalFooterColor: 'bar-positive', //Optional
+                        from: new Date(1900, 0, 1), //Optional
+                        to: new Date(2101, 0, 1),  //Optional
+                        dateFormat: ' yyyy - MM - dd ', //Optional
+                        closeOnSelect: false, //Optional
+                        dateModel: defaultValue,
+                        callback: function (val) { //Mandatory
+                          this.dateModel = $filter('date')(val, 'yyyy-MM-dd');
+                          $scope.needList[dpIndex].value = this.dateModel;
+                        }
+                      };
+                    }
+                  }
+                }
               }
             }
             $scope.LoadingModalData = false;
@@ -1126,18 +1248,18 @@ angular.module('applicationModule')
             submitFlag = 'N';
           }
 
-          if(baseConfig.debug){
+          if (baseConfig.debug) {
             console.log('$stateParams.myPrsonalApplicationFlag ' + $stateParams.myPrsonalApplicationFlag);
           }
 
-          if ($stateParams.myPrsonalApplicationFlag && $stateParams.myPrsonalApplicationFlag == true){
-            if(detail.status){
-              if(detail.status == 1){
+          if ($stateParams.myPrsonalApplicationFlag && $stateParams.myPrsonalApplicationFlag == true) {
+            if (detail.status) {
+              if (detail.status == 1) {
                 submitFlag = 'N';
-              }else{
+              } else {
                 submitFlag = 'Y';
               }
-            }else{
+            } else {
               submitFlag = 'Y';
             }
           }
@@ -1211,11 +1333,11 @@ angular.module('applicationModule')
         init.initPushDetail(detail);
         $timeout(function () {
           init.initDataModal();
-        },250);
+        }, 250);
       } else if ($stateParams.type == 'WORKFLOWDETAIL') {
         $scope.LoadingPushData = false;
         $timeout(function () {
           init.initDataModal();
-        },250);
+        }, 250);
       }
     }]);

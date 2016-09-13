@@ -14,7 +14,7 @@
       <i class="ion-android-add" style="font-size: 24px"></i>
     </div>
   </ion-header-bar>
-  <ion-content style="bottom:48px;" class="messages" ng-class="{true: 'has-employee-list', false: ''}[showFilter]">
+  <ion-content style="bottom:48px;" class="messages" ng-class="{true: 'has-employee-list', false: ''}[showFilter]" has-bouncing="">
 
     <hms-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </hms-refresher>
