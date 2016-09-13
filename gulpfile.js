@@ -39,8 +39,13 @@ var htmlFilePath = [
 var libDevFilePath = [
   'app/lib/**/*.*',
   'app/lib/**/**/*.*',
-  'app/common/**/**/*.*',
   'app/lib/**/**/**/*.*'];
+
+var libDevCommonFilePath = [
+  'app/common/**/*.*',
+  'app/common/**/**/*.*',
+  'app/common/**/**/**/*.*'
+];
 
 var libPublishFilePath = [
   'app/lib/**/css/ionic.min.css',
@@ -190,14 +195,23 @@ gulp.task('copy-ios-appStore-config', function () {
  .pipe(gulp.dest('plugins'));
  });
  */
+
+
+gulp.task('copy-common-js-libs', function () {
+  return gulp.src(libDevCommonFilePath)
+    //.pipe(useref({noAssets: true}, lazypipe().pipe(sourcemaps.init, {loadMaps: true})))
+    //.pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('www/build/common'));
+});
+
 //定义开发环境的依赖库文件任务
 gulp.task('copy-dev-lib', function (callback) {
-  runSequence('copy-dev-libs', 'copy-img', callback);
+  runSequence('copy-dev-libs', 'copy-img', 'copy-common-js-libs' , callback);
 });
 
 //定义发布环境的依赖库文件任务
 gulp.task('copy-publish-lib', function (callback) {
-  runSequence('copy-publish-libs', 'copy-img', callback);
+  runSequence('copy-publish-libs', 'copy-img', 'copy-common-js-libs', callback);
 });
 
 //合并压缩css文件

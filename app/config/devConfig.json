@@ -9,6 +9,7 @@
     "businessPath": "http://wechat.hand-china.com/hrmsv2/v2/api/l",
     "queryPath": "http://wechat.hand-china.com/hrmsv2/v2/api",
     "imPath": "http://wechat.hand-china.com/hrmsv2",
+    "pluginBusinessPath": "http://wechat.hand-china.com",
     "pkgIdentifier": "",
     "appEnvironment": "UAT",
     "expUploadUrl": "http://172.20.0.71:8099/handhr_aurora/hand_app_fileupload.svc",

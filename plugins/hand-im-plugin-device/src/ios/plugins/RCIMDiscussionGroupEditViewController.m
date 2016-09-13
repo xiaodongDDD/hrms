@@ -240,8 +240,8 @@
 
 - (void)upload:(NSString *)filename mimeType:(NSString *)mimeType fileData:(NSData *)fileData params:(NSDictionary *)params
 {
-   // NSString *access_token = [[NSUserDefaults standardUserDefaults] objectForKey:@"access_token"];
-    NSString *access_token = @"589bb441-e760-495a-846c-3ed22460a2eb";
+    NSString *access_token = [[NSUserDefaults standardUserDefaults] objectForKey:@"access_token"];
+    //NSString *access_token = @"589bb441-e760-495a-846c-3ed22460a2eb";
     // 1.请求路径
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@access_token=%@",localServiceUpload,access_token]];
     

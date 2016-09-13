@@ -46,11 +46,6 @@ angular.module('HmsModule')
             } catch (e) {
               serveVersionParams.updateContent = '';
             }
-            try {
-              serveVersionParams.subDownloadDesc = response.returnData.subDownloadDesc.replace(/\\n/g, '\r\n');
-            } catch (e) {
-              serveVersionParams.subDownloadDesc = '';
-            }
             var serveVersion = serveVersionParams.bigVersion.split('.');
             var localVersion = baseConfig.version.currentVersion.split('.');
 
@@ -99,9 +94,9 @@ angular.module('HmsModule')
                       return;
                     }
                   };
-                  hmsPopup.confirm(serveVersionParams.subDownloadDesc, "小版本更新", selectAction_min);
+                  hmsPopup.confirm(serveVersionParams.updateContent, "小版本更新", selectAction_min);
                 } else {
-                  alert(serveVersionParams.subDownloadDesc);
+                  alert(serveVersionParams.updateContent);
                 }
               } else {
                 if (newName === 'MY_INFO')

@@ -9,6 +9,7 @@
     "businessPath": "http://mobile-app.hand-china.com/hrmsv2/v2/api/l",
     "queryPath": "http://mobile-app.hand-china.com/hrmsv2/v2/api",
     "imPath": "http://mobile-app.hand-china.com/hrmsv2",
+    "pluginBusinessPath": "http://mobile-app.hand-china.com",
     "pkgIdentifier": "",
     "appEnvironment": "PROD",
     "expUploadUrl":"http://app.hand-china.com/hrms/hand_app_fileupload.svc",

@@ -301,10 +301,12 @@
             
             NSString *name = [DataBaseTool getNameByWorkerId:conversation.targetId];
             NSString *icon = [DataBaseTool getImageUrlByWorkerId:conversation.targetId];
+            
             NSLog(@"t-id:%@,name:%@,icon:%@,time:%@,unreadCount:%@,content:%@,sortTIme:%@,conversationType:%@",conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content,[TimeTool sortTime:conversation.receivedTime],@(conversation.conversationType));
-           
-            NSDictionary *dictConversa = [NSDictionary dictionaryWithObjects:@[conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content,[TimeTool sortTime:conversation.receivedTime],@(conversation.conversationType)] forKeys:@[@"sendId",@"userName",@"userIcon",@"sendTime",@"messageNum",@"content",@"sortTime",@"conversationType"]];
-            [returnArray addObject:@{@"message":dictConversa}];
+            if (name!=nil&&icon!=nil) {
+                NSDictionary *dictConversa = [NSDictionary dictionaryWithObjects:@[conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content,[TimeTool sortTime:conversation.receivedTime],@(conversation.conversationType)] forKeys:@[@"sendId",@"userName",@"userIcon",@"sendTime",@"messageNum",@"content",@"sortTime",@"conversationType"]];
+                [returnArray addObject:@{@"message":dictConversa}];
+            }
         }else if (conversation.conversationType==ConversationType_DISCUSSION){
             if (![conversation.objectName isEqualToString:@"RC:DizNtf"]) {
                 //讨论组聊天
