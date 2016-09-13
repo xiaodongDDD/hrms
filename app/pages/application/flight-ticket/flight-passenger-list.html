@@ -64,7 +64,7 @@
       <ion-item class="passenger-edit-item" ng-if="editMode && showData">
         <div class="row passenger-name-row">
           <label class="passenger-name">姓名：</label>
-          <input type="text" class="first-input" placeholder="请输入乘机人姓名" ng-model="editItem[0].passenger_name"/>
+          <input type="text" class="first-input ios-input-top-mend" placeholder="请输入乘机人姓名" ng-model="editItem[0].passenger_name"/>
         </div>
         <div class="row passenger-id-row">
           <label class="passenger-id">性别：</label>
@@ -83,7 +83,7 @@
         </div>
         <div class="row passenger-passport-row">
           <label class="passenger-id">护照：</label>
-          <input type="text" class="second-input" placeholder="请输入乘机人护照" ng-model="editItem[0].passenger_passport"/>
+          <input type="text" class="second-input ios-input-top-mend" placeholder="请输入乘机人护照" ng-model="editItem[0].passenger_passport"/>
         </div>
         <ion-option-button>
           <div class="option-button-full-row">
@@ -96,7 +96,7 @@
       <ion-item class="passenger-edit-item" ng-if="createMode && showData">
         <div class="row passenger-name-row">
           <label class="passenger-id">姓名(必填)：</label>
-          <input type="text" class="second-input" placeholder="请输入乘机人姓名" ng-model="createItem[0].passenger_name"/>
+          <input type="text" class="second-input ios-input-top-mend" placeholder="请输入乘机人姓名" ng-model="createItem[0].passenger_name"/>
         </div>
         <div class="row passenger-id-row">
           <label class="passenger-id">性别(必填)：</label>
@@ -107,7 +107,7 @@
         </div>
         <div class="row passenger-id-row">
           <label class="passenger-id">身份证号(必填)：</label>
-          <input type="text" class="second-input" placeholder="请输入乘机人身份证号" ng-model="createItem[0].passenger_id"/>
+          <input type="text" class="second-input ios-input-top-mend" placeholder="请输入乘机人身份证号" ng-model="createItem[0].passenger_id"/>
         </div>
         <div class="row passenger-id-row" ng-click="editRelationship('create')">
           <label class="passenger-id">关系(必填)：</label>
@@ -115,7 +115,7 @@
         </div>
         <div class="row passenger-passport-row">
           <label class="passenger-id">护照(选填)：</label>
-          <input type="text" class="second-input" placeholder="请输入乘机人护照" ng-model="createItem[0].passenger_passport"/>
+          <input type="text" class="second-input ios-input-top-mend" placeholder="请输入乘机人护照" ng-model="createItem[0].passenger_passport"/>
         </div>
         <ion-option-button>
           <div class="option-button-full-row">

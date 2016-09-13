@@ -77,10 +77,15 @@ angular.module('applicationModule')
       }).then(function (modal5) {
         $scope.chooseFlybackModal = modal5;
       });
+      $ionicModal.fromTemplateUrl('build/pages/application/flight-ticket/modal/project-type-select-modal.html', {//项目类型选择modal
+        scope: $scope
+      }).then(function (modal6) {
+        $scope.chooseProjectTypeModal = modal6;
+      });
       $timeout(function () {//获取省份列表滚动条
         $scope.provinceScroll = $ionicScrollDelegate.$getByHandle('provinceScroll');
       }, 300);
-     $scope.projectList=$stateParams.projectList;//项目列表
+     var wholeProjectList=$stateParams.projectList;//项目列表
      $scope.passengerList=passengerService.getPassengerList();//获取乘机人列表
      var param=$stateParams.detailInfo;
      $scope.detailInfo={//详情信息
@@ -88,6 +93,7 @@ angular.module('applicationModule')
       apply_id:param.apply_id,
       apply_detail_id:param.apply_detail_id,
       project_id:param.project_id,
+      project_type:param.project_type,
       project_name:param.project_name,
       departure_place:param.departure_place,
       destination_place:param.destination_place,
@@ -102,6 +108,13 @@ angular.module('applicationModule')
       ticket_supplement:param.ticket_supplement,
       backup_description:param.backup_description
      };
+     if($scope.detailInfo.project_type=="客户项目"){
+       $scope.projectList=wholeProjectList.customer_project;
+     }else if($scope.detailInfo.project_type=="预销售"){
+       $scope.projectList=wholeProjectList.pre_sale;
+     }else if($scope.detailInfo.project_type=="内部项目"){
+       $scope.projectList=wholeProjectList.internal_project;
+     }
      $scope.dateDetail={//年月日详情拆分
         year:parseInt($scope.detailInfo.departure_date.substring(0,4)),
         month:parseInt($scope.detailInfo.departure_date.substring(5,7)),
@@ -110,6 +123,7 @@ angular.module('applicationModule')
       console.log(angular.toJson(param,true));
      console.log(angular.toJson($scope.detailInfo,true));
      console.log(angular.toJson($scope.dateDetail,true));
+     $scope.projectTypeList=["客户项目","预销售","内部项目"];
      $scope.flightTypeList=["项目内机票","flyback机票"];//机票类型列表
       $scope.citiesInfo=citiesService;//从factory中拿到中国省市信息
       $scope.citiesDetailInfo=citiesService[0].city;//默认城市信息列表为北京
@@ -186,7 +200,7 @@ angular.module('applicationModule')
        if($scope.editAble==true){
          if($scope.detailInfo.apply_status == "applied"){
            $scope.editMode = true;
-           hmsPopup.showLongCenterToast("进入编辑模式");
+           hmsPopup.showVeryShortCenterToast("进入编辑模式");
          }else if($scope.detailInfo.apply_status == "finished"){
            $scope.endorseMode = true;
            hmsPopup.showLongCenterToast("改签请填写改签后出发日期和航班，退票直接点击退票按钮");
@@ -341,9 +355,33 @@ angular.module('applicationModule')
        }
        $scope.chooseCitiesModal.hide();
      };
+     $scope.changeProjectType=function(){//改变项目类型
+       if($scope.editMode==true){
+         $scope.chooseProjectTypeModal.show();
+       }
+     };
+     $scope.finishChoosingProjectType=function(param){//项目类型选择完毕
+        if($scope.detailInfo.project_type!=param){
+          $scope.detailInfo.project_type=param;
+          $scope.detailInfo.project_name="请选择项目名称";
+          $scope.detailInfo.project_id="";
+        }
+        $scope.chooseProjectTypeModal.hide();
+     };
      $scope.changeProject=function(){//改变项目
        if($scope.editMode==true){
-         $scope.chooseProjectModal.show();
+         if($scope.detailInfo.project_type=="客户项目"){
+           $scope.projectList=wholeProjectList.customer_project;
+         }else if($scope.detailInfo.project_type=="预销售"){
+           $scope.projectList=wholeProjectList.pre_sale;
+         }else if($scope.detailInfo.project_type=="内部项目"){
+           $scope.projectList=wholeProjectList.internal_project;
+         }
+         if($scope.projectList.length==0){
+           hmsPopup.showVeryShortCenterToast("此类型无可选择项目");
+         }else if($scope.projectList.length>0){
+           $scope.chooseProjectModal.show();
+         }
        }
      };
      $scope.finishChoosingProject=function(num){//项目选择完毕
@@ -398,58 +436,62 @@ angular.module('applicationModule')
        });
      }
      $scope.confirmToChange=function(){//确认更改申请
-       var temp = $scope.detailInfo;
-       var url=baseConfig.businessPath+"/ticket_apply_info/flyback_modified";
-       var param={
-         "params":{
-           p_apply_id:temp.apply_id,
-           p_apply_detail_id:temp.apply_detail_id,
-           p_employee_number:window.localStorage.empno,
-           p_project_id:temp.project_id,
-           p_departure_place:temp.departure_place,
-           p_destination_place:temp.destination_place,
-           p_departure_date:temp.departure_date,
-           p_flight_type:"",
-           p_departure_flyback_number:"",
-           p_departure_flight_number:temp.departure_flight_number,
-           p_passenger_name:temp.passenger_name,
-           p_passenger_id:temp.passenger_id,
-           p_backup_description:temp.backup_description,
-           p_ticket_supplement:"",
-           p_customer_pay:"",
-           p_route_type:1
+       if($scope.detailInfo.project_name=="请选择项目名称"){
+         hmsPopup.showVeryShortCenterToast("请选择项目名称");
+       }else if($scope.detailInfo.project_name!="请选择项目名称") {
+         var temp = $scope.detailInfo;
+         var url = baseConfig.businessPath + "/ticket_apply_info/flyback_modified";
+         var param = {
+           "params": {
+             p_apply_id: temp.apply_id,
+             p_apply_detail_id: temp.apply_detail_id,
+             p_employee_number: window.localStorage.empno,
+             p_project_id: temp.project_id,
+             p_departure_place: temp.departure_place,
+             p_destination_place: temp.destination_place,
+             p_departure_date: temp.departure_date,
+             p_flight_type: "",
+             p_departure_flyback_number: "",
+             p_departure_flight_number: temp.departure_flight_number,
+             p_passenger_name: temp.passenger_name,
+             p_passenger_id: temp.passenger_id,
+             p_backup_description: temp.backup_description,
+             p_ticket_supplement: "",
+             p_customer_pay: "",
+             p_route_type: 1
+           }
          }
-       }
-       if(temp.flight_type=="项目内机票"){
-         param.params.p_flight_type=15;
-       }else if(temp.flight_type=="flyback机票" || temp.flight_type=="Flyback机票"){
-         param.params.p_flight_type=10;
-       }
-       if($scope.booleanSet.customerPay==false){
-         param.params.p_customer_pay=0;
-       }else if($scope.booleanSet.customerPay==true){
-         param.params.p_customer_pay=1;
-       }
-       if($scope.booleanSet.ticketSupplement==false){
-         param.params.p_ticket_supplement=0;
-       }else if($scope.booleanSet.ticketSupplement==true){
-         param.params.p_ticket_supplement=1;
-       }
-       if(temp.flight_type=="flyback机票" || temp.flight_type=="Flyback机票"){
-         param.params.p_departure_flyback_number=temp.departure_flyback_code;
-         var direction = temp.departure_flyback_number.substring(temp.departure_flyback_number.length-2,temp.departure_flyback_number.length);
-         if(direction=="去程"){
-           param.params.p_route_type=1;
-         }else if(direction=="回程"){
-           param.params.p_route_type=2;
+         if (temp.flight_type == "项目内机票") {
+           param.params.p_flight_type = 15;
+         } else if (temp.flight_type == "flyback机票" || temp.flight_type == "Flyback机票") {
+           param.params.p_flight_type = 10;
          }
-         if(temp.departure_flyback_number==""){
-           hmsPopup.showVeryShortCenterToast("flyback机票申请必须输入flyback号码");
-         }else if(temp.departure_flyback_number!=""){
-           postData(url,param);
+         if ($scope.booleanSet.customerPay == false) {
+           param.params.p_customer_pay = 0;
+         } else if ($scope.booleanSet.customerPay == true) {
+           param.params.p_customer_pay = 1;
          }
-       }else if(temp.flight_type=="项目内机票"){
-         postData(url,param);
+         if ($scope.booleanSet.ticketSupplement == false) {
+           param.params.p_ticket_supplement = 0;
+         } else if ($scope.booleanSet.ticketSupplement == true) {
+           param.params.p_ticket_supplement = 1;
+         }
+         if (temp.flight_type == "flyback机票" || temp.flight_type == "Flyback机票") {
+           param.params.p_departure_flyback_number = temp.departure_flyback_code;
+           var direction = temp.departure_flyback_number.substring(temp.departure_flyback_number.length - 2, temp.departure_flyback_number.length);
+           if (direction == "去程") {
+             param.params.p_route_type = 1;
+           } else if (direction == "回程") {
+             param.params.p_route_type = 2;
+           }
+           if (temp.departure_flyback_number == "") {
+             hmsPopup.showVeryShortCenterToast("flyback机票申请必须输入flyback号码");
+           } else if (temp.departure_flyback_number != "") {
+             postData(url, param);
+           }
+         } else if (temp.flight_type == "项目内机票") {
+           postData(url, param);
+         }
        }
      };
      $scope.returnTicket=function(){//退票

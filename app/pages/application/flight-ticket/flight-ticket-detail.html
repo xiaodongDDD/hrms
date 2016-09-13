@@ -37,6 +37,10 @@
          <div class="apply-left-label">出发时间：</div>
          <div class="apply-right-label" ng-class="{'edit-mark':endorseMode}" ng-bind="detailInfo.departure_date"></div>
        </div>
+       <div class="item apply-detail-item" ng-click="changeProjectType()">
+         <div class="apply-left-label">项目类型：</div>
+         <div class="apply-right-label" ng-bind="detailInfo.project_type"></div>
+       </div>
        <div class="item apply-detail-item" ng-click="changeProject()">
          <div class="apply-left-label">项目名称：</div>
          <div class="apply-right-label" ng-bind="detailInfo.project_name"></div>
