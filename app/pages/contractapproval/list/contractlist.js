@@ -144,12 +144,14 @@ angular.module('applicationModule')
         if (!contractListService.IsFromParent()) {
           contractListService.setIsFromParent(true);
         }
+        $scope.subheadereAnimaFlag = true;
         slideToChangePage = false;
 
         //设置分页的状态（选中与未选中）
         for(k in $scope.subheaderSelectFlag){
           $scope.subheaderDeselectAnimaFlag[k] = $scope.subheaderSelectFlag[k];
         }
+        $scope.subheaderDeselectAnimaFlag[title] = false;//防止点同一个
         for (k in $scope.subheaderSelectFlag) {
           $scope.subheaderSelectFlag[k] = false;
         }
@@ -388,9 +390,15 @@ angular.module('applicationModule')
         scope: $scope
       }).then(function(modal) {
         $scope.filterModal = modal;
+        $scope.filterPosX = $ionicScrollDelegate.$getByHandle('hmsFilterCondition').getScrollPosition().left;
       });
 
       $scope.filterWorkFlowInfo = function() { //响应筛选按钮的方法
+        if(!$scope.filterPosY){
+          $ionicScrollDelegate.$getByHandle('hmsFilterCondition').scrollTo($scope.filterPosX, 0, false);
+        }else{
+          $ionicScrollDelegate.$getByHandle('hmsFilterCondition').scrollTo($scope.filterPosX, $scope.filterPosY, false);
+        }
         $scope.filterModal.show();
       };
 
@@ -406,6 +414,7 @@ angular.module('applicationModule')
           if (baseConfig.debug) {
             console.log('dataFilterUtil.filterOption ' + angular.toJson(filterOption));
           }
+          $scope.filterPosY = $ionicScrollDelegate.$getByHandle('hmsFilterCondition').getScrollPosition().top;
           $scope.filterModal.hide();
 
           if (baseConfig.debug) {
@@ -428,6 +437,7 @@ angular.module('applicationModule')
           });
           type.selected = true;
           $scope.filterItemList = [];
+          $scope.filterPosY = 0;
           $ionicScrollDelegate.$getByHandle('hmsFilterCondition').scrollTop();
 
 
@@ -562,6 +572,7 @@ angular.module('applicationModule')
         }
         //从子页面返回时进入的
         else {
+          $scope.subheadereAnimaFlag = false;
           if (baseConfig.debug) {
             console.log('从子页面返回时进入的');
           }
@@ -592,12 +603,14 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.beforeLeave');
         }
+        for(k in $scope.subheaderDeselectAnimaFlag){
+          $scope.subheaderDeselectAnimaFlag[k] = false;
+        }
       });
       $scope.$on('$ionicView.afterLeave', function() {
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.afterLeave');
         }
-        $scope.subheadereAnimaFlag = false;
       });
 
       $scope.$on('$destroy', function(e) {

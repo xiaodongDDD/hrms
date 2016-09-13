@@ -45,10 +45,20 @@ angular.module('applicationModule')
     '$timeout',
     '$ionicHistory',
     '$ionicActionSheet',
+    '$ionicScrollDelegate',
     'hmsPopup',
     'contractDetailService',
     'contractListService',
-    function($scope, $state, $stateParams, $timeout, $ionicHistory, $ionicActionSheet, hmsPopup, contractDetailService, contractListService) {
+    function($scope, 
+    $state, 
+    $stateParams, 
+    $timeout, 
+    $ionicHistory, 
+    $ionicActionSheet, 
+    $ionicScrollDelegate,
+    hmsPopup, 
+    contractDetailService, 
+    contractListService) {
       $scope.nowContractInfoNum = 0;
       $scope.nowContractInfo = {};
       $scope.noNextDataFlag = false;
@@ -63,20 +73,23 @@ angular.module('applicationModule')
       $scope.afterEnter = false;
 
       //合同要素数据成功返回后
-      var essenceSuccess = function(responce) {
-        $scope.essenceData = responce;
+      var essenceSuccess = function(responce, index) {
+        // console.log(index + angular.toJson(responce));
+        $scope.essenceData[index] = responce;
       };
 
       //初始化页面所需数据
       var httpSuccess = function(response) {
         $scope.data = response;
+        // console.log($scope.data);
+
         $scope.fetchDataFlag = false;
         if ($scope.data.result == "E") {
           $ionicHistory.goBack();
-          hmsPopup.showPopup($scope.data.message);
+          hmsPopup.showPopup('获取数据失败' + $scope.data.message);
           return 0;
         }
-        $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[0].line_values;
+        
         //原date格式为 yyyy-MM-dd At hh:mm:ss ,拆分为两个字段并保存
         if ($scope.data.historyData) {
           for (var i = 0; i < $scope.data.historyData.length; i++) {
@@ -90,11 +103,19 @@ angular.module('applicationModule')
             window.localStorage.contractDetailHintFlag = "true";
           }, 1000);
         }
-        $scope.contractId = $scope.nowContractInfo[8].line_value;
+        
         if ($scope.data.contractInfo.lines[0].line.length < 2)
           $scope.noNextDataFlag = true;
         $scope.showOperateButton = $scope.data.approvalAction ? true : false;
-        contractDetailService.getEssence(essenceSuccess, $scope.contractId);
+
+        $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[0].line_values;
+        $scope.contractId = $scope.nowContractInfo[8].line_value;
+        contractDetailService.getEssence(essenceSuccess, $scope.contractId, 0);
+        // for(var i = 0; i < $scope.data.contractInfo.lines.length; i++){
+        //   var _nowContractInfo = $scope.data.contractInfo.lines[0].line[i].line_values;
+        //   var _contractId = _nowContractInfo[8].line_value;
+        //   contractDetailService.getEssence(essenceSuccess, _contractId, i);
+        // }
       };
 
       //取初始化页面所需数据
@@ -104,8 +125,8 @@ angular.module('applicationModule')
 
       //显示合同要素弹出框
       $scope.showEssenceDiv = function() {
-        if ($scope.essenceData.result == "E") {
-          hmsPopup.showPopup($scope.essenceData.message);
+        if ($scope.essenceData[$scope.nowContractInfoNum].result == "E") {
+          hmsPopup.showPopup('合同要素获取失败' + $scope.essenceData[$scope.nowContractInfoNum].message);
           return 0;
         } else {
           $scope.showDesc = false;
@@ -131,11 +152,17 @@ angular.module('applicationModule')
         $scope.nowContractInfoNum++;
         $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[$scope.nowContractInfoNum].line_values;
         $scope.noNextDataFlag = ($scope.nowContractInfoNum == $scope.data.contractInfo.lines[0].line.length - 1);
+
+        if(!$scope.essenceData[$scope.nowContractInfoNum]){
+          $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[$scope.nowContractInfoNum].line_values;
+          $scope.contractId = $scope.nowContractInfo[8].line_value;
+          contractDetailService.getEssence(essenceSuccess, $scope.contractId, $scope.nowContractInfoNum);
+        }
       };
 
       $scope.workflowDetailScroll = {
-        "width": document.body.clientWidth,
-        "height": 105
+        "width": document.body.clientWidth + 'px;',
+        "height": 105 + 'px;'
       };
 
       $scope.showProc = false;
@@ -176,23 +203,39 @@ angular.module('applicationModule')
 
       $scope.showProcessFlag = true;
 
-      $scope.hideProcess = function() {
+      $scope.hideProcess = function($event) {
         $scope.showProcessFlag = false;
+        $scope.resizeContent($event);
       };
 
-      $scope.showProcess = function() {
+      $scope.showProcess = function($event) {
         $scope.showProcessFlag = true;
+        $scope.resizeContent($event);
       };
 
       $scope.showContractFlag = true;
 
-      $scope.hideContract = function() {
+      $scope.hideContract = function($event) {
         $scope.showContractFlag = false;
+        $scope.resizeContent($event);
       };
 
-      $scope.showContract = function() {
+      $scope.showContract = function($event) {
         $scope.showContractFlag = true;
+        $scope.resizeContent($event);
       };
+
+      $scope.resizeContent = function($event) {
+        var detail = $ionicScrollDelegate.$getByHandle('workflowDetailHandle').getScrollView();
+
+        if ($scope.showContractFlag || $scope.showProcessFlag) {
+          if ($event.pageY + 15 > detail.__clientHeight) {
+            var detailScroll = $ionicScrollDelegate.$getByHandle('workflowDetailHandle').getScrollPosition();
+            var detailScroll1 = $ionicScrollDelegate.$getByHandle('workflowDetailHandle').scrollTo(0, (detailScroll.top + 300), true);
+          }
+        }
+        $ionicScrollDelegate.resize();
+      }
 
       //提交操作后的回掉
       var submitSuccess = function(response) {
@@ -201,7 +244,7 @@ angular.module('applicationModule')
           $ionicHistory.goBack();
           hmsPopup.showPopup('操作成功');
         } else {
-          hmsPopup.showPopup(response.message);
+          hmsPopup.showPopup('操作失败：' + response.message);
         }
       };
 
@@ -382,12 +425,12 @@ angular.module('applicationModule')
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        hmsPopup.showPopup(response);
+        // hmsPopup.showPopup(response);
       });
 
     };
 
-    this.getEssence = function(success, contractId) {
+    this.getEssence = function(success, contractId, index) {
 
       var params = {
         userId: window.localStorage.empno,
@@ -395,9 +438,9 @@ angular.module('applicationModule')
         contractId: contractId
       };
       hmsHttp.post(baseUrlTest, params).success(function(result) {
-        success(result);
+        success(result, index);
       }).error(function(response, status) {
-        hmsPopup.showPopup(response);
+        // hmsPopup.showPopup(response);
       });
     };
 
@@ -409,7 +452,7 @@ angular.module('applicationModule')
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        hmsPopup.showPopup(response);
+        // hmsPopup.showPopup(response);
       });
 
     };
@@ -427,7 +470,7 @@ angular.module('applicationModule')
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        hmsPopup.showPopup(response);
+        // hmsPopup.showPopup(response);
       });
 
     };
@@ -445,7 +488,7 @@ angular.module('applicationModule')
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        hmsPopup.showPopup(response);
+        // hmsPopup.showPopup(response);
       });
 
     };
