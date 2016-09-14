@@ -31,15 +31,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "com.handmobile.cordovaplugin.hotpatch": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-geolocation": {
         "source": {
             "type": "registry",
@@ -74,5 +65,14 @@
         "variables": {
             "API_KEY": "22b25063349b6beef7bde524"
         }
+    },
+    "com.handmobile.cordovaplugin.hotpatch": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
