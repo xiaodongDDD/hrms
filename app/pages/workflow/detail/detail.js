@@ -1179,7 +1179,7 @@ angular.module('applicationModule')
                   console.log('$scope.singalArrayList ' + angular.toJson($scope.singalArrayList));
                 }
 
-                $scope.needList = response.workflow_data.need;
+                $scope.needList = result.workflow_data.need;
                 //lov、datepicker类型额外处理
                 if ($scope.needList) {
                   var lovIndex, dpIndex, defaultValue;

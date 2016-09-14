@@ -22,10 +22,10 @@ angular.module('applicationModule')
         };
 
         var notifyType = {
-          "work_flow": {
+          /*"work_flow": {
             "name": "待办事项",
             "imgUrl": "build/img/message/todo@3x.png",
-          },
+          },*/
           "room": {
             "name": "住宿申请",
             "imgUrl": "build/img/message/dorm@3x.png",
@@ -138,20 +138,23 @@ angular.module('applicationModule')
               var totalMessageCount = 0;
               var messageList = [];
               angular.forEach(result.returnData, function (messageDetail) {
-                totalMessageCount = totalMessageCount + parseInt(messageDetail.messageNum);
 
-                var notify = {
-                  "name": notifyType[messageDetail.messageTypeCode].name,
-                  "content": messageDetail.messageContent,
-                  "imgUrl": notifyType[messageDetail.messageTypeCode].imgUrl,
-                  "count": messageDetail.messageNum,
-                  "employee": "",
-                  "time": messageDetail.compareTime,
-                  "messageType": messageType.notify,
-                  "sortTime": filterData(messageDetail.latestMessageTime),
-                  "conversationType": messageDetail.messageTypeCode
-                };
-                messageList.push(notify);
+                if(notifyType[messageDetail.messageTypeCode]){
+                  totalMessageCount = totalMessageCount + parseInt(messageDetail.messageNum);
+                  var notify = {
+                    "name": notifyType[messageDetail.messageTypeCode].name,
+                    "content": messageDetail.messageContent,
+                    "imgUrl": notifyType[messageDetail.messageTypeCode].imgUrl,
+                    "count": messageDetail.messageNum,
+                    "employee": "",
+                    "time": messageDetail.compareTime,
+                    "messageType": messageType.notify,
+                    "sortTime": filterData(messageDetail.latestMessageTime),
+                    "conversationType": messageDetail.messageTypeCode
+                  };
+                  messageList.push(notify);
+                }
+
               });
 
               setCachedNotifyList(messageList);
