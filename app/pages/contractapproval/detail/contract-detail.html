@@ -123,7 +123,7 @@
         </div>
       </div>
       <div class="hms-singal-array-content" ng-if="showContractFlag">
-        <div class="hms-singal-array-line" ng-repeat="arrayItem in array.line_title">
+        <div class="hms-singal-array-line" ng-repeat="arrayItem in array.line_title" ng-if="arrayItem.line_title != '合同编号'">
           <div class="hms-singal-array-key" ng-bind="arrayItem.line_title">
           </div>
           <div class="hms-singal-array-value" ng-bind="nowContractInfo[$index].line_value">
