@@ -8,6 +8,23 @@
   .required {
     background-color: #fffae3;
   }
+
+  .hms-application-member-button {
+    display: block;
+    text-align: center;
+    margin: 12px auto;
+    width: 193px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #24559C;
+    background: none;
+    border-radius: 6px;
+    color: #24559C;
+    &.activated {
+      background: #b7cde7;
+    }
+  }
+
   .hms-workflow-history {
     width: 100%;
     height: 136px;
@@ -296,22 +313,6 @@
         color: white;
         background: #24559C;
         border: 1px solid #24559C;
-      }
-    }
-
-    .hms-application-member-button {
-      display: block;
-      text-align: center;
-      margin: 12px auto;
-      width: 193px;
-      height: 30px;
-      line-height: 30px;
-      border: 1px solid #24559C;
-      background: none;
-      border-radius: 6px;
-      color: #24559C;
-      &.activated {
-        background: #b7cde7;
       }
     }
   }
