@@ -89,12 +89,15 @@ angular.module('applicationModule')
               if (parseInt(friendList[i].sortTime) < parseInt(notifyList[j].sortTime) && !notifyList[j].selected) {
                 messageList.push(notifyList[j]);
                 notifyList[j].selected = true;
+                notifyList[j].deleteAnimate = true;
               }
             }
+            friendList[i].deleteAnimate = true;
             messageList.push(friendList[i]);
           }
           for (var ii = 0; ii < notifyList.length; ii++) {
             if (!notifyList[ii].selected) {
+              notifyList[ii].deleteAnimate = true;
               messageList.push(notifyList[ii]);
             }
           }
@@ -139,7 +142,7 @@ angular.module('applicationModule')
               var messageList = [];
               angular.forEach(result.returnData, function (messageDetail) {
 
-                if(notifyType[messageDetail.messageTypeCode]){
+                if(messageDetail.messageTypeCode != 'work_flow'){
                   totalMessageCount = totalMessageCount + parseInt(messageDetail.messageNum);
                   var notify = {
                     "name": notifyType[messageDetail.messageTypeCode].name,

@@ -196,6 +196,9 @@ angular.module('messageModule')
         if (baseConfig.debug) {
           console.log('in refreshMessageList.getTime ' + new Date().getTime());
         }
+        angular.forEach($scope.messageList,function (data) {
+          data.deleteAnimate = false;
+        })
         messageService.getNotifyMessageList(refreshPluginMessageAndNotify, refreshPluginOnlyMessage, true, []);
       };
 
@@ -350,6 +353,7 @@ angular.module('messageModule')
           if (message.messageType == 'MESSAGE') {
             messageService.deletePluginMessage($scope, message);
           } else {
+            message.delete = true;
             var index = $scope.messageList.indexOf(message);
             $scope.messageList.splice(index, 1);
             messageService.readAllMessage(message.conversationType);

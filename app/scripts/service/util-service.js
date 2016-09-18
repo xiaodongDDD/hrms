@@ -247,7 +247,7 @@ angular.module('HmsModule')
           });
           confirmPopup.then(function(res){
             if(res){
-             onConfirm();
+             onConfirm(res);
             }else{
 
             }

@@ -208,22 +208,23 @@
       </div>
 
       <!--多维数组-->
-      <div class="hms-workflow-array" ng-repeat="array in multipleLine">
+      <div class="hms-workflow-array" ng-repeat="array in multipleLine" ng-if="!multpleLine.editAble">
         <div class="hms-multiple-array-header">
           <div class="hms-singal-array-name">
             <i class="ion-record"></i>{{array.title}}
           </div>
-          <div class="hms-multiple-array-sub-header">
-            <div class="hms-singal-array-link">
-              <a class="hms-array-selector">共{{array.arrayList.length}}条</a>
-              <a class="hms-array-selector" ng-click="workflowDetailUtil.toBack(array)"
-                 ng-class="{'true':'no-activated'}[array.currentPage==1]">上一条</a>
-              <a class="hms-array-selector" ng-click="workflowDetailUtil.goForward(array)"
-                 ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
-            </div>
-            <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
-              <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
-            </div>
+        </div>
+        <div class="hms-multiple-array-sub-header">
+          <div class="hms-singal-array-link">
+            <a class="hms-array-selector">共{{array.arrayList.length}}条</a>
+            <a class="hms-array-selector" ng-click="workflowDetailUtil.toBack(array)"
+               ng-class="{'true':'no-activated'}[array.currentPage==1]">上一条</a>
+            <a class="hms-array-selector" ng-click="workflowDetailUtil.goForward(array)"
+               ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
+          </div>
+          <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
+            <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
+
           </div>
         </div>
         <div class="hms-singal-array-content" ng-if="array.showFlag">
@@ -235,6 +236,66 @@
               <i class="ion-android-attach"></i>
             </div>
             <div class="hms-singal-array-value" ng-bind="item.value" ng-if="item.name.substring(0,2) !='附件'">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--可以编辑的多维数组-->
+      <div class="hms-workflow-array" ng-repeat="array in multipleLine" ng-if="multpleLine.editAble">
+        <div class="hms-multiple-array-header">
+          <div class="hms-singal-array-name">
+            <i class="ion-record"></i>{{array.title}}
+          </div>
+          <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.saveEditLine(array)">
+            <i>保存</i>
+          </div>
+        </div>
+        <div class="hms-multiple-array-sub-header">
+          <div class="hms-singal-array-link">
+            <a class="hms-array-selector">共{{array.arrayList.length}}条</a>
+            <a class="hms-array-selector" ng-click="workflowDetailUtil.toBackEdit(array)"
+               ng-class="{'true':'no-activated'}[array.currentPage==1]">上一条</a>
+            <a class="hms-array-selector" ng-click="workflowDetailUtil.goForwardEdit(array)"
+               ng-class="{'true':'no-activated'}[array.currentPage==array.arrayList.length]">下一条</a>
+          </div>
+          <div class="hms-singal-array-operation" ng-click="workflowDetailUtil.showContent(array,$event)">
+            <i ng-class="{'true':'ion-ios-minus-outline','false':'ion-ios-plus-outline'}[array.showFlag]"></i>
+          </div>
+        </div>
+
+        <div class="hms-singal-array-content" ng-if="array.showFlag">
+          <div class="hms-singal-array-line" ng-repeat="item in array.currentArray.array">
+            <div class="hms-singal-array-key" ng-bind="item.name">
+            </div>
+            <div class="hms-singal-array-value" ng-if="item.name.substring(0,2) =='附件'"
+                 ng-click="workflowDetailUtil.goUrl(item.value)">
+              <i class="ion-android-attach"></i>
+            </div>
+            <div class="hms-singal-array-value" ng-if="item.name.substring(0,2) !='附件'">
+              <div ng-if="item.canUpdate=='N'">{{item.value}}</div>
+
+              <div ng-if="item.canUpdate=='Y' && item.type=='input'"
+                   class="text-overflow-ellipsis"
+                   ng-click="workflowDetailUtil.showInputFieldScreen(item.name,item)">
+                <i class="ion-compose"></i>&nbsp;{{item.value}}
+              </div>
+              <div ng-if="item.canUpdate=='Y' && item.type=='lov'" style="min-width: 80px">
+                <select ng-model="item.currentValue"
+                        ng-class="{'required':item.required=='Y' && item.value ==''}"
+                        ng-options="lovOption.name for lovOption in item.lov track by lovOption.value"
+                        style="width: 100%;color:#333333;height: 24px;line-height: 20px;font-size: 12px;appearance:none;-webkit-appearance:none;text-align: right">
+                </select>
+              </div>
+              <div ng-if="item.canUpdate=='Y' && item.type=='checkbox'">
+                <div ng-model="item.value"
+                     ng-class="{'ion-ios-checkmark timesheet-checkbox':item.value =='1',
+                                'ion-ios-circle-outline timesheet-checkbox':item.value=='0'||item.value==''|| item.value==null}"
+                     ng-click="workflowDetailUtil.checkBoxChange(item,array.currentArray.array)"
+                     ng-class="{'required':item.required=='Y' && item.value==''}"
+                     style="width: 100%;appearance:none;-webkit-appearance:none">
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -275,7 +336,8 @@
             <input class="hms-singal-array-value" placeholder="项目代码" ng-if="openProjectDetail.openNewProjectFlag == '0'"
                    ng-model="openProjectDetail.projectCode" style="height: 22px; border:0;">
             </input>
-            <div class="hms-singal-array-value" ng-bind="openProjectDetail.projectCode" ng-click="showOpenProjectModal()"
+            <div class="hms-singal-array-value" ng-bind="openProjectDetail.projectCode"
+                 ng-click="showOpenProjectModal()"
                  ng-if="openProjectDetail.openNewProjectFlag=='1'">
             </div>
           </div>
@@ -331,15 +393,12 @@
               <span style="width: 50%;color:#333333;line-height: 30px">{{need.title}}:</span>
 
               <div style="width: 50%;line-height: 30px">
-                <!--<select ng-options="option.value as option.name for option in need.options"-->
-                <!--ng-model="need.value"-->
-                <!--style="width: 100%;color:#333333;height: 24px;text-align: right;appearance:none;-webkit-appearance:none;"></select>-->
-                <select ng-model="need.value"
+                <select ng-model="need.lov"
+                        ng-options="lovOption.name for lovOption in need.options track by lovOption.value"
                         style="width: 100%;color:#333333;height: 24px;text-align: right;appearance:none;-webkit-appearance:none;">
-                  <option ng-repeat="lovOption in need.options"
-                          ng-selected="lovOption.value==need.value" value="{{lovOption.value}}">
+                  <!--<option ng-repeat="lovOption in need.options" value="{{lovOption.value}}">
                     {{lovOption.name}}
-                  </option>
+                  </option>-->
                 </select>
               </div>
             </div>
@@ -358,9 +417,10 @@
             </ionic-datepicker>
           </div>
           <div ng-if="need.type=='checkbox'">
-            <div ng-class="{'ion-ios-checkmark timesheet-checkbox':need.value=='1','ion-ios-circle-outline timesheet-checkbox':need.value=='0'||need.value==''||need.value==null}"
-                 ng-click="checkChange(need)"
-                 style="margin-left: 10px;height: 40px;line-height:40px;">
+            <div
+              ng-class="{'ion-ios-checkmark timesheet-checkbox':need.value=='1','ion-ios-circle-outline timesheet-checkbox':need.value=='0'||need.value==''||need.value==null}"
+              ng-click="checkChange(need)"
+              style="margin-left: 10px;height: 40px;line-height:40px;">
               <span class="timesheet-span">{{need.title}}</span>
             </div>
           </div>
@@ -376,7 +436,6 @@
         </ion-item>
       </div>
     </div>
-
 
     <!--处理意见和转交人-->
     <div class="hms-extra-info" ng-if="workflowActionShowFlag">

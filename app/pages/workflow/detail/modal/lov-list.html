@@ -1,0 +1,24 @@
+<ion-modal-view class="lov-list">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="title">
+      <div>{{lovList.title}}</div>
+    </div>
+    <div class="buttons">
+      <button class="button button-icon icon" ng-click="lovHandle.hideLovList()">
+        <span class="back-text">取消</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="project-modal">
+    <ion-list>
+      <div class="row" ng-repeat="lov in lovList.lovList" ng-click="lovHandle.selectLov(lov)">
+        <div class="col col-90">
+          {{lov.name}}
+        </div>
+        <div class="col col-10 col-center">
+          <i class="ion-checkmark checked" ng-if="lovList.currentLovValue == lov.value"></i>
+        </div>
+      </div>
+    </ion-list>
+  </ion-content>
+</ion-modal-view>

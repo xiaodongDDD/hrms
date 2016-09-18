@@ -1,9 +1,9 @@
 {
   "baseConfig": {
-    "debug": false,
-    "isMobilePlatform": false,
+    "debug": true,
+    "isMobilePlatform": true,
     "clearTable": true,
-    "nativeScreenFlag": false,
+    "nativeScreenFlag": true,
     "appStoreFlag": false,
     "loginPath": "http://wechat.hand-china.com/hrmsv2/oauth/token?client_id=client&client_secret=secret&grant_type=password&",
     "businessPath": "http://wechat.hand-china.com/hrmsv2/v2/api/l",
@@ -20,8 +20,8 @@
     "appRootFile": "helloCordova",
     "appUpId": "com.hand.china.hrms2.research",
     "version": {
-      "currentVersion": "2.0.1",
-      "currentversionName": "此版本为测试版本2.0.1",
+      "currentVersion": "2.0.3",
+      "currentversionName": "此版本为测试版本2.0.3",
       "currentSubVersion": "1",
       "currentSubVersionName": "资源增量包1"
     }
