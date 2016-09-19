@@ -32,6 +32,8 @@ angular.module('myApp')
     'sqliteService',
     'hmsPopup',
     '$cordovaTouchID',
+    '$location',
+    '$rootScope',
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -41,7 +43,9 @@ angular.module('myApp')
               hmsJpushService,
               sqliteService,
               hmsPopup,
-              $cordovaTouchID) {
+              $cordovaTouchID,
+              $location,
+              $rootScope) {
 
       $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -160,6 +164,26 @@ angular.module('myApp')
         if (ionic.Platform.isWebView()) {
         }
       });
+
+      $ionicPlatform.registerBackButtonAction(function (e) {
+        //判断处于哪个页面时双击退出,袁梦添加
+        if ($location.path() == '/tab/message'||$location.path() == '/tab/application'||$location.path() == '/tab/contact'||
+          $location.path() == '/tab/myInfo'||$location.path() == '/login'||$location.path() == '/gesture-lock') {
+          if ($rootScope.backButtonPressedOnceToExit) {
+            ionic.Platform.exitApp();
+          } else {
+            $rootScope.backButtonPressedOnceToExit = true;
+            setTimeout(function () {
+              $rootScope.backButtonPressedOnceToExit = false;
+            }, 2000);
+          }
+        }
+        else if ($ionicHistory.backView()) {
+          $ionicHistory.goBack();
+        }
+        e.preventDefault();
+        return false;
+      }, 101);
     }]);
 
 angular.module('myApp')
