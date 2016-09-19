@@ -32,6 +32,7 @@ angular.module('applicationModule')
     '$ionicModal',
     '$timeout',
     '$ionicHistory',
+    '$ionicScrollDelegate',
     'baseConfig',
     'TimeSheetService',
     'hmsPopup',
@@ -42,6 +43,7 @@ angular.module('applicationModule')
               $ionicModal,
               $timeout,
               $ionicHistory,
+              $ionicScrollDelegate,
               baseConfig,
               TimeSheetService,
               hmsPopup) {
@@ -63,7 +65,26 @@ angular.module('applicationModule')
       var checkedJson = function () {
         var json = {flag: true, style: checked};
         return json;
-      }
+      };
+
+      $scope.projectCategory = {};
+      $scope.projectListType = [
+        {
+          "id": "1",
+          "name": "客户项目",
+          "selected": true
+        },
+        {
+          "id": "2",
+          "name": "预销售",
+          "selected": false
+        },
+        {
+          "id": "3",
+          "name": "内部项目",
+          "selected": false
+        }];
+      $scope.currentProjectListCategory = [];
 
 
       //初始化timesheet填写界面字段
@@ -85,7 +106,7 @@ angular.module('applicationModule')
         console.log('$stateParams.day ' + angular.toJson($stateParams.day));
       }
 
-      $scope.lockFlag= $stateParams.day.lockFlag;
+      $scope.lockFlag = $stateParams.day.lockFlag;
 
       $scope.currentDate = $stateParams.day.each_day;
 
@@ -126,6 +147,30 @@ angular.module('applicationModule')
         $scope.flybackModal.hide();
       };
 
+      $scope.projectListModalHandle = {
+        selectProject: function (type) {
+
+          $ionicScrollDelegate.$getByHandle('projectModalHandle').scrollTop();
+
+          angular.forEach($scope.projectListType, function (data) {
+            data.selected = false;
+          });
+
+          type.selected = true;
+
+          var typeId = type.id;
+          if($scope.projectCategory[typeId]){
+            $scope.currentProjectListCategory = $scope.projectCategory[typeId].array;
+          }else{
+            $scope.currentProjectListCategory = [];
+          }
+
+          if(baseConfig.debug){
+            console.log('$scope.currentProjectListCategory ' + angular.toJson($scope.currentProjectListCategory));
+          }
+        }
+      };
+
       $scope.selectProject = function (project) {
         if (baseConfig.debug) {
           console.log("selectAddress.project " + angular.toJson(project));
@@ -162,6 +207,15 @@ angular.module('applicationModule')
       };
 
       $scope.showProjectModal = function () {
+        angular.forEach($scope.projectCategory, function (data) {
+          angular.forEach(data.array, function (data1) {
+            data1.selected_flag = 'N';
+            if (data1.project_id == $scope.timesheetDetail.currentProject.project_id) {
+              data1.selected_flag = 'Y';
+            }
+          });
+        });
+
         $scope.projectModal.show();
       };
       $scope.hideProjectModal = function () {
@@ -251,6 +305,29 @@ angular.module('applicationModule')
           $scope.projectList = projectList;
           $scope.addressList = addressList;
           $scope.flybackList = flybackList;
+          $scope.projectCategory = TimeSheetService.processProject(projectList);
+
+          $scope.projectListType[0].selected = true;
+          angular.forEach($scope.projectListType, function (data) {
+            if (data.id == $scope.timesheetDetail.currentProject.project_type_id) {
+              $scope.projectListType[0].selected = false;
+              data.selected = true;
+            }
+            else {
+              data.selected = false;
+            }
+          });
+          if ($scope.timesheetDetail.currentProject.project_id) {
+            var project_type_id = $scope.timesheetDetail.currentProject.project_type_id;
+            $scope.currentProjectListCategory = $scope.projectCategory[project_type_id].array;
+          } else {
+            if($scope.projectCategory[1]){
+              $scope.currentProjectListCategory = $scope.projectCategory[1].array;
+            }else{
+              $scope.currentProjectListCategory = [];
+            }
+          }
+
         }
         else {
           hmsPopup.showPopup('获取timesheet错误,错误原因为');
@@ -317,7 +394,7 @@ angular.module('applicationModule')
 
         description = $scope.timesheetDetail.description.replace(/[\n]/g, "\\n").replace(/[\r]/g, "\\r");
 
-        if(baseConfig.debug){
+        if (baseConfig.debug) {
           console.log('$scope.timesheetDetail.description ' + $scope.timesheetDetail.description);
           console.log('description ' + description);
         }

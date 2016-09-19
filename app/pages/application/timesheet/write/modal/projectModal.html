@@ -1,4 +1,4 @@
-<ion-modal-view class="">
+<ion-modal-view class="project-modal">
   <ion-header-bar align-title="center" class="bar-stable">
     <div class="title">
       <div>项目列表</div>
@@ -9,11 +9,27 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content class="project-modal">
+  <div class="bar bar-subheader project-type"  style="background-size: 100% 0px">
+    <div class="row no-padding">
+      <div class="col col-33 no-padding" ng-repeat="type in projectListType" style="text-align: center;height: 40px;line-height: 40px"
+           ng-click="projectListModalHandle.selectProject(type)"
+           ng-class="{true:'project-type-selected',false:''}[type.selected]">
+        <div ng-bind="type.name"></div>
+      </div>
+    </div>
+  </div>
+  <ion-content class="has-subheader"  delegate-handle="projectModalHandle">
     <ion-list>
-      <ion-item ng-repeat="project in projectList" ng-click="selectProject(project)">
-        {{project.project_name}}
-      </ion-item>
+      <div class="filter-item-detail row no-padding" ng-repeat="project in currentProjectListCategory"
+                ng-click="selectProject(project)">
+        <div class="col no-padding col-67 filter-condition-item"
+             ng-class="{true: 'selected', false: 'no-selected'}[item.selected]"
+             ng-bind="project.project_name">
+        </div>
+        <div class="col no-padding col-33 col-center" ng-if="project.selected_flag == 'Y'" style="text-align: center">
+          <i class="ion-checkmark checked"></i>
+        </div>
+      </div>
     </ion-list>
   </ion-content>
 </ion-modal-view>
