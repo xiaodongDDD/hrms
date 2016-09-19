@@ -1,5 +1,6 @@
 /**
  * Created by zhangsongsong on 2016-05-04.
+ * Improve by yuanmeng on 2016-09-14
  */
 function getDis(a, b) {                                           //计算两个坐标之间的距离
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
@@ -64,7 +65,7 @@ H5lock.prototype.createCircle = function () {// 创建解锁点的坐标，根�
   this.restPoint = [];            //存储所有未滑过的圆圈
   this.r = this.ctx.canvas.width / (1 + 3 * n);// 公式计算  this.ctx.canvas画布对象(最左边两个半径大小距离，剩下的为4×n个距离)
   var r = this.r;
-  if( this.miniCtx && ( this.step == 0 || ( this.step == 1 && this.operation == this.CHANGE_PASSWORD )) ){       //包含小九宫格的初始化
+  if( this.miniCtx && ( ( this.step == 0 && ( this.operation == this.CHANGE_PASSWORD || this.operation == this.INIT_PASSWORD ) )|| ( this.step == 1 && this.operation == this.CHANGE_PASSWORD )) ){       //包含小九宫格的初始化
     this.miniR = this.miniCtx.canvas.width / (1 + 3 * n);
     var miniR = this.miniR;
     for (var i = 0; i < n; i++) {         //初始化圆圈数组对象以及未滑过的圆圈数组对象
@@ -300,7 +301,7 @@ H5lock.prototype.init = function () {                                           
   this.ctx.globalCompositeOperation = 'source-atop';
   this.canvas.width = this.width;
   this.canvas.height = this.height;
-  if( this.miniCanvasID && ( this.operation == this.INIT_PASSWORD || this.operation == this.CHANGE_PASSWORD ) ){
+  if( this.miniCanvasID ){
     this.miniCanvas = document.getElementById(this.miniCanvasID);                   //获取小九宫格canvas
     this.miniCtx = this.miniCanvas.getContext('2d');
     this.miniCtx.globalCompositeOperation = 'source-atop';
@@ -314,6 +315,10 @@ H5lock.prototype.init = function () {                                           
   if ( this.resetID ){
     this.resetBtn = document.getElementById(this.resetID);
   }
+  this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);     //清空所有指定区域的像素
+  if( this.miniCtx ){
+    this.miniCtx.clearRect(0, 0, this.miniCtx.canvas.width, this.miniCtx.canvas.height);     //清空小九宫格区域的像素
+  }
   this.createCircle();
   this.bindEvent();                                                                   //绑定画布上的事件监听
 };
@@ -325,10 +330,12 @@ H5lock.prototype.bindEvent = function () {                                      
     var po = self.getPosition(e);               //获取触摸位置信息
     for (var i = 0; i < self.arr.length; i++) {           //如果触摸位置与各圆圈圆心位置横竖均距离少于r，则设置触摸设置密码开始
       if (Math.abs(po.x - self.arr[i].x) < self.r && Math.abs(po.y - self.arr[i].y) < self.r) {
-        self.touchFlag = true;
-        self.drawPoint(self.arr[i].x, self.arr[i].y);
-        self.lastPoint.push(self.arr[i]);
-        self.restPoint.splice(i, 1);
+        if ( self.lastPoint.length == 0 ){
+          self.touchFlag = true;
+          self.drawPoint(self.arr[i].x, self.arr[i].y);
+          self.lastPoint.push(self.arr[i]);
+          self.restPoint.splice(i, 1);
+        }
         break;
       }
     }
