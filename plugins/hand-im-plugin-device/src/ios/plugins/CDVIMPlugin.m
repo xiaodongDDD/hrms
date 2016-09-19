@@ -20,7 +20,6 @@
     NSString *friendName;
     NSString *friendIcon;
     NSString *telephoneNumbers;
-    BOOL isSuccessFulConnect;
 }
 
 @end
@@ -31,12 +30,14 @@
 -(void)getChatList:(CDVInvokedUrlCommand *)command
 {
     NSString *baseUrl = [command.arguments[0] objectForKey:@"businessUrl"];
-    [[NSUserDefaults standardUserDefaults] setObject:baseUrl forKey:@"businessUrl"];
-    
+    NSLog(@"rootService----%@",rootService);
     NSString *userId = [command.arguments[0] objectForKey:@"userId"];
     NSString *access_token = [command.arguments[0] objectForKey:@"access_token"];
     NSString *Token = [command.arguments[0] objectForKey:@"RCToken"];
 //    NSLog(@"%@,%@,token----%@",userId,access_token,Token);
+    [[NSUserDefaults standardUserDefaults] setObject:baseUrl forKey:@"businessUrl"];
+    
+    NSLog(@"businessUrl:%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"businessUrl"]);
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:@"userId"];
     [[NSUserDefaults standardUserDefaults] setObject:Token forKey:@"RCToken"];
     [[NSUserDefaults standardUserDefaults] setObject:access_token forKey:@"access_token"];
@@ -51,7 +52,8 @@
 //开启单人会话
 - (void)toChatAct:(CDVInvokedUrlCommand *)command
 {
-    if (isSuccessFulConnect) {
+    RCConnectionStatus isSuccessFulConnect = [[RCIM sharedRCIM] getConnectionStatus];//状态监听
+    if (isSuccessFulConnect==ConnectionStatus_Connected) {
         NSLog(@"openIMVC");
         friendId =   command.arguments[0][@"friendId"];
         friendName = command.arguments[0][@"friendName"];
