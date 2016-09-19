@@ -22,11 +22,11 @@
     <ion-list>
       <div class="filter-item-detail row no-padding" ng-repeat="project in currentProjectListCategory"
                 ng-click="selectProject(project)">
-        <div class="col no-padding col-67 filter-condition-item"
+        <div class="col no-padding col-90 filter-condition-item"
              ng-class="{true: 'selected', false: 'no-selected'}[item.selected]"
              ng-bind="project.project_name">
         </div>
-        <div class="col no-padding col-33 col-center" ng-if="project.selected_flag == 'Y'" style="text-align: center">
+        <div class="col no-padding col-10 col-center" ng-if="project.selected_flag == 'Y'" style="text-align: center">
           <i class="ion-checkmark checked"></i>
         </div>
       </div>
