@@ -1,3 +1,36 @@
+.project-modal{
+  .project-type{
+    .project-type-selected{
+      border-bottom: 1px solid #24559C;
+    }
+  }
+
+  .no-padding {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .filter-item-detail {
+    border-bottom: 1px solid #d2d2d2;
+    padding: 15px 0px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .filter-condition-item {
+    &.selected {
+      color: #26579E;
+    }
+  }
+  .select-item-color {
+    color: #26579E;
+  }
+  .checked {
+    font-size: 18px;
+    color: #26579E;
+  }
+}
+
+
 .timesheet-write,.timesheet-batch-write {
 
   .title-header{
