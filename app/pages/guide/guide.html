@@ -3,7 +3,7 @@
     <button class="skip-button" ng-click="skipGuide()">
       跳过
     </button>
-    <ion-slide-box on-slide-changed="slideChanged(index)">
+    <ion-slide-box ng-style="actualHeight" on-slide-changed="slideChanged(index)">
       <ion-slide>
         <img src="build/img/1@3x.png" class="slider-item">
       </ion-slide>

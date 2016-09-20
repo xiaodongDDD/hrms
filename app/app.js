@@ -302,8 +302,22 @@ angular.module('myApp')
           controller: 'loginCtrl'
         });
 
-      if (!window.localStorage.needGuid || window.localStorage.needGuid == "true") {
+      if(baseConfig.debug){
+        console.log('app.js window.localStorage.appCacheVersion ' + window.localStorage.appCacheVersion);
+        console.log('app.js !window.localStorage.appCacheVersion ' + !window.localStorage.appCacheVersion);
+        console.log('app.js baseConfig.version.currentVersion ' + baseConfig.version.currentVersion);
+      }
+
+      if (!window.localStorage.needGuid || window.localStorage.needGuid == "true"
+          || !window.localStorage.appCacheVersion || window.localStorage.appCacheVersion != baseConfig.version.currentVersion) {
+        if(baseConfig.debug){
+          console.log('app.js into guide ');
+        }
+
         $urlRouterProvider.otherwise('/guide');
+        window.localStorage.appCacheVersion = baseConfig.version.currentVersion;
+
+
       } else {
         if (window.localStorage.token && window.localStorage.token != "") {
           if( window.localStorage.getItem('gesturePassword') &&window.localStorage.getItem('gesturePassword') != ''){
