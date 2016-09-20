@@ -221,7 +221,6 @@
     NSString *userToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"RCToken"];
     [[RCIMClient sharedRCIMClient] connectWithToken:userToken success:^(NSString *userId) {
         NSLog(@"连接融云成功 with userId: %@", userId);
-        isSuccessFulConnect = YES;
     } error:^(RCConnectErrorCode status) {
         NSLog(@"login error status: %ld.", (long)status);
     } tokenIncorrect:^{

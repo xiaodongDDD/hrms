@@ -18,19 +18,21 @@ angular.module('loginModule')
       window.localStorage.needGuid = "false";
 
       var getHeight = function () {
+
+        height = document.body.scrollHeight + '';
+        if (height == "0") {
+        }
+        else {
+          return height + 'px';
+        }
+        
         var height = document.body.clientHeight + '';
-        if (height === "0") {
+        if (height == "0") {
         }
         else {
           return height + 'px';
         }
 
-        height = document.body.scrollHeight + '';
-        if (height === "0") {
-        }
-        else {
-          return height + 'px';
-        }
         return ""
       };
 

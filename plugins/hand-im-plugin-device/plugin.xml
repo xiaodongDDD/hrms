@@ -6,6 +6,7 @@
   <description>hand IM plugin.</description>
   <keywords>handim</keywords>
   <license>GPLv2</license>
+  <preference name="RONG_KEY"/>
   <js-module charset="utf-8" name="HandIMPlugin" src="www/HandIMPlugin.js">
     <clobbers target="HandIMPlugin"/>
   </js-module>
@@ -388,9 +389,12 @@
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
         <!-- 正式 -->
-      <meta-data
+		<meta-data
             android:name="RONG_CLOUD_APP_KEY"
-            android:value="e5t4ouvptpsaa" />
+            android:value="$RONG_KEY" />
+      <!--<meta-data
+            android:name="RONG_CLOUD_APP_KEY"
+            android:value="e5t4ouvptpsaa" />-->
         <!-- 测试 -->
         <!-- <meta-data
             android:name="RONG_CLOUD_APP_KEY"
