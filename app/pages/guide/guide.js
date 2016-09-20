@@ -19,21 +19,21 @@ angular.module('loginModule')
 
       var getHeight = function () {
 
-        height = document.body.scrollHeight + "";
+        var height = document.body.scrollHeight + '';
         if (height == "0") {
         }
         else {
           return height + 'px';
         }
 
-        var height = document.body.scrollHeight + "";
+        var height = document.body.clientHeight + '';
         if (height == "0") {
         }
         else {
           return height + 'px';
         }
 
-        return '';
+        return "";
       };
 
       $scope.actualHeight = {
