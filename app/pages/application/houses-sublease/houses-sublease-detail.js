@@ -110,7 +110,7 @@ angular.module('applicationModule')
         }
       }
 
-      function share(){
+      $scope.share = function (){
         //分享显示的图片，默认
         var imgurl = 'http://youtui.mobi/media/image/youtui.png';
         //分享显示的图片，取转租信息中的第一张照片
