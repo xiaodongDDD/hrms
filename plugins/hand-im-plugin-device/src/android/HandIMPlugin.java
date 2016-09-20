@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.hand.im.HandChatActivity;
 import com.hand.im.HandMulChatActivity;
 import com.hand.im.LoginInfo;
 import com.hand.im.activity.CallActivity;
+import com.hand.im.activity.MulCallActivity;
 import com.hand.im.contact.ContactActivity;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -111,31 +113,34 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         mCallbackContext = callbackContext;
         if (ACTION_GET_CHAT_LIST.equals(action)) {
+
 //            JSONObject jsonObject = new JSONObject(args.getString(0));
 //            userId = jsonObject.getString("userId");
 //            token = jsonObject.getString("RCToken");
 //            access_token = jsonObject.getString("access_token");
 //            token_url = jsonObject.getString("token_url");
-//            sp.edit().putString("access_token",access_token).commit();
+//            sp.edit().putString("access_token", access_token).commit();
             //获取用户的id 这里定义上为进入初始化的操作 但是还是加了判断防止多次进入 如果已经接受过传来的用户数据不用重复获取
             if (args != null && args.length() > 0) {
                 JSONObject obj = args.getJSONObject(0);
                 userId = obj.getString("userId");
                 token = obj.getString("RCToken");
                 access_token = obj.getString("access_token");
-                //token_url = obj.getString("token_url");
+                token_url = obj.getString("businessUrl");
                 LoginInfo.userId = userId;//px
                 LoginInfo.access_token = access_token;//px
+                LoginInfo.baseUrl = token_url;
                 sp.edit().putString("access_token", access_token).commit();
             }
+
             if (!access_token.isEmpty()) {
                 //开启线程 获取信息写入缓存
                 cordova.getThreadPool().execute(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            URL url = new URL(LoginInfo.baseUrl+"/hrmsv2/v2/api/staff/detail?access_token=" + access_token);
-   //                         URL url = new URL(token_url + access_token);
+//                            URL url = new URL(LoginInfo.baseUrl+"/hrmsv2/v2/api/staff/detail?access_token=" + access_token);
+                            URL url = new URL(token_url+"/hrmsv2/v2/api/staff/detail?access_token=" + access_token);
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                             connection.setRequestMethod("POST");
                             connection.setConnectTimeout(5000);
@@ -205,12 +210,15 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
 //            friendId = jsonObject.getString("friendId");
 //            friendName = jsonObject.getString("friendName");
 //            friendIcon = jsonObject.getString("friendIcon");
-
+//            String telephoneNumbers = jsonObject.getString("telephoneNumbers");
+//            sp.edit().putString("telephoneNumbers",telephoneNumbers).commit();
             if (args != null && args.length() > 0) {
                 JSONObject obj = args.getJSONObject(0);
                 friendId = obj.getString("friendId");
                 friendName = obj.getString("friendName");
                 friendIcon = obj.getString("friendIcon");
+                String telephoneNumbers = obj.getString("telephoneNumbers");
+                sp.edit().putString("telephoneNumbers",telephoneNumbers).commit();
             }
             if (RongIMClient.getInstance() == null) {
                 initRY();
@@ -306,7 +314,7 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
 
 //            JSONObject jsonObject = new JSONObject(args.getString(0));
 //            targetId = jsonObject.getString("targetId");
-            
+
             //  groupName = jsonObject.getString("groupName");
             //  groupIcon = jsonObject.getString("groupIcon");
             if (args != null && args.length() > 0) {
@@ -443,12 +451,23 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
     /////////////////////////  接到语音通话回调 //////////////////////////////////
     @Override
     public void onReceivedCall(RongCallSession rongCallSession) {
-//        Toast.makeText(context, "onReceivedCall",Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(context, CallActivity.class);
-        intent.putExtra("isReceiverCall", true);
-        intent.putExtra("callerUserId", rongCallSession.getCallerUserId());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        String name = rongCallSession.getConversationType().name();
+        if ("PRIVATE".equals(name)) {//单人电话
+            Intent intent = new Intent(context, CallActivity.class);
+            intent.putExtra("isReceiverCall", true);
+            intent.putExtra("callerUserId", rongCallSession.getCallerUserId());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else if ("DISCUSSION".equals(name)) {//讨论组电话
+            Intent intent = new Intent(context, MulCallActivity.class);
+            intent.putExtra("action", "audio_incoming");//来电
+            intent.putExtra("callerUserId", rongCallSession.getCallerUserId());//呼叫的userId
+            intent.putExtra("targetId", rongCallSession.getTargetId());
+            intent.putExtra("selfUserId", rongCallSession.getSelfUserId());//自己的userId
+            intent.putParcelableArrayListExtra("usersProfileList", (ArrayList<? extends Parcelable>) rongCallSession.getParticipantProfileList());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
         wakeAndUnlock(true);
     }
 
@@ -456,12 +475,25 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
     public void onCheckPermission(RongCallSession rongCallSession) {
         Log.e("399", "onCheckPermission");
         Log.e("399", "getCallerUserId:" + rongCallSession.getCallerUserId());
-        Intent intent = new Intent(context, CallActivity.class);
-        intent.putExtra("isReceiverCall", true);
-        intent.putExtra("callerUserId", rongCallSession.getCallerUserId());
-        intent.putExtra("startForCheckPermissions", true);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        String name = rongCallSession.getConversationType().name();
+        if ("PRIVATE".equals(name)) {//单人电话
+            Intent intent = new Intent(context, CallActivity.class);
+            intent.putExtra("isReceiverCall", true);
+            intent.putExtra("callerUserId", rongCallSession.getCallerUserId());
+            intent.putExtra("startForCheckPermissions", true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else if ("DISCUSSION".equals(name)) {//讨论组电话
+            Intent intent = new Intent(context, MulCallActivity.class);
+            intent.putExtra("action", "audio_incoming");//来电
+            intent.putExtra("callerUserId", rongCallSession.getCallerUserId());//呼叫的userId
+            intent.putExtra("targetId", rongCallSession.getTargetId());
+            intent.putExtra("selfUserId", rongCallSession.getSelfUserId());//自己的userId
+            intent.putExtra("startForCheckPermissions", true);
+            intent.putParcelableArrayListExtra("usersProfileList", (ArrayList<? extends Parcelable>) rongCallSession.getParticipantProfileList());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
         wakeAndUnlock(true);
     }
 
@@ -592,7 +624,7 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
         public myConversation() {
         }
 
-        public myConversation(String txt, String id, String time,String sortTime, String num, String userName, String userIcon, String conversationType) {
+        public myConversation(String txt, String id, String time, String sortTime, String num, String userName, String userIcon, String conversationType) {
             this.content = txt;
             this.sendId = id;
             this.sendTime = time;
@@ -603,10 +635,11 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
             this.conversationType = conversationType;
         }
 
-        public void setSortTime(String sortTime){
+        public void setSortTime(String sortTime) {
             this.sortTime = sortTime;
         }
-        public String getSortTime(){
+
+        public String getSortTime() {
             return sortTime;
         }
 
@@ -736,39 +769,39 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
                         conversationType="2";
                     }
                     //如果是文本消息获取最后一条消息的文本内容
-					if (messageContent instanceof TextMessage) {
-						TextMessage tm = (TextMessage) messageContent;
-						userInfoName = "";
-						if (tm.getUserInfo() != null) {
-							userInfoName = tm.getUserInfo().getName();
-						}
-						txt = userInfoName + ":" + tm.getContent();
-					} else if (messageContent instanceof ImageMessage) {
-						ImageMessage im = (ImageMessage) messageContent;
-						userInfoName = "";
-						if (im.getUserInfo() != null) {
-							userInfoName = im.getUserInfo().getName();
-						}
-						txt = userInfoName + ":图片";
-					} else if (messageContent instanceof VoiceMessage) {
-						VoiceMessage vm = (VoiceMessage) messageContent;
-						userInfoName = "";
-						if (vm.getUserInfo() != null) {
-							userInfoName = vm.getUserInfo().getName();
-						}
-						txt = userInfoName + ":语音";
-					}
+                    if (messageContent instanceof TextMessage) {
+                        TextMessage tm = (TextMessage) messageContent;
+                        userInfoName = "";
+                        if (tm.getUserInfo() != null) {
+                            userInfoName = tm.getUserInfo().getName();
+                        }
+                        txt = userInfoName + ":" + tm.getContent();
+                    } else if (messageContent instanceof ImageMessage) {
+                        ImageMessage im = (ImageMessage) messageContent;
+                        userInfoName = "";
+                        if (im.getUserInfo() != null) {
+                            userInfoName = im.getUserInfo().getName();
+                        }
+                        txt = userInfoName + ":图片";
+                    } else if (messageContent instanceof VoiceMessage) {
+                        VoiceMessage vm = (VoiceMessage) messageContent;
+                        userInfoName = "";
+                        if (vm.getUserInfo() != null) {
+                            userInfoName = vm.getUserInfo().getName();
+                        }
+                        txt = userInfoName + ":语音";
+                    }
 
                     long time = conversation.getSentTime();
                     Date date = new Date(time);
-					Date currentDate = new Date();
+                    Date currentDate = new Date();
                     SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					if(date.getYear()==currentDate.getYear()&&date.getMonth()==currentDate.getMonth()&&date.getDate()==currentDate.getDate()){
+                    if(date.getYear()==currentDate.getYear()&&date.getMonth()==currentDate.getMonth()&&date.getDate()==currentDate.getDate()){
                         sd = new SimpleDateFormat("HH:mm");
                     }else if(date.getYear()==currentDate.getYear()&&date.getMonth()==currentDate.getMonth()){
                         sd = new SimpleDateFormat("MM-dd HH:mm");
                     }
-					
+                    
                     String mTime = sd.format(date);
                     SimpleDateFormat sortTimeFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                     String sortTime = sortTimeFormat.format(date);
@@ -782,7 +815,8 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
                             sendUserName = "讨论组";
                         }
                     }
-                    myConversation myCon = new myConversation(txt, targetId, mTime,sortTime,String.valueOf(num), sendUserName, iconPath, conversationType);
+
+                    myConversation myCon = new myConversation(txt, targetId, mTime, sortTime, String.valueOf(num), sendUserName, iconPath, conversationType);
                     myConversations.add(myCon);
                 }
                 putChatList(myConversations);

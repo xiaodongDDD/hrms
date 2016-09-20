@@ -22,10 +22,10 @@ angular.module('applicationModule')
         };
 
         var notifyType = {
-          "work_flow": {
+          /*"work_flow": {
             "name": "待办事项",
             "imgUrl": "build/img/message/todo@3x.png",
-          },
+          },*/
           "room": {
             "name": "住宿申请",
             "imgUrl": "build/img/message/dorm@3x.png",
@@ -89,12 +89,15 @@ angular.module('applicationModule')
               if (parseInt(friendList[i].sortTime) < parseInt(notifyList[j].sortTime) && !notifyList[j].selected) {
                 messageList.push(notifyList[j]);
                 notifyList[j].selected = true;
+                notifyList[j].deleteAnimate = true;
               }
             }
+            friendList[i].deleteAnimate = true;
             messageList.push(friendList[i]);
           }
           for (var ii = 0; ii < notifyList.length; ii++) {
             if (!notifyList[ii].selected) {
+              notifyList[ii].deleteAnimate = true;
               messageList.push(notifyList[ii]);
             }
           }
@@ -138,20 +141,23 @@ angular.module('applicationModule')
               var totalMessageCount = 0;
               var messageList = [];
               angular.forEach(result.returnData, function (messageDetail) {
-                totalMessageCount = totalMessageCount + parseInt(messageDetail.messageNum);
 
-                var notify = {
-                  "name": notifyType[messageDetail.messageTypeCode].name,
-                  "content": messageDetail.messageContent,
-                  "imgUrl": notifyType[messageDetail.messageTypeCode].imgUrl,
-                  "count": messageDetail.messageNum,
-                  "employee": "",
-                  "time": messageDetail.compareTime,
-                  "messageType": messageType.notify,
-                  "sortTime": filterData(messageDetail.latestMessageTime),
-                  "conversationType": messageDetail.messageTypeCode
-                };
-                messageList.push(notify);
+                if(messageDetail.messageTypeCode != 'work_flow'){
+                  totalMessageCount = totalMessageCount + parseInt(messageDetail.messageNum);
+                  var notify = {
+                    "name": notifyType[messageDetail.messageTypeCode].name,
+                    "content": messageDetail.messageContent,
+                    "imgUrl": notifyType[messageDetail.messageTypeCode].imgUrl,
+                    "count": messageDetail.messageNum,
+                    "employee": "",
+                    "time": messageDetail.compareTime,
+                    "messageType": messageType.notify,
+                    "sortTime": filterData(messageDetail.latestMessageTime),
+                    "conversationType": messageDetail.messageTypeCode
+                  };
+                  messageList.push(notify);
+                }
+
               });
 
               setCachedNotifyList(messageList);
@@ -163,6 +169,7 @@ angular.module('applicationModule')
               }
               if (ionic.Platform.isWebView() && ionic.Platform.isIOS()) {
                 window.plugins.jPushPlugin.setApplicationIconBadgeNumber(totalMessageCount);
+                window.plugins.jPushPlugin.setBadge(totalMessageCount);
               }
             }
           };
@@ -275,6 +282,7 @@ angular.module('applicationModule')
               badgeNumber = 0;
             }
             window.plugins.jPushPlugin.setApplicationIconBadgeNumber(badgeNumber);
+            window.plugins.jPushPlugin.setBadge(badgeNumber);
           });
         }
 

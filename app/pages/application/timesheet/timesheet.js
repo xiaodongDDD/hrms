@@ -14,6 +14,24 @@ angular.module('applicationModule')
 
       var timeSheetList = [];
 
+      this.processProject = function (projectList) {
+        var projectCategory = {};
+        angular.forEach(projectList, function (data) {
+          if (data.project_type_id && data.project_type_id != "") {
+            var project_type_id = data.project_type_id;
+            if (projectCategory[project_type_id]) {
+              projectCategory[project_type_id].name = data.project_type;
+              projectCategory[project_type_id].array.push(data);
+            } else {
+              projectCategory[project_type_id] = {}
+              projectCategory[project_type_id].name = data.project_type;
+              projectCategory[project_type_id].array = [data];
+            }
+          }
+        });
+        return projectCategory;
+      };
+
       this.getTimeSheetList = function () {
         return timeSheetList;
       };

@@ -33,11 +33,21 @@
     <!-- add by fuwei begin -->
     <source-file src="src/android/activity/BaseActivity.java" target-dir="src/com/hand/im/activity"/>
     <source-file src="src/android/activity/CallActivity.java" target-dir="src/com/hand/im/activity"/>
+    <source-file src="src/android/activity/MulCallActivity.java" target-dir="src/com/hand/im/activity"/>
+    <source-file src="src/android/activity/CallSelectActivity.java" target-dir="src/com/hand/im/activity"/>
+
+    <source-file src="src/android/adapter/CallSelectAdapter.java" target-dir="src/com/hand/im/adapter"/>
     <source-file src="src/android/control/PlayControl.java" target-dir="src/com/hand/im/control"/>
     <source-file src="src/android/widget/CallFloatBoxView.java" target-dir="src/com/hand/im/widget"/>
+    <source-file src="src/android/widget/CallUserGridView.java" target-dir="src/com/hand/im/widget"/>
+    <source-file src="src/android/widget/CompatUtils.java" target-dir="src/com/hand/im/widget"/>
+    <source-file src="src/android/widget/SmoothCheckBox.java" target-dir="src/com/hand/im/widget"/>
+    <source-file src="src/android/widget/MulCallFloatBoxView.java" target-dir="src/com/hand/im/widget"/>
     <source-file src="src/android/service/PlayService.java" target-dir="src/com/hand/im/service"/>
     <source-file src="src/android/model/NameModel.java" target-dir="src/com/hand/im/model"/>
     <source-file src="src/android/model/RequestModel.java" target-dir="src/com/hand/im/model"/>
+    <source-file src="src/android/model/CallMemberModel.java" target-dir="src/com/hand/im/model"/>
+    <source-file src="src/android/model/UserInfo.java" target-dir="src/com/hand/im/model"/>
     <!-- add by fuwei end-->
 	
 	<!--add by panxu begin -->
@@ -286,6 +296,10 @@
     <source-file src="src/android/layout/activity_call.xml" target-dir="res/layout"/>
     <source-file src="src/android/layout/rc_voip_float_box.xml" target-dir="res/layout"/>
     <source-file src="src/android/layout/item_alert_dialog.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/activity_mul_call.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/activity_call_select.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/item_call_select.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/item_mul_user_info.xml" target-dir="res/layout"/>
 
     <source-file src="src/android/drawable-hdpi/rc_voip_minimize.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/drawable-hdpi/head_1.png" target-dir="res/drawable-hdpi"/>
@@ -298,6 +312,8 @@
     <source-file src="src/android/drawable-hdpi/rc_voip_hang_up_hover.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/drawable-hdpi/rc_voip_mute.png" target-dir="res/drawable-hdpi"/>
     <source-file src="src/android/drawable-hdpi/rc_voip_mute_hover.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/rc_voip_icon_add.png" target-dir="res/drawable-hdpi"/>
+
     <source-file src="src/android/drawable/bt_mute_selector.xml" target-dir="res/drawable"/>
     <source-file src="src/android/drawable/bt_answer_selector.xml" target-dir="res/drawable"/>
     <source-file src="src/android/drawable/bt_call_cancel_selector.xml" target-dir="res/drawable"/>
@@ -305,6 +321,7 @@
     <source-file src="src/android/drawable/rc_voip_float_bg.xml" target-dir="res/drawable"/>
     <source-file src="src/android/drawable/blue_button_background.xml" target-dir="res/drawable"/>
     <source-file src="src/android/drawable/red_button_background.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/drawable/text_state_bg.xml" target-dir="res/drawable"/>
     <!-- add by fuwei end -->
 
 
@@ -338,7 +355,8 @@
         <item name="android:windowFrame">@null</item>
         </style>
         </config-file>
-
+    
+    <source-file src="src/android/values/attrs.xml" target-dir="res/values"/>
     <!-- updata bu fuwei end -->
 
 
@@ -369,12 +387,14 @@
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <!-- <meta-data
+        <!-- 正式 -->
+      <meta-data
             android:name="RONG_CLOUD_APP_KEY"
-            android:value="e5t4ouvptpsaa" /> -->
-        <meta-data
+            android:value="e5t4ouvptpsaa" />
+        <!-- 测试 -->
+        <!-- <meta-data
             android:name="RONG_CLOUD_APP_KEY"
-            android:value="0vnjpoadnd4cz" />
+            android:value="0vnjpoadnd4cz" /> -->
 
       <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
                 android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"
@@ -388,7 +408,7 @@
 		<activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
 			 android:name="com.hand.im.contact.ContactActivity"  
 			 android:screenOrientation="portrait" 
-			 android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"></activity>
+			 android:windowSoftInputMode="adjustPan"></activity>
 		<activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
 		  android:name="com.hand.im.GroupInfoActivity"  android:screenOrientation="portrait" 
 		  android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"></activity>
@@ -407,6 +427,15 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+
+            <activity android:name="com.hand.im.activity.MulCallActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+
+            <activity android:name="com.hand.im.activity.CallSelectActivity"
+            android:screenOrientation="portrait"
+            />
 
         <service android:name="com.hand.im.service.PlayService" />
         <!-- add by fuwei end -->

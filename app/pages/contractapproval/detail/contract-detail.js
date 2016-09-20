@@ -49,16 +49,16 @@ angular.module('applicationModule')
     'hmsPopup',
     'contractDetailService',
     'contractListService',
-    function($scope, 
-    $state, 
-    $stateParams, 
-    $timeout, 
-    $ionicHistory, 
-    $ionicActionSheet, 
-    $ionicScrollDelegate,
-    hmsPopup, 
-    contractDetailService, 
-    contractListService) {
+    function($scope,
+      $state,
+      $stateParams,
+      $timeout,
+      $ionicHistory,
+      $ionicActionSheet,
+      $ionicScrollDelegate,
+      hmsPopup,
+      contractDetailService,
+      contractListService) {
       $scope.nowContractInfoNum = 0;
       $scope.nowContractInfo = {};
       $scope.noNextDataFlag = false;
@@ -89,7 +89,7 @@ angular.module('applicationModule')
           hmsPopup.showPopup('获取数据失败' + $scope.data.message);
           return 0;
         }
-        
+
         //原date格式为 yyyy-MM-dd At hh:mm:ss ,拆分为两个字段并保存
         if ($scope.data.historyData) {
           for (var i = 0; i < $scope.data.historyData.length; i++) {
@@ -103,14 +103,18 @@ angular.module('applicationModule')
             window.localStorage.contractDetailHintFlag = "true";
           }, 1000);
         }
-        
+
         if ($scope.data.contractInfo.lines[0].line.length < 2)
           $scope.noNextDataFlag = true;
         $scope.showOperateButton = $scope.data.approvalAction ? true : false;
 
-        $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[0].line_values;
-        $scope.contractId = $scope.nowContractInfo[8].line_value;
-        contractDetailService.getEssence(essenceSuccess, $scope.contractId, 0);
+        for (var i = 0; i < $scope.data.contractInfo.lines[0].line_title.length; i++) {
+          if ($scope.data.contractInfo.lines[0].line_title[i].line_title == '存储编号') {
+            $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[0].line_values;
+            $scope.contractId = $scope.nowContractInfo[i].line_value;
+            contractDetailService.getEssence(essenceSuccess, $scope.contractId, 0);
+          }
+        }
         // for(var i = 0; i < $scope.data.contractInfo.lines.length; i++){
         //   var _nowContractInfo = $scope.data.contractInfo.lines[0].line[i].line_values;
         //   var _contractId = _nowContractInfo[8].line_value;
@@ -153,10 +157,14 @@ angular.module('applicationModule')
         $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[$scope.nowContractInfoNum].line_values;
         $scope.noNextDataFlag = ($scope.nowContractInfoNum == $scope.data.contractInfo.lines[0].line.length - 1);
 
-        if(!$scope.essenceData[$scope.nowContractInfoNum]){
-          $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[$scope.nowContractInfoNum].line_values;
-          $scope.contractId = $scope.nowContractInfo[8].line_value;
-          contractDetailService.getEssence(essenceSuccess, $scope.contractId, $scope.nowContractInfoNum);
+        if (!$scope.essenceData[$scope.nowContractInfoNum]) {
+          for (var i = 0; i < $scope.data.contractInfo.lines[0].line_title.length; i++) {
+            if ($scope.data.contractInfo.lines[0].line_title[i].line_title == '存储编号') {
+              $scope.nowContractInfo = $scope.data.contractInfo.lines[0].line[$scope.nowContractInfoNum].line_values;
+              $scope.contractId = $scope.nowContractInfo[i].line_value;
+              contractDetailService.getEssence(essenceSuccess, $scope.contractId, $scope.nowContractInfoNum);
+            }
+          }
         }
       };
 

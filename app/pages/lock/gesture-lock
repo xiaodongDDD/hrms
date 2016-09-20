@@ -1,18 +1,20 @@
 .gesture-lock .scroll{
   height: 100vh;
-  margin-top: -44px;
   position: relative;
 }
 .gesture-lock .lock-panel{
   position: absolute;
-  top:50%;
+  top: 50%;
   transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
   text-align: center;
 }
+.gesture-lock .lock-panel h4{
+  margin-bottom: 15vw;
+}
 .gesture-lock .error-description{
-  animation:error-description 0.5s;
-  -webkit-animation:error-description 0.5s;
+  animation: error-description 0.5s;
+  -webkit-animation: error-description 0.5s;
 }
 @keyframes error-description {
   0%{
@@ -66,7 +68,8 @@
     -webkit-transform: translateX(0px);
   }
 }
-.gesture-password-setting #container{
-  width: 100vw;
-  height: 100vw;
+.gesture-lock #container{
+  margin: 0 10vw;
+  width: 80vw;
+  height: 80vw;
 }

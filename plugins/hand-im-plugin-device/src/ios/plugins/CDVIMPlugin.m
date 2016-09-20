@@ -20,7 +20,6 @@
     NSString *friendName;
     NSString *friendIcon;
     NSString *telephoneNumbers;
-    BOOL isSuccessFulConnect;
 }
 
 @end
@@ -29,11 +28,16 @@
 
 //程序点击登陆的时候调用
 -(void)getChatList:(CDVInvokedUrlCommand *)command
-{ [NSString stringWithFormat:@"%@/hrmsv2/v2/api/staff/detail?",rootService];
+{
+    NSString *baseUrl = [command.arguments[0] objectForKey:@"businessUrl"];
+    NSLog(@"rootService----%@",rootService);
     NSString *userId = [command.arguments[0] objectForKey:@"userId"];
     NSString *access_token = [command.arguments[0] objectForKey:@"access_token"];
     NSString *Token = [command.arguments[0] objectForKey:@"RCToken"];
-    NSLog(@"%@,%@,token----%@",userId,access_token,Token);
+//    NSLog(@"%@,%@,token----%@",userId,access_token,Token);
+    [[NSUserDefaults standardUserDefaults] setObject:baseUrl forKey:@"businessUrl"];
+    
+    NSLog(@"businessUrl:%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"businessUrl"]);
     [[NSUserDefaults standardUserDefaults] setObject:userId forKey:@"userId"];
     [[NSUserDefaults standardUserDefaults] setObject:Token forKey:@"RCToken"];
     [[NSUserDefaults standardUserDefaults] setObject:access_token forKey:@"access_token"];
@@ -48,7 +52,8 @@
 //开启单人会话
 - (void)toChatAct:(CDVInvokedUrlCommand *)command
 {
-    if (isSuccessFulConnect) {
+    RCConnectionStatus isSuccessFulConnect = [[RCIM sharedRCIM] getConnectionStatus];//状态监听
+    if (isSuccessFulConnect==ConnectionStatus_Connected) {
         NSLog(@"openIMVC");
         friendId =   command.arguments[0][@"friendId"];
         friendName = command.arguments[0][@"friendName"];
@@ -301,8 +306,8 @@
             
             NSString *name = [DataBaseTool getNameByWorkerId:conversation.targetId];
             NSString *icon = [DataBaseTool getImageUrlByWorkerId:conversation.targetId];
-            
             NSLog(@"t-id:%@,name:%@,icon:%@,time:%@,unreadCount:%@,content:%@,sortTIme:%@,conversationType:%@",conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content,[TimeTool sortTime:conversation.receivedTime],@(conversation.conversationType));
+           
             if (name!=nil&&icon!=nil) {
                 NSDictionary *dictConversa = [NSDictionary dictionaryWithObjects:@[conversation.targetId,name,icon,[TimeTool timeStr:conversation.receivedTime],@(conversation.unreadMessageCount),content,[TimeTool sortTime:conversation.receivedTime],@(conversation.conversationType)] forKeys:@[@"sendId",@"userName",@"userIcon",@"sendTime",@"messageNum",@"content",@"sortTime",@"conversationType"]];
                 [returnArray addObject:@{@"message":dictConversa}];

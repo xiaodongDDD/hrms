@@ -5,6 +5,26 @@
   .detail-has-footer {
     bottom: 80px;
   }
+  .required {
+    background-color: #fffae3;
+  }
+
+  .hms-application-member-button {
+    display: block;
+    text-align: center;
+    margin: 12px auto;
+    width: 193px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #24559C;
+    background: none;
+    border-radius: 6px;
+    color: #24559C;
+    &.activated {
+      background: #b7cde7;
+    }
+  }
+
   .hms-workflow-history {
     width: 100%;
     height: 136px;
@@ -146,9 +166,11 @@
     }
 
     .hms-multiple-array-header {
-      height: 86px;
+      height: 43px;
       color: #205098;
       .hms-singal-array-name {
+        float: left;
+        width: 75%;
         height: 43px;
         font-size: 16px;
         line-height: 43px;
@@ -162,38 +184,54 @@
           margin-right: 10px;
         }
       }
-      .hms-multiple-array-sub-header {
+
+      .hms-singal-array-operation {
+        float: right;
+        text-align: right;
         height: 43px;
-        .hms-singal-array-link {
-          float: left;
-          height: 43px;
-          line-height: 43px;
-          font-size: 14px;
-          .hms-array-selector {
-            padding-left: 10px;
-            color: #205098;
-            &.no-activated, &.activated {
-              color: #999999;
-            }
-          }
-          .selector-large {
-            font-size: 20px;
-            font-weight: bold;
+        width: 25%;
+        font-size: 16px;
+        line-height: 43px;
+        font-weight: bold;
+        padding-right: 10px;
+        &.activated {
+          font-size: 16px;
+          color: #64ACFF;
+        }
+      }
+    }
+
+    .hms-multiple-array-sub-header {
+      height: 43px;
+      .hms-singal-array-link {
+        float: left;
+        height: 43px;
+        line-height: 43px;
+        font-size: 14px;
+        .hms-array-selector {
+          padding-left: 10px;
+          color: #205098;
+          &.no-activated, &.activated {
+            color: #999999;
           }
         }
-        .hms-singal-array-operation {
-          float: right;
-          height: 43px;
-          width: 35px;
-          font-size: 25px;
-          line-height: 43px;
+        .selector-large {
+          font-size: 20px;
           font-weight: bold;
-          text-align: center;
-          margin-right: 10px;
-          &.activated {
-            font-size: 24px;
-            color: #64ACFF;
-          }
+        }
+      }
+      .hms-singal-array-operation {
+        float: right;
+        height: 43px;
+        width: 35px;
+        font-size: 25px;
+        line-height: 43px;
+        font-weight: bold;
+        text-align: center;
+        margin-right: 10px;
+        &.activated {
+          font-size: 24px;
+          color: #64ACFF;
         }
       }
     }
@@ -275,22 +313,6 @@
         color: white;
         background: #24559C;
         border: 1px solid #24559C;
-      }
-    }
-
-    .hms-application-member-button {
-      display: block;
-      text-align: center;
-      margin: 12px auto;
-      width: 193px;
-      height: 30px;
-      line-height: 30px;
-      border: 1px solid #24559C;
-      background: none;
-      border-radius: 6px;
-      color: #24559C;
-      &.activated {
-        background: #b7cde7;
       }
     }
   }
@@ -482,6 +504,7 @@
       }
     }
   }
+
 }
 
 .transmit-person-modal {

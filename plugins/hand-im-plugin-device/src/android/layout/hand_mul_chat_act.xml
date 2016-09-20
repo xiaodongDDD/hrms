@@ -40,9 +40,7 @@
       android:layout_height="wrap_content"
       android:src="@drawable/dial_2x"
       android:layout_marginRight="15dp"
-      android:layout_marginLeft="15dp"
-	  android:visibility="invisible"
-      />
+      android:layout_marginLeft="15dp"/>
     <ImageView
       android:id="@+id/imgv_group_info"
       android:layout_width="wrap_content"
@@ -175,3 +173,4 @@
     android:visibility="gone">
   </com.hand.im.VoiceLayout>
 </LinearLayout>
+

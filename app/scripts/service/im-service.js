@@ -51,7 +51,8 @@ angular.module('HmsModule')
         var newImParams = {
           "userId": window.localStorage.empno,
           "access_token": window.localStorage.token,
-          "RCToken": window.localStorage.access_token
+          "RCToken": window.localStorage.access_token,
+          "businessUrl": baseConfig.pluginBusinessPath
         };
         if (baseConfig.debug) {
           alert('newImParams ' + angular.toJson(newImParams));

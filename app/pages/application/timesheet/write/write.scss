@@ -1,16 +1,57 @@
-.timesheet-write,.timesheet-batch-write {
-
-  .title-header{
-    width:100%; height: 28px;line-height: 28px
+.project-modal {
+  .project-type {
+    .project-type-selected {
+      border-bottom: 2px solid #24559C;
+    }
   }
 
-  .title-sub-header{
-    width:100%; height: 14px;line-height: 14px;font-size: 14px;font-weight: normal;
+  .no-padding {
+    padding: 0px;
+    margin: 0px;
   }
 
-  .no-padding{
+  .filter-item-detail {
+    border-bottom: 1px solid #d2d2d2;
+    padding: 12px 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+    &.activated {
+      background: #f5f5f5;
+    }
+  }
+  .filter-condition-item {
+    &.selected {
+      color: #26579E;
+    }
+  }
+  .select-item-color {
+    color: #26579E;
+  }
+  .checked {
+    font-size: 18px;
+    color: #26579E;
+  }
+}
+
+.timesheet-write, .timesheet-batch-write {
+
+  .title-header {
+    width: 100%;
+    height: 28px;
+    line-height: 28px
+  }
+
+  .title-sub-header {
+    width: 100%;
+    height: 14px;
+    line-height: 14px;
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  .no-padding {
     margin: 0;
-    padding:0;
+    padding: 0;
   }
 
   .timesheet-write-button {
@@ -25,7 +66,7 @@
     border-radius: 20px;
     display: block;
     font-size: 16px;
-    &.activated{
+    &.activated {
       background: #FCC896;
       margin-left: 6%;
       margin-right: 6%;
@@ -49,7 +90,6 @@
   max-width: 15%;
 }
 
-
 .hms-input-list {
   margin: 5px 5px 20px 5px;
   padding-bottom: 25px;
@@ -58,9 +98,10 @@
   border: 1px solid #f5f5f5;
   box-shadow: 0px 0px 8px #D2D2D2;
 
-  .hms-textarea{
-    width: 90%;height: 100px;
-    margin:10px;
+  .hms-textarea {
+    width: 90%;
+    height: 100px;
+    margin: 10px;
   }
 
   .hms-input-item {
@@ -69,20 +110,20 @@
     padding-bottom: 8px;
     border-bottom: 1px solid #D2D2D2;
 
-    .checkbox-size{
-      font-size:24px;
+    .checkbox-size {
+      font-size: 24px;
       color: #24559C;
       margin-top: -2px;
     }
-    .checkbox-font-size{
-      font-size:16px;
+    .checkbox-font-size {
+      font-size: 16px;
       color: #24559C;
     }
-    &.activated{
+    &.activated {
       background: #f5f5f5;
     }
     .hms-input-icon {
-      img{
+      img {
         width: 20px;
         height: 20px;
       }
@@ -92,7 +133,7 @@
       color: #4A4A4A;
     }
     .hms-input-link {
-      .hms-input-link-img{
+      .hms-input-link-img {
         width: 20px;
         height: 20px;
         background: url("../img/application/timesheet/BackArrow@3x.png");

@@ -36,6 +36,7 @@ angular.module('applicationModule')
     '$timeout',
     'baseConfig',
     'TimeSheetService',
+    '$ionicScrollDelegate',
     'hmsPopup',
     function ($scope,
               $state,
@@ -45,6 +46,7 @@ angular.module('applicationModule')
               $timeout,
               baseConfig,
               TimeSheetService,
+              $ionicScrollDelegate,
               hmsPopup) {
 
       var checked = 'ion-ios-checkmark';
@@ -59,6 +61,24 @@ angular.module('applicationModule')
       if (baseConfig.debug) {
         console.log('dayRange ' + angular.toJson(dayRange));
       }
+
+      $scope.projectListType = [
+        {
+          "id": "1",
+          "name": "客户项目",
+          "selected": true
+        },
+        {
+          "id": "2",
+          "name": "预销售",
+          "selected": false
+        },
+        {
+          "id": "3",
+          "name": "内部项目",
+          "selected": false
+        }];
+      $scope.currentProjectListCategory = [];
 
       $scope.timeSheetBatchDetail = {
         "dayRange": {},
@@ -92,6 +112,30 @@ angular.module('applicationModule')
       $scope.timeSheetBatchDetail.normalAllowance = uncheckedJson();
       $scope.timeSheetBatchDetail.includeWeekend = checkedJson();
       $scope.timeSheetBatchDetail.extChargeIncludeWeekend = uncheckedJson();
+
+      $scope.projectListModalHandle = {
+        selectProject: function (type) {
+
+          $ionicScrollDelegate.$getByHandle('projectModalHandle').scrollTop();
+
+          angular.forEach($scope.projectListType, function (data) {
+            data.selected = false;
+          });
+
+          type.selected = true;
+
+          var typeId = type.id;
+          if($scope.projectCategory[typeId]){
+            $scope.currentProjectListCategory = $scope.projectCategory[typeId].array;
+          }else{
+            $scope.currentProjectListCategory = [];
+          }
+
+          if(baseConfig.debug){
+            console.log('$scope.currentProjectListCategory ' + angular.toJson($scope.currentProjectListCategory));
+          }
+        }
+      };
 
       $scope.checkBoxChanged = function (item, type) {
         if (baseConfig.debug) {
@@ -156,6 +200,16 @@ angular.module('applicationModule')
 
       $scope.timeSheetBatchHandle = {
         showProjectModal: function () {
+
+          angular.forEach($scope.projectCategory, function (data) {
+            angular.forEach(data.array, function (data1) {
+              data1.selected_flag = 'N';
+              if (data1.project_id == $scope.timeSheetBatchDetail.currentProject.project_id) {
+                data1.selected_flag = 'Y';
+              }
+            });
+          });
+
           $scope.projectModal.show();
         },
         showAddressModal: function () {
@@ -258,6 +312,31 @@ angular.module('applicationModule')
                   $scope.timeSheetBatchDetail.currentAddress = $scope.projectList[0].address[0];
                 }
                 $scope.timeSheetBatchDetail.approver = $scope.projectList[0].approver;
+              }
+
+
+              /*添加项目类型的逻辑*/
+              $scope.projectCategory = TimeSheetService.processProject(result.project);
+
+              $scope.projectListType[0].selected = true;
+              angular.forEach($scope.projectListType, function (data) {
+                if (data.id == $scope.timeSheetBatchDetail.currentProject.project_type_id) {
+                  $scope.projectListType[0].selected = false;
+                  data.selected = true;
+                }
+                else {
+                  data.selected = false;
+                }
+              });
+              if ($scope.timeSheetBatchDetail.currentProject.project_id) {
+                var project_type_id = $scope.timeSheetBatchDetail.currentProject.project_type_id;
+                $scope.currentProjectListCategory = $scope.projectCategory[project_type_id].array;
+              } else {
+                if($scope.projectCategory[1]){
+                  $scope.currentProjectListCategory = $scope.projectCategory[1].array;
+                }else{
+                  $scope.currentProjectListCategory = [];
+                }
               }
 
             } else {

@@ -37,7 +37,7 @@ angular.module('HmsModule')
               getRegistrationID();
               if (device.platform != "Android") {
                 window.plugins.jPushPlugin.setDebugModeFromIos();
-                window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
+                //window.plugins.jPushPlugin.setApplicationIconBadgeNumber(0);
               } else {
                 window.plugins.jPushPlugin.setDebugMode(true);
                 window.plugins.jPushPlugin.setStatisticsOpen(true);

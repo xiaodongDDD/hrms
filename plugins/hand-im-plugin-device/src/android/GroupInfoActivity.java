@@ -1,12 +1,11 @@
 package com.hand.im;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,7 +18,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.hand.im.bean.UserInfo;
 import com.hand.im.contact.ContactActivity;
 import com.hand.im.okhttp.OkHttpClientManager;
@@ -29,8 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -102,6 +98,9 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
       new RongIMClient.ResultCallback<Conversation>() {
         @Override
         public void onSuccess(Conversation conversation) {
+          if(conversation == null){
+            return;
+          }
           switchConvTop.setChecked(conversation.isTop());
         }
 
@@ -135,8 +134,10 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
     });
   }
   private void dealData() {
-
     String url = LoginInfo.baseUrl+"/hrmsv2/v2/api/staff/detail?" + "access_token=" + LoginInfo.access_token;
+//    SharedPreferences sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+//    String url = "http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/detail?access_token="+ sp.getString("access_token", "");
+
     for(int i=0;i<data.size()-2;i++){
       JSONObject object = new JSONObject();
       try {
@@ -185,11 +186,11 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
   }
   private ArrayList<UserInfo> getData(Discussion discussion) {
     data.clear();
-	GroupArray = new String[discussion.getMemberIdList().size()];
+  GroupArray = new String[discussion.getMemberIdList().size()];
     for (int i = 0; i < discussion.getMemberIdList().size(); i++) {
       UserInfo userInfo = new UserInfo();
       userInfo.setEmp_name(discussion.getMemberIdList().get(i));
-	  GroupArray[i] = discussion.getMemberIdList().get(i);
+    GroupArray[i] = discussion.getMemberIdList().get(i);
       data.add(userInfo);
     }
     txtGroupNo.setText(data.size()+"人");
@@ -262,7 +263,7 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
       });
     }else if(id == idBack){
       setResult(1);
-	  finish();
+    finish();
     }else if(id == idBtnUpdateName){
       Intent intent = new Intent(GroupInfoActivity.this,UpdateDisNameActivity.class);
       intent.putExtra("targetId",targetId);
@@ -278,7 +279,7 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
       Intent intent = new Intent(GroupInfoActivity.this, ContactActivity.class);
       intent.putExtra("targetId", targetId);
       //startActivity(intent);
-	  intent.putExtra("GroupArray",GroupArray);
+    intent.putExtra("GroupArray",GroupArray);
       startActivityForResult(intent, 0);
     }
   }

@@ -28,29 +28,36 @@ angular.module('myInfoModule')
       $scope.$on('$ionicView.enter', function () {
         $scope.operation = 2;
         if( !storageLock.getLock() ){
-          var w = window.innerWidth
-            || document.documentElement.clientWidth
-            || document.body.clientWidth;
-          var config = {
-            height: w,
-            width: w,
-            operation: $scope.operation,
-            descID: 'description',
-            canvasID: 'container',
-            successUnlockCallback: function(){
-              var desc = document.getElementById('description');
-              desc.className = '';
-              $state.go('tab.message');
-            },
-            errorCallback: function () {
-              var desc = document.getElementById('description');
-              desc.className = '';
-              $timeout(function(){
-                desc.className = 'error-description';
-              },20);
+          var delay = ionic.Platform.isIOS() ? 0 : 400;
+          $timeout(function () {
+            var w = window.innerWidth
+              || document.documentElement.clientWidth
+              || document.body.clientWidth;
+            if( w == 0 ){
+              console.log('Gesture lock init error!');
+              $state.go(tab.message);
             }
-          };
-          storageLock.initLock(config);
+            var config = {
+              height:  w * 8 /10,
+              width:  w * 8 /10,
+              operation: $scope.operation,
+              descID: 'description',
+              canvasID: 'container',
+              successUnlockCallback: function(){
+                var desc = document.getElementById('description');
+                desc.className = '';
+                $state.go('tab.message');
+              },
+              errorCallback: function () {
+                var desc = document.getElementById('description');
+                desc.className = '';
+                $timeout(function(){
+                  desc.className = 'error-description';
+                },20);
+              }
+            };
+            storageLock.initLock(config);
+          }, delay);
         } else {
           $scope.lock = storageLock.getLock();
           $scope.lock.init();

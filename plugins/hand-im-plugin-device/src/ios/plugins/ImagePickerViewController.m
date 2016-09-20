@@ -72,6 +72,25 @@ static NSString * const reuseIdentifier = @"Cell";
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){
         dataSource = [self getAllAssetInPhotoAblumWithAscending:NO];
     }
+    // iOS9以后
+    if ([UIDevice currentDevice].systemVersion.floatValue>=9.0) {
+        
+        if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
+            
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                
+                if (status == PHAuthorizationStatusAuthorized) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        dataSource = [self getAllAssetInPhotoAblumWithAscending:NO];
+                        [self.imageCollectionView reloadData];
+                    });
+                }
+            }];
+            
+        }else if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized){
+            dataSource = [self getAllAssetInPhotoAblumWithAscending:NO];
+        }
+    }
 }
 - (void)viewWillAppear:(BOOL)animated
 {

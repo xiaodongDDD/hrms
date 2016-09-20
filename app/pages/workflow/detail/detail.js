@@ -97,6 +97,8 @@ angular.module('applicationModule')
     'hmsPopup',
     '$ionicHistory',
     'HmsDateFormat',
+    'hmsHttp',
+    '$ionicPopup',
     function ($scope,
               $state,
               $stateParams,
@@ -110,7 +112,9 @@ angular.module('applicationModule')
               workFLowListService,
               hmsPopup,
               $ionicHistory,
-              HmsDateFormat) {
+              HmsDateFormat,
+              hmsHttp,
+              $ionicPopup) {
 
       $scope.currentDetail = $stateParams.detail; //传过来的数据块
       var detail = $stateParams.detail;//传过来的数据块
@@ -178,6 +182,14 @@ angular.module('applicationModule')
         }
       };
 
+      $scope.multpleLine = {
+        "editAble": false
+      };
+
+      $scope.multLineInputText = {
+        "value": ""
+      };
+
       $scope.transmitPersonFilter = {
         "value": ""
       };
@@ -203,12 +215,12 @@ angular.module('applicationModule')
       $scope.currentApplicationEmployeeAbility = {};
       /*------------------转正申请数据源------------------*/
 
-
       $scope.openProjectDetail = {};
+
+      $scope.currentNeedLov = {};
 
       var contractRenewal = {
         queryData: function () {
-
         }
       };
 
@@ -249,7 +261,7 @@ angular.module('applicationModule')
         $scope.abilityGradeModal = modal;
       });//初始化下拉列表的modal
 
-      //加载项目画面
+//加载项目画面
       $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/transmit-person.html', {
         scope: $scope
       }).then(function (modal) {
@@ -257,7 +269,7 @@ angular.module('applicationModule')
       });
 
 
-      // 合并项目选择 modal
+// 合并项目选择 modal
       $ionicModal.fromTemplateUrl('project-modal.html', {
         scope: $scope,
       }).then(function (modal) {
@@ -285,7 +297,7 @@ angular.module('applicationModule')
         }
       };
 
-      //项目选择与清选
+//项目选择与清选
       $scope.openProjectChoose = function (item) {
         $scope.openProjectDetail.projectCode = item.value;
         $scope.openProjectDetail.projectName = item.name;
@@ -298,7 +310,7 @@ angular.module('applicationModule')
       };
 
 
-      // 职位选择 modal
+// 职位选择 modal
       $ionicModal.fromTemplateUrl('build/pages/workflow/detail/modal/position-modal.html', {
         scope: $scope,
       }).then(function (modal) {
@@ -325,7 +337,7 @@ angular.module('applicationModule')
         workFLowListService.getPositionData(success, error, unitId);
       };
 
-      //职位选择与清选
+//职位选择与清选
       $scope.positionUtil = {
         positionChoose: function (item) {
           $scope.applicationEmployeeDetail.position = item.name;
@@ -371,7 +383,7 @@ angular.module('applicationModule')
         }
       };
 
-      //选择值列表的数据
+//选择值列表的数据
       $scope.selectData = function (data) {
         if (detail.workflowId == workflowIdSpecial.renewContractWorkflowId) { //合同续签地址维护
           $scope.renewContract.method = data.item;
@@ -392,7 +404,7 @@ angular.module('applicationModule')
         }
       };
 
-      //转正申请功能
+//转正申请功能
       $scope.applicationFullMemberUtil = {
         changeType: function (item, type) {
           var cache = {
@@ -544,7 +556,7 @@ angular.module('applicationModule')
         }
       };
 
-      //转正申请功能包
+//转正申请功能包
       var applicationFullMember = function () {
         var __self = {};
         __self.query = function () {
@@ -618,7 +630,7 @@ angular.module('applicationModule')
         return __self;
       };
 
-      //合通续签功能
+//合通续签功能
       $scope.renewContractUtil = {
         showDataList: function () {
           $scope.dataTitle = '合同续签方式维护方式';
@@ -661,7 +673,7 @@ angular.module('applicationModule')
         }
       };
 
-      //合通续签功能包
+//合通续签功能包
       var renewContract = function () {
         var __self = {};
         __self.query = function () {
@@ -685,7 +697,7 @@ angular.module('applicationModule')
         return __self;
       };
 
-      //新建项目
+//新建项目
       $scope.openProjectUtil = {
         openProjectTypeShow: function () {
           $scope.dataTitle = '新开项目或者合并项目';
@@ -728,7 +740,7 @@ angular.module('applicationModule')
         }
       };
 
-      //新建项目
+//新建项目
       var openProject = function () {
         var self = {};
         self.init = function (projectData) {
@@ -755,7 +767,7 @@ angular.module('applicationModule')
         return self;
       };
 
-      //通用工作流
+//通用工作流
       $scope.workflowDetailUtil = {
 
         goUrl: function (url) {
@@ -824,6 +836,52 @@ angular.module('applicationModule')
             }
           }
         },
+
+        //可以编辑二维表单上一页操作
+        toBackEdit: function (array) {
+          if (array.currentPage <= 1) {
+            return '';
+          } else {
+
+            workflowDetail().saveCurrentLine(array);
+
+            var currentPage = array.currentPage - 1;
+            array.currentPage = currentPage;
+            array.currentArray.lineId = array.arrayList[currentPage - 1].line_id;
+            for (var i = 0; i < array.currentArray.array.length; i++) {
+              if (array.arrayList[currentPage - 1].line_values[i].lov) {
+                array.currentArray.array[i].currentValue = {
+                  "value": array.arrayList[currentPage - 1].line_values[i].line_value,
+                  "name": ""
+                }
+              } else {
+                array.currentArray.array[i].value = array.arrayList[currentPage - 1].line_values[i].line_value;
+              }
+            }
+          }
+        },
+        //可以编辑二维表单下一页操作
+        goForwardEdit: function (array) {
+          if (array.currentPage >= array.arrayList.length) {
+            return '';
+          } else {
+            workflowDetail().saveCurrentLine(array);
+            var currentPage = array.currentPage + 1;
+            array.currentPage = currentPage;
+            array.currentArray.lineId = array.arrayList[currentPage - 1].line_id;
+            for (var i = 0; i < array.currentArray.array.length; i++) {
+              if (array.arrayList[currentPage - 1].line_values[i].lov) {
+                array.currentArray.array[i].currentValue = {
+                  "value": array.arrayList[currentPage - 1].line_values[i].line_value,
+                  "name": ""
+                }
+              } else {
+                array.currentArray.array[i].value = array.arrayList[currentPage - 1].line_values[i].line_value;
+              }
+            }
+          }
+        },
+
         //提交工作流数据
         submitAction: function (actionType) {
           if (baseConfig.debug) {
@@ -911,7 +969,12 @@ angular.module('applicationModule')
           var lov, datepicker;
           var canSave = true;
           for (var i = 0; i < $scope.needList.length; i++) {
-            if ($scope.needList[i].required == 'Y' && ($scope.needList[i].value == '' || $scope.needList[i].value == null)) {
+            if ($scope.needList[i].required == 'Y' &&
+              (
+                ($scope.needList[i].type == 'lov' && ($scope.needList[i].lov.value == '' || $scope.needList[i].lov.value == null)) ||
+                ($scope.needList[i].type != 'lov' && ($scope.needList[i].value == '' || $scope.needList[i].value == null))
+              )
+            ) {
               canSave = false;
               hmsPopup.showPopup('保存失败：必输项不能为空');
               break;
@@ -930,7 +993,7 @@ angular.module('applicationModule')
               lov.required = $scope.needList[i].required;
               lov.title = $scope.needList[i].title;
               lov.type = $scope.needList[i].type;
-              lov.value = $scope.needList[i].value;
+              lov.value = $scope.needList[i].lov.value;
               needs.push(lov);
             } else if ($scope.needList[i].type == 'datepicker') {
               datepicker = {
@@ -952,22 +1015,116 @@ angular.module('applicationModule')
               needs.push($scope.needList[i]);
             }
           }
+          if (baseConfig.debug) {
+            console.log('needSave needs ' + angular.toJson(needs));
+          }
           if (canSave) {
             var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/workflow_save_action";
             var params = {
               params: {
                 "p_instance_id": detail.instanceId,
-                "p_param_json": {"need": +JSON.stringify(needs)}
+                "p_param_json": '{"need":' + JSON.stringify(needs) + '}'
               }
             };
+            hmsPopup.showLoading('保存数据中');
             hmsHttp.post(url, params).success(function (result) {
+              hmsPopup.hideLoading();
               if (result.status == 'S') {
                 hmsPopup.showPopup('确认信息保存成功');
               } else {
                 hmsPopup.showPopup('确认信息保存失败 ' + result.errmsg);
               }
             }).error(function () {
+              hmsPopup.hideLoading();
               hmsPopup.showPopup('确认信息保存失败,可能是网络错误');
+            });
+          }
+        },
+
+        showInputFieldScreen: function (title, item) {
+          $scope.multLineInputText.value = item.value;
+          var inputPopup = $ionicPopup.show({
+            template: '<textarea type="text" style="padding:10px;" ng-model="multLineInputText.value" rows="6" >',
+            title: '<h4>' + title + '</h4>',
+            scope: $scope,
+            buttons: [
+              {text: '取消'},
+              {
+                text: '确认',
+                type: 'button-positive',
+                onTap: function (e) {
+                  return true;
+                }
+              }
+            ]
+          });
+          inputPopup.then(function (res) {
+            if (res) {
+              item.value = $scope.multLineInputText.value;
+            }
+            $scope.multLineInputText.value = '';
+          });
+        },
+
+        checkBoxChange: function (item, lineArray) {
+          if (item.value && item.value == '0') {
+            item.value = '1';
+            for (var i = 0; i < lineArray.length; i++) {
+              if (lineArray[i].special == 'Y' && lineArray[i].type == 'input') {
+                lineArray[i].required = 'N'
+              }
+            }
+          } else {
+            item.value = '0';
+            for (var i = 0; i < lineArray.length; i++) {
+              if (lineArray[i].special == 'Y' && lineArray[i].type == 'input') {
+                lineArray[i].required = 'Y'
+              }
+            }
+          }
+        },
+
+        saveEditLine: function (array) {
+          if (baseConfig.debug) {
+            console.log('saveEditLine array ' + angular.toJson(array));
+            console.log('saveEditLine array.currentArray ' + angular.toJson(array.currentArray));
+            console.log('saveEditLine array.saveAction ' + angular.toJson(array.saveAction));
+          }
+
+          workflowDetail().saveCurrentLine(array);
+
+          if (baseConfig.debug) {
+            console.log('saveEditLine array ' + angular.toJson(array));
+          }
+
+          var canSave = true;
+          for (var i = 0; i < array.arrayList.length; i++) {
+            for (var j = 0; j < array.arrayList[i].line_values.length; j++) {
+              if (array.arrayList[i].line_values[j].required == 'Y' && array.arrayList[i].line_values[j].line_value == '') {
+                canSave = false;
+                hmsPopup.showPopup('保存失败：必输项不能为空!');
+                break;
+              }
+            }
+          }
+          if (canSave) {
+            var url = baseConfig.businessPath + '/' + array.saveAction.procedure + '/' + array.saveAction.function;
+            var params = {
+              params: {
+                "p_lines": '{"line":' + JSON.stringify(array.arrayList) + '}'
+              }
+            };
+            hmsPopup.showLoading('保存数据中');
+            hmsHttp.post(url, params).success(function (result) {
+              hmsPopup.hideLoading();
+              if (result.status == 'S') {
+                hmsPopup.showPopup('保存成功');
+              } else {
+                hmsPopup.showPopup('保存失败 ' + result.errmsg);
+              }
+            }).error(function () {
+              hmsPopup.hideLoading();
+              hmsPopup.showPopup('保存失败,可能是网络错误');
             });
           }
         }
@@ -976,39 +1133,51 @@ angular.module('applicationModule')
       var workflowDetail = function () {
         var self = {};
 
-        self.submitBackAction = function (backAction) {
-          if (baseConfig.debug) {
-            console.log('submitBackAction ' + angular.toJson(backAction))
-          }
 
-          var opinion = $scope.processExtroInfo.opinion;
-
-          var success = function (result) {
-            if (result.status == 'S') {
-              hmsPopup.showPopup('处理退回工作流成功!');
-              if ($stateParams.type == 'WORKFLOWDETAIL') {
-                workFLowListService.setRefreshWorkflowList(true);
-              }
-              $ionicHistory.goBack();
+        self.saveCurrentLine = function (array) {
+          var currentPage = array.currentPage - 1;
+          for (var i = 0; i < array.currentArray.array.length; i++) {
+            if (array.arrayList[currentPage].line_values[i].lov) {
+              array.arrayList[currentPage].line_values[i].line_value = array.currentArray.array[i].currentValue.value;
             } else {
-              hmsPopup.showPopup('处理退回工作流失败!');
+              array.arrayList[currentPage].line_values[i].line_value = array.currentArray.array[i].value;
             }
-          };
-          var error = function (response) {
-          };
+          }
+        },
 
-          var submit = function (buttonIndex) {
+          self.submitBackAction = function (backAction) {
             if (baseConfig.debug) {
-              console.log('You selected button ' + buttonIndex);
+              console.log('submitBackAction ' + angular.toJson(backAction))
             }
-            if (buttonIndex == 1) {
-              hmsPopup.showLoading('处理退回工作流中');
-              workFLowListService.backTo(success, error, detail.recordId, backAction.actionId, opinion);
-            } else {
+
+            var opinion = $scope.processExtroInfo.opinion;
+
+            var success = function (result) {
+              if (result.status == 'S') {
+                hmsPopup.showPopup('处理退回工作流成功!');
+                if ($stateParams.type == 'WORKFLOWDETAIL') {
+                  workFLowListService.setRefreshWorkflowList(true);
+                }
+                $ionicHistory.goBack();
+              } else {
+                hmsPopup.showPopup('处理退回工作流失败!');
+              }
+            };
+            var error = function (response) {
+            };
+
+            var submit = function (buttonIndex) {
+              if (baseConfig.debug) {
+                console.log('You selected button ' + buttonIndex);
+              }
+              if (buttonIndex == 1) {
+                hmsPopup.showLoading('处理退回工作流中');
+                workFLowListService.backTo(success, error, detail.recordId, backAction.actionId, opinion);
+              } else {
+              }
             }
-          }
-          hmsPopup.confirm('是否确认' + backAction.title + '?', '', submit);
-        };
+            hmsPopup.confirm('是否确认' + backAction.title + '?', '', submit);
+          };
 
         self.goBackAction = function () {
           var success = function (result) {
@@ -1054,8 +1223,10 @@ angular.module('applicationModule')
               }
             }
           };
+
           var error = function (response) {
           };
+
           workFLowListService.getBackList(success, error, detail.nodeId);
         };
         //验证工作
@@ -1149,6 +1320,44 @@ angular.module('applicationModule')
           return oneLine;
         };
 
+
+        self.processEditAbleLine = function (line) {
+          var oneLine = {
+            title: line.line_big_title,
+            arrayList: line.line,
+            currentPage: 1,
+            currentArray: {
+              lineId: "",
+              array: [],
+            },
+            saveAction: line.saveAction,
+            showFlag: true
+          };
+          if (line.line.length > 0) {
+            var currentList = [];
+            var lineTitle = line.line_title;
+            var list = line.line[0].line_values;
+            for (var i = 0; i < list.length; i++) {
+              var array = {
+                "name": lineTitle[i].line_title,
+                "value": list[i].line_value,
+                "canUpdate": list[i].canUpdate,
+                "type": list[i].type,
+                "required": list[i].required,
+                "special": list[i].special,
+              };
+              if (list[i].lov) {
+                array.lov = list[i].lov;
+                array.currentValue = {"value": list[i].line_value};
+              }
+              currentList.push(array);
+            }
+            oneLine.currentArray.array = currentList;
+            oneLine.currentArray.lineId = line.line[0].line_id
+          }
+          return oneLine;
+        };
+
         self.getWorkflowDetail = function () {
           var success = function (result) {
             if (baseConfig.debug) {
@@ -1163,10 +1372,21 @@ angular.module('applicationModule')
                   data.showFlag = true;
                 });
 
-                multipleArrayList = result.workflow_data.lines;
-                angular.forEach(multipleArrayList, function (data) {
-                  $scope.multipleLine.push(self.processLine(data));
-                });
+                if (detail.workflowId == 100466 && (detail.nodeId == 100966 || detail.nodeId == 101167) ||
+                  detail.workflowId == 100470 && detail.nodeId == 100849 ||
+                  detail.workflowId == 100727 && (detail.nodeId == 101371 || detail.nodeId == 101381)
+                ) {
+                  $scope.multpleLine.editAble = true;
+                  multipleArrayList = result.workflow_data.lines;
+                  angular.forEach(multipleArrayList, function (data) {
+                    $scope.multipleLine.push(self.processEditAbleLine(data));
+                  });
+                } else {
+                  multipleArrayList = result.workflow_data.lines;
+                  angular.forEach(multipleArrayList, function (data) {
+                    $scope.multipleLine.push(self.processLine(data));
+                  });
+                }
 
                 if (detail.workflowId == workflowIdSpecial.openProjectWorkflowId && result.workflow_data.project_data) {
                   openProject().init(result.workflow_data.project_data);
@@ -1179,7 +1399,7 @@ angular.module('applicationModule')
                   console.log('$scope.singalArrayList ' + angular.toJson($scope.singalArrayList));
                 }
 
-                $scope.needList = response.workflow_data.need;
+                $scope.needList = result.workflow_data.need;
                 //lov、datepicker类型额外处理
                 if ($scope.needList) {
                   var lovIndex, dpIndex, defaultValue;
@@ -1191,8 +1411,16 @@ angular.module('applicationModule')
                       var url = baseConfig.businessPath + "/" + $scope.needList[i].default.procedure + "/" + $scope.needList[i].default.function;
                       var params = {"params": {"p_instance_id": detail.instanceId}}
                       hmsHttp.post(url, params).success(function (result) {
-                        if (result.status == 'S') {
+                        if (result.con_status == 'S' && result.lov) {
                           $scope.needList[lovIndex].options = result.lov;
+                          angular.forEach(result.lov, function (data) {
+                            if (data.value == $scope.needList[lovIndex].value) {
+                              $scope.needList[lovIndex].lov = {
+                                "value": data.value,
+                                "name": data.name,
+                              };
+                            }
+                          });
                         } else {
                         }
                       }).error(function () {
@@ -1340,4 +1568,5 @@ angular.module('applicationModule')
           init.initDataModal();
         }, 250);
       }
-    }]);
+    }])
+;

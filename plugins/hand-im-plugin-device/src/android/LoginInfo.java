@@ -8,5 +8,7 @@ public class LoginInfo {
   public static String userId = "";
   public static String userIcon = "";
   public static String userName= "";
-  public static String baseUrl = "http://wechat.hand-china.com";
+//  public static String baseUrl = "http://wechat.hand-china.com";//测试环境
+//  public static String baseUrl = "http://mobile-app.hand-china.com";//正式环境
+  public static String baseUrl = "";
 }
