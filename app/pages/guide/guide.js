@@ -17,6 +17,10 @@ angular.module('loginModule')
 
       window.localStorage.needGuid = "false";
 
+      $scope.actualHeight = {
+        "height": document.documentElement.clientHeight
+      }
+
       $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
 
       $scope.skipGuide = function () {

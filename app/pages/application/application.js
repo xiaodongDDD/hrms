@@ -7,11 +7,13 @@ angular.module('applicationModule')
   .controller('applicationCtrl', [
     '$scope',
     '$state',
+    '$ionicGesture',
     'baseConfig',
     'workFLowListService',
     'contractListService',
     function ($scope,
               $state,
+              $ionicGesture,
               baseConfig,
               workFLowListService,
               contractListService) {
@@ -207,6 +209,13 @@ angular.module('applicationModule')
         workFLowListService.getNoticeListCount(success, error);
       };
 
+      $scope.onRelease = function () {
+        if(baseConfig.debug){
+          console.log('$scope.onRelease');
+        }
+        $scope.animationsEnabled = false;
+      }
+
       $scope.$on('$ionicView.beforeEnter', function (e) {
         if (baseConfig.debug) {
           console.log('applicationCtrl.$ionicView.beforeEnter');
@@ -215,6 +224,13 @@ angular.module('applicationModule')
         getWorkflowNum();
         contractListService.check(successCheckContract);
         $scope.openDoor = 0;
+      });
+
+      $scope.$on('$ionicView.beforeLeave', function (e) {
+        if (baseConfig.debug) {
+          console.log('applicationCtrl.$ionicView.beforeLeave');
+        }
+        $scope.animationsEnabled = false;
       });
 
       $scope.$on('$destroy', function (e) {
