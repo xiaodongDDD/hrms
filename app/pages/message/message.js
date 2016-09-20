@@ -162,11 +162,20 @@ angular.module('messageModule')
         if (baseConfig.debug) {
           console.log('IMPush.openNotification result ' + angular.toJson(result));
         }
+
+        angular.forEach($scope.messageList,function (data) {
+          data.deleteAnimate = false;
+        });
+
+        $scope.$apply();
+
         if (result && result.message) {
           var friendList = [];
+
           if (angular.isArray(result.message)) {
             friendList = messageService.getEmployeeMessageList(result);
           }
+
           //messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, friendList);
           var notifyList = messageService.getCachedNotifyList()
           $scope.messageList = messageService.mergeNotifyToFriendList(notifyList, friendList);
@@ -192,13 +201,16 @@ angular.module('messageModule')
        }, false);*/
 
       //刷新消息列表
-      var refreshMessageList = function () {
+      var refreshMessageList = function (refreshDom) {
         if (baseConfig.debug) {
           console.log('in refreshMessageList.getTime ' + new Date().getTime());
         }
         angular.forEach($scope.messageList,function (data) {
           data.deleteAnimate = false;
-        })
+        });
+        if(refreshDom){
+          $scope.$apply();
+        }
         messageService.getNotifyMessageList(refreshPluginMessageAndNotify, refreshPluginOnlyMessage, true, []);
       };
 
@@ -216,6 +228,7 @@ angular.module('messageModule')
               if (angular.isArray(result.message)) {
                 friendList = messageService.getEmployeeMessageList(result);
               }
+
               $scope.messageList = messageService.mergeNotifyToFriendList(notifyList, friendList);
             }
             $scope.$broadcast("scroll.refreshComplete");
@@ -415,10 +428,10 @@ angular.module('messageModule')
 
         if (!$scope.firstRefresh) {
           $timeout(function () {
-            refreshMessageList();
+            refreshMessageList(true);
           }, 1500);
         } else {
-          refreshMessageList();
+          refreshMessageList(true);
         }
         $scope.firstRefresh = true;
       });

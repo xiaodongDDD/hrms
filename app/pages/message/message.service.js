@@ -87,9 +87,9 @@ angular.module('applicationModule')
           for (var i = 0; i < friendList.length; i++) {
             for (var j = 0; j < notifyList.length; j++) {
               if (parseInt(friendList[i].sortTime) < parseInt(notifyList[j].sortTime) && !notifyList[j].selected) {
-                messageList.push(notifyList[j]);
                 notifyList[j].selected = true;
                 notifyList[j].deleteAnimate = true;
+                messageList.push(notifyList[j]);
               }
             }
             friendList[i].deleteAnimate = true;
