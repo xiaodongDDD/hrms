@@ -452,9 +452,11 @@ angular.module('applicationModule')
      $scope.showPassengerListModal=function(){//显示乘客的modal
        $scope.choosePassengerModal.show();
      };
+      
      $scope.showProjectTypeListModal=function(){//显示项目类型的modal
        $scope.chooseProjectTypeModal.show();
      };
+
      $scope.showFlybackListModal=function(num){//显示flyback选择modal
        flybackType = num;
        if($scope.applyInfo.projectName == "请选择项目名称"){
