@@ -1,9 +1,9 @@
 {
   "baseConfig": {
     "debug": false,
-    "isMobilePlatform": true,
+    "isMobilePlatform": false,
     "clearTable": true,
-    "nativeScreenFlag":true,
+    "nativeScreenFlag":false,
     "appStoreFlag": false,
     "loginPath": "http://mobile-app.hand-china.com/hrmsv2/oauth/token?client_id=client&client_secret=secret&grant_type=password&",
     "businessPath": "http://mobile-app.hand-china.com/hrmsv2/v2/api/l",
@@ -20,8 +20,8 @@
     "appRootFile": "helloCordova",
     "appUpId":"com.hand-china.hrms",
     "version":{
-      "currentVersion": "2.0.23",
-      "currentversionName": "此版本为正式版本2.0.23",
+      "currentVersion": "2.0.24",
+      "currentversionName": "此版本为正式版本2.0.24",
       "currentSubVersion": "1",
       "currentSubVersionName": "资源增量包1"
     }

@@ -17,9 +17,26 @@ angular.module('loginModule')
 
       window.localStorage.needGuid = "false";
 
+      var getHeight = function () {
+        var height = document.body.clientHeight + '';
+        if (height === "0") {
+        }
+        else {
+          return height + 'px';
+        }
+
+        height = document.body.scrollHeight + '';
+        if (height === "0") {
+        }
+        else {
+          return height + 'px';
+        }
+        return ""
+      };
+
       $scope.actualHeight = {
-        "height": document.documentElement.clientHeight
-      }
+        "height": getHeight()
+      };
 
       $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
 
@@ -40,11 +57,11 @@ angular.module('loginModule')
       var goToMain = function () {
         $state.go("login");
         /*if (window.localStorage.token && window.localStorage.token != "") {
-          checkVersionService.checkAppVersion();
-          $state.go("tab.message");
-        } else {
-          $state.go("login");
-        }*/
+         checkVersionService.checkAppVersion();
+         $state.go("tab.message");
+         } else {
+         $state.go("login");
+         }*/
       };
 
       $scope.$on('$ionicView.enter', function () {

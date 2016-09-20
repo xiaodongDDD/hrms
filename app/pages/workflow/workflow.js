@@ -308,7 +308,7 @@ angular.module('applicationModule')
 
         this.loadMoreFetchDoneList = function (myscope, dataFilterUtil, pageNum) {
           var success = function (result) {
-            processDoneList(result);
+            processDoneList(myscope,result);
             if (result.processedWorkflowList.length < pageNumLimit) {
               myscope.loadMoreDataFlag = false;
             }
