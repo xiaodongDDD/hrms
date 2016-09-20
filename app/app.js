@@ -34,6 +34,7 @@ angular.module('myApp')
     '$cordovaTouchID',
     '$location',
     '$rootScope',
+    '$ionicHistory',
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -45,7 +46,8 @@ angular.module('myApp')
               hmsPopup,
               $cordovaTouchID,
               $location,
-              $rootScope) {
+              $rootScope,
+              $ionicHistory) {
 
       $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -173,6 +175,7 @@ angular.module('myApp')
             ionic.Platform.exitApp();
           } else {
             $rootScope.backButtonPressedOnceToExit = true;
+            hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
             setTimeout(function () {
               $rootScope.backButtonPressedOnceToExit = false;
             }, 2000);
