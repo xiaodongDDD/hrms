@@ -26,14 +26,14 @@ angular.module('loginModule')
           return height + 'px';
         }
 
-        var height = document.body.clientHeight + "";
+        var height = document.body.scrollHeight + "";
         if (height == "0") {
         }
         else {
           return height + 'px';
         }
 
-        return document.body.scrollHeight + 'px';
+        return '';
       };
 
       $scope.actualHeight = {
