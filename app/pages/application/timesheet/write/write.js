@@ -54,6 +54,9 @@ angular.module('applicationModule')
       $scope.addressList = [];
       $scope.flybackList = [];
       var editable = 'N';
+
+      $scope.searchProjectName = {"value": ""};
+
       //var uncheckedJson = {flag: false, style: unchecked};
       //var checkedJson = {flag: true, style: checked};
 
@@ -147,9 +150,28 @@ angular.module('applicationModule')
         $scope.flybackModal.hide();
       };
 
+      //处理项目LOV界面中的项目数据
       $scope.projectListModalHandle = {
-        selectProject: function (type) {
+        //选择项目类型
+        selectProjectType: function (type) {
+          var changeProject = true;
 
+          if (baseConfig.debug) {
+            console.log('projectListModalHandle.type ' + angular.toJson(type))
+            console.log('$scope.projectListType ' + angular.toJson($scope.projectListType))
+          }
+
+          angular.forEach($scope.projectListType, function (data) {
+            if (data.id == type.id && type.selected == true) {
+              changeProject = false;
+            }
+          });
+
+          if (!changeProject) {
+            return;
+          }
+
+          $scope.searchProjectName.value = '';
           $ionicScrollDelegate.$getByHandle('projectModalHandle').scrollTop();
 
           angular.forEach($scope.projectListType, function (data) {
@@ -171,6 +193,7 @@ angular.module('applicationModule')
         }
       };
 
+      //选择项目Lov中的项目
       $scope.selectProject = function (project) {
         if (baseConfig.debug) {
           console.log("selectAddress.project " + angular.toJson(project));
@@ -207,6 +230,18 @@ angular.module('applicationModule')
       };
 
       $scope.showProjectModal = function () {
+
+        if(baseConfig.debug){
+          console.log('$scope.timesheetDetail.currentProject ' + angular.toJson($scope.timesheetDetail.currentProject));
+          console.log('$scope.timesheetDetail.currentProject.project_type_id ' + $scope.timesheetDetail.currentProject.project_type_id)
+        }
+
+        var porjectTypeId = $scope.timesheetDetail.currentProject.project_type_id -1;
+        if($scope.timesheetDetail.currentProject.project_type_id == ''){
+          porjectTypeId = 0
+        }
+        $scope.projectListModalHandle.selectProjectType($scope.projectListType[porjectTypeId]);
+
         angular.forEach($scope.projectCategory, function (data) {
           angular.forEach(data.array, function (data1) {
             data1.selected_flag = 'N';
@@ -307,26 +342,6 @@ angular.module('applicationModule')
           $scope.flybackList = flybackList;
           $scope.projectCategory = TimeSheetService.processProject(projectList);
 
-          $scope.projectListType[0].selected = true;
-          angular.forEach($scope.projectListType, function (data) {
-            if (data.id == $scope.timesheetDetail.currentProject.project_type_id) {
-              $scope.projectListType[0].selected = false;
-              data.selected = true;
-            }
-            else {
-              data.selected = false;
-            }
-          });
-          if ($scope.timesheetDetail.currentProject.project_id) {
-            var project_type_id = $scope.timesheetDetail.currentProject.project_type_id;
-            $scope.currentProjectListCategory = $scope.projectCategory[project_type_id].array;
-          } else {
-            if($scope.projectCategory[1]){
-              $scope.currentProjectListCategory = $scope.projectCategory[1].array;
-            }else{
-              $scope.currentProjectListCategory = [];
-            }
-          }
 
         }
         else {
