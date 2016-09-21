@@ -218,10 +218,10 @@ angular.module('loginModule')
           console.log("此时密码框的状态为 :", angular.toJson($scope.rememberPassword));
         }
         if ($scope.rememberPassword == true) {
-          $scope.passwordChecked = "build/img/login/login-checked.png"
+          $scope.passwordChecked = "build/img/login/login-checked.png";
           window.localStorage.checkboxSavePwd = "true";
         } else if ($scope.rememberPassword == false) {
-          $scope.passwordChecked = "build/img/login/login-unchecked.png"
+          $scope.passwordChecked = "build/img/login/login-unchecked.png";
           window.localStorage.checkboxSavePwd = "";
         }
         if ($scope.loginInfo.password !== "") {
@@ -232,6 +232,76 @@ angular.module('loginModule')
           }
         }
       };
+      // function getMobileType() { // 获取机型
+      //   var ua = navigator.userAgent;
+      //   if (ua.indexOf("Windows NT 5.1") != -1) return "Windows XP";
+      //   if (ua.indexOf("Windows NT 6.0") != -1) return "Windows Vista";
+      //   if (ua.indexOf("Windows NT 6.1") != -1) return "Windows 7";
+      //   if (ua.indexOf("iPhone") != -1) return "iPhone";
+      //   if (ua.indexOf("iPad") != -1) return "iPad";
+      //   if (ua.indexOf("Linux") != -1) {
+      //     var index = ua.indexOf("Android");
+      //     if (index != -1) {
+      //       var reg = new RegExp('(Android.*?);(.*)Build');
+      //       var os = ua.match(reg)[2].trim() + ' ' + ua.match(reg)[1].trim();
+      //       return os;
+      //     } else {
+      //       return "Linux";
+      //     }
+      //   }
+      //   return "未知操作系统";
+      // }
+      function toIPhoneModel(model) {
+        var dictionary = {
+          "i386"    :"Simulator",
+          "x86_64"  :"Simulator",
+          "iPod1,1":"iPod Touch",         // (Original)
+          "iPod2,1":"iPod Touch 2",       // (Second Generation)
+          "iPod3,1":"iPod Touch 3",       // (Third Generation)
+          "iPod4,1":"iPod Touch 4",       // (Third Generation)
+          "iPod7,1":"iPod Touch 6",       // (6th Generation)
+          "iPhone1,1":"iPhone",           // (Original)
+          "iPhone1,2":"iPhone 3G",        // (3G)
+          "iPhone2,1":"iPhone 3GS",       // (3GS)
+          "iPad1,1":"iPad",               // (Original)
+          "iPad2,1":"iPad 2",             // (2nd Generation)
+          "iPad3,1":"new iPad",           // (3rd Generation)
+          "iPhone3,1":"iPhone 4",         // (GSM)
+          "iPhone3,3":"iPhone 4",         // (CDMA/Verizon/Sprint)
+          "iPhone4,1":"iPhone 4S",
+          "iPhone5,1":"iPhone 5",         // (model A1428, AT&T/Canada)
+          "iPhone5,2":"iPhone 5",         // (model A1429, everything else)
+          "iPad3,4":"iPad 4th Generation",// (4th Generation)
+          "iPad2,5":"iPad Mini",          // (Original)
+          "iPhone5,3":"iPhone 5c",        // (model A1456, A1532 | GSM)
+          "iPhone5,4":"iPhone 5c",        // (model A1507, A1516, A1526 (China), A1529 | Global)
+          "iPhone6,1":"iPhone 5s",        // (model A1433, A1533 | GSM)
+          "iPhone6,2":"iPhone 5s",        // (model A1457, A1518, A1528 (China), A1530 | Global)
+          "iPhone7,1":"iPhone 6 Plus",
+          "iPhone7,2":"iPhone 6",
+          "iPhone8,1":"iPhone 6S",
+          "iPhone8,2":"iPhone 6S Plus",
+          "iPhone8,4":"iPhone SE",
+          "iPhone9,1":"iPhone 7",
+          "iPhone9,3":"iPhone 7",
+          "iPhone9,2":"iPhone 7 Plus",
+          "iPhone9,4":"iPhone 7 Plus",
+          "iPad4,1":"iPad Air",           // 5th Generation iPad (iPad Air) - Wifi
+          "iPad4,2":"iPad Air",           // 5th Generation iPad (iPad Air) - Cellular
+          "iPad4,4":"iPad Mini",          // (2nd Generation iPad Mini - Wifi)
+          "iPad4,5":"iPad Mini",          // (2nd Generation iPad Mini - Cellular)
+          "iPad4,7":"iPad Mini",          // (3rd Generation iPad Mini - Wifi (model A1599))
+          "iPad6,7":"iPad Pro (12.9\")",  // iPad Pro 12.9 inches - (model A1584)
+          "iPad6,8":"iPad Pro (12.9\")",  // iPad Pro 12.9 inches - (model A1652)
+          "iPad6,3":"iPad Pro (9.7\")",   // iPad Pro 9.7 inches - (model A1673)
+          "iPad6,4":"iPad Pro (9.7\")"    // iPad Pro 9.7 inches - (models A1674 and A1675)
+        };
+        if(dictionary[model]){
+          return dictionary[model];
+        } else {
+          return "Unknown IOS model";
+        }
+      }
       function loginPost(){//后台采用HAP后更改成包含Content-type的方式，账号密码采用encodeURIComponent()转换，这样可以传特殊符号
         var deviceInfo="";
         if(ionic.Platform.isAndroid()){
@@ -241,7 +311,22 @@ angular.module('loginModule')
         }else{
           deviceInfo="PC";
         }
-        var url=baseConfig.loginPath+"username=" + encodeURIComponent($scope.loginInfo.username) + "&password=" + encodeURIComponent($scope.loginInfo.password) + "&device_info=" + deviceInfo;
+
+        try{
+          if( deviceInfo == 'iOS' ){
+            var model = toIPhoneModel(device.model);
+          } else {
+            model  = device.model;
+          }
+          var url=baseConfig.loginPath+"username=" + encodeURIComponent($scope.loginInfo.username) + "&password=" +
+            encodeURIComponent($scope.loginInfo.password) + "&device_info=" + deviceInfo + "&device_model=" + encodeURIComponent(model) +
+            "&device_version=" + encodeURIComponent(device.version) + "&device_uuid=" + encodeURIComponent(device.uuid);
+        } catch (e) {
+          alert('No device!');
+          url=baseConfig.loginPath+"username=" + encodeURIComponent($scope.loginInfo.username) + "&password=" +
+            encodeURIComponent($scope.loginInfo.password) + "&device_info=" + deviceInfo;
+        }
+
         console.log(url);
         return $http({
           method:'POST',

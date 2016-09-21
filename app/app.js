@@ -178,7 +178,7 @@ angular.module('myApp')
             hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
             setTimeout(function () {
               $rootScope.backButtonPressedOnceToExit = false;
-            }, 2000);
+            }, 1500);
           }
         }
         else if ($ionicHistory.backView()) {

@@ -7,7 +7,7 @@
  * @author
  * gusenlin
  */
-angular.module('utilModule').factory('httpRequestHeader', function () {
+angular.module('utilModule').factory('httpRequestHeader', function (baseConfig) {
   var interceptor = {
     'request': function (config) {
       if (window.localStorage.token && window.localStorage.empno) {
@@ -16,6 +16,7 @@ angular.module('utilModule').factory('httpRequestHeader', function () {
         config.headers.timestamp = timestamp;
         config.headers.token     = token;
         config.headers.loginName = window.localStorage.empno;
+        config.headers.appVersion = baseConfig.version.currentVersion + '_' + baseConfig.version.currentSubVersion;
       }
       return config;
     }
