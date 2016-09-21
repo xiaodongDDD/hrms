@@ -12,15 +12,21 @@
   <div class="bar bar-subheader project-type"  style="background-size: 100% 0px">
     <div class="row no-padding">
       <div class="col col-33 no-padding" ng-repeat="type in projectListType" style="text-align: center;height: 40px;line-height: 40px"
-           ng-click="projectListModalHandle.selectProject(type)"
+           ng-click="projectListModalHandle.selectProjectType(type)"
            ng-class="{true:'project-type-selected',false:''}[type.selected]">
         <div ng-bind="type.name"></div>
       </div>
     </div>
   </div>
   <ion-content class="has-subheader"  delegate-handle="projectModalHandle">
+
+    <div class="search-outline">
+      <input ng-model="searchProjectName.value" type="text" class="search"
+             placeholder="搜索"/>
+    </div>
+
     <ion-list>
-      <div class="filter-item-detail row no-padding" ng-repeat="project in currentProjectListCategory"
+      <div class="filter-item-detail row no-padding" ng-repeat="project in currentProjectListCategory | filter:searchProjectName.value"
                 ng-click="selectProject(project)">
         <div class="col no-padding col-80 filter-condition-item"
              ng-class="{true: 'selected', false: 'no-selected'}[item.selected]"

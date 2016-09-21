@@ -88,16 +88,16 @@ angular.module('applicationModule')
             for (var j = 0; j < notifyList.length; j++) {
               if (parseInt(friendList[i].sortTime) < parseInt(notifyList[j].sortTime) && !notifyList[j].selected) {
                 notifyList[j].selected = true;
-                notifyList[j].deleteAnimate = true;
+                notifyList[j].deleteAnimate = false;
                 messageList.push(notifyList[j]);
               }
             }
-            friendList[i].deleteAnimate = true;
+            friendList[i].deleteAnimate = false;
             messageList.push(friendList[i]);
           }
           for (var ii = 0; ii < notifyList.length; ii++) {
             if (!notifyList[ii].selected) {
-              notifyList[ii].deleteAnimate = true;
+              notifyList[ii].deleteAnimate = false;
               messageList.push(notifyList[ii]);
             }
           }

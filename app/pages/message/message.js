@@ -366,10 +366,12 @@ angular.module('messageModule')
           if (message.messageType == 'MESSAGE') {
             messageService.deletePluginMessage($scope, message);
           } else {
-            message.delete = true;
-            var index = $scope.messageList.indexOf(message);
-            $scope.messageList.splice(index, 1);
-            messageService.readAllMessage(message.conversationType);
+            message.deleteAnimate = true;
+            $timeout(function () {
+              var index = $scope.messageList.indexOf(message);
+              $scope.messageList.splice(index, 1);
+              messageService.readAllMessage(message.conversationType);
+            },0);
           }
         },
 
@@ -411,7 +413,7 @@ angular.module('messageModule')
       };
 
       $scope.refresh = function () {
-        refreshMessageList();
+        refreshMessageList(true);
       };
 
       if (baseConfig.debug) {

@@ -55,6 +55,7 @@ angular.module('applicationModule')
       $scope.addressList = [];
       $scope.approver = [];
       var editable = 'N';
+      $scope.searchProjectName = {"value": ""};
 
       var dayRange = $stateParams.dayRange;
 
@@ -114,8 +115,24 @@ angular.module('applicationModule')
       $scope.timeSheetBatchDetail.extChargeIncludeWeekend = uncheckedJson();
 
       $scope.projectListModalHandle = {
-        selectProject: function (type) {
+        selectProjectType: function (type) {
+          var changeProject = true;
 
+          if (baseConfig.debug) {
+            console.log('projectListModalHandle.type ' + angular.toJson(type))
+          }
+
+          angular.forEach($scope.projectListType, function (data) {
+            if (data.id = type.id && data.selected == true) {
+              changeProject = false;
+            }
+          });
+
+          if (!changeProject) {
+            return;
+          }
+
+          $scope.searchProjectName.value = '';
           $ionicScrollDelegate.$getByHandle('projectModalHandle').scrollTop();
 
           angular.forEach($scope.projectListType, function (data) {
@@ -125,13 +142,13 @@ angular.module('applicationModule')
           type.selected = true;
 
           var typeId = type.id;
-          if($scope.projectCategory[typeId]){
+          if ($scope.projectCategory[typeId]) {
             $scope.currentProjectListCategory = $scope.projectCategory[typeId].array;
-          }else{
+          } else {
             $scope.currentProjectListCategory = [];
           }
 
-          if(baseConfig.debug){
+          if (baseConfig.debug) {
             console.log('$scope.currentProjectListCategory ' + angular.toJson($scope.currentProjectListCategory));
           }
         }
@@ -201,6 +218,17 @@ angular.module('applicationModule')
       $scope.timeSheetBatchHandle = {
         showProjectModal: function () {
 
+          if (baseConfig.debug) {
+            console.log('$scope.timeSheetBatchDetail.currentProject ' + angular.toJson($scope.timeSheetBatchDetail.currentProject));
+            console.log('$scope.timeSheetBatchDetail.currentProject.project_type_id ' + $scope.timeSheetBatchDetail.currentProject.project_type_id)
+          }
+
+          var porjectTypeId = $scope.timeSheetBatchDetail.currentProject.project_type_id - 1;
+          if ($scope.timeSheetBatchDetail.currentProject.project_type_id == '') {
+            porjectTypeId = 0
+          }
+          $scope.projectListModalHandle.selectProjectType($scope.projectListType[porjectTypeId]);
+
           angular.forEach($scope.projectCategory, function (data) {
             angular.forEach(data.array, function (data1) {
               data1.selected_flag = 'N';
@@ -261,21 +289,21 @@ angular.module('applicationModule')
           };
 
           var success = function (result) {
-            if(result.status == 'S'){
-              if(result.refresh_status == 'S'){
+            if (result.status == 'S') {
+              if (result.refresh_status == 'S') {
                 hmsPopup.showPopup('批量填写成功!');
                 $ionicHistory.goBack();
                 TimeSheetService.setRefreshTimeSheetFlag(true);
                 TimeSheetService.cacheTimeSheetList(result.refresh_timesheet.timesheet);
-              }else{
+              } else {
                 hmsPopup.showPopup('批量填写成功后获取TimeSheet数据失败! 请手动返回TimeSheet页面!');
               }
-            }else{
+            } else {
               hmsPopup.showPopup('批量填写TimeSheet失败! 原因 ' + result.returnMsg);
             }
           };
           hmsPopup.showLoading('批量填写TimeSheet中');
-          TimeSheetService.submitBatchWrite(success,params);
+          TimeSheetService.submitBatchWrite(success, params);
         }
       };
 
@@ -296,8 +324,8 @@ angular.module('applicationModule')
                 }];
               }
 
-              angular.forEach(result.project,function (data) {
-                if(data.selected_id == 'Y'){
+              angular.forEach(result.project, function (data) {
+                if (data.selected_id == 'Y') {
                   $scope.timeSheetBatchDetail.currentProject = data;
                   if (data.address[0]) {
                     $scope.timeSheetBatchDetail.currentAddress = data.address[0];
@@ -317,27 +345,6 @@ angular.module('applicationModule')
 
               /*添加项目类型的逻辑*/
               $scope.projectCategory = TimeSheetService.processProject(result.project);
-
-              $scope.projectListType[0].selected = true;
-              angular.forEach($scope.projectListType, function (data) {
-                if (data.id == $scope.timeSheetBatchDetail.currentProject.project_type_id) {
-                  $scope.projectListType[0].selected = false;
-                  data.selected = true;
-                }
-                else {
-                  data.selected = false;
-                }
-              });
-              if ($scope.timeSheetBatchDetail.currentProject.project_id) {
-                var project_type_id = $scope.timeSheetBatchDetail.currentProject.project_type_id;
-                $scope.currentProjectListCategory = $scope.projectCategory[project_type_id].array;
-              } else {
-                if($scope.projectCategory[1]){
-                  $scope.currentProjectListCategory = $scope.projectCategory[1].array;
-                }else{
-                  $scope.currentProjectListCategory = [];
-                }
-              }
 
             } else {
               hmsPopup.showPopup('获取项目信息错误,请检查');
