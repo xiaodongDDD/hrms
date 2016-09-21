@@ -21,12 +21,16 @@ angular.module('loginModule')
 
       var getHeight = function () {
 
+        //alert('document.body.scrollHeight ' + document.body.scrollHeight);
+
         var height = document.body.scrollHeight + "";
         if (height == "0") {
         }
         else {
           return height + 'px';
         }
+
+        //alert('document.body.scrollHeight ' + document.body.clientHeight);
 
         height = document.body.clientHeight + "";
         if (height == "0") {
@@ -35,7 +39,7 @@ angular.module('loginModule')
           return height + 'px';
         }
 
-        return guideService.getScreenSize().height;
+        return '100%';
       };
 
       $scope.actualHeight = {

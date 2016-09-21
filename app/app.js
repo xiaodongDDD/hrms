@@ -321,6 +321,8 @@ angular.module('myApp')
         console.log('app.js baseConfig.version.currentVersion ' + baseConfig.version.currentVersion);
       }
 
+      //$urlRouterProvider.otherwise('/guide'); return;
+
       if (!window.localStorage.needGuid || window.localStorage.needGuid == "true"
           || !window.localStorage.appCacheVersion || window.localStorage.appCacheVersion != baseConfig.version.currentVersion) {
         if(baseConfig.debug){
