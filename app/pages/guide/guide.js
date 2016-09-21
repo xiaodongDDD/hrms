@@ -8,10 +8,12 @@ angular.module('loginModule')
     '$state',
     'baseConfig',
     'checkVersionService',
+    'guideService',
     function ($scope,
               $state,
               baseConfig,
-              checkVersionService) {
+              checkVersionService,
+              guideService) {
 
       console.log('loginCtrl.enter');
 
@@ -33,7 +35,7 @@ angular.module('loginModule')
           return height + 'px';
         }
 
-        return "";
+        return guideService.getScreenSize().height;
       };
 
       $scope.actualHeight = {

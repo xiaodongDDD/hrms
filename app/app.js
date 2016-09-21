@@ -35,6 +35,7 @@ angular.module('myApp')
     '$location',
     '$rootScope',
     '$ionicHistory',
+    'guideService',
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -47,7 +48,8 @@ angular.module('myApp')
               $cordovaTouchID,
               $location,
               $rootScope,
-              $ionicHistory) {
+              $ionicHistory,
+              guideService) {
 
       $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -63,6 +65,7 @@ angular.module('myApp')
         if(window.plugins.screensize){
           window.plugins.screensize.get(function (result) {
             alert('window.plugins.screensize ' + angular.toJson(result));
+            guideService.setScreenSize(result);
           }, function (result) {
           });
         }
