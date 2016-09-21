@@ -43,6 +43,7 @@ angular.module('myInfoModule')
               operation: $scope.operation,
               descID: 'description',
               canvasID: 'container',
+              haveDelta: true,
               successUnlockCallback: function(){
                 var desc = document.getElementById('description');
                 desc.className = '';

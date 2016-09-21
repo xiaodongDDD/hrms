@@ -32,6 +32,7 @@ var H5lock = function (obj) {                                 //初始化H5加�
   this.successRmLockCallback = obj.successRmLockCallback;       //成功解除密码的回调函数
   this.errorCallback = obj.errorCallback;                         //出错调用的函数
   this.step = 0;                                              //当前绘制密码次数
+  this.haveDelta= false || obj.haveDelta;//箭头
 };
 
 H5lock.prototype.checkPass = function (psw1, psw2) {             // 检测密码，判断是否两次输入的密码一样
@@ -158,49 +159,52 @@ H5lock.prototype.drawLine = function (po, lastPoint) {                          
   this.ctx.closePath();                                                            //创建从当前点回到起始点的路径
 };
 
-H5lock.prototype.drawTriangle = function (fromPt, toPt) {                          //绘制三角形箭头
-  this.ctx.beginPath();
-  this.ctx.fillStyle = this.fillStyle;
-  if ( fromPt.x == toPt.x ){                                                       //两点平行于y轴的情况
-    if( fromPt.y < toPt.y ){
-      this.ctx.moveTo(fromPt.x, fromPt.y + this.r * 5 / 6);
-      this.ctx.lineTo(fromPt.x + this.r / 4, fromPt.y + this.r / 2);
-      this.ctx.lineTo(fromPt.x - this.r / 4, fromPt.y + this.r / 2);
-      this.ctx.closePath();
-      this.ctx.fill();
+H5lock.prototype.drawTriangle = function (fromPt, toPt) {   //绘制三角形箭头
+  if(this.haveDelta==true){
+    this.ctx.beginPath();
+    this.ctx.fillStyle = this.fillStyle;
+    if ( fromPt.x == toPt.x ){                                                       //两点平行于y轴的情况
+      if( fromPt.y < toPt.y ){
+        this.ctx.moveTo(fromPt.x, fromPt.y + this.r * 5 / 6);
+        this.ctx.lineTo(fromPt.x + this.r / 4, fromPt.y + this.r / 2);
+        this.ctx.lineTo(fromPt.x - this.r / 4, fromPt.y + this.r / 2);
+        this.ctx.closePath();
+        this.ctx.fill();
+      } else {
+        this.ctx.moveTo(fromPt.x, fromPt.y - this.r * 5 / 6);
+        this.ctx.lineTo(fromPt.x + this.r / 4, fromPt.y - this.r / 2);
+        this.ctx.lineTo(fromPt.x - this.r / 4, fromPt.y - this.r / 2);
+        this.ctx.closePath();
+        this.ctx.fill();
+      }
+    } else if ( fromPt.y == toPt.y ){                                                //两点平行于x轴的情况
+      if( fromPt.x < toPt.x ){
+        this.ctx.moveTo(fromPt.x + this.r * 5 / 6, fromPt.y);
+        this.ctx.lineTo(fromPt.x + this.r / 2, fromPt.y + this.r / 4);
+        this.ctx.lineTo(fromPt.x + this.r / 2, fromPt.y - this.r / 4);
+        this.ctx.closePath();
+        this.ctx.fill();
+      } else {
+        this.ctx.moveTo(fromPt.x - this.r * 5 / 6, fromPt.y);
+        this.ctx.lineTo(fromPt.x - this.r / 2, fromPt.y + this.r / 4);
+        this.ctx.lineTo(fromPt.x - this.r / 2, fromPt.y - this.r / 4);
+        this.ctx.closePath();
+        this.ctx.fill();
+      }
     } else {
-      this.ctx.moveTo(fromPt.x, fromPt.y - this.r * 5 / 6);
-      this.ctx.lineTo(fromPt.x + this.r / 4, fromPt.y - this.r / 2);
-      this.ctx.lineTo(fromPt.x - this.r / 4, fromPt.y - this.r / 2);
+      var dis = getDis(fromPt, toPt);
+      var sin = ( toPt.y - fromPt.y ) / dis;
+      var cos = ( toPt.x - fromPt.x ) / dis;
+      this.ctx.moveTo(fromPt.x + this.r * 5 / 6 * cos , fromPt.y + this.r * 5 / 6 * sin );
+      var tempX = fromPt.x + this.r / 2 * cos;
+      var tempY = fromPt.y + this.r / 2 * sin;
+      this.ctx.lineTo(tempX + this.r / 4 * sin, tempY - this.r / 4 *cos);
+      this.ctx.lineTo(tempX - this.r / 4 * sin, tempY + this.r / 4 *cos);
       this.ctx.closePath();
       this.ctx.fill();
     }
-  } else if ( fromPt.y == toPt.y ){                                                //两点平行于x轴的情况
-    if( fromPt.x < toPt.x ){
-      this.ctx.moveTo(fromPt.x + this.r * 5 / 6, fromPt.y);
-      this.ctx.lineTo(fromPt.x + this.r / 2, fromPt.y + this.r / 4);
-      this.ctx.lineTo(fromPt.x + this.r / 2, fromPt.y - this.r / 4);
-      this.ctx.closePath();
-      this.ctx.fill();
-    } else {
-      this.ctx.moveTo(fromPt.x - this.r * 5 / 6, fromPt.y);
-      this.ctx.lineTo(fromPt.x - this.r / 2, fromPt.y + this.r / 4);
-      this.ctx.lineTo(fromPt.x - this.r / 2, fromPt.y - this.r / 4);
-      this.ctx.closePath();
-      this.ctx.fill();
-    }
-  } else {
-    var dis = getDis(fromPt, toPt);
-    var sin = ( toPt.y - fromPt.y ) / dis;
-    var cos = ( toPt.x - fromPt.x ) / dis;
-    this.ctx.moveTo(fromPt.x + this.r * 5 / 6 * cos , fromPt.y + this.r * 5 / 6 * sin );
-    var tempX = fromPt.x + this.r / 2 * cos;
-    var tempY = fromPt.y + this.r / 2 * sin;
-    this.ctx.lineTo(tempX + this.r / 4 * sin, tempY - this.r / 4 *cos);
-    this.ctx.lineTo(tempX - this.r / 4 * sin, tempY + this.r / 4 *cos);
-    this.ctx.closePath();
-    this.ctx.fill();
   }
+
 };
 
 H5lock.prototype.pickPoints = function (fromPt, toPt) {

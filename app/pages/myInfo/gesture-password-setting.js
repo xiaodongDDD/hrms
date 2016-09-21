@@ -54,6 +54,7 @@ angular.module('myInfoModule')
             descID: 'setting-description',
             resetID: 'setting-reset',
             miniCanvasID: 'mini-container',
+            haveDelta: true,
             successInitCallback: function(){
               var desc = document.getElementById('setting-description');
               desc.className = '';
