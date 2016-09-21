@@ -1,7 +1,7 @@
 <ion-view view-title="待办事项目" class="workflow">
   <ion-header-bar align-title="center" class="bar-stable">
     <div class="buttons show-back-button">
-      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+      <button ng-if="!isWeixinWebview" class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
         <span class="back-text">返回</span>
       </button>
     </div>

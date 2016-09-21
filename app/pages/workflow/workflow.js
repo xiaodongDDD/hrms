@@ -6,11 +6,41 @@ angular.module('applicationModule')
     ['hmsHttp',
       'baseConfig',
       'hmsPopup',
+      '$http',
       '$timeout',
       function (hmsHttp,
                 baseConfig,
                 hmsPopup,
+                $http,
                 $timeout) {
+
+        // add by luyufei 
+        var paramData = {};
+
+        this.saveParamData = function(d) {
+          // alert(angular.toJson(d.detail));
+          paramData = d;
+        }
+
+        this.getParamData = function() {
+          return paramData;
+        }
+
+        this.getSubmitFlag = function(success, error, id) {
+          var url = baseConfig.businessPath + '/wfl_wx_workflow_appr/get_submit_flag';
+          var param = {params: {p_instance_id: id, p_employee_code: window.window.localStorage.empno}};
+          // alert(url + "----" + angular.toJson(param));
+          hmsHttp.post(url, param).success(function(response){
+            // alert('success' + angular.toJson(response));
+            success(response);
+          }).error(function(){
+            // alert('error' + angular.toJson(response));
+            if(error){
+              error(response);
+            }
+          })
+        }
+        //end add
 
         var pageNumLimit = 10;
         var workflowDefaultIcon = 'build/img/application/profile@3x.png';
@@ -21,6 +51,43 @@ angular.module('applicationModule')
         var refreshWorkflowList = {
           flag: false
         };
+
+        this.wxLogin = function(codeWx, dataFilterUtil, getTodoListQuery, scope, pageNum, cashList) {
+          //登录请求，只有code参数是有用的，其他参数用于占位
+          var destUrl = baseConfig.wxLoginPath + "username=" + codeWx + "&password=123456&p_phone_no=111111";
+          $http.post(destUrl).success(function (response) {
+            window.localStorage.token = response.access_token;
+            //获取工号请求
+            hmsHttp.post(baseConfig.queryPath + '/getEmpNo').success(function (response) {
+              if(response.success){
+                if(response.rows.length > 0){
+                  window.localStorage.empno = response.rows[0];
+                  getTodoListQuery(scope, pageNum, cashList, false, dataFilterUtil());
+                  dataFilterUtil().query();
+                } else {
+                  hmsPopup.showShortCenterToast('获取工号为空,请联系系统管理员!');
+                }
+              } else {
+                hmsPopup.showShortCenterToast('无法获取工号,请联系系统管理员!');
+              }
+            //获取工号失败
+            }).error(function (response, status) {
+              hmsPopup.showShortCenterToast('获取工号请求失败,请检查网络或联系系统管理员!');
+            });
+          //登录失败
+          }).error(function (response, status) {
+            window.localStorage.token = '';
+            if (status == '401') {
+              hmsPopup.showShortCenterToast('登录被拒绝!');
+            }
+            else if (status == '404') {
+              hmsPopup.showShortCenterToast('后端服务器请求失败,请联系管理员!');
+            }
+            else{
+              hmsPopup.showShortCenterToast('处理请求失败,请确认网络连接是否正常,或者联系管理员!');
+            }
+          });
+        }
 
         var showList = function (myscope) {
           $timeout(

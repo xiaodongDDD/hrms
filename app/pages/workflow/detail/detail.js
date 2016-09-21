@@ -1,6 +1,6 @@
 angular.module('myApp')
-  .config(['$stateProvider',
-    function ($stateProvider) {
+  .config(['$stateProvider', 'baseConfig',
+    function ($stateProvider, baseConfig) {
       $stateProvider
         .state('tab.workflow-detail', {
           url: '/workflow-detail',
@@ -12,64 +12,66 @@ angular.module('myApp')
             }
           }
         })
+        if(!baseConfig.isWeixinWebview){
+          $stateProvider
+            .state('workflow-employee', {
+              url: 'workflow-employee',
+              templateUrl: 'build/pages/contact/detail/employee-detail.html',
+              controller: 'contactEmployeeDetailCtl',
+              params: {
+                'employeeNumber': ""
+              }
+            })
 
-        .state('workflow-employee', {
-          url: 'workflow-employee',
-          templateUrl: 'build/pages/contact/detail/employee-detail.html',
-          controller: 'contactEmployeeDetailCtl',
-          params: {
-            'employeeNumber': ""
-          }
-        })
-
-        .state('tab.tab-application-workflow-employee', {
-          url: '/tab-application-workflow-employee',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/contact/detail/employee-detail.html',
-              controller: 'contactEmployeeDetailCtl'
-            }
-          },
-          params: {
-            'employeeNumber': ""
-          }
-        })
-        .state('tab.tab-message-workflow-employee', {
-          url: '/tab-message-workflow-employee',
-          views: {
-            'tab-message': {
-              templateUrl: 'build/pages/contact/detail/employee-detail.html',
-              controller: 'contactEmployeeDetailCtl'
-            }
-          },
-          params: {
-            'employeeNumber': ""
-          }
-        })
-        .state('tab.tab-contact-workflow-employee', {
-          url: '/tab-contact-workflow-employee',
-          views: {
-            'tab-contact': {
-              templateUrl: 'build/pages/contact/detail/employee-detail.html',
-              controller: 'contactEmployeeDetailCtl'
-            }
-          },
-          params: {
-            'employeeNumber': ""
-          }
-        })
-        .state('tab.tab-myInfo-workflow-employee', {
-          url: '/tab-myInfo-workflow-employee',
-          views: {
-            'tab-myInfo': {
-              templateUrl: 'build/pages/contact/detail/employee-detail.html',
-              controller: 'contactEmployeeDetailCtl'
-            }
-          },
-          params: {
-            'employeeNumber': ""
-          }
-        });
+            .state('tab.tab-application-workflow-employee', {
+              url: '/tab-application-workflow-employee',
+              views: {
+                'tab-application': {
+                  templateUrl: 'build/pages/contact/detail/employee-detail.html',
+                  controller: 'contactEmployeeDetailCtl'
+                }
+              },
+              params: {
+                'employeeNumber': ""
+              }
+            })
+            .state('tab.tab-message-workflow-employee', {
+              url: '/tab-message-workflow-employee',
+              views: {
+                'tab-message': {
+                  templateUrl: 'build/pages/contact/detail/employee-detail.html',
+                  controller: 'contactEmployeeDetailCtl'
+                }
+              },
+              params: {
+                'employeeNumber': ""
+              }
+            })
+            .state('tab.tab-contact-workflow-employee', {
+              url: '/tab-contact-workflow-employee',
+              views: {
+                'tab-contact': {
+                  templateUrl: 'build/pages/contact/detail/employee-detail.html',
+                  controller: 'contactEmployeeDetailCtl'
+                }
+              },
+              params: {
+                'employeeNumber': ""
+              }
+            })
+            .state('tab.tab-myInfo-workflow-employee', {
+              url: '/tab-myInfo-workflow-employee',
+              views: {
+                'tab-myInfo': {
+                  templateUrl: 'build/pages/contact/detail/employee-detail.html',
+                  controller: 'contactEmployeeDetailCtl'
+                }
+              },
+              params: {
+                'employeeNumber': ""
+              }
+            });
+        }
     }]);
 
 /**
@@ -92,7 +94,7 @@ angular.module('applicationModule')
     '$ionicActionSheet',
     '$filter',
     'baseConfig',
-    'TimeSheetService',
+    // 'TimeSheetService',
     'workFLowListService',
     'hmsPopup',
     '$ionicHistory',
@@ -108,13 +110,28 @@ angular.module('applicationModule')
               $ionicActionSheet,
               $filter,
               baseConfig,
-              TimeSheetService,
+              // TimeSheetService,
               workFLowListService,
               hmsPopup,
               $ionicHistory,
               HmsDateFormat,
               hmsHttp,
               $ionicPopup) {
+      $scope.isWeixinWebview = baseConfig.isWeixinWebview;
+      if($scope.isWeixinWebview){
+        $scope.inputIosStyle = function(){
+          if(ionic.Platform.isIOS()){
+            return {
+              '-webkit-appearance': 'none',
+              '-ms-progress-appearance': 'none',
+              '-moz-appearance': 'none',
+              'appearance': 'none'
+            }
+          } else {
+            return {}
+          }
+        }
+      }
 
       $scope.currentDetail = $stateParams.detail; //传过来的数据块
       var detail = $stateParams.detail;//传过来的数据块
@@ -140,9 +157,16 @@ angular.module('applicationModule')
       //var detailScroll = angular.element('#workflowDetailScroll');
       //var detailHistory = angular.element('#workflowDetailHistory');
 
-      $scope.workflowDetailScroll = {
-        "width": document.body.clientWidth
-      };
+      if($scope.isWeixinWebview){
+        $scope.workflowDetailScroll = {
+          "width": (document.body.clientWidth -20) + "px",
+          "height": "139px"
+        };
+      } else {
+        $scope.workflowDetailScroll = {
+          "width": document.body.clientWidth
+        };
+      }
 
       $scope.workflowDetailHistory = {};
 
@@ -225,26 +249,30 @@ angular.module('applicationModule')
       };
 
       var analyze = function (currentState) {
-        if (currentState.views) {
-          if (currentState.views['tab-application']) {
-            return 'tab.tab-application-';
-          } else if (currentState.views['tab-message']) {
-            return 'tab.tab-message-';
-          } else if (currentState.views['tab-contact']) {
-            return 'tab.tab-contact-';
-          } else if (currentState.views['tab-myInfo']) {
-            return 'tab.tab-myInfo-';
+        if(!$scope.isWeixinWebview){
+          if (currentState.views) {
+            if (currentState.views['tab-application']) {
+              return 'tab.tab-application-';
+            } else if (currentState.views['tab-message']) {
+              return 'tab.tab-message-';
+            } else if (currentState.views['tab-contact']) {
+              return 'tab.tab-contact-';
+            } else if (currentState.views['tab-myInfo']) {
+              return 'tab.tab-myInfo-';
+            }
           }
         }
         return '';
       };
 
       $scope.goEmployeeDetail = function () {
-        if (detail.employeeCode) {
-          if ($stateParams.type == 'WORKFLOWDETAIL') {
-            $state.go('tab.tab-application-workflow-employee', {"employeeNumber": detail.employeeCode})
-          } else {
-            $state.go(analyze + '-employee-detail', {"employeeNumber": detail.employeeCode})
+        if(!$scope.isWeixinWebview){
+          if (detail.employeeCode) {
+            if ($stateParams.type == 'WORKFLOWDETAIL') {
+              $state.go('tab.tab-application-workflow-employee', {"employeeNumber": detail.employeeCode})
+            } else {
+              $state.go(analyze + '-employee-detail', {"employeeNumber": detail.employeeCode})
+            }
           }
         }
       };
@@ -425,23 +453,37 @@ angular.module('applicationModule')
           $scope.abilityGradeModal.show();
         },
         showDate: function () {
-          var options = {
-            date: $scope.applicationEmployeeDetail.trialDate,
-            mode: 'date',
-            titleText: '请选择时间',
-            okText: '确定',
-            cancelText: '取消',
-            doneButtonLabel: '确认',
-            cancelButtonLabel: '取消',
-            locale: 'zh_cn',
-            androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
-          };
-          $cordovaDatePicker.show(options).then(function (date) {
-            if (date) {
-              $scope.applicationEmployeeDetail.date = date;
-              $scope.applicationEmployeeDetail.dateString = HmsDateFormat.getDateString(date);
-            }
-          });
+          if(!$scope.isWeixinWebview){
+            var options = {
+              date: $scope.applicationEmployeeDetail.trialDate,
+              mode: 'date',
+              titleText: '请选择时间',
+              okText: '确定',
+              cancelText: '取消',
+              doneButtonLabel: '确认',
+              cancelButtonLabel: '取消',
+              locale: 'zh_cn',
+              androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+            };
+            $cordovaDatePicker.show(options).then(function (date) {
+              if (date) {
+                $scope.applicationEmployeeDetail.date = date;
+                $scope.applicationEmployeeDetail.dateString = HmsDateFormat.getDateString(date);
+              }
+            });
+          }
+        },
+        inputDateStart: function() {
+        },
+        inputDateIng: function(){
+        },
+        inputDateEnd: function() {
+          if(!$scope.applicationEmployeeDetail.inputDate){
+            $scope.applicationEmployeeDetail.inputDate = new Date();
+          }
+
+          $scope.applicationEmployeeDetail.date = $scope.applicationEmployeeDetail.inputDate;
+          $scope.applicationEmployeeDetail.dateString = HmsDateFormat.getDateString($scope.applicationEmployeeDetail.inputDate);
         },
         //保存转正信息
         savePositiveBlock1: function (Empdetail, Emptype) {
@@ -590,6 +632,7 @@ angular.module('applicationModule')
                     $scope.applicationEmployeeDetail.trialDate = new Date(dateString);
                   } else {
                     $scope.applicationEmployeeDetail.trialDate = new Date();
+                    $scope.applicationEmployeeDetail.inputDate = new Date();
                     $scope.applicationEmployeeDetail.trial_date =
                       HmsDateFormat.getDateString($scope.applicationEmployeeDetail.trialDate);
                   }
@@ -1236,9 +1279,16 @@ angular.module('applicationModule')
             historyWidth = parseInt(historyNum) * historyEachWidth;
           } catch (e) {
           }
-          $scope.workflowDetailHistoryWidth = {
-            "width": historyWidth
-          };
+          if($scope.isWeixinWebview){
+            $scope.workflowDetailHistoryWidth = {
+              "width": historyWidth + "px",
+              "height": "139px"
+            };
+          } else {
+            $scope.workflowDetailHistoryWidth = {
+              "width": historyWidth
+            };
+          }
         };
 
         self.validateWorkFlowAction = function (actionType) {
@@ -1557,16 +1607,53 @@ angular.module('applicationModule')
         }
       };
 
-      if ($stateParams.type == 'PUSHDETAIL') { //消息推送过来的
-        init.initPushDetail(detail);
-        $timeout(function () {
-          init.initDataModal();
-        }, 250);
-      } else if ($stateParams.type == 'WORKFLOWDETAIL') {
-        $scope.LoadingPushData = false;
-        $timeout(function () {
-          init.initDataModal();
-        }, 250);
+      if(!$scope.isWeixinWebview){
+        if ($stateParams.type == 'PUSHDETAIL') { //消息推送过来的
+          init.initPushDetail(detail);
+          $timeout(function () {
+            init.initDataModal();
+          }, 250);
+        } else if ($stateParams.type == 'WORKFLOWDETAIL') {
+          $scope.LoadingPushData = false;
+          $timeout(function () {
+            init.initDataModal();
+          }, 250);
+        }
+      } else {
+        var data = workFLowListService.getParamData();
+        $stateParams.detail = data.detail;
+        $stateParams.myPrsonalApplicationFlag = data.myPrsonalApplicationFlag;
+        $stateParams.type = data.type;
+        workFLowListService.getSubmitFlag(function(data){
+          // $stateParams.processedFlag = data.processedFlag;
+          if(data.status == 'N'){
+            $stateParams.processedFlag = {value: false};
+          } else {
+            $stateParams.processedFlag = {value: true};
+          }
+
+          $scope.workflowActionShowFlag = !$stateParams.processedFlag.value;
+          $scope.currentDetail = $stateParams.detail; //传过来的数据块
+          detail = $stateParams.detail;//传过来的数据块
+          processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
+          $scope.LoadingPushData = false;
+          $timeout(function () {
+            init.initDataModal();
+          }, 250);
+        },function(data){
+          hmsPopup.showPopup('获取审核操作异常，审核操作已屏蔽');
+          $stateParams.processedFlag = {value: true};
+
+          $scope.workflowActionShowFlag = !$stateParams.processedFlag.value;
+          $scope.currentDetail = $stateParams.detail; //传过来的数据块
+          detail = $stateParams.detail;//传过来的数据块
+          processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
+          $scope.LoadingPushData = false;
+          $timeout(function () {
+            init.initDataModal();
+          }, 250);
+        },$stateParams.detail.instanceId);
       }
+      
     }])
 ;
