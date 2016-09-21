@@ -19,21 +19,23 @@ angular.module('myApp')
         });
     }
   ])
-  .config(['$stateProvider',
-    function($stateProvider) {
-      $stateProvider
-        .state('tab.contractDetail-employeeDetail', {
-          url: '/contract-detail/authorDetail',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/contact/detail/employee-detail.html',
-              controller: 'contactEmployeeDetailCtl'
+  .config(['$stateProvider', 'baseConfig',
+    function($stateProvider, baseConfig) {
+      if(!baseConfig.isWeixinWebview){
+        $stateProvider
+          .state('tab.contractDetail-employeeDetail', {
+            url: '/contract-detail/authorDetail',
+            views: {
+              'tab-application': {
+                templateUrl: 'build/pages/contact/detail/employee-detail.html',
+                controller: 'contactEmployeeDetailCtl'
+              }
+            },
+            params: {
+              'employeeNumber': ""
             }
-          },
-          params: {
-            'employeeNumber': ""
-          }
-        });
+          });
+      }
     }
   ]);
 
@@ -47,6 +49,7 @@ angular.module('applicationModule')
     '$ionicActionSheet',
     '$ionicScrollDelegate',
     'hmsPopup',
+    'baseConfig',
     'contractDetailService',
     'contractListService',
     function($scope,
@@ -57,6 +60,7 @@ angular.module('applicationModule')
       $ionicActionSheet,
       $ionicScrollDelegate,
       hmsPopup,
+      baseConfig,
       contractDetailService,
       contractListService) {
       $scope.nowContractInfoNum = 0;
@@ -71,6 +75,7 @@ angular.module('applicationModule')
       $scope.showIosHeader = ionic.Platform.isIOS();
       $scope.hisBluring = false;
       $scope.afterEnter = false;
+      $scope.isWxWebview = baseConfig.isWeixinWebview;
 
       //合同要素数据成功返回后
       var essenceSuccess = function(responce, index) {
@@ -80,6 +85,9 @@ angular.module('applicationModule')
 
       //初始化页面所需数据
       var httpSuccess = function(response) {
+        if (baseConfig.isWeixinWebview) {
+          contractDetailService.saveDetailData(response);
+        }
         $scope.data = response;
         // console.log($scope.data);
 
@@ -123,9 +131,17 @@ angular.module('applicationModule')
       };
 
       //取初始化页面所需数据
-      contractDetailService.check(httpSuccess,
-        $stateParams.data.activityId ? $stateParams.data.activityId : "",
-        $stateParams.data.procId ? $stateParams.data.procId : "");
+      if ($stateParams.data) {
+        contractDetailService.check(httpSuccess,
+          $stateParams.data.activityId ? $stateParams.data.activityId : "",
+          $stateParams.data.procId ? $stateParams.data.procId : "");
+      } else {
+        httpSuccess(contractDetailService.getDetailData());
+      }
+      // //取初始化页面所需数据
+      // contractDetailService.check(httpSuccess,
+      //   $stateParams.data.activityId ? $stateParams.data.activityId : "",
+      //   $stateParams.data.procId ? $stateParams.data.procId : "");
 
       //显示合同要素弹出框
       $scope.showEssenceDiv = function() {
@@ -252,7 +268,7 @@ angular.module('applicationModule')
           $ionicHistory.goBack();
           hmsPopup.showPopup('操作成功');
         } else {
-          hmsPopup.showPopup('操作失败：' + response.message);
+          hmsPopup.showPopup('操作失败：' + angular.toJson(response.message));
         }
       };
 
@@ -386,10 +402,12 @@ angular.module('applicationModule')
       }
 
       $scope.goToAuthorPage = function(id) {
-        if (id) {
-          $state.go('tab.contractDetail-employeeDetail', { employeeNumber: id });
-        } else {
-          $state.go('tab.contractDetail-employeeDetail', { employeeNumber: 1876 });
+        if (!baseConfig.isWeixinWebview) {
+          if (id) {
+            $state.go('tab.contractDetail-employeeDetail', { employeeNumber: id });
+          } else {
+            $state.go('tab.contractDetail-employeeDetail', { employeeNumber: 1876 });
+          }
         }
       }
 
@@ -465,8 +483,31 @@ angular.module('applicationModule')
 
     };
 
-    this.submit = function(success, procInstId, actInstId, submitKey, comment) {
+    // add by luyufei 
+    var paramData = {};
+    this.saveData = function(d){
+      paramData = d;
+    }
+    this.getData = function(){
+      return paramData;
+    }
 
+    var detailData = {};
+    this.saveDetailData = function(d){
+      detailData = d;
+    }
+    this.getDetailData = function(){
+      return detailData;
+    }
+    this.disableOprate = function(){
+      detailData.approvalAction = false;
+    };
+    //end add
+
+    this.submit = function(success, procInstId, actInstId, submitKey, comment) {
+      if (baseConfig.isWeixinWebview) {
+        this.disableOprate();
+      }
       var params = {
         userId: window.localStorage.empno,
         method: "submit",
@@ -484,7 +525,9 @@ angular.module('applicationModule')
     };
 
     this.transpond = function(success, procInstId, actInstId, transpondUser, message) {
-
+      if (baseConfig.isWeixinWebview) {
+        this.disableOprate();
+      }
       var params = {
         userId: window.localStorage.empno,
         method: "transpond",

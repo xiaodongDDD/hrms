@@ -44,6 +44,7 @@ angular.module('applicationModule')
       $scope.list = []; //用于显示列表的列表数据
       $scope.listBackup = []; //备份列表数据，在筛选时使用。
       $scope.isIos = false; //平台
+      $scope.isWxWebview = baseConfig.isWeixinWebview;
       var slideToChangePage = true; //是否是滑动来换页的
       $scope.enteringIndex = 0;
       $scope.subheadereAnimaFlag = false;
@@ -97,13 +98,24 @@ angular.module('applicationModule')
               'opacity': 1
             }
           } else {
-            return {
-              'animation': 'contract-fadeIn forwards 0.5s',
-              '-webkit-animation': 'contract-fadeIn forwards 0.5s',
-              'animation-delay': (index + 1) * 90 + 'ms',
-              '-webkit-animation-delay': (index + 1) * 90 + 'ms',
-              'animation-duration': '0',
-              '-webkit-animation-duration': '0'
+            if (baseConfig.isWeixinWebview) {
+              return {
+                'animation': 'contract-fadeIn forwards 0.5s',
+                '-webkit-animation': 'contract-fadeIn forwards 0.5s',
+                'animation-delay': 500 + 'ms',
+                '-webkit-animation-delay': 500 + 'ms',
+                'animation-duration': '0',
+                '-webkit-animation-duration': '0'
+              }
+            } else {
+              return {
+                'animation': 'contract-fadeIn forwards 0.5s',
+                '-webkit-animation': 'contract-fadeIn forwards 0.5s',
+                'animation-delay': (index + 1) * 90 + 'ms',
+                '-webkit-animation-delay': (index + 1) * 90 + 'ms',
+                'animation-duration': '0',
+                '-webkit-animation-duration': '0'
+              }
             }
           }
         } else { //如果是从子级页面返回的
@@ -542,9 +554,34 @@ angular.module('applicationModule')
         return self;
       };
 
-      $timeout(function() {
-        getTodoList(false);
-      }, 400);
+      if (baseConfig.isWeixinWebview) {
+        //wx
+        var argsWx = {};
+        var queryWx = location.search.substring(1); //获取查询串
+        var pairsWx = queryWx.split("&"); //在逗号处断开
+        for (var i = 0; i < pairsWx.length; i++) {
+          var pos = pairsWx[i].indexOf('='); //查找name=value
+          if (pos == -1) {
+            continue;
+          } //如果没有找到就跳过
+          var argName = pairsWx[i].substring(0, pos); //提取name
+          argsWx[argName] = pairsWx[i].substring(pos + 1); //存为属性
+        }
+
+        var codeWx = argsWx.code;
+        var stateWx = argsWx.state;
+        window.localStorage.token = '';
+
+        if (codeWx) {
+          contractListService.wxLogin(codeWx, getTodoList, contractListService.check);
+        } else {
+          hmsPopup.showShortCenterToast('微信授权失败,请联系管理员!');
+        }
+      } else {
+        $timeout(function() {
+          getTodoList(false);
+        }, 400);
+      }
 
       $scope.$on('$ionicView.enter', function(e) {
         if (baseConfig.debug) {
@@ -557,7 +594,7 @@ angular.module('applicationModule')
           console.log('contractListCtrl.$ionicView.beforeEnter');
         }
         //iOS的时候，top:0px在状态栏内部
-        if (ionic.Platform.isIOS()) {
+        if (ionic.Platform.isIOS() && !baseConfig.isWeixinWebview) {
           $scope.isIos = true;
           $scope.shouldDisableBouncing = true;
           $scope.hasBouncing = 'true';
@@ -647,9 +684,11 @@ angular.module('applicationModule')
   ])
 
 .service('contractListService', ['hmsHttp',
+  '$http',
   'baseConfig',
   'hmsPopup',
   function(hmsHttp,
+    $http,
     baseConfig,
     hmsPopup) {
     var fromParentFlag = {
@@ -698,6 +737,41 @@ angular.module('applicationModule')
     this.IsFromParent = function() {
       return fromParentFlag.flag;
     };
+
+    this.wxLogin = function(codeWx, getTodoList, check) {
+      var destUrl = baseConfig.wxLoginPath + "username=" + codeWx + "&password=123456&p_phone_no=111111";
+      $http.post(destUrl).success(function(response) {
+        window.localStorage.token = response.access_token;
+        //获取工号请求
+        hmsHttp.post(baseConfig.queryPath + '/getEmpNo').success(function(response) {
+          if (response.success) {
+            if (response.rows.length > 0) {
+              window.localStorage.empno = response.rows[0];
+              check(function() {
+                getTodoList(false);
+              });
+            } else {
+              hmsPopup.showShortCenterToast('获取工号为空,请联系系统管理员!');
+            }
+          } else {
+            hmsPopup.showShortCenterToast('无法获取工号,请联系系统管理员!');
+          }
+          //获取工号失败
+        }).error(function(response, status) {
+          hmsPopup.showShortCenterToast('获取工号请求失败,请检查网络或联系系统管理员!');
+        });
+        //登录失败
+      }).error(function(response, status) {
+        window.localStorage.token = '';
+        if (status == '401') {
+          hmsPopup.showShortCenterToast('登录被拒绝!');
+        } else if (status == '404') {
+          hmsPopup.showShortCenterToast('后端服务器请求失败,请联系管理员!');
+        } else {
+          hmsPopup.showShortCenterToast('处理请求失败,请确认网络连接是否正常,或者联系管理员!');
+        }
+      });
+    }
 
     //现在如果checkUser不通过，则getTodoList和getTodoCount不会被执行post请求。
     this.check = function(success) {
@@ -808,4 +882,3 @@ angular.module('applicationModule')
     };
   }
 ]);
-

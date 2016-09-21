@@ -43,6 +43,7 @@ angular.module('applicationModule')
               baseConfig,
               workFLowListService,
               $ionicScrollDelegate) {
+      $scope.isWeixinWebview = baseConfig.isWeixinWebview;
 
       //缓存工作流列表
       var cashList = [];
@@ -232,12 +233,23 @@ angular.module('applicationModule')
           if ($scope.listStatus.mine.selected) {
             myPrsonalApplicationFlag = true;
           }
-          $state.go('tab.workflow-detail', {
-            "detail": detail,
-            "processedFlag": processedFlag,
-            "myPrsonalApplicationFlag": myPrsonalApplicationFlag,
-            "type": "WORKFLOWDETAIL"
-          });
+          if(!$scope.isWeixinWebview){
+            $state.go('tab.workflow-detail', {
+              "detail": detail,
+              "processedFlag": processedFlag,
+              "myPrsonalApplicationFlag": myPrsonalApplicationFlag,
+              "type": "WORKFLOWDETAIL"
+            });
+          } else {
+            workFLowListService.saveParamData({
+              "detail": detail,
+              "processedFlag": processedFlag,
+              "myPrsonalApplicationFlag": myPrsonalApplicationFlag,
+              "type": "WORKFLOWDETAIL"
+            });
+
+            $state.go('tab.workflow-detail', workFLowListService.getParamData());
+          }
         }
       }
 
@@ -588,10 +600,35 @@ angular.module('applicationModule')
         return self;
       };
 
-      $timeout(function () {
-        workFLowListService.getTodoListQuery($scope, pageNum, cashList, false, dataFilterUtil());
-        dataFilterUtil().query();
-      }, 300);
+      if(!$scope.isWeixinWebview){
+        $timeout(function () {
+          workFLowListService.getTodoListQuery($scope, pageNum, cashList, false, dataFilterUtil());
+          dataFilterUtil().query();
+        }, 300);
+      } else {
+        //WeiXin. add by luyufei
+        var argsWx = {};
+        var queryWx = location.search.substring(1);//获取查询串
+        var pairsWx = queryWx.split("&");//在逗号处断开
+        for (var i = 0; i < pairsWx.length; i++) {
+          var pos = pairsWx[i].indexOf('=');//查找name=value
+          if (pos == -1) {
+            continue;
+          }    //如果没有找到就跳过
+          var argName = pairsWx[i].substring(0, pos);//提取name
+          argsWx[argName] = pairsWx[i].substring(pos + 1);//存为属性
+        }
+
+        var codeWx = argsWx.code;
+        var stateWx = argsWx.state;
+        window.localStorage.token = '';
+
+        if(codeWx){
+          workFLowListService.wxLogin(codeWx, dataFilterUtil, workFLowListService.getTodoListQuery, $scope, pageNum, cashList);
+        } else {
+          hmsPopup.showShortCenterToast('微信授权失败,请联系管理员!');
+        }
+      }
 
       $scope.$on('$ionicView.enter', function (e) {
         if (baseConfig.debug) {
