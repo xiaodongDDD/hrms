@@ -5,6 +5,8 @@
     "clearTable": true,
     "nativeScreenFlag": true,
     "appStoreFlag": false,
+    "isWeixinWebview": false,
+    "wxLoginPath": "http://wechat.hand-china.com/hrmsv2/oauth/token?client_id=wx_client&client_secret=secret&grant_type=password&",
     "loginPath": "http://wechat.hand-china.com/hrmsv2/oauth/token?client_id=client&client_secret=secret&grant_type=password&",
     "businessPath": "http://wechat.hand-china.com/hrmsv2/v2/api/l",
     "queryPath": "http://wechat.hand-china.com/hrmsv2/v2/api",
