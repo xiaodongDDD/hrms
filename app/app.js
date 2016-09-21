@@ -62,13 +62,15 @@ angular.module('myApp')
           StatusBar.styleLightContent();
         }
 
-        if(window.plugins.screensize){
+        //alert('device' + angular.toJson(device));
+
+        /*if(window.plugins.screensize){
           window.plugins.screensize.get(function (result) {
             alert('window.plugins.screensize ' + angular.toJson(result));
             guideService.setScreenSize(result);
           }, function (result) {
           });
-        }
+        }*/
 
         // if(ThreeDeeTouch){}
         // ThreeDeeTouch.configureQuickActions([
