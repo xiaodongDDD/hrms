@@ -173,6 +173,16 @@ $text-padding: 11px !default
           border-radius: $img-half-height;
           font-size: 16px;
         }
+
+        .message-has-text{
+          width: $img-height;
+          height: $img-height;
+          line-height: $img-height;
+          text-align: center;
+          float: left;
+          border-radius: $img-half-height;
+          font-size: 16px;
+        }
       }
       .message-content {
         position: absolute;

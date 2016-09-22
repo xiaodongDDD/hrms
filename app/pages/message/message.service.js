@@ -16,6 +16,24 @@ angular.module('applicationModule')
                 hmsPopup,
                 contactService) {
 
+        var colorList = [
+          {
+            "border": "1px solid #dd1144"
+          },
+          {
+            "border": "1px solid #4b8bf4"
+          },
+          {
+            "border": "1px solid #F99D32"
+          },
+          {
+            "border": "1px solid #5CB281"
+          },
+          {
+            "border": "1px solid #6BB9F0"
+          },
+        ];
+
         var messageType = {
           message: 'MESSAGE',
           notify: 'NOTIFY'
@@ -23,9 +41,9 @@ angular.module('applicationModule')
 
         var notifyType = {
           /*"work_flow": {
-            "name": "待办事项",
-            "imgUrl": "build/img/message/todo@3x.png",
-          },*/
+           "name": "待办事项",
+           "imgUrl": "build/img/message/todo@3x.png",
+           },*/
           "room": {
             "name": "住宿申请",
             "imgUrl": "build/img/message/dorm@3x.png",
@@ -69,9 +87,23 @@ angular.module('applicationModule')
           notifyList = list
         };
 
+        var getRandomColor = function () {
+          var index = parseInt(Math.random() * 4);
+          if(baseConfig.debug){
+            console.log('getRandomColor.Math.random() ' + Math.random())
+            console.log('getRandomColor.index ' + index);
+            console.log('getRandomColor.colorList[index] ' + angular.toJson(colorList[index]));
+          }
+          return colorList[index];
+        };
+
+        this.getRandomColor = function () {
+          return getRandomColor();
+        };
+
         this.getCachedNotifyList = function () {
           var list = [];
-          angular.forEach(notifyList,function (data) {
+          angular.forEach(notifyList, function (data) {
             data.selected = false;
             list.push(data);
           })
@@ -116,10 +148,22 @@ angular.module('applicationModule')
               userIcon = messageDefaultIcon;
               userName = data.message.sendId;
             }
+
+            if (userName.length == 2) {
+              imgName = userName;
+            } else if (userName.length == 3) {
+              imgName = userName.substr(1, 2);
+            } else {
+              imgName = userName.substr(0, 1);
+            }
+
+
             var item = {
               "name": userName,
               "content": data.message.content,
               "imgUrl": userIcon,
+              "imgName": imgName,
+              "imgColorStyle": getRandomColor(),
               "count": data.message.messageNum,
               "employee": data.message.sendId,
               "time": data.message.sendTime,
@@ -142,12 +186,14 @@ angular.module('applicationModule')
               var messageList = [];
               angular.forEach(result.returnData, function (messageDetail) {
 
-                if(messageDetail.messageTypeCode != 'work_flow'){
+                if (messageDetail.messageTypeCode != 'work_flow') {
                   totalMessageCount = totalMessageCount + parseInt(messageDetail.messageNum);
                   var notify = {
                     "name": notifyType[messageDetail.messageTypeCode].name,
                     "content": messageDetail.messageContent,
                     "imgUrl": notifyType[messageDetail.messageTypeCode].imgUrl,
+                    "imgName": "",
+                    "imgColorStyle": "",
                     "count": messageDetail.messageNum,
                     "employee": "",
                     "time": messageDetail.compareTime,
