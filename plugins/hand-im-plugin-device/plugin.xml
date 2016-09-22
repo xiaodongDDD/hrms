@@ -53,12 +53,16 @@
 	
 	<!--add by panxu begin -->
 	<source-file src="src/android/bean/UserInfo.java" target-dir="src/com/hand/im/bean"/>
+	<source-file src="src/android/bean/OrgStruct.java" target-dir="src/com/hand/im/bean"/>
 	<source-file src="src/android/contact/ContactActivity.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/contact/PersonBean.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/contact/PinyinComparator.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/contact/PinyinUtils.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/contact/SideBar.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/contact/SortAdapter.java" target-dir="src/com/hand/im/contact"/>
+	<source-file src="src/android/contact/OrgStructActivity.java" target-dir="src/com/hand/im/contact"/>
+	<source-file src="src/android/contact/OrgStructAdapter.java" target-dir="src/com/hand/im/contact"/>
+	<source-file src="src/android/contact/TipDialog.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/okhttp/OkHttpClientManager.java" target-dir="src/com/hand/im/okhttp"/>
 	<source-file src="src/android/GroupInfoActivity.java" target-dir="src/com/hand/im"/>
 	<source-file src="src/android/GroupInfoAdapter.java" target-dir="src/com/hand/im"/>
@@ -69,6 +73,7 @@
 	<source-file src="src/android/UpdateDisNameActivity.java" target-dir="src/com/hand/im"/>	
 	
 	<source-file src="src/android/drawable/exit_button_shape.xml" target-dir="res/drawable"/>
+	<source-file src="src/android/drawable/edittext_bg.xml" target-dir="res/drawable"/>
 	<source-file src="src/android/drawable/item_check_box.xml" target-dir="res/drawable"/>
 	<source-file src="src/android/drawable/switch_thumb.xml" target-dir="res/drawable"/>
 	<source-file src="src/android/drawable/switch_track.xml" target-dir="res/drawable"/>
@@ -90,7 +95,11 @@
 	<source-file src="src/android/layout/hand_mul_chat_act.xml" target-dir="res/layout"/>
 	<source-file src="src/android/layout/item_group_info.xml" target-dir="res/layout"/>
 	<source-file src="src/android/layout/list_item.xml" target-dir="res/layout"/>
-
+	
+	<source-file src="src/android/layout/item_org_org.xml" target-dir="res/layout"/>
+	<source-file src="src/android/layout/item_org_person.xml" target-dir="res/layout"/>
+	<source-file src="src/android/layout/activity_org_struct.xml" target-dir="res/layout"/>
+	<source-file src="src/android/layout/dialog_tip.xml" target-dir="res/layout"/>
 	<source-file src="src/android/libs/pinyin4j-2.5.0.jar" target-dir="libs/"/>
 	
 	<!--add by panxu end-->
@@ -388,10 +397,11 @@
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-        <!-- 正式 -->
+       
 		<meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="$RONG_KEY" />
+			 <!-- 正式 -->
       <!--<meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="e5t4ouvptpsaa" />-->
@@ -424,6 +434,11 @@
 			android:name="com.hand.im.UpdateDisNameActivity" 
 			android:screenOrientation="portrait" 
 			android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" />
+		<activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
+			android:name="com.hand.im.contact.OrgStructActivity" 
+			android:screenOrientation="portrait" 
+			android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" />
+
 	<!--add by panxu end-->
         <!-- add by fuwei begin -->
             <activity

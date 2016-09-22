@@ -7,11 +7,11 @@
       <input placeholder="搜索" ng-blur="messageHandle.blur()" ng-focus="messageHandle.focus()"
              ng-change="messageHandle.search(false)" ng-model="empFilterValue">
     </div>
-    <div class="cancel-button" ng-click="messageHandle.cancel()" ng-if="showFilter">
+    <div class="cancel-button-text" ng-click="messageHandle.cancel()" ng-if="showFilter">
       取消
     </div>
-    <div class="cancel-button" ng-click="messageHandle.createGroupChat()" ng-if="!showFilter">
-      <i class="ion-android-add" style="font-size: 24px"></i>
+    <div class="cancel-button-icon" ng-click="messageHandle.createGroupChat()" ng-if="!showFilter">
+      <i class="ion-android-add"></i>
     </div>
   </ion-header-bar>
   <ion-content style="bottom:48px;" class="messages" ng-class="{true: 'has-employee-list', false: ''}[showFilter]" has-bouncing="">

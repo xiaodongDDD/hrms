@@ -90,12 +90,11 @@ static NSMutableArray *usersInfo;
 - (void)onReceived:(RCMessage *)message left:(int)nLeft object:(id)object
 {
     if (!([message.objectName isEqualToString:@"RC:DizNtf"]||[message.objectName isEqualToString:@"RC:VCSummary"])) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:RCIMLibReceivedMessageNotification object:message];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:RCIMLibReceivedMessageNotification object:message];
+}
     if(message.conversationType==ConversationType_PRIVATE){
         
         //单聊
-        NSString *telePhone;
         //收到新消息 发送通知
         if (![message.objectName isEqualToString:@"RC:VCSummary"]) {
             SystemSoundID soundID;
@@ -107,7 +106,83 @@ static NSMutableArray *usersInfo;
             
             //弹出提示框
             UILocalNotification *localNotification ;
+            if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+                NSString *body;
+                NSDictionary *userInfoAndExtra;
+                //每次收到消息就把数据存在本地数据库
+                if ([message.content isKindOfClass:[RCTextMessage class]]) {
+                    RCTextMessage *textMessage = (RCTextMessage *) message.content;
+                    NSLog(@"Appdelegate+CDVIMPlugin收到消息了来自%@,%@-%@-%@",message.senderUserId,textMessage.senderUserInfo.userId,textMessage.senderUserInfo.name,textMessage.senderUserInfo.portraitUri);
+                    if (textMessage.extra!=nil) {
+                        
+                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":textMessage.senderUserInfo.userId,@"name":textMessage.senderUserInfo.name,@"portraitUri":textMessage.senderUserInfo.portraitUri},@"extra":textMessage.extra,@"conversationType":@(message.conversationType)};
+                        
+                    }else{
+                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":textMessage.senderUserInfo.userId,@"name":textMessage.senderUserInfo.name,@"portraitUri":textMessage.senderUserInfo.portraitUri},@"extra":@"null",@"conversationType":@(message.conversationType)};
+                    }
+                    if ([message.content senderUserInfo]) {
+                        body = [NSString stringWithFormat:@"%@:%@",[textMessage senderUserInfo].name,[textMessage content]];
+                        NSLog(@"body:%@",body);
+                        
+                    }else{//发送者没有携带用户信息 显示userid
+                        body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,textMessage.content];
+                    }
+                }else if([message.content isKindOfClass:[RCImageMessage class]]){
+                    RCImageMessage *imageMessage = (RCImageMessage *)[message content];
+                    if (imageMessage.extra!=nil) {
+                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":imageMessage.senderUserInfo.userId,@"name":imageMessage.senderUserInfo.name,@"portraitUri":imageMessage.senderUserInfo.portraitUri},@"extra":imageMessage.extra,@"conversationType":@(message.conversationType)};
+                    }else{
+                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":imageMessage.senderUserInfo.userId,@"name":imageMessage.senderUserInfo.name,@"portraitUri":imageMessage.senderUserInfo.portraitUri},@"extra":@"null",@"conversationType":@(message.conversationType)};
+                    }
+                    if ([message.content senderUserInfo]) {
+                        body = [NSString stringWithFormat:@"%@:%@",[imageMessage senderUserInfo].name,@"[图片]"];
+                    }else{
+                        body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,@"[图片]"];
+                    }
+                }else if ([message.content isKindOfClass:[RCVoiceMessage class]]){
+                    RCVoiceMessage *voiceMessage = (RCVoiceMessage *)message.content;
+                    if (voiceMessage.extra!=nil) {
+                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":voiceMessage.senderUserInfo.userId,@"name":voiceMessage.senderUserInfo.name,@"portraitUri":voiceMessage.senderUserInfo.portraitUri},@"extra":voiceMessage.extra,@"conversationType":@(message.conversationType)};
+                    }else{
+                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":voiceMessage.senderUserInfo.userId,@"name":voiceMessage.senderUserInfo.name,@"portraitUri":voiceMessage.senderUserInfo.portraitUri},@"extra":@"null",@"conversationType":@(message.conversationType)};
+                    }
+                    if ([message.content senderUserInfo]) {
+                        body = [NSString stringWithFormat:@"%@:%@",[voiceMessage senderUserInfo].name,@"[语音]"];
+                    }else{
+                        body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,@"[语音]"];
+                    }
+                }else if ([message.content isKindOfClass:[RCLocationMessage class]]){
+                    RCLocationMessage *locationMessage = (RCLocationMessage *)[message content];
+                    if (locationMessage.extra!=nil) {
+                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":locationMessage.senderUserInfo.userId,@"name":locationMessage.senderUserInfo.name,@"portraitUri":locationMessage.senderUserInfo.portraitUri},@"extra":locationMessage.extra,@"conversationType":@(message.conversationType)};
+                    }else{
+                        NSString *extra = nil;
+                        userInfoAndExtra = @{@"senderUserInfo":@{@"userId":locationMessage.senderUserInfo.userId,@"name":locationMessage.senderUserInfo.name,@"portraitUri":locationMessage.senderUserInfo.portraitUri},@"extra":extra,@"conversationType":@(message.conversationType)};
+                    }
+                    if ([message.content senderUserInfo]) {
+                        body = [NSString stringWithFormat:@"%@:%@",[locationMessage senderUserInfo].name,@"[位置]"];
+                    }else{
+                        body = [NSString stringWithFormat:@"%@:%@",message.senderUserId,@"[位置]"];
+                    }
+                }
+                localNotification = [[UILocalNotification alloc] init];
+                [localNotification setAlertTitle:[[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"]];
+                [localNotification setAlertBody:body];
+                [localNotification setUserInfo:userInfoAndExtra];
+                [localNotification setSoundName:UILocalNotificationDefaultSoundName];
+            }
             
+            NSString *telePhone;
+            if ([message.content isKindOfClass:[RCTextMessage class]] ) {
+                RCTextMessage *textMsg =  (RCTextMessage*)message.content;
+                telePhone = textMsg.extra;
+            }else if ([message.content isKindOfClass:[RCVoiceMessage class]]){
+                RCVoiceMessage *voiceMsg =(RCVoiceMessage*) message.content;
+                telePhone = voiceMsg.extra;
+            }else if ([message.content isKindOfClass:[RCImageMessage class]]){
+                 RCImageMessage *imageMsg = (RCImageMessage*)message.content;
+                telePhone = imageMsg.extra;
+            }else{}
             
             RCUserInfo *senderUserInfo ;
             if (message.content.senderUserInfo) {
@@ -117,6 +192,9 @@ static NSMutableArray *usersInfo;
             if (senderUserInfo!=nil) {
                 if (senderUserInfo.portraitUri==nil) {
                     senderUserInfo.portraitUri = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"profile-2@3x.png" ofType:@"png"]].absoluteString;
+                }
+                if (telePhone==nil||[telePhone isEqual:[NSNull null]]) {
+                    telePhone = @"000000";
                 }
                 NSDictionary *sendInfo = @{@"work_id":senderUserInfo.userId, @"name":senderUserInfo.name, @"image_url":senderUserInfo.portraitUri,@"tel":telePhone};
                 [self hasSameUserInfo:sendInfo];
@@ -174,6 +252,7 @@ static NSMutableArray *usersInfo;
     NSLog(@"onReceived");
     NSLog(@"还剩余的未接收的消息数：%d 本条消息类型:%lu", nLeft,message.conversationType);
 }
+
 
 - (void)comeUpLocalNotificationWith:(NSString *)body UserInfo:(NSDictionary *)userInfo
 {

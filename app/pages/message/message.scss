@@ -1,3 +1,11 @@
+$message-height: 66px !default;
+$img-width: 50px !default;
+$img-height: 50px !default;
+$img-half-height: 25px !default;
+
+$img-padding: 8px !default;
+$text-padding: 11px !default
+
 .message-list {
 
   .scroll-refresher.active.refreshing .hms-spinner {
@@ -91,7 +99,7 @@
       padding: 0;
       margin: 0;
       border: none;
-      border-bottom: 1px solid #DBDBDB;
+      border-bottom: 1px solid #e5e5e5;
       .item-content {
         padding: 0;
         margin: 0;
@@ -101,7 +109,7 @@
 
     .delete-button {
       width: 100%;
-      height: 55px;
+      height: 60px;
       text-align: center;
       margin-top: auto;
       margin-bottom: auto;
@@ -109,22 +117,18 @@
         height: 35px;
         line-height: 35px;
         .delete-icon {
-          font-size: 26px;
+          font-size: 28px;
         }
       }
       .delete-text {
         height: 20px;
         line-height: 20px;
-        font-size: 14px
+        font-size: 16px
       }
     }
 
     .message-item {
-      height: 70.5px;
-      padding-top: 6px;
-      padding-bottom: 6px;
-      padding-left: 8px;
-      padding-right: 8px;
+      height: $message-height;
       position: relative;
 
       &.activated{
@@ -133,22 +137,22 @@
 
       .message-introduce {
         position: absolute;
-        left: 15px;
-        top: 15.5px;
-        width: 45px;
-        height: 45px;
-
+        left: 10px;
+        padding-top: $img-padding;
+        width: $img-height;
+        height: $img-height;
+        padding-bottom: $img-padding;
         .message-logo {
-          width: 45px;
-          height: 45px;
-          line-height: 45px;
+          width: $img-height;
+          height: $img-height;
+          line-height: $img-height;
           text-align: center;
           float: left;
-          border-radius: 22.5px;
+          border-radius: $img-half-height;
           font-size: 16px;
           img {
-            width: 45px;
-            height: 45px;
+            width: $img-height;
+            height: $img-height;
           }
           &.red {
             border: 1px solid #dd1144;
@@ -159,30 +163,31 @@
         }
 
         .message-has-logo {
-          width: 45px;
-          height: 45px;
-          line-height: 45px;
+          width: $img-height;
+          height: $img-height;
+          line-height: $img-height;
           text-align: center;
           float: left;
-          border-radius: 22.5px;
+          border-radius: $img-half-height;
           font-size: 16px;
         }
       }
       .message-content {
         position: absolute;
         left: 70px;
-        top: 15.5px;
-        height: 45px;
+        height: $message-height;
         right: 55px;
+        padding-top: $text-padding;
+        padding-bottom: $text-padding;
         .message-title {
-          font-size: 15px;
+          font-size: 16px;
           color: #4A4A4A;
-          height: 21px;
-          line-height: 21px;
+          height: 24px;
+          line-height: 24px;
         }
         .message-line {
-          margin-top: 4px;
-          font-size: 13px;
+          margin-top: 2px;
+          font-size: 14px;
           color: #9B9B9B;
           height: 18px;
           line-height: 18px;
@@ -194,14 +199,15 @@
       }
       .message-extro {
         position: absolute;
-        top: 15.5px;
-        height: 45px;
+        padding-top: $text-padding;
+        padding-bottom: $text-padding;
+        height: $message-height;
         right: 12px;
         .message-date {
-          font-size: 11px;
+          font-size: 12px;
           color: #9B9B9B;
-          height: 16px;
-          line-height: 16px;
+          height: 18px;
+          line-height: 18px;
           text-align: right;
         }
         .message-qty {
@@ -210,7 +216,7 @@
           width: 45px;
           height: 20px;
           line-height: 20px;
-          font-size: 13px;
+          font-size: 14px;
           color: white;
           background: #EB5F02;
           border-radius: 10px;
@@ -222,20 +228,18 @@
   }
 
   .message-search {
-    width: 80%;
-    margin-left: 5%;
-    position: relative;
+    left: 15px;
+    right: 50px;
+    position: absolute;
     background: white;
-    height: 28px;
+    height: 30px;
     color: gray;
     margin-top: 5px;
     padding-left: 15px;
     border-radius: 15px;
     &.has-employee-list {
-      width: 80%;
-      margin-left: 5%;
       background: white;
-      position: relative;
+      position: absolute;
       .message-button {
         float: left;
         width: 8%;
@@ -276,12 +280,25 @@
     }
   }
 
-  .cancel-button {
-    font-size: 14px;
-    width: 15%;
+  .cancel-button-icon {
+    position: absolute;
+    font-size: 30px;
+    right: 0;
+    width: 50px;
     height: 30px;
     line-height: 30px;
     text-align: center;
+    margin-top: 0px;
+  }
+  .cancel-button-text {
+    position: absolute;
+    font-size: 18px;
+    right: 0;
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-top: -2px;
   }
 
 }

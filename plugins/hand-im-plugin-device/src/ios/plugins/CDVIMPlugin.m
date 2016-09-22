@@ -14,6 +14,7 @@
 #import "RCIMDiscussionGroupAddMemberController.h"
 #import "RCIMGroupChatViewController.h"
 #import <RongCallKit/RongCallKit.h>
+
 @interface CDVIMPlugin ()
 {
     NSString *friendId;
@@ -59,20 +60,36 @@
         friendName = command.arguments[0][@"friendName"];
         friendIcon = command.arguments[0][@"friendIcon"];
         telephoneNumbers = command.arguments[0][@"telephoneNumbers"];
-
+        NSArray *telephones;
+        if (telephoneNumbers) {
+            if ([telephoneNumbers rangeOfString:@"|"].location != NSNotFound)
+            {
+                //包含
+                telephones = [telephoneNumbers componentsSeparatedByString:@"|"];
+                NSLog(@"tele-%@",telephoneNumbers);
+            }else
+            {
+                //单个电话号码
+                telephones = @[telephoneNumbers];
+            }
+        }else
+        {
+            //为空
+            //查看数据库
+            NSString *telStr = [DataBaseTool getTelPhoneByWorkerId:friendId];
+            if (telStr) {
+                telephoneNumbers = telStr;
+            }else{
+                telephoneNumbers = @"000000";
+            }
+            telephones = @[telephoneNumbers];
+        }
+        
         if (![DataBaseTool hasPerson:friendId]) {
+            NSLog(@"没有查到此人");
             [DataBaseTool selectSameUserInfoWithId:friendId Name:friendName ImageUrl:friendIcon Tel:telephoneNumbers];
         }
-        NSArray *telephones;
-        if ([telephoneNumbers rangeOfString:@"|"].location != NSNotFound) {
-            //包含
-            telephones = [telephoneNumbers componentsSeparatedByString:@"|"];
-            NSLog(@"tele-%@",telephoneNumbers);
-        }else if(telephoneNumbers!=nil&&![telephoneNumbers isEqualToString:@""]){
-            telephones = @[telephoneNumbers];
-        }else{
-            telephones = @[@"null"];
-        }
+        NSLog(@"电话:%@",telephones);
         UINavigationController *nav = [[UINavigationController alloc] initWithTargetId:friendId FriendName:friendName Icon:friendIcon PhoneNumbers:telephones];
         [self.viewController presentViewController:nav animated:NO completion:nil];
         

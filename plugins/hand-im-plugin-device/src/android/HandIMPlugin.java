@@ -205,20 +205,15 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
         } else if (ACTION_TO_CHAT_ACT.equals(action)) {
             //获取消息发送对象的ID
             //判断连接状态
-            Log.e("399", args.getString(0));
-//            JSONObject jsonObject = new JSONObject(args.getString(0));
-//            friendId = jsonObject.getString("friendId");
-//            friendName = jsonObject.getString("friendName");
-//            friendIcon = jsonObject.getString("friendIcon");
-//            String telephoneNumbers = jsonObject.getString("telephoneNumbers");
-//            sp.edit().putString("telephoneNumbers",telephoneNumbers).commit();
             if (args != null && args.length() > 0) {
                 JSONObject obj = args.getJSONObject(0);
                 friendId = obj.getString("friendId");
                 friendName = obj.getString("friendName");
                 friendIcon = obj.getString("friendIcon");
-                String telephoneNumbers = obj.getString("telephoneNumbers");
-                sp.edit().putString("telephoneNumbers",telephoneNumbers).commit();
+				String telephoneNumbers = obj.optString("telephoneNumbers");
+				if(telephoneNumbers!=null&&!telephoneNumbers.equals("")) {
+					sp.edit().putString("telephoneNumbers", telephoneNumbers).commit();
+				}
             }
             if (RongIMClient.getInstance() == null) {
                 initRY();

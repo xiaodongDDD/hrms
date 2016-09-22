@@ -326,8 +326,10 @@ angular.module('loginModule')
           url=baseConfig.loginPath+"username=" + encodeURIComponent($scope.loginInfo.username) + "&password=" +
             encodeURIComponent($scope.loginInfo.password) + "&device_info=" + deviceInfo;
         }
+        if(baseConfig.debug){
+          console.log('loginPost.url ' + url);
+        }
 
-        console.log(url);
         return $http({
           method:'POST',
           headers:{

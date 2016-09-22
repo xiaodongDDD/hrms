@@ -35,7 +35,6 @@ static CGFloat keyboardheight;
     UIWindow *recorderWindow;
     NSString *copyStr;
     CGPoint originalPoint;
-    NSMutableArray *phoneNumPlace;
 }
 /*!
  *  message消息数据源
@@ -62,6 +61,8 @@ static CGFloat keyboardheight;
  * 输入框下端附带的视图
  */
 @property (nonatomic,strong)UIView *attachView;
+
+@property (nonatomic,strong)NSMutableArray *phoneNumPlace;
 
 @end
 
@@ -120,10 +121,12 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     }];
    
     //请求电话的归属地
+    NSLog(@"电话列表:%@",self.phoneNums);
     for (int idx=0; idx<self.phoneNums.count; idx++) {
         [[BelongPlaceManager sharedInsance] APIRequest:self.phoneNums[idx]];
         [BelongPlaceManager sharedInsance].successCall = ^(NSString *str){
-            [phoneNumPlace addObject:str];
+            NSLog(@"str:%@",str);
+            [self.phoneNumPlace addObject:str];
         };
     }
     
@@ -199,8 +202,13 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     [_refreshControl addTarget:self action:@selector(updateHistoryMessage:) forControlEvents:UIControlEventValueChanged];
     [self.ChatTableView addSubview:_refreshControl];
     
-    phoneNumPlace = [NSMutableArray array];
-    
+}
+- (NSMutableArray *)phoneNumPlace
+{
+    if (_phoneNumPlace==nil) {
+        _phoneNumPlace = [NSMutableArray array];
+    }
+    return _phoneNumPlace;
 }
 //刷新历史消息
 - (void)updateHistoryMessage:(UIRefreshControl *)control
@@ -307,14 +315,17 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     [alertVC addAction:[UIAlertAction actionWithTitle:@"本地电话" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
         UIAlertController *alertVC1 = [UIAlertController alertControllerWithTitle:@"联系人电话列表" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        for(int idx=0;idx<self.phoneNums.count;idx++){
-            NSString *title = phoneNumPlace[idx];
-            [alertVC1 addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                NSString *telephone = [title componentsSeparatedByString:@"("][0];
-                [self callToSomeOne:telephone];
-                NSLog(@"打电话给:%@",telephone);
-            }]];
-            
+        if (self.phoneNumPlace.count) {
+    
+            for(int idx=0;idx<self.phoneNums.count;idx++){
+                NSString *title = self.phoneNumPlace[idx];
+                [alertVC1 addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    NSString *telephone = [title componentsSeparatedByString:@"("][0];
+                    [self callToSomeOne:telephone];
+                    NSLog(@"打电话给:%@",telephone);
+                }]];
+                
+            }
         }
         [alertVC1 addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:alertVC1 animated:YES completion:nil];
@@ -394,12 +405,22 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 {
     [self dismissViewControllerAnimated:YES completion:^{
         RCImageMessage *imageMessage = [RCImageMessage messageWithImage:editingInfo[@"UIImagePickerControllerOriginalImage"]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIImageWriteToSavedPhotosAlbum(editingInfo[@"UIImagePickerControllerOriginalImage"], self, nil, NULL);
-        });
+        imageMessage.thumbnailImage = image;
+        imageMessage.originalImage = image;
         [self clickedSendImageMessage:@[imageMessage]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+        UIImageWriteToSavedPhotosAlbum(editingInfo[@"UIImagePickerControllerOriginalImage"], self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+        });
     }];
     
+}
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    if (error) {
+        NSLog(@"保存图片出错:%@",error);
+    }else{
+        NSLog(@"%@",contextInfo);
+    }
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {

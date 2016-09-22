@@ -163,12 +163,6 @@ angular.module('messageModule')
           console.log('IMPush.openNotification result ' + angular.toJson(result));
         }
 
-        angular.forEach($scope.messageList,function (data) {
-          data.deleteAnimate = false;
-        });
-
-        $scope.$apply();
-
         if (result && result.message) {
           var friendList = [];
 
@@ -204,12 +198,6 @@ angular.module('messageModule')
       var refreshMessageList = function (refreshDom) {
         if (baseConfig.debug) {
           console.log('in refreshMessageList.getTime ' + new Date().getTime());
-        }
-        angular.forEach($scope.messageList,function (data) {
-          data.deleteAnimate = false;
-        });
-        if(refreshDom){
-          $scope.$apply();
         }
         messageService.getNotifyMessageList(refreshPluginMessageAndNotify, refreshPluginOnlyMessage, true, []);
       };

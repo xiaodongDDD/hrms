@@ -80,7 +80,7 @@ static FMDatabase *db;
 
 +(void)insertPersonDetailInformationWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon Tel:(NSString *)telphone
 {
-    NSLog(@"插入员工信息");
+    NSLog(@"插入员工信息");//worker_id TEXT, name TEXT,image_url TEXT,tel
     //添加数据
     if ([db open]) {
         NSString *insertSql= [NSString stringWithFormat:
@@ -267,17 +267,21 @@ static FMDatabase *db;
 
 +(BOOL)hasPerson:(NSString*)userId
 {
-    NSLog(@"查询相同member");
     BOOL flag = NO;
     if ([db open]) {
-        NSString * sql = [NSString stringWithFormat:@"SELECT * FROM Workers_Table WHERE worker_id = '%@ '",userId];
+        NSString * sql = [NSString stringWithFormat:
+                          @"SELECT * FROM Workers_Table WHERE worker_id = '%@' ",userId];
         FMResultSet * rs = [db executeQuery:sql];
         while ([rs next]) {
-            //    NSString * image_url = [rs stringForColumn:@"image_url"];
             flag = YES;
-            NSLog(@"查到了相同member");
+            NSLog(@"查到了相同的员工");
         }
         [db close];
+        if (!rs) {
+            NSLog(@"error when executeQuery db table");
+        } else {
+            NSLog(@"success to executeQuery db table");
+        }
     }
     return flag;
 }
@@ -285,16 +289,6 @@ static FMDatabase *db;
 +(BOOL)selectSameUserInfoWithId:(NSString *)userId Name:(NSString *)userName ImageUrl:(NSString *)userIcon Tel:(NSString *)tel
 {
     NSLog(@"查询相同信息");
-//    BOOL flag = NO;
-//    if ([db open]) {
-//        NSString * sql = [NSString stringWithFormat:@"SELECT * FROM Workers_Table WHERE worker_id = '%@ '",userId];
-//        FMResultSet * rs = [db executeQuery:sql];
-//        while ([rs next]) {
-//            //    NSString * image_url = [rs stringForColumn:@"image_url"];
-//            flag = YES;
-//        }
-//        [db close];
-//    }
     BOOL flag = [DataBaseTool hasPerson:userId];
     if (!flag) {
         //没有一个相同
@@ -303,7 +297,7 @@ static FMDatabase *db;
         NSLog(@"插入新联系人");
     }else{
         //可以更新
-        [self updatePersonDetailInformationWithId:userId Name:userName ImageUrl:userId Tel:tel];
+        [self updatePersonDetailInformationWithId:userId Name:userName ImageUrl:userIcon Tel:tel];
         NSLog(@"更新联系人");
     }
     

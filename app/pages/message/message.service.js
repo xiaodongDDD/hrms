@@ -153,7 +153,8 @@ angular.module('applicationModule')
                     "time": messageDetail.compareTime,
                     "messageType": messageType.notify,
                     "sortTime": filterData(messageDetail.latestMessageTime),
-                    "conversationType": messageDetail.messageTypeCode
+                    "conversationType": messageDetail.messageTypeCode,
+                    "deleteAnimate": false
                   };
                   messageList.push(notify);
                 }

@@ -103,7 +103,7 @@
         } error:^(RCErrorCode status) {
             NSLog(@"创建讨论组失败：%li",status);
             if (status==30001||status==30002) {
-                [ToastUtils showLong:@"请检查手机的当前网络是否正常"];
+                [ToastUtils showLong:@"当前网络不稳定,请尝试重新创建讨论组"];
             }else if (status==1||status==-1){
                 [ToastUtils showLong:@"创建讨论组必须两个人以上"];
             }
@@ -164,7 +164,7 @@
 }
 - (void)tapGesture:(UITapGestureRecognizer *)tap
 {
-        //选择讨论组图片
+    //选择讨论组图片
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"选择讨论组图标" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     [alertController addAction:[UIAlertAction actionWithTitle:@"相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
@@ -172,7 +172,7 @@
         //相机是否可用
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
-            [imagePicker setAllowsEditing:YES];
+            [imagePicker setAllowsEditing:NO];
             [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
             [self presentViewController:imagePicker animated:YES completion:nil];
         }
@@ -181,7 +181,7 @@
         //使用相册
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
-        //相机是否可用
+        //相册是否可用
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
         {
             [imagePicker setAllowsEditing:YES];
@@ -306,6 +306,18 @@
             [DataBaseTool insertDiscussionGroupInformation:self.discussionId PortraitUri:discussionImageUrl];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.navigationController pushViewController:RCIMGroupChattingVC animated:YES];
+                NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+                NSString *userIcon = [[NSUserDefaults standardUserDefaults] objectForKey:@"userIcon"];
+                NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
+                RCUserInfo *userInfo = [[RCUserInfo alloc] initWithUserId:userId name:userName portrait:userIcon];
+                RCTextMessage *textMessage = [RCTextMessage messageWithContent:[NSString stringWithFormat:@"%@创建了讨论组",userName]];
+                textMessage.senderUserInfo = userInfo;
+                textMessage.extra = discussionImageUrl;
+                [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_DISCUSSION targetId:RCIMGroupChattingVC.discussionId content:textMessage pushContent:nil pushData:nil success:^(long messageId) {
+                    NSLog(@"%@",textMessage.content);
+                } error:^(RCErrorCode nErrorCode, long messageId) {
+                    NSLog(@"创建讨论组失败");
+                }];
                 [progress hide];
             });
         }

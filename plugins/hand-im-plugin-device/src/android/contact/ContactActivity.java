@@ -3,7 +3,6 @@ package com.hand.im.contact;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -18,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import com.hand.im.okhttp.OkHttpClientManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,11 +60,17 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     private Button btnOK;
     private String targetId;
     private TextView imgBack;
+
     private String TYPE;
     private String USERID;
     private String USERNAME;
     private String ICONURL;
     private String TOKEN;
+    private RelativeLayout rltOrgStruct;
+    private RelativeLayout rltSelfOrgStruct;
+    private ProgressBar loading;
+    private TextView txtSelfOrg;
+    private String currentDeptID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +100,12 @@ public class ContactActivity extends Activity implements View.OnClickListener {
         btnOK.setOnClickListener(this);
         btnSearch = (ImageView) findViewById(Util.getRS("imgSearch", "id", this));
         btnSearch.setOnClickListener(this);
+        loading = (ProgressBar)findViewById(Util.getRS("loading","id",this));
+        rltOrgStruct = (RelativeLayout)findViewById(Util.getRS("lyt_org_struct","id",this));
+        rltSelfOrgStruct = (RelativeLayout)findViewById(Util.getRS("lyt_org_self_struct","id",this));
+        rltOrgStruct.setOnClickListener(this);
+        rltSelfOrgStruct.setOnClickListener(this);
+        txtSelfOrg = (TextView)findViewById(Util.getRS("txtSelfOrg","id",this));
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -111,9 +125,6 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     }
     private void updateDataList(){
         String url = LoginInfo.baseUrl + "/hrmsv2/v2/api/staff/query?" + "access_token=" + LoginInfo.access_token;
-//        SharedPreferences sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-//        String url = "http://mobile-app.hand-china.com/hrmsv2/v2/api/staff/query?access_token="+ sp.getString("access_token", "");
-
         JSONObject object = new JSONObject();
         try {
             object.put("key", edtSearch.getText().toString());
@@ -181,14 +192,52 @@ public class ContactActivity extends Activity implements View.OnClickListener {
         data = new ArrayList<PersonBean>();
         sortadapter = new SortAdapter(this, data, btnOK, GroupArray);
         listView.setAdapter(sortadapter);
+        initSelfOrgStruct();
     }
 
+    private void initSelfOrgStruct(){
+        loading.setVisibility(View.VISIBLE);
+        rltSelfOrgStruct.setClickable(false);
+        String url =LoginInfo.baseUrl+"/hrmsv2/v2/api/dept/getStaffDeptInfo?" + "access_token=" + LoginInfo.access_token;
+        OkHttpClientManager.postAsyn(url, new JSONObject(), new OkHttpClientManager.ResultCallback<String>() {
+            @Override
+            public void onError(Call call, Exception e) {
+                Log.e("ERROR",e.toString());
+                loading.setVisibility(View.GONE);
+            }
+            @Override
+            public void onResponse(String response) {
+                loading.setVisibility(View.GONE);
+                rltSelfOrgStruct.setClickable(true);
+                JSONObject object;
+                JSONArray parentDeptArray;
+                try {
+                    object = new JSONObject(response).getJSONObject("returnData");
+                    parentDeptArray = object.getJSONArray("deptInfo");
+                    String title="";
+                    for(int i=1;i<parentDeptArray.length();i++){
+                        if(i==parentDeptArray.length()-1){
+                            currentDeptID = parentDeptArray.getJSONObject(i).getString("id");
+                            title = title + parentDeptArray.getJSONObject(i).getString("name");
+                        }else {
+                            title = title + parentDeptArray.getJSONObject(i).getString("name") + "-";
+                        }
+                    }
+                    txtSelfOrg.setText(title);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     @Override
     public void onClick(View view) {
         int id = view.getId();
         int idImgSearch = Util.getRS("imgSearch", "id", this);
         int idBtnOK = Util.getRS("btnOK", "id", this);
         int idImgBack = Util.getRS("arrow_back", "id", this);
+        int idRltOrgStruct = Util.getRS("lyt_org_struct","id",this);
+        int idRltSelfOrgStruct = Util.getRS("lyt_org_self_struct","id",this);
         if (id == idImgSearch) {
             updateDataList();
         } else if (id == idBtnOK) {
@@ -203,6 +252,22 @@ public class ContactActivity extends Activity implements View.OnClickListener {
             }
         } else if (id == idImgBack) {
             finish();
+        } else if (id == idRltOrgStruct){
+            Intent intent = new Intent(ContactActivity.this,OrgStructActivity.class);
+            if(targetId!=null){
+                intent.putExtra("targetId",targetId);
+                intent.putExtra("GroupArray",GroupArray);
+            }
+            startActivityForResult(intent,0);
+        } else if(id == idRltSelfOrgStruct){
+            Intent intent = new Intent(ContactActivity.this,OrgStructActivity.class);
+            intent.putExtra("selfDeptId",currentDeptID);
+            if(targetId!=null){
+                intent.putExtra("targetId",targetId);
+                intent.putExtra("GroupArray",GroupArray);
+            }
+            startActivityForResult(intent,0);
+            //startActivity(intent);
         }
     }
 
@@ -230,22 +295,23 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     private void createNewDiscussion(final ArrayList<String> members) {
         final String title = sortadapter.getTitle();
         if (RongIMClient.getInstance() != null) {
+            Toast.makeText(this,"开始添加新成员，等待反馈！",Toast.LENGTH_SHORT).show();
             RongIMClient.getInstance().createDiscussion(title, members, new RongIMClient.CreateDiscussionCallback() {
                 @Override
-                public void onSuccess(String targetId) {
-                    Log.e("399","targetId:" + targetId);
+                public void onSuccess(String s) {
+
                     dialog.setVisibility(View.INVISIBLE);
                     dialog.setTextSize(30);
                     DBhelper dBhelper = new DBhelper(getApplicationContext());
-                    dBhelper.addUserInfo(targetId, title, "http://zhouzybk.img-cn-shanghai.aliyuncs.com/discussionGroupImage1472535269374.png");
-                    Toast.makeText(getApplicationContext(),"讨论组创建成功", Toast.LENGTH_SHORT).show();
+                    dBhelper.addUserInfo(s, title, "http://zhouzybk.img-cn-shanghai.aliyuncs.com/discussionGroupImage1472535269374.png");
+                    Toast.makeText(getApplicationContext(), "讨论组创建成功", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ContactActivity.this, HandMulChatActivity.class);
                     intent.putExtra("TYPE", "NORMAL");
                     intent.putExtra("USERID", USERID);//用户Id
                     intent.putExtra("USERNAME", USERNAME);//用户姓名
                     intent.putExtra("ICONURL", ICONURL);//用户头像
                     intent.putExtra("TOKEN", TOKEN);
-                    intent.putExtra("TARGETID", targetId);
+                    intent.putExtra("TARGETID", s);
                     intent.putExtra("GROUPNAME", title);
                     intent.putExtra("GROUPICON", members);
                     startActivity(intent);
@@ -301,4 +367,12 @@ public class ContactActivity extends Activity implements View.OnClickListener {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==0&&resultCode==1){
+            setResult(1);
+            finish();
+        }
+    }
 }
