@@ -114,9 +114,9 @@ angular.module('applicationModule')
         imageUrl: "build/img/application/application/timesheet@3x.png",
         destUrl: "tab.timesheet",
       }, {
-        appName: "",
-        imageUrl: "",
-        destUrl: "",
+        appName: "资源查询",
+        imageUrl: "build/img/application/application/timesheet@3x.png",
+        destUrl: "tab.resources-query",
       }, {
         appName: "",
         imageUrl: "",

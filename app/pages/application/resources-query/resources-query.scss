@@ -70,18 +70,23 @@
     z-index: 999;
     background-color: #f8f8f8;
     width: 100%;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    box-shadow: 0 2px 2px #999;
-    padding: .75rem;
+    //height: 66.7%;
+    //border-top: 1px solid #ddd;
+    //border-bottom: 1px solid #ddd;
+    //box-shadow: 0 2px 2px #999;
+    padding: .75rem 1.3%;
   }
 
   .btn {
-    width: 100%;
-    height: 2.5rem;
-    min-height: 2.5rem;
-    line-height: 2.5rem;
+    width: 94%;
+    margin: 0 3%;
+    height: 3rem;
+    min-height: 3rem;
+    line-height: 3rem;
     margin-top: .75rem;
+    border-radius: 1rem;
+    background: #f99d32;
+    color: #fff;
   }
 
   .tr-odd-bgcolor {
@@ -101,16 +106,18 @@
   }
 
   .label-row {
+
     height: 2rem;
     line-height: 2rem;
     margin-top: .5rem;
   }
 
   .div-block {
-    padding: 0.5rem;
-    border: 1px solid #e8e8e8;
+    padding: .5rem ;
+    //border: 1px solid #e8e8e8;
     border-radius: 4px;
     background-color: #fff;
+    box-shadow: 0 2px 2px #ccc;
   }
 
   .label-date {
@@ -120,28 +127,56 @@
     line-height: 1.5rem;
     font-size: 1rem;
     text-align: center;
+    color: #9b9b9b;
+
   }
 
-  .input-date {
-    width: 100%;
-    text-align: center;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    padding: 4px 0 0;
-    color: #e6b400;
+  //.input-date {
+  //  width: 100%;
+  //  text-align: center;
+  //  height: 1.5rem;
+  //  line-height: 1.5rem;
+  //  padding: 4px 0 0;
+  //  color: #e6b400;
+  //}
+
+  .select-date{
+    width:100%;
+    font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+    height: 2rem;
+    margin-top: .5rem;
+    .month{
+      text-align: right;
+      font-size: 1em;
+      height: 1rem;
+      margin-right: .2rem;
+    }
+    .week{
+      text-align: right;
+      font-size: 1em;
+      height: 1rem;
+      margin-right: .3rem;
+    }
+    .day{
+      text-align: left;
+      font-size: 2.4em;
+      height: 2rem;
+      font-weight: 500;
+      line-height: initial;
+    }
   }
 
   .div-block-middle {
     height: 2.5rem;
-    margin: 0 0.25rem;
+    margin: 0 3%;
   }
 
-  .div-block-middle img {
-    width: 1.5rem;
-    height: 1.5rem;
-    position: relative;
-    top: 4px;
-  }
+  //.div-block-middle img {
+  //  width: 1.5rem;
+  //  height: 1.5rem;
+  //  position: relative;
+  //  top: 4px;
+  //}
 
   .div-block-middle input {
     height: 2rem;
@@ -151,24 +186,28 @@
     border: 0;
   }
 
-  .col-15 {
+  .col-20 {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 15%;
+    -webkit-flex: 0 0 20%;
     -moz-box-flex: 0;
-    -moz-flex: 0 0 15%;
-    -ms-flex: 0 0 15%;
-    flex: 0 0 15%;
-    max-width: 15%;
+    -moz-flex: 0 0 20%;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
   }
 
-  #scroll-bar-v .col-70 {
+  #scroll-bar-v .col-60 {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 70%;
+    -webkit-flex: 0 0 60%;
     -moz-box-flex: 0;
-    -moz-flex: 0 0 70%;
-    -ms-flex: 0 0 70%;
-    flex: 0 0 70%;
-    max-width: 70%;
+    -moz-flex: 0 0 60%;
+    -ms-flex: 0 0 60%;
+    flex: 0 0 60%;
+    max-width: 60%;
+  }
+  .font-select{
+    color: #ccc;
+    text-align: right;
   }
 
   /* 修改ionic样式 */
