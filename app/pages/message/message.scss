@@ -6,6 +6,8 @@ $img-half-height: 25px !default;
 $img-padding: 8px !default;
 $text-padding: 11px !default
 
+
+
 .message-list {
 
   .scroll-refresher.active.refreshing .hms-spinner {
@@ -372,5 +374,32 @@ $text-padding: 11px !default
         }
       }
     }
+  }
+}
+
+.platform-android{
+  .message-search-android {
+    margin-top: -2px;
+  }
+
+  .cancel-button-icon {
+    position: absolute;
+    font-size: 30px;
+    right: 0;
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-top: -3px;
+  }
+  .cancel-button-text {
+    position: absolute;
+    font-size: 18px;
+    right: 0;
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-top: -3px;
   }
 }
