@@ -101,7 +101,7 @@ $text-padding: 11px !default
       padding: 0;
       margin: 0;
       border: none;
-      border-bottom: 1px solid #e5e5e5;
+      border-bottom: 0.25px solid #e5e5e5;
       .item-content {
         padding: 0;
         margin: 0;
@@ -379,7 +379,7 @@ $text-padding: 11px !default
 
 .platform-android{
   .message-search-android {
-    margin-top: -2px;
+    margin-top: 1px;
   }
 
   .cancel-button-icon {
@@ -390,7 +390,7 @@ $text-padding: 11px !default
     height: 30px;
     line-height: 30px;
     text-align: center;
-    margin-top: 4px;
+    margin-top: 1px;
   }
   .cancel-button-text {
     position: absolute;
@@ -400,6 +400,6 @@ $text-padding: 11px !default
     height: 30px;
     line-height: 30px;
     text-align: center;
-    margin-top: 4px;
+    margin-top: 1px;
   }
 }
