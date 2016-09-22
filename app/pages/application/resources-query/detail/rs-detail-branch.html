@@ -1,0 +1,92 @@
+<ion-view class="resources-detail-branch">
+  <ion-header-bar align-title="center" ng-class="{'bar-stable blur-back':descriptionAppearance,'bar-stable clear-back':!descriptionAppearance}">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">互联网产品中心</h1>
+    <!--<div class="buttons">-->
+    <!--<button class="button button-clear" ng-click="toggleQuery()">-->
+    <!--<span class="back-button-text">查询</span>-->
+    <!--</button>-->
+    <!--</div>-->
+  </ion-header-bar>
+
+
+  <ion-content class="person-content">
+    <!--<hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>-->
+
+    <div class="calendar-month">
+      <span class="arrow ion-ios-arrow-left" ng-click="lastMonth()"></span>
+      <span class="word-font">{{currentYear}}</span>
+      <span class="word-font">{{currentEnglishMonth}} {{currentMonth}}月</span>
+      <span class="arrow ion-ios-arrow-right" ng-click="nextMonth()"></span>
+    </div>
+
+    <div class="calendar-branch">
+      <div class="calendar-day">
+        <div class="calendar-title">
+            余佳文 11000
+        </div>
+        <div class="calendar-each-week">
+          <div class="calendar-week" ng-repeat="week in calendar">
+            <a class="{{day.style_color}}" ng-repeat="day in week.list">
+              <div class="{{day.style_outline}}">{{day.day}}</div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="calendar-day">
+        <div class="calendar-title">
+          余佳文 11000
+        </div>
+        <div class="calendar-each-week">
+          <div class="calendar-week" ng-repeat="week in calendar">
+            <a class="{{day.style_color}}" ng-repeat="day in week.list">
+              <div class="{{day.style_outline}}">{{day.day}}</div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="calendar-day">
+        <div class="calendar-title">
+          余佳文 11000
+        </div>
+        <div class="calendar-each-week">
+          <div class="calendar-week" ng-repeat="week in calendar">
+            <a class="{{day.style_color}}" ng-repeat="day in week.list">
+              <div class="{{day.style_outline}}">{{day.day}}</div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="calendar-day">
+        <div class="calendar-title">
+          余佳文 11000
+        </div>
+        <div class="calendar-each-week">
+          <div class="calendar-week" ng-repeat="week in calendar">
+            <a class="{{day.style_color}}" ng-repeat="day in week.list">
+              <div class="{{day.style_outline}}">{{day.day}}</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </ion-content>
+
+  <ion-footer-bar class="foot-bar" style="bottom: 0px;">
+    <div class="foot-circle" style="border-color: green"></div>
+    <div class="foot-word">有项目</div>
+    <div class="foot-circle" style="border-color: gray"></div>
+    <div class="foot-word">无项目</div>
+    <div class="foot-circle" style="border-color: red"></div>
+    <div class="foot-word" >法定节假日</div>
+    <div class="button-list" ng-click="filterWorkFlowInfo()"></div>
+  </ion-footer-bar>
+
+
+</ion-view>

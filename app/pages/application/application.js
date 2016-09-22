@@ -102,6 +102,7 @@ angular.module('applicationModule')
       }
       ];
 
+
       var successCheckContract = function (result) {
         if (result.result == 'S') {
           var successGetTodoCount = function (result) {
@@ -117,6 +118,7 @@ angular.module('applicationModule')
           }
           contractListService.getTodoCount(successGetTodoCount);
         }
+
       }
 
       //项目门户
@@ -216,6 +218,7 @@ angular.module('applicationModule')
         $scope.animationsEnabled = false;
       }
 
+
       $scope.$on('$ionicView.beforeEnter', function (e) {
         if (baseConfig.debug) {
           console.log('applicationCtrl.$ionicView.beforeEnter');
@@ -240,3 +243,4 @@ angular.module('applicationModule')
       });
     }
   ]);
+

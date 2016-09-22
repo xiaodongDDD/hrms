@@ -1,0 +1,184 @@
+$contactLineColor: #D2D2D2 !default;
+$bgColor: #fafafa !default;
+
+.employee-search-content {
+  background-color: $bgColor;
+  .history {
+    font-size: $font-size;
+    color: $contactLineColor;
+    img {
+      height: 16px;
+      width: 22px;
+      align-self: center;
+      padding-left: 5px;
+    }
+    .history-logo {
+      padding-left: 10px;
+    }
+    .history-line {
+      border-bottom: 1px solid $contactLineColor;
+      align-self: center;
+      margin-left: -2%;
+    }
+  }
+  .employee-item {
+    background-color: $bgColor;
+    padding: 10px 10px 10px 16px !important;
+    &.no-top-border-color {
+      border-top: none;
+      margin-top: -5px;
+    }
+  }
+  .clear-button {
+    text-align: center;
+  }
+  .first-item {
+    margin-top: 5px;
+  }
+  .search-result-item {
+    border-radius: 5px;
+    background-color: $color-base;
+    box-shadow: 0px 2px 4px rgba(155, 155, 155, 0.13);
+    width: 97.4%;
+    margin-left: 1.3%;
+    margin-bottom: 12px;
+    &.activated {
+      background-color: #f8f8f8;
+      opacity: 0.8;
+    }
+    .human-img {
+      height: 32px;
+      width: 32px;
+      border-radius: 100%;
+      align-self: center;
+      margin-left: 7px;
+    }
+    .col-padding {
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+    .tel-img {
+      width: 60px;
+      height: 60px;
+      background-color: transparent;
+      bottom: 0;
+      background-image: url("./../img/contact/dial@3x.png");
+      @include position-adjust(0px, 2%);
+      @include image-background(no-repeat, 23px 23px, 21px 53%);
+      &.activated {
+        opacity: 0.7;
+        transform: scale(0.9, 0.9);
+        -webkit-transform: scale(0.9, 0.9);
+      }
+    }
+    .name {
+      line-height: 23px;
+      color: $color-text-assistant;
+      font-size: 16/15*$font-size;
+    }
+    .employee-status {
+      color: #24559C;
+      padding-left: 10px;
+    }
+    .mail-tel {
+      line-height: 23px;
+      color: $color-text-main;
+      font-size: $font-size;
+    }
+  }
+}
+
+
+.branch-search-content{
+  background-color: $bgColor;
+  .myBranch {
+    font-size: $font-size;
+    color: $contactLineColor;
+    img {
+      height: 16px;
+      width: 22px;
+      align-self: center;
+      padding-left: 5px;
+    }
+    .branch-logo {
+      padding-left: 10px;
+    }
+    .branch-line {
+      border-bottom: 1px solid $contactLineColor;
+      align-self: center;
+      margin-left: -2%;
+    }
+
+  }
+  .myBranch-item {
+    background-color: $bgColor;
+    padding: 10px 10px 10px 16px !important;
+    color: #9b9b9b;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .search-result-item {
+    border-radius: 5px;
+    background-color: $color-base;
+    box-shadow: 0px 2px 4px rgba(155, 155, 155, 0.13);
+    width: 97.4%;
+    margin-left: 1.3%;
+    margin-bottom: 12px;
+    line-height: 23px;
+    color: $color-text-assistant;
+    font-size: 16/15*$font-size;
+
+    .branch-name{
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    .unit-name{
+      margin-left: 20px;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+  }
+
+
+}
+
+.subject-search-content{
+  background-color: $bgColor;
+  .mySubject {
+    font-size: $font-size;
+    color: $contactLineColor;
+    img {
+      height: 16px;
+      width: 22px;
+      align-self: center;
+      padding-left: 5px;
+    }
+    .subject-logo {
+      padding-left: 10px;
+    }
+    .subject-line {
+      border-bottom: 1px solid $contactLineColor;
+      align-self: center;
+      margin-left: -2%;
+    }
+
+  }
+  .mySubject-item {
+    background-color: $bgColor;
+    padding: 10px 10px 10px 16px !important;
+    color: #9b9b9b;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .search-result-item {
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0px 2px 4px #b2b2b2;
+    width: 97.4%;
+    margin-left: 1.3%;
+    padding: 10px;
+    margin-bottom: 5px;
+
+  }
+
+}

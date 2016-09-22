@@ -1,0 +1,36 @@
+<ion-view class="transmit-person-modal">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="transmit-search">
+      <div class="transmit-button">
+        <i class="ion-ios-search search-i"></i>
+      </div>
+      <input id="subjectInputSearch" placeholder="搜索"
+             ng-model="subjectKey.getValue"
+             ng-change="searchSubject()">
+      <img src="build/img/login/login-clear.png" class="employee-clear-img"
+           ng-if="showClear"
+           ng-click="clearInputContent()"/>
+    </div>
+    <div class="buttons">
+      <button class="button button-icon icon" ng-click="hideSubjectSearch()">
+        <span class="back-text">取消</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="subject-search-content">
+    <div ng-if="showMySubject">
+      <div class="row mySubject">
+        <img ng-src="build/img/contact/history@3x.png"/>
+        <span class="col-25 subject-logo">我的项目</span>
+        <label class="col-80 subject-line"></label>
+      </div>
+      <div class="mySubject-item" ng-repeat="x in mySubject"  ng-click="selectSubjectItem(x)">
+        {{x.project_name}}
+      </div>
+    </div>
+    <div class="search-result-item" ng-repeat="subject in subjectList" ng-click="selectSubjectItem(subject)">
+        {{subject.project_name}}
+    </div>
+
+  </ion-content>
+</ion-view>
