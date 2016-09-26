@@ -91,6 +91,11 @@ angular.module('applicationModule')
         }
       }
 
+      if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+        if(document.setTitle){
+          document.setTitle('合同管理');
+        }
+      }
       $scope.fadeStyle = function(index) { //循序出现，循序fadein
         if (contractListService.IsFromParent()) { //如果是从上级页面进入的
           if ($scope.pageNum > 1) { //如果是上拉加载出来的
@@ -739,38 +744,14 @@ angular.module('applicationModule')
     };
 
     this.wxLogin = function(codeWx, getTodoList, check) {
-      var destUrl = baseConfig.wxLoginPath + "username=" + codeWx + "&password=123456&p_phone_no=111111";
-      $http.post(destUrl).success(function(response) {
-        window.localStorage.token = response.access_token;
-        //获取工号请求
-        hmsHttp.post(baseConfig.queryPath + '/getEmpNo').success(function(response) {
-          if (response.success) {
-            if (response.rows.length > 0) {
-              window.localStorage.empno = response.rows[0];
-              check(function() {
-                getTodoList(false);
-              });
-            } else {
-              hmsPopup.showShortCenterToast('获取工号为空,请联系系统管理员!');
-            }
-          } else {
-            hmsPopup.showShortCenterToast('无法获取工号,请联系系统管理员!');
-          }
-          //获取工号失败
-        }).error(function(response, status) {
-          hmsPopup.showShortCenterToast('获取工号请求失败,请检查网络或联系系统管理员!');
+      var callback = function(){
+        check(function() {
+          getTodoList(false);
         });
-        //登录失败
-      }).error(function(response, status) {
-        window.localStorage.token = '';
-        if (status == '401') {
-          hmsPopup.showShortCenterToast('登录被拒绝!');
-        } else if (status == '404') {
-          hmsPopup.showShortCenterToast('后端服务器请求失败,请联系管理员!');
-        } else {
-          hmsPopup.showShortCenterToast('处理请求失败,请确认网络连接是否正常,或者联系管理员!');
-        }
-      });
+      }
+      if(hmsHttp.wxLogin){
+        hmsHttp.wxLogin(codeWx, callback);
+      }
     }
 
     //现在如果checkUser不通过，则getTodoList和getTodoCount不会被执行post请求。

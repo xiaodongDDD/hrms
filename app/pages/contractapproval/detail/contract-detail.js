@@ -77,6 +77,12 @@ angular.module('applicationModule')
       $scope.afterEnter = false;
       $scope.isWxWebview = baseConfig.isWeixinWebview;
 
+      if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+        if(document.setTitle){
+          document.setTitle('合同详情');
+        }
+      }
+
       //合同要素数据成功返回后
       var essenceSuccess = function(responce, index) {
         // console.log(index + angular.toJson(responce));
