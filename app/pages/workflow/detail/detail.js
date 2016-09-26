@@ -133,6 +133,13 @@ angular.module('applicationModule')
         }
       }
 
+      if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+        if(document.setTitle){
+          document.setTitle('工作流详情');
+        }
+      }
+
+      $scope.showBackbtn = true;
       $scope.currentDetail = $stateParams.detail; //传过来的数据块
       var detail = $stateParams.detail;//传过来的数据块
       var processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
@@ -1607,7 +1614,7 @@ angular.module('applicationModule')
         }
       };
 
-      if(!$scope.isWeixinWebview){
+      if(!$scope.isWeixinWebview){ //app端
         if ($stateParams.type == 'PUSHDETAIL') { //消息推送过来的
           init.initPushDetail(detail);
           $timeout(function () {
@@ -1619,40 +1626,86 @@ angular.module('applicationModule')
             init.initDataModal();
           }, 250);
         }
-      } else {
-        var data = workFLowListService.getParamData();
-        $stateParams.detail = data.detail;
-        $stateParams.myPrsonalApplicationFlag = data.myPrsonalApplicationFlag;
-        $stateParams.type = data.type;
-        workFLowListService.getSubmitFlag(function(data){
-          // $stateParams.processedFlag = data.processedFlag;
-          if(data.status == 'N'){
-            $stateParams.processedFlag = {value: false};
-          } else {
+      } else { //微信端
+        var argsWx = {};
+        var queryWx = location.search.substring(1);//获取查询串
+        var pairsWx = queryWx.split("&");//在逗号处断开
+        for (var i = 0; i < pairsWx.length; i++) {
+          var pos = pairsWx[i].indexOf('=');//查找name=value
+          if (pos == -1) {
+            continue;
+          }    //如果没有找到就跳过
+          var argName = pairsWx[i].substring(0, pos);//提取name
+          argsWx[argName] = pairsWx[i].substring(pos + 1);//存为属性
+        }
+
+        var codeWx = argsWx.code;
+        var isPushFromWx = window.location.href.indexOf('indexWorkflowDetail.html');
+
+        if(isPushFromWx == -1){ //微信非推送
+          var data = workFLowListService.getParamData();
+          $stateParams.detail = data.detail;
+          $stateParams.myPrsonalApplicationFlag = data.myPrsonalApplicationFlag;
+          $stateParams.type = data.type;
+
+          workFLowListService.getSubmitFlag(function(data){
+            // $stateParams.processedFlag = data.processedFlag;
+            if(data.status == 'N'){
+              $stateParams.processedFlag = {value: false};
+            } else {
+              $stateParams.processedFlag = {value: true};
+            }
+
+            $scope.workflowActionShowFlag = !$stateParams.processedFlag.value;
+            $scope.currentDetail = $stateParams.detail; //传过来的数据块
+            detail = $stateParams.detail;//传过来的数据块
+            processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
+            $scope.LoadingPushData = false;
+            $timeout(function () {
+              init.initDataModal();
+            }, 250);
+          },function(data){
+            hmsPopup.showPopup('获取审核操作异常，审核操作已屏蔽');
             $stateParams.processedFlag = {value: true};
+
+            $scope.workflowActionShowFlag = !$stateParams.processedFlag.value;
+            $scope.currentDetail = $stateParams.detail; //传过来的数据块
+            detail = $stateParams.detail;//传过来的数据块
+            processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
+            $scope.LoadingPushData = false;
+            $timeout(function () {
+              init.initDataModal();
+            }, 250);
+          },$stateParams.detail.instanceId);
+        } else { //微信推送
+          $scope.showBackbtn = false;
+          var paramsKey = ['instanceId','workflowId','nodeId','submitFlag','recordId','approve','refuse','toOther','goBack'];
+          var detailParams = pairsWx[0].split("|");
+          var paramsJson = {};
+          for(i = 0; i < paramsKey.length; i++){
+            paramsJson[paramsKey[i]] = detailParams[i];
           }
 
+          detail = paramsJson;
+          $scope.currentDetail = paramsJson;
+          if(paramsJson.submitFlag == 'Y'){
+            $stateParams.processedFlag = {value: true};
+          } else {
+            $stateParams.processedFlag = {value: false};
+          }
           $scope.workflowActionShowFlag = !$stateParams.processedFlag.value;
-          $scope.currentDetail = $stateParams.detail; //传过来的数据块
-          detail = $stateParams.detail;//传过来的数据块
-          processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
           $scope.LoadingPushData = false;
-          $timeout(function () {
-            init.initDataModal();
-          }, 250);
-        },function(data){
-          hmsPopup.showPopup('获取审核操作异常，审核操作已屏蔽');
-          $stateParams.processedFlag = {value: true};
 
-          $scope.workflowActionShowFlag = !$stateParams.processedFlag.value;
-          $scope.currentDetail = $stateParams.detail; //传过来的数据块
-          detail = $stateParams.detail;//传过来的数据块
-          processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
-          $scope.LoadingPushData = false;
-          $timeout(function () {
-            init.initDataModal();
-          }, 250);
-        },$stateParams.detail.instanceId);
+          var callback = function(){
+            init.initPushDetail(paramsJson);
+            $timeout(function () {
+              init.initDataModal();
+            }, 250);
+          }
+          if(hmsHttp.wxLogin){
+            hmsHttp.wxLogin(codeWx, callback);
+          }
+        }
       }
       
     }])
