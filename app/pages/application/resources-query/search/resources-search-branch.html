@@ -34,7 +34,7 @@
 
     <div class="search-result-item " ng-repeat="branch in branchList">
       <div class="branch-name" ng-click="selectBranchItem(branch)" >
-        {{branch.dept_name}}
+        {{branch.unit_name}}
       </div>
       <div class="unit-name" ng-repeat="unit in branch.unit_detail_list" ng-click="selectBranchItem(unit)">
         {{unit.full_unit_name}}

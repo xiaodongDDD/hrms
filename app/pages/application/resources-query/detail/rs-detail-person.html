@@ -7,95 +7,41 @@
 
   </div>
 
-  <div id="next-slide">
-    <div class="person-top">
-      <div  class="person-head-image" style="background: url('build/img/application/resources-query/3.jpg');background-size: cover;background-position: center;background-repeat: no-repeat;">
+  <ion-slide-box id="next-slide" delegate-handle="employee-handle" active-slide="slideIndex" on-slide-changed="slideChanged($index)">
+    <ion-slide class="person-top" ng-repeat="x in employeeList" >
+      <!--<div  class="person-head-image" style="background: #ccc;background-size: cover;background-position: center;background-repeat: no-repeat;">-->
+      <!--</div>-->
+      <div  class="person-head-image" style="background: url('{{x.emp_avatar}}');background-size: cover;background-position: center;background-repeat: no-repeat;">
       </div>
       <div class="person-info">
         <div class="img-section">
-          <img class="img-person" ng-cloak ng-src="{{empInfo.avatar}}"/>
-          <p class="person-name">{{empInfo.name}}&nbsp;&nbsp;{{empInfo.employee_number}}</p>
+          <img class="img-person" ng-cloak ng-src="{{x.emp_avatar}}"/>
+          <p class="person-name">{{x.employee_name}}&nbsp;&nbsp;{{x.employee_number}}</p>
         </div>
         <div class="person-subject">
-          <div class="subject-item" ng-repeat="subject in subject">
-            <div class="subject-item-circle" style="background: {{subject.color}}"></div>
-            <div class="subject-item-name">{{subject.project_name}}</div>
+          <div class="subject-item" ng-repeat="subject in projectList">
+            <div class="subject-item-circle" ng-cloak style="background: {{subject.color}}">{{subject.days_count}}</div>
+            <div class="subject-item-name" ng-cloak>{{subject.project_name}}</div>
           </div>
         </div>
         <div class="person-bottom row">
-          <div class="person-bottom-left col-40" ng-click="goLastPerson()">
-            <span class="person-left-span ion-ios-arrow-left"></span>
-            <div class="person-left-name">顾森林 3705</div>
+          <div class="person-bottom-left col-40" >
+            <span class="person-left-span ion-ios-arrow-left" ng-if="lastArrow"></span>
+            <div class="person-left-name" ng-cloak>{{lastEmp.employee_name}}&nbsp;&nbsp;{{lastEmp.employee_number}}</div>
           </div>
           <div class="col-20">
             <div class="person-triangle"></div>
           </div>
-          <div class="person-bottom-right col-40" ng-click="goNextPerson()">
-            <span class="person-right-span ion-ios-arrow-right"></span>
-            <div class="person-right-name">顾森林 4404</div>
+          <div class="person-bottom-right col-40" >
+            <span class="person-right-span ion-ios-arrow-right" ng-if="nextArrow"></span>
+            <div class="person-right-name" ng-cloak>{{nextEmp.employee_name}}&nbsp;&nbsp;{{nextEmp.employee_number}}</div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="person-top">
-      <div class="person-head-image" style="background: url('build/img/application/resources-query/3.jpg');background-size: cover;background-position: center;background-repeat: no-repeat;">
-      </div>
-      <div class="person-info">
-        <div class="img-section">
-          <img class="img-person" ng-cloak ng-src="{{empInfo.avatar}}"/>
-          <p class="person-name">{{empInfo.name}}&nbsp;&nbsp;{{empInfo.employee_number}}</p>
-        </div>
-        <div class="person-subject">
-          <div class="subject-item" ng-repeat="subject in subject">
-            <div class="subject-item-circle" style="background: {{subject.color}}"></div>
-            <div class="subject-item-name">{{subject.project_name}}</div>
-          </div>
-        </div>
-        <div class="person-bottom row">
-          <div class="person-bottom-left col-40" ng-click="goLastPerson()">
-            <span class="person-left-span ion-ios-arrow-left"></span>
-            <div class="person-left-name">顾森林 3705</div>
-          </div>
-          <div class="col-20">
-            <div class="person-triangle"></div>
-          </div>
-          <div class="person-bottom-right col-40" ng-click="goNextPerson()">
-            <span class="person-right-span ion-ios-arrow-right"></span>
-            <div class="person-right-name">顾森林 4404</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="person-top">
-      <div  class="person-head-image" style="background: url('build/img/application/resources-query/3.jpg');background-size: cover;background-position: center;background-repeat: no-repeat;">
-      </div>
-      <div class="person-info">
-        <div class="img-section">
-          <img class="img-person" ng-cloak ng-src="{{empInfo.avatar}}"/>
-          <p class="person-name">{{empInfo.name}}&nbsp;&nbsp;{{empInfo.employee_number}}</p>
-        </div>
-        <div class="person-subject">
-          <div class="subject-item" ng-repeat="subject in subject">
-            <div class="subject-item-circle" style="background: {{subject.color}}"></div>
-            <div class="subject-item-name">{{subject.project_name}}</div>
-          </div>
-        </div>
-        <div class="person-bottom row">
-          <div class="person-bottom-left col-40" ng-click="goLastPerson()">
-            <span class="person-left-span ion-ios-arrow-left"></span>
-            <div class="person-left-name">顾森林 3705</div>
-          </div>
-          <div class="col-20">
-            <div class="person-triangle"></div>
-          </div>
-          <div class="person-bottom-right col-40" ng-click="goNextPerson()">
-            <span class="person-right-span ion-ios-arrow-right"></span>
-            <div class="person-right-name">顾森林 4404</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    </ion-slide>
+
+
+  </ion-slide-box>
 
 
 
@@ -103,35 +49,40 @@
   <!--{{employeeInfo.emp_name}} {{employeeInfo.emp_code}}-->
   <!--</div>-->
   <ion-content class="person-content">
-    <!--<hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>-->
-    <div class="calendar-month">
-      <span class="arrow ion-ios-arrow-left" ng-click="lastMonth()"></span>
-      <span class="word-font">{{currentYear}}</span>
-      <span class="word-font">{{currentEnglishMonth}} {{currentMonth}}月</span>
-      <span class="arrow ion-ios-arrow-right" ng-click="nextMonth()"></span>
-    </div>
-    <div class="calendar-day">
-      <div class="calendar-title">
-        <div class="title-item" ng-repeat="title in weekTitleList">
-          {{title}}
+    <hms-loading ng-if="contactLoading" style="padding-top: 10px"></hms-loading>
+    <ion-slide-box id="month-slide" delegate-handle="month-handle" active-slide="monthIndex" on-slide-changed="monthChanged($index)">
+      <ion-slide ng-repeat="y in monthSlideList">
+        <div class="calendar-month">
+          <span class="arrow ion-ios-arrow-left" ng-click="lastMonth()"></span>
+          <span class="word-font" ng-cloak>{{y.yearSlide}}</span>
+          <span class="word-font" ng-cloak>{{y.monthEnglishSlide}} {{y.monthSlide}}月</span>
+          <span class="arrow ion-ios-arrow-right" ng-click="nextMonth()"></span>
         </div>
-      </div>
-      <div class="calendar-each-week">
-        <!--<div class="calendar-week" ng-repeat="week in calendar">-->
-          <!--<a class="day-item" ng-repeat="day in week.list">-->
+        <div class="calendar-day">
+          <div class="calendar-title">
+            <div class="title-item" ng-cloak ng-repeat="title in weekTitleList">
+              {{title}}
+            </div>
+          </div>
+          <div class="calendar-each-week">
+            <!--<div class="calendar-week" ng-repeat="week in calendar">-->
+            <!--<a class="day-item" ng-repeat="day in week.list">-->
             <!--<div  ng-class="{'each-day-blank':su, 'each-day-purple':day.isSubject,-->
             <!--'each-day-green':day.isHoliday, 'each-day-red':subjec}">{{day.day}}</div>-->
-          <!--</a>-->
-        <!--</div>-->
+            <!--</a>-->
+            <!--</div>-->
+            <a class="day-item" ng-repeat="day in y.calendarDayList">
+              <div class="each-day-blank" ng-cloak ng-class="{'each-day-purple':day.isSubject5,
+                'each-day-green':day.isSubject1, 'each-day-red':day.isSubject3,'each-day-blue':day.isSubject2,
+                'each-day-yellow':day.isSubject4, 'each-day-6':day.isSubject6,'each-day-7':day.isSubject7,
+                'each-day-8':day.isSubject8, 'each-day-9':day.isSubject9}">{{day.day}}
+              </div>
+            </a>
+          </div>
+        </div>
+      </ion-slide>
+    </ion-slide-box>
 
-
-        <a class="day-item" ng-repeat="day in calendarDayList">
-          <div class="each-day-blank" ng-class="{'each-day-purple':day.isSubject1,
-          'each-day-green':day.isHoliday, 'each-day-red':day.isSubject2}">{{day.day}}</div>
-        </a>
-
-      </div>
-    </div>
 
   </ion-content>
   <ion-footer-bar class="foot-bar" style="bottom: 0px;">

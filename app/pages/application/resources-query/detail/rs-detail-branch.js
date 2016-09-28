@@ -44,6 +44,7 @@ angular.module('applicationModule')
     'workFLowListService',
     '$stateParams',
     '$ionicScrollDelegate',
+    '$ionicSlideBoxDelegate',
 
 
 
@@ -58,7 +59,9 @@ angular.module('applicationModule')
               baseConfig,
               workFLowListService,
               $stateParams,
-              $ionicScrollDelegate) {
+              $ionicScrollDelegate,
+              $ionicSlideBoxDelegate
+    ) {
 
       $scope.goBack = function () {
         $ionicHistory.goBack();
@@ -76,10 +79,54 @@ angular.module('applicationModule')
       var dimission = $stateParams.dimission;
       var pageNumber = 1;
 
+      $scope.branchName = branchName;
+
+
+      $scope.showInfinite = false; //默认隐藏无限滚动的标签
+      $scope.contactLoading = false; //默认不显示loading加载
+
+
+
+
+
 
       var postUrl = baseConfig.businessPath + "/api_resources_query/get_personal_resource"; //个人查询结果接口地址
       var postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber + '","p_dismission":"' + dimission +  '"}}';
 
+
+      var getBranchData = function () {
+        $scope.contactLoading = true;
+        hmsHttp.post(postUrl, postData).success(function (result) {
+          $scope.contactLoading = false;
+          console.log(dateFrom);
+          console.log(dateTo);
+          console.log(employeeName);
+          console.log(branchName);
+          console.log(subjectName);
+          console.log(dimission);
+
+          console.log(result.returnMsg);
+          console.log(postData);
+          console.log(result);
+
+          $scope.branchResourceList = result.branch_resource_list.sort(function (a, b) {
+            return (a.record_date.substring(0,4)+a.record_date.substring(5,7)) - (b.record_date.substring(0,4)+b.record_date.substring(5,7));
+          });
+          $ionicSlideBoxDelegate.$getByHandle('branch-handle').update();
+
+        }).error(function () {
+          console.log('个人查询结果异常');
+        })
+      };
+      getBranchData();
+
+
+      // $scope.loadMore = function () { //加载下一页
+      //   $scope.newPage += 1;
+      //   employeeParams.key = $scope.contactKey.getValue;
+      //   employeeParams.page = $scope.newPage;
+      //   $scope.getEmployeeData('loadMore');
+      // };
 
 
       //月份英文简写
@@ -198,24 +245,7 @@ angular.module('applicationModule')
 
       initCalendar($scope.currentYear, $scope.currentMonth);
 
-      var getBranchData = function () {
-        hmsHttp.post(postUrl, postData).success(function (result) {
-          console.log(dateFrom);
-          console.log(dateTo);
-          console.log(employeeName);
-          console.log(branchName);
-          console.log(subjectName);
-          console.log(dimission);
 
-          console.log(result.returnMsg);
-          console.log(postData);
-          console.log(result);
-
-        }).error(function () {
-          console.log('个人查询结果异常');
-        })
-      };
-      getBranchData();
 
 
 

@@ -14,20 +14,20 @@ $timesheet-cover: #E3F5F0 !default;
 
   #next-slide{
     position: absolute;
-    width: 300vw;
+    //width: 300vw;
     height: 53vh;
-    left: -100vw;
+    //left: -100vw;
   }
   .person-top {
     position: relative;
     height: 53vh;
     width: 100vw;
-    float: left;
+
   }
   .person-head-image {
-    height: 55vh;
+    height: 53vh;
     width: 100%;
-    -webkit-filter: blur(10px) brightness(0.9);
+    filter: blur(10px) brightness(0.9);
     z-index: -1;
     position: absolute;
     top: 0;
@@ -72,7 +72,7 @@ $timesheet-cover: #E3F5F0 !default;
 
   }
   .person-subject {
-
+    width: 100%;
   }
   .subject-item {
     width: 100%;
@@ -85,10 +85,12 @@ $timesheet-cover: #E3F5F0 !default;
     border-radius: 50%;
     float: left;
     margin-left: 4%;
+    text-align: center;
 
   }
   .subject-item-name {
     float: left;
+    width: 85%;
     margin-left: 10px;
   }
   .person-bottom {
@@ -169,7 +171,9 @@ $timesheet-cover: #E3F5F0 !default;
       position: relative;
       text-align: center;
       margin: 15px auto;
+      margin-bottom: 10px;
       font-size: 1.3em;
+      color: #1f519a;
 
       //.arrow{
       //  font-size: 1.5em;
@@ -183,27 +187,29 @@ $timesheet-cover: #E3F5F0 !default;
     .calendar-day {
       margin: 5px;
       padding: 5px;
-      border-radius: 10px;
+      font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
       background: white;
-      box-shadow: 0px 1px 5px #e5e5e5;
+
       position: relative;
 
       .calendar-title {
         height: 35px;
         margin-bottom: 5px;
+
         .title-item {
           float: left;
           width: 14%;
           height: 35px;
           line-height: 35px;
           text-align: center;
-          color: #9B9B9B;
-          font-size: 16px;
+          color: #1f519a;
+          font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+          font-size: 1.1em;
         }
       }
 
       //.calendar-week {
-        height: 40px;
+      //  height: 40px;
         .day-item {
           float: left;
           width: 14%;
@@ -236,48 +242,66 @@ $timesheet-cover: #E3F5F0 !default;
             border-radius: 14px;
             text-align: center;
             font-size: 18px;
-            color: #9B9B9B;
+            color: #1f519a;
           }
           .each-day-red {
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 14px;
-            text-align: center;
-            font-size: 18px;
-            color: #9B9B9B;
+
             background: url("../img/application/resources-query/selected-R@3x.png");//无项目
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
           }
           .each-day-purple {
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 14px;
-            text-align: center;
-            font-size: 18px;
-            color: #9B9B9B;
+
             background: url("../img/application/resources-query/selected-P@3x.png");
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
           }
           .each-day-green {
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 14px;
-            text-align: center;
-            font-size: 18px;
-            color: #9B9B9B;
+
+            background: url("../img/application/resources-query/selected-G@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-blue {
+
+            background: url("../img/application/resources-query/blue@3x.png");//无项目
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-yellow {
+
+            background: url("../img/application/resources-query/yellow@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-6 {
+
+            background: url("../img/application/resources-query/selected-P@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-7 {
+
+            background: url("../img/application/resources-query/selected-R@3x.png");//无项目
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-8 {
+
+            background: url("../img/application/resources-query/selected-P@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-9 {
+
             background: url("../img/application/resources-query/selected-G@3x.png");
             background-repeat: no-repeat;
             background-size: contain;

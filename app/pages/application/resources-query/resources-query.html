@@ -23,9 +23,9 @@
     <div class=" div-query animated {{toggleUpDownAnimate}}"
     ng-class="{true: '',false: 'hidden-query'}[toggleUpDownFlag]">
     <div class="row div-block" style="padding: 1.2rem .5rem">
-      <div class="col col-50">
+      <div class="col col-50" ng-click="selectDateFrom()">
         <label for="formDate" class="label-date">起始日期</label>
-        <div class="row select-date" id="formDate" ng-click="selectDateFrom()">
+        <div class="row select-date" id="formDate">
           <div class="col col-50">
             <div class="month">{{monthFrom}}月</div>
             <div class="week">{{weekFrom}}</div>
@@ -35,9 +35,9 @@
 
         <!--<input type="date" id="formDate" class="input-date" ng-model="queryParams.dateFrom">-->
       </div>
-      <div class="col col-50" style="border-left: 1px solid #e8e8e8;">
+      <div class="col col-50" style="border-left: 1px solid #e8e8e8;" ng-click="selectDateTo()">
         <label for="toDate" class="label-date">结束日期</label>
-        <div class="row select-date" id="toDate" ng-click="selectDateTo()">
+        <div class="row select-date" id="toDate">
           <div class="col col-50">
             <div class="month">{{monthTo}}月</div>
             <div class="week">{{weekTo}}</div>
@@ -48,25 +48,25 @@
       </div>
     </div>
     <div class="div-block" style="padding: .01rem .5rem 0;margin-top: .5rem">
-      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8">
-        <div class="row label-row" >
+      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8" ng-click="goInputSearch('person')">
+        <div class="row label-row">
           <span class="col col-20" >员工 :</span>
           <div class="col col-60" ng-bind="employeeName"></div>
-          <span class="font-select col col-20" ng-click="goInputSearch('person')">请选择</span>
+          <span class="font-select col col-20">请选择</span>
         </div>
       </div>
-      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8">
+      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8" ng-click="goInputSearch('branch')">
         <div class="row label-row">
           <span class="col col-20">部门 :</span>
           <div class="col col-60" ng-bind="branchName"></div>
-          <span class="font-select col col-20" ng-click="goInputSearch('branch')">请选择</span>
+          <span class="font-select col col-20">请选择</span>
         </div>
       </div>
-      <div class="div-block-middle">
+      <div class="div-block-middle" ng-click="goInputSearch('subject')">
         <div class="row label-row">
           <span class="col col-20">项目 :</span>
           <div class="col col-60" ng-bind="subjectName"></div>
-          <span class="font-select col col-20" ng-click="goInputSearch('subject')">请选择</span>
+          <span class="font-select col col-20">请选择</span>
         </div>
       </div>
     </div>

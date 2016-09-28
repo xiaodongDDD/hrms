@@ -18,7 +18,7 @@
   }
 
   .calendar-day {
-    width: 50vw;
+    width: 49.95vw;
     background: white;
     position: relative;
     float: left;
@@ -33,9 +33,9 @@
       background: #f5f5f5;
     }
 
-    .calendar-week {
-      height: 30px;
-      padding-left: 7%;
+    //.calendar-week {
+    //  height: 30px;
+    //  padding-left: 7%;
       .day-item {
         float: left;
         width: 13%;
@@ -92,10 +92,25 @@
 
           }
         }
-
-
       }
-    }
+
+      .day-item:nth-child(1){
+        margin-left: 4.5%;
+      }.day-item:nth-child(8){
+        margin-left: 4.5%;
+      }.day-item:nth-child(15){
+        margin-left: 4.5%;
+      }.day-item:nth-child(22){
+        margin-left: 4.5%;
+      }.day-item:nth-child(29){
+        margin-left: 4.5%;
+      }.day-item:nth-child(36){
+        margin-left: 4.5%;
+      }.day-item:nth-child(43){
+        margin-left: 4.5%;
+      }
+
+    //}
 
   }
 
