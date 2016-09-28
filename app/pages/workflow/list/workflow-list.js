@@ -93,6 +93,12 @@ angular.module('applicationModule')
         "workflowNameFilter": []
       };
 
+      if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+        if(document.setTitle){
+          document.setTitle('待审批项');
+        }
+      }
+
       var refreshTodoList = function () {
         pageNum = 1;
         $ionicScrollDelegate.$getByHandle('workflowListHandle').scrollTop();

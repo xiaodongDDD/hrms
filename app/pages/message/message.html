@@ -1,6 +1,6 @@
 <ion-view view-title="消息" class="message-list">
   <ion-header-bar align-title="left" class="bar-stable">
-    <div class="message-search" ng-class="{true: 'has-employee-list', false: ''}[showFilter]">
+    <div class="message-search message-search-android" ng-class="{true: 'has-employee-list', false: ''}[showFilter]">
       <div class="message-button">
         <i class="ion-ios-search search-i"></i>
       </div>
@@ -25,8 +25,10 @@
 
         <div class="message-item" ng-click="messageHandle.goMessageDetail(message)">
           <div class="message-introduce">
-            <img class="message-has-logo" src="{{message.imgUrl}}">
+            <img class="message-has-logo" src="{{message.imgUrl}}" ng-if="message.imgUrl != ''">
             </img>
+            <div class="message-has-text" ng-style="message.imgColorStyle" ng-bind="message.imgName" ng-if="message.imgUrl == ''">
+            </div>
           </div>
           <div class="message-content">
             <div class="message-title" ng-bind="message.name">

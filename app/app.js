@@ -194,7 +194,7 @@ angular.module('myApp')
           }
         }
         else if ($ionicHistory.backView()) {
-          $ionicHistory.goBack();
+          //$ionicHistory.goBack();
         }
         e.preventDefault();
         return false;

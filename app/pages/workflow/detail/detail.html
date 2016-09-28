@@ -1,7 +1,7 @@
 <ion-view view-title="待办事项明细" class="workflow-detail">
   <ion-header-bar align-title="center" style="background:none">
     <div class="buttons">
-      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+      <button ng-if="showBackbtn" class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
         <span class="back-text">返回</span>
       </button>
     </div>

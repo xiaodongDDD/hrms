@@ -99,7 +99,9 @@ angular.module('messageModule')
         {
           "name": '顾森林',
           "content": '你最近怎么样1?',
-          "imgUrl": 'build/img/application/profile@3x.png',
+          "imgUrl": "",
+          "imgName": "森林",
+          "imgColorStyle": messageService.getRandomColor(),
           "count": 3,
           "employee": '',
           "time": '23:54',
@@ -110,7 +112,9 @@ angular.module('messageModule')
         {
           "name": '石顺',
           "content": '你最近怎么样2?',
-          "imgUrl": 'build/img/application/profile@3x.png',
+          "imgUrl": "",
+          "imgName": "石顺",
+          "imgColorStyle": messageService.getRandomColor(),
           "count": 4,
           "employee": '',
           "time": '23:54',
@@ -359,7 +363,7 @@ angular.module('messageModule')
               var index = $scope.messageList.indexOf(message);
               $scope.messageList.splice(index, 1);
               messageService.readAllMessage(message.conversationType);
-            },0);
+            }, 0);
           }
         },
 
