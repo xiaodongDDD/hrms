@@ -1,75 +1,21 @@
 {
-    "cordova-plugin-contacts": {
+    "jpush-phonegap-plugin": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-contacts"
+            "id": "jpush-phonegap-plugin@2.2.3"
         },
         "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-actionsheet": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-actionsheet"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-crosswalk-webview": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-crosswalk-webview"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-touchid": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-touchid"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-geolocation": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-geolocation"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-youtuishare": {
-        "source": {
-            "type": "local",
-            "path": "C:\\Users\\lifi\\Desktop\\cordova-plugin-youtuishare"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-screensize": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-screensize"
-        },
-        "is_top_level": true,
-        "variables": {}
+        "variables": {
+            "API_KEY": "22b25063349b6beef7bde524"
+        }
     },
     "cordova-plugin-device": {
         "source": {
-            "type": "registry",
-            "id": "cordova-plugin-device"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "com.handmobile.cordovaplugin.hotpatch": {
-        "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "url": "https://github.com/apache/cordova-plugin-device.git",
             "subdir": "."
         },
-        "is_top_level": true,
+        "is_top_level": false,
         "variables": {}
     },
     "hand-im-plugin-device": {
@@ -83,14 +29,12 @@
             "RONG_KEY": "e5t4ouvptpsaa"
         }
     },
-    "jpush-phonegap-plugin": {
+    "cordova-plugin-actionsheet": {
         "source": {
             "type": "registry",
-            "id": "jpush-phonegap-plugin"
+            "id": "cordova-plugin-actionsheet"
         },
         "is_top_level": true,
-        "variables": {
-            "API_KEY": "22b25063349b6beef7bde524"
-        }
+        "variables": {}
     }
 }
