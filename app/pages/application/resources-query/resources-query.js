@@ -142,9 +142,9 @@ angular.module('applicationModule')
         todayLabel: '今天',  //可选
         closeLabel: '关闭',  //可选
         setLabel: '设置',  //可选
-        setButtonType : 'button-assertive',  //Optional
-        todayButtonType : 'button-assertive',  //Optional
-        closeButtonType : 'button-assertive',  //Optional
+        setButtonType : 'button-balanced',  //Optional
+        todayButtonType : 'button-balanced',  //Optional
+        closeButtonType : 'button-balanced',  //Optional
         showTodayButton: 'true',
         from: new Date(1988, 1, 1), //Optional
         to: new Date(2028, 10, 30), //Optional
@@ -152,8 +152,8 @@ angular.module('applicationModule')
         mondayFirst: false,          //Optional
         weeksList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
         monthsList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],       //Optional
-        modalHeaderColor: 'bar-assertive', //Optional
-        modalFooterColor: 'bar-assertive', //Optional
+        modalHeaderColor: 'bar-balancede', //Optional
+        modalFooterColor: 'bar-balanced', //Optional
         closeOnSelect: false,       //Optional
         templateType: 'popup'    //Optional
       };
@@ -188,9 +188,9 @@ angular.module('applicationModule')
         todayLabel: '今天',  //可选
         closeLabel: '关闭',  //可选
         setLabel: '设置',  //可选
-        setButtonType : 'button-assertive',  //Optional
-        todayButtonType : 'button-assertive',  //Optional
-        closeButtonType : 'button-assertive',  //Optional
+        setButtonType : 'button-balanced',  //Optional
+        todayButtonType : 'button-balanced',  //Optional
+        closeButtonType : 'button-balanced',  //Optional
         showTodayButton: 'true',
         from: new Date(1988, 1, 1), //Optional
         to: new Date(2028, 10, 30), //Optional
@@ -198,8 +198,8 @@ angular.module('applicationModule')
         mondayFirst: false,          //Optional
         weeksList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
         monthsList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],       //Optional
-        modalHeaderColor: 'bar-assertive', //Optional
-        modalFooterColor: 'bar-assertive', //Optional
+        modalHeaderColor: 'bar-balanced', //Optional
+        modalFooterColor: 'bar-balanced', //Optional
         closeOnSelect: false,       //Optional
         templateType: 'popup'    //Optional
       };

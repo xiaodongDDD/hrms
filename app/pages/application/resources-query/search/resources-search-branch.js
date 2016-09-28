@@ -120,6 +120,7 @@ angular.module('applicationModule')
         hmsHttp.post(searchBranchUrl,branchSearch).success(function (result) {
 
           $scope.branchList = result.returnData;
+          console.log($scope.branchList);
 
 
         }).error(function () {
@@ -160,8 +161,8 @@ angular.module('applicationModule')
           $rootScope.$broadcast("UNIT_ID",newBranch.unit_id);
           $rootScope.$broadcast("BRANCH_ID",newBranch.parent_id);
           $ionicHistory.goBack();
-        }else if(newBranch.dept_name && newBranch.unit_detail_list == ""){
-          $rootScope.$broadcast("BRANCH_NAME",newBranch.dept_name);
+        }else if(newBranch.unit_name && newBranch.unit_detail_list == ""){
+          $rootScope.$broadcast("BRANCH_NAME",newBranch.unit_name);
           $rootScope.$broadcast("BRANCH_ID",newBranch.dept_id);
           $ionicHistory.goBack();
         }else if(newBranch == 'myBranchDetail'){

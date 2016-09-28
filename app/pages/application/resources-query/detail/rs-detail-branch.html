@@ -5,7 +5,7 @@
         <span class="back-button-text">返回</span>
       </button>
     </div>
-    <h1 class="title">互联网产品中心</h1>
+    <h1 class="title">{{branchName}}</h1>
     <!--<div class="buttons">-->
     <!--<button class="button button-clear" ng-click="toggleQuery()">-->
     <!--<span class="back-button-text">查询</span>-->
@@ -15,65 +15,41 @@
 
 
   <ion-content class="person-content">
-    <!--<hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>-->
+    <hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>
+    <ion-slide-box id="branch-slide" delegate-handle="branch-handle" active-slide="monthIndex" on-slide-changed="monthChanged($index)">
+      <ion-slide  ng-repeat="x in branchResourceList">
+        <div class="calendar-month">
+          <span class="arrow ion-ios-arrow-left" ></span>
+          <span class="word-font">{{x.record_date}}</span>
+          <span class="word-font"></span>
+          <span class="arrow ion-ios-arrow-right" ></span>
+        </div>
+        <div class="calendar-branch" ng-repeat="y in x.timesheet_details">
+          <div class="calendar-day">
+            <div class="calendar-title">
+              {{y.employee_name}}&nbsp;&nbsp;{{y.employee_number}}
+            </div>
+            <div class="calendar-each-week">
+              <!--<div class="calendar-week" ng-repeat="week in calendar">-->
+                <!--<a class="{{day.style_color}}" ng-repeat="day in week.list">-->
+                  <!--<div class="{{day.style_outline}}">{{day.day}}</div>-->
+                <!--</a>-->
+              <!--</div>-->
+              <a class="day-item" ng-repeat="day in y.resource_details">
+                <div class="each-day" ng-cloak >{{day.record_date.substring(8,10)}}
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!--<ion-infinite-scroll on-infinite="loadMore()"-->
+                             <!--ng-if="showInfinite"-->
+                             <!--immediate-check="false"-->
+                             <!--distance="0.5%">-->
+        <!--</ion-infinite-scroll>-->
+      </ion-slide>
+    </ion-slide-box>
 
-    <div class="calendar-month">
-      <span class="arrow ion-ios-arrow-left" ng-click="lastMonth()"></span>
-      <span class="word-font">{{currentYear}}</span>
-      <span class="word-font">{{currentEnglishMonth}} {{currentMonth}}月</span>
-      <span class="arrow ion-ios-arrow-right" ng-click="nextMonth()"></span>
-    </div>
-
-    <div class="calendar-branch">
-      <div class="calendar-day">
-        <div class="calendar-title">
-            余佳文 11000
-        </div>
-        <div class="calendar-each-week">
-          <div class="calendar-week" ng-repeat="week in calendar">
-            <a class="{{day.style_color}}" ng-repeat="day in week.list">
-              <div class="{{day.style_outline}}">{{day.day}}</div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="calendar-day">
-        <div class="calendar-title">
-          余佳文 11000
-        </div>
-        <div class="calendar-each-week">
-          <div class="calendar-week" ng-repeat="week in calendar">
-            <a class="{{day.style_color}}" ng-repeat="day in week.list">
-              <div class="{{day.style_outline}}">{{day.day}}</div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="calendar-day">
-        <div class="calendar-title">
-          余佳文 11000
-        </div>
-        <div class="calendar-each-week">
-          <div class="calendar-week" ng-repeat="week in calendar">
-            <a class="{{day.style_color}}" ng-repeat="day in week.list">
-              <div class="{{day.style_outline}}">{{day.day}}</div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="calendar-day">
-        <div class="calendar-title">
-          余佳文 11000
-        </div>
-        <div class="calendar-each-week">
-          <div class="calendar-week" ng-repeat="week in calendar">
-            <a class="{{day.style_color}}" ng-repeat="day in week.list">
-              <div class="{{day.style_outline}}">{{day.day}}</div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
   </ion-content>
