@@ -405,11 +405,11 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 {
     [self dismissViewControllerAnimated:YES completion:^{
         RCImageMessage *imageMessage = [RCImageMessage messageWithImage:editingInfo[@"UIImagePickerControllerOriginalImage"]];
-        imageMessage.thumbnailImage = image;
-        imageMessage.originalImage = image;
+        imageMessage.thumbnailImage = editingInfo[@"UIImagePickerControllerOriginalImage"];
+        imageMessage.originalImage = editingInfo[@"UIImagePickerControllerOriginalImage"];
         [self clickedSendImageMessage:@[imageMessage]];
         dispatch_async(dispatch_get_main_queue(), ^{
-        UIImageWriteToSavedPhotosAlbum(editingInfo[@"UIImagePickerControllerOriginalImage"], self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+            UIImageWriteToSavedPhotosAlbum(editingInfo[@"UIImagePickerControllerOriginalImage"], self, nil, NULL);
         });
     }];
     

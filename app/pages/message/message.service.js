@@ -16,7 +16,7 @@ angular.module('applicationModule')
                 hmsPopup,
                 contactService) {
 
-        var colorList = [
+        /*var colorList = [
           {
             "border": "1px solid #dd1144"
           },
@@ -31,6 +31,24 @@ angular.module('applicationModule')
           },
           {
             "border": "1px solid #6BB9F0"
+          },
+        ];*/
+
+        var colorList = [
+          {
+            "background": "#dd1144","color":"white"
+          },
+          {
+            "background": "#4b8bf4","color":"white"
+          },
+          {
+            "background": "#F99D32","color":"white"
+          },
+          {
+            "background": "#5CB281","color":"white"
+          },
+          {
+            "background": "#6BB9F0","color":"white"
           },
         ];
 
@@ -147,6 +165,11 @@ angular.module('applicationModule')
             if (!userName || userName == '') {
               userIcon = messageDefaultIcon;
               userName = data.message.sendId;
+            }
+
+            if(userIcon.indexOf("http://") == 0){
+            }else{
+              userIcon = '';
             }
 
             if (userName.length == 2) {
