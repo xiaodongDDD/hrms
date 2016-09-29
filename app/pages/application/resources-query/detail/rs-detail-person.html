@@ -19,10 +19,12 @@
           <p class="person-name">{{x.employee_name}}&nbsp;&nbsp;{{x.employee_number}}</p>
         </div>
         <div class="person-subject">
-          <div class="subject-item" ng-repeat="subject in projectList">
-            <div class="subject-item-circle" ng-cloak style="background: {{subject.color}}">{{subject.days_count}}</div>
-            <div class="subject-item-name" ng-cloak>{{subject.project_name}}</div>
-          </div>
+          <ion-scroll class="subject-scroll" delegate-handle="subject-handle">
+            <div class="subject-item" ng-repeat="subject in projectList">
+              <div class="subject-item-circle" ng-cloak style="background: {{subject.color}}">{{subject.days_count}}</div>
+              <div class="subject-item-name" ng-cloak>{{subject.project_name}}</div>
+            </div>
+          </ion-scroll>
         </div>
         <div class="person-bottom row">
           <div class="person-bottom-left col-40" >

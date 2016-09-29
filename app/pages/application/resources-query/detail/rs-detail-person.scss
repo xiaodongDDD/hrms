@@ -75,6 +75,9 @@ $timesheet-cover: #E3F5F0 !default;
   .person-subject {
     width: 100%;
   }
+  .subject-scroll{
+    height: calc(53vh - 175px);
+  }
   .subject-item {
     width: 100%;
   }
