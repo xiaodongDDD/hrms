@@ -151,7 +151,7 @@
     CGContextSetLineWidth(context, 1.0);
     CGContextSetRGBFillColor (context, 1.0, 1.0, 1.0, 1.0);
     UIFont  *font = [UIFont systemFontOfSize:25.0];
-    [sting drawInRect:CGRectMake(size.width/2.0-14, size.height/2.0-14, 30, 30) withAttributes:@{NSFontAttributeName:font}];
+    [sting drawInRect:CGRectMake(size.width/2.0-14, size.height/2.0-14, 30, 30) withAttributes:@{NSFontAttributeName:font,NSForegroundColorAttributeName:[UIColor whiteColor]}];
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return img;
