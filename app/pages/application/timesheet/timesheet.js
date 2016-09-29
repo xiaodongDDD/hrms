@@ -14,8 +14,26 @@ angular.module('applicationModule')
 
       var timeSheetList = [];
 
-      this.processProject = function (projectList) {
+      this.processProject = function (projectList, batchFlag) {
         var projectCategory = {};
+
+        if (!batchFlag) {
+          var noneProject = {
+            approver: "",
+            project_id: -1,
+            project_name: "我的项目",
+            project_type: "客户项目",
+            project_type_id: 1,
+            selected_flag: ""
+          };
+
+          var project = {name: "内部项目", array: [noneProject]};
+
+          projectCategory = {
+            "1": project
+          }
+        }
+
         angular.forEach(projectList, function (data) {
           if (data.project_type_id && data.project_type_id != "") {
             var project_type_id = data.project_type_id;
