@@ -617,7 +617,8 @@ angular.module('applicationModule')
             if (result.status == 'S') {
               $scope.historyList = result.history;
               workflowDetail().setWorkflowDetailHistoryWidth(result.history.length);
-              if (result.workflow_data) {
+              //判断是否有工作流明细数据
+              if (result.workflow_data && result.workflow_data.details.detail) {
                 $scope.applicationEmployeeDetail = result.workflow_data.details.detail;
                 $scope.applicationEmployeeDetail.showFlag = true;
 
@@ -1415,6 +1416,30 @@ angular.module('applicationModule')
           return oneLine;
         };
 
+        self.getLovList = function (neeListItem) {
+          var url = baseConfig.businessPath + "/" + neeListItem.default.procedure + "/" + neeListItem.default.function;
+          var params = {"params": {"p_instance_id": detail.instanceId}}
+          hmsHttp.post(url, params).success(function (result) {
+            if (result.con_status == 'S' && result.lov) {
+              neeListItem.options = result.lov;
+              angular.forEach(result.lov, function (data) {
+                if (data.value == neeListItem.value) {
+                  neeListItem.lov = {
+                    "value": data.value,
+                    "name": data.name,
+                  };
+                }
+              });
+              if(baseConfig.debug){
+                console.log('getLov neeListItem ' + angular.toJson(neeListItem));
+              }
+            } else {
+            }
+          }).error(function () {
+            hmsPopup.showPopup('获取值列表信息错误!');
+          });
+        };
+
         self.getWorkflowDetail = function () {
           var success = function (result) {
             if (baseConfig.debug) {
@@ -1459,30 +1484,14 @@ angular.module('applicationModule')
                 $scope.needList = result.workflow_data.need;
                 //lov、datepicker类型额外处理
                 if ($scope.needList) {
-                  var lovIndex, dpIndex, defaultValue;
+                  var dpIndex, defaultValue;
                   for (var i = 0; i < $scope.needList.length; i++) {
                     if ($scope.needList[i].type == 'lov') {
-                      lovIndex = i;
+                      var lovIndex = i;
                       $scope.needList[i].options = [];
 
-                      var url = baseConfig.businessPath + "/" + $scope.needList[i].default.procedure + "/" + $scope.needList[i].default.function;
-                      var params = {"params": {"p_instance_id": detail.instanceId}}
-                      hmsHttp.post(url, params).success(function (result) {
-                        if (result.con_status == 'S' && result.lov) {
-                          $scope.needList[lovIndex].options = result.lov;
-                          angular.forEach(result.lov, function (data) {
-                            if (data.value == $scope.needList[lovIndex].value) {
-                              $scope.needList[lovIndex].lov = {
-                                "value": data.value,
-                                "name": data.name,
-                              };
-                            }
-                          });
-                        } else {
-                        }
-                      }).error(function () {
-                        hmsPopup.showPopup('获取值列表信息错误!');
-                      });
+                      self.getLovList($scope.needList[i]);
+
                     }
                     if ($scope.needList[i].type == 'datepicker') {
                       dpIndex = i;
@@ -1707,6 +1716,6 @@ angular.module('applicationModule')
           }
         }
       }
-      
+
     }])
 ;
