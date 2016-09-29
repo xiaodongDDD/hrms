@@ -51,22 +51,25 @@
       <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8" ng-click="goInputSearch('person')">
         <div class="row label-row">
           <span class="col col-20" >员工 :</span>
-          <div class="col col-60" ng-bind="employeeName"></div>
-          <span class="font-select col col-20">请选择</span>
+          <!--<div class="col col-60" ng-bind="employeeName"></div>-->
+          <!--<span class="font-select col col-20">请选择</span>-->
+          <input type="text" class="col col-80" placeholder="请选择" ng-model="employeeName">
         </div>
       </div>
       <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8" ng-click="goInputSearch('branch')">
         <div class="row label-row">
           <span class="col col-20">部门 :</span>
-          <div class="col col-60" ng-bind="branchName"></div>
-          <span class="font-select col col-20">请选择</span>
+          <!--<div class="col col-60" ng-bind="branchName"></div>-->
+          <!--<span class="font-select col col-20">请选择</span>-->
+          <input type="text" class="col col-80" placeholder="请选择" ng-model="branchName">
         </div>
       </div>
       <div class="div-block-middle" ng-click="goInputSearch('subject')">
         <div class="row label-row">
           <span class="col col-20">项目 :</span>
-          <div class="col col-60" ng-bind="subjectName"></div>
-          <span class="font-select col col-20">请选择</span>
+          <!--<div class="col col-60" ng-bind="subjectName"></div>-->
+          <!--<span class="font-select col col-20">请选择</span>-->
+          <input type="text" class="col col-80" placeholder="请选择" ng-model="subjectName">
         </div>
       </div>
     </div>

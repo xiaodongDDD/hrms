@@ -27,7 +27,8 @@ $timesheet-cover: #E3F5F0 !default;
   .person-head-image {
     height: 53vh;
     width: 100%;
-    filter: blur(10px) brightness(0.9);
+    //filter: blur(10px) brightness(0.9);
+    //-webkit-filter: blur(10px) brightness(0.9);
     z-index: -1;
     position: absolute;
     top: 0;
@@ -76,8 +77,6 @@ $timesheet-cover: #E3F5F0 !default;
   }
   .subject-item {
     width: 100%;
-    height: 20px;
-    margin-top: 10px;
   }
   .subject-item-circle {
     width: 20px;
@@ -86,12 +85,13 @@ $timesheet-cover: #E3F5F0 !default;
     float: left;
     margin-left: 4%;
     text-align: center;
-
+    margin-top: 5px;
   }
   .subject-item-name {
     float: left;
     width: 85%;
     margin-left: 10px;
+    margin-top: 5px;
   }
   .person-bottom {
     position: absolute;

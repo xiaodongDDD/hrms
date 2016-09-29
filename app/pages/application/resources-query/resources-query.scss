@@ -205,6 +205,15 @@
     flex: 0 0 60%;
     max-width: 60%;
   }
+  .col-80 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 80%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 80%;
+    -ms-flex: 0 0 80%;
+    flex: 0 0 80%;
+    max-width: 80%;
+  }
   .font-select{
     color: #ccc;
     text-align: right;
