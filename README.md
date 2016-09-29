@@ -76,7 +76,7 @@ Xcode
 ```
 
 
-#打包步骤
+# 打包步骤
 Android测试环境
 确认cordova版本最好是6.3.1以上,jdk一定要1.7以上,Android SDK一定要API23以上
 1.修改app/config/devConfig.json  里面
