@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:minHeight="48dp"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
+
+    <CheckBox
+        android:id="@+id/ckbCheckStaff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:button="@drawable/item_check_box" />
+
+    <ImageView
+        android:id="@+id/imgHeader"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/ckbCheckStaff"
+        android:src="@drawable/head_1" />
+
+    <LinearLayout
+        android:layout_toRightOf="@+id/imgHeader"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/txtStaff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="姓名"
+            android:textColor="#000000" />
+        <TextView
+            android:id="@+id/txtEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="email"
+            android:textColor="#c2c2c2"
+            />
+    </LinearLayout>
+</RelativeLayout>

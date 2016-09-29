@@ -7,6 +7,7 @@ public class PersonBean {
 	private String Name;
 	private String PinYin;
 	private String FirstPinYin;
+	private String email;
 
 	public String getId() {
 		return id;
@@ -54,6 +55,14 @@ public class PersonBean {
 
 	public void setFirstPinYin(String firstPinYin) {
 		FirstPinYin = firstPinYin;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String toString() {

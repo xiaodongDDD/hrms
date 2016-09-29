@@ -1,6 +1,10 @@
-﻿var exec = require('cordova/exec');
+var exec = require('cordova/exec');
 
 var HandIMPlugin = {
+
+	//注销登录
+	exitApp: function(successCallback, errorCallback, options){		if (errorCallback == null) {            errorCallback = function () {            }        }        if (typeof errorCallback != "function") {            return        }        if (typeof successCallback != "function") {            return        }		exec(successCallback, errorCallback, "HandIMPlugin", "exitApp", []);	},
+
     //创建讨论组 panxu add
     createDiscussion: function (successCallback, errorCallback, options) {
         if (errorCallback == null) {
@@ -114,7 +118,8 @@ var HandIMPlugin = {
     returnConversationList: function (successCallback, errorCallback) {
         exec(successCallback, errorCallback, "HandIMPlugin", "returnConversationList", []);
     },
-
+	
+	
 
     /*var optsList = {
      "friendId": "",

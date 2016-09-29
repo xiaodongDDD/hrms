@@ -1,21 +1,20 @@
 package com.hand.im.contact;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
+
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -26,40 +25,30 @@ import com.hand.im.DBhelper;
 import com.hand.im.HandMulChatActivity;
 import com.hand.im.LoginInfo;
 import com.hand.im.Util;
+import com.hand.im.bean.Project;
 import com.hand.im.okhttp.OkHttpClientManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.SynchronousQueue;
 
-import io.rong.imlib.RongIMClient;
 import okhttp3.Call;
-import okhttp3.Response;
+
 
 /**
  * Created by panx on 2016/8/24.
  */
 public class ContactActivity extends Activity implements View.OnClickListener {
-    private ListView listView;
-    private SortAdapter sortadapter;
-    private List<PersonBean> data;
     private String[] GroupArray;
-    private SideBar sidebar;
-    private TextView dialog;
     private EditText edtSearch;
-    private ImageView btnSearch;
-    private Button btnOK;
+    private LinearLayout btnOK;
     private String targetId;
     private TextView imgBack;
+
+    private TextView txt_check_info;
 
     private String TYPE;
     private String USERID;
@@ -71,6 +60,16 @@ public class ContactActivity extends Activity implements View.OnClickListener {
     private ProgressBar loading;
     private TextView txtSelfOrg;
     private String currentDeptID;
+    private ContactDataSource contactDataSource = new ContactDataSource();
+    private ArrayList<Project> projectData;
+    private ListView lsvProject;
+    private ProjectAdapter projectAdapter;
+    private ListView lsvOftenContact;
+    private ContactSearchAdapter oftenAdapter;
+    private ArrayList<PersonBean> oftenList;
+    private ProgressBar projectProgress;
+    private ProgressBar oftenContactProgress;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,126 +84,139 @@ public class ContactActivity extends Activity implements View.OnClickListener {
         ICONURL = getIntent().getStringExtra("ICONURL");
         TOKEN = getIntent().getStringExtra("TOKEN");
         initView();
-        init();
+        initData();
+        initEvent();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setCreateInfo();
+        if (oftenAdapter != null) {
+            oftenAdapter.notifyDataSetChanged();
+        }
     }
 
     private void initView() {
         imgBack = (TextView) findViewById(Util.getRS("arrow_back", "id", this));
-        imgBack.setOnClickListener(this);
-        sidebar = (SideBar) findViewById(Util.getRS("sidebar", "id", this));
-        listView = (ListView) findViewById(Util.getRS("listview", "id", this));
-        listView.setEmptyView(findViewById(Util.getRS("empty_view", "id", this)));
-        dialog = (TextView) findViewById(Util.getRS("dialog", "id", this));
         edtSearch = (EditText) findViewById(Util.getRS("edtSearch", "id", this));
-        btnOK = (Button) findViewById(Util.getRS("btnOK", "id", this));
+        btnOK = (LinearLayout) findViewById(Util.getRS("btnOK", "id", this));
+        loading = (ProgressBar) findViewById(Util.getRS("loading", "id", this));
+        rltOrgStruct = (RelativeLayout) findViewById(Util.getRS("lyt_org_struct", "id", this));
+        rltSelfOrgStruct = (RelativeLayout) findViewById(Util.getRS("lyt_org_self_struct", "id", this));
+        txtSelfOrg = (TextView) findViewById(Util.getRS("txtSelfOrg", "id", this));
+        lsvProject = (ListView) findViewById(Util.getRS("lsv_my_project", "id", this));
+        lsvOftenContact = (ListView) findViewById(Util.getRS("lsv_often_contact", "id", this));
+        txt_check_info = (TextView) findViewById(Util.getRS("txt_check_info", "id", this));
+        lsvProject.setEmptyView(findViewById(Util.getRS("txtProjectTip", "id", this)));
+        lsvOftenContact.setEmptyView(findViewById(Util.getRS("txtTip", "id", this)));
+        projectProgress = (ProgressBar) (findViewById(Util.getRS("projectLoading", "id", this)));
+        oftenContactProgress = (ProgressBar) (findViewById(Util.getRS("oftenLoading", "id", this)));
+    }
+
+    private void initData() {
+        initSelfOrgStruct();
+        initProject();
+        initOftenContact();
+    }
+
+    private void initEvent() {
+        imgBack.setOnClickListener(this);
+        edtSearch.setOnClickListener(this);
         btnOK.setOnClickListener(this);
-        btnSearch = (ImageView) findViewById(Util.getRS("imgSearch", "id", this));
-        btnSearch.setOnClickListener(this);
-        loading = (ProgressBar)findViewById(Util.getRS("loading","id",this));
-        rltOrgStruct = (RelativeLayout)findViewById(Util.getRS("lyt_org_struct","id",this));
-        rltSelfOrgStruct = (RelativeLayout)findViewById(Util.getRS("lyt_org_self_struct","id",this));
         rltOrgStruct.setOnClickListener(this);
         rltSelfOrgStruct.setOnClickListener(this);
-        txtSelfOrg = (TextView)findViewById(Util.getRS("txtSelfOrg","id",this));
-        edtSearch.addTextChangedListener(new TextWatcher() {
+        lsvProject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                data.clear();
-                updateDataList();
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(ContactActivity.this, ProjectActivity.class);
+                intent.putExtra("projectId", projectData.get(i).getProject_id());
+                intent.putExtra("projectName", projectData.get(i).getProject_name());
+                intent.putExtra("targetId", targetId);
+                intent.putExtra("GroupArray", GroupArray);
+                startActivityForResult(intent, 0);
             }
         });
     }
-    private void updateDataList(){
-        String url = LoginInfo.baseUrl + "/hrmsv2/v2/api/staff/query?" + "access_token=" + LoginInfo.access_token;
-        JSONObject object = new JSONObject();
-        try {
-            object.put("key", edtSearch.getText().toString());
-            object.put("page", "1");
-            object.put("pageSize", "30");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        OkHttpClientManager.postAsyn(url, object, new OkHttpClientManager.ResultCallback<String>() {
+    private void initProject() {
+
+        contactDataSource.getProjectList(LoginInfo.userId, new ContactDataSource.DataSourceCallBack<ArrayList<Project>>() {
             @Override
-            public void onError(Call call, Exception e) {
+            public void error(String msg) {
+                projectProgress.setVisibility(View.GONE);
+                Log.e("ERROR", msg);
             }
+
             @Override
-            public void onResponse(String response) {
-                dealDataList(response);
+            public void response(ArrayList<Project> projects) {
+                projectProgress.setVisibility(View.GONE);
+                setProjectAdapter(projects);
             }
         });
     }
-    private List<PersonBean> getData(String[] data) {
-        List<PersonBean> listarray = new ArrayList<PersonBean>();
-        for (int i = 0; i < data.length; i++) {
-            String pinyin = PinyinUtils.getPingYin(data[i]);
-            String Fpinyin = pinyin.substring(0, 1).toUpperCase();
-            PersonBean person = new PersonBean();
-            person.setName(data[i]);
-            person.setPinYin(pinyin);
-            if (Fpinyin.matches("[A-Z]")) {
-                person.setFirstPinYin(Fpinyin);
-            } else {
-                person.setFirstPinYin("#");
-            }
-            listarray.add(person);
-        }
-        return listarray;
+
+    private void setProjectAdapter(ArrayList<Project> projects) {
+        projectData = projects;
+        projectAdapter = new ProjectAdapter(this, projects);
+        lsvProject.setAdapter(projectAdapter);
+        setListViewHeightBasedOnChildren(lsvProject);
     }
 
-    private List<PersonBean> dealData(List<PersonBean> data) {
-        for (int i = 0; i < data.size(); i++) {
-            String pinyin = PinyinUtils.getPingYin(data.get(i).getName());
-            String Fpinyin = pinyin.substring(0, 1).toUpperCase();
-            if (!Fpinyin.matches("[A-Z]")) {
-                Fpinyin = "#";
+    private void initOftenContact() {
+        contactDataSource.getOftenContact(new ContactDataSource.DataSourceCallBack<ArrayList<PersonBean>>() {
+            @Override
+            public void error(String msg) {
+                oftenContactProgress.setVisibility(View.GONE);
+                Log.e("error", msg);
             }
-            data.get(i).setPinYin(pinyin);
-            data.get(i).setFirstPinYin(Fpinyin);
-        }
-        return data;
-    }
-
-    private void init() {
-        // TODO Auto-generated method stub
-        sidebar.setTextView(dialog);
-        sidebar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
 
             @Override
-            public void onTouchingLetterChanged(String s) {
-                // TODO Auto-generated method stub
-                int position = sortadapter.getPositionForSelection(s.charAt(0));
-                if (position != -1) {
-                    listView.setSelection(position);
-                }
+            public void response(ArrayList<PersonBean> response) {
+                oftenContactProgress.setVisibility(View.GONE);
+                setOftenAdapter(response);
+                initOftenContactImage(response);
             }
         });
-        data = new ArrayList<PersonBean>();
-        sortadapter = new SortAdapter(this, data, btnOK, GroupArray);
-        listView.setAdapter(sortadapter);
-        initSelfOrgStruct();
     }
 
-    private void initSelfOrgStruct(){
+    private void setOftenAdapter(ArrayList<PersonBean> response) {
+        oftenList = response;
+        oftenAdapter = new ContactSearchAdapter(this, oftenList, new DataCheckCallBack() {
+            @Override
+            public void setCheckInfo() {
+                setCreateInfo();
+            }
+        },GroupArray);
+        lsvOftenContact.setAdapter(oftenAdapter);
+        setListViewHeightBasedOnChildren(lsvOftenContact);
+    }
+
+    private void initOftenContactImage(ArrayList<PersonBean> persons) {
+        contactDataSource.getStaffImageList(persons, new ContactDataSource.DataSourceCallBack<String>() {
+            @Override
+            public void error(String msg) {
+
+            }
+
+            @Override
+            public void response(String response) {
+                oftenAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void initSelfOrgStruct() {
         loading.setVisibility(View.VISIBLE);
         rltSelfOrgStruct.setClickable(false);
-        String url =LoginInfo.baseUrl+"/hrmsv2/v2/api/dept/getStaffDeptInfo?" + "access_token=" + LoginInfo.access_token;
+        String url = LoginInfo.baseUrl + "/hrmsv2/v2/api/dept/getStaffDeptInfo?" + "access_token=" + LoginInfo.access_token;
         OkHttpClientManager.postAsyn(url, new JSONObject(), new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Call call, Exception e) {
-                Log.e("ERROR",e.toString());
+                Log.e("ERROR", e.toString());
                 loading.setVisibility(View.GONE);
             }
+
             @Override
             public void onResponse(String response) {
                 loading.setVisibility(View.GONE);
@@ -214,14 +226,17 @@ public class ContactActivity extends Activity implements View.OnClickListener {
                 try {
                     object = new JSONObject(response).getJSONObject("returnData");
                     parentDeptArray = object.getJSONArray("deptInfo");
-                    String title="";
-                    for(int i=1;i<parentDeptArray.length();i++){
-                        if(i==parentDeptArray.length()-1){
+                    String title = "";
+                    for (int i = 1; i < parentDeptArray.length(); i++) {
+                        if (i == parentDeptArray.length() - 1) {
                             currentDeptID = parentDeptArray.getJSONObject(i).getString("id");
                             title = title + parentDeptArray.getJSONObject(i).getString("name");
-                        }else {
+                        } else {
                             title = title + parentDeptArray.getJSONObject(i).getString("name") + "-";
                         }
+                    }
+                    if (title.length() > 20) {
+                        title = title.substring(0, 20) + "...";
                     }
                     txtSelfOrg.setText(title);
                 } catch (JSONException e) {
@@ -230,149 +245,153 @@ public class ContactActivity extends Activity implements View.OnClickListener {
             }
         });
     }
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        int idImgSearch = Util.getRS("imgSearch", "id", this);
         int idBtnOK = Util.getRS("btnOK", "id", this);
         int idImgBack = Util.getRS("arrow_back", "id", this);
-        int idRltOrgStruct = Util.getRS("lyt_org_struct","id",this);
-        int idRltSelfOrgStruct = Util.getRS("lyt_org_self_struct","id",this);
-        if (id == idImgSearch) {
-            updateDataList();
+        int idEdtSearch = Util.getRS("edtSearch", "id", this);
+        int idRltOrgStruct = Util.getRS("lyt_org_struct", "id", this);
+        int idRltSelfOrgStruct = Util.getRS("lyt_org_self_struct", "id", this);
+        if (id == idEdtSearch) {
+            Intent intent = new Intent(ContactActivity.this, ContactSearchActivity.class);
+            startActivityForResult(intent, 0);
+        } else if (id == idRltOrgStruct) {
+            Intent intent = new Intent(ContactActivity.this, OrgStructActivity.class);
+            if (targetId != null) {
+                intent.putExtra("targetId", targetId);
+                intent.putExtra("GroupArray", GroupArray);
+            }
+            startActivityForResult(intent, 0);
+        } else if (id == idRltSelfOrgStruct) {
+            Intent intent = new Intent(ContactActivity.this, OrgStructActivity.class);
+            intent.putExtra("selfDeptId", currentDeptID);
+            if (targetId != null) {
+                intent.putExtra("targetId", targetId);
+                intent.putExtra("GroupArray", GroupArray);
+            }
+            startActivityForResult(intent, 0);
         } else if (id == idBtnOK) {
-            dialog.setVisibility(View.VISIBLE);
-            dialog.setText("保存中...");
-            dialog.setTextSize(10);
-            ArrayList<String> members = sortadapter.getDealMember();
-            if (targetId == null) {
-                createNewDiscussion(members);
-            } else {
-                inviteNewMember(members);
-            }
-        } else if (id == idImgBack) {
-            finish();
-        } else if (id == idRltOrgStruct){
-            Intent intent = new Intent(ContactActivity.this,OrgStructActivity.class);
-            if(targetId!=null){
-                intent.putExtra("targetId",targetId);
-                intent.putExtra("GroupArray",GroupArray);
-            }
-            startActivityForResult(intent,0);
-        } else if(id == idRltSelfOrgStruct){
-            Intent intent = new Intent(ContactActivity.this,OrgStructActivity.class);
-            intent.putExtra("selfDeptId",currentDeptID);
-            if(targetId!=null){
-                intent.putExtra("targetId",targetId);
-                intent.putExtra("GroupArray",GroupArray);
-            }
-            startActivityForResult(intent,0);
-            //startActivity(intent);
-        }
-    }
-
-    private void inviteNewMember(final ArrayList<String> members) {
-        RongIMClient.getInstance().addMemberToDiscussion(targetId, members, new RongIMClient.OperationCallback() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(getApplicationContext(), "已邀请" + members.size() + "位新成员加入群聊",
-                        Toast.LENGTH_SHORT).show();
-                setResult(1);
-                dialog.setVisibility(View.INVISIBLE);
-                dialog.setTextSize(30);
-                finish();
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                Toast.makeText(getApplicationContext(), "邀请失败", Toast.LENGTH_SHORT).show();
-                dialog.setVisibility(View.INVISIBLE);
-                dialog.setTextSize(30);
-            }
-        });
-    }
-
-    private void createNewDiscussion(final ArrayList<String> members) {
-        final String title = sortadapter.getTitle();
-        if (RongIMClient.getInstance() != null) {
-            Toast.makeText(this,"开始添加新成员，等待反馈！",Toast.LENGTH_SHORT).show();
-            RongIMClient.getInstance().createDiscussion(title, members, new RongIMClient.CreateDiscussionCallback() {
+            btnOK.setClickable(false);
+            showProgressDialog(true);
+            CreateDisInfo.getMemberList(new CreateDisInfo.CreateCallBack<ArrayList<String>>() {
                 @Override
-                public void onSuccess(String s) {
-
-                    dialog.setVisibility(View.INVISIBLE);
-                    dialog.setTextSize(30);
-                    DBhelper dBhelper = new DBhelper(getApplicationContext());
-                    dBhelper.addUserInfo(s, title, "http://zhouzybk.img-cn-shanghai.aliyuncs.com/discussionGroupImage1472535269374.png");
-                    Toast.makeText(getApplicationContext(), "讨论组创建成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ContactActivity.this, HandMulChatActivity.class);
-                    intent.putExtra("TYPE", "NORMAL");
-                    intent.putExtra("USERID", USERID);//用户Id
-                    intent.putExtra("USERNAME", USERNAME);//用户姓名
-                    intent.putExtra("ICONURL", ICONURL);//用户头像
-                    intent.putExtra("TOKEN", TOKEN);
-                    intent.putExtra("TARGETID", s);
-                    intent.putExtra("GROUPNAME", title);
-                    intent.putExtra("GROUPICON", members);
-                    startActivity(intent);
-                    finish();
+                public void error(String msg) {
+                    btnOK.setClickable(true);
+                    showProgressDialog(false);
+                    Toast.makeText(getApplicationContext(), "可能由于您同时加载的人数过多，导致加载失败", Toast.LENGTH_SHORT).show();
+                    Log.e("error", msg);
                 }
 
                 @Override
-                public void onError(RongIMClient.ErrorCode errorCode) {
-                    dialog.setVisibility(View.INVISIBLE);
-                    dialog.setTextSize(30);
-                    Toast.makeText(getApplicationContext(), "fail:" + errorCode, Toast.LENGTH_SHORT).show();
+                public void response(ArrayList<String> members) {
+                    btnOK.setClickable(true);
+                    showProgressDialog(false);
+                    toCreateOrInvite(members);
                 }
             });
+        } else if (id == idImgBack) {
+            onBackPressed();
         }
     }
-    public void dealDataList(String str)  {
-        JSONObject object = null;
-        try {
-            synchronized (ContactActivity.class) {
-                data.clear();
-                object = new JSONObject(str);
-                JSONArray array = new JSONArray(object.getString("rows"));
-                for (int i = 0; i < array.length(); i++) {
-                    PersonBean person = new PersonBean();
-                    JSONObject object1 = new JSONObject(array.get(i).toString());
-                    person.setId(object1.getString("emp_code"));
-                    person.setName(object1.getString("emp_name"));
-                    person.setAvatar(object1.getString("avatar"));
-                    person.setPosition_name(object1.getString("position_name"));
-                    data.add(person);
-                }
-                data = dealData(data);
-                Collections.sort(data, new PinyinComparator());
-                sortadapter.notifyDataSetChanged();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivityManager == null) {
-                Toast.makeText(getApplicationContext(), "请检查您的网络连接状态", Toast.LENGTH_SHORT).show();
-            }
-            NetworkInfo[] networkInfos = connectivityManager.getAllNetworkInfo();
-            if (networkInfos != null && networkInfos.length > 0) {
-                for (int i = 0; i < networkInfos.length; i++) {
-                    if (networkInfos[i].getState() == NetworkInfo.State.CONNECTED) {
-                        Toast.makeText(getApplicationContext(), "与服务器连接失败", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-            }
-            Toast.makeText(getApplicationContext(), "请检查您的网络连接状态", Toast.LENGTH_SHORT).show();
+    private void showProgressDialog(Boolean b){
+        if(progressDialog == null&&b){
+            progressDialog = ProgressDialog.show(this,null,"处理中...");
+        }else if(b){
+            progressDialog.show();
+        }else if(!b&&progressDialog!=null){
+            progressDialog.dismiss();
         }
+    }
+    private void toCreateOrInvite(ArrayList<String> members) {
+        DiscussionManager dm = new DiscussionManager(ContactActivity.this);
+        final int type;
+        if (targetId != null && !targetId.equals("")) {
+            type = DiscussionManager.INVITE;
+        } else {
+            type = DiscussionManager.CREATE;
+        }
+        dm.CreateOrInviteToDiscussion(new DiscussionManager.DisMCallBack<String>() {
+            @Override
+            public void onError(String msg) {
+                btnOK.setClickable(true);
+                Toast.makeText(getApplicationContext(), "ERROR:" + msg, Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onReponse(String id, String title) {
+                btnOK.setClickable(true);
+                if (type == DiscussionManager.CREATE) {
+                    afterCreate(id, title);
+                } else {
+                    afterInvite();
+                }
+                Toast.makeText(getApplicationContext(), "创建讨论组成功！", Toast.LENGTH_SHORT).show();
+            }
+        }, type, members, targetId, GroupArray);
+    }
+
+    private void afterCreate(String id, String title) {
+        DBhelper dBhelper = new DBhelper(getApplicationContext());
+        dBhelper.addUserInfo(id, title, "http://zhouzybk.img-cn-shanghai.aliyuncs.com/discussionGroupImage1472535269374.png");
+        Toast.makeText(getApplicationContext(), "讨论组创建成功", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(ContactActivity.this, HandMulChatActivity.class);
+        intent.putExtra("TYPE", "NORMAL");
+        intent.putExtra("USERID", LoginInfo.userId);//用户Id
+        intent.putExtra("TARGETID", id);
+		intent.putExtra("USERNAME",LoginInfo.userName);
+        intent.putExtra("ICONURL",LoginInfo.userIcon);
+        intent.putExtra("GROUPNAME", title);
+        CreateDisInfo.reset();
+        startActivity(intent);
+        finish();
+    }
+
+    private void afterInvite() {
+        Toast.makeText(this, "已邀请新成员", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==0&&resultCode==1){
+        //邀请新成员时返回，101通过组织架构页面，102项目页面，103搜索页面
+        if (requestCode == 0 && (resultCode == 101 || resultCode == 102|| resultCode==103)) {
             setResult(1);
             finish();
         }
+        //创建讨论组时返回，201通过组织架构页面,202项目页面，203搜索页面
+        if (requestCode == 0 && (resultCode == 201 || resultCode == 202 || resultCode == 203)) {
+            String id = data.getStringExtra("id");
+            String title = data.getStringExtra("title");
+            afterCreate(id, title);
+        }
+    }
+
+    private void setCreateInfo() {
+        txt_check_info.setText(CreateDisInfo.getCreateInfo());
+    }
+
+    @Override
+    public void onBackPressed() {
+        CreateDisInfo.reset();
+        super.onBackPressed();
+    }
+
+    private void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }

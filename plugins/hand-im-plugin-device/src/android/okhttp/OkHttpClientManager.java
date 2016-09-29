@@ -44,9 +44,13 @@ public class OkHttpClientManager {
         return mInstance;
     }
     //请求JSONObject
-    private void _postAsyn(String url,JSONObject object,ResultCallback callback){
+    private void _postAsyn(String url,Object object,ResultCallback callback){
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), object.toString());
-        Request request = new Request.Builder().url(url).header("content-type", "application/json").post(body).build();
+        Request request = new Request.Builder()
+                .url(url)
+                .header("content-type", "application/json")
+                .post(body)
+                .build();
         deliveryRequest(callback,request);
     }
 
@@ -76,7 +80,7 @@ public class OkHttpClientManager {
             }
         });
     }
-    public static void postAsyn(String url, JSONObject object,ResultCallback callback) {
+    public static void postAsyn(String url, Object object,ResultCallback callback) {
         getInstance()._postAsyn(url,object,callback);
     }
 

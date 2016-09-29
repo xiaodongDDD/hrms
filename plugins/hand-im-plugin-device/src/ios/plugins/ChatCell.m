@@ -130,7 +130,7 @@ static NSArray *emojiList = nil;
         NSMutableAttributedString *text = [[NSMutableAttributedString alloc] init];
         NSMutableAttributedString *attachment = nil;
         // 嵌入 UIImage
-        attachment = [NSMutableAttributedString yy_attachmentStringWithContent:imageMessage.thumbnailImage contentMode:UIViewContentModeCenter attachmentSize:msgFrame.messageLabelSize.size alignToFont:[UIFont systemFontOfSize:0] alignment:1];
+        attachment = [NSMutableAttributedString yy_attachmentStringWithContent:imageMessage.thumbnailImage contentMode:UIViewContentModeScaleToFill attachmentSize:msgFrame.messageLabelSize.size alignToFont:[UIFont systemFontOfSize:0] alignment:1];
         [text appendAttributedString: attachment];
         [self.messageLabel setAttributedText:attachment];
         

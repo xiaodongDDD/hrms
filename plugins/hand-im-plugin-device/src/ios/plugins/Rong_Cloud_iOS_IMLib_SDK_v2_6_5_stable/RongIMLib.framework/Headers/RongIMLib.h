@@ -49,6 +49,7 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCTextMessage.h>
 #import <RongIMLib/RCUnknownMessage.h>
 #import <RongIMLib/RCVoiceMessage.h>
+#import <RongIMLib/RCRecallNotificationMessage.h>
 /// 工具类
 #import <RongIMLib/RCAmrDataConverter.h>
 #import <RongIMLib/RCUtilities.h>
@@ -66,5 +67,11 @@ FOUNDATION_EXPORT const unsigned char RongIMLibVersionString[];
 #import <RongIMLib/RCRealTimeLocationManager.h>
 #import <RongIMLib/RCStatusMessage.h>
 #import <RongIMLib/RCUploadImageStatusListener.h>
+#import <RongIMLib/RCUploadMediaStatusListener.h>
 #import <RongIMLib/RCUserInfo.h>
 #import <RongIMLib/RCWatchKitStatusDelegate.h>
+#import <RongIMLib/RCCustomerServiceGroupItem.h>
+
+#import <RongIMLib/RCFileMessage.h>
+#import <RongIMLib/RCFileUtility.h>
+#import <RongIMLib/RCReadReceiptInfo.h>

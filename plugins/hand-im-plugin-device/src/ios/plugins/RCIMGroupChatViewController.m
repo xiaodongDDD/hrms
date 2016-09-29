@@ -299,6 +299,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         cell = [tableView dequeueReusableCellWithIdentifier:voiceMessageCellReusableId];
     }else{
         cell = [tableView dequeueReusableCellWithIdentifier:imageMessageCellReusableId];
+        [cell.messageLabel setTextContainerInset:UIEdgeInsetsMake( textMesaageFont/2.0, 0, textMesaageFont/2.0, textLeftRightSpace)];
     }
     if (indexPath.row==0) {
         messageFrame.isHiddenTime = NO;
@@ -405,15 +406,37 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(nullable NSDictionary<NSString *,id> *)editingInfo
 {
     [self dismissViewControllerAnimated:YES completion:^{
-        RCImageMessage *imageMessage = [RCImageMessage messageWithImage:editingInfo[@"UIImagePickerControllerOriginalImage"]];
-        imageMessage.thumbnailImage = editingInfo[@"UIImagePickerControllerOriginalImage"];
-        imageMessage.originalImage = editingInfo[@"UIImagePickerControllerOriginalImage"];
+        RCImageMessage *imageMessage = [RCImageMessage messageWithImage:image];
+        imageMessage.thumbnailImage = [self scaleImage:image byScalingToSize:CGSizeMake(162, 160)];
+        imageMessage.originalImage = image;
+        imageMessage.imageUrl = [NSString stringWithFormat:@"%lf",[NSDate date].timeIntervalSinceNow];
         [self clickedSendImageMessage:@[imageMessage]];
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIImageWriteToSavedPhotosAlbum(editingInfo[@"UIImagePickerControllerOriginalImage"], self, nil, NULL);
+            UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
         });
     }];
+    
 }
+- (UIImage *)scaleImage:(UIImage*)image byScalingToSize:(CGSize)targetSize {
+    
+    UIImage *sourceImage = image;
+    UIImage *newImage = nil;
+    
+    UIGraphicsBeginImageContext(targetSize);
+    
+    CGRect thumbnailRect = CGRectZero;
+    thumbnailRect.origin = CGPointZero;
+    thumbnailRect.size.width  = targetSize.width;
+    thumbnailRect.size.height = targetSize.height;
+    
+    [sourceImage drawInRect:thumbnailRect];
+    
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage ;
+}
+
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     if (error) {
@@ -422,15 +445,18 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         NSLog(@"%@",contextInfo);
     }
 }
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [self dismissViewControllerAnimated:YES completion:^{
         [self scrollToBottom];
     }];
 }
+
 /*!
  * emoji表情按钮点击回调
  */
+
 - (void)touchEmojiView:(UIButton *)sender
 {
     [self removeAllOtherView:RCKeyboardShowEmotionType];
@@ -540,23 +566,20 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         
         messageFrame.message = [[RCMessage alloc] initWithType:ConversationType_DISCUSSION targetId:self.discussionId direction:MessageDirection_SEND messageId:message_id content:imageMessage];
         [self.dataSource addObject:messageFrame];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSInteger index = self.dataSource.count;
-            [self sendImage:ConversationType_DISCUSSION Content:imageMessage targetId:messageFrame.message.targetId index:index-1 MessageFrame:messageFrame];
-        });
         
         [self.ChatTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_dataSource.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
         [self.ChatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_dataSource.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.2f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSInteger index = self.dataSource.count;
+            [self sendImage:ConversationType_DISCUSSION Content:imageMessage targetId:messageFrame.message.targetId index:index-1 MessageFrame:messageFrame];
+        });
     }
     NSLog(@"发送图片消息接口:%@",array);
 }
 
 - (void)sendImage:(RCConversationType)type Content:(RCImageMessage *)content targetId:(NSString *)targetId index:(NSInteger)index MessageFrame:(RCIMDiscussionMessageFrame *)msgFrame
 {
-    RCIMDiscussionCell *cell = [self.ChatTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    SDBallProgressView *ball = [self setProgress:cell.messageLabel];
     [[RCIMClient sharedRCIMClient] sendImageMessage:type targetId:targetId content:content pushContent:nil pushData:nil progress:^(int progress, long messageId) {
-        ball.progress = progress*0.01;
         NSLog(@"更新进度：%i",progress);
     } success:^(long messageId) {
         //更新一下本地的messageId号

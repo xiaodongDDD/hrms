@@ -134,8 +134,8 @@
 - (void)getImageWithAsset:(PHAsset *)asset completion:(void (^)(UIImage *image, NSDictionary *info))completion
 {
     CGSize size = [self getSizeWithAsset:asset];
-    size.width  *= 1.5;
-    size.height *= 1.5;
+//    size.width  *= 1.5;
+//    size.height *= 1.5;
     [self requestImageForAsset:asset size:size resizeMode:PHImageRequestOptionsResizeModeFast completion:completion];
 }
 @end
