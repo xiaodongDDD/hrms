@@ -2,6 +2,7 @@ package com.hand.im.contact;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.hand.im.LoginInfo;
 import com.hand.im.Util;
+import com.hand.im.bean.CheckPageSet;
 import com.hand.im.bean.OrgStruct;
 import com.hand.im.okhttp.OkHttpClientManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -83,7 +85,7 @@ public class OrgStructAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView == null) {
             if (data.get(position).getType() == OrgStruct.DEPTARTMENT) {
                 holder = new ViewHolder();
@@ -107,12 +109,24 @@ public class OrgStructAdapter extends BaseAdapter {
         if (isMemberExist(data.get(position).getId())) {
             holder.checkBox.setChecked(true);
         }
+        if(isInMemberList(data.get(position).getId())){
+            holder.checkBox.setChecked(true);
+            checkList.set(position,true);
+        }
         if (data.get(position).getType() == OrgStruct.DEPTARTMENT) {
+            if(checkList.get(position)){
+                holder.rltNextLevel.setBackgroundColor(0xFFF2F2F2);
+            }else{
+                holder.rltNextLevel.setBackgroundColor(0xFFFFFFFF);
+            }
             holder.rltNextLevel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(checkList.get(position)){
+                        return;
+                    }
                     String deptId = data.get(position).getId();
-                    refreshData(deptId);
+                    callBack.nextLevel(deptId);
                 }
             });
             holder.txtName.setText(data.get(position).getName() + "(" + data.get(position).getTotalStaffNumber() + ")");
@@ -128,7 +142,18 @@ public class OrgStructAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 setCheckStatus(view);
-
+                if(getItemViewType(position)==OrgStruct.DEPTARTMENT){
+                    if(checkList.get(position)){
+                        holder.rltNextLevel.setBackgroundColor(0xFFF2F2F2);
+                    }else{
+                        holder.rltNextLevel.setBackgroundColor(0xFFFFFFFF);
+                    }
+                }
+                if(getItemViewType(position)==OrgStruct.STAFF){
+                    if(!checkList.get(position)){
+                        refreshMemberList(data.get(position).getId(),false);
+                    }
+                }
             }
         });
         return convertView;
@@ -161,88 +186,15 @@ public class OrgStructAdapter extends BaseAdapter {
         callBack.setLoading(status);
     }
 
-    @Override
-    public void notifyDataSetChanged() {
+    public void setCheckList(){
         checkList.clear();
-        for (int i = 0; i < data.size(); i++) {
+        for(int i=0;i<data.size();i++){
             checkList.add(false);
         }
-        refreshCheckInfo();
-        super.notifyDataSetChanged();
     }
-
-    //点击下级时刷新数据
-    private void refreshData(String deptId) {
-        callBack.setCheckAll(false);
-        data.clear();
-        notifyDataSetChanged();
-        setLoading(View.VISIBLE);
-        String url = LoginInfo.baseUrl + "/hrmsv2/v2/api/dept/getDetail?" + "access_token=" + LoginInfo.access_token;
-        JSONObject object = new JSONObject();
-        try {
-            object.put("id", deptId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        OkHttpClientManager.postAsyn(url, object, new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Call call, Exception e) {
-                Log.e("error", e.toString());
-                setLoading(View.GONE);
-            }
-
-            @Override
-            public void onResponse(String response) {
-                ArrayList<OrgStruct> tempDataList = dealDataList(response);
-                data.addAll(tempDataList);
-                callBack.pushDataSet(tempDataList);
-                notifyDataSetChanged();
-                setLoading(View.GONE);
-            }
-        });
-    }
-
-    //处理获取到的数据
-    private ArrayList<OrgStruct> dealDataList(String data) {
-        ArrayList<OrgStruct> tempList = new ArrayList<OrgStruct>();
-        JSONObject object = new JSONObject();
-        JSONArray deptArray = new JSONArray();
-        JSONArray staffArray = new JSONArray();
-        try {
-            object = new JSONObject(data).getJSONObject("returnData");
-            deptArray = object.getJSONArray("childrenDept");
-            staffArray = object.getJSONArray("deptStaff");
-            callBack.setParentArray(object.getJSONArray("deptInfo"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < deptArray.length(); i++) {
-            OrgStruct orgStruct = new OrgStruct();
-            try {
-                JSONObject deptObject = deptArray.getJSONObject(i);
-                orgStruct.setId(deptObject.getString("departmentId"));
-                orgStruct.setName(deptObject.getString("departmentName"));
-                orgStruct.setTotalStaffNumber(deptObject.getString("totalStaffNumber"));
-                orgStruct.setType(OrgStruct.DEPTARTMENT);
-                tempList.add(orgStruct);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        for (int i = 0; i < staffArray.length(); i++) {
-            OrgStruct orgStruct = new OrgStruct();
-            try {
-                JSONObject staffObject = staffArray.getJSONObject(i);
-                orgStruct.setId(staffObject.getString("accountNumber"));
-                orgStruct.setName(staffObject.getString("userName"));
-                orgStruct.setAvatar(staffObject.getString("avatar"));
-                orgStruct.setType(OrgStruct.STAFF);
-                tempList.add(orgStruct);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return tempList;
+    public void setCheckList(ArrayList<Boolean> checkList){
+        this.checkList.clear();
+        this.checkList.addAll(checkList);
     }
 
     public void checkAll() {
@@ -298,11 +250,7 @@ public class OrgStructAdapter extends BaseAdapter {
             checkList.set(id, true);
             ((CheckBox) view).setChecked(true);
         }
-        if (isHaveCheck()) {
-            callBack.setOkButton(View.VISIBLE);
-        } else {
-            callBack.setOkButton(View.GONE);
-        }
+
         if (isAllChecked()) {
             callBack.setCheckAll(true);
         } else {
@@ -310,32 +258,27 @@ public class OrgStructAdapter extends BaseAdapter {
         }
         refreshCheckInfo();
     }
-
+    /**
+     *
+     * @param emp_id
+     * @param b 为true时添加，false时删除
+     */
+    private void refreshMemberList(String emp_id,boolean b){
+        if(!b){
+            CreateDisInfo.removeMember(emp_id);
+        }
+    }
     private void refreshCheckInfo() {
-        int checkNum = 0;
-        int deptNum = 0;
-        for (int i = 0; i < checkList.size(); i++) {
-            if (checkList.get(i)) {
-                if (data.get(i).getType() == OrgStruct.STAFF) {
-                    checkNum++;
-                }
-                if (data.get(i).getType() == OrgStruct.DEPTARTMENT) {
-                    deptNum++;
-                    checkNum = checkNum + Integer.valueOf(data.get(i).getTotalStaffNumber());
-                }
-            }
-        }
-        if (checkNum == 0) {
-            callBack.setCheckInfo("");
-        } else {
-            callBack.setCheckInfo(checkNum + "人，其中包含" + deptNum + "个部门");
-        }
+
+        callBack.setCheckInfo();
     }
 
     public ArrayList<Boolean> getCheckList() {
-        return checkList;
+        ArrayList<Boolean> reCheckList = new ArrayList<Boolean>();
+        reCheckList.addAll(checkList);
+        return reCheckList;
     }
-
+    //成员已经在讨论组中，邀请成员时使用
     public boolean isMemberExist(String emp_id) {
         if(emp_id!=null&&emp_id.equals(LoginInfo.userId)){
             return true;
@@ -349,5 +292,9 @@ public class OrgStructAdapter extends BaseAdapter {
             }
         }
         return false;
+    }
+    //成员在准备添加的memberList中
+    public boolean isInMemberList(String emp_id){
+        return CreateDisInfo.isInMemberList(emp_id);
     }
 }

@@ -71,6 +71,8 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
     public static final String ACTION_TO_CHAT_ACT = "toChatAct";
     public static final String ACTION_DELETE_CHAT = "deleteConversationList";
     public static final String ACTION_RETURN_CONVERSATION = "returnConversationList";
+	public static final String ACTION_LOG_OUT = "exitApp";
+	
     public static final int RESULT = 1;
     private static Context context;
     //用户信息
@@ -348,6 +350,10 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
                     //获取token 建立连接
                     connect(token);
                 }
+            }
+        }else if(ACTION_LOG_OUT.equals(action)){
+            if(RongIMClient.getInstance()!=null){
+                RongIMClient.getInstance().logout();
             }
         }
         return false;

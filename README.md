@@ -74,3 +74,26 @@ Xcode
 *angularJS项目 逻辑功能不要全部写在controller里面，因该写在service里面
 *在一个controller 里面，变量都在最上面，函数在下面，因为js执行的时候，他也会自动先去执行变量的定义
 ```
+
+
+#打包步骤
+Android测试环境
+确认cordova版本最好是6.3.1以上,jdk一定要1.7以上,Android SDK一定要API23以上
+1.修改app/config/devConfig.json  里面
+2.gulp run-dev
+3.重新下载插件
+  cordova plugin rm com.handmobile.cordovaplugin.hotpatch
+  cordova plugin add http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH/
+  
+  cordova plugin rm hand-im-plugin-device
+  cordova plugin add http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git  --variable RONG_KEY=0vnjpoadnd4cz
+  
+  cordova plugin rm jpush-phonegap-plugin
+  cordova plugin add jpush-phonegap-plugin --variable API_KEY=6e0b08078306f45ac8331d54
+  
+  cordova plugin rm cordova-plugin-youtuishare
+  cordova plugin add cordova-plugin-youtuishare
+  
+4.ionic platform add android
+5.ionic build android
+    

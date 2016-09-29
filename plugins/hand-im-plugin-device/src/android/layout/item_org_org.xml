@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="48dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
     >
     <CheckBox
         android:id="@+id/ckbCheckOrg"
@@ -27,12 +25,11 @@
     <RelativeLayout
         android:id="@+id/nextLevel"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="48dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:clickable="true"
+        android:paddingRight="10dp"
         >
         <TextView
             android:id="@+id/line_bar"
@@ -40,6 +37,8 @@
             android:layout_height="match_parent"
             android:background="#e2e2e2"
             android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             />
         <TextView
             android:layout_toRightOf="@+id/line_bar"

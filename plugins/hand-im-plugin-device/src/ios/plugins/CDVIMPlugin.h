@@ -10,6 +10,10 @@
 
 @interface CDVIMPlugin : CDVPlugin
 /*!
+ * 程序注销登陆的时候调用
+ */
+- (void)exitApp:(CDVInvokedUrlCommand *)command;
+/*!
  * 程序点击登陆的时候调用
  */
 -(void)getChatList:(CDVInvokedUrlCommand *)command;

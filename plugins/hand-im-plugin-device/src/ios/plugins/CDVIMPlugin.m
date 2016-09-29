@@ -27,6 +27,12 @@
 
 @implementation CDVIMPlugin
 
+//app注销登录
+- (void)exitApp:(CDVInvokedUrlCommand *)command
+{
+    [[RCIMClient sharedRCIMClient] logout];
+}
+
 //程序点击登陆的时候调用
 -(void)getChatList:(CDVInvokedUrlCommand *)command
 {
@@ -43,10 +49,9 @@
     [[NSUserDefaults standardUserDefaults] setObject:Token forKey:@"RCToken"];
     [[NSUserDefaults standardUserDefaults] setObject:access_token forKey:@"access_token"];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self loginRCWebService];//登陆融云
-        [self requestUserNameAndUrlById:userId ByToken:access_token];//请求登录用户信息
-    });
+    [self loginRCWebService];//登陆融云
+    [self requestUserNameAndUrlById:userId ByToken:access_token];//请求登录用户信息
+    
     [self performSelector:@selector(IMPluginDidReceiveMessage:) withObject:nil afterDelay:2.0];
 }
 
@@ -94,7 +99,8 @@
         [self.viewController presentViewController:nav animated:NO completion:nil];
         
     }else{
-        [ToastUtils showLong:@"登录聊天服务器失败,请确保您的网络可用或重新登录"];
+       // [ToastUtils showLong:@"登录聊天服务器失败,请确保您的网络可用或重新登录"];
+        [ToastUtils showLong:[NSString stringWithFormat:@"网络连接状态码：%li",isSuccessFulConnect]];
     }
 }
 
@@ -243,6 +249,11 @@
     } tokenIncorrect:^{
         //可以重新请求一次
         NSLog(@"token 无效 ，请确保生成token 使用的appkey 和初始化时的appkey 一致");
+        [[RCIMClient sharedRCIMClient] connectWithToken:userToken success:^(NSString *userId) {
+            NSLog(@"重新连接融云成功 with userId: %@", userId);
+        } error:^(RCConnectErrorCode status) {
+            NSLog(@"login error status: %ld.", (long)status);
+        } tokenIncorrect:nil];
     }];
     
 }

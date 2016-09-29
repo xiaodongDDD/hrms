@@ -42,10 +42,10 @@ static NSString * const reuseIdentifier = @"Cell";
     _imageCollectionView.dataSource = self;
     _imageCollectionView.delegate = self;
     
-    //设置长按拖动手势
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressCell:)];
-    [longPress setMinimumPressDuration:0.20f];
-    [_imageCollectionView addGestureRecognizer:longPress];
+//    //设置长按拖动手势
+//    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressCell:)];
+//    [longPress setMinimumPressDuration:0.20f];
+//    [_imageCollectionView addGestureRecognizer:longPress];
     [_imageCollectionView setShowsHorizontalScrollIndicator:NO];
     [_imageCollectionView setShowsVerticalScrollIndicator:NO];
     [self.view addSubview:_imageCollectionView];
@@ -105,7 +105,7 @@ static NSString * const reuseIdentifier = @"Cell";
         PHAsset *asset = dataSource[[selectedItems[i] integerValue]];
         CGFloat scale = 1.0;//[UIScreen mainScreen].scale
         //异步获取
-        [self requestImageForAsset:asset scale:scale resizeMode:PHImageRequestOptionsResizeModeExact completion:^(UIImage *image) {
+        [self requestImageForAsset:asset scale:scale resizeMode:PHImageRequestOptionsResizeModeFast completion:^(UIImage *image) {
                 //获取原始图   缩略图
             RCImageMessage *imageMessage = [RCImageMessage messageWithImage:image];
             imageMessage.thumbnailImage = [self scaleImage:image byScalingToSize:CGSizeMake(162, 160)];
@@ -138,6 +138,11 @@ static NSString * const reuseIdentifier = @"Cell";
         imageCell.isSelected = NO;
     }
     [imageCell setCell:dataSource[indexPath.row] Index:indexPath.row];
+    //添加手势
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressCell:)];
+    [longPress setMinimumPressDuration:0.03f];
+    [imageCell.imageView addGestureRecognizer:longPress];
+    
     imageCell.imageCellBlock = ^(NSInteger itemIndex){
     
         if ([selectedItems containsObject:@(itemIndex)]) {
@@ -248,7 +253,7 @@ static NSString * const reuseIdentifier = @"Cell";
                 cell.imageView.alpha = 0;
                 
                 // 将快照恢复到初始状态
-                [UIView animateWithDuration:0.05 animations:^{
+                [UIView animateWithDuration:0.25 animations:^{
                     snapshot.center = CGPointMake(cell.center.x-self.imageCollectionView.contentOffset.x, cell.center.y);
                     snapshot.transform = CGAffineTransformIdentity;
                     snapshot.alpha = 0.0;

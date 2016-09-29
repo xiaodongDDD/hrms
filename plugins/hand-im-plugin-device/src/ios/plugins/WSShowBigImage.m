@@ -77,7 +77,11 @@ static CGRect newFrame;
         backgroundView.alpha = 1;
         newFrame = oldframe = _imageView.frame;
     } completion:^(BOOL finished) {
-        [_imageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:image options:SDWebImageProgressiveDownload];
+        if ([url containsString:@"http://"]) {
+            [_imageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:image options:SDWebImageProgressiveDownload];
+        }else{
+            [_imageView sd_setImageWithURL:[NSURL fileURLWithPath:url] placeholderImage:image options:SDWebImageProgressiveDownload];
+        }
     }];
 }
 

@@ -145,7 +145,7 @@
 {
     UIGraphicsBeginImageContext(size);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context,[self randomColor].CGColor);
+    CGContextSetFillColorWithColor(context,[[self randomColor] colorWithAlphaComponent:0.9].CGColor);
     CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
     //写文字
     CGContextSetLineWidth(context, 1.0);

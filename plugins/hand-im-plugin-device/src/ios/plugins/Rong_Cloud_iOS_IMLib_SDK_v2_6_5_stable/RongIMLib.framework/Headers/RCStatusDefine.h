@@ -47,7 +47,8 @@ typedef NS_ENUM(NSInteger, RCConnectErrorCode) {
   /*!
    导航HTTP发送失败
 
-   @discussion 建立连接的临时错误码，SDK会做好自动重连，开发者无须处理。
+   @discussion 如果是偶尔出现此错误，SDK会做好自动重连，开发者无须处理。如果一直是这个错误，应该是您没有设置好ATS。
+   ATS默认只使用HTTPS协议，当HTTP协议被禁止时SDK会一直30004错误。您可以在我们iOS开发文档中搜索到ATS设置。
    */
   RC_NAVI_REQUEST_FAIL = 30004,
 
@@ -183,7 +184,7 @@ typedef NS_ENUM(NSInteger, RCConnectErrorCode) {
   RC_CONN_USER_BLOCKED = 31009,
 
   /*!
-   当前用户在其他设备上登陆，此设备被踢下线
+   当前用户在其他设备上登录，此设备被踢下线
    */
   RC_DISCONN_KICK = 31010,
 
@@ -344,6 +345,8 @@ typedef NS_ENUM(NSInteger, RCErrorCode) {
 typedef NS_ENUM(NSInteger, RCConnectionStatus) {
   /*!
    未知状态
+   
+   @discussion 建立连接中出现异常的临时状态，SDK会做好自动重连，开发者无须处理。
    */
   ConnectionStatus_UNKNOWN = -1,
 
@@ -388,12 +391,12 @@ typedef NS_ENUM(NSInteger, RCConnectionStatus) {
   ConnectionStatus_WIFI = 5,
 
   /*!
-   当前用户在其他设备上登陆，此设备被踢下线
+   当前用户在其他设备上登录，此设备被踢下线
    */
   ConnectionStatus_KICKED_OFFLINE_BY_OTHER_CLIENT = 6,
 
   /*!
-   当前用户在 Web 端登陆
+   当前用户在 Web 端登录
 
    @discussion 建立连接的临时状态，SDK会做好自动重连，开发者无须处理。
    */
@@ -737,7 +740,23 @@ typedef NS_ENUM(NSUInteger, RCMediaType) {
   /*!
    其他文件
    */
-  MediaType_FILE = 100
+  MediaType_FILE = 4
+};
+
+#pragma mark RCMediaType - 消息中@提醒的类型
+/*!
+ @提醒的类型
+ */
+typedef NS_ENUM(NSUInteger, RCMentionedType) {
+  /*!
+   @所有人
+   */
+  RC_Mentioned_All = 1,
+  
+  /*!
+   @部分指定用户
+   */
+  RC_Mentioned_Users = 2,
 };
 
 #pragma mark - 公众服务相关
@@ -819,5 +838,27 @@ typedef NS_ENUM(NSUInteger, RCCSModeType) {
    */
   RC_CS_RobotFirst = 3,
 };
+
+#pragma mark RCLogLevel - 日志级别
+/*!
+ 日志级别
+ */
+typedef NS_ENUM(NSUInteger, RCLogLevel) {
+  /*!
+   *  只输出错误的日志
+   */
+  RC_Log_Level_Error = 1,
+  
+  /*!
+   *  输出错误和警告的日志
+   */
+  RC_Log_Level_Warn = 2,
+  
+  /*!
+   *  输出错误、警告和一般的日志
+   */
+  RC_Log_Level_Info = 3,
+};
+
 
 #endif
