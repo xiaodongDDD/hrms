@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,9 +21,10 @@ import io.rong.imlib.RongIMClient;
  */
 public class UpdateDisNameActivity extends Activity implements View.OnClickListener{
   private EditText edtDiscussName;
-  private Button btnOK;
+  private TextView btnOK;
   private String targetId;
   private TextView txtBack;
+  private ImageView img_clear;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -32,13 +34,13 @@ public class UpdateDisNameActivity extends Activity implements View.OnClickListe
     initView();
   }
   private void initView(){
-    txtBack = (TextView)findViewById(Util.getRS("textv_back","id",getApplicationContext()));
+    img_clear = (ImageView)findViewById(Util.getRS("img_clear","id",this));
+    img_clear.setOnClickListener(this);
+    txtBack = (TextView)findViewById(Util.getRS("textv_back","id",this));
     txtBack.setOnClickListener(this);
-    btnOK = (Button)findViewById(Util.getRS("btnOK","id",getApplicationContext()));
+    btnOK = (TextView) findViewById(Util.getRS("btnOK","id",this));
     btnOK.setOnClickListener(this);
-    edtDiscussName = (EditText)findViewById(Util.getRS("newDisName","id",getApplicationContext()));
-    edtDiscussName.setFocusableInTouchMode(true);
-    edtDiscussName.requestFocus();
+    edtDiscussName = (EditText)findViewById(Util.getRS("newDisName","id",this));
     edtDiscussName.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -46,8 +48,10 @@ public class UpdateDisNameActivity extends Activity implements View.OnClickListe
       @Override
       public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if(charSequence.length()>0) {
+          img_clear.setVisibility(View.VISIBLE);
           btnOK.setVisibility(View.VISIBLE);
         }else{
+          img_clear.setVisibility(View.GONE);
           btnOK.setVisibility(View.GONE);
         }
       }
@@ -62,6 +66,7 @@ public class UpdateDisNameActivity extends Activity implements View.OnClickListe
     int id = view.getId();
     int idBtnOK = Util.getRS("btnOK","id",this);
     int idTxtBack = Util.getRS("textv_back","id",this);
+    int idImgClear = Util.getRS("img_clear","id",this);
     if(idBtnOK == id){
       final String newName = edtDiscussName.getText().toString();
       RongIMClient.getInstance().setDiscussionName(targetId, newName, new RongIMClient.OperationCallback() {
@@ -80,6 +85,9 @@ public class UpdateDisNameActivity extends Activity implements View.OnClickListe
           Toast.makeText(getApplicationContext(),"讨论组名称修改失败",Toast.LENGTH_SHORT).show();
         }
       });
+    }else if(idImgClear==id){
+      edtDiscussName.setText("");
+      img_clear.setVisibility(View.GONE);
     }else if(idTxtBack == id){
       finish();
     }

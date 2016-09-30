@@ -38,6 +38,13 @@ angular.module('messageModule')
               baseConfig,
               messageService) {
 
+      $scope.customZoom = {
+        width: document.body.scrollWidth,
+        height: document.body.scrollHeight
+      };
+
+      window.frames("sFrameName").document.body.style.zoom = "50%";
+
       $scope.loadMoreDataFlag = false;
 
       var messageDetail = $stateParams.messageDetail;
@@ -169,6 +176,7 @@ angular.module('messageModule')
 
       $scope.loadMoreData = function () {
         currentPage = currentPage + 1;
+        if(angular)
         getDetail(true);
       };
 

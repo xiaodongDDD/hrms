@@ -47,7 +47,7 @@ angular.module('messageModule')
       $scope.loadingMoreFlag = false;
 
       //分页
-      var page = 1;
+      var currentPage = 1;
 
       var messageCacheList1 = [
         {
@@ -356,7 +356,10 @@ angular.module('messageModule')
 
         deleteMessage: function (message) {
           if (message.messageType == 'MESSAGE') {
-            messageService.deletePluginMessage($scope, message);
+            message.deleteAnimate = true;
+            $timeout(function () {
+              messageService.deletePluginMessage($scope, message);
+            },0);
           } else {
             message.deleteAnimate = true;
             $timeout(function () {
@@ -368,7 +371,16 @@ angular.module('messageModule')
         },
 
         search: function (loadMoreFlag) {
-          messageService.searchEmployee($scope, page, loadMoreFlag);
+          if(loadMoreFlag){
+            currentPage = parseInt(currentPage) + 1;
+          }else{
+            currentPage = 1;
+          }
+
+          if(baseConfig.debug){
+            console.log('search.currentPage ' + currentPage);
+          }
+          messageService.searchEmployee($scope, currentPage, loadMoreFlag);
         },
 
         goMessageDetail: function (messageDetail) {

@@ -258,9 +258,9 @@ public class HandMulChatContentAdapter extends BaseAdapter {
       }else if(date.getMonth() != preDate.getMonth()){
         sd = new SimpleDateFormat("MM-dd");
       }else if(date.getDate()!=preDate.getDate()){
-        sd = new SimpleDateFormat("MM-dd hh:mm");
+        sd = new SimpleDateFormat("MM-dd HH:mm");
       }else{
-        sd = new SimpleDateFormat("hh:mm");
+        sd = new SimpleDateFormat("HH:mm");
       }
     }
     rt = sd.format(date);

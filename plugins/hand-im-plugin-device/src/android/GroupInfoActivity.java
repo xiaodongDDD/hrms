@@ -193,7 +193,7 @@ public class GroupInfoActivity extends Activity implements CompoundButton.OnChec
     GroupArray[i] = discussion.getMemberIdList().get(i);
       data.add(userInfo);
     }
-    txtGroupNo.setText(data.size()+"人");
+    txtGroupNo.setText("("+data.size()+"人)");
     data.add(new UserInfo());
     data.add(new UserInfo());
 

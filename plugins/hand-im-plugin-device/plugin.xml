@@ -96,7 +96,7 @@
 	<source-file src="src/android/drawable-hdpi/avatar_default.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/btn_next.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/group_add.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-xxhdpi/group_info.png" target-dir="res/drawable-xxhdpi"/>
+	<source-file src="src/android/drawable-hdpi/group_info.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/search.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/arrow_back.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/check.png" target-dir="res/drawable-hdpi"/>
@@ -108,6 +108,7 @@
 	<source-file src="src/android/drawable-hdpi/project_icon_in.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/project_icon_out.png" target-dir="res/drawable-hdpi"/>
 	<source-file src="src/android/drawable-hdpi/hand_icon.png" target-dir="res/drawable-hdpi"/>
+	<source-file src="src/android/drawable-hdpi/txt_clear.png" target-dir="res/drawable-hdpi"/>
 	
 	
 	<source-file src="src/android/layout/activity_contact.xml" target-dir="res/layout"/>

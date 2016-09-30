@@ -46,7 +46,7 @@
 #define WXAppSecret @"35b235f667c83f623667ecce678944cd"
 
 //QQ
-#define QQAppID @"1101255276"
+#define QQAppID @"1105645417"
 #define QQURI @"http://youtui.mobi"
 
 //人人

@@ -139,6 +139,7 @@ angular.module('applicationModule')
         }
       }
 
+      $scope.myPrsonalApplicationFlag = $stateParams.myPrsonalApplicationFlag;
       $scope.showBackbtn = true;
       $scope.currentDetail = $stateParams.detail; //传过来的数据块
       var detail = $stateParams.detail;//传过来的数据块
