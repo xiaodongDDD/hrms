@@ -97,7 +97,7 @@ angular.module('myInfoModule')
       };
 
       $scope.nextTime=function(){
-        hmsPopup.showPopup("本功能下一版本上线");
+        hmsPopup.showPopup("敬请期待");
       };
 
       $scope.checkHelp=function(){
