@@ -7,7 +7,7 @@
     </div>
     <h1 class="title" ng-bind="detailTitle"></h1>
     <div class="buttons">
-      <button class="button button-clear" style="font-size: 26px">
+      <button class="button button-clear" style="font-size: 24px">
         <i class="ion-ios-help-outline"></i>
       </button>
     </div>
@@ -15,6 +15,11 @@
   <div class="bar bar-subheader"
        style="padding:0px;height:1px; background: -webkit-linear-gradient(left,#1D4D95,#6BB9F0)"></div>
   <ion-content>
+
+    <!--class="has-header no-padding" overflow-scroll="true" scroll="true"
+    <iframe name="sFrameName"
+            ng-style="customZoom" src="http://ehrbpm.minthgroup.com/service/mobileservice/GetFormContent?languagetype=zh-CN&siteCode=Local&ValidToken=1&LogonId=minth-global\\31210&formApproveID=MinTH.FMAP.1633004&formkind=HCM.FORM.1&formno=345454"></iframe>
+    -->
     <div class="message-block" ng-repeat="messageDetail in messageDetailList" ng-click="readMessage(messageDetail)">
       <div class="message-time-line" ng-bind="messageDetail.sendTime">
       </div>

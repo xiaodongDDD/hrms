@@ -93,7 +93,7 @@ Android测试环境
   cordova plugin add jpush-phonegap-plugin --variable API_KEY=6e0b08078306f45ac8331d54
   
   cordova plugin rm cordova-plugin-youtuishare
-  cordova plugin add cordova-plugin-youtuishare
+  cordova plugin add http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git
   
 4.ionic platform add android
 5.ionic build android
