@@ -82,7 +82,7 @@ angular.module('HmsModule')
             else if (status == '404') {
               hmsPopup.showShortCenterToast('后端服务器请求失败,请联系管理员!');
             }
-            else{
+            else {
               hmsPopup.showShortCenterToast('处理请求失败,请确认网络连接是否正常,或者联系管理员!');
             }
           });
@@ -126,7 +126,7 @@ angular.module('HmsModule')
         $ionicLoading.show({
           template: '<ion-spinner icon="ios" class="spinner spinner-ios spinner-stable"></ion-spinner>' +
           '<div style="color: white;font-size: 12px;text-align: center;height:25px;line-height: 25px;">' + content + '</div>',
-          noBackdrop:true
+          noBackdrop: true
         });
       };
       this.hideLoading = function () {
@@ -245,21 +245,24 @@ angular.module('HmsModule')
             okText: '确定',
             okType: 'button-cux-popup-confirm'
           });
-          confirmPopup.then(function(res){
-            if(res){
-             onConfirm(res);
-            }else{
-
+          confirmPopup.then(function (res) {
+            if (baseConfig.debug) {
+              console.log('this.confirm.res ' + angular.toJson(res))
             }
+            var index = 0;
+            if (res) {
+              index = 1;
+            }
+            onConfirm(index);
           });
         } else {
           navigator.notification.confirm(
             message, // message
             function (index) {
-              onConfirm(index-1);
+              onConfirm(index - 1);
             }, // callback to invoke with index of button pressed
             title, // title
-            ['取消' , '确定'] // buttonLabels
+            ['取消', '确定'] // buttonLabels
           );
         }
       };

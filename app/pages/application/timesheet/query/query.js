@@ -122,8 +122,14 @@ angular.module('applicationModule')
         }
       ];
       $scope.timesheetProcessMode = timesheetTitle;
+
+      //处理手势冲突,是否打开滑动填写兼容
       $scope.slippingFlag = false;
+
+      //设置界面的滑动填写功能
       $scope.slippingEnableFlag = true;
+
+      //开启滑动填写功能
       $scope.startSlippingFlag = false;
 
       var clientWidth = document.body.clientWidth;
@@ -242,7 +248,7 @@ angular.module('applicationModule')
         var monthParams = year + '' + formatMonth(month);
         fetchCalendar(monthParams);
         generateAllowance(monthParams);
-      }
+      };
 
 
       var initCalendarArray = [];
@@ -542,6 +548,13 @@ angular.module('applicationModule')
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
       };
 
+      var stopUISlipping = function () {
+        $scope.slippingFlag = false;
+        $scope.startSlippingFlag = false;
+        $scope.slippingEnableFlag = false;
+        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
+      };
+
       var clearCalendarCache = function () {
         angular.forEach($scope.calendar, function (data) {
           angular.forEach(data.list, function (list) {
@@ -771,8 +784,10 @@ angular.module('applicationModule')
 
       $ionicGesture.on("touch", function (e) {
         copyFromDay = {};
-        $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
-        $scope.startSlippingFlag = true;
+        if($scope.slippingEnableFlag){
+          $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
+          $scope.startSlippingFlag = true;
+        }
         if ($scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
           if (baseConfig.debug) {
@@ -854,8 +869,8 @@ angular.module('applicationModule')
       };
 
       $scope.changeSlippingMode = function () {
-        if ($scope.slippingFlag && $scope.slippingEnableFlag && $scope.startSlippingFlag) {
-          stopSlipping();
+        if (/*$scope.slippingFlag && $scope.startSlippingFlag && */$scope.slippingEnableFlag) {
+          stopUISlipping();
         } else {
           startSlipping();
         }

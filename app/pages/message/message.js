@@ -11,6 +11,7 @@ angular.module('messageModule')
     '$ionicScrollDelegate',
     '$ionicActionSheet',
     '$cordovaActionSheet',
+    '$location',
     'imService',
     'checkVersionService',
     'baseConfig',
@@ -25,6 +26,7 @@ angular.module('messageModule')
               $ionicScrollDelegate,
               $ionicActionSheet,
               $cordovaActionSheet,
+              $location,
               imService,
               checkVersionService,
               baseConfig,
@@ -423,6 +425,27 @@ angular.module('messageModule')
       if (baseConfig.debug) {
         console.log('messageCtrl.enter');
       }
+
+      $ionicPlatform.registerBackButtonAction(function (e) {
+        if ($location.path() == '/tab/message') {
+          if(!$scope.showFilter){
+            if ($rootScope.backButtonPressedOnceToExit) {
+              ionic.Platform.exitApp();
+            } else {
+              $rootScope.backButtonPressedOnceToExit = true;
+              hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
+              setTimeout(function () {
+                $rootScope.backButtonPressedOnceToExit = false;
+              }, 1500);
+            }
+          }
+          else {
+            $scope.messageHandle.cancel();
+          }
+        }
+        e.preventDefault();
+        return false;
+      }, 101);
 
       $scope.$on('$ionicView.enter', function (e) {
         //将页面的导航bar设置成白色

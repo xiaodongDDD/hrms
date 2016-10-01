@@ -5,8 +5,11 @@
         <span class="back-text">返回</span>
       </button>
     </div>
-    <h1 class="title" ng-click="openTimesheetMode($event)">{{timesheetProcessMode}}&nbsp;<i
-      class="ion-chevron-down"></i>
+    <h1 class="title">
+      <span ng-click="openTimesheetMode($event)">
+        {{timesheetProcessMode}}
+      </span>
+      <i class="ion-chevron-down" ng-click="openTimesheetMode($event)"></i>
     </h1>
     <div class="buttons" ng-click="openPopover($event)">
       <button class="button button-clear">
@@ -52,7 +55,7 @@
         </div>
       </div>
       <div class="allowance">
-        <div class="batch-process" ng-class="{true:'selected',false:''}[slippingFlag&&slippingEnableFlag&&startSlippingFlag]"
+        <div class="batch-process" ng-class="{true:'selected',false:''}[slippingEnableFlag]"
              ng-click="changeSlippingMode()">
         </div>
 
