@@ -177,23 +177,33 @@ static NSString *reusableCellID = @"RCIMDiscussionGroupAddMemberCell";
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     [self connectToService:searchController.searchBar.text];
-
+    
     NSLog(@"changed");
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)willDismissSearchController:(UISearchController *)searchController
 {
-    for (id searchbuttons in [searchBar.subviews[0] subviews])
-        //只需在此处修改即可
+    [searchController.searchBar setBackgroundImage:nil forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+}
+
+
+#pragma mark 搜索框的代理方法，搜索输入框获得焦点（聚焦）
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    //[UIImage imageNamed:@"NavBar@3x"]
+    [searchBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor] size:CGSizeMake(screenWidth, 64)] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    // 修改UISearchBar右侧的取消按钮文字颜色及背景图片
+    for (UIView *searchbuttons in [searchBar subviews][0].subviews){
+        NSLog(@"searchbuttons:%@",searchbuttons);
         if ([searchbuttons isKindOfClass:[UIButton class]]) {
             UIButton *cancelButton = (UIButton*)searchbuttons;
-            if (searchBar.text.length==0) {
-                [cancelButton setTitle:@"返回"forState:UIControlStateNormal];
-            }else{
-                [cancelButton setTitle:@"确定"forState:UIControlStateNormal];
-            }
+            // 修改文字颜色
+            [cancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+            [cancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+            
         }
-    NSLog(@"textDidChange");
+    }
 }
 
 
@@ -326,10 +336,17 @@ static NSString *reusableCellID = @"RCIMDiscussionGroupAddMemberCell";
 }
 
 #pragma mark -RCIMDiscussionGroupAllMembersListDelegate
-- (void)didSelectCell:(NSDictionary *)info
+- (void)didSelectCell:(NSDictionary *)info isSelected:(BOOL)selected
 {
     self.navigationItem.rightBarButtonItem.enabled = YES;
-    [self.selectedMembers addObject:info];
+    
+    if (selected) {
+        if (![self.selectedMembers containsObject:info]) {
+            [self.selectedMembers addObject:info];
+        }
+    }else{
+        [self.selectedMembers removeObject:info];
+    }
     [self.tableView reloadData];
 }
 

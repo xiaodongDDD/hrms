@@ -45,6 +45,7 @@ static NSArray *emojiList = nil;
         self.messageLabel.numberOfLines = 0;
         [self.messageLabel setFont:[UIFont systemFontOfSize:textMesaageFont]];
         [self.messageLabel setTextContainerInset:UIEdgeInsetsMake( textMesaageFont/2.0, textLeftRightSpace, textMesaageFont/2.0, textLeftRightSpace)];
+        self.messageLabel.lineBreakMode = NSLineBreakByCharWrapping;
         [self.messageLabel.layer setCornerRadius:18];//聊天消息圆角度数
         [self.messageLabel.layer setMasksToBounds:YES];
         [self.messageLabel setTextAlignment:NSTextAlignmentLeft];

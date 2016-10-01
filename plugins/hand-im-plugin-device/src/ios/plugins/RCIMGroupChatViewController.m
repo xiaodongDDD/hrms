@@ -94,10 +94,6 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0],NSForegroundColorAttributeName:[UIColor colorWithRed:74/255.0 green:74/255.0 blue:74/255.0 alpha:1.0]}];
     
     
-    //监听键盘变动
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillDismiss:) name:UIKeyboardWillHideNotification object:nil];
-    
     //设置导航下面渐变色
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor] size:CGSizeMake(screenWidth, 44+22)]
                                                  forBarPosition:UIBarPositionAny
@@ -117,6 +113,12 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     } error:^(RCErrorCode status) {
         NSLog(@"%@-获取讨论组更新信息失败",self.class);
     }];
+    
+    //监听键盘变动
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillDismiss:) name:UIKeyboardWillHideNotification object:nil];
+    //设置通知监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedMessageNotification:) name:RCIMLibReceivedMessageNotification object:nil];
 }
 
 //重写控制状态栏方法
@@ -162,9 +164,6 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         }
     }];
     
-    
-    //设置通知监听
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedMessageNotification:) name:RCIMLibReceivedMessageNotification object:nil];
     
     [self setUI];
     [self performSelector:@selector(scrollToBottom) withObject:nil afterDelay:0.2f];
@@ -412,6 +411,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         imageMessage.imageUrl = [NSString stringWithFormat:@"%lf",[NSDate date].timeIntervalSinceNow];
         [self clickedSendImageMessage:@[imageMessage]];
         dispatch_async(dispatch_get_main_queue(), ^{
+            _inputBarControl.frame = CGRectMake(0, self.view.bounds.size.height-80, screenWidth, 80);
             UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
         });
     }];

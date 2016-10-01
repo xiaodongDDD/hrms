@@ -1,52 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#FFFFFF"
-              >
-    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    >
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="48dp"
+        android:background="@drawable/nav_bar"
         android:gravity="center_vertical"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
         <TextView
             android:id="@+id/textv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#24559C"
-            android:text="返回"
-            android:textSize="16sp"
-            android:gravity="center_vertical"
-            android:drawableLeft="@drawable/back"
-            android:drawableStart="@drawable/back"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            />
+            android:drawableLeft="@drawable/white_back"
+            android:drawableStart="@drawable/white_back"
+            android:gravity="center_vertical"
+            android:text="消息"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/textv_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_centerInParent="true"
             android:text="姓名"
-            android:gravity="center"
-            android:textSize="19sp"
-            android:textColor="#4A4A4A"/>
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
         <ImageView
             android:id="@+id/imgv_call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:src="@drawable/dial_2x"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp"
-            />
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#FF003CA7"/>
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="16dp"/>
+    </RelativeLayout>
     <ListView
         android:id="@+id/listv_content"
         android:layout_width="match_parent"
@@ -69,8 +65,8 @@
         android:gravity="center"
         >
         <View android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:background="#FFD2D2D2"/>
+            android:layout_height="1dp"
+            android:background="#FFD2D2D2"/>
         <EditText
             android:id="@+id/edit_content"
             android:layout_width="match_parent"
@@ -85,59 +81,59 @@
             android:textColorHint="#FFD2D2D2"
             android:background="#FFFFFFFF"
             android:layout_gravity="bottom"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="5dp">
+        <ImageView
+            android:id="@+id/imgv_emjoe"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="5dp">
-            <ImageView
-                android:id="@+id/imgv_emjoe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/selector_emjoe"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
-                />
-            <ImageView
-                android:id="@+id/imgv_record"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/selector_record"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
-                />
-            <ImageView
-                android:id="@+id/imgv_album"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/selector_album"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
-                />
-            <ImageView
-                android:id="@+id/imgv_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/selector_camera"
-                />
-            <TextView
-                android:id="@+id/btn_send"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:background="#FFFFFF"
-                android:text="发送"
-                android:textColor="#FFD2D2D2"
-                android:paddingLeft="20dp"
-                android:paddingStart="20dp"
-                android:paddingRight="10dp"
-                android:paddingEnd="10dp"
-                />
-        </LinearLayout>
+            android:src="@drawable/selector_emjoe"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            />
+        <ImageView
+            android:id="@+id/imgv_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_record"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            />
+        <ImageView
+            android:id="@+id/imgv_album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_album"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            />
+        <ImageView
+            android:id="@+id/imgv_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_camera"
+            />
+        <TextView
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:text="发送"
+            android:textColor="#FFD2D2D2"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            />
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_facechoose"
         android:layout_width="match_parent"

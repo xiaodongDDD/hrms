@@ -132,6 +132,9 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     
     //设置通知监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceivedMessageNotification:) name:RCIMLibReceivedMessageNotification object:nil];
+    //监听键盘变动
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillDismiss:) name:UIKeyboardWillHideNotification object:nil];
 }
 //重写控制状态栏方法
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -152,9 +155,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
     [super viewDidLoad];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    //监听键盘变动
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillDismiss:) name:UIKeyboardWillHideNotification object:nil];
+    
     //设置左右导航按钮
     UIBarButtonItem *left = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     self.navigationItem.leftBarButtonItem = left;//mobile@3x.png
@@ -412,6 +413,7 @@ static NSString *voiceMessageCellReusableId = @"voiceMessageCellReusableId";
         [self clickedSendImageMessage:@[imageMessage]];
         dispatch_async(dispatch_get_main_queue(), ^{
             UIImageWriteToSavedPhotosAlbum(image, self, nil, NULL);
+            _inputBarControl.frame = CGRectMake(0, self.view.bounds.size.height-80, screenWidth, 80);
         });
     }];
     

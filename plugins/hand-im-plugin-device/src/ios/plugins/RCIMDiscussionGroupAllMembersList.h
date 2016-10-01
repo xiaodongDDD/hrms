@@ -12,7 +12,7 @@
 
 @optional
 - (void)ViewControllerWillDrag;
-- (void)didSelectCell:(NSDictionary *)info;
+- (void)didSelectCell:(NSDictionary *)info isSelected:(BOOL)selected;
 @end
 
 @interface RCIMDiscussionGroupAllMembersList : UITableViewController

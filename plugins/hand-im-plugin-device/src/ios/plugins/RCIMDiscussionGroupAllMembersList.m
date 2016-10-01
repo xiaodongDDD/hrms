@@ -15,12 +15,19 @@
 @interface RCIMDiscussionGroupAllMembersList ()<MJRefreshBaseViewDelegate>
 @property (nonatomic,strong)MJRefreshFooterView *footerView;
 @property (nonatomic,strong)NSString *lastUpdateTime;
+@property (nonatomic,strong)NSMutableArray *filtArray;
 @end
 static NSInteger page ;
 @implementation RCIMDiscussionGroupAllMembersList
 static NSString *reusableCellId = @"reusableCell";
 
-
+- (NSMutableArray *)filtArray
+{
+    if (_filtArray==nil) {
+        _filtArray = [NSMutableArray array];
+    }
+    return _filtArray;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.rowHeight = 80;
@@ -100,17 +107,30 @@ static NSString *reusableCellId = @"reusableCell";
         cell = [[RCIMDiscussionGroupAllMembersListCell alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 80)];
     }else{
         cell = [tableView dequeueReusableCellWithIdentifier:reusableCellId forIndexPath:indexPath];
-
+        
     }
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
+    
+    NSDictionary *person = self.dataList[indexPath.section];
+    if ([self.filtArray containsObject:person]) {
+        cell.isSelected = YES;
+    }else{
+        cell.isSelected = NO;
+    }
+    if(userId.integerValue==[person[@"emp_code"] integerValue]){
+        cell.selctedImageV.image = [UIImage imageNamed:@"btn_unselected@3x"];
+    }
+    
     NSString *emp_name = [self.dataList[indexPath.section] objectForKey:@"emp_name"];//name
     NSString *emp_code = [self.dataList[indexPath.section] objectForKey:@"emp_code"];//id
     NSString *email = [self.dataList[indexPath.section] objectForKey:@"email"];//email
     NSString *avatar = [self.dataList[indexPath.section] objectForKey:@"avatar"];//img
-
+    
     [cell setCell:avatar Name:emp_name Emp_code:emp_code Email:email];
     NSLog(@"cell:%@,name:%@,%@,%@,%@",cell,emp_name,emp_code,email,avatar);
     return cell;
 }
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self.delegate ViewControllerWillDrag];
@@ -118,10 +138,22 @@ static NSString *reusableCellId = @"reusableCell";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"--indexpath:%li,%@",indexPath.row,self.dataList);
-    
-    [self.delegate didSelectCell:self.dataList[indexPath.section]];
-    [self.dataList removeObjectAtIndex:indexPath.section];
-    [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationTop];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    RCIMDiscussionGroupAllMembersListCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"userId"];
+    NSDictionary *person = self.dataList[indexPath.section];
+    if ([[person objectForKey:@"emp_code"] integerValue]!=userId.integerValue) {
+        cell.isSelected = !cell.isSelected;
+        if (cell.isSelected) {
+            [self.delegate didSelectCell:self.dataList[indexPath.section] isSelected:YES];
+            if (![self.filtArray containsObject:person]) {
+                [self.filtArray addObject:person];
+            }
+        }else{
+            [self.filtArray removeObject:person];
+            [self.delegate didSelectCell:self.dataList[indexPath.section] isSelected:NO];
+        }
+    }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 2.5;

@@ -1105,7 +1105,7 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
         return true;
       }
     }
-    return true;
+     return super.onKeyDown(keyCode,event);
   }
 
   private void sendMessage(final MessageContent msg) {

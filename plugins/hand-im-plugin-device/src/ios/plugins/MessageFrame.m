@@ -22,8 +22,7 @@ static NSArray *emojiList =nil;
     if (message.messageDirection==MessageDirection_RECEIVE) {
 
         //消息接受
-        CGSize timeSize  = [[TimeTool timeStr:message.receivedTime] boundingRectWithSize:[UIScreen mainScreen].bounds.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0]} context:nil].size;
-        self.timeLineSize = CGRectMake(([UIScreen mainScreen].bounds.size.width-timeSize.width)/2, iconLeftSpace, timeSize.width, 13);
+        self.timeLineSize = CGRectMake(0, iconLeftSpace, screenWidth, 13);
         self.iconSize = CGRectMake(iconLeftSpace, timeLineBottomSpace+CGRectGetMaxY(self.timeLineSize), iconSize_iphone6.width, iconSize_iphone6.height);
         
         if ([message.content  isKindOfClass:[RCTextMessage class]]) {
@@ -103,9 +102,7 @@ static NSArray *emojiList =nil;
 
     }else{
         //消息发送
-        CGSize timeSize  = [[TimeTool timeStr:message.sentTime] boundingRectWithSize:[UIScreen mainScreen].bounds.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0]} context:nil].size;
-        self.timeLineSize = CGRectMake(([UIScreen mainScreen].bounds.size.width-timeSize.width)/2, iconLeftSpace, timeSize.width, 13);
-
+        self.timeLineSize = CGRectMake(0, iconLeftSpace, screenWidth, 13);
         self.iconSize = CGRectMake([UIScreen mainScreen].bounds.size.width-iconSize_iphone6.width-iconLeftSpace, timeLineBottomSpace+CGRectGetMaxY(self.timeLineSize), iconSize_iphone6.width, iconSize_iphone6.height);
         
         if ([message.content  isKindOfClass:[RCTextMessage class]]) {

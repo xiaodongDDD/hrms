@@ -14,5 +14,7 @@ typedef void(^RCIMDiscussionGroupAllMembersListCellBlock)(UIImage *Image,NSStrin
 @property (nonatomic,strong)UIImageView *imageV;
 @property (nonatomic,strong)UILabel *name_label;
 @property (nonatomic,strong)UILabel *email_label;
+@property (nonatomic,strong)UIImageView *selctedImageV;
+@property (nonatomic,assign)BOOL isSelected;
 - (void)setCell:(NSString *)imageUrlStr Name:(NSString *)nameStr Emp_code:(NSString *)code Email:(NSString *)email ;
 @end

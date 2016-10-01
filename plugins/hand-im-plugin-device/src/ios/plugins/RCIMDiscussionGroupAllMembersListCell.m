@@ -33,8 +33,21 @@
         [self.layer setShadowOffset:CGSizeMake(0, 1.0)];
         [self.layer setShadowRadius:10.0];
         [self.layer setShadowOpacity:0.6];
+        self.selctedImageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+        self.selctedImageV.image = [UIImage imageNamed:@"btn_original_circle@3x.png"];
+        self.accessoryView = self.selctedImageV;
     }
     return self;
+}
+
+- (void)setIsSelected:(BOOL)isSelected
+{
+    _isSelected = isSelected;
+    if (isSelected) {//btn_selected@3x
+        self.selctedImageV.image = [UIImage imageNamed:@"select_highlight"];
+    }else{
+        self.selctedImageV.image = [UIImage imageNamed:@"btn_original_circle@3x.png"];
+    }
 }
 
 -(void)setCell:(NSString *)imageUrlStr Name:(NSString *)nameStr Emp_code:(NSString *)code Email:(NSString *)email 

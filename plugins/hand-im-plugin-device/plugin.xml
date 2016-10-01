@@ -606,7 +606,10 @@
     <resource-file src="src/ios/plugins/images/buddy_header_icon_group@2x.png"/>
     <resource-file src="src/ios/plugins/images/add_members@2x.png"/>
     <resource-file src="src/ios/plugins/images/add_icon_friend@2x.png"/>
-    
+
+    <resource-file src="src/ios/plugins/images/btn_original_circle@3x.png"/>
+<resource-file src="src/ios/plugins/images/btn_unselected@3x.png"/>
+<resource-file src="src/ios/plugins/images/select_highlight.png"/>
     
     <source-file src="src/ios/plugins/libopencore-amrnb.a" framework="true" />
     <resource-file src="src/ios/plugins/RCConfig.plist" />
