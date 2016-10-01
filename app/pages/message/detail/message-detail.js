@@ -43,7 +43,7 @@ angular.module('messageModule')
         height: document.body.scrollHeight
       };
 
-      window.frames("sFrameName").document.body.style.zoom = "50%";
+      //window.frames("sFrameName").document.body.style.zoom = "50%";
 
       $scope.loadMoreDataFlag = false;
 

@@ -12,6 +12,8 @@ angular.module('messageModule')
     '$ionicActionSheet',
     '$cordovaActionSheet',
     '$location',
+    '$rootScope',
+    '$ionicHistory',
     'imService',
     'checkVersionService',
     'baseConfig',
@@ -27,6 +29,8 @@ angular.module('messageModule')
               $ionicActionSheet,
               $cordovaActionSheet,
               $location,
+              $rootScope,
+              $ionicHistory,
               imService,
               checkVersionService,
               baseConfig,
@@ -310,7 +314,9 @@ angular.module('messageModule')
           $scope.employeeList = [];
           $scope.loadMoreFlag = false;
           $scope.empFilterValue = '';
-          $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
+          $timeout(function () {
+            $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
+          },0);
         },
 
         chatWithNative: function (item) {
@@ -427,6 +433,11 @@ angular.module('messageModule')
       }
 
       $ionicPlatform.registerBackButtonAction(function (e) {
+
+        if(baseConfig.debug){
+          console.log('messageCtrl.$ionicPlatform.registerBackButtonAction');
+        }
+
         if ($location.path() == '/tab/message') {
           if(!$scope.showFilter){
             if ($rootScope.backButtonPressedOnceToExit) {
@@ -441,7 +452,22 @@ angular.module('messageModule')
           }
           else {
             $scope.messageHandle.cancel();
+            $scope.$apply();
           }
+        }else if ($location.path() == '/tab/application' || $location.path() == '/tab/contact' ||
+          $location.path() == '/tab/myInfo' || $location.path() == '/login' || $location.path() == '/gesture-lock') {
+          if ($rootScope.backButtonPressedOnceToExit) {
+            ionic.Platform.exitApp();
+          } else {
+            $rootScope.backButtonPressedOnceToExit = true;
+            hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
+            setTimeout(function () {
+              $rootScope.backButtonPressedOnceToExit = false;
+            }, 1500);
+          }
+        }
+        else if ($ionicHistory.backView() && $location.path() != '/tab/message') {
+          $ionicHistory.goBack();
         }
         e.preventDefault();
         return false;
