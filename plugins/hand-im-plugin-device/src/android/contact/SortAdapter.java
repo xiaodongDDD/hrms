@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.hand.im.LoginInfo;
 import com.hand.im.Util;
 import com.hand.im.okhttp.OkHttpClientManager;
@@ -31,8 +30,8 @@ public class SortAdapter extends BaseAdapter {
     private List<ImageView> imgList = new ArrayList<ImageView>();
     private Button btnOK;
     private DisplayImageOptions options;
-	private String[] GroupArray;
-	
+    private String[] GroupArray;
+
     public SortAdapter(Context context, List<PersonBean> persons, Button btnOK) {
         this.context = context;
         this.persons = persons;
@@ -43,7 +42,7 @@ public class SortAdapter extends BaseAdapter {
         }
         initOptions();
     }
-	public SortAdapter(Context context,List<PersonBean> persons,Button btnOK,String[] GroupArray){
+    public SortAdapter(Context context,List<PersonBean> persons,Button btnOK,String[] GroupArray){
         this.context = context;
         this.persons = persons;
         this.btnOK = btnOK;
@@ -112,17 +111,19 @@ public class SortAdapter extends BaseAdapter {
             viewholder.tv_tag.setVisibility(View.GONE);
             viewholder.line.setVisibility(View.VISIBLE);
         }
-		 if(person.getId().equals(LoginInfo.userId)||isMemberExist(person.getId())){
+        if(person.getId().equals(LoginInfo.userId)||isMemberExist(person.getId())){
             viewholder.checkToGroup.setVisibility(View.INVISIBLE);
         }else{
             viewholder.checkToGroup.setVisibility(View.VISIBLE);
         }
+
         viewholder.tv_name.setText(person.getName());
         if (person.getAvatar() != null&&!person.getAvatar().equals("")) {
             ImageLoader.getInstance().displayImage(person.getAvatar(), viewholder.imgAvatar, options);
         }else{
             viewholder.imgAvatar.setImageResource(Util.getRS("head_1","drawable",context));
         }
+
         viewholder.checkToGroup.setChecked(checkList.get(position));
         viewholder.checkToGroup.setTag(position);
         viewholder.checkToGroup.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +190,6 @@ public class SortAdapter extends BaseAdapter {
         for (int i = 0; i < checkList.size(); i++) {
             if (checkList.get(i)) {
                 members.add(persons.get(i).getId());
-                Log.e("members",persons.get(i).getId());
             }
         }
         return members;
@@ -206,7 +206,7 @@ public class SortAdapter extends BaseAdapter {
         }
         return title;
     }
-	public boolean isMemberExist(String id){
+    public boolean isMemberExist(String id){
         if(GroupArray==null||GroupArray.length==0){
             return false;
         }

@@ -167,7 +167,7 @@ public class ContactSearchActivity extends Activity implements View.OnClickListe
         if(id == idBtnOK){
             showProgressDialog(true);
             btnOK.setClickable(false);
-            CreateDisInfo.getMemberList(new CreateDisInfo.CreateCallBack<ArrayList<String>>() {
+            CreateDisInfo.getMemberList(new CreateDisInfo.CreateCallBack<ArrayList<PersonBean>>() {
                 @Override
                 public void error(String msg) {
                     btnOK.setClickable(true);
@@ -176,7 +176,7 @@ public class ContactSearchActivity extends Activity implements View.OnClickListe
                     Log.e("error",msg);
                 }
                 @Override
-                public void response(ArrayList<String> members) {
+                public void response(ArrayList<PersonBean> members) {
                     toCreateOrInvite(members);
                     btnOK.setClickable(true);
                     showProgressDialog(false);
@@ -199,7 +199,7 @@ public class ContactSearchActivity extends Activity implements View.OnClickListe
             progressDialog.dismiss();
         }
     }
-    private void toCreateOrInvite(ArrayList<String> members){
+    private void toCreateOrInvite(ArrayList<PersonBean> members){
         DiscussionManager dm = new DiscussionManager(ContactSearchActivity.this);
         final int type;
         if(targetId!=null&&!targetId.equals("")){
@@ -215,10 +215,10 @@ public class ContactSearchActivity extends Activity implements View.OnClickListe
             }
 
             @Override
-            public void onReponse(String id,String title) {
+            public void onReponse(String id,String title,String url) {
                 btnOK.setClickable(true);
                 if(type == DiscussionManager.CREATE){
-                    afterCreate(id,title);
+                    afterCreate(id,title,url);
                 }else{
                     afterInvite();
                 }
@@ -226,10 +226,11 @@ public class ContactSearchActivity extends Activity implements View.OnClickListe
         },type, members,targetId,GroupArray);
     }
 
-    private void afterCreate(String id,String title){
+    private void afterCreate(String id,String title,String url){
         Intent intent = new Intent();
         intent.putExtra("id",id);
         intent.putExtra("title",title);
+        intent.putExtra("url",url);
         setResult(203,intent);
         finish();
     }

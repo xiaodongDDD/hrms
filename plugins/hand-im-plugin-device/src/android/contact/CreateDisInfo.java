@@ -7,6 +7,7 @@ import com.hand.im.bean.CheckPageSet;
 import com.hand.im.bean.OrgStruct;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
 public class CreateDisInfo {
     public static List<CheckPageSet> historyCheckPageSet = new ArrayList<CheckPageSet>();
     public static int currentPageNo = -1;
-    public static List<String> memberList = new ArrayList<String>();
+    public static List<PersonBean> memberList = new ArrayList<PersonBean>();
 
     public static void reset() {
         historyCheckPageSet.clear();
@@ -41,22 +42,26 @@ public class CreateDisInfo {
 
     public static boolean isInMemberList(String emp_id) {
         for (int i = 0; i < memberList.size(); i++) {
-            if (emp_id.equals(memberList.get(i))) {
+            if (emp_id.equals(memberList.get(i).getId())) {
                 return true;
             }
         }
         return false;
     }
 
-    public static void addMember(String emp_id) {
-        if (!isMenberExist(emp_id)) {
-            memberList.add(emp_id);
+    public static void addMember(PersonBean person) {
+        if (!isMenberExist(person.getId())) {
+            memberList.add(person);
         }
     }
 
-    public static void removeMember(String emp_id) {
-        if (isMenberExist(emp_id)) {
-            memberList.remove(emp_id);
+    public static void removeMember(PersonBean person) {
+        Iterator<PersonBean> it = memberList.iterator();
+        while ((it.hasNext())){
+            PersonBean p = it.next();
+            if(p.getId().equals(person.getId())){
+                it.remove();
+            }
         }
     }
 
@@ -88,7 +93,7 @@ public class CreateDisInfo {
 
     private static int totalNum = 0;
     private static int loadNum = 0;
-    private static ArrayList<String> rtMemberList;
+    private static ArrayList<PersonBean> rtMemberList;
 
     /**
      * 创建讨论组前获取所有数据
@@ -97,7 +102,7 @@ public class CreateDisInfo {
     public static void getMemberList(final CreateCallBack callBack) {
         totalNum = 0;
         loadNum = 0;
-        rtMemberList = new ArrayList<String>();
+        rtMemberList = new ArrayList<PersonBean>();
         for (int i = 0; i < memberList.size(); i++) {
             addToRtMemberList(rtMemberList, memberList.get(i));
         }
@@ -118,7 +123,7 @@ public class CreateDisInfo {
             ArrayList<Boolean> checkList = historyCheckPageSet.get(i).getCheckList();
             for (int j = 0; j < checkList.size(); j++) {
                 if (checkList.get(j) && data.get(j).getType() == OrgStruct.DEPTARTMENT) {
-                    contactDataSource.getTotalStaffByDeptId(data.get(j).getId(), new ContactDataSource.DataSourceCallBack<ArrayList<String>>() {
+                    contactDataSource.getTotalStaffByDeptId(data.get(j).getId(), new ContactDataSource.DataSourceCallBack<ArrayList<PersonBean>>() {
                         @Override
                         public void error(String msg) {
                             Log.e("error", msg);
@@ -126,7 +131,7 @@ public class CreateDisInfo {
                         }
 
                         @Override
-                        public void response(ArrayList<String> members) {
+                        public void response(ArrayList<PersonBean> members) {
                             loadNum++;
                             addAllToRtMemberList(rtMemberList, members);
                             //所有数据均以加载完成
@@ -137,7 +142,10 @@ public class CreateDisInfo {
                         }
                     });
                 } else if (checkList.get(j) && data.get(j).getType() == OrgStruct.STAFF) {
-                    addToRtMemberList(rtMemberList, data.get(j).getId());
+                    PersonBean person = new PersonBean();
+                    person.setId(data.get(j).getId());
+                    person.setAvatar(data.get(j).getAvatar());
+                    addToRtMemberList(rtMemberList, person);
                     loadNum++;
                     if (loadNum == totalNum) {
                         callBack.response(rtMemberList);
@@ -149,21 +157,21 @@ public class CreateDisInfo {
         }
     }
 
-    private static void addAllToRtMemberList(ArrayList<String> rtMemberList, ArrayList<String> members) {
+    private static void addAllToRtMemberList(ArrayList<PersonBean> rtMemberList, ArrayList<PersonBean> members) {
         for (int i = 0; i < members.size(); i++) {
             addToRtMemberList(rtMemberList, members.get(i));
         }
     }
 
-    private static void addToRtMemberList(ArrayList<String> rtMemberList, String emp_id) {
-        if (!isInRtMemberList(rtMemberList, emp_id)) {
-            rtMemberList.add(emp_id);
+    private static void addToRtMemberList(ArrayList<PersonBean> rtMemberList, PersonBean person) {
+        if (!isInRtMemberList(rtMemberList, person.getId())) {
+            rtMemberList.add(person);
         }
     }
 
-    private static boolean isInRtMemberList(ArrayList<String> rtMemberList, String emp_id) {
+    private static boolean isInRtMemberList(ArrayList<PersonBean> rtMemberList, String emp_id) {
         for (int i = 0; i < rtMemberList.size(); i++) {
-            if (rtMemberList.get(i).equals(emp_id)) {
+            if (rtMemberList.get(i).getId().equals(emp_id)) {
                 return true;
             }
         }
@@ -207,6 +215,13 @@ public class CreateDisInfo {
             }
         }
 
+        for(int i=0;i<memberList.size();i++){
+            title = title+memberList.get(i).getName()+"、";
+            n++;
+            if(n>=4){
+                return title.substring(0,title.length()-1);
+            }
+        }
         if(!title.equals("")){
             return title.substring(0,title.length()-1);
         }else{

@@ -552,45 +552,53 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    //解析message
-//                    MessageContent mc = message.getContent();
-//                    String ContentText = "";
-//                    //如果是文本消息获取最后一条消息的文本内容
-//                    if (mc instanceof TextMessage) {
-//                        TextMessage tm = (TextMessage) mc;
-//                        ContentText = tm.getContent();
-//                    } else if(mc instanceof ImageMessage){
-//                        ContentText = "图片";
-//                    } else if(mc instanceof VoiceMessage){
-//                        ContentText = "语音";
-//                    }
-//                    String targetId = message.getTargetId();
-//                    Intent intent = new Intent(cordova.getActivity(),HandChatActivity.class);
-//                    intent.putExtra("TYPE","NOTICE");
-//                    intent.putExtra("MUSERID",userId);
-//                    intent.putExtra("MUSERNAME",userName);
-//                    intent.putExtra("MICONURL",iconUrl);
-//                    intent.putExtra("MTOKEN", token);
-//                    intent.putExtra("MFRIENDID",friendId);
-//                    intent.putExtra("MFRIENDNAME",friendName);
-//                    intent.putExtra("MFRIENDICON",friendIcon);
-//                    PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) (Math.random() * 1000) + 1, intent, 0);
-//                    //获取目标ID
-//                    //通知栏提示
-//                    NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
-//                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-//                    mBuilder.setContentTitle(targetId)//设置通知栏标题
-//                            .setContentText(ContentText)
-//                            .setContentIntent(pendingIntent) //设置通知栏点击意图
-//                            .setTicker("会话通知") //通知首次出现在通知栏，带上升动画效果的
-//                            .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
-//                            .setDefaults(Notification.DEFAULT_VIBRATE)//向通知添加声音、闪灯和振动效果.setAutoCancel(true)
-//                            .setAutoCancel(true)
-//                            .setSmallIcon(Util.getRS("header", "drawable", cordova.getActivity().getApplicationContext()));//设置通知小ICON
-//                            //.setSmallIcon(R.drawable.header);//设置通知小ICON
-//                    Notification notification = mBuilder.build();
-//                    notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//                    mNotificationManager.notify(Integer.valueOf(targetId), mBuilder.build());
+					//解析message
+                    MessageContent mc = message.getContent();
+                    String ContentText = "";
+                    String fromName = "";
+                    //如果是文本消息获取最后一条消息的文本内容
+                    if (mc instanceof TextMessage) {
+                        TextMessage tm = (TextMessage) mc;
+                        ContentText = tm.getContent();
+
+                    } else if (mc instanceof ImageMessage) {
+                        ContentText = "图片";
+                    } else if (mc instanceof VoiceMessage) {
+                        ContentText = "语音";
+                    }
+                    if (mcInfo != null) {
+                        fromName = mcInfo.getName();
+                        ContentText = fromName + ":" + ContentText;
+                    }
+                    String targetId = message.getTargetId();
+                    Intent intent = new Intent(cordova.getActivity(), cordova.getActivity().getClass());
+                    intent.putExtra("TYPE", "NOTICE");
+                    intent.putExtra("MUSERID", userId);
+                    intent.putExtra("MUSERNAME", userName);
+                    intent.putExtra("MICONURL", iconUrl);
+                    intent.putExtra("MTOKEN", token);
+                    intent.putExtra("MFRIENDID", targetId);
+                    intent.putExtra("MFRIENDNAME", friendName);
+                    intent.putExtra("MFRIENDICON", friendIcon);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) (Math.random() * 1000) + 1, intent, 0);
+                    //获取目标ID
+                    //通知栏提示
+                    NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+                    mBuilder.setContentTitle("消息提醒")//设置通知栏标题
+                            .setContentText(ContentText)
+                            .setContentIntent(pendingIntent) //设置通知栏点击意图
+                            .setTicker("会话通知") //通知首次出现在通知栏，带上升动画效果的
+                            .setWhen(System.currentTimeMillis())//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
+                            .setDefaults(Notification.DEFAULT_VIBRATE)//向通知添加声音、闪灯和振动效果.setAutoCancel(true)
+                            .setAutoCancel(true)
+                            .setSmallIcon(Util.getRS("header", "drawable", cordova.getActivity().getApplicationContext()));//设置通知小ICON
+                    //.setSmallIcon(R.drawable.header);//设置通知小ICON
+                    Notification notification = mBuilder.build();
+                    notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                    if(!ContentText.isEmpty()) {
+                        mNotificationManager.notify(0, mBuilder.build());
+                    }
                 }
 
                 @Override
@@ -810,7 +818,7 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
                     int num = conversation.getUnreadMessageCount();
                     if (conversationType.equals("2")) {
                         if (iconPath == null || iconPath.equals("")) {
-                            iconPath = "http://zhouzybk.img-cn-shanghai.aliyuncs.com/discussionGroupImage1472535269374.png";
+                            iconPath = LoginInfo.url_group_icon;
                         }
                         if (sendUserName == null || sendUserName.equals("")) {
                             sendUserName = "讨论组";
@@ -870,46 +878,12 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == RESULT) {
-            String targetId = "";
-            Conversation.ConversationType conversationType=null;
-            if (intent != null) {
-                targetId = intent.getStringExtra("FID");
-                if(resultCode==3){
-                    try {
-                        getChatListInfo();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }else if(resultCode==2){
-                    conversationType = Conversation.ConversationType.DISCUSSION;
-                }else if(resultCode==0x0000){
-                    conversationType = Conversation.ConversationType.PRIVATE;
-                }
-                if(conversationType!=null) {
-                    RongIMClient.getInstance().clearMessagesUnreadStatus(conversationType, targetId, new RongIMClient.ResultCallback<Boolean>() {
-                        @Override
-                        public void onSuccess(Boolean aBoolean) {
-                            //将改会话未读消息数置为0 刷新界面
-                            try {
-                                getChatListInfo();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void onError(RongIMClient.ErrorCode errorCode) {
-                            try {
-                                getChatListInfo();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
+        if (requestCode == RESULT && (resultCode == 3 || resultCode == 2 || resultCode == 0x0000)) {
+            try {
+                getChatListInfo();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
     }
 

@@ -421,7 +421,7 @@ public class OrgStructActivity extends Activity implements View.OnClickListener 
         } else if (id == idBtnOk) {
             showProgressDialog(true);
             btnOk.setClickable(false);
-            CreateDisInfo.getMemberList(new CreateDisInfo.CreateCallBack<ArrayList<String>>() {
+            CreateDisInfo.getMemberList(new CreateDisInfo.CreateCallBack<ArrayList<PersonBean>>() {
                 @Override
                 public void error(String msg) {
                     showProgressDialog(false);
@@ -431,7 +431,7 @@ public class OrgStructActivity extends Activity implements View.OnClickListener 
                 }
 
                 @Override
-                public void response(ArrayList<String> members) {
+                public void response(ArrayList<PersonBean> members) {
                     showProgressDialog(false);
                     btnOk.setClickable(true);
                     toCreateOrInvite(members);
@@ -450,7 +450,7 @@ public class OrgStructActivity extends Activity implements View.OnClickListener 
         }
     }
 
-    private void toCreateOrInvite(ArrayList<String> members) {
+    private void toCreateOrInvite(ArrayList<PersonBean> members) {
         DiscussionManager dm = new DiscussionManager(OrgStructActivity.this);
         final int type;
         if (targetId != null && !targetId.equals("")) {
@@ -467,11 +467,11 @@ public class OrgStructActivity extends Activity implements View.OnClickListener 
             }
 
             @Override
-            public void onReponse(String id, String title) {
+            public void onReponse(String id, String title,String url) {
                 setLoading(View.GONE);
                 btnOk.setClickable(true);
                 if (type == DiscussionManager.CREATE) {
-                    afterCreate(id, title);
+                    afterCreate(id, title,url);
                 } else {
                     afterInvite();
                 }
@@ -479,10 +479,11 @@ public class OrgStructActivity extends Activity implements View.OnClickListener 
         }, type, members, targetId, GroupArray);
     }
 
-    private void afterCreate(String id, String title) {
+    private void afterCreate(String id, String title,String url) {
         Intent intent = new Intent();
         intent.putExtra("id", id);
         intent.putExtra("title", title);
+        intent.putExtra("url",url);
         setResult(201, intent);
         finish();
     }

@@ -188,6 +188,18 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
 
   //加载融云
   private void initMyRongIM() {
+	//设置消息数为已读
+    RongIMClient.getInstance().clearMessagesUnreadStatus(Conversation.ConversationType.DISCUSSION, friendId, new RongIMClient.ResultCallback<Boolean>() {
+      @Override
+      public void onSuccess(Boolean aBoolean) {
+        //将改会话未读消息数置为0 刷新界面
+      }
+
+      @Override
+      public void onError(RongIMClient.ErrorCode errorCode) {
+        Log.e("error","error to clear unread message");
+      }
+    });
     RongIMClient.getInstance().getDiscussion(friendId, new RongIMClient.ResultCallback<Discussion>() {
       @Override
       public void onSuccess(Discussion dis) {
@@ -199,17 +211,19 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
       }
     });
     //讨论组聊天 获取聊天记录
-    RongIMClient.getInstance().getLatestMessages(Conversation.ConversationType.DISCUSSION, friendId, Integer.MAX_VALUE, new RongIMClient.ResultCallback<List<Message>>() {
+     RongIMClient.getInstance().getLatestMessages(Conversation.ConversationType.DISCUSSION, friendId, Integer.MAX_VALUE, new RongIMClient.ResultCallback<List<Message>>() {
       @Override
       public void onSuccess(List<Message> messages) {
-
+        DBhelper dBhelper = new DBhelper(getApplicationContext());
         if (messages != null) {
           for (int i = (messages.size() - 1); i >= 0; i--) {
-
             String senderUserId = messages.get(i).getSenderUserId();
 		    long time = messages.get(i).getReceivedTime();
             if (messages.get(i).getContent() instanceof ImageMessage) {
               ImageMessage im = (ImageMessage) messages.get(i).getContent();
+              DBhelper.MyConversation mc = dBhelper.getUserInfo(friendId);
+              String title = mc.getTargetName();
+              dBhelper.addUserInfo(friendId,title,im.getExtra());
               Uri mThumUri = im.getThumUri();
               Uri mLocalUri = im.getLocalUri();
               Uri ryUri = im.getRemoteUri();
@@ -224,6 +238,9 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
               contentList.add(md);
             } else if (messages.get(i).getContent() instanceof TextMessage) {
               TextMessage tm = (TextMessage) messages.get(i).getContent();
+              DBhelper.MyConversation mc = dBhelper.getUserInfo(friendId);
+              String title = mc.getTargetName();
+              dBhelper.addUserInfo(friendId,title,tm.getExtra());
               String msg = tm.getContent();
               ChatContant md = new ChatContant(senderUserId, msg, TXT);
               if (tm.getUserInfo() != null && tm.getUserInfo().getPortraitUri() != null) {
@@ -236,6 +253,9 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
               contentList.add(md);
             } else if (messages.get(i).getContent() instanceof VoiceMessage) {
               VoiceMessage voiceMessage = (VoiceMessage) messages.get(i).getContent();
+              DBhelper.MyConversation mc = dBhelper.getUserInfo(friendId);
+              String title = mc.getTargetName();
+              dBhelper.addUserInfo(friendId,title,voiceMessage.getExtra());
               Uri voiceUri = voiceMessage.getUri();
               int duration = voiceMessage.getDuration();
               ChatContant md = new ChatContant(senderUserId, voiceUri, VOICE, duration);

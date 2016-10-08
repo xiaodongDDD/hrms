@@ -24,6 +24,7 @@ public class DiscussionManager {
     private String[] GroupArray;
     private DisMCallBack mCallBack;
     private ProgressDialog progressDialog;
+    private ArrayList<PersonBean> members ;
     public DiscussionManager(Context context) {
         this.context = context;
     }
@@ -72,10 +73,14 @@ public class DiscussionManager {
         }
     }
 
-    public void CreateOrInviteToDiscussion(DisMCallBack callBack,int type, ArrayList<String> memberList, String targetId, String[] existMembers) {
+    public void CreateOrInviteToDiscussion(DisMCallBack callBack,int type, ArrayList<PersonBean> members, String targetId, String[] existMembers) {
+        this.members = members;
+        this.memberList = new ArrayList<String>();
+        for(int i=0;i<members.size();i++){
+            memberList.add(members.get(i).getId());
+        }
         this.mCallBack = callBack;
         this.type = type;
-        this.memberList = memberList;
         this.targetId = targetId;
         this.GroupArray = existMembers;
         showDialog(memberList);
@@ -92,13 +97,27 @@ public class DiscussionManager {
     private void CreateNewDiscussion() {
         showProgressDialog(true);
         final String title = CreateDisInfo.getGroupTitle();
-        RongIMClient.getInstance().createDiscussion(title, memberList, new RongIMClient.CreateDiscussionCallback() {
+        DisAvaManager disAvaManager = new DisAvaManager( members, context, new DisAvaManager.AvatarCallBack<String>() {
             @Override
-            public void onSuccess(String s) {
-                showProgressDialog(false);
-                mCallBack.onReponse(s,title);
+            public void error() {
+                RYCreate(null,title);
             }
 
+            @Override
+            public void success(final String url) {
+                RYCreate(url,title);
+            }
+        });
+        disAvaManager.createAvatar();
+
+    }
+    private void RYCreate(final String url,final String title){
+        RongIMClient.getInstance().createDiscussion(title, memberList, new RongIMClient.CreateDiscussionCallback() {
+            @Override
+            public void onSuccess(final String s) {
+                showProgressDialog(false);
+                mCallBack.onReponse(s,title,url);
+            }
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
                 showProgressDialog(false);
@@ -106,7 +125,6 @@ public class DiscussionManager {
             }
         });
     }
-
     private void inviteToDiscussion() {
         showProgressDialog(true);
         subExistMember();
@@ -114,7 +132,7 @@ public class DiscussionManager {
             @Override
             public void onSuccess() {
                 showProgressDialog(false);
-                mCallBack.onReponse("success",null);
+                mCallBack.onReponse("success",null,null);
             }
 
             @Override
@@ -157,7 +175,7 @@ public class DiscussionManager {
 
     public static abstract class DisMCallBack<T>{
         public abstract void onError(String msg);
-        public abstract void onReponse(T object,String title);
+        public abstract void onReponse(T object,String title,String url);
     }
 
 }

@@ -253,22 +253,26 @@ public class ContactDataSource {
             @Override
             public void onResponse(String response) {
                 //Log.e("Response",response);
-                ArrayList<String> members = dealTotalStaffList(response);
+                ArrayList<PersonBean> members = dealTotalStaffList(response);
                 callBack.response(members);
             }
         });
     }
 
-    private ArrayList<String> dealTotalStaffList(String response){
-        ArrayList<String> members = new ArrayList<String>();
+    private ArrayList<PersonBean> dealTotalStaffList(String response){
+        ArrayList<PersonBean> members = new ArrayList<PersonBean>();
         JSONObject rootObject;
         JSONArray rowsArray;
         try {
             rootObject = new JSONObject(response);
             rowsArray = rootObject.getJSONArray("returnData");
             for(int i=0;i<rowsArray.length();i++){
+                PersonBean person = new PersonBean();
                 String emp_id = rowsArray.getJSONObject(i).getString("accountNumber");
-                members.add(emp_id);
+                String avatar = rowsArray.getJSONObject(i).getString("avatar");
+                person.setId(emp_id);
+                person.setAvatar(avatar);
+                members.add(person);
             }
         } catch (JSONException e) {
             e.printStackTrace();

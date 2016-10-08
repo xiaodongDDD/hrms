@@ -70,7 +70,7 @@ static NSArray *emojiList =nil;
             formStr = [formStr stringByReplacingOccurrencesOfString:@"[电话]" withString:emojiList[97]];
             formStr = [formStr stringByReplacingOccurrencesOfString:@"[向日葵]" withString:emojiList[92]];
             CGSize textSize = [formStr boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width-2*(self.iconSize.size.width+iconLeftSpace+iconRightSpace+textLeftRightSpace), MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:textMesaageFont]} context:nil].size;
-            self.messageLabelSize = CGRectMake(CGRectGetMaxX(self.iconSize)+iconRightSpace, self.iconSize.origin.y+2, textSize.width+textLeftRightSpace*2, textSize.height+textMesaageFont);
+            self.messageLabelSize = CGRectMake(CGRectGetMaxX(self.iconSize)+iconRightSpace, self.iconSize.origin.y+2, textSize.width+textLeftRightSpace*2, textSize.height+textMesaageFont+10);
             
         }else if ([message.content isKindOfClass:[RCImageMessage class]]){
             //图片消息
@@ -111,7 +111,7 @@ static NSArray *emojiList =nil;
             NSString *text = textMessage.content ;
             //计算文字大小
             CGSize textSize = [text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width-2*(self.iconSize.size.width+iconLeftSpace+iconRightSpace+textLeftRightSpace), MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:textMesaageFont]} context:nil].size;
-            self.messageLabelSize = CGRectMake(CGRectGetMinX(self.iconSize)-(iconRightSpace+textSize.width+2*textLeftRightSpace), self.iconSize.origin.y+2, textSize.width+2*textLeftRightSpace, textSize.height+textMesaageFont);
+            self.messageLabelSize = CGRectMake(CGRectGetMinX(self.iconSize)-(iconRightSpace+textSize.width+2*textLeftRightSpace), self.iconSize.origin.y+2, textSize.width+2*textLeftRightSpace, textSize.height+textMesaageFont+10);
             
         }else if ([message.content isKindOfClass:[RCImageMessage class]]){
             //图片消息

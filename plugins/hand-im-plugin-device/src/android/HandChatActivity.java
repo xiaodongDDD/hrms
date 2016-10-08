@@ -170,6 +170,18 @@ public class HandChatActivity extends Activity implements View.OnClickListener,A
     }
     //加载融云
     private void initMyRongIM(){
+		//清空未读状态
+        RongIMClient.getInstance().clearMessagesUnreadStatus(Conversation.ConversationType.PRIVATE, friendId, new RongIMClient.ResultCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean aBoolean) {
+                //将改会话未读消息数置为0 刷新界面
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e("error","error to clear unread message");
+            }
+        });
         //单聊对象的ID 获取消息记录
         RongIMClient.getInstance().getLatestMessages(Conversation.ConversationType.PRIVATE, friendId, Integer.MAX_VALUE, new RongIMClient.ResultCallback<List<Message>>() {
             @Override

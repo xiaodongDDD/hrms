@@ -275,7 +275,7 @@ public class ContactActivity extends Activity implements View.OnClickListener {
         } else if (id == idBtnOK) {
             btnOK.setClickable(false);
             showProgressDialog(true);
-            CreateDisInfo.getMemberList(new CreateDisInfo.CreateCallBack<ArrayList<String>>() {
+            CreateDisInfo.getMemberList(new CreateDisInfo.CreateCallBack<ArrayList<PersonBean>>() {
                 @Override
                 public void error(String msg) {
                     btnOK.setClickable(true);
@@ -285,7 +285,7 @@ public class ContactActivity extends Activity implements View.OnClickListener {
                 }
 
                 @Override
-                public void response(ArrayList<String> members) {
+                public void response(ArrayList<PersonBean> members) {
                     btnOK.setClickable(true);
                     showProgressDialog(false);
                     toCreateOrInvite(members);
@@ -304,7 +304,7 @@ public class ContactActivity extends Activity implements View.OnClickListener {
             progressDialog.dismiss();
         }
     }
-    private void toCreateOrInvite(ArrayList<String> members) {
+    private void toCreateOrInvite(final ArrayList<PersonBean> members) {
         DiscussionManager dm = new DiscussionManager(ContactActivity.this);
         final int type;
         if (targetId != null && !targetId.equals("")) {
@@ -320,27 +320,33 @@ public class ContactActivity extends Activity implements View.OnClickListener {
             }
 
             @Override
-            public void onReponse(String id, String title) {
+            public void onReponse(String id, String title,String url) {
                 btnOK.setClickable(true);
                 if (type == DiscussionManager.CREATE) {
-                    afterCreate(id, title);
+                    afterCreate(id, title,url);
+
                 } else {
                     afterInvite();
                 }
-                Toast.makeText(getApplicationContext(), "创建讨论组成功！", Toast.LENGTH_SHORT).show();
             }
         }, type, members, targetId, GroupArray);
     }
 
-    private void afterCreate(String id, String title) {
+    private void afterCreate(String id, String title,String url) {
+        String url_group;
+        if(url!=null&&!url.equals("")){
+            url_group = url;
+        }else{
+            url_group = LoginInfo.url_group_icon;
+        }
         DBhelper dBhelper = new DBhelper(getApplicationContext());
-        dBhelper.addUserInfo(id, title, "http://zhouzybk.img-cn-shanghai.aliyuncs.com/discussionGroupImage1472535269374.png");
+        dBhelper.addUserInfo(id, title, url_group);
         Toast.makeText(getApplicationContext(), "讨论组创建成功", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(ContactActivity.this, HandMulChatActivity.class);
         intent.putExtra("TYPE", "NORMAL");
         intent.putExtra("USERID", LoginInfo.userId);//用户Id
         intent.putExtra("TARGETID", id);
-		intent.putExtra("USERNAME",LoginInfo.userName);
+        intent.putExtra("USERNAME",LoginInfo.userName);
         intent.putExtra("ICONURL",LoginInfo.userIcon);
         intent.putExtra("GROUPNAME", title);
         CreateDisInfo.reset();
@@ -364,7 +370,8 @@ public class ContactActivity extends Activity implements View.OnClickListener {
         if (requestCode == 0 && (resultCode == 201 || resultCode == 202 || resultCode == 203)) {
             String id = data.getStringExtra("id");
             String title = data.getStringExtra("title");
-            afterCreate(id, title);
+            String url = data.getStringExtra("url");
+            afterCreate(id, title,url);
         }
     }
 

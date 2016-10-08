@@ -144,7 +144,7 @@ public class ProjectActivity extends Activity implements View.OnClickListener {
         if (id == idBtnOk) {
             showProgressDialog(true);
             btnOK.setClickable(false);
-            CreateDisInfo.getMemberList(new CreateDisInfo.CreateCallBack<ArrayList<String>>() {
+            CreateDisInfo.getMemberList(new CreateDisInfo.CreateCallBack<ArrayList<PersonBean>>() {
                 @Override
                 public void error(String msg) {
                     showProgressDialog(false);
@@ -154,7 +154,7 @@ public class ProjectActivity extends Activity implements View.OnClickListener {
                 }
 
                 @Override
-                public void response(ArrayList<String> members) {
+                public void response(ArrayList<PersonBean> members) {
                     showProgressDialog(false);
                     btnOK.setClickable(true);
                     toCreateOrInvite(members);
@@ -181,7 +181,7 @@ public class ProjectActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private void toCreateOrInvite(ArrayList<String> members) {
+    private void toCreateOrInvite(ArrayList<PersonBean> members) {
         DiscussionManager dm = new DiscussionManager(ProjectActivity.this);
         final int type;
         if (targetId != null && !targetId.equals("")) {
@@ -199,10 +199,10 @@ public class ProjectActivity extends Activity implements View.OnClickListener {
             }
 
             @Override
-            public void onReponse(String id, String title) {
+            public void onReponse(String id, String title,String url) {
                 btnOK.setClickable(true);
                 if (type == DiscussionManager.CREATE) {
-                    afterCreate(id, title);
+                    afterCreate(id, title,url);
                 } else {
                     afterInvite();
                 }
@@ -210,10 +210,11 @@ public class ProjectActivity extends Activity implements View.OnClickListener {
         }, type, members, targetId, GroupArray);
     }
 
-    private void afterCreate(String id, String title) {
+    private void afterCreate(String id, String title,String url) {
         Intent intent = new Intent();
         intent.putExtra("id", id);
         intent.putExtra("title", title);
+        intent.putExtra("url",url);
         setResult(202, intent);
         finish();
     }

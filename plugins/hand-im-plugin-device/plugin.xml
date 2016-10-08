@@ -73,6 +73,7 @@
 	<source-file src="src/android/contact/DiscussionManager.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/contact/ProjectActivity.java" target-dir="src/com/hand/im/contact"/>
 	<source-file src="src/android/contact/ProjectAdapter.java" target-dir="src/com/hand/im/contact"/>
+	<source-file src="src/android/contact/DisAvaManager.java" target-dir="src/com/hand/im/contact"/>
 	
 	<source-file src="src/android/okhttp/OkHttpClientManager.java" target-dir="src/com/hand/im/okhttp"/>
 	<source-file src="src/android/GroupInfoActivity.java" target-dir="src/com/hand/im"/>
@@ -467,6 +468,16 @@
 			android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" />
 		<activity android:name="com.hand.im.contact.ContactSearchActivity"/>
         <activity android:name="com.hand.im.contact.ProjectActivity"/>
+		 <receiver
+            android:exported="true"
+            android:name="com.hand.im.RYNotificationReceiver">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+            </intent-filter>
+        </receiver>
 	<!--add by panxu end-->
         <!-- add by fuwei begin -->
             <activity

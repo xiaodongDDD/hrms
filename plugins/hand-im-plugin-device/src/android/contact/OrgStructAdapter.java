@@ -151,7 +151,7 @@ public class OrgStructAdapter extends BaseAdapter {
                 }
                 if(getItemViewType(position)==OrgStruct.STAFF){
                     if(!checkList.get(position)){
-                        refreshMemberList(data.get(position).getId(),false);
+                        refreshMemberList(data.get(position),false);
                     }
                 }
             }
@@ -260,12 +260,15 @@ public class OrgStructAdapter extends BaseAdapter {
     }
     /**
      *
-     * @param emp_id
+     * @param orgStruct
      * @param b 为true时添加，false时删除
      */
-    private void refreshMemberList(String emp_id,boolean b){
+    private void refreshMemberList(OrgStruct orgStruct,boolean b){
         if(!b){
-            CreateDisInfo.removeMember(emp_id);
+            PersonBean person = new PersonBean();
+            person.setId(orgStruct.getId());
+            person.setAvatar(orgStruct.getAvatar());
+            CreateDisInfo.removeMember(person);
         }
     }
     private void refreshCheckInfo() {

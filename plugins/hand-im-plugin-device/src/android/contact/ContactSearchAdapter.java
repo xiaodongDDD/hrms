@@ -101,11 +101,11 @@ public class ContactSearchAdapter extends BaseAdapter {
                 if(checkList.get(id)){
                     Log.e("id",3+"");
                     checkList.set(id,false);
-                    refreshMemberList(data.get(position).getId(),false);
+                    refreshMemberList(data.get(position),false);
                 }else{
                     Log.e("id",4+"");
                     checkList.set(id,true);
-                    refreshMemberList(data.get(position).getId(),true);
+                    refreshMemberList(data.get(position),true);
                 }
                 checkCallBack.setCheckInfo();
             }
@@ -130,14 +130,14 @@ public class ContactSearchAdapter extends BaseAdapter {
 
     /**
      *
-     * @param emp_id
+     * @param person
      * @param b 为true时添加，false时删除
      */
-    private void refreshMemberList(String emp_id,boolean b){
+    private void refreshMemberList(PersonBean person,boolean b){
         if(b){
-            CreateDisInfo.addMember(emp_id);
+            CreateDisInfo.addMember(person);
         }else{
-            CreateDisInfo.removeMember(emp_id);
+            CreateDisInfo.removeMember(person);
         }
     }
     public void checkAll(){
@@ -146,7 +146,7 @@ public class ContactSearchAdapter extends BaseAdapter {
                 continue;
             }
             checkList.set(i,true);
-            refreshMemberList(data.get(i).getId(),true);
+            refreshMemberList(data.get(i),true);
         }
         super.notifyDataSetChanged();
         checkCallBack.setCheckInfo();
@@ -157,7 +157,7 @@ public class ContactSearchAdapter extends BaseAdapter {
                 continue;
             }
             checkList.set(i,false);
-            refreshMemberList(data.get(i).getId(),false);
+            refreshMemberList(data.get(i),false);
         }
         super.notifyDataSetChanged();
         checkCallBack.setCheckInfo();

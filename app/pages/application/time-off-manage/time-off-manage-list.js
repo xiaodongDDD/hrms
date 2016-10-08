@@ -189,7 +189,7 @@ angular.module('applicationModule')
 
         var timeOffData = {};
 
-        if (item.approveStatus == 'APPROVING') {
+        if (item.approveStatus == 'APPROVING' || item.approveStatus == 'APPROVED') {
           timeOffData.operationType       = 'revoke';
         } else if(item.approveStatus == 'DRAFT') {
           timeOffData.operationType       = 'update';

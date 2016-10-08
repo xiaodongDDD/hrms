@@ -135,8 +135,9 @@
 
 .popup-select{
   position: absolute;
-  top: 60%;
+  top: inherit;
   bottom: 0%;
+  height: 270px;
   min-height: 270px;
   width: 100%;
   background-color: #ffffff;
