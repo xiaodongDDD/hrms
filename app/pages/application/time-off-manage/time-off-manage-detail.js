@@ -31,7 +31,9 @@ angular.module('applicationModule')
     '$ionicModal',
     '$ionicHistory',
     '$cordovaDatePicker',
+    '$timeout',
     'timeOffManageService',
+    'HmsDateFormat',
     function ($scope,
               $state,
               $stateParams,
@@ -41,7 +43,9 @@ angular.module('applicationModule')
               $ionicModal,
               $ionicHistory,
               $cordovaDatePicker,
-              timeOffManageService) {
+              $timeout,
+              timeOffManageService,
+              HmsDateFormat) {
 
       $scope.isIOSPlatform = ionic.Platform.isIOS();//判断平台,留出iOS的statusBar
       $scope.descriptionFlag = '';
@@ -64,6 +68,8 @@ angular.module('applicationModule')
           $scope.operation.queryMode = false;
           $scope.operationTypeMeaning = '提交';
           $scope.readOnly = false;
+          $scope.timeOffData.timeOffTypeMeaning = '带薪年假'; //add by senlin 20161008
+          $scope.timeOffData.unusedHoliday = $scope.timeOffData.paidHoliday; //add by senlin 20161008
           $scope.pageTitle = '创建休假';
         } else if (modeType == 'revoke') {
           $scope.operation.createMode = false;
@@ -98,11 +104,52 @@ angular.module('applicationModule')
       //初始化假期类型数组
       $scope.timeOffTypeRecord = ["带薪年假", "额外福利年假", "事假", "带薪病假", "病假", "婚嫁", "产假", "丧假", "陪产假"];
 
+      $scope.timeOffType = {
+        "带薪年假": "100000",
+        "额外福利年假": "100060",
+        "事假": "100001",
+        "带薪病假": "100002",
+        "病假": "100020",
+        "婚嫁": "100003",
+        "产假": "100004",
+        "丧假": "100040",
+        "陪产假": "100041"
+      };
+
       //记录传入日志
       if (baseConfig.debug) {
         console.log('$stateParams.timeOffData ' + angular.toJson($stateParams.timeOffData));
       }
 
+      //modify by gusenlin 2016-10-08
+      var getOffTime = function (startDate, endDate) {
+        var mmSec = (endDate.realDate.getTime() - startDate.realDate.getTime());
+        return mmSec;
+      };
+
+      var getLeaveDays = function () {
+
+        if(baseConfig.debug) {
+          console.log('in getLeaveDays $scope.timeOffData.timeOffTypeMeaning ' + $scope.timeOffData.timeOffTypeMeaning);
+        }
+
+        if (getOffTime($scope.datetimeFrom, $scope.datetimeTo) > 0) {
+          if ($scope.timeOffData.timeOffTypeMeaning && $scope.timeOffData.timeOffTypeMeaning != '') {
+            var policyitemId = $scope.timeOffType[$scope.timeOffData.timeOffTypeMeaning];
+            var start = HmsDateFormat.getDateTimeString($scope.datetimeFrom.realDate);
+            var end = HmsDateFormat.getDateTimeString($scope.datetimeTo.realDate);
+
+            if(baseConfig.debug){
+              console.log('in getLeaveDays policyitemId ' + policyitemId);
+              console.log('in getLeaveDays start ' + start);
+              console.log('in getLeaveDays end ' + end);
+            }
+            timeOffManageService.getLeaveDays($scope, policyitemId, start, end);
+          }
+        } else {
+          $scope.timeOffData.timeLeave = 0;
+        }
+      };
 
       //init data
       {
@@ -116,11 +163,13 @@ angular.module('applicationModule')
         var month = todayDate.getMonth() + 1;
         var day = todayDate.getDate();
         $scope.datetimeFrom = {//开始日期
+          realDate: new Date(),
           year: todayDate.getFullYear(),
           month: "",
           day: ""
         };
         $scope.datetimeTo = {//结束日期
+          realDate: new Date(),
           year: "",
           month: "",
           day: ""
@@ -135,25 +184,24 @@ angular.module('applicationModule')
         $scope.datetimeFrom.month = month;
         $scope.datetimeFrom.day = day;
 
+        var myDate = $scope.datetimeFrom;
+        $scope.datetimeFrom.realDate = new Date(myDate.year, myDate.month - 1, myDate.day, '08', '30', '00');
+
         //初始化结束时间
         refreshEndDate(1);
 
+        if($scope.timeOffData.operationType == 'create'){
+          getLeaveDays();
+        }
       }
-
-      //modify by gusenlin 2016-10-08
-      var getOffDays = function (startDate, endDate) {
-        var start = new Date(startDate.year, startDate.month - 1, startDate.day);
-        var end = new Date(endDate.year, endDate.month - 1, endDate.day);
-        var mmSec = (end.getTime() - start.getTime()) + 1;
-        return parseInt(mmSec / 3600000 / 24);
-      };
 
 
       $scope.getdateFromMeaning = function () {
         if ($scope.readOnly) { // add by ciwei 只读模式下,直接读取列表信息
           return $scope.timeOffData.datetimeFrom;
         } else {
-          return $scope.datetimeFrom.year + '-' + $scope.datetimeFrom.month + '-' + $scope.datetimeFrom.day + ' 08:30:00';
+          return HmsDateFormat.getDateTimeString($scope.datetimeFrom.realDate);
+          //$scope.datetimeFrom.year + '-' + $scope.datetimeFrom.month + '-' + $scope.datetimeFrom.day + ' 08:30:00';
         }
 
       };
@@ -162,7 +210,8 @@ angular.module('applicationModule')
         if ($scope.readOnly) { // add by ciwei 只读模式下,直接读取列表信息
           return $scope.timeOffData.datetimeTo;
         } else {
-          return $scope.datetimeTo.year + '-' + $scope.datetimeTo.month + '-' + $scope.datetimeTo.day + ' 18:00:00';
+          return HmsDateFormat.getDateTimeString($scope.datetimeTo.realDate);
+          //return $scope.datetimeTo.year + '-' + $scope.datetimeTo.month + '-' + $scope.datetimeTo.day + ' 18:00:00';
         }
       };
 
@@ -199,6 +248,9 @@ angular.module('applicationModule')
           $scope.timeOffData.unusedHoliday = '0';
         }
         $scope.timeOffTypePopup.hide();
+        $timeout(function () {
+          getLeaveDays();
+        },200);
       };
 
       //假期说明信息
@@ -209,17 +261,18 @@ angular.module('applicationModule')
         $scope.descriptionFlag = false;
       };
 
+
       $scope.chooseStartDate = function () {//选择开始日期
 
         if ($scope.readOnly) {
           return;
         }
 
-        var myDate = $scope.datetimeFrom;
+        var myDate = $scope.datetimeFrom.realDate;
 
-        var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+        //var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
         var options = {
-          date: previousDate,
+          date: myDate,
           mode: 'datetime',
           titleText: '请选择开始日期',
           okText: '确定',
@@ -242,16 +295,17 @@ angular.module('applicationModule')
           $scope.datetimeFrom.year = date.getFullYear();
           $scope.datetimeFrom.month = month;
           $scope.datetimeFrom.day = day;
+          $scope.datetimeFrom.realDate = date;
 
-          var offDays = getOffDays($scope.datetimeFrom, $scope.datetimeTo) + 1;
+          //$scope.$apply();
+          getLeaveDays();
 
-          if (offDays > 0) {
-            $scope.timeOffData.timeLeave = offDays;
-          } else {
-            $scope.timeOffData.timeLeave = '';
-          }
-
-          $scope.$apply();
+          /*var offDays = getOffDays($scope.datetimeFrom, $scope.datetimeTo) + 1;
+           if (offDays > 0) {
+           $scope.timeOffData.timeLeave = offDays;
+           } else {
+           $scope.timeOffData.timeLeave = '';
+           }*/
         });
       };
 
@@ -261,10 +315,10 @@ angular.module('applicationModule')
           return;
         }
 
-        var myDate = $scope.datetimeTo;
-        var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+        var myDate = $scope.datetimeTo.realDate;
+        //var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
         var options = {
-          date: previousDate,
+          date: myDate,
           mode: 'datetime',
           titleText: '请选择结束日期',
           okText: '确定',
@@ -287,16 +341,19 @@ angular.module('applicationModule')
           $scope.datetimeTo.year = date.getFullYear();
           $scope.datetimeTo.month = month;
           $scope.datetimeTo.day = day;
+          $scope.datetimeTo.realDate = date;
 
-          var offDays = getOffDays($scope.datetimeFrom, $scope.datetimeTo) + 1;
+          //$scope.$apply();
+          getLeaveDays();
+          /*var offDays = getOffDays($scope.datetimeFrom, $scope.datetimeTo) + 1;
 
-          if (offDays > 0) {
-            $scope.timeOffData.timeLeave = offDays;
-          } else {
-            $scope.timeOffData.timeLeave = '';
-          }
+           if (offDays > 0) {
+           $scope.timeOffData.timeLeave = offDays;
+           } else {
+           $scope.timeOffData.timeLeave = '';
+           }*/
 
-          $scope.$apply();
+
         });
       };
 
@@ -320,6 +377,10 @@ angular.module('applicationModule')
         $scope.datetimeTo.year = tomorrowYear;
         $scope.datetimeTo.month = tomorrowMonth;
         $scope.datetimeTo.day = tomorrowDay;
+
+        var myDate = $scope.datetimeTo;
+        $scope.datetimeTo.realDate = new Date(myDate.year, myDate.month - 1, myDate.day, '18', '00', '00');
+
       };
       //创建休假申请
       $scope.submitTimeOff = function () {
@@ -341,19 +402,18 @@ angular.module('applicationModule')
         //}
 
         //--add by senlin 20161008
-        var offDays = getOffDays($scope.datetimeFrom, $scope.datetimeTo) + 1;
-
+        var offDays = getOffTime($scope.datetimeFrom, $scope.datetimeTo);
         if (offDays < 0) {
           hmsPopup.showPopup('起始时间不能小于结束时间');
           return;
         }
 
         /*if ($scope.timeOffData.unusedHoliday &&
-          $scope.timeOffData.timeOffTypeMeaning == '带薪年假' &&
-          offDays > $scope.timeOffData.unusedHoliday) {
-          hmsPopup.showPopup('申请带薪年假不能超过本年度可用年假');
-          return;
-        }*/
+         $scope.timeOffData.timeOffTypeMeaning == '带薪年假' &&
+         offDays > $scope.timeOffData.unusedHoliday) {
+         hmsPopup.showPopup('申请带薪年假不能超过本年度可用年假');
+         return;
+         }*/
         //--add by senlin 20161008
 
         if ($scope.timeOffData.timeOffTypeMeaning == '带薪病假' && $scope.timeOffData.timeLeave > 1) {
