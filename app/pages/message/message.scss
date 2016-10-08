@@ -196,6 +196,9 @@ $text-padding: 11px !default
           color: #4A4A4A;
           height: 24px;
           line-height: 24px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .message-line {
           margin-top: 2px;
