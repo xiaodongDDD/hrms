@@ -1,7 +1,7 @@
 <ion-view view-title="待办事项明细" class="workflow-detail">
   <ion-header-bar align-title="center" style="background:none">
     <div class="buttons">
-      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
         <span class="back-text">返回</span>
       </button>
     </div>
@@ -112,8 +112,8 @@
               </div>
               <div bg-if="!isWeixinWebview" class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.trial_date">
               </div>
-              <input bg-if="isWeixinWebview" type="date" class="hms-singal-array-value" 
-              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate" 
+              <input bg-if="isWeixinWebview" type="date" class="hms-singal-array-value"
+              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate"
               ng-focus="applicationFullMemberUtil.inputDateStart()" ng-change="applicationFullMemberUtil.inputDateIng()" ng-blur="applicationFullMemberUtil.inputDateEnd()"/>
             </div>
             <div class="hms-singal-array-line">
@@ -404,8 +404,8 @@
                        style="width: 100%;color:#333333;height: 24px;text-align: right;background-color: #fff"
                        readonly ng-model="need.datepickerObject.dateModel">
               </ionic-datepicker>
-              <input bg-if="isWeixinWebview" type="date" class="hms-singal-array-value" 
-              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate" 
+              <input bg-if="isWeixinWebview" type="date" class="hms-singal-array-value"
+              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate"
               ng-focus="applicationFullMemberUtil.inputDateStart()" ng-change="applicationFullMemberUtil.inputDateIng()" ng-blur="applicationFullMemberUtil.inputDateEnd()"/>
             </div>
 

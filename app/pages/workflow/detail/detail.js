@@ -1654,6 +1654,13 @@ angular.module('applicationModule')
           }, 250);
         },$stateParams.detail.instanceId);
       }
-      
+
+      $scope.goBack = function () {
+        if($ionicHistory.backView()){
+          $ionicHistory.goBack();
+        } else {
+          ionic.Platform.exitApp();
+        }
+      };
     }])
 ;

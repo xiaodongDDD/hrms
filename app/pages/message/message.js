@@ -18,6 +18,7 @@ angular.module('messageModule')
     'hmsPopup',
     'messageService',
     'contactService',
+    '$ionicHistory',
     function ($scope,
               $state,
               $timeout,
@@ -31,7 +32,8 @@ angular.module('messageModule')
               hmsHttp,
               hmsPopup,
               messageService,
-              contactService) {
+              contactService,
+              $ionicHistory) {
 
       //消息列表
       $scope.messageList = [];
@@ -424,6 +426,11 @@ angular.module('messageModule')
           refreshMessageList(true);
         }
         $scope.firstRefresh = true;
+      });
+
+      $scope.$on('$ionicView.beforeEnter', function () {
+        $ionicHistory.clearCache();
+        $ionicHistory.clearHistory();
       });
 
       $scope.$on('$destroy', function (e) {
