@@ -22,6 +22,7 @@ angular.module('applicationModule')
     '$stateParams',
     'ionicDatePicker',
     '$rootScope',
+    '$timeout',
 
 
 
@@ -37,7 +38,8 @@ angular.module('applicationModule')
               $ionicHistory,
               $stateParams,
               ionicDatePicker,
-              $rootScope
+              $rootScope,
+              $timeout
 
 
 
@@ -52,6 +54,11 @@ angular.module('applicationModule')
         $ionicHistory.goBack();
       };
 
+      $scope.showClearEmployee = false; //默认隐藏搜索框的清除按钮
+      $scope.showClearBranch = false; //默认隐藏搜索框的清除按钮
+      $scope.showClearSubject = false; //默认隐藏搜索框的清除按钮
+
+
       //初始化搜索数据
       {
         var weekDaysList = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
@@ -63,7 +70,7 @@ angular.module('applicationModule')
         $scope.dayFrom = $scope.dateFrom.getDate();
         $scope.dateFrom.setMonth($scope.dateFrom.getMonth()-1);
         $scope.weekFrom = weekDaysList[$scope.dateFrom.getDay()];
-        $scope.YearFrom = $scope.dateFrom.getFullYear();
+        $scope.yearFrom = $scope.dateFrom.getFullYear();
 
         if($scope.monthFrom < 10){
           $scope.monthFrom = "0" + $scope.monthFrom;
@@ -72,7 +79,7 @@ angular.module('applicationModule')
           $scope.dayFrom = "0" + $scope.dayFrom;
         }
 
-        var dateFrom = $scope.YearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
+        var dateFrom = $scope.yearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
 
 
 
@@ -81,7 +88,7 @@ angular.module('applicationModule')
         $scope.monthTo = $scope.dateTo.getMonth()+1;
         $scope.dayTo = $scope.dateTo.getDate();
         $scope.weekTo = weekDaysList[$scope.dateTo.getDay()];
-        $scope.YearTo = $scope.dateTo.getFullYear();
+        $scope.yearTo = $scope.dateTo.getFullYear();
 
         if($scope.monthTo < 10){
           $scope.monthTo = "0" + $scope.monthTo;
@@ -89,7 +96,7 @@ angular.module('applicationModule')
         if($scope.dayTo < 10){
           $scope.dayTo = "0" + $scope.dayTo;
         }
-        var dateTo = $scope.YearTo + '-' + $scope.monthTo+ '-' + $scope.dayTo;
+        var dateTo = $scope.yearTo + '-' + $scope.monthTo+ '-' + $scope.dayTo;
 
 
 
@@ -109,18 +116,43 @@ angular.module('applicationModule')
         // console.log($scope.dimission);
       };
 
-
+      $scope.clearInputContent = function (inputBox) { //响应清除输入框文字按钮的方法
+        if(inputBox == 'employee'){
+          $scope.employeeName = "";
+          $scope.employeeCode = "";
+          $scope.showClearEmployee = false;
+        }
+        if(inputBox == 'branch'){
+          $scope.branchName = "";
+          $scope.branchId = "";
+          $scope.unitId = "";
+          $scope.showClearBranch = false;
+        }
+        if(inputBox == 'subject'){
+          $scope.subjectName = "";
+          $scope.subjectId = "";
+          $scope.showClearSubject = false;
+        }
+        if (ionic.Platform.isWebView()) {
+          cordova.plugins.Keyboard.show();
+        }
+        $timeout(function () {
+          item.focus();
+          $scope.$apply();
+        }, 400);
+      };
 
 
 
       // var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
       var ipObj1 = {
         callback: function (val) {  //Mandatory
+
           $scope.dateFrom = new Date(val);
           $scope.monthFrom = $scope.dateFrom.getMonth()+1;
           $scope.dayFrom = $scope.dateFrom.getDate();
           $scope.weekFrom = weekDaysList[$scope.dateFrom.getDay()];
-          $scope.YearFrom = $scope.dateFrom.getFullYear();
+          $scope.yearFrom = $scope.dateFrom.getFullYear();
 
           if($scope.monthFrom < 10){
             $scope.monthFrom = "0" + $scope.monthFrom;
@@ -129,7 +161,7 @@ angular.module('applicationModule')
             $scope.dayFrom = "0" + $scope.dayFrom;
           }
 
-          dateFrom = $scope.YearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
+          dateFrom = $scope.yearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
 
 
 
@@ -152,7 +184,7 @@ angular.module('applicationModule')
         mondayFirst: false,          //Optional
         weeksList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
         monthsList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],       //Optional
-        modalHeaderColor: 'bar-balancede', //Optional
+        modalHeaderColor: 'bar-balanced', //Optional
         modalFooterColor: 'bar-balanced', //Optional
         closeOnSelect: false,       //Optional
         templateType: 'popup'    //Optional
@@ -168,7 +200,7 @@ angular.module('applicationModule')
           $scope.monthTo = $scope.dateTo.getMonth()+1;
           $scope.dayTo = $scope.dateTo.getDate();
           $scope.weekTo = weekDaysList[$scope.dateTo.getDay()];
-          $scope.YearTo = $scope.dateTo.getFullYear();
+          $scope.yearTo = $scope.dateTo.getFullYear();
 
           if($scope.monthTo < 10){
             $scope.monthTo = "0" + $scope.monthTo;
@@ -176,7 +208,7 @@ angular.module('applicationModule')
           if($scope.dayTo < 10){
             $scope.dayTo = "0" + $scope.dayTo;
           }
-          dateTo = $scope.YearTo + '-' + $scope.monthTo + '-' + $scope.dayTo;
+          dateTo = $scope.yearTo + '-' + $scope.monthTo + '-' + $scope.dayTo;
 
 
 
@@ -212,12 +244,22 @@ angular.module('applicationModule')
       {
         $rootScope.$on("EMP_NAME",function(e,data){
           $scope.employeeName = data;
+          if($scope.employeeName){
+            $scope.showClearEmployee = true;
+          }else {
+            $scope.showClearEmployee = false;
+          }
         });
         $rootScope.$on("EMP_CODE",function(e,data){
           $scope.employeeCode = data;
         });
         $rootScope.$on("BRANCH_NAME",function(e,data){
           $scope.branchName = data;
+          if($scope.branchName){
+            $scope.showClearBranch = true;
+          }else {
+            $scope.showClearBranch = false;
+          }
         });
         $rootScope.$on("UNIT_ID",function(e,data){
           $scope.unitId = data;
@@ -227,6 +269,11 @@ angular.module('applicationModule')
         });
         $rootScope.$on("SUBJECT_NAME",function(e,data){
           $scope.subjectName = data;
+          if($scope.subjectName){
+            $scope.showClearSubject = true;
+          }else {
+            $scope.showClearSubject = false;
+          }
         });
         $rootScope.$on("SUBJECT_ID",function(e,data){
           $scope.subjectId = data;

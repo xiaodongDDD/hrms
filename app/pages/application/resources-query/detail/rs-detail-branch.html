@@ -5,12 +5,12 @@
         <span class="back-button-text">返回</span>
       </button>
     </div>
-    <h1 class="title">{{branchName}}</h1>
-    <!--<div class="buttons">-->
-    <!--<button class="button button-clear" ng-click="toggleQuery()">-->
-    <!--<span class="back-button-text">查询</span>-->
-    <!--</button>-->
-    <!--</div>-->
+    <h1 class="title"><input type="text" class="title-input" disabled ng-model="branchName"></h1>
+    <div class="buttons">
+      <button class="button-small button-clear button-list" ng-click="toggleQuery()">
+
+      </button>
+    </div>
   </ion-header-bar>
 
 
@@ -24,6 +24,9 @@
           <span class="word-font"></span>
           <span class="arrow ion-ios-arrow-right" ></span>
         </div>
+        <div class="calendar-subject">
+          <div class=""></div>
+        </div>
         <div class="calendar-branch" ng-repeat="y in x.timesheet_details">
           <div class="calendar-day">
             <div class="calendar-title">
@@ -36,7 +39,8 @@
                 <!--</a>-->
               <!--</div>-->
               <a class="day-item" ng-repeat="day in y.resource_details">
-                <div class="each-day" ng-cloak >{{day.record_date.substring(8,10)}}
+                <div class="each-day" ng-cloak >
+                  <span class="day-border" ng-class="{true:'border-red',false:'border-green'}[day.is_holiday]">{{day.record_date.substring(8,10)}}</span>
                 </div>
               </a>
             </div>
@@ -54,15 +58,15 @@
 
   </ion-content>
 
-  <ion-footer-bar class="foot-bar" style="bottom: 0px;">
-    <div class="foot-circle" style="border-color: green"></div>
-    <div class="foot-word">有项目</div>
-    <div class="foot-circle" style="border-color: gray"></div>
-    <div class="foot-word">无项目</div>
-    <div class="foot-circle" style="border-color: red"></div>
-    <div class="foot-word" >法定节假日</div>
-    <div class="button-list" ng-click="filterWorkFlowInfo()"></div>
-  </ion-footer-bar>
+  <!--<ion-footer-bar class="foot-bar" style="bottom: 0px;">-->
+    <!--<div class="foot-circle" style="border-color: green"></div>-->
+    <!--<div class="foot-word">有项目</div>-->
+    <!--<div class="foot-circle" style="border-color: gray"></div>-->
+    <!--<div class="foot-word">无项目</div>-->
+    <!--<div class="foot-circle" style="border-color: red"></div>-->
+    <!--<div class="foot-word" >法定节假日</div>-->
+    <!--<div class="button-list" ng-click="filterWorkFlowInfo()"></div>-->
+  <!--</ion-footer-bar>-->
 
 
 </ion-view>

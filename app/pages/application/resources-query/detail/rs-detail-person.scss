@@ -29,7 +29,7 @@ $timesheet-cover: #E3F5F0 !default;
     width: 100%;
     //filter: blur(10px) brightness(0.9);
     //-webkit-filter: blur(10px) brightness(0.9);
-    z-index: -1;
+    z-index: -2;
     position: absolute;
     top: 0;
     left: 0;
@@ -38,6 +38,16 @@ $timesheet-cover: #E3F5F0 !default;
     //background-size: cover;
     //background-position: center center;
     //background-repeat: no-repeat;
+  }
+  .black-cover{
+    height: 53vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: black;
+    opacity: 0.5;
   }
   .person-info {
     position: absolute;
@@ -89,6 +99,7 @@ $timesheet-cover: #E3F5F0 !default;
     margin-left: 4%;
     text-align: center;
     margin-top: 5px;
+    font-size: 0.9rem;
   }
   .subject-item-name {
     float: left;
@@ -116,7 +127,7 @@ $timesheet-cover: #E3F5F0 !default;
 
   .person-triangle {
     margin: 0 auto;
-    margin-top: 23px;
+    margin-top: 27px;
     width: 0;
     height: 0;
     border-left: 20px solid transparent;
@@ -169,6 +180,12 @@ $timesheet-cover: #E3F5F0 !default;
     background: #fff;
     z-index: 999;
 
+    .calendar-float{
+      margin-top: -20px;
+      .float-span{
+        color: transparent;
+      }
+    }
     .calendar-month {
       font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
       position: relative;
@@ -282,21 +299,21 @@ $timesheet-cover: #E3F5F0 !default;
             background-size: contain;
             background-position: center;
           }
-          .each-day-6 {
+          .each-day-orange {
 
-            background: url("../img/application/resources-query/selected-P@3x.png");
+            background: url("../img/application/resources-query/orange@3x.png");
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
           }
-          .each-day-7 {
+          .each-day-rose {
 
-            background: url("../img/application/resources-query/selected-R@3x.png");//无项目
+            background: url("../img/application/resources-query/rose@3x.png");//无项目
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center;
           }
-          .each-day-8 {
+          .each-day-brown {
 
             background: url("../img/application/resources-query/selected-P@3x.png");
             background-repeat: no-repeat;
@@ -335,25 +352,28 @@ $timesheet-cover: #E3F5F0 !default;
 
     //}
 
-
-  }
-
-
-  .foot-bar{
-    background: transparent;
-    .button-list {
-      position: absolute;
-      right: 7.5px;
-      bottom: 7.5px;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      background-image: url("../img/application/resources-query/button-list.png");
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-
+    .ion-record{
+      font-size: 1px;
     }
+
   }
+
+
+
+  .button-list {
+    position: fixed;
+    right: 7.5px;
+    top: 7.5px;
+    width: 35px;
+    height: 35px;
+    color: transparent;
+    border-radius: 50%;
+    background-image: url("../img/application/resources-query/screen@2x.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 1000;
+  }
+
 
 }
