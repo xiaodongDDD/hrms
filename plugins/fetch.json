@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "cordova-plugin-device": {
     "source": {
       "type": "registry",
@@ -16,6 +17,16 @@
       },
       "is_top_level": false,
       "variables": {}
+=======
+    "cordova-plugin-device": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/apache/cordova-plugin-device.git",
+            "subdir": "."
+        },
+        "is_top_level": false,
+        "variables": {}
+>>>>>>> 73891d3c8701c2285d163b922b5e19bee545b9f5
     },
     "cordova-plugin-actionsheet": {
       "source": {
