@@ -119,16 +119,17 @@ angular.module('applicationModule')
           var changeProject = true;
 
           if (baseConfig.debug) {
-            console.log('projectListModalHandle.type ' + angular.toJson(type))
+            console.log('projectListModalHandle.type ' + angular.toJson(type));
+            console.log('projectListModalHandle.projectCategory ' + angular.toJson($scope.projectCategory));
           }
 
           angular.forEach($scope.projectListType, function (data) {
-            if (data.id = type.id && data.selected == true) {
+            if (data.id == type.id && data.selected == true) {
               changeProject = false;
             }
           });
 
-          if (!changeProject) {
+          if (!changeProject && $scope.currentProjectListCategory.length > 0) {
             return;
           }
 
@@ -344,7 +345,7 @@ angular.module('applicationModule')
 
 
               /*添加项目类型的逻辑*/
-              $scope.projectCategory = TimeSheetService.processProject(result.project);
+              $scope.projectCategory = TimeSheetService.processProject(result.project,true);
 
             } else {
               hmsPopup.showPopup('获取项目信息错误,请检查');

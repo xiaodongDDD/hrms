@@ -167,7 +167,7 @@ angular.module('applicationModule')
             }
           });
 
-          if (!changeProject) {
+          if (!changeProject && $scope.currentProjectListCategory.length>0) {
             return;
           }
 

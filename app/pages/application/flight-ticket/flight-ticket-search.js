@@ -452,7 +452,7 @@ angular.module('applicationModule')
      $scope.showPassengerListModal=function(){//显示乘客的modal
        $scope.choosePassengerModal.show();
      };
-      
+
      $scope.showProjectTypeListModal=function(){//显示项目类型的modal
        $scope.chooseProjectTypeModal.show();
      };

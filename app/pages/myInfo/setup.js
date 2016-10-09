@@ -139,6 +139,38 @@ angular.module('myInfoModule')
 
       };
 
+      var initSetting = function () {
+        if (!window.localStorage.slippingEnableFlag) {
+          window.localStorage.slippingEnableFlag = "true";
+          $scope.slippingEnableFlag = true;
+        } else {
+          if (window.localStorage.slippingEnableFlag == "true") {
+            $scope.slippingEnableFlag = true;
+          } else {
+            $scope.slippingEnableFlag = false;
+          }
+        }
+      };
+
+      //console.log('navigator.userAgent  ' + navigator.userAgent)
+      $scope.changeSlippingSetting = function () {
+        if ($scope.slippingEnableFlag == true) {
+          $scope.slippingEnableFlag = false;
+          window.localStorage.slippingEnableFlag = "false";
+        } else {
+          $scope.slippingEnableFlag = true;
+          window.localStorage.slippingEnableFlag = "true";
+        }
+      };
+
+      $scope.$on('$ionicView.beforeEnter', function (e) {
+        if(baseConfig.debug) {
+          console.log('setUpCtrl.$ionicView.beforeEnter');
+        }
+        initSetting();
+      });
+
+
       $rootScope.$on('REMOVE_GESTURE_PASSWORD', function(){
        $scope.gesture.lock = false;
         window.localStorage.gestureLock="false";

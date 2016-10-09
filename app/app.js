@@ -65,12 +65,12 @@ angular.module('myApp')
         //alert('device' + angular.toJson(device));
 
         /*if(window.plugins.screensize){
-          window.plugins.screensize.get(function (result) {
-            alert('window.plugins.screensize ' + angular.toJson(result));
-            guideService.setScreenSize(result);
-          }, function (result) {
-          });
-        }*/
+         window.plugins.screensize.get(function (result) {
+         alert('window.plugins.screensize ' + angular.toJson(result));
+         guideService.setScreenSize(result);
+         }, function (result) {
+         });
+         }*/
 
         // if(ThreeDeeTouch){}
         // ThreeDeeTouch.configureQuickActions([
@@ -179,26 +179,27 @@ angular.module('myApp')
         }
       });
 
-      $ionicPlatform.registerBackButtonAction(function (e) {
-        //判断处于哪个页面时双击退出,袁梦添加
-        if ($location.path() == '/tab/message'||$location.path() == '/tab/application'||$location.path() == '/tab/contact'||
-          $location.path() == '/tab/myInfo'||$location.path() == '/login'||$location.path() == '/gesture-lock') {
-          if ($rootScope.backButtonPressedOnceToExit) {
-            ionic.Platform.exitApp();
-          } else {
-            $rootScope.backButtonPressedOnceToExit = true;
-            hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
-            setTimeout(function () {
-              $rootScope.backButtonPressedOnceToExit = false;
-            }, 1500);
-          }
-        }
-        else if ($ionicHistory.backView()) {
-          //$ionicHistory.goBack();
-        }
-        e.preventDefault();
-        return false;
-      }, 101);
+      // $ionicPlatform.registerBackButtonAction(function (e) {
+      //   //判断处于哪个页面时双击退出,袁梦添加
+      //   console.log(" path : "+$location.path());
+      //   if ($location.path() == '/tab/message'||$location.path() == '/tab/application'||$location.path() == '/tab/contact'||
+      //     $location.path() == '/tab/myInfo'||$location.path() == '/login'||$location.path() == '/gesture-lock') {
+      //     if ($rootScope.backButtonPressedOnceToExit) {
+      //       ionic.Platform.exitApp();
+      //     } else {
+      //       $rootScope.backButtonPressedOnceToExit = true;
+      //       hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
+      //       setTimeout(function () {
+      //         $rootScope.backButtonPressedOnceToExit = false;
+      //       }, 1500);
+      //     }
+      //   }
+      //   else if ($ionicHistory.backView()) {
+      //    $ionicHistory.goBack();
+      //   }
+      //   e.preventDefault();
+      //   return false;
+      // }, 101);
     }]);
 
 angular.module('myApp')
@@ -317,7 +318,7 @@ angular.module('myApp')
           controller: 'loginCtrl'
         });
 
-      if(baseConfig.debug){
+      if (baseConfig.debug) {
         console.log('app.js window.localStorage.appCacheVersion ' + window.localStorage.appCacheVersion);
         console.log('app.js !window.localStorage.appCacheVersion ' + !window.localStorage.appCacheVersion);
         console.log('app.js baseConfig.version.currentVersion ' + baseConfig.version.currentVersion);
@@ -326,8 +327,8 @@ angular.module('myApp')
       //$urlRouterProvider.otherwise('/guide'); return;
 
       if (!window.localStorage.needGuid || window.localStorage.needGuid == "true"
-          || !window.localStorage.appCacheVersion || window.localStorage.appCacheVersion != baseConfig.version.currentVersion) {
-        if(baseConfig.debug){
+        || !window.localStorage.appCacheVersion || window.localStorage.appCacheVersion != baseConfig.version.currentVersion) {
+        if (baseConfig.debug) {
           console.log('app.js into guide ');
         }
 
@@ -337,7 +338,7 @@ angular.module('myApp')
 
       } else {
         if (window.localStorage.token && window.localStorage.token != "") {
-          if( window.localStorage.getItem('gesturePassword') &&window.localStorage.getItem('gesturePassword') != ''){
+          if (window.localStorage.getItem('gesturePassword') && window.localStorage.getItem('gesturePassword') != '') {
             $urlRouterProvider.otherwise('/gesture-lock');
           } else {
             $urlRouterProvider.otherwise('/tab/message');

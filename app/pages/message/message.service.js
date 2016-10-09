@@ -286,6 +286,7 @@ angular.module('applicationModule')
             window.location.href = "tel:" + baseInfo.mobil.replace(/\s+/g, "");
             var imgUrl = baseInfo.avatar;
             if (baseInfo.avatar != '' || baseInfo.avatar) {
+
             } else {
               if (baseInfo.gender == "男") {//根据性别判定头像男女
                 imgUrl = "build/img/myInfo/man-portrait.png";
@@ -411,7 +412,6 @@ angular.module('applicationModule')
             });
           } else {
             myscope.loadingMoreFlag = true;
-            page = page + 1;
           }
           var url = baseConfig.queryPath + '/staff/query';
           var params = {
@@ -424,6 +424,9 @@ angular.module('applicationModule')
             if (response.success == true) {
               if (response.total && response.total > 0) {
                 angular.forEach(response.rows, function (data) {
+                  if(data.avatar && data.avatar != ""){
+                    data.avatar = data.avatar + '64';
+                  }
                   myscope.employeeList.push(data);
                 });
 

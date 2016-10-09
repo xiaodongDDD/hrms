@@ -1,48 +1,68 @@
 {
-    "cordova-plugin-device": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-device"
-        },
-        "is_top_level": false,
-        "variables": {}
+  "cordova-plugin-device": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-device"
+    },
+    "is_top_level": false,
+    "variables": {}
+  },
+  "cordova-plugin-actionsheet": {
+    "source": {
+      "type": "registry",
+      "source": {
+        "type": "registry",
+        "id": "cordova-plugin-device"
+      },
+      "is_top_level": false,
+      "variables": {}
     },
     "cordova-plugin-actionsheet": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-actionsheet"
-        },
-        "is_top_level": true,
-        "variables": {}
+      "source": {
+        "type": "registry",
+        "id": "cordova-plugin-actionsheet"
+      },
+      "is_top_level": true,
+      "variables": {}
     },
     "com.handmobile.cordovaplugin.hotpatch": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
+      "source": {
+        "type": "git",
+        "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+        "subdir": "."
+      },
+      "is_top_level": true,
+      "variables": {}
+    },
+    "cordova-plugin-youtuishare": {
+      "source": {
+        "type": "git",
+        "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
+        "subdir": "."
+      },
+      "is_top_level": true,
+      "variables": {}
     },
     "hand-im-plugin-device": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {
-            "RONG_KEY": "e5t4ouvptpsaa"
-        }
+      "source": {
+        "type": "git",
+        "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
+        "subdir": "."
+      },
+      "is_top_level": true,
+      "variables": {
+        "RONG_KEY": "0vnjpoadnd4cz"
+      }
     },
     "jpush-phonegap-plugin": {
-        "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin"
-        },
-        "is_top_level": true,
-        "variables": {
-            "API_KEY": "22b25063349b6beef7bde524"
-        }
+      "source": {
+        "type": "registry",
+        "id": "jpush-phonegap-plugin"
+      },
+      "is_top_level": true,
+      "variables": {
+        "API_KEY": "22b25063349b6beef7bde524"
+      }
     }
+  }
 }

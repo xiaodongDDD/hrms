@@ -11,6 +11,9 @@ angular.module('messageModule')
     '$ionicScrollDelegate',
     '$ionicActionSheet',
     '$cordovaActionSheet',
+    '$location',
+    '$rootScope',
+    '$ionicHistory',
     'imService',
     'checkVersionService',
     'baseConfig',
@@ -18,6 +21,7 @@ angular.module('messageModule')
     'hmsPopup',
     'messageService',
     'contactService',
+    '$ionicHistory',
     function ($scope,
               $state,
               $timeout,
@@ -25,13 +29,17 @@ angular.module('messageModule')
               $ionicScrollDelegate,
               $ionicActionSheet,
               $cordovaActionSheet,
+              $location,
+              $rootScope,
+              $ionicHistory,
               imService,
               checkVersionService,
               baseConfig,
               hmsHttp,
               hmsPopup,
               messageService,
-              contactService) {
+              contactService,
+              $ionicHistory) {
 
       //消息列表
       $scope.messageList = [];
@@ -47,7 +55,7 @@ angular.module('messageModule')
       $scope.loadingMoreFlag = false;
 
       //分页
-      var page = 1;
+      var currentPage = 1;
 
       var messageCacheList1 = [
         {
@@ -308,7 +316,9 @@ angular.module('messageModule')
           $scope.employeeList = [];
           $scope.loadMoreFlag = false;
           $scope.empFilterValue = '';
-          $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
+          $timeout(function () {
+            $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
+          },0);
         },
 
         chatWithNative: function (item) {
@@ -356,7 +366,10 @@ angular.module('messageModule')
 
         deleteMessage: function (message) {
           if (message.messageType == 'MESSAGE') {
-            messageService.deletePluginMessage($scope, message);
+            message.deleteAnimate = true;
+            $timeout(function () {
+              messageService.deletePluginMessage($scope, message);
+            },0);
           } else {
             message.deleteAnimate = true;
             $timeout(function () {
@@ -368,7 +381,16 @@ angular.module('messageModule')
         },
 
         search: function (loadMoreFlag) {
-          messageService.searchEmployee($scope, page, loadMoreFlag);
+          if(loadMoreFlag){
+            currentPage = parseInt(currentPage) + 1;
+          }else{
+            currentPage = 1;
+          }
+
+          if(baseConfig.debug){
+            console.log('search.currentPage ' + currentPage);
+          }
+          messageService.searchEmployee($scope, currentPage, loadMoreFlag);
         },
 
         goMessageDetail: function (messageDetail) {
@@ -412,6 +434,47 @@ angular.module('messageModule')
         console.log('messageCtrl.enter');
       }
 
+      $ionicPlatform.registerBackButtonAction(function (e) {
+
+        if(baseConfig.debug){
+          console.log('messageCtrl.$ionicPlatform.registerBackButtonAction');
+        }
+
+        if ($location.path() == '/tab/message') {
+          if(!$scope.showFilter){
+            if ($rootScope.backButtonPressedOnceToExit) {
+              ionic.Platform.exitApp();
+            } else {
+              $rootScope.backButtonPressedOnceToExit = true;
+              hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
+              setTimeout(function () {
+                $rootScope.backButtonPressedOnceToExit = false;
+              }, 1500);
+            }
+          }
+          else {
+            $scope.messageHandle.cancel();
+            $scope.$apply();
+          }
+        }else if ($location.path() == '/tab/application' || $location.path() == '/tab/contact' ||
+          $location.path() == '/tab/myInfo' || $location.path() == '/login' || $location.path() == '/gesture-lock') {
+          if ($rootScope.backButtonPressedOnceToExit) {
+            ionic.Platform.exitApp();
+          } else {
+            $rootScope.backButtonPressedOnceToExit = true;
+            hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
+            setTimeout(function () {
+              $rootScope.backButtonPressedOnceToExit = false;
+            }, 1500);
+          }
+        }
+        else if ($ionicHistory.backView() && $location.path() != '/tab/message') {
+          $ionicHistory.goBack();
+        }
+        e.preventDefault();
+        return false;
+      }, 101);
+
       $scope.$on('$ionicView.enter', function (e) {
         //将页面的导航bar设置成白色
         $ionicPlatform.ready(function () {
@@ -428,6 +491,11 @@ angular.module('messageModule')
           refreshMessageList(true);
         }
         $scope.firstRefresh = true;
+      });
+
+      $scope.$on('$ionicView.beforeEnter', function () {
+        $ionicHistory.clearCache();
+        $ionicHistory.clearHistory();
       });
 
       $scope.$on('$destroy', function (e) {

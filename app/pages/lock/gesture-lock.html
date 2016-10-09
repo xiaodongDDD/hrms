@@ -5,4 +5,10 @@
       <canvas id="container"></canvas>
     </div>
   </ion-content>
+  <div class="black-page" ng-if="errorLock">
+    <div class="black-head"></div>
+    <div class="error-lock">
+      {{unlockTimeString}} 解除锁定
+    </div>
+  </div>
 </ion-view>

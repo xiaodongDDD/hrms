@@ -170,6 +170,7 @@ angular.module('applicationModule')
             });
 
             $scope.circleAnimationFlag = true;//数据加载完成标志,触发进度圈动画
+            console.log('circleAnimationFlag change!');
             $scope.fetchDataFlag       = false;//数据加载完成,设置数据加载标记隐藏
 
           } else {
@@ -189,7 +190,7 @@ angular.module('applicationModule')
 
         var timeOffData = {};
 
-        if (item.approveStatus == 'APPROVING') {
+        if (item.approveStatus == 'APPROVING' || item.approveStatus == 'APPROVED') {
           timeOffData.operationType       = 'revoke';
         } else if(item.approveStatus == 'DRAFT') {
           timeOffData.operationType       = 'update';
@@ -275,5 +276,26 @@ angular.module('applicationModule')
 
       this.getRefreshWorkflowList = function () {
         return refreshTimeOffList;
+      };
+
+      this.getLeaveDays = function (myscope,policyitemId,dateFrom,dateTo) {
+        hmsPopup.showLoading("处理休假申请中");
+
+        var url = baseConfig.businessPath + "/api_holiday/get_holiday_days";
+        var params = {
+          "params": {
+            "p_policyitem_id": policyitemId,
+            "p_date_from": dateFrom,
+            "p_date_to": dateTo
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          hmsPopup.hideLoading();
+          if(result.returnCode == 'S') {
+            myscope.timeOffData.timeLeave = result.holiday_days;
+          }
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+        });
       };
     }]);
