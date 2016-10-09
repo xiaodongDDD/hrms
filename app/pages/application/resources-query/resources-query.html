@@ -27,8 +27,8 @@
         <label for="formDate" class="label-date">起始日期</label>
         <div class="row select-date" id="formDate">
           <div class="col col-50">
-            <div class="month">{{monthFrom}}月</div>
-            <div class="week">{{weekFrom}}</div>
+            <div class="month">{{yearFrom}}</div>
+            <div class="week">{{monthFrom}}月</div>
           </div>
           <div class=" col col-50 day">{{dayFrom}}</div>
         </div>
@@ -39,8 +39,8 @@
         <label for="toDate" class="label-date">结束日期</label>
         <div class="row select-date" id="toDate">
           <div class="col col-50">
-            <div class="month">{{monthTo}}月</div>
-            <div class="week">{{weekTo}}</div>
+            <div class="month">{{yearTo}}</div>
+            <div class="week">{{monthTo}}月</div>
           </div>
           <div class=" col col-50 day">{{dayTo}}</div>
         </div>
@@ -48,26 +48,38 @@
       </div>
     </div>
     <div class="div-block" style="padding: .01rem .5rem 0;margin-top: .5rem">
-      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8" ng-click="goInputSearch('person')">
-        <div class="row label-row">
+      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8">
+        <div class="row label-row" ng-click="goInputSearch('person')">
           <span class="col col-20" >员工 :</span>
-          <div class="col col-60" ng-bind="employeeName"></div>
-          <span class="font-select col col-20">请选择</span>
+          <!--<div class="col col-60" ng-bind="employeeName"></div>-->
+          <!--<span class="font-select col col-20">请选择</span>-->
+          <input type="text" class="col col-75" placeholder="请选择" disabled ng-model="employeeName">
         </div>
+        <img src="build/img/application/resources-query/clear.png" class="clear-img"
+             ng-if="showClearEmployee"
+             ng-click="clearInputContent('employee')"/>
       </div>
-      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8" ng-click="goInputSearch('branch')">
-        <div class="row label-row">
+      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8">
+        <div class="row label-row" ng-click="goInputSearch('branch')">
           <span class="col col-20">部门 :</span>
-          <div class="col col-60" ng-bind="branchName"></div>
-          <span class="font-select col col-20">请选择</span>
+          <!--<div class="col col-60" ng-bind="branchName"></div>-->
+          <!--<span class="font-select col col-20">请选择</span>-->
+          <input type="text" class="col col-75" placeholder="请选择" disabled ng-model="branchName" >
         </div>
+        <img src="build/img/application/resources-query/clear.png" class="clear-img"
+             ng-if="showClearBranch"
+             ng-click="clearInputContent('branch')"/>
       </div>
-      <div class="div-block-middle" ng-click="goInputSearch('subject')">
-        <div class="row label-row">
+      <div class="div-block-middle">
+        <div class="row label-row" ng-click="goInputSearch('subject')">
           <span class="col col-20">项目 :</span>
-          <div class="col col-60" ng-bind="subjectName"></div>
-          <span class="font-select col col-20">请选择</span>
+          <!--<div class="col col-60" ng-bind="subjectName"></div>-->
+          <!--<span class="font-select col col-20">请选择</span>-->
+          <input type="text" class="col col-75" placeholder="请选择" disabled ng-model="subjectName">
         </div>
+        <img src="build/img/application/resources-query/clear.png" class="clear-img"
+             ng-if="showClearSubject"
+             ng-click="clearInputContent('subject')"/>
       </div>
     </div>
     <div class="row div-block" style="padding: .8rem 0; margin-top: .5rem">

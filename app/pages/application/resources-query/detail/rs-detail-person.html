@@ -1,11 +1,11 @@
 <ion-view class="resources-detail-person" >
   <div class="row common-head">
     <button class="button button-clear back-button" style="color: #0d3349;z-index: 999" ng-click="goBackPage()">
-      <i class="ion-ios-arrow-back"></i>
-      <span class="back-text">返回</span>
+      <i class="ion-ios-arrow-back" style="color: #fff"></i>
+      <span class="back-text" style="color: #fff">返回</span>
     </button>
-
   </div>
+  <button class="button-small button-clear button-list"></button>
 
   <ion-slide-box id="next-slide" delegate-handle="employee-handle" active-slide="slideIndex" on-slide-changed="slideChanged($index)">
     <ion-slide class="person-top" ng-repeat="x in employeeList" >
@@ -13,16 +13,19 @@
       <!--</div>-->
       <div  class="person-head-image" style="background: url('{{x.emp_avatar}}');background-size: cover;background-position: center;background-repeat: no-repeat;">
       </div>
+      <div class="black-cover"></div>
       <div class="person-info">
         <div class="img-section">
           <img class="img-person" ng-cloak ng-src="{{x.emp_avatar}}"/>
           <p class="person-name">{{x.employee_name}}&nbsp;&nbsp;{{x.employee_number}}</p>
         </div>
         <div class="person-subject">
-          <div class="subject-item" ng-repeat="subject in projectList">
-            <div class="subject-item-circle" ng-cloak style="background: {{subject.color}}">{{subject.days_count}}</div>
-            <div class="subject-item-name" ng-cloak>{{subject.project_name}}</div>
-          </div>
+          <ion-scroll class="subject-scroll" delegate-handle="subject-handle">
+            <div class="subject-item" ng-repeat="subject in projectList">
+              <div class="subject-item-circle" ng-cloak style="background: {{subject.color}}">{{subject.days_count}}</div>
+              <div class="subject-item-name" ng-cloak>{{subject.project_name}}</div>
+            </div>
+          </ion-scroll>
         </div>
         <div class="person-bottom row">
           <div class="person-bottom-left col-40" >
@@ -51,18 +54,19 @@
   <ion-content class="person-content">
     <hms-loading ng-if="contactLoading" style="padding-top: 10px"></hms-loading>
     <ion-slide-box id="month-slide" delegate-handle="month-handle" active-slide="monthIndex" on-slide-changed="monthChanged($index)">
-      <ion-slide ng-repeat="y in monthSlideList">
+      <ion-slide ng-repeat="y in resultList">
+        <div class="calendar-float">
+          <span class="float-span">1111111111111111111111111111</span>
+        </div>
         <div class="calendar-month">
-          <span class="arrow ion-ios-arrow-left" ng-click="lastMonth()"></span>
-          <span class="word-font" ng-cloak>{{y.yearSlide}}</span>
+          <span class="arrow ion-ios-arrow-left"></span>
+          <span class="word-font" ng-bind="y.yearSlide"></span>
           <span class="word-font" ng-cloak>{{y.monthEnglishSlide}} {{y.monthSlide}}月</span>
-          <span class="arrow ion-ios-arrow-right" ng-click="nextMonth()"></span>
+          <span class="arrow ion-ios-arrow-right"></span>
         </div>
         <div class="calendar-day">
           <div class="calendar-title">
-            <div class="title-item" ng-cloak ng-repeat="title in weekTitleList">
-              {{title}}
-            </div>
+            <div class="title-item" ng-cloak ng-repeat="title in weekTitleList" ng-bind="title"></div>
           </div>
           <div class="calendar-each-week">
             <!--<div class="calendar-week" ng-repeat="week in calendar">-->
@@ -74,8 +78,8 @@
             <a class="day-item" ng-repeat="day in y.calendarDayList">
               <div class="each-day-blank" ng-cloak ng-class="{'each-day-purple':day.isSubject5,
                 'each-day-green':day.isSubject1, 'each-day-red':day.isSubject3,'each-day-blue':day.isSubject2,
-                'each-day-yellow':day.isSubject4, 'each-day-6':day.isSubject6,'each-day-7':day.isSubject7,
-                'each-day-8':day.isSubject8, 'each-day-9':day.isSubject9}">{{day.day}}
+                'each-day-yellow':day.isSubject4, 'each-day-orange':day.isSubject6,'each-day-rose':day.isSubject7,
+                'each-day-brown':day.isSubject8, 'each-day-9':day.isSubject9}" ng-bind="day.day">
               </div>
             </a>
           </div>
@@ -85,9 +89,7 @@
 
 
   </ion-content>
-  <ion-footer-bar class="foot-bar" style="bottom: 0px;">
-    <div class="button-list" ng-click="filterWorkFlowInfo()"></div>
-  </ion-footer-bar>
 
+  <!--<div class="button-list" ng-click="filterWorkFlowInfo()"></div>-->
 
 </ion-view>

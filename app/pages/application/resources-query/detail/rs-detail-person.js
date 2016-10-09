@@ -76,9 +76,12 @@ angular.module('applicationModule')
       $scope.subject = "";   //初始化项目列表
       $scope.resourceDetails = "";   //初始化查询结果
       $scope.yearMonth = ""; //初始化日历年月
+      $scope.newPage = 1;
 
       $scope.contactLoading = false; //默认不显示loading加载
 
+      $scope.resultList = []; //初始化最终呈现的结果
+      $scope.resultProList = [];
 
 
       var oSlide = document.getElementById('next-slide');
@@ -125,7 +128,9 @@ angular.module('applicationModule')
             return(a.employee_number - b.employee_number);
           });
           $ionicSlideBoxDelegate.$getByHandle('employee-handle').update();
-          console.log($scope.employeeList);
+
+          // console.log($scope.employeeList);
+
           for(var i=0; i<$scope.employeeList.length; i++){
             if(employeeCode == $scope.employeeList[i].employee_number){
               $scope.slideIndex = i;
@@ -169,8 +174,12 @@ angular.module('applicationModule')
       //   $ionicSlideBoxDelegate.slide(index);
       // };
       $scope.slideChanged=function(index){//  上面人员滑动时候触发
-        $scope.slideIndex=index;
 
+        $scope.resultList = []; //初始化最终呈现的结果
+        $scope.resultProList = [];
+        $scope.slideIndex=index;
+        $scope.monthIndex = 0;
+        $scope.newPage = 1;
         if($scope.employeeList[$scope.slideIndex - 1]){
           $scope.lastEmp = $scope.employeeList[$scope.slideIndex - 1];
           $scope.lastArrow = true;
@@ -188,13 +197,16 @@ angular.module('applicationModule')
         }
         employeeCode = $scope.employeeList[$scope.slideIndex].employee_number;
         postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber + '","p_dismission":"' + dimission +  '"}}';
-        getData(postUrl, postData);
+        getData('init');
 
       };
 
       $scope.monthChanged = function (index) {  //下面日历滑动时触发
         $scope.monthIndex=index;
-        $scope.projectList = $scope.resourceDetails[index].project_list;
+        console.log(index);
+        $scope.loadMore(index);
+        $scope.projectList = $scope.resultProList[index];
+
       };
 
 
@@ -212,10 +224,80 @@ angular.module('applicationModule')
       // };
       // getEmpPicture(empPictureUrl,$scope.empCode,$scope.slideIndex);
       //
-      function getData(postUrl, postData) {
-        $scope.contactLoading = true;
+
+      $scope.loadMore = function (index) { //加载下一页
+
+        if($scope.newPage == 1 && index == 1){
+          $scope.newPage = 2;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 2 && index == 3){
+          $scope.newPage = 3;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 3 && index == 5){
+          $scope.newPage = 4;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 4 && index == 7){
+          $scope.newPage = 5;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 5 && index == 9){
+          $scope.newPage = 6;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 6 && index == 11){
+          $scope.newPage = 7;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 7 && index == 13){
+          $scope.newPage = 8;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 8 && index == 15){
+          $scope.newPage = 9;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 9 && index == 17){
+          $scope.newPage = 10;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 10 && index == 19){
+          $scope.newPage = 11;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 11 && index == 21){
+          $scope.newPage = 12;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+        if($scope.newPage == 12 && index == 23){
+          $scope.newPage = 13;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('loadMore');
+        }
+      };
+
+
+      function getData(moreFlag) {
+        // $scope.contactLoading = true;
+        if (moreFlag === 'init') {
+          $scope.contactLoading = true;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + 1 + '","p_dismission":"' + dimission +  '"}}';
+        }
         hmsHttp.post(postUrl, postData).success(function (result) {
-          $scope.contactLoading = false;
+
           // console.log(dateFrom);
           // console.log(dateTo);
           // console.log(employeeName);
@@ -225,9 +307,8 @@ angular.module('applicationModule')
           // console.log(result.returnMsg);
           // console.log(postData);
           // console.log(result);
-          $scope.monthSlideList = [];  //初始化拼接显示结果
+          // $scope.monthSlideList = [];  //初始化拼接显示结果
 
-          console.log(result);
 
           //年月排序
           $scope.resourceDetails = result.resource_details.sort(function (a, b) {
@@ -253,33 +334,50 @@ angular.module('applicationModule')
               $scope.resourceDetails[j].project_list[4].color = "#93408a";
             }
             if($scope.resourceDetails[j].project_list[5]){
-              $scope.resourceDetails[j].project_list[5].color = "#ccc";
+              $scope.resourceDetails[j].project_list[5].color = "#fa9e34";
+            }
+            if($scope.resourceDetails[j].project_list[6]){
+              $scope.resourceDetails[j].project_list[6].color = "#e4517b";
+            }
+            if($scope.resourceDetails[j].project_list[7]){
+              $scope.resourceDetails[j].project_list[7].color = "#c9a666";
             }
 
           }
 
-          //封装monthSlideList
+          //封装resultList，resultProList
           for(var i=0; i<$scope.resourceDetails.length; i++){
             $scope.yearMonth = new Date($scope.resourceDetails[i].record_date);
             year = $scope.yearMonth.getFullYear();
             month = $scope.yearMonth.getMonth();
-            $scope.monthSlideList.push(initDate(year,month));
+            $scope.resultList.push(initDate(year,month));
             $ionicSlideBoxDelegate.$getByHandle('month-handle').update();
+            $scope.resultProList.push($scope.resourceDetails[i].project_list);
           }
 
-          $scope.projectList = $scope.resourceDetails[0].project_list;
+          // $scope.resultList.push($scope.monthSlideList);
 
-          console.log($scope.monthSlideList);
+          console.log($scope.resultList);
+          console.log($scope.resultProList);
+          console.log(result);
+
+          if(moreFlag === 'init'){
+            $scope.contactLoading = false;
+            $scope.projectList = $scope.resultProList[0];
+          }
+
+
+          // console.log($scope.monthSlideList);
           // console.log($scope.yearMonth);
         }).error(function () {
           console.log('个人查询结果异常');
         });
 
-        $scope.monthIndex = 0;
+
       };
 
 
-      getData(postUrl, postData);
+      getData('init');
 
 
 
@@ -309,37 +407,37 @@ angular.module('applicationModule')
 
         console.log($scope.resourceDetails);
 
-        $scope.lastMonth = function () {
-          $scope.currentMonth--;
-          if ($scope.currentMonth == 0) {
-            $scope.currentMonth = 12;
-            $scope.currentYear--;
-          }
-          $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
-          initCalendar($scope.currentYear, $scope.currentMonth);
-          if($scope.currentMonth<10){
-            recordDate = $scope.currentYear + '-0' + $scope.currentMonth;
-          }else{
-            recordDate = $scope.currentYear + '-' + $scope.currentMonth;
-          }
-
-          subjectNode(recordDate);
-        };
-        $scope.nextMonth = function () {
-          $scope.currentMonth++;
-          if ($scope.currentMonth == 13) {
-            $scope.currentMonth = 1;
-            $scope.currentYear++;
-          }
-          $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
-          initCalendar($scope.currentYear, $scope.currentMonth);
-          if($scope.currentMonth<10){
-            recordDate = $scope.currentYear + '-0' + $scope.currentMonth;
-          }else{
-            recordDate = $scope.currentYear + '-' + $scope.currentMonth;
-          }
-          subjectNode(recordDate);
-        };
+        // $scope.lastMonth = function () {
+        //   $scope.currentMonth--;
+        //   if ($scope.currentMonth == 0) {
+        //     $scope.currentMonth = 12;
+        //     $scope.currentYear--;
+        //   }
+        //   $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
+        //   initCalendar($scope.currentYear, $scope.currentMonth);
+        //   if($scope.currentMonth<10){
+        //     recordDate = $scope.currentYear + '-0' + $scope.currentMonth;
+        //   }else{
+        //     recordDate = $scope.currentYear + '-' + $scope.currentMonth;
+        //   }
+        //
+        //   subjectNode(recordDate);
+        // };
+        // $scope.nextMonth = function () {
+        //   $scope.currentMonth++;
+        //   if ($scope.currentMonth == 13) {
+        //     $scope.currentMonth = 1;
+        //     $scope.currentYear++;
+        //   }
+        //   $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
+        //   initCalendar($scope.currentYear, $scope.currentMonth);
+        //   if($scope.currentMonth<10){
+        //     recordDate = $scope.currentYear + '-0' + $scope.currentMonth;
+        //   }else{
+        //     recordDate = $scope.currentYear + '-' + $scope.currentMonth;
+        //   }
+        //   subjectNode(recordDate);
+        // };
 
         //周列表
         $scope.weekTitleList = [
