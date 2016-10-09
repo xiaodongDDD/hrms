@@ -1,8 +1,9 @@
 {
     "cordova-plugin-device": {
         "source": {
-            "type": "registry",
-            "id": "cordova-plugin-device"
+            "type": "git",
+            "url": "https://github.com/apache/cordova-plugin-device.git",
+            "subdir": "."
         },
         "is_top_level": false,
         "variables": {}
@@ -47,7 +48,7 @@
     "jpush-phonegap-plugin": {
         "source": {
             "type": "registry",
-            "id": "jpush-phonegap-plugin"
+            "id": "jpush-phonegap-plugin@2.2.3"
         },
         "is_top_level": true,
         "variables": {
