@@ -9,7 +9,15 @@ angular.module('myApp')
         .state('gesture-lock', {
           url: '/gesture-lock',
           templateUrl: 'build/pages/lock/gesture-lock.html',
-          controller: 'GestureLockCtrl'
+          controller: 'GestureLockCtrl',
+          params:{
+            'stateCurrent':'',
+            "detail": '',
+            "processedFlag": {},
+            "type": "",
+            'readMessage':{},
+            'messageId':''
+          }
         })
     }]);
 angular.module('myInfoModule')
@@ -17,63 +25,126 @@ angular.module('myInfoModule')
     '$scope',
     'baseConfig',
     '$state',
-    'storageLock',
     '$timeout',
+    '$stateParams',
+    'hmsJpushService',
+    '$ionicHistory',
+    'hmsPopup',
     function ($scope,
               baseConfig,
               $state,
-              storageLock,
-              $timeout) {
+              $timeout,
+              $stateParams,
+              hmsJpushService,
+              $ionicHistory,
+              hmsPopup) {
 
       $scope.$on('$ionicView.enter', function () {
         $scope.operation = 2;
-        if( !storageLock.getLock() ){
-          var delay = ionic.Platform.isIOS() ? 0 : 400;
-          $timeout(function () {
-            var w = window.innerWidth
-              || document.documentElement.clientWidth
-              || document.body.clientWidth;
-            if( w == 0 ){
-              console.log('Gesture lock init error!');
-              $state.go(tab.message);
-            }
-            var config = {
-              height:  w * 8 /10,
-              width:  w * 8 /10,
-              operation: $scope.operation,
-              descID: 'description',
-              canvasID: 'container',
-              haveDelta: true,
-              successUnlockCallback: function(){
-                var desc = document.getElementById('description');
-                desc.className = '';
-                $state.go('tab.message');
-              },
-              errorCallback: function () {
-                var desc = document.getElementById('description');
-                desc.className = '';
-                $timeout(function(){
-                  desc.className = 'error-description';
-                },20);
-              }
-            };
-            storageLock.initLock(config);
-          }, delay);
-        } else {
-          $scope.lock = storageLock.getLock();
-          $scope.lock.init();
+        $scope.errorLock = Boolean( window.localStorage.errorLock );
+        $scope.unlockTimeString = '';
+        $scope.localStorage = window.localStorage;
+        if( window.localStorage.unlockTime ){
+          $scope.unlockTimeString = ( new Date(parseInt(window.localStorage.unlockTime)) ).toLocaleString();
         }
+        var delay = ionic.Platform.isIOS() ? 0 : 500;
+        $timeout(function () {
+          var w = window.innerWidth
+            || document.documentElement.clientWidth
+            || document.body.clientWidth;
+          if( w == 0 ){
+            if(baseConfig.debug){
+              console.log('Gesture lock init error!');
+            }
+            alert('Gesture lock init error!');
+            $state.go('tab.message');
+          }
+          var config = {
+            height:  w * 8 /10,
+            width:  w * 8 /10,
+            operation: $scope.operation,
+            descID: 'description',
+            canvasID: 'container',
+            haveDelta: true,
+            successUnlockCallback: function(){
+              var desc = document.getElementById('description');
+              desc.className = '';
+              if( hmsJpushService.localStorage.stateCurrent ){
+                var storage = hmsJpushService.localStorage;
+                $state.go( storage.stateCurrent, {
+                  "detail": storage.detail,
+                  "processedFlag": storage.processedFlag,
+                  "type": storage.type
+                });
+
+                if(ionic.Platform.isIOS()) {
+                  storage.readMessage(storage.messageId);
+                }
+                $timeout(function(){
+                  hmsJpushService.localStorage = {};
+                }, 1000);
+              } else {
+                $state.go('tab.message');
+              }
+              window.localStorage.errorCount = 0;
+            },
+            errorCallback: function () {
+              var desc = document.getElementById('description');
+              desc.className = '';
+              $timeout(function(){
+                desc.className = 'error-description';
+              },20);
+              if( !parseInt(window.localStorage.errorCount) ){
+                window.localStorage.errorCount = 1;
+              } else {
+                window.localStorage.errorCount = parseInt(window.localStorage.errorCount) + 1;
+              }
+              console.log(window.localStorage.errorCount);
+              $scope.$apply();
+            }
+          };
+          $scope.lock = new H5lock(config);
+          $scope.lock.init();
+        }, delay);
+
+        $scope.$watch('localStorage.errorCount',function () {
+          if( parseInt($scope.localStorage.errorCount) && parseInt($scope.localStorage.errorCount) > 4  && !$scope.errorLock){
+            hmsPopup.showVeryShortCenterToast('输入错误次数达到五次，手机将暂时锁定!');
+            var current = new Date();
+            var unlockTime = new Date(current.getTime() + 60000);
+            $scope.unlockTimeString = unlockTime.toLocaleString();
+            window.localStorage.unlockTime = unlockTime.getTime();
+            window.localStorage.errorLock = 'true';
+            $scope.errorLock = true;
+            $timeout(function () {
+              $scope.errorLock = false;
+              window.localStorage.unlockTime = 0;
+              $scope.unlockTimeString = '';
+              window.localStorage.errorCount = 0;
+              window.localStorage.errorLock = '';
+            }, 60000);
+          } else if ( $scope.errorLock ) {
+            current = new Date();
+            if ( current.getTime() == parseInt(window.localStorage.unlockTime)){
+              $scope.errorLock = false;
+              window.localStorage.unlockTime = 0;
+              $scope.unlockTimeString = '';
+              window.localStorage.errorCount = 0;
+              window.localStorage.errorLock = '';
+            } else {
+              $timeout(function () {
+                $scope.errorLock = false;
+                window.localStorage.unlockTime = 0;
+                $scope.unlockTimeString = '';
+                window.localStorage.errorCount = 0;
+                window.localStorage.errorLock = '';
+              }, (window.localStorage.unlockTime - current.getTime()));
+            }
+          }
+        });
+
+        $ionicHistory.nextViewOptions({
+          disableBack: true
+        });
       });
-    }])
-  .factory('storageLock', function () {
-    var lock;
-    return {
-      initLock : function(config){
-        lock = new H5lock(config);
-        lock.init();
-      },
-      getLock : function(){
-        return lock;
-      }
-    }
-  });
+    }]);

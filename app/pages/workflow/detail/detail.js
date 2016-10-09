@@ -1716,7 +1716,7 @@ angular.module('applicationModule')
             hmsHttp.wxLogin(codeWx, callback);
           }
         }
-      }
-
+      };
+      
     }])
 ;

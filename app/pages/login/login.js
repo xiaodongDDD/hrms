@@ -483,10 +483,6 @@ angular.module('loginModule')
           $scope.rememberPassword = false;
           $scope.passwordChecked = "build/img/login/login-unchecked.png";
         }
-        $timeout(function () {
-          $ionicHistory.clearCache();
-          $ionicHistory.clearHistory();
-        }, 400);
       });
       $scope.$on('$destroy', function (e) {
         if (baseConfig.debug) {
