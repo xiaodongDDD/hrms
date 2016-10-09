@@ -179,26 +179,27 @@ angular.module('myApp')
         }
       });
 
-      $ionicPlatform.registerBackButtonAction(function (e) {
-        //判断处于哪个页面时双击退出,袁梦添加
-        if ($location.path() == '/tab/application' || $location.path() == '/tab/contact' ||
-          $location.path() == '/tab/myInfo' || $location.path() == '/login' || $location.path() == '/gesture-lock') {
-          if ($rootScope.backButtonPressedOnceToExit) {
-            ionic.Platform.exitApp();
-          } else {
-            $rootScope.backButtonPressedOnceToExit = true;
-            hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
-            setTimeout(function () {
-              $rootScope.backButtonPressedOnceToExit = false;
-            }, 1500);
-          }
-        }
-        else if ($ionicHistory.backView() && $location.path() != '/tab/message') {
-          $ionicHistory.goBack();
-        }
-        e.preventDefault();
-        return false;
-      }, 101);
+      // $ionicPlatform.registerBackButtonAction(function (e) {
+      //   //判断处于哪个页面时双击退出,袁梦添加
+      //   console.log(" path : "+$location.path());
+      //   if ($location.path() == '/tab/message'||$location.path() == '/tab/application'||$location.path() == '/tab/contact'||
+      //     $location.path() == '/tab/myInfo'||$location.path() == '/login'||$location.path() == '/gesture-lock') {
+      //     if ($rootScope.backButtonPressedOnceToExit) {
+      //       ionic.Platform.exitApp();
+      //     } else {
+      //       $rootScope.backButtonPressedOnceToExit = true;
+      //       hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
+      //       setTimeout(function () {
+      //         $rootScope.backButtonPressedOnceToExit = false;
+      //       }, 1500);
+      //     }
+      //   }
+      //   else if ($ionicHistory.backView()) {
+      //    $ionicHistory.goBack();
+      //   }
+      //   e.preventDefault();
+      //   return false;
+      // }, 101);
     }]);
 
 angular.module('myApp')

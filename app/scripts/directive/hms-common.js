@@ -159,6 +159,8 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
               var calculation1 = $scope.timeOffHeader.paidHoliday / ($scope.timeOffHeader.paidHoliday + $scope.timeOffHeader.usedPaidHoliday);
               var calculation2 = $scope.timeOffHeader.paidSickLeave / ($scope.timeOffHeader.paidSickLeave + $scope.timeOffHeader.usedPaidSickLeave);
               var calculation3 = $scope.timeOffHeader.extPaidHoliday / ($scope.timeOffHeader.extPaidHoliday + $scope.timeOffHeader.usedExtPaidHoliday);
+              console.log($scope.timeOffHeader);
+              console.log('calculation:'+calculation1 + '  '+ calculation2 + '  '+ calculation3);
               if (calculation1 <= 0.5) {//剩余天数大于总天数的一半
                 leftball1.style.transition = "all 0.3s linear";
                 leftball1.style.webkitTransition = "all 0.3s linear";
@@ -211,7 +213,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                 if (calculation1 <= 0.5) {
                   angle1 = 360 * calculation1;
                   angle1 = angle1 - 135;
-                  //console.log("角度："+angle);
                   leftball1.style.webkitTransform = "rotate(-135deg)";
                   leftball1.style.transform = "rotate(-135deg)";
                   rightball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
@@ -220,7 +221,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                   calculation1 = calculation1 - 0.5;
                   angle1 = 360 * calculation1;
                   angle1 = angle1 - 135;
-                  //console.log("角度："+angle);
                   leftball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
                   leftball1.style.transform = "rotate(" + angle1 + "deg)";
                   rightball1.style.webkitTransform = "rotate(45deg)";
@@ -229,7 +229,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                 if (calculation2 <= 0.5) {
                   angle2 = 360 * calculation2;
                   angle2 = angle2 - 135;
-                  //console.log("角度："+angle);
                   leftball2.style.webkitTransform = "rotate(-135deg)";
                   leftball2.style.transform = "rotate(-135deg)";
                   rightball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
@@ -238,7 +237,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                   calculation2 = calculation2 - 0.5;
                   angle2 = 360 * calculation2;
                   angle2 = angle2 - 135;
-                  //console.log("角度："+angle);
                   leftball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
                   leftball2.style.transform = "rotate(" + angle2 + "deg)";
                   rightball2.style.webkitTransform = "rotate(45deg)";
@@ -247,7 +245,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                 if (calculation3 <= 0.5) {
                   angle3 = 360 * calculation3;
                   angle3 = angle3 - 135;
-                  //console.log("角度："+angle);
                   leftball3.style.webkitTransform = "rotate(-135deg)";
                   leftball3.style.transform = "rotate(-135deg)";
                   rightball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
@@ -256,7 +253,7 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                   calculation3 = calculation3 - 0.5;
                   angle3 = 360 * calculation3;
                   angle3 = angle3 - 135;
-                  //console.log("角度："+angle);
+                  console.log("角度3："+angle3);
                   leftball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
                   leftball3.style.transform = "rotate(" + angle3 + "deg)";
                   rightball3.style.webkitTransform = "rotate(45deg)";

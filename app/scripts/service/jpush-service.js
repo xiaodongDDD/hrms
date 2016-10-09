@@ -8,6 +8,8 @@ angular.module('HmsModule')
     function (baseConfig,
               messageService) {
 
+      this.localStorage = {};
+
       this.init = function (state) {
         if (baseConfig.debug) {
           console.log('hmsJpushService.init!! ');
@@ -64,14 +66,14 @@ angular.module('HmsModule')
             return '';
           };
 
-
+          var self = this;
           var readMessage = function (messageId) {
             var messageList = [
               {
                 "messageId": messageId,
                 "actionCode": "change"
               }
-            ]
+            ];
             var success = function (result) {
               if(baseConfig.debug){
                 console.log('messageService.getMessageProcess success result')
@@ -139,14 +141,26 @@ angular.module('HmsModule')
                detailId.workflowId, detailId.instanceId, detailId.nodeId);*/
 
               if(messageType == "work_flow"){
-                state.go(analyze(state.current) + 'pushDetail', {
-                  "detail": detail,
-                  "processedFlag": {value: true},
-                  "type": "PUSHDETAIL"
-                });
+                if( window.localStorage.getItem('gesturePassword') &&window.localStorage.getItem('gesturePassword') != '' ){
+                  self.localStorage = {
+                    'stateCurrent':analyze(state.current) + 'pushDetail',
+                    "detail": detail,
+                    "processedFlag": {value: true},
+                    "type": "PUSHDETAIL",
+                    'readMessage':readMessage,
+                    'messageId':messageId
+                  };
+                  console.log(self.localStorage);
+                } else {
+                  state.go(analyze(state.current) + 'pushDetail', {
+                    "detail": detail,
+                    "processedFlag": {value: true},
+                    "type": "PUSHDETAIL"
+                  });
 
-                if(ionic.Platform.isIOS()) {
-                  readMessage(messageId);
+                  if(ionic.Platform.isIOS()) {
+                    readMessage(messageId);
+                  }
                 }
               }
 
