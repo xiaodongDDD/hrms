@@ -417,6 +417,13 @@ angular.module('applicationModule')
         }
       }
 
+      $scope.$on('$ionicView.beforeEnter', function () {
+        if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+          if(document.setTitle){
+            document.setTitle('合同详情');
+          }
+        }
+      });
       $scope.$on('$ionicView.afterEnter', function() {
         $scope.afterEnter = true;
       });

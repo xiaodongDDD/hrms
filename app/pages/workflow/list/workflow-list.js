@@ -650,6 +650,11 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('WorkFLowListCtrl.$ionicView.beforeEnter');
         }
+        if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+          if(document.setTitle){
+            document.setTitle('待办事项');
+          }
+        }
         if (workFLowListService.getRefreshWorkflowList().flag == true) {
           workFLowListService.setRefreshWorkflowList(false);
           if (baseConfig.debug) {

@@ -1690,7 +1690,7 @@ angular.module('applicationModule')
         } else { //微信推送
           $scope.showBackbtn = false;
           var paramsKey = ['instanceId','workflowId','nodeId','submitFlag','recordId','approve','refuse','toOther','goBack'];
-          var detailParams = pairsWx[0].split("|");
+          var detailParams = decodeURI(pairsWx[0]).split("|"); // "|"在iOS微信浏览器中被转义
           var paramsJson = {};
           for(i = 0; i < paramsKey.length; i++){
             paramsJson[paramsKey[i]] = detailParams[i];
@@ -1717,6 +1717,14 @@ angular.module('applicationModule')
           }
         }
       };
+
+      $scope.$on('$ionicView.beforeEnter', function () {
+        if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+          if(document.setTitle){
+            document.setTitle('待办事项明细');
+          }
+        }
+      });
       
     }])
 ;
