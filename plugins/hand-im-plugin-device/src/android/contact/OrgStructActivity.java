@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -79,6 +80,7 @@ public class OrgStructActivity extends Activity implements View.OnClickListener 
         } else {
             initData();
         }
+        initEvent();
     }
 
     @Override
@@ -111,6 +113,16 @@ public class OrgStructActivity extends Activity implements View.OnClickListener 
                 } else if (!ckbCheckAll.isChecked() && orgStructAdapter != null) {
                     orgStructAdapter.unCheckAll();
                 }
+            }
+        });
+    }
+
+    private void initEvent() {
+        lstOrgStruct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                OrgStructAdapter.ViewHolder holder = (OrgStructAdapter.ViewHolder) view.getTag();
+                orgStructAdapter.checkButtonOnClick(holder,holder.checkBox,i);
             }
         });
     }
@@ -467,11 +479,11 @@ public class OrgStructActivity extends Activity implements View.OnClickListener 
             }
 
             @Override
-            public void onReponse(String id, String title,String url) {
+            public void onReponse(String id, String title, String url) {
                 setLoading(View.GONE);
                 btnOk.setClickable(true);
                 if (type == DiscussionManager.CREATE) {
-                    afterCreate(id, title,url);
+                    afterCreate(id, title, url);
                 } else {
                     afterInvite();
                 }
@@ -479,11 +491,11 @@ public class OrgStructActivity extends Activity implements View.OnClickListener 
         }, type, members, targetId, GroupArray);
     }
 
-    private void afterCreate(String id, String title,String url) {
+    private void afterCreate(String id, String title, String url) {
         Intent intent = new Intent();
         intent.putExtra("id", id);
         intent.putExtra("title", title);
-        intent.putExtra("url",url);
+        intent.putExtra("url", url);
         setResult(201, intent);
         finish();
     }

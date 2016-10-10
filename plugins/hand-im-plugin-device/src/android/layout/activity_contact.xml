@@ -10,8 +10,7 @@
         android:id="@+id/nav_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/nav_bar"
-        android:orientation="horizontal">
+        android:background="@drawable/nav_bar">
 
         <TextView
             android:id="@+id/arrow_back"
@@ -35,7 +34,7 @@
             android:layout_centerInParent="true"
             android:text="创建多人聊天"
             android:textColor="#ffffff"
-            android:textSize="19sp" />
+            android:textSize="18sp" />
 
     </RelativeLayout>
 
@@ -102,7 +101,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="14dp"
                     android:text="组织架构"
                     android:textColor="#FF003CA7" />
             </LinearLayout>
@@ -115,10 +114,10 @@
 
                 <ImageView
                     android:id="@+id/hand_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="14dp"
                     android:src="@drawable/hand_icon" />
 
                 <TextView
@@ -155,10 +154,10 @@
 
                 <ImageView
                     android:id="@+id/self_org"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="14dp"
                     android:src="@drawable/self_org" />
 
                 <ProgressBar
@@ -175,7 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="20dp"
                     android:layout_toRightOf="@+id/self_org"
                     android:textColor="#000000" />
@@ -201,7 +200,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="14dp"
                     android:text="我的项目"
                     android:textColor="#FF003CA7" />
             </LinearLayout>
@@ -227,8 +226,9 @@
 
                 <TextView
                     android:id="@+id/txtProjectTip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="项目列表为空"
                     android:textColor="#c2c2c2" />
             </LinearLayout>
@@ -243,7 +243,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="14dp"
                     android:text="常用联系人"
                     android:textColor="#FF003CA7" />
             </LinearLayout>

@@ -172,8 +172,8 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
       userName = intent.getStringExtra("MUSERNAME");
       iconUrl = intent.getStringExtra("MICONURL");
       token = intent.getStringExtra("MTOKEN");
-      friendId = intent.getStringExtra("TARGETID");
-      friendName = intent.getStringExtra("GROUPNAME");
+      friendId = intent.getStringExtra("MFRIENDID");
+      friendName = intent.getStringExtra("MFRIENDNAME");
       friendIcon = intent.getStringExtra("GROUPICON");
     }
     if (iconUrl != null) {
@@ -188,30 +188,17 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
 
   //加载融云
   private void initMyRongIM() {
-	//设置消息数为已读
-    RongIMClient.getInstance().clearMessagesUnreadStatus(Conversation.ConversationType.DISCUSSION, friendId, new RongIMClient.ResultCallback<Boolean>() {
-      @Override
-      public void onSuccess(Boolean aBoolean) {
-        //将改会话未读消息数置为0 刷新界面
-      }
-
-      @Override
-      public void onError(RongIMClient.ErrorCode errorCode) {
-        Log.e("error","error to clear unread message");
-      }
-    });
+ ;
     RongIMClient.getInstance().getDiscussion(friendId, new RongIMClient.ResultCallback<Discussion>() {
       @Override
       public void onSuccess(Discussion dis) {
         discussion = dis;
       }
       @Override
-      public void onError(RongIMClient.ErrorCode errorCode) {
-
-      }
+      public void onError(RongIMClient.ErrorCode errorCode) {}
     });
     //讨论组聊天 获取聊天记录
-     RongIMClient.getInstance().getLatestMessages(Conversation.ConversationType.DISCUSSION, friendId, Integer.MAX_VALUE, new RongIMClient.ResultCallback<List<Message>>() {
+    RongIMClient.getInstance().getLatestMessages(Conversation.ConversationType.DISCUSSION, friendId, Integer.MAX_VALUE, new RongIMClient.ResultCallback<List<Message>>() {
       @Override
       public void onSuccess(List<Message> messages) {
         DBhelper dBhelper = new DBhelper(getApplicationContext());
@@ -277,6 +264,18 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
       @Override
       public void onError(RongIMClient.ErrorCode errorCode) {
         Log.d(TAG, "getLatestMessages" + errorCode.getMessage());
+      }
+    });
+    //设置消息数为已读
+    RongIMClient.getInstance().clearMessagesUnreadStatus(Conversation.ConversationType.DISCUSSION, friendId, new RongIMClient.ResultCallback<Boolean>() {
+      @Override
+      public void onSuccess(Boolean aBoolean) {
+        //将改会话未读消息数置为0 刷新界面
+      }
+
+      @Override
+      public void onError(RongIMClient.ErrorCode errorCode) {
+        Log.e("error","error to clear unread message");
       }
     });
     //设置消息监听
@@ -369,7 +368,7 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
     RongIMClient.getInstance().getDiscussion(friendId, new RongIMClient.ResultCallback<Discussion>() {
       @Override
       public void onSuccess(Discussion discussion) {
-    DBhelper dBhelper = new DBhelper(getApplicationContext());
+        DBhelper dBhelper = new DBhelper(getApplicationContext());
         DBhelper.MyConversation mc = dBhelper.getUserInfo(friendId);
         String iconUrl = mc.getTargetIconUrl();
         dBhelper.addUserInfo(friendId,discussion.getName(),iconUrl);
@@ -710,6 +709,7 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
               listv_content.setSelection(listv_content.getBottom());
             } else if (message.getContent() instanceof TextMessage) {
               TextMessage tm = (TextMessage) message.getContent();
+
               dBhelper.addUserInfo(message.getTargetId(),discussion.getName(),tm.getExtra());
               String msg = tm.getContent();
               Log.e("txt msg", msg);
@@ -1125,7 +1125,7 @@ public class HandMulChatActivity extends Activity implements View.OnClickListene
         return true;
       }
     }
-     return super.onKeyDown(keyCode,event);
+    return super.onKeyDown(keyCode,event);
   }
 
   private void sendMessage(final MessageContent msg) {

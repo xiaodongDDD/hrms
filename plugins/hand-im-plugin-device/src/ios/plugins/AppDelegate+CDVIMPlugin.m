@@ -14,8 +14,68 @@
 #import "UINavigationController+RCIMChatNavigationController.h"
 #import "RCIMGroupChatViewController.h"
 
+#import <RongCallLib/RongCallLib.h>
+#import <RongCallKit/RongCallKit.h>
+#import "NSUserActivity+StartCallConvertible.h"
+#import "NSURL+StartCallConvertible.h"
+
+
+
+#include <objc/runtime.h>
+
+#import "CustomRCCall.h"
+
 static NSMutableArray *usersInfo;
+
+@interface AppDelegate ()
+
+@end
+
+
 @implementation AppDelegate (CDVIMPlugin)
+
++ (AppDelegate *)sharedDelegate{
+    return (AppDelegate *)([UIApplication sharedApplication].delegate);
+}
+
+#pragma mark 属性
+- (void)setPushRegistry:(PKPushRegistry *)pushRegistry{
+    objc_setAssociatedObject(self, @selector(pushRegistry), pushRegistry, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (PKPushRegistry *)pushRegistry{
+    return objc_getAssociatedObject(self, @selector(pushRegistry));
+}
+- (void)setCallManager:(WTCallManager *)callManager{
+    objc_setAssociatedObject(self, @selector(callManager), callManager, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (WTCallManager *)callManager{
+    return objc_getAssociatedObject(self, @selector(callManager));
+}
+- (void)setProviderDelegate:(ProviderDelegate *)providerDelegate{
+    objc_setAssociatedObject(self, @selector(providerDelegate), providerDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (ProviderDelegate *)providerDelegate{
+    return objc_getAssociatedObject(self, @selector(providerDelegate));
+}
+
+
+- (void)showCallkit{
+    {
+        [self setPushRegistry:[[PKPushRegistry alloc] initWithQueue:dispatch_get_main_queue()]];
+        self.pushRegistry.delegate = self;
+        self.pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
+    }
+    {
+        [self setCallManager:[[WTCallManager alloc] init]];
+        
+        [self setProviderDelegate:[[ProviderDelegate alloc] initWithCallManager:self.callManager]];
+    }
+    
+    
+}
+
+
 +(void)load
 {
     Method origin;
@@ -40,17 +100,106 @@ static NSMutableArray *usersInfo;
 - (void)IMApplicationDidLaunch:(NSNotification *)notification
 {
     launchOptions = notification.userInfo;
-    //弹出通知注册
+    //    弹出通知注册
     UIUserNotificationSettings *seting = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge categories:nil];
     
     //启动
     [[UIApplication sharedApplication] registerUserNotificationSettings:seting];
-    [[RCIMClient sharedRCIMClient] initWithAppKey:AppKey];
+    [[RCIMClient sharedRCIMClient] initWithAppKey:appSecret];
     [[RCIMClient sharedRCIMClient] setReceiveMessageDelegate:self object:nil];
     [RCIM sharedRCIM].userInfoDataSource = self;
-
+    [[RCIM sharedRCIM]setConnectionStatusDelegate:self];
+    [CustomRCCall sharedRCCall];
+    NSString *tokenStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"device_token"];
+    if(tokenStr){
+        [[RCIMClient sharedRCIMClient] setDeviceToken:tokenStr];
+    }
+    [self showCallkit];
     NSLog(@"IMApplicationDidLaunch");
 }
+
+
+#pragma mark CallKit
+
+//通讯录中点击会到这里,在通话的时候,系统的通话界面中点击视频,音频会重复拨打电话呢,也会走这里
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void(^)(NSArray * __nullable restorableObjects))restorationHandler{
+    
+    NSString *handle = [userActivity startCallHandle];
+    NSLog(@"handld == %@",handle);
+    //handle为点击的联系人的电话号码
+    BOOL hasVideo = NO;
+    if ([userActivity.activityType isEqualToString:@"INStartVideoCallIntent"]) {
+        hasVideo = YES;
+    }
+    
+    if (handle != nil && handle.length > 0 ){
+        //去拨打电话:电话号码 :视频
+        [[CustomRCCall sharedRCCall] startSingleCall:handle mediaType:RCCallMediaAudio];
+    }
+    return NO;
+}
+
+
+#pragma mark - PKPushRegistryDelegate
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type{
+    NSLog(@"pushRegistry: didUpdatePushCredentials:");
+}
+
+/*!
+ @method        pushRegistry:didReceiveIncomingPushWithPayload:forType:
+ @abstract      This method is invoked when a push notification has been received for the specified PKPushType.
+ @param         registry
+ The PKPushRegistry instance responsible for the delegate callback.
+ @param         payload
+ The push payload sent by a developer via APNS server API.
+ @param         type
+ This is a PKPushType constant which is present in [registry desiredPushTypes].
+ */
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type{
+    if (type == PKPushTypeVoIP) {
+        NSDictionary *dictionaryPayload = payload.dictionaryPayload;
+        
+        NSString *uuidString    = [[NSUserDefaults standardUserDefaults] objectForKey:@"kuuid"];
+        NSString *handle        = dictionaryPayload[@"handle"];
+        NSNumber *hasVideo      = dictionaryPayload[@"hasVideo"];
+        
+        NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:uuidString];
+        
+        [self displayIncomingCallUUID:uuid handle:handle hasVideo:[hasVideo boolValue] completion:^(NSError * _Nullable error) {
+            
+        }];
+    }
+}
+
+/// Display the incoming call to the user
+- (void)displayIncomingCallUUID:(NSUUID *)uuid handle:(NSString *)handle hasVideo:(BOOL)hasVideo completion:(void (^)(NSError * error))completion{
+    
+    [self.providerDelegate reportIncomingCallUUID:uuid handle:handle hasVideo:hasVideo completion:^(NSError * _Nullable error) {
+        NSLog(@"xiaowei---error = %@",error);
+    }];
+}
+
+
+#pragma mark - 保证3D touch的操作可以被触发
+- (void)RemoveNotificationCenterRequired:(NSString *)key bySubInfo:(NSDictionary *)info{
+    NSArray *arrayInfos = [self.notificationCenterRequired objectForKey:key];
+    if (arrayInfos != nil && [arrayInfos count] > 0) {
+        NSMutableArray *arrayMuInfos = [[NSMutableArray alloc] initWithArray:arrayInfos];
+        [arrayMuInfos removeObject:info];
+        if ([arrayMuInfos count] == 0) {
+            [self.notificationCenterRequired removeObjectForKey:key];
+        }else{
+            [self.notificationCenterRequired setObject:arrayMuInfos forKey:key];
+        }
+    }
+}
+
+- (void)RemoveNotificationCenterRequired:(NSString *)key{
+    [self.notificationCenterRequired removeObjectForKey:key];
+}
+
+
+
 
 
 /*!
@@ -90,10 +239,39 @@ static NSMutableArray *usersInfo;
 - (void)onReceived:(RCMessage *)message left:(int)nLeft object:(id)object
 {
     if (!([message.objectName isEqualToString:@"RC:DizNtf"]||[message.objectName isEqualToString:@"RC:VCSummary"])) {
-    [[NSNotificationCenter defaultCenter] postNotificationName:RCIMLibReceivedMessageNotification object:message];
-}
-    if(message.conversationType==ConversationType_PRIVATE){
+        [[NSNotificationCenter defaultCenter] postNotificationName:RCIMLibReceivedMessageNotification object:message];
+    }
+    if([message.objectName isEqualToString:@"RC:VCSummary"]){
         
+        WTCall *call = [self.callManager.calls lastObject];
+        if(call){
+            [self.callManager endCall:call];
+        }
+        if([[UIApplication sharedApplication] windows].count>2){
+            UIViewController *viewController = [[UIApplication sharedApplication] keyWindow].rootViewController;
+            
+            if ([viewController isKindOfClass:[RCCallBaseViewController class]]) {
+                UIViewController *rootVC = viewController;
+                while (rootVC.parentViewController) {
+                    rootVC = rootVC.parentViewController;
+                }
+                viewController = rootVC;
+            }
+            for (UIWindow *window in [UIApplication sharedApplication].windows) {
+                if (window.rootViewController == viewController) {
+                    [window resignKeyWindow];
+                    window.hidden = YES;
+                    return;
+                }
+            }
+            [viewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+    }
+    
+    NSLog(@"message.content = %@",message.objectName);
+    
+    if(message.conversationType==ConversationType_PRIVATE){
         //单聊
         //收到新消息 发送通知
         if (![message.objectName isEqualToString:@"RC:VCSummary"]) {
@@ -180,7 +358,7 @@ static NSMutableArray *usersInfo;
                 RCVoiceMessage *voiceMsg =(RCVoiceMessage*) message.content;
                 telePhone = voiceMsg.extra;
             }else if ([message.content isKindOfClass:[RCImageMessage class]]){
-                 RCImageMessage *imageMsg = (RCImageMessage*)message.content;
+                RCImageMessage *imageMsg = (RCImageMessage*)message.content;
                 telePhone = imageMsg.extra;
             }else{}
             
@@ -288,13 +466,13 @@ static NSMutableArray *usersInfo;
         NSString *extara = notification.userInfo[@"extra"];
         NSArray *telephones;
         if ([extara rangeOfString:@"|"].location != NSNotFound) {
-             telephones = (NSMutableArray *)[extara componentsSeparatedByString:@"|"];
+            telephones = (NSMutableArray *)[extara componentsSeparatedByString:@"|"];
             
         }else{
             telephones = @[extara];
         }
         NSLog(@"--telephones:%@",telephones);
-    
+        
         UINavigationController *nav = [[UINavigationController alloc] initWithTargetId:userInfo[@"userId"] FriendName:userInfo[@"name"] Icon:userInfo[@"portraitUri"] PhoneNumbers:telephones];
         
         [self.viewController presentViewController:nav animated:NO completion:nil];

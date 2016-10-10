@@ -8,15 +8,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/nav_bar"
-        android:gravity="center_vertical"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp">
+        android:background="@drawable/nav_bar">
 
         <TextView
             android:id="@+id/textv_back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:drawableLeft="@drawable/white_back"
@@ -24,23 +21,24 @@
             android:gravity="center_vertical"
             android:text="消息"
             android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textv_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:gravity="center_vertical"
             android:text="姓名"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
         <ImageView
             android:id="@+id/imgv_call"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:src="@drawable/dial_2x"
-            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center_vertical"
             android:layout_marginRight="16dp"/>
     </RelativeLayout>
     <ListView

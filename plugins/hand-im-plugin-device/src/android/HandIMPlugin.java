@@ -780,25 +780,17 @@ public class HandIMPlugin extends CordovaPlugin implements IRongReceivedCallList
                     //如果是文本消息获取最后一条消息的文本内容
                     if (messageContent instanceof TextMessage) {
                         TextMessage tm = (TextMessage) messageContent;
-                        userInfoName = "";
-                        if (tm.getUserInfo() != null) {
-                            userInfoName = tm.getUserInfo().getName();
-                        }
-                        txt = userInfoName + ":" + tm.getContent();
+                        txt = tm.getContent();
                     } else if (messageContent instanceof ImageMessage) {
-                        ImageMessage im = (ImageMessage) messageContent;
-                        userInfoName = "";
-                        if (im.getUserInfo() != null) {
-                            userInfoName = im.getUserInfo().getName();
-                        }
-                        txt = userInfoName + ":图片";
+                        txt = "图片";
                     } else if (messageContent instanceof VoiceMessage) {
-                        VoiceMessage vm = (VoiceMessage) messageContent;
-                        userInfoName = "";
-                        if (vm.getUserInfo() != null) {
-                            userInfoName = vm.getUserInfo().getName();
+                        txt = "语音";
+                    }
+                    if(conversationType!=null&&conversationType.equals("2")){
+                        UserInfo uinfo  = messageContent.getUserInfo();
+                        if(uinfo!=null&&!uinfo.getUserId().equals(userId)){
+                            txt = uinfo.getName()+":"+txt;
                         }
-                        txt = userInfoName + ":语音";
                     }
 
                     long time = conversation.getSentTime();

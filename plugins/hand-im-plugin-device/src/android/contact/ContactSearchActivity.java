@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -105,6 +106,13 @@ public class ContactSearchActivity extends Activity implements View.OnClickListe
             }
         });
         txtCancel.setOnClickListener(this);
+        lsvContent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ContactSearchAdapter.ViewHolder holder = (ContactSearchAdapter.ViewHolder) view.getTag();
+                contactSearchAdapter.checkButtonOnClick(holder.checkBox,i);
+            }
+        });
     }
 
     private void updateDataList() {

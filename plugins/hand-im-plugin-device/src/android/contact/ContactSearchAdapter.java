@@ -91,26 +91,27 @@ public class ContactSearchAdapter extends BaseAdapter {
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("id",1+"");
-                int id = Integer.parseInt(view.getTag().toString());
-                if(isMemberInDiscussion(data.get(id).getId())){
-                    Log.e("id",2+"");
-                    ((CheckBox)view).setChecked(true);
-                    return;
-                }
-                if(checkList.get(id)){
-                    Log.e("id",3+"");
-                    checkList.set(id,false);
-                    refreshMemberList(data.get(position),false);
-                }else{
-                    Log.e("id",4+"");
-                    checkList.set(id,true);
-                    refreshMemberList(data.get(position),true);
-                }
-                checkCallBack.setCheckInfo();
+                checkButtonOnClick(view,position);
             }
         });
         return convertView;
+    }
+    public void checkButtonOnClick(View view, int position){
+        int id = Integer.parseInt(view.getTag().toString());
+        if(isMemberInDiscussion(data.get(id).getId())){
+            ((CheckBox)view).setChecked(true);
+            return;
+        }
+        if(checkList.get(id)){
+            checkList.set(id,false);
+            ((CheckBox)view).setChecked(false);
+            refreshMemberList(data.get(position),false);
+        }else{
+            checkList.set(id,true);
+            ((CheckBox)view).setChecked(true);
+            refreshMemberList(data.get(position),true);
+        }
+        checkCallBack.setCheckInfo();
     }
     public final class ViewHolder{
         public CheckBox checkBox;

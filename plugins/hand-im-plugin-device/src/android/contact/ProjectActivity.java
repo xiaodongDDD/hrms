@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -75,9 +80,6 @@ public class ProjectActivity extends Activity implements View.OnClickListener {
     }
 
     private void initData() {
-        if (projectName.length() > 10) {
-            projectName = projectName.substring(0, 10) + "...";
-        }
         txtProjectName.setText(projectName);
         contactDataSource = new ContactDataSource();
         initProjectData();
@@ -87,6 +89,27 @@ public class ProjectActivity extends Activity implements View.OnClickListener {
         btnOK.setOnClickListener(this);
         checkAll.setOnClickListener(this);
         arrow_back.setOnClickListener(this);
+        txtProjectName.setMovementMethod(ScrollingMovementMethod.getInstance());
+        txtProjectName.setOnClickListener(new View.OnClickListener() {
+            boolean flag = true;
+            @Override
+            public void onClick(View view) {
+                if(flag){
+                    flag = false;
+                    txtProjectName.setSingleLine(false);
+                }else{
+                    flag = true;
+                    txtProjectName.setSingleLine(true);
+                }
+            }
+        });
+        lsvContent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ContactSearchAdapter.ViewHolder holder = (ContactSearchAdapter.ViewHolder) view.getTag();
+                projectInfoAdapter.checkButtonOnClick(holder.checkBox,i);
+            }
+        });
     }
 
     private void initProjectData() {

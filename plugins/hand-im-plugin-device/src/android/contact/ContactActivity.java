@@ -137,6 +137,13 @@ public class ContactActivity extends Activity implements View.OnClickListener {
                 startActivityForResult(intent, 0);
             }
         });
+        lsvOftenContact.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ContactSearchAdapter.ViewHolder holder = (ContactSearchAdapter.ViewHolder) view.getTag();
+                oftenAdapter.checkButtonOnClick(holder.checkBox,i);
+            }
+        });
     }
 
     private void initProject() {

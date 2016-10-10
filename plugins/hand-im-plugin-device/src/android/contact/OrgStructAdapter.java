@@ -141,22 +141,26 @@ public class OrgStructAdapter extends BaseAdapter {
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setCheckStatus(view);
-                if(getItemViewType(position)==OrgStruct.DEPTARTMENT){
-                    if(checkList.get(position)){
-                        holder.rltNextLevel.setBackgroundColor(0xFFF2F2F2);
-                    }else{
-                        holder.rltNextLevel.setBackgroundColor(0xFFFFFFFF);
-                    }
-                }
-                if(getItemViewType(position)==OrgStruct.STAFF){
-                    if(!checkList.get(position)){
-                        refreshMemberList(data.get(position),false);
-                    }
-                }
+                checkButtonOnClick(holder,view,position);
             }
         });
         return convertView;
+    }
+
+    public void checkButtonOnClick(ViewHolder holder,View view, int position){
+        setCheckStatus(view);
+        if(getItemViewType(position)==OrgStruct.DEPTARTMENT){
+            if(checkList.get(position)){
+                holder.rltNextLevel.setBackgroundColor(0xFFF2F2F2);
+            }else{
+                holder.rltNextLevel.setBackgroundColor(0xFFFFFFFF);
+            }
+        }
+        if(getItemViewType(position)==OrgStruct.STAFF){
+            if(!checkList.get(position)){
+                refreshMemberList(data.get(position),false);
+            }
+        }
     }
 
     public final class ViewHolder {

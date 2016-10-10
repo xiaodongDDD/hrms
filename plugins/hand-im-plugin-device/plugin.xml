@@ -50,87 +50,87 @@
     <source-file src="src/android/model/CallMemberModel.java" target-dir="src/com/hand/im/model"/>
     <source-file src="src/android/model/UserInfo.java" target-dir="src/com/hand/im/model"/>
     <!-- add by fuwei end-->
-	
-	<!--add by panxu begin -->
-	<source-file src="src/android/bean/UserInfo.java" target-dir="src/com/hand/im/bean"/>
-	<source-file src="src/android/bean/OrgStruct.java" target-dir="src/com/hand/im/bean"/>
-	<source-file src="src/android/bean/CheckPageSet.java" target-dir="src/com/hand/im/bean"/>
-	<source-file src="src/android/bean/Project.java" target-dir="src/com/hand/im/bean"/>
-	<source-file src="src/android/contact/ContactActivity.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/PersonBean.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/PinyinComparator.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/PinyinUtils.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/SideBar.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/SortAdapter.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/OrgStructActivity.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/OrgStructAdapter.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/TipDialog.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/ContactDataSource.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/ContactSearchActivity.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/ContactSearchAdapter.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/CreateDisInfo.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/DataCheckCallBack.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/DiscussionManager.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/ProjectActivity.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/ProjectAdapter.java" target-dir="src/com/hand/im/contact"/>
-	<source-file src="src/android/contact/DisAvaManager.java" target-dir="src/com/hand/im/contact"/>
-	
-	<source-file src="src/android/okhttp/OkHttpClientManager.java" target-dir="src/com/hand/im/okhttp"/>
-	<source-file src="src/android/GroupInfoActivity.java" target-dir="src/com/hand/im"/>
-	<source-file src="src/android/GroupInfoAdapter.java" target-dir="src/com/hand/im"/>
-	<source-file src="src/android/HandMulChatActivity.java" target-dir="src/com/hand/im"/>
-	<source-file src="src/android/HandMulChatContentAdapter.java" target-dir="src/com/hand/im"/>
-	<source-file src="src/android/LoginInfo.java" target-dir="src/com/hand/im"/>
-	<source-file src="src/android/noScrollGridView.java" target-dir="src/com/hand/im"/>
-	<source-file src="src/android/UpdateDisNameActivity.java" target-dir="src/com/hand/im"/>	
-	
-	<source-file src="src/android/drawable/exit_button_shape.xml" target-dir="res/drawable"/>
-	<source-file src="src/android/drawable/edittext_bg.xml" target-dir="res/drawable"/>
-	<source-file src="src/android/drawable/item_check_box.xml" target-dir="res/drawable"/>
-	<source-file src="src/android/drawable/switch_thumb.xml" target-dir="res/drawable"/>
-	<source-file src="src/android/drawable/switch_track.xml" target-dir="res/drawable"/>
-	<source-file src="src/android/drawable/switch_track_off.xml" target-dir="res/drawable"/>
-	<source-file src="src/android/drawable/switch_track_on.xml" target-dir="res/drawable"/>
-	<source-file src="src/android/drawable/ok_button_shape.xml" target-dir="res/drawable"/>
-	<source-file src="src/android/drawable/btn_dark_blue.xml" target-dir="res/drawable"/>
-	
-	<source-file src="src/android/drawable-hdpi/avatar_default.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/btn_next.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/group_add.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/group_info.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/search.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/arrow_back.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/check.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/uncheck.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/white_back.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/right_back.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/nav_bar.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/self_org.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/project_icon_in.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/project_icon_out.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/hand_icon.png" target-dir="res/drawable-hdpi"/>
-	<source-file src="src/android/drawable-hdpi/txt_clear.png" target-dir="res/drawable-hdpi"/>
-	
-	
-	<source-file src="src/android/layout/activity_contact.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/activity_group_info.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/activity_update_dis_name.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/hand_mul_chat_act.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/item_group_info.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/list_item.xml" target-dir="res/layout"/>
-	
-	<source-file src="src/android/layout/item_org_org.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/item_org_person.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/activity_org_struct.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/dialog_tip.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/activity_contact_search.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/activity_project.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/item_project.xml" target-dir="res/layout"/>
-	<source-file src="src/android/layout/item_staff.xml" target-dir="res/layout"/>
-	
-	<source-file src="src/android/libs/pinyin4j-2.5.0.jar" target-dir="libs/"/>
-	
-	<!--add by panxu end-->
+    
+    <!--add by panxu begin -->
+    <source-file src="src/android/bean/UserInfo.java" target-dir="src/com/hand/im/bean"/>
+    <source-file src="src/android/bean/OrgStruct.java" target-dir="src/com/hand/im/bean"/>
+    <source-file src="src/android/bean/CheckPageSet.java" target-dir="src/com/hand/im/bean"/>
+    <source-file src="src/android/bean/Project.java" target-dir="src/com/hand/im/bean"/>
+    <source-file src="src/android/contact/ContactActivity.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/PersonBean.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/PinyinComparator.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/PinyinUtils.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/SideBar.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/SortAdapter.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/OrgStructActivity.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/OrgStructAdapter.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/TipDialog.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/ContactDataSource.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/ContactSearchActivity.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/ContactSearchAdapter.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/CreateDisInfo.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/DataCheckCallBack.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/DiscussionManager.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/ProjectActivity.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/ProjectAdapter.java" target-dir="src/com/hand/im/contact"/>
+    <source-file src="src/android/contact/DisAvaManager.java" target-dir="src/com/hand/im/contact"/>
+    
+    <source-file src="src/android/okhttp/OkHttpClientManager.java" target-dir="src/com/hand/im/okhttp"/>
+    <source-file src="src/android/GroupInfoActivity.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/GroupInfoAdapter.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/HandMulChatActivity.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/HandMulChatContentAdapter.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/LoginInfo.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/noScrollGridView.java" target-dir="src/com/hand/im"/>
+    <source-file src="src/android/UpdateDisNameActivity.java" target-dir="src/com/hand/im"/>    
+    
+    <source-file src="src/android/drawable/exit_button_shape.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/drawable/edittext_bg.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/drawable/item_check_box.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/drawable/switch_thumb.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/drawable/switch_track.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/drawable/switch_track_off.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/drawable/switch_track_on.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/drawable/ok_button_shape.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/drawable/btn_dark_blue.xml" target-dir="res/drawable"/>
+    
+    <source-file src="src/android/drawable-hdpi/avatar_default.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/btn_next.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/group_add.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/group_info.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/search.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/arrow_back.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/check.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/uncheck.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/white_back.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/right_back.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/nav_bar.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/self_org.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/project_icon_in.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/project_icon_out.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/hand_icon.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/txt_clear.png" target-dir="res/drawable-hdpi"/>
+    <source-file src="src/android/drawable-hdpi/org_str.png" target-dir="res/drawable-hdpi"/>
+    
+    <source-file src="src/android/layout/activity_contact.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/activity_group_info.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/activity_update_dis_name.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/hand_mul_chat_act.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/item_group_info.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/list_item.xml" target-dir="res/layout"/>
+    
+    <source-file src="src/android/layout/item_org_org.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/item_org_person.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/activity_org_struct.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/dialog_tip.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/activity_contact_search.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/activity_project.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/item_project.xml" target-dir="res/layout"/>
+    <source-file src="src/android/layout/item_staff.xml" target-dir="res/layout"/>
+    
+    <source-file src="src/android/libs/pinyin4j-2.5.0.jar" target-dir="libs/"/>
+    
+    <!--add by panxu end-->
 
     <source-file src="src/android/assets/emoji" target-dir="assets/"/>
     <source-file src="src/android/assets/outgoing.mp3" target-dir="assets/"/>
@@ -426,10 +426,10 @@
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
        
-		<meta-data
+        <meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="$RONG_KEY" />
-			 <!-- 正式 -->
+             <!-- 正式 -->
       <!--<meta-data
             android:name="RONG_CLOUD_APP_KEY"
             android:value="e5t4ouvptpsaa" />-->
@@ -446,29 +446,29 @@
                 android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"
                 android:name="com.hand.im.ImageActivity"
                 android:screenOrientation="portrait" />
-	  <!--add by panxu begin-->
-		<activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
-			 android:name="com.hand.im.contact.ContactActivity"  
-			 android:screenOrientation="portrait" 
-			 android:windowSoftInputMode="adjustPan"></activity>
-		<activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
-		  android:name="com.hand.im.GroupInfoActivity"  android:screenOrientation="portrait" 
-		  android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"></activity>
-		<activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
-		  android:name="com.hand.im.HandMulChatActivity" 
-		  android:screenOrientation="portrait" 
-		  android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" />
-		<activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
-			android:name="com.hand.im.UpdateDisNameActivity" 
-			android:screenOrientation="portrait" 
-			android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" />
-		<activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
-			android:name="com.hand.im.contact.OrgStructActivity" 
-			android:screenOrientation="portrait" 
-			android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" />
-		<activity android:name="com.hand.im.contact.ContactSearchActivity"/>
+      <!--add by panxu begin-->
+        <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
+             android:name="com.hand.im.contact.ContactActivity"  
+             android:screenOrientation="portrait" 
+             android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
+          android:name="com.hand.im.GroupInfoActivity"  android:screenOrientation="portrait" 
+          android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged"></activity>
+        <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
+          android:name="com.hand.im.HandMulChatActivity" 
+          android:screenOrientation="portrait" 
+          android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" />
+        <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
+            android:name="com.hand.im.UpdateDisNameActivity" 
+            android:screenOrientation="portrait" 
+            android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" />
+        <activity android:configChanges="orientation|screenSize|keyboardHidden|keyboard" 
+            android:name="com.hand.im.contact.OrgStructActivity" 
+            android:screenOrientation="portrait" 
+            android:windowSoftInputMode="stateVisible|adjustResize|stateHidden|stateUnchanged" />
+        <activity android:name="com.hand.im.contact.ContactSearchActivity"/>
         <activity android:name="com.hand.im.contact.ProjectActivity"/>
-		 <receiver
+         <receiver
             android:exported="true"
             android:name="com.hand.im.RYNotificationReceiver">
             <intent-filter>
@@ -478,7 +478,7 @@
                 <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
             </intent-filter>
         </receiver>
-	<!--add by panxu end-->
+    <!--add by panxu end-->
         <!-- add by fuwei begin -->
             <activity
             android:name="com.hand.im.activity.CallActivity"
@@ -563,7 +563,7 @@
         <string>zh_CN</string>
         
     </config-file>
-	
+    
     
     <!-- resource   -->
     <resource-file src="src/ios/plugins/images/aio_image_default@2x.png" />
@@ -798,6 +798,55 @@
     <header-file src="src/ios/plugins/SDWebImage/UIView+WebCacheOperation.h"/>
     <source-file src="src/ios/plugins/SDWebImage/UIView+WebCacheOperation.m"/>
     
+
+    <!--add by xiaowei begin -->
+    <header-file src="src/ios/plugins/CustomRCCall.h" />
+    <source-file src="src/ios/plugins/CustomRCCall.m" />
+    <header-file src="src/ios/plugins/JSONFighting.h" />
+    <source-file src="src/ios/plugins/JSONFighting.m" />
+    <header-file src="src/ios/plugins/IntentsInfo.h" />
+    <source-file src="src/ios/plugins/IntentsInfo.m" />
+    <header-file src="src/ios/plugins/NSURL+StartCallConvertible.h" />
+    <source-file src="src/ios/plugins/NSURL+StartCallConvertible.m" />
+    <header-file src="src/ios/plugins/NSUserActivity+StartCallConvertible.h" />
+    <source-file src="src/ios/plugins/NSUserActivity+StartCallConvertible.m" />
+    <header-file src="src/ios/plugins/CallDirectoryManager.h" />
+    <source-file src="src/ios/plugins/CallDirectoryManager.m" />
+    
+    <header-file src="src/ios/plugins/ProviderDelegate.h" />
+    <source-file src="src/ios/plugins/ProviderDelegate.m" />
+    <header-file src="src/ios/plugins/PushPKRegistryDelegate.h" />
+    <source-file src="src/ios/plugins/PushPKRegistryDelegate.m" />
+    <header-file src="src/ios/plugins/CallDirectoryBaseModel.h" />
+    <source-file src="src/ios/plugins/CallDirectoryBaseModel.m" />
+    <header-file src="src/ios/plugins/CallDirectoryPhoneModel.h" />
+    <source-file src="src/ios/plugins/CallDirectoryPhoneModel.m" />
+    <header-file src="src/ios/plugins/DataModels.h" />
+    
+    <header-file src="src/ios/plugins/WTCall.h" />
+    <source-file src="src/ios/plugins/WTCall.m" />
+    <header-file src="src/ios/plugins/WTCallManager.h" />
+    <source-file src="src/ios/plugins/WTCallManager.m" />
+    <header-file src="src/ios/plugins/AudioController.h" />
+    <source-file src="src/ios/plugins/AudioController.mm" />
+    <header-file src="src/ios/plugins/CABitOperations.h" />
+    
+    <header-file src="src/ios/plugins/CADebugMacros.h" />
+    <source-file src="src/ios/plugins/CADebugMacros.mm" />
+    <header-file src="src/ios/plugins/CallAudio.h" />
+    <source-file src="src/ios/plugins/CallAudio.m" />
+    
+    <header-file src="src/ios/plugins/CAMath.h" />
+    
+    <header-file src="src/ios/plugins/CAStreamBasicDescription.h" />
+    <source-file src="src/ios/plugins/CAStreamBasicDescription.mm" />
+    <header-file src="src/ios/plugins/CAXException.h" />
+    <source-file src="src/ios/plugins/CAXException.mm" />
+    
+    
+    <!--add by xiaowei end -->
+
+
     <!--框架-->
     <framework src="src/ios/plugins/RongIMLib.framework" custom="true"/>
     <framework src="src/ios/plugins/RongIMKit.framework" custom="true"/>

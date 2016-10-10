@@ -2,10 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="48dp"
     android:minHeight="48dp"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp"
     >
     <CheckBox
         android:id="@+id/ckbCheckStaff"
@@ -18,8 +16,8 @@
         android:id = "@+id/imgHeader"
         android:layout_toRightOf="@+id/ckbCheckStaff"
         android:layout_marginLeft="10dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_centerVertical="true"
         android:src="@drawable/head_1"
         />
