@@ -109,7 +109,11 @@ angular.module('myInfoModule')
 
         $scope.$watch('localStorage.errorCount',function () {
           if( parseInt($scope.localStorage.errorCount) && parseInt($scope.localStorage.errorCount) > 4  && !$scope.errorLock){
-            hmsPopup.showVeryShortCenterToast('输入错误次数达到五次，手机将暂时锁定!');
+            if(ionic.Platform.isIOS()){
+              alert('输入错误次数达到五次，手机将暂时锁定!')
+            } else {
+              hmsPopup.showVeryShortCenterToast('输入错误次数达到五次，手机将暂时锁定!');
+            }
             var current = new Date();
             var unlockTime = new Date(current.getTime() + 60000);
             $scope.unlockTimeString = unlockTime.toLocaleString();
