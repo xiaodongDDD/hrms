@@ -18,11 +18,11 @@
 
     <div style="position: absolute;width: 100%;height: 100%; background: white;z-index:100;" ng-if="showFlag"></div>
     <!--class="has-header no-padding" overflow-scroll="true" scroll="true"-->
-    <iframe id="sFrameName111111"
-            ng-style="customZoom" ng-src="{{frameSrc}}"></iframe>
+    <!--<iframe id="sFrameName111111"
+            ng-style="customZoom" ng-src="{{frameSrc}}"></iframe>-->
 
 
-    <!--<div class="message-block" ng-repeat="messageDetail in messageDetailList" ng-click="readMessage(messageDetail)">
+    <div class="message-block" ng-repeat="messageDetail in messageDetailList" ng-click="readMessage(messageDetail)">
       <div class="message-time-line" ng-bind="messageDetail.sendTime">
       </div>
       <div class="message-content content-selected">
@@ -58,6 +58,6 @@
     </div>
     <ion-infinite-scroll ng-if="loadMoreDataFlag" on-infinite="loadMoreData()"
                          distance="1%">
-    </ion-infinite-scroll>-->
+    </ion-infinite-scroll>
   </ion-content>
 </ion-view>

@@ -42,17 +42,10 @@ angular.module('messageModule')
               baseConfig,
               messageService) {
 
-      $scope.customZoom = {
-        width: document.body.scrollWidth,
-        height: document.body.scrollHeight
-      };
-
       $scope.showFlag = true;
 
-      $scope.sFrameName = '';
-
-      $scope.frameSrc = $sce.trustAsResourceUrl('http://ehrbpm.minthgroup.com/service/mobileservice/GetFormContent?languagetype=zh-CN&siteCode=Local&ValidToken=1&LogonId=minth-global\\31210&formApproveID=MinTH.FMAP.1633004&formkind=HCM.FORM.1&formno=345454');
-
+      //$scope.sFrameName = '';
+      //$scope.frameSrc = $sce.trustAsResourceUrl('http://');
       //window.frames("sFrameName").document.body.style.zoom = "50%";
 
 
@@ -202,12 +195,13 @@ angular.module('messageModule')
       $scope.$on('$ionicView.enter', function (e) {
         console.log('messageDetailCtrl.$ionicView.enter');
 
-        $timeout(function () {
+        /*$timeout(function () {
           var element = $("#sFrameName111111").contents().find("body").css("zoom","35%");
           console.log(element);
           $scope.showFlag = false;
           $scope.$apply();
-        },200);
+        },200);*/
+
       });
       console.log('messageDetailCtrl.enter');
 
