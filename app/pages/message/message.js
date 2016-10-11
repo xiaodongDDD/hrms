@@ -45,7 +45,7 @@ angular.module('messageModule')
       $scope.messageList = [];
 
       //是否弹出员工查询过滤层
-      $scope.showFilter = true;
+      $scope.showFilter = false;
 
       //员工查询界面加载更多数据标志
       $scope.loadMoreFlag = false;
@@ -336,6 +336,7 @@ angular.module('messageModule')
             imService.toNativeChatPage(emp);
             $timeout(function () {
               $scope.showFilter = false;
+              $scope.empFilterValue = '';
               $scope.$apply();
             }, 200);
           } else {
