@@ -235,10 +235,10 @@ angular.module('applicationModule')
         timeOffData.unusedHoliday = '0';
 
         timeOffData.timeOffTypeMeaning  = '';
-        timeOffData.datetimeFrom        = '';
-        timeOffData.datetimeTo          = '';
-        timeOffData.timeLeave           = '';
-        timeOffData.applyReason         = '';
+        timeOffData.datetimeFrom         = '';
+        timeOffData.datetimeTo           = '';
+        timeOffData.timeLeave            = '';
+        timeOffData.applyReason          = '';
 
         $state.go("tab.time-off-manage-detail", {timeOffData : timeOffData});
       };
