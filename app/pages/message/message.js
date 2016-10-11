@@ -45,7 +45,7 @@ angular.module('messageModule')
       $scope.messageList = [];
 
       //是否弹出员工查询过滤层
-      $scope.showFilter = false;
+      $scope.showFilter = true;
 
       //员工查询界面加载更多数据标志
       $scope.loadMoreFlag = false;
@@ -318,7 +318,7 @@ angular.module('messageModule')
           $scope.empFilterValue = '';
           $timeout(function () {
             $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
-          },0);
+          }, 0);
         },
 
         chatWithNative: function (item) {
@@ -334,6 +334,10 @@ angular.module('messageModule')
               "telephoneNumbers": item.mobil
             };
             imService.toNativeChatPage(emp);
+            $timeout(function () {
+              $scope.showFilter = false;
+              $scope.$apply();
+            }, 200);
           } else {
             hmsPopup.showShortCenterToast('不支持网页聊天!');
           }
@@ -369,7 +373,7 @@ angular.module('messageModule')
             message.deleteAnimate = true;
             $timeout(function () {
               messageService.deletePluginMessage($scope, message);
-            },0);
+            }, 0);
           } else {
             message.deleteAnimate = true;
             $timeout(function () {
@@ -381,13 +385,13 @@ angular.module('messageModule')
         },
 
         search: function (loadMoreFlag) {
-          if(loadMoreFlag){
+          if (loadMoreFlag) {
             currentPage = parseInt(currentPage) + 1;
-          }else{
+          } else {
             currentPage = 1;
           }
 
-          if(baseConfig.debug){
+          if (baseConfig.debug) {
             console.log('search.currentPage ' + currentPage);
           }
           messageService.searchEmployee($scope, currentPage, loadMoreFlag);
@@ -436,12 +440,12 @@ angular.module('messageModule')
 
       $ionicPlatform.registerBackButtonAction(function (e) {
 
-        if(baseConfig.debug){
+        if (baseConfig.debug) {
           console.log('messageCtrl.$ionicPlatform.registerBackButtonAction');
         }
 
         if ($location.path() == '/tab/message') {
-          if(!$scope.showFilter){
+          if (!$scope.showFilter) {
             if ($rootScope.backButtonPressedOnceToExit) {
               ionic.Platform.exitApp();
             } else {
@@ -454,9 +458,12 @@ angular.module('messageModule')
           }
           else {
             $scope.messageHandle.cancel();
+            var input = document.getElementById("your-input-id");
+            input.blur();
             $scope.$apply();
+
           }
-        }else if ($location.path() == '/tab/application' || $location.path() == '/tab/contact' ||
+        } else if ($location.path() == '/tab/application' || $location.path() == '/tab/contact' ||
           $location.path() == '/tab/myInfo' || $location.path() == '/login' || $location.path() == '/gesture-lock') {
           if ($rootScope.backButtonPressedOnceToExit) {
             ionic.Platform.exitApp();
