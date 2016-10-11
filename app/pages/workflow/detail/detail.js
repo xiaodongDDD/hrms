@@ -4,7 +4,7 @@ angular.module('myApp')
       $stateProvider
         .state('tab.workflow-detail', {
           url: '/workflow-detail',
-          params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": ""},
+          params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": "", 'fromLock': false},
           views: {
             'tab-application': {
               templateUrl: 'build/pages/workflow/detail/detail.html',
@@ -141,6 +141,7 @@ angular.module('applicationModule')
 
       $scope.myPrsonalApplicationFlag = $stateParams.myPrsonalApplicationFlag;
       $scope.showBackbtn = true;
+      $scope.showBackbtn = $stateParams.fromLock;
       $scope.currentDetail = $stateParams.detail; //传过来的数据块
       var detail = $stateParams.detail;//传过来的数据块
       var processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
@@ -1725,6 +1726,6 @@ angular.module('applicationModule')
           }
         }
       });
-      
+
     }])
 ;

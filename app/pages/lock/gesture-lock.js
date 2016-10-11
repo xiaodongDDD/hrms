@@ -74,7 +74,8 @@ angular.module('myInfoModule')
                 $state.go( storage.stateCurrent, {
                   "detail": storage.detail,
                   "processedFlag": storage.processedFlag,
-                  "type": storage.type
+                  "type": storage.type,
+                  'fromLock':true
                 });
 
                 if(ionic.Platform.isIOS()) {
@@ -112,10 +113,10 @@ angular.module('myInfoModule')
             if(ionic.Platform.isIOS()){
               alert('输入错误次数达到五次，手机将暂时锁定!')
             } else {
-              hmsPopup.showVeryShortCenterToast('输入错误次数达到五次，手机将暂时锁定!');
+              hmsPopup.showShortCenterToast('输入错误次数达到五次，手机将暂时锁定!');
             }
             var current = new Date();
-            var unlockTime = new Date(current.getTime() + 60000);
+            var unlockTime = new Date(current.getTime() + 300000);
             $scope.unlockTimeString = unlockTime.toLocaleString();
             window.localStorage.unlockTime = unlockTime.getTime();
             window.localStorage.errorLock = 'true';
@@ -126,7 +127,7 @@ angular.module('myInfoModule')
               $scope.unlockTimeString = '';
               window.localStorage.errorCount = 0;
               window.localStorage.errorLock = '';
-            }, 60000);
+            }, 300000);
           } else if ( $scope.errorLock ) {
             current = new Date();
             if ( current.getTime() == parseInt(window.localStorage.unlockTime)){
