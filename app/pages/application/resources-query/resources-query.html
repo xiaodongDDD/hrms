@@ -27,10 +27,10 @@
         <label for="formDate" class="label-date">起始日期</label>
         <div class="row select-date" id="formDate">
           <div class="col col-50">
-            <div class="month">{{yearFrom}}</div>
-            <div class="week">{{monthFrom}}月</div>
+            <div class="month">{{datetimeFrom.year}}</div>
+            <div class="week">{{datetimeFrom.month}}月</div>
           </div>
-          <div class=" col col-50 day">{{dayFrom}}</div>
+          <div class=" col col-50 day">{{datetimeFrom.day}}</div>
         </div>
 
         <!--<input type="date" id="formDate" class="input-date" ng-model="queryParams.dateFrom">-->
@@ -39,10 +39,10 @@
         <label for="toDate" class="label-date">结束日期</label>
         <div class="row select-date" id="toDate">
           <div class="col col-50">
-            <div class="month">{{yearTo}}</div>
-            <div class="week">{{monthTo}}月</div>
+            <div class="month">{{datetimeTo.year}}</div>
+            <div class="week">{{datetimeTo.month}}月</div>
           </div>
-          <div class=" col col-50 day">{{dayTo}}</div>
+          <div class=" col col-50 day">{{datetimeTo.day}}</div>
         </div>
         <!--<input type="date" id="toDate" class="input-date" ng-model="queryParams.dateTo">-->
       </div>

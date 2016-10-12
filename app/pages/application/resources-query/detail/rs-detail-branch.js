@@ -45,6 +45,7 @@ angular.module('applicationModule')
     '$stateParams',
     '$ionicScrollDelegate',
     '$ionicSlideBoxDelegate',
+    '$q',
 
 
 
@@ -60,10 +61,13 @@ angular.module('applicationModule')
               workFLowListService,
               $stateParams,
               $ionicScrollDelegate,
-              $ionicSlideBoxDelegate
+              $ionicSlideBoxDelegate,
+              $q
     ) {
 
       $scope.goBack = function () {
+        $scope.resultList = [];//存储结果
+        $scope.newPage = 1;
         $ionicHistory.goBack();
       };
 
@@ -78,6 +82,7 @@ angular.module('applicationModule')
       var subjectId = $stateParams.subjectId;
       var dimission = $stateParams.dimission;
       var pageNumber = 1;
+      $scope.newPage = 1;
 
       $scope.branchName = branchName;
 
@@ -85,7 +90,31 @@ angular.module('applicationModule')
       $scope.showInfinite = false; //默认隐藏无限滚动的标签
       $scope.contactLoading = false; //默认不显示loading加载
 
+      $scope.resultList = [
 
+          // {
+          //   id: 1221,
+          //   name: '移动内部项目',
+          //   color: 'green'
+          //
+          // },
+          // {
+          //   id: 1222,
+          //   name: '如新ageLOCme app开发',
+          //   color: 'blue'
+          //
+          // },
+          // {
+          //   name: '周末及法定节假日',
+          //   color: 'yellow'
+          // },
+          // {
+          //   name: '无项目',
+          //   color: 'gray'
+          // }
+
+
+      ];//存储结果
 
 
 
@@ -94,39 +123,147 @@ angular.module('applicationModule')
       var postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber + '","p_dismission":"' + dimission +  '"}}';
 
 
-      var getBranchData = function () {
+      // $scope.run = false;//模拟线程锁机制  防止多次请求 含义：是否正在请求。请注意，此处并非加入到了就绪队列，而是直接跳过不执行
+
+
+      var getBranchData = function (moreFlag) {
+        console.log(moreFlag);
         $scope.contactLoading = true;
-        hmsHttp.post(postUrl, postData).success(function (result) {
-          $scope.contactLoading = false;
-          console.log(dateFrom);
-          console.log(dateTo);
-          console.log(employeeName);
-          console.log(branchName);
-          console.log(subjectName);
-          console.log(dimission);
+        var q = $q.defer();
+        if (moreFlag === 'init') {
+          $scope.contactLoading = true;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + 1 + '","p_dismission":"' + dimission +  '"}}';
+        }
 
-          console.log(result.returnMsg);
-          console.log(postData);
-          console.log(result);
 
-          $scope.branchResourceList = result.branch_resource_list.sort(function (a, b) {
-            return (a.record_date.substring(0,4)+a.record_date.substring(5,7)) - (b.record_date.substring(0,4)+b.record_date.substring(5,7));
+
+          hmsHttp.post(postUrl, postData).success(function (result) {
+
+            console.log("result");
+            console.log(result);
+            $scope.contactLoading = false;
+            // console.log(dateFrom);
+            // console.log(dateTo);
+            // console.log(employeeName);
+            // console.log(branchName);
+            // console.log(subjectName);
+            // console.log(dimission);
+            // console.log(result.returnMsg);
+            // console.log(postData);
+            // console.log(result);
+
+            $scope.branchResourceList = result.branch_resource_list.sort(function (a, b) {
+              return (a.record_date.substring(0,4)+a.record_date.substring(5,7)) - (b.record_date.substring(0,4)+b.record_date.substring(5,7));
+            });
+            $scope.count = $scope.branchResourceList[0].timesheet_details.length;
+            // console.log($scope.branchResourceList);
+            // console.log($scope.count);
+
+
+            if ($scope.count  == 0) {
+              $scope.showInfinite = false;
+              if (moreFlag === 'loadMore') {
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+              } else {
+                $scope.resultList = [];
+              }
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            } else {
+
+              if ($scope.count < 10) {
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                if (moreFlag == 'init') {
+
+                  $scope.resultList = $scope.branchResourceList;
+                  // console.log($scope.resultList);
+                  console.log("第一次加载完成");
+
+                }else{
+
+                  // console.log($scope.branchResourceList);
+                  // console.log("2222222222");
+                  for (var i = 0; i < $scope.branchResourceList.length; i++) {
+                    for (var j = 0; j <= $scope.count; j++) {
+                      $scope.resultList[i].timesheet_details.push($scope.branchResourceList[i].timesheet_details[j]);
+                    }
+                  }
+
+                  // console.log($scope.resultList);
+                  // q.resolve($scope.resultList);
+                }
+
+
+                q.resolve($scope.resultList);
+                $scope.showInfinite = false;
+                $ionicSlideBoxDelegate.$getByHandle('branch-handle').update();
+              } else {
+                $scope.showInfinite = true;
+                if ($scope.newPage == 1) {
+
+                  $scope.resultList = $scope.branchResourceList;
+
+                }else {
+
+
+                  for (var m = 0; m < $scope.branchResourceList.length; m++) {
+                    for (var n = 0; n < $scope.count; n++) {
+                      $scope.resultList[m].timesheet_details.push($scope.branchResourceList[m].timesheet_details[n]);
+                    }
+                    // console.log($scope.branchResourceList[m].timesheet_details);
+                  }
+
+                  // q.resolve($scope.resultList);
+                }
+                // console.log(moreFlag);
+                // console.log($scope.resultList);
+                q.resolve($scope.resultList);
+
+                $ionicSlideBoxDelegate.$getByHandle('branch-handle').update();
+              }
+              $ionicSlideBoxDelegate.$getByHandle('branch-handle').update();
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+
+              //在此拼接
+              console.log('hello');
+              console.log($scope.resultList);
+
+            }
+            return q.promise;
+
+            // angular.forEach($scope.branchResourceList, function (data, index) {
+            //   $scope.resultList.push(data, index );
+            // });
+
+
+
+          }).error(function () {
+            console.log('个人查询结果异常');
+            $scope.contactLoading = false;
+            $scope.$broadcast('scroll.infiniteScrollComplete');
           });
-          $ionicSlideBoxDelegate.$getByHandle('branch-handle').update();
 
-        }).error(function () {
-          console.log('个人查询结果异常');
-        })
+
+
       };
-      getBranchData();
+
+      $timeout(function () {
+        getBranchData('init');
+      },200);
 
 
-      // $scope.loadMore = function () { //加载下一页
-      //   $scope.newPage += 1;
-      //   employeeParams.key = $scope.contactKey.getValue;
-      //   employeeParams.page = $scope.newPage;
-      //   $scope.getEmployeeData('loadMore');
-      // };
+
+      $scope.loadMore = function () { //加载下一页
+
+        $timeout(function () {
+          $scope.newPage += 1;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage + '","p_dismission":"' + dimission +  '"}}';
+          console.log("hahahahhahahaahha");
+          getBranchData('loadMore');
+        },200);
+
+
+
+      };
 
 
       var initDate = function (yea,mont) {
@@ -138,24 +275,24 @@ angular.module('applicationModule')
         $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
 
 
-        $scope.lastMonth = function () {
-          $scope.currentMonth--;
-          if ($scope.currentMonth == 0) {
-            $scope.currentMonth = 12;
-            $scope.currentYear--;
-          }
-          $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
-          initCalendar($scope.currentYear, $scope.currentMonth);
-        };
-        $scope.nextMonth = function () {
-          $scope.currentMonth++;
-          if ($scope.currentMonth == 13) {
-            $scope.currentMonth = 1;
-            $scope.currentYear++;
-          }
-          $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
-          initCalendar($scope.currentYear, $scope.currentMonth);
-        };
+        // $scope.lastMonth = function () {
+        //   $scope.currentMonth--;
+        //   if ($scope.currentMonth == 0) {
+        //     $scope.currentMonth = 12;
+        //     $scope.currentYear--;
+        //   }
+        //   $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
+        //   initCalendar($scope.currentYear, $scope.currentMonth);
+        // };
+        // $scope.nextMonth = function () {
+        //   $scope.currentMonth++;
+        //   if ($scope.currentMonth == 13) {
+        //     $scope.currentMonth = 1;
+        //     $scope.currentYear++;
+        //   }
+        //   $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
+        //   initCalendar($scope.currentYear, $scope.currentMonth);
+        // };
 
         //周列表
         $scope.weekTitleList = [
