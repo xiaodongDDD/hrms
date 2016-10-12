@@ -501,7 +501,7 @@ angular.module('messageModule')
         $scope.firstRefresh = true;
       });
 
-      $scope.$on('$ionicView.beforeEnter', function () {
+      $scope.$on('$ionicView.afterEnter', function () {
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory();
       });
