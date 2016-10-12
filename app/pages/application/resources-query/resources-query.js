@@ -23,6 +23,8 @@ angular.module('applicationModule')
     'ionicDatePicker',
     '$rootScope',
     '$timeout',
+    '$cordovaDatePicker',
+    'HmsDateFormat',
 
 
 
@@ -39,7 +41,9 @@ angular.module('applicationModule')
               $stateParams,
               ionicDatePicker,
               $rootScope,
-              $timeout
+              $timeout,
+              $cordovaDatePicker,
+              HmsDateFormat
 
 
 
@@ -64,39 +68,37 @@ angular.module('applicationModule')
         var weekDaysList = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
 
-        $scope.dateFrom = new Date();
-        $scope.dateFrom.setDate(1);
-        $scope.monthFrom = $scope.dateFrom.getMonth();
-        $scope.dayFrom = $scope.dateFrom.getDate();
-        $scope.dateFrom.setMonth($scope.dateFrom.getMonth()-1);
-        $scope.weekFrom = weekDaysList[$scope.dateFrom.getDay()];
-        $scope.yearFrom = $scope.dateFrom.getFullYear();
+        // $scope.dateFrom = new Date();
+        // $scope.dateFrom.setDate(1);
+        // $scope.monthFrom = $scope.dateFrom.getMonth();
+        // $scope.dayFrom = $scope.dateFrom.getDate();
+        // $scope.dateFrom.setMonth($scope.dateFrom.getMonth()-1);
+        // $scope.weekFrom = weekDaysList[$scope.dateFrom.getDay()];
+        // $scope.yearFrom = $scope.dateFrom.getFullYear();
+        //
+        // if($scope.monthFrom < 10){
+        //   $scope.monthFrom = "0" + $scope.monthFrom;
+        // }
+        // if($scope.dayFrom < 10){
+        //   $scope.dayFrom = "0" + $scope.dayFrom;
+        // }
+        //
+        // var dateFrom = $scope.yearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
+        //
+        // $scope.dateTo = new Date();
+        // $scope.monthTo = $scope.dateTo.getMonth()+1;
+        // $scope.dayTo = $scope.dateTo.getDate();
+        // $scope.weekTo = weekDaysList[$scope.dateTo.getDay()];
+        // $scope.yearTo = $scope.dateTo.getFullYear();
+        //
+        // if($scope.monthTo < 10){
+        //   $scope.monthTo = "0" + $scope.monthTo;
+        // }
+        // if($scope.dayTo < 10){
+        //   $scope.dayTo = "0" + $scope.dayTo;
+        // }
+        // var dateTo = $scope.yearTo + '-' + $scope.monthTo+ '-' + $scope.dayTo;
 
-        if($scope.monthFrom < 10){
-          $scope.monthFrom = "0" + $scope.monthFrom;
-        }
-        if($scope.dayFrom < 10){
-          $scope.dayFrom = "0" + $scope.dayFrom;
-        }
-
-        var dateFrom = $scope.yearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
-
-
-
-
-        $scope.dateTo = new Date();
-        $scope.monthTo = $scope.dateTo.getMonth()+1;
-        $scope.dayTo = $scope.dateTo.getDate();
-        $scope.weekTo = weekDaysList[$scope.dateTo.getDay()];
-        $scope.yearTo = $scope.dateTo.getFullYear();
-
-        if($scope.monthTo < 10){
-          $scope.monthTo = "0" + $scope.monthTo;
-        }
-        if($scope.dayTo < 10){
-          $scope.dayTo = "0" + $scope.dayTo;
-        }
-        var dateTo = $scope.yearTo + '-' + $scope.monthTo+ '-' + $scope.dayTo;
 
 
 
@@ -145,100 +147,268 @@ angular.module('applicationModule')
 
 
       // var monthList = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
-      var ipObj1 = {
-        callback: function (val) {  //Mandatory
+      // var ipObj1 = {
+      //   callback: function (val) {  //Mandatory
+      //
+      //     $scope.dateFrom = new Date(val);
+      //     $scope.monthFrom = $scope.dateFrom.getMonth()+1;
+      //     $scope.dayFrom = $scope.dateFrom.getDate();
+      //     $scope.weekFrom = weekDaysList[$scope.dateFrom.getDay()];
+      //     $scope.yearFrom = $scope.dateFrom.getFullYear();
+      //
+      //     if($scope.monthFrom < 10){
+      //       $scope.monthFrom = "0" + $scope.monthFrom;
+      //     }
+      //     if($scope.dayFrom < 10){
+      //       $scope.dayFrom = "0" + $scope.dayFrom;
+      //     }
+      //
+      //     dateFrom = $scope.yearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
+      //
+      //
+      //
+      //
+      //   },
+      //   disabledDates: [            //Optionals
+      //
+      //   ],
+      //   titleLabel: '选择日期',  //可选
+      //   todayLabel: '今天',  //可选
+      //   closeLabel: '关闭',  //可选
+      //   setLabel: '设置',  //可选
+      //   setButtonType : 'button-balanced',  //Optional
+      //   todayButtonType : 'button-balanced',  //Optional
+      //   closeButtonType : 'button-balanced',  //Optional
+      //   showTodayButton: 'true',
+      //   from: new Date(1988, 1, 1), //Optional
+      //   to: new Date(2028, 10, 30), //Optional
+      //   inputDate: new Date(),      //Optional
+      //   mondayFirst: false,          //Optional
+      //   weeksList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
+      //   monthsList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],       //Optional
+      //   modalHeaderColor: 'bar-balanced', //Optional
+      //   modalFooterColor: 'bar-balanced', //Optional
+      //   closeOnSelect: false,       //Optional
+      //   templateType: 'popup'    //Optional
+      // };
+      //
+      // $scope.selectDateFrom = function(){
+      //   ionicDatePicker.openDatePicker(ipObj1);
+      // };
+      //
+      // var ipObj2 = {
+      //   callback: function (val) {  //Mandatory
+      //     $scope.dateTo = new Date(val);
+      //     $scope.monthTo = $scope.dateTo.getMonth()+1;
+      //     $scope.dayTo = $scope.dateTo.getDate();
+      //     $scope.weekTo = weekDaysList[$scope.dateTo.getDay()];
+      //     $scope.yearTo = $scope.dateTo.getFullYear();
+      //
+      //     if($scope.monthTo < 10){
+      //       $scope.monthTo = "0" + $scope.monthTo;
+      //     }
+      //     if($scope.dayTo < 10){
+      //       $scope.dayTo = "0" + $scope.dayTo;
+      //     }
+      //     dateTo = $scope.yearTo + '-' + $scope.monthTo + '-' + $scope.dayTo;
+      //
+      //
+      //
+      //   },
+      //   disabledDates: [            //Optionals
+      //
+      //   ],
+      //   titleLabel: '选择日期',  //可选
+      //   todayLabel: '今天',  //可选
+      //   closeLabel: '关闭',  //可选
+      //   setLabel: '设置',  //可选
+      //   setButtonType : 'button-balanced',  //Optional
+      //   todayButtonType : 'button-balanced',  //Optional
+      //   closeButtonType : 'button-balanced',  //Optional
+      //   showTodayButton: 'true',
+      //   from: new Date(1988, 1, 1), //Optional
+      //   to: new Date(2028, 10, 30), //Optional
+      //   inputDate: new Date(),      //Optional
+      //   mondayFirst: false,          //Optional
+      //   weeksList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
+      //   monthsList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],       //Optional
+      //   modalHeaderColor: 'bar-balanced', //Optional
+      //   modalFooterColor: 'bar-balanced', //Optional
+      //   closeOnSelect: false,       //Optional
+      //   templateType: 'popup'    //Optional
+      // };
+      //
+      // $scope.selectDateTo = function(){
+      //   ionicDatePicker.openDatePicker(ipObj2);
+      // };
 
-          $scope.dateFrom = new Date(val);
-          $scope.monthFrom = $scope.dateFrom.getMonth()+1;
-          $scope.dayFrom = $scope.dateFrom.getDate();
-          $scope.weekFrom = weekDaysList[$scope.dateFrom.getDay()];
-          $scope.yearFrom = $scope.dateFrom.getFullYear();
 
-          if($scope.monthFrom < 10){
-            $scope.monthFrom = "0" + $scope.monthFrom;
-          }
-          if($scope.dayFrom < 10){
-            $scope.dayFrom = "0" + $scope.dayFrom;
-          }
+      // //init data
+      {
 
-          dateFrom = $scope.yearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
+        //设置初始化时间
+        var todayDate = new Date();//今天日期
+        var month = todayDate.getMonth() + 1;
+        var day = todayDate.getDate();
+        $scope.datetimeFrom = {//开始日期
+          realDate: new Date(),
+          year: todayDate.getFullYear(),
+          month: "",
+          day: ""
+        };
+        $scope.datetimeTo = {//结束日期
+          realDate: new Date(),
+          year: "",
+          month: "",
+          day: ""
+        };
+
+        if (month < 10) {
+          month = "0" + month;
+        }
+        if (day < 10) {
+          day = "0" + day;
+        }
+
+        $scope.datetimeFrom.month = month;
+        $scope.datetimeFrom.day = day;
+
+        var myDate = $scope.datetimeFrom;
+        $scope.datetimeFrom.realDate = new Date(myDate.year, myDate.month - 1, myDate.day, '08', '30', '00');
+
+        dateFrom = $scope.datetimeFrom.year + '-' + $scope.datetimeFrom.month + '-' + $scope.datetimeFrom.day;
+
+        //初始化结束时间
+        refreshEndDate(1);
 
 
+      }
 
+      function refreshEndDate(num) {
+        var myDate = $scope.datetimeFrom;
+        var todayDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+        var tomorrowDate = new Date(myDate.year, myDate.month - 1, myDate.day);
 
-        },
-        disabledDates: [            //Optionals
+        num = parseInt(num);
+        tomorrowDate.setDate(todayDate.getDate() + num);
+        tomorrowYear = tomorrowDate.getFullYear();
+        tomorrowDay = tomorrowDate.getDate();
+        tomorrowMonth = tomorrowDate.getMonth() + 1;
 
-        ],
-        titleLabel: '选择日期',  //可选
-        todayLabel: '今天',  //可选
-        closeLabel: '关闭',  //可选
-        setLabel: '设置',  //可选
-        setButtonType : 'button-balanced',  //Optional
-        todayButtonType : 'button-balanced',  //Optional
-        closeButtonType : 'button-balanced',  //Optional
-        showTodayButton: 'true',
-        from: new Date(1988, 1, 1), //Optional
-        to: new Date(2028, 10, 30), //Optional
-        inputDate: new Date(),      //Optional
-        mondayFirst: false,          //Optional
-        weeksList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
-        monthsList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],       //Optional
-        modalHeaderColor: 'bar-balanced', //Optional
-        modalFooterColor: 'bar-balanced', //Optional
-        closeOnSelect: false,       //Optional
-        templateType: 'popup'    //Optional
+        if (tomorrowMonth < 10) {
+          tomorrowMonth = "0" + tomorrowMonth;
+        }
+        if (tomorrowDay < 10) {
+          tomorrowDay = "0" + tomorrowDay;
+        }
+        $scope.datetimeTo.year = tomorrowYear;
+        $scope.datetimeTo.month = tomorrowMonth;
+        $scope.datetimeTo.day = tomorrowDay;
+
+        var myDate = $scope.datetimeTo;
+        $scope.datetimeTo.realDate = new Date(myDate.year, myDate.month - 1, myDate.day, '18', '00', '00');
+
+        dateTo = $scope.datetimeTo.year + '-' + $scope.datetimeTo.month + '-' + $scope.datetimeTo.day;
+
       };
 
-      $scope.selectDateFrom = function(){
-        ionicDatePicker.openDatePicker(ipObj1);
-      };
 
-      var ipObj2 = {
-        callback: function (val) {  //Mandatory
-          $scope.dateTo = new Date(val);
-          $scope.monthTo = $scope.dateTo.getMonth()+1;
-          $scope.dayTo = $scope.dateTo.getDate();
-          $scope.weekTo = weekDaysList[$scope.dateTo.getDay()];
-          $scope.yearTo = $scope.dateTo.getFullYear();
+      $scope.selectDateFrom = function () {
+        // if ($scope.readOnly) {
+        //   return;
+        // }
 
-          if($scope.monthTo < 10){
-            $scope.monthTo = "0" + $scope.monthTo;
+        var myDate = $scope.datetimeFrom.realDate;
+
+        //var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+        var options = {
+          date: myDate,
+          mode: 'date',
+          titleText: '请选择开始日期',
+          okText: '确定',
+          cancelText: '取消',
+          doneButtonLabel: '确认',
+          cancelButtonLabel: '取消',
+          androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK,
+          locale: "zh_cn"
+        };
+        $cordovaDatePicker.show(options).then(function (date) {
+          var month = date.getMonth() + 1;
+          var day = date.getDate();
+
+          if (month < 10) {
+            month = "0" + month;
           }
-          if($scope.dayTo < 10){
-            $scope.dayTo = "0" + $scope.dayTo;
+          if (day < 10) {
+            day = "0" + day;
           }
-          dateTo = $scope.yearTo + '-' + $scope.monthTo + '-' + $scope.dayTo;
+          $scope.datetimeFrom.year = date.getFullYear();
+          $scope.datetimeFrom.month = month;
+          $scope.datetimeFrom.day = day;
+          $scope.datetimeFrom.realDate = date;
+
+          dateFrom = $scope.datetimeFrom.year + '-' + $scope.datetimeFrom.month + '-' + $scope.datetimeFrom.day;
+
+          //$scope.$apply();
+          // getLeaveDays();
+
+          /*var offDays = getOffDays($scope.datetimeFrom, $scope.datetimeTo) + 1;
+           if (offDays > 0) {
+           $scope.timeOffData.timeLeave = offDays;
+           } else {
+           $scope.timeOffData.timeLeave = '';
+           }*/
+        });
+      };
+      $scope.selectDateTo = function () {
+        // if ($scope.readOnly) {
+        //   return;
+        // }
+
+        var myDate = $scope.datetimeTo.realDate;
+        //var previousDate = new Date(myDate.year, myDate.month - 1, myDate.day);
+        var options = {
+          date: myDate,
+          mode: 'date',
+          titleText: '请选择结束日期',
+          okText: '确定',
+          cancelText: '取消',
+          doneButtonLabel: '确认',
+          cancelButtonLabel: '取消',
+          androidTheme: window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK,
+          locale: "zh_cn"
+        };
+        $cordovaDatePicker.show(options).then(function (date) {
+          var month = date.getMonth() + 1;
+          var day = date.getDate();
+
+          if (month < 10) {
+            month = "0" + month;
+          }
+          if (day < 10) {
+            day = "0" + day;
+          }
+          $scope.datetimeTo.year = date.getFullYear();
+          $scope.datetimeTo.month = month;
+          $scope.datetimeTo.day = day;
+          $scope.datetimeTo.realDate = date;
+
+          dateTo = $scope.datetimeTo.year + '-' + $scope.datetimeTo.month + '-' + $scope.datetimeTo.day;
+
+          //$scope.$apply();
+          // getLeaveDays();
+          /*var offDays = getOffDays($scope.datetimeFrom, $scope.datetimeTo) + 1;
+
+           if (offDays > 0) {
+           $scope.timeOffData.timeLeave = offDays;
+           } else {
+           $scope.timeOffData.timeLeave = '';
+           }*/
 
 
-
-        },
-        disabledDates: [            //Optionals
-
-        ],
-        titleLabel: '选择日期',  //可选
-        todayLabel: '今天',  //可选
-        closeLabel: '关闭',  //可选
-        setLabel: '设置',  //可选
-        setButtonType : 'button-balanced',  //Optional
-        todayButtonType : 'button-balanced',  //Optional
-        closeButtonType : 'button-balanced',  //Optional
-        showTodayButton: 'true',
-        from: new Date(1988, 1, 1), //Optional
-        to: new Date(2028, 10, 30), //Optional
-        inputDate: new Date(),      //Optional
-        mondayFirst: false,          //Optional
-        weeksList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
-        monthsList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],       //Optional
-        modalHeaderColor: 'bar-balanced', //Optional
-        modalFooterColor: 'bar-balanced', //Optional
-        closeOnSelect: false,       //Optional
-        templateType: 'popup'    //Optional
+        });
       };
 
-      $scope.selectDateTo = function(){
-        ionicDatePicker.openDatePicker(ipObj2);
-      };
 
       //接收搜索页面返回的数据
       {

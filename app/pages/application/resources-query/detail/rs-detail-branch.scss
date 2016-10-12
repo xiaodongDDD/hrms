@@ -4,6 +4,15 @@
     padding: 0;
     width: auto;
   }
+  .col-20 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 20%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 20%;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
   .title-input{
     background: transparent;
     margin-left: 80px;
@@ -22,26 +31,121 @@
     text-align: center;
     font-size: 1.3em;
     line-height: 3rem;
+    color: #1f519a;
     z-index: 999;
   }
   .calendar-subject{
     width: 100%;
     height: 1rem;
-    background: #ccc;
+    margin-bottom: 0.3rem;
+
+    .circle{
+      float: left;
+      width: 0.7rem;
+      height: 0.7rem;
+      margin-top: 0.2rem;
+      border-radius: 50%;
+      background: red;
+      margin-left: 0.5rem;
+    }
+    .text{
+      float: left;
+      height: 1rem;
+      margin-left: 0.5rem;
+      line-height: 1rem;
+      color: #9b9b9b;
+      font-size: 0.8rem;
+    }
+
+
+
   }
 
+  .each-person{
+
+    min-height: 100px;
+
+    .each-table{
+      position: relative;
+      margin-left: 30px;
+      width: 100px;
+      border-bottom: 1px solid #ccc;
+      .each-subject{
+        width: 20px;
+        height: 93px;
+        text-align: center;
+
+
+      }
+      .each-subject:nth-child(1){
+        margin-left: 10px;
+        position: relative;
+        bottom: 0;
+      }
+      .each-subject:nth-child(2){
+        margin-left: 40px;
+        position: absolute;
+        bottom: 0;
+      }
+      .each-subject:nth-child(3){
+        margin-left: 70px;
+        position: absolute;
+        bottom: 0;
+      }
+    }
+    .each-array{
+      margin-left: 30px;
+      width: 100px;
+      height: 20px;
+      .each-count{
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        margin-left: 10px;
+        float: left;
+      }
+    }
+
+    //.each-subject:nth-child(1){
+    //  background: #0bb49d;
+    //}
+    //.each-subject:nth-child(2){
+    //  background: #eb7474;
+    //}
+    //.each-subject:nth-child(3){
+    //  background: #55aafc;
+    //}
+  }
   .calendar-day {
     width: 49.95vw;
     background: white;
     position: relative;
     float: left;
 
+
     .calendar-title {
-      height: 35px;
+      height: 60px;
       width: 100%;
-      line-height: 35px;
-      text-align: center;
-      font-size: 1em;
+
+
+
+      .head{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-top: 10px;
+        display: inline-block;
+        margin-left: 10px;
+      }
+      .text{
+        font-size: 1em;
+        display: inline-block;
+        position: relative;
+        height: 20px;
+        top: -15px;
+        margin-left: 10px;
+      }
+
     }
 
     //.calendar-week {
@@ -111,6 +215,7 @@
             height: 20px;
             border: 1px solid gray;
             border-radius: 50%;
+            color: #1f519a;
           }
           .border-red{
             border: 1px solid red;

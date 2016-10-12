@@ -160,7 +160,10 @@ angular.module('applicationModule')
 
 
       // $scope.$on('$ionicView.afterEnter', function () {
-      getEmpList(empListUrl,searchInfo);
+      // $timeout(function () {
+      //   getEmpList(empListUrl,searchInfo);
+      // },200);
+
 
 
       // });
@@ -376,8 +379,11 @@ angular.module('applicationModule')
 
       };
 
+      $timeout(function () {
+        getEmpList(empListUrl,searchInfo);
+        getData('init');
+      },200);
 
-      getData('init');
 
 
 
