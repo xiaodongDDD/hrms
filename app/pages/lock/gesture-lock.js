@@ -75,7 +75,7 @@ angular.module('myInfoModule')
                   "detail": storage.detail,
                   "processedFlag": storage.processedFlag,
                   "type": storage.type,
-                  'fromLock':true
+                  'fromLock':false
                 });
 
                 if(ionic.Platform.isIOS()) {
@@ -100,7 +100,6 @@ angular.module('myInfoModule')
               } else {
                 window.localStorage.errorCount = parseInt(window.localStorage.errorCount) + 1;
               }
-              console.log(window.localStorage.errorCount);
               $scope.$apply();
             }
           };
@@ -110,11 +109,7 @@ angular.module('myInfoModule')
 
         $scope.$watch('localStorage.errorCount',function () {
           if( parseInt($scope.localStorage.errorCount) && parseInt($scope.localStorage.errorCount) > 4  && !$scope.errorLock){
-            if(ionic.Platform.isIOS()){
-              alert('输入错误次数达到五次，手机将暂时锁定!')
-            } else {
-              hmsPopup.showShortCenterToast('输入错误次数达到五次，手机将暂时锁定!');
-            }
+            hmsPopup.showShortCenterToast('输入错误次数达到五次，手机将暂时锁定!');
             var current = new Date();
             var unlockTime = new Date(current.getTime() + 300000);
             $scope.unlockTimeString = unlockTime.toLocaleString();

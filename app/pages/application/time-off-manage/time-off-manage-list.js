@@ -170,7 +170,6 @@ angular.module('applicationModule')
             });
 
             $scope.circleAnimationFlag = true;//数据加载完成标志,触发进度圈动画
-            console.log('circleAnimationFlag change!');
             $scope.fetchDataFlag       = false;//数据加载完成,设置数据加载标记隐藏
 
           } else {
@@ -218,6 +217,7 @@ angular.module('applicationModule')
         timeOffData.datetimeTo          = item.datetimeTo;
         timeOffData.timeLeave           = item.timeLeave;
         timeOffData.applyReason         = item.applyReason;
+        timeOffData.approveStatus       = item.approveStatus;
 
         $state.go("tab.time-off-manage-detail", {timeOffData : timeOffData});
       };

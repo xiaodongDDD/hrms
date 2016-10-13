@@ -125,7 +125,7 @@ angular.module('applicationModule')
             $scope.housesSubDetail.houseTitle, //描述
             imgurl  //图片
           ]);
-      }
+      };
 
       $timeout(function () {
         serchHousesSubleaseDetailInfo();//自动获取房屋转租信息

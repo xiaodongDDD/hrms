@@ -292,7 +292,9 @@ angular.module('applicationModule')
         unusedExtPaidHoliday: '',
         unusedHoliday: '',
         timeLeave: '',
-        applyReason: ''
+        applyReason: '',
+        approveStatus: '',
+        revokeReason:''
       };
 
       //初始化假期类型数组
@@ -351,7 +353,7 @@ angular.module('applicationModule')
         //create,revoke,update,query
         //当前还不支持草稿类型,所以不存在update操作
         setOperationMode($scope.timeOffData.operationType);
-
+        $stateParams.timeOffData.revokeReason = "";
         //设置初始化时间
         var todayDate = new Date();//今天日期
         var month = todayDate.getMonth() + 1;
@@ -387,6 +389,38 @@ angular.module('applicationModule')
         if($scope.timeOffData.operationType == 'create'){
           getLeaveDays();
         }
+
+        var initURL = baseConfig.businessPath + "/api_holiday/get_holiday_history";
+        var initParams = {
+          "params": {
+            "p_employee_number": window.localStorage.empno
+          }
+        };
+        $scope.approveDTimeOffId = "";
+        hmsHttp.post(initURL, initParams).success(function (response) {
+
+          hmsPopup.hideLoading();
+          if (hmsHttp.isSuccessfull(response.con_status)) {
+            for ( var i = 0; i < response.holiday_history_list.length; i++ ){
+              var holiday = response.holiday_history_list[i];
+              var type = holiday.holiday_history_display.slice(0, holiday.holiday_history_display.indexOf(','));
+              var from = holiday.holiday_history_display.substr(holiday.holiday_history_display.indexOf('从') + 1, 10);
+              var to = holiday.holiday_history_display.substr(holiday.holiday_history_display.indexOf('到') + 2, 10);
+              if( type === $scope.timeOffData.timeOffTypeMeaning && from === $scope.timeOffData.datetimeFrom.substr(0, 10) && to === $scope.timeOffData.datetimeTo.substr(0, 10)) {
+                $scope.approveDTimeOffId = holiday.time_offid;
+              }
+            }
+          } else {
+            if (response.con_status === 'E' || response.con_status == 'e') {
+              hmsPopup.showShortCenterToast("查询休假记录出错!请检查相关数据！" /*+ response.errorMsg*/);
+            } else {
+              hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
+            }
+          }
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup("查询休假记录失败");
+        });
       }
 
 
@@ -678,12 +712,27 @@ angular.module('applicationModule')
           };
 
         } else if ($scope.operation.revokeMode) {
-
-          $scope.requestUrl = baseConfig.businessPath + "/api_holiday/get_holiday_apply_back";
-          $scope.requestParams = {
-            "params": {
-              "p_employee_code": window.localStorage.empno,
-              "p_timeoffid": $scope.timeOffData.timeOffId
+          if ($scope.timeOffData.approveStatus == 'APPROVED') {
+            if( !$scope.timeOffData.revokeReason.trim() ){
+              hmsPopup.showVeryShortCenterToast('请输入撤回原因!');
+              return;
+            } else {
+              $scope.requestUrl = baseConfig.businessPath + "/api_holiday/get_holiday_cancel";
+              $scope.requestParams = {
+                "params": {
+                  "p_employee_number": window.localStorage.empno,
+                  "p_timeoffid": $scope.approveDTimeOffId,
+                  'p_description': $scope.timeOffData.revokeReason
+                }
+              }
+            }
+          } else {
+            $scope.requestUrl = baseConfig.businessPath + "/api_holiday/get_holiday_apply_back";
+            $scope.requestParams = {
+              "params": {
+                "p_employee_code": window.localStorage.empno,
+                "p_timeoffid": $scope.timeOffData.timeOffId
+              }
             }
           }
         }
@@ -692,28 +741,41 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('requestParams ' + angular.toJson($scope.requestParams));
         }
-        hmsPopup.showLoading("处理休假申请中");
+
+        hmsPopup.showLoading("处理请求中");
 
         // uploadImage();
         hmsHttp.post($scope.requestUrl, $scope.requestParams).success(function (response) {
 
           hmsPopup.hideLoading();
-          if (hmsHttp.isSuccessfull(response.status)) {
+          var status;
+          if( response.status ){
+            status = response.status;
+          } else if ( response.returnCode ){
+            status = response.returnCode;
+          } else {
+            status = response.con_status;
+          }
+          if (hmsHttp.isSuccessfull(status)) {
 
             //跳转回列表界面
             timeOffManageService.setRefreshTimeOffList(true);
             $ionicHistory.goBack();
 
           } else {
-            if (response.status === 'E' || response.status == 'e') {
-              hmsPopup.showShortCenterToast("处理休假申请出错!请检查相关数据！" /*+ response.errorMsg*/);
+            if (status === 'E' || status == 'e') {
+              if( response.returnMsg ){
+                hmsPopup.showShortCenterToast(response.returnMsg);
+              } else {
+                hmsPopup.showShortCenterToast("处理请求出错!请检查相关数据！" /*+ response.errorMsg*/);
+              }
             } else {
               hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
             }
           }
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup("处理休假申请失败");
+          hmsPopup.showPopup("处理请求失败");
         });
       }
 
