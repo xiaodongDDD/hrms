@@ -91,7 +91,7 @@ angular.module('applicationModule')
         if (sourceTypeInt == 0) {
           sourceType = Camera.PictureSourceType.CAMERA;
         } else if (sourceTypeInt == 1) {
-          sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+          sourceType = Camera.PictureSourceT/ype.PHOTOLIBRARY;
         } else if (sourceTypeInt == 2) {
           sourceType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
         }

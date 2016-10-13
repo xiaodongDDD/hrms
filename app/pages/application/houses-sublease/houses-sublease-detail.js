@@ -100,7 +100,7 @@ angular.module('applicationModule')
       function success(success) {
         if(success.code=='0'){
           //分享成功
-        }    
+        }
       }
       function fail(error) {
         if(error.code=='-1'){
@@ -125,7 +125,7 @@ angular.module('applicationModule')
             $scope.housesSubDetail.houseTitle, //描述
             imgurl  //图片
           ]);
-      }
+      };
 
       serchHousesSubleaseDetailInfo();//自动获取房屋转租信息
       function serchHousesSubleaseDetailInfo() {

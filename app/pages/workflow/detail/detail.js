@@ -4,7 +4,7 @@ angular.module('myApp')
       $stateProvider
         .state('tab.workflow-detail', {
           url: '/workflow-detail',
-          params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": "", 'fromLock': false},
+          params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": "", 'fromLock': true},
           views: {
             'tab-application': {
               templateUrl: 'build/pages/workflow/detail/detail.html',
