@@ -4683,7 +4683,7 @@ angular.module('applicationModule')
           return false;
         }
 
-        if(!validateNumber(info.houseTypeRoom) || !validateNumber(info.houseTypeHall) || !validateNumber(info.houseTypeBathRoom)){
+        if(!validateNull(info.houseTypeRoom) || !validateNull(info.houseTypeHall) || !validateNull(info.houseTypeBathRoom)){
           hmsPopup.showPopup("请输入户型信息！");
           return false;
         }
@@ -4698,10 +4698,10 @@ angular.module('applicationModule')
           return false;
         }
 
-        /*if(!validateNull(info.houseTitle)){
+        if(!validateNull(info.houseTitle)){
           hmsPopup.showPopup("请输入标题信息！");
           return false;
-        }*/
+        }
 
         return true;
       };
@@ -4728,7 +4728,7 @@ angular.module('applicationModule')
             hmsPopup.showShortCenterToast("发布成功");
           } else {
             pictureNumber = 0;
-            hmsPopup.showShortCenterToast("发布失败，请检查所填信息是否完整！");
+            hmsPopup.showShortCenterToast("发布失败，请检查所填信息是否完整以及部分字段是否是数字！");
           }
 
         }).error(function (error, status) {
