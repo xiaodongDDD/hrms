@@ -50,7 +50,7 @@ angular.module('applicationModule')
               $ionicModal) {
       $scope.province_enum = [//初始化省市区值列表
         {
-          id: 1, name: '北京', city: [
+          id: 1, name: '北京', selected: true, city: [
           {
             id: 1, name: '北京市', district: [
             {id: 1, name: '东城区'},
@@ -4549,7 +4549,9 @@ angular.module('applicationModule')
       $scope.finishChoosingProvince = function (province) {
         $scope.cityList = [];
         for (var i = 0; i < $scope.province_enum.length; i++) {
+          $scope.province_enum[i].selected = false;
           if ($scope.province_enum[i].name == province.name) {
+            $scope.province_enum[i].selected = true;
             angular.forEach($scope.province_enum[i].city, function (data, index, array) {
               $scope.cityList.push(array[index])
             })
@@ -4660,8 +4662,8 @@ angular.module('applicationModule')
             }
             $ionicHistory.goBack();//删除申请成功后返回上一界面
             hmsPopup.showShortCenterToast("发布成功");
-          } else if (result.status == "E") {
-            hmsPopup.showShortCenterToast("发布失败");
+          } else {
+            hmsPopup.showShortCenterToast("发布失败，请检查所填信息是否完整！");
           }
 
         }).error(function (error, status) {

@@ -100,7 +100,7 @@ angular.module('applicationModule')
       function success(success) {
         if(success.code=='0'){
           //分享成功
-        }    
+        }
       }
       function fail(error) {
         if(error.code=='-1'){
@@ -127,7 +127,10 @@ angular.module('applicationModule')
           ]);
       }
 
-      serchHousesSubleaseDetailInfo();//自动获取房屋转租信息
+      $timeout(function () {
+        serchHousesSubleaseDetailInfo();//自动获取房屋转租信息
+      },300);
+
       function serchHousesSubleaseDetailInfo() {
         $scope.housesSubDetail = [];
         var url = baseConfig.queryPath + "/house/query";

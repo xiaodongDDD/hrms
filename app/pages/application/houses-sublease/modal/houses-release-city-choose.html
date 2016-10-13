@@ -7,7 +7,10 @@
       <ion-scroll direction="y" scrollbar-y="false" style="float: left; height: 100%; width: 50%"
                   delegate-handle="provinceScroll">
         <div class="list">
-          <div ng-repeat="x in province_enum" class="item apply-item" ng-click="finishChoosingProvince(x)">{{x.name}}
+          <div ng-repeat="x in province_enum" class="item apply-item"
+               ng-click="finishChoosingProvince(x)"
+               ng-class="{true: 'selected', false: ''}[x.selected]">
+            {{x.name}}
           </div>
         </div>
       </ion-scroll>

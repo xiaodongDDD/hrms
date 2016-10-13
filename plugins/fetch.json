@@ -1,13 +1,11 @@
 {
-    "jpush-phonegap-plugin": {
+    "cordova-plugin-device": {
         "source": {
             "type": "registry",
-            "id": "jpush-phonegap-plugin"
+            "id": "cordova-plugin-device"
         },
-        "is_top_level": true,
-        "variables": {
-            "API_KEY": "22b25063349b6beef7bde524"
-        }
+        "is_top_level": false,
+        "variables": {}
     },
     "hand-im-plugin-device": {
         "source": {
@@ -20,12 +18,14 @@
             "RONG_KEY": "e5t4ouvptpsaa"
         }
     },
-    "cordova-plugin-device": {
+    "jpush-phonegap-plugin": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-device"
+            "id": "jpush-phonegap-plugin"
         },
-        "is_top_level": false,
-        "variables": {}
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "22b25063349b6beef7bde524"
+        }
     }
 }

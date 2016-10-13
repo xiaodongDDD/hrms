@@ -468,7 +468,7 @@ angular.module('applicationModule')
         var options = {
           date: myDate,
           mode: 'datetime',
-          titleText: '请选择开始日期',
+          titleText: '请选择开始时间',
           okText: '确定',
           cancelText: '取消',
           doneButtonLabel: '确认',
@@ -514,7 +514,7 @@ angular.module('applicationModule')
         var options = {
           date: myDate,
           mode: 'datetime',
-          titleText: '请选择结束日期',
+          titleText: '请选择结束时间',
           okText: '确定',
           cancelText: '取消',
           doneButtonLabel: '确认',
