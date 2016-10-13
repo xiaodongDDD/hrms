@@ -4580,6 +4580,11 @@ angular.module('applicationModule')
       };
 
       $scope.housesRelease = function () {//发布按钮
+
+        if(!validateHousesInfo()){
+          return;
+        }
+
         $scope.housesReleaseInfo.deleteImgs = [];
         for (var i = 0; i < $scope.pictureList.length; i++) {
           if ($scope.pictureList[i].flag == 'del') {
@@ -4589,6 +4594,7 @@ angular.module('applicationModule')
         //console.log("被删除的图片数组+++", angular.toJson($scope.housesReleaseInfo.deleteImgs));
         uploadImage();
       };
+
       var pictureNumber = 0;
       var uploadImage = function () {//上传图片
         hmsPopup.showLoading('请稍候');
@@ -4646,8 +4652,66 @@ angular.module('applicationModule')
         hmsPopup.showPopup("图片上传失败");
       };
 
+      var validateNumber = function(value){
+        try{
+          var number = parseInt(value);
+          return true;
+        }catch(e){
+          return false;
+        }
+        return false
+      };
+
+      var validateNull = function(value){
+        if(!value || value == ''){
+          return false;
+        }
+        else{
+          return true;
+        }
+      }
+
+      var validateHousesInfo = function () {
+        var info = $scope.housesReleaseInfo;
+        if(!validateNull(info.city)){
+          hmsPopup.showPopup("请输入城市信息！");
+          return false;
+        }
+
+        if(!validateNull(info.area)){
+          hmsPopup.showPopup("请输入区域信息！");
+          return false;
+        }
+
+        if(!validateNumber(info.houseTypeRoom) || !validateNumber(info.houseTypeHall) || !validateNumber(info.houseTypeBathRoom)){
+          hmsPopup.showPopup("请输入户型信息！");
+          return false;
+        }
+
+        if(!validateNull(info.square)){
+          hmsPopup.showPopup("请输入面积信息！");
+          return false;
+        }
+
+        if(!validateNull(info.rent)){
+          hmsPopup.showPopup("请输入租金信息！");
+          return false;
+        }
+
+        /*if(!validateNull(info.houseTitle)){
+          hmsPopup.showPopup("请输入标题信息！");
+          return false;
+        }*/
+
+        return true;
+      };
+
       function releaseHousesInfo() {//调用发布接口
-        console.log("房屋发布信息：" + angular.toJson($scope.housesReleaseInfo));
+
+        if(baseConfig.debug) {
+          console.log("房屋发布信息：" + angular.toJson($scope.housesReleaseInfo));
+        }
+
         var url = baseConfig.queryPath + "/house/publish";
         hmsHttp.post(url, $scope.housesReleaseInfo).success(function (result) {
           hmsPopup.hideLoading();
@@ -4663,10 +4727,12 @@ angular.module('applicationModule')
             $ionicHistory.goBack();//删除申请成功后返回上一界面
             hmsPopup.showShortCenterToast("发布成功");
           } else {
+            pictureNumber = 0;
             hmsPopup.showShortCenterToast("发布失败，请检查所填信息是否完整！");
           }
 
         }).error(function (error, status) {
+          pictureNumber = 0;
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast("网络连接出错");
           if (baseConfig.debug) {
