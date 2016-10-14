@@ -79,22 +79,27 @@ angular.module('applicationModule')
       };
 
       $scope.selectImage = function (sourceTypeInt) {
+        //alert("sourceTypeInt " + sourceTypeInt);
+
         if (angular.isUndefined(Camera) || angular.isUndefined(navigator.camera)) {
           alert("Camera 插件未安装!");
           return;
         }
+
         if (angular.isUndefined(window.plugins) || angular.isUndefined(angular.isUndefined(window.plugins.Base64))) {
           alert("Camera 插件未安装!");
           return;
         }
+
         var sourceType;
         if (sourceTypeInt == 0) {
           sourceType = Camera.PictureSourceType.CAMERA;
         } else if (sourceTypeInt == 1) {
-          sourceType = Camera.PictureSourceT/ype.PHOTOLIBRARY;
+          sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
         } else if (sourceTypeInt == 2) {
           sourceType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
         }
+
         var options = {
           quality: 50,
           sourceType: sourceType,
