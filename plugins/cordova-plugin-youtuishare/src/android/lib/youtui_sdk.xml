@@ -33,19 +33,19 @@
     <!-- 微信 -->
     <Wechat
         AppId="wxaaeac85f01714b29"
-        AppSecret="35b235f667c83f623667ecce678944cd"
+        AppSecret="c2fa44f4026681e1f83320606aceae41"
         Enable="true" />
 
     <!-- 微信朋友圈 -->
     <WechatMoments
         AppId="wxaaeac85f01714b29"
-        AppSecret="35b235f667c83f623667ecce678944cd"
+        AppSecret="c2fa44f4026681e1f83320606aceae41"
         Enable="true" />
 
     <!-- 微信收藏 -->
     <WechatFavorite
         AppId="wxaaeac85f01714b29"
-        AppSecret="35b235f667c83f623667ecce678944cd"
+        AppSecret="c2fa44f4026681e1f83320606aceae41"
         Enable="true" />
 
     <!-- 新浪微博 -->
