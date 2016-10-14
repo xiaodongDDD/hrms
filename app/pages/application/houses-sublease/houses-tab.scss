@@ -28,6 +28,7 @@
   width: 100%;
   background-color: #ffffff;
   border-radius: 6px;
+  border-top:2px #26579e solid;
   .header-color{
     background-color: #ffffff;
     border-bottom: 1px solid #3D7BC4;
@@ -56,6 +57,11 @@
     padding: 0;
     margin: 0;
   }
+
+  .item.activated{
+    opacity: 1;
+  }
+
   .apply-item{
     width: 70%;
     margin-left: 15%;
@@ -86,6 +92,9 @@
   width: 100%;
   background-color: #ffffff;
   border-radius: 6px;
+
+  border-top:2px #26579e solid;
+
   .header-color{
     background-color: #ffffff;
     border-bottom: 1px solid #3D7BC4;
@@ -154,6 +163,7 @@
 }
 
 .houses-detail-photo{
+
   .image-list-thumb {
     padding: 2px 2px 2px 2px;
     height: 150px;

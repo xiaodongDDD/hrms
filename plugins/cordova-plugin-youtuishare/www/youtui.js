@@ -4,14 +4,14 @@ var youtuiShare = function() {
 
 
 youtuiShare.prototype.share = function(successCallback, errorCallback, options) {
-    //console.log("youtuiShare");
+    console.log("youtuiShare");
     if (errorCallback == null) { errorCallback = function() {}}
     if (typeof errorCallback != "function")  {
 
         return
     }
     if (typeof successCallback != "function") {
-
+        
         return
     }
     exec(successCallback, errorCallback, "YouTui", "share", options);
@@ -22,7 +22,7 @@ if(!window.plugins) {
 }
 
 if (!window.plugins.youtuiShare) {
-    //alert("No window.plugins.youtuiShare.");
+    alert("No window.plugins.youtuiShare.");
     window.plugins.youtuiShare = new youtuiShare();
 }
 
