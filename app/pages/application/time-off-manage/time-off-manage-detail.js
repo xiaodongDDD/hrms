@@ -390,37 +390,40 @@ angular.module('applicationModule')
           getLeaveDays();
         }
 
-        var initURL = baseConfig.businessPath + "/api_holiday/get_holiday_history";
-        var initParams = {
-          "params": {
-            "p_employee_number": window.localStorage.empno
-          }
-        };
         $scope.approveDTimeOffId = "";
-        hmsHttp.post(initURL, initParams).success(function (response) {
 
-          hmsPopup.hideLoading();
-          if (hmsHttp.isSuccessfull(response.con_status)) {
-            for ( var i = 0; i < response.holiday_history_list.length; i++ ){
-              var holiday = response.holiday_history_list[i];
-              var type = holiday.holiday_history_display.slice(0, holiday.holiday_history_display.indexOf(','));
-              var from = holiday.holiday_history_display.substr(holiday.holiday_history_display.indexOf('从') + 1, 10);
-              var to = holiday.holiday_history_display.substr(holiday.holiday_history_display.indexOf('到') + 2, 10);
-              if( type === $scope.timeOffData.timeOffTypeMeaning && from === $scope.timeOffData.datetimeFrom.substr(0, 10) && to === $scope.timeOffData.datetimeTo.substr(0, 10)) {
-                $scope.approveDTimeOffId = holiday.time_offid;
+        if( $scope.timeOffData.operationType = 'revoke' && $scope.approveStatus == "APPROVED"){
+          var initURL = baseConfig.businessPath + "/api_holiday/get_holiday_history";
+          var initParams = {
+            "params": {
+              "p_employee_number": window.localStorage.empno
+            }
+          };
+          hmsHttp.post(initURL, initParams).success(function (response) {
+
+            hmsPopup.hideLoading();
+            if (hmsHttp.isSuccessfull(response.con_status)) {
+              for ( var i = 0; i < response.holiday_history_list.length; i++ ){
+                var holiday = response.holiday_history_list[i];
+                var type = holiday.holiday_history_display.slice(0, holiday.holiday_history_display.indexOf(','));
+                var from = holiday.holiday_history_display.substr(holiday.holiday_history_display.indexOf('从') + 1, 10);
+                var to = holiday.holiday_history_display.substr(holiday.holiday_history_display.indexOf('到') + 2, 10);
+                if( type === $scope.timeOffData.timeOffTypeMeaning && from === $scope.timeOffData.datetimeFrom.substr(0, 10) && to === $scope.timeOffData.datetimeTo.substr(0, 10)) {
+                  $scope.approveDTimeOffId = holiday.time_offid;
+                }
+              }
+            } else {
+              if (response.con_status === 'E' || response.con_status == 'e') {
+                hmsPopup.showShortCenterToast("查询休假记录出错!请检查相关数据！" /*+ response.errorMsg*/);
+              } else {
+                hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
               }
             }
-          } else {
-            if (response.con_status === 'E' || response.con_status == 'e') {
-              hmsPopup.showShortCenterToast("查询休假记录出错!请检查相关数据！" /*+ response.errorMsg*/);
-            } else {
-              hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
-            }
-          }
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup("查询休假记录失败");
-        });
+          }).error(function (response, status) {
+            hmsPopup.hideLoading();
+            hmsPopup.showPopup("查询休假记录失败");
+          });
+        }
       }
 
 
