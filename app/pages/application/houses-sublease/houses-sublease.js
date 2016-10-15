@@ -190,6 +190,24 @@ angular.module('applicationModule')
         $state.go("tab.houses-release", {'flag': "ADD"});
       };
 
+      $scope.$on('subleaseScroll', function (e) {
+        $timeout(function () {
+          var monthScroll = $ionicScrollDelegate.$getByHandle('subleaseScroll').getScrollPosition();
+          if (baseConfig.debug) {
+            console.log('HousesTabCtrl.monthScroll ' + angular.toJson(monthScroll));
+          }
+          var yOffset = monthScroll.top + 2;
+          var monthScroll1 = $ionicScrollDelegate.$getByHandle('subleaseScroll').scrollTo(0, yOffset, true);
+
+          var monthScroll2 = $ionicScrollDelegate.$getByHandle('subleaseScroll').getScrollPosition();
+
+          if (baseConfig.debug) {
+            console.log('HousesTabCtrl.monthScroll2 ' + angular.toJson(monthScroll2));
+          }
+        },100);
+      });
+
+
       $rootScope.$on("RELEASE_SUCCESS",function(){//空房间申请成功时，返回查询界面自动刷新历史申请数据
         //nowPage = 1;
         //$scope.moreDataCanBeLoaded = true;

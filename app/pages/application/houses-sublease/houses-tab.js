@@ -20,7 +20,9 @@ angular.module('applicationModule')
     '$rootScope',
     '$state',
     '$ionicHistory',
-    function ($scope, $rootScope, $state, $ionicHistory) {
+    '$ionicScrollDelegate',
+    'baseConfig',
+    function ($scope, $rootScope, $state, $ionicHistory,$ionicScrollDelegate,baseConfig) {
       $rootScope.goBack = function () {
         $ionicHistory.goBack();
       };
@@ -49,4 +51,11 @@ angular.module('applicationModule')
         }
         tab.isActive = true;
       }
+
+      $scope.$on('$ionicView.beforeEnter', function (e) {
+        if (baseConfig.debug) {
+          console.log('HousesTabCtrl.$ionicView.beforeEnter');
+        }
+        $scope.$broadcast('subleaseScroll','');
+      });
     }]);

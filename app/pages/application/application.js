@@ -123,23 +123,32 @@ angular.module('applicationModule')
 
       //项目门户
       $scope.projectApp = [{
-        list: [{
-          appName: "Timesheet审批",
-          imageUrl: "build/img/application/application/timesheetExamine@3x.png",
-          destUrl: "tab.tsApproveList",
-        }, {
-          appName: "Timesheet填写",
-          imageUrl: "build/img/application/application/timesheet@3x.png",
-          destUrl: "tab.timesheet",
-        }, {
-          appName: "资源查询",
-          imageUrl: "build/img/application/application/search@3x.png",
-          destUrl: "tab.resources-query",
-        }, {
-          appName: "",
-          imageUrl: "",
-          destUrl: "",
-        }]
+        list: [
+          {
+            appName: "Timesheet审批",
+            imageUrl: "build/img/application/application/timesheetExamine@3x.png",
+            destUrl: "tab.tsApproveList",
+          },
+          {
+            appName: "Timesheet填写",
+            imageUrl: "build/img/application/application/timesheet@3x.png",
+            destUrl: "tab.timesheet",
+          },
+          /*{
+            appName: "资源查询",
+            imageUrl: "build/img/application/application/search@3x.png",
+            destUrl: "tab.resources-query",
+          }, */
+          {
+            appName: "",
+            imageUrl: "",
+            destUrl: "",
+          },
+          {
+            appName: "",
+            imageUrl: "",
+            destUrl: "",
+          }]
       }];
 
       //员工社区
@@ -212,7 +221,7 @@ angular.module('applicationModule')
       };
 
       $scope.onRelease = function () {
-        if(baseConfig.debug){
+        if (baseConfig.debug) {
           console.log('$scope.onRelease');
         }
         $scope.animationsEnabled = false;

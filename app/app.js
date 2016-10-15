@@ -252,7 +252,7 @@ angular.module('myApp')
           params: {message: {}},
           views: {
             'tab-message': {
-              templateUrl: 'build/pages/message/detail/messageDetail.html',
+              templateUrl: 'build/pages/message/detail/message-detail.html',
               controller: 'messageDetailCtrl'
             }
           }
