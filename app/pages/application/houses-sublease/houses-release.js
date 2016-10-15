@@ -4409,6 +4409,7 @@ angular.module('applicationModule')
           $scope.chooseCityPopup = modal1;
         });//初始化选择城市的modal
       }
+
       showModal();
       $ionicModal.fromTemplateUrl('build/pages/application/houses-sublease/modal/houses-release-city-area-choose.html', {//定义modal
         scope: $scope
@@ -4459,6 +4460,7 @@ angular.module('applicationModule')
       }
       //console.log("图片数组+++", angular.toJson($scope.pictureList));
 
+
       $rootScope.$on("housesReleasePhoto", function (event, data) {//广播获取图片数组
         setTimeout(function () {
           $scope.pictureList = [];
@@ -4490,6 +4492,13 @@ angular.module('applicationModule')
       $scope.goHousesPhotoList = function () {
         $state.go("tab.houses-photo-list", {'housesImageList': $scope.pictureList});
       };
+
+      if ($scope.flag == 'EDIT') {
+      } else {
+        $timeout(function () {
+          $scope.goHousesPhotoList();
+        }, 0);
+      }
 
       $scope.goBack = function () {//返回按钮
         $ionicHistory.goBack();
@@ -4581,7 +4590,7 @@ angular.module('applicationModule')
 
       $scope.housesRelease = function () {//发布按钮
 
-        if(!validateHousesInfo()){
+        if (!validateHousesInfo()) {
           return;
         }
 
@@ -4652,53 +4661,53 @@ angular.module('applicationModule')
         hmsPopup.showPopup("图片上传失败");
       };
 
-      var validateNumber = function(value){
-        try{
+      var validateNumber = function (value) {
+        try {
           var number = parseInt(value);
           return true;
-        }catch(e){
+        } catch (e) {
           return false;
         }
         return false
       };
 
-      var validateNull = function(value){
-        if(!value || value == ''){
+      var validateNull = function (value) {
+        if (!value || value == '') {
           return false;
         }
-        else{
+        else {
           return true;
         }
       }
 
       var validateHousesInfo = function () {
         var info = $scope.housesReleaseInfo;
-        if(!validateNull(info.city)){
+        if (!validateNull(info.city)) {
           hmsPopup.showPopup("请输入城市信息！");
           return false;
         }
 
-        if(!validateNull(info.area)){
+        if (!validateNull(info.area)) {
           hmsPopup.showPopup("请输入区域信息！");
           return false;
         }
 
-        if(!validateNull(info.houseTypeRoom) || !validateNull(info.houseTypeHall) || !validateNull(info.houseTypeBathRoom)){
+        if (!validateNull(info.houseTypeRoom) || !validateNull(info.houseTypeHall) || !validateNull(info.houseTypeBathRoom)) {
           hmsPopup.showPopup("请输入户型信息！");
           return false;
         }
 
-        if(!validateNull(info.square)){
+        if (!validateNull(info.square)) {
           hmsPopup.showPopup("请输入面积信息！");
           return false;
         }
 
-        if(!validateNull(info.rent)){
+        if (!validateNull(info.rent)) {
           hmsPopup.showPopup("请输入租金信息！");
           return false;
         }
 
-        if(!validateNull(info.houseTitle)){
+        if (!validateNull(info.houseTitle)) {
           hmsPopup.showPopup("请输入标题信息！");
           return false;
         }
@@ -4708,7 +4717,7 @@ angular.module('applicationModule')
 
       function releaseHousesInfo() {//调用发布接口
 
-        if(baseConfig.debug) {
+        if (baseConfig.debug) {
           console.log("房屋发布信息：" + angular.toJson($scope.housesReleaseInfo));
         }
 
