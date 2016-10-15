@@ -141,7 +141,7 @@ angular.module('HmsModule')
                detailId.workflowId, detailId.instanceId, detailId.nodeId);*/
 
               if(messageType == "work_flow"){
-                if( window.localStorage.getItem('gesturePassword') &&window.localStorage.getItem('gesturePassword') != '' ){
+                if( window.localStorage.getItem('gesturePassword') && window.localStorage.getItem('gesturePassword') != '' ){
                   self.localStorage = {
                     'stateCurrent':analyze(state.current) + 'pushDetail',
                     "detail": detail,
