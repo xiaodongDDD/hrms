@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hand_china.hrms"
+    package="cn.bidaround.hrms"
     android:versionCode="1"
     android:versionName="1.0" >
     <uses-sdk android:minSdkVersion="14"/>
