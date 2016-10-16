@@ -7,6 +7,25 @@
         "is_top_level": false,
         "variables": {}
     },
+    "cordova-plugin-youtuishare": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "jpush-phonegap-plugin": {
+        "source": {
+            "type": "registry",
+            "id": "jpush-phonegap-plugin"
+        },
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "28ff89acc7f718ba07290be4"
+        }
+    },
     "hand-im-plugin-device": {
         "source": {
             "type": "git",
@@ -18,20 +37,10 @@
             "RONG_KEY": "e5t4ouvptpsaa"
         }
     },
-    "jpush-phonegap-plugin": {
-        "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin"
-        },
-        "is_top_level": true,
-        "variables": {
-            "API_KEY": "22b25063349b6beef7bde524"
-        }
-    },
-    "cordova-plugin-youtuishare": {
+    "com.handmobile.cordovaplugin.hotpatch": {
         "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
             "subdir": "."
         },
         "is_top_level": true,

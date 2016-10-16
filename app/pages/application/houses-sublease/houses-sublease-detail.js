@@ -113,7 +113,7 @@ angular.module('applicationModule')
 
       $scope.share = function (){
         //分享显示的图片，默认
-        var imgurl = 'http://youtui.mobi/media/image/youtui.png';
+        var imgurl = 'http://mobile-app.hand-china.com/hrmsstatic/hrms-img/icon.png';
         //分享显示的图片，取转租信息中的第一张照片
         if ($scope.housesSubDetail.imgs.length > 0) {
           imgurl = $scope.housesSubDetail.imgs[$scope.slideIndex].objectUrl;
