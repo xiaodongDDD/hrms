@@ -29,40 +29,143 @@ angular.module('applicationModule')
       var menuFetchFlag = false;
 
       /*//个人办公
+       $scope.officeApp = [
+       {
+       list: [
+       {
+       appName: "人事政策",
+       imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+       destUrl: "tab.personnel-policy",
+       },
+       {
+       appName: "假期管理",
+       imageUrl: "build/img/application/application/holidayManage@3x.png",
+       destUrl: "tab.time-off-manage",
+       },
+       {
+       appName: "机票预定",
+       imageUrl: "build/img/application/application/flightBooking@3x.png",
+       destUrl: "tab.flight-ticket-list",
+       },
+       {
+       appName: "工作流",
+       imageUrl: "build/img/application/application/schedule@3x.png",
+       destUrl: "tab.workflow-list",
+       hasWorkflowNum: true,
+       count: 0
+       }]
+       },
+       {
+       list: [
+       {
+       appName: "合同管理",
+       imageUrl: "build/img/application/application/schedule@3x.png",
+       destUrl: "tab.contractlist",
+       hasWorkflowNum: true,
+       count: 0
+       },
+       {
+       appName: "",
+       imageUrl: "",
+       destUrl: "",
+       },
+       {
+       appName: "",
+       imageUrl: "",
+       destUrl: "",
+       },
+       {
+       appName: "",
+       imageUrl: "",
+       destUrl: "",
+       }
+       ]
+       }
+       ];
+
+       //项目门户
+       $scope.projectApp = [{
+       list: [
+       {
+       appName: "Timesheet审批",
+       imageUrl: "build/img/application/application/timesheetExamine@3x.png",
+       destUrl: "tab.tsApproveList",
+       },
+       {
+       appName: "Timesheet填写",
+       imageUrl: "build/img/application/application/timesheet@3x.png",
+       destUrl: "tab.timesheet",
+       },
+       {
+       appName: "资源查询",
+       imageUrl: "build/img/application/application/search@3x.png",
+       destUrl: "tab.resources-query",
+       },
+       {
+       appName: "",
+       imageUrl: "",
+       destUrl: "",
+       }]
+       }];
+
+       //员工社区
+       $scope.employeeApp = [{
+       list: [
+       {
+       appName: "住宿申请",
+       imageUrl: "build/img/application/application/dormApply@3x.png",
+       destUrl: "tab.dorm-apply"
+       }, {
+       appName: "房屋转租",
+       imageUrl: "build/img/application/application/housingrental@3x.png",
+       destUrl: "tab.houses-tab",
+       }, {
+       appName: "班车信息",
+       imageUrl: "build/img/application/application/bus@3x.png",
+       destUrl: "tab.bus-information",
+       }, {
+       appName: "拼车",
+       imageUrl: "build/img/application/application/carpooling@3x.png",
+       destUrl: "tab.carpooling",
+       }
+       ]
+       }];*/
+
+      //个人办公
       $scope.officeApp = [
         {
           list: [
             {
-              appName: "人事政策",
-              imageUrl: "build/img/application/application/personnelPolicy@3x.png",
-              destUrl: "tab.personnel-policy",
+              appName: "",
+              imageUrl: "",
+              destUrl: ""
             },
             {
-              appName: "假期管理",
-              imageUrl: "build/img/application/application/holidayManage@3x.png",
-              destUrl: "tab.time-off-manage",
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
             },
             {
-              appName: "机票预定",
-              imageUrl: "build/img/application/application/flightBooking@3x.png",
-              destUrl: "tab.flight-ticket-list",
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
             },
             {
-              appName: "工作流",
-              imageUrl: "build/img/application/application/schedule@3x.png",
-              destUrl: "tab.workflow-list",
-              hasWorkflowNum: true,
-              count: 0
-            }]
-        },
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            }
+          ]
+        }];
+
+      //项目门户
+      $scope.projectApp = [
         {
           list: [
             {
-              appName: "合同管理",
-              imageUrl: "build/img/application/application/schedule@3x.png",
-              destUrl: "tab.contractlist",
-              hasWorkflowNum: true,
-              count: 0
+              appName: "",
+              imageUrl: "",
+              destUrl: ""
             },
             {
               appName: "",
@@ -83,62 +186,33 @@ angular.module('applicationModule')
         }
       ];
 
-      //项目门户
-      $scope.projectApp = [{
-        list: [
-          {
-            appName: "Timesheet审批",
-            imageUrl: "build/img/application/application/timesheetExamine@3x.png",
-            destUrl: "tab.tsApproveList",
-          },
-          {
-            appName: "Timesheet填写",
-            imageUrl: "build/img/application/application/timesheet@3x.png",
-            destUrl: "tab.timesheet",
-          },
-          {
-           appName: "资源查询",
-           imageUrl: "build/img/application/application/search@3x.png",
-           destUrl: "tab.resources-query",
-          },
-          {
-            appName: "",
-            imageUrl: "",
-            destUrl: "",
-          }]
-      }];
-
       //员工社区
-      $scope.employeeApp = [{
-        list: [
-          {
-            appName: "住宿申请",
-            imageUrl: "build/img/application/application/dormApply@3x.png",
-            destUrl: "tab.dorm-apply"
-          }, {
-            appName: "房屋转租",
-            imageUrl: "build/img/application/application/housingrental@3x.png",
-            destUrl: "tab.houses-tab",
-          }, {
-            appName: "班车信息",
-            imageUrl: "build/img/application/application/bus@3x.png",
-            destUrl: "tab.bus-information",
-          }, {
-            appName: "拼车",
-            imageUrl: "build/img/application/application/carpooling@3x.png",
-            destUrl: "tab.carpooling",
-          }
-        ]
-      }];*/
-
-      //个人办公
-      $scope.officeApp = [];
-
-      //项目门户
-      $scope.projectApp = [];
-
-      //员工社区
-      $scope.employeeApp = [];
+      $scope.employeeApp = [
+        {
+          list: [
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: ""
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            },
+            {
+              appName: "",
+              imageUrl: "",
+              destUrl: "",
+            }
+          ]
+        }
+      ];
 
 
       var initSetting = function () {
@@ -154,7 +228,7 @@ angular.module('applicationModule')
         }
       };
 
-      if(baseConfig.debug){
+      if (baseConfig.debug) {
         console.log('navigator.userAgent  ' + navigator.userAgent)
       }
 
@@ -244,7 +318,7 @@ angular.module('applicationModule')
 
       var fetchMenuList = function () {
         var success = function (result) {
-          if(result.returnStatus == 'S'){
+          if (result.returnStatus == 'S') {
 
             $scope.officeApp = applicationService.analysisMenuList(result.returnData.officeApp);
             $scope.projectApp = applicationService.analysisMenuList(result.returnData.projectApp);
@@ -254,7 +328,7 @@ angular.module('applicationModule')
               $scope.$apply();
             }, 200);
 
-            if(baseConfig.debug){
+            if (baseConfig.debug) {
               console.log('$scope.officeApp ' + angular.toJson($scope.officeApp));
               console.log('$scope.projectApp ' + angular.toJson($scope.projectApp));
               console.log('$scope.employeeApp ' + angular.toJson($scope.employeeApp));
@@ -284,10 +358,10 @@ angular.module('applicationModule')
         }
         initSetting();
 
-        if(menuFetchFlag){
+        if (menuFetchFlag) {
           getWorkflowNum();
           contractListService.check(successCheckContract);
-        }else{
+        } else {
           fetchMenuList();
         }
 
