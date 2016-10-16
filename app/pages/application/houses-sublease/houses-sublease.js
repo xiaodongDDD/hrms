@@ -191,7 +191,7 @@ angular.module('applicationModule')
       };
 
       $scope.$on('subleaseScroll', function (e) {
-        $timeout(function () {
+        /*$timeout(function () {
           var monthScroll = $ionicScrollDelegate.$getByHandle('subleaseScroll').getScrollPosition();
           if (baseConfig.debug) {
             console.log('HousesTabCtrl.monthScroll ' + angular.toJson(monthScroll));
@@ -204,7 +204,7 @@ angular.module('applicationModule')
           if (baseConfig.debug) {
             console.log('HousesTabCtrl.monthScroll2 ' + angular.toJson(monthScroll2));
           }
-        },100);
+        },100);*/
       });
 
 

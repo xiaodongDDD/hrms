@@ -501,11 +501,6 @@ angular.module('messageModule')
         $scope.firstRefresh = true;
       });
 
-      $scope.$on('$ionicView.afterEnter', function () {
-        $ionicHistory.clearCache();
-        $ionicHistory.clearHistory();
-      });
-
       $scope.$on('$destroy', function (e) {
         if (baseConfig.debug) {
           console.log('messageCtrl.$destroy');
