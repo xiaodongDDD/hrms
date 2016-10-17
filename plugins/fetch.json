@@ -16,6 +16,15 @@
         "is_top_level": true,
         "variables": {}
     },
+    "cordova-plugin-youtuishare": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "hand-im-plugin-device": {
         "source": {
             "type": "git",
@@ -36,14 +45,5 @@
         "variables": {
             "API_KEY": "22b25063349b6beef7bde524"
         }
-    },
-    "cordova-plugin-youtuishare": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
     }
 }
