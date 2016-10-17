@@ -60,14 +60,14 @@
 
     <!-- QQ -->
     <QQ
-        AppId="1101255276"
-        AppKey="h4sOXgtTtsqRjoOq"
+        AppId="1104633415"
+        AppKey="7nO8Uk92aqIQ16ko"
         Enable="true" />
 
     <!-- QQ空间 -->
     <QZone
-        AppId="1101255276"
-        AppKey="h4sOXgtTtsqRjoOq"
+        AppId="1104633415"
+        AppKey="7nO8Uk92aqIQ16ko"
         Enable="true" />
 
     <!-- 腾讯微博 -->
