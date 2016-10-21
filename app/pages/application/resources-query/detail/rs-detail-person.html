@@ -5,9 +5,9 @@
       <span class="back-text" style="color: #fff">返回</span>
     </button>
   </div>
-  <button class="button-small button-clear button-list"></button>
+  <!--<button class="button-small button-clear button-list"></button>-->
 
-  <ion-slide-box id="next-slide" delegate-handle="employee-handle" active-slide="slideIndex" on-slide-changed="slideChanged($index)">
+  <ion-slide-box id="next-slide" ng-if="showContent" delegate-handle="employee-handle" active-slide="slideIndex" on-slide-changed="slideChanged($index)">
     <ion-slide class="person-top" ng-repeat="x in employeeList" >
       <!--<div  class="person-head-image" style="background: #ccc;background-size: cover;background-position: center;background-repeat: no-repeat;">-->
       <!--</div>-->
@@ -51,9 +51,9 @@
   <!--<div class="employee-name" ng-cloak>-->
   <!--{{employeeInfo.emp_name}} {{employeeInfo.emp_code}}-->
   <!--</div>-->
-  <ion-content class="person-content">
+  <ion-content class="person-content" overflow-scroll="true" style="overflow: hidden">
     <hms-loading ng-if="contactLoading" style="padding-top: 10px"></hms-loading>
-    <ion-slide-box id="month-slide" delegate-handle="month-handle" active-slide="monthIndex" on-slide-changed="monthChanged($index)">
+    <ion-slide-box id="month-slide" ng-if="showContent" delegate-handle="month-handle" active-slide="monthIndex" on-slide-changed="monthChanged($index)">
       <ion-slide ng-repeat="y in resultList">
         <div class="calendar-float">
           <span class="float-span">1111111111111111111111111111</span>

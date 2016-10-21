@@ -16,6 +16,8 @@ $timesheet-cover: #E3F5F0 !default;
     position: absolute;
     //width: 300vw;
     height: 53vh;
+    background: rgba(51, 51, 51, 0.8)
+
     //left: -100vw;
   }
   .person-top {
@@ -190,8 +192,10 @@ $timesheet-cover: #E3F5F0 !default;
       font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
       position: relative;
       text-align: center;
-      margin: 15px auto;
-      margin-bottom: 10px;
+      margin-top: 1vh;
+      margin-bottom: 1vh;
+      height: 4vh;
+      line-height: 4vh;
       font-size: 1.3em;
       color: #1f519a;
 
@@ -205,26 +209,27 @@ $timesheet-cover: #E3F5F0 !default;
     }
 
     .calendar-day {
-      margin: 5px;
-      padding: 5px;
       font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
       background: white;
 
       position: relative;
 
       .calendar-title {
-        height: 35px;
-        margin-bottom: 5px;
+        height: 5vh;
+
 
         .title-item {
           float: left;
-          width: 14%;
-          height: 35px;
-          line-height: 35px;
+          width: 13%;
+          height: 5vh;
+          line-height: 5vh;
           text-align: center;
           color: #1f519a;
           font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
           font-size: 1.1em;
+        }
+        .title-item:nth-child(1){
+          margin-left: 4.5%;
         }
       }
 
@@ -232,8 +237,8 @@ $timesheet-cover: #E3F5F0 !default;
       //  height: 40px;
         .day-item {
           float: left;
-          width: 14%;
-          height: 40px;
+          width: 13%;
+          height: 6vh;
           position: relative;
           //&.activated {
           //  //background: #eeeeee;
@@ -259,6 +264,7 @@ $timesheet-cover: #E3F5F0 !default;
             line-height: 30px;
             margin-left: auto;
             margin-right: auto;
+            margin-top: calc((6vh - 30px)/2);
             border-radius: 14px;
             text-align: center;
             font-size: 18px;
@@ -348,6 +354,21 @@ $timesheet-cover: #E3F5F0 !default;
           }
 
         }
+        .day-item:nth-child(1){
+          margin-left: 4.5%;
+        }.day-item:nth-child(8){
+          margin-left: 4.5%;
+        }.day-item:nth-child(15){
+          margin-left: 4.5%;
+        }.day-item:nth-child(22){
+          margin-left: 4.5%;
+        }.day-item:nth-child(29){
+          margin-left: 4.5%;
+        }.day-item:nth-child(36){
+          margin-left: 4.5%;
+        }
+
+
       }
 
     //}

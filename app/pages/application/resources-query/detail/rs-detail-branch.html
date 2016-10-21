@@ -6,17 +6,15 @@
       </button>
     </div>
     <h1 class="title"><input type="text" class="title-input" disabled ng-model="branchName"></h1>
-    <div class="buttons">
-      <button class="button-small button-clear button-list">
-
-      </button>
-    </div>
+    <!--<div class="buttons">-->
+      <!--<button class="button-small button-clear button-list"></button>-->
+    <!--</div>-->
   </ion-header-bar>
 
 
-  <ion-content class="person-content">
+  <ion-content class="person-content"  delegate-handle="content-handle" overflow-scroll="true" style="overflow: hidden">
     <hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>
-    <ion-slide-box id="branch-slide" delegate-handle="branch-handle" active-slide="monthIndex" on-slide-changed="monthChanged($index)">
+    <ion-slide-box id="branch-slide" ng-if="showContent" delegate-handle="branch-handle" active-slide="monthIndex" show-pager="false" on-slide-changed="monthChanged($index)">
       <ion-slide  ng-repeat="x in resultList">
         <div class="calendar-month">
           <span class="arrow ion-ios-arrow-left" ></span>
@@ -32,48 +30,35 @@
           <div class="circle"  style="margin-left: 1.5rem; background: #6cb9f1"></div>
           <div class="text">法定节假日</div>
         </div>
-        <div class="calendar-branch" ng-repeat="y in x.timesheet_details">
-          <div class="calendar-day">
-            <div class="calendar-title">
-              <img class="head" src="build\img\application\resources-query\profile@2x.png" alt="">
-              <span class="text">{{y.employee_name}}&nbsp;&nbsp;{{y.employee_number}}</span>
-            </div>
-            <div class="each-person">
-              <!--<div class="calendar-week" ng-repeat="week in calendar">-->
-                <!--<a class="{{day.style_color}}" ng-repeat="day in week.list">-->
-                  <!--<div class="{{day.style_outline}}">{{day.day}}</div>-->
-                <!--</a>-->
-              <!--</div>-->
-              <!--<a class="day-item" ng-repeat="day in y.resource_details">-->
-                <!--<div class="each-day" ng-cloak >-->
-                  <!--<span class="day-border" ng-class="{true:'border-red',false:'border-green'}[day.is_holiday]">{{day.record_date.substring(8,10)}}</span>-->
-                <!--</div>-->
-              <!--</a>-->
-              <div class="each-table row">
-                <div class="each-subject col-20" style="background: #86e2d3; height: 69px;"></div>
-                <div class="each-subject col-20" style="background: #e08183; height: 9px;"></div>
-                <div class="each-subject col-20" style="background: #6cb9f1; height: 12px;"></div>
+        <div class="subject-content">
+          <ion-scroll class="subject-scroll" delegate-handle="{{x.record_date}}" on-scroll="subjectScroll(x.record_date)">
+            <div class="calendar-branch" ng-repeat="y in x.timesheet_details" ng-click="goEmployeeDetail(y.employee_number,y.employee_name,x.record_date)">
+              <div class="calendar-day">
+                <div class="calendar-title">
+                  <!--<img class="head" src="build\img\application\resources-query\profile@2x.png" alt="">-->
+                  <img class="head" src="build\img\application\resources-query\profile@2x.png" ng-src="{{y.emp_avatar}}" alt="">
+                  <span class="text">{{y.employee_name}}&nbsp;&nbsp;{{y.employee_number}}</span>
+                </div>
+                <div class="each-person">
+                  <div class="each-table row">
+                    <div class="each-subject col-20" style="background: #86e2d3; height: {{y.normal_project_days*3}}px"></div>
+                    <div class="each-subject col-20" style="background: #e08183; height: {{y.exception_project_days*3}}px"></div>
+                    <div class="each-subject col-20" style="background: #6cb9f1; height: {{y.holiday_project_days*3}}px"></div>
+                  </div>
+                  <div class="each-array">
+                    <div class="each-count" ng-bind="y.normal_project_days"></div>
+                    <div class="each-count" ng-bind="y.exception_project_days"></div>
+                    <div class="each-count" ng-bind="y.holiday_project_days"></div>
+                  </div>
+                </div>
               </div>
-              <div class="each-array">
-                <div class="each-count">23</div>
-                <div class="each-count">3</div>
-                <div class="each-count">4</div>
-              </div>
-
-
             </div>
-          </div>
+            <ion-infinite-scroll ng-if="showInfinite[monthIndex]" on-infinite="loadMore(monthIndex)" distance="1%">
+            </ion-infinite-scroll>
+          </ion-scroll>
         </div>
-        <ion-infinite-scroll on-infinite="loadMore()"
-                             ng-if="showInfinite"
-                             immediate-check="false"
-                             distance="-1%">
-        </ion-infinite-scroll>
       </ion-slide>
     </ion-slide-box>
-
-
-
   </ion-content>
 
   <!--<ion-footer-bar class="foot-bar" style="bottom: 0px;">-->
