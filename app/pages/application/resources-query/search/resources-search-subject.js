@@ -117,7 +117,7 @@ angular.module('applicationModule')
           var returnData = result.returnData;
 
           $scope.mySubject = returnData.my_project_list;
-          // console.log(returnCode);
+          console.log(result);
           // console.log(returnMsg);
           // console.log(returnData);
           // console.log($scope.mySubject);

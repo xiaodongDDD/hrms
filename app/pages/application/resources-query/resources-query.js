@@ -68,36 +68,36 @@ angular.module('applicationModule')
         var weekDaysList = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
 
-        // $scope.dateFrom = new Date();
-        // $scope.dateFrom.setDate(1);
-        // $scope.monthFrom = $scope.dateFrom.getMonth();
-        // $scope.dayFrom = $scope.dateFrom.getDate();
-        // $scope.dateFrom.setMonth($scope.dateFrom.getMonth()-1);
-        // $scope.weekFrom = weekDaysList[$scope.dateFrom.getDay()];
-        // $scope.yearFrom = $scope.dateFrom.getFullYear();
-        //
-        // if($scope.monthFrom < 10){
-        //   $scope.monthFrom = "0" + $scope.monthFrom;
-        // }
-        // if($scope.dayFrom < 10){
-        //   $scope.dayFrom = "0" + $scope.dayFrom;
-        // }
-        //
-        // var dateFrom = $scope.yearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
-        //
-        // $scope.dateTo = new Date();
-        // $scope.monthTo = $scope.dateTo.getMonth()+1;
-        // $scope.dayTo = $scope.dateTo.getDate();
-        // $scope.weekTo = weekDaysList[$scope.dateTo.getDay()];
-        // $scope.yearTo = $scope.dateTo.getFullYear();
-        //
-        // if($scope.monthTo < 10){
-        //   $scope.monthTo = "0" + $scope.monthTo;
-        // }
-        // if($scope.dayTo < 10){
-        //   $scope.dayTo = "0" + $scope.dayTo;
-        // }
-        // var dateTo = $scope.yearTo + '-' + $scope.monthTo+ '-' + $scope.dayTo;
+        $scope.dateFrom = new Date();
+        $scope.dateFrom.setDate(1);
+        $scope.monthFrom = $scope.dateFrom.getMonth();
+        $scope.dayFrom = $scope.dateFrom.getDate();
+        $scope.dateFrom.setMonth($scope.dateFrom.getMonth()-1);
+        $scope.weekFrom = weekDaysList[$scope.dateFrom.getDay()];
+        $scope.yearFrom = $scope.dateFrom.getFullYear();
+
+        if($scope.monthFrom < 10){
+          $scope.monthFrom = "0" + $scope.monthFrom;
+        }
+        if($scope.dayFrom < 10){
+          $scope.dayFrom = "0" + $scope.dayFrom;
+        }
+
+        var dateFrom = $scope.yearFrom + '-' + $scope.monthFrom + '-' + $scope.dayFrom;
+
+        $scope.dateTo = new Date();
+        $scope.monthTo = $scope.dateTo.getMonth()+1;
+        $scope.dayTo = $scope.dateTo.getDate();
+        $scope.weekTo = weekDaysList[$scope.dateTo.getDay()];
+        $scope.yearTo = $scope.dateTo.getFullYear();
+
+        if($scope.monthTo < 10){
+          $scope.monthTo = "0" + $scope.monthTo;
+        }
+        if($scope.dayTo < 10){
+          $scope.dayTo = "0" + $scope.dayTo;
+        }
+        var dateTo = $scope.yearTo + '-' + $scope.monthTo+ '-' + $scope.dayTo;
 
 
 
@@ -243,7 +243,7 @@ angular.module('applicationModule')
       // };
 
 
-      // //init data
+      //init data
       {
 
         //设置初始化时间
