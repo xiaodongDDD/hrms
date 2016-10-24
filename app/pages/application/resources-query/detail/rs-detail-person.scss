@@ -1,8 +1,4 @@
-$timesheet-bule: #24559C !default;
-$timesheet-green: #1BBC9B !default;
-$timesheet-purple: #913D88 !default;
-$timesheet-red: #E08283 !default;
-$timesheet-cover: #E3F5F0 !default;
+
 
 .resources-detail-person {
   position: absolute;
@@ -28,7 +24,7 @@ $timesheet-cover: #E3F5F0 !default;
   }
   .person-head-image {
     height: 53vh;
-    width: 100%;
+    width: 100vw;
     //filter: blur(10px) brightness(0.9);
     //-webkit-filter: blur(10px) brightness(0.9);
     z-index: -2;
@@ -43,7 +39,7 @@ $timesheet-cover: #E3F5F0 !default;
   }
   .black-cover{
     height: 53vh;
-    width: 100%;
+    width: 100vw;
     position: absolute;
     top: 0;
     left: 0;
@@ -56,7 +52,7 @@ $timesheet-cover: #E3F5F0 !default;
     top: 0;
     left: 0;
     height: 53vh;
-    width: 100%;
+    width: 100vw;
     background: transparent;
     color: #fff;
     font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
@@ -85,13 +81,13 @@ $timesheet-cover: #E3F5F0 !default;
 
   }
   .person-subject {
-    width: 100%;
+    width: 100vw;
   }
   .subject-scroll{
     height: calc(53vh - 175px);
   }
   .subject-item {
-    width: 100%;
+    width: 100vw;
   }
   .subject-item-circle {
     width: 20px;
