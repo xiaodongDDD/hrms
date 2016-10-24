@@ -213,6 +213,8 @@ angular.module('applicationModule')
         if($scope.employeeList[$scope.slideIndex - 1]){
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];
+          $scope.monthIndex = 0;
+          $scope.newPage = 1;
           $scope.slideIndex--;
           $scope.empInfo = $scope.employeeList[$scope.slideIndex];
           if($scope.employeeList[$scope.slideIndex - 1]){
@@ -239,6 +241,8 @@ angular.module('applicationModule')
         if($scope.employeeList[$scope.slideIndex + 1]){
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];
+          $scope.monthIndex = 0;
+          $scope.newPage = 1;
           $scope.slideIndex++;
           $scope.empInfo = $scope.employeeList[$scope.slideIndex];
           if($scope.employeeList[$scope.slideIndex - 1]){
