@@ -107,7 +107,9 @@ angular.module('applicationModule')
 
     ) {
 
+
       $scope.employeeList = "";  //初始化人员列表
+      $scope.employeeListSlide = []; //初始化3个呈现的人元列表
       $scope.empInfo = "";   //初始化此员工信息
       $scope.subject = "";   //初始化项目列表
       $scope.resourceDetails = "";   //初始化查询结果
@@ -118,6 +120,7 @@ angular.module('applicationModule')
       $scope.showContent = false; //默认不显示整体页面
       $scope.resultList = []; //初始化最终呈现的结果
       $scope.resultProList = [];
+      $scope.empInfo = [];
 
 
       var oSlide = document.getElementById('next-slide');
@@ -154,7 +157,7 @@ angular.module('applicationModule')
       var empPictureUrl = baseConfig.businessPath + "/api_employee/get_employee_code"; //人员头像接口地址
       var empCode = '{"params":{"p_employee_code":"' + employeeCode +  '"}}';
 
-      $scope.slideIndex = 0;
+      // $scope.slideIndex = 0;
 
       var getEmpList = function (postUrl,postData) { //获取人员列表
 
@@ -164,15 +167,80 @@ angular.module('applicationModule')
           $scope.employeeList = result.employee_list.sort(function (a, b) {
             return(a.employee_number - b.employee_number);
           });
-          $ionicSlideBoxDelegate.$getByHandle('employee-handle').update();
 
-          // console.log($scope.employeeList);
+
+
+          console.log('人员列表啊');
+          console.log($scope.employeeList);
 
           for(var i=0; i<$scope.employeeList.length; i++){
             if(employeeCode == $scope.employeeList[i].employee_number){
               $scope.slideIndex = i;
+              break;
             }
           }
+          $scope.empInfo = $scope.employeeList[i];
+          // $scope.employeeListSlide.push($scope.employeeList[$scope.slideIndex]) ;
+          // console.log($scope.employeeListSlide);
+          // $ionicSlideBoxDelegate.$getByHandle('employee-handle').update();
+
+          if($scope.employeeList[$scope.slideIndex - 1]){
+            // $scope.employeeListSlide.reverse().push($scope.employeeList[$scope.employeeIndex - 1]);
+            // $scope.employeeListSlide.reverse();
+            $scope.lastEmp = $scope.employeeList[$scope.slideIndex - 1];
+
+            $scope.lastArrow = true;
+          }else{
+            $scope.lastEmp = "";
+            $scope.lastArrow = false;
+          }
+          if($scope.employeeList[$scope.slideIndex + 1]){
+            // $scope.employeeListSlide.push($scope.employeeList[$scope.employeeIndex + 1]);
+            $scope.nextEmp = $scope.employeeList[$scope.slideIndex + 1];
+            $scope.nextArrow = true;
+          }else{
+            $scope.nextEmp = "";
+            $scope.nextArrow = false;
+          }
+
+
+        }).error(function () {
+          console.log('人员列表接口异常');
+        })
+      };
+
+      $scope.lastPerson = function () {
+        if($scope.employeeList[$scope.slideIndex - 1]){
+          $scope.resultList = []; //初始化最终呈现的结果
+          $scope.resultProList = [];
+          $scope.slideIndex--;
+          $scope.empInfo = $scope.employeeList[$scope.slideIndex];
+          if($scope.employeeList[$scope.slideIndex - 1]){
+            $scope.lastEmp = $scope.employeeList[$scope.slideIndex - 1];
+            $scope.lastArrow = true;
+          }else{
+            $scope.lastEmp = "";
+            $scope.lastArrow = false;
+          }
+          if($scope.employeeList[$scope.slideIndex + 1]){
+            $scope.nextEmp = $scope.employeeList[$scope.slideIndex + 1];
+            $scope.nextArrow = true;
+          }else{
+            $scope.nextEmp = "";
+            $scope.nextArrow = false;
+          }
+          employeeCode = $scope.employeeList[$scope.slideIndex].employee_number;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('init');
+        }
+
+      };
+      $scope.nextPerson = function () {
+        if($scope.employeeList[$scope.slideIndex + 1]){
+          $scope.resultList = []; //初始化最终呈现的结果
+          $scope.resultProList = [];
+          $scope.slideIndex++;
+          $scope.empInfo = $scope.employeeList[$scope.slideIndex];
           if($scope.employeeList[$scope.slideIndex - 1]){
             $scope.lastEmp = $scope.employeeList[$scope.slideIndex - 1];
             $scope.lastArrow = true;
@@ -188,12 +256,12 @@ angular.module('applicationModule')
             $scope.nextArrow = false;
           }
 
+          employeeCode = $scope.employeeList[$scope.slideIndex].employee_number;
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          getData('init');
+        }
 
-        }).error(function () {
-          console.log('人员列表接口异常');
-        })
       };
-
 
 
       // $scope.$on('$ionicView.afterEnter', function () {
@@ -207,33 +275,35 @@ angular.module('applicationModule')
       //   $scope.slectIndex=index;
       //   $ionicSlideBoxDelegate.slide(index);
       // };
-      $scope.slideChanged=function(index){//  上面人员滑动时候触发
+      // $scope.slideChanged=function(index){//  上面人员滑动时候触发
+      //
+      //   $scope.resultList = []; //初始化最终呈现的结果
+      //   $scope.resultProList = [];
+      //   // $scope.slideIndex=index;
+      //   $scope.monthIndex = 0;
+      //   $scope.newPage = 1;
+      //   if($scope.employeeList[index - 1]){
+      //     $scope.lastEmp = $scope.employeeList[index - 1];
+      //     $scope.lastArrow = true;
+      //
+      //   }else{
+      //     $scope.lastEmp = "";
+      //     $scope.lastArrow = false;
+      //   }
+      //   if($scope.employeeList[index + 1]){
+      //     $scope.nextEmp = $scope.employeeList[index + 1];
+      //     $scope.nextArrow = true;
+      //   }else{
+      //     $scope.nextEmp = "";
+      //     $scope.nextArrow = false;
+      //   }
+      //   employeeCode = $scope.employeeList[index].employee_number;
+      //   postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+      //   getData('init');
+      //
+      // };
 
-        $scope.resultList = []; //初始化最终呈现的结果
-        $scope.resultProList = [];
-        $scope.slideIndex=index;
-        $scope.monthIndex = 0;
-        $scope.newPage = 1;
-        if($scope.employeeList[$scope.slideIndex - 1]){
-          $scope.lastEmp = $scope.employeeList[$scope.slideIndex - 1];
-          $scope.lastArrow = true;
 
-        }else{
-          $scope.lastEmp = "";
-          $scope.lastArrow = false;
-        }
-        if($scope.employeeList[$scope.slideIndex + 1]){
-          $scope.nextEmp = $scope.employeeList[$scope.slideIndex + 1];
-          $scope.nextArrow = true;
-        }else{
-          $scope.nextEmp = "";
-          $scope.nextArrow = false;
-        }
-        employeeCode = $scope.employeeList[$scope.slideIndex].employee_number;
-        postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
-        getData('init');
-
-      };
 
       $scope.monthChanged = function (index) {  //下面日历滑动时触发
         $scope.monthIndex=index;
@@ -244,20 +314,19 @@ angular.module('applicationModule')
       };
 
 
-      // var getEmpPicture = function (url,empCode,index) {   //获取员工头像
+      // var getEmpPicture = function (url,empCode) {   //获取员工头像
       //   hmsHttp.post(url, empCode).success(function (result) {
-      //     // console.log(result);
-      //     $scope.empInfo = result.result;
       //
-      //     portraitBackground[index].style.backgroundImage="url('"+$scope.empInfo.avatar+"')";
+      //     $scope.empInfo = result.result;
+      //     console.log($scope.empInfo);
       //
       //
       //   }).error(function () {
       //     console.log('员工头像接口异常')
       //   })
       // };
-      // getEmpPicture(empPictureUrl,$scope.empCode,$scope.slideIndex);
-      //
+
+
 
       $scope.loadMore = function (index) { //加载下一页
 
@@ -400,14 +469,16 @@ angular.module('applicationModule')
 
 
       getData('init');
+      // getEmpPicture(empPictureUrl,empCode);
       getEmpList(empListUrl,searchInfo);
 
-      $timeout(function () {
-        $scope.showContent = true; //显示整体页面
-      },200);
+      // $timeout(function () {
+      //   $scope.showContent = true; //显示整体页面
+      // },300);
 
       $scope.goBackPage = function () {
         $scope.showContent = false; //默认不显示整体页面
+        $scope.empInfo = [];
         $ionicHistory.goBack();
       };
 

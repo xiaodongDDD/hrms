@@ -20,11 +20,12 @@ angular.module('applicationModule')
     'baseConfig',
     '$ionicHistory',
     '$stateParams',
-    'ionicDatePicker',
+    // 'ionicDatePicker',
     '$rootScope',
     '$timeout',
+    '$ionicLoading',
     '$cordovaDatePicker',
-    'HmsDateFormat',
+    // 'HmsDateFormat',
 
 
 
@@ -39,11 +40,12 @@ angular.module('applicationModule')
               baseConfig,
               $ionicHistory,
               $stateParams,
-              ionicDatePicker,
+              // ionicDatePicker,
               $rootScope,
               $timeout,
-              $cordovaDatePicker,
-              HmsDateFormat
+              $ionicLoading,
+              $cordovaDatePicker
+              // HmsDateFormat
 
 
 
@@ -502,6 +504,9 @@ angular.module('applicationModule')
     $scope.doQuery = function () {
       // $scope.toggleQuery(); // mod by ciwei
       // console.log(window.localStorage.empno);
+      if(!$scope.employeeName && !$scope.branchName && !$scope.subjectName){
+        $ionicLoading.show({template: '请选择至少一种查询条件！', duration: 2000});
+      }
       if($scope.employeeName){
         $state.go('tab.rsDetailPerson',
           {
