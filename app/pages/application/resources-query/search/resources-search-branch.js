@@ -86,7 +86,9 @@ angular.module('applicationModule')
 
 
       var showMyBranch = function () {
+        $scope.contactLoading = true;
         hmsHttp.post(getMyBranchUrl, myNumber).success(function (result) {
+          $scope.contactLoading = false;
           var returnCode = result.returnCode;
           var returnMsg = result.returnMsg;
           $scope.myBranch = result.returnData;

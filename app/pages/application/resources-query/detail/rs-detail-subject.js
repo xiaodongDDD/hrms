@@ -107,7 +107,7 @@ angular.module('applicationModule')
 
       var getBranchData = function (moreFlag) {
         console.log(moreFlag);
-        $scope.contactLoading = true;
+        // $scope.contactLoading = true;
         var q = $q.defer();
         if (moreFlag === 'init') {
           $scope.contactLoading = true;
