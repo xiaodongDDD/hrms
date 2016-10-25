@@ -210,6 +210,7 @@ angular.module('applicationModule')
       };
 
       $scope.lastPerson = function () {
+        // $(".subject-item-name").hide().fadeIn("slow");
         if($scope.employeeList[$scope.slideIndex - 1]){
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];
@@ -238,6 +239,7 @@ angular.module('applicationModule')
 
       };
       $scope.nextPerson = function () {
+        // $(".subject-item-name").hide().fadeIn(3000);
         if($scope.employeeList[$scope.slideIndex + 1]){
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];

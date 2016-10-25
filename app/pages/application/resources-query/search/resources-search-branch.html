@@ -18,6 +18,7 @@
     </div>
   </ion-header-bar>
   <ion-content class="branch-search-content">
+    <hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>
     <div ng-if="showMyBranch">
       <div class="row myBranch">
         <img ng-src="build/img/contact/history@3x.png"/>

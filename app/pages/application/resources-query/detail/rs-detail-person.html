@@ -11,12 +11,13 @@
     <!--<ion-slide class="person-top" ng-repeat="x in employeeList" >-->
       <!--<div  class="person-head-image" style="background: #ccc;background-size: cover;background-position: center;background-repeat: no-repeat;">-->
       <!--</div>-->
-      <div  class="person-head-image" style="background: url('{{empInfo.emp_avatar}}');background-size: cover;background-position: center;background-repeat: no-repeat;">
+    <div class="person-top" ng-cloak on-swipe-left="nextPerson()" on-swipe-right="lastPerson()">
+      <div  class="person-head-image" ng-cloak style="background: url('{{empInfo.emp_avatar}}');background-size: cover;background-position: center;background-repeat: no-repeat;">
       </div>
       <div class="black-cover"></div>
       <div class="person-info">
         <div class="img-section">
-          <img class="img-person" ng-src="{{empInfo.emp_avatar}}" src="build/img/application/resources-query/profile@3x.png"/>
+          <img class="img-person" ng-src="{{empInfo.emp_avatar}}"/>
           <p class="person-name"><span ng-bind="empInfo.employee_name"></span>&nbsp;&nbsp;<span ng-bind="empInfo.employee_number"></span></p>
         </div>
         <div class="person-subject">
@@ -28,19 +29,20 @@
           </ion-scroll>
         </div>
         <div class="person-bottom row">
-          <div class="person-bottom-left col-40" ng-click="lastPerson()">
+          <div class="person-bottom-left col-40">
             <span class="person-left-span ion-ios-arrow-left" ng-if="lastArrow"></span>
             <div class="person-left-name"><span ng-bind="lastEmp.employee_name"></span>&nbsp;&nbsp;<span ng-bind="lastEmp.employee_number"></span></div>
           </div>
           <div class="col-20">
             <div class="person-triangle"></div>
           </div>
-          <div class="person-bottom-right col-40" ng-click="nextPerson()">
+          <div class="person-bottom-right col-40">
             <span class="person-right-span ion-ios-arrow-right" ng-if="nextArrow"></span>
             <div class="person-right-name"><span ng-bind="nextEmp.employee_name"></span>&nbsp;&nbsp;<span ng-bind="nextEmp.employee_number"></span></div>
           </div>
         </div>
       </div>
+    </div>
     <!--</ion-slide>-->
 
 
