@@ -23,8 +23,8 @@ angular.module('applicationModule')
     // 'ionicDatePicker',
     '$rootScope',
     '$timeout',
-    '$ionicLoading',
     '$cordovaDatePicker',
+    '$ionicPopup',
     // 'HmsDateFormat',
     // '$ionicModal',
     // //'Prompter',
@@ -38,8 +38,8 @@ angular.module('applicationModule')
               // ionicDatePicker,
               $rootScope,
               $timeout,
-              $ionicLoading,
-              $cordovaDatePicker
+              $cordovaDatePicker,
+              $ionicPopup
               // HmsDateFormat
               // $ionicModal,
               // //Prompter,
@@ -270,6 +270,7 @@ angular.module('applicationModule')
 
         dateFrom = $scope.datetimeFrom.year + '-' + $scope.datetimeFrom.month + '-' + $scope.datetimeFrom.day;
 
+
         //初始化结束时间
         refreshEndDate(1);
 
@@ -302,7 +303,7 @@ angular.module('applicationModule')
 
         dateTo = $scope.datetimeTo.year + '-' + $scope.datetimeTo.month + '-' + $scope.datetimeTo.day;
 
-      };
+      }
 
 
       $scope.selectDateFrom = function () {
@@ -487,114 +488,129 @@ angular.module('applicationModule')
       };
 
 
+      // 定义弹窗
+      $scope.showPopup = function(word) {
+        $scope.data = {};
+        // 一个精心制作的自定义弹窗
+        var myPopup = $ionicPopup.show({
+          title: word
+        });
+        myPopup.then(function (res) {
+          console.log('Tapped!', res);
+        });
+        $timeout(function () {
+          myPopup.close(); //由于某种原因3秒后关闭弹出
+        }, 2000);
+      };
 
 
+      $scope.doQuery = function () {
+        // $scope.toggleQuery(); // mod by ciwei
+        // console.log(window.localStorage.empno);
+        if(!$scope.employeeName && !$scope.branchName && !$scope.subjectName){
+          $scope.showPopup('请至少选择一个查询条件!');
+        }
+        if(!$scope.employeeName && $scope.branchName && $scope.subjectName){
+          $scope.showPopup('请单独查询部门或项目!');
+        }
+        if($scope.employeeName){
+          $state.go('tab.rsDetailPerson',
+            {
+              dateFrom: dateFrom,
+              dateTo: dateTo,
+              employeeName: $scope.employeeName,
+              employeeCode: $scope.employeeCode,
+              branchName: $scope.branchName,
+              branchId: $scope.branchId,
+              unitId: $scope.unitId,
+              subjectName: $scope.subjectName,
+              subjectId: $scope.subjectId,
+              dimission: $scope.dimission
+            }
+          );
+        }
+        if(!$scope.employeeName && $scope.branchName&& !$scope.subjectName){
+          $state.go('tab.rsDetailBranch',
+            {
+              dateFrom: dateFrom,
+              dateTo: dateTo,
+              employeeName: $scope.employeeName,
+              employeeCode: $scope.employeeCode,
+              branchName: $scope.branchName,
+              branchId: $scope.branchId,
+              unitId: $scope.unitId,
+              subjectName: $scope.subjectName,
+              subjectId: $scope.subjectId,
+              dimission: $scope.dimission
+            }
+          );
+        }
+        if(!$scope.employeeName && !$scope.branchName && $scope.subjectName){
+          $state.go('tab.rsDetailSubject',
+            {
+              dateFrom: dateFrom,
+              dateTo: dateTo,
+              employeeName: $scope.employeeName,
+              employeeCode: $scope.employeeCode,
+              branchName: $scope.branchName,
+              branchId: $scope.branchId,
+              unitId: $scope.unitId,
+              subjectName: $scope.subjectName,
+              subjectId: $scope.subjectId,
+              dimission: $scope.dimission
+            }
+          );
+        }
 
 
-    $scope.doQuery = function () {
-      // $scope.toggleQuery(); // mod by ciwei
-      // console.log(window.localStorage.empno);
-      if(!$scope.employeeName && !$scope.branchName && !$scope.subjectName){
-        $ionicLoading.show({template: '请选择至少一种查询条件！', duration: 2000});
+        //判断输入信息
+        // if ($scope.queryParams.dateFrom == "" || $scope.queryParams.dateFrom == undefined ||
+        //   $scope.queryParams.dateTo == "" || $scope.queryParams.dateTo == undefined) {
+        //   $ionicLoading.show({template: '请输入开始时间和结束时间！', duration: 2000});
+        // } else {
+        //   if ($scope.queryParams.dateFrom > $scope.queryParams.dateTo) {
+        //     $ionicLoading.show({template: '结束时间早于开始时间！', duration: 2000});
+        //   } else {
+        //     if ($scope.queryParams.employeeId == "" &&
+        //       $scope.queryParams.departmentId == "" &&
+        //       $scope.queryParams.groupId == "") {
+        //       $ionicLoading.show({template: '请至少输入一项查询条件！', duration: 2000});
+        //     } else {
+        //       $scope.toggleQuery();// add by ciwei
+        //       //Prompter.showLoading("Loading...");
+        //       var dateForm = formatDate($scope.queryParams.dateFrom);
+        //       var dateTo = formatDate($scope.queryParams.dateTo);
+        //       var urlValueList = window.localStorage.wsurl + "/resource_query/get_resource_result";
+        //       var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '",' +
+        //         '"p_department_id":"' + $scope.queryParams.departmentId + '",' +
+        //         '"p_sub_dept_id ":"' + $scope.queryParams.groupId + '",' +
+        //         '"p_emp_id":"' + $scope.queryParams.employeeId + '",' +
+        //         '"p_date_from":"' + dateForm + '",' +
+        //         '"p_date_to":"' + dateTo + '",' +
+        //         '"p_dimission_include":"' + $scope.dimissionCtrl.dimissionInclude + '"}}';
+        //       console.log(paramValueList);
+        //       hmsHttp.post(urlValueList, paramValueList, $scope).success(function (response) {
+        //         if (response.status == "S") {
+        //
+        //           $scope.headerItems = response.headerItems;
+        //           $scope.lineItems = response.lineItems;
+        //           console.log("拉取列表成功" + angular.toJson(response));
+        //           $scope.tableShow = true;
+        //           //Prompter.hideLoading("");
+        //         } else {
+        //           console.log("拉取列表失败：" + response.returnMsg);
+        //           //Prompter.hideLoading("");
+        //           $ionicLoading.show({template: response.returnMsg, duration: 2000});
+        //         }
+        //       }).error(function (response, status) {
+        //         console.log("hmsHttp error ");
+        //         //Prompter.hideLoading("");
+        //       });
+        //     }
+        //   }
+        // }
+
       }
-      if($scope.employeeName){
-        $state.go('tab.rsDetailPerson',
-          {
-            dateFrom: dateFrom,
-            dateTo: dateTo,
-            employeeName: $scope.employeeName,
-            employeeCode: $scope.employeeCode,
-            branchName: $scope.branchName,
-            branchId: $scope.branchId,
-            unitId: $scope.unitId,
-            subjectName: $scope.subjectName,
-            subjectId: $scope.subjectId,
-            dimission: $scope.dimission
-          }
-        );
-      }
-      if(!$scope.employeeName && $scope.branchName){
-        $state.go('tab.rsDetailBranch',
-          {
-            dateFrom: dateFrom,
-            dateTo: dateTo,
-            employeeName: $scope.employeeName,
-            employeeCode: $scope.employeeCode,
-            branchName: $scope.branchName,
-            branchId: $scope.branchId,
-            unitId: $scope.unitId,
-            subjectName: $scope.subjectName,
-            subjectId: $scope.subjectId,
-            dimission: $scope.dimission
-          }
-        );
-      }
-      if(!$scope.employeeName && !$scope.branchName && $scope.subjectName){
-        $state.go('tab.rsDetailSubject',
-          {
-            dateFrom: dateFrom,
-            dateTo: dateTo,
-            employeeName: $scope.employeeName,
-            employeeCode: $scope.employeeCode,
-            branchName: $scope.branchName,
-            branchId: $scope.branchId,
-            unitId: $scope.unitId,
-            subjectName: $scope.subjectName,
-            subjectId: $scope.subjectId,
-            dimission: $scope.dimission
-          }
-        );
-      }
-
-
-      //判断输入信息
-      // if ($scope.queryParams.dateFrom == "" || $scope.queryParams.dateFrom == undefined ||
-      //   $scope.queryParams.dateTo == "" || $scope.queryParams.dateTo == undefined) {
-      //   $ionicLoading.show({template: '请输入开始时间和结束时间！', duration: 2000});
-      // } else {
-      //   if ($scope.queryParams.dateFrom > $scope.queryParams.dateTo) {
-      //     $ionicLoading.show({template: '结束时间早于开始时间！', duration: 2000});
-      //   } else {
-      //     if ($scope.queryParams.employeeId == "" &&
-      //       $scope.queryParams.departmentId == "" &&
-      //       $scope.queryParams.groupId == "") {
-      //       $ionicLoading.show({template: '请至少输入一项查询条件！', duration: 2000});
-      //     } else {
-      //       $scope.toggleQuery();// add by ciwei
-      //       //Prompter.showLoading("Loading...");
-      //       var dateForm = formatDate($scope.queryParams.dateFrom);
-      //       var dateTo = formatDate($scope.queryParams.dateTo);
-      //       var urlValueList = window.localStorage.wsurl + "/resource_query/get_resource_result";
-      //       var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '",' +
-      //         '"p_department_id":"' + $scope.queryParams.departmentId + '",' +
-      //         '"p_sub_dept_id ":"' + $scope.queryParams.groupId + '",' +
-      //         '"p_emp_id":"' + $scope.queryParams.employeeId + '",' +
-      //         '"p_date_from":"' + dateForm + '",' +
-      //         '"p_date_to":"' + dateTo + '",' +
-      //         '"p_dimission_include":"' + $scope.dimissionCtrl.dimissionInclude + '"}}';
-      //       console.log(paramValueList);
-      //       hmsHttp.post(urlValueList, paramValueList, $scope).success(function (response) {
-      //         if (response.status == "S") {
-      //
-      //           $scope.headerItems = response.headerItems;
-      //           $scope.lineItems = response.lineItems;
-      //           console.log("拉取列表成功" + angular.toJson(response));
-      //           $scope.tableShow = true;
-      //           //Prompter.hideLoading("");
-      //         } else {
-      //           console.log("拉取列表失败：" + response.returnMsg);
-      //           //Prompter.hideLoading("");
-      //           $ionicLoading.show({template: response.returnMsg, duration: 2000});
-      //         }
-      //       }).error(function (response, status) {
-      //         console.log("hmsHttp error ");
-      //         //Prompter.hideLoading("");
-      //       });
-      //     }
-      //   }
-      // }
-
-    }
     //滑动定位
     // $scope.scroll = function () {
     //   var scrollLeft = $ionicScrollDelegate.$getByHandle('tableBody').getScrollPosition().left;
