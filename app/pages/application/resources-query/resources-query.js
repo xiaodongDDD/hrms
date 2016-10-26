@@ -26,13 +26,8 @@ angular.module('applicationModule')
     '$ionicLoading',
     '$cordovaDatePicker',
     // 'HmsDateFormat',
-
-
-
     // '$ionicModal',
-    // '$timeout',
     // //'Prompter',
-    // '$ionicLoading',
     // '$ionicScrollDelegate',
     // 'hmsHttp',
     function ($scope,
@@ -46,13 +41,8 @@ angular.module('applicationModule')
               $ionicLoading,
               $cordovaDatePicker
               // HmsDateFormat
-
-
-
               // $ionicModal,
-              // $timeout,
               // //Prompter,
-              // $ionicLoading,
               // $ionicScrollDelegate,
               // hmsHttp
     ) {

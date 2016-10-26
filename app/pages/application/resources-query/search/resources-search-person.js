@@ -292,7 +292,7 @@ angular.module('applicationModule')
         }, 400);
       };
 
-      $scope.search = function (loadMoreFlag) {
+      $scope.search = function (loadMoreFlag) { //响应搜索输入框的方法
         $scope.showHistory = false;
         $scope.showClear = true;
         $scope.contactLoading = true;
@@ -312,7 +312,7 @@ angular.module('applicationModule')
         $scope.searchEmployee(currentPage, loadMoreFlag);
       };
 
-      $scope.searchEmployee = function (page, loadMoreFlag) {
+      $scope.searchEmployee = function (page, loadMoreFlag) {  //获取搜索关键字的数据
         $scope.showFilter = true;
         if (!$scope.contactKey.getValue || $scope.contactKey.getValue == '') {
           $scope.showHistory = true;
