@@ -44,9 +44,9 @@
       <ion-list>
         <ion-item class="employee-item" ng-repeat="x in employeeList" ng-click="getEmployee(x)">
           {{x.employee_name}}&nbsp;&nbsp;&nbsp;&nbsp;{{x.employee_number}}
-                  <!--ng-class="{'no-top-border-color':$index===0}"-->
-                  <!--ng-click="getHistoryItem(values)"-->
-                  <!--ng-bind-html="values.historyItem">-->
+          <!--ng-class="{'no-top-border-color':$index===0}"-->
+          <!--ng-click="getHistoryItem(values)"-->
+          <!--ng-bind-html="values.historyItem">-->
         </ion-item>
       </ion-list>
     </div>
@@ -78,10 +78,9 @@
              ng-click="search(true)">加载更多
         </div>
         <div style="height:28px; line-height:28px; text-align: center; margin-bottom: 10px;" ng-if="loadingMoreFlag">
-          <ion-spinner icon="ios" class="spinner spinner-ios spinner-stable">
+          <ion-spinner icon="ios" class="spinner spinner-ios spinner-stable"></ion-spinner>
         </div>
       </div>
-
     </div>
   </ion-content>
 </ion-view>
