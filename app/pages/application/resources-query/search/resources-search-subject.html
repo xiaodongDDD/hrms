@@ -17,7 +17,8 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content class="subject-search-content">
+  <ion-content class="subject-search-content" delegate-handle="contentHandle">
+    <hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>
     <div ng-if="showMySubject">
       <div class="row mySubject">
         <img ng-src="build/img/contact/history@3x.png"/>
@@ -28,7 +29,7 @@
         {{x.project_name}}
       </div>
     </div>
-    <div class="search-result-item" ng-repeat="subject in subjectList" ng-click="selectSubjectItem(subject)">
+    <div ng-if="showSubjectList" class="search-result-item" ng-repeat="subject in subjectList" ng-click="selectSubjectItem(subject)">
         {{subject.project_name}}
     </div>
 

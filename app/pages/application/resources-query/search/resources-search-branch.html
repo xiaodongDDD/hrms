@@ -17,7 +17,7 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content class="branch-search-content">
+  <ion-content class="branch-search-content" delegate-handle="contentHandle">
     <hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>
     <div ng-if="showMyBranch">
       <div class="row myBranch">
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div class="search-result-item " ng-repeat="branch in branchList">
+    <div ng-if="showBranchList" class="search-result-item " ng-repeat="branch in branchList">
       <div class="branch-name" ng-click="selectBranchItem(branch)" >
         {{branch.unit_name}}
       </div>
