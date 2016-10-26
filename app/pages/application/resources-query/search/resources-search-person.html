@@ -17,7 +17,7 @@
       </button>
     </div>
   </ion-header-bar>
-  <ion-content class="employee-search-content">
+  <ion-content class="employee-search-content" delegate-handle="contentHandle">
     <div ng-if="showHistory">
       <div class="row history">
         <img ng-src="build/img/contact/history@3x.png"/>
@@ -51,7 +51,7 @@
       </ion-list>
     </div>
     <hms-loading ng-if="contactLoading" style="padding-top: 80px"></hms-loading>
-    <div style="position: relative" delegate-handle="employeeListHandle"
+    <div style="position: relative" delegate-handle="empListHandle"
          class="employee-list overflow-scroll  has-tabs"
          ng-if="showFilter">
       <ion-list>
@@ -78,7 +78,7 @@
              ng-click="search(true)">加载更多
         </div>
         <div style="height:28px; line-height:28px; text-align: center; margin-bottom: 10px;" ng-if="loadingMoreFlag">
-          <ion-spinner icon="ios" class="spinner spinner-ios spinner-stable"></ion-spinner>
+          <ion-spinner icon="ios" class="spinner"></ion-spinner>
         </div>
       </div>
     </div>

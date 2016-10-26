@@ -274,6 +274,10 @@ angular.module('applicationModule')
       // };
 
       $scope.clearInputContent = function () { //响应清除输入框文字按钮的方法
+        $timeout(function () {
+          $ionicScrollDelegate.$getByHandle('empListHandle').scrollTop();
+          $ionicScrollDelegate.$getByHandle('contentHandle').scrollTop();
+        });
         $scope.contactKey.getValue = '';
         $scope.showHistory = true;
         $scope.showClear = false;
@@ -296,6 +300,10 @@ angular.module('applicationModule')
           currentPage = parseInt(currentPage) + 1;
         }else{
           currentPage = 1;
+          $timeout(function () {
+            $ionicScrollDelegate.$getByHandle('empListHandle').scrollTop();
+            $ionicScrollDelegate.$getByHandle('contentHandle').scrollTop();
+          });
         }
 
         if(baseConfig.debug){
@@ -318,7 +326,8 @@ angular.module('applicationModule')
           $scope.resultList = [];
           $scope.loadMoreFlag = false;
           $timeout(function () {
-            $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
+            $ionicScrollDelegate.$getByHandle('empListHandle').scrollTop();
+            $ionicScrollDelegate.$getByHandle('contentHandle').scrollTop();
           });
         } else {
           $scope.loadingMoreFlag = true;
@@ -349,7 +358,7 @@ angular.module('applicationModule')
               else {
                 $scope.loadMoreFlag = false;
               }
-              $ionicScrollDelegate.$getByHandle('employeeListHandle').resize();
+              $ionicScrollDelegate.$getByHandle('empListHandle').resize();
             }
             else {
               $scope.loadMoreFlag = false;

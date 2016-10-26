@@ -29,14 +29,14 @@
           </ion-scroll>
         </div>
         <div class="person-bottom row">
-          <div class="person-bottom-left col-40">
+          <div class="person-bottom-left col-40" ng-click="lastPerson()">
             <span class="person-left-span ion-ios-arrow-left" ng-if="lastArrow"></span>
             <div class="person-left-name"><span ng-bind="lastEmp.employee_name"></span>&nbsp;&nbsp;<span ng-bind="lastEmp.employee_number"></span></div>
           </div>
           <div class="col-20">
             <div class="person-triangle"></div>
           </div>
-          <div class="person-bottom-right col-40">
+          <div class="person-bottom-right col-40" ng-click="nextPerson()">
             <span class="person-right-span ion-ios-arrow-right" ng-if="nextArrow"></span>
             <div class="person-right-name"><span ng-bind="nextEmp.employee_name"></span>&nbsp;&nbsp;<span ng-bind="nextEmp.employee_number"></span></div>
           </div>
