@@ -89,15 +89,15 @@ angular.module('applicationModule')
         var subjectSearch = '{"params":{"p_project_value":"' + $scope.subjectKey.getValue + '","p_employee_number":"' + employeeCode + '","p_project_id":"' + branchId + '"}}'; //封装搜索项目信息传参
       }
 
-      var showBranchSubject = function () {
-        $scope.contactLoading = true;
-        hmsHttp.post(getBranchSubjectUrl, searchInfo).success(function (result) {
-          $scope.contactLoading = false;
-          $scope.mySubject = result.project_list;
-        }).error(function () {
-          console.log('按部门查项目接口异常')
-        })
-      };
+      // var showBranchSubject = function () {
+      //   $scope.contactLoading = true;
+      //   hmsHttp.post(getBranchSubjectUrl, searchInfo).success(function (result) {
+      //     $scope.contactLoading = false;
+      //     $scope.mySubject = result.project_list;
+      //   }).error(function () {
+      //     console.log('按部门查项目接口异常')
+      //   })
+      // };
 
       var showMySubject = function () {
         $scope.contactLoading = true;
@@ -113,12 +113,12 @@ angular.module('applicationModule')
         });
       };
 
-      if (employeeCode && !branchId) {
+      // if (employeeCode && !branchId) {
         showMySubject();
-      }
-      if (branchId) {
-        showBranchSubject();
-      }
+      // }
+      // if (branchId) {
+      //   showBranchSubject();
+      // }
 
 
       $scope.searchSubject = function () {

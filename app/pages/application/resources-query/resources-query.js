@@ -513,7 +513,10 @@ angular.module('applicationModule')
         if(!$scope.employeeName && $scope.branchName && $scope.subjectName){
           $scope.showPopup('请单独查询部门或项目!');
         }
-        if($scope.employeeName){
+        if($scope.employeeName && $scope.branchName && $scope.subjectName){
+          $scope.showPopup('部门和项目不能同时查询!');
+        }
+        if(($scope.employeeName && !$scope.branchName && !$scope.subjectName)|| ($scope.employeeName && $scope.branchName && !$scope.subjectName) || ($scope.employeeName && !$scope.branchName && $scope.subjectName)){
           $state.go('tab.rsDetailPerson',
             {
               dateFrom: dateFrom,
