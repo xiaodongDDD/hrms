@@ -22,7 +22,7 @@ angular.module('applicationModule')
     '$stateParams',
     '$rootScope',
     '$timeout',
-    '$ionicLoading',
+    // '$ionicLoading',
     '$cordovaDatePicker',
     // 'HmsDateFormat',
     // '$ionicModal',
@@ -37,14 +37,14 @@ angular.module('applicationModule')
               $stateParams,
               $rootScope,
               $timeout,
-              $cordovaDatePicker,
-              $ionicLoading
+              $cordovaDatePicker
+              // $ionicLoading
               // HmsDateFormat
               // $ionicModal,
               // //Prompter,
               // $ionicScrollDelegate,
               // hmsHttp
-              
+
             )
 
 
@@ -487,9 +487,9 @@ angular.module('applicationModule')
       $scope.doQuery = function () {
         // $scope.toggleQuery(); // mod by ciwei
         // console.log(window.localStorage.empno);
-        if (!$scope.employeeName && !$scope.branchName && !$scope.subjectName) {
-          $ionicLoading.show({template: '请选择至少一种查询条件！', duration: 2000});
-        }
+        // if (!$scope.employeeName && !$scope.branchName && !$scope.subjectName) {
+        //   $ionicLoading.show({template: '请选择至少一种查询条件！', duration: 2000});
+        // }
         if ($scope.employeeName) {
           $state.go('tab.rsDetailPerson',
             {
