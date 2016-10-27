@@ -46,7 +46,8 @@ angular.module('myApp')
             unitId: "",
             subjectName: "",
             subjectId: "",
-            dimission: false
+            dimission: false,
+            exceptionEmpList: ""
           }
         })
         .state('tab.rsDetailPerson3', {
@@ -67,7 +68,8 @@ angular.module('myApp')
             unitId: "",
             subjectName: "",
             subjectId: "",
-            dimission: false
+            dimission: false,
+            exceptionEmpList: ""
           }
         });
     }]);
@@ -140,6 +142,7 @@ angular.module('applicationModule')
       var subjectName = $stateParams.subjectName;
       var subjectId = $stateParams.subjectId;
       var dimission = $stateParams.dimission;
+      var exceptionEmpList = $stateParams.exceptionEmpList;
       var pageNumber = 1;
       var monthPage = 1;
 
@@ -168,6 +171,12 @@ angular.module('applicationModule')
             return(a.employee_number - b.employee_number);
           });
 
+
+          if(exceptionEmpList){
+            $scope.employeeList = exceptionEmpList.sort(function (a, b) {
+              return(a.employee_number - b.employee_number);
+            });
+          }
 
 
           console.log('人员列表啊');
