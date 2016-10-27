@@ -173,6 +173,12 @@ angular.module('applicationModule')
           console.log('人员列表啊');
           console.log($scope.employeeList);
 
+          for(var j=0; j< $scope.employeeList.length; j++){
+            if(!$scope.employeeList[j].emp_avatar){
+              $scope.employeeList[j].emp_avatar = "build\\img\\application\\resources-query\\profile@3x.png";
+            }
+          }
+
           for(var i=0; i<$scope.employeeList.length; i++){
             if(employeeCode == $scope.employeeList[i].employee_number){
               $scope.slideIndex = i;
@@ -180,6 +186,8 @@ angular.module('applicationModule')
             }
           }
           $scope.empInfo = $scope.employeeList[i];
+
+
           // $scope.employeeListSlide.push($scope.employeeList[$scope.slideIndex]) ;
           // console.log($scope.employeeListSlide);
           // $ionicSlideBoxDelegate.$getByHandle('employee-handle').update();
@@ -210,7 +218,6 @@ angular.module('applicationModule')
       };
 
       $scope.lastPerson = function () {
-        // $(".subject-item-name").hide().fadeIn("slow");
         if($scope.employeeList[$scope.slideIndex - 1]){
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];
@@ -239,7 +246,6 @@ angular.module('applicationModule')
 
       };
       $scope.nextPerson = function () {
-        // $(".subject-item-name").hide().fadeIn(3000);
         if($scope.employeeList[$scope.slideIndex + 1]){
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];

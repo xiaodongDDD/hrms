@@ -106,6 +106,7 @@ angular.module('applicationModule')
 
       // $scope.run = false;//模拟线程锁机制  防止多次请求 含义：是否正在请求。请注意，此处并非加入到了就绪队列，而是直接跳过不执行
 
+
       var getBranchData = function (moreFlag) {
         console.log(moreFlag);
         // $scope.contactLoading = true;
@@ -121,6 +122,7 @@ angular.module('applicationModule')
           console.log(result);
 
           $scope.branchResourceList = result.branch_resource_list;
+
             // $scope.branchResourceList = result.branch_resource_list.sort(function (a, b) {
             //   return (a.record_date.substring(0,4)+a.record_date.substring(5,7)) - (b.record_date.substring(0,4)+b.record_date.substring(5,7));
             // });
