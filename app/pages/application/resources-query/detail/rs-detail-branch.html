@@ -18,8 +18,7 @@
       <ion-slide  ng-repeat="x in resultList">
         <div class="calendar-month">
           <span class="arrow ion-ios-arrow-left" ></span>
-          <span class="word-font">{{x.record_date}}</span>
-          <span class="word-font"></span>
+          <span class="word-font" ng-cloak=>{{x.record_date.replace("-","年")}}月</span>
           <span class="arrow ion-ios-arrow-right" ></span>
         </div>
         <div class="calendar-subject">
@@ -36,8 +35,8 @@
               <div class="calendar-day">
                 <div class="calendar-title">
                   <!--<img class="head" src="build\img\application\resources-query\profile@2x.png" alt="">-->
-                  <img class="head" src="build\img\application\resources-query\profile@2x.png" ng-src="{{y.emp_avatar}}" alt="">
-                  <span class="text">{{y.employee_name}}&nbsp;&nbsp;{{y.employee_number}}</span>
+                  <img class="head" src="build\img\application\resources-query\profile@2x.png" ng-src="{{y.emp_avatar}}" alt="头像">
+                  <span class="text"><span ng-bind="y.employee_name"></span>&nbsp;<span ng-bind="y.employee_number"></span></span>
                 </div>
                 <div class="each-person">
                   <div class="each-table row">
