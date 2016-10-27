@@ -70,6 +70,13 @@
   .subject-scroll{
     height: calc(100vh - 107px);
   }
+
+  .show{
+    display: block;
+  }
+  .hide{
+    display: none;
+  }
   .each-person{
 
     min-height: 100px;

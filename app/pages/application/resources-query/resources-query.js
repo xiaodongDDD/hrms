@@ -239,7 +239,7 @@ angular.module('applicationModule')
       {
 
         //设置初始化时间
-        var todayDate = new Date();//今天日期
+        var todayDate = new Date("2015-11-01");//今天日期
         var month = todayDate.getMonth() + 1;
         var day = todayDate.getDate();
         $scope.datetimeFrom = {//开始日期
@@ -272,7 +272,7 @@ angular.module('applicationModule')
 
 
         //初始化结束时间
-        refreshEndDate(1);
+        refreshEndDate(100);
 
 
       }
