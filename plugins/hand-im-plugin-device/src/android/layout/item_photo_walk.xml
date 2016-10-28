@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hand.im.widget.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:paddingBottom="2dp"
+  android:paddingLeft="1dp"
+  android:paddingRight="1dp"
+  android:paddingTop="2dp">
+
+  <ImageView
+    android:id="@+id/iv_album"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:contentDescription="@null"
+    android:scaleType="centerCrop" />
+
+  <com.hand.im.widget.SelectView
+    android:id="@+id/sv_point"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="3dp"
+    android:layout_marginTop="3dp" />
+</com.hand.im.widget.SquareRelativeLayout>

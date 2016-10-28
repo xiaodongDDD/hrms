@@ -1,16 +1,23 @@
 <ion-view class="resources-detail-person" >
-  <div class="row common-head">
-    <button class="button button-clear back-button" style="color: #0d3349;z-index: 999" ng-click="goBackPage()">
-      <i class="ion-ios-arrow-back" style="color: #fff"></i>
-      <span class="back-text" style="color: #fff">返回</span>
-    </button>
-  </div>
+  <ion-header-bar style="background: transparent; z-index: 99">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBackPage()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+      <!--<button class="button button-clear back-button" style="color: #0d3349;z-index: 999" ng-click="goBackPage()">-->
+        <!--<i class="ion-ios-arrow-back" style="color: #fff"></i>-->
+        <!--<span class="back-text" style="color: #fff">返回</span>-->
+      <!--</button>-->
+  </ion-header-bar>
+
   <!--<button class="button-small button-clear button-list" ng-click="filterWorkFlowInfo()"></button>-->
 
-  <!--<ion-slide-box id="next-slide" ng-if="showContent" delegate-handle="employee-handle" active-slide="slideIndex" on-slide-changed="slideChanged($index)">-->
+  <ion-content class="person-content" overflow-scroll="true" style="overflow: hidden">
+    <!--<ion-slide-box id="next-slide" ng-if="showContent" delegate-handle="employee-handle" active-slide="slideIndex" on-slide-changed="slideChanged($index)">-->
     <!--<ion-slide class="person-top" ng-repeat="x in employeeList" >-->
-      <!--<div  class="person-head-image" style="background: #ccc;background-size: cover;background-position: center;background-repeat: no-repeat;">-->
-      <!--</div>-->
+    <!--<div  class="person-head-image" style="background: #ccc;background-size: cover;background-position: center;background-repeat: no-repeat;">-->
+    <!--</div>-->
     <div class="person-top" ng-cloak on-swipe-left="nextPerson()" on-swipe-right="lastPerson()">
       <div  class="person-head-image" ng-cloak style="background: url('{{empInfo.emp_avatar}}');background-size: cover;background-position: center;background-repeat: no-repeat;">
       </div>
@@ -44,16 +51,7 @@
       </div>
     </div>
     <!--</ion-slide>-->
-
-
-  <!--</ion-slide-box>-->
-
-
-
-  <!--<div class="employee-name" ng-cloak>-->
-  <!--{{employeeInfo.emp_name}} {{employeeInfo.emp_code}}-->
-  <!--</div>-->
-  <ion-content class="person-content" overflow-scroll="true" style="overflow: hidden">
+    <!--</ion-slide-box>-->
     <hms-loading ng-if="contactLoading" style="padding-top: 10px"></hms-loading>
     <ion-slide-box id="month-slide" delegate-handle="month-handle" active-slide="monthIndex" on-slide-changed="monthChanged($index)">
       <ion-slide ng-repeat="y in resultList">
