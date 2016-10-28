@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:gravity="end"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtv_received_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="time"
+        android:textColor="#929292"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgv_chat_left_head_portrait"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/head_1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtv_chat_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="name"
+                android:textColor="#626262"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textv_chat_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:minWidth="50dp"
+                android:maxWidth="150dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/shape_left_chat_item"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:textColor="#FF4A4A4A"
+                android:textIsSelectable="true"
+                android:textSize="17sp" />
+
+            <ImageView
+                android:id="@+id/imgv_chat_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="60dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginStart="5dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/shape_left_chat_item"
+                android:maxWidth="120dp"
+                android:minHeight="40dp"
+                android:minWidth="60dp"
+                android:padding="5dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/lyt_left_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:id="@+id/rlt_left_voice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/shape_left_chat_item"
+                    android:gravity="start"
+                    android:minHeight="40dp"
+                    android:minWidth="60dp">
+
+                    <ImageView
+                        android:id="@+id/imgv_left_voice"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/v_l_f" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/txt_left_voice_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:text=""
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+        <ProgressBar
+            android:id="@+id/msg_status_sending"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="5dp"
+            />
+        <ImageView
+            android:id = "@+id/msg_status_failed"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/send_faile"
+            android:layout_marginRight="5dp"
+            />
+        <TextView
+            android:id="@+id/textv_chat_right_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:minWidth="50dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:maxWidth="150dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/shape_right_chat_item"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:textColor="#FFFFFFFF"
+            android:textIsSelectable="true"
+            android:textSize="17sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/imgv_chat_right_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/shape_right_chat_item"
+            android:maxWidth="120dp"
+            android:minHeight="40dp"
+            android:minWidth="60dp"
+            android:padding="5dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/lyt_right_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txt_right_voice_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="5dp"
+                android:text=""
+                android:textColor="#000000" />
+
+            <RelativeLayout
+                android:id="@+id/rlt_right_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_right_chat_item"
+                android:gravity="end"
+                android:minHeight="40dp"
+                android:minWidth="60dp">
+
+                <ImageView
+                    android:id="@+id/imgv_right_voice"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/v_r_f" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgv_chat_right_head_portrait"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/head_1"
+            android:visibility="gone"/>
+    </LinearLayout>
+</LinearLayout>
