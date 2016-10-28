@@ -46,7 +46,8 @@ angular.module('myApp')
             unitId: "",
             subjectName: "",
             subjectId: "",
-            dimission: false
+            dimission: false,
+            exceptionEmpList: ""
           }
         })
         .state('tab.rsDetailPerson3', {
@@ -67,7 +68,8 @@ angular.module('myApp')
             unitId: "",
             subjectName: "",
             subjectId: "",
-            dimission: false
+            dimission: false,
+            exceptionEmpList: ""
           }
         });
     }]);
@@ -140,6 +142,7 @@ angular.module('applicationModule')
       var subjectName = $stateParams.subjectName;
       var subjectId = $stateParams.subjectId;
       var dimission = $stateParams.dimission;
+      var exceptionEmpList = $stateParams.exceptionEmpList;
       var pageNumber = 1;
       var monthPage = 1;
 
@@ -169,9 +172,21 @@ angular.module('applicationModule')
           });
 
 
+          if(exceptionEmpList){
+            $scope.employeeList = exceptionEmpList.sort(function (a, b) {
+              return(a.employee_number - b.employee_number);
+            });
+          }
+
 
           console.log('人员列表啊');
           console.log($scope.employeeList);
+
+          for(var j=0; j< $scope.employeeList.length; j++){
+            if(!$scope.employeeList[j].emp_avatar){
+              $scope.employeeList[j].emp_avatar = "build\\img\\application\\resources-query\\profile@3x.png";
+            }
+          }
 
           for(var i=0; i<$scope.employeeList.length; i++){
             if(employeeCode == $scope.employeeList[i].employee_number){
@@ -180,6 +195,8 @@ angular.module('applicationModule')
             }
           }
           $scope.empInfo = $scope.employeeList[i];
+
+
           // $scope.employeeListSlide.push($scope.employeeList[$scope.slideIndex]) ;
           // console.log($scope.employeeListSlide);
           // $ionicSlideBoxDelegate.$getByHandle('employee-handle').update();
@@ -210,7 +227,6 @@ angular.module('applicationModule')
       };
 
       $scope.lastPerson = function () {
-        // $(".subject-item-name").hide().fadeIn("slow");
         if($scope.employeeList[$scope.slideIndex - 1]){
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];
@@ -239,7 +255,6 @@ angular.module('applicationModule')
 
       };
       $scope.nextPerson = function () {
-        // $(".subject-item-name").hide().fadeIn(3000);
         if($scope.employeeList[$scope.slideIndex + 1]){
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];

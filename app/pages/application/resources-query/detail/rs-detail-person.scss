@@ -195,15 +195,15 @@
       margin-bottom: 1vh;
       height: 4vh;
       line-height: 4vh;
-      font-size: 1.3em;
       color: #1f519a;
-
-      //.arrow{
-      //  font-size: 1.5em;
-      //}
-      //.word-font{
-      //
-      //}
+      .arrow{
+        font-size: 1.8em;
+      }
+      .word-font{
+        font-size: 1.3em;
+        position: relative;
+        top: -3px;
+      }
 
     }
 

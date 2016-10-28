@@ -29,10 +29,16 @@
     font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
     position: relative;
     text-align: center;
-    font-size: 1.3em;
     line-height: 3rem;
     color: #1f519a;
-    z-index: 999;
+    .arrow{
+      font-size: 1.8em;
+    }
+    .word-font{
+      font-size: 1.3em;
+      position: relative;
+      top: -3px;
+    }
   }
   .calendar-subject{
     width: 100%;
@@ -63,6 +69,13 @@
 
   .subject-scroll{
     height: calc(100vh - 107px);
+  }
+
+  .show{
+    display: block;
+  }
+  .hide{
+    display: none;
   }
   .each-person{
 

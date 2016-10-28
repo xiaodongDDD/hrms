@@ -45,6 +45,7 @@ angular.module('applicationModule')
     '$ionicScrollDelegate',
     '$ionicSlideBoxDelegate',
     '$q',
+    '$ionicPopup',
 
 
 
@@ -60,7 +61,8 @@ angular.module('applicationModule')
               $stateParams,
               $ionicScrollDelegate,
               $ionicSlideBoxDelegate,
-              $q
+              $q,
+              $ionicPopup
     ) {
 
       $scope.goBack = function () {
@@ -68,6 +70,7 @@ angular.module('applicationModule')
         $scope.newPage = [1];
         $scope.newMonthPage = 1;
         $scope.showContent = false;
+        $scope.toggleCount = false;
         $ionicHistory.goBack();
       };
 
@@ -91,6 +94,7 @@ angular.module('applicationModule')
       $scope.showInfinite = [false]; //默认隐藏无限滚动的标签
       $scope.contactLoading = false; //默认不显示loading加载
       $scope.showContent = false; //默认不显示整体页面
+      $scope.toggleCount = false;  //是否只显示异常项目开关，默认为关
 
       //计算月份差
       // var date1 = dateFrom.split('-');
@@ -106,6 +110,12 @@ angular.module('applicationModule')
 
       // $scope.run = false;//模拟线程锁机制  防止多次请求 含义：是否正在请求。请注意，此处并非加入到了就绪队列，而是直接跳过不执行
 
+      var isException = {
+        "isException": "2"
+      };
+      var noException = {
+        "isException": "1"
+      };
       var getBranchData = function (moreFlag) {
         console.log(moreFlag);
         // $scope.contactLoading = true;
@@ -121,10 +131,29 @@ angular.module('applicationModule')
           console.log(result);
 
           $scope.branchResourceList = result.branch_resource_list;
+
             // $scope.branchResourceList = result.branch_resource_list.sort(function (a, b) {
             //   return (a.record_date.substring(0,4)+a.record_date.substring(5,7)) - (b.record_date.substring(0,4)+b.record_date.substring(5,7));
             // });
           $scope.count = $scope.branchResourceList[0].timesheet_details.length;
+
+          if($scope.toggleCount){  //开
+            for(var i=0; i<$scope.count; i++){
+              if($scope.branchResourceList[0].timesheet_details[i].exception_project_days){ //异常天数>0时,为1
+                $scope.branchResourceList[0].timesheet_details[i].isException = 1;
+              }else{ //异常天数=0时，为0
+                $scope.branchResourceList[0].timesheet_details[i].isException = 0;
+              }
+            }
+          }else{   //关
+            for(var i=0; i<$scope.count; i++){
+              if($scope.branchResourceList[0].timesheet_details[i].exception_project_days){ //异常天数>0时,为2
+                $scope.branchResourceList[0].timesheet_details[i].isException = 2;
+              }else{ //异常天数=0时，为1
+                $scope.branchResourceList[0].timesheet_details[i].isException = 1;
+              }
+            }
+          }
 
 
           if ($scope.count  == 0) {
@@ -185,6 +214,25 @@ angular.module('applicationModule')
         hmsHttp.post(postUrl, postData).success(function (result) {
 
           $scope.branchMonthList = result.branch_resource_list[0];
+
+          if($scope.toggleCount){  //开
+            for(var i=0; i<$scope.branchMonthList.timesheet_details.length; i++){
+              if($scope.branchMonthList.timesheet_details[i].exception_project_days){ //异常天数>0时,为2
+                $scope.branchMonthList.timesheet_details[i].isException = 1;
+              }else{ //异常天数=0时，为1
+                $scope.branchMonthList.timesheet_details[i].isException = 0;
+              }
+            }
+          }else{   //关
+            for(var i=0; i<$scope.branchMonthList.timesheet_details.length; i++){
+              if($scope.branchMonthList.timesheet_details[i].exception_project_days){ //异常天数>0时,为2
+                $scope.branchMonthList.timesheet_details[i].isException = 2;
+              }else{ //异常天数=0时，为1
+                $scope.branchMonthList.timesheet_details[i].isException = 1;
+              }
+            }
+          }
+
           if($scope.branchMonthList){
             $scope.resultList.push($scope.branchMonthList);
           }
@@ -252,11 +300,19 @@ angular.module('applicationModule')
           newMonth = 1;
         }
         var newDate = new Date(newYear,newMonth,1);
-
         var lastDate = new Date(newDate - 3600000 * 24).getDate();
-
         var dateFromCurrent = currentMonth + '-01';
         var dateToCurrent = currentMonth + '-' +lastDate;
+
+        if($scope.toggleCount){ //开
+          var empList = $scope.resultList[$scope.monthIndex].timesheet_details;
+          var exceptionEmpList = [];
+          for(var i=0; i<empList.length; i++){
+            if(empList[i].exception_project_days){
+              exceptionEmpList.push(empList[i]);
+            }
+          }
+        }
 
 
         $state.go('tab.rsDetailPerson2',
@@ -270,11 +326,48 @@ angular.module('applicationModule')
             unitId: unitId,
             subjectName: subjectName,
             subjectId: subjectId,
-            dimission: dimission
+            dimission: dimission,
+            exceptionEmpList: exceptionEmpList
           }
         );
       };
 
 
+      // 定义弹窗
+      $scope.showPopup = function(word) {
+        $scope.data = {};
+        // 一个精心制作的自定义弹窗
+        var myPopup = $ionicPopup.show({
+          title: word
+        });
+        myPopup.then(function (res) {
+          console.log('Tapped!', res);
+        });
+        $timeout(function () {
+          myPopup.close(); //由于某种原因2秒后关闭弹出
+        }, 2000);
+      };
+
+      $scope.toggle = function () {
+        console.log($scope.resultList);
+        $scope.toggleCount = !$scope.toggleCount;
+        if($scope.toggleCount){
+          console.log('只显示异常项目');
+          $scope.showPopup('只显示异常项目人员！');
+          for(var i=0; i<$scope.resultList.length; i++){
+            for(var j=0; j<$scope.resultList[i].timesheet_details.length; j++){
+              $scope.resultList[i].timesheet_details[j].isException--;
+            }
+          }
+        }else{
+          console.log('显示所有项目');
+          $scope.showPopup('显示所有项目人员！');
+          for(var i=0; i<$scope.resultList.length; i++){
+            for(var j=0; j<$scope.resultList[i].timesheet_details.length; j++){
+              $scope.resultList[i].timesheet_details[j].isException++;
+            }
+          }
+        }
+      }
     }
   ]);
