@@ -110,9 +110,9 @@
               <div class="hms-singal-array-key">
                 转正日期
               </div>
-              <div bg-if="!isWeixinWebview" class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.trial_date">
+              <div ng-if="!isWeixinWebview" class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.trial_date">
               </div>
-              <input bg-if="isWeixinWebview" type="date" class="hms-singal-array-value"
+              <input ng-if="isWeixinWebview" type="date" class="hms-singal-array-value"
               ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate"
               ng-focus="applicationFullMemberUtil.inputDateStart()" ng-change="applicationFullMemberUtil.inputDateIng()" ng-blur="applicationFullMemberUtil.inputDateEnd()"/>
             </div>
