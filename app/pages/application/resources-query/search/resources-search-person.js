@@ -74,6 +74,16 @@ angular.module('applicationModule')
       var unitId = $stateParams.unitId;
       var branchId = $stateParams.branchId;
       var subjectId = $stateParams.subjectId;
+      //是否弹出员工查询过滤层
+      $scope.showFilter = false;
+
+      //员工查询界面加载更多数据标志
+      $scope.loadMoreFlag = false;
+
+      $scope.loadingMoreFlag = false;
+
+      //分页
+      var currentPage = 1;
 
 
       {
@@ -212,6 +222,9 @@ angular.module('applicationModule')
           employeeParams.page = 1;
         }
         hmsHttp.post(getEmployeeUrl, employeeParams).success(function (response) {
+          $scope.showFilter = true;
+          console.log('dadad');
+          console.log(response);
           $scope.contactLoading = false;
           if (response.total == 0) {
             $scope.showInfinite = false;
@@ -244,23 +257,32 @@ angular.module('applicationModule')
             }
             $scope.$broadcast('scroll.infiniteScrollComplete');
           }
+          console.log($scope.resultList);
           return q.promise;
+
         }).error(function (error) {
           $scope.contactLoading = false;
           $scope.$broadcast('scroll.infiniteScrollComplete');
         });
       };
-
-      $scope.loadMore = function () { //加载下一页
-        $scope.newPage += 1;
-        employeeParams.key = $scope.contactKey.getValue;
-        employeeParams.page = $scope.newPage;
-        $scope.getEmployeeData('loadMore');
-      };
+      //
+      // $scope.loadMore = function () { //加载下一页
+      //   $scope.newPage += 1;
+      //   employeeParams.key = $scope.contactKey.getValue;
+      //   employeeParams.page = $scope.newPage;
+      //   $scope.getEmployeeData('loadMore');
+      // };
 
       $scope.clearInputContent = function () { //响应清除输入框文字按钮的方法
+        $timeout(function () {
+          $ionicScrollDelegate.$getByHandle('empListHandle').scrollTop();
+          $ionicScrollDelegate.$getByHandle('contentHandle').scrollTop();
+        });
         $scope.contactKey.getValue = '';
-        $scope.searchContacts();
+        $scope.showHistory = true;
+        $scope.showClear = false;
+        $scope.showFilter = false;
+        $scope.resultList = [];
         if (ionic.Platform.isWebView()) {
           cordova.plugins.Keyboard.show();
         }
@@ -270,26 +292,109 @@ angular.module('applicationModule')
         }, 400);
       };
 
-      $scope.searchContacts = function () { //响应搜索输入框的方法
+      $scope.search = function (loadMoreFlag) { //响应搜索输入框的方法
         $scope.showHistory = false;
-        if ($scope.contactKey.getValue === '') {
+        $scope.showClear = true;
+        $scope.contactLoading = true;
+        if(loadMoreFlag){
+          currentPage = parseInt(currentPage) + 1;
+        }else{
+          currentPage = 1;
+          $timeout(function () {
+            $ionicScrollDelegate.$getByHandle('empListHandle').scrollTop();
+            $ionicScrollDelegate.$getByHandle('contentHandle').scrollTop();
+          });
+        }
+
+        if(baseConfig.debug){
+          console.log('search.currentPage ' + currentPage);
+        }
+        $scope.searchEmployee(currentPage, loadMoreFlag);
+      };
+
+      $scope.searchEmployee = function (page, loadMoreFlag) {  //获取搜索关键字的数据
+        $scope.showFilter = true;
+        if (!$scope.contactKey.getValue || $scope.contactKey.getValue == '') {
           $scope.showHistory = true;
           $scope.showClear = false;
-          $timeout(function () {
-            $scope.resultList = [];
-          }, 251); //防止过快啦 --凸凸凸
-        } else {
-          $scope.showClear = true;
+          $scope.showFilter = false;
+          $scope.contactLoading = false;
+          return;
         }
-        $scope.newPage = 1;
-        employeeParams.key = $scope.contactKey.getValue;
-        employeeParams.page = $scope.newPage;
-        $scope.contactLoading = true;
-        $scope.resultList = [];
-        //$timeout(function () {
-        $scope.getEmployeeData('init');
-        //}, 200);
+        if (!loadMoreFlag) {
+          page = 1;
+          $scope.resultList = [];
+          $scope.loadMoreFlag = false;
+          $timeout(function () {
+            $ionicScrollDelegate.$getByHandle('empListHandle').scrollTop();
+            $ionicScrollDelegate.$getByHandle('contentHandle').scrollTop();
+          });
+        } else {
+          $scope.loadingMoreFlag = true;
+        }
+        var url = baseConfig.queryPath + '/staff/query';
+        var params = {
+          "key": $scope.contactKey.getValue + "",
+          "page": page + "",
+          "pageSize": "30"
+        };
+
+        hmsHttp.post(url, params).success(function (response) {
+          if (response.success == true) {
+            $scope.contactLoading = false;
+            $scope.showFilter = true;
+            if (response.total && response.total > 0) {
+              angular.forEach(response.rows, function (data) {
+                if(data.avatar && data.avatar != ""){
+                  data.avatar = data.avatar + '64';
+                }
+                $scope.resultList.push(data);
+              });
+
+              if (response.total == 30) {
+                $scope.loadMoreFlag = true;
+                $scope.loadingMoreFlag = false;
+              }
+              else {
+                $scope.loadMoreFlag = false;
+              }
+              $ionicScrollDelegate.$getByHandle('empListHandle').resize();
+            }
+            else {
+              $scope.loadMoreFlag = false;
+            }
+          }
+          else {
+            $scope.loadMoreFlag = false;
+          }
+          if (loadMoreFlag) {
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+          }
+        }).error(function (error) {
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        });
       };
+
+      // $scope.searchContacts = function () { //响应搜索输入框的方法
+      //   $scope.showHistory = false;
+      //   if ($scope.contactKey.getValue === '') {
+      //     $scope.showHistory = true;
+      //     $scope.showClear = false;
+      //     $timeout(function () {
+      //       $scope.resultList = [];
+      //     }, 251); //防止过快啦 --凸凸凸
+      //   } else {
+      //     $scope.showClear = true;
+      //   }
+      //   $scope.newPage = 1;
+      //   employeeParams.key = $scope.contactKey.getValue;
+      //   employeeParams.page = $scope.newPage;
+      //   $scope.contactLoading = true;
+      //   $scope.resultList = [];
+      //   //$timeout(function () {
+      //   $scope.getEmployeeData('init');
+      //   //}, 200);
+      // };
 
       $scope.getHistoryItem = function (values) { //响应搜素历史记录点击的方法
         $scope.contactKey.getValue = values.historyItem;

@@ -34,6 +34,7 @@ angular.module('applicationModule')
     'baseConfig',
     '$timeout',
     '$rootScope',
+    '$ionicScrollDelegate',
 
     function ($scope,
               $state,
@@ -42,7 +43,8 @@ angular.module('applicationModule')
               hmsHttp,
               baseConfig,
               $timeout,
-              $rootScope
+              $rootScope,
+              $ionicScrollDelegate
 
 
               ){
@@ -52,6 +54,7 @@ angular.module('applicationModule')
         $scope.contactLoading = false; //默认不显示loading加载
         $scope.showMyBranch = true; //默认显示我的部门
         $scope.showClear = false; //默认隐藏搜索框的清楚按钮
+        $scope.showBranchList = false; //默认隐藏搜索的结果列表
 
         $scope.branchKey = {getValue: ''}; //绑定输入的关键字
         $scope.historys = []; //存储搜索历史的关键字
@@ -86,14 +89,12 @@ angular.module('applicationModule')
 
 
       var showMyBranch = function () {
+        $scope.contactLoading = true;
         hmsHttp.post(getMyBranchUrl, myNumber).success(function (result) {
-          var returnCode = result.returnCode;
-          var returnMsg = result.returnMsg;
+          $scope.contactLoading = false;
+
           $scope.myBranch = result.returnData;
-          // var myBranchId = returnData.parent_id;  //个人部门ID
-          // var myBranchDetailId = returnData.unit_id;  //个人小组ID
-          // $scope.myBranch = returnData.my_branch;
-          // $scope.myBranchDetail = returnData.my_branch_detail;
+
         }).error(function () {
           console.log('我的部门异常');
         });
@@ -103,22 +104,28 @@ angular.module('applicationModule')
 
 
       $scope.searchBranch = function () {
-
+        $timeout(function () {
+          $ionicScrollDelegate.$getByHandle('contentHandle').scrollTop();
+        });
         $scope.showMyBranch = false;
         if ($scope.branchKey.getValue === '') {
+          $scope.showBranchList = false;
           $scope.showMyBranch = true;
           $scope.showClear = false;
+          $scope.contactLoading = false;
           $timeout(function () {
             $scope.branchList = [];
           }, 251); //防止过快
         } else {
           $scope.showClear = true;
+          $scope.showBranchList = true;
+          $scope.contactLoading = true;
         }
 
         branchSearch = '{"params":{"p_department_value":"' + $scope.branchKey.getValue + '"}}';
 
         hmsHttp.post(searchBranchUrl,branchSearch).success(function (result) {
-
+          $scope.contactLoading = false;
           $scope.branchList = result.returnData;
           console.log($scope.branchList);
 

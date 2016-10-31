@@ -1,8 +1,4 @@
-$timesheet-bule: #24559C !default;
-$timesheet-green: #1BBC9B !default;
-$timesheet-purple: #913D88 !default;
-$timesheet-red: #E08283 !default;
-$timesheet-cover: #E3F5F0 !default;
+
 
 .resources-detail-person {
   position: absolute;
@@ -16,6 +12,8 @@ $timesheet-cover: #E3F5F0 !default;
     position: absolute;
     //width: 300vw;
     height: 53vh;
+    background: rgba(51, 51, 51, 0.8)
+
     //left: -100vw;
   }
   .person-top {
@@ -26,23 +24,24 @@ $timesheet-cover: #E3F5F0 !default;
   }
   .person-head-image {
     height: 53vh;
-    width: 100%;
-    //filter: blur(10px) brightness(0.9);
-    //-webkit-filter: blur(10px) brightness(0.9);
+    width: 100vw;
+
     z-index: -2;
     position: absolute;
     top: 0;
     left: 0;
     //background-color: #ccc;
-    //background-image: url("../img/application/resources-query/3.jpg");
+    //background-image: url("../img/application/resources-query/profile@3x.png");
     //background-size: cover;
     //background-position: center center;
     //background-repeat: no-repeat;
   }
   .black-cover{
     height: 53vh;
-    width: 100%;
+    width: 100vw;
     position: absolute;
+    //filter: blur(10px) brightness(0.9);
+    //-webkit-filter: blur(10px) brightness(0.9);
     top: 0;
     left: 0;
     z-index: -1;
@@ -54,7 +53,7 @@ $timesheet-cover: #E3F5F0 !default;
     top: 0;
     left: 0;
     height: 53vh;
-    width: 100%;
+    width: 100vw;
     background: transparent;
     color: #fff;
     font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
@@ -69,12 +68,14 @@ $timesheet-cover: #E3F5F0 !default;
   }
   .img-person {
     display: block;
+
     width: 80px;
     height: 80px;
     margin: 0 auto;
     margin-top: 20px;
     border: 1px solid #fff;
     border-radius: 50%;
+
 
   }
   .person-name {
@@ -83,13 +84,13 @@ $timesheet-cover: #E3F5F0 !default;
 
   }
   .person-subject {
-    width: 100%;
+    width: 100vw;
   }
   .subject-scroll{
     height: calc(53vh - 175px);
   }
   .subject-item {
-    width: 100%;
+    width: 100vw;
   }
   .subject-item-circle {
     width: 20px;
@@ -175,10 +176,11 @@ $timesheet-cover: #E3F5F0 !default;
   }
 
   .person-content {
-    margin-top: 53vh;
+    margin-top: -44px;
     //height: 47vh;
     background: #fff;
-    z-index: 999;
+    z-index: 9;
+
 
     .calendar-float{
       margin-top: -20px;
@@ -190,41 +192,44 @@ $timesheet-cover: #E3F5F0 !default;
       font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
       position: relative;
       text-align: center;
-      margin: 15px auto;
-      margin-bottom: 10px;
-      font-size: 1.3em;
+      margin-top: 1vh;
+      margin-bottom: 1vh;
+      height: 4vh;
+      line-height: 4vh;
       color: #1f519a;
-
-      //.arrow{
-      //  font-size: 1.5em;
-      //}
-      //.word-font{
-      //
-      //}
+      .arrow{
+        font-size: 1.8em;
+      }
+      .word-font{
+        font-size: 1.3em;
+        position: relative;
+        top: -3px;
+      }
 
     }
 
     .calendar-day {
-      margin: 5px;
-      padding: 5px;
       font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
       background: white;
 
       position: relative;
 
       .calendar-title {
-        height: 35px;
-        margin-bottom: 5px;
+        height: 5vh;
+
 
         .title-item {
           float: left;
-          width: 14%;
-          height: 35px;
-          line-height: 35px;
+          width: 13%;
+          height: 5vh;
+          line-height: 5vh;
           text-align: center;
           color: #1f519a;
           font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
           font-size: 1.1em;
+        }
+        .title-item:nth-child(1){
+          margin-left: 4.5%;
         }
       }
 
@@ -232,8 +237,8 @@ $timesheet-cover: #E3F5F0 !default;
       //  height: 40px;
         .day-item {
           float: left;
-          width: 14%;
-          height: 40px;
+          width: 13%;
+          height: 6vh;
           position: relative;
           //&.activated {
           //  //background: #eeeeee;
@@ -259,6 +264,7 @@ $timesheet-cover: #E3F5F0 !default;
             line-height: 30px;
             margin-left: auto;
             margin-right: auto;
+            margin-top: calc((6vh - 30px)/2);
             border-radius: 14px;
             text-align: center;
             font-size: 18px;
@@ -348,6 +354,21 @@ $timesheet-cover: #E3F5F0 !default;
           }
 
         }
+        .day-item:nth-child(1){
+          margin-left: 4.5%;
+        }.day-item:nth-child(8){
+          margin-left: 4.5%;
+        }.day-item:nth-child(15){
+          margin-left: 4.5%;
+        }.day-item:nth-child(22){
+          margin-left: 4.5%;
+        }.day-item:nth-child(29){
+          margin-left: 4.5%;
+        }.day-item:nth-child(36){
+          margin-left: 4.5%;
+        }
+
+
       }
 
     //}
