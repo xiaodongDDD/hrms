@@ -57,9 +57,9 @@ angular.module('tsApproveModule')
       {
         if (ionic.Platform.isIOS()) {
           angular.element('.custom-head').css({'paddingTop': '20px', 'height': '120px'});
-          angular.element('.ts-list-bg').css('paddingTop', '120px');
         } else if (ionic.Platform.isAndroid()) {
-          angular.element('.ts-content-bottom').css('marginBottom', '60px');
+          angular.element('.list:last-child').css('marginBottom', '90px');
+          angular.element('.ts-list-bg').css('paddingTop', '70px');
         }
 
         var viewTag = document.getElementsByTagName('ion-view');
@@ -141,6 +141,7 @@ angular.module('tsApproveModule')
         var history = $ionicHistory.viewHistory().histories[historyId].stack;
         // for (var i = history.length - 1; i >= 0; i--) {
         // warn(history[0]);
+        angular.element('.list:last-child').css('marginBottom', '0');
         $ionicHistory.backView(history[0]);
         $ionicHistory.goBack();
         // }
@@ -163,6 +164,10 @@ angular.module('tsApproveModule')
       initData();
 
       $scope.$on('$ionicView.beforeEnter', function (e) {
+        if (ionic.Platform.isIOS()) {
+        } else if (ionic.Platform.isAndroid()) {
+          angular.element('.list:last-child').css('marginBottom', '90px');
+        }
         $scope.listCanSwipe = true;
         if (ApproveDetailService.getRefreshFlag() === 'refresh-approve-list') {
           $scope.tsListRefresh();
@@ -328,7 +333,12 @@ angular.module('tsApproveModule')
         } else {
           $scope.showLsLoading = true;
         }
+        $scope.listInfoArray = [];
         $scope.listInfoArray = new TsApproveListService($scope, tsLsUrl, tsListParams, $scope.showLsLoading);
+        if (pullFlag === 'pull_down') {
+        } else {
+          $ionicScrollDelegate.$getByHandle('approveListHandle').resize();
+        }
       };
 
       $scope.getAttentionInfo = function (e, newWarnList) {
@@ -366,6 +376,7 @@ angular.module('tsApproveModule')
       };
 
       $scope.goApproveDetail = function (index, newEmployeeNumber, newProjectId, newStartDate, newEndDate) {
+        angular.element('.list:last-child').css('marginBottom', '0');
         if ($scope.showDetailArrow) {
           $state.go('tab.tsApproveDetail', {
               'employeeNumber': newEmployeeNumber,
@@ -473,7 +484,10 @@ angular.module('tsApproveModule')
           if (!newObject) {
             $scope.doSelectAction();
           }
+          $scope.listInfoArray.loading = true;
+          hmsPopup.showLoading("loading...");
           $timeout(function () {
+            hmsPopup.hideLoading();
             $scope.tsListRefresh();
           }, 400);
         }).error(function (e) {
@@ -481,6 +495,7 @@ angular.module('tsApproveModule')
           if (!newObject) {
             $scope.doSelectAction();
           }
+          $scope.listInfoArray.loading = true;
           $timeout(function () {
             $scope.tsListRefresh();
           }, 400);
@@ -508,7 +523,9 @@ angular.module('tsApproveModule')
           if (!newObject) {
             $scope.doSelectAction();
           }
+           hmsPopup.showLoading("loading...");
           $timeout(function () {
+             hmsPopup.hideLoading();
             $scope.tsListRefresh();
           }, 400);
         }).error(function (e) {
@@ -612,7 +629,6 @@ angular.module('tsApproveModule')
         }
 
         hmsHttp.post(_self.url, _self.params).success(function (response) {
-          _self.loading = false;
           try {
             if (hmsHttp.isSuccessfull(response.status)) {
               var tsResult = response.timesheet_approve_response;
@@ -642,9 +658,10 @@ angular.module('tsApproveModule')
               _self.scope.$broadcast('scroll.refreshComplete');
               _self.scope.$broadcast('scroll.infiniteScrollComplete');
             }
+            _self.loading = false;
           } catch (e) {
+            _self.loading = false;
           }
-
         }.bind(_self)).error(function (error) {
           _self.loading = false;
           _self.params.params.p_page = 1;

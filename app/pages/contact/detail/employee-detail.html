@@ -59,8 +59,15 @@
       <div class="row item-row">
         <img src="build/img/myInfo/icon-telephone.png" class="tel-img"/>
 
-        <div class="col col-25">移动电话</div>
-        <div class="col col-70 col-item" style="padding-right: 30px;" ng-bind="employeeInfo.mobil"></div>
+        <div class="col col-25">电话1</div>
+        <a class="col col-70 col-item" style="padding-right: 30px;" ng-bind="employeeInfo.mobil" href="tel: {{employeeInfo.mobil2}}"></a>
+      </div>
+      <div class="item-line" ng-if="employeeInfo.mobil2"></div>
+      <div class="row item-row" ng-if="employeeInfo.mobil2">
+        <img src="build/img/myInfo/icon-telephone.png" class="tel-img"/>
+
+        <div class="col col-25">电话2</div>
+        <a class="col col-70 col-item" style="padding-right: 30px;" ng-bind="employeeInfo.mobil2" href="tel: {{employeeInfo.mobil2}}"></a>
       </div>
     </ion-item>
     <ion-item class="item-employee">
