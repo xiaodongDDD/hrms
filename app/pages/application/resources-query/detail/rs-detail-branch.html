@@ -17,9 +17,9 @@
     <ion-slide-box id="branch-slide" ng-if="showContent" delegate-handle="branch-handle" active-slide="monthIndex" show-pager="false" on-slide-changed="monthChanged($index)">
       <ion-slide  ng-repeat="x in resultList">
         <div class="calendar-month">
-          <span class="arrow ion-ios-arrow-left" ></span>
+          <!--<span class="arrow ion-ios-arrow-left" ></span>-->
           <span class="word-font" ng-cloak=>{{x.record_date.replace("-","年")}}月</span>
-          <span class="arrow ion-ios-arrow-right" ></span>
+          <!--<span class="arrow ion-ios-arrow-right" ></span>-->
         </div>
         <div class="calendar-subject">
           <div class="circle" style="background: #86e2d3"></div>

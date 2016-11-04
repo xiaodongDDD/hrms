@@ -447,6 +447,7 @@ angular.module('applicationModule')
           hmsHttp.post(url, params).success(function (response) {
             if (response.success == true) {
               if (response.total && response.total > 0) {
+                myscope.employeeList = [];
                 angular.forEach(response.rows, function (data) {
                   if(data.avatar && data.avatar != ""){
                     data.avatar = data.avatar + '64';
