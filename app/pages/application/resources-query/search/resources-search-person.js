@@ -169,8 +169,10 @@ angular.module('applicationModule')
             $scope.$apply();
           }, 400);
         } else {
+          $timeout(function () {
           item.focus();
           $scope.$apply();
+          }, 400);
         }
       });
 
