@@ -41,8 +41,8 @@
     </div>
 
 
-    <div class="hms-hide-content" ng-if="LoadingPushData || LoadingModalData">
-      <hms-loading></hms-loading>
+    <div class="hms-hide-content" ng-if="LoadingPushData || LoadingModalData" >
+      <hms-common-loading></hms-common-loading>
     </div>
 
     <div ng-if="!LoadingPushData&&!LoadingModalData">
@@ -426,7 +426,7 @@
     </div>
 
     <!--处理意见和转交人-->
-    <div class="hms-extra-info" ng-if="workflowActionShowFlag">
+    <div class="hms-extra-info" ng-if="workflowActionShowFlag&&!LoadingPushData&&!LoadingModalData">
       <div class="hms-opinion">
         <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
         </input>

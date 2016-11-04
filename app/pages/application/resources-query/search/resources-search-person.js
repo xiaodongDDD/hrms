@@ -26,7 +26,7 @@ angular.module('myApp')
     }]);
 
 angular.module('applicationModule')
-  .controller('resourcesSearchPersonCtl',[
+  .controller('resourcesSearchPersonCtl', [
     '$scope',
     '$state',
     '$ionicHistory',
@@ -60,9 +60,7 @@ angular.module('applicationModule')
               $rootScope,
               $cordovaActionSheet,
               $sce,
-              $q
-
-              ){
+              $q) {
 
 
 
@@ -107,7 +105,7 @@ angular.module('applicationModule')
         }
       }
 
-      var searchInfo = '{"params":{"p_employee_number":"' + employeeCode + '","p_branch_id":"' + unitId +  '","p_project_id":"' + subjectId +  '"}}';
+      var searchInfo = '{"params":{"p_employee_number":"' + employeeCode + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '"}}';
       var getBranchEmpUrl = baseConfig.businessPath + "/api_resources_query/query_branch_emp"; //部门员工接口地址
       var getSubjectEmpUrl = baseConfig.businessPath + "/api_resources_query/query_project_emp"; //项目员工接口地址
 
@@ -135,17 +133,17 @@ angular.module('applicationModule')
         })
       };
 
-      if(unitId && !subjectId){
+      if (unitId && !subjectId) {
         getBranchEmp();
       }
-      if(subjectId){
+      if (subjectId) {
         getSubjectEmp();
       }
-      if(subjectId || unitId){
+      if (subjectId || unitId) {
         $scope.showHistory = false;
         $scope.showEmployee = true;
         item.disabled = true; //禁用搜索框
-      }else{
+      } else {
         $scope.showHistory = true;
         $scope.showEmployee = false;
         item.disabled = false; //启用搜索框
@@ -153,25 +151,28 @@ angular.module('applicationModule')
 
       //返回部门或项目的员工信息
       $scope.getEmployee = function (newEmp) {
-        $rootScope.$broadcast("EMP_NAME",newEmp.employee_name);
-        $rootScope.$broadcast("EMP_CODE",newEmp.employee_number);
+        $rootScope.$broadcast("EMP_NAME", newEmp.employee_name);
+        $rootScope.$broadcast("EMP_CODE", newEmp.employee_number);
         $ionicHistory.goBack();
       };
 
 
       $scope.$on('$ionicView.afterEnter', function () { //初始化input框-自动聚焦
-        if (ionic.Platform.isWebView()) {
-          cordova.plugins.Keyboard.show();
-        }
         if (ionic.Platform.isAndroid()) {
           $timeout(function () {
+            if (ionic.Platform.isWebView()) {
+              cordova.plugins.Keyboard.show();
+            }
             item.focus();
             $scope.$apply();
           }, 400);
         } else {
           $timeout(function () {
-          item.focus();
-          $scope.$apply();
+            if (ionic.Platform.isWebView()) {
+              cordova.plugins.Keyboard.show();
+            }
+            item.focus();
+            $scope.$apply();
           }, 400);
         }
       });
@@ -213,8 +214,8 @@ angular.module('applicationModule')
         $scope.showClear = false;
         $scope.resultList = [];
         $scope.contactKey.getValue = '';
-        $rootScope.$broadcast("EMP_NAME","");
-        $rootScope.$broadcast("EMP_CODE","");
+        $rootScope.$broadcast("EMP_NAME", "");
+        $rootScope.$broadcast("EMP_CODE", "");
         $ionicHistory.goBack();
       };
 
@@ -298,9 +299,9 @@ angular.module('applicationModule')
         $scope.showHistory = false;
         $scope.showClear = true;
         $scope.contactLoading = true;
-        if(loadMoreFlag){
+        if (loadMoreFlag) {
           currentPage = parseInt(currentPage) + 1;
-        }else{
+        } else {
           currentPage = 1;
           $timeout(function () {
             $ionicScrollDelegate.$getByHandle('empListHandle').scrollTop();
@@ -308,7 +309,7 @@ angular.module('applicationModule')
           });
         }
 
-        if(baseConfig.debug){
+        if (baseConfig.debug) {
           console.log('search.currentPage ' + currentPage);
         }
         $scope.searchEmployee(currentPage, loadMoreFlag);
@@ -347,7 +348,7 @@ angular.module('applicationModule')
             $scope.showFilter = true;
             if (response.total && response.total > 0) {
               angular.forEach(response.rows, function (data) {
-                if(data.avatar && data.avatar != ""){
+                if (data.avatar && data.avatar != "") {
                   data.avatar = data.avatar + '64';
                 }
                 $scope.resultList.push(data);
@@ -428,9 +429,9 @@ angular.module('applicationModule')
           $ionicHistory.goBack();
         } else {
           // $scope.authorize = function(){
-            $rootScope.$broadcast("EMP_NAME",newEmp.emp_name);
-            $rootScope.$broadcast("EMP_CODE",newEmp.emp_code);
-            $ionicHistory.goBack();
+          $rootScope.$broadcast("EMP_NAME", newEmp.emp_name);
+          $rootScope.$broadcast("EMP_CODE", newEmp.emp_code);
+          $ionicHistory.goBack();
           // };
           // $state.go('tab.resources-query',
           //   {

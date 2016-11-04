@@ -93,7 +93,7 @@ angular.module('applicationModule')
         hmsHttp.post(getMyBranchUrl, myNumber).success(function (result) {
           $scope.contactLoading = false;
 
-          $scope.myBranch = result.returnData;
+          $scope.myBranch = result.returnData.my_branch_detail;
 
         }).error(function () {
           console.log('我的部门异常');
@@ -155,15 +155,13 @@ angular.module('applicationModule')
         $scope.showClear = false;
         $scope.branchList = [];
         $scope.branchKey.getValue = '';
-        // if (commonContactService.getContactFlag() === 'carpooling-new-contactSearch') {
-        //   commonContactService.setEmpInfo(newEmp);
-        //   $rootScope.$broadcast("SEND_EMP_INFO");
-        //   $ionicHistory.goBack();
-        // } else {
-        // $scope.authorize = function(){
 
-
-        if(newBranch.full_unit_name){
+        $rootScope.$broadcast("BRANCH_NAME",newBranch.unit_name);
+        $rootScope.$broadcast("UNIT_ID",newBranch.unit_id);
+        $rootScope.$broadcast("BRANCH_ID",newBranch.parent_id);
+        $ionicHistory.goBack();
+        
+        /*if(newBranch.full_unit_name){
           $rootScope.$broadcast("BRANCH_NAME",newBranch.full_unit_name);
           $rootScope.$broadcast("UNIT_ID",newBranch.unit_id);
           $rootScope.$broadcast("BRANCH_ID",newBranch.parent_id);
@@ -177,7 +175,7 @@ angular.module('applicationModule')
           $rootScope.$broadcast("BRANCH_ID",$scope.myBranch.parent_id);
           $rootScope.$broadcast("UNIT_ID",$scope.myBranch.unit_id);
           $ionicHistory.goBack();
-        }
+        }*/
         // }else if(newBranch == 'myBranch'){
         //   $rootScope.$broadcast("BRANCH_NAME",$scope.myBranch.my_branch);
         //   $rootScope.$broadcast("BRANCH_ID",$scope.myBranch.parent_id);
