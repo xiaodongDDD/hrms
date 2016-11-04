@@ -189,7 +189,7 @@ angular.module('applicationModule')
 
         var timeOffData = {};
 
-        if (item.approveStatus == 'APPROVING') {
+        if (item.approveStatus == 'APPROVING' || item.approveStatus == 'APPROVED') {
           timeOffData.operationType       = 'revoke';
         } else if(item.approveStatus == 'DRAFT') {
           timeOffData.operationType       = 'update';
@@ -217,6 +217,7 @@ angular.module('applicationModule')
         timeOffData.datetimeTo          = item.datetimeTo;
         timeOffData.timeLeave           = item.timeLeave;
         timeOffData.applyReason         = item.applyReason;
+        timeOffData.approveStatus       = item.approveStatus;
 
         $state.go("tab.time-off-manage-detail", {timeOffData : timeOffData});
       };
@@ -234,10 +235,10 @@ angular.module('applicationModule')
         timeOffData.unusedHoliday = '0';
 
         timeOffData.timeOffTypeMeaning  = '';
-        timeOffData.datetimeFrom        = '';
-        timeOffData.datetimeTo          = '';
-        timeOffData.timeLeave           = '';
-        timeOffData.applyReason         = '';
+        timeOffData.datetimeFrom         = '';
+        timeOffData.datetimeTo           = '';
+        timeOffData.timeLeave            = '';
+        timeOffData.applyReason          = '';
 
         $state.go("tab.time-off-manage-detail", {timeOffData : timeOffData});
       };
@@ -275,5 +276,26 @@ angular.module('applicationModule')
 
       this.getRefreshWorkflowList = function () {
         return refreshTimeOffList;
+      };
+
+      this.getLeaveDays = function (myscope,policyitemId,dateFrom,dateTo) {
+        hmsPopup.showLoading("处理休假申请中");
+
+        var url = baseConfig.businessPath + "/api_holiday/get_holiday_days";
+        var params = {
+          "params": {
+            "p_policyitem_id": policyitemId,
+            "p_date_from": dateFrom,
+            "p_date_to": dateTo
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          hmsPopup.hideLoading();
+          if(result.returnCode == 'S') {
+            myscope.timeOffData.timeLeave = result.holiday_days;
+          }
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+        });
       };
     }]);

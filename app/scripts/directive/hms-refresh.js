@@ -340,13 +340,15 @@ HmsModule
         } else if (activated && lastOverscroll < ptrThreshold) {
           activated = false;
           ionic.requestAnimationFrame(deactivate);
-        } else if (!activated && lastOverscroll <= ptrThreshold){
-          if(baseConfig.debug){
-            console.log('handleTouchmove lastOverscroll ' + lastOverscroll );
-            console.log('handleTouchmove ptrThreshold ' + ptrThreshold );
-          }
-          loadingRefreshAnimate(-lastOverscroll);
         }
+
+        //else if (!activated && lastOverscroll <= ptrThreshold){
+        if(baseConfig.debug){
+          console.log('handleTouchmove lastOverscroll ' + lastOverscroll );
+          console.log('handleTouchmove ptrThreshold ' + ptrThreshold );
+        }
+        loadingRefreshAnimate(-lastOverscroll);
+        //}
       }
 
       function handleScroll(e) {

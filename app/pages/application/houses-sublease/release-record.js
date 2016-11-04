@@ -221,7 +221,7 @@ angular.module('applicationModule')
             console.log("数据", angular.toJson(param));
             param.effectiveDays = "-1";
             var url = baseConfig.queryPath + "/house/publish";
-            //hmsPopup.showLoading('请稍候');
+            hmsPopup.showLoading('删除数据中');
             hmsHttp.post(url, param).success(function (result) {
               hmsPopup.hideLoading();
               if (baseConfig.debug) {

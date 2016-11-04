@@ -1,0 +1,75 @@
+<ion-view class="resources-detail-branch">
+  <ion-header-bar align-title="center" ng-class="{'bar-stable blur-back':descriptionAppearance,'bar-stable clear-back':!descriptionAppearance}">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title"><input type="text" class="title-input" disabled ng-model="branchName"></h1>
+    <div class="buttons">
+      <button class="button-small button-clear button-list" ng-click="toggle()"></button>
+    </div>
+  </ion-header-bar>
+
+
+  <ion-content class="person-content"  delegate-handle="content-handle" overflow-scroll="true" style="overflow: hidden">
+    <hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>
+    <ion-slide-box id="branch-slide" ng-if="showContent" delegate-handle="branch-handle" active-slide="monthIndex" show-pager="false" on-slide-changed="monthChanged($index)">
+      <ion-slide  ng-repeat="x in resultList">
+        <div class="calendar-month">
+          <span class="arrow ion-ios-arrow-left" ></span>
+          <span class="word-font" ng-cloak=>{{x.record_date.replace("-","年")}}月</span>
+          <span class="arrow ion-ios-arrow-right" ></span>
+        </div>
+        <div class="calendar-subject">
+          <div class="circle" style="background: #86e2d3"></div>
+          <div class="text">正常项目</div>
+          <div class="circle" style="margin-left: 1.5rem; background: #e08183"></div>
+          <div class="text">异常项目</div>
+          <div class="circle"  style="margin-left: 1.5rem; background: #6cb9f1"></div>
+          <div class="text">法定节假日</div>
+        </div>
+        <div class="subject-content">
+          <ion-scroll class="subject-scroll" delegate-handle="{{x.record_date}}" on-scroll="subjectScroll(x.record_date)">
+            <div class="calendar-branch" ng-if="y.isException" ng-repeat="y in x.timesheet_details" ng-click="goEmployeeDetail(y.employee_number,y.employee_name,x.record_date)">
+              <div class="calendar-day">
+                <div class="calendar-title">
+                  <!--<img class="head" src="build\img\application\resources-query\profile@2x.png" alt="">-->
+                  <img class="head" src="build\img\application\resources-query\profile@2x.png" ng-src="{{y.emp_avatar}}" alt="头像">
+                  <span class="text"><span ng-bind="y.employee_name"></span>&nbsp;<span ng-bind="y.employee_number"></span></span>
+                </div>
+                <div class="each-person">
+                  <div class="each-table row">
+                    <div class="each-subject col-20" style="background: #86e2d3; height: {{y.normal_project_days*3}}px"></div>
+                    <div class="each-subject col-20" style="background: #e08183; height: {{y.exception_project_days*3}}px"></div>
+                    <div class="each-subject col-20" style="background: #6cb9f1; height: {{y.holiday_project_days*3}}px"></div>
+                  </div>
+                  <div class="each-array">
+                    <div class="each-count" ng-bind="y.normal_project_days"></div>
+                    <div class="each-count" ng-bind="y.exception_project_days"></div>
+                    <div class="each-count" ng-bind="y.holiday_project_days"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ion-infinite-scroll ng-if="showInfinite[monthIndex]" on-infinite="loadMore(monthIndex)" distance="1%">
+            </ion-infinite-scroll>
+          </ion-scroll>
+        </div>
+        <div class=""></div>
+      </ion-slide>
+    </ion-slide-box>
+  </ion-content>
+
+  <!--<ion-footer-bar class="foot-bar" style="bottom: 0px;">-->
+    <!--<div class="foot-circle" style="border-color: green"></div>-->
+    <!--<div class="foot-word">有项目</div>-->
+    <!--<div class="foot-circle" style="border-color: gray"></div>-->
+    <!--<div class="foot-word">无项目</div>-->
+    <!--<div class="foot-circle" style="border-color: red"></div>-->
+    <!--<div class="foot-word" >法定节假日</div>-->
+    <!--<div class="button-list" ng-click="filterWorkFlowInfo()"></div>-->
+  <!--</ion-footer-bar>-->
+
+
+</ion-view>

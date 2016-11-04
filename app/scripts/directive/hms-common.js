@@ -130,7 +130,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
             if (calculation <= 0.5) {
               angle = 360 * calculation;
               angle = angle - 135;
-              //console.log("角度："+angle);
               leftball.style.webkitTransform = "rotate(-135deg)";
               leftball.style.transform = "rotate(-135deg)";
               rightball.style.webkitTransform = "rotate(" + angle + "deg)";
@@ -139,7 +138,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
               calculation = calculation - 0.5;
               angle = 360 * calculation;
               angle = angle - 135;
-              //console.log("角度："+angle);
               leftball.style.webkitTransform = "rotate(" + angle + "deg)";
               leftball.style.transform = "rotate(" + angle + "deg)";
               rightball.style.webkitTransform = "rotate(45deg)";
@@ -211,7 +209,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                 if (calculation1 <= 0.5) {
                   angle1 = 360 * calculation1;
                   angle1 = angle1 - 135;
-                  //console.log("角度："+angle);
                   leftball1.style.webkitTransform = "rotate(-135deg)";
                   leftball1.style.transform = "rotate(-135deg)";
                   rightball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
@@ -220,7 +217,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                   calculation1 = calculation1 - 0.5;
                   angle1 = 360 * calculation1;
                   angle1 = angle1 - 135;
-                  //console.log("角度："+angle);
                   leftball1.style.webkitTransform = "rotate(" + angle1 + "deg)";
                   leftball1.style.transform = "rotate(" + angle1 + "deg)";
                   rightball1.style.webkitTransform = "rotate(45deg)";
@@ -229,7 +225,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                 if (calculation2 <= 0.5) {
                   angle2 = 360 * calculation2;
                   angle2 = angle2 - 135;
-                  //console.log("角度："+angle);
                   leftball2.style.webkitTransform = "rotate(-135deg)";
                   leftball2.style.transform = "rotate(-135deg)";
                   rightball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
@@ -238,7 +233,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                   calculation2 = calculation2 - 0.5;
                   angle2 = 360 * calculation2;
                   angle2 = angle2 - 135;
-                  //console.log("角度："+angle);
                   leftball2.style.webkitTransform = "rotate(" + angle2 + "deg)";
                   leftball2.style.transform = "rotate(" + angle2 + "deg)";
                   rightball2.style.webkitTransform = "rotate(45deg)";
@@ -247,7 +241,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                 if (calculation3 <= 0.5) {
                   angle3 = 360 * calculation3;
                   angle3 = angle3 - 135;
-                  //console.log("角度："+angle);
                   leftball3.style.webkitTransform = "rotate(-135deg)";
                   leftball3.style.transform = "rotate(-135deg)";
                   rightball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
@@ -256,7 +249,6 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
                   calculation3 = calculation3 - 0.5;
                   angle3 = 360 * calculation3;
                   angle3 = angle3 - 135;
-                  //console.log("角度："+angle);
                   leftball3.style.webkitTransform = "rotate(" + angle3 + "deg)";
                   leftball3.style.transform = "rotate(" + angle3 + "deg)";
                   rightball3.style.webkitTransform = "rotate(45deg)";

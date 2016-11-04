@@ -78,29 +78,30 @@ angular.module('applicationModule')
       //  }
       //];
       $scope.housesSubDetail = {
-        "houseTitle": "悠和家园三室一厅一厨两卫",
-        "houseSubject": "悠和家园，距地铁一号线延长路站10分钟的路程，周围超市、餐饮、医院、休闲设施一应俱全，靠近大宁国际，租金8500元/月，三室一厅一厨两卫，面积110平左后，小区24小时门禁，租期到11月份，可续租。",
-        "houseTypeRoom": "三室",
-        "houseTypeHall": "一厅",
-        "houseTypeBathRoom": "两卫",
-        "square": "100",
+        "houseTitle": "房屋信息",
+        "houseSubject": "",
+        "houseTypeRoom": "",
+        "houseTypeHall": "",
+        "houseTypeBathRoom": "",
+        "square": "",
         "trafficInfo": "",
-        "rent": "8500",
-        "expireDate": "11月到期",
-        "publishDate": "2016-07-06",
+        "rent": "",
+        "expireDate": "",
+        "publishDate": "",
         "publishEmp": "",
         "city": "",
-        "area": "闸北区",
+        "area": "",
         "houseId": "",
         "imgs": [],
         "publishUrl": ""
       };
+
       $scope.slideIndex = 0;
 
       function success(success) {
         if(success.code=='0'){
           //分享成功
-        }    
+        }
       }
       function fail(error) {
         if(error.code=='-1'){
@@ -112,7 +113,7 @@ angular.module('applicationModule')
 
       $scope.share = function (){
         //分享显示的图片，默认
-        var imgurl = 'http://youtui.mobi/media/image/youtui.png';
+        var imgurl = 'http://mobile-app.hand-china.com/hrmsstatic/hrms-img/icon.png';
         //分享显示的图片，取转租信息中的第一张照片
         if ($scope.housesSubDetail.imgs.length > 0) {
           imgurl = $scope.housesSubDetail.imgs[$scope.slideIndex].objectUrl;
@@ -125,11 +126,14 @@ angular.module('applicationModule')
             $scope.housesSubDetail.houseTitle, //描述
             imgurl  //图片
           ]);
-      }
+      };
 
-      serchHousesSubleaseDetailInfo();//自动获取房屋转租信息
+      $timeout(function () {
+        serchHousesSubleaseDetailInfo();//自动获取房屋转租信息
+      },250);
+
       function serchHousesSubleaseDetailInfo() {
-        $scope.housesSubDetail = [];
+         //$scope.housesSubDetail = [];
         var url = baseConfig.queryPath + "/house/query";
         //var url = 'http://10.211.103.145:9090/hrmsv2/v2/api/house/query';
         var param = {
@@ -137,13 +141,13 @@ angular.module('applicationModule')
           "page": "1",
           "pageSize": "1"
         };
-        hmsPopup.showLoading('请稍候');
+        hmsPopup.showLoading('查询数据中');
         hmsHttp.post(url, param).success(function (result) {
           hmsPopup.hideLoading();
           if (baseConfig.debug) {
             console.log("result success " + angular.toJson(result));
           }
-          console.log("result success " + angular.toJson(result));
+          //console.log("result success " + angular.toJson(result));
           $scope.housesSubDetail = result.returnData;
 
           $ionicSlideBoxDelegate.update();

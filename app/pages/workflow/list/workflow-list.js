@@ -147,6 +147,7 @@ angular.module('applicationModule')
 
           } else {
             if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+              pageNum = 1;
               $scope.listStatus.todo.selected = true;
               $scope.listStatus.done.selected = false;
               $scope.listStatus.mine.selected = false;
@@ -173,6 +174,7 @@ angular.module('applicationModule')
           if ($scope.listStatus.done.selected && !refreshFlag) {
           } else {
             if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+              pageNum = 1;
               $scope.listStatus.done.selected = true;
               $scope.listStatus.todo.selected = false;
               $scope.listStatus.mine.selected = false;
@@ -199,6 +201,7 @@ angular.module('applicationModule')
           if ($scope.listStatus.mine.selected && !refreshFlag) {
           } else {
             if (!$scope.fetchDataFlag && !$scope.pullRefreshDataFlag) {
+              pageNum = 1;
               $scope.listStatus.mine.selected = true;
               $scope.listStatus.done.selected = false;
               $scope.listStatus.todo.selected = false;
@@ -278,6 +281,7 @@ angular.module('applicationModule')
           $scope.list = [];
           $scope.$apply();
           $timeout(function () {
+            pageNum = 1;
             if ($scope.listStatus.todo.selected) {
               workFLowListService.getTodoListQuery($scope, pageNum, cashList, true, dataFilterUtil());
             } else if ($scope.listStatus.done.selected) {
@@ -645,6 +649,11 @@ angular.module('applicationModule')
       $scope.$on('$ionicView.beforeEnter', function () {
         if (baseConfig.debug) {
           console.log('WorkFLowListCtrl.$ionicView.beforeEnter');
+        }
+        if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+          if(document.setTitle){
+            document.setTitle('待办事项');
+          }
         }
         if (workFLowListService.getRefreshWorkflowList().flag == true) {
           workFLowListService.setRefreshWorkflowList(false);

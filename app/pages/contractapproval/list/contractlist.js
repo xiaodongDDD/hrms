@@ -598,6 +598,11 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.beforeEnter');
         }
+        if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+          if(document.setTitle){
+            document.setTitle('合同管理');
+          }
+        }
         //iOS的时候，top:0px在状态栏内部
         if (ionic.Platform.isIOS() && !baseConfig.isWeixinWebview) {
           $scope.isIos = true;

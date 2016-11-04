@@ -24,6 +24,7 @@
 		请在友推官网注册，提交应用，获取AppKey/AppSecret  http://youtui.mobi/
 		注意： 如果在友推只提供AppKey，在AppKey和AppSecret处都写AppKey值；若友推有提供AppSecret请填写相应的AppSecret值
 	-->
+    
 	<YouTui
 	    AppKey="332276"
 	    AppSecret="536432b28938e48"
@@ -33,19 +34,19 @@
     <!-- 微信 -->
     <Wechat
         AppId="wxaaeac85f01714b29"
-        AppSecret="35b235f667c83f623667ecce678944cd"
+        AppSecret="c2fa44f4026681e1f83320606aceae41"
         Enable="true" />
 
     <!-- 微信朋友圈 -->
     <WechatMoments
         AppId="wxaaeac85f01714b29"
-        AppSecret="35b235f667c83f623667ecce678944cd"
+        AppSecret="c2fa44f4026681e1f83320606aceae41"
         Enable="true" />
 
     <!-- 微信收藏 -->
     <WechatFavorite
         AppId="wxaaeac85f01714b29"
-        AppSecret="35b235f667c83f623667ecce678944cd"
+        AppSecret="c2fa44f4026681e1f83320606aceae41"
         Enable="true" />
 
     <!-- 新浪微博 -->
@@ -59,14 +60,14 @@
 
     <!-- QQ -->
     <QQ
-        AppId="1101255276"
-        AppKey="h4sOXgtTtsqRjoOq"
+        AppId="1104633415"
+        AppKey="7nO8Uk92aqIQ16ko"
         Enable="true" />
 
     <!-- QQ空间 -->
     <QZone
-        AppId="1101255276"
-        AppKey="h4sOXgtTtsqRjoOq"
+        AppId="1104633415"
+        AppKey="7nO8Uk92aqIQ16ko"
         Enable="true" />
 
     <!-- 腾讯微博 -->

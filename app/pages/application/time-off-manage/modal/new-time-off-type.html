@@ -2,10 +2,9 @@
   <ion-header-bar class="header-color">
     <h1 class="title title-color">请选择假期类型</h1>
   </ion-header-bar>
-  <ion-content class="back-color">
-    <div class="change-line"></div>
-    <div class="list">
+  <ion-content class="back-color" overflow-scroll="true">
+    <ion-list>
       <div ng-repeat="x in timeOffTypeRecord" class="item apply-item" ng-click="timeOffTypeSelected(x)">{{x}}</div>
-    </div>
+    </ion-list>
   </ion-content>
 </ion-modal-view>

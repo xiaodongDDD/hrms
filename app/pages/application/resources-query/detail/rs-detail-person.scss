@@ -1,0 +1,400 @@
+
+
+.resources-detail-person {
+  position: absolute;
+  .row,
+  .col {
+    padding: 0;
+    width: auto;
+  }
+
+  #next-slide{
+    position: absolute;
+    //width: 300vw;
+    height: 53vh;
+    background: rgba(51, 51, 51, 0.8)
+
+    //left: -100vw;
+  }
+  .person-top {
+    position: relative;
+    height: 53vh;
+    width: 100vw;
+
+  }
+  .person-head-image {
+    height: 53vh;
+    width: 100vw;
+
+    z-index: -2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    //background-color: #ccc;
+    //background-image: url("../img/application/resources-query/profile@3x.png");
+    //background-size: cover;
+    //background-position: center center;
+    //background-repeat: no-repeat;
+  }
+  .black-cover{
+    height: 53vh;
+    width: 100vw;
+    position: absolute;
+    //filter: blur(10px) brightness(0.9);
+    //-webkit-filter: blur(10px) brightness(0.9);
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: black;
+    opacity: 0.5;
+  }
+  .person-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 53vh;
+    width: 100vw;
+    background: transparent;
+    color: #fff;
+    font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+    font-size: 1rem;
+
+  }
+  .img-section {
+    position: relative;
+    height: 120px;
+    width: 100vw;
+    background: transparent;
+  }
+  .img-person {
+    display: block;
+
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    margin-top: 20px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+
+
+  }
+  .person-name {
+    text-align: center;
+    margin-top: 10px;
+
+  }
+  .person-subject {
+    width: 100vw;
+  }
+  .subject-scroll{
+    height: calc(53vh - 175px);
+  }
+  .subject-item {
+    width: 100vw;
+  }
+  .subject-item-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    float: left;
+    margin-left: 4%;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 0.9rem;
+  }
+  .subject-item-name {
+    float: left;
+    width: 85%;
+    margin-left: 10px;
+    margin-top: 5px;
+  }
+  .person-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 92vw;
+    height: 35px;
+    margin-left: 4vw;
+  }
+  .person-bottom-left {
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+  }
+  .person-bottom-right {
+    height: 35px;
+    line-height: 35px;
+    text-align: right;
+  }
+
+  .person-triangle {
+    margin: 0 auto;
+    margin-top: 27px;
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 15px solid #fff;
+  }
+  .person-left-name {
+    font-size: 0.8rem;
+    float: left;
+    margin-left: 10px;
+  }
+  .person-right-name {
+    font-size: 0.8rem;
+    float: right;
+    margin-right: 10px;
+  }
+  .person-left-span {
+    display: block;
+    float: left;
+    font-size: 1.3rem;
+  }
+  .person-right-span {
+    display: block;
+    float: right;
+    font-size: 1.3rem;
+  }
+
+  .col-40 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 40%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 40%;
+    -ms-flex: 0 0 40%;
+    flex: 0 0 40%;
+    max-width: 40%;
+  }
+  .col-20 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 20%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 20%;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+
+  .person-content {
+    margin-top: -44px;
+    //height: 47vh;
+    background: #fff;
+    z-index: 9;
+
+
+    .calendar-float{
+      margin-top: -20px;
+      .float-span{
+        color: transparent;
+      }
+    }
+    .calendar-month {
+      font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+      position: relative;
+      text-align: center;
+      margin-top: 1vh;
+      margin-bottom: 1vh;
+      height: 4vh;
+      line-height: 4vh;
+      color: #1f519a;
+      .arrow{
+        font-size: 1.8em;
+      }
+      .word-font{
+        font-size: 1.3em;
+        position: relative;
+        top: -3px;
+      }
+
+    }
+
+    .calendar-day {
+      font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+      background: white;
+
+      position: relative;
+
+      .calendar-title {
+        height: 5vh;
+
+
+        .title-item {
+          float: left;
+          width: 13%;
+          height: 5vh;
+          line-height: 5vh;
+          text-align: center;
+          color: #1f519a;
+          font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+          font-size: 1.1em;
+        }
+        .title-item:nth-child(1){
+          margin-left: 4.5%;
+        }
+      }
+
+      //.calendar-week {
+      //  height: 40px;
+        .day-item {
+          float: left;
+          width: 13%;
+          height: 6vh;
+          position: relative;
+          //&.activated {
+          //  //background: #eeeeee;
+          //}
+          //&.choosed.activated {
+          //  background: $timesheet-cover;
+          //}
+          //&.approve {
+          //  color: $timesheet-red;
+          //}
+          //&.reject {
+          //  color: $timesheet-purple;
+          //}
+          //&.attendance {
+          //  color: $timesheet-green;
+          //}
+          //&.blank {
+          //
+          //}
+          .each-day-blank {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: calc((6vh - 30px)/2);
+            border-radius: 14px;
+            text-align: center;
+            font-size: 18px;
+            color: #1f519a;
+          }
+          .each-day-red {
+
+            background: url("../img/application/resources-query/selected-R@3x.png");//无项目
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-purple {
+
+            background: url("../img/application/resources-query/selected-P@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-green {
+
+            background: url("../img/application/resources-query/selected-G@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-blue {
+
+            background: url("../img/application/resources-query/blue@3x.png");//无项目
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-yellow {
+
+            background: url("../img/application/resources-query/yellow@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-orange {
+
+            background: url("../img/application/resources-query/orange@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-rose {
+
+            background: url("../img/application/resources-query/rose@3x.png");//无项目
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-brown {
+
+            background: url("../img/application/resources-query/selected-P@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+          .each-day-9 {
+
+            background: url("../img/application/resources-query/selected-G@3x.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+
+
+          .money {
+            font-size: 8px;
+            text-align: center;
+            height: 12px;
+            line-height: 12px;
+            margin-top: 5px;
+          }
+          .project {
+            width: 100%;
+            font-size: 8px;
+            text-align: center;
+            height: 12px;
+            line-height: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+        }
+        .day-item:nth-child(1){
+          margin-left: 4.5%;
+        }.day-item:nth-child(8){
+          margin-left: 4.5%;
+        }.day-item:nth-child(15){
+          margin-left: 4.5%;
+        }.day-item:nth-child(22){
+          margin-left: 4.5%;
+        }.day-item:nth-child(29){
+          margin-left: 4.5%;
+        }.day-item:nth-child(36){
+          margin-left: 4.5%;
+        }
+
+
+      }
+
+    //}
+
+    .ion-record{
+      font-size: 1px;
+    }
+
+  }
+
+
+
+  .button-list {
+    position: fixed;
+    right: 7.5px;
+    top: 7.5px;
+    width: 35px;
+    height: 35px;
+    color: transparent;
+    border-radius: 50%;
+    background-image: url("../img/application/resources-query/screen@2x.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 1000;
+  }
+
+
+}

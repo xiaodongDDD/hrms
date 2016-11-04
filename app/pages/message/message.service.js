@@ -50,6 +50,21 @@ angular.module('applicationModule')
           {
             "background": "#6BB9F0","color":"white"
           },
+          {
+            "background": "#94c840","color":"white"
+          },
+          {
+            "background": "#0a9dc7","color":"white"
+          },
+          {
+            "background": "#e6b500","color":"white"
+          },
+          {
+            "background": "#d45b7a","color":"white"
+          },
+          {
+            "background": "#ffabd7","color":"white"
+          }
         ];
 
         var messageType = {
@@ -105,18 +120,28 @@ angular.module('applicationModule')
           notifyList = list
         };
 
-        var getRandomColor = function () {
-          var index = parseInt(Math.random() * 4);
+        var getRandomColor = function (userId) {
+          //alert('getRandomColor.userId ' + userId)
+          var index;
+          try{
+            index = parseInt(userId)%9;
+          }catch(e){
+            index = 1;
+          }
+          //var index = parseInt(Math.random() * 4);
           if(baseConfig.debug){
             console.log('getRandomColor.Math.random() ' + Math.random())
             console.log('getRandomColor.index ' + index);
             console.log('getRandomColor.colorList[index] ' + angular.toJson(colorList[index]));
           }
+
+          //alert('getRandomColor.index ' + index)
+
           return colorList[index];
         };
 
-        this.getRandomColor = function () {
-          return getRandomColor();
+        this.getRandomColor = function (userId) {
+          return getRandomColor(userId);
         };
 
         this.getCachedNotifyList = function () {
@@ -180,13 +205,12 @@ angular.module('applicationModule')
               imgName = userName.substr(0, 1);
             }
 
-
             var item = {
               "name": userName,
               "content": data.message.content,
               "imgUrl": userIcon,
               "imgName": imgName,
-              "imgColorStyle": getRandomColor(),
+              "imgColorStyle": getRandomColor(data.message.sendId),
               "count": data.message.messageNum,
               "employee": data.message.sendId,
               "time": data.message.sendTime,
@@ -286,6 +310,7 @@ angular.module('applicationModule')
             window.location.href = "tel:" + baseInfo.mobil.replace(/\s+/g, "");
             var imgUrl = baseInfo.avatar;
             if (baseInfo.avatar != '' || baseInfo.avatar) {
+
             } else {
               if (baseInfo.gender == "男") {//根据性别判定头像男女
                 imgUrl = "build/img/myInfo/man-portrait.png";
@@ -411,7 +436,6 @@ angular.module('applicationModule')
             });
           } else {
             myscope.loadingMoreFlag = true;
-            page = page + 1;
           }
           var url = baseConfig.queryPath + '/staff/query';
           var params = {
@@ -424,6 +448,9 @@ angular.module('applicationModule')
             if (response.success == true) {
               if (response.total && response.total > 0) {
                 angular.forEach(response.rows, function (data) {
+                  if(data.avatar && data.avatar != ""){
+                    data.avatar = data.avatar + '64';
+                  }
                   myscope.employeeList.push(data);
                 });
 

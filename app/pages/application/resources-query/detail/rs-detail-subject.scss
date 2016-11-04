@@ -1,0 +1,283 @@
+.resources-detail-subject {
+  .row,
+  .col {
+    padding: 0;
+    width: auto;
+  }
+  .col-20 {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 20%;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 20%;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+  .title-input{
+    background: transparent;
+    margin-left: 80px;
+    height: 43px;
+    color: #fff;
+    font-size: 17px;
+    width: calc(100% - 160px);
+    text-align: center;
+  }
+
+  .calendar-month {
+    width: 100%;
+    height: 3rem;
+    font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+    position: relative;
+    text-align: center;
+    line-height: 3rem;
+    color: #1f519a;
+    .arrow{
+      font-size: 1.8em;
+    }
+    .word-font{
+      font-size: 1.3em;
+      position: relative;
+      top: -3px;
+    }
+  }
+  .calendar-subject{
+    width: 100%;
+    height: 1rem;
+    margin-bottom: 0.3rem;
+
+    .circle{
+      float: left;
+      width: 0.7rem;
+      height: 0.7rem;
+      margin-top: 0.2rem;
+      border-radius: 50%;
+      background: red;
+      margin-left: 0.5rem;
+    }
+    .text{
+      float: left;
+      height: 1rem;
+      margin-left: 0.5rem;
+      line-height: 1rem;
+      color: #9b9b9b;
+      font-size: 0.8rem;
+    }
+
+
+
+  }
+
+  .subject-scroll{
+    height: calc(100vh - 107px);
+  }
+  .each-person{
+
+    min-height: 100px;
+
+    .each-table{
+      position: relative;
+      margin-left: 15px;
+      width: 130px;
+      border-bottom: 1px solid #ccc;
+      height: 80px;
+      .each-subject{
+        width: 20px;
+        //height: 93px;
+        text-align: center;
+
+
+      }
+      .each-subject:nth-child(1){
+        margin-left: 10px;
+        position: absolute;
+        bottom: 0;
+      }
+      .each-subject:nth-child(2){
+        margin-left: 40px;
+        position: absolute;
+        bottom: 0;
+      }
+      .each-subject:nth-child(3){
+        margin-left: 70px;
+        position: absolute;
+        bottom: 0;
+      }
+      .each-subject:nth-child(4){
+        margin-left: 100px;
+        position: absolute;
+        bottom: 0;
+      }
+    }
+    .each-array{
+      margin-left: 15px;
+      margin-bottom: 10px;
+      width: 130px;
+      height: 20px;
+      .each-count{
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        margin-left: 10px;
+        float: left;
+      }
+    }
+
+    //.each-subject:nth-child(1){
+    //  background: #0bb49d;
+    //}
+    //.each-subject:nth-child(2){
+    //  background: #eb7474;
+    //}
+    //.each-subject:nth-child(3){
+    //  background: #55aafc;
+    //}
+  }
+  .calendar-day {
+    width: 49.95vw;
+    background: white;
+    position: relative;
+    float: left;
+
+
+    .calendar-title {
+      height: 60px;
+      width: 100%;
+
+
+
+      .head{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-top: 10px;
+        display: inline-block;
+        margin-left: 10px;
+      }
+      .text{
+        font-size: 1em;
+        display: inline-block;
+        position: relative;
+        height: 20px;
+        top: -15px;
+        margin-left: 10px;
+      }
+
+    }
+
+    //.calendar-week {
+    //  height: 30px;
+    //  padding-left: 7%;
+    .day-item {
+      float: left;
+      width: 13%;
+      height: 30px;
+      position: relative;
+
+      .each-day {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 14px;
+        text-align: center;
+        font-size: 1em;
+        color: #9B9B9B;
+
+        &.approve {
+          background: url("../img/application/timesheet/selected-R@3x.png");
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+        }
+        &.reject {
+          background: url("../img/application/timesheet/selected-P@3x.png");
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+        }
+        &.attendance {
+          background: url("../img/application/timesheet/selected-G@3x.png");
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+        }
+        &.blank {
+
+        }
+        .day-border{
+          text-align: center;
+          display: block;
+          margin-top: 6px;
+          line-height: 18px;
+          width: 20px;
+          height: 20px;
+          border: 1px solid gray;
+          border-radius: 50%;
+          color: #1f519a;
+        }
+        .border-red{
+          border: 1px solid red;
+        }
+        .border-green{
+          border: 1px solid #19a28f;
+        }
+        .border-gray{
+          border: 1px solid gray;
+        }
+      }
+    }
+
+    .day-item:nth-child(1){
+      margin-left: 4.5%;
+    }.day-item:nth-child(8){
+       margin-left: 4.5%;
+     }.day-item:nth-child(15){
+        margin-left: 4.5%;
+      }.day-item:nth-child(22){
+         margin-left: 4.5%;
+       }.day-item:nth-child(29){
+          margin-left: 4.5%;
+        }.day-item:nth-child(36){
+           margin-left: 4.5%;
+         }.day-item:nth-child(43){
+            margin-left: 4.5%;
+          }
+
+    //}
+
+  }
+
+  //.foot-bar{
+  //
+  //  box-shadow: 0 -4px 10px #ccc;
+  //
+  //  .foot-circle{
+  //    width: 20px;
+  //    height: 20px;
+  //    border: 1px solid black;
+  //    border-radius: 50%;
+  //    float: left;
+  //    margin-top: 10px;
+  //    margin-left: 5px;
+  //  }
+  //  .foot-word{
+  //    float: left;
+  //    font-size: 1rem;
+  //    margin-top: 10px;
+  //    margin-left: 5px;
+  //  }
+  .button-list {
+    width: 35px;
+    height: 35px;
+    color: transparent;
+    border-radius: 50%;
+    background-image: url("../img/application/resources-query/screen@2x.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+  //}
+
+
+}

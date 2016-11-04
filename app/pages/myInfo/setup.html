@@ -17,7 +17,7 @@
       </div>
       <div class="ts-toggle-position">
         <label class="toggle toggle-positive">
-          <input type="checkbox" ng-checked="timesheetAuto" ng-click="clickTimesheetAuto()">
+          <input type="checkbox" ng-checked="slippingEnableFlag" ng-click="changeSlippingSetting()">
           <div class="track setup-track">
             <div class="handle setup-handle"></div>
           </div>
@@ -26,15 +26,13 @@
       <div class="message-toggle-position">
         <label class="toggle toggle-positive">
           <input type="checkbox" ng-model="messagePush" ng-click="clickMessagePush()">
-           <div class="track setup-track">
-             <div class="handle setup-handle"></div>
-           </div>
+          <div class="track setup-track">
+            <div class="handle setup-handle"></div>
+          </div>
         </label>
       </div>
-
-
     </ion-item>
-    <ion-item class="setup-panel">
+    <!--<ion-item class="setup-panel">
       <div class="row setup-panel-row1">
         <label class="setup-label">手势密码</label>
       </div>
@@ -49,7 +47,6 @@
       <div class="row setup-panel-row1"  ng-if="gesture.lock" ng-click="clickChangePassword()">
         <label class="setup-label">修改手势密码</label>
       </div>
-
-    </ion-item>
+    </ion-item>-->
   </ion-content>
 </ion-view>

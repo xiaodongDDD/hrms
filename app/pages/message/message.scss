@@ -6,8 +6,6 @@ $img-half-height: 25px !default;
 $img-padding: 8px !default;
 $text-padding: 11px !default
 
-
-
 .message-list {
 
   .scroll-refresher.active.refreshing .hms-spinner {
@@ -196,6 +194,9 @@ $text-padding: 11px !default
           color: #4A4A4A;
           height: 24px;
           line-height: 24px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .message-line {
           margin-top: 2px;
@@ -256,7 +257,7 @@ $text-padding: 11px !default
         float: left;
         width: 8%;
         padding-left: 5px;
-        margin-top: 5px;
+        margin-top: 6px;
         font-size: 18px;
       }
       input {
@@ -265,7 +266,7 @@ $text-padding: 11px !default
         padding-left: 10%;
         height: 20px;
         line-height: 20px;
-        margin-top: 4px;
+        margin-top: 5px;
         margin-bottom: 4px;
         margin-right: 5px;
         border: none;
@@ -274,7 +275,7 @@ $text-padding: 11px !default
     .message-button {
       position: absolute;
       padding-left: 15%;
-      margin-top: 5px;
+      margin-top: 6px;
       font-size: 18px;
       z-index: 10;
     }
@@ -284,7 +285,7 @@ $text-padding: 11px !default
       width: 88%;
       height: 20px;
       line-height: 20px;
-      margin-top: 4px;
+      margin-top: 5px;
       margin-bottom: 4px;
       border: none;
       z-index: 20;

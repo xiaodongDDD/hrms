@@ -5,6 +5,7 @@
 node_modules/
 /platforms/
 /plugins/ios.json
+/plugins/hand-im-plugin-device
 /plugins/jpush-phonegap-plugin
 /plugins/android.json
 app/lib/

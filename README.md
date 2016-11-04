@@ -80,6 +80,7 @@ Xcode
 Android测试环境
 确认cordova版本最好是6.3.1以上,jdk一定要1.7以上,Android SDK一定要API23以上
 ```
+1.修改app/config/devConfig.json  里面
 1.真机打包,修改app/config/devConfig.json  里面  isMobilePlatform  nativeScreenFlag 设置为true
 2.gulp run-dev
 3.重新下载插件
@@ -93,7 +94,7 @@ Android测试环境
   cordova plugin add jpush-phonegap-plugin --variable API_KEY=6e0b08078306f45ac8331d54
   
   cordova plugin rm cordova-plugin-youtuishare
-  cordova plugin add cordova-plugin-youtuishare
+  cordova plugin add http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git
   
 4.ionic platform add android
 5.ionic build android

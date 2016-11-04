@@ -28,6 +28,8 @@ angular.module('messageModule')
     '$stateParams',
     '$ionicHistory',
     '$ionicPlatform',
+    '$timeout',
+    '$sce',
     'baseConfig',
     'messageService',
     function ($scope,
@@ -35,8 +37,17 @@ angular.module('messageModule')
               $stateParams,
               $ionicHistory,
               $ionicPlatform,
+              $timeout,
+              $sce,
               baseConfig,
               messageService) {
+
+      $scope.showFlag = true;
+
+      //$scope.sFrameName = '';
+      //$scope.frameSrc = $sce.trustAsResourceUrl('http://');
+      //window.frames("sFrameName").document.body.style.zoom = "50%";
+
 
       $scope.loadMoreDataFlag = false;
 
@@ -169,6 +180,7 @@ angular.module('messageModule')
 
       $scope.loadMoreData = function () {
         currentPage = currentPage + 1;
+        if(angular)
         getDetail(true);
       };
 
@@ -182,6 +194,14 @@ angular.module('messageModule')
 
       $scope.$on('$ionicView.enter', function (e) {
         console.log('messageDetailCtrl.$ionicView.enter');
+
+        /*$timeout(function () {
+          var element = $("#sFrameName111111").contents().find("body").css("zoom","35%");
+          console.log(element);
+          $scope.showFlag = false;
+          $scope.$apply();
+        },200);*/
+
       });
       console.log('messageDetailCtrl.enter');
 

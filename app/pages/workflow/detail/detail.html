@@ -6,9 +6,9 @@
       </button>
     </div>
     <h1 class="title" style="color: white">待办事项明细</h1>
-    <div class="buttons" bg-if="!isWeixinWebview">
+    <div class="buttons" ng-if="!isWeixinWebview && !myPrsonalApplicationFlag">
       <button class="button button-clear" ng-click="goEmployeeDetail()">
-        <i class="ion-ios-email" style="color: white;font-size: 30px"></i>
+        <i class="ion-chatbubble-working" style="color: white;font-size: 30px"></i>
       </button>
     </div>
   </ion-header-bar>
@@ -110,10 +110,10 @@
               <div class="hms-singal-array-key">
                 转正日期
               </div>
-              <div bg-if="!isWeixinWebview" class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.trial_date">
+              <div ng-if="!isWeixinWebview" class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.trial_date">
               </div>
-              <input bg-if="isWeixinWebview" type="date" class="hms-singal-array-value" 
-              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate" 
+              <input ng-if="isWeixinWebview" type="date" class="hms-singal-array-value"
+              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate"
               ng-focus="applicationFullMemberUtil.inputDateStart()" ng-change="applicationFullMemberUtil.inputDateIng()" ng-blur="applicationFullMemberUtil.inputDateEnd()"/>
             </div>
             <div class="hms-singal-array-line">
@@ -404,8 +404,8 @@
                        style="width: 100%;color:#333333;height: 24px;text-align: right;background-color: #fff"
                        readonly ng-model="need.datepickerObject.dateModel">
               </ionic-datepicker>
-              <input bg-if="isWeixinWebview" type="date" class="hms-singal-array-value" 
-              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate" 
+              <input bg-if="isWeixinWebview" type="date" class="hms-singal-array-value"
+              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate"
               ng-focus="applicationFullMemberUtil.inputDateStart()" ng-change="applicationFullMemberUtil.inputDateIng()" ng-blur="applicationFullMemberUtil.inputDateEnd()"/>
             </div>
 

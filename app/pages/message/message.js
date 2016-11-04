@@ -11,6 +11,9 @@ angular.module('messageModule')
     '$ionicScrollDelegate',
     '$ionicActionSheet',
     '$cordovaActionSheet',
+    '$location',
+    '$rootScope',
+    '$ionicHistory',
     'imService',
     'checkVersionService',
     'baseConfig',
@@ -18,6 +21,7 @@ angular.module('messageModule')
     'hmsPopup',
     'messageService',
     'contactService',
+    '$ionicHistory',
     function ($scope,
               $state,
               $timeout,
@@ -25,13 +29,17 @@ angular.module('messageModule')
               $ionicScrollDelegate,
               $ionicActionSheet,
               $cordovaActionSheet,
+              $location,
+              $rootScope,
+              $ionicHistory,
               imService,
               checkVersionService,
               baseConfig,
               hmsHttp,
               hmsPopup,
               messageService,
-              contactService) {
+              contactService,
+              $ionicHistory) {
 
       //消息列表
       $scope.messageList = [];
@@ -47,7 +55,7 @@ angular.module('messageModule')
       $scope.loadingMoreFlag = false;
 
       //分页
-      var page = 1;
+      var currentPage = 1;
 
       var messageCacheList1 = [
         {
@@ -101,7 +109,7 @@ angular.module('messageModule')
           "content": '你最近怎么样1?',
           "imgUrl": "",
           "imgName": "森林",
-          "imgColorStyle": messageService.getRandomColor(),
+          "imgColorStyle": messageService.getRandomColor('0221'),
           "count": 3,
           "employee": '',
           "time": '23:54',
@@ -114,7 +122,7 @@ angular.module('messageModule')
           "content": '你最近怎么样2?',
           "imgUrl": "",
           "imgName": "石顺",
-          "imgColorStyle": messageService.getRandomColor(),
+          "imgColorStyle": messageService.getRandomColor('00232'),
           "count": 4,
           "employee": '',
           "time": '23:54',
@@ -308,7 +316,9 @@ angular.module('messageModule')
           $scope.employeeList = [];
           $scope.loadMoreFlag = false;
           $scope.empFilterValue = '';
-          $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
+          $timeout(function () {
+            $ionicScrollDelegate.$getByHandle('employeeListHandle').scrollTop();
+          }, 0);
         },
 
         chatWithNative: function (item) {
@@ -324,6 +334,11 @@ angular.module('messageModule')
               "telephoneNumbers": item.mobil
             };
             imService.toNativeChatPage(emp);
+            $timeout(function () {
+              $scope.showFilter = false;
+              $scope.empFilterValue = '';
+              $scope.$apply();
+            }, 200);
           } else {
             hmsPopup.showShortCenterToast('不支持网页聊天!');
           }
@@ -356,7 +371,10 @@ angular.module('messageModule')
 
         deleteMessage: function (message) {
           if (message.messageType == 'MESSAGE') {
-            messageService.deletePluginMessage($scope, message);
+            message.deleteAnimate = true;
+            $timeout(function () {
+              messageService.deletePluginMessage($scope, message);
+            }, 0);
           } else {
             message.deleteAnimate = true;
             $timeout(function () {
@@ -368,7 +386,16 @@ angular.module('messageModule')
         },
 
         search: function (loadMoreFlag) {
-          messageService.searchEmployee($scope, page, loadMoreFlag);
+          if (loadMoreFlag) {
+            currentPage = parseInt(currentPage) + 1;
+          } else {
+            currentPage = 1;
+          }
+
+          if (baseConfig.debug) {
+            console.log('search.currentPage ' + currentPage);
+          }
+          messageService.searchEmployee($scope, currentPage, loadMoreFlag);
         },
 
         goMessageDetail: function (messageDetail) {
@@ -411,6 +438,50 @@ angular.module('messageModule')
       if (baseConfig.debug) {
         console.log('messageCtrl.enter');
       }
+
+      $ionicPlatform.registerBackButtonAction(function (e) {
+
+        if (baseConfig.debug) {
+          console.log('messageCtrl.$ionicPlatform.registerBackButtonAction');
+        }
+
+        if ($location.path() == '/tab/message') {
+          if (!$scope.showFilter) {
+            if ($rootScope.backButtonPressedOnceToExit) {
+              ionic.Platform.exitApp();
+            } else {
+              $rootScope.backButtonPressedOnceToExit = true;
+              hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
+              setTimeout(function () {
+                $rootScope.backButtonPressedOnceToExit = false;
+              }, 1500);
+            }
+          }
+          else {
+            $scope.messageHandle.cancel();
+            var input = document.getElementById("your-input-id");
+            input.blur();
+            $scope.$apply();
+
+          }
+        } else if ($location.path() == '/tab/application' || $location.path() == '/tab/contact' ||
+          $location.path() == '/tab/myInfo' || $location.path() == '/login' || $location.path() == '/gesture-lock') {
+          if ($rootScope.backButtonPressedOnceToExit) {
+            ionic.Platform.exitApp();
+          } else {
+            $rootScope.backButtonPressedOnceToExit = true;
+            hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
+            setTimeout(function () {
+              $rootScope.backButtonPressedOnceToExit = false;
+            }, 1500);
+          }
+        }
+        else if ($ionicHistory.backView() && $location.path() != '/tab/message') {
+          $ionicHistory.goBack();
+        }
+        e.preventDefault();
+        return false;
+      }, 101);
 
       $scope.$on('$ionicView.enter', function (e) {
         //将页面的导航bar设置成白色

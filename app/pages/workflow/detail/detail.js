@@ -4,7 +4,7 @@ angular.module('myApp')
       $stateProvider
         .state('tab.workflow-detail', {
           url: '/workflow-detail',
-          params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": ""},
+          params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": "", 'fromLock': true},
           views: {
             'tab-application': {
               templateUrl: 'build/pages/workflow/detail/detail.html',
@@ -139,7 +139,9 @@ angular.module('applicationModule')
         }
       }
 
+      $scope.myPrsonalApplicationFlag = $stateParams.myPrsonalApplicationFlag;
       $scope.showBackbtn = true;
+      //$scope.showBackbtn = $stateParams.fromLock;
       $scope.currentDetail = $stateParams.detail; //传过来的数据块
       var detail = $stateParams.detail;//传过来的数据块
       var processedFlag = $stateParams.processedFlag; //已经审批和未审批的标记
@@ -1689,7 +1691,7 @@ angular.module('applicationModule')
         } else { //微信推送
           $scope.showBackbtn = false;
           var paramsKey = ['instanceId','workflowId','nodeId','submitFlag','recordId','approve','refuse','toOther','goBack'];
-          var detailParams = pairsWx[0].split("|");
+          var detailParams = decodeURI(pairsWx[0]).split("|"); // "|"在iOS微信浏览器中被转义
           var paramsJson = {};
           for(i = 0; i < paramsKey.length; i++){
             paramsJson[paramsKey[i]] = detailParams[i];
@@ -1715,7 +1717,13 @@ angular.module('applicationModule')
             hmsHttp.wxLogin(codeWx, callback);
           }
         }
-      }
+      };
 
-    }])
-;
+      $scope.$on('$ionicView.beforeEnter', function () {
+        if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
+          if(document.setTitle){
+            document.setTitle('待办事项明细');
+          }
+        }
+      });
+    }]);

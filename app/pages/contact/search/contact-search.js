@@ -317,7 +317,8 @@ angular.module('contactModule')
         if (ionic.Platform.isWebView()) {
           var newContact = navigator.contacts.create();
           var phoneNumbers = [];
-          phoneNumbers[0] = new ContactField('mobile', baseInfo.mobil, true);
+          phoneNumbers[0] = new ContactField('work', baseInfo.mobil2, false);
+          phoneNumbers[1] = new ContactField('mobile', baseInfo.mobil, true);
           var emails = [];
           emails[0] = new ContactField('email', baseInfo.email, true);
           var organization = [];

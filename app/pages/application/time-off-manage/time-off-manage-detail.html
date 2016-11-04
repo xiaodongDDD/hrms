@@ -1,11 +1,11 @@
-<ion-view view-title="{{pageTitle}}">
+<ion-view view-title="休假详情">  <!--pageTitle-->
   <ion-header-bar align-title="center" class="bar-stable">
     <div class="buttons">
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
         <span class="back-text">返回</span>
       </button>
     </div>
-    <h1 class="title">{{pageTitle}}</h1>
+    <h1 class="title">休假详情</h1>
     <div class="buttons">
       <button class="button button-icon icon ion-ios-help-outline" ng-click="showDescription()">
       </button>
@@ -38,7 +38,7 @@
         <div class="item-line"></div>
       </div>
 
-      <div class="row text-row no-padding-margin important-value" ng-if="timeLeaveFlag">
+      <div class="row text-row no-padding-margin important-value">
         <div class="col-20 text-left">休假天数:</div>
         <div class="col-80 text-right" ng-bind="timeOffData.timeLeave"></div>
         <div class="item-line"></div>
@@ -46,7 +46,132 @@
 
       <textarea class="desc-text-area" type="text" placeholder="休假原因" ng-model="timeOffData.applyReason" ng-readonly="readOnly">
       </textarea>
-    </ion-item>
+      <br>
+      <br>
+      <textarea class="desc-text-area" type="text" placeholder="请输入撤销原因" ng-model="timeOffData.revokeReason" ng-if="( timeOffData.approveStatus == 'APPROVED')">
+      </textarea>
+      <!--<ion-item class="image-item">-->
+        <!--<div class="row label-row" style="margin-top: 5px">-->
+          <!--<label class="upload-description-label">提示：最多上传10张图片</label>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;第一行&ndash;&gt;<div class="row label-row" ng-show="judgeRow(0)">-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[0][0]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[0].selected" ng-click="deleteImage(0)"></i>-->
+            <!--<img ng-hide="imageList[0].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(0)"/>-->
+            <!--<div ng-show="imageList[0].selected" style="background-image: url({{imageList[0].uri}})" on-tap="showBigPicture(0)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[0].deleteMode" ng-click="leaveDeleteModel(0)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-5 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[0][1]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[1].selected" ng-click="deleteImage(1)"></i>-->
+            <!--<img ng-hide="imageList[1].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(1)"/>-->
+            <!--<div ng-show="imageList[1].selected" style="background-image: url({{imageList[1].uri}})" on-tap="showBigPicture(1)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[1].deleteMode" ng-click="leaveDeleteModel(1)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-5 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[0][2]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[2].selected" ng-click="deleteImage(2)"></i>-->
+            <!--<img ng-hide="imageList[2].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(2)"/>-->
+            <!--<div ng-show="imageList[2].selected" style="background-image: url({{imageList[2].uri}})" on-tap="showBigPicture(2)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[2].deleteMode" ng-click="leaveDeleteModel(2)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-15 no-space">-->
+        <!--</div>-->
+      <!--</div>-->
+        <!--&lt;!&ndash;第二行&ndash;&gt;<div class="row label-row" ng-show="judgeRow(1)">-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[1][0]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[3].selected" ng-click="deleteImage(3)"></i>-->
+            <!--<img ng-hide="imageList[3].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(3)"/>-->
+            <!--<div ng-show="imageList[3].selected" style="background-image: url({{imageList[3].uri}})" on-tap="showBigPicture(3)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[3].deleteMode" ng-click="leaveDeleteModel(3)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-5 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[1][1]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[4].selected" ng-click="deleteImage(4)"></i>-->
+            <!--<img ng-hide="imageList[4].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(4)"/>-->
+            <!--<div ng-show="imageList[4].selected" style="background-image: url({{imageList[4].uri}})" on-tap="showBigPicture(4)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[4].deleteMode" ng-click="leaveDeleteModel(4)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-5 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[1][2]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[5].selected" ng-click="deleteImage(5)"></i>-->
+            <!--<img ng-hide="imageList[5].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(5)"/>-->
+            <!--<div ng-show="imageList[5].selected" style="background-image: url({{imageList[5].uri}})" on-tap="showBigPicture(5)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[5].deleteMode" ng-click="leaveDeleteModel(5)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-15 no-space">-->
+        <!--</div>-->
+      <!--</div>-->
+        <!--&lt;!&ndash;第三行&ndash;&gt;<div class="row label-row" ng-show="judgeRow(2)">-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[2][0]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[6].selected" ng-click="deleteImage(6)"></i>-->
+            <!--<img ng-hide="imageList[6].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(6)"/>-->
+            <!--<div ng-show="imageList[6].selected" style="background-image: url({{imageList[6].uri}})" on-tap="showBigPicture(6)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[6].deleteMode" ng-click="leaveDeleteModel(6)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-5 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[2][1]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[7].selected" ng-click="deleteImage(7)"></i>-->
+            <!--<img ng-hide="imageList[7].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(7)"/>-->
+            <!--<div ng-show="imageList[7].selected" style="background-image: url({{imageList[7].uri}})" on-tap="showBigPicture(7)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[7].deleteMode" ng-click="leaveDeleteModel(7)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-5 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[2][2]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[8].selected" ng-click="deleteImage(8)"></i>-->
+            <!--<img ng-hide="imageList[8].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(8)"/>-->
+            <!--<div ng-show="imageList[8].selected" style="background-image: url({{imageList[8].uri}})" on-tap="showBigPicture(8)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[8].deleteMode" ng-click="leaveDeleteModel(8)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-15 no-space">-->
+        <!--</div>-->
+      <!--</div>-->
+        <!--&lt;!&ndash;第四行&ndash;&gt;<div class="row label-row" ng-show="judgeRow(3)">-->
+        <!--<div class="col col-25 no-space">-->
+          <!--<ion-item class="image-square-item" ng-show="matrix[3][0]">-->
+            <!--<i class="ion-ios-close delete-icon" ng-show="imageList[9].selected" ng-click="deleteImage(9)"></i>-->
+            <!--<img ng-hide="imageList[9].selected" src="build/img/myInfo/camera.png" class="camera-image" ng-click="showPictureModal(9)"/>-->
+            <!--<div ng-show="imageList[9].selected" style="background-image: url({{imageList[9].uri}})" on-tap="showBigPicture(9)" class="common-image"></div>-->
+            <!--&lt;!&ndash;<div ng-show="imageList[9].deleteMode" ng-click="leaveDeleteModel(9)" class="black-shelter"></div>&ndash;&gt;-->
+          <!--</ion-item>-->
+        <!--</div>-->
+        <!--<div class="col col-5 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-25 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-5 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-25 no-space">-->
+        <!--</div>-->
+        <!--<div class="col col-15 no-space">-->
+        <!--</div>-->
+      <!--</div>-->
+        <!--<div class="upload-bottom"></div>-->
+      <!--</ion-item>-->
 
     <div class="bottom-bar">
       <div class="process-button"

@@ -43,10 +43,10 @@
 
 //微信
 #define WXAppKey @"wxaaeac85f01714b29"
-#define WXAppSecret @"35b235f667c83f623667ecce678944cd"
+#define WXAppSecret @"c2fa44f4026681e1f83320606aceae41"
 
 //QQ
-#define QQAppID @"1101255276"
+#define QQAppID @"1105645417"
 #define QQURI @"http://youtui.mobi"
 
 //人人

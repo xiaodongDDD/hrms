@@ -1,13 +1,13 @@
 <ion-view view-title="消息列表" class="messageDetail">
   <ion-header-bar align-title="center" style="">
     <div class="buttons">
-      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()" style="color: #1D4D95">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()" style="color: #1D4D95">
         <span class="back-text">返回</span>
       </button>
     </div>
     <h1 class="title" ng-bind="detailTitle"></h1>
     <div class="buttons">
-      <button class="button button-clear" style="font-size: 26px">
+      <button class="button button-clear" style="font-size: 24px">
         <i class="ion-ios-help-outline"></i>
       </button>
     </div>
@@ -15,6 +15,13 @@
   <div class="bar bar-subheader"
        style="padding:0px;height:1px; background: -webkit-linear-gradient(left,#1D4D95,#6BB9F0)"></div>
   <ion-content>
+
+    <!--<div style="position: absolute;width: 100%;height: 100%; background: white;z-index:100;" ng-if="showFlag"></div>-->
+    <!--class="has-header no-padding" overflow-scroll="true" scroll="true"-->
+    <!--<iframe id="sFrameName111111"
+            ng-style="customZoom" ng-src="{{frameSrc}}"></iframe>-->
+
+
     <div class="message-block" ng-repeat="messageDetail in messageDetailList" ng-click="readMessage(messageDetail)">
       <div class="message-time-line" ng-bind="messageDetail.sendTime">
       </div>

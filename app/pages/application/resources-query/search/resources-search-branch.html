@@ -1,0 +1,48 @@
+<ion-view class="transmit-person-modal">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="transmit-search">
+      <div class="transmit-button">
+        <i class="ion-ios-search search-i"></i>
+      </div>
+      <input id="branchInputSearch" placeholder="搜索"
+             ng-model="branchKey.getValue"
+             ng-change="searchBranch()">
+      <img src="build/img/login/login-clear.png" class="employee-clear-img"
+           ng-if="showClear"
+           ng-click="clearInputContent()"/>
+    </div>
+    <div class="buttons">
+      <button class="button button-icon icon" ng-click="hideBranchSearch()">
+        <span class="back-text">取消</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="branch-search-content" delegate-handle="contentHandle">
+    <hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>
+    <div ng-if="showMyBranch">
+      <div class="row myBranch">
+        <img ng-src="build/img/contact/history@3x.png"/>
+        <span class="col-25 branch-logo">我的部门</span>
+        <label class="col-80 branch-line"></label>
+      </div>
+      <div class="myBranch-item">
+        {{myBranch.my_branch}}
+      </div>
+      <div class="myBranch-item" ng-click="selectBranchItem('myBranchDetail')">
+        <span style="margin-left: 20px">{{myBranch.my_branch_detail}}</span>
+      </div>
+    </div>
+
+    <div ng-if="showBranchList" class="search-result-item " ng-repeat="branch in branchList">
+      <div class="branch-name" ng-click="selectBranchItem(branch)" >
+        {{branch.unit_name}}
+      </div>
+      <div class="unit-name" ng-repeat="unit in branch.unit_detail_list" ng-click="selectBranchItem(unit)">
+        {{unit.full_unit_name}}
+      </div>
+    </div>
+
+
+
+  </ion-content>
+</ion-view>

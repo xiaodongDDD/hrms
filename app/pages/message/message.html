@@ -4,7 +4,7 @@
       <div class="message-button">
         <i class="ion-ios-search search-i"></i>
       </div>
-      <input placeholder="搜索" ng-blur="messageHandle.blur()" ng-focus="messageHandle.focus()"
+      <input id="your-input-id" placeholder="搜索" ng-blur="messageHandle.blur()" ng-focus="messageHandle.focus()"
              ng-change="messageHandle.search(false)" ng-model="empFilterValue">
     </div>
     <div class="cancel-button-text" ng-click="messageHandle.cancel()" ng-if="showFilter">
