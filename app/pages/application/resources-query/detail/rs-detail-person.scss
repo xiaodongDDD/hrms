@@ -100,7 +100,9 @@
     margin-left: 4%;
     text-align: center;
     margin-top: 5px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    line-height: 20px;
+    text-align: center;
   }
   .subject-item-name {
     float: left;
@@ -176,6 +178,7 @@
   }
 
   .person-content {
+    //top:0px;
     margin-top: -44px;
     //height: 47vh;
     background: #fff;
@@ -267,8 +270,9 @@
             margin-top: calc((6vh - 30px)/2);
             border-radius: 14px;
             text-align: center;
-            font-size: 18px;
-            color: #1f519a;
+            font-size: 16px;
+            //color: #1f519a;
+            color:#9B9B9B;
           }
           .each-day-red {
 

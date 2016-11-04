@@ -56,7 +56,7 @@ angular.module('HmsModule')
             console.log("checkAppStoreVersion End!");
           }
           var result = response.results;
-          var appstoreVersion = ''
+          var appstoreVersion = '';
           if(result[0]){
             appstoreVersion = result[0].version;
             var serveVersion = appstoreVersion.split('.');
@@ -73,6 +73,12 @@ angular.module('HmsModule')
               hmsPopup.confirm('', "AppStore有新版本更新", selectAction);
             }else{
               if(appstoreVersion === baseConfig.version.currentVersion) {
+
+                if (baseConfig.debug) {
+                  console.log("appstoreVersion " + appstoreVersion);
+                  console.log("baseConfig.version.currentVersion " + baseConfig.version.currentVersion);
+                }
+
                 var promise = hmsHttp.post(url, checkVersionParams).success(function (response) {
                   var minVersion = response.returnData.subVersiorNumber;
                   var minUpdateUrl = response.returnData.subDownloadUrl;

@@ -6,7 +6,7 @@
 
 * 参数successCallBack  成功时的回调
 * 参数errorCallBack  失败时的回调
-* 参数type 传0选择单个日期，传1返回一个日期期间
+* 参数type 传1选择单个日期，传2返回一个日期期间
 
 ##返回值
 ###当type传入值为1的时候直接返回一个字符串 如：2016-07-20
@@ -19,11 +19,11 @@
     					},
     					function(msg){
     					alert(msg);
-    					},0)">chooseSingle</button>
+    					},1)">chooseSingle</button>
     	<button onclick="HmsCalendar.openCalendar(
     				function(msg){
     					alert(msg);
     					},
     					function(msg){
     					alert(msg);
-    					},1)">chooseRange</button>
+    					},2)">chooseRange</button>

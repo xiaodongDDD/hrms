@@ -13,7 +13,7 @@
 
   <!--<button class="button-small button-clear button-list" ng-click="filterWorkFlowInfo()"></button>-->
 
-  <ion-content class="person-content" overflow-scroll="true" style="overflow: hidden">
+  <ion-content class="person-content" overflow-scroll="true" style="overflow: hidden" ng-style="marginTop">
     <!--<ion-slide-box id="next-slide" ng-if="showContent" delegate-handle="employee-handle" active-slide="slideIndex" on-slide-changed="slideChanged($index)">-->
     <!--<ion-slide class="person-top" ng-repeat="x in employeeList" >-->
     <!--<div  class="person-head-image" style="background: #ccc;background-size: cover;background-position: center;background-repeat: no-repeat;">-->
@@ -28,7 +28,7 @@
           <p class="person-name"><span ng-bind="empInfo.employee_name"></span>&nbsp;&nbsp;<span ng-bind="empInfo.employee_number"></span></p>
         </div>
         <div class="person-subject">
-          <ion-scroll class="subject-scroll" delegate-handle="subject-handle">
+          <ion-scroll class="subject-scroll" delegate-handle="subject-handle" has-bouncing="false">
             <div class="subject-item" ng-repeat="subject in projectList">
               <div class="subject-item-circle" style="background:{{subject.color}}" ng-bind="subject.days_count"></div>
               <div class="subject-item-name" ng-bind="subject.project_name"></div>
@@ -59,10 +59,10 @@
         <span class="float-span">1111111111111111111111111111</span>
       </div>
         <div class="calendar-month">
-          <span class="arrow ion-ios-arrow-left"></span>
+          <!--<span class="arrow ion-ios-arrow-left"></span>-->
           <span class="word-font" ng-bind="y.yearSlide"></span>
           <span class="word-font">年<span ng-bind="y.monthSlide"></span>月</span>
-          <span class="arrow ion-ios-arrow-right"></span>
+          <!--<span class="arrow ion-ios-arrow-right"></span>-->
         </div>
         <div class="calendar-day">
           <div class="calendar-title">

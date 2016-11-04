@@ -146,6 +146,16 @@ angular.module('applicationModule')
       var pageNumber = 1;
       var monthPage = 1;
 
+      $scope.marginTop = {
+        "margin-top": "-44px"
+      };
+
+      if(ionic.Platform.isIOS()){
+        $scope.marginTop = {
+          "margin-top": "-64px"
+        };
+      }
+
       //周列表
       $scope.weekTitleList = [
         '日', '一', '二', '三', '四', '五', '六'
