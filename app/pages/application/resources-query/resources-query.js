@@ -387,13 +387,19 @@ angular.module('applicationModule')
 
       $scope.goInputSearch = function (page) { //去搜索界面
         if (page == 'person') {
+
+          var dimission = "false";
+          if($scope.dimission){
+            dimission = "true";
+          }
           $state.go('tab.resourcesSearchPerson',
             {
               page: page,
               employeeCode: $scope.employeeCode,
               unitId: $scope.unitId,
               branchId: $scope.branchId,
-              subjectId: $scope.subjectId
+              subjectId: $scope.subjectId,
+              dimission: dimission,
             }
           );
         }

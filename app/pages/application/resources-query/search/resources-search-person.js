@@ -20,7 +20,8 @@ angular.module('myApp')
             employeeCode: "",
             unitId: "",
             branchId: "",
-            subjectId: ""
+            subjectId: "",
+            dimission: ""
           }
         });
     }]);
@@ -62,9 +63,6 @@ angular.module('applicationModule')
               $sce,
               $q) {
 
-
-
-
       //接收到要搜索的数据类型page
       //接收数据
       var page = $stateParams.page;
@@ -74,6 +72,10 @@ angular.module('applicationModule')
       var subjectId = $stateParams.subjectId;
       //是否弹出员工查询过滤层
       $scope.showFilter = false;
+
+      if(baseConfig.debug){
+        console.log('resourcesSearchPersonCtl.$stateParams ' + angular.toJson($stateParams));
+      }
 
       //员工查询界面加载更多数据标志
       $scope.loadMoreFlag = false;
@@ -105,7 +107,14 @@ angular.module('applicationModule')
         }
       }
 
-      var searchInfo = '{"params":{"p_employee_number":"' + employeeCode + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '"}}';
+      var searchInfo = {
+        "params": {
+          "p_employee_number": employeeCode,
+          "p_branch_id": unitId,
+          "p_project_id": subjectId,
+          "p_dismission": $stateParams.dimission
+        }
+      };
       var getBranchEmpUrl = baseConfig.businessPath + "/api_resources_query/query_branch_emp"; //部门员工接口地址
       var getSubjectEmpUrl = baseConfig.businessPath + "/api_resources_query/query_project_emp"; //项目员工接口地址
 

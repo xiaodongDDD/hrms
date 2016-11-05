@@ -28,7 +28,7 @@
       <!--<div class="myBranch-item">
         {{myBranch.my_branch}}
       </div>-->
-      <div class="myBranch-item" ng-click="selectBranchItem(item)" ng-repeat="item in myBranch">
+      <div class="myBranch-item" ng-click="selectBranchItem(item,'self')" ng-repeat="item in myBranch">
         <span style="margin-left: 0px">{{item.unit_name}}</span>
       </div>
     </div>
@@ -37,7 +37,7 @@
       <div class="branch-name" ng-click="selectBranchItem(branch)" >
         {{branch.unit_name}}
       </div>
-      <div class="unit-name" ng-repeat="unit in branch.unit_detail_list" ng-click="selectBranchItem(unit)">
+      <div class="unit-name" ng-repeat="unit in branch.unit_detail_list" ng-click="selectBranchItem(unit,'all')">
         {{unit.full_unit_name}}
       </div>
     </div>
