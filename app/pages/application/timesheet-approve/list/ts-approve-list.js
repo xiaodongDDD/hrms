@@ -135,6 +135,10 @@ angular.module('tsApproveModule')
         }
       }
 
+      //处理月份那个去前导0
+      $scope.dealRegexp = function(str) {
+        return str.replace(/^0/,"");
+      }
 
       $scope.goBackPage = function () { //响应返回按钮--
         var historyId = $ionicHistory.currentHistoryId();

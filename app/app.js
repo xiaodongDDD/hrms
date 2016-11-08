@@ -9,6 +9,7 @@ angular.module('myApp', [
   'ionic',
   'ionic-datepicker',
   'ngCordova',
+  'ngSanitize',
   'loginModule',
   'baseConfig',
   'messageModule',

@@ -52,7 +52,7 @@
              ng-if="!showDetailArrow"></div>
         <div class="arrow-item" ng-if="showDetailArrow"></div>
         <div class="arrow-content" ng-if="showDetailArrow"
-             ng-bind-html="i.end_date.substring(5,7).replace(0,'')+'月'"></div>
+             ng-bind-html="dealRegexp(i.end_date.substring(5,7))+'月'"></div>
         <div class="row second-content">
           <div class="name">项目:</div>
           <div class="number" ng-bind="i.project_name"></div>
@@ -104,4 +104,3 @@
     </div>
   </ion-popover-view>
 </script>
-
