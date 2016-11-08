@@ -313,6 +313,26 @@ HmsModule.directive('hmsLoading', ['$rootScope', function ($rootScope) {
 }]);
 
 /**
+ * @description:loading tag
+ *
+ */
+HmsModule.directive('hmsCommonLoading', ['$rootScope', function ($rootScope) {
+  return {
+    restrict: 'EA',
+    template: '' +
+    '<div class="hide-icon">' +
+    '<ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>' +
+    '</div>',
+    replace: true, //使用模板替换原始标记
+    transclude: false,    // 不复制原始HTML内容
+    controller: ["$scope", function ($scope) {
+    }],
+    link: function (scope, element, attrs, controller) {
+    }
+  };
+}]);
+
+/**
  * @description:nodata tag
  *
  */

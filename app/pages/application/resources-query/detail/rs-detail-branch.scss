@@ -139,7 +139,7 @@
     background: white;
     position: relative;
     float: left;
-
+    border-bottom: 1px dashed #ccc;
 
     .calendar-title {
       height: 60px;
@@ -270,8 +270,9 @@
   //    margin-left: 5px;
   //  }
     .button-list {
-      width: 35px;
-      height: 35px;
+      margin-top: 3px;
+      width: 30px;
+      height: 30px;
       color: transparent;
       border-radius: 50%;
       background-image: url("../img/application/resources-query/screen@2x.png");

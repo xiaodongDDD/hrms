@@ -1,34 +1,26 @@
-<ion-view class="resources-detail-person" >
+<ion-view class="resources-detail-person">
   <ion-header-bar style="background: transparent; z-index: 99">
     <div class="buttons">
       <button class="button button-icon ion-ios-arrow-back" ng-click="goBackPage()">
         <span class="back-button-text">返回</span>
       </button>
     </div>
-      <!--<button class="button button-clear back-button" style="color: #0d3349;z-index: 999" ng-click="goBackPage()">-->
-        <!--<i class="ion-ios-arrow-back" style="color: #fff"></i>-->
-        <!--<span class="back-text" style="color: #fff">返回</span>-->
-      <!--</button>-->
   </ion-header-bar>
 
-  <!--<button class="button-small button-clear button-list" ng-click="filterWorkFlowInfo()"></button>-->
-
-  <ion-content class="person-content" overflow-scroll="true" style="overflow: hidden">
-    <!--<ion-slide-box id="next-slide" ng-if="showContent" delegate-handle="employee-handle" active-slide="slideIndex" on-slide-changed="slideChanged($index)">-->
-    <!--<ion-slide class="person-top" ng-repeat="x in employeeList" >-->
-    <!--<div  class="person-head-image" style="background: #ccc;background-size: cover;background-position: center;background-repeat: no-repeat;">-->
-    <!--</div>-->
+  <ion-content class="person-content" overflow-scroll="true" style="overflow: hidden" ng-style="marginTop">
     <div class="person-top" ng-cloak on-swipe-left="nextPerson()" on-swipe-right="lastPerson()">
-      <div  class="person-head-image" ng-cloak style="background: url('{{empInfo.emp_avatar}}');background-size: cover;background-position: center;background-repeat: no-repeat;">
+      <div class="person-head-image" ng-cloak
+           style="background: url('{{empInfo.emp_avatar}}');background-size: cover;background-position: center;background-repeat: no-repeat;">
       </div>
       <div class="black-cover"></div>
       <div class="person-info">
         <div class="img-section">
           <img class="img-person" ng-src="{{empInfo.emp_avatar}}"/>
-          <p class="person-name"><span ng-bind="empInfo.employee_name"></span>&nbsp;&nbsp;<span ng-bind="empInfo.employee_number"></span></p>
+          <div class="person-name"><span ng-bind="empInfo.employee_name"></span>&nbsp;&nbsp;<span
+            ng-bind="empInfo.employee_number"></span></div>
         </div>
         <div class="person-subject">
-          <ion-scroll class="subject-scroll" delegate-handle="subject-handle">
+          <ion-scroll class="subject-scroll" delegate-handle="subject-handle" has-bouncing="false" scrollbar-y="false">
             <div class="subject-item" ng-repeat="subject in projectList">
               <div class="subject-item-circle" style="background:{{subject.color}}" ng-bind="subject.days_count"></div>
               <div class="subject-item-name" ng-bind="subject.project_name"></div>
@@ -38,43 +30,35 @@
         <div class="person-bottom row">
           <div class="person-bottom-left col-40" ng-click="lastPerson()">
             <span class="person-left-span ion-ios-arrow-left" ng-if="lastArrow"></span>
-            <div class="person-left-name"><span ng-bind="lastEmp.employee_name"></span>&nbsp;&nbsp;<span ng-bind="lastEmp.employee_number"></span></div>
+            <div class="person-left-name"><span ng-bind="lastEmp.employee_name"></span>&nbsp;&nbsp;<span
+              ng-bind="lastEmp.employee_number"></span></div>
           </div>
           <div class="col-20">
             <div class="person-triangle"></div>
           </div>
           <div class="person-bottom-right col-40" ng-click="nextPerson()">
             <span class="person-right-span ion-ios-arrow-right" ng-if="nextArrow"></span>
-            <div class="person-right-name"><span ng-bind="nextEmp.employee_name"></span>&nbsp;&nbsp;<span ng-bind="nextEmp.employee_number"></span></div>
+            <div class="person-right-name"><span ng-bind="nextEmp.employee_name"></span>&nbsp;&nbsp;<span
+              ng-bind="nextEmp.employee_number"></span></div>
           </div>
         </div>
       </div>
     </div>
-    <!--</ion-slide>-->
-    <!--</ion-slide-box>-->
     <hms-loading ng-if="contactLoading" style="padding-top: 10px"></hms-loading>
-    <ion-slide-box id="month-slide" delegate-handle="month-handle" active-slide="monthIndex" on-slide-changed="monthChanged($index)">
+    <ion-slide-box id="month-slide" delegate-handle="month-handle" active-slide="monthIndex"
+                   on-slide-changed="monthChanged($index)">
       <ion-slide ng-repeat="y in resultList">
-        <div class="calendar-float">
-        <span class="float-span">1111111111111111111111111111</span>
-      </div>
         <div class="calendar-month">
-          <span class="arrow ion-ios-arrow-left"></span>
+          <!--<span class="arrow ion-ios-arrow-left"></span>-->
           <span class="word-font" ng-bind="y.yearSlide"></span>
           <span class="word-font">年<span ng-bind="y.monthSlide"></span>月</span>
-          <span class="arrow ion-ios-arrow-right"></span>
+          <!--<span class="arrow ion-ios-arrow-right"></span>-->
         </div>
         <div class="calendar-day">
           <div class="calendar-title">
             <div class="title-item" ng-cloak ng-repeat="title in weekTitleList" ng-bind="title"></div>
           </div>
           <div class="calendar-each-week">
-            <!--<div class="calendar-week" ng-repeat="week in calendar">-->
-            <!--<a class="day-item" ng-repeat="day in week.list">-->
-            <!--<div  ng-class="{'each-day-blank':su, 'each-day-purple':day.isSubject,-->
-            <!--'each-day-green':day.isHoliday, 'each-day-red':subject}">{{day.day}}</div>-->
-            <!--</a>-->
-            <!--</div>-->
             <a class="day-item" ng-repeat="day in y.calendarDayList">
               <div class="each-day-blank" ng-cloak ng-class="{'each-day-purple':day.isSubject5,
                 'each-day-green':day.isSubject1, 'each-day-red':day.isSubject3,'each-day-blue':day.isSubject2,
@@ -86,10 +70,5 @@
         </div>
       </ion-slide>
     </ion-slide-box>
-
-
   </ion-content>
-
-  <!--<div class="button-list" ng-click="filterWorkFlowInfo()"></div>-->
-
 </ion-view>

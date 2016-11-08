@@ -15,3 +15,4 @@ HmsCalendar.prototype.openCalendar=function(successCallBack, errorCallBack, type
 module.exports = new HmsCalendar();
 
 //调用方法 HmsCalendar
+

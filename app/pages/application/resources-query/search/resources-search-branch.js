@@ -25,7 +25,7 @@ angular.module('myApp')
     }]);
 
 angular.module('applicationModule')
-  .controller('resourcesSearchBranchCtl',[
+  .controller('resourcesSearchBranchCtl', [
     '$scope',
     '$state',
     '$ionicHistory',
@@ -44,10 +44,7 @@ angular.module('applicationModule')
               baseConfig,
               $timeout,
               $rootScope,
-              $ionicScrollDelegate
-
-
-              ){
+              $ionicScrollDelegate) {
 
       {
         $scope.showInfinite = false; //默认隐藏无限滚动的标签
@@ -75,11 +72,10 @@ angular.module('applicationModule')
         var subjectId = $stateParams.subjectId;
 
         var myNumber = '{"params":{"p_employee_number":"' + window.localStorage.empno + '"}}'; //封装我的工号信息传参
-        if(employeeCode){
+        if (employeeCode) {
           myNumber = '{"params":{"p_employee_number":"' + employeeCode + '"}}'; //封装已选择员工工号信息传参
           item.disabled = true;  //禁用输入框
         }
-
 
 
         var getMyBranchUrl = baseConfig.businessPath + "/api_resources_query/get_personal_department"; //我的部门接口地址
@@ -93,14 +89,21 @@ angular.module('applicationModule')
         hmsHttp.post(getMyBranchUrl, myNumber).success(function (result) {
           $scope.contactLoading = false;
 
-          $scope.myBranch = result.returnData;
+          if (angular.isArray(result.returnData.my_branch_detail)) {
+            $scope.myBranch = result.returnData.my_branch_detail;
+          }
+          else {
+            $scope.myBranch = [];
+          }
+
 
         }).error(function () {
-          console.log('我的部门异常');
+          if (baseConfig.debug) {
+            console.log('我的部门异常');
+          }
         });
       };
       showMyBranch();
-
 
 
       $scope.searchBranch = function () {
@@ -124,14 +127,16 @@ angular.module('applicationModule')
 
         branchSearch = '{"params":{"p_department_value":"' + $scope.branchKey.getValue + '"}}';
 
-        hmsHttp.post(searchBranchUrl,branchSearch).success(function (result) {
+        hmsHttp.post(searchBranchUrl, branchSearch).success(function (result) {
           $scope.contactLoading = false;
           $scope.branchList = result.returnData;
-          console.log($scope.branchList);
-
-
+          if (baseConfig.debug) {
+            console.log($scope.branchList);
+          }
         }).error(function () {
-          console.log('搜索部门异常');
+          if (baseConfig.debug) {
+            console.log('搜索部门异常');
+          }
         })
 
       };
@@ -148,79 +153,49 @@ angular.module('applicationModule')
         }, 400);
       };
 
-      $scope.selectBranchItem = function (newBranch) { //把项目信息返回
+      $scope.selectBranchItem = function (newBranch,type) { //把项目信息返回
         // dealHistory(newSub.sub_name);
-
+        if (baseConfig.debug) {
+          console.log('selectBranchItem.newBranch ' + angular.toJson(newBranch));
+        }
         $scope.showMyBranch = true;
         $scope.showClear = false;
         $scope.branchList = [];
         $scope.branchKey.getValue = '';
-        // if (commonContactService.getContactFlag() === 'carpooling-new-contactSearch') {
-        //   commonContactService.setEmpInfo(newEmp);
-        //   $rootScope.$broadcast("SEND_EMP_INFO");
-        //   $ionicHistory.goBack();
-        // } else {
-        // $scope.authorize = function(){
 
-
-        if(newBranch.full_unit_name){
-          $rootScope.$broadcast("BRANCH_NAME",newBranch.full_unit_name);
-          $rootScope.$broadcast("UNIT_ID",newBranch.unit_id);
-          $rootScope.$broadcast("BRANCH_ID",newBranch.parent_id);
+        if(type == 'self'){
+          $rootScope.$broadcast("BRANCH_NAME", newBranch.unit_name);
+          $rootScope.$broadcast("UNIT_ID", newBranch.unit_id);
+          $rootScope.$broadcast("BRANCH_ID", newBranch.parent_id);
           $ionicHistory.goBack();
-        }else if(newBranch.unit_name && newBranch.unit_detail_list == ""){
-          $rootScope.$broadcast("BRANCH_NAME",newBranch.unit_name);
-          $rootScope.$broadcast("BRANCH_ID",newBranch.dept_id);
-          $ionicHistory.goBack();
-        }else if(newBranch == 'myBranchDetail'){
-          $rootScope.$broadcast("BRANCH_NAME",$scope.myBranch.my_branch_detail);
-          $rootScope.$broadcast("BRANCH_ID",$scope.myBranch.parent_id);
-          $rootScope.$broadcast("UNIT_ID",$scope.myBranch.unit_id);
-          $ionicHistory.goBack();
+        }else{
+          if (newBranch.full_unit_name) {
+            $rootScope.$broadcast("BRANCH_NAME", newBranch.full_unit_name);
+            $rootScope.$broadcast("UNIT_ID", newBranch.unit_id);
+            $rootScope.$broadcast("BRANCH_ID", newBranch.parent_id);
+            $ionicHistory.goBack();
+          } else if (newBranch.unit_name && newBranch.unit_detail_list == "") {
+            $rootScope.$broadcast("BRANCH_NAME", newBranch.unit_name);
+            $rootScope.$broadcast("BRANCH_ID", newBranch.dept_id);
+            $ionicHistory.goBack();
+          } else if (newBranch == 'myBranchDetail') {
+            $rootScope.$broadcast("BRANCH_NAME", $scope.myBranch.my_branch_detail);
+            $rootScope.$broadcast("BRANCH_ID", $scope.myBranch.parent_id);
+            $rootScope.$broadcast("UNIT_ID", $scope.myBranch.unit_id);
+            $ionicHistory.goBack();
+          }
         }
-        // }else if(newBranch == 'myBranch'){
-        //   $rootScope.$broadcast("BRANCH_NAME",$scope.myBranch.my_branch);
-        //   $rootScope.$broadcast("BRANCH_ID",$scope.myBranch.parent_id);
-        //   $ionicHistory.goBack();
-
-
-        // else{
-        //   $rootScope.$broadcast("BRANCH_NAME",newBranch);
-        //   $rootScope.$broadcast("BRANCH_ID",newBranch);
-        //   $ionicHistory.goBack();
-        // }
-
-
-        // };
-
-        // $state.go('tab.resources-query',
-        //   {
-        //     branchName: unit.full_unit_name
-        //   }
-        // );
-
       };
-
-
-
-
-
-
-
 
       $scope.hideBranchSearch = function () {
         $scope.showMyBranch = true;
         $scope.showClear = false;
         $scope.branchList = [];
         $scope.branchKey.getValue = '';
-        $rootScope.$broadcast("BRANCH_NAME","");
-        $rootScope.$broadcast("BRANCH_ID","");
-        $rootScope.$broadcast("UNIT_ID","");
+        $rootScope.$broadcast("BRANCH_NAME", "");
+        $rootScope.$broadcast("BRANCH_ID", "");
+        $rootScope.$broadcast("UNIT_ID", "");
         $ionicHistory.goBack();
       };
-
-
-
-
 
     }]);
