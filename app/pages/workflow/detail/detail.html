@@ -113,7 +113,7 @@
               <div ng-if="!isWeixinWebview" class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.trial_date">
               </div>
               <input ng-if="isWeixinWebview" type="date" class="hms-singal-array-value"
-              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate"
+              ng-style="inputIosStyle()" style="height:19px;padding:0px;appearance:none;-webkit-appearance:none;" ng-model="applicationEmployeeDetail.inputDate"
               ng-focus="applicationFullMemberUtil.inputDateStart()" ng-change="applicationFullMemberUtil.inputDateIng()" ng-blur="applicationFullMemberUtil.inputDateEnd()"/>
             </div>
             <div class="hms-singal-array-line">
