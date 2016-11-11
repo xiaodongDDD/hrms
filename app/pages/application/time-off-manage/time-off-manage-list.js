@@ -163,6 +163,12 @@ angular.module('applicationModule')
               } else if ('DRAFT'     == data.approveStatus) {
                 data.approveStatusMeaning = '草稿';
                 data.approveStatusClass   = 'draft';
+              } else if ('REVOKING'     == data.approveStatus) {
+                data.approveStatusMeaning = '撤销中';
+                data.approveStatusClass   = 'revoking';
+              } else if ('REVOKED'     == data.approveStatus) {
+                data.approveStatusMeaning = '已撤销';
+                data.approveStatusClass   = 'revoked';
               }
 
               //加上'天'后缀
