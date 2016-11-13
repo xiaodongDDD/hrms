@@ -83,7 +83,8 @@ Android测试环境
 1.修改app/config/devConfig.json  里面
 1.真机打包,修改app/config/devConfig.json  里面  isMobilePlatform  nativeScreenFlag 设置为true
 2.gulp run-dev
-3.重新下载插件
+3.测试环境打包 
+  iOS版本 Android 打包 通用插件下载
   cordova plugin rm com.handmobile.cordovaplugin.hotpatch
   cordova plugin add http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH/
   
@@ -96,7 +97,45 @@ Android测试环境
   cordova plugin rm cordova-plugin-youtuishare
   cordova plugin add http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git
   
-4.ionic platform add android
-5.ionic build android
+  一 iOS 打包
+  二 Android 打包
+  
+4.正式环境PROD appID com.hand-china.hrms
+  iOS版本 Android 打包 通用插件下载
+  cordova plugin rm com.handmobile.cordovaplugin.hotpatch
+  cordova plugin add http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH/
+  
+  cordova plugin rm hand-im-plugin-device
+  cordova plugin add http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git --variable RONG_KEY=e5t4ouvptpsaa
+  
+  cordova plugin rm jpush-phonegap-plugin
+  cordova plugin add jpush-phonegap-plugin --variable API_KEY=22b25063349b6beef7bde524
+  
+  一 iOS 打包
+  (1) CDVPlugin-Bridging-Header.h 修改融云app key   e5t4ouvptpsaa 
+  (2) C Language Dialect 改成 GNU99[-std=gnu99]
+  (3) Apple LLVM8.0 - Preprocessing 去掉DEBUG=1
+  (4) 删掉cell_image.png
+  
+  (5) 
+  AppDelegate+JPush.m didRegisterForRemoteNotificationsWithDeviceToken加入下面的判断
+  NSString *token =
+      [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"
+                                                             withString:@""]
+        stringByReplacingOccurrencesOfString:@">"
+        withString:@""]
+       stringByReplacingOccurrencesOfString:@" "
+       withString:@""];
+      NSLog(@"token = %@",token);
+      [[NSUserDefaults standardUserDefaults]setObject:token forKey:@"device_token"];
+      
+      [[RCIMClient sharedRCIMClient] setDeviceToken:token];
+      
+  #import <RongIMLib/RongIMLib.h>
+  
+  二 Android 打包
+  
+5.ionic platform add android
+6.ionic build android
 ```
     

@@ -734,7 +734,7 @@ angular.module('applicationModule')
             $scope.requestParams = {
               "params": {
                 "p_employee_code": window.localStorage.empno,
-                "p_timeoffid": $scope.timeOffData.timeOffId
+                "p_timeoffid": $scope.timeOffData.timeOffId + ""
               }
             }
           }
