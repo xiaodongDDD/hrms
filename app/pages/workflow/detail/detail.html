@@ -73,7 +73,7 @@
             </div>
             <input class="hms-singal-array-value" placeholder="请填写邮寄地址"
                    ng-model="renewContract.address" ng-if="renewContractEditable" style="height: 22px;border:0;">
-            </input>
+            
           </div>
         </div>
       </div>
@@ -323,7 +323,7 @@
             </div>
             <input class="hms-singal-array-value" placeholder="合同金额"
                    ng-model="openProjectDetail.amount" style="height: 22px; border:0;">
-            </input>
+            
           </div>
           <div class="hms-singal-array-line" ng-click="openProjectUtil.openProjectTypeShow()">
             <div class="hms-singal-array-key">
@@ -338,7 +338,7 @@
             </div>
             <input class="hms-singal-array-value" placeholder="项目代码" ng-if="openProjectDetail.openNewProjectFlag == '0'"
                    ng-model="openProjectDetail.projectCode" style="height: 22px; border:0;">
-            </input>
+            
             <div class="hms-singal-array-value" ng-bind="openProjectDetail.projectCode"
                  ng-click="showOpenProjectModal()"
                  ng-if="openProjectDetail.openNewProjectFlag=='1'">
@@ -351,7 +351,7 @@
             <input class="hms-singal-array-value" placeholder="项目名称"
                    ng-if="openProjectDetail.openNewProjectFlag =='0'"
                    ng-model="openProjectDetail.projectName" style="height: 22px; border:0;">
-            </input>
+            
             <div class="hms-singal-array-value" ng-bind="openProjectDetail.projectName"
                  ng-if="openProjectDetail.openNewProjectFlag=='1'">
             </div>
@@ -429,7 +429,7 @@
     <div class="hms-extra-info" ng-if="workflowActionShowFlag&&!LoadingPushData&&!LoadingModalData">
       <div class="hms-opinion">
         <input class="" type="text" placeholder="请填写处理意见" ng-model="processExtroInfo.opinion">
-        </input>
+        
       </div>
       <div class="hms-transmit" ng-click="workflowDetailUtil.chooseTransmitPerson()">
         <div class="row row-col-no-padding">
@@ -445,7 +445,7 @@
         </div>
       </div>
     </div>
-    </div>
+    
   </ion-content>
 
   <div class="hms-workflow-submit" ng-if="workflowActionShowFlag">

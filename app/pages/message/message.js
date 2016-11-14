@@ -38,8 +38,7 @@ angular.module('messageModule')
               hmsHttp,
               hmsPopup,
               messageService,
-              contactService,
-              $ionicHistory) {
+              contactService) {
 
       //消息列表
       $scope.messageList = [];
