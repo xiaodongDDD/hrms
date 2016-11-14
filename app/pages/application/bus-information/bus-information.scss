@@ -7,136 +7,144 @@
     padding: 0;
     border: 0;
     outline: 0;
-    .bus-information li {
+    overflow: hidden;
+    .bus-information .bus-information li {
         list-style: none;
     }
-  .module {
-    width: 100vw;
-    margin: 1.6vh 0 3vh;
-  }
-  .module .title {
-    width: 100vw;
-    height: 5.5vh;
-    line-height: 5.5vh;
-    background: white;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    box-shadow: 0 0.5vh 0.5vh #CCCBCB;
-  }
-  .module .title .point {
-    width: 4vw;
-    height: 4vw;
-    background: #4A90E2;
-    border-radius: 50%;
-    margin: 0 1.5vw 0 2vw;
-  }
-  .module:nth-child(2) .title .point {
-    background: #7ED321;
-  }
-  .module .title p {
-    font-size: 4.6vw;
-    height: 5.5vh;
-    color: #24559C;
-    margin: 0;
-  }
-  .module .title img {
-    margin: 0 1.5vw;
-  }
-  .module .table_head {
-    width: 100vw;
-    height: 4.8vh;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    justify-content: space-around;
-  }
-  .module .table_head li {
-    margin-top: 0.4vh;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    font-size: 3.9vw;
-    color: #24559C;
-  }
-  .module .table_head li:nth-child(1) img {
-    height: 3vh;
-    margin-right: 2vw;
-  }
-  .module .table_head li:nth-child(2) img,
-  .module .table_head li:nth-child(3) img {
-    height: 2.6vh;
-    margin-right: 2vw;
-  }
-  .module .t_d {
-    width: 100vw;
-    height: 7.5vh;
-    background: white;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    justify-content: space-around;
-  }
-  .module .t_d li {
-    font-size: 4.8vw;
-  }
-  .module .t_d li:nth-child(1) {
-    color: #4A4A4A;
-  }
-  .module .t_d li:nth-child(2) {
-    color: #D0021B;
-  }
-  .module .t_d li:nth-child(3) {
-    color: #F5A623;
-  }
-  .module .journey ul:nth-child(4) {
-    justify-content: space-between;
-  }
-  .module .journey ul:nth-child(4) li:nth-child(1) {
-    margin: 0 0 0 3vw;
-  }
-  .module .journey ul:nth-child(4) li:nth-child(2) {
-    margin: 0 8.5vw 0 0;
-  }
-  .module .journey ul:nth-child(4) li:nth-child(3) {
-    margin: 0 7.7vw 0 0;
-  }
-  .module .journey ul:nth-child(3) {
-    border-bottom: 1px solid #D3D3D3;
-    border-top: 1px solid #D3D3D3;
-  }
-  .module .station {
-    width: 100vw;
-    height: 5vh;
-    line-height: 5vh;
-    font-size: 4.2vw;
-    color: #24559C;
-  }
-  .module .station img {
-    height: 2.8vh;
-    vertical-align: middle;
-    margin: 0 3vw 0 5vw;
-  }
-  .module .detail {
-    width: 100vw;
-    height: 14vh;
-    background: white;
-    border-radius: 0 0 3vw 3vw;
-    box-shadow: 0 0.8vh 0.5vh #CCCBCB;
-  }
-  .module:nth-child(2) .detail {
-    width: 100vw;
-    height: 11vh;
-    background: white;
-    border-radius: 0 0 3vw 3vw;
-    box-shadow: 0 0.8vh 0.5vh #CCCBCB;
-  }
-  .module .detail p {
-    width: 90vw;
-    line-height: 3.7vh;
-    margin: 0 auto;
-    padding-top: 1.5vh;
-    font-size: 3.8vw;
-    color: black;
-  }
+    .bus-information ion-content {
+        overflow: hidden;
+    }
+    .bus-information .module {
+        width: 100vw;
+        margin: 1vh 0 2vh;
+    }
+    .bus-information .module .title {
+        width: 100vw;
+        height: 5.5vh;
+        line-height: 5.5vh;
+        background: white;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        box-shadow: 0 0.5vh 0.5vh #CCCBCB;
+    }
+    .bus-information .module .title .point {
+        width: 3vw;
+        height: 3vw;
+        background: #4A90E2;
+        border-radius: 50%;
+        margin: 0 1.5vw 0 3.2vw;
+    }
+    .bus-information .module:nth-child(2) .title .point {
+        background: #7ED321;
+    }
+    .bus-information .module .title p {
+        font-size: 4.6vw;
+        height: 5.5vh;
+        color: #24559C;
+        margin: 0;
+    }
+    .bus-information .module .title img {
+        margin: 0 1.5vw;
+    }
+    .bus-information .module .table_head {
+        width: 93vw;
+        margin: 0 auto;
+        height: 4.8vh;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .bus-information .module .table_head li {
+        margin-top: 0.4vh;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        font-size: 4.1vw;
+        color: #24559C;
+    }
+    .bus-information .module .table_head li:nth-child(1) img {
+        height: 3vh;
+        margin-right: 2vw;
+    }
+    .bus-information .module .table_head li:nth-child(2) img,
+    .bus-information .module .table_head li:nth-child(3) img {
+        height: 2.6vh;
+        margin-right: 2vw;
+    }
+    .bus-information .module .t_d {
+        width: 100vw;
+        height: 7.5vh;
+        background: white;
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    .bus-information .module .t_d li {
+        font-size: 4.5vw;
+    }
+    .bus-information .module .t_d li:nth-child(1) {
+        color: #4A4A4A;
+        margin-left: 2vw;
+    }
+    .bus-information .module .t_d li:nth-child(2) {
+        color: #D0021B;
+        font-size: 5.2vw;
+    }
+    .bus-information .module .t_d li:nth-child(3) {
+        color: #F5A623;
+        font-size: 5.2vw;
+    }
+    .bus-information .module .journey ul:nth-child(4) {
+        justify-content: space-between;
+    }
+    .bus-information .module .journey ul:nth-child(4) li:nth-child(1) {
+        margin: 0 0 0 3.5vw;
+    }
+    .bus-information .module .journey ul:nth-child(4) li:nth-child(2) {
+        margin: 0 7.2vw 0 0;
+    }
+    .bus-information .module .journey ul:nth-child(4) li:nth-child(3) {
+        margin: 0 7vw 0 0;
+    }
+    .bus-information .module .journey ul:nth-child(3) {
+        border-bottom: 1px solid #D3D3D3;
+        border-top: 1px solid #D3D3D3;
+    }
+    .bus-information .module .station {
+        width: 100vw;
+        height: 5vh;
+        line-height: 5vh;
+        font-size: 4.2vw;
+        color: #24559C;
+    }
+    .bus-information .module .station img {
+        height: 2.8vh;
+        vertical-align: middle;
+        margin: 0 3vw 0 2.9vw;
+    }
+    .bus-information .module .detail {
+        width: 100vw;
+        height: 15vh;
+        background: white;
+        border-radius: 0 0 3vw 3vw;
+        box-shadow: 0 0.8vh 0.5vh #CCCBCB;
+    }
+    .bus-information .module:nth-child(2) .detail {
+        width: 100vw;
+        height: 11vh;
+        background: white;
+        border-radius: 0 0 3vw 3vw;
+        box-shadow: 0 0.8vh 0.5vh #CCCBCB;
+    }
+    .bus-information .module .detail p {
+        width: 86vw;
+        line-height: 3.5vh;
+        margin: 0 auto;
+        padding-top: 2vh;
+        font-size: 3.8vw;
+        color: black;
+    }
 }
