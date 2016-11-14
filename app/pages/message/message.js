@@ -53,6 +53,21 @@ angular.module('messageModule')
 
       $scope.loadingMoreFlag = false;
 
+      $timeout(function () {
+        var scriptEle = document.createElement("script");
+        //scriptEle.type = "text/javasctipt";
+        scriptEle.async = true;
+        scriptEle.src = "http://webapi.amap.com/maps?v=1.3&key=afa17826e025989b36d837f9f4b4ba1f";
+
+        var styleEle = document.createElement("link");
+        styleEle.rel = "stylesheet";
+        styleEle.async = true;
+        styleEle.href = "http://cache.amap.com/lbs/static/main.css?v=1.0";
+        var x1 = document.getElementsByTagName("head")[0];
+        x1.insertBefore(styleEle, x1.firstChild);
+        x1.insertBefore(scriptEle, x1.firstChild);
+      }, 0);
+
       //分页
       var currentPage = 1;
 

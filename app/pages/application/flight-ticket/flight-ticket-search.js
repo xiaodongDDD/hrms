@@ -155,23 +155,29 @@ angular.module('applicationModule')
         provinceNum:0,
         cityNum:0
       };
-      var mapObj = new AMap.Map('iCenter');//高的地图自动定位城市,高德定位是一个异步
-      var getCityName="";
-      mapObj.plugin(["AMap.CitySearch"], function() {
-        //实例化城市查询类
-        var citysearch = new AMap.CitySearch();
-        //自动获取用户IP，返回当前城市
-        citysearch.getLocalCity(function(status,result){
-          if(status=="complete"){
-            getCityName=result.city;
-            getCityName=getCityName.substring(0,getCityName.length-1);
-          }else{
-            getCityName="上海";
-            hmsPopup.showVeryShortCenterToast("定位失败，自动定位到上海");
-          }
-          $scope.mapFinished=true;
+      try{
+        var mapObj = new AMap.Map('iCenter');//高的地图自动定位城市,高德定位是一个异步
+        var getCityName="";
+        mapObj.plugin(["AMap.CitySearch"], function() {
+          //实例化城市查询类
+          var citysearch = new AMap.CitySearch();
+          //自动获取用户IP，返回当前城市
+          citysearch.getLocalCity(function(status,result){
+            if(status=="complete"){
+              getCityName=result.city;
+              getCityName=getCityName.substring(0,getCityName.length-1);
+            }else{
+              getCityName="上海";
+              hmsPopup.showVeryShortCenterToast("定位失败，自动定位到上海");
+            }
+            $scope.mapFinished=true;
+          });
         });
-      });
+      }
+      catch(e){
+        hmsPopup.showShortCenterToast("定位失败，请重新进入App应用");
+      }
+
       $scope.$watch('mapFinished',function(){//正由于高德的定位是一个异步，这里用监听的形式检测是否定位完成，完成后在查看定位城市的天气
        if($scope.mapFinished == true){
          $scope.weatherInfo.cityName=getCityName;

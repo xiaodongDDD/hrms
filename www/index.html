@@ -29,10 +29,8 @@
 </head>
 
 <body ng-app="myApp">
-<!--GaoDeMap-->
-<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css?v=1.0" async="async"/>
-<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=afa17826e025989b36d837f9f4b4ba1f" async="async"></script>
-
+  <!--<link href="http://cache.amap.com/lbs/static/main.css?v=1.0" rel="stylesheet">
+  <script src="http://webapi.amap.com/maps?v=1.3&key=afa17826e025989b36d837f9f4b4ba1f"></script>-->
 <!--
   The nav bar that will be updated as we navigate between views.
 -->
@@ -40,7 +38,6 @@
 <!--<ion-nav-back-button>-->
 <!--</ion-nav-back-button>-->
 <!--</ion-nav-bar>-->
-
 <!--
   The views will be rendered in the <ion-nav-view> directive below
   Templates are in the /templates folder (but you could also
@@ -48,4 +45,23 @@
 -->
 <ion-nav-view></ion-nav-view>
 </body>
+<script>
+  /*(function () {
+    //<!--GaoDeMap-->
+
+    var scriptEle = document.createElement("script");
+    //scriptEle.type = "text/javasctipt";
+    scriptEle.async = true;
+    scriptEle.src = "http://webapi.amap.com/maps?v=1.3&key=afa17826e025989b36d837f9f4b4ba1f";
+
+    var styleEle = document.createElement("link");
+    styleEle.rel = "stylesheet";
+    styleEle.async = true;
+    styleEle.href = "http://cache.amap.com/lbs/static/main.css?v=1.0";
+    var x1 = document.getElementsByTagName("head")[0];
+    x1.insertBefore(styleEle, x1.firstChild);
+    x1.insertBefore(scriptEle, x1.firstChild);
+    //document.body.appendChild(scriptEle);
+  })();*/
+</script>
 </html>
