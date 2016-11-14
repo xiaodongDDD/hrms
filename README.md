@@ -77,8 +77,10 @@ Xcode
 
 
 # 打包步骤
+打包环境
+检查是否有gulp npm node ionic bower
 Android测试环境
-确认cordova版本最好是6.3.1以上,jdk一定要1.7以上,Android SDK一定要API23以上
+确认cordova版本最好是6.3.1,jdk一定要1.7以上,Android SDK一定要API23以上
 ```
 1.修改app/config/devConfig.json  里面
 1.真机打包,修改app/config/devConfig.json  里面  isMobilePlatform  nativeScreenFlag 设置为true
