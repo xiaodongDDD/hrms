@@ -1,23 +1,23 @@
 .bus-information {
     background-color: #F5F5F5;
     font-size: 62.5%;
-    font: 12px/1.2rem "微软雅黑",Arial,Tahoma, Helvetica,\5b8b\4f53, sans-serif;
+    font: 12px/1.2rem;
     margin: 0;
     padding: 0;
     border: 0;
     outline: 0;
     overflow: hidden;
-    .bus-information li {
+     li {
         list-style: none;
     }
-    .bus-information ion-content {
+    ion-content {
         overflow: hidden;
     }
-    .bus-information .module {
+    .module {
         width: 100vw;
         margin: 1vh 0 2vh;
     }
-    .bus-information .module .title {
+    .module .title {
         width: 100vw;
         height: 5.5vh;
         line-height: 5.5vh;
@@ -27,26 +27,26 @@
         align-items: center;
         box-shadow: 0 0.5vh 0.5vh #CCCBCB;
     }
-    .bus-information .module .title .point {
+    .module .title .point {
         width: 3vw;
         height: 3vw;
         background: #4A90E2;
         border-radius: 50%;
         margin: 0 1.5vw 0 3.2vw;
     }
-    .bus-information .module:nth-child(2) .title .point {
+    .module:nth-child(2) .title .point {
         background: #7ED321;
     }
-    .bus-information .module .title p {
+    .module .title p {
         font-size: 4.6vw;
         height: 5.5vh;
         color: #24559C;
         margin: 0;
     }
-    .bus-information .module .title img {
+    .module .title img {
         margin: 0 1.5vw;
     }
-    .bus-information .module .table_head {
+    .module .table_head {
         width: 93vw;
         margin: 0 auto;
         height: 4.8vh;
@@ -55,7 +55,7 @@
         align-items: center;
         justify-content: space-between;
     }
-    .bus-information .module .table_head li {
+    .module .table_head li {
         margin-top: 0.4vh;
         display: flex;
         display: -webkit-flex;
@@ -63,16 +63,16 @@
         font-size: 4.1vw;
         color: #24559C;
     }
-    .bus-information .module .table_head li:nth-child(1) img {
+    .module .table_head li:nth-child(1) img {
         height: 3vh;
         margin-right: 2vw;
     }
-    .bus-information .module .table_head li:nth-child(2) img,
-    .bus-information .module .table_head li:nth-child(3) img {
+    .module .table_head li:nth-child(2) img,
+    .module .table_head li:nth-child(3) img {
         height: 2.6vh;
         margin-right: 2vw;
     }
-    .bus-information .module .t_d {
+    .module .t_d {
         width: 100vw;
         height: 7.5vh;
         background: white;
@@ -81,64 +81,64 @@
         align-items: center;
         justify-content: space-around;
     }
-    .bus-information .module .t_d li {
+    .module .t_d li {
         font-size: 4.5vw;
     }
-    .bus-information .module .t_d li:nth-child(1) {
+    .module .t_d li:nth-child(1) {
         color: #4A4A4A;
         margin-left: 2vw;
     }
-    .bus-information .module .t_d li:nth-child(2) {
+    .module .t_d li:nth-child(2) {
         color: #D0021B;
         font-size: 5.2vw;
     }
-    .bus-information .module .t_d li:nth-child(3) {
+    .module .t_d li:nth-child(3) {
         color: #F5A623;
         font-size: 5.2vw;
     }
-    .bus-information .module .journey ul:nth-child(4) {
+    .module .journey ul:nth-child(4) {
         justify-content: space-between;
     }
-    .bus-information .module .journey ul:nth-child(4) li:nth-child(1) {
+    .module .journey ul:nth-child(4) li:nth-child(1) {
         margin: 0 0 0 3.5vw;
     }
-    .bus-information .module .journey ul:nth-child(4) li:nth-child(2) {
+    .module .journey ul:nth-child(4) li:nth-child(2) {
         margin: 0 7.2vw 0 0;
     }
-    .bus-information .module .journey ul:nth-child(4) li:nth-child(3) {
+    .module .journey ul:nth-child(4) li:nth-child(3) {
         margin: 0 7vw 0 0;
     }
-    .bus-information .module .journey ul:nth-child(3) {
+    .module .journey ul:nth-child(3) {
         border-bottom: 1px solid #D3D3D3;
         border-top: 1px solid #D3D3D3;
     }
-    .bus-information .module .station {
+    .module .station {
         width: 100vw;
         height: 5vh;
         line-height: 5vh;
         font-size: 4.2vw;
         color: #24559C;
     }
-    .bus-information .module .station img {
+    .module .station img {
         height: 2.8vh;
         vertical-align: middle;
         margin: 0 3vw 0 2.9vw;
     }
-    .bus-information .module .detail {
+    .module .detail {
         width: 100vw;
         height: 15vh;
         background: white;
         border-radius: 0 0 3vw 3vw;
         box-shadow: 0 0.8vh 0.5vh #CCCBCB;
     }
-    .bus-information .module:nth-child(2) .detail {
+    .module:nth-child(2) .detail {
         width: 100vw;
         height: 11vh;
         background: white;
         border-radius: 0 0 3vw 3vw;
         box-shadow: 0 0.8vh 0.5vh #CCCBCB;
     }
-    .bus-information .module .detail p {
+    .module .detail p {
         width: 86vw;
         line-height: 3.5vh;
         margin: 0 auto;
