@@ -24,11 +24,11 @@ public class CalendarListViewPlugin extends CordovaPlugin {
 		if ("openCalendar".equals(action)) {
 			String type = args.getString(0);
       isClick = true;
-			if ("1".equals(type)) {//选择单个日期
+			if ("2".equals(type)) {//选择单个日期
 				Intent singleIntent = new Intent(cordova.getActivity(), CalendarActivity.class);
 				singleIntent.putExtra("isSingle", true);
 				cordova.startActivityForResult(this, singleIntent, 0);
-			} else if ("2".equals(type)) {//选择日期期间
+			} else if ("1".equals(type)) {//选择日期期间
 				Intent rangeIntent = new Intent(cordova.getActivity(), CalendarActivity.class);
 				rangeIntent.putExtra("isSingle", false);
 				cordova.startActivityForResult(this, rangeIntent, 1);

@@ -27,12 +27,31 @@ angular.module('myInfoModule')
       if (baseConfig.debug) {
         console.log('myInfoCtrl.enter');
       }
+
+      if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != '') {
+        $scope.portraitImageLarge = {
+          "background": "url('" + window.localStorage.myInfoImg + "')",
+          "background-size": "cover",
+          "background-position": "center",
+          "background-repeat": "no-repeat"
+        };
+        $scope.defaultPortrait = window.localStorage.myInfoImg
+      } else {
+        $scope.portraitImageLarge = {
+          "background": "url('build/img/myInfo/background.png')",
+          "background-size": "cover",
+          "background-position": "center",
+          "background-repeat": "no-repeat"
+        };
+        $scope.defaultPortrait = "";
+      }
+
       $scope.currentVersion = baseConfig.version.currentversionName + ' - ' + baseConfig.version.currentSubVersion; // 获得当前版本号
       $scope.personalInfo = "";
       $scope.showLoading = true;//默认显示loading
       var portraitBackground = document.getElementById('portrait-image');
       //$scope.defaultPortrait="build/img/myInfo/man-portrait.png";
-      $scope.defaultPortrait = "";
+
       var url = baseConfig.businessPath + "/api_employee/get_employee_code";//获取用户信息
       var param = {
         "params": {
@@ -47,7 +66,10 @@ angular.module('myInfoModule')
           $scope.personalInfo = result.result;
           if ($scope.personalInfo.avatar != "") {
             $scope.defaultPortrait = $scope.personalInfo.avatar;
-            portraitBackground.style.backgroundImage = "url('" + $scope.personalInfo.avatar + "')";
+            //portraitBackground.style.backgroundImage = "url('" + $scope.personalInfo.avatar + "')";
+            window.localStorage.myInfoImg = $scope.personalInfo.avatar;
+            $scope.portraitImageLarge.background = "url('" + $scope.personalInfo.avatar + "')";
+
           } else if ($scope.personalInfo.avatar == "") {
             if ($scope.personalInfo.gender == "男") {//根据性别判定头像男女
               $scope.defaultPortrait = "build/img/myInfo/man-portrait.png";
@@ -55,7 +77,8 @@ angular.module('myInfoModule')
               $scope.defaultPortrait = "build/img/myInfo/woman-portrait.png";
             }
           }
-        } else if (result.status == "E") {
+        }
+        else if (result.status == "E") {
           hmsPopup.showShortCenterToast('系统可能还没有你的资料，请联系管理员！');
         }
         if (baseConfig.debug) {
@@ -160,4 +183,5 @@ angular.module('myInfoModule')
           console.log('myInfoCtrl.$destroy');
         }
       });
-    }]);
+    }])
+;

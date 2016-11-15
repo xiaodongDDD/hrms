@@ -53,6 +53,22 @@ angular.module('messageModule')
 
       $scope.loadingMoreFlag = false;
 
+
+      if (baseConfig.debug) {
+        console.log('window.localStorage.myInfoImg ' + window.localStorage.myInfoImg);
+      }
+      $scope.urlCache8 = '';
+      $scope.urlCache9 = '';
+      if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != '') {
+        $scope.urlCache8 = {
+          "background": "url('" + window.localStorage.myInfoImg + "')"
+        }
+        $scope.urlCache9 = {
+          "background": "url('" + window.localStorage.myInfoImg + "64')"
+        }
+      }
+
+
       $timeout(function () {
         var scriptEle = document.createElement("script");
         //scriptEle.type = "text/javasctipt";

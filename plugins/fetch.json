@@ -25,19 +25,19 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-hand-calendar": {
+    "com.hand.scancard": {
         "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CALENDAR/cordova-plugin-hand-calendar.git",
+            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
             "subdir": "."
         },
         "is_top_level": true,
         "variables": {}
     },
-    "com.hand.scancard2": {
+    "cordova-plugin-hand-calendar": {
         "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
+            "url": "http://hpm.hand-china.com/diffusion/CALENDAR/cordova-plugin-hand-calendar.git",
             "subdir": "."
         },
         "is_top_level": true,
