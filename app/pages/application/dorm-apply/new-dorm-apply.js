@@ -236,7 +236,7 @@ angular.module('applicationModule')
           cancelText:'取消',
           doneButtonLabel:'确认',
           cancelButtonLabel:'取消',
-          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK,
+          androidTheme : window.datePicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_LIGHT,
           locale:"zh_cn"
         };
         $cordovaDatePicker.show(options).then(function(date){

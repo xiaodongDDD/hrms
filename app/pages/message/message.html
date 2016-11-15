@@ -19,6 +19,13 @@
     <hms-refresher on-refresh="refresh()" pulling-text="正在刷新数据..." pulling-icon="ion-ios-loop">
     </hms-refresher>
 
+    <div>
+      <div class="message-on"></div>
+      <div class="application-on"></div>
+      <div class="contact-on"></div>
+      <div class="mine-on"></div>
+    </div>
+
     <ion-list show-delete="shouldShowDelete"
               can-swipe="true" class="message-list-content">
       <ion-item ng-repeat="message in messageList" class="message-list-item" ng-class="{true:'item-remove-animate',false:''}[message.deleteAnimate]">
@@ -26,7 +33,7 @@
         <div class="message-item" ng-click="messageHandle.goMessageDetail(message)">
           <div class="message-introduce">
             <img class="message-has-logo" src="{{message.imgUrl}}" ng-if="message.imgUrl != ''">
-            
+
             <div class="message-has-text" ng-style="message.imgColorStyle" ng-bind="message.imgName" ng-if="message.imgUrl == ''">
             </div>
           </div>

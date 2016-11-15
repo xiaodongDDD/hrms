@@ -5,8 +5,35 @@ $img-half-height: 25px !default;
 
 $img-padding: 8px !default;
 $text-padding: 11px !default
+$message-tab-item-size: 24px;
+$message-tab-item-small-size: 21px;
 
 .message-list {
+
+  .message-on {
+    background-image: url("../img/tabs/message-f@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $message-tab-item-size;
+  }
+  .application-on {
+    background-image: url("../img/tabs/application-F@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $message-tab-item-small-size;
+  }
+  .contact-on {
+    background-image: url("../img/tabs/contact-B@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $message-tab-item-small-size;
+  }
+  .mine-on {
+    background-image: url("../img/tabs/mine-B@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $message-tab-item-size;
+  }
 
   .scroll-refresher.active.refreshing .hms-spinner {
     display: none;
