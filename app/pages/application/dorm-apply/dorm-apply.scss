@@ -98,16 +98,16 @@
     //animation: flipInY .4s;
     //-webkit-animation: fadeInUp 0.5s;
     //animation: fadeInUp .5s;
-    -webkit-animation: zoomInUp 0.5s;
-    animation: zoomInUp .5s;
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn .5s;
     //-webkit-animation: lightSpeedIn 0.4s;
     //animation: lightSpeedIn .4s;
     //-webkit-animation: rotateInUpLeft 0.4s;
     //animation: rotateInUpLeft .4s;
   }
   .item-appearance.ng-enter-stagger{
-    -webkit-animation-delay: 150ms;
-    animation-delay: 150ms;
+    -webkit-animation-delay: 90ms;
+    animation-delay: 90ms;
     -webkit-animation-duration: 0ms;
     animation-duration: 0ms;
   }
@@ -1299,12 +1299,12 @@
     //animation: zoomInUp .4s;
     //-webkit-animation: lightSpeedIn 0.4s;
     //animation: lightSpeedIn .4s;
-    -webkit-animation: rotateInUpLeft 0.4s;
-    animation: rotateInUpLeft .4s;
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn .5s;
   }
   .item-appearance.ng-enter-stagger{
-    -webkit-animation-delay: 120ms;
-    animation-delay: 120ms;
+    -webkit-animation-delay: 90ms;
+    animation-delay: 90ms;
     -webkit-animation-duration: 0ms;
     animation-duration: 0ms;
   }
