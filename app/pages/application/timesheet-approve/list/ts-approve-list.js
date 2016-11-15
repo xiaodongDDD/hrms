@@ -22,6 +22,7 @@ angular.module('myApp')
 angular.module('tsApproveModule')
   .controller('tsApproveListCtrl', [
     '$scope',
+    '$rootScope',
     '$state',
     'baseConfig',
     '$ionicModal',
@@ -37,6 +38,7 @@ angular.module('tsApproveModule')
     'stackViewService',
     '$ionicHistory',
     function ($scope,
+              $rootScope,
               $state,
               baseConfig,
               $ionicModal,
@@ -147,7 +149,7 @@ angular.module('tsApproveModule')
         // warn(history[0]);
         angular.element('.list:last-child').css('marginBottom', '0');
         $ionicHistory.backView(history[0]);
-        $ionicHistory.goBack();
+        $rootScope.$hmsGoBack();
         // }
       };
 

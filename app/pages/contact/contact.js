@@ -5,6 +5,7 @@
 angular.module('contactModule')
   .controller('ContactCtrl', [
     '$scope',
+    '$rootScope',
     '$ionicScrollDelegate',
     '$ionicModal',
     'baseConfig',
@@ -14,6 +15,7 @@ angular.module('contactModule')
     'contactService',
     'getInitStructureInfo',
     function ($scope,
+              $rootScope,
               $ionicScrollDelegate,
               $ionicModal,
               baseConfig,

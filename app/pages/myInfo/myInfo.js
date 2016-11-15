@@ -56,7 +56,7 @@ angular.module('myInfoModule')
             }
           }
         } else if (result.status == "E") {
-          hmsPopup.showShortCenterToast(message);
+          hmsPopup.showShortCenterToast('系统可能还没有你的资料，请联系管理员！');
         }
         if (baseConfig.debug) {
           console.log("result success " + angular.toJson(result));

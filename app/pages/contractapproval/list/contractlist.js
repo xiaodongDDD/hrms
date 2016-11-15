@@ -2,7 +2,7 @@
 // 修改selectedUrl变量以更换调用地址
 angular.module('myApp')
   .config(['$stateProvider',
-    function($stateProvider) {
+    function ($stateProvider) {
       $stateProvider
         .state('tab.contractlist', {
           url: '/contractlist',
@@ -18,6 +18,7 @@ angular.module('myApp')
 
 angular.module('applicationModule')
   .controller('contractlistCtrl', [
+    '$rootScope',
     '$scope',
     '$state',
     '$stateParams',
@@ -29,17 +30,18 @@ angular.module('applicationModule')
     '$ionicScrollDelegate',
     '$ionicSlideBoxDelegate',
     '$ionicHistory',
-    function($scope,
-      $state,
-      $stateParams,
-      $ionicModal,
-      $timeout,
-      hmsPopup,
-      baseConfig,
-      contractListService,
-      $ionicScrollDelegate,
-      $ionicSlideBoxDelegate,
-      $ionicHistory) {
+    function ($rootScope,
+              $scope,
+              $state,
+              $stateParams,
+              $ionicModal,
+              $timeout,
+              hmsPopup,
+              baseConfig,
+              contractListService,
+              $ionicScrollDelegate,
+              $ionicSlideBoxDelegate,
+              $ionicHistory) {
 
       $scope.list = []; //用于显示列表的列表数据
       $scope.listBackup = []; //备份列表数据，在筛选时使用。
@@ -82,7 +84,7 @@ angular.module('applicationModule')
         myTask_unfin: false,
         myTask_fin: false
       };
-      $scope.setLoadMoreDataFlags = function(key) { //设置是否可以上拉加载
+      $scope.setLoadMoreDataFlags = function (key) { //设置是否可以上拉加载
         for (var i in $scope.loadMoreDataFlags) {
           $scope.loadMoreDataFlags[i] = false;
         }
@@ -91,12 +93,12 @@ angular.module('applicationModule')
         }
       }
 
-      if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
-        if(document.setTitle){
+      if (ionic.Platform.isIOS() && $scope.isWeixinWebview) {
+        if (document.setTitle) {
           document.setTitle('合同管理');
         }
       }
-      $scope.fadeStyle = function(index) { //循序出现，循序fadein
+      $scope.fadeStyle = function (index) { //循序出现，循序fadein
         if (contractListService.IsFromParent()) { //如果是从上级页面进入的
           if ($scope.pageNum > 1) { //如果是上拉加载出来的
             return {
@@ -157,7 +159,7 @@ angular.module('applicationModule')
       };
 
       //按了导航栏的按钮
-      $scope.clickSubheader = function(title) {
+      $scope.clickSubheader = function (title) {
         if (!contractListService.IsFromParent()) {
           contractListService.setIsFromParent(true);
         }
@@ -165,7 +167,7 @@ angular.module('applicationModule')
         slideToChangePage = false;
 
         //设置分页的状态（选中与未选中）
-        for(k in $scope.subheaderSelectFlag){
+        for (k in $scope.subheaderSelectFlag) {
           $scope.subheaderDeselectAnimaFlag[k] = $scope.subheaderSelectFlag[k];
         }
         $scope.subheaderDeselectAnimaFlag[title] = false;//防止点同一个
@@ -210,9 +212,9 @@ angular.module('applicationModule')
         getTodoList(false);
       }
 
-      var showList = function() {
+      var showList = function () {
         $timeout(
-          function() {
+          function () {
             $scope.fetchDataFlag = false;
             var subheaderTitles = document.getElementsByClassName('contractSubheaderMarker');
             var scroll = 0;
@@ -228,11 +230,11 @@ angular.module('applicationModule')
       };
 
       //处理获取到的数据列表
-      var processTodoList = function(result) {
+      var processTodoList = function (result) {
         if (result.status == 'S') {
           $scope.list = [];
           var list = result.unprocessedWorkflowList;
-          angular.forEach(list, function(data) {
+          angular.forEach(list, function (data) {
             //头像，合同工作流中没有头像
             var employeeImg = data.employee_img;
             if (!employeeImg || employeeImg == "") {
@@ -274,7 +276,7 @@ angular.module('applicationModule')
       };
 
       //获取数据列表
-      var getTodoList = function(pullRefresh) {
+      var getTodoList = function (pullRefresh) {
         //重置一些变量
         $scope.firstLoadFlag = true;
         $scope.loadMoreDataFlag = false;
@@ -293,15 +295,15 @@ angular.module('applicationModule')
         } else {
           $scope.fetchDataFlag = true;
         }
-        var success = function(result) {
+        var success = function (result) {
           if (pullRefresh) {
             $scope.pullRefreshDataFlag = false;
             $scope.$broadcast('scroll.refreshComplete');
           }
           processTodoList(result);
         };
-        var error = function(result) {
-          $timeout(function() {
+        var error = function (result) {
+          $timeout(function () {
             if (pullRefresh) {
               $scope.pullRefreshDataFlag = false;
               $scope.$broadcast('scroll.refreshComplete');
@@ -312,13 +314,13 @@ angular.module('applicationModule')
 
         var filterCondition = dataFilterUtil().fetchFilterCondition();
         //post请求
-        $timeout(function() {
+        $timeout(function () {
           contractListService.getTodoList('N', filterCondition.workflowId, $scope.type, $scope.pageNum, success, error);
         }, 550);
       };
 
       // 筛选列表，每次先从备份数据中拷贝一份，然后进行删除操作
-      $scope.fetchTodoList = function(refreshFlag) {
+      $scope.fetchTodoList = function (refreshFlag) {
         $scope.loadMoreDataFlag = false;
         $scope.setLoadMoreDataFlags();
         $scope.pageNum = 1;
@@ -369,31 +371,31 @@ angular.module('applicationModule')
       };
 
       // 上拉加载更多数据
-      var loadMoreFetchTodoList = function() {
-        var success = function(result) {
+      var loadMoreFetchTodoList = function () {
+        var success = function (result) {
           if ($scope.list.length < $scope.pageNumLimit * $scope.pageNum) {
             $scope.loadMoreDataFlag = false;
             $scope.setLoadMoreDataFlags();
           }
           $scope.$broadcast('scroll.infiniteScrollComplete');
         };
-        $timeout(function() {
+        $timeout(function () {
           success();
         }, 2000);
       };
-      $scope.loadMoreData = function() {
+      $scope.loadMoreData = function () {
         if ($scope.loadMoreDataFlag) {
           $scope.pageNum = $scope.pageNum + 1;
           loadMoreFetchTodoList();
         }
       };
 
-      $scope.refresh = function() {
+      $scope.refresh = function () {
         if (!$scope.fetchDataFlag) {
           dataFilterUtil().clearFilterCondition();
           $scope.list = [];
           $scope.$apply();
-          $timeout(function() {
+          $timeout(function () {
             $scope.clickSubheader($scope.type);
             $scope.$broadcast('scroll.refreshComplete');
           }, 0);
@@ -405,15 +407,15 @@ angular.module('applicationModule')
       // 筛选上拉菜单模型
       $ionicModal.fromTemplateUrl('build/pages/public/modal/hms-filter-modal.html', { //筛选modal
         scope: $scope
-      }).then(function(modal) {
+      }).then(function (modal) {
         $scope.filterModal = modal;
         $scope.filterPosX = $ionicScrollDelegate.$getByHandle('hmsFilterCondition').getScrollPosition().left;
       });
 
-      $scope.filterWorkFlowInfo = function() { //响应筛选按钮的方法
-        if(!$scope.filterPosY){
+      $scope.filterWorkFlowInfo = function () { //响应筛选按钮的方法
+        if (!$scope.filterPosY) {
           $ionicScrollDelegate.$getByHandle('hmsFilterCondition').scrollTo($scope.filterPosX, 0, false);
-        }else{
+        } else {
           $ionicScrollDelegate.$getByHandle('hmsFilterCondition').scrollTo($scope.filterPosX, $scope.filterPosY, false);
         }
         $scope.filterModal.show();
@@ -421,13 +423,13 @@ angular.module('applicationModule')
 
       // 筛选上拉菜单句柄
       $scope.dataFilterHandle = {
-        cancelDataFilter: function() {
+        cancelDataFilter: function () {
           $scope.filterModal.hide();
         },
-        clearDataFilterParams: function() {
+        clearDataFilterParams: function () {
           $scope.filterModal.hide();
         },
-        confirmDataFilter: function() {
+        confirmDataFilter: function () {
           if (baseConfig.debug) {
             console.log('dataFilterUtil.filterOption ' + angular.toJson(filterOption));
           }
@@ -445,11 +447,11 @@ angular.module('applicationModule')
           }
 
         },
-        selectFilterType: function(type) {
+        selectFilterType: function (type) {
           if (baseConfig.debug) {
             console.log('type ' + angular.toJson(type));
           }
-          angular.forEach($scope.selectFilterTypeList, function(data) {
+          angular.forEach($scope.selectFilterTypeList, function (data) {
             data.selected = false;
           });
           type.selected = true;
@@ -467,11 +469,11 @@ angular.module('applicationModule')
             $scope.filterItemList = filterOption.submitterFilter;
           }
         },
-        selectFilterItem: function(filterItem) {
+        selectFilterItem: function (filterItem) {
           if (baseConfig.debug) {
             console.log('filterItem ' + angular.toJson(filterItem));
           }
-          angular.forEach($scope.filterItemList, function(data) {
+          angular.forEach($scope.filterItemList, function (data) {
             data.selected = false;
           });
           filterItem.selected = true;
@@ -484,15 +486,15 @@ angular.module('applicationModule')
         }
       };
 
-      var dataFilterUtil = function() {
+      var dataFilterUtil = function () {
         var self = {};
 
-        self.clearFilterCondition = function() {
+        self.clearFilterCondition = function () {
           filterOption.currentSelectType = 'ALL'
           filterOption.currentSubmitterFilter = '';
         };
 
-        self.fetchFilterCondition = function() {
+        self.fetchFilterCondition = function () {
           var condition = {
             "workflowId": "",
             "submitterId": ""
@@ -505,8 +507,8 @@ angular.module('applicationModule')
           }
         };
 
-        self.query = function() {
-          var success = function(result) {
+        self.query = function () {
+          var success = function (result) {
             if (result.returnStatus == 'S') {
               if (baseConfig.debug) {
                 console.log('result ' + angular.toJson(result));
@@ -552,7 +554,8 @@ angular.module('applicationModule')
               }
             }
           };
-          var error = function(response) {};
+          var error = function (response) {
+          };
           var processedFlag = 'N';
           success($scope.filterPersonList);
         };
@@ -583,23 +586,23 @@ angular.module('applicationModule')
           hmsPopup.showShortCenterToast('微信授权失败,请联系管理员!');
         }
       } else {
-        $timeout(function() {
+        $timeout(function () {
           getTodoList(false);
         }, 400);
       }
 
-      $scope.$on('$ionicView.enter', function(e) {
+      $scope.$on('$ionicView.enter', function (e) {
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.enter');
         }
       });
 
-      $scope.$on('$ionicView.beforeEnter', function() {
+      $scope.$on('$ionicView.beforeEnter', function () {
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.beforeEnter');
         }
-        if (ionic.Platform.isIOS() && $scope.isWeixinWebview){
-          if(document.setTitle){
+        if (ionic.Platform.isIOS() && $scope.isWeixinWebview) {
+          if (document.setTitle) {
             document.setTitle('合同管理');
           }
         }
@@ -632,7 +635,7 @@ angular.module('applicationModule')
         }
       });
 
-      $scope.$on('$ionicView.afterEnter', function() {
+      $scope.$on('$ionicView.afterEnter', function () {
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.afterEnter');
         }
@@ -646,28 +649,28 @@ angular.module('applicationModule')
         document.getElementById('contractSubheaderScroll').style.width = subheadereWidth + 'px';
       });
 
-      $scope.$on('$ionicView.beforeLeave', function() {
+      $scope.$on('$ionicView.beforeLeave', function () {
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.beforeLeave');
         }
-        for(k in $scope.subheaderDeselectAnimaFlag){
+        for (k in $scope.subheaderDeselectAnimaFlag) {
           $scope.subheaderDeselectAnimaFlag[k] = false;
         }
       });
-      $scope.$on('$ionicView.afterLeave', function() {
+      $scope.$on('$ionicView.afterLeave', function () {
         if (baseConfig.debug) {
           console.log('contractListCtrl.$ionicView.afterLeave');
         }
       });
 
-      $scope.$on('$destroy', function(e) {
+      $scope.$on('$destroy', function (e) {
         if (baseConfig.debug) {
           console.log('contractListCtrl.$destroy');
         }
       });
 
       //滑动换页时
-      $scope.changeSlide = function(index) {
+      $scope.changeSlide = function (index) {
         //如果是按了导航按钮，那么会调用$scope.clickSubheader，然后代码控制换页，进入这个函数，但不会进入这个if，
         //如果是滑动换页，则进入这个if，来调用$scope.clickSubheader。因为if中的$scope.clickSubheader会设slideToChangePage = false;
         //这样是防止按导航按钮时调用两次$scope.clickSubheader。
@@ -677,155 +680,116 @@ angular.module('applicationModule')
         slideToChangePage = true;
       }
 
-      $scope.enterWorkflowDetail = function(detail, index) {
+      $scope.enterWorkflowDetail = function (detail, index) {
         contractListService.setIsFromParent(false);
         $scope.enteringIndex = index;
         contractListService.initRemoveItemFlag();
-        $state.go('tab.contractDetail', { data: detail.originData })
-      }
+        $state.go('tab.contractDetail', {data: detail.originData})
+      };
 
-      $scope.goBack = function() {
+      $scope.goBack = function () {
         contractListService.setIsFromParent(true); //当做没进来过这个页面
         contractListService.setListType('myStart_undo'); //如果回到上一级，那么下次进来就进第一分页
-        $ionicHistory.goBack();
+        $rootScope.$hmsGoBack();
       }
-
     }
   ])
 
-.service('contractListService', ['hmsHttp',
-  '$http',
-  'baseConfig',
-  'hmsPopup',
-  function(hmsHttp,
-    $http,
-    baseConfig,
-    hmsPopup) {
-    var fromParentFlag = {
-      flag: true
-    };
-
-    var removeItemFlag = {
-      flag: false
-    }
-
-    var checkUserFlag = {
-      flag: false
-    };
-
-    var listType = {
-      data: 'myStart_undo'
-    };
-
-    this.setListType = function(type) {
-      if (type) { //
-        listType.data = type;
-      }
-    }
-
-    //合同详情页中如果操作了这项合同，直接调用 contractListService.removeItem() 就可以告知合同列表这项合同已经被移到别的分类下了。
-    this.removeItem = function() {
-      removeItemFlag.flag = true;
-    }
-
-    this.initRemoveItemFlag = function() {
-      removeItemFlag.flag = false;
-    }
-
-    this.getItemRemoveFlag = function() {
-      return removeItemFlag.flag;
-    }
-
-    this.getListType = function() {
-      return listType.data;
-    }
-
-    this.setIsFromParent = function(flag) {
-      fromParentFlag.flag = flag;
-    };
-
-    this.IsFromParent = function() {
-      return fromParentFlag.flag;
-    };
-
-    this.wxLogin = function(codeWx, getTodoList, check) {
-      var callback = function(){
-        check(function() {
-          getTodoList(false);
-        });
-      }
-      if(hmsHttp.wxLogin){
-        hmsHttp.wxLogin(codeWx, callback);
-      }
-    }
-
-    //现在如果checkUser不通过，则getTodoList和getTodoCount不会被执行post请求。
-    this.check = function(success) {
-      if (baseConfig.debug) {
-        console.log('check user');
-      }
-      var url = '';
-      var params = {};
-
-      url = baseConfig.queryPath + '/handcontract';
-
-      params = {
-        userId: window.localStorage.empno,
-        method: 'checkUser'
+  .service('contractListService', ['hmsHttp',
+    '$http',
+    'baseConfig',
+    'hmsPopup',
+    function (hmsHttp,
+              $http,
+              baseConfig,
+              hmsPopup) {
+      var fromParentFlag = {
+        flag: true
       };
 
-      hmsHttp.post(url, params).success(function(result) {
-        if (baseConfig.debug) {
-          console.log('check user success');
-        }
-        if (result.result == 'S') {
-          checkUserFlag.flag = true;
-        } else {
-          checkUserFlag.flag = false;
-        }
-        success(result);
-      }).error(function(response, status) {
-        if (baseConfig.debug) {
-          console.log('check user error');
-          console.log(response);
-        }
-      });
-      if (baseConfig.debug) {
-        console.log('调用地址：' + url);
-        console.log('调用参数：');
-        console.log(params);
+      var removeItemFlag = {
+        flag: false
       }
-    }
 
-    this.getCheckFlag = function() {
-      return checkUserFlag.flag;
-    }
+      var checkUserFlag = {
+        flag: false
+      };
 
-    this.getTodoList = function(flag, user, type, page, success, error) {
-      if (this.getCheckFlag()) {
+      var listType = {
+        data: 'myStart_undo'
+      };
+
+      this.setListType = function (type) {
+        if (type) { //
+          listType.data = type;
+        }
+      }
+
+      //合同详情页中如果操作了这项合同，直接调用 contractListService.removeItem() 就可以告知合同列表这项合同已经被移到别的分类下了。
+      this.removeItem = function () {
+        removeItemFlag.flag = true;
+      }
+
+      this.initRemoveItemFlag = function () {
+        removeItemFlag.flag = false;
+      }
+
+      this.getItemRemoveFlag = function () {
+        return removeItemFlag.flag;
+      }
+
+      this.getListType = function () {
+        return listType.data;
+      }
+
+      this.setIsFromParent = function (flag) {
+        fromParentFlag.flag = flag;
+      };
+
+      this.IsFromParent = function () {
+        return fromParentFlag.flag;
+      };
+
+      this.wxLogin = function (codeWx, getTodoList, check) {
+        var callback = function () {
+          check(function () {
+            getTodoList(false);
+          });
+        }
+        if (hmsHttp.wxLogin) {
+          hmsHttp.wxLogin(codeWx, callback);
+        }
+      }
+
+      //现在如果checkUser不通过，则getTodoList和getTodoCount不会被执行post请求。
+      this.check = function (success) {
+        if (baseConfig.debug) {
+          console.log('check user');
+        }
         var url = '';
         var params = {};
-        var user = (user) ? user : window.localStorage.empno;
-        var type = (type) ? type : 'myStart_undo';
 
         url = baseConfig.queryPath + '/handcontract';
 
         params = {
           userId: window.localStorage.empno,
-          method: 'processes',
-          type: type
+          method: 'checkUser'
         };
-        hmsHttp.post(url, params).success(function(result) {
-          if (result.result == 'E') {
-            result.unprocessedWorkflowList = [];
+
+        hmsHttp.post(url, params).success(function (result) {
+          if (baseConfig.debug) {
+            console.log('check user success');
+          }
+          if (result.result == 'S') {
+            checkUserFlag.flag = true;
           } else {
-            result.status = result.result;
-            result.unprocessedWorkflowList = result.procList.detail;
+            checkUserFlag.flag = false;
           }
           success(result);
-        }).error(function(response, status) {
+        }).error(function (response, status) {
           if (baseConfig.debug) {
-            console.log('post: getTodoList() error');
+            console.log('check user error');
+            console.log(response);
           }
         });
         if (baseConfig.debug) {
@@ -833,38 +797,76 @@ angular.module('applicationModule')
           console.log('调用参数：');
           console.log(params);
         }
-      } else {
-        if (baseConfig.debug) {
-          console.log('不应该被调用getTodoList()');
-        }
-        error();
       }
-    };
 
-    this.getTodoCount = function(success) {
-      if (this.getCheckFlag()) {
-        var user = (user) ? user : window.localStorage.empno;
-        var url = ''
-        var params = {};
+      this.getCheckFlag = function () {
+        return checkUserFlag.flag;
+      }
 
-        url = baseConfig.queryPath + '/handcontract';
+      this.getTodoList = function (flag, user, type, page, success, error) {
+        if (this.getCheckFlag()) {
+          var url = '';
+          var params = {};
+          var user = (user) ? user : window.localStorage.empno;
+          var type = (type) ? type : 'myStart_undo';
 
-        params = {
-          userId: window.localStorage.empno,
-          method: 'getMyToDoSize'
-        }
-        hmsHttp.post(url, params).success(function(result) {
-          success(result);
-        }).error(function(response, status) {
+          url = baseConfig.queryPath + '/handcontract';
+
+          params = {
+            userId: window.localStorage.empno,
+            method: 'processes',
+            type: type
+          };
+          hmsHttp.post(url, params).success(function (result) {
+            if (result.result == 'E') {
+              result.unprocessedWorkflowList = [];
+            } else {
+              result.status = result.result;
+              result.unprocessedWorkflowList = result.procList.detail;
+            }
+            success(result);
+          }).error(function (response, status) {
+            if (baseConfig.debug) {
+              console.log('post: getTodoList() error');
+            }
+          });
           if (baseConfig.debug) {
-            console.log('post: getTodoCount() error');
+            console.log('调用地址：' + url);
+            console.log('调用参数：');
+            console.log(params);
           }
-        });
-      } else {
-        if (baseConfig.debug) {
-          console.log('不应该被调用getTodoCount()');
+        } else {
+          if (baseConfig.debug) {
+            console.log('不应该被调用getTodoList()');
+          }
+          error();
         }
-      }
-    };
-  }
-]);
+      };
+
+      this.getTodoCount = function (success) {
+        if (this.getCheckFlag()) {
+          var user = (user) ? user : window.localStorage.empno;
+          var url = ''
+          var params = {};
+
+          url = baseConfig.queryPath + '/handcontract';
+
+          params = {
+            userId: window.localStorage.empno,
+            method: 'getMyToDoSize'
+          }
+          hmsHttp.post(url, params).success(function (result) {
+            success(result);
+          }).error(function (response, status) {
+            if (baseConfig.debug) {
+              console.log('post: getTodoCount() error');
+            }
+          });
+        } else {
+          if (baseConfig.debug) {
+            console.log('不应该被调用getTodoCount()');
+          }
+        }
+      };
+    }
+  ]);

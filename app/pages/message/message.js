@@ -508,7 +508,7 @@ angular.module('messageModule')
         if (!$scope.firstRefresh) {
           $timeout(function () {
             refreshMessageList(true);
-          }, 1500);
+          }, 1000);
         } else {
           refreshMessageList(true);
         }

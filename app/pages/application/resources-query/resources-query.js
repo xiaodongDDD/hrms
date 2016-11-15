@@ -25,12 +25,6 @@ angular.module('applicationModule')
     '$cordovaDatePicker',
     '$ionicPopup',
     'hmsPopup',
-    // 'HmsDateFormat',
-    // '$ionicModal',
-    // //'Prompter',
-    // '$ionicScrollDelegate',
-    // 'hmsHttp',
-
     function ($scope,
               $state,
               baseConfig,
@@ -40,14 +34,7 @@ angular.module('applicationModule')
               $timeout,
               $cordovaDatePicker,
               $ionicPopup,
-              hmsPopup
-              // HmsDateFormat
-              // $ionicModal,
-              // //Prompter,
-              // $ionicScrollDelegate,
-              // hmsHttp
-
-    ) {
+              hmsPopup) {
       $scope.goBack = function () {
         $ionicHistory.goBack();
       };
@@ -223,7 +210,7 @@ angular.module('applicationModule')
       }
 
 
-      var converterDate = function (date,dest) {
+      var converterDate = function (date, dest) {
         dest.realDate = date;
         var endMonth = date.getMonth() + 1;
         var endDay = date.getDate();
@@ -246,8 +233,8 @@ angular.module('applicationModule')
             var result = response.result;
             var startDate = new Date(result[0].replace(/-/g, '/'));
             var endDate = new Date(result[1].replace(/-/g, '/'));
-            converterDate(startDate,$scope.datetimeFrom);
-            converterDate(endDate,$scope.datetimeTo);
+            converterDate(startDate, $scope.datetimeFrom);
+            converterDate(endDate, $scope.datetimeTo);
             dateFrom = $scope.datetimeFrom.year + '-' + $scope.datetimeFrom.month + '-' + $scope.datetimeFrom.day;
             dateTo = $scope.datetimeTo.year + '-' + $scope.datetimeTo.month + '-' + $scope.datetimeTo.day;
             $scope.$apply();
@@ -389,7 +376,7 @@ angular.module('applicationModule')
         if (page == 'person') {
 
           var dimission = "false";
-          if($scope.dimission){
+          if ($scope.dimission) {
             dimission = "true";
           }
           $state.go('tab.resourcesSearchPerson',
@@ -435,7 +422,9 @@ angular.module('applicationModule')
           title: word
         });
         myPopup.then(function (res) {
-          console.log('Tapped!', res);
+          if (baseConfig.debug) {
+            console.log('Tapped!', res);
+          }
         });
         $timeout(function () {
           myPopup.close(); //由于某种原因3秒后关闭弹出

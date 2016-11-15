@@ -1,7 +1,7 @@
 <ion-view view-title="拼车列表" class="carpooling-list">
   <ion-header-bar align-title="center" class="bar-stable">
       <div class="buttons" ng-if="!showSearchTop">
-        <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
+        <button class="button button-icon icon ion-ios-arrow-back" ng-click="$hmsGoBack()">
           <span class="back-text">返回</span>
         </button>
        </div>
@@ -15,7 +15,7 @@
           <span style="font-size: 15px;">{{cityCode}}</span>
         </div>
       </div>
-    
+
     <!--上滑搜索框显示在状态栏-->
     <div class="row no-padding search-input  search-input-location" ng-if="showSearchTop">
       <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
@@ -119,7 +119,7 @@
           <!--</div>-->
         <!--</ion-item>-->
       </ion-list>
-   
+
     <ion-infinite-scroll ng-if="showInfinite" distance="1%"  on-infinite="loadMore()" immediate-check="false"></ion-infinite-scroll>
   </ion-content>
 </ion-view>

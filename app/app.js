@@ -36,7 +36,7 @@ angular.module('myApp')
     '$location',
     '$rootScope',
     '$ionicHistory',
-    'guideService',
+    'TabsService',
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -50,7 +50,8 @@ angular.module('myApp')
               $location,
               $rootScope,
               $ionicHistory,
-              guideService) {
+              TabsService
+    ) {
 
       $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -63,67 +64,17 @@ angular.module('myApp')
           StatusBar.styleLightContent();
         }
 
-        //alert('device' + angular.toJson(device));
-
-        /*if(window.plugins.screensize){
-         window.plugins.screensize.get(function (result) {
-         alert('window.plugins.screensize ' + angular.toJson(result));
-         guideService.setScreenSize(result);
-         }, function (result) {
-         });
-         }*/
-
-        // if(ThreeDeeTouch){}
-        // ThreeDeeTouch.configureQuickActions([
-        //   {
-        //     type: 'checkin', // optional, but can be used in the onHomeIconPressed callback
-        //     title: 'timesheet填写', // mandatory
-        //     subtitle: '快速填写timesheet', // optional
-        //     iconType: 'compose' // optional
-        //   }
-        // ]);
-        //
-        // ThreeDeeTouch.isAvailable(function (avail) {
-        //   // alert("avail? " + avail)
-        //   ThreeDeeTouch.onHomeIconPressed = function(payload) {
-        //     if(baseConfig.debug){
-        //       console.log("Icon pressed. Type: " + payload.type + ". Title: " + payload.title + ".");
-        //     }
-        //     if (payload.type == 'checkin') {
-        //       $state.go('tab.myTimesheet');
-        //     } else if (payload.type == 'saved') {
-        //       $state.go('tab.tsApproveList');
-        //     } else {
-        //       // wrapping in a timeout, otherwise it collides with the splashscreen
-        //       setTimeout(function() {
-        //         // alert(JSON.stringify(payload));
-        //       }, 500);
-        //     }
-        //   }
-        // });
-
-        /*var analyze = function (currentState) {
-         if (currentState.views) {
-         if (currentState.views['tab-application']) {
-         return 'tab.tab-application-';
-         } else if (currentState.views['tab-message']) {
-         return 'tab.tab-message-';
-         } else if (currentState.views['tab-contact']) {
-         return 'tab.tab-contact-';
-         } else if (currentState.views['tab-myInfo']) {
-         return 'tab.tab-myInfo-';
-         }
-         }
-         return '';
-         };
-
-         var goToPushDetail = function () {
-         $state.go(analyze($state.current) + 'pushDetail', {content: {"stateName": $state.current}});
-         };
-         $timeout(function () {
-         goToPushDetail();
-         },10000);
-         */
+        //全局的返回上一个页面的函数
+        $rootScope.$hmsGoBack = function(backCount) {
+          if(baseConfig.debug){
+            console.log('TabsService.getManualReturnFlag()' + TabsService.getManualReturnFlag())
+          }
+          TabsService.setManualReturnFlag(true);
+          if(baseConfig.debug){
+            console.log('TabsService.getManualReturnFlag()' + TabsService.getManualReturnFlag())
+          }
+          $ionicHistory.goBack(backCount);
+        };
 
         hmsJpushService.init($state);
         sqliteService.buildExpenseSql();
@@ -179,28 +130,6 @@ angular.module('myApp')
         if (ionic.Platform.isWebView()) {
         }
       });
-
-      // $ionicPlatform.registerBackButtonAction(function (e) {
-      //   //判断处于哪个页面时双击退出,袁梦添加
-      //   console.log(" path : "+$location.path());
-      //   if ($location.path() == '/tab/message'||$location.path() == '/tab/application'||$location.path() == '/tab/contact'||
-      //     $location.path() == '/tab/myInfo'||$location.path() == '/login'||$location.path() == '/gesture-lock') {
-      //     if ($rootScope.backButtonPressedOnceToExit) {
-      //       ionic.Platform.exitApp();
-      //     } else {
-      //       $rootScope.backButtonPressedOnceToExit = true;
-      //       hmsPopup.showVeryShortCenterToast('再次点击返回键退出应用!');
-      //       setTimeout(function () {
-      //         $rootScope.backButtonPressedOnceToExit = false;
-      //       }, 1500);
-      //     }
-      //   }
-      //   else if ($ionicHistory.backView()) {
-      //    $ionicHistory.goBack();
-      //   }
-      //   e.preventDefault();
-      //   return false;
-      // }, 101);
     }]);
 
 angular.module('myApp')
