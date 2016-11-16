@@ -63,13 +63,13 @@ angular.module('loginModule')
       };
 
       var goToMain = function () {
-        $state.go("login");
-        /*if (window.localStorage.token && window.localStorage.token != "") {
-         checkVersionService.checkAppVersion();
-         $state.go("tab.message");
-         } else {
-         $state.go("login");
-         }*/
+        //$state.go("login");
+        if (window.localStorage.token && window.localStorage.token != "") {
+          //checkVersionService.checkAppVersion();
+          $state.go("tab.message");
+        } else {
+          $state.go("login");
+        }
       };
 
       $scope.$on('$ionicView.enter', function () {
