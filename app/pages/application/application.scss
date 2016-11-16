@@ -229,7 +229,7 @@ $applicationColor: white !default;
       height: 95px;
       border-top: 1px solid #DBDBDB;
       .appList {
-        height: 95px;
+        height: 105px;
         width: 50%;
         float: left;
         border-right: 1px solid #DBDBDB;
@@ -247,8 +247,8 @@ $applicationColor: white !default;
             border-radius: 30px;
           }
           .app-item-content{
-            height: 60px;
-            width: 60px;
+            height: 55px;
+            width: 55px;
             position: relative;
             background: none;
             .app-extra{
@@ -291,7 +291,7 @@ $applicationColor: white !default;
         }
         .appText {
           text-align: center;
-          font-size: 10px;
+          font-size: 14px;
         }
       }
     }
