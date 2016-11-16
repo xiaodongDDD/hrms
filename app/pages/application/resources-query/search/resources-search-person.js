@@ -167,22 +167,12 @@ angular.module('applicationModule')
 
 
       $scope.$on('$ionicView.afterEnter', function () { //初始化input框-自动聚焦
-        if (ionic.Platform.isAndroid()) {
+        if (ionic.Platform.isWebView()) {
           $timeout(function () {
-            if (ionic.Platform.isWebView()) {
-              cordova.plugins.Keyboard.show();
-            }
+            cordova.plugins.Keyboard.show();
             item.focus();
             $scope.$apply();
-          }, 400);
-        } else {
-          $timeout(function () {
-            if (ionic.Platform.isWebView()) {
-              cordova.plugins.Keyboard.show();
-            }
-            item.focus();
-            $scope.$apply();
-          }, 400);
+          }, 200);
         }
       });
 

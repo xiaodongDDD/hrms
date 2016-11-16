@@ -5,9 +5,10 @@ $img-half-height: 25px !default;
 
 $img-padding: 8px !default;
 $text-padding: 11px !default
+$message-tab-item-size: 24px;
+$message-tab-item-small-size: 21px;
 
 .message-list {
-
   .scroll-refresher.active.refreshing .hms-spinner {
     display: none;
   }

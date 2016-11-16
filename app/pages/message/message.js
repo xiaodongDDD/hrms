@@ -21,7 +21,7 @@ angular.module('messageModule')
     'hmsPopup',
     'messageService',
     'contactService',
-    '$ionicHistory',
+    'hmsCacheService',
     function ($scope,
               $state,
               $timeout,
@@ -38,7 +38,8 @@ angular.module('messageModule')
               hmsHttp,
               hmsPopup,
               messageService,
-              contactService) {
+              contactService,
+              hmsCacheService) {
 
       //消息列表
       $scope.messageList = [];
@@ -52,6 +53,27 @@ angular.module('messageModule')
       $scope.empFilterValue = '';
 
       $scope.loadingMoreFlag = false;
+
+
+      if (baseConfig.debug) {
+        console.log('window.localStorage.myInfoImg ' + window.localStorage.myInfoImg);
+      }
+
+      hmsCacheService.loadImageCache('build/img/tabs/message-f@3x.png',function () {});
+      hmsCacheService.loadImageCache('build/img/tabs/application-F@3x.png',function () {});
+      hmsCacheService.loadImageCache('build/img/tabs/contact-B@3x.png',function () {});
+      hmsCacheService.loadImageCache('build/img/tabs/mine-B@3x.png',function () {});
+      hmsCacheService.loadImageCache('build/img/myInfo/background.png',function () {});
+      hmsCacheService.loadImageCache('build/img/myInfo/man-portrait.png',function () {});
+      hmsCacheService.loadImageCache('build/img/myInfo/woman-portrait.png',function () {});
+      if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != '') {
+        hmsCacheService.loadImageCache(window.localStorage.myInfoImg, function () {
+          messageService.setMyInfoImageCacheFlag(true);
+        });
+        hmsCacheService.loadImageCache(window.localStorage.myInfoImg + '64', function () {
+        });
+      }
+
 
       $timeout(function () {
         var scriptEle = document.createElement("script");
@@ -508,7 +530,7 @@ angular.module('messageModule')
         if (!$scope.firstRefresh) {
           $timeout(function () {
             refreshMessageList(true);
-          }, 1500);
+          }, 1000);
         } else {
           refreshMessageList(true);
         }

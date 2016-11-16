@@ -1,169 +1,158 @@
-<!--<ion-view id="resourceQuery" view-title="资源查询">-->
-  <!--<ion-nav-buttons side="right">-->
-    <!--<button class="button button-clear" ng-click="toggleQuery()">查询</button>-->
-  <!--</ion-nav-buttons>-->
-
-
-  <ion-view view-title="资源查询" class="resources-query">
-  <ion-header-bar align-title="center" ng-class="{'bar-stable blur-back':descriptionAppearance,'bar-stable clear-back':!descriptionAppearance}">
+<ion-view view-title="资源查询" class="resources-query">
+  <ion-header-bar align-title="center"
+                  ng-class="{'bar-stable blur-back':descriptionAppearance,'bar-stable clear-back':!descriptionAppearance}">
     <div class="buttons">
-      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="$hmsGoBack()">
         <span class="back-button-text">返回</span>
       </button>
     </div>
     <h1 class="title">资源查询</h1>
-    <!--<div class="buttons">-->
-      <!--<button class="button button-clear" ng-click="toggleQuery()">-->
-        <!--<span class="back-button-text">查询</span>-->
-      <!--</button>-->
-    <!--</div>-->
   </ion-header-bar>
   <ion-content>
 
     <div class=" div-query animated {{toggleUpDownAnimate}}"
-    ng-class="{true: '',false: 'hidden-query'}[toggleUpDownFlag]">
-    <div class="row div-block" style="padding: 1.2rem .5rem">
-      <div class="col col-50" ng-click="selectDateFrom()">
-        <label for="formDate" class="label-date">起始日期</label>
-        <div class="row select-date" id="formDate">
-          <div class="col col-50">
-            <div class="month">{{datetimeFrom.year}}</div>
-            <div class="week">{{datetimeFrom.month}}月</div>
+         ng-class="{true: '',false: 'hidden-query'}[toggleUpDownFlag]">
+      <div class="row div-block" style="padding: 1.2rem .5rem">
+        <div class="col col-50" ng-click="selectDateFrom()">
+          <label for="formDate" class="label-date">起始日期</label>
+          <div class="row select-date" id="formDate">
+            <div class="col col-50">
+              <div class="month">{{datetimeFrom.year}}</div>
+              <div class="week">{{datetimeFrom.month}}月</div>
+            </div>
+            <div class=" col col-50 day">{{datetimeFrom.day}}</div>
           </div>
-          <div class=" col col-50 day">{{datetimeFrom.day}}</div>
-        </div>
 
-        <!--<input type="date" id="formDate" class="input-date" ng-model="queryParams.dateFrom">-->
-      </div>
-      <div class="col col-50" style="border-left: 1px solid #e8e8e8;" ng-click="selectDateTo()">
-        <label for="toDate" class="label-date">结束日期</label>
-        <div class="row select-date" id="toDate">
-          <div class="col col-50">
-            <div class="month">{{datetimeTo.year}}</div>
-            <div class="week">{{datetimeTo.month}}月</div>
+          <!--<input type="date" id="formDate" class="input-date" ng-model="queryParams.dateFrom">-->
+        </div>
+        <div class="col col-50" style="border-left: 1px solid #e8e8e8;" ng-click="selectDateTo()">
+          <label for="toDate" class="label-date">结束日期</label>
+          <div class="row select-date" id="toDate">
+            <div class="col col-50">
+              <div class="month">{{datetimeTo.year}}</div>
+              <div class="week">{{datetimeTo.month}}月</div>
+            </div>
+            <div class=" col col-50 day">{{datetimeTo.day}}</div>
           </div>
-          <div class=" col col-50 day">{{datetimeTo.day}}</div>
+          <!--<input type="date" id="toDate" class="input-date" ng-model="queryParams.dateTo">-->
         </div>
-        <!--<input type="date" id="toDate" class="input-date" ng-model="queryParams.dateTo">-->
       </div>
-    </div>
-    <div class="div-block" style="padding: .01rem .5rem 0;margin-top: .5rem">
-      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8">
-        <div class="row label-row" ng-click="goInputSearch('person')">
-          <span class="col col-20" >员工 :</span>
-          <!--<div class="col col-60" ng-bind="employeeName"></div>-->
-          <!--<span class="font-select col col-20">请选择</span>-->
-          <input type="text" class="col col-75" placeholder="请选择" disabled ng-model="employeeName">
-        </div>
-        <img src="build/img/application/resources-query/clear.png" class="clear-img"
-             ng-if="showClearEmployee"
-             ng-click="clearInputContent('employee')"/>
-      </div>
-      <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8">
-        <div class="row label-row" ng-click="goInputSearch('branch')">
-          <span class="col col-20">部门 :</span>
-          <!--<div class="col col-60" ng-bind="branchName"></div>-->
-          <!--<span class="font-select col col-20">请选择</span>-->
-          <input type="text" class="col col-75" placeholder="请选择" disabled ng-model="branchName" >
-        </div>
-        <img src="build/img/application/resources-query/clear.png" class="clear-img"
-             ng-if="showClearBranch"
-             ng-click="clearInputContent('branch')"/>
-      </div>
-      <div class="div-block-middle">
-        <div class="row label-row" ng-click="goInputSearch('subject')">
-          <span class="col col-20">项目 :</span>
-          <!--<div class="col col-60" ng-bind="subjectName"></div>-->
-          <!--<span class="font-select col col-20">请选择</span>-->
-          <input type="text" class="col col-75" placeholder="请选择" disabled ng-model="subjectName">
-        </div>
-        <img src="build/img/application/resources-query/clear.png" class="clear-img"
-             ng-if="showClearSubject"
-             ng-click="clearInputContent('subject')"/>
-      </div>
-    </div>
-    <div class="row div-block" style="padding: .8rem 0; margin-top: .5rem">
-      <div style="width: 50%;margin-left: 5%;line-height: 1.875rem">包含离职人员</div>
-      <div style="width: 50%;text-align: right;padding-right: .25rem">
-        <label class="toggle toggle-balanced" style="height: 2.5rem;line-height: 2.5rem;">
-          <input type="checkbox" ng-model="dimission" ng-click="dimissionClick()">
-
-          <div class="track">
-            <div class="handle"></div>
+      <div class="div-block" style="padding: .01rem .5rem 0;margin-top: .5rem">
+        <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8">
+          <div class="row label-row" ng-click="goInputSearch('person')">
+            <span class="col col-20">员工 :</span>
+            <!--<div class="col col-60" ng-bind="employeeName"></div>-->
+            <!--<span class="font-select col col-20">请选择</span>-->
+            <input type="text" class="col col-75" placeholder="请选择" disabled ng-model="employeeName">
           </div>
-        </label>
+          <img src="build/img/application/resources-query/clear.png" class="clear-img"
+               ng-if="showClearEmployee"
+               ng-click="clearInputContent('employee')"/>
+        </div>
+        <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8">
+          <div class="row label-row" ng-click="goInputSearch('branch')">
+            <span class="col col-20">部门 :</span>
+            <!--<div class="col col-60" ng-bind="branchName"></div>-->
+            <!--<span class="font-select col col-20">请选择</span>-->
+            <input type="text" class="col col-75" placeholder="请选择" disabled ng-model="branchName">
+          </div>
+          <img src="build/img/application/resources-query/clear.png" class="clear-img"
+               ng-if="showClearBranch"
+               ng-click="clearInputContent('branch')"/>
+        </div>
+        <div class="div-block-middle">
+          <div class="row label-row" ng-click="goInputSearch('subject')">
+            <span class="col col-20">项目 :</span>
+            <!--<div class="col col-60" ng-bind="subjectName"></div>-->
+            <!--<span class="font-select col col-20">请选择</span>-->
+            <input type="text" class="col col-75" placeholder="请选择" disabled ng-model="subjectName">
+          </div>
+          <img src="build/img/application/resources-query/clear.png" class="clear-img"
+               ng-if="showClearSubject"
+               ng-click="clearInputContent('subject')"/>
+        </div>
       </div>
-    </div>
-    <button class="button btn" ng-click="doQuery()">查询</button>
-    </div>
+      <div class="row div-block" style="padding: .8rem 0; margin-top: .5rem">
+        <div style="width: 50%;margin-left: 5%;line-height: 1.875rem">包含离职人员</div>
+        <div style="width: 50%;text-align: right;padding-right: .25rem">
+          <label class="toggle toggle-balanced" style="height: 2.5rem;line-height: 2.5rem;">
+            <input type="checkbox" ng-model="dimission" ng-click="dimissionClick()">
 
+            <div class="track">
+              <div class="handle"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <button class="button btn" ng-click="doQuery()">查询</button>
+    </div>
     <!--&lt;!&ndash;首行首列固定的滚动表格 begin&ndash;&gt;-->
     <!--<ion-content scroll="false">-->
-      <!--<div class="row table-header animated {{toggleLeftRightAnimate}}"-->
-           <!--ng-class="{true: '',false: 'hidden-left'}[toggleLeftRightFlag]">-->
-        <!--<div class="col col-40" style="z-index: 2">-->
-          <!--<table class="left">-->
-            <!--<tr class="table-header-tr" ng-click="toggleLeft()" ng-show="tableShow">-->
-              <!--<td style="width: 20%">#</td>-->
-              <!--<td style="width: 30%">工号</td>-->
-              <!--<td style="width: 50%">姓名</td>-->
-            <!--</tr>-->
-          <!--</table>-->
-        <!--</div>-->
-        <!--<div class="col col-60" style="z-index: -1">-->
-          <!--<ion-scroll delegate-handle="tableHeader" has-bouncing="false" direction="x" scrollbar-x="false"-->
-                      <!--style="margin-top: 0;margin-left: -1px">-->
-            <!--<table class="right">-->
-              <!--<tr class="table-header-tr">-->
-                <!--<td ng-class="{true: 'isHoliday',false: ''}[headers.isHoliday=='Y']"-->
-                    <!--ng-repeat="headers in headerItems">-->
-                  <!--<div class="column-default-width column-{{$index}}">-->
-                    <!--{{headers.isHoliday=='Y'?headers.date+"(休)":headers.date}}-->
-                  <!--</div>-->
-                <!--</td>-->
-              <!--</tr>-->
-            <!--</table>-->
-          <!--</ion-scroll>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="table-body animated {{toggleLeftRightAnimate}}"-->
-           <!--ng-class="{true: '',false: 'hidden-left'}[toggleLeftRightFlag]">-->
-        <!--<ion-scroll direction="y" style="height: 100%">-->
-          <!--<div class="row">-->
-            <!--<div class="col col-40" style="z-index: 1">-->
-              <!--<table class="left">-->
-                <!--<tr ng-class="{true:'tr-odd-bgcolor',false:'tr-even-bgcolor'}[$index%2==0]"-->
-                    <!--ng-repeat="lineItem in lineItems">-->
-                  <!--<td style="width: 20%;background-color: rgba(236,233,216,1)">{{$index+1}}</td>-->
-                  <!--<td style="width: 30%;background-color: rgba(236,233,216,.5)">-->
-                    <!--{{lineItem.employeeCode}}-->
-                  <!--</td>-->
-                  <!--<td style="width: 50%;background-color: rgba(236,233,216,.5)">-->
-                    <!--{{lineItem.employeeName}}-->
-                  <!--</td>-->
-                <!--</tr>-->
-              <!--</table>-->
-            <!--</div>-->
-            <!--<div class="col col-60" style="z-index: 0">-->
-              <!--<ion-scroll delegate-handle="tableBody" has-bouncing="false" direction="x" scrollbar-x="false"-->
-                          <!--on-scroll="scroll()" style="margin-top: 0;margin-left: -1px">-->
-                <!--<table class="right">-->
-                  <!--<tr ng-class="{true:'tr-odd-bgcolor',false:'tr-even-bgcolor'}[$index%2==0]"-->
-                      <!--ng-repeat="lineItem in lineItems">-->
-                    <!--<td ng-class="{'isTodo':lines.project=='无项目','isDone':lines.project==''}"-->
-                        <!--ng-repeat="lines in lineItem.projLists">-->
-                      <!--<div class="text-overflow-ellipsis column-default-width column-{{$index}}"-->
-                           <!--ng-click="resetWidth($index,lines.project)">-->
-                        <!--{{lines.project}}-->
-                      <!--</div>-->
-                    <!--</td>-->
-                  <!--</tr>-->
-                <!--</table>-->
-              <!--</ion-scroll>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</ion-scroll>-->
-      <!--</div>-->
+    <!--<div class="row table-header animated {{toggleLeftRightAnimate}}"-->
+    <!--ng-class="{true: '',false: 'hidden-left'}[toggleLeftRightFlag]">-->
+    <!--<div class="col col-40" style="z-index: 2">-->
+    <!--<table class="left">-->
+    <!--<tr class="table-header-tr" ng-click="toggleLeft()" ng-show="tableShow">-->
+    <!--<td style="width: 20%">#</td>-->
+    <!--<td style="width: 30%">工号</td>-->
+    <!--<td style="width: 50%">姓名</td>-->
+    <!--</tr>-->
+    <!--</table>-->
+    <!--</div>-->
+    <!--<div class="col col-60" style="z-index: -1">-->
+    <!--<ion-scroll delegate-handle="tableHeader" has-bouncing="false" direction="x" scrollbar-x="false"-->
+    <!--style="margin-top: 0;margin-left: -1px">-->
+    <!--<table class="right">-->
+    <!--<tr class="table-header-tr">-->
+    <!--<td ng-class="{true: 'isHoliday',false: ''}[headers.isHoliday=='Y']"-->
+    <!--ng-repeat="headers in headerItems">-->
+    <!--<div class="column-default-width column-{{$index}}">-->
+    <!--{{headers.isHoliday=='Y'?headers.date+"(休)":headers.date}}-->
+    <!--</div>-->
+    <!--</td>-->
+    <!--</tr>-->
+    <!--</table>-->
+    <!--</ion-scroll>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="table-body animated {{toggleLeftRightAnimate}}"-->
+    <!--ng-class="{true: '',false: 'hidden-left'}[toggleLeftRightFlag]">-->
+    <!--<ion-scroll direction="y" style="height: 100%">-->
+    <!--<div class="row">-->
+    <!--<div class="col col-40" style="z-index: 1">-->
+    <!--<table class="left">-->
+    <!--<tr ng-class="{true:'tr-odd-bgcolor',false:'tr-even-bgcolor'}[$index%2==0]"-->
+    <!--ng-repeat="lineItem in lineItems">-->
+    <!--<td style="width: 20%;background-color: rgba(236,233,216,1)">{{$index+1}}</td>-->
+    <!--<td style="width: 30%;background-color: rgba(236,233,216,.5)">-->
+    <!--{{lineItem.employeeCode}}-->
+    <!--</td>-->
+    <!--<td style="width: 50%;background-color: rgba(236,233,216,.5)">-->
+    <!--{{lineItem.employeeName}}-->
+    <!--</td>-->
+    <!--</tr>-->
+    <!--</table>-->
+    <!--</div>-->
+    <!--<div class="col col-60" style="z-index: 0">-->
+    <!--<ion-scroll delegate-handle="tableBody" has-bouncing="false" direction="x" scrollbar-x="false"-->
+    <!--on-scroll="scroll()" style="margin-top: 0;margin-left: -1px">-->
+    <!--<table class="right">-->
+    <!--<tr ng-class="{true:'tr-odd-bgcolor',false:'tr-even-bgcolor'}[$index%2==0]"-->
+    <!--ng-repeat="lineItem in lineItems">-->
+    <!--<td ng-class="{'isTodo':lines.project=='无项目','isDone':lines.project==''}"-->
+    <!--ng-repeat="lines in lineItem.projLists">-->
+    <!--<div class="text-overflow-ellipsis column-default-width column-{{$index}}"-->
+    <!--ng-click="resetWidth($index,lines.project)">-->
+    <!--{{lines.project}}-->
+    <!--</div>-->
+    <!--</td>-->
+    <!--</tr>-->
+    <!--</table>-->
+    <!--</ion-scroll>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</ion-scroll>-->
+    <!--</div>-->
     <!--&lt;!&ndash;end&ndash;&gt;-->
   </ion-content>
 </ion-view>

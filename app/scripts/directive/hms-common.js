@@ -37,8 +37,8 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
         var image = document.getElementById($attr.elasticImage);
         var imageHeight = image.offsetHeight;
         var currentBrightness = '';
-        var brightness5 = "blur(5px) brightness(0.7)";
-        var brightness4 = "blur(3px) brightness(0.85)";
+        var brightness5 = "blur(0px) brightness(0.7)";
+        var brightness4 = "blur(0px) brightness(1)";
         var brightness1 = "blur(0px) brightness(1)";
         currentBrightness = brightness5;
 

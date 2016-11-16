@@ -27,6 +27,7 @@ angular.module('myApp')
 angular.module('myApp')
   .controller('structureCtl', [
     '$scope',
+    '$rootScope',
     'hmsPopup',
     '$state',
     '$stateParams',
@@ -36,6 +37,7 @@ angular.module('myApp')
     '$ionicScrollDelegate',
     '$timeout',
     function ($scope,
+              $rootScope,
               hmsPopup,
               $state,
               $stateParams,
@@ -149,8 +151,9 @@ angular.module('myApp')
         }
         dynamicAddScrollWidth();
         $timeout(function () {
-          $ionicHistory.goBack();
-        }, 251);
+          //$ionicHistory.goBack();
+          $rootScope.$hmsGoBack();
+        }, 100);
       };
 
       $scope.goInputSearch = function () { //去搜索界面

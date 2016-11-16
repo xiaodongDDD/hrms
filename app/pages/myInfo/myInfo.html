@@ -1,5 +1,7 @@
 <ion-view view-title="我的" class="my-info">
-  <div id="portrait-image" class="shrink-image" style="background: url('build/img/myInfo/background.png');background-size: cover;background-position: center;background-repeat: no-repeat;">
+  <!--style="background: url('build/img/myInfo/background.png');-->
+  <div id="portrait-image" class="shrink-image"
+       ng-style="portraitImageLarge">
   </div>
   <button class="button button-icon setup-button" ng-click="setup()">
     <img src="build/img/myInfo/setup.png" class="setup-image"/>
@@ -85,9 +87,8 @@
           <div class="login-icon-shelter">
             <img src="build/img/myInfo/version.png" class="help-icon"/>
         </div>
-          <label class="login-label">版本更新</label>
+          <label class="login-label" ng-bind="currentVersion"></label>
         </div>
-        <label class="version-label" ng-bind="currentVersion"></label>
         <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
       </ion-item>
     </div>

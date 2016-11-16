@@ -150,10 +150,10 @@ angular.module('applicationModule')
         $timeout(function () {
           item.focus();
           $scope.$apply();
-        }, 400);
+        }, 200);
       };
 
-      $scope.selectBranchItem = function (newBranch,type) { //把项目信息返回
+      $scope.selectBranchItem = function (newBranch, type) { //把项目信息返回
         // dealHistory(newSub.sub_name);
         if (baseConfig.debug) {
           console.log('selectBranchItem.newBranch ' + angular.toJson(newBranch));
@@ -163,12 +163,12 @@ angular.module('applicationModule')
         $scope.branchList = [];
         $scope.branchKey.getValue = '';
 
-        if(type == 'self'){
+        if (type == 'self') {
           $rootScope.$broadcast("BRANCH_NAME", newBranch.unit_name);
           $rootScope.$broadcast("UNIT_ID", newBranch.unit_id);
           $rootScope.$broadcast("BRANCH_ID", newBranch.parent_id);
           $ionicHistory.goBack();
-        }else{
+        } else {
           if (newBranch.full_unit_name) {
             $rootScope.$broadcast("BRANCH_NAME", newBranch.full_unit_name);
             $rootScope.$broadcast("UNIT_ID", newBranch.unit_id);

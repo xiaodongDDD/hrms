@@ -179,7 +179,7 @@
     border: none;
     height: 46px;
     border-bottom: 1px solid #e8e8e8;
-    margin-left: 20px;
+    padding-left: 20px;
   }
   .login-item-row{
     padding: 0px;
@@ -215,7 +215,7 @@
     padding: 0px;
     border: none;
     height: 46px;
-    margin-left: 20px;
+    padding-left: 20px;
   }
   .feedback-item-row{
     padding: 0px;
@@ -254,12 +254,12 @@
     margin-top: 30px;
   }
   .login-item.item.activated{
-    background-color: #ffffff;
-    opacity: 0.2;
+    background-color: #f8f8f8;
+    //opacity: 0.2;
   }
   .certificate-item.item.activated{
-    background-color: #ffffff;
-    opacity: 0.2;
+    background-color: #f8f8f8;
+    //opacity: 0.2;
   }
 }
 .setup{
@@ -608,12 +608,12 @@
     box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
   }
   .certificate-item.ng-enter{
-    -webkit-animation: zoomInUp 0.5s;
-    animation: zoomInUp .5s;
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn .5s;
   }
   .certificate-item.ng-enter-stagger{
-    -webkit-animation-delay: 150ms;
-    animation-delay: 150ms;
+    -webkit-animation-delay: 90ms;
+    animation-delay: 90ms;
     -webkit-animation-duration: 0ms;
     animation-duration: 0ms;
   }
@@ -637,8 +637,8 @@
     right: 11px;
   }
   .item.activated{
-    background-color: #ffffff;
-    opacity: 0.4;
+    //background-color: #ffffff;
+    //opacity: 0.4;
   }
   .add-image{
     width: 26px;

@@ -16,7 +16,7 @@ angular.module('myApp')
             }
           },
           params: {
-            dateFrom:"",
+            dateFrom: "",
             dateTo: "",
             employeeName: "",
             employeeCode: "",
@@ -37,7 +37,7 @@ angular.module('myApp')
             }
           },
           params: {
-            dateFrom:"",
+            dateFrom: "",
             dateTo: "",
             employeeName: "",
             employeeCode: "",
@@ -59,7 +59,7 @@ angular.module('myApp')
             }
           },
           params: {
-            dateFrom:"",
+            dateFrom: "",
             dateTo: "",
             employeeName: "",
             employeeCode: "",
@@ -76,7 +76,6 @@ angular.module('myApp')
 
 angular.module('applicationModule')
   .controller('rsDetailPersonCtl', [
-
     '$scope',
     '$state',
     '$ionicHistory',
@@ -89,9 +88,6 @@ angular.module('applicationModule')
     '$stateParams',
     '$ionicTabsDelegate',
     '$ionicSlideBoxDelegate',
-
-
-
     function ($scope,
               $state,
               $ionicHistory,
@@ -103,11 +99,7 @@ angular.module('applicationModule')
               $ionicScrollDelegate,
               $stateParams,
               $ionicTabsDelegate,
-              $ionicSlideBoxDelegate
-
-
-
-    ) {
+              $ionicSlideBoxDelegate) {
 
 
       $scope.employeeList = "";  //初始化人员列表
@@ -150,7 +142,7 @@ angular.module('applicationModule')
         "margin-top": "-44px"
       };
 
-      if(ionic.Platform.isIOS()){
+      if (ionic.Platform.isIOS()) {
         $scope.marginTop = {
           "margin-top": "-64px"
         };
@@ -162,44 +154,45 @@ angular.module('applicationModule')
       ];
 
       var postUrl = baseConfig.businessPath + "/api_resources_query/get_personal_resource"; //个人查询结果接口地址
-      var postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+      var postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + pageNumber + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
 
       var empListUrl = baseConfig.businessPath + "/api_resources_query/get_employee_list"; //人员列表接口地址
-      var searchInfo = '{"params":{"p_employee_number":"' + employeeCode + '","p_branch_id":"' + unitId +  '","p_project_id":"' + subjectId +  '"}}';
+      var searchInfo = '{"params":{"p_employee_number":"' + employeeCode + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '"}}';
 
       var empPictureUrl = baseConfig.businessPath + "/api_employee/get_employee_code"; //人员头像接口地址
-      var empCode = '{"params":{"p_employee_code":"' + employeeCode +  '"}}';
+      var empCode = '{"params":{"p_employee_code":"' + employeeCode + '"}}';
 
       // $scope.slideIndex = 0;
 
-      var getEmpList = function (postUrl,postData) { //获取人员列表
+      var getEmpList = function (postUrl, postData) { //获取人员列表
 
         hmsHttp.post(postUrl, postData).success(function (result) {
 
           // console.log(result.employee_list);
           $scope.employeeList = result.employee_list.sort(function (a, b) {
-            return(a.employee_number - b.employee_number);
+            return (a.employee_number - b.employee_number);
           });
 
 
-          if(exceptionEmpList){
+          if (exceptionEmpList) {
             $scope.employeeList = exceptionEmpList.sort(function (a, b) {
-              return(a.employee_number - b.employee_number);
+              return (a.employee_number - b.employee_number);
             });
           }
 
+          if (baseConfig.debug) {
+            console.log('人员列表啊');
+            console.log($scope.employeeList);
+          }
 
-          console.log('人员列表啊');
-          console.log($scope.employeeList);
-
-          for(var j=0; j< $scope.employeeList.length; j++){
-            if(!$scope.employeeList[j].emp_avatar){
+          for (var j = 0; j < $scope.employeeList.length; j++) {
+            if (!$scope.employeeList[j].emp_avatar) {
               $scope.employeeList[j].emp_avatar = "build\\img\\application\\resources-query\\profile@3x.png";
             }
           }
 
-          for(var i=0; i<$scope.employeeList.length; i++){
-            if(employeeCode == $scope.employeeList[i].employee_number){
+          for (var i = 0; i < $scope.employeeList.length; i++) {
+            if (employeeCode == $scope.employeeList[i].employee_number) {
               $scope.slideIndex = i;
               break;
             }
@@ -211,214 +204,159 @@ angular.module('applicationModule')
           // console.log($scope.employeeListSlide);
           // $ionicSlideBoxDelegate.$getByHandle('employee-handle').update();
 
-          if($scope.employeeList[$scope.slideIndex - 1]){
+          if ($scope.employeeList[$scope.slideIndex - 1]) {
             // $scope.employeeListSlide.reverse().push($scope.employeeList[$scope.employeeIndex - 1]);
             // $scope.employeeListSlide.reverse();
             $scope.lastEmp = $scope.employeeList[$scope.slideIndex - 1];
 
             $scope.lastArrow = true;
-          }else{
+          } else {
             $scope.lastEmp = "";
             $scope.lastArrow = false;
           }
-          if($scope.employeeList[$scope.slideIndex + 1]){
+          if ($scope.employeeList[$scope.slideIndex + 1]) {
             // $scope.employeeListSlide.push($scope.employeeList[$scope.employeeIndex + 1]);
             $scope.nextEmp = $scope.employeeList[$scope.slideIndex + 1];
             $scope.nextArrow = true;
-          }else{
+          } else {
             $scope.nextEmp = "";
             $scope.nextArrow = false;
           }
 
-
         }).error(function () {
-          console.log('人员列表接口异常');
+          if (baseConfig.debug) {
+            console.log('人员列表接口异常');
+          }
         })
       };
 
       $scope.lastPerson = function () {
-        if($scope.employeeList[$scope.slideIndex - 1]){
+        if ($scope.employeeList[$scope.slideIndex - 1]) {
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];
           $scope.monthIndex = 0;
           $scope.newPage = 1;
           $scope.slideIndex--;
           $scope.empInfo = $scope.employeeList[$scope.slideIndex];
-          if($scope.employeeList[$scope.slideIndex - 1]){
+          if ($scope.employeeList[$scope.slideIndex - 1]) {
             $scope.lastEmp = $scope.employeeList[$scope.slideIndex - 1];
             $scope.lastArrow = true;
-          }else{
+          } else {
             $scope.lastEmp = "";
             $scope.lastArrow = false;
           }
-          if($scope.employeeList[$scope.slideIndex + 1]){
+          if ($scope.employeeList[$scope.slideIndex + 1]) {
             $scope.nextEmp = $scope.employeeList[$scope.slideIndex + 1];
             $scope.nextArrow = true;
-          }else{
+          } else {
             $scope.nextEmp = "";
             $scope.nextArrow = false;
           }
           employeeCode = $scope.employeeList[$scope.slideIndex].employee_number;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + pageNumber + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('init');
         }
 
       };
       $scope.nextPerson = function () {
-        if($scope.employeeList[$scope.slideIndex + 1]){
+        if ($scope.employeeList[$scope.slideIndex + 1]) {
           $scope.resultList = []; //初始化最终呈现的结果
           $scope.resultProList = [];
           $scope.monthIndex = 0;
           $scope.newPage = 1;
           $scope.slideIndex++;
           $scope.empInfo = $scope.employeeList[$scope.slideIndex];
-          if($scope.employeeList[$scope.slideIndex - 1]){
+          if ($scope.employeeList[$scope.slideIndex - 1]) {
             $scope.lastEmp = $scope.employeeList[$scope.slideIndex - 1];
             $scope.lastArrow = true;
-          }else{
+          } else {
             $scope.lastEmp = "";
             $scope.lastArrow = false;
           }
-          if($scope.employeeList[$scope.slideIndex + 1]){
+          if ($scope.employeeList[$scope.slideIndex + 1]) {
             $scope.nextEmp = $scope.employeeList[$scope.slideIndex + 1];
             $scope.nextArrow = true;
-          }else{
+          } else {
             $scope.nextEmp = "";
             $scope.nextArrow = false;
           }
 
           employeeCode = $scope.employeeList[$scope.slideIndex].employee_number;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + pageNumber + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('init');
         }
 
       };
 
-
-      // $scope.$on('$ionicView.afterEnter', function () {
-      // $timeout(function () {
-      //   getEmpList(empListUrl,searchInfo);
-      // },200);
-      // });
-
-
-      // $scope.activeSlide=function(index){//点击时候触发
-      //   $scope.slectIndex=index;
-      //   $ionicSlideBoxDelegate.slide(index);
-      // };
-      // $scope.slideChanged=function(index){//  上面人员滑动时候触发
-      //
-      //   $scope.resultList = []; //初始化最终呈现的结果
-      //   $scope.resultProList = [];
-      //   // $scope.slideIndex=index;
-      //   $scope.monthIndex = 0;
-      //   $scope.newPage = 1;
-      //   if($scope.employeeList[index - 1]){
-      //     $scope.lastEmp = $scope.employeeList[index - 1];
-      //     $scope.lastArrow = true;
-      //
-      //   }else{
-      //     $scope.lastEmp = "";
-      //     $scope.lastArrow = false;
-      //   }
-      //   if($scope.employeeList[index + 1]){
-      //     $scope.nextEmp = $scope.employeeList[index + 1];
-      //     $scope.nextArrow = true;
-      //   }else{
-      //     $scope.nextEmp = "";
-      //     $scope.nextArrow = false;
-      //   }
-      //   employeeCode = $scope.employeeList[index].employee_number;
-      //   postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + pageNumber +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
-      //   getData('init');
-      //
-      // };
-
-
-
       $scope.monthChanged = function (index) {  //下面日历滑动时触发
-        $scope.monthIndex=index;
-        console.log(index);
+        $scope.monthIndex = index;
+        if (baseConfig.debug) {
+          console.log(index);
+        }
         $scope.loadMore(index);
         $scope.projectList = $scope.resultProList[index];
-
       };
-
-
-      // var getEmpPicture = function (url,empCode) {   //获取员工头像
-      //   hmsHttp.post(url, empCode).success(function (result) {
-      //
-      //     $scope.empInfo = result.result;
-      //     console.log($scope.empInfo);
-      //
-      //
-      //   }).error(function () {
-      //     console.log('员工头像接口异常')
-      //   })
-      // };
-
-
 
       $scope.loadMore = function (index) { //加载下一页
 
-        if($scope.newPage == 1 && index == 1){
+        if ($scope.newPage == 1 && index == 1) {
           $scope.newPage = 2;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 2 && index == 3){
+        if ($scope.newPage == 2 && index == 3) {
           $scope.newPage = 3;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 3 && index == 5){
+        if ($scope.newPage == 3 && index == 5) {
           $scope.newPage = 4;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 4 && index == 7){
+        if ($scope.newPage == 4 && index == 7) {
           $scope.newPage = 5;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 5 && index == 9){
+        if ($scope.newPage == 5 && index == 9) {
           $scope.newPage = 6;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 6 && index == 11){
+        if ($scope.newPage == 6 && index == 11) {
           $scope.newPage = 7;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 7 && index == 13){
+        if ($scope.newPage == 7 && index == 13) {
           $scope.newPage = 8;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 8 && index == 15){
+        if ($scope.newPage == 8 && index == 15) {
           $scope.newPage = 9;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 9 && index == 17){
+        if ($scope.newPage == 9 && index == 17) {
           $scope.newPage = 10;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 10 && index == 19){
+        if ($scope.newPage == 10 && index == 19) {
           $scope.newPage = 11;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 11 && index == 21){
+        if ($scope.newPage == 11 && index == 21) {
           $scope.newPage = 12;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
-        if($scope.newPage == 12 && index == 23){
+        if ($scope.newPage == 12 && index == 23) {
           $scope.newPage = 13;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + $scope.newPage +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + $scope.newPage + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
           getData('loadMore');
         }
       };
@@ -428,80 +366,80 @@ angular.module('applicationModule')
         // $scope.contactLoading = true;
         if (moreFlag === 'init') {
           $scope.contactLoading = true;
-          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId +  '","p_page_number":"' + 1 +  '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission +  '"}}';
+          postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + 1 + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
         }
         hmsHttp.post(postUrl, postData).success(function (result) {
 
           //年月排序
           $scope.resourceDetails = result.resource_details.sort(function (a, b) {
-            return (a.record_date.substring(0,4)+a.record_date.substring(5,7)) - (b.record_date.substring(0,4)+b.record_date.substring(5,7));
+            return (a.record_date.substring(0, 4) + a.record_date.substring(5, 7)) - (b.record_date.substring(0, 4) + b.record_date.substring(5, 7));
           });
 
           //上颜色
-          for(var j=0; j<$scope.resourceDetails.length; j++){
+          for (var j = 0; j < $scope.resourceDetails.length; j++) {
 
-            if($scope.resourceDetails[j].project_list[0]){
+            if ($scope.resourceDetails[j].project_list[0]) {
               $scope.resourceDetails[j].project_list[0].color = "#86e2d5";
             }
-            if($scope.resourceDetails[j].project_list[1]){
+            if ($scope.resourceDetails[j].project_list[1]) {
               $scope.resourceDetails[j].project_list[1].color = "#6bb9f0";
             }
-            if($scope.resourceDetails[j].project_list[2]){
+            if ($scope.resourceDetails[j].project_list[2]) {
               $scope.resourceDetails[j].project_list[2].color = "#e08283";
             }
-            if($scope.resourceDetails[j].project_list[3]){
+            if ($scope.resourceDetails[j].project_list[3]) {
               $scope.resourceDetails[j].project_list[3].color = "#f8e71c";
             }
-            if($scope.resourceDetails[j].project_list[4]){
+            if ($scope.resourceDetails[j].project_list[4]) {
               $scope.resourceDetails[j].project_list[4].color = "#93408a";
             }
-            if($scope.resourceDetails[j].project_list[5]){
+            if ($scope.resourceDetails[j].project_list[5]) {
               $scope.resourceDetails[j].project_list[5].color = "#fa9e34";
             }
-            if($scope.resourceDetails[j].project_list[6]){
+            if ($scope.resourceDetails[j].project_list[6]) {
               $scope.resourceDetails[j].project_list[6].color = "#e4517b";
             }
-            if($scope.resourceDetails[j].project_list[7]){
+            if ($scope.resourceDetails[j].project_list[7]) {
               $scope.resourceDetails[j].project_list[7].color = "#c9a666";
             }
 
           }
 
           //封装resultList，resultProList
-          for(var i=0; i<$scope.resourceDetails.length; i++){
+          for (var i = 0; i < $scope.resourceDetails.length; i++) {
             $scope.yearMonth = new Date($scope.resourceDetails[i].record_date);
             year = $scope.yearMonth.getFullYear();
             month = $scope.yearMonth.getMonth();
-            $scope.resultList.push(initDate(year,month));
+            $scope.resultList.push(initDate(year, month));
             $ionicSlideBoxDelegate.$getByHandle('month-handle').update();
             $scope.resultProList.push($scope.resourceDetails[i].project_list);
           }
 
-          // $scope.resultList.push($scope.monthSlideList);
+          //$scope.resultList.push($scope.monthSlideList);
 
-          console.log($scope.resultList);
-          console.log($scope.resultProList);
-          console.log(result);
+          if (baseConfig.debug) {
+            console.log($scope.resultList);
+            console.log($scope.resultProList);
+            console.log(result);
+          }
 
-          if(moreFlag === 'init'){
+          if (moreFlag === 'init') {
             $scope.contactLoading = false;
             $scope.projectList = $scope.resultProList[0];
           }
 
-
-          // console.log($scope.monthSlideList);
-          // console.log($scope.yearMonth);
         }).error(function () {
-          console.log('个人查询结果异常');
+          if (baseConfig.debug) {
+            console.log('个人查询结果异常');
+          }
         });
-
 
       };
 
 
       getData('init');
       // getEmpPicture(empPictureUrl,empCode);
-      getEmpList(empListUrl,searchInfo);
+      getEmpList(empListUrl, searchInfo);
 
       // $timeout(function () {
       //   $scope.showContent = true; //显示整体页面
@@ -519,50 +457,19 @@ angular.module('applicationModule')
       // var year = $scope.yearMonth.getFullYear();
       // var month = $scope.yearMonth.getMonth();
 
-      var initDate = function (yea,mont) {
+      var initDate = function (yea, mont) {
         var EnglishMonth = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
         $scope.currentYear = yea;
         $scope.currentMonth = mont + 1;
         $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
         var recordDate = $scope.currentYear + '-' + $scope.currentMonth;
-        if($scope.currentMonth<10){
+        if ($scope.currentMonth < 10) {
           recordDate = $scope.currentYear + '-0' + $scope.currentMonth;
         }
 
-
-        console.log($scope.resourceDetails);
-
-        // $scope.lastMonth = function () {
-        //   $scope.currentMonth--;
-        //   if ($scope.currentMonth == 0) {
-        //     $scope.currentMonth = 12;
-        //     $scope.currentYear--;
-        //   }
-        //   $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
-        //   initCalendar($scope.currentYear, $scope.currentMonth);
-        //   if($scope.currentMonth<10){
-        //     recordDate = $scope.currentYear + '-0' + $scope.currentMonth;
-        //   }else{
-        //     recordDate = $scope.currentYear + '-' + $scope.currentMonth;
-        //   }
-        //
-        //   subjectNode(recordDate);
-        // };
-        // $scope.nextMonth = function () {
-        //   $scope.currentMonth++;
-        //   if ($scope.currentMonth == 13) {
-        //     $scope.currentMonth = 1;
-        //     $scope.currentYear++;
-        //   }
-        //   $scope.currentEnglishMonth = EnglishMonth[$scope.currentMonth - 1];
-        //   initCalendar($scope.currentYear, $scope.currentMonth);
-        //   if($scope.currentMonth<10){
-        //     recordDate = $scope.currentYear + '-0' + $scope.currentMonth;
-        //   }else{
-        //     recordDate = $scope.currentYear + '-' + $scope.currentMonth;
-        //   }
-        //   subjectNode(recordDate);
-        // };
+        if (baseConfig.debug) {
+          console.log($scope.resourceDetails);
+        }
 
         //周列表
         $scope.weekTitleList = [
@@ -604,7 +511,6 @@ angular.module('applicationModule')
               initCalendarArray.push(i - firstDay + 1);
             }
           }
-
 
 
           $scope.calendar = [];
@@ -652,9 +558,6 @@ angular.module('applicationModule')
                   isSubject2: false,
                   isSubject3: false,
                   isSubject4: false
-                  // style_outline: style_blank,
-                  // style_color: style_color,
-                  // project: project
                 };
               }
               week.list.push(item);
@@ -662,76 +565,59 @@ angular.module('applicationModule')
               seq = seq + 1;
             }
             $scope.calendar.push(week);
-
           }
         };
 
         initCalendar($scope.currentYear, $scope.currentMonth);
-      // console.log($scope.calendar);
 
-
-      // for(var a=0; a<$scope.calendar.length; a++){
-      //   for(var b=0; b<7; b++){
-      //     console.log($scope.calendar[a][b]);
-      //   }
-      // }
-      // console.log($scope.calendarDayList);
-
-        var subjectNode = function(recordDate){
-
-          // for(var x=0; x<$scope.subject.length; x++){
-          //
-          // }
-          // $scope.monthSubjectList = MonthSubjectList.all();
-          // $scope.resourceDetails
+        var subjectNode = function (recordDate) {
           $scope.everydaySubjectList = [];
 
-          for(var i=0; i<$scope.resourceDetails.length; i++){
+          for (var i = 0; i < $scope.resourceDetails.length; i++) {
             // console.log($scope.resourceDetails[i].record_date);
-            if($scope.resourceDetails[i].record_date == recordDate){
+            if ($scope.resourceDetails[i].record_date == recordDate) {
               // console.log($scope.resourceDetails[i].record_date);
               $scope.everydaySubjectList = $scope.resourceDetails[i].timesheet_details;
               $scope.subject = $scope.resourceDetails[i].project_list;
 
-              for(var k=0; k<$scope.everydaySubjectList.length; k++){
+              for (var k = 0; k < $scope.everydaySubjectList.length; k++) {
 
-                for(var m=0; m<$scope.calendarDayList.length; m++){
+                for (var m = 0; m < $scope.calendarDayList.length; m++) {
                   // console.log($scope.calendar[m]);
-                  if($scope.everydaySubjectList[k].record_date.substring(8,10) == $scope.calendarDayList[m].day){
+                  if ($scope.everydaySubjectList[k].record_date.substring(8, 10) == $scope.calendarDayList[m].day) {
                     $scope.calendarDayList[m].isSubject = $scope.everydaySubjectList[k].is_project;
                     $scope.calendarDayList[m].isHoliday = $scope.everydaySubjectList[k].is_holiday;
                     $scope.calendarDayList[m].subjectID = $scope.everydaySubjectList[k].project_id;
                     $scope.calendarDayList[m].subjectName = $scope.everydaySubjectList[k].project_name;
 
-                    for(var n=0; n<$scope.subject.length; n++){
-                      if($scope.calendarDayList[m] && $scope.subject[0] && $scope.calendarDayList[m].subjectID == $scope.subject[0].project_id){
+                    for (var n = 0; n < $scope.subject.length; n++) {
+                      if ($scope.calendarDayList[m] && $scope.subject[0] && $scope.calendarDayList[m].subjectID == $scope.subject[0].project_id) {
                         $scope.calendarDayList[m].isSubject1 = true;
                       }
-                      if($scope.calendarDayList[m] && $scope.subject[1] && $scope.calendarDayList[m].subjectID == $scope.subject[1].project_id){
+                      if ($scope.calendarDayList[m] && $scope.subject[1] && $scope.calendarDayList[m].subjectID == $scope.subject[1].project_id) {
                         $scope.calendarDayList[m].isSubject2 = true;
                       }
-                      if($scope.calendarDayList[m] && $scope.subject[2] && $scope.calendarDayList[m].subjectID == $scope.subject[2].project_id){
+                      if ($scope.calendarDayList[m] && $scope.subject[2] && $scope.calendarDayList[m].subjectID == $scope.subject[2].project_id) {
                         $scope.calendarDayList[m].isSubject3 = true;
                       }
-                      if($scope.calendarDayList[m] && $scope.subject[3] && $scope.calendarDayList[m].subjectID == $scope.subject[3].project_id){
+                      if ($scope.calendarDayList[m] && $scope.subject[3] && $scope.calendarDayList[m].subjectID == $scope.subject[3].project_id) {
                         $scope.calendarDayList[m].isSubject4 = true;
                       }
-                      if($scope.calendarDayList[m] && $scope.subject[4] && $scope.calendarDayList[m].subjectID == $scope.subject[4].project_id){
+                      if ($scope.calendarDayList[m] && $scope.subject[4] && $scope.calendarDayList[m].subjectID == $scope.subject[4].project_id) {
                         $scope.calendarDayList[m].isSubject5 = true;
                       }
-                      if($scope.calendarDayList[m] && $scope.subject[5] && $scope.calendarDayList[m].subjectID == $scope.subject[5].project_id){
+                      if ($scope.calendarDayList[m] && $scope.subject[5] && $scope.calendarDayList[m].subjectID == $scope.subject[5].project_id) {
                         $scope.calendarDayList[m].isSubject6 = true;
                       }
-                      if($scope.calendarDayList[m] && $scope.subject[6] && $scope.calendarDayList[m].subjectID == $scope.subject[6].project_id){
+                      if ($scope.calendarDayList[m] && $scope.subject[6] && $scope.calendarDayList[m].subjectID == $scope.subject[6].project_id) {
                         $scope.calendarDayList[m].isSubject7 = true;
                       }
-                      if($scope.calendarDayList[m] && $scope.subject[7] && $scope.calendarDayList[m].subjectID == $scope.subject[7].project_id){
+                      if ($scope.calendarDayList[m] && $scope.subject[7] && $scope.calendarDayList[m].subjectID == $scope.subject[7].project_id) {
                         $scope.calendarDayList[m].isSubject8 = true;
                       }
-                      if($scope.calendarDayList[m] && $scope.subject[8] && $scope.calendarDayList[m].subjectID == $scope.subject[8].project_id){
+                      if ($scope.calendarDayList[m] && $scope.subject[8] && $scope.calendarDayList[m].subjectID == $scope.subject[8].project_id) {
                         $scope.calendarDayList[m].isSubject9 = true;
                       }
-
                     }
                   }
                 }
@@ -740,15 +626,14 @@ angular.module('applicationModule')
           }
         };
         subjectNode(recordDate);
-        $scope.monthSlide = {yearSlide:  $scope.currentYear ,monthSlide: $scope.currentMonth ,monthEnglishSlide: $scope.currentEnglishMonth , calendarDayList: $scope.calendarDayList };
-        return($scope.monthSlide);
-
+        $scope.monthSlide = {
+          yearSlide: $scope.currentYear,
+          monthSlide: $scope.currentMonth,
+          monthEnglishSlide: $scope.currentEnglishMonth,
+          calendarDayList: $scope.calendarDayList
+        };
+        return ($scope.monthSlide);
       };
-
-
-
-
-
     }
   ]);
 
