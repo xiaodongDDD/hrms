@@ -660,4 +660,42 @@ angular.module('HmsModule')
       }
     };
     return request;
-  });
+  })
+
+  .factory("hmsCacheService", ['baseConfig', function (baseConfig) {
+    var request = {
+      loadImageCache: function (url, callback) {
+        var img = new Image();
+        img.src = url;
+        img.onerror = function () {
+          if(baseConfig.debug) {
+            console.log('loadImage error');
+          }
+          img = img.onload = img.onerror = null;
+        };
+        img.onload = function () {
+          if(baseConfig.debug){
+            console.log('loadImage onload img.width ' + img.width);
+            console.log('loadImage onload img.height ' + img.height);
+            console.log('loadImage onload img.align ' + img.align);
+            console.log('loadImage onload img.alt ' + img.alt);
+            console.log('loadImage onload img.border ' + img.border);
+            console.log('loadImage onload img.complete ' + img.complete);
+            console.log('loadImage onload img.id ' + img.id);
+            console.log('loadImage onload img.isMap ' + img.isMap);
+            console.log('loadImage onload img.longDesc ' + img.longDesc);
+            console.log('loadImage onload img.lowsrc ' + img.lowsrc);
+            console.log('loadImage onload img.name ' + img.name);
+            console.log('loadImage onload img.src ' + img.src);
+            console.log('loadImage onload img.useMap ' + img.useMap);
+            console.log('loadImage onload img.vspace ' + img.vspace);
+            console.log('loadImage onload img.lowsrc ' + img.lowsrc);
+          }
+          img.onload = null;
+          callback.call(img);
+          img = null;
+        };
+      }
+    };
+    return request;
+  }]);

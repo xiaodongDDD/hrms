@@ -121,6 +121,7 @@ Android测试环境
   
   (5) 
   AppDelegate+JPush.m didRegisterForRemoteNotificationsWithDeviceToken加入下面的判断
+  
   NSString *token =
       [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"
                                                              withString:@""]

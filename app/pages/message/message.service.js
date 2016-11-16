@@ -33,6 +33,7 @@ angular.module('applicationModule')
             "border": "1px solid #6BB9F0"
           },
         ];*/
+        var loadMyInfoImageCacheFlag = false;
 
         var colorList = [
           {
@@ -138,6 +139,14 @@ angular.module('applicationModule')
           //alert('getRandomColor.index ' + index)
 
           return colorList[index];
+        };
+
+        this.setMyInfoImageCacheFlag = function (flag) {
+          loadMyInfoImageCacheFlag = flag;
+        };
+
+        this.getMyInfoImageCacheFlag = function (flag) {
+          return loadMyInfoImageCacheFlag;
         };
 
         this.getRandomColor = function (userId) {

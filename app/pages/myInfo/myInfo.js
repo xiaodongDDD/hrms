@@ -14,6 +14,8 @@ angular.module('myInfoModule')
     '$rootScope',
     '$http',
     'hmsJpushService',
+    'hmsCacheService',
+    'messageService',
     function ($scope,
               $state,
               baseConfig,
@@ -23,19 +25,23 @@ angular.module('myInfoModule')
               $ionicHistory,
               $rootScope,
               $http,
-              hmsJpushService) {
+              hmsJpushService,
+              hmsCacheService,
+              messageService) {
       if (baseConfig.debug) {
         console.log('myInfoCtrl.enter');
+        console.log('myInfoCtrl.enter ');
       }
 
-      if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != '') {
+      if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != ''
+        && messageService.getMyInfoImageCacheFlag() == true) {
         $scope.portraitImageLarge = {
           "background": "url('" + window.localStorage.myInfoImg + "')",
           "background-size": "cover",
           "background-position": "center",
           "background-repeat": "no-repeat"
         };
-        $scope.defaultPortrait = window.localStorage.myInfoImg
+        $scope.defaultPortrait = window.localStorage.myInfoImg;
       } else {
         $scope.portraitImageLarge = {
           "background": "url('build/img/myInfo/background.png')",
@@ -65,10 +71,13 @@ angular.module('myInfoModule')
         if (result.status == "S") {
           $scope.personalInfo = result.result;
           if ($scope.personalInfo.avatar != "") {
-            $scope.defaultPortrait = $scope.personalInfo.avatar;
-            //portraitBackground.style.backgroundImage = "url('" + $scope.personalInfo.avatar + "')";
-            window.localStorage.myInfoImg = $scope.personalInfo.avatar;
-            $scope.portraitImageLarge.background = "url('" + $scope.personalInfo.avatar + "')";
+            hmsCacheService.loadImageCache($scope.personalInfo.avatar, function () {
+              $scope.portraitImageLarge.background = "url('" + $scope.personalInfo.avatar + "')";
+              $scope.defaultPortrait = $scope.personalInfo.avatar;
+              //portraitBackground.style.backgroundImage = "url('" + $scope.personalInfo.avatar + "')";
+              window.localStorage.myInfoImg = $scope.personalInfo.avatar;
+              $scope.$apply();
+            });
 
           } else if ($scope.personalInfo.avatar == "") {
             if ($scope.personalInfo.gender == "男") {//根据性别判定头像男女
@@ -99,6 +108,7 @@ angular.module('myInfoModule')
         window.localStorage.access_token = "";
         window.localStorage.gestureLock = false;
         window.localStorage.removeItem('gesturePassword');
+        window.localStorage.removeItem('myInfoImg');
         $state.go('login');
         if (HandIMPlugin) {
           HandIMPlugin.exitApp(function () {
