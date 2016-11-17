@@ -290,7 +290,7 @@ angular.module('applicationModule')
           };
 
           var success = function (result) {
-            if (result.status == 'S') {
+            if (result.status == 'S' || result.status == 'W') {
               if (result.refresh_status == 'S') {
                 hmsPopup.showPopup('批量填写成功!');
                 $ionicHistory.goBack();

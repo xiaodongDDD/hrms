@@ -606,7 +606,7 @@ angular.module('applicationModule')
         var success = function (result) {
           hmsPopup.hideLoading();
           if (result.status == 'S') {
-            hmsPopup.showPopup('批量填写成功!');
+            hmsPopup.showPopup(result.message);
             var timesheetArray = result.refresh_timesheet;
             fetchData(timesheetArray);
           } else {
@@ -615,6 +615,7 @@ angular.module('applicationModule')
             }else{
               hmsPopup.showPopup('批量填写出现异常!请联系管理员');
             }
+            clearCalendarCache();
           }
         };
         var error = function (response) {

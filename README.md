@@ -100,6 +100,30 @@ Android测试环境
   cordova plugin add http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git
   
   一 iOS 打包
+  
+  (1) CDVPlugin-Bridging-Header.h 修改融云app key   0vnjpoadnd4cz 
+  (2) C Language Dialect 改成 GNU99[-std=gnu99]
+  (3) Apple LLVM8.0 - Preprocessing 去掉DEBUG=1
+  (4) 删掉cell_image.png
+    
+  (5) 
+    AppDelegate+JPush.m didRegisterForRemoteNotificationsWithDeviceToken加入下面的判断
+    
+    NSString *token =
+        [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"
+                                                               withString:@""]
+          stringByReplacingOccurrencesOfString:@">"
+          withString:@""]
+         stringByReplacingOccurrencesOfString:@" "
+         withString:@""];
+        NSLog(@"token = %@",token);
+        [[NSUserDefaults standardUserDefaults]setObject:token forKey:@"device_token"];
+        
+        [[RCIMClient sharedRCIMClient] setDeviceToken:token];
+        
+    #import <RongIMLib/RongIMLib.h>
+    
+    
   二 Android 打包
   
 4.正式环境PROD appID com.hand-china.hrms
