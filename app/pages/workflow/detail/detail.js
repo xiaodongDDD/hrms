@@ -823,6 +823,14 @@ angular.module('applicationModule')
 //通用工作流
       $scope.workflowDetailUtil = {
 
+        checkChange: function (item) {
+          if(item.value == '0'){
+            item.value = '1';
+          }else{
+            item.value = '0';
+          }
+        },
+
         goUrl: function (url) {
           window.open(url, '_system', 'location=yes');
         },

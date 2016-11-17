@@ -300,7 +300,11 @@ angular.module('applicationModule')
                 hmsPopup.showPopup('批量填写成功后获取TimeSheet数据失败! 请手动返回TimeSheet页面!');
               }
             } else {
-              hmsPopup.showPopup('批量填写TimeSheet失败! 原因 ' + result.returnMsg);
+              if(result.returnMsg){
+                hmsPopup.showPopup(result.returnMsg);
+              }else{
+                hmsPopup.showPopup('批量填写TimeSheet出现错误，请联系管理员！');
+              }
             }
           };
           hmsPopup.showLoading('批量填写TimeSheet中');

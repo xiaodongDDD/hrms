@@ -610,7 +610,11 @@ angular.module('applicationModule')
             var timesheetArray = result.refresh_timesheet;
             fetchData(timesheetArray);
           } else {
-            hmsPopup.showPopup('批量填写失败!' + result.message);
+            if(result.message){
+              hmsPopup.showPopup(result.message);
+            }else{
+              hmsPopup.showPopup('批量填写出现异常!请联系管理员');
+            }
           }
         };
         var error = function (response) {
