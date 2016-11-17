@@ -57,19 +57,26 @@
         justify-content: space-between;
     }
     .module .table_head li {
+        width: 30vw;
+        text-align: center;
         margin-top: 0.5vh;
         display: flex;
         display: -webkit-flex;
+        justify-content: center;
         align-items: center;
         font-size: 3.8vw;
-        letter-spacing: 0.5vw;
+        letter-spacing: 0.7vw;
         color: #24559C;
     }
     .module .table_head li:nth-child(1) {
-        margin: 0.5vh 2vw 0 3.5vw;
+        justify-content: flex-start;
+        padding-left: 3.5vw;
+    }
+    .module .table_head li:nth-child(2) {
+        padding-right: 2.5vw;
     }
     .module .table_head li:nth-child(3) {
-        margin-right: 4.5vw;
+        margin-right: 2.5vw;
     }
     .module .table_head li:nth-child(1) img {
         height: 2.5vh;
