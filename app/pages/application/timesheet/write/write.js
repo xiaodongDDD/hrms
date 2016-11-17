@@ -345,7 +345,11 @@ angular.module('applicationModule')
 
         }
         else {
-          hmsPopup.showPopup('获取timesheet错误,错误原因为');
+          if (result.message) {
+            hmsPopup.showPopup(result.message);
+          } else {
+            hmsPopup.showPopup('填写TimeSheet出现错误，请联系管理员！');
+          }
         }
       };
 
