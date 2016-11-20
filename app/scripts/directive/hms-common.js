@@ -99,13 +99,15 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
     }
   }])
 
-  .directive('circleRotate', ['$timeout', function ($timeout) {
+  .directive('circleRotate', ['$timeout','baseConfig', function ($timeout,baseConfig) {
     return {
       restrict: 'A',
       link: function ($scope, $scroller, $attr) {
         var params = $attr.circleRotate;
         var domsId = params.split(',');
-        console.log(domsId);
+        if(baseConfig.debug){
+          console.log(domsId);
+        }
         if (domsId[0] == "dorm-apply") {
           var leftball = document.getElementById(domsId[1]);
           var rightball = document.getElementById(domsId[2]);

@@ -428,7 +428,7 @@ angular.module('applicationModule')
         });
         $timeout(function () {
           myPopup.close(); //由于某种原因3秒后关闭弹出
-        }, 2000);
+        }, 800);
       };
 
 

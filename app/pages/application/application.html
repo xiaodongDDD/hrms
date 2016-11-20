@@ -48,7 +48,7 @@
                   <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">
                     <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
                   </div>
-                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
@@ -62,7 +62,7 @@
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
                 <div class="app-item-content">
-                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
@@ -76,7 +76,7 @@
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
                 <div class="app-item-content">
-                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
@@ -97,7 +97,7 @@
                   <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">
                     <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
                   </div>
-                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
@@ -111,7 +111,7 @@
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
               <div class="appItem" ng-click="goPage(appItem)">
                 <div class="app-item-content">
-                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>
@@ -125,7 +125,7 @@
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
               <div class="appItem" ng-click="goPage(appItem)">
                 <div class="app-item-content">
-                  <img src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
               </div>
               <div class="appText">{{appItem.appName}}</div>

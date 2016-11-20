@@ -37,6 +37,8 @@ angular.module('myApp')
     '$rootScope',
     '$ionicHistory',
     'TabsService',
+    'hmsCacheService',
+    'messageService',
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -50,7 +52,9 @@ angular.module('myApp')
               $location,
               $rootScope,
               $ionicHistory,
-              TabsService
+              TabsService,
+              hmsCacheService,
+              messageService
     ) {
 
       $ionicPlatform.ready(function () {
@@ -62,6 +66,21 @@ angular.module('myApp')
         }
         if (window.StatusBar) {
           StatusBar.styleLightContent();
+        }
+
+        hmsCacheService.loadImageCache('build/img/tabs/message-f@3x.png',function () {});
+        hmsCacheService.loadImageCache('build/img/tabs/application-F@3x.png',function () {});
+        hmsCacheService.loadImageCache('build/img/tabs/contact-B@3x.png',function () {});
+        hmsCacheService.loadImageCache('build/img/tabs/mine-B@3x.png',function () {});
+        hmsCacheService.loadImageCache('build/img/myInfo/background.png',function () {});
+        hmsCacheService.loadImageCache('build/img/myInfo/man-portrait.png',function () {});
+        hmsCacheService.loadImageCache('build/img/myInfo/woman-portrait.png',function () {});
+        if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != '') {
+          hmsCacheService.loadImageCache(window.localStorage.myInfoImg, function () {
+            messageService.setMyInfoImageCacheFlag(true);
+          });
+          hmsCacheService.loadImageCache(window.localStorage.myInfoImg + '64', function () {
+          });
         }
 
         //全局的返回上一个页面的函数
@@ -140,6 +159,8 @@ angular.module('myApp')
       // Set up the various states which the app can be in.
       // Each state's controller can be found in controllers.js
 
+      $ionicConfigProvider.templates.maxPrefetch(10);
+
       $httpProvider.interceptors.push('httpRequestHeader');//注册过滤器
       //$httpProvider.interceptors[0] = $httpProvider.interceptors[0] + "access_token=" + window.localStorage.token;
       $ionicConfigProvider.platform.ios.tabs.style('standard');
@@ -158,6 +179,13 @@ angular.module('myApp')
 
       $stateProvider
       // setup an abstract state for the tabs directive
+
+        .state('login', {
+          url: '/login',
+          templateUrl: 'build/pages/login/login.html',
+          controller: 'loginCtrl'
+        })
+
         .state('tab', {
           url: '/tab',
           caches: true,
@@ -177,23 +205,12 @@ angular.module('myApp')
           }
         })
 
-        .state('tab.messageDetail', {
-          url: '/messageDetail',
-          params: {message: {}},
+        .state('tab.application', {
+          url: '/application',
           views: {
-            'tab-message': {
-              templateUrl: 'build/pages/message/detail/message-detail.html',
-              controller: 'messageDetailCtrl'
-            }
-          }
-        })
-
-        .state('tab.myTimesheet', {
-          url: '/myTimesheet',
-          views: {
-            'tab-message': {
-              templateUrl: 'build/pages/application/timesheet/query/query.html',
-              controller: 'TimeSheetQueryCtrl'
+            'tab-application': {
+              templateUrl: 'build/pages/application/application.html',
+              controller: 'applicationCtrl'
             }
           }
         })
@@ -208,15 +225,7 @@ angular.module('myApp')
           }
         })
 
-        .state('tab.application', {
-          url: '/application',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/application.html',
-              controller: 'applicationCtrl'
-            }
-          }
-        })
+
 
         .state('tab.myInfo', {
           url: '/myInfo',
@@ -234,6 +243,17 @@ angular.module('myApp')
           controller: 'guideCtrl'
         })
 
+        .state('tab.messageDetail', {
+          url: '/messageDetail',
+          params: {message: {}},
+          views: {
+            'tab-message': {
+              templateUrl: 'build/pages/message/detail/message-detail.html',
+              controller: 'messageDetailCtrl'
+            }
+          }
+        })
+
         .state('pushDetail', {
           url: '/pushDetail',
           cache: false,
@@ -242,10 +262,14 @@ angular.module('myApp')
           controller: 'WorkFLowDetailCtrl'
         })
 
-        .state('login', {
-          url: '/login',
-          templateUrl: 'build/pages/login/login.html',
-          controller: 'loginCtrl'
+        .state('tab.myTimesheet', {
+          url: '/myTimesheet',
+          views: {
+            'tab-message': {
+              templateUrl: 'build/pages/application/timesheet/query/query.html',
+              controller: 'TimeSheetQueryCtrl'
+            }
+          }
         });
 
       if (baseConfig.debug) {
