@@ -29,7 +29,7 @@ HmsModule.directive('hmsWorkflowList', function () {
 
     template: '<a class="workflow-list-item">' +
     '<div class="workflow-list-logo">' +
-    '<img src="{{icon}}"/>' +
+    '<img ng-src="{{icon}}"/>' +
     '</div>' +
     '<div class="workflow-list-header">{{title}}</div>' +
     '<div class="workflow-list-content">' +

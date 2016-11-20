@@ -60,10 +60,13 @@ angular.module('applicationModule')
       //双向绑定工作流列表
       $scope.list = [];
 
+      //获取工作流标记
       $scope.fetchDataFlag = true;
 
+      //下拉刷新标记
       $scope.pullRefreshDataFlag = false;
 
+      //展开工作流明细内容标记
       $scope.showDetailArrow = true;
 
       //加载更多数据的标志
@@ -307,7 +310,6 @@ angular.module('applicationModule')
           data.selectedFlag = $scope.selectAll.flag;
         });
       };
-
 
       //全部处理
       $scope.processBatchWorkflow = function (action) {
@@ -610,12 +612,21 @@ angular.module('applicationModule')
         return self;
       };
 
+
+      //$scope.fetchTodoList(false);
+
       if(!$scope.isWeixinWebview){
         $timeout(function () {
           workFLowListService.getTodoListQuery($scope, pageNum, cashList, false, dataFilterUtil());
           dataFilterUtil().query();
-        }, 300);
-      } else {
+        }, 200);
+
+        $timeout(function () {
+          var maxValues = $ionicScrollDelegate.getScrollView().getScrollMax();
+          console.log('$ionInfiniteScroll.getJSMaxScroll.maxValues.top ' + maxValues.top);
+        }, 3000);
+      }
+      else {
         //WeiXin. add by luyufei
         var argsWx = {};
         var queryWx = location.search.substring(1);//获取查询串

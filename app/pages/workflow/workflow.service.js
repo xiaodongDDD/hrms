@@ -243,10 +243,11 @@ angular.module('applicationModule')
               myscope.pullRefreshDataFlag = false;
               myscope.$broadcast('scroll.refreshComplete');
             }
+            myscope.fetchDataFlag = false;
             if (!result.unprocessedWorkflowList || result.unprocessedWorkflowList.length == pageNumLimit) {
               myscope.loadMoreDataFlag = true;
             }
-            showList(myscope);
+            //showList(myscope);
           };
           var error = function (result) {
             if (pullRefresh) {
@@ -279,7 +280,9 @@ angular.module('applicationModule')
               myscope.$broadcast('scroll.refreshComplete');
             }
             if (!result.processedWorkflowList || result.processedWorkflowList.length == pageNumLimit) {
-              myscope.loadMoreDataFlag = true;
+              $timeout(function () {
+                myscope.loadMoreDataFlag = true;
+              },6000);
             }
             showList(myscope);
           };

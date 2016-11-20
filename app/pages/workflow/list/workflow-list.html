@@ -40,7 +40,7 @@
       <hms-loading></hms-loading>
     </div>
 
-    <ion-list can-swipe="!listStatus.done.selected && !batchProcessFlag">
+    <ion-list ng-if="!fetchDataFlag" can-swipe="!listStatus.done.selected && !batchProcessFlag">
       <ion-item class="workflow-list" ng-repeat="item in list">
         <hms-workflow-list ng-if="!fetchDataFlag&&!pullRefreshDataFlag"
                            workflow-selected-flag='item.selectedFlag'
@@ -64,15 +64,18 @@
         </hms-workflow-list>
 
         <ion-option-button class="hms-swipe-left-action">
-          <div class="row approve-row" ng-click="workflowActionHandle.approveWorkflow(item)" ng-if="listStatus.todo.selected" >
+          <div class="row approve-row" ng-click="workflowActionHandle.approveWorkflow(item)"
+               ng-if="listStatus.todo.selected">
             <img class="status-img"
                  ng-src="build/img/application/timesheet-approve/list/approval@3x.png"/>
           </div>
-          <div class="row refuse-row" ng-click="workflowActionHandle.rejectWorkflow(item)" ng-if="listStatus.todo.selected">
+          <div class="row refuse-row" ng-click="workflowActionHandle.rejectWorkflow(item)"
+               ng-if="listStatus.todo.selected">
             <img class="status-img" style="width: 61px;"
                  ng-src="build/img/application/timesheet-approve/list/refuse@3x.png"/>
           </div>
-          <div class="row approve-row" ng-click="workflowActionHandle.cancelWorkflow(item)" ng-if="item.allow_cancel == 1" >
+          <div class="row approve-row" ng-click="workflowActionHandle.cancelWorkflow(item)"
+               ng-if="item.allow_cancel == 1">
             <img class="status-img2"
                  ng-src="build/img/workflow/withdraw@3x.png"/>
           </div>
@@ -80,7 +83,7 @@
       </ion-item>
     </ion-list>
     <ion-infinite-scroll ng-if="loadMoreDataFlag" on-infinite="loadMoreData()"
-                         distance="1%">
+                         distance="1%" immediate-check="false">
     </ion-infinite-scroll>
   </ion-content>
   <ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="!batchProcessFlag">

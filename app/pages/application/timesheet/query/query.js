@@ -763,6 +763,7 @@ angular.module('applicationModule')
              }*/
           }
         }
+
         if ($scope.startSlippingFlag && $scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           var selectDay = markSelectCalendar(clientWidth,
             e.gesture.touches[0].pageX,
@@ -920,10 +921,11 @@ angular.module('applicationModule')
       var createAllowance = function (currentYear, currentMonth) {
 
         var monthParams = currentYear + '' + formatMonth(currentMonth);
-        hmsPopup.showLoading("生成津贴中");
         $scope.allowanceList = [];
+        hmsPopup.showLoading("生成津贴中");
         var success = function (result) {
           hmsPopup.hideLoading();
+          $scope.allowanceList = [];
           if (result.status == 'S') {
             processAllowance(result.allowance);
           } else {
@@ -933,6 +935,7 @@ angular.module('applicationModule')
           }
         };
         var error = function () {
+          $scope.allowanceList = [];
           hmsPopup.hideLoading();
         };
         TimeSheetService.generateAllowance(success, error, 'Y', monthParams);
