@@ -68,21 +68,6 @@ angular.module('myApp')
           StatusBar.styleLightContent();
         }
 
-        hmsCacheService.loadImageCache('build/img/tabs/message-f@3x.png',function () {});
-        hmsCacheService.loadImageCache('build/img/tabs/application-F@3x.png',function () {});
-        hmsCacheService.loadImageCache('build/img/tabs/contact-B@3x.png',function () {});
-        hmsCacheService.loadImageCache('build/img/tabs/mine-B@3x.png',function () {});
-        hmsCacheService.loadImageCache('build/img/myInfo/background.png',function () {});
-        hmsCacheService.loadImageCache('build/img/myInfo/man-portrait.png',function () {});
-        hmsCacheService.loadImageCache('build/img/myInfo/woman-portrait.png',function () {});
-        if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != '') {
-          hmsCacheService.loadImageCache(window.localStorage.myInfoImg, function () {
-            messageService.setMyInfoImageCacheFlag(true);
-          });
-          hmsCacheService.loadImageCache(window.localStorage.myInfoImg + '64', function () {
-          });
-        }
-
         //全局的返回上一个页面的函数
         $rootScope.$hmsGoBack = function(backCount) {
           if(baseConfig.debug){
