@@ -292,7 +292,7 @@ angular.module('applicationModule')
           var success = function (result) {
             if (result.status == 'S' || result.status == 'W') {
               if (result.refresh_status == 'S') {
-                hmsPopup.showPopup('批量填写成功!');
+                hmsPopup.showPopup(result.message);
                 $ionicHistory.goBack();
                 TimeSheetService.setRefreshTimeSheetFlag(true);
                 TimeSheetService.cacheTimeSheetList(result.refresh_timesheet.timesheet);
