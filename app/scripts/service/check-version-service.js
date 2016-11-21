@@ -184,7 +184,7 @@ angular.module('HmsModule')
                   alert(serveVersionParams.updateContent);
                 }
               } else {
-                if (serveVersionParams.bigVersion === baseConfig.version.currentVersion && serveVersionParams.minVersion > baseConfig.version.currentSubVersion) {
+                if (serveVersionParams.bigVersion === baseConfig.version.currentVersion && parseInt(serveVersionParams.minVersion) > parseInt(baseConfig.version.currentSubVersion)) {
                   if (ionic.Platform.isWebView()) {
                     function selectAction_min(buttonIndex) { // update from pgy
                       if (buttonIndex == 1) { //确认按钮

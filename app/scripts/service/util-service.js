@@ -693,7 +693,6 @@ angular.module('HmsModule')
           }
           img.onload = null;
           callback.call(img);
-          img = null;
         };
       }
     };

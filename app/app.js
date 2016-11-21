@@ -144,7 +144,7 @@ angular.module('myApp')
       // Set up the various states which the app can be in.
       // Each state's controller can be found in controllers.js
 
-      $ionicConfigProvider.templates.maxPrefetch(10);
+      $ionicConfigProvider.templates.maxPrefetch(15);
 
       $httpProvider.interceptors.push('httpRequestHeader');//注册过滤器
       //$httpProvider.interceptors[0] = $httpProvider.interceptors[0] + "access_token=" + window.localStorage.token;
@@ -235,6 +235,15 @@ angular.module('myApp')
             'tab-message': {
               templateUrl: 'build/pages/message/detail/message-detail.html',
               controller: 'messageDetailCtrl'
+            }
+          }
+        })
+        .state('tab.carpooling-create', {
+          url: '/carpooling-create',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/carpooling/carpooling-create/carpooling-create.html',
+              controller: 'CarpoolingCreateCtrl'
             }
           }
         })

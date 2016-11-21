@@ -20,8 +20,6 @@ angular.module('messageModule')
     'hmsHttp',
     'hmsPopup',
     'messageService',
-    'contactService',
-    'hmsCacheService',
     function ($scope,
               $state,
               $timeout,
@@ -37,9 +35,7 @@ angular.module('messageModule')
               baseConfig,
               hmsHttp,
               hmsPopup,
-              messageService,
-              contactService,
-              hmsCacheService) {
+              messageService) {
 
       //消息列表
       $scope.messageList = [];
@@ -59,146 +55,144 @@ angular.module('messageModule')
         console.log('window.localStorage.myInfoImg ' + window.localStorage.myInfoImg);
       }
 
-      hmsCacheService.loadImageCache('build/img/tabs/message-f@3x.png',function () {});
-      hmsCacheService.loadImageCache('build/img/tabs/application-F@3x.png',function () {});
-      hmsCacheService.loadImageCache('build/img/tabs/contact-B@3x.png',function () {});
-      hmsCacheService.loadImageCache('build/img/tabs/mine-B@3x.png',function () {});
-      hmsCacheService.loadImageCache('build/img/myInfo/background.png',function () {});
-      hmsCacheService.loadImageCache('build/img/myInfo/man-portrait.png',function () {});
-      hmsCacheService.loadImageCache('build/img/myInfo/woman-portrait.png',function () {});
-      if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != '') {
-        hmsCacheService.loadImageCache(window.localStorage.myInfoImg, function () {
-          messageService.setMyInfoImageCacheFlag(true);
-        });
-        hmsCacheService.loadImageCache(window.localStorage.myInfoImg + '64', function () {
-        });
-      }
+      /*hmsCacheService.loadImageCache('img/tabs/message-f@3x.png',function () {});
+       hmsCacheService.loadImageCache('img/tabs/application-F@3x.png',function () {});
+       hmsCacheService.loadImageCache('img/tabs/contact-B@3x.png',function () {});
+       hmsCacheService.loadImageCache('img/tabs/mine-B@3x.png',function () {});
+       hmsCacheService.loadImageCache('img/myInfo/background.png',function () {});
+       hmsCacheService.loadImageCache('img/myInfo/man-portrait.png',function () {});
+       hmsCacheService.loadImageCache('img/myInfo/woman-portrait.png',function () {});
+       if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != '') {
+       hmsCacheService.loadImageCache(window.localStorage.myInfoImg, function () {
+       messageService.setMyInfoImageCacheFlag(true);
+       });
+       }
 
 
-      $timeout(function () {
-        var scriptEle = document.createElement("script");
-        //scriptEle.type = "text/javasctipt";
-        scriptEle.async = true;
-        scriptEle.src = "http://webapi.amap.com/maps?v=1.3&key=afa17826e025989b36d837f9f4b4ba1f";
+       $timeout(function () {
+       var scriptEle = document.createElement("script");
+       //scriptEle.type = "text/javasctipt";
+       scriptEle.async = true;
+       scriptEle.src = "http://webapi.amap.com/maps?v=1.3&key=afa17826e025989b36d837f9f4b4ba1f";
 
-        var styleEle = document.createElement("link");
-        styleEle.rel = "stylesheet";
-        styleEle.async = true;
-        styleEle.href = "http://cache.amap.com/lbs/static/main.css?v=1.0";
-        var x1 = document.getElementsByTagName("head")[0];
-        x1.insertBefore(styleEle, x1.firstChild);
-        x1.insertBefore(scriptEle, x1.firstChild);
-      }, 0);
+       var styleEle = document.createElement("link");
+       styleEle.rel = "stylesheet";
+       styleEle.async = true;
+       styleEle.href = "http://cache.amap.com/lbs/static/main.css?v=1.0";
+       var x1 = document.getElementsByTagName("head")[0];
+       x1.insertBefore(styleEle, x1.firstChild);
+       x1.insertBefore(scriptEle, x1.firstChild);
+       }, 0);
 
-      //分页
-      var currentPage = 1;
+       //分页
+       var currentPage = 1;
 
-      var messageCacheList1 = [
-        {
-          "name": '顾森林',
-          "content": '你最近怎么样1?',
-          "imgUrl": 'build/img/application/profile@3x.png',
-          "count": 3,
-          "employee": '',
-          "time": '23:54',
-          "messageType": 'MESSAGE',
-          "sortTime": "20160830145901",
-          "conversationType": ""
-        },
-        {
-          "name": '石顺',
-          "content": '你最近怎么样2?',
-          "imgUrl": 'build/img/application/profile@3x.png',
-          "count": 4,
-          "employee": '',
-          "time": '23:54',
-          "messageType": 'MESSAGE',
-          "sortTime": "20160830145911",
-          "conversationType": ""
-        }, {
-          "name": '马云飞',
-          "content": '你最近怎么样3?',
-          "imgUrl": 'build/img/application/profile@3x.png',
-          "count": 5,
-          "employee": '',
-          "time": '23:54',
-          "messageType": 'MESSAGE4',
-          "sortTime": "20160830145931",
-          "conversationType": ""
-        },
-        {
-          "name": '成志唯',
-          "content": '你最近怎么样5?',
-          "imgUrl": 'build/img/application/profile@3x.png',
-          "count": 6,
-          "employee": '',
-          "time": '23:54',
-          "messageType": 'MESSAGE',
-          "sortTime": "20160830145941",
-          "conversationType": ""
-        }
-      ];
+       var messageCacheList1 = [
+       {
+       "name": '顾森林',
+       "content": '你最近怎么样1?',
+       "imgUrl": 'build/img/application/profile@3x.png',
+       "count": 3,
+       "employee": '',
+       "time": '23:54',
+       "messageType": 'MESSAGE',
+       "sortTime": "20160830145901",
+       "conversationType": ""
+       },
+       {
+       "name": '石顺',
+       "content": '你最近怎么样2?',
+       "imgUrl": 'build/img/application/profile@3x.png',
+       "count": 4,
+       "employee": '',
+       "time": '23:54',
+       "messageType": 'MESSAGE',
+       "sortTime": "20160830145911",
+       "conversationType": ""
+       }, {
+       "name": '马云飞',
+       "content": '你最近怎么样3?',
+       "imgUrl": 'build/img/application/profile@3x.png',
+       "count": 5,
+       "employee": '',
+       "time": '23:54',
+       "messageType": 'MESSAGE4',
+       "sortTime": "20160830145931",
+       "conversationType": ""
+       },
+       {
+       "name": '成志唯',
+       "content": '你最近怎么样5?',
+       "imgUrl": 'build/img/application/profile@3x.png',
+       "count": 6,
+       "employee": '',
+       "time": '23:54',
+       "messageType": 'MESSAGE',
+       "sortTime": "20160830145941",
+       "conversationType": ""
+       }
+       ];
 
-      var messageCacheList = [
-        {
-          "name": '顾森林',
-          "content": '你最近怎么样1?',
-          "imgUrl": "",
-          "imgName": "森林",
-          "imgColorStyle": messageService.getRandomColor('0221'),
-          "count": 3,
-          "employee": '',
-          "time": '23:54',
-          "messageType": 'MESSAGE',
-          "sortTime": "2016:01",
-          "conversationType": ""
-        },
-        {
-          "name": '石顺',
-          "content": '你最近怎么样2?',
-          "imgUrl": "",
-          "imgName": "石顺",
-          "imgColorStyle": messageService.getRandomColor('00232'),
-          "count": 4,
-          "employee": '',
-          "time": '23:54',
-          "messageType": 'MESSAGE',
-          "sortTime": "20160822234412",
-          "conversationType": ""
-        }, {
-          "name": '马云飞',
-          "content": '你最近怎么样3?',
-          "imgUrl": 'build/img/application/profile@3x.png',
-          "count": 5,
-          "employee": '',
-          "time": '23:54',
-          "messageType": 'MESSAGE4',
-          "sortTime": "20160822234421",
-          "conversationType": ""
-        },
-        {
-          "name": '成志唯',
-          "content": '你最近怎么样5?',
-          "imgUrl": 'build/img/application/profile@3x.png',
-          "count": 6,
-          "employee": '',
-          "time": '23:54',
-          "messageType": 'MESSAGE',
-          "sortTime": "20160822234424",
-          "conversationType": ""
-        }
-      ];
+       var messageCacheList = [
+       {
+       "name": '顾森林',
+       "content": '你最近怎么样1?',
+       "imgUrl": "",
+       "imgName": "森林",
+       "imgColorStyle": messageService.getRandomColor('0221'),
+       "count": 3,
+       "employee": '',
+       "time": '23:54',
+       "messageType": 'MESSAGE',
+       "sortTime": "2016:01",
+       "conversationType": ""
+       },
+       {
+       "name": '石顺',
+       "content": '你最近怎么样2?',
+       "imgUrl": "",
+       "imgName": "石顺",
+       "imgColorStyle": messageService.getRandomColor('00232'),
+       "count": 4,
+       "employee": '',
+       "time": '23:54',
+       "messageType": 'MESSAGE',
+       "sortTime": "20160822234412",
+       "conversationType": ""
+       }, {
+       "name": '马云飞',
+       "content": '你最近怎么样3?',
+       "imgUrl": 'build/img/application/profile@3x.png',
+       "count": 5,
+       "employee": '',
+       "time": '23:54',
+       "messageType": 'MESSAGE4',
+       "sortTime": "20160822234421",
+       "conversationType": ""
+       },
+       {
+       "name": '成志唯',
+       "content": '你最近怎么样5?',
+       "imgUrl": 'build/img/application/profile@3x.png',
+       "count": 6,
+       "employee": '',
+       "time": '23:54',
+       "messageType": 'MESSAGE',
+       "sortTime": "20160822234424",
+       "conversationType": ""
+       }
+       ];
 
-      //将页面的导航bar设置成白色
-      $ionicPlatform.ready(function () {
-        if (window.StatusBar) {
-          StatusBar.styleLightContent();
-        }
-      });
+       //将页面的导航bar设置成白色
+       $ionicPlatform.ready(function () {
+       if (window.StatusBar) {
+       StatusBar.styleLightContent();
+       }
+       });
 
-      $scope.firstRefresh = false;
+       $scope.firstRefresh = false;
 
-      /*$timeout(function () {
+       /*$timeout(function () {
        messageService.getNotifyMessageList(refreshMessageAndNotify, refreshOnlyMessage, false, messageCacheList1);
        },3000);
 

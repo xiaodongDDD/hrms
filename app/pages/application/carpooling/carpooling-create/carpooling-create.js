@@ -3,15 +3,6 @@ angular.module('myApp')
   .config(['$stateProvider',
     function ($stateProvider) {
       $stateProvider
-        .state('tab.carpooling-create', {
-          url: '/carpooling-create',
-          views: {
-            'tab-application': {
-              templateUrl: 'build/pages/application/carpooling/carpooling-create/carpooling-create.html',
-              controller: 'CarpoolingCreateCtrl'
-            }
-          }
-        })
         .state('tab.carpooling-create-contactSearch', {
           url: 'contact/carpooling-create-contactSearch',
           views: {

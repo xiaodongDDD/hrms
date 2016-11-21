@@ -229,8 +229,15 @@ angular.module('applicationModule')
       var pluginCalendar = function () {
         var success = function (response) {
           //alert('pluginCalendar.response ' + angular.toJson(response));
+          //alert('pluginCalendar.response ' + response);
+          //alert('pluginCalendar.response.result ' + response.result);
           try {
-            var result = response.result;
+            var result;
+            if(ionic.Platform.isAndroid()){
+              result = JSON.parse(response).result;
+            }else{
+              result = response.result;
+            }
             var startDate = new Date(result[0].replace(/-/g, '/'));
             var endDate = new Date(result[1].replace(/-/g, '/'));
             converterDate(startDate, $scope.datetimeFrom);
