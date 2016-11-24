@@ -96,7 +96,7 @@ angular.module('applicationModule')
         $scope.checkOut = true;
         $scope.buttonText = '再次预定';
       }
-      if($scope.applyInfo.status == '已入住' && $scope.leftDays>7){
+      if($scope.applyInfo.status == '已入住' && $scope.leftDays>10){
          $scope.showButton=false;
       }
 

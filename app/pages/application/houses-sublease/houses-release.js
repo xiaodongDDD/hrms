@@ -28,6 +28,7 @@ angular.module('applicationModule')
     'baseConfig',
     '$ionicHistory',
     'hmsHttp',
+    '$ionicPopup',
     'hmsPopup',
     '$ionicScrollDelegate',
     '$timeout',
@@ -41,6 +42,7 @@ angular.module('applicationModule')
               baseConfig,
               $ionicHistory,
               hmsHttp,
+              $ionicPopup,
               hmsPopup,
               $ionicScrollDelegate,
               $timeout,
@@ -4475,6 +4477,7 @@ angular.module('applicationModule')
             }
           }
           $ionicSlideBoxDelegate.update();
+          $ionicSlideBoxDelegate.loop(true);
 
           $scope.imageList = [];//用于图片上传的数组
           for (var i = 0; i < $scope.pictureList.length; i++) {
@@ -4589,7 +4592,7 @@ angular.module('applicationModule')
       };
 
       $scope.housesRelease = function () {//发布按钮
-
+        // $scope.showAlertShare();
         if (!validateHousesInfo()) {
           return;
         }
@@ -4715,8 +4718,47 @@ angular.module('applicationModule')
         return true;
       };
 
-      function releaseHousesInfo() {//调用发布接口
+      /*
+      * 弹出提示框判断返回还是分享
+      * */
+      $scope.showAlertShare = function () {
 
+        $scope.title = "提示";
+        $scope.message = "发布完成";
+
+        var create = function (buttonIndex) {
+          console.log("index"+buttonIndex);
+          if (baseConfig.debug) {
+            console.log('You selected button ' + buttonIndex);
+          }
+          if (buttonIndex == 1) {
+            $ionicHistory.goBack();
+          } else {
+            $scope.share();
+          }
+        };
+        hmsPopup.confirmShare($scope.title, $scope.message, create);
+      };
+      /*
+       * 分享
+       * */
+      $scope.share = function(){
+        //分享显示的图片，默认
+        var imgurl = 'http://mobile-app.hand-china.com/hrmsstatic/hrms-img/icon.png';
+        //分享显示的图片，取转租信息中的第一张照片
+        if ($scope.pictureList.length > 0) {
+          imgurl = $scope.pictureList[0];
+        }
+        var youtuiShare = window.plugins.youtuiShare;
+        youtuiShare.share(success, fail, [
+          '汉得房屋转租',   //标题
+          $scope.housesSubDetail.publishUrl, //链接
+          $scope.housesSubDetail.houseTitle, //描述
+          imgurl  //图片
+        ]);
+      };
+
+      function releaseHousesInfo() {//调用发布接口
         if (baseConfig.debug) {
           console.log("房屋发布信息：" + angular.toJson($scope.housesReleaseInfo));
         }
@@ -4733,8 +4775,8 @@ angular.module('applicationModule')
             } else {
               $rootScope.$broadcast("RELEASE_SUCCESS");//触发上一界面重新刷新数据
             }
-            $ionicHistory.goBack();//删除申请成功后返回上一界面
-            hmsPopup.showShortCenterToast("发布成功");
+            // $scope.showAlertShare();
+            $ionicHistory.goBack();
           } else {
             pictureNumber = 0;
             hmsPopup.showShortCenterToast("发布失败，请检查所填信息是否完整以及部分字段是否是数字！");

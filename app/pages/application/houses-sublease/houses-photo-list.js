@@ -48,10 +48,17 @@ angular.module('applicationModule')
 
       $scope.housesPhoto = [];
       $scope.deleteImageList = [];
-      angular.forEach($stateParams.housesImageList, function (data, index, array) {
-        $scope.housesPhoto.push(array[index]);
+      $scope.showEmpty = true;
+      $scope.$on("$ionicView.beforeEnter", function () {
+        if($stateParams.housesImageList.length == 0){
+          $scope.showEmpty = true;
+        }else {
+          $scope.showEmpty = false;
+        }
+        angular.forEach($stateParams.housesImageList, function (data, index, array) {
+          $scope.housesPhoto.push(array[index]);
+        });
       });
-
       $scope.takePicture = function () {
         var hideSheet = $ionicActionSheet.show({
           buttons: [
@@ -122,6 +129,7 @@ angular.module('applicationModule')
           };
           //console.log("imageUrl: " + $scope.photoUrl);
           $scope.housesPhoto.push($scope.photoUrl);
+          $scope.showEmpty = false;
           //console.log("imageUrl+++++++++: " + angular.toJson($scope.housesPhoto));
           $scope.$apply();
         }
@@ -216,6 +224,9 @@ angular.module('applicationModule')
           if(picUrl == $scope.housesPhoto[i].objectUrl){
             $scope.housesPhoto[i].flag = 'del';
           }
+        }
+        if ($scope.housesPhoto.length == 0){
+          $scope.showEmpty = true;
         }
       }
     }]);

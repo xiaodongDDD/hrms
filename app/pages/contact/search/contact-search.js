@@ -253,7 +253,7 @@ angular.module('contactModule')
         event.stopPropagation(); //阻止事件冒泡
 
         var options = {
-          buttonLabels: ['拨打电话', '增加到通讯录'],
+          buttonLabels: ['拨打电话', '拨打网络电话', '增加到通讯录'],
           addCancelButtonWithLabel: '取消',
           androidEnableCancelButton: true,
           androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT

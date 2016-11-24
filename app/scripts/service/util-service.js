@@ -266,6 +266,39 @@ angular.module('HmsModule')
           );
         }
       };
+
+      this.confirmShare = function (title, message,  shareConfirm) {
+        if (!baseConfig.nativeScreenFlag) {
+          var confirmSharePopup = $ionicPopup.confirm({
+            title: title,
+            template: message,
+            cancelText: '直接分享',
+            cancelType: 'button-cux-popup-cancel',
+            okText: '继续返回',
+            okType: 'button-cux-popup-confirm'
+          });
+          confirmSharePopup.then(function (res) {
+            if (baseConfig.debug) {
+              console.log('this.confirm.res ' + angular.toJson(res))
+            }
+            console.log(index);
+            var index = 0;
+            if (res) {
+              index = 1;
+            }
+            shareConfirm(index);
+          });
+        } else {
+          navigator.notification.confirm(
+            message, // message
+            function (index) {
+              shareConfirm(index - 1);
+            }, // callback to invoke with index of button pressed
+            title, // title
+            ['直接分享', '继续返回'] // buttonLabels
+          );
+        }
+      };
     }
   ])
 

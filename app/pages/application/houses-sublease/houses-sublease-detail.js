@@ -118,7 +118,6 @@ angular.module('applicationModule')
         if ($scope.housesSubDetail.imgs.length > 0) {
           imgurl = $scope.housesSubDetail.imgs[$scope.slideIndex].objectUrl;
         }
-
         var youtuiShare = window.plugins.youtuiShare;
           youtuiShare.share(success, fail, [
             '汉得房屋转租',   //标题
@@ -220,12 +219,17 @@ angular.module('applicationModule')
         try {
           $ionicActionSheet.show({
             buttons: [
-              {text: '拨打电话'}
+              {text: '拨打电话'},
+              {text: '拨打网络电话'}
             ],
             cancelText: 'Cancel',
             buttonClicked: function (index) {
-              window.location.href = "tel:" + telNum.replace(/\s+/g, "");
-              return true;
+              if (index == 0){
+                window.location.href = "tel:" + telNum.replace(/\s+/g, "");
+                return true;
+              } else if (index == 1){
+
+              }
             }
           });
         } catch (e) {

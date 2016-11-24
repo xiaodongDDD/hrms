@@ -687,6 +687,9 @@ angular.module('applicationModule')
           return;
         }
 
+        if($scope.timeOffData.unusedHoliday == 0){
+          hmsPopup.showPopup('您已超出可申请的假期天数');
+        }
         /*if ($scope.timeOffData.unusedHoliday &&
          $scope.timeOffData.timeOffTypeMeaning == '带薪年假' &&
          offDays > $scope.timeOffData.unusedHoliday) {
@@ -770,7 +773,7 @@ angular.module('applicationModule')
               if( response.returnMsg ){
                 hmsPopup.showShortCenterToast(response.returnMsg);
               } else {
-                hmsPopup.showShortCenterToast("处理请求出错!请检查相关数据！" /*+ response.errorMsg*/);
+                hmsPopup.showShortCenterToast("休假天数已超过可用天数,请重新选择!" /*+ response.errorMsg*/);
               }
             } else {
               hmsPopup.showShortCenterToast("网络异常,请稍后重试!");
