@@ -1,0 +1,38 @@
+<ion-view view-title="通讯录" class="contact-quick">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$hmsGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">
+      通讯录
+    </h1>
+
+  </ion-header-bar>
+  <ion-content delegate-handle="contactQuick" overflow-scroll="true">
+    <div class="contact-list">
+      <div class="contact-item" ng-repeat="item in list">
+        <div class="contact-header" id="element{{item.header}}" style="background: #dddddd">
+          {{item.header}}
+        </div>
+        <div class="contact-element" ng-repeat="element in item.elementList">
+          <div>
+            {{element.element}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </ion-content>
+
+  <div
+    style="position: fixed; width: 16px;top:44px; right: 0;background: #f8f8f8;height:100%;">
+    <div style="margin-top:calc(50vh - 230px); width: 16px;text-align: center; height: 460px; " id="contactQuickHandle">
+      <div ng-repeat="item in statusBar" ng-style="item.style">
+        <div ng-bind="item.element" ng-click="contactQuick(item.element)"></div>
+      </div>
+    </div>
+  </div>
+</ion-view>

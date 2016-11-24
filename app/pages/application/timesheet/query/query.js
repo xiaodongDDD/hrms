@@ -793,6 +793,7 @@ angular.module('applicationModule')
         if($scope.slippingEnableFlag){
           $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
           $scope.startSlippingFlag = true;
+          e.preventDefault();
         }
         if ($scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
