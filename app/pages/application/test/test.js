@@ -147,6 +147,7 @@ angular.module('applicationModule')
 
       //拖拽标记TimeSheet具体天
       $ionicGesture.on("drag", function (e) {
+        //e.preventDefault();
         var top = 100;
         var element = '';
         for (var i = 0; i < 26; i++) {

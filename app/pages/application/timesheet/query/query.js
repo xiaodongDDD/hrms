@@ -750,6 +750,7 @@ angular.module('applicationModule')
       $ionicGesture.on("drag", function (e) {
         //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
         //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
+        //e.preventDefault();
         if ($scope.startSlippingFlag && !$scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           if (Math.abs(startTouchX - e.gesture.touches[0].pageX) > 3 || Math.abs(startTouchY - e.gesture.touches[0].pageY) > 3) {
             toTime = new Date().getTime();
@@ -790,10 +791,10 @@ angular.module('applicationModule')
 
       $ionicGesture.on("touch", function (e) {
         copyFromDay = {};
+        //e.preventDefault();
         if($scope.slippingEnableFlag){
           $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
           $scope.startSlippingFlag = true;
-          e.preventDefault();
         }
         if ($scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           var position = $ionicScrollDelegate.$getByHandle('timeSheetHandle').getScrollPosition();
