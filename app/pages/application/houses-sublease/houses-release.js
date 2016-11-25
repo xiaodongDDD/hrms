@@ -4592,7 +4592,6 @@ angular.module('applicationModule')
       };
 
       $scope.housesRelease = function () {//发布按钮
-        // $scope.showAlertShare();
         if (!validateHousesInfo()) {
           return;
         }
@@ -4725,7 +4724,6 @@ angular.module('applicationModule')
 
         $scope.title = "提示";
         $scope.message = "发布完成";
-
         var create = function (buttonIndex) {
           console.log("index"+buttonIndex);
           if (baseConfig.debug) {
@@ -4749,13 +4747,30 @@ angular.module('applicationModule')
         if ($scope.pictureList.length > 0) {
           imgurl = $scope.pictureList[0];
         }
+        console.log("$scope.shareUrl"+$scope.shareUrl);
         var youtuiShare = window.plugins.youtuiShare;
-        youtuiShare.share(success, fail, [
-          '汉得房屋转租',   //标题
-          $scope.housesSubDetail.publishUrl, //链接
-          $scope.housesSubDetail.houseTitle, //描述
-          imgurl  //图片
-        ]);
+        if (youtuiShare !== undefined) {
+          youtuiShare.share(success, fail, [
+            '汉得房屋转租',   //标题
+            $scope.shareUrl, //链接
+            "汉得房屋转租", //描述
+            imgurl  //图片
+          ]);
+        }
+        function success(success) {
+          console.log("success_code"+ success.code);
+          if(success.code=='0'){
+            hmsPopup.showShortCenterToast("分享成功");
+          }
+        }
+        function fail(error) {
+          console.log("error_code"+ error.code);
+          if(error.code=='-1'){
+            hmsPopup.showShortCenterToast("分享失败");
+          }else if(error.code=='-2'){
+            hmsPopup.showShortCenterToast("已取消");
+          }
+        }
       };
 
       function releaseHousesInfo() {//调用发布接口
@@ -4775,8 +4790,9 @@ angular.module('applicationModule')
             } else {
               $rootScope.$broadcast("RELEASE_SUCCESS");//触发上一界面重新刷新数据
             }
-            // $scope.showAlertShare();
-            $ionicHistory.goBack();
+            $scope.shareUrl = result.returnData;
+            console.log("result data"+angular.toJson(result.returnData, true));
+            $scope.showAlertShare();
           } else {
             pictureNumber = 0;
             hmsPopup.showShortCenterToast("发布失败，请检查所填信息是否完整以及部分字段是否是数字！");
