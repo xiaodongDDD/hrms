@@ -144,12 +144,12 @@ angular.module('applicationModule')
         hmsHttp.post(url, param).success(function (result) {
           hmsPopup.hideLoading();
           if (baseConfig.debug) {
-            console.log("result success " + angular.toJson(result));
+            console.log("result success " + angular.toJson(result, true));
           }
           //console.log("result success " + angular.toJson(result));
           $scope.housesSubDetail = result.returnData;
-
           $ionicSlideBoxDelegate.update();
+          $ionicSlideBoxDelegate.loop(true);
           getStaffDetails();
 
         }).error(function (error, status) {
