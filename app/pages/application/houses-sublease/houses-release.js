@@ -4758,12 +4758,14 @@ angular.module('applicationModule')
           ]);
         }
         function success(success) {
+          $ionicHistory.goBack();
           console.log("success_code"+ success.code);
           if(success.code=='0'){
             hmsPopup.showShortCenterToast("分享成功");
           }
         }
         function fail(error) {
+          $ionicHistory.goBack();
           console.log("error_code"+ error.code);
           if(error.code=='-1'){
             hmsPopup.showShortCenterToast("分享失败");
