@@ -4,9 +4,9 @@ module.exports = {
     exec(successCallback, errorCallback, 'scanCard', 'takePicture', []);
   },
   choosePicturefun: function ( successCallback, errorCallback) {
-    console.log("choosePicture");
-    exec(successCallback, errorCallback, 'scanCard', 'choosePicture', []);
-  }
+               console.log("choosePicture");
+               exec(successCallback, errorCallback, 'scanCard', 'choosePicture', []);
+           }
 
 };
 
