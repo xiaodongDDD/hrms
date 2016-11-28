@@ -196,6 +196,16 @@
      }];
 }
 
+#pragma mark - 取消选择图片
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    NSLog(@"取消了");
+    [self returnMess:self._command
+            andError:@"1"
+          andSuccess:nil
+            andError:@"cancel"];
+}
+
 - (void)reconizeCardWithCardImage:(UIImage *)image {
     //    webView *p=[[webView alloc] init];
     
