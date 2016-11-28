@@ -349,7 +349,11 @@ angular.module('applicationModule')
 
         var success = function (result) {
           if(result.status == 'S'){
-            hmsPopup.showPopup('批量处理工作流成功!');
+            if(result.error_count && result.error_count != 0){
+              hmsPopup.showPopup(result.message);
+            }else{
+              hmsPopup.showPopup('批量处理工作流成功!');
+            }
             $scope.batchProcessFlag = false;
             $scope.fetchTodoList(true);
           }else{
