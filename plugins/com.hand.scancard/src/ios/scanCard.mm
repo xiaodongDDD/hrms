@@ -200,10 +200,13 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     NSLog(@"取消了");
-    [self returnMess:self._command
-            andError:@"1"
-          andSuccess:nil
-            andError:@"cancel"];
+    [picker dismissViewControllerAnimated:YES completion:^
+     {
+         [self returnMess:self._command
+                 andError:@"1"
+               andSuccess:nil
+                 andError:@"cancel"];
+     }];
 }
 
 - (void)reconizeCardWithCardImage:(UIImage *)image {

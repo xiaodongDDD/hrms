@@ -41,6 +41,11 @@
       <string>zh_CN</string>
 
     </config-file>
+  
+  <!--相册权限-->
+  <config-file target="*-Info.plist"  parent="NSPhotoLibraryUsageDescription">
+      <string> </string>
+  </config-file>
 
     <!-- 源码    -->
     <header-file src="src/ios/scanCard.h"/>
