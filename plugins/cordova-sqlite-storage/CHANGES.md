@@ -60,7 +60,7 @@
 ### cordova-sqlite-storage 0.8.2
 
 - Workaround fix for empty readTransaction issue (litehelpers/Cordova-sqlite-storage#409)
-- Split spec/www/spec/legacy.js into db-open-close-delete-test.js & tx-extended.js
+- Split spec/www/spec/legacy.js into db-open-close-delete-test-contact.js & tx-extended.js
 
 ### cordova-sqlite-storage 0.8.0
 
