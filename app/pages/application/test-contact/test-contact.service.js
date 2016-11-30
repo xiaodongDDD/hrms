@@ -21,18 +21,44 @@ angular.module('applicationModule')
         });
 
         angular.forEach(contactList.rows, function (data1) {
-          list[data1.pinYinC].push({
-            "element": data1.name
-          })
-        });
-
-        for (i in list) {
-          var item = {
-            "header": i,
-            "elementList": list[i]
+          //console.log('data1 ' + angular.toJson(data1))
+          if (!list[data1.pinYinC] || list[data1.pinYinC].length < 20) {
+            if (list[data1.pinYinC]) {
+              list[data1.pinYinC].push({
+                "element": data1.name
+              })
+            } else {
+              list[data1.pinYinC] = [{
+                "element": data1.name
+              }]
+            }
           }
+        });
+        /*angular.forEach(elementList, function (data2) {
+          var item = {
+            "header": data2,
+            "elementList": ''
+          }
+
+          var elementList = '';
+          for (ele in list[data2]) {
+            if (elementList == '') {
+              elementList = elementList + '<span>' + list[data2][ele].element + '</span>';
+            } else {
+              elementList = elementList + '<span>' + list[data2][ele].element + '</span>';
+            }
+          }
+          item.elementList = elementList;
           result.push(item);
-        }
+        });*/
+
+        angular.forEach(elementList, function (data2) {
+          var item = {
+            "header": data2,
+            "elementList": list[data2]
+          };
+          result.push(item);
+        });
 
         return result;
       }
@@ -44,21 +70,22 @@ angular.module('applicationModule')
         replace: true,
         require: ['contactQuickBar'],
         controller: 'contactQuickBarCtrl',
-        template: '<div class="contact-quick-bar" ng-style="quickBarStyle">' +
+        template: '<div><div class="contact-quick-bar-header" ng-if="showHeaderFlag" ng-bind="contactHeaderItem"></div>' +
+        '<div class="contact-quick-bar" ng-style="quickBarStyle">' +
         '<div class="contact-quick-content" id="contactQuickHandle" ng-style="quickContentStyle">' +
         '<div ng-repeat="item in quickSearchBar" ng-style="item.style">' +
         '<div ng-bind="item.element" ng-click="contactQuick(item.element)">' +
         '</div>' +
         '</div>' +
         '</div>' +
-        '</div>',
+        '</div></div>',
         link: function ($scope, $element, $attrs, ctrls) {
 
           var contactCtrl = ctrls[0];
           /*console.log(typeof(angular.element('#contactQuickHandle')));
-          console.log(angular.element('#contactQuickHandle'));
-          console.log(angular.element('#contactQuickHandle')[0].offsetTop);
-          console.log(angular.element('#contactQuickHandle')[0].offsetHeight);*/
+           console.log(angular.element('#contactQuickHandle'));
+           console.log(angular.element('#contactQuickHandle')[0].offsetTop);
+           console.log(angular.element('#contactQuickHandle')[0].offsetHeight);*/
           var offsetTop = angular.element('#contactQuickHandle')[0].offsetTop
           contactCtrl.init(offsetTop);
         }
@@ -106,6 +133,10 @@ angular.module('applicationModule')
       var roundRate = 9;
 
       var elementNum = 26;
+
+      $scope.contactHeaderItem = '';
+
+      $scope.showHeaderFlag = false;
 
       //字母检索滑动动画的偏移系数
       var offsetList = [
@@ -188,11 +219,6 @@ angular.module('applicationModule')
       };
 
       $ionicBind($scope, $attrs, {
-        /*barElementSize: '@',
-         barElementColor: '@',
-         barElementHeight: '@',
-         barBackground: '@',
-         barHeight: '@',*/
         $onElementClick: '&onElementClick',
         $onElementTouched: '&onElementTouched'
       });
@@ -258,8 +284,8 @@ angular.module('applicationModule')
 
       function isLocateToElement(top, y, index) {
         /*console.log('isLocateToElement top ' + top);
-        console.log('isLocateToElement y ' + y);
-        console.log('isLocateToElement index ' + index);*/
+         console.log('isLocateToElement y ' + y);
+         console.log('isLocateToElement index ' + index);*/
 
         if (y > (top + (index) * $attrs.barElementHeight) + $attrs.touchOffset
           && y <= (top + (index + 1) * $attrs.barElementHeight) - $attrs.touchOffset) {
@@ -329,29 +355,32 @@ angular.module('applicationModule')
         for (var i = 0; i < elementNum; i++) {
           if (isLocateToElement(elementBarTopHeight, pageY, i)) {
 
-            console.log('quickLocate elementBarTopHeight ' + elementBarTopHeight);
-            console.log('quickLocate pageY ' + pageY);
-            console.log('quickLocate i ' + i);
-            console.log('quickLocate currentElement ' + currentElement);
-            console.log('quickLocate $scope.elementList[i] ' + $scope.elementList[i]);
-
             if (currentElement === '' || currentElement != $scope.elementList[i]) {
+              console.log('quickLocate elementBarTopHeight ' + elementBarTopHeight);
+              console.log('quickLocate pageY ' + pageY);
+              console.log('quickLocate i ' + i);
+              console.log('quickLocate currentElement ' + currentElement);
+              console.log('quickLocate $scope.elementList[i] ' + $scope.elementList[i]);
+              $scope.showHeaderFlag = true;
               currentElement = $scope.elementList[i];
+              $scope.contactHeaderItem = $scope.elementList[i];
               animate(i, showAnimate);
-              $location.hash('element' + $scope.elementList[i]);
-              $anchorScroll();
               $scope.$apply();
+              //正式使用
+              //$location.hash('element' + $scope.elementList[i]);
+              //$anchorScroll();
+              //只是为了演示使用
+              document.getElementById('element' + $scope.elementList[i]).scrollIntoView();
             }
-
           }
         }
       }
 
       //拖拽标记TimeSheet具体天
       $ionicGesture.on("drag", function (e) {
-        console.log('drag.screenY ' + e.gesture.touches[0].screenY);
+        /*console.log('drag.screenY ' + e.gesture.touches[0].screenY);
         console.log('drag.pageY ' + e.gesture.touches[0].pageY);
-        console.log('drag.clientY ' + e.gesture.touches[0].clientY);
+        console.log('drag.clientY ' + e.gesture.touches[0].clientY);*/
         quickLocate(e.gesture.touches[0].pageY);
       }, element);
 
@@ -362,6 +391,7 @@ angular.module('applicationModule')
 
       //
       $ionicGesture.on("release", function (e) {
+        $scope.showHeaderFlag = false;
         angular.forEach($scope.quickSearchBar, function (data) {
           data.style = getElementStyle(0);
         });

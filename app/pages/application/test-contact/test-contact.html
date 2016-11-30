@@ -15,21 +15,20 @@
         <div class="contact-header" id="element{{item.header}}">
           {{item.header}}
         </div>
-        <div class="contact-element">
-          <div class="contact-element-value" ng-repeat="element in item.elementList">
-            {{element.element}}
-          </div>
+        <!--<div class="contact-element" ng-bind-html="item.elementList">
+        </div>-->
+        <div class="contact-element" ng-repeat="element in item.elementList">
+          {{element.element}}
         </div>
       </div>
     </div>
   </ion-content>
 
   <contact-quick-bar
-    bar-element-size = '14px';
+    bar-element-size='14px'
     bar-element-color="blue"
     bar-background="#f8f8f8"
     show-Animate=true
-    bar-element-height = '16'
-    on-element-click="click()">
+    bar-element-height='16'>
   </contact-quick-bar>
 </ion-view>
