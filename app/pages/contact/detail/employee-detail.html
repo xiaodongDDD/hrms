@@ -26,23 +26,23 @@
       <div class="section-bg" ng-bind="employeeInfo.rootUnitName">
       </div>
       <div class="row icon-row">
-        <div class="col col-40 np-padding-margin">
+        <div class="col col-40 np-padding-margin" id="unfold" ng-click="unfold()" >
           <div class="row">
-            <img src="build/img/myInfo/position.png" class="col-image"/>
-            <span class="info-text-label" ng-bind="employeeInfo.position_name"></span>
+            <img src="build/img/myInfo/position.png" class="col-image" style="margin: 0 9px 0 6px;"/>
+            <span class="info-text-label" id="txt" ng-bind="employeeInfo.position_name" style="margin: 0 auto;"></span>
           </div>
         </div>
         <div class="col col-25 np-padding-margin">
           <div class="row">
-            <img src="build/img/contact/status@3x.png" class="col-image"/>
+            <img src="build/img/contact/status@3x.png" class="col-image" style="margin: 0 9px 0 0;"/>
             <span class="info-text-label" ng-bind="employeeInfo.emp_status"></span>
           </div>
         </div>
-        <div class="col-5">
-        </div>
+        <!--<div class="col-1">
+        </div>-->
         <div class="col col-25 np-padding-margin">
           <div class="row">
-            <img src="build/img/myInfo/baseland.png" class="col-image"/>
+            <img src="build/img/myInfo/baseland.png" class="col-image" style="margin: 0 9px 0 0;"/>
             <span class="info-text-label" ng-bind="employeeInfo.base_name"></span>
           </div>
         </div>

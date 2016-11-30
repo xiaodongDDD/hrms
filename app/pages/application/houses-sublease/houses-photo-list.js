@@ -141,7 +141,13 @@ angular.module('applicationModule')
       $scope.goBack = function () {//返回按钮
         //console.log("被删除的图片数组+++", angular.toJson($scope.deleteImageList));
         $rootScope.$broadcast("housesReleasePhoto", $scope.housesPhoto);
-        $ionicHistory.goBack();
+        $ionicHistory.goBack(-2);
+      };
+      
+      $scope.goForward = function () {//返回按钮
+        //console.log("被删除的图片数组+++", angular.toJson($scope.deleteImageList));
+        $rootScope.$broadcast("housesReleasePhoto", $scope.housesPhoto);
+        $ionicHistory.goBack(-1);
       };
 
       $scope.operatePhoto = function (event, image) { //拨打电话按钮的响应事件
