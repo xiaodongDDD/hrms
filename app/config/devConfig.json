@@ -1,9 +1,9 @@
 {
   "baseConfig": {
     "debug": false,
-    "isMobilePlatform": false,
+    "isMobilePlatform": true,
     "clearTable": true,
-    "nativeScreenFlag": false,
+    "nativeScreenFlag": true,
     "appStoreFlag": false,
     "isWeixinWebview": false,
     "wxLoginPath": "http://wechat.hand-china.com/hrmsv2/oauth/token?client_id=wx_client&client_secret=secret&grant_type=password&",
@@ -24,8 +24,8 @@
     "version": {
       "currentVersion": "2.1.8",
       "currentversionName": "此版本为测试版本2.1.8",
-      "currentSubVersion": "2",
-      "currentSubVersionName": "资源增量包2"
+      "currentSubVersion": "20",
+      "currentSubVersionName": "资源增量包20"
     }
   }
 }
