@@ -150,7 +150,7 @@ angular.module('myApp')
       // Each state's controller can be found in controllers.js
 
       $ionicConfigProvider.templates.maxPrefetch(15);
-      $ionicConfigProvider.views.swipeBackEnabled(true);
+      //$ionicConfigProvider.views.swipeBackEnabled(true);
 
       $httpProvider.interceptors.push('httpRequestHeader');//注册过滤器
       //$httpProvider.interceptors[0] = $httpProvider.interceptors[0] + "access_token=" + window.localStorage.token;

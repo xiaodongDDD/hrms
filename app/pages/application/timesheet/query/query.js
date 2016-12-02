@@ -581,7 +581,7 @@ angular.module('applicationModule')
 
             if (list.choosed) {
               //batchList.push({"day": list.each_day});
-              if(list.project && list.project != ''){
+              if (list.project && list.project != '') {
                 hasCopyedFlag = true;
               }
               if (dateArray == '') {
@@ -593,8 +593,8 @@ angular.module('applicationModule')
           });
         });
 
-        if(!hasCopyedFlag){
-          if(dateArray != ''){
+        if (!hasCopyedFlag) {
+          if (dateArray != '') {
             var range = getUnfreezeDateRange();
             $state.go('tab.timesheet-batch-write', {dayRange: range});
             clearCalendarCache();
@@ -614,9 +614,9 @@ angular.module('applicationModule')
             var timesheetArray = result.refresh_timesheet;
             fetchData(timesheetArray);
           } else {
-            if(result.message){
+            if (result.message) {
               hmsPopup.showPopup(result.message);
-            }else{
+            } else {
               hmsPopup.showPopup('批量填写出现异常!请联系管理员');
             }
             clearCalendarCache();
@@ -751,7 +751,7 @@ angular.module('applicationModule')
       };
 
       //拖拽标记TimeSheet具体天
-      $ionicGesture.on("drag", function (e) {
+      var dragGesture = $ionicGesture.on("drag", function (e) {
         //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
         //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
         //e.preventDefault();
@@ -794,12 +794,12 @@ angular.module('applicationModule')
         }
       }, element);
 
-      $ionicGesture.on("touch", function (e) {
+      var touchGesture = $ionicGesture.on("touch", function (e) {
         $ionicConfig.views.swipeBackEnabled(false);
 
         copyFromDay = {};
         //e.stopPropagation();
-        if($scope.slippingEnableFlag){
+        if ($scope.slippingEnableFlag) {
           $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
           $scope.startSlippingFlag = true;
         }
@@ -816,7 +816,7 @@ angular.module('applicationModule')
         }
       }, element);
 
-      $ionicGesture.on("release", function (e) {
+      var releaseGesture = $ionicGesture.on("release", function (e) {
         $ionicConfig.views.swipeBackEnabled(true);
 
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
@@ -965,16 +965,16 @@ angular.module('applicationModule')
       };
 
       /*$rootScope.$on('refreshTimesheet', function (event, data) {
-        if (baseConfig.debug) {
-          console.log('refreshTimesheet', data);
-        }
-        $timeout(
-          function () {
-            var monthParams = $scope.currentYear + '' + formatMonth($scope.currentMonth);
-            fetchCalendar(monthParams);
-          }, 600
-        );
-      });*/
+       if (baseConfig.debug) {
+       console.log('refreshTimesheet', data);
+       }
+       $timeout(
+       function () {
+       var monthParams = $scope.currentYear + '' + formatMonth($scope.currentMonth);
+       fetchCalendar(monthParams);
+       }, 600
+       );
+       });*/
 
       if (baseConfig.debug) {
         console.log('TimeSheetQueryCtrl.enter');
@@ -992,7 +992,7 @@ angular.module('applicationModule')
           console.log('TimeSheetQueryCtrl.$ionicView.beforeEnter');
         }
 
-        if(TimeSheetService.getRefreshTimeSheetFlag() == true){
+        if (TimeSheetService.getRefreshTimeSheetFlag() == true) {
           TimeSheetService.setRefreshTimeSheetFlag(false);
           var timesheet = TimeSheetService.getTimeSheetList();
           var timeSheetList = {
@@ -1051,9 +1051,12 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('TimeSheetQueryCtrl.$destroy');
         }
-        //$ionicGesture.off("touch", function (e) {}, element);
-        //$ionicGesture.off("release", function (e) {}, element);
-        //$ionicGesture.off("drag", function (e) {}, element);
+        $ionicGesture.off(touchGesture, 'touch', function (e) {
+        });
+        $ionicGesture.off(dragGesture, 'drag', function (e) {
+        });
+        $ionicGesture.off(releaseGesture, 'release', function (e) {
+        });
         $scope.popover.remove();
       });
     }]);
