@@ -61,5 +61,7 @@
     "cordova-sqlite-storage",
     "cordova-plugin-file"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "ios"
+  ]
 }

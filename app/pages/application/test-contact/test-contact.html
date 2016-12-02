@@ -9,7 +9,8 @@
       通讯录
     </h1>
   </ion-header-bar>
-  <ion-content delegate-handle="contactQuick" overflow-scroll="true" style="right:20px">
+  /*禁用手机浏览器的用户选择功能 */
+  <ion-content delegate-handle="contactQuick" overflow-scroll="true" style="right:20px;-webkit-user-select: none;-moz-user-select: none;">
     <div class="contact-list">
       <div class="contact-item" ng-repeat="item in list">
         <div class="contact-header" id="element{{item.header}}">

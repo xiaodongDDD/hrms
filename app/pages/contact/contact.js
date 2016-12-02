@@ -209,10 +209,24 @@ angular.module('contactModule')
         }
       };
 
-      $scope.telNumber = function (event, baseInfo) { //拨打电话按钮的响应事件
-        event.stopPropagation(); //阻止事件冒泡
+      $scope.telNumber = function (event, baseInfo,employeeNumber,name,imgageUrl) { //拨打电话按钮的响应事件
+        //event.stopPropagation(); //阻止事件冒泡
         //常用联系人拨打电话
-        window.location.href = "tel:" + baseInfo.replace(/\s+/g, "");
+        var options = {
+          buttonLabels: ['拨打电话', '拨打网络电话'],
+          addCancelButtonWithLabel: '取消',
+          androidEnableCancelButton: true,
+          androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT
+        };
+
+        $cordovaActionSheet.show(options)
+          .then(function (btnIndex) {
+            if (btnIndex == 1) {
+              window.location.href = "tel:" + baseInfo.replace(/\s+/g, "");
+            }else if (btnIndex == 2) {
+              HandIMPlugin.callNetPhone(function(){},function(){},employeeNumber,name,imgageUrl);
+            }
+          });
       };
 
       $scope.goInputSearch = function () { //去搜索界面

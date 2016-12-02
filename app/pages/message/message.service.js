@@ -318,6 +318,7 @@ angular.module('applicationModule')
             window.location.href = "tel:" + 88888888888; //不明觉厉--
             window.location.href = "tel:" + baseInfo.mobil.replace(/\s+/g, "");
             var imgUrl = baseInfo.avatar;
+
             if (baseInfo.avatar != '' || baseInfo.avatar) {
 
             } else {
@@ -339,6 +340,14 @@ angular.module('applicationModule')
             }
             return true;
           } else if (btnIndex == 2) {
+            var callImgUrl = baseInfo.avatar;
+            if (baseInfo.avatar != '' || baseInfo.avatar) {
+            } else {
+              callImgUrl = '';
+            }
+            HandIMPlugin.callNetPhone(function(){},function(){},baseInfo.emp_code,baseInfo.emp_name,callImgUrl);
+            return true;
+          } else if (btnIndex == 3) {
             contactService.contactLocal(baseInfo);
             return true;
           }

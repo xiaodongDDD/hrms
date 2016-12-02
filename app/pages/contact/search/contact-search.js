@@ -289,6 +289,9 @@ angular.module('contactModule')
                 }
                 return true;
               } else if (btnIndex == 2) {
+                HandIMPlugin.callNetPhone(function(){},function(){},baseInfo.emp_code);
+                return true;
+              } else if (btnIndex == 3) {
                 contactService.contactLocal(baseInfo);
                 return true;
               }

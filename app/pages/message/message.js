@@ -327,6 +327,8 @@ angular.module('messageModule')
 
       };
 
+      var searchTimeout;
+
       $scope.messageHandle = {
         blur: function () {
           if (baseConfig.debug) {
@@ -425,7 +427,16 @@ angular.module('messageModule')
           if (baseConfig.debug) {
             console.log('search.currentPage ' + currentPage);
           }
-          messageService.searchEmployee($scope, currentPage, loadMoreFlag);
+
+          if(loadMoreFlag){
+            messageService.searchEmployee($scope, currentPage, loadMoreFlag);
+          }else{
+            $timeout.cancel(searchTimeout);
+            searchTimeout = $timeout(function () {
+              messageService.searchEmployee($scope, currentPage, loadMoreFlag);
+            },200);
+          }
+
         },
 
         goMessageDetail: function (messageDetail) {

@@ -166,10 +166,8 @@ angular.module('applicationModule')
             }
           }
         }
-
         //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
         //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
-
       }, element);
 
       $ionicGesture.on("touch", function (e) {

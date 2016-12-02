@@ -40,6 +40,7 @@ angular.module('applicationModule')
     'TimeSheetService',
     'hmsHttp',
     'hmsPopup',
+    '$ionicConfig',
     function ($scope,
               $rootScope,
               $ionicPopover,
@@ -51,7 +52,8 @@ angular.module('applicationModule')
               $ionicScrollDelegate,
               TimeSheetService,
               hmsHttp,
-              hmsPopup) {
+              hmsPopup,
+              $ionicConfig) {
 
       var currentTimeSheetPosition = true;
       var isScrollFreeze;
@@ -592,10 +594,12 @@ angular.module('applicationModule')
         });
 
         if(!hasCopyedFlag){
-          var range = getUnfreezeDateRange();
-          $state.go('tab.timesheet-batch-write', {dayRange: range});
-          clearCalendarCache();
-          return;
+          if(dateArray != ''){
+            var range = getUnfreezeDateRange();
+            $state.go('tab.timesheet-batch-write', {dayRange: range});
+            clearCalendarCache();
+            return;
+          }
         }
 
         if (baseConfig.debug) {
@@ -751,6 +755,7 @@ angular.module('applicationModule')
         //console.log('drag.startTouchX ' + e.gesture.touches[0].pageX);
         //console.log('drag.startTouchY ' + e.gesture.touches[0].pageY);
         //e.preventDefault();
+        //console.log(e);
         if ($scope.startSlippingFlag && !$scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           if (Math.abs(startTouchX - e.gesture.touches[0].pageX) > 3 || Math.abs(startTouchY - e.gesture.touches[0].pageY) > 3) {
             toTime = new Date().getTime();
@@ -790,8 +795,10 @@ angular.module('applicationModule')
       }, element);
 
       $ionicGesture.on("touch", function (e) {
+        $ionicConfig.views.swipeBackEnabled(false);
+
         copyFromDay = {};
-        //e.preventDefault();
+        //e.stopPropagation();
         if($scope.slippingEnableFlag){
           $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(true);
           $scope.startSlippingFlag = true;
@@ -810,6 +817,8 @@ angular.module('applicationModule')
       }, element);
 
       $ionicGesture.on("release", function (e) {
+        $ionicConfig.views.swipeBackEnabled(true);
+
         $ionicScrollDelegate.$getByHandle('timeSheetHandle').freezeScroll(false);
         if ($scope.startSlippingFlag && $scope.slippingFlag && $scope.slippingEnableFlag && !$scope.exitQuery) {
           //console.log('release.startTouchX ' + e.gesture.touches[0].pageX);
@@ -955,7 +964,7 @@ angular.module('applicationModule')
         $ionicHistory.$ionicGoBack();
       };
 
-      $rootScope.$on('refreshTimesheet', function (event, data) {
+      /*$rootScope.$on('refreshTimesheet', function (event, data) {
         if (baseConfig.debug) {
           console.log('refreshTimesheet', data);
         }
@@ -965,7 +974,7 @@ angular.module('applicationModule')
             fetchCalendar(monthParams);
           }, 600
         );
-      });
+      });*/
 
       if (baseConfig.debug) {
         console.log('TimeSheetQueryCtrl.enter');
@@ -978,6 +987,7 @@ angular.module('applicationModule')
       });
 
       $scope.$on('$ionicView.beforeEnter', function (e) {
+
         if (baseConfig.debug) {
           console.log('TimeSheetQueryCtrl.$ionicView.beforeEnter');
         }
@@ -1041,6 +1051,9 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log('TimeSheetQueryCtrl.$destroy');
         }
+        //$ionicGesture.off("touch", function (e) {}, element);
+        //$ionicGesture.off("release", function (e) {}, element);
+        //$ionicGesture.off("drag", function (e) {}, element);
         $scope.popover.remove();
       });
     }]);
