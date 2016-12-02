@@ -142,6 +142,7 @@ Android测试环境
   (2) C Language Dialect 改成 GNU99[-std=gnu99]
   (3) Apple LLVM8.0 - Preprocessing 去掉DEBUG=1
   (4) 删掉cell_image.png
+  (5) YYText 
   
   (5) 
   AppDelegate+JPush.m didRegisterForRemoteNotificationsWithDeviceToken加入下面的判断
