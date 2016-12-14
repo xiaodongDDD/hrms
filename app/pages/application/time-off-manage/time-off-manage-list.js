@@ -86,7 +86,7 @@ angular.module('applicationModule')
 
         //hmsPopup.showPopup(window.screen.width);
 
-        var requestUrl = baseConfig.businessPath + "get_holidays_data";
+        var requestUrl = baseConfig.businessPath + "/api_holiday/get_holidays_data";
         var requestParams = {
           "params": {
             "p_employee_code": window.localStorage.empno
@@ -287,7 +287,7 @@ angular.module('applicationModule')
       this.getLeaveDays = function (myscope,policyitemId,dateFrom,dateTo) {
         hmsPopup.showLoading("处理休假申请中");
 
-        var url = baseConfig.businessPath + "get_holiday_days";
+        var url = baseConfig.businessPath + "/api_holiday/get_holiday_days";
         var params = {
           "params": {
             "p_policyitem_id": policyitemId,

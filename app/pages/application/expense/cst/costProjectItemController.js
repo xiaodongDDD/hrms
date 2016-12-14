@@ -31,7 +31,7 @@ angular.module("applicationModule")
 
         //deferred.resolve(keepAccount.expenseItemList);
 
-        var Url = baseConfig.businessPath + "get_project_list";
+        var Url = baseConfig.businessPath + "/expenses_apply/get_project_list";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
 
         console.log(PostData);

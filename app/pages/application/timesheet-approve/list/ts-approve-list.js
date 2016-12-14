@@ -95,9 +95,9 @@ angular.module('tsApproveModule')
         }];
         var position = ""; //记录滚动条的位置
         var selectItem = []; //初始化点击全部条目为false
-        var tsLsUrl = baseConfig.businessPath + "get_timesheet_list";
-        var tsProjectPersonListUrl = baseConfig.businessPath + "get_project_person_list";
-        var tsActionUrl = baseConfig.businessPath + "timesheet_approve";
+        var tsLsUrl = baseConfig.businessPath + "/api_timesheet/get_timesheet_list";
+        var tsProjectPersonListUrl = baseConfig.businessPath + "/api_timesheet/get_project_person_list";
+        var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
         var tsListParams = { //获取列表的参数
           "params": {
             "p_employee_number": window.localStorage.empno, //参考angularjs的localStorange--

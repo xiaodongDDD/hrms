@@ -63,7 +63,7 @@ angular.module('applicationModule')
       function initPassengerList(){//当编辑，删除，增加乘机人时，重新调用接口刷新数据，然后把新数据存在本地passengerService中
         $scope.showLoading=true;
         $scope.passengerList=[];
-        var url=baseConfig.businessPath+"get_tickets_list";
+        var url=baseConfig.businessPath+"/ticket_apply_info/get_tickets_list";
         var param={
           "params":{
             p_employee_number: window.localStorage.empno,
@@ -246,7 +246,7 @@ angular.module('applicationModule')
           hmsPopup.confirm("确认删除本乘机受益人？","提示",function(){
             //在这里调用删除接口，然后在删除接口的异步中再调用initPassengerList()
             $scope.showLoading=true;
-            var url=baseConfig.businessPath+"create_beneficiaris";
+            var url=baseConfig.businessPath+"/ticket_apply_info/create_beneficiaris";
             var param={
               params:{
                 p_employee_number:window.localStorage.empno,
@@ -310,7 +310,7 @@ angular.module('applicationModule')
            hmsPopup.showVeryShortCenterToast("乘机人身份证号不能为空");
          }else if(editValue.passenger_name!="" && editValue.passenger_id!=""){
            $scope.showLoading=true;
-           var url=baseConfig.businessPath+"create_beneficiaris";
+           var url=baseConfig.businessPath+"/ticket_apply_info/create_beneficiaris";
            var param={
              params:{
                p_employee_number:window.localStorage.empno,
@@ -355,7 +355,7 @@ angular.module('applicationModule')
            hmsPopup.showVeryShortCenterToast("请选择乘机人关系");
          }else if(createValue.passenger_name!="" && createValue.passenger_id!="" && createValue.relation_text!="请选择乘机人关系"){//创建完成
            $scope.showLoading=true;
-           var url=baseConfig.businessPath+"create_beneficiaris";
+           var url=baseConfig.businessPath+"/ticket_apply_info/create_beneficiaris";
            var param={
              params:{
                p_employee_number:window.localStorage.empno,

@@ -172,7 +172,7 @@ angular.module('applicationModule')
       getUseableFlyback();
      function getUseableFlyback(){
        flybackStatus="查询中";
-       var url=baseConfig.businessPath+"get_flyback_num";//自动查询相关项目可用flyback
+       var url=baseConfig.businessPath+"/ticket_apply_info/get_flyback_num";//自动查询相关项目可用flyback
        var param={
          "params":{
            p_employee_number:window.localStorage.empno,
@@ -440,7 +440,7 @@ angular.module('applicationModule')
          hmsPopup.showVeryShortCenterToast("请选择项目名称");
        }else if($scope.detailInfo.project_name!="请选择项目名称") {
          var temp = $scope.detailInfo;
-         var url = baseConfig.businessPath + "flyback_modified";
+         var url = baseConfig.businessPath + "/ticket_apply_info/flyback_modified";
          var param = {
            "params": {
              p_apply_id: temp.apply_id,
@@ -504,7 +504,7 @@ angular.module('applicationModule')
            hmsPopup.showShortCenterToast("请填写退票详细说明");
          }else if($scope.reasonInputDetail.returnInput!=""){
            $scope.showLoading=true;
-           var url=baseConfig.businessPath+"ticket_return_apply";
+           var url=baseConfig.businessPath+"/ticket_apply_info/ticket_return_apply";
            var param={
              "params":{
                p_employee_number:window.localStorage.empno,
@@ -532,7 +532,7 @@ angular.module('applicationModule')
          if($scope.reasonInputDetail.changeInput==""){
            hmsPopup.showShortCenterToast("请填写改签详细说明");
          }else if($scope.reasonInputDetail.changeInput!=""){
-           var url=baseConfig.businessPath+"meal_ticket_apply";
+           var url=baseConfig.businessPath+"/ticket_apply_info/meal_ticket_apply";
            var param={
              "params":{
                p_employee_number:window.localStorage.empno,

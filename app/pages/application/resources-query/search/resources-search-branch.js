@@ -78,8 +78,8 @@ angular.module('applicationModule')
         }
 
 
-        var getMyBranchUrl = baseConfig.businessPath + "get_personal_department"; //我的部门接口地址
-        var searchBranchUrl = baseConfig.businessPath + "query_departments"; //搜索部门接口地址
+        var getMyBranchUrl = baseConfig.businessPath + "/api_resources_query/get_personal_department"; //我的部门接口地址
+        var searchBranchUrl = baseConfig.businessPath + "/api_resources_query/query_departments"; //搜索部门接口地址
         var branchSearch = '{"params":{"p_department_value":"' + $scope.branchKey.getValue + '"}}'; //封装搜索部门信息传参
       }
 

@@ -129,7 +129,7 @@ angular.module("applicationModule")
       });
       var expStatues = 'SAVE';
       var deferred = $q.defer();
-      var Url = baseConfig.businessPath + "fetch_expense_list";
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
         + '","p_page_num":"' + "1" + '"}}';
 
@@ -188,7 +188,7 @@ angular.module("applicationModule")
         expStatues = 'SUBMIT';
       }
       //  console.log("queryList");
-      var Url = baseConfig.businessPath + "fetch_expense_list";
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues + '","p_page_num":"' + $scope.newPage + '"}}';
       $scope.show();
       hmsHttp.post(Url, PostData).success(function (response) {
@@ -376,7 +376,7 @@ angular.module("applicationModule")
         var deferred = $q.defer();
         var expHeaderId = $scope.expList[index].ra_id;
         console.log(expHeaderId);
-        var Url = baseConfig.businessPath + "delete_expense";
+        var Url = baseConfig.businessPath + "/expense_account/delete_expense";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
         hmsHttp.post(Url, PostData).success(function (response) {
           if (response["status"] == "S") {

@@ -100,7 +100,7 @@ angular.module("applicationModule")
 
       var deferred = $q.defer();
 
-      var Url = baseConfig.businessPath + "get_apply_list";
+      var Url = baseConfig.businessPath + "/expenses_apply/get_apply_list";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_status":"' + statusType + '","p_project_id":"' + "" + '"}}';
 
 

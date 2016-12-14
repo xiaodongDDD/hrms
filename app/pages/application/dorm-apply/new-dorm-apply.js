@@ -104,7 +104,7 @@ angular.module('applicationModule')
       $scope.startDate.month=month;
       $scope.startDate.day=day;
       refreshEndDate(1);//结束日期默认比开始晚1天
-      var url=baseConfig.businessPath+"query_project_list";
+      var url=baseConfig.businessPath+"/api_apply_room/query_project_list";
       var param={
         "params": {
           p_employee_number:window.localStorage.empno//工号
@@ -335,7 +335,7 @@ angular.module('applicationModule')
         }else if( (startYear>endYear) ||((startYear==endYear)&&(startMonth>endMonth)) || ((startYear==endYear)&&(startMonth==endMonth)&&(startDay>endDay))){
           hmsPopup.showShortCenterToast('入住日期不能晚于结束日期');
         }else{
-          var url = baseConfig.businessPath + "query_free_room_list";
+          var url = baseConfig.businessPath + "/api_apply_room/query_free_room_list";
           var param = {
             "params": {
               p_employee_number: window.localStorage.empno,

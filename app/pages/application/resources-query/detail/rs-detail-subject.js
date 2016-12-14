@@ -84,7 +84,7 @@ angular.module('applicationModule')
       $scope.resultList = [];//存储结果
       $scope.toggleCount = false;  //是否只显示异常项目开关，默认为关
 
-      var postUrl = baseConfig.businessPath + "get_personal_resource"; //个人查询结果接口地址
+      var postUrl = baseConfig.businessPath + "/api_resources_query/get_personal_resource"; //个人查询结果接口地址
       var postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + pageNumber + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
 
 

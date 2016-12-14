@@ -78,7 +78,7 @@ angular.module("applicationModule")
       var deferred = $q.defer();
       console.log(1122);
       var Item = [];
-      var Url = baseConfig.businessPath + "fetch_expense_detail";
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_detail";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
       hmsHttp.post(Url, PostData).success(function (response) {
         //console.log("返回数据：" + angular.toJson(response));
@@ -101,7 +101,7 @@ angular.module("applicationModule")
       else if (queryType == 'submitted') {
         expStatues = 'SUBMIT';
       }
-      var Url = baseConfig.businessPath + "fetch_expense_list";
+      var Url = baseConfig.businessPath + "/expense_account/fetch_expense_list";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_expense_type":"' + expStatues
         + '","p_page_num":"' + "1" + '"}}';
 
@@ -148,7 +148,7 @@ angular.module("applicationModule")
       }
       console.log(linesId);
       var deferred = $q.defer();
-      var Url = baseConfig.businessPath + "create_expense";
+      var Url = baseConfig.businessPath + "/expense_account/create_expense";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + "" + '","p_description":"'
         + detailData.description + '","p_line":"' + linesId + '"}}';
 
@@ -309,7 +309,7 @@ angular.module("applicationModule")
       console.log(linesId);
 
       var deferred = $q.defer();
-      var Url = baseConfig.businessPath + "create_expense";
+      var Url = baseConfig.businessPath + "/expense_account/create_expense";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + detailData.expHeaderId
         + '","p_description":"' + detailData.description + '","p_line":"' + linesId + '"}}';
       hmsHttp.post(Url, PostData).success(function (response) {

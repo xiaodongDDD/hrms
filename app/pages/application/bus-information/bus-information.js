@@ -24,6 +24,7 @@ angular.module('applicationModule')
               baseConfig,
               $ionicHistory) {
 
+      
       $scope.goBack = function () {
         $ionicHistory.goBack();
       };

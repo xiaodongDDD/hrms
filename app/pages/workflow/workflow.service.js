@@ -27,7 +27,7 @@ angular.module('applicationModule')
         }
 
         this.getSubmitFlag = function(success, error, id) {
-          var url = baseConfig.businessPath + 'get_submit_flag';
+          var url = baseConfig.businessPath + '/wfl_wx_workflow_appr/get_submit_flag';
           var param = {params: {p_instance_id: id, p_employee_code: window.window.localStorage.empno}};
           // alert(url + "----" + angular.toJson(param));
           hmsHttp.post(url, param).success(function(response){
@@ -184,7 +184,7 @@ angular.module('applicationModule')
         };
 
         var getTodoListService = function (flag, worklfowId, submitterId, page, success, error) {
-          var url = baseConfig.businessPath + "get_instance_list_v2";
+          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list_v2";
           var params = {
             'params': {
               "p_employee_code": window.localStorage.empno,
@@ -203,7 +203,7 @@ angular.module('applicationModule')
         };
 
         var getMineListService = function (worklfowId, submitterId, page, success, error) {
-          var url = baseConfig.businessPath + "get_personal_applications";
+          var url = baseConfig.businessPath + "/wfl_per_application/get_personal_applications";
           var params = {
             'params': {
               "p_employee_number": window.localStorage.empno,
@@ -382,7 +382,7 @@ angular.module('applicationModule')
         };
 
         this.getWorkflowDetail = function (success, workflowId, recordId, submitFlag) {
-          var url = baseConfig.businessPath + "get_workflow_detail";
+          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_workflow_detail";
           var params = {
             "params": {
               "p_workflow_id": workflowId,
@@ -398,7 +398,7 @@ angular.module('applicationModule')
         };
 
         this.getTransmitPerson = function (success, error, value) {
-          var url = baseConfig.businessPath + "get_trans_employee";
+          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_trans_employee";
           var params = {
             "params": {
               "p_modual": value + ""
@@ -412,7 +412,7 @@ angular.module('applicationModule')
         };
 
         this.submitAction = function (success, error, params) {
-          var url = baseConfig.businessPath + "wfl_workflow_action";
+          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/wfl_workflow_action";
           hmsHttp.post(url, params).success(function (result) {
             hmsPopup.hideLoading();
             success(result);
@@ -423,7 +423,7 @@ angular.module('applicationModule')
         };
 
         this.contractRenewalQuery = function (success, error, instanceId) {
-          var url = baseConfig.businessPath + "contract_renewal_query";
+          var url = baseConfig.businessPath + "/api_contract_renewal/contract_renewal_query";
           var params = {
             "params": {
               "p_employee_number": window.localStorage.empno,
@@ -438,7 +438,7 @@ angular.module('applicationModule')
         };
 
         this.contractRenewalSubmit = function (success, error, params) {
-          var url = baseConfig.businessPath + "contract_renewal_submit";
+          var url = baseConfig.businessPath + "/api_contract_renewal/contract_renewal_submit";
           hmsHttp.post(url, params).success(function (result) {
             hmsPopup.hideLoading();
             success(result);
@@ -450,7 +450,7 @@ angular.module('applicationModule')
 
         // 获取部门信息（转正审批工作流）
         this.getUnitData = function (success, error, unitId) {
-          var url = baseConfig.businessPath + "get_unit_data";
+          var url = baseConfig.businessPath + "/get_workflow_data/get_unit_data";
           var params = '{"params":{"p_unit_id":"' + unitId + '"}}';
           hmsHttp.post(url, params).success(function (result) {
             success(result);
@@ -461,7 +461,7 @@ angular.module('applicationModule')
 
         // 获取职位信息（转正审批工作流）
         this.getPositionData = function (success, error, unitId) {
-          var url = baseConfig.businessPath + "get_position_data";
+          var url = baseConfig.businessPath + "/get_workflow_data/get_position_data";
           var params = '{"params":{"p_unit_id":"' + unitId + '"}}';
 
           hmsHttp.post(url, params).success(function (result) {
@@ -473,7 +473,7 @@ angular.module('applicationModule')
 
         // 获取上层部门信息（转正审批工作流）
         this.getParentUnitData = function (success, error, unitId) {
-          var url = baseConfig.businessPath + "get_parent_unit_data";
+          var url = baseConfig.businessPath + "/get_workflow_data/get_parent_unit_data";
           var params = '{"params":{"p_unit_id":"' + unitId + '"}}';
           hmsHttp.post(url, params).success(function (result) {
             success(result);
@@ -484,7 +484,7 @@ angular.module('applicationModule')
 
         // 保存转正信息（转正审批工作流）
         this.savePositiveBlock1 = function (success, error, params) {
-          var url = baseConfig.businessPath + "save_positive_block1_data";
+          var url = baseConfig.businessPath + "/wfl_save_action/save_positive_block1_data";
           hmsHttp.post(url, params).success(function (result) {
             hmsPopup.hideLoading();
             success(result);
@@ -497,7 +497,7 @@ angular.module('applicationModule')
         // 保存考评结果（转正审批工作流）
         this.savePositiveBlock2 = function (success, error, instanceId, record) {
 
-          var url = baseConfig.businessPath + "save_positive_block2_data";
+          var url = baseConfig.businessPath + "/wfl_save_action/save_positive_block2_data";
           var params = {
             "params": {
               "p_instance_id": instanceId,
@@ -517,7 +517,7 @@ angular.module('applicationModule')
         // 保存试用期总结（转正审批工作流）
         this.savePositiveBlock3 = function (success, error, instanceId, fieldId, fieldValue) {
 
-          var url = baseConfig.businessPath + "save_positive_block3_data";
+          var url = baseConfig.businessPath + "/wfl_save_action/save_positive_block3_data";
           var params = {
             "params": {
               "p_instance_id": instanceId,
@@ -535,7 +535,7 @@ angular.module('applicationModule')
         };
 
         this.getDetailBase = function (success, error, recordId, workflowId, instanceId, nodeId) {
-          var url = baseConfig.businessPath + "get_detail_base";
+          var url = baseConfig.businessPath + "/api_workflow_common/get_detail_base";
           var params = {
             "params": {
               "p_record_id": recordId + "",
@@ -552,7 +552,7 @@ angular.module('applicationModule')
         };
 
         this.getNoticeListCount = function (success, error) {
-          var url = baseConfig.businessPath + "get_instance_list_count";
+          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/get_instance_list_count";
           var params = {"params": {"p_employee_code": window.localStorage.empno}};
           hmsHttp.post(url, params).success(function (result) {
             success(result);
@@ -563,7 +563,7 @@ angular.module('applicationModule')
 
         //获取回退列表 added by Ethan
         this.getBackList = function (success, error, nodeId) {
-          var url = baseConfig.businessPath + "get_back_list";
+          var url = baseConfig.businessPath + "/get_workflow_data/get_back_list";
           var params = '{"params":{"p_node_id":"' + nodeId + '"}}';
 
           hmsHttp.post(url, params).success(function (result) {
@@ -576,7 +576,7 @@ angular.module('applicationModule')
         };
 
         this.backTo = function (success, error, recordId, actionId, comment) {
-          var url = baseConfig.businessPath + "wfl_back_to_action";
+          var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/wfl_back_to_action";
           var params = '{"params":{"p_record_id":"' + recordId + '","p_action_id":"' + actionId + '","p_comment":"' + comment + '"}}';
 
           hmsHttp.post(url, params).success(function (result) {
@@ -590,7 +590,7 @@ angular.module('applicationModule')
 
         // 获取项目信息（新开项目申请工作流）
         this.getProjectData = function (success, error, condition) {
-          var url = baseConfig.businessPath + "get_project_data";
+          var url = baseConfig.businessPath + "/get_workflow_data/get_project_data";
           var params = '{"params":{"p_param":"' + condition + '"}}';
 
           hmsHttp.post(url, params).success(function (result) {
@@ -604,7 +604,7 @@ angular.module('applicationModule')
 
         // 保存新开项目申请信息（新开项目申请工作流）
         this.saveNewProjectApplyData = function (success, error, instanceId, pactCode, projectName, expenses, mergeFlag) {
-          var url = baseConfig.businessPath + "save_new_project_apply_data";
+          var url = baseConfig.businessPath + "/wfl_save_action/save_new_project_apply_data";
           var params = '{"params":{"p_instance_id":"' + instanceId + '","p_pact_code":"' + pactCode + '","p_project_name":"' + projectName + '","p_expenses":"' + expenses + '","p_merge_flag":"' + mergeFlag + '"}}';
 
           hmsHttp.post(url, params).success(function (result) {
@@ -618,7 +618,7 @@ angular.module('applicationModule')
 
         // 保存新开项目申请信息（新开项目申请工作流）
         this.get_workflow_filter = function (success, error, processedFlag) {
-          var url = baseConfig.businessPath + "get_workflow_filter";
+          var url = baseConfig.businessPath + "/api_workflow_common/get_workflow_filter";
           var params = {
             "params": {
               "p_employee": window.localStorage.empno,
@@ -634,7 +634,7 @@ angular.module('applicationModule')
 
         //批量处理工作流
         this.batchProcessWorkflow = function (success, error, params) {
-          var url = baseConfig.businessPath + "wfl_batch_approve";
+          var url = baseConfig.businessPath + "/workflow_common/wfl_batch_approve";
           var params = params;
           hmsHttp.post(url, params).success(function (result) {
             hmsPopup.hideLoading();
@@ -647,7 +647,7 @@ angular.module('applicationModule')
 
         //退回我的申请
         this.cancelMyWorkflow = function (p_instance_id,detail) {
-          var url = baseConfig.businessPath + "wfl_batch_back";
+          var url = baseConfig.businessPath + "/wfl_per_application/wfl_batch_back";
           var backList = {
             "p_back_list": [{"p_instance_id": p_instance_id + ""}]
           };

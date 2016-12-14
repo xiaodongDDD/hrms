@@ -293,7 +293,7 @@ angular.module('applicationModule')
           params:usedParam
         };
         console.debug(angular.toJson(realParam,true));
-        var url = baseConfig.businessPath+"flyback_submit";
+        var url = baseConfig.businessPath+"/ticket_apply_info/flyback_submit";
         hmsHttp.post(url,realParam).success(function(result){
           $scope.showLoading = false;
           if(result.status=="S"){
@@ -520,7 +520,7 @@ angular.module('applicationModule')
        if($scope.applyInfo.projectFlightFlag == false){//如果是flyback机票
          //自动查询该项目可用的flyback列表
          flybackStatus="查询中";
-         var url=baseConfig.businessPath+"get_flyback_num";
+         var url=baseConfig.businessPath+"/ticket_apply_info/get_flyback_num";
          var param={
            "params":{
              p_employee_number:window.localStorage.empno,

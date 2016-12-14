@@ -504,7 +504,7 @@ angular.module('applicationModule')
       var fetchCalendar = function (monthParams) {
         $scope.loadingDataFlag = true;
 
-        var url = baseConfig.businessPath + "fetch_calendar";
+        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
         var params = {
           "params": {
             "p_employee": window.localStorage.empno,
