@@ -97,7 +97,7 @@ angular.module("applicationModule")
             }
           }
           Prompter.showLoading("请稍候");
-          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list2";
+          var urlValueList = baseConfig.businessPath + "get_value_list2";
           var paramValueList={
             'params':{
               'p_employee':window.localStorage.empno,
@@ -333,7 +333,7 @@ angular.module("applicationModule")
             //  $scope.flybackline.flight_date = flight_date;
             if ($scope.flybackline.apply_detail_id !== "") {
               Prompter.showLoading("请稍候");
-              var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_line";
+              var urlValueList = baseConfig.businessPath + "delete_flyback_line";
               var paramValueList = '{"params":{"p_apply_id":"' + applyId + '","p_apply_detail_id":"' + $scope.flybackline.apply_detail_id + '"}}';
               console.log("paramValueList =" + paramValueList);
               HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {

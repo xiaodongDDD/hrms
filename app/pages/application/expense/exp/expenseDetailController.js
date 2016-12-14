@@ -193,7 +193,7 @@ angular.module("applicationModule")
         template: "正在提交..."
       });
       var expHeaderId = $scope.detailData.expHeaderId;
-      var Url = baseConfig.businessPath + "/expense_account/submit_expense";
+      var Url = baseConfig.businessPath + "submit_expense";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '"}}';
       hmsHttp.post(Url, PostData).success(function (response) {
         if (response["status"] == "S") {
@@ -266,7 +266,7 @@ angular.module("applicationModule")
         var lineId = $scope.detailData.lines[index].lineId;
         var expHeaderId = $scope.detailData.expHeaderId;
         //console.log("+++++++++++++++++++++++++++++" +　lineId);
-        var Url = baseConfig.businessPath + "/expense_account/delete_expense_line";
+        var Url = baseConfig.businessPath + "delete_expense_line";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_ra_id":"' + expHeaderId + '","p_ra_line_id":"' + lineId + '"}}';
 
         hmsHttp.post(Url, PostData).success(function (response) {

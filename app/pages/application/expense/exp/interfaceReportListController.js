@@ -32,7 +32,7 @@ angular.module("applicationModule")
     function interfaceReportList(){
         var deferred = $q.defer();
         var expenseObject_id= expenseApply.data.expenseObject_id;
-        var Url = baseConfig.businessPath + "/expense_account/fetch_exp_details";
+        var Url = baseConfig.businessPath + "fetch_exp_details";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_project_id":"' + expenseObject_id + '"}}';
       hmsHttp.post(Url,PostData).success(function (response){
             console.log(response);

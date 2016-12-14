@@ -61,7 +61,7 @@ angular.module('applicationModule')
           $scope.showLoading = true;
           $scope.items=[];
           pageNumber = 1;
-          var url=baseConfig.businessPath+"/ticket_apply_info/get_tickets_list";
+          var url=baseConfig.businessPath+"get_tickets_list";
           var param={
             "params":{
               p_employee_number: window.localStorage.empno,
@@ -106,7 +106,7 @@ angular.module('applicationModule')
         $scope.loadMore=function(){//加载更多数据
           console.debug("触发加载更多");
           pageNumber++;
-          var url=baseConfig.businessPath+"/ticket_apply_info/get_tickets_list";
+          var url=baseConfig.businessPath+"get_tickets_list";
           var param={
             "params":{
               p_employee_number: window.localStorage.empno,
@@ -215,7 +215,7 @@ angular.module('applicationModule')
           $timeout(function(){
             hmsPopup.confirm("确认撤销本条申请？","提示",function(){
               $scope.showLoading=true;
-              var url=baseConfig.businessPath+"/ticket_apply_info/wfl_flyback_back";
+              var url=baseConfig.businessPath+"wfl_flyback_back";
               var param={
                 "params":{
                  p_employee_number:window.localStorage.empno,

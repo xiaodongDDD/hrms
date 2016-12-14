@@ -393,7 +393,7 @@ angular.module('applicationModule')
         $scope.approveDTimeOffId = "";
 
         if( $scope.timeOffData.operationType = 'revoke' && $scope.approveStatus == "APPROVED"){
-          var initURL = baseConfig.businessPath + "/api_holiday/get_holiday_history";
+          var initURL = baseConfig.businessPath + "get_holiday_history";
           var initParams = {
             "params": {
               "p_employee_number": window.localStorage.empno
@@ -705,7 +705,7 @@ angular.module('applicationModule')
 
         if ($scope.operation.createMode) {
 
-          $scope.requestUrl = baseConfig.businessPath + "/api_holiday/submit_holiday_apply";
+          $scope.requestUrl = baseConfig.businessPath + "submit_holiday_apply";
           $scope.requestParams = {
             "params": {
               "p_employeecode": window.localStorage.empno,
@@ -723,7 +723,7 @@ angular.module('applicationModule')
               hmsPopup.showVeryShortCenterToast('请输入撤回原因!');
               return;
             } else {
-              $scope.requestUrl = baseConfig.businessPath + "/api_holiday/get_holiday_cancel";
+              $scope.requestUrl = baseConfig.businessPath + "get_holiday_cancel";
               $scope.requestParams = {
                 "params": {
                   "p_employee_number": window.localStorage.empno,
@@ -733,7 +733,7 @@ angular.module('applicationModule')
               }
             }
           } else {
-            $scope.requestUrl = baseConfig.businessPath + "/api_holiday/get_holiday_apply_back";
+            $scope.requestUrl = baseConfig.businessPath + "get_holiday_apply_back";
             $scope.requestParams = {
               "params": {
                 "p_employee_code": window.localStorage.empno,

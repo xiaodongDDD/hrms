@@ -241,7 +241,7 @@ angular.module('applicationModule')
           if((startYear>endYear) ||((startYear==endYear)&&(startMonth>endMonth)) || ((startYear==endYear)&&(startMonth==endMonth)&&(startDay>endDay))){
             hmsPopup.showShortCenterToast('入住日期不能晚于结束日期');
           }else{
-            var url = baseConfig.businessPath + "/api_apply_room/overstay_apply_room";
+            var url = baseConfig.businessPath + "overstay_apply_room";
             var param = {
               "params": {
                 p_employee_number: window.localStorage.empno,

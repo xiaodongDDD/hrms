@@ -38,7 +38,7 @@ angular.module('applicationModule')
       };
 
       this.fetchMenuList = function (success, error) {
-        var url = baseConfig.businessPath + "/common_info/get_user_menu_list";
+        var url = baseConfig.businessPath + "get_user_menu_list";
         var params = {
           "params": {
             "p_user_code": window.localStorage.empno,

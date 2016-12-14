@@ -153,13 +153,13 @@ angular.module('applicationModule')
         '日', '一', '二', '三', '四', '五', '六'
       ];
 
-      var postUrl = baseConfig.businessPath + "/api_resources_query/get_personal_resource"; //个人查询结果接口地址
+      var postUrl = baseConfig.businessPath + "get_personal_resource"; //个人查询结果接口地址
       var postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + pageNumber + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
 
-      var empListUrl = baseConfig.businessPath + "/api_resources_query/get_employee_list"; //人员列表接口地址
+      var empListUrl = baseConfig.businessPath + "get_employee_list"; //人员列表接口地址
       var searchInfo = '{"params":{"p_employee_number":"' + employeeCode + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '"}}';
 
-      var empPictureUrl = baseConfig.businessPath + "/api_employee/get_employee_code"; //人员头像接口地址
+      var empPictureUrl = baseConfig.businessPath + "get_employee_code"; //人员头像接口地址
       var empCode = '{"params":{"p_employee_code":"' + employeeCode + '"}}';
 
       // $scope.slideIndex = 0;

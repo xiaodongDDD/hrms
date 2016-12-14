@@ -1080,7 +1080,7 @@ angular.module('applicationModule')
             console.log('needSave needs ' + angular.toJson(needs));
           }
           if (canSave) {
-            var url = baseConfig.businessPath + "/wfl_wx_workflow_appr/workflow_save_action";
+            var url = baseConfig.businessPath + "workflow_save_action";
             var params = {
               params: {
                 "p_instance_id": detail.instanceId,

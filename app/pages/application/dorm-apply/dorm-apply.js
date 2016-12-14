@@ -44,7 +44,7 @@ angular.module('applicationModule')
       searchHistoryApplyListAutomatically();//自动获取历史申请数据
       function searchHistoryApplyListAutomatically() {
         $scope.items=[];
-        var url = baseConfig.businessPath + "/api_apply_room/query_room_history_list";
+        var url = baseConfig.businessPath + "query_room_history_list";
         var param = {
           "params": {
             p_employee_number: window.localStorage.empno

@@ -80,12 +80,12 @@ angular.module('applicationModule')
 
 
         var myNumber = '{"params":{"p_employee_number":"' + employeeCode + '"}}'; //封装已选择员工工号信息传参
-        var getMySubjectUrl = baseConfig.businessPath + "/api_resources_query/get_personal_projects"; //我的项目接口地址
+        var getMySubjectUrl = baseConfig.businessPath + "get_personal_projects"; //我的项目接口地址
 
         var searchInfo = '{"params":{"p_employee_number":"' + employeeCode + '","p_branch_id":"' + branchId + '","p_project_id":"' + subjectId + '"}}';
-        var getBranchSubjectUrl = baseConfig.businessPath + "/api_resources_query/query_branch_project"; //部门项目接口地址
+        var getBranchSubjectUrl = baseConfig.businessPath + "query_branch_project"; //部门项目接口地址
 
-        var searchSubjectUrl = baseConfig.businessPath + "/api_resources_query/query_projects"; //搜索项目接口地址
+        var searchSubjectUrl = baseConfig.businessPath + "query_projects"; //搜索项目接口地址
         var subjectSearch = '{"params":{"p_project_value":"' + $scope.subjectKey.getValue + '","p_employee_number":"' + employeeCode + '","p_project_id":"' + branchId + '"}}'; //封装搜索项目信息传参
       }
 

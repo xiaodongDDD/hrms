@@ -68,7 +68,7 @@ angular.module("applicationModule")
     }
 
     function doPostHttpOnlyData(json, deferred) {
-      var Url = baseConfig.businessPath + "/expense_account/create_expense_details";
+      var Url = baseConfig.businessPath + "create_expense_details";
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
         '","p_details":' + json + '}}';
 
@@ -94,7 +94,7 @@ angular.module("applicationModule")
 
     function deleteAccountItem(timestamp, deferred) {
       console.log("get the timestamp = " + timestamp);
-      var Url = baseConfig.businessPath + "/expense_account/delete_expense_details";
+      var Url = baseConfig.businessPath + "delete_expense_details";
 //        var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
 //            '","p_time_stamp":' + timestamp+'}}';
       var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_time_stamp":"' + timestamp + '"}}';

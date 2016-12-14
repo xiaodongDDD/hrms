@@ -53,7 +53,7 @@ angular.module("applicationModule")
             var dateFrom = flaybackService.getFormatDate(new Date($scope.param.reqDateFrom));
             var dateTo = flaybackService.getFormatDate(new Date($scope.param.reqDateTo));
             hmsPopup.showLoading("请稍候");
-            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_lists";
+            var urlValueList = baseConfig.businessPath + "get_flyback_lists";
             var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
               + '","p_project_code":"' + $scope.param.projectCode
               + '","p_apply_date_from":"' + dateFrom
@@ -83,7 +83,7 @@ angular.module("applicationModule")
 
         //获取项目列表
         hmsPopup.showLoading("请稍候");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_project_list";
+        var urlValueList = baseConfig.businessPath + "get_project_list";
         var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
         HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
           //console.log("get_project_list =" + angular.toJson(response));
@@ -152,7 +152,7 @@ angular.module("applicationModule")
         // 删除fyback
         $scope.deleteFB = function (applyId, index) {
           hmsPopup.showLoading("请稍候");
-          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
+          var urlValueList = baseConfig.businessPath + "delete_flyback_all";
           var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + applyId + '"}}';
           HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
             if (response.status == "S") {

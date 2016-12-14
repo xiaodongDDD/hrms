@@ -106,7 +106,7 @@ angular.module("applicationModule").factory('costApply', function ($http, $q, ba
             console.log(angular.toJson(this.data));
 
             console.log("参数准备");
-            var Url = baseConfig.businessPath + "/expenses_apply/create_expense_apply";
+            var Url = baseConfig.businessPath + "create_expense_apply";
 
             this.data.cost_date=getFormatDate(new Date(this.data.cost_date));
             if (this.data.cost_amount == null) {
@@ -155,7 +155,7 @@ angular.module("applicationModule").factory('costApply', function ($http, $q, ba
             console.log(angular.toJson(this.data));
 
             console.log("参数准备");
-            var Url = baseConfig.businessPath + "/expenses_apply/submit_expense_apply";
+            var Url = baseConfig.businessPath + "submit_expense_apply";
 
 
 

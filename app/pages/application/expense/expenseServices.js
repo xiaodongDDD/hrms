@@ -76,7 +76,7 @@ angular.module("applicationModule")
         queryProjectList:function (){
             //showMessage("查询项目列表");
             var deferred = $q.defer();
-            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_proj";
+            var Url = baseConfig.businessPath + "fetch_expense_proj";
             var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
 
           hmsHttp.post(Url,PostData).success(function (data){
@@ -100,7 +100,7 @@ angular.module("applicationModule")
             //showMessage("查询项目列表");
             var deferred = $q.defer();
 
-            var Url = baseConfig.businessPath + "/expense_account/fetch_expense_types";
+            var Url = baseConfig.businessPath + "fetch_expense_types";
 //            var PostData = '{"params":{"p_employee":"' + window.localStorage.empno +
 //            '","p_project_code":' + projectCode +
 //            '","p_project_id":' + projectId +'}}';

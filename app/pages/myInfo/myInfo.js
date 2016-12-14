@@ -58,7 +58,7 @@ angular.module('myInfoModule')
       var portraitBackground = document.getElementById('portrait-image');
       //$scope.defaultPortrait="build/img/myInfo/man-portrait.png";
 
-      var url = baseConfig.businessPath + "/api_employee/get_employee_code";//获取用户信息
+      var url = baseConfig.businessPath + "get_employee_code";//获取用户信息
       var param = {
         "params": {
           "p_employee_code": window.localStorage.empno

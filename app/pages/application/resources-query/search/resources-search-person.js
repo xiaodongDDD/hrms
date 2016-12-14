@@ -115,8 +115,8 @@ angular.module('applicationModule')
           "p_dismission": $stateParams.dimission
         }
       };
-      var getBranchEmpUrl = baseConfig.businessPath + "/api_resources_query/query_branch_emp"; //部门员工接口地址
-      var getSubjectEmpUrl = baseConfig.businessPath + "/api_resources_query/query_project_emp"; //项目员工接口地址
+      var getBranchEmpUrl = baseConfig.businessPath + "query_branch_emp"; //部门员工接口地址
+      var getSubjectEmpUrl = baseConfig.businessPath + "query_project_emp"; //项目员工接口地址
 
       var getBranchEmp = function () {
         hmsHttp.post(getBranchEmpUrl, searchInfo).success(function (result) {

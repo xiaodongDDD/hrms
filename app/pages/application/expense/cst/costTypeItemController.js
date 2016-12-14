@@ -31,7 +31,7 @@ angular.module("applicationModule").controller('costTypeItemController', functio
 
         //deferred.resolve(keepAccount.expenseItemList);
 
-        var Url = baseConfig.businessPath + "/expenses_apply/get_typeitme_list";
+        var Url = baseConfig.businessPath + "get_typeitme_list";
         var PostData = '{"params":{"p_employee":"' + window.localStorage.empno + '"}}';
 
         console.log(PostData);

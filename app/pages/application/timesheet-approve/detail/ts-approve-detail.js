@@ -57,7 +57,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
       $scope.showActionBar = false; //默认不显示勾选按钮和底部的bar
       $scope.detailInfoArray = {}; //用于接收列表对应数据object
       $scope.selectArray = [];
-      var tsApproveDetailUrl = baseConfig.businessPath + "/api_timesheet/query_timesheet_approve_list";
+      var tsApproveDetailUrl = baseConfig.businessPath + "query_timesheet_approve_list";
       var tsApproveDetailParams = {
         "params": {
           "p_employee_number": $stateParams.employeeNumber,
@@ -66,7 +66,7 @@ tsApproveModule.controller('tsApproveDetailCtrl', [
           "p_project_id": $stateParams.projectId
         }
       };
-      var tsActionUrl = baseConfig.businessPath + "/api_timesheet/timesheet_approve";
+      var tsActionUrl = baseConfig.businessPath + "timesheet_approve";
       var tsActionParams = { //审批拒绝/通过的参数
         "params": {
           "p_approve_flag": "AGREE",

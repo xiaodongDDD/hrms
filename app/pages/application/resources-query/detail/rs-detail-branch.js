@@ -109,7 +109,7 @@ angular.module('applicationModule')
 
       $scope.resultList = [];//存储结果
 
-      var postUrl = baseConfig.businessPath + "/api_resources_query/get_personal_resource"; //个人查询结果接口地址
+      var postUrl = baseConfig.businessPath + "get_personal_resource"; //个人查询结果接口地址
       var postData = '{"params":{"p_employee_number":"' + employeeCode + '","p_date_from":"' + dateFrom + '","p_date_to":"' + dateTo + '","p_branch_id":"' + unitId + '","p_project_id":"' + subjectId + '","p_page_number":"' + pageNumber + '","p_month_page":"' + monthPage + '","p_dismission":"' + dimission + '"}}';
 
       // $scope.run = false;//模拟线程锁机制  防止多次请求 含义：是否正在请求。请注意，此处并非加入到了就绪队列，而是直接跳过不执行

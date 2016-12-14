@@ -68,7 +68,7 @@ angular.module('applicationModule')
 
       this.fetchCalendar = function (monthParams) {
 
-        var url = baseConfig.businessPath + "/timesheet_process/fetch_calendar";
+        var url = baseConfig.businessPath + "fetch_calendar";
         var params = {
           "params": {
             "p_employee": window.localStorage.empno,
@@ -90,7 +90,7 @@ angular.module('applicationModule')
       };
 
       this.fetchEachDay = function (callback, oneDate) {
-        var url = baseConfig.businessPath + '/timesheet_process/fetch_projects';
+        var url = baseConfig.businessPath + 'fetch_projects';
         var params = {'params': {'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + ""}};
         hmsHttp.post(url, params).success(function (result) {
           callback(result);
@@ -101,7 +101,7 @@ angular.module('applicationModule')
       };
 
       this.fetchProjectDetailInfo = function (callback, oneDate, projectId) {
-        var url = baseConfig.businessPath + "/timesheet_process/project_change"
+        var url = baseConfig.businessPath + "project_change"
         var params = {
           'params': {
             'p_employee': window.localStorage.empno + "", 'p_date': +oneDate + "",
@@ -117,7 +117,7 @@ angular.module('applicationModule')
       };
 
       this.submitTimesheet = function (callback, params) {
-        var url = baseConfig.businessPath + "/timesheet_process/save_timesheet1";
+        var url = baseConfig.businessPath + "save_timesheet1";
         var params = params;
         hmsHttp.post(url, params).success(function (result) {
           callback(result);
@@ -128,7 +128,7 @@ angular.module('applicationModule')
       };
 
       this.generateAllowance = function (success, error, generateFlag, month) {
-        var url = baseConfig.businessPath + "/timesheet_process/generate_allowance";
+        var url = baseConfig.businessPath + "generate_allowance";
         var params = {
           "params": {
             "p_employee": window.localStorage.empno,
@@ -145,7 +145,7 @@ angular.module('applicationModule')
       };
 
       this.slippingBatch = function (success, error, template, dateArray) {
-        var url = baseConfig.businessPath + "/timesheet_process/slipping_batch1";
+        var url = baseConfig.businessPath + "slipping_batch1";
         var params = {
           "params": {
             "p_employee": window.localStorage.empno,
@@ -161,7 +161,7 @@ angular.module('applicationModule')
       };
 
       this.unfreezeTimesheet = function (success, error, dateFrom, dateTo) {
-        var url = baseConfig.businessPath + "/api_timesheet_unfreeze/timesheet_unfreeze";
+        var url = baseConfig.businessPath + "timesheet_unfreeze";
         var params = {
           "params": {
             "p_employee_code": window.localStorage.empno,
@@ -177,7 +177,7 @@ angular.module('applicationModule')
       };
 
       this.fetchBatchProjectList = function (success) {
-        var url = baseConfig.businessPath + "/timesheet_process/fetch_projects_batch";
+        var url = baseConfig.businessPath + "fetch_projects_batch";
         var params = {
           "params": {
             "p_employee_code": window.localStorage.empno
@@ -192,7 +192,7 @@ angular.module('applicationModule')
       };
 
       this.submitBatchWrite = function (success, params) {
-        var url = baseConfig.businessPath + "/timesheet_process/batch_timesheet1";
+        var url = baseConfig.businessPath + "batch_timesheet1";
         hmsHttp.post(url, params).success(function (result) {
           hmsPopup.hideLoading();
           success(result);

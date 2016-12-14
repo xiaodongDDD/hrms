@@ -49,7 +49,7 @@ angular.module("applicationModule")
         } else if (dataSource == "query") {
           var applyId = $scope.pageParam.applyId;
           Prompter.showLoading("请稍候");
-          var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_flyback_detail";
+          var urlValueList = baseConfig.businessPath + "get_flyback_detail";
           var paramValueList = '{"params":{"p_apply_id":"' + applyId + '"}}';
           HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {
             console.log("get_flyback_detail =" + angular.toJson(response));
@@ -83,7 +83,7 @@ angular.module("applicationModule")
       // 获取值列表数据
       if ($scope.canEdit) {
         Prompter.showLoading("请稍候");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/get_value_list";
+        var urlValueList = baseConfig.businessPath + "get_value_list";
         var paramValueList={
           "params":{
             p_employee:window.localStorage.empno
@@ -160,7 +160,7 @@ angular.module("applicationModule")
     //保存 baseConfig.businessPath   baseConfig.businessPath
       $scope.save = function () {
         Prompter.showLoading("请稍候");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/save_flyback";
+        var urlValueList = baseConfig.businessPath + "save_flyback";
         var jsonData = JSON.stringify($scope.flybacklines);
         var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno
           + '","p_apply_id":"' + $scope.flybackHeader.applyId
@@ -187,7 +187,7 @@ angular.module("applicationModule")
     //提交
       $scope.submit = function () {
         Prompter.showLoading("请稍候");
-        var urlValueList = baseConfig.businessPath + "/create_ticket_apply/flyback_submit";
+        var urlValueList = baseConfig.businessPath + "flyback_submit";
         var jsonData = JSON.stringify($scope.flybacklines);
         var paramValueList = {
           'params':{
@@ -221,7 +221,7 @@ angular.module("applicationModule")
         } else {
           if ($scope.canEdit) {
             Prompter.showLoading("请稍候");
-            var urlValueList = baseConfig.businessPath + "/create_ticket_apply/delete_flyback_all";
+            var urlValueList = baseConfig.businessPath + "delete_flyback_all";
             var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_apply_id":"' + $scope.flybackHeader.applyId + '"}}';
             console.log(paramValueList);
             HttpAppService.post(urlValueList, paramValueList, $scope).success(function (response) {

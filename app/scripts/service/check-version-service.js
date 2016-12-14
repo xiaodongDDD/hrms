@@ -13,7 +13,7 @@ angular.module('HmsModule')
               baseConfig,
               $http,
               $ionicPopup) {
-      var url = baseConfig.businessPath + '/common_info/app_upgrade_info',
+      var url = baseConfig.businessPath + 'app_upgrade_info',
         checkVersionParams = {
           'params': {
             'p_platform': ionic.Platform.isAndroid() ? 'Android' : 'iPhone',
