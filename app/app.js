@@ -142,14 +142,14 @@ angular.module('myApp')
     }]);
 
 angular.module('myApp')
-  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider', 'baseConfig',
-    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider, baseConfig) {
+  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider', 'baseConfig','$templateRequest',
+    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider, baseConfig,$templateRequest) {
       // Ionic uses AngularUI Router which uses the concept of states
       // Learn more here: https://github.com/angular-ui/ui-router
       // Set up the various states which the app can be in.
       // Each state's controller can be found in controllers.js
 
-      $ionicConfigProvider.templates.maxPrefetch(15);
+      //$ionicConfigProvider.templates.maxPrefetch(15);
       //$ionicConfigProvider.views.swipeBackEnabled(true);
 
       $httpProvider.interceptors.push('httpRequestHeader');//注册过滤器
@@ -170,7 +170,6 @@ angular.module('myApp')
 
       $stateProvider
       // setup an abstract state for the tabs directive
-
         .state('login', {
           url: '/login',
           templateUrl: 'build/pages/login/login.html',
@@ -278,6 +277,9 @@ angular.module('myApp')
         console.log('app.js baseConfig.version.currentVersion ' + baseConfig.version.currentVersion);
       }
 
+      //$xhrFactory('GET','http://localhost:8100/build/pages/application/application.html');
+
+      $templateRequest('build/pages/application/application.html',true);
       //$urlRouterProvider.otherwise('/guide'); return;
 
       if (!window.localStorage.needGuid || window.localStorage.needGuid == "true"

@@ -143,6 +143,7 @@ Android测试环境
   (3) Apple LLVM8.0 - Preprocessing 去掉DEBUG=1
   (4) 删掉cell_image.png
   (5) YYText 
+  (6) 钩上推送的选项
   
   (5) 
   AppDelegate+JPush.m didRegisterForRemoteNotificationsWithDeviceToken加入下面的判断
