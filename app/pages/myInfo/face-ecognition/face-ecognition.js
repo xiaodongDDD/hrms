@@ -32,9 +32,11 @@
   function faceEcognitionCtrl($scope,
                               $stateParams,
                               baseConfig,
-                              $timeout) {
+                              hmsPopup,
+                              faceEcognitionService) {
     var vm = this;
 
+    vm.faceEcognitionResult = false;
     vm.list = [
       {
         "image": "build/img/myInfo/1-1@3x.png",
@@ -49,78 +51,85 @@
         "text": "不要斜视手机"
       }
     ];
+    vm.faceResult = {};
+    vm.progress = {}
 
     vm.faceEcognition = faceEcognition;
+    vm.reFaceEcognition = reFaceEcognition;
+    vm.complete = complete;
 
-    var uploadImage1 = function (result) {
-      if(baseConfig.debug){
-        alert('uploadImage.start ');
-      }
-
-      var success = function (response) {
-        if(baseConfig.debug) {
-          alert(response);
-          alert('uploadImage.success ' + angular.toJson(response));
-        }
-      };
-
-      var error = function (response) {
-        if(baseConfig.debug) {
-          alert(response);
-          alert('uploadImage.error ' + angular.toJson(response));
-        }
-      };
-
-      var url = baseConfig.imPath + '/api/photoUpload';
-      var options = new FileUploadOptions();
-      options.filekey = "file";
-      options.fileName = "image.jpg";
-      options.mimeType = "image/jpeg";
-      options.chunkedMode = false;
-      options.headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.localStorage.token}
-      var trustAllHosts = true;
-      var fileTransfer = new FileTransfer();
-
-      if(baseConfig.debug) {
-        alert('uploadImage.start url ' + angular.toJson(url));
-        alert('uploadImage.start options ' + angular.toJson(options));
-      }
-
-      fileTransfer.upload(
-        result.imgPath,
-        encodeURI(url),//上传服务器的接口地址
-        success,
-        error,
-        options,
-        trustAllHosts
-      );
+    function reFaceEcognition() {
+      faceEcognition();
     }
 
+    function complete() {
+      var upload = function (buttonIndex) {
+        if (buttonIndex == 1) {
+          faceEcognitionService.uploadImage(vm.faceResult.imgUrl,onProgress);
+        }
+      };
+      var onProgress = function (progressEvent) {
+        vm.progress.lengthComputable = progressEvent.lengthComputable;
+        if (progressEvent.lengthComputable) {
+          vm.progress.loaded = progressEvent.loaded;
+          vm.progress.total = progressEvent.total;
+          vm.progress.progress = progressEvent.loaded / progressEvent.total;
+        } else {
+        }
+        $scope.$apply();
+      }
+      hmsPopup.confirm('是否将采集的信息传到服务器?', "采集信息", upload);
+    }
 
-    var faceEcognitionSuccess = function (result) {
-      if(baseConfig.debug) {
+    var faceEcognitionError = function (result) {
+      if (baseConfig.debug) {
         alert(result);
         alert('faceEcogniition.success ' + angular.toJson(result));
       }
-
     };
 
-    var faceEcognitionError = function (result) {
-      if(baseConfig.debug) {
+    var faceEcognitionSuccess = function (result) {
+      if (baseConfig.debug) {
         alert(result);
         alert('faceEcogniition.error ' + angular.toJson(result));
       }
+      vm.faceResult.imgUrl = result.imgPath;
+      vm.faceResult.age = result.age;
+      vm.faceResult.beauty = result.beauty;
+      vm.faceResult.expression = result.expression;
+      if(result.gender && result.gender < 50){
+        vm.faceResult.gender = '女';
+      }else if(result.gender && result.gender > 50){
+        vm.faceResult.gender = '男';
+      }
 
-      uploadImage1(result);
+      if (baseConfig.debug) {
+        alert('vm.faceResult '+ angular.toJson(vm.faceResult));
+      }
+
+      pluginface.getLocalImage(result.imgPath, function (base64) {
+        if (baseConfig.debug) {
+          alert(base64);
+          console.log(base64);
+          console.log(angular.toJson(base64));
+        }
+        vm.faceResult.img = 'data:image/jpg;base64,' + base64;
+        vm.faceEcognitionResult = true;
+        $scope.$apply();
+      }, function (e) {
+        if (baseConfig.debug) {
+          alert(e);
+          console.log(e);
+          console.log('e' + angular.toJson(e));
+        }
+      });
     }
-
 
     function faceEcognition() {
       if (baseConfig.debug) {
         console.log('faceEcognition.work...');
       }
-
-      pluginface.faceDetect(faceEcognitionSuccess, faceEcognitionError, '');
+      pluginface.faceDetect('', faceEcognitionSuccess, faceEcognitionError);
     }
 
 

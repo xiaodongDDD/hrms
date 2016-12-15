@@ -1,6 +1,7 @@
 .face-ecognition {
   .content-style {
     .face-ecognition-content {
+
       padding-top: 15px;
       .title {
         color: #9B9B9B;
@@ -10,8 +11,10 @@
         text-align: center;
       }
 
-      .info-list{
-        width:340px;
+      .info-list {
+        width: 280px;
+        margin-left: auto;
+        margin-right: auto;
         .info-item {
           margin-top: 15px;
           margin-bottom: 35px;
@@ -19,15 +22,15 @@
           .info-item-icon {
             width: 80px;
             height: 60px;
-            float:left;
-            img{
+            float: left;
+            img {
               width: 80px;
               height: 60px;
             }
           }
           .info-item-text {
             padding-left: 20px;
-            float:left;
+            float: left;
             height: 65px;
             line-height: 65px;
             color: #4A4A4A;
@@ -36,25 +39,161 @@
         }
       }
 
-
       .face-ecognition-button {
-        padding-top:30px;
+        padding-top: 30px;
         .button-image {
           width: 76px;
           height: 76px;
           margin-left: auto;
           margin-right: auto;
-          img{
+          img {
             width: 76px;
             height: 76px;
           }
         }
         .button-text {
-          margin-top:8px;
+          margin-top: 8px;
           width: 100%;
           text-align: center;
           font-size: 16px;
           color: #1F8CEB;
+        }
+      }
+    }
+
+    .face-ecognition-result {
+      .face-area {
+        position: relative;
+        margin-top: 25px;
+        width: 280px;
+        height: 280px;
+        padding: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        background: url("../img/myInfo/cover@3x.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        .face-img {
+          width: 240px;
+          height: 240px;
+        }
+
+        .face-identification {
+          width: 72px;
+          height: 72px;
+          position: absolute;
+          right: -5px;
+          bottom: -5px;
+          img {
+            width: 72px;
+            height: 72px;
+          }
+        }
+      }
+
+      .face-result-list {
+        margin-top: 25px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-image: linear-gradient(0deg, #ddd, #ddd 50%, transparent 50%);
+        background-position: top;
+        background-size: 100% 1px;
+        background-repeat: no-repeat;
+
+        .no-padding {
+          padding: 0;
+          margin: 0;
+        }
+        .face-result-item {
+          padding-left: 20px;
+          &.last-line {
+            .face-item {
+              background: none;
+            }
+          }
+          .face-item {
+            background-image: linear-gradient(0deg, #ddd, #ddd 50%, transparent 50%);
+            background-position: bottom;
+            background-size: 100% 1px;
+            background-repeat: no-repeat;
+            padding: 10px 0px 10px 0px;
+            height: 40px;
+            .item-img {
+              float: left;
+              width: 10%;
+              height: 20px;
+              img {
+                width: 20px;
+                height: 20px;
+              }
+            }
+            .item-name {
+              float: left;
+              width: 20%;
+              height: 20px;
+              font-size: 16px;
+              color: #6D7A80;
+            }
+
+            .item-value {
+              float: left;
+              width: 70%;
+              height: 20px;
+              color: #6D7A80;
+            }
+          }
+        }
+      }
+
+      .face-result-button {
+        margin-top: 30px;
+        height: 90px;
+        .re-face {
+          height: 90px;
+          float: left;
+          width: 50%;
+          position: relative;
+          .re-face-item {
+            width: 84px;
+            position: absolute;
+            right: 20px;
+            img {
+              width: 64px;
+              height: 64px;
+              margin-left:10px;
+            }
+            .text {
+              margin-top: 10px;
+              text-align: center;
+              font-size: 16px;
+              color: #9B9B9B;
+            }
+          }
+
+        }
+
+        .face-ok {
+          height: 90px;
+          float: left;
+          width: 50%;
+          position: relative;
+          .face-ok-item {
+            width: 84px;
+            position: absolute;
+            left: 20px;
+            img {
+              width: 64px;
+              height: 64px;
+              margin-left:10px;
+            }
+            .text {
+              margin-top: 10px;
+              text-align: center;
+              font-size: 16px;
+              color: #9B9B9B;
+            }
+          }
         }
       }
     }
