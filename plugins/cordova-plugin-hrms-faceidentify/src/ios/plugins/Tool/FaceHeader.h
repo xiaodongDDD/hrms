@@ -15,6 +15,6 @@
 #import "MBProgressHUD.h"
 #import "UIImage+FaceExtensions.h"
 #import "ToastUtils.h"
-#import "AFNetworkReachabilityManager.h"
+#import <AFNetworkingFramwork/AFNetworkReachabilityManager.h>
 #define GroupId @"handhand"
 #endif /* Header_h */

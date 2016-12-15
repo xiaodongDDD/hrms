@@ -76,15 +76,8 @@
         <item name="android:windowBackground">@android:color/transparent</item>
 		</style>
     </config-file>
-		
-    <config-file target="res/values/colors.xml" parent="/resources">
-         <color name="colorPrimary">#3F51B5</color>
-		<color name="colorPrimaryDark">#303F9F</color>
-		<color name="colorAccent">#FF4081</color>
-		<color name="loading_dialog_bg">#4F000000</color>
-		<color name="white">#FFFFFF</color>
-		<color name="black">#000000</color>
-    </config-file>
+    
+    <source-file src="res/values/colors.xml" target-dir="res/values"/>
 	
 	
 	<config-file parent="/manifest" target="AndroidManifest.xml">
@@ -148,8 +141,8 @@
         <source-file src="src/ios/plugins/MBProgressHUD/MBProgressHUD.m"/>
         
         <!--Tool -->
-        <header-file src="src/ios/plugins/Tool/AFNetworkReachabilityManager.h"/>
-        <source-file src="src/ios/plugins/Tool/AFNetworkReachabilityManager.m"/>
+<!--        <header-file src="src/ios/plugins/Tool/AFNetworkReachabilityManager.h"/>-->
+<!--        <source-file src="src/ios/plugins/Tool/AFNetworkReachabilityManager.m"/>-->
         
         <header-file src="src/ios/plugins/Tool/Auth.h"/>
         <source-file src="src/ios/plugins/Tool/Auth.m"/>
