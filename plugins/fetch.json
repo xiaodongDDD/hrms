@@ -53,5 +53,23 @@
         "variables": {
             "API_KEY": "6e0b08078306f45ac8331d54"
         }
+    },
+    "cordova-plugin-hrms-faceidentify": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.handmobile.cordovaplugin.hotpatch": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

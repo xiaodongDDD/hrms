@@ -142,8 +142,8 @@ angular.module('myApp')
     }]);
 
 angular.module('myApp')
-  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider', 'baseConfig','$templateRequest',
-    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider, baseConfig,$templateRequest) {
+  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider', 'baseConfig',
+    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider, baseConfig) {
       // Ionic uses AngularUI Router which uses the concept of states
       // Learn more here: https://github.com/angular-ui/ui-router
       // Set up the various states which the app can be in.
@@ -279,7 +279,7 @@ angular.module('myApp')
 
       //$xhrFactory('GET','http://localhost:8100/build/pages/application/application.html');
 
-      $templateRequest('build/pages/application/application.html',true);
+      //$templateRequest('build/pages/application/application.html',true);
       //$urlRouterProvider.otherwise('/guide'); return;
 
       if (!window.localStorage.needGuid || window.localStorage.needGuid == "true"

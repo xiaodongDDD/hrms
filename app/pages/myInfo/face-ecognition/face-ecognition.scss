@@ -1,0 +1,59 @@
+.face-ecognition {
+  .content-style {
+    .face-ecognition-content {
+      padding-top: 15px;
+      .title {
+        color: #9B9B9B;
+        height: 24px;
+        line-height: 24px;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      .info-list {
+        margin-top: 15px;
+        margin-bottom: 25px;
+        height: 65px;
+        padding-left: 31px;
+        .info-item-icon {
+          width: 80px;
+          height: 60px;
+          float:left;
+          img{
+            width: 80px;
+            height: 60px;
+          }
+        }
+        .info-item-text {
+          padding-left: 20px;
+          float:left;
+          height: 65px;
+          line-height: 65px;
+          color: #4A4A4A;
+          font-size: 16px;
+        }
+      }
+
+      .face-ecognition-button {
+        padding-top:20px;
+        .button-image {
+          width: 76px;
+          height: 76px;
+          margin-left: auto;
+          margin-right: auto;
+          img{
+            width: 76px;
+            height: 76px;
+          }
+        }
+        .button-text {
+          margin-top:8px;
+          width: 100%;
+          text-align: center;
+          font-size: 16px;
+          color: #1F8CEB;
+        }
+      }
+    }
+  }
+}

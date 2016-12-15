@@ -117,6 +117,10 @@ angular.module('myInfoModule')
         }
       };
 
+      $scope.faceRecognition = function () {
+        $state.go('tab.face-ecognition');
+      }
+
       $scope.setup = function () {//进入设置界面
         $state.go('tab.setup');
       };

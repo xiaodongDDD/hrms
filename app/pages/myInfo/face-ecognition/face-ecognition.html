@@ -1,0 +1,39 @@
+<ion-view view-title="创建人脸识别" class="face-ecognition">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="$hmsGoBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">创建人脸识别</h1>
+  </ion-header-bar>
+  <ion-content class="content-style">
+    <div class="face-ecognition-content">
+      <div class="face-ecognition-header">
+        <div class="title">
+          创建时，请保持正脸对准屏幕
+        </div>
+        <div class="title">
+          并遵从如下事项
+        </div>
+      </div>
+
+      <div class="info-list" ng-repeat="item in vm.list">
+        <div class="info-item-icon">
+          <img ng-src="{{item.image}}">
+        </div>
+        <div class="info-item-text" ng-bind="item.text">
+        </div>
+      </div>
+
+      <div class="face-ecognition-button" ng-click="vm.faceEcognition();">
+        <div class="button-image">
+          <img src="build/img/myInfo/photo@3x.png">
+        </div>
+        <div class="button-text">
+          开始扫描
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
