@@ -167,7 +167,7 @@ angular.module('applicationModule')
       function serchHousesRecordInfo() {
         $scope.releaseRecordInfo = [];
         var url = baseConfig.queryPath + "/house/myHouse";
-        //var url = 'http://10.211.103.145:9090/hrmsv2/v2/api/house/myHouse';
+        //var url = 'http://10.211.103.145:9090/hmap/i/api/house/myHouse';
         var param = {
           "empNo": window.localStorage.empno,
           "page": nowRecordPage,

@@ -75,7 +75,7 @@ angular.module('HmsModule')
 
       return {
         initImData: function () {
-          var getImTokenUrl = baseUrl + '/v2/api/thirdparty/getToken';
+          var getImTokenUrl = baseUrl + '/i/api/thirdparty/getToken';
           init2Cloud(getImTokenUrl);
         },
         getImChatList: function () {

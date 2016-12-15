@@ -135,7 +135,7 @@ angular.module('applicationModule')
       function serchHousesSubleaseInfo() {
         $scope.housesSubInfo = [];
         var url = baseConfig.queryPath + "/house/list";
-        //var url = 'http://10.211.103.145:9090/hrmsv2/v2/api/house/list';
+        //var url = 'http://10.211.103.145:9090/hmap/i/api/house/list';
         var param = {
           "page": nowPage,
           "pageSize": "10"

@@ -59,8 +59,10 @@ angular.module('HmsModule')
             console.log(postName + " url " + url);
             console.log(postName + " paramter " + angular.toJson(paramter));
           }
-          var destUrl = url + "?access_token=" + window.localStorage.token;
-          var post = $http.post(destUrl, paramter).success(function (response) {
+          var destUrl = url;
+          var post = $http.post(destUrl, paramter,{
+            headers: {'Content-Type': 'application/json','Authorization':'Bearer ' + window.localStorage.token}
+          }).success(function (response) {
             if (baseConfig.debug) {
               console.log(postName + " success");
               console.log(postName + " response " + angular.toJson(response));
@@ -93,8 +95,10 @@ angular.module('HmsModule')
             console.log(getName + " Start!");
             console.log(getName + " url " + url);
           }
-          var destUrl = url + "?access_token=" + window.localStorage.token;
-          var get = $http.get(destUrl).success(function (response) {
+          var destUrl = url;
+          var get = $http.get(destUrl,{
+            headers: {'Content-Type': 'application/json','Authorization':'Bearer ' + window.localStorage.token}
+          }).success(function (response) {
             if (baseConfig.debug) {
               console.log(getName + " success");
               console.log(getName + " response " + angular.toJson(response));
