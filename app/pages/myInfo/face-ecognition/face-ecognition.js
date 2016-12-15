@@ -53,16 +53,22 @@
     vm.faceEcognition = faceEcognition;
 
     var uploadImage1 = function (result) {
-      alert('uploadImage.start ');
+      if(baseConfig.debug){
+        alert('uploadImage.start ');
+      }
 
       var success = function (response) {
-        alert(response);
-        alert('uploadImage.success ' + angular.toJson(response));
+        if(baseConfig.debug) {
+          alert(response);
+          alert('uploadImage.success ' + angular.toJson(response));
+        }
       };
 
       var error = function (response) {
-        alert(response);
-        alert('uploadImage.error ' + angular.toJson(response));
+        if(baseConfig.debug) {
+          alert(response);
+          alert('uploadImage.error ' + angular.toJson(response));
+        }
       };
 
       var url = baseConfig.imPath + '/api/photoUpload';
@@ -75,8 +81,10 @@
       var trustAllHosts = true;
       var fileTransfer = new FileTransfer();
 
-      alert('uploadImage.start url ' + angular.toJson(url));
-      alert('uploadImage.start options ' + angular.toJson(options));
+      if(baseConfig.debug) {
+        alert('uploadImage.start url ' + angular.toJson(url));
+        alert('uploadImage.start options ' + angular.toJson(options));
+      }
 
       fileTransfer.upload(
         result.imgPath,
@@ -90,14 +98,18 @@
 
 
     var faceEcognitionSuccess = function (result) {
-      alert(result);
-      alert('faceEcogniition.success ' + angular.toJson(result));
+      if(baseConfig.debug) {
+        alert(result);
+        alert('faceEcogniition.success ' + angular.toJson(result));
+      }
 
     };
 
     var faceEcognitionError = function (result) {
-      alert(result);
-      alert('faceEcogniition.error ' + angular.toJson(result));
+      if(baseConfig.debug) {
+        alert(result);
+        alert('faceEcogniition.error ' + angular.toJson(result));
+      }
 
       uploadImage1(result);
     }

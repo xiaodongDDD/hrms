@@ -10,29 +10,32 @@
         text-align: center;
       }
 
-      .info-list {
-        margin-top: 15px;
-        margin-bottom: 35px;
-        height: 65px;
-        padding-left: 10%;
-        .info-item-icon {
-          width: 80px;
-          height: 60px;
-          float:left;
-          img{
+      .info-list{
+        width:340px;
+        .info-item {
+          margin-top: 15px;
+          margin-bottom: 35px;
+          height: 65px;
+          .info-item-icon {
             width: 80px;
             height: 60px;
+            float:left;
+            img{
+              width: 80px;
+              height: 60px;
+            }
+          }
+          .info-item-text {
+            padding-left: 20px;
+            float:left;
+            height: 65px;
+            line-height: 65px;
+            color: #4A4A4A;
+            font-size: 16px;
           }
         }
-        .info-item-text {
-          padding-left: 20px;
-          float:left;
-          height: 65px;
-          line-height: 65px;
-          color: #4A4A4A;
-          font-size: 16px;
-        }
       }
+
 
       .face-ecognition-button {
         padding-top:30px;

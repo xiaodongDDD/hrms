@@ -4633,7 +4633,7 @@ angular.module('applicationModule')
               options.params = myParam;
               var fileTransfer = new FileTransfer();
 
-              alert('uploadImage.start url ' + $scope.imageList[i].objectUrl);
+              //alert('uploadImage.start url ' + $scope.imageList[i].objectUrl);
 
               fileTransfer.upload(
                 $scope.imageList[i].objectUrl,
