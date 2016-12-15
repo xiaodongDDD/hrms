@@ -19,10 +19,12 @@
       </div>
 
       <div class="info-list" ng-repeat="item in vm.list">
-        <div class="info-item-icon">
-          <img ng-src="{{item.image}}">
-        </div>
-        <div class="info-item-text" ng-bind="item.text">
+        <div class="info-item">
+          <div class="info-item-icon">
+            <img ng-src="{{item.image}}">
+          </div>
+          <div class="info-item-text" ng-bind="item.text">
+          </div>
         </div>
       </div>
 

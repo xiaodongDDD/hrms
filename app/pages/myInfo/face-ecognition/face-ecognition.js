@@ -1,9 +1,6 @@
 /**
  * Created by gusenlin on 2016/12/15.
  */
-/**
- * Created by gusenlin on 2016/12/9.
- */
 (function () {
   'use strict';
   angular
@@ -33,7 +30,9 @@
   //plansDetailCtrl.$inject = [];
 
   function faceEcognitionCtrl($scope,
-                              $stateParams) {
+                              $stateParams,
+                              baseConfig,
+                              $timeout) {
     var vm = this;
 
     vm.list = [
@@ -53,22 +52,65 @@
 
     vm.faceEcognition = faceEcognition;
 
+    var uploadImage1 = function (result) {
+      alert('uploadImage.start ');
+
+      var success = function (response) {
+        alert(response);
+        alert('uploadImage.success ' + angular.toJson(response));
+      };
+
+      var error = function (response) {
+        alert(response);
+        alert('uploadImage.error ' + angular.toJson(response));
+      };
+
+      var url = baseConfig.imPath + '/api/photoUpload';
+      var options = new FileUploadOptions();
+      options.filekey = "file";
+      options.fileName = "image.jpg";
+      options.mimeType = "image/jpeg";
+      options.chunkedMode = false;
+      options.headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.localStorage.token}
+      var trustAllHosts = true;
+      var fileTransfer = new FileTransfer();
+
+      alert('uploadImage.start url ' + angular.toJson(url));
+      alert('uploadImage.start options ' + angular.toJson(options));
+
+      fileTransfer.upload(
+        result.imgPath,
+        encodeURI(url),//上传服务器的接口地址
+        success,
+        error,
+        options,
+        trustAllHosts
+      );
+    }
+
+
+    var faceEcognitionSuccess = function (result) {
+      alert(result);
+      alert('faceEcogniition.success ' + angular.toJson(result));
+
+    };
+
+    var faceEcognitionError = function (result) {
+      alert(result);
+      alert('faceEcogniition.error ' + angular.toJson(result));
+
+      uploadImage1(result);
+    }
+
 
     function faceEcognition() {
       if (baseConfig.debug) {
         console.log('faceEcognition.work...');
       }
-      var success = function (result) {
-        alert(result);
-        alert('faceEcogniition.success ' + angular.toJson(result));
-      }
 
-      function error(result) {
-        alert(result);
-        alert('faceEcogniition.error ' + angular.toJson(result));
-      }
-
-      pluginface.faceDetect(success, error, '');
+      pluginface.faceDetect(faceEcognitionSuccess, faceEcognitionError, '');
     }
+
+
   }
 })();

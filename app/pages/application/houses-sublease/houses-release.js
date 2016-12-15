@@ -4632,6 +4632,9 @@ angular.module('applicationModule')
               //myParam.filename="";
               options.params = myParam;
               var fileTransfer = new FileTransfer();
+
+              alert('uploadImage.start url ' + $scope.imageList[i].objectUrl);
+
               fileTransfer.upload(
                 $scope.imageList[i].objectUrl,
                 encodeURI(baseConfig.queryPath + "/objectUpload?access_token=" + window.localStorage.token),//上传服务器的接口地址
