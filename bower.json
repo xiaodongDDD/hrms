@@ -14,7 +14,11 @@
     "angular-local-storage": "^0.2.3",
     "ionic-native-transitions": "shprink/ionic-native-transitions#^1.0.0-rc10",
     "jquery": "^2.2.0",
-    "jquery.lazyload": ""
+    "jquery.lazyload": "",
+    "handLib": "",
+    "pouchdb": "",
+    "angular-translate":"2.13.1",
+    "angular-translate-loader-static-files":"2.13.1"
   },
   "devDependencies": {}
 }
