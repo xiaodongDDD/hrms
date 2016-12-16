@@ -16,6 +16,7 @@ angular.module('myInfoModule')
     'hmsJpushService',
     'hmsCacheService',
     'messageService',
+    'faceEcognitionService',
     function ($scope,
               $state,
               baseConfig,
@@ -27,7 +28,8 @@ angular.module('myInfoModule')
               $http,
               hmsJpushService,
               hmsCacheService,
-              messageService) {
+              messageService,
+              faceEcognitionService) {
       if (baseConfig.debug) {
         console.log('myInfoCtrl.enter');
         console.log('myInfoCtrl.enter ');
@@ -118,7 +120,11 @@ angular.module('myInfoModule')
       };
 
       $scope.faceRecognition = function () {
-        $state.go('tab.face-ecognition');
+        if(faceEcognitionService.getFaceEcognitionFlag()){
+          $state.go('tab.face-ecognition-setting');
+        }else{
+          $state.go('tab.face-ecognition');
+        }
       }
 
       $scope.setup = function () {//进入设置界面

@@ -12,12 +12,23 @@
 
   function faceEcognitionService(baseConfig, hmsPopup) {
     var service;
+    var faceEcognitionFlag = false;
 
     service = {
-      uploadImage: uploadImage
+      uploadImage: uploadImage,
+      getFaceEcognitionFlag: getFaceEcognitionFlag,
+      setFaceEcognitionFlag: setFaceEcognitionFlag
     };
 
     return service;
+    
+    function getFaceEcognitionFlag() {
+      return faceEcognitionFlag;
+    }
+    
+    function setFaceEcognitionFlag(flag) {
+      faceEcognitionFlag = flag;
+    }
 
     function uploadImage(imgPath, onProgress) {
       if (baseConfig.debug) {

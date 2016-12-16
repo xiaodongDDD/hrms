@@ -1,0 +1,49 @@
+<ion-view view-title="人脸识别" class="ecognition">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="$hmsGoBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">人脸识别</h1>
+  </ion-header-bar>
+  <ion-content class="ecognition-content">
+
+    <div class="purpose">
+      <div class="">
+        将人脸验证用于
+      </div>
+      <ion-item class="login-item" ng-click="faceRecognition()">
+        <div class="row login-item-row">
+          <div class="login-icon-shelter">
+            <img src="build/img/myInfo/face-recognition@3x.png" class="login-icon"/>
+          </div>
+          <label class="login-label">人脸识别登录</label>
+        </div>
+        <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
+      </ion-item>
+    </div>
+
+    <div class="ecognition-setting">
+      <ion-item class="login-item" ng-click="vm.ecognition()">
+        <div class="row login-item-row">
+          <div class="login-icon-shelter">
+            <img src="build/img/myInfo/face-recognition@3x.png" class="login-icon"/>
+          </div>
+          <label class="login-label">尝试验证</label>
+        </div>
+        <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
+      </ion-item>
+
+      <ion-item class="login-item" ng-click="vm.setting()">
+        <div class="row login-item-row">
+          <div class="login-icon-shelter">
+            <img src="build/img/myInfo/face-recognition@3x.png" class="login-icon"/>
+          </div>
+          <label class="login-label">重新设置</label>
+        </div>
+        <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
+      </ion-item>
+    </div>
+  </ion-content>
+</ion-view>
