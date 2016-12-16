@@ -1,0 +1,87 @@
+<ion-view view-title="竞争对手" class="competitor">
+  <crm-loading ng-if="!showContent"></crm-loading>
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
+
+    <h2 class="title">{{'COMPETITOR.COMPETITORS'|T}}</h2>
+    <img src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="goState()"/>
+  </ion-header-bar>
+  <div class="row bar bar-subheader titles"   ng-class="{false:'hide-search'}[showHead]">
+      <div class="title-img">
+        <img src="build/img/contact/icon_search@3x.png">
+      </div>
+      <input ng-click="goSearch()" placeholder="{{'COMPETITOR.SEARCH'|T}}" ng-readonly="true">
+      <img ng-click="showShiftDiv()" src="build/img/contact/icon_select_blue@3x.png" style="width: 40px;
+    position: absolute;
+    right: 2px;top: 2px;
+    border: 10px solid transparent;"/>
+  </div>
+  <ion-content  class="" ng-class="{false:'show-more',true:'margin-top'}[showHead]">
+    <!--<div class="hideContent" ng-hide="showContent">
+      <div class="hide-icon">
+        <ion-spinner icon="ios-small" class="spinner spinner-ios"></ion-spinner>
+      </div>
+    </div>-->
+  <!--  <div ng-show="showContent" >-->
+      <ion-refresher
+        pulling-text="正在刷新数据"
+        pulling-icon="ion-ios-loop" on-refresh="doRefresh()" >
+      </ion-refresher>
+      <div class="info-item" on-drag="onDrag($event)" ng-repeat="item in competitors"
+           ng-click="goCompetitorDetail(item)">
+        <div class="row no-padding div-top">
+          <div class="col col-90 no-padding div-top-left">{{item.fullName}}</div>
+          <div class="col col-10 no-padding div-top-right">{{item.dataStatusName}}</div>
+        </div>
+        <div class="div-bottom">
+          <div class="div-bottom-left">{{item.shortName}}</div>
+          <div class="div-bottom-right1"> {{item.areaPropertyName}}</div>
+          <div class="div-bottom-right2">
+            <img ng-src="build/img/competitor/{{item.areaPropertyName}}@3x.png">
+          </div>
+          <div style="clear: both;"></div>
+        </div>
+      </div>
+      <ion-infinite-scroll
+        immediate-check="false"
+        ng-if="moreDataCanBeLoaded"
+        on-infinite="loadMore()"
+        distance="1%">
+      </ion-infinite-scroll>
+ <!--   </div>-->
+  </ion-content>
+  <div class="common-fix-div sifting-fix-div" ng-class="{true:'showUp'}[showShift]">
+    <div class="sifting-header" ng-class="{true:'sifting-header-ios',false:'sifting-header'}[isIos]">
+      <img ng-click="showShiftDiv()" src="build/img/application/customer/detail/top_left_arrow@3x.png"/>
+      竞争对手
+    </div>
+    <div class="sifting-item" ng-click="showSelectDiv('area')">
+      <img src="build/img/competitor/icon_area@3x.png"/>
+      <span>区域性质</span>
+      <span class="item-content">{{showData.areaValue}}</span>
+      <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+    </div>
+    <div class="sifting-item" ng-click="showSelectDiv('status')">
+      <img src="build/img/application/customer/icon_flat_blue@3x.png"/>
+      <span>建档状态</span>
+      <span class="item-content">{{showData.statusValue}}</span>
+      <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+    </div>
+    <ion-footer-bar class="common-footer" ng-if="showShift">
+      <div class="footer-wrap">
+        <div class="footer-button " ng-click="showShiftDiv()">
+          <div class="left-div">{{'CANCEL'|T}}</div>
+        </div>
+        <div class="footer-button" ng-click="clearSifting()">
+          <div class="two-div">{{'CLEAR'|T}}</div>
+        </div>
+        <div class="button-confirm" ng-click="sifting()">
+          <div>
+            <img src="build/img/application/information/icon_confirm@3x.png">
+            {{'CONFIRM'|T}}
+          </div>
+        </div>
+      </div>
+    </ion-footer-bar>
+  </div>
+</ion-view>

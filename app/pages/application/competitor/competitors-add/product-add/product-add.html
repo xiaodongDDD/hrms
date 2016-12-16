@@ -1,0 +1,49 @@
+<ion-modal-view view-title="添加产品" class="competitors-add">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button" ng-click="goCancel()">{{'CANCEL'|T}}</button>
+    </div>
+    <h2 class="title">添加产品</h2>
+  </ion-header-bar>
+  <ion-content class="pro-add-bg">
+   <div class="pro-block">
+     <hms-input-item
+       label-name="title.name"
+       input-box="product.productName"
+       important="true"
+       last-line="false">
+     </hms-input-item>
+   <!-- <div class="common-item-input">
+      <div>产品名称</div>
+      <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" class="with-background-none" ng-model="product.productName"/>
+      <div class="common-light-line"></div>
+    </div>-->
+     <hms-input-item
+       label-name="title.adv"
+       input-box="product.productAdvDesc"
+       important="false"
+       last-line="false">
+     </hms-input-item>
+  <!--  <div class="common-item-input">
+      <div>优势说明</div>
+      <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" class="with-background-none" ng-model="product.productAdvDesc"/>
+      <div class="common-light-line"></div>
+    </div>-->
+     <hms-input-item
+       label-name="title.other"
+       input-box="product.productOtherDesc"
+       important="false"
+       last-line="true"
+       show-line="false">
+     </hms-input-item>
+    <!--<div class="common-item-input">
+      <div>其他优势</div>
+      <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" class="with-background-none" ng-model="product.productOtherDesc"/>
+    </div>-->
+    </div>
+    <div class="common-item-confirm-button">
+      <button ng-click="saveProduct(product)" style="">
+        <img src="build/img/application/information/icon_confirm@3x.png" style="   ">确认</button>
+    </div>
+  </ion-content>
+</ion-modal-view>

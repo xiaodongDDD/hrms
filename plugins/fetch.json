@@ -66,9 +66,14 @@
     },
     "cordova-plugin-youtuishare": {
         "source": {
+<<<<<<< HEAD
             "type": "git",
             "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
             "subdir": "."
+=======
+            "type": "local",
+            "path": "E:\\hrms4\\cordova-plugin-hrms-faceidentify"
+>>>>>>> 195055e729b0334745822962984893f4a9a9b815
         },
         "is_top_level": true,
         "variables": {}
