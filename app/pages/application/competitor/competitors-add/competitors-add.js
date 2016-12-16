@@ -35,7 +35,7 @@ angular.module('competitorModule')
     'baseConfig',
     'addCompetitorsService',
     '$rootScope',
-    'addLinkmanService',
+    'competitorListService',
     '$stateParams',
     'competitorDetailService',
     function ($scope,
@@ -51,7 +51,7 @@ angular.module('competitorModule')
               baseConfig,
               addCompetitorsService,
               $rootScope,
-              addLinkmanService,
+              competitorListService,
               $stateParams,
               competitorDetailService) {
       $rootScope.img = "";
@@ -269,7 +269,7 @@ angular.module('competitorModule')
           }
         }
       };
-      addLinkmanService.getValueList(valueListSuccess, 'HCRM.COMPETITOR_AREA_PROPERTY', window.localStorage.COMPETITOR_AREA_PROPERTY_DATE);
+      competitorListService.getValueList(valueListSuccess, 'HCRM.COMPETITOR_AREA_PROPERTY', window.localStorage.COMPETITOR_AREA_PROPERTY_DATE);
       $scope.saveCompetitor = function (value) {
         $scope.value.competitorAdvDesc= $('#advantage1').val();
         $scope.value.competitorDisadvDesc= $('#advantage2').val();
@@ -360,7 +360,7 @@ angular.module('competitorModule')
         }
       }
     }]);
-angular.module('addModule')
+angular.module('competitorModule')
   .service('addCompetitorsService', ['hmsHttp',
     'hmsPopup',
     'baseConfig',

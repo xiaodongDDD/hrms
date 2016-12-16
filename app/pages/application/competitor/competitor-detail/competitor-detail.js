@@ -24,7 +24,6 @@ angular.module('competitorModule')
   .controller('CompetitorDetailCtrl', [
     '$scope',
     '$state',
-    'publicMethod',
     '$ionicHistory',
     '$timeout',
     '$stateParams',
@@ -34,7 +33,6 @@ angular.module('competitorModule')
     '$rootScope',
     function($scope,
              $state,
-             publicMethod,
              $ionicHistory,
              $timeout,
              $stateParams,
@@ -193,7 +191,7 @@ angular.module('competitorModule')
              baseConfig,
              $http) {
 
-      var baseUrl = baseConfig.basePath;
+      var baseUrl = baseConfig.crmPath;
 
       this.getCompetitorDetail = function(success, id) {
         var params = {

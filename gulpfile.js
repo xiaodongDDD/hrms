@@ -56,7 +56,8 @@ var libPublishFilePath = [
   'app/lib/**/dist/ng-cordova.js',
   'app/lib/**/angular-translate.js',
   'app/lib/**/angular-translate-loader-static-files.js',
-  'app/lib/**/dist/ionic-datepicker.bundle.min.js'
+  'app/lib/**/dist/ionic-datepicker.bundle.min.js',
+  'app/lib/**/dist/pouchdb.min.js'
 ];
 
 var imgFilePath = [

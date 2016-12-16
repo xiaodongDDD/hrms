@@ -169,8 +169,8 @@ angular.module('competitorModule')
   .service('CompetitorSearchService', ['hmsHttp',
     'hmsPopup',
     'baseConfig', function (hmsHttp, hmsPopup, baseConfig) {
-      console.log(baseConfig.basePath);
-      var baseUrl = baseConfig.basePath;
+      console.log(baseConfig.crmPath);
+      var baseUrl = baseConfig.crmPath;
       console.log(baseUrl);
       this.getSearchData = function (success, key) {
         hmsHttp.post(baseUrl + 'search_competitor', key).success(function (result) {

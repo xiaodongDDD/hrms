@@ -19,3 +19,4 @@ var clueModule = angular.module('clueModule', []);
 var addModule = angular.module('addModule', []);
 var competitorModule = angular.module('competitorModule', []);
 var bidbondModule=angular.module('bidbondModule', []);
+var serviceModule=angular.module('serviceModule', []);

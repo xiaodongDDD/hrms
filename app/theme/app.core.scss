@@ -8,6 +8,7 @@
 @import "../scss/_Minxin.scss";
 @import "../scss/animate.scss";
 @import "../scss/loading.scss";
+@import "../scss/col.min";
 @import "../pages/application/application";
 @import "../pages/application/time-off-manage/time-off-manage-list";
 @import "../pages/application/time-off-manage/time-off-manage-detail";
@@ -55,4 +56,8 @@
 @import "../pages/application/flight-ticket/flight-ticket.scss";
 @import "../pages/guide/guide";
 @import "../pages/tab/tabs";
-
+@import "common-style";
+@import "../pages/application/competitor/competitor-detail/competitor-detail";
+@import "../pages/application/competitor/competitor";
+@import "../pages/application/competitor/competitors-add/competitors-add";
+@import "../pages/application/competitor/competitors-add/product-add/product-add";

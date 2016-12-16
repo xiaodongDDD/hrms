@@ -1,0 +1,38 @@
+{
+    "jpush-phonegap-plugin": {
+        "source": {
+            "type": "registry",
+            "id": "jpush-phonegap-plugin"
+        },
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "6e0b08078306f45ac8331d54"
+        }
+    },
+    "hand-im-plugin-device": {
+        "source": {
+            "type": "local",
+            "path": "E:\\hrms4\\hand-im-plugin-device"
+        },
+        "is_top_level": true,
+        "variables": {
+            "RONG_KEY": "0vnjpoadnd4cz"
+        }
+    },
+    "cordova-plugin-hrms-faceidentify": {
+        "source": {
+            "type": "local",
+            "path": "E:\\hrms4\\cordova-plugin-hrms-faceidentify"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-sqlite-storage": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-sqlite-storage"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}
