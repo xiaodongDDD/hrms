@@ -29,12 +29,12 @@ angular.module('loginModule').controller('TabsCtrl',
       }
 
       if(baseConfig){
-        console.log('window.localStorage.neeGuide ' + window.localStorage.neeGuide);
+        console.log('window.localStorage.neeGuideHelp ' + window.localStorage.neeGuideHelp);
         console.log('window.localStorage.guideHelpAuto ' + window.localStorage.guideHelpAuto);
       }
 
-      if(!window.localStorage.neeGuide || window.localStorage.neeGuide == "true" || window.localStorage.guideHelpAuto == "true"){
-        window.localStorage.neeGuide = "false";
+      if(!window.localStorage.neeGuideHelp || window.localStorage.neeGuideHelp == "true" || window.localStorage.guideHelpAuto == "true"){
+        window.localStorage.neeGuideHelp = "false";
         $scope.showGuideFlag = true;
       }else{
       }
