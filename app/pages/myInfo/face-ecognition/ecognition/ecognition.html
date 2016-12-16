@@ -9,11 +9,11 @@
   </ion-header-bar>
   <ion-content class="ecognition-content">
 
+    <div class="purpose-header">
+      将人脸验证用于
+    </div>
     <div class="purpose">
-      <div class="">
-        将人脸验证用于
-      </div>
-      <ion-item class="login-item" ng-click="faceRecognition()">
+      <ion-item class="login-item" ng-click="vm.loginFace()">
         <div class="row login-item-row">
           <div class="login-icon-shelter">
             <img src="build/img/myInfo/face-recognition@3x.png" class="login-icon"/>
@@ -25,7 +25,7 @@
     </div>
 
     <div class="ecognition-setting">
-      <ion-item class="login-item" ng-click="vm.ecognition()">
+      <ion-item class="login-item has-line" ng-click="vm.ecognition()">
         <div class="row login-item-row">
           <div class="login-icon-shelter">
             <img src="build/img/myInfo/face-recognition@3x.png" class="login-icon"/>

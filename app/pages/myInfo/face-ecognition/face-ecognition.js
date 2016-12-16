@@ -65,9 +65,24 @@
     function complete() {
       var upload = function (buttonIndex) {
         if (buttonIndex == 1) {
-          faceEcognitionService.uploadImage(vm.faceResult.imgUrl,onProgress);
+          faceEcognitionService.uploadImage('/photoUpload', vm.faceResult.imgUrl, onProgress, success, error);
         }
       };
+
+      var success = function (res) {
+        hmsPopup.hideLoading();
+        if (baseConfig.debug) {
+          alert('complete.success ' + angular.toJson(JSON.parse(res.response)));
+        }
+      };
+
+      var error = function (response) {
+        hmsPopup.hideLoading();
+        if (baseConfig.debug) {
+          alert('complete.error ' + angular.toJson(response));
+        }
+      };
+
       var onProgress = function (progressEvent) {
         vm.progress.lengthComputable = progressEvent.lengthComputable;
         if (progressEvent.lengthComputable) {
@@ -78,7 +93,8 @@
           hmsPopup.showLoading('上传图片进度为 ' + Math.round(vm.progress.progress) + '%');
 
         } else {
-
+        }
+        if (vm.progress.progress == 100) {
           hmsPopup.showLoading('采集信息到服务器中');
         }
         $scope.$apply();
@@ -98,38 +114,22 @@
         alert(result);
         alert('faceEcogniition.error ' + angular.toJson(result));
       }
+      var sex = '';
       vm.faceResult.imgUrl = result.imgPath;
       vm.faceResult.age = result.age;
       vm.faceResult.beauty = result.beauty;
-      vm.faceResult.expression = result.expression;
-      if(result.gender && result.gender < 50){
+      if (result.gender && result.gender < 50) {
         vm.faceResult.gender = '女';
-      }else if(result.gender && result.gender > 50){
+        sex = 'woman';
+      } else if (result.gender && result.gender > 50) {
         vm.faceResult.gender = '男';
+        sex = 'man';
       }
+      vm.faceResult.expression = faceEcognitionService.getExpression(result.expression, sex);
 
       vm.faceResult.img = result.imgPath;
       vm.faceEcognitionResult = true;
       $scope.$apply();
-
-      /*if (baseConfig.debug) {
-        alert('vm.faceResult '+ angular.toJson(vm.faceResult));
-      }
-      pluginface.getLocalImage(result.imgPath, function (base64) {
-        if (baseConfig.debug) {
-          alert(base64);
-          console.log(base64);
-          console.log(angular.toJson(base64));
-        }
-        vm.faceResult.img = 'data:image/jpg;base64,' + base64;
-
-      }, function (e) {
-        if (baseConfig.debug) {
-          alert(e);
-          console.log(e);
-          console.log('e' + angular.toJson(e));
-        }
-      });*/
     }
 
     function faceEcognition() {
