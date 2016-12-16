@@ -23,9 +23,7 @@ angular.module('competitorModule')
     'competitorListService',
     'hmsPopup',
     '$state',
-    'addLinkmanService',
     '$ionicModal',
-    'opportunityAddService',
     '$ionicScrollDelegate',
     '$rootScope',
     function ($scope,
@@ -33,9 +31,7 @@ angular.module('competitorModule')
               competitorListService,
               hmsPopup,
               $state,
-              addLinkmanService,
               $ionicModal,
-              opportunityAddService,
               $ionicScrollDelegate,
               $rootScope) {
       $scope.showContent = false;
@@ -191,7 +187,7 @@ angular.module('competitorModule')
         ;
       };
       /*  console.log(upData);*/
-      opportunityAddService.getValueList(listInitSuccess, upData);
+      competitorListService.getValueList(listInitSuccess, upData);
       var showValueInList = function (code) {
         var valueObj = getValueObjByCode(code);
         $scope.items = $scope.items.concat(JSON.parse(window.localStorage[valueObj.localList]));
@@ -355,7 +351,7 @@ angular.module('competitorModule')
     function (hmsHttp,
               hmsPopup,
               baseConfig) {
-      var baseUrl = baseConfig.basePath;
+      var baseUrl = baseConfig.crmPath;
       //查询竞争对手列表
       this.getCompetitorList = function (success, error, params) {
         hmsHttp.post(baseUrl + 'query_competitor_list', params).success(function (result) {
@@ -363,6 +359,22 @@ angular.module('competitorModule')
           success(result);
         }).error(function (response, status) {
           error(response);
+          hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
+      //得到值列表
+      this.getValueList = function(success, list) {
+        var params = {lookupList : []};
+        for(var i = 0; i < list.length; i++){
+          params.lookupList.push({
+            code : list[i].code,
+            lastUpdateDate: window.localStorage[list[i].lastUpdateDate]
+          })
+        }
+        hmsHttp.post(baseUrl + 'query_lookup', params).success(function(result) {
+          success(result);
+        }).error(function(response, status) {
           hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });

@@ -734,4 +734,174 @@ angular.module('HmsModule')
       }
     };
     return request;
-  }]);
+  }])
+
+  .service('history', function () {
+    var _db;
+    //dateFix 函数是用来处理SQLite读出的数据的，因为SQLite的存储的数据结构层次优点不同，
+    function dateFix (result) {
+      var data = [];
+      result.forEach(function (each) {data.push(each.doc);　});
+      console.log(data);
+      return data
+    }
+
+    return {
+      initDB: function () {
+        _db = new PouchDB('history', {adapter: 'websql'});
+      },
+      getAllHistory: function (callback) {
+        _db.allDocs({include_docs: true}).then(function (result) {
+          callback(dateFix(result.rows));
+        })
+      },
+      addHistory: function (history) {
+        _db.post(history);
+      },
+      removeHistory: function (history) {
+        _db.remove(history);
+      }
+    }
+  })
+  .service('historyCompetitor', function () {
+    var _db;
+    //dateFix 函数是用来处理SQLite读出的数据的，因为SQLite的存储的数据结构层次优点不同，
+    function dateFix (result) {
+      var data = [];
+      result.forEach(function (each) {data.push(each.doc);　});
+      console.log(data);
+      return data
+    }
+
+    return {
+      initDB: function () {
+        _db = new PouchDB('historyCompetitor', {adapter: 'websql'});
+      },
+      getAllHistory: function (callback) {
+        _db.allDocs({include_docs: true}).then(function (result) {
+          callback(dateFix(result.rows));
+        })
+      },
+      addHistory: function (history) {
+        _db.post(history);
+      },
+      removeHistory: function (history) {
+        _db.remove(history);
+      }
+    }
+  })
+  .service('historyOpportunity', function () {
+    var _db;
+    //dateFix 函数是用来处理SQLite读出的数据的，因为SQLite的存储的数据结构层次优点不同，
+    function dateFix (result) {
+      var data = [];
+      result.forEach(function (each) {data.push(each.doc);　});
+      console.log(data);
+      return data
+    }
+
+    return {
+      initDB: function () {
+        _db = new PouchDB('historyOpportunity', {adapter: 'websql'});
+      },
+      getAllHistory: function (callback) {
+        _db.allDocs({include_docs: true}).then(function (result) {
+          callback(dateFix(result.rows));
+        })
+      },
+      addHistory: function (history) {
+        _db.post(history);
+      },
+      removeHistory: function (history) {
+        _db.remove(history);
+      }
+    }
+  })
+  .service('historyContact', function () {
+    var _db;
+    //dateFix 函数是用来处理SQLite读出的数据的，因为SQLite的存储的数据结构层次优点不同，
+    function dateFix (result) {
+      var data = [];
+      result.forEach(function (each) {data.push(each.doc);　});
+      console.log(data);
+      return data
+    }
+
+    return {
+      initDB: function () {
+        _db = new PouchDB('historyContact', {adapter: 'websql'});
+      },
+      getAllHistory: function (callback) {
+        _db.allDocs({include_docs: true}).then(function (result) {
+          callback(dateFix(result.rows));
+        })
+      },
+      addHistory: function (history) {
+        _db.post(history);
+      },
+      removeHistory: function (history) {
+        _db.remove(history);
+      }
+    }
+  })
+  .service('contactLocal',function(hmsPopup){
+    //for contact
+    function onSaveContactSuccess() {
+      console.log("添加成功");
+    }
+    //for contact
+    function onSaveContactError(contactError) {
+      console.log("添加失败");
+    }
+    return {  //联系人保存到本地--
+      contactLocal: function (baseInfo,onSaveContactSuccess,onSaveContactError) {
+        hmsPopup.showLoading("正在保存");
+        if (ionic.Platform.isWebView()) {
+          var newContact = navigator.contacts.create();
+          var phoneNumbers = [];
+          phoneNumbers[0] = new ContactField('mobile', baseInfo.mobil, true);
+          var emails = [];
+          emails[0] = new ContactField('email', baseInfo.email, true);
+          var organization = [];
+          organization[0] = new ContactField('organization', baseInfo.organization, true);
+          var ims=[];
+          ims[0]= new ContactField('ims',baseInfo.categories,true);
+          var categories=[];
+          categories[0]= new ContactField('categories',baseInfo.categories,true);
+          var organizations=[];
+          organizations[0]= new ContactField('organizations',baseInfo.categories,true);
+          if (ionic.Platform.isAndroid()) {
+            newContact.displayName = baseInfo.emp_name; // ios 不支持 displayName
+          }
+          if (ionic.Platform.isIOS()) {
+            var name = new ContactName();
+            name.givenName = baseInfo.emp_name.substring(1, baseInfo.emp_name.length);
+            name.familyName = baseInfo.emp_name.substring(0, 1);
+            newContact.name = name;
+          }
+          newContact.phoneNumbers = phoneNumbers;
+          newContact.emails = emails;
+          newContact.organizations = organization;
+          newContact.categories = categories;
+          newContact.save(onSaveContactSuccess, onSaveContactError);
+        }
+      },
+      findLocal:function(onSuccess,onError){
+        if (ionic.Platform.isWebView()) {
+          var options = new ContactFindOptions();
+          options.filter = "";
+          options.multiple = true;
+          /*
+           查找关键字
+           名字: "displayName"  ,
+           电话号码:"phoneNumbers"   //ContactField[]类型
+
+           */
+          var fields = ["displayName", "name", "phoneNumbers"];
+          navigator.contacts.find(fields, onSuccess, onError, options);
+
+
+        }
+      }
+    }
+  });

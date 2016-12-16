@@ -54,7 +54,7 @@
     isRunning = YES;
     
     //初始化一个计时器每两秒钟检测一次人脸
-    timer = [NSTimer scheduledTimerWithTimeInterval:2.0f repeats:YES block:^(NSTimer * _Nonnull timer) {
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.2f repeats:YES block:^(NSTimer * _Nonnull timer) {
         isDetecting = YES;
     }];
     
@@ -266,7 +266,7 @@
                     if (!isPassed) {
                         [ToastUtils show:@"识别成功！"];
                         isPassed = YES;
-                        self.successBlock(image,face[0]);
+                        self.successBlock([UIImage imageWithData:[image compressedData]],face[0]);
                         [self dismissViewControllerAnimated:YES completion:nil];
                     }
                 }
@@ -282,7 +282,7 @@
                 if (!isPassed) {
                     [ToastUtils show:@"识别失败！"];
                     isPassed = YES;
-                    self.successBlock(image,nil);
+                    self.successBlock([UIImage imageWithData:[image compressedData]],nil);
                     [self dismissViewControllerAnimated:YES completion:nil];
                 }
             }

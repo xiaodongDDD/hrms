@@ -6,6 +6,7 @@
     "nativeScreenFlag": true,
     "appStoreFlag": false,
     "isWeixinWebview": false,
+    "crmPath": "http://wechat.hand-china.com/hcrm_web/r/api?sysName=CRM&apiName=",
     "wxLoginPath": "http://wechat.hand-china.com/hmap/oauth/token?client_id=wx_client&client_secret=secret&grant_type=password&",
     "loginPath": "http://wechat.hand-china.com/hmap/oauth/token?client_id=d66ff5b1-6f50-4bb1-b4d3-6971b97775b7&client_secret=780ea799-79b8-4597-a973-85de55c478d3&grant_type=password&",
     "businessPath": "http://wechat.hand-china.com/hmap/api/l",

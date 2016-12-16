@@ -20,7 +20,9 @@ angular.module('myApp', [
   'utilModule',
   'tsApproveModule',
   'HmsModule',
-  'competitorModule'
+  'competitorModule',
+  'serviceModule',
+  'addModule'
 ]);
 
 angular.module('myApp')

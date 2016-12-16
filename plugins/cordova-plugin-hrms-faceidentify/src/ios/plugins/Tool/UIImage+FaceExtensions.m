@@ -3,7 +3,7 @@
 
 #define MAX_IMAGEPIX_WIDTH 800.0f          // max pix 400.0px
 #define MAX_IMAGEPIX_HEIGHT 600.0f          // max pix 400.0px
-#define MAX_IMAGEDATA_LEN 1500000.0f   // max data length 1500K
+#define MAX_IMAGEDATA_LEN 300000.0f   // max data length 300K
 
 CGFloat DegreesToRadians(CGFloat degrees);
 CGFloat RadiansToDegrees(CGFloat radians);
