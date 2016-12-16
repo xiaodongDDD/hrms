@@ -1,0 +1,122 @@
+<ion-view view-title="竞争对手详情" class="competitor-detail">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
+
+    <h2 class="title">竞争对手详情</h2>
+    <button class="button button-clear" ng-click="updateCompetitor()">编辑</button>
+  </ion-header-bar>
+
+  <ion-content overflow-scroll="true">
+
+    <div class="competitor-title">
+      <div class="table-center">
+        <div style="font-size: 17px;
+"><span>{{competitorDetail.fullName}}<img
+          src="build/img/competitor/competitor-detail/icon_pk_red@3x.png"/></span></div>
+        <div class="title-detail">{{competitorDetail.shortName}} {{competitorDetail.areaPropertyName}}
+          {{competitorDetail.dataStatusName}}
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-header">
+      <span ng-repeat="subHeader in subHeaders" ng-click="selectSubHeader($index)"
+            ng-class="{true:'selected'}[subHeadersSelect[$index]]">
+        <img
+          ng-src="{{'build/img/competitor/competitor-detail/' + subHeader.icon + (subHeadersSelect[$index] ? '_selected@3x.png' : '@3x.png') }}"/>
+        {{subHeader.title}}
+        <div class="bottom-line"></div>
+      </span>
+    </div>
+
+    <div class="competitor-detail-content">
+      <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="detailScroll">
+
+        <div ng-show="subHeadersSelect[0]">
+          <div class="info-item">
+            <div class="info-title">竞争对手优势</div>
+            <div class="info-content">{{competitorDetail.competitorAdvDesc}}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-title">竞争对手劣势</div>
+            <div class="info-content">{{competitorDetail.competitorDisadvDesc}}</div>
+          </div>
+        </div>
+
+        <div ng-show="subHeadersSelect[1]">
+          <div class="info-group" ng-repeat="product in competitorProduct track by $index">
+            <div class="info-group-title">
+              {{product.productName}}
+              <img src="build/img/application/right_arrow@3x.png"/>
+            </div>
+            <div class="info-item">
+              <div class="info-title">优势说明</div>
+              <div class="info-content">{{product.productAdvDesc}}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-title">其他说明</div>
+              <div class="info-content">{{product.productOtherDesc}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div ng-show="subHeadersSelect[2]">
+          <div class="info-group" ng-repeat="opportunity in competitorOpportunity track by $index">
+            <div class="info-group-title">
+              {{opportunity.customername}}
+              <img src="build/img/application/right_arrow@3x.png"/>
+            </div>
+            <div class="info-item">
+              <div class="info-title">负责人</div>
+              <div class="info-content">{{opportunity.saleAreaName}} | {{opportunity.saleTeamName}} |
+                {{opportunity.saleemployeename}}
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-title">涉及产品</div>
+              <div class="info-content">{{opportunity.productName}}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-title">优势说明</div>
+              <div class="info-content">{{opportunity.advantage}}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-title">其他说明</div>
+              <div class="info-content">{{opportunity.description}}</div>
+            </div>
+          </div>
+        </div>
+
+      </ion-scroll>
+    </div>
+
+  </ion-content>
+
+  <!--  <img class="fix-button" ng-src="{{buttonImg}}" ng-class="{true:'edit-button'}[isEdit]" ng-click="chooseThis()"/>-->
+
+  <div class="common-fix-div" ng-class="{true:'showUp'}[showEditProduct]">
+    <div class="common-input-area-title">
+      <div ng-click="cancel()" class="left">取消</div>
+      编辑产品信息
+      <div ng-click="deleteProduct()">删除</div>
+    </div>
+    <div>
+      <div class="common-item-input">
+        <div>产品名称</div>
+        <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="nowProduct.productName"/>
+      </div>
+      <div class="common-item-input">
+        <div>优势说明</div>
+        <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="nowProduct.productAdvDesc"/>
+      </div>
+      <div class="common-item-input">
+        <div>其他说明</div>
+        <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="nowProduct.productOtherDesc"/>
+      </div>
+    </div>
+    <button class="ok" ng-click="updateProduct()">
+      {{ 'OK' | T }}
+    </button>
+  </div>
+
+</ion-view>

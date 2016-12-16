@@ -54,7 +54,10 @@ var libPublishFilePath = [
   'app/lib/**/rollups/md5.js',
   'app/lib/**/dist/jquery.min.js',
   'app/lib/**/dist/ng-cordova.js',
-  'app/lib/**/dist/ionic-datepicker.bundle.min.js'];
+  'app/lib/**/angular-translate.js',
+  'app/lib/**/angular-translate-loader-static-files.js',
+  'app/lib/**/dist/ionic-datepicker.bundle.min.js'
+];
 
 var imgFilePath = [
   'app/img/**/*.png',
@@ -89,12 +92,12 @@ var pluginPRODPath = [
 
 //清除自动生成的目录文件
 gulp.task('clean', function () {
-  return gulp.src(['www/build/*','app/scripts/baseConfig.js', 'config.xml'
+  return gulp.src(['www/build/*', 'app/scripts/baseConfig.js', 'config.xml'
     /*,'plugins/com.handmobile.cordovaplugin.hotpatch/*', 'plugins/hand-im-plugin-device/*'*/]).pipe(clean());
 });
 
 gulp.task('clean-code', function () {
-  return gulp.src(['www/build/css/*','www/build/img/*','www/build/pages/*','www/build/app.bundle.js']).pipe(clean());
+  return gulp.src(['www/build/css/*', 'www/build/img/*', 'www/build/pages/*', 'www/build/app.bundle.js']).pipe(clean());
 });
 
 gulp.task('clean-bundle-js', function () {
@@ -115,7 +118,6 @@ gulp.task('copy-prod-android-im-config', function () {
 gulp.task('config-prod-android-im-config', function (callback) {
   runSequence('clean-android-im-config', 'copy-prod-android-im-config', callback);
 });
-
 
 
 //语法检查
@@ -205,7 +207,7 @@ gulp.task('copy-common-js-libs', function () {
 
 //定义开发环境的依赖库文件任务
 gulp.task('copy-dev-lib', function (callback) {
-  runSequence('copy-dev-libs', 'copy-img', 'copy-common-js-libs' , callback);
+  runSequence('copy-dev-libs', 'copy-img', 'copy-common-js-libs', callback);
 });
 
 //定义发布环境的依赖库文件任务
@@ -277,23 +279,23 @@ gulp.task('scripts', function () {
   return gulp.src(jsFilePath)
     .pipe(concat('app.bundle.js'))
     .pipe(gulp.dest('www/build'));// write source file for debug
-    //.pipe(rename({suffix: '.min'}))   //rename压缩后的文件名
-    //.pipe(uglify())    //压缩
-    //.pipe(gulp.dest('www/build'));  //输出
+  //.pipe(rename({suffix: '.min'}))   //rename压缩后的文件名
+  //.pipe(uglify())    //压缩
+  //.pipe(gulp.dest('www/build'));  //输出
 });
 
 //
 gulp.task('copy-prod', function () {
   return gulp.src([
-      'src/**/*',
-      '!src/index.html',
-      '!src/**/*.ts',
-      '!src/**/*.less',
-      '!src/**/*.sass',
-      '!src/**/*.styl',
-      '!src/css/*',
-      '!src/**/*.md',
-      '!src/scripts/*'])
+    'src/**/*',
+    '!src/index.html',
+    '!src/**/*.ts',
+    '!src/**/*.less',
+    '!src/**/*.sass',
+    '!src/**/*.styl',
+    '!src/css/*',
+    '!src/**/*.md',
+    '!src/scripts/*'])
     .pipe(gulp.dest('www'));
 });
 
