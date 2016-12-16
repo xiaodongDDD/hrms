@@ -73,8 +73,13 @@
         if (progressEvent.lengthComputable) {
           vm.progress.loaded = progressEvent.loaded;
           vm.progress.total = progressEvent.total;
-          vm.progress.progress = progressEvent.loaded / progressEvent.total;
+          vm.progress.progress = progressEvent.loaded / progressEvent.total * 100;
+
+          hmsPopup.showLoading('上传图片进度为 ' + Math.round(vm.progress.progress) + '%');
+
         } else {
+
+          hmsPopup.showLoading('采集信息到服务器中');
         }
         $scope.$apply();
       }
@@ -103,10 +108,13 @@
         vm.faceResult.gender = '男';
       }
 
-      if (baseConfig.debug) {
+      vm.faceResult.img = result.imgPath;
+      vm.faceEcognitionResult = true;
+      $scope.$apply();
+
+      /*if (baseConfig.debug) {
         alert('vm.faceResult '+ angular.toJson(vm.faceResult));
       }
-
       pluginface.getLocalImage(result.imgPath, function (base64) {
         if (baseConfig.debug) {
           alert(base64);
@@ -114,15 +122,14 @@
           console.log(angular.toJson(base64));
         }
         vm.faceResult.img = 'data:image/jpg;base64,' + base64;
-        vm.faceEcognitionResult = true;
-        $scope.$apply();
+
       }, function (e) {
         if (baseConfig.debug) {
           alert(e);
           console.log(e);
           console.log('e' + angular.toJson(e));
         }
-      });
+      });*/
     }
 
     function faceEcognition() {

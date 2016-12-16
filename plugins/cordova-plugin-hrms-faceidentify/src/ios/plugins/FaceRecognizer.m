@@ -29,34 +29,34 @@
     faceVideoDectorVC.successBlock = ^(UIImage *image,NSDictionary *dict){
         
         if (dict) {
-            //把图片写入临时文件中 ，经过base64加密成NSString形式存储
+            //把图片写入临时文件中存储
             NSURL *tempPathUrl = [NSURL fileURLWithPath:NSTemporaryDirectory()];
             
-            NSString *dateStr = [NSString stringWithFormat:@"%lf",[[NSDate date] timeIntervalSince1970]];
+            NSString *dateStr = [NSString stringWithFormat:@"%lf.png",[[NSDate date] timeIntervalSince1970]];
             
             tempPathUrl = [tempPathUrl URLByAppendingPathComponent:dateStr];
             
-            NSData *imageData = UIImagePNGRepresentation(image);
+            NSData *imageData = UIImagePNGRepresentation([image fixOrientation]);
             
-            NSString *imageBase64Str = [imageData base64EncodedStringWithOptions:0];
+            //NSString *imageBase64Str = [imageData base64EncodedStringWithOptions:0];
             
-            if ([imageBase64Str writeToFile:tempPathUrl.path atomically:YES]) {
+            if ([imageData writeToFile:tempPathUrl.path atomically:YES]) {
                 
                 NSMutableDictionary *mutableDict = [NSMutableDictionary dictionaryWithDictionary:dict];
                 
-                [mutableDict setObject:tempPathUrl.path forKey:@"imgPath"];
+                [mutableDict setObject:tempPathUrl.absoluteString forKey:@"imgPath"];
                 
                 [self faceRecognizerDidEnd:mutableDict IsSuccess:YES];
                 
             }
         }else{
             NSDictionary *dict = @{@"errorMsg":@"识别失败!"};
-                [self faceRecognizerDidEnd:dict IsSuccess:NO];
+            [self faceRecognizerDidEnd:dict IsSuccess:NO];
         }
     };
     
     [self.viewController presentViewController:faceVideoDectorVC animated:YES completion:nil];
-
+    
 }
 
 -(void)faceLogin:(CDVInvokedUrlCommand *)command

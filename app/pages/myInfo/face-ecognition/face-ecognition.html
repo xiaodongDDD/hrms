@@ -41,7 +41,7 @@
     <div class="face-ecognition-result" ng-if="vm.faceEcognitionResult">
       <div class="face-area">
         <div class="face-img">
-          <img ng-src="vm.faceResult.img">
+          <img ng-src="{{vm.faceResult.imgUrl}}">
         </div>
         <div class="face-identification">
           <img src="build/img/myInfo/success@3x.png">
@@ -103,6 +103,7 @@
         </div>
       </div>
 
+      <!--
       <div>
         vm.progress.lengthComputable {{vm.progress.lengthComputable }}
       </div>
@@ -113,8 +114,8 @@
         vm.progress.total {{vm.progress.total }}
       </div>
       <div>
-        vm.progress.lengthComputable {{vm.progress.lengthComputable }}
-      </div>
+        vm.progress.progress {{vm.progress.progress }}
+      </div>-->
 
       <div class="face-result-button">
         <div class="re-face" ng-click="vm.reFaceEcognition()">

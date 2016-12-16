@@ -10,7 +10,7 @@
 
   //plansDetailCtrl.$inject = [];
 
-  function faceEcognitionService(baseConfig) {
+  function faceEcognitionService(baseConfig, hmsPopup) {
     var service;
 
     service = {
@@ -19,12 +19,13 @@
 
     return service;
 
-    function uploadImage(imgPath,onProgress) {
+    function uploadImage(imgPath, onProgress) {
       if (baseConfig.debug) {
         alert('uploadImage.start ');
       }
 
       var success = function (response) {
+        hmsPopup.hideLoading();
         if (baseConfig.debug) {
           alert(response);
           alert('uploadImage.success ' + angular.toJson(response));
@@ -32,30 +33,33 @@
       };
 
       var error = function (response) {
+        hmsPopup.hideLoading();
         if (baseConfig.debug) {
           alert(response);
           alert('uploadImage.error ' + angular.toJson(response));
         }
       };
 
-      var url = baseConfig.imPath + '/api/photoUpload';
-      var options = new FileUploadOptions();
-      options.filekey = "file";
-      options.fileName = "image.jpg";
-      options.mimeType = "image/jpeg";
-      options.chunkedMode = false;
-      options.headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window.localStorage.token}
+      var url = baseConfig.queryPath + '/photoUpload';
+
+      var options = new FileUploadOptions(
+        'file', 'image.jpg', 'image/jpeg', null,
+        {"Authorization": "Bearer " + window.localStorage.token}, 'POST');
+
       var trustAllHosts = true;
       var fileTransfer = new FileTransfer();
 
       if (baseConfig.debug) {
         alert('uploadImage.start url ' + angular.toJson(url));
         alert('uploadImage.start options ' + angular.toJson(options));
+        alert('uploadImage.start imgPath ' + angular.toJson(imgPath));
       }
 
-      fileTransfer.onprogress = function(progressEvent) {
+      fileTransfer.onprogress = function (progressEvent) {
         onProgress(progressEvent);
       };
+
+      hmsPopup.showLoading('上传人脸识别中..');
 
       fileTransfer.upload(
         imgPath,
