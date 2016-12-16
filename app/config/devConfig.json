@@ -1,9 +1,9 @@
 {
   "baseConfig": {
     "debug": true,
-    "isMobilePlatform": true,
+    "isMobilePlatform": false,
     "clearTable": true,
-    "nativeScreenFlag": true,
+    "nativeScreenFlag": false,
     "appStoreFlag": false,
     "isWeixinWebview": false,
     "crmPath": "http://wechat.hand-china.com/hcrm_web/r/api?sysName=CRM&apiName=",
