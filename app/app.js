@@ -43,6 +43,10 @@ angular.module('myApp')
     'TabsService',
     'hmsCacheService',
     'messageService',
+    'history',
+    'historyContact',
+    'historyCompetitor',
+    'historyOpportunity',
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -58,10 +62,19 @@ angular.module('myApp')
               $ionicHistory,
               TabsService,
               hmsCacheService,
-              messageService
+              messageService,
+              history,
+              historyContact,
+              historyCompetitor,
+              historyOpportunity
     ) {
 
       $ionicPlatform.ready(function () {
+        history.initDB();//初始化客户数据库
+        historyContact.initDB();//初始化客户常用联系人数据库
+        historyCompetitor.initDB();//初始化竞争对手查询数据库
+        historyCompetitor.initDB();//初始化竞争对手查询数据库
+        historyOpportunity.initDB();//初始化商机查询数据库
         try{
           navigator.splashscreen.hide();
         }catch(e){
