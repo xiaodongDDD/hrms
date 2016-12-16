@@ -1,0 +1,172 @@
+<ion-view view-title="竞争对手新增" class="competitors-add">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <button class="button button-clear" ng-click="goBack()">{{'CANCEL'|T}}</button>
+    <h2 class="title">{{'COMPETITORS_ADD.COMPETITORS'|T}}</h2>
+    <button class="button button-clear" ng-click="saveCompetitor(value)">{{'SAVE'|T}}</button>
+  </ion-header-bar>
+  <ion-content>
+    <div style="margin-left:12px;margin-right:10px;">
+      <div class="row row-center info-item">
+        <div class="col col-8 ">
+          <img src="build/img/competitor/icon_pk_blue@3x.png" class="info-img">
+        </div>
+        <div class="col col-42">
+          <div class="row">
+            <span class="info-item-name required">竞争对手简称</span>
+          </div>
+        </div>
+        <div class="col col-50">
+          <div class="row info-item-con">
+            <input type="text" placeholder="{{'PLEASE_INPUT'|T}}" ng-model="value.shortName">
+          </div>
+        </div>
+      </div>
+      <div class="row row-center info-item">
+        <div class="col col-8">
+          <img src="build/img/competitor/icon_company@3x.png" class="info-img">
+        </div>
+        <div class="col col-42">
+          <div class="row">
+            <span class="info-item-name">竞争对手全称</span>
+          </div>
+        </div>
+        <div class="col col-50">
+          <div class="row info-item-con">
+            <input type="text" placeholder="{{'PLEASE_INPUT'|T}}" ng-model="value.fullName">
+          </div>
+        </div>
+      </div>
+      <div class="row row-center info-item" ng-click="showType()">
+        <div class="col col-8 ">
+          <img src="build/img/competitor/icon_area@3x.png" class="info-img">
+        </div>
+        <div class="col col-36">
+          <div class="row">
+            <span class="info-item-name">{{'COMPETITORS_ADD.REGIONAL'|T}}</span>
+          </div>
+        </div>
+        <div class="col col-28" ng-repeat="item in items" style="text-align:center">
+          <div class="row row-center info-item-con" ng-click="clickThis($index,item)">
+            <img
+              ng-src="{{'build/img/application/plans/' + (num==$index ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}">{{item.description}}
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="common-input-area">
+      <div class="common-input-area-title title-area"  ng-click="hideArea(0)">
+        <i><img src="build/img/competitor/icon_product_selected@3x.png"></i>
+        对手优势产品
+        <div>{{hideAreaFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+      </div>
+      <div ng-hide="hideAreaFlag[0]" class="area-item">
+        <div ng-repeat="item in value.competitorProducts track by $index">
+          <div class="row pro-item">
+            <div class="col col-90 col-center pro-name">
+              {{item.productName}}
+            </div>
+            <div class="col col-10 col-center pro-item-img"  ng-click="deleteProduct(item,$index)">
+              <img src="build/img/competitor/icon_delete@3x.png">
+            </div>
+          </div>
+          <div class="pro-cont">
+            <div class="row pro-des"> {{'COMPETITORS_ADD.ADVANTAGE_DES'|T}}
+            </div>
+            <div class="row pro-dec-item">
+              <textarea placeholder="请输入"  ng-model="item.productAdvDesc"></textarea></div>
+          </div>
+          <div class="pro-cont ">
+            <div class="row pro-des" >{{'COMPETITORS_ADD.OTHER'|T}}</div>
+            <div class="row pro-dec-item with-no-border">
+              <textarea  placeholder="请输入"  ng-model="item.productOtherDesc"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row pro-item" ng-click="openModal()">
+          <div class="col col-90 col-center pro-name">
+            {{'COMPETITORS_ADD.ADD'|T}}
+          </div>
+          <div class="col col-10 col-center pro-item-img" >
+            <img src="build/img/competitor/icon_addmore@3x.png">
+          </div>
+        </div>
+        <div class="with-margin-left">
+          <div  class="hold-on-wrap">
+            <div class="title">
+              <div class="pro-des title-name">
+                {{'COMPETITORS_ADD.ADVANTAGE'|T}}
+              </div>
+            </div>
+            <div class="hold-img-wrap" ng-if="holdText1">
+              <div>
+                <img src="build/img/plans/icon_weave@3x.png">
+              </div>
+            </div>
+            <div class="hold-on-text"  ng-if="holdText1">
+              <div>
+                按住说话<br>松开结束
+              </div>
+            </div>
+            <div class="hold-img-wrap" ng-if="holdText1">
+              <div>
+                <img src="build/img/plans/icon_weave@3x.png">
+              </div>
+            </div>
+            <div class="hold-div" ng-if="!holdText1"></div>
+            <div class="hold-on-div">
+              <div on-touch="voiceToAdvantage1()"
+                   on-release="onReleaseAdvantage1()">
+                <img src="build/img/plans/icon_voice@3x.png">
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="row row-bottom-item">
+            <div class="col col-80" style="padding:0;">
+              <textarea id="advantage1" placeholder="{{'PLEASE_INPUT'|T}}" class="com-text"
+                        ng-model="value.competitorAdvDesc"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="with-margin-left">
+          <div  class="hold-on-wrap">
+            <div class="title">
+              <div class="pro-des title-name">
+                {{'COMPETITORS_ADD.DISADVANTAGE'|T}}
+              </div>
+            </div>
+            <div class="hold-img-wrap" ng-if="holdText">
+              <div>
+                <img src="build/img/plans/icon_weave@3x.png">
+              </div>
+            </div>
+            <div class="hold-on-text"   ng-if="holdText">
+              <div>
+                按住说话<br>松开结束
+              </div>
+            </div>
+            <div class="hold-img-wrap" ng-if="holdText">
+              <div>
+                <img src="build/img/plans/icon_weave@3x.png">
+              </div>
+            </div>
+            <div class="hold-div"  ng-if="!holdText"></div>
+            <div  class="hold-on-div">
+              <div on-touch="voiceToAdvantage2()" on-release="onReleaseAdvantage2()">
+                <img src="build/img/plans/icon_voice@3x.png">
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="row row-bottom-item">
+            <div class="col col-80" style="padding:0;">
+              <textarea id="advantage2" placeholder="{{'PLEASE_INPUT'|T}}" class="com-text"
+                        ng-model="value.competitorDisadvDesc"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -7,6 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('myApp', [
   'ionic',
+  'pascalprecht.translate',
   'ionic-datepicker',
   'ngCordova',
   'ngSanitize',
@@ -18,7 +19,8 @@ angular.module('myApp', [
   'myInfoModule',
   'utilModule',
   'tsApproveModule',
-  'HmsModule'
+  'HmsModule',
+  'competitorModule'
 ]);
 
 angular.module('myApp')
@@ -142,8 +144,10 @@ angular.module('myApp')
     }]);
 
 angular.module('myApp')
-  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider', 'baseConfig',
-    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider, baseConfig) {
+  .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$ionicConfigProvider',
+    '$translateProvider', '$translateStaticFilesLoaderProvider','baseConfig',
+    function ($stateProvider, $urlRouterProvider, $httpProvider, $ionicConfigProvider,
+              $translateProvider, $translateStaticFilesLoaderProvider,baseConfig) {
       // Ionic uses AngularUI Router which uses the concept of states
       // Learn more here: https://github.com/angular-ui/ui-router
       // Set up the various states which the app can be in.
@@ -167,7 +171,12 @@ angular.module('myApp')
 
       $ionicConfigProvider.platform.ios.views.transition('ios');
       $ionicConfigProvider.platform.android.views.transition('android');
-
+      var lang = window.localStorage.lang || 'zh';
+      $translateProvider.preferredLanguage(lang);
+      $translateProvider.useStaticFilesLoader({
+        prefix: 'build/common/i18n/',
+        suffix: '.json'
+      });
       $stateProvider
       // setup an abstract state for the tabs directive
 
@@ -303,3 +312,21 @@ angular.module('myApp')
       }
 
     }]);
+angular.module("myApp").filter("T", ['$translate', function ($translate) {
+  return function (key) {
+    if (key) {
+      return $translate.instant(key);
+    }
+  };
+}]);
+
+angular.module('myApp').factory('T', ['$translate', function ($translate) {
+  return {
+    T: function (key) {
+      if (key) {
+        return $translate.instant(key);
+      }
+      return key;
+    }
+  };
+}]);

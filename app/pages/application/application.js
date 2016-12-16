@@ -130,6 +130,46 @@ angular.module('applicationModule')
        }
        ]
        }];*/
+      //CRM
+      $scope.manageApp = [{
+        list: [{
+          appName:"客户",
+          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          destUrl: "tab.customers"
+        }, {
+          appName: "联系人",
+          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          destUrl: "tab.contact"
+        }, {
+          appName: "线索",
+          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          destUrl: "tab.clues"
+        }, {
+          appName:"商机",
+          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          destUrl: "tab.opportunities"
+        }]
+      },{
+        list:[
+        {
+          appName: "销售计划",
+          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          destUrl: "tab.clues"
+        }, {
+          appName:"保证金",
+          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          destUrl: "tab.opportunities"
+        }, {
+          appName: "立项",
+          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          destUrl: "tab.clues"
+        }, {
+          appName:"竞争对手",
+          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          destUrl: "tab.competitor"
+        }
+      ]
+      }];
 
       //个人办公
       $scope.officeApp = [
