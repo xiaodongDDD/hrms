@@ -65,9 +65,8 @@
     },
     "cordova-plugin-hrms-faceidentify": {
         "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
-            "subdir": "."
+            "type": "local",
+            "path": "E:\\hrms4\\cordova-plugin-hrms-faceidentify"
         },
         "is_top_level": true,
         "variables": {}

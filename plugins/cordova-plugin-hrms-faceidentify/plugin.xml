@@ -77,7 +77,7 @@
 		</style>
     </config-file>
     
-    <source-file src="res/values/colors.xml" target-dir="res/values"/>
+    <source-file src="src/android/values/colors.xml" target-dir="res/values"/>
 	
 	
 	<config-file parent="/manifest" target="AndroidManifest.xml">
