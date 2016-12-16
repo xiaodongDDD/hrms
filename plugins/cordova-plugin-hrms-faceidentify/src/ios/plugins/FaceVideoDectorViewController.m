@@ -19,6 +19,7 @@
     BOOL isDetecting;
     NSTimer *timer;
     BOOL isPassed;
+    BOOL isWorking;
 }
 @property (nonatomic,strong)WBCaptureService *captureService;
 @property (nonatomic,strong) AVCaptureVideoPreviewLayer *previewLayer;
@@ -27,10 +28,17 @@
 @property (nonatomic,strong)UILabel *timeLabel;
 @property (nonatomic,strong)UIButton *backBtn;
 @property (nonatomic,strong)UIButton *switchBtn;
+@property (nonatomic,strong)ZLProgressHUD *progress;
 @end
 
 @implementation FaceVideoDectorViewController
-
+- (ZLProgressHUD *)progress
+{
+    if (!_progress) {
+        _progress = [[ZLProgressHUD alloc]init];
+    }
+    return _progress;
+}
 - (WBCaptureService*)captureService
 {
     if (!_captureService) {
@@ -54,7 +62,7 @@
     isRunning = YES;
     
     //初始化一个计时器每两秒钟检测一次人脸
-    timer = [NSTimer scheduledTimerWithTimeInterval:1.2f repeats:YES block:^(NSTimer * _Nonnull timer) {
+    timer = [NSTimer scheduledTimerWithTimeInterval:0.6f repeats:YES block:^(NSTimer * _Nonnull timer) {
         isDetecting = YES;
     }];
     
@@ -205,11 +213,11 @@
     //由于这段代码中，设备是home在下进行录制，所以此处在生成image时，指定了方向
     UIImage *image = [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationRight];
 
-    if (isDetecting) {
-
+    if (isDetecting&&!isWorking) {
+        
         [self faceRecognizer:image];
         
-       isDetecting = NO;
+        isDetecting = NO;
         
     }
     
@@ -248,11 +256,13 @@
 #pragma mark - 人脸检测
 - (void)faceRecognizer:(UIImage *)image
 {
+    isWorking = YES;
+    [self.progress show];
     NSString *auth = [Auth appSign:1000000 userId:nil];
     TXQcloudFrSDK *sdk = [[TXQcloudFrSDK alloc] initWithName:[Conf instance].appId authorization:auth endPoint:[Conf instance].API_END_POINT];
     
     [sdk detectFace:[image compressedImage] successBlock:^(id responseObject) {
-       
+        isWorking = NO;
         NSDictionary *dict = responseObject;
         
         NSLog(@"人脸检测成功:%@",dict);
@@ -264,7 +274,10 @@
                 isRunning = NO;
                 if (self.successBlock) {
                     if (!isPassed) {
-                        [ToastUtils show:@"识别成功！"];
+                        if ([self.progress isShowing]) {
+                            [self.progress hide];
+                        }
+                        [ToastUtils showLong:@"识别成功！"];
                         isPassed = YES;
                         self.successBlock([UIImage imageWithData:[image compressedData]],face[0]);
                         [self dismissViewControllerAnimated:YES completion:nil];
@@ -275,12 +288,16 @@
         }
         
     } failureBlock:^(NSError *error) {
+        isWorking = NO;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.captureService stopRunning];
             isRunning = NO;
             if (self.successBlock) {
                 if (!isPassed) {
-                    [ToastUtils show:@"识别失败！"];
+                    if ([self.progress isShowing]) {
+                        [self.progress hide];
+                    }
+                    [ToastUtils showLong:@"识别失败！"];
                     isPassed = YES;
                     self.successBlock([UIImage imageWithData:[image compressedData]],nil);
                     [self dismissViewControllerAnimated:YES completion:nil];

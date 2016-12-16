@@ -103,10 +103,11 @@ public class FaceCompareActivity extends Activity {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int w_screen = dm.widthPixels;
         int h_screen = dm.heightPixels;
-        faceLeft = (w_screen-20)/2 * 3 / 10;
+        //获取屏幕的百分之九十的一半作为半径 根据圆内最大正方形的左上角坐标计算left
+        faceLeft = w_screen * 9 / 20 * 2 / 10;
         faceRight = w_screen-faceLeft;
-        faceTop = h_screen/2 - (w_screen-20)/2 + 20;
-        faceBottom = h_screen/2 + (w_screen-20)/2 + 20;
+        faceTop = h_screen/2 -  w_screen*9/20 + 20;
+        faceBottom = h_screen/2 +  w_screen*9/20 + 20;
         boolean isMirror = false;
         int Id = CameraInterface.getInstance().getCameraId();
         if(Id == Camera.CameraInfo.CAMERA_FACING_BACK){
@@ -181,8 +182,9 @@ public class FaceCompareActivity extends Activity {
                         times = 0;
                         textv_face_info.setText("未检测到人脸");
                     }
-                    if(times>=15 && pictureLock){
+                    if(times>=10 && pictureLock){
                         pictureLock = false;
+                        textv_face_info.setVisibility(View.GONE);
                         //检测
                         detect();
                     }
@@ -207,7 +209,8 @@ public class FaceCompareActivity extends Activity {
                 public void run() {
                     Bitmap mImage = surfaceView.getPicture();
                     //保存图片
-                    FileUtil.saveBitmap(mImage);
+                    String path = getFilesDir().getPath();
+                    FileUtil.saveBitmap(FileUtil.centerSquareScaleBitmap(mImage,faceRight-faceLeft+60),path);
                     if (mImage != null) {
                         try {
                             JSONObject respose = faceYoutu.DetectFace(mImage, 1);
@@ -221,9 +224,8 @@ public class FaceCompareActivity extends Activity {
                             e.printStackTrace();
                         }
                     }else{
-                        if(loadingDialog!=null && loadingDialog.isShowing()) loadingDialog.dismiss();
-                        times = 0;
-                        pictureLock = true;
+                        Message msg = new Message();
+                        handler.sendEmptyMessage(0x101);
                     }
                 }
             });
@@ -275,6 +277,7 @@ public class FaceCompareActivity extends Activity {
                         if(!"0".equals(errorcode)){
                             myAct.times = 0;
                             myAct.pictureLock = true;
+                            myAct.textv_face_info.setVisibility(View.VISIBLE);
                             Toast.makeText(myAct, "图片校验失败，请重新检测人脸照片", Toast.LENGTH_SHORT).show();
                         }else{
                             JSONArray jsonArr = face.getJSONArray("face");
@@ -289,9 +292,16 @@ public class FaceCompareActivity extends Activity {
                         //打开检测锁 重置检测次数
                         myAct.times = 0;
                         myAct.pictureLock = true;
+                        myAct.textv_face_info.setVisibility(View.VISIBLE);
                         Toast.makeText(myAct, "图片校验失败，请重新检测人脸照片", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
+                    break;
+                case 0x101:
+                    if(myAct.loadingDialog!=null && myAct.loadingDialog.isShowing()) myAct.loadingDialog.dismiss();
+                    myAct. times = 0;
+                    myAct.pictureLock = true;
+                    myAct.textv_face_info.setVisibility(View.VISIBLE);
                     break;
                 default:
                     break;

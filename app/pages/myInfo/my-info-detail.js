@@ -45,12 +45,8 @@ angular.module('myInfoModule')
            $scope.myPortrait = "build/img/myInfo/woman-portrait.png";
          }
       }
-
-
-      $scope.goBack=function(){//返回按钮
+      
+      $scope.goBack = function(){//返回按钮
         $ionicHistory.goBack();
-      }
-
-
-
-    }])
+      };
+    }]);

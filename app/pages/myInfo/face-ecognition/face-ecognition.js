@@ -52,13 +52,50 @@
       }
     ];
     vm.faceResult = {};
-    vm.progress = {}
+    vm.progress = {};
+
+    var width = document.body.clientWidth;
+
+    var outerPadding = 10;
+    if(width < 360){
+      outerPadding = 10;
+    }else{
+      outerPadding = 15;
+    }
+
+    var areaWidth = width - 30;
+    var outerWidth = width - 50;
+    var InnerWidth = width - 50 -  2 * outerPadding;
+
+    vm.faceStyle = {
+      "area": {
+        "width": areaWidth + 'px',
+        "height": areaWidth + 'px'
+      },
+      "imageOuter": {
+        "width": outerWidth + 'px',
+        "height": outerWidth + 'px',
+        "padding": outerPadding + 'px'
+      },
+      "imageInner": {
+        "width": InnerWidth + 'px',
+        "height": InnerWidth + 'px'
+      }
+    };
+
+    vm.faceResult.imgUrl = 'build/img/application/carpooling/Bar@3x.png';
 
     vm.faceEcognition = faceEcognition;
     vm.reFaceEcognition = reFaceEcognition;
     vm.complete = complete;
 
     function reFaceEcognition() {
+      vm.faceResult.imgUrl = '';
+      vm.faceResult.age = '';
+      vm.faceResult.beauty = '';
+      vm.faceResult.gender = '';
+      vm.faceResult.expression = '';
+      vm.faceResult.img = '';
       faceEcognition();
     }
 
@@ -71,8 +108,15 @@
 
       var success = function (res) {
         hmsPopup.hideLoading();
+        var result = JSON.parse(res.response);
         if (baseConfig.debug) {
-          alert('complete.success ' + angular.toJson(JSON.parse(res.response)));
+          alert('complete.success ' + angular.toJson());
+        }
+        if(result.success == true){
+          hmsPopup.showPopup('采集信息已经采集成功');
+          faceEcognitionService.setFaceEcognitionFlag(true);
+        }else{
+          hmsPopup.showPopup('采集信息采集失败，请重新采集！');
         }
       };
 
@@ -81,6 +125,7 @@
         if (baseConfig.debug) {
           alert('complete.error ' + angular.toJson(response));
         }
+        hmsPopup.showPopup('采集信息采集出现异常，请重新采集！');
       };
 
       var onProgress = function (progressEvent) {
@@ -104,14 +149,12 @@
 
     var faceEcognitionError = function (result) {
       if (baseConfig.debug) {
-        alert(result);
         alert('faceEcogniition.success ' + angular.toJson(result));
       }
     };
 
     var faceEcognitionSuccess = function (result) {
       if (baseConfig.debug) {
-        alert(result);
         alert('faceEcogniition.error ' + angular.toJson(result));
       }
       var sex = '';
@@ -138,7 +181,6 @@
       }
       pluginface.faceDetect('', faceEcognitionSuccess, faceEcognitionError);
     }
-
 
   }
 })();

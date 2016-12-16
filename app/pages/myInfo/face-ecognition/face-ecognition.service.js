@@ -57,12 +57,13 @@
     return service;
 
     function getExpression(value, sex) {
+      var result = '没有表情';
       angular.forEach(expressionList, function (data) {
         if (parseInt(value) >= parseInt(data.from) && parseInt(value) < parseInt(data.to)) {
-          return data[sex];
+          result = data[sex];
         }
       });
-      return value;
+      return result;
     }
 
     function getFaceEcognitionFlag() {
@@ -78,7 +79,7 @@
         //alert('uploadImage.start ');
       }
 
-      var url = baseConfig.queryPath + '/photoUpload';
+      var url = baseConfig.queryPath + url;
 
       var options = new FileUploadOptions(
         'file', 'image.jpg', 'image/jpeg', null,

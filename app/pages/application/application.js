@@ -21,7 +21,7 @@ angular.module('applicationModule')
               workFLowListService,
               contractListService,
               applicationService) {
-
+      
       $scope.animationsEnabled = false;
       $scope.openDoor = 0;
       $scope.fetchWorkflowData = true;

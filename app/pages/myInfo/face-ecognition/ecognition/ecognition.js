@@ -63,6 +63,13 @@
         if (baseConfig.debug) {
           alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
         }
+        var result = JSON.parse(res.response);
+        if(result.rows[0] && result.rows[0].person_id && result.rows[0].person_id == window.localStorage.empno){
+          hmsPopup.showPopup('验证成功！');
+        }else{
+          hmsPopup.showPopup('验证失败，请重新验证！');
+        }
+        //hmsPopup.showPopup('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
       };
 
       var error = function (response) {
@@ -70,6 +77,7 @@
         if (baseConfig.debug) {
           alert('uploadImage.error ' + angular.toJson(response));
         }
+        hmsPopup.showPopup('验证出现异常，请重新验证！');
       };
 
       var onProgress = function (progressEvent) {

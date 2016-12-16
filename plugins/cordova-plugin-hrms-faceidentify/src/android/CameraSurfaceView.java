@@ -1,6 +1,9 @@
 package com.hand.face.view;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
@@ -10,6 +13,8 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.OrientationEventListener;
@@ -47,7 +52,15 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         // TODO Auto-generated method stub
         Log.i(TAG, "surfaceCreated...");
         CameraInterface.getInstance().setCallBack(this);
-        CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_FRONT);
+
+        //运行时权限检测
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            //不具有camera权限 申请权限
+            ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.CAMERA}, 1);
+        }else{
+            CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_FRONT);
+        }
     }
 
     @Override
