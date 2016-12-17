@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="NO">
+    <dependencies>
+        <deployment version="1792" identifier="iOS"/>
+        <development version="7000" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageRotateViewController">
+            <connections>
+                <outlet property="anticlockwise90Button" destination="TFj-ht-hQR" id="7ND-Zv-ba5"/>
+                <outlet property="clockwise90Button" destination="Ssm-Gf-BDO" id="Tsn-Ll-CfT"/>
+                <outlet property="scrollView" destination="56w-qc-MWa" id="RwN-t1-AKi"/>
+                <outlet property="toolBarView" destination="9HK-4e-0AR" id="ubc-j2-x4z"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="56w-qc-MWa">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="56w-qc-MWa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="9RJ-AA-fDf"/>
+                <constraint firstAttribute="trailing" secondItem="56w-qc-MWa" secondAttribute="trailing" id="HyT-hz-Ml7"/>
+                <constraint firstItem="56w-qc-MWa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bsx-qC-9GO"/>
+                <constraint firstAttribute="bottom" secondItem="56w-qc-MWa" secondAttribute="bottom" id="qSp-Ll-Afe"/>
+            </constraints>
+        </view>
+        <view contentMode="scaleToFill" id="9HK-4e-0AR">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TFj-ht-hQR">
+                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="sSo-bI-J1N"/>
+                        <constraint firstAttribute="width" constant="50" id="x1P-Li-0s9"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="jtbq_022.png"/>
+                    <connections>
+                        <action selector="anticlockwise90ButtonPressed:" destination="-1" eventType="touchUpInside" id="LqB-UD-8uP"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ssm-Gf-BDO">
+                    <rect key="frame" x="325" y="0.0" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="Gt1-nH-whu"/>
+                        <constraint firstAttribute="height" constant="50" id="HQB-ak-D2t"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="jtbq_021.png"/>
+                    <connections>
+                        <action selector="clockwise90ButtonPressed:" destination="-1" eventType="touchUpInside" id="Pci-yQ-76V"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="Ssm-Gf-BDO" firstAttribute="centerY" secondItem="9HK-4e-0AR" secondAttribute="centerY" id="10D-SI-1n5"/>
+                <constraint firstItem="TFj-ht-hQR" firstAttribute="leading" secondItem="9HK-4e-0AR" secondAttribute="leading" id="IK8-Z9-dd4"/>
+                <constraint firstItem="TFj-ht-hQR" firstAttribute="centerY" secondItem="9HK-4e-0AR" secondAttribute="centerY" id="ou3-mt-DKS"/>
+                <constraint firstAttribute="trailing" secondItem="Ssm-Gf-BDO" secondAttribute="trailing" id="yYQ-ph-uSW"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="32.5" y="114"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="jtbq_021.png" width="128" height="128"/>
+        <image name="jtbq_022.png" width="128" height="128"/>
+    </resources>
+</document>

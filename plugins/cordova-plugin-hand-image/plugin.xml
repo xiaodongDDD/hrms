@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-hand-image" version="0.1.5" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>ImageExt</name>
+    <js-module name="ImageExt" src="www/ImageExt.js">
+        <clobbers target="cordova.plugins.ImageExt" />
+    </js-module>
+
+        <!-- android -->
+    <platform name="android">
+    	<!--继承CordovaPlugin的类所在路径，和拷贝到工程的路径--> 
+        <source-file src="src/android/ImageExt.java" target-dir="src/com/hand"/>
+
+        
+        <config-file target="res/xml/config.xml" parent="/*">
+        	<!--插件继承CordovaPlugin的类名，-->
+            <feature name="ImageExt">
+            	<!--android 工程中的这个插件类的路径-->
+                <param name="android-package" value="com.hand.ImageExt"/>
+            </feature>
+        </config-file>
+
+       <!--需要添加的权限-->
+        <config-file target="AndroidManifest.xml" parent="/*">  
+            <uses-permission android:name="android.permission.INTERNET" />
+    		<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        </config-file> 
+    <framework src="src/android/hand_image_library" custom="true"/>
+    </platform>
+
+
+
+
+
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml" >
+            <feature name="ImageExt">
+                <param name="ios-package" value="ImageExt" />
+            </feature>
+
+        </config-file>
+        
+       
+        
+	    <header-file src="src/ios/ImageExt.h" target-dir="."/>
+        <source-file src="src/ios/ImageExt.m" target-dir="."/>
+        <!--
+        <header-file src="src/ios/ImageFilterCordova.h" target-dir="."/>
+        <source-file src="src/ios/ImageFilterCordova.m" target-dir="."/>
+        -->
+        <header-file src="src/ios/ImageCutViewController.h" target-dir="."/>
+        <source-file src="src/ios/ImageCutViewController.m" target-dir="."/>
+        <source-file src="src/ios/ImageCutViewController.xib" target-dir="."/>
+        <header-file src="src/ios/CropMaskView.h" target-dir="."/>
+        <source-file src="src/ios/CropMaskView.m" target-dir="."/>
+        
+        <header-file src="src/ios/ImageRotateViewController.h" target-dir="."/>
+        <source-file src="src/ios/ImageRotateViewController.m" target-dir="."/>
+        <source-file src="src/ios/ImageRotateViewController.xib" target-dir="."/>
+        
+        <header-file src="src/ios/ViewControllerDelegate.h" target-dir="."/>
+        <source-file src="src/ios/ViewControllerDelegate.m" target-dir="."/>
+        
+        <header-file src="src/ios/UIImage+KIAdditions.h" target-dir="."/>
+        <source-file src="src/ios/UIImage+KIAdditions.m" target-dir="."/>
+		
+		
+		<header-file src="src/ios/CropCircleVMaskiew.h" target-dir="."/>
+        <source-file src="src/ios/CropCircleVMaskiew.m" target-dir="."/>
+		
+		<!--
+        <source-file src="src/ios/image.png" target-dir="."/>
+        -->
+        
+
+        <source-file src="src/ios/image/jtbq_001.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_002.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_003.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_004.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_005.png" target-dir="image"/>
+        
+        <source-file src="src/ios/image/jtbq_006.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_007.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_008.png" target-dir="image"/>
+        
+        <source-file src="src/ios/image/jtbq_017.png" target-dir="image"/>
+
+        <source-file src="src/ios/image/jtbq_020.png" target-dir="image"/>
+        
+        <source-file src="src/ios/image/jtbq_021.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_022.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_023.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_024.png" target-dir="image"/>
+        <source-file src="src/ios/image/jtbq_025.png" target-dir="image"/>
+        
+
+        <framework src="Foundation.framework" />
+        <framework src="UIKit.framework" />
+
+    </platform>
+</plugin>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="NO">
+    <dependencies>
+        <deployment version="1792" identifier="iOS"/>
+        <development version="7000" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageCutViewController">
+            <connections>
+                <outlet property="previewButton" destination="ZID-62-i4o" id="Tkj-hL-btu"/>
+                <outlet property="previewScrollView" destination="5i5-Ln-ki8" id="feL-xC-7X6"/>
+                <outlet property="previewView" destination="57y-bG-Itz" id="HXO-IH-nta"/>
+                <outlet property="redoButton" destination="fVU-kL-wZb" id="d96-pg-HTu"/>
+                <outlet property="scrollView" destination="jOz-e2-ovA" id="v9U-9s-bhS"/>
+                <outlet property="toolBarView" destination="sPs-eM-vHT" id="vje-ss-O8b"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleAspectFit" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jOz-e2-ovA">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="jOz-e2-ovA" secondAttribute="bottom" id="2bK-bE-wgi"/>
+                <constraint firstAttribute="trailing" secondItem="jOz-e2-ovA" secondAttribute="trailing" id="I25-6d-Lng"/>
+                <constraint firstItem="jOz-e2-ovA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="VNi-CY-Upw"/>
+                <constraint firstItem="jOz-e2-ovA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nde-5C-5ng"/>
+            </constraints>
+            <point key="canvasLocation" x="32.5" y="70.5"/>
+        </view>
+        <view alpha="0.5" contentMode="scaleToFill" id="sPs-eM-vHT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZID-62-i4o">
+                    <rect key="frame" x="16" y="10" width="31" height="30"/>
+                    <state key="normal" title="预览">
+                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="lockPreviewButtonPressed:" destination="-1" eventType="touchUpInside" id="3dZ-4D-7PR"/>
+                    </connections>
+                </button>
+                <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lvm-hq-cVm">
+                    <rect key="frame" x="210" y="10" width="64" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q86-0s-qxh">
+                    <rect key="frame" x="295" y="10" width="64" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fVU-kL-wZb">
+                    <rect key="frame" x="62" y="10" width="31" height="30"/>
+                    <state key="normal" title="撤销">
+                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="redoButtonPressed:" destination="-1" eventType="touchUpInside" id="CD3-0V-O74"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.90980392160000001" green="0.90980392160000001" blue="0.90980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="ZID-62-i4o" firstAttribute="leading" secondItem="sPs-eM-vHT" secondAttribute="leading" constant="16" id="0cf-zi-puG"/>
+                <constraint firstItem="fVU-kL-wZb" firstAttribute="centerY" secondItem="sPs-eM-vHT" secondAttribute="centerY" id="Ai5-aa-BLi"/>
+                <constraint firstItem="ZID-62-i4o" firstAttribute="centerY" secondItem="sPs-eM-vHT" secondAttribute="centerY" id="Wad-Zy-m27"/>
+                <constraint firstItem="fVU-kL-wZb" firstAttribute="leading" secondItem="ZID-62-i4o" secondAttribute="trailing" constant="15" id="dmv-rw-15A"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="31.5" y="807"/>
+        </view>
+        <view contentMode="scaleToFill" id="57y-bG-Itz">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CAo-Ej-3wj">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="预览" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2V7-Sw-Bgd">
+                            <rect key="frame" x="170" y="10" width="35" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Buw-Lx-DHu">
+                            <rect key="frame" x="304" y="5" width="31" height="30"/>
+                            <state key="normal" title="撤销"/>
+                            <connections>
+                                <action selector="redoButtonPressed:" destination="-1" eventType="touchUpInside" id="loC-JF-fAj"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="2V7-Sw-Bgd" firstAttribute="centerX" secondItem="CAo-Ej-3wj" secondAttribute="centerX" id="11Y-07-pHA"/>
+                        <constraint firstAttribute="height" constant="40" id="1fi-xO-rbi"/>
+                        <constraint firstItem="2V7-Sw-Bgd" firstAttribute="centerY" secondItem="CAo-Ej-3wj" secondAttribute="centerY" id="WKR-LA-6ss"/>
+                        <constraint firstAttribute="trailing" secondItem="Buw-Lx-DHu" secondAttribute="trailing" constant="40" id="mEf-4S-59M"/>
+                        <constraint firstItem="Buw-Lx-DHu" firstAttribute="centerY" secondItem="CAo-Ej-3wj" secondAttribute="centerY" id="mrr-Vq-OhE"/>
+                    </constraints>
+                </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5i5-Ln-ki8">
+                    <rect key="frame" x="0.0" y="40" width="375" height="627"/>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="CAo-Ej-3wj" secondAttribute="trailing" id="29M-k7-mrR"/>
+                <constraint firstItem="CAo-Ej-3wj" firstAttribute="centerX" secondItem="57y-bG-Itz" secondAttribute="centerX" id="75f-Tf-ai1"/>
+                <constraint firstItem="CAo-Ej-3wj" firstAttribute="leading" secondItem="57y-bG-Itz" secondAttribute="leading" id="8cm-gb-xe7"/>
+                <constraint firstAttribute="trailing" secondItem="5i5-Ln-ki8" secondAttribute="trailing" id="RQj-h8-O68"/>
+                <constraint firstAttribute="bottom" secondItem="5i5-Ln-ki8" secondAttribute="bottom" id="WYd-Wt-10u"/>
+                <constraint firstItem="5i5-Ln-ki8" firstAttribute="leading" secondItem="57y-bG-Itz" secondAttribute="leading" id="WgZ-PH-B9V"/>
+                <constraint firstItem="5i5-Ln-ki8" firstAttribute="top" secondItem="CAo-Ej-3wj" secondAttribute="bottom" id="eTd-Tw-3aU"/>
+                <constraint firstItem="CAo-Ej-3wj" firstAttribute="top" secondItem="57y-bG-Itz" secondAttribute="top" id="rRd-gW-4CM"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

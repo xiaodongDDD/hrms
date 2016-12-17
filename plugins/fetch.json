@@ -70,5 +70,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-hand-image": {
+        "source": {
+            "type": "local",
+            "path": "/Users/zaranengap/WebstormProjects/cordova-plugin-hand-image"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }

@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sleepgod.cuiweicai.hand_image_library">
+<uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="23"
+        />
+    <application
+    >
+   <activity android:name=".activity.CropdrawableActivity"/>
+        <activity android:name=".activity.SaveDrawbleActivity"/>
+        <activity android:name=".activity.RotateDrawableActivity"/>
+    </application>
+
+</manifest>
