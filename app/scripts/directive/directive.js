@@ -2,7 +2,7 @@
  * Created by user on 2016/8/25.
  */
 HmsModule
-  .directive('hmsLoading', ['$rootScope', function ($rootScope) {
+  /*.directive('hmsLoading', ['$rootScope', function ($rootScope) {
     return {
       restrict: 'E',
       template: '<div class="hms-hide-small-content">' +
@@ -15,7 +15,7 @@ HmsModule
       link: function (scope, element, attrs, controller) {
       }
     };
-  }])
+  }])*/
   .directive('hmsSelector',['$ionicModal',function ($ionicModal) {
   return {
     restrict:"EA",
