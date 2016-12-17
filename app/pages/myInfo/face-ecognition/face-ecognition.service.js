@@ -51,7 +51,8 @@
       uploadImage: uploadImage,
       getFaceEcognitionFlag: getFaceEcognitionFlag,
       setFaceEcognitionFlag: setFaceEcognitionFlag,
-      getExpression: getExpression
+      getExpression: getExpression,
+      processProgress: processProgress
     };
 
     return service;
@@ -79,7 +80,7 @@
       var progress;
       if (progressEvent.lengthComputable) {
         progress = progressEvent.loaded / progressEvent.total * 100;
-        if (vm.progress.progress == 100) {
+        if (progress == 100) {
           hmsPopup.hidePopup();
         } else {
           hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
@@ -97,7 +98,7 @@
       if (baseConfig.debug) {
         //alert('uploadImage.start ');
       }
-      
+
       var url = baseConfig.queryPath + url;
 
       var options = new FileUploadOptions(
