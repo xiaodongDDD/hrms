@@ -1,0 +1,121 @@
+.customer-detail-change-log{
+
+  width: 100%;
+  background: white;
+
+  .state-container{
+
+    position: relative;
+    width: 100%;
+
+      .state-item{
+        position: relative;
+        margin-left: 5vw;
+        width: 90vw;
+        margin-top: 15px;
+
+        .time-line{
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 150%;
+          width: 1px;
+          background: #36a6ec;
+        }
+
+        .time-line:before{
+          content:'';
+          position: absolute;
+          background: #36a6ec;
+          top: calc(5vw + 38px);
+          left: -2px;
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          box-shadow: 0 0 0 3px white;
+        }
+
+        .state-date{
+          position: relative;
+          display: inline-block;
+          border-radius: 13px;
+          color: white;
+          background: #a1d8fa;
+          padding: 0 2vw;
+          height: 25px;
+          line-height: 25px;
+          margin-bottom: 15px;
+          left: -2vw;
+          box-shadow: 0 0 0 5px white;
+        }
+
+        .state-content{
+          width: 100%;
+          display: flex;
+          .state-time{
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            color: #aaaaaa;
+            img{
+              position: absolute;
+              width: 19px;
+              height: 19px;
+              top: 3px;
+              left: -20px;
+            }
+          }
+          .state-info{
+            flex: 1;
+            margin-left: 20px;
+            border: 1px solid #a1d8fa;
+            border-radius: 10px;
+            padding: 5px 5vw;
+            line-height: 30px;
+            color: #666666;
+            position: relative;
+            font-size: 1.1em;
+            span{
+              font-size: 1.2em;
+              color: #32a4ec;
+            }
+            div{
+              float: right;
+              height: 30px;
+              line-height: 30px;
+            }
+          }
+          .state-info:before{
+            content:'';
+            position: absolute;
+            top: calc(10px + 1vw);
+            left: -5vw;
+            width: 0;
+            height: 0;
+            border-left: 2.5vw solid transparent;
+            border-right: 2.5vw solid #a1d8fa;
+            border-top: 1.5vw solid transparent;
+            border-bottom: 1.5vw solid transparent;
+          }
+          .state-info:after{
+            content:'';
+            position: absolute;
+            top: calc(10px + 1vw);
+            left: calc(2px - 5vw);
+            width: 0;
+            height: 0;
+            border-left: 2.5vw solid transparent;
+            border-right: 2.5vw solid white;
+            border-top: 1.5vw solid transparent;
+            border-bottom: 1.5vw solid transparent;
+          }
+        }
+
+    }
+
+  }
+
+}

@@ -1,0 +1,31 @@
+<div class="crm crmCityModal">
+  <ion-modal-view style="width: 100vw;
+    background: none;">
+    <crm-loading ng-if="showCrmLoading"></crm-loading>
+    <div class="common-fix-div" ng-class="{true:'showUp'}[showCountryFlag]">
+      <div class="common-fix-div-header">
+        <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="showCountrySelect()"/>
+        请选择
+      </div>
+      <div class="sifting-area">
+        <img src="build/img/application/opportunity/icon_top_search@3x.png">
+        <input type="text" placeholder="搜索" ng-change="filterCountry()" ng-model="selectCity.placeKey"/>
+        <img src="build/img/application/icon_circle@3x.png" ng-show="selectCity.placeKey != ''" ng-click="clearFilter()">
+      </div>
+      <div class="country-in">
+        <div ng-click="changeChina(true)" ng-class="{true:'selected'}[inChina]">国内</div>
+        <div ng-click="changeChina(false)" ng-class="{false:'selected'}[inChina]">国外</div>
+      </div>
+      <div class="country-header" ng-show="inChina">
+        <span ng-click="placeBackTo($index)" ng-repeat="history in selectedPlaces track by $index">{{history.addressName}}</span>
+      </div>
+      <div class="list country" ng-class="{true:'in-china'}[inChina]">
+        <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="countryScroll">
+          <div class="list-item" ng-repeat="place in places track by $index" ng-click="selectPlace($index)" ng-show="place != ''">
+            {{place.addressName}}<img src="build/img/application/right_arrow@3x.png"/>
+          </div>
+        </ion-scroll>
+      </div>
+    </div>
+  </ion-modal-view>
+</div>

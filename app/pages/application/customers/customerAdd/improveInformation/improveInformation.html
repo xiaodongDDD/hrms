@@ -1,0 +1,343 @@
+<ion-view view-title="完善信息" class="crm improve-information">
+  <crm-loading ng-if="showLoading"></crm-loading>
+  <ion-header-bar align-title="center" class="bar-stable">
+    <button class="button button-clear" ng-click="goBack()">{{ 'CANCEL' | T }}</button>
+    <div class="title">{{bilingual.improve_information}}</div>
+    <button class="button button-clear" ng-click="checkData()">{{ 'SAVE' | T }}</button>
+  </ion-header-bar>
+
+  <ion-content class="employee-search-content" delegate-handle="employeeSearchHandle">
+    <!--<div  ng-if="showLoadings">-->
+      <!--<hms-loading></hms-loading>-->
+    <!--</div>-->
+    <!--基础信息 -->
+    <div class="common-input-area-title" ng-click="show(0)">
+      <img  src="build/img/application/information/base.png">
+      {{ bilingual.basic_info}}<div class="title-but">{{showFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div class="photo-upload top-margin" ng-if="!showFlag[0]">
+      <div class="photo" ng-click="showImageUploadChoices()">
+        <!--<i class="ion-ios-plus-empty add" ng-show="!isShow_image"></i>-->
+        <img  ng-src="{{imagevalue}}" class="image" >
+      </div>
+      <div class="text">
+        <div class="text1">{{customerName.fullName}}</div>
+        <div class="text2">{{customerName.simpleName==""? '&nbsp' : customerName.simpleName }}</div>
+      </div>
+    </div>
+    <div class="  " ng-if="!showFlag[0]">
+      <hms-input-item
+        ng-repeat="x in basicInformation"
+        label-name="x.text"
+        input-box="x.input"
+        important="x.important"
+        last-line="false">
+      </hms-input-item>
+      <hms-input-item
+        label-name="creditCode.text"
+        input-box="creditCode.input"
+        important="creditCode.important"
+        last-line="false"
+        hms-input="validCreditCode()">
+      </hms-input-item>
+      <hms-input-item
+        label-name="dutyParagraph.text"
+        input-box="dutyParagraph.input"
+        important="dutyParagraph.important"
+        last-line="false"
+        hms-input="validDutyParagraph()">
+      </hms-input-item>
+
+
+      <hms-select-item
+        label-name="parentCustomer.text"
+        input-box="showData.fullName"
+        important="false"
+        hms-select="showSelectDiv('parent_customer')"
+        last-line="false"
+        show-line ="true">
+      </hms-select-item>
+
+      <!--<div class="common-item-select2" ng-click="showSelectDiv('parent_customer')" >-->
+        <!--<div >{{bilingual.parent_customers}}</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.fullName" ng-readonly="true" />-->
+        <!--<i><img src="build/img/contact/right_arrow@3x.png" ></i>-->
+      <!--</div>-->
+    </div>
+   <!--联系信息-->
+    <div class="common-input-area-title" ng-click="show(1)">
+      <img class="title-image" src="build/img/application/information/contact.png" >
+      {{ bilingual.contact_info}}<div class="title-but">{{showFlag[1] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+
+    <div class="  top-margin" ng-if="!showFlag[1]">
+
+      <hms-select-item
+        label-name="address.text"
+        input-box="showData.address"
+        important="address.important"
+        hms-select="showCountrySelect()"
+        last-line="false"
+        show-line ="false">
+      </hms-select-item>
+
+      <!--<div class="common-item-input3">-->
+        <!--<div class="  padding3">{{bilingual.address_detail}}</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.addressDetail"  />-->
+        <!--<img class="location-icon" src="build/img/application/customer/detail/icon_position@3x.png">-->
+        <!--<div class="light-line4"></div>-->
+      <!--</div>-->
+      <hms-input-item
+        label-name="bilingual.address_detail"
+        input-box="data.addressDetail"
+        important="true"
+        last-line="false"
+        show-bottom-line ="false" >
+      </hms-input-item>
+      <hms-input-item
+        label-name="phone.text"
+        input-box="phone.input"
+        important="phone.important"
+        last-line="false"
+        hms-input="validPhone()">
+      </hms-input-item>
+      <hms-input-item
+        ng-repeat="x in contact"
+        label-name="x.text"
+        input-box="x.input"
+        important="x.important"
+        last-line="false"
+        show-bottom-line ="x.showLine" >
+      </hms-input-item>
+
+    </div>
+    <!--所属大区、团队、负责人、业务负责人 -->
+    <div class="common-input-area-title"  ng-click="show(2)">
+      <img class="title-image" src="build/img/application/information/team.png">
+      {{ bilingual.team }}<div class="title-but">{{showFlag[2] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+
+    <div class="  top-margin" ng-if="!showFlag[2]">
+      <!--<div class="common-item-select" ng-click="showSaleSelect()">-->
+        <!--<div class="required">{{ 'NEW_OPPORTUNITY.LONG_BELONG' | T }}</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.saleBelong" readonly/>-->
+        <!--<i><img src="build/img/contact/right_arrow@3x.png"></i>-->
+        <!--<div class="light-line3"></div>-->
+      <!--</div>-->
+      <hms-select-item
+        label-name="longBelong.text"
+        input-box="showData.saleBelong"
+        important="longBelong.important"
+        hms-select="showSaleSelect()"
+        last-line="false"
+        show-line ="false">
+      </hms-select-item>
+      <div class="common-item-input">
+        <div class="  padding3">{{bilingual.principal}}</div>
+        <input type="text"  ng-model="showData.principal" readonly />
+        <div class="common-light-line-long"></div>
+      </div>
+      <hms-select-item
+        label-name="bilingual.professional"
+        input-box="showData.normalEmployeeName"
+        important="false"
+        hms-select="showSelectDiv('normal_employee')"
+        last-line="false"
+        show-line ="true">
+      </hms-select-item>
+    </div>
+
+    <div class="common-input-area-title" ng-click="show(3)">
+      <img class="title-image" src="build/img/application/information/icon_company.png" >
+      {{  bilingual.business_detail }}<div class="title-but">{{showFlag[3] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div class=" " ng-if="!showFlag[3]">
+      <hms-select-item
+        label-name="business[0].text"
+        input-box="showData.enterpriseNature"
+        important="business[0].important"
+        hms-select="showSelectDiv('enterprise_nature')"
+        last-line="business[0].lastLine"
+        show-line ="business[0].showLine">
+      </hms-select-item>
+      <hms-select-item
+        label-name="business[1].text"
+        input-box="showData.industry"
+        important="business[1].important"
+        hms-select="showIndustrySelect()"
+        last-line="business[1].lastLine"
+        show-line ="business[1].showLine">
+      </hms-select-item>
+      <hms-select-item
+        label-name="business[2].text"
+        input-box="showData.isListed"
+        important="business[2].important"
+        hms-select="showSelectDiv('is_listed')"
+        last-line="business[2].lastLine"
+        show-line ="business[2].showLine">
+      </hms-select-item>
+      <hms-select-item
+        label-name="business[3].text"
+        input-box="showData.incomeScale"
+        important="business[3].important"
+        hms-select="showSelectDiv('income_scale')"
+        last-line="business[3].lastLine"
+        show-line ="business[3].showLine">
+      </hms-select-item>
+      <hms-select-item
+        label-name="business[4].text"
+        input-box="showData.workerScale"
+        important="business[4].important"
+        hms-select="showSelectDiv('worker_scale')"
+        last-line="business[4].lastLine"
+        show-line ="business[4].showLine">
+      </hms-select-item>
+      <hms-input-item
+        label-name="others[1].text"
+        input-box="others[1].input"
+        important="others[1].important"
+        last-line="false"
+        show-bottom-line ="others[1].showLine" >
+      </hms-input-item>
+      <!--<div class="common-item-select" ng-click="showSelectDiv('enterprise_nature')" >-->
+        <!--<div >{{bilingual.enterprise_nature}}</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.enterpriseNature" ng-readonly="true" />-->
+        <!--<i><img src="build/img/contact/right_arrow@3x.png" ></i>-->
+        <!--<div class="light-line3"></div>-->
+      <!--</div>-->
+      <!--<div class="common-item-select" ng-click="showIndustrySelect()" >-->
+        <!--<div class="required">{{bilingual.owned_industry}}</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.industry" ng-readonly="true" />-->
+        <!--<i><img src="build/img/contact/right_arrow@3x.png" ></i>-->
+        <!--<div class="light-line3"></div>-->
+      <!--</div>-->
+      <!--<div class="common-item-select" ng-click="showSelectDiv('is_listed')" >-->
+        <!--<div class="required">{{bilingual.is_listed}}</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.isListed" ng-readonly="true" />-->
+        <!--<i><img src="build/img/contact/right_arrow@3x.png" ></i>-->
+        <!--<div class="light-line3"></div>-->
+      <!--</div>-->
+      <!--<div class="common-item-select" ng-click="showSelectDiv('income_scale')">-->
+        <!--<div class="required">{{bilingual.income_scale}}</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.incomeScale" ng-readonly="true" />-->
+        <!--<i><img src="build/img/contact/right_arrow@3x.png" ></i>-->
+        <!--<div class="light-line3"></div>-->
+      <!--</div>-->
+      <!--<div class="common-item-select2" ng-click="showSelectDiv('worker_scale')" >-->
+        <!--<div class="padding-top">{{bilingual.worker_scale}}</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.workerScale" ng-readonly="true" />-->
+        <!--<i><img src="build/img/contact/right_arrow@3x.png" ></i>-->
+        <!--<div class="light-line3"></div>-->
+      <!--</div>-->
+    </div>
+
+    <div class="common-input-area-title" ng-click="show(4)">
+      <img class="title-image" src="build/img/application/information/icon_system.png" >
+      {{ bilingual.current_system_status }}<div class="title-but">{{showFlag[4] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-if="!showFlag[4]">
+      <div ng-repeat="application in applicationStatus track by $index " >
+        <div class="row application-text ">
+          <div class="col col-87 left-margin1">
+            <div class="text">{{application.productTypeName}}&nbsp;|&nbsp;{{application.productName}}</div>
+          </div>
+          <div class="col col-13 icon-div" ng-click="deleteApplication($index)">
+            <!--<i class="ion-ios-minus-outline icon"></i>-->
+            <img class="icon" src="build/img/application/information/icon_delete.png">
+          </div>
+        </div>
+        <div class="application-line"></div>
+        <div class="text-div left-padding" ng-click="edit($index)">
+          <div class="application-text-margin">
+            <span>实施公司:&nbsp;&nbsp;</span>
+            <span>{{application.implementationCompany}}</span>
+          </div>
+          <div class="application-text-margin2">
+            <span>其他说明:&nbsp;&nbsp;</span>
+            <span>{{application.description}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row application-text " ng-click="goState('tab.addApplication')">
+        <div class="col col-87 left-margin1">
+          <div class="text">添加应用</div>
+        </div>
+        <div class="col col-13 icon-div">
+          <img class="icon" src="build/img/application/information/icon_addmore@3x.png">
+        </div>
+      </div>
+    </div>
+
+    <div class="common-input-area-title" ng-click="show(5)">
+      <img  src="build/img/application/information/icon_other@3x.png" >
+      {{ bilingual.other }}<div class="title-but">{{showFlag[5] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div class="padding5"  ng-if="!showFlag[5]">
+      <hms-input-item
+        label-name="others[0].text"
+        input-box="others[0].input"
+        important="others[0].important"
+        last-line="false"
+        show-bottom-line ="others[0].showLine" >
+      </hms-input-item>
+
+    </div>
+    <!--<div class="last-div"></div>-->
+
+
+
+  </ion-content>
+  <!--所属选择区域-->
+  <div class="common-fix-div" ng-class="{true:'showUp'}[showSaleSelectFlag]">
+    <div class="common-fix-div-header">
+      <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="saleBack()"/>
+      请选择
+    </div>
+    <div class="sifting-area">
+      <img src="build/img/application/opportunity/icon_top_search@3x.png">
+      <input type="text" placeholder="搜索..."/>
+    </div>
+    <div class="value-list-header">
+      {{showSaleTeam ? showData.saleAreaName : '所属区域'}}
+    </div>
+    <div class="list list-has-header">
+      <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="saleScroll">
+        <div class="list-item" ng-repeat="saleArea in saleAreas" ng-click="selectArea(saleArea)" ng-hide="showSaleTeam">
+          {{saleArea.saleAreaName}}
+          <img src="build/img/application/opportunity/right_arrow@3x.png"/>
+        </div>
+        <div class="list-item" ng-repeat="saleTeam in saleTeams" ng-click="selectTeam(saleTeam)" ng-show="showSaleTeam">{{saleTeam.saleTeamName}}</div>
+      </ion-scroll>
+    </div>
+  </div>
+  <!--所属行业选择-->
+  <div class="common-fix-div" ng-class="{true:'showUp'}[showIndustrySelectFlag]">
+    <div class="common-fix-div-header">
+      <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="industryBack()"/>
+      请选择
+    </div>
+    <div class="sifting-area">
+      <img src="build/img/application/opportunity/icon_top_search@3x.png">
+      <input type="text" placeholder="搜索..."/>
+    </div>
+    <div class="value-list-header">
+      {{showSubIndustry ? showData.majorIndustry : '主行业'}}
+    </div>
+    <div class="list list-has-header">
+      <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="industryScroll">
+        <div class="list-item" ng-repeat="industry in majorIndustrys" ng-click="selectMajor(industry)" ng-hide="showSubIndustry">
+          {{industry.industryName}}
+          <img src="build/img/application/opportunity/right_arrow@3x.png"/>
+        </div>
+        <div class="list-item" ng-repeat="industry in subIndustrys" ng-click="selectSub(industry)" ng-show="showSubIndustry">{{industry.industryName}}</div>
+      </ion-scroll>
+    </div>
+  </div>
+
+  <div class="show-big-pic" ng-click="closeBigPic()" ng-if="showBig">
+    <img ng-src="{{imagevalue}}"/>
+  </div>
+</ion-view>
+
+

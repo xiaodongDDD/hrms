@@ -1,0 +1,27 @@
+<ion-view view-title="通讯录" class="contact-quick">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <h1 class="title">
+      通讯录
+    </h1>
+  </ion-header-bar>
+  <ion-content delegate-handle="contactQuick" overflow-scroll="true" class="contactQuickContent" style="right:20px;overflowY:hidden">
+    <div class="contact-list">
+      <div class="contact-item" ng-repeat="item in list">
+        <div class="contact-header" id="element{{item.header}}">
+          {{item.header}}
+        </div>
+        <div class="contact-element" ng-repeat="element in item.elementList" ng-click="chooseItem(element)">
+          {{element.element}}
+        </div>
+      </div>
+    </div>
+  </ion-content>
+
+  <contact-quick-bar
+    bar-element-size='12px'
+    bar-element-color="blue"
+    bar-background="#f8f8f8"
+    show-Animate=true
+    bar-element-height='14'>
+  </contact-quick-bar>
+</ion-view>

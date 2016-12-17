@@ -1,0 +1,47 @@
+<div class="modal crm hmsModal">
+  <ion-content class="sifting-fix-div filter-contact-content">
+    <div class="sifting-item"  ng-click="showSelectDiv('contactType')">
+      <img src="build/img/contact/icon_systemletter@3x.png"/>
+      <span>{{'CONTACTS.CONTACT_CATEGORY'|T}}</span>
+      <span class="item-content">    {{(showData.contactType === "" ||showData.contactType === null || showData.contactType===
+            undefined)?"请选择":showData.contactType}}</span>
+      <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+    </div>
+    <div class="sifting-item"  ng-click="showSelectDiv('status')">
+      <img src="build/img/contact/icon_business2@3x.png"/>
+      <span>{{'CONTACTS.CONTACT_STATUS'|T}}</span>
+      <span class="item-content">  {{(showData.status === "" ||showData.status === null || showData.status===
+            undefined)?"请选择":showData.status}}</span>
+      <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+    </div>
+  </ion-content>
+  <ion-footer-bar class="common-footer filter-foot" style="" >
+    <div class="footer-wrap">
+      <div class="footer-button " ng-click="filterContactsModel.hide()">
+        <div class="left-div">{{'CANCEL'|T}}</div>
+      </div>
+      <div class="footer-button" ng-click="clearParam()">
+        <div class="two-div">{{'CLEAR'|T}}</div>
+      </div>
+      <div class="button-confirm" ng-click="closeFilterContactsModel()">
+        <div>
+          <img src="build/img/application/information/icon_confirm@3x.png">
+          {{'CONFIRM'|T}}
+        </div>
+      </div>
+    </div>
+  </ion-footer-bar>
+</div>
+<style>
+/* .filterContact .modal {
+    display: block;
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    overflow: hidden;
+    min-height: 87%!important;
+    width: 100%;
+    background-color: #fff;
+    margin-top: 24%!important;
+  }*/
+</style>

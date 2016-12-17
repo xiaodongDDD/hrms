@@ -1,0 +1,219 @@
+<ion-view view-title="客户" class="crm hrms-pancel-corlor customer-inquire">
+  <crm-loading ng-if="showLoading"></crm-loading>
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
+    <div class="header-select-button">
+      <div ng-click="selectSubHeader(0)" ng-class="{true:'selected'}[subHeadersSelect[0]]">{{bilingual.all_customer}}
+      </div>
+      <div ng-click="selectSubHeader(1)" ng-class="{true:'selected'}[subHeadersSelect[1]]">{{bilingual.my_customer}}
+      </div>
+    </div>
+    <img src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="goState('tab.customerAdd')"/>
+  </ion-header-bar>
+  <div class="row bar bar-subheader titles" style="background-color: #F5F5F5;"
+       ng-class="{false:'hide-search'}[showHead]">
+
+    <div ng-click="openSearch()">
+      <div style="position: absolute;left: 20px;top: 14px;color: #fff;">
+        <img src="build/img/contact/icon_search@3x.png" style="width: 16px;">
+      </div>
+      <input placeholder="{{bilingual.search}}" ng-click="goState('tab.customerSearch')" ng-readonly="true"
+             style="padding-left:32px;margin-top:7px;margin-left:10px;height: 30px;line-height: 30px;color:#959595;border-radius: 30px;width: 95vw;background: #FFFFFF;border: none;">
+    </div>
+  </div>
+
+  <ion-content class="marginTop" ng-class="{false:'show-more'}[showHead]">
+    <ion-refresher
+      pulling-text="正在刷新数据"
+      pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+    </ion-refresher>
+
+    <div class="customer-item" ng-repeat="customer in customers" ng-click="goDetail(customer)" on-drag="onDrag($event)">
+      <div class="customer-line">
+        <!--<span class="status-blue" ng-if="customer.approveTypeName=='已提交'">{{customer.approveTypeName =='已通过'? '': customer.approveTypeName}}</span>-->
+        <!--<span class="status-red" ng-if="customer.approveTypeName=='已拒绝'">{{customer.approveTypeName =='已通过'? '': customer.approveTypeName}}</span>-->
+        <!--<span class="status-green" ng-if="customer.approveTypeName=='未审核'">{{customer.approveTypeName =='已通过'? '': customer.approveTypeName}}</span>-->
+        <!--<span ng-class="{'status-blue':customer.approveTypeName =='已提交','status-green':customer.approveTypeName =='未审核',-->
+        <!--'status-red':customer.approveTypeName =='已拒绝'}" >-->
+          <span  ng-class="{'已提交':'status-blue','未提交':'status-green','已拒绝': 'status-red'}[customer.approveTypeName]" >
+        {{customer.approveTypeName =='已审核'? '': customer.approveTypeName}}</span>
+        <span class="customer-company">{{customer.fullName}}</span>
+        <span class="customer-name">{{customer.saleEmployee}}</span>
+      </div>
+      <div class="customer-line2">
+        <div class="row no-padding">
+          <!--<img class="house" src="build/img/application/customer/icon_house_blue@3x.png">
+          <span class="customer-location">{{customer.cityName}}</span>
+          <img class="house" style="margin-left: 10px" src="build/img/application/customer/icon_flat_blue@3x.png">
+          <span class="customer-location">{{customer.saleArea}}</span>
+          <span class="customer-group">{{customer.saleTeam}}</span>
+          <img class="team customer-group" src="build/img/application/customer/icon_team_red@3x.png">-->
+          <div class="col no-padding" style="padding-left: 3px"
+               ng-class="{true:'col-80',false:'col-67'}[!customer.saleTeam || customer.saleTeam == '']">
+            <img class="team1" src="build/img/application/customer/icon_house_blue@3x.png">
+            <span>{{customer.cityName}}</span>
+            <img class="team1" style="margin-left: 10px" src="build/img/application/customer/icon_flat_blue@3x.png">
+            <span class="">{{customer.saleArea}}</span>
+          </div>
+          <div class="col no-padding" style="text-align:right"
+               nng-class="{true:'col-20',false:'col-33'}[!customer.saleTeam || customer.saleTeam == '']">
+            <img class="team" src="build/img/application/customer/icon_team_red@3x.png">
+            <span class="">{{customer.saleTeam}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ion-infinite-scroll
+      on-infinite="loadMoreData()"
+      ng-if="loadMoreDataFlag"
+      distance="1%">
+    </ion-infinite-scroll>
+  </ion-content>
+
+  <div class="bottom-button" ng-class="{true:'showUp'}[showHead]">
+    <div ng-click="showShiftDiv()"><img src="build/img/application/opportunity/icon_select_blue@3x.png"/>{{ 'FILTER' | T
+      }}
+    </div>
+    <div ng-click="showSortDiv()"><img src="build/img/application/opportunity/icon_select_list@3x.png"/>{{ 'SORT' | T }}</div>
+  </div>
+
+  <div class="common-fix-div sifting-fix-div" ng-class="{true:'showUp'}[showShift]">
+
+    <div class="sifting-header" ng-class="{true:'sifting-header-ios',false:'sifting-header'}[isIos]">
+      <img ng-click="showShiftDiv()" src="build/img/application/customer/detail/top_left_arrow@3x.png"/>
+      {{bilingual.my_customer}}
+    </div>
+    <div class="filter-scroll">
+      <ion-scroll class="filter-scroll"  delegate-handle="subHeaderScroll" direction="y" scrollbar-y="false" has-bouncing="true">
+      <div class="sifting-item" ng-click="showSelectDiv('parent_customer')">
+        <img src="build/img/application/icon_custom@3x.png"/>
+        <span>{{ filterBilingual.parent_customers}}</span>
+        <span class="item-content">{{showData.fullName}}</span>
+        <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('belongs_region')">
+        <img src="build/img/application/customer/icon_flat_blue@3x.png"/>
+        <span>{{filterBilingual.belongs_to_the_region}}</span>
+        <span class="item-content">{{showData.saleAreaName}}</span>
+        <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('team')">
+        <img src="build/img/application/opportunity/icon_team@3x.png"/>
+        <span>{{filterBilingual.team}}</span>
+        <span class="item-content">{{showData.team}}</span>
+        <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('principal')">
+        <img src="build/img/application/customer/icon_leader@3x.png"/>
+        <span>{{filterBilingual.principal}}</span>
+        <span class="item-content">{{showData.principal}}</span>
+        <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+      </div>
+      <div class="sifting-item" ng-click="showCountrySelect()">
+        <img src="build/img/application/customer/icon_house_blue@3x.png"/>
+        <span>{{bilingual.location}}</span>
+        <span class="item-content">{{showData.address}}</span>
+        <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+      </div>
+
+      <div class="sifting-item" ng-click="showSelectDiv('ENTERPRISE_NATURE')">
+        <img src="build/img/application/information/icon_company.png"/>
+        <span>{{filterBilingual.enterprise_nature}}</span>
+        <span class="item-content">{{showData.enterpriseNature}}</span>
+        <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('major_industry')">
+        <img src="build/img/application/customer/icon_industry@3x.png"/>
+        <span>{{filterBilingual.major_industry}}</span>
+        <span class="item-content">{{showData.majorIndustry}}</span>
+        <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('sub_industry')">
+        <img src="build/img/application/customer/icon_industry@3x.png"/>
+        <span>{{filterBilingual.sub_industry}}</span>
+        <span class="item-content">{{showData.subIndustry}}</span>
+        <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+      </div>
+      <div class="sifting-item" style="padding-right: 5px">
+        <img src="build/img/application/customer/icon_up@3x.png"/>
+        <span>{{filterBilingual.is_listed}}</span>
+        <div class="div1">
+          <!--<input class="radio1" type="radio" name="isListed"><span style="margin-right: 5vw">是</span>-->
+          <!--<input class="radio1" type="radio" name="isListed" ><span>否</span>-->
+          <div class="yes" ng-click="selectTime(2)">
+            <img class="select"
+                 ng-src="{{'build/img/application/plans/' + (timeItems[2].flag ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+            {{timeItems[2].text}}
+          </div>
+          <div class="yes" ng-click="selectTime(0)">
+            <img class="select"
+                 ng-src="{{'build/img/application/plans/' + (timeItems[0].flag ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+            {{timeItems[0].text}}
+          </div>
+
+          <div class="no" ng-click="selectTime(1)">
+            <img class="select"
+                 ng-src="{{'build/img/application/plans/' + (timeItems[1].flag ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+            {{timeItems[1].text}}
+          </div>
+        </div>
+        <!--<div class="div2"><input class="radio1" type="radio" name="isListed" >否</div>-->
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('income_scale')">
+        <img src="build/img/application/customer/icon_money@3x.png"/>
+        <span>{{filterBilingual.income_scale}}</span>
+        <span class="item-content">{{showData.incomeScale}}</span>
+        <img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+      </div>
+      <div class="sifting-item multi-item">
+        <img src="build/img/application/opportunity/icon_day.png"/>
+        <span>{{ 'CONTACTS.CREATE_DATA' | T }}</span>
+        <div class="time-area">
+          <div ng-click="selectDate('creationDateFrom')">{{showData.creationDateFrom == '' ? 'From' :
+            showData.creationDateFrom}}
+          </div>
+          <span class="line">~</span>
+          <div ng-click="selectDate('creationDateTo')">{{showData.creationDateTo == '' ? 'To' :
+            showData.creationDateTo}}
+          </div>
+        </div>
+      </div>
+        </ion-scroll>
+    </div>
+      <ion-footer-bar class="common-footer" ng-if="showShift">
+        <div class="footer-wrap">
+          <div class="footer-button " ng-click="showShiftDiv()">
+            <div class="left-div">{{'CANCEL'|T}}</div>
+          </div>
+          <div class="footer-button" ng-click="clearSifting()">
+            <div class="two-div">{{'CLEAR'|T}}</div>
+          </div>
+          <div class="button-confirm" ng-click="sifting()">
+            <div>
+              <img src="build/img/application/information/icon_confirm@3x.png">
+              {{'CONFIRM'|T}}
+            </div>
+          </div>
+        </div>
+      </ion-footer-bar>
+  </div>
+
+  <div class="common-fix-div sifting-fix-div sort-div" ng-class="{true:'showUp'}[showSort]" ng-click="showSortDiv()" on-drag="stopBubble($event)">
+    <div class="sifting-header">
+      客户排序
+    </div>
+    <div class="sifting-item" ng-repeat="item in sortList track by $index" ng-click="selectSort($index)">
+      <img ng-src="{{'build/img/application/customer/' + item.icon + '@3x.png'}}"/>
+      <span>{{item.text}}</span>
+      <img src="build/img/application/icon_right@3x.png" class="right-img" ng-show="lastSelectSortIndex == $index">
+    </div>
+  </div>
+</ion-view>
+<style>
+  .item-toggle div {
+    font-size: 1.1em;
+  }
+</style>
+
+

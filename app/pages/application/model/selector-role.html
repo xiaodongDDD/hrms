@@ -1,0 +1,16 @@
+<ion-modal-view style="    background: none;"  ng-click="roleHide()">
+  <div class="modal hmsModal">
+    <ion-header-bar class="bar bar-border-bottom">
+      <h1 class="title">{{title}}</h1>
+      <a class="createNewRecord" ng-click="modal.hide()">
+        <i class="ion-android-close closeIcon">
+        </i>
+      </a>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+        <div class="item" ng-repeat="i in linkRoleData" ng-click="chooseRole(i)">{{i.description}}</div>
+      </div>
+    </ion-content>
+  </div>
+</ion-modal-view>

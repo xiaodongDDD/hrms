@@ -1,0 +1,27 @@
+<ion-modal-view style="    background: none;" ng-click="closeModal()">
+  <div class="modal hmsManyDataModal">
+    <ion-header-bar class="bar bar-positive">
+      <div class="buttons">
+        <button class="button" ng-click="closeModal()">返回</button>
+      </div>
+      <h1 class="title">{{hmsTitle}}</h1>
+      <div class="buttons">
+        <button class="button" ng-click="clear()">清选</button>
+      </div>
+    </ion-header-bar>
+    <ion-header-bar class="bar-subheader">
+      <div>
+        <div class="input-left"><i class="ion-ios-search"></i></div>
+        <div class="input-style">
+          <input class="input-search" placeholder="请输入查询信息" ng-model="info.filter"/>
+          <div class="delete" ng-show="info.filter !== ''" ng-click="delete()"><i class="ion-close"></i></div>
+        </div>
+      </div>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+        <div class="item" ng-repeat="i in hmsModalValue | filter:info.filter" ng-click="choose(i)">{{i}}</div>
+      </div>
+    </ion-content>
+  </div>
+</ion-modal-view>

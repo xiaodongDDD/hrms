@@ -1,0 +1,161 @@
+.contact-search{
+  .item-complex .item-content, .item-radio .item-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 !important;
+    /* padding: 16px 49px 16px 16px; */
+    border: none;
+    background-color: #fff;
+  }
+  background: #f5f5f5;
+  .link-header{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 35px;
+    margin-left: 3%;
+  }
+  .link-header input::-webkit-input-placeholder{
+    color: #959595;
+    font-size: 1em;
+    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+  }
+  .link-header input:-moz-placeholder {
+    color: #959595;
+    font-size: 1em;
+    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+  }
+  .link-header input:-ms-input-placeholder {
+    color: #959595;
+    font-size: 1em;
+    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+  }
+  .link-header-left{
+    float: left;width:100%
+  }
+  .link-header-left img{
+    width: 18px;
+    position: absolute;
+    left: 7%;
+    top: 7px;
+    color: #fff;
+  }
+  .link-header-left input{
+    padding-left:16%;height:28px;border-radius: 30px;width: 100%;background: #E3E4E6;border: none;    line-height: 28px;
+  }
+  .link-header-right{
+    float: left; width:20%;
+  }
+  .link-header-right img{
+    width: 20px;
+    margin: auto;
+    position: absolute;
+    right: 3%;
+    top: 6px;
+  }
+  .ion-ios-telephone{
+    color: #000000;
+  }
+  .row+.row {
+    margin: 0!important;
+  }
+  .failure{
+    background: #CCCCCC;
+    padding: 1px;
+    font-size: 13px;
+    border: 1px solid #AAAAAA;
+    border-radius: 1px;
+    text-align: center;
+  }
+  .link-item{
+    padding-top:0;padding-bottom:0;height: 75px;
+  }
+  .with-border{
+    border-bottom: 1px solid rgba(221, 221, 221, 0.6);
+  }
+  .linkRole{
+    margin-left: 2px;
+    font-size: 13px;
+    color: #aaaaaa;
+  }
+  .department{
+    color: #666666;
+    margin-right: 10px;
+    font-size: 14px;
+  }
+  .duty{
+    color: #868585;
+    margin-left: 10px;
+    font-size: 14px;
+  }
+
+  .linkclass{
+    background: #B0E3FF;
+    padding: 1px;
+    font-size: 13px;
+    border-bottom: 1px solid #e9e9e9;
+    border-radius: 1px;
+    text-align: center;
+  }
+  .info-item-con{
+    color: #AAAAAA;
+    text-align: right;
+  }
+  .bar-show{
+    background: #ffffff;
+    color: #000000;
+    border-bottom: 0.5px solid #E1E1E1;
+    height: 40px;
+  }
+  .bar-gray-show{
+    background: #f5f5f5;
+    color: #666666;
+    /* border-bottom: 0.5px solid #E2e3e5; */
+    padding-left: 17px;
+    height: 35px;
+  }
+  .bar-show img{
+    width: 20px;
+    position: relative;
+    top: 2px;
+    left: 29%;
+  }
+  .result-style{
+    color: #959595;padding-left: 1%;
+  }
+  .result-right-button{
+    text-align:right;color:#32A4EC;padding-right: 3%;
+  }
+  .item-bg{
+    padding:0!important;background: #ffffff
+  }
+  .header-img{
+    border-radius: 50%;width:100%;padding-left: 8px;
+  }
+  .header-img img{
+    width: 40px;
+    margin-top: 2px;
+  }
+  .sex-img{
+    width: 15px;
+    margin-left: 5px;
+    /* margin-top: 1px; */
+    margin-right: 10px;
+    position: relative;
+    top: 1px;
+  }
+  .phone-icon{
+    width: 22px;
+    position: relative;
+    right: -23%;
+    top: 2px;
+  }
+  .button-delete-icon{
+    background: #FE9073
+  }
+  .button-delete-icon img{
+    width: 20px;
+    position: relative;
+    left: 16px;
+  }
+}

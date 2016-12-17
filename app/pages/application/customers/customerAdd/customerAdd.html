@@ -1,0 +1,39 @@
+<ion-view view-title="新建客户" class="crm customer-add">
+
+  <ion-header-bar align-title="center" class="bar-stable">
+    <span class="button button-icon icon btn:active back-button text-title"
+          ng-click="goBack()">{{bilingual.cancel}}</span>
+    <h2 class="title">{{bilingual.create_customer}}</h2>
+  </ion-header-bar>
+
+  <ion-content>
+    <!--<div  ng-if="showLoadings">-->
+    <!--<hms-loading></hms-loading>-->
+    <!--</>div-->
+    <hms-input-item
+      ng-repeat="x in items"
+      label-name="x.text"
+      input-box="x.input"
+      important="x.important"
+      last-line="$last">
+    </hms-input-item>
+
+    <!--hide-bottom-line="true"-->
+    <!--<hms-select-item
+      ng-repeat="y in selectModalList"
+      label-name="y"
+      input-box="x"
+      important="true"
+      last-line="$last"
+      hms-select="hmsSelect()">
+    </hms-select-item>-->
+    <div class="searchMess" ng-click="showMessage()">
+      查询企业工商信息>>
+    </div>
+    <button class="button button-block logout-button" ng-disabled="showLoadings" ng-click="add()">
+      <img class="button-img" src="build/img/application/information/icon_confirm@3x.png">{{bilingual.confirm}}
+    </button>
+
+  </ion-content>
+
+</ion-view>

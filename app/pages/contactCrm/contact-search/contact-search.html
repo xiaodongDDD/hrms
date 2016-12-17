@@ -1,0 +1,110 @@
+<ion-view class="crm transmit-person-modal globelSearch contact-search">
+  <ion-header-bar class="bar-stable" align-title="center">
+    <form ng-submit="searchResult(selectParam)" class="form-style">
+      <div class="transmit-search">
+        <div class="transmit-button">
+          <img src="build/img/contact/icon_search@3x.png">
+        </div>
+        <input style="margin-left: -15px!important;" id="customerLinkmaninput" placeholder="{{'CONTACTS.SEARCH'|T}}"
+               ng-model="searched.keyWord"
+               ng-change="searchContacts()">
+        <img src="build/img/application/icon_circle@3x.png" class="employee-clear-img"
+             ng-if="searched.keyWord!=''"
+             ng-click="clearInputContent()"/>
+      </div>
+    </form>
+    <div class="buttons transmit-buttons">
+      <button class="button button-icon icon button-text" ng-click="hideSearch()">
+        <span>{{'CANCEL'| T }}</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="employee-search-content">
+    <div class="hideContent" ng-hide="showContent">
+      <div class="hide-icon">
+        <ion-spinner icon="ios-small" class="spinner spinner-ios"></ion-spinner>
+      </div>
+    </div>
+    <div ng-show="showContent">
+      <div ng-if="historyContact.length==0&&searched.keyWord==''">
+        <div class="history-img" style="" align="center" scroll-height-img>
+          <div>
+            <img src="build/img/application/search_miss@3x.png">
+          </div>
+          <div class="with-margin">
+            {{'GLOBEL_SEARCH.NO_HISTORY'|T}}
+          </div>
+        </div>
+      </div>
+      <div ng-if="searched.keyWord==''&&historyContact.length !== 0" class="searchResult">
+        <div class="row history-logo-wrap">
+          <span class="col-25 history-logo col-center"> {{'GLOBEL_SEARCH.HISTORY_RECORD'|T}}</span>
+        </div>
+        <div class="item-bg" ng-repeat="item in historyContact"
+             ng-class="{'no-top-border-color':$index===0}">
+          <div class="row link-item with-border">
+            <div class="col col-15 col-center" ng-click="goDetail(item)">
+              <div class="header-img">
+                <img src="build/img/contact/user_img2@3x.png">
+              </div>
+            </div>
+            <div class="col col-75 col-center" ng-click="goDetail(item)">
+              <div class="row">
+                <span style="font-size: 17px;">{{item.name}}</span>
+                <span> <img src="{{item.sexImg}}" class="sex-img"></span>
+                <span class="linkRole">{{item.position}}</span>
+              </div>
+              <div class="row ">
+                <span class="department">{{item.fullName}}</span>
+              </div>
+            </div>
+            <div class="col col-10 col-center" align="center" ng-click="deleteItem(item,$index)">
+              <div class="col">
+                <img src="build/img/application/icon_wrong@3x.png" class="phone-icon with-margin-top">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clear-button" align="center">
+          <img src="build/img/application/icon_delete_blue@3x.png">
+
+          <div class="button button-clear" ng-if="historyContact.length !== 0" ng-click="deleteHistory()">
+            {{'GLOBEL_SEARCH.CLEAR_DATA'|T}}
+          </div>
+        </div>
+      </div>
+      <div id="dataS">
+        <div class="item-bg" ng-repeat="item in searchData" ng-if="searched.keyWord!=''">
+          <div class="row link-item with-border">
+            <div class="col col-15 col-center" ng-click="goDetail(item)">
+              <div class="header-img">
+                <img src="build/img/contact/user_img2@3x.png">
+              </div>
+            </div>
+            <div class="col col-65 col-center" ng-click="goDetail(item)">
+              <div class="row">
+                <span style="font-size: 17px;">{{item.name}}</span>
+                <span> <img src="{{item.sexImg}}" class="sex-img"></span>
+                <span class="linkRole">{{item.position}}</span>
+              </div>
+              <div class="row ">
+                <span class="department">{{item.fullName}}</span>
+              </div>
+            </div>
+            <div class="col col-20 col-center" align="center">
+              <div class="col"><a href="tel:{{item.phone}}">
+                <img src="build/img/contact/icon_phone_green@3x.png" class="phone-icon">
+              </a></div>
+            </div>
+          </div>
+        </div>
+        <ion-infinite-scroll
+          ng-if="moreDataCanBeLoaded"
+          on-infinite="loadMore()"
+          distance="1%">
+        </ion-infinite-scroll>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+

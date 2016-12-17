@@ -1,0 +1,48 @@
+<div class="crmCityModal">
+  <ion-modal-view style="width: 100vw;
+    background: none;">
+    <crm-loading ng-if="showCrmLoading"></crm-loading>
+    <div class="common-fix-div" ng-class="{true:'showUp'}[showShareFlag]">
+      <div class="common-fix-div-header">
+        <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="showShareSelect()"/>
+        请选择
+      </div>
+      <div class="sifting-area">
+        <img src="build/img/application/opportunity/icon_top_search@3x.png">
+        <input type="text" placeholder="搜索" ng-change="filterShare()" ng-model="selectCity.placeKey"/>
+        <img src="build/img/application/icon_circle@3x.png" ng-show="selectCity.placeKey != ''" ng-click="clearFilter()">
+      </div>
+      <div class="country-in">
+        <div ng-click="changePersonal(true)" ng-class="{true:'selected'}[inPersonal]">个人</div>
+        <div ng-click="changePersonal(false)" ng-class="{false:'selected'}[inPersonal]">团队</div>
+      </div>
+
+      <div class="list country" ng-class="{true:'in-china'}[inPersonal]">
+        <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="countryScroll">
+          <div class="list-item" ng-repeat="data in shareData track by $index" ng-click="selectShare($index)" ng-show="data != ''">
+            {{data.showModal}}<img src="build/img/application/right_arrow@3x.png"/>
+          </div>
+          <ion-infinite-scroll
+            on-infinite="loadMoreData()"
+            distance="1%"
+            immediate-check="false"
+            ng-if="moreDataCanBeLoaded">
+          </ion-infinite-scroll>
+        </ion-scroll>
+      </div>
+      <!--<div class="sifting-item multi-item">-->
+        <!--<img src="build/img/application/opportunity/icon_day.png"/>-->
+        <!--<span>{{ 'CONTACTS.CREATE_DATA' | T }}</span>-->
+        <!--<div class="time-area">-->
+          <!--<div ng-click="selectDate('creationDateFrom')">{{showData.creationDateFrom == '' ? 'From' :-->
+            <!--showData.creationDateFrom}}-->
+          <!--</div>-->
+          <!--<span class="line">~</span>-->
+          <!--<div ng-click="selectDate('creationDateTo')">{{showData.creationDateTo == '' ? 'To' :-->
+            <!--showData.creationDateTo}}-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    </div>
+  </ion-modal-view>
+</div>

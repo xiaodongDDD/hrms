@@ -139,7 +139,7 @@ angular.module('applicationModule')
         }, {
           appName: "联系人",
           imageUrl: "build/img/application/application/personnelPolicy@3x.png",
-          destUrl: "tab.contact"
+          destUrl: "tab.contactCrm"
         }, {
           appName: "线索",
           imageUrl: "build/img/application/application/personnelPolicy@3x.png",

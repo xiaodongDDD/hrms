@@ -1,0 +1,22 @@
+<div class="hmsSelectModal">
+  <ion-modal-view class="flight-select-modal">
+    <ion-header-bar class="header-color">
+      <h1 class="title title-color">{{modalTitle}}</h1>
+      <div class="buttons">
+        <button class="button button-clear" ng-click="canceljj()">
+          <span class="bar-right-button">取消</span>
+        </button>
+      </div>
+    </ion-header-bar>
+    <ion-content class="back-color">
+      <div class="list">
+        <div ng-repeat="x in valueList" class="item apply-item non-selected-font" style="border: none;padding: 0px;margin-top: 10px" ng-click="finishjj(x)">
+          <div class="row hand-no-space">
+            <label class="modal-label">{{x}}</label>
+          </div>
+          <div class="light-line" style="margin-top: 10px"></div>
+        </div>
+      </div>
+    </ion-content>
+  </ion-modal-view>
+</div>

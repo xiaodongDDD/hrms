@@ -1,0 +1,31 @@
+<div ng-controller="CustomerDetailStateCtrl" class="customer-detail-state">
+  <crm-loading ng-if="showLoading"></crm-loading>
+  <ion-refresher
+    pulling-text="正在刷新数据"
+    pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+  </ion-refresher>
+
+  <div class="state-container">
+    <div class="state-item" ng-repeat="state in states">
+      <div class="time-line"></div>
+        <span class="state-date">
+          {{state.logDate.substr(0,10)}}
+        </span>
+      <div class="state-content">
+        <div class="state-time">
+          <img src="build/img/application/customer/detail/icon_history@3x.png"/>
+          {{state.logDate.substr(-8,8)}}
+        </div>
+        <div class="state-info">
+          <span>{{state.operationTypeName}}</span><div>{{state.operationByName}}</div><br>
+          {{state.dynamicsContent}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <ion-infinite-scroll
+    on-infinite="loadMoreData()"
+    ng-if="loadMoreDataFlag"
+    distance="1%">
+  </ion-infinite-scroll>
+</div>

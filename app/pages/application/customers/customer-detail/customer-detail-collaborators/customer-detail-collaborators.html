@@ -1,0 +1,134 @@
+<div ng-controller="CustomerDetailCollaboratorsCtrl" class="CustomerDetailCollaborators">
+  <div class="hideContent" ng-show="showCrmLoading">
+    <div class="hide-icon">
+      <ion-spinner icon="ios-small" class="spinner spinner-ios"></ion-spinner>
+    </div>
+  </div>
+  <div ng-hide="showCrmLoading">
+    <ion-refresher
+      pulling-text="正在刷新数据"
+      pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+    </ion-refresher>
+    <ion-list>
+      <ion-item style="padding:0!important;background: #ffffff">
+        <div class="row row-center" style="padding:0;height: 80px">
+          <div class="col col-60" ng-click="goDetail(item)">
+            <div class="row row-center">
+              <div class="col">
+                <span style="font-size: 17px;color:#333333;margin-left:5px;">{{leading_official.saleEmployee}}</span>
+              <span class="linkRole" style=" margin-left:10px; font-size: 14px;
+    color: #aaaaaa;">({{leading_official.employeeCode}})</span>
+              </div>
+
+            </div>
+            <div class="row row-center" style="    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    font-size: 15px;
+    margin-top: 0px;
+    padding-top: 5px;
+    margin-bottom: 8px;">
+              <div class="col">
+               <span style="margin-right: 5px;color:#666666">
+              {{leading_official.saleArea}}
+            </span>
+              </div>
+            </div>
+          </div>
+          <div class="col col-40" style="padding-top: 9px;">
+            <div class="row row-center" ng-click="goDetail(item)">
+              <div class="col" style="text-align: right">
+                <span class="state-date"> 负责人</span>
+              </div>
+            </div>
+            <div class="row row-center">
+              <div class="col item-phone">
+                <a href="tel:{{leading_official.phoneNumber}}" ng-if="empno!=leading_official.employeeCode">
+                  <img src="build/img/contact/icon_phone_green@3x.png" style="width: 26px;">
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <ion-option-button class=" button-delete-icon"
+                           ng-click="transfer(item)" style="">
+          <div style="color:#fff;width:50px;"> 转移</div>
+        </ion-option-button>
+      </ion-item>
+      <ion-item ng-repeat="item in collaborators" style="padding:0!important;background: #ffffff">
+        <div class="row row-center" style="padding:0;height: 80px">
+          <div class="col col-60" ng-click="goDetail(item)">
+            <div class="row row-center">
+              <div class="col">
+                <span style="font-size: 17px;color:#333333;margin-left:5px;">{{item.name}}</span>
+              <span class="linkRole" style=" margin-left:10px; font-size: 14px;
+    color: #aaaaaa;" ng-if="item.employeeCode!=''">({{item.employeeCode}})</span>
+              </div>
+
+            </div>
+            <div class="row row-center" style="    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    font-size: 15px;
+    margin-top: 0px;
+    padding-top: 5px;
+    margin-bottom: 8px;">
+              <div class="col">
+               <span style="margin-right: 5px;color:#666666">
+              {{item.saleArea}}
+            </span>
+              </div>
+            </div>
+          </div>
+          <div class="col col-40" style="padding-top: 9px;">
+            <div class="row row-center" ng-click="goDetail(item)">
+              <div class="col" style="text-align: right">
+                <span class="state-date"> {{item.shareType=='HCRM_SHARE_TEAM'?'协作团队':'协作人'}}</span>
+              </div>
+            </div>
+            <div class="row row-center">
+              <div class="col item-phone">
+                <a href="tel:{{item.phoneNumber}}" ng-if="item.shareType!='HCRM_SHARE_TEAM'">
+                  <img src="build/img/contact/icon_phone_green@3x.png" style="width: 26px;">
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ion-option-button class=" button-delete-icon"
+                           ng-click="collaboratorInvalid(item,$index)" style="">
+          <div style="color:#fff;width:50px;">失效</div>
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll
+      immediate-check="false"
+      ng-if="moreDataCanBeLoaded"
+      on-infinite="loadMoreColl()"
+      distance="1%">
+    </ion-infinite-scroll>
+    <div style="height: 70px;"></div>
+  </div>
+</div>
+<style>
+  .button-delete-icon {
+    background: #FE9073
+  }
+
+  .button-delete-icon img {
+    width: 20px;
+    position: relative;
+    left: 16px;
+  }
+
+  .item-complex .item-content, .item-radio .item-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 !important;
+    /* padding: 16px 49px 16px 16px; */
+    border: none;
+    background-color: #fff;
+  }
+
+</style>

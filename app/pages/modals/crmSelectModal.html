@@ -1,0 +1,32 @@
+<div class="crm crmSelectModal">
+  <ion-modal-view style="width: 100vw;background: none;">
+    <crm-loading ng-if="showCrmLoading"></crm-loading>
+    <div class="common-fix-div" ng-class="{true:'showUp'}[showSelect]">
+      <div class="common-fix-div-header">
+        <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="showSelectDiv()"/>
+        请选择
+      </div>
+      <div class="sifting-area">
+        <img src="build/img/application/opportunity/icon_top_search@3x.png">
+        <input type="search" placeholder="搜索" ng-change="searchSelectValue()" ng-model="searchModel.searchValueKey"/>
+        <img src="build/img/application/icon_circle@3x.png" ng-show="searchModel.searchValueKey != ''" ng-click="clearSelectFilter()">
+      </div>
+      <div class="list">
+        <ion-content class="srcoll-content"  has-bouncing="true"   delegate-handle="listScroll">
+          <div class="list-item" ng-repeat="item in items track by $index" ng-click="selectItem($index)"
+               ng-show="item != ''">{{item[nowSelectTarget['showKey']]}}
+          </div>
+          <!--   <div class="noData" ng-show="items.length == 0 || noDataFlag">
+            &lt;!&ndash;   <img src="build/img/application/search_miss@3x.png"/><br>&ndash;&gt;
+             </div>-->
+          <ion-infinite-scroll
+            on-infinite="loadMore()"
+            distance="1%"
+            immediate-check="false"
+            ng-if="nowSelectTarget.needShowMore && moreDataCanBeLoaded">
+          </ion-infinite-scroll>
+        </ion-content>
+      </div>
+    </div>
+  </ion-modal-view>
+</div>

@@ -1,0 +1,48 @@
+.addLinkman{
+  ion-header-bar {
+    background: #f8f8f8 !important;
+    border-bottom:1px solid rgba(178, 178, 178, 0.3);
+  }
+  .img-add{
+    width: 15px;
+    position: relative;
+    right: -6px;
+  }
+  .item-toggle, .item-toggle.item-complex .item-content {
+    /* padding-right: 99px; */
+    width: 100%;
+    border: none;
+  }
+  .item-toggle .toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px!important;
+    z-index: 3;
+  }
+  input{
+    border: none;
+    background-color: #ffffff!important;
+  }
+  .info-title{
+    text-align: center;
+    background:#d8d8d8;
+    color: #000000;
+    border-bottom: 1px solid #4d4d4d;
+    height: 30px;
+    line-height: 31px;
+  }
+  .import-info{
+    color: red;
+    margin-left: 5px;
+  }
+  .info-item{
+    border-bottom: 1px solid #d8d8d8;
+  }
+  .info-item-name{
+    color: #4d4d4d;
+  }
+  .info-item-con{
+    color: #AAAAAA;
+    text-align: right;
+  }
+}

@@ -1,0 +1,36 @@
+<div ng-controller="CustomerDetailOpportunityCtrl" class="customer-detail-opportunity">
+  <crm-loading ng-if="showLoading"></crm-loading>
+  <ion-refresher
+    pulling-text="正在刷新数据"
+    pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+  </ion-refresher>
+  <div class="opportunity-item" ng-click="goDetail(opportunity)" ng-repeat="opportunity in opportunities">
+    <div class="item-header">
+      {{ 'OPPORTUNITIES.CREATION_DATE' | T }}:{{opportunity.creationDate.split(' ')[0]}}
+      <span>
+        <img src="build/img/application/opportunity/icon_hot@3x.png" ng-show="opportunity.opportunityStatus == 'HCRM_HOT_CHANCE'"/>
+        {{opportunity.opportunityStatusName}}
+      </span>
+    </div>
+    <div class="opportunity-info">
+      <div>
+        <div class="opportunity-name">{{opportunity.opportunityName}}</div>
+        <div class="opportunity-belong">
+          <img src="build/img/application/opportunity/icon_leader_gray@3x.png"/>{{opportunity.saleEmployeeName}}
+          <img src="build/img/application/opportunity/icon_flat_gray@3x.png"/>{{opportunity.saleAreaName}}&nbsp;
+          <img src="build/img/application/opportunity/icon_team_gray@3x.png"/>{{opportunity.saleTeamName}}
+        </div>
+      </div>
+      <div class="more-bottom-margin">
+        <span class="cost-title">{{ 'OPPORTUNITIES.ANTICIPATED_REVENUE' | T }}</span>
+        <span class="money">￥{{opportunity.preMoney}}</span>
+      </div>
+    </div>
+  </div>
+  <ion-infinite-scroll
+    on-infinite="loadMoreOpportunity()"
+    distance="1%"
+    ng-if="moreOpportunityCanBeLoaded">
+  </ion-infinite-scroll>
+
+</div>

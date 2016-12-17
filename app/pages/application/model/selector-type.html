@@ -1,0 +1,16 @@
+<ion-modal-view style="    background: none;" ng-click="typeHide()">
+  <div class="modal hmsModal">
+    <ion-header-bar class="bar bar-border-bottom">
+      <h2 class="title">{{title}}</h2>
+      <a class="createNewRecord" ng-click="modal.hide()">
+        <i class="ion-android-close closeIcon">
+        </i>
+      </a>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list">
+        <div class="item" ng-repeat="i in linkclassdata" ng-click="chooseType(i)">{{i.description}}</div>
+      </div>
+    </ion-content>
+  </div>
+</ion-modal-view>

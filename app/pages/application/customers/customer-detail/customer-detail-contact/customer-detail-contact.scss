@@ -1,0 +1,74 @@
+
+.CustomerDetailContact{
+  .item-complex .item-content, .item-radio .item-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 !important;
+    /* padding: 16px 49px 16px 16px; */
+    border: none;
+    background-color: #fff;
+  }
+  .button-delete-icon{
+    background: #FE9073
+  }
+  .button-delete-icon img{
+    width: 20px;
+    position: relative;
+    left: 16px;
+  }
+}
+.CustomerDetailContact{
+  .ion-ios-telephone{
+    color: #000000;
+  }
+  .row+.row {
+    margin: 0!important;
+  }
+  .failure{
+    background: #CCCCCC;
+    padding: 1px;
+    font-size: 13px;
+    border: 1px solid #AAAAAA;
+    border-radius: 1px;
+    text-align: center;
+  }
+  .link-item{
+    border-bottom: 1px solid #E1E1E1;
+  }
+  .linkRole{
+    margin-left: 15px;
+    font-size: 13px;
+    color: #aaaaaa;
+  }
+  .duty{
+    color: #868585;
+    margin-left: 10px;
+  }
+
+  .linkclass{
+    background: #B0E3FF;
+    padding: 1px;
+    font-size: 13px;
+    border: 1px solid #aaaaaa;
+    border-radius: 1px;
+    text-align: center;
+  }
+  .info-item-con{
+    color: #AAAAAA;
+    text-align: right;
+  }
+
+  .state-date {
+    position: relative;
+    display: inline-block;
+    border-radius: 13px;
+    color: white;
+    background: #a1d8fa;
+    padding: 1px 7px 1px 8px;
+    height: 22px;
+    line-height: 20px;
+    box-shadow: 0 0 0 5px white;
+    font-size: 14px;
+  }
+
+}

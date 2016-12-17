@@ -1,0 +1,29 @@
+<div class="clues" ng-controller="CustomerDetailClueCtrl">
+  <ion-refresher
+    pulling-text="正在刷新数据"
+    pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+  </ion-refresher>
+
+  <div class="clue-item" ng-repeat="clue in opportunities" ng-click="goDetail(clue.opportunityId)">
+    <div class="item-header">
+      {{ 'OPPORTUNITIES.CREATION_DATE' | T }}:{{clue.creationDate.split(' ')[0]}}
+      <span>{{clue.opportunityStatusName}}</span>
+    </div>
+    <div class="clue-info">
+      <div>
+        <div class="clue-name">{{clue.opportunityName}}</div>
+        <div class="clue-belong">
+          <img src="build/img/application/opportunity/icon_leader_orange@3x.png"/>{{clue.saleEmployeeName}}
+          <img src="build/img/application/customer/icon_flat_blue@3x.png"/>{{clue.saleAreaName}}&nbsp;
+          <img src="build/img/application/opportunity/icon_team@3x.png"/>{{clue.saleTeamName}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ion-infinite-scroll
+    on-infinite="loadMoreOpportunity()"
+    distance="1%"
+    ng-if="moreOpportunityCanBeLoaded">
+  </ion-infinite-scroll>
+</div>

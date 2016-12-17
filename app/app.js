@@ -22,7 +22,8 @@ angular.module('myApp', [
   'HmsModule',
   'competitorModule',
   'serviceModule',
-  'addModule'
+  'addModule',
+  'customerModule'
 ]);
 
 angular.module('myApp')
@@ -238,7 +239,15 @@ angular.module('myApp')
             }
           }
         })
-
+        .state('tab.contactCrm', {
+          url: '/contactCrm',
+          views: {
+            'tab-contactCrm': {
+              templateUrl: 'build/pages/contactCrm/contact.html',
+              controller: 'contactCrmCtrl'
+            }
+          }
+        })
 
 
         .state('tab.myInfo', {

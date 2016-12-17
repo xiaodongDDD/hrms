@@ -1,0 +1,51 @@
+<ion-view view-title="添加应用" class="application-add">
+
+  <ion-header-bar align-title="center" class="bar-stable">
+    <button class="button button-clear" ng-click="goBack()">{{ 'CANCEL' | T }}</button>
+    <div class="title">添加应用</div>
+  </ion-header-bar>
+  <ion-content >
+    <div>
+      <hms-select-item
+        label-name="applicationSelect[0].text"
+        input-box="showData.productCatalog"
+        important="applicationSelect[0].important"
+        hms-select="showSelectDiv('product_catalog')"
+        last-line="applicationSelect[0].lastLine"
+        show-line ="applicationSelect[0].showLine">
+      </hms-select-item>
+      <hms-select-item
+        label-name="applicationSelect[1].text"
+        input-box="showData.productBrand"
+        important="applicationSelect[1].important"
+        hms-select="showSelectDiv('product_brand')"
+        last-line="applicationSelect[1].lastLine"
+        show-line ="applicationSelect[1].showLine">
+      </hms-select-item>
+      <!--<div class="common-item-select" ng-click="showSelectDiv('product_catalog')" >-->
+        <!--<div >产品类别</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.productCatalog" ng-readonly="true" />-->
+        <!--<i><img src="build/img/contact/right_arrow@3x.png" ></i>-->
+        <!--<div class="light-line3"></div>-->
+      <!--</div>-->
+      <!--<div class="common-item-select" ng-click="showSelectDiv('product_brand')" >-->
+        <!--<div>产品品牌</div>-->
+        <!--<input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.productBrand" ng-readonly="true" />-->
+        <!--<i><img src="build/img/contact/right_arrow@3x.png" ></i>-->
+        <!--<div class="light-line4"></div>-->
+      <!--</div>-->
+      <hms-input-item
+        ng-repeat="x in applicationStatusInput"
+        label-name="x.text"
+        input-box="x.input"
+        important="x.important"
+        last-line="false">
+      </hms-input-item>
+    </div>
+    <button class="button button-block logout-button" ng-click="confirm()">确定</button>
+  </ion-content>
+
+
+</ion-view>
+
+

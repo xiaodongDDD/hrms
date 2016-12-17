@@ -1,0 +1,22 @@
+<ion-modal-view class="customer-add">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <button class="button button-clear" ng-click="closeModal()">关闭</button>
+    <h2 class="title">企业工商信息查询指南</h2>
+  </ion-header-bar>
+  <ion-content>
+    <div class="guideBox" align="center">
+      <div>
+        <div class="font_16px">为确保客户信息真实有效</div>
+        <div class="font_16px with-margin">请从如下途径获取企业工商信息</div>
+      </div>
+      <div class="margin-top-50">
+        <div class="font_16_blue" ng-click="goNational()">全国企业信用信息公示系统</div>
+        <div class="color-gray"> 免注册、需验证码、体验差、不推荐下载app</div>
+      </div>
+      <div class="margin-top-50">
+        <div class="font_16_blue" ng-click="goApp()">启信宝<img class="hot-img" src="build/img/application/customer/hot.png"></div>
+        <div class="color-gray">需注册、无需验证码、体验好、推荐下载app</div>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

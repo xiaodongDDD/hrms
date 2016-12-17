@@ -1,0 +1,194 @@
+<div ng-controller="CustomerDetailDetailCtrl" class="improve-information">
+  <crm-loading ng-if="showLoading"></crm-loading>
+  <!--<ion-scroll class="state-scroll" delegate-handle="stateScroll" direction="y" scrollbar-y="false" has-bouncing="true">-->
+  <div class="common-input-area-title" ng-click="show(0)">
+    {{ bilingual.basic_info}}<div class="title-but">{{showFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+    <div  ng-if="!showFlag[0]">
+      <div class="common-item-input">
+        <div class=" padding3">{{ 'IMPROVE_INFORMATION.CUSTOMER_CODE' | T}}</div>
+        <input type="text"  ng-model="customer.customerCode" readonly />
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-input">
+        <div class=" padding3">{{ 'CUSTOMER_ADD.FULL_NAME' | T}}</div>
+        <input type="text"  ng-model="customer.fullName" readonly />
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-input">
+        <div class=" padding3">{{ 'CUSTOMER_ADD.SIMPLE_NAME' | T}}</div>
+        <input type="text"  ng-model="customer.simpleName" readonly />
+        <div class="common-light-line"></div>
+      </div>
+    <div class="common-item-input">
+      <div class=" padding3">{{bilingual.english_name}}</div>
+      <input type="text"  ng-model="customer.englishName" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class=" padding3">{{bilingual.simple_name}}</div>
+      <input type="text"  ng-model="customer.simpleCode" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.register_id}}</div>
+      <input type="text"  ng-model="customer.registerId" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.credit_code}}</div>
+      <input type="text"  ng-model="customer.creditCode" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.duty_paragraph}}</div>
+      <input type="text"  ng-model="customer.dutyParagraph" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.parent_customers}}</div>
+      <input type="text"  ng-model="customer.parentFullName" readonly />
+    </div>
+
+  </div>
+
+  <div class="common-input-area-title" ng-click="show(1)">
+    {{ bilingual.contact_info}}<div class="title-but">{{showFlag[1] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+
+  <div class="top-margin" ng-if="!showFlag[1]">
+    <div class="common-item-input">
+      <div class="  padding3">{{ 'CUSTOMER_INQUIRIES.LOCATION' | T}}</div>
+      <input type="text"  ng-model="location" readonly />
+      <div class="common-light-line"></div>
+    </div>
+
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.address_detail}}</div>
+      <input type="text"  ng-model="customer.addressDetails" readonly />
+      <img class="location-icon" src="build/img/application/customer/detail/icon_position@3x.png">
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.zip_code}}</div>
+      <input type="text"  ng-model="customer.addressZipCode" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.phone}}</div>
+      <input type="text"  ng-model="customer.phone" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.fax}}</div>
+      <input type="text"  ng-model="customer.fax" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.website}}</div>
+      <input type="text"  ng-model="customer.website" readonly />
+    </div>
+
+  </div>
+
+  <div class="common-input-area-title" ng-click="show(2)">
+    {{ bilingual.team }}<div class="title-but">{{showFlag[2] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+
+  <div class="top-margin" ng-if="!showFlag[2]">
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.belongs_to_the_region}}</div>
+      <input type="text"  ng-model="customer.saleArea" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.team}}</div>
+      <input type="text"  ng-model="customer.saleTeam" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.principal}}</div>
+      <input type="text"  ng-model="customer.saleEmployee" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.professional}}</div>
+      <input type="text"  ng-model="customer.normalEmployeeName" readonly />
+    </div>
+  </div>
+
+  <div class="common-input-area-title" ng-click="show(3)">
+    {{  bilingual.business_detail }}<div class="title-but">{{showFlag[3] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+
+  <div class="top-margin" ng-if="!showFlag[3]">
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.enterprise_nature}}</div>
+      <input type="text"  ng-model="customer.enterpriseName" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.major_industry}}</div>
+      <input type="text"  ng-model="customer.majorIndustryName" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.sub_industry}}</div>
+      <input type="text"  ng-model="customer.subIndustryName" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.is_listed}}</div>
+      <input type="text"  ng-model="customer.listedName" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.worker_scale}}</div>
+      <input type="text"  ng-model="customer.workerScaleName" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.income_scale}}</div>
+      <input type="text"  ng-model="customer.incomeScaleName" readonly />
+      <div class="common-light-line"></div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">{{bilingual.other_description}}</div>
+      <input type="text"  ng-model="customer.otherDescription" readonly />
+    </div>
+  </div>
+
+  <div class="common-input-area-title" ng-click="show(4)">
+    {{  'IMPROVE_INFORMATION.Information_construction_situation' | T}}<div class="title-but">{{showFlag[4] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+
+  <div class="top-margin" ng-if="!showFlag[4]">
+    <div ng-repeat="application in informationStatus track by $index " >
+      <div class="row application-text ">
+        <div class="col col-87 left-margin1">
+          <div class="text">{{application.productTypeName}}&nbsp;|&nbsp;{{application.productName}}</div>
+        </div>
+
+      </div>
+      <div class="application-line"></div>
+      <div class="text-div left-padding" >
+        <div class="application-text-margin">
+          <span>实施公司:&nbsp;&nbsp;</span>
+          <span>{{application.implementationCompany}}</span>
+        </div>
+        <div class="application-text-margin2">
+          <span>其他说明:&nbsp;&nbsp;</span>
+          <span>{{application.description}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">其他信息化建设状况</div>
+      <input type="text"  ng-model="customer.itStatusDes" readonly />
+    </div>
+  </div>
+  <!--<div class="last-div"></div>-->
+  <!--</ion-scroll>-->
+
+</div>
+

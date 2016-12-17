@@ -1,0 +1,107 @@
+<ion-view view-title="详情" class="contactDetail">
+  <crm-loading ng-if="showLoading"></crm-loading>
+  <ion-content overflow-scroll='true' class="scroll-content">
+    <div class="header-bg">
+      <div class="row header-button">
+        <div class="col col-10" ng-click="goBack()">
+          <img src="build/img/contact/left_arrow_white@3x.png" class="img-size">
+        </div>
+        <div class="col col-80"></div>
+        <div class="col col-10" ng-click="showMore()">
+          <img src="build/img/contact/icon_dot_white@3x.png" class="img-size">
+        </div>
+      </div>
+      <div class="row detail-top">
+        <div class="col col-25 col-center">
+          <img src="build/img/contact/icon_user@3x.png" class="user_img">
+        </div>
+        <div class="col col-60 col-center contact-detail-info">
+          <div class="info-name" >
+            <span class="info-name-item">{{contactDetail.name}}</span>
+          <span> <img class="info-name-img" src="{{contactDetail.sexImg}}"></span>
+          </div>
+          <div>
+            <span class=info-department>{{contactDetail.department}}</span>
+            <span>{{contactDetail.position}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="selectable">
+      <div class="row row-center status-info">
+        <div class="col col-37 info-type">
+          <img src="build/img/contact/icon_contact_blue@3x.png">
+          {{contactDetail.contactTypeName}}
+        </div>
+        <div class="col center-item info-role">
+          <img src="build/img/contact/icon_leader_yellow@3x.png">
+          {{contactDetail.roleName}}
+        </div>
+        <div class="col info-status" style="">
+          <img src="build/img/contact/icon_effect@3x.png">
+          {{contactDetail.statusName}}
+        </div>
+      </div>
+      <div class="row detail-item" ng-click="goContactDetail(contactDetail)">
+        <div class="col col-20 col-left" align="center">
+          <img src="build/img/contact/huarun.png" class="customer-img">
+        </div>
+        <div class="col col-70 col-center customer-name">{{contactDetail.fullName}}
+        </div>
+        <div class="col col-10 right-item col-center">
+          <i><img src="build/img/contact/right_arrow@3x.png" style="width: 15px;"></i>
+        </div>
+      </div>
+      <div class="row detail-item">
+        <div class="col col-10 col-left">
+          <img src="build/img/contact/icon_iphone@3x.png" class="img-top-5">
+        </div>
+        <div class="col col-30 col-center color-black">{{bilingual.mobile}}</div>
+        <div class="col col-60 col-center right-item color-blue" ng-click="showPhone(contactDetail.phone)">
+          {{contactDetail.phone}}
+        </div>
+      </div>
+      <div class="row detail-item ">
+        <div class="col col-10 col-left">
+          <img src="build/img/contact/icon_phone_blue@3x.png" class="img-top-5">
+        </div>
+        <div class="col col-30 col-center color-black">{{bilingual.off_mobile}}</div>
+        <div class="col col-60 col-center right-item color-blue"><a href="tel:{{contactDetail.tel}}">{{contactDetail.tel}}</a>
+        </div>
+      </div>
+      <div class="row detail-item">
+        <div class="col col-10 col-left">
+          <img src="build/img/contact/icon_mail@3x.png" class="img-top-5">
+        </div>
+        <div class="col col-30 col-center color-black">{{bilingual.mail}}</div>
+        <div class="col col-60 col-center right-item" ng-click="mailTo(contactDetail.email)">{{contactDetail.email}}
+        </div>
+      </div>
+      <div class="row detail-item">
+        <div class="col col-10 col-left">
+          <img src="build/img/contact/icon_wechat@3x.png" class="img-top-4">
+        </div>
+        <div class="col col-30 col-center color-black">{{bilingual.weChat}}</div>
+        <div class="col col-60 right-item col-center"> {{contactDetail.wechat}}</div>
+      </div>
+      <div class="detail-item" style="height:auto;">
+        <div class="row">
+          <div class="col col-10 col-left">
+            <img src="build/img/contact/icon_adress@3x.png" class="img-top-1">
+          </div>
+          <div class="col col-30 col-center color-black">{{bilingual.all_address}}</div>
+        </div>
+        <div class="row padding-bottom-10">
+          <div class="col col-10 col-center"></div>
+          <div class="col col-90 col-center address-detail">
+            {{contactDetail.countryName}}{{contactDetail.provinceName}}{{contactDetail.cityName}}{{contactDetail.zoneName}}{{contactDetail.addressDetails}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+<style>
+
+
+</style>
