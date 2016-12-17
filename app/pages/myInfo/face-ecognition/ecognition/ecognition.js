@@ -44,6 +44,7 @@
       hmsPopup.showPopup('此功能下一版本上线');
     }
 
+    //人脸识别
     function ecognition() {
       var error = function (result) {
         if (baseConfig.debug) {
@@ -57,6 +58,7 @@
       pluginface.faceDetect('', success, error);
     }
 
+    //上传到服务器进行验证
     function uploadServe(imgUrl) {
       var success = function (res) {
         hmsPopup.hideLoading();
@@ -81,20 +83,7 @@
       };
 
       var onProgress = function (progressEvent) {
-        var progress;
-        if (progressEvent.lengthComputable) {
-          progress = progressEvent.loaded / progressEvent.total * 100;
-          if (vm.progress.progress == 100) {
-            hmsPopup.hidePopup();
-          }else {
-            hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
-          }
-        } else {
-        }
-        if (progress == 100) {
-          hmsPopup.showLoading('验证中');
-        }
-        $scope.$apply();
+        faceEcognitionService.processProgress(progressEvent,$scope,'验证中');
       }
 
       faceEcognitionService.uploadImage('/faceidentify', imgUrl, onProgress, success, error);

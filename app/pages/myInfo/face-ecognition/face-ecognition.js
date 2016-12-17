@@ -85,8 +85,10 @@
 
     vm.faceResult.imgUrl = 'build/img/application/carpooling/Bar@3x.png';
 
+    //人脸采集
     vm.faceEcognition = faceEcognition;
     vm.reFaceEcognition = reFaceEcognition;
+    //上传到服务器
     vm.complete = complete;
 
     function reFaceEcognition() {
@@ -99,13 +101,8 @@
       faceEcognition();
     }
 
+    //采集人脸到阿里云和腾讯服务器
     function complete() {
-/*      var upload = function (buttonIndex) {
-        if (buttonIndex == 1) {
-          faceEcognitionService.uploadImage('/photoUpload', vm.faceResult.imgUrl, onProgress, success, error);
-        }
-      };*/
-
       var success = function (res) {
         hmsPopup.hideLoading();
         var result = JSON.parse(res.response);
@@ -182,6 +179,7 @@
       $scope.$apply();
     }
 
+    //人脸识别
     function faceEcognition() {
       if (baseConfig.debug) {
         console.log('faceEcognition.work...');

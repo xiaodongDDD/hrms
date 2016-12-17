@@ -74,11 +74,30 @@
       faceEcognitionFlag = flag;
     }
 
+    //上传附件的进度管控
+    function processProgress(progressEvent, scope, prompt) {
+      var progress;
+      if (progressEvent.lengthComputable) {
+        progress = progressEvent.loaded / progressEvent.total * 100;
+        if (vm.progress.progress == 100) {
+          hmsPopup.hidePopup();
+        } else {
+          hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
+        }
+      } else {
+      }
+      if (progress == 100) {
+        hmsPopup.showLoading(prompt);
+      }
+      scope.$apply();
+    }
+
+    //将附件上传到腾讯服务器中进行采集或者识别
     function uploadImage(url, imgPath, onProgress, success, error) {
       if (baseConfig.debug) {
         //alert('uploadImage.start ');
       }
-
+      
       var url = baseConfig.queryPath + url;
 
       var options = new FileUploadOptions(
@@ -98,7 +117,7 @@
         onProgress(progressEvent);
       };
 
-      hmsPopup.showLoading('验证中');
+      hmsPopup.showLoading('提交处理中');
 
       fileTransfer.upload(
         imgPath,

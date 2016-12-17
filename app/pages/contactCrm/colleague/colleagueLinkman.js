@@ -109,9 +109,9 @@ angular.module('contactModule')
         $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
       };
     }])
-  .factory('getInitStructureInfo', ['hmsHttp', 'baseConfig', function (hmsHttp) {
-    var _currentStructureUrl =  'http://wechat.hand-china.com/hrmsv2/v2/api/dept/getStaffDeptInfo';
-    var _structureUrl =  'http://wechat.hand-china.com/hrmsv2/v2/api/dept/getDetail';
+  .factory('getInitStructureInfo', ['hmsHttp', 'baseConfig', function (hmsHttp,baseConfig) {
+    var _currentStructureUrl =  baseConfig.queryPath + '/dept/getStaffDeptInfo';
+    var _structureUrl =   baseConfig.queryPath + '/dept/getDetail';
     this._returnData = {};
     return {
       getCurrentStructure: function (callback) {
