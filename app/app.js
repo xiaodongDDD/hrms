@@ -333,7 +333,7 @@ angular.module('myApp')
             $urlRouterProvider.otherwise('/tab/message');
           }
         } else {
-          $urlRouterProvider.otherwise('/tab/application');
+          $urlRouterProvider.otherwise('/login');
         }
       }
 
