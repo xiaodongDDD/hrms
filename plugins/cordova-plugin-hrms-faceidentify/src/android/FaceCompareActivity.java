@@ -76,6 +76,8 @@ public class FaceCompareActivity extends Activity {
     private int faceBottom=0;
     private TextView textv_face_info;
     private NotifyMessageManager notify;
+    //屏幕宽度
+    private int w_screen;
     public static void actionStart(Context context){
         Intent intent = new Intent(context,FaceCompareActivity.class);
         context.startActivity(intent);
@@ -101,7 +103,7 @@ public class FaceCompareActivity extends Activity {
     }
     private void initWH(){
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        int w_screen = dm.widthPixels;
+        w_screen = dm.widthPixels;
         int h_screen = dm.heightPixels;
         //获取屏幕的百分之九十的一半作为半径 根据圆内最大正方形的左上角坐标计算left
         faceLeft = w_screen * 9 / 20 * 2 / 10;
@@ -126,6 +128,19 @@ public class FaceCompareActivity extends Activity {
         mask = (MaskView) findViewById(Utils.getResourceId(FaceCompareActivity.this, "mask", "id"));
         switchBtn.setVisibility(View.GONE);
 //        img = (ImageView) findViewById(R.id.img);
+//        switchBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                 //切换摄像头
+//                stopGoogleFaceDetect();
+//                int newId = (CameraInterface.getInstance().getCameraId() + 1)%2;
+//                CameraInterface.getInstance().doStopCamera();
+//                //人脸登录默认前置摄像头
+//                CameraInterface.getInstance().doOpenCamera(null,newId);
+//                CameraInterface.getInstance().doStartPreview(surfaceView.getSurfaceHolder(), previewRate);
+//                mMainHandler.sendEmptyMessageDelayed(EventUtil.CAMERA_HAS_STARTED_PREVIEW, 1500);
+//            }
+//        });
     }
     private void initViewParams(){
         LayoutParams params = surfaceView.getLayoutParams();
@@ -210,7 +225,7 @@ public class FaceCompareActivity extends Activity {
                     Bitmap mImage = surfaceView.getPicture();
                     //保存图片
                     String path = getFilesDir().getPath();
-                    FileUtil.saveBitmap(FileUtil.centerSquareScaleBitmap(mImage,faceRight-faceLeft+60),path);
+                    FileUtil.saveBitmap(FileUtil.centerSquareScaleBitmap(mImage,(faceRight-faceLeft)*mImage.getWidth()/w_screen+20),path);
                     if (mImage != null) {
                         try {
                             JSONObject respose = faceYoutu.DetectFace(mImage, 1);

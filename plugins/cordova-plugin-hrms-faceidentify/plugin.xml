@@ -21,6 +21,7 @@
 	<source-file src="src/android/CameraInterface.java" target-dir="src/com/hand/face/myinterface"/>
 	<source-file src="src/android/NotifyMessage.java" target-dir="src/com/hand/face/myinterface"/>
 	<source-file src="src/android/FaceCompareActivity.java" target-dir="src/com/hand/face/ui"/>
+	<source-file src="src/android/FaceSerchActivity.java" target-dir="src/com/hand/face/ui"/>
 	<source-file src="src/android/Accelerometer.java" target-dir="src/com/hand/face/utils"/>
 	<source-file src="src/android/CamParaUtil.java" target-dir="src/com/hand/face/utils"/>
 	<source-file src="src/android/DisplayUtil.java" target-dir="src/com/hand/face/utils"/>
@@ -93,10 +94,13 @@
 		<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     </config-file>
 	<config-file target="AndroidManifest.xml" parent="/manifest/application">
-	 <activity
+		<activity
             android:name="com.hand.face.ui.FaceCompareActivity"
             android:screenOrientation="portrait" >
         </activity>
+		<activity android:name="com.hand.face.ui.FaceSerchActivity"
+			android:screenOrientation="portrait" >
+		</activity>
 	</config-file>
   </platform>
    <platform name="ios">

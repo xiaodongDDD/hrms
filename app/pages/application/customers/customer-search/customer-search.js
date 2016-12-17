@@ -233,8 +233,8 @@ angular.module('applicationModule')
     'hmsPopup',
     'baseConfig', function (hmsHttp, hmsPopup, baseConfig) {
       //hmsPopup.showLoading()
-      console.log(baseConfig.basePath);
-      var baseUrl = baseConfig.basePath + "select_customers";
+      console.log(baseConfig.crmPath);
+      var baseUrl = baseConfig.crmPath + "select_customers";
       console.log(baseUrl);
       this.getSearchData = function (success, key) {
         hmsHttp.post(baseUrl, key).success(function (result) {
