@@ -28,17 +28,12 @@
 @property (nonatomic,strong)UILabel *timeLabel;
 @property (nonatomic,strong)UIButton *backBtn;
 @property (nonatomic,strong)UIButton *switchBtn;
-@property (nonatomic,strong)ZLProgressHUD *progress;
+@property (nonatomic,strong)UILabel *titleLabel;
+@property (nonatomic,strong)UIActivityIndicatorView *activityView;
 @end
 
 @implementation FaceVideoDectorViewController
-- (ZLProgressHUD *)progress
-{
-    if (!_progress) {
-        _progress = [[ZLProgressHUD alloc]init];
-    }
-    return _progress;
-}
+
 - (WBCaptureService*)captureService
 {
     if (!_captureService) {
@@ -61,10 +56,12 @@
     [self.captureService startRunning];
     isRunning = YES;
     
-    //初始化一个计时器每两秒钟检测一次人脸
-    timer = [NSTimer scheduledTimerWithTimeInterval:0.6f repeats:YES block:^(NSTimer * _Nonnull timer) {
-        isDetecting = YES;
-    }];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //初始化一个计时器每两秒钟检测一次人脸
+        timer = [NSTimer scheduledTimerWithTimeInterval:1.2f repeats:YES block:^(NSTimer * _Nonnull timer) {
+            isDetecting = YES;
+        }];
+    });
     
     AFNetworkReachabilityStatus status = [[AFNetworkReachabilityManager sharedManager] networkReachabilityStatus];
     if (status==AFNetworkReachabilityStatusNotReachable) {
@@ -84,6 +81,7 @@
     [self.view addSubview:self.previewView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    imageView.alpha = 0.6;
     UIImage *image = [UIImage imageNamed:@"style_default_bg_mask_normal"];
     imageView.image = image;
     [self.view addSubview:imageView];
@@ -103,6 +101,21 @@
     [self.switchBtn addTarget:self action:@selector(switchCamera) forControlEvents:UIControlEventTouchUpInside];
     [self.switchBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.view addSubview:self.switchBtn];
+    
+    
+    //进度圈
+    self.activityView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake((CGRectGetWidth(self.view.frame)-30)/2.0-40, 60, 20, 20)];
+    self.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    [self.view addSubview:self.activityView];
+    
+    
+    //提示标题
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.activityView.frame), 60, 120, 20)];
+    self.titleLabel.hidden = YES;
+    self.titleLabel.text = @"正在识别中...";
+    self.titleLabel.textColor = [UIColor whiteColor];
+    [self.view addSubview:self.titleLabel];
+    
     
 }
 
@@ -127,7 +140,7 @@
     [self.captureService startRunning];
     
     isRunning = YES;
-
+    
     
     [self setupPreviewView];
     
@@ -143,6 +156,14 @@
     
     [self.previewLayer addAnimation:rotationAnimation forKey:@"rotate"];
     
+    //重新开始计时
+    [timer invalidate];
+    timer = nil;
+    //初始化一个计时器每两秒钟检测一次人脸
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.2f repeats:YES block:^(NSTimer * _Nonnull timer) {
+        isDetecting = YES;
+    }];
+    
 }
 
 
@@ -155,9 +176,9 @@
     self.view.backgroundColor = [UIColor grayColor];
     
     [self initUI];
-
+    
     [self setupPreviewView];
-
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -169,17 +190,17 @@
     }
     [timer invalidate];
     timer = nil;
-   // [self.navigationController.navigationBar setHidden:NO];
+    // [self.navigationController.navigationBar setHidden:NO];
 }
 
 - (void)setupPreviewView
 {
-     self.previewLayer = self.captureService.previewLayer;
+    self.previewLayer = self.captureService.previewLayer;
     
     [self.previewLayer setFrame:[self.previewView bounds]];
     
     [self.previewView.layer addSublayer:self.previewLayer];
-
+    
 }
 
 #pragma mark - WBCaptureServiceDelegate
@@ -212,13 +233,18 @@
     
     //由于这段代码中，设备是home在下进行录制，所以此处在生成image时，指定了方向
     UIImage *image = [UIImage imageWithCGImage:newImage scale:1.0 orientation:UIImageOrientationRight];
-
+    
     if (isDetecting&&!isWorking) {
+        
+        self.titleLabel.hidden = NO;
+        if (![self.activityView isAnimating]) {
+            [self.activityView startAnimating];
+        }
         
         [self faceRecognizer:image];
         
-        isDetecting = NO;
         
+        isDetecting = NO;
     }
     
     // image = nil;
@@ -238,7 +264,7 @@
     NSLog(@"captureServiceRecordingDidStart");
 }
 
-- (void)captureService:(WBCaptureService *)captureService recordingDidFailWithError:(NSError *)error 
+- (void)captureService:(WBCaptureService *)captureService recordingDidFailWithError:(NSError *)error
 {
     NSLog(@"recordingDidFailWithError");
 }
@@ -253,33 +279,36 @@
     NSLog(@"captureServiceRecordingDidStop");
 }
 
+
 #pragma mark - 人脸检测
 - (void)faceRecognizer:(UIImage *)image
 {
     isWorking = YES;
-    [self.progress show];
+    
+    //    NSLog(@"原始Size:%@,大小:%lu",NSStringFromCGSize(image.size),UIImagePNGRepresentation(image).length/1024);
     NSString *auth = [Auth appSign:1000000 userId:nil];
     TXQcloudFrSDK *sdk = [[TXQcloudFrSDK alloc] initWithName:[Conf instance].appId authorization:auth endPoint:[Conf instance].API_END_POINT];
-    
-    [sdk detectFace:[image compressedImage] successBlock:^(id responseObject) {
+    UIImage *compassImage = [image compressedImage];
+    //NSLog(@"大小:%lu",[image compassImage].length/1024);
+    [sdk detectFace:compassImage successBlock:^(id responseObject) {
         isWorking = NO;
         NSDictionary *dict = responseObject;
         
         NSLog(@"人脸检测成功:%@",dict);
         NSInteger errorcode = [dict[@"errorcode"] integerValue];
         NSArray *face = dict[@"face"];
+        
         if (face.count && errorcode ==0 ) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.captureService stopRunning];
                 isRunning = NO;
                 if (self.successBlock) {
                     if (!isPassed) {
-                        if ([self.progress isShowing]) {
-                            [self.progress hide];
-                        }
+                        
                         [ToastUtils showLong:@"识别成功！"];
                         isPassed = YES;
-                        self.successBlock([UIImage imageWithData:[image compressedData]],face[0]);
+                        NSDictionary *faceDetail = face[0];
+                        self.successBlock([compassImage imageAtRect:CGRectMake([faceDetail[@"x"] integerValue]-35, [faceDetail[@"y"] integerValue]-60, [faceDetail[@"width"] integerValue]+70, [faceDetail[@"height"] integerValue]+70)],face[0]);
                         [self dismissViewControllerAnimated:YES completion:nil];
                     }
                 }
@@ -289,17 +318,16 @@
         
     } failureBlock:^(NSError *error) {
         isWorking = NO;
+        NSLog(@"---error：%@",error);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.captureService stopRunning];
             isRunning = NO;
             if (self.successBlock) {
                 if (!isPassed) {
-                    if ([self.progress isShowing]) {
-                        [self.progress hide];
-                    }
+                    
                     [ToastUtils showLong:@"识别失败！"];
                     isPassed = YES;
-                    self.successBlock([UIImage imageWithData:[image compressedData]],nil);
+                    self.successBlock(nil,nil);
                     [self dismissViewControllerAnimated:YES completion:nil];
                 }
             }
