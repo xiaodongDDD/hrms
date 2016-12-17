@@ -33,7 +33,7 @@
                               $stateParams,
                               baseConfig,
                               hmsPopup,
-                              faceEcognitionService) {
+                              faceEcognitionService,$state) {
     var vm = this;
 
     vm.faceEcognitionResult = false;
@@ -100,11 +100,11 @@
     }
 
     function complete() {
-      var upload = function (buttonIndex) {
+/*      var upload = function (buttonIndex) {
         if (buttonIndex == 1) {
           faceEcognitionService.uploadImage('/photoUpload', vm.faceResult.imgUrl, onProgress, success, error);
         }
-      };
+      };*/
 
       var success = function (res) {
         hmsPopup.hideLoading();
@@ -113,8 +113,10 @@
           alert('complete.success ' + angular.toJson());
         }
         if(result.success == true){
-          hmsPopup.showPopup('采集信息已经采集成功');
+          hmsPopup.showPopup('采集成功');
+          window.localStorage.faceEcognition=='true';
           faceEcognitionService.setFaceEcognitionFlag(true);
+          $state.go("tab.face-ecognition-setting");
         }else{
           hmsPopup.showPopup('采集信息采集失败，请重新采集！');
         }
@@ -140,11 +142,12 @@
         } else {
         }
         if (vm.progress.progress == 100) {
-          hmsPopup.showLoading('采集信息到服务器中');
+          hmsPopup.showLoading('正在采集信息..');
         }
         $scope.$apply();
-      }
-      hmsPopup.confirm('是否将采集的信息传到服务器?', "采集信息", upload);
+      };
+     /* hmsPopup.confirm('是否将采集的信息传到服务器?', "采集信息", upload);*/
+      faceEcognitionService.uploadImage('/photoUpload', vm.faceResult.imgUrl, onProgress, success, error);
     }
 
     var faceEcognitionError = function (result) {

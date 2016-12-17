@@ -122,7 +122,7 @@
         vm.progress.progress {{vm.progress.progress }}
       </div>-->
 
-      <div class="face-result-button">
+      <!--<div class="face-result-button">
         <div class="re-face" ng-click="vm.reFaceEcognition()">
           <div class="re-face-item">
             <img src="build/img/myInfo/photo-2@3x.png">
@@ -135,7 +135,21 @@
             <div class="text">完成</div>
           </div>
         </div>
-      </div>
+      </div>-->
     </div>
   </ion-content>
+  <div class="face-result-button" ng-if="vm.faceEcognitionResult">
+    <div class="re-face" ng-click="vm.reFaceEcognition()">
+      <div class="re-face-item">
+        <img src="build/img/myInfo/photo-2@3x.png">
+        <div class="text">重新扫描</div>
+      </div>
+    </div>
+    <div class="face-ok" ng-click="vm.complete()">
+      <div class="face-ok-item">
+        <img src="build/img/myInfo/complete@3x.png">
+        <div class="text">完成</div>
+      </div>
+    </div>
+  </div>
 </ion-view>

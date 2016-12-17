@@ -333,26 +333,9 @@ angular.module('myApp')
             $urlRouterProvider.otherwise('/tab/message');
           }
         } else {
-          $urlRouterProvider.otherwise('/login');
+          $urlRouterProvider.otherwise('/tab/application');
         }
       }
 
     }]);
-angular.module("myApp").filter("T", ['$translate', function ($translate) {
-  return function (key) {
-    if (key) {
-      return $translate.instant(key);
-    }
-  };
-}]);
 
-angular.module('myApp').factory('T', ['$translate', function ($translate) {
-  return {
-    T: function (key) {
-      if (key) {
-        return $translate.instant(key);
-      }
-      return key;
-    }
-  };
-}]);

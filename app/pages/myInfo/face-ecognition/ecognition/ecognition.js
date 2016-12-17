@@ -49,7 +49,7 @@
         if (baseConfig.debug) {
           alert('ecognition.error ' + angular.toJson(result));
         }
-        hmsPopup.showPopup('人脸识别出错，请重新验证！');
+        hmsPopup.showPopup('验证失败，请重新验证或重新设置！');
       };
       var success = function (result) {
         uploadServe(result.imgPath);
@@ -67,7 +67,7 @@
         if(result.rows[0] && result.rows[0].person_id && result.rows[0].person_id == window.localStorage.empno){
           hmsPopup.showPopup('验证成功！');
         }else{
-          hmsPopup.showPopup('验证失败，请重新验证！');
+          hmsPopup.showPopup('验证失败，请重新验证或重新设置！');
         }
         //hmsPopup.showPopup('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
       };
@@ -88,7 +88,7 @@
         } else {
         }
         if (progress == 100) {
-          hmsPopup.showLoading('信息识别中');
+          hmsPopup.showLoading('正在采集信息...');
         }
         $scope.$apply();
       }

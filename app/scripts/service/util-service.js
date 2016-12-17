@@ -688,3 +688,21 @@ angular.module('HmsModule')
       }
     }
   });
+angular.module("HmsModule").filter("T", ['$translate', function ($translate) {
+  return function (key) {
+    if (key) {
+      return $translate.instant(key);
+    }
+  };
+}]);
+
+angular.module('HmsModule').factory('T', ['$translate', function ($translate) {
+  return {
+    T: function (key) {
+      if (key) {
+        return $translate.instant(key);
+      }
+      return key;
+    }
+  };
+}]);
