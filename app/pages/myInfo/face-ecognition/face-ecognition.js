@@ -136,8 +136,12 @@
           vm.progress.loaded = progressEvent.loaded;
           vm.progress.total = progressEvent.total;
           vm.progress.progress = progressEvent.loaded / progressEvent.total * 100;
+          if (vm.progress.progress == 100) {
+           hmsPopup.hidePopup();
+          }else{
+            hmsPopup.showLoading('上传图片进度为 ' + Math.round(vm.progress.progress) + '%');
+          }
 
-          hmsPopup.showLoading('上传图片进度为 ' + Math.round(vm.progress.progress) + '%');
 
         } else {
         }
