@@ -13,7 +13,7 @@ angular.module('contactModule')
           views: {
             'tab-application': {
               prefetchTemplate: false,
-              templateUrl: 'build/pages/contact/addLinkman/addLinkman.html',
+              templateUrl: 'build/pages/contactCrm/addLinkman/addLinkman.html',
               controller: 'addLinkmanCtrl'
             }
           }
