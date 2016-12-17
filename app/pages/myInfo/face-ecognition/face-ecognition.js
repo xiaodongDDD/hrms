@@ -35,7 +35,7 @@
                               hmsPopup,
                               faceEcognitionService,$state) {
     var vm = this;
-
+    window.localStorage.faceEcognition='true';
     vm.faceEcognitionResult = false;
     vm.list = [
       {
@@ -114,7 +114,7 @@
         }
         if(result.success == true){
           hmsPopup.showPopup('采集成功');
-          window.localStorage.faceEcognition=='true';
+
           faceEcognitionService.setFaceEcognitionFlag(true);
           $state.go("tab.face-ecognition-setting");
         }else{

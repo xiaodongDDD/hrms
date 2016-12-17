@@ -120,7 +120,10 @@ angular.module('myInfoModule')
       };
 
       $scope.faceRecognition = function () {
-        if(faceEcognitionService.getFaceEcognitionFlag()||window.localStorage.faceEcognitionFlag=='true'){
+        if(window.localStorage.faceEcognition=='true'){
+          faceEcognitionService.setFaceEcognitionFlag(true);
+        }
+        if(faceEcognitionService.getFaceEcognitionFlag()){
           $state.go('tab.face-ecognition-setting');
         }else{
           $state.go('tab.face-ecognition');

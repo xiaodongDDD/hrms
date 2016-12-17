@@ -30,8 +30,8 @@
       {
         from: 31,
         to: 50,
-        man: "强颜欢笑",
-        woman: "似笑非笑"
+        man: "迷之微笑",
+        woman: "迷之微笑"
       },
       {
         from: 51,
@@ -98,7 +98,7 @@
         onProgress(progressEvent);
       };
 
-      hmsPopup.showLoading('上传人脸识别中..');
+      hmsPopup.showLoading('验证中');
 
       fileTransfer.upload(
         imgPath,

@@ -84,11 +84,15 @@
         var progress;
         if (progressEvent.lengthComputable) {
           progress = progressEvent.loaded / progressEvent.total * 100;
-          hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
+          if (vm.progress.progress == 100) {
+            hmsPopup.hidePopup();
+          }else {
+            hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
+          }
         } else {
         }
         if (progress == 100) {
-          hmsPopup.showLoading('正在采集信息...');
+          hmsPopup.showLoading('验证中');
         }
         $scope.$apply();
       }
