@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-hand-contacts" version="0.1.2" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Contacts</name>
+    <js-module name="Contacts" src="www/Contacts.js">
+        <clobbers target="ContactsPlugin"/>
+    </js-module>
+
+
+      <platform name="android">
+        <!--继承cordovaActivity的类所在路径，和拷贝到工程的路径--> 
+        <source-file src="src/android/ContactsCordova.java" target-dir="src/com/hand"/>
+
+        
+        <config-file target="res/xml/config.xml" parent="/*">
+            <!--插件继承cordovaActivity的类名，-->
+            <feature name="ContactsCordova">
+                <!--android 工程中的这个插件类的路径-->
+                <param name="android-package" value="com.hand.ContactsCordova"/>
+            </feature>
+        </config-file>
+
+
+         <!--需要添加的权限-->
+        <config-file target="AndroidManifest.xml" parent="/*"> 
+            <uses-permission android:name="android.permission.READ_CONTACTS" />
+            <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+        </config-file> 
+
+
+     </platform>
+
+
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="ContactsCordova">
+                <param name="ios-package" value="ContactsCordova"/>
+            </feature>
+
+        </config-file>
+
+        <header-file src="src/ios/ContactsCordova.h" target-dir="."/>
+        <source-file src="src/ios/ContactsCordova.m" target-dir="."/>
+
+
+        <config-file target="*-Info.plist" parent="NSContactsUsageDescription">
+            <string></string>
+
+        </config-file>
+		
+		<framework src="AddressBook.framework" weak="true"/> 
+		<framework src="AddressBookUI.framework" weak="true"/> 
+		<framework src="Contacts.framework" weak="true"/> 
+		<framework src="ContactsUI.framework" weak="true"/> 
+
+
+    </platform>
+
+
+
+</plugin>

@@ -7,24 +7,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-hrms-faceidentify": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "com.handmobile.cordovaplugin.hotpatch": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "hand-im-plugin-device": {
         "source": {
             "type": "git",
@@ -52,6 +34,41 @@
             "id": "cordova-plugin-device"
         },
         "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-plugin-hrms-faceidentify": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.handmobile.cordovaplugin.hotpatch": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-youtuishare": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-hand-contacts": {
+        "source": {
+            "type": "local",
+            "path": "/Users/zaranengap/WebstormProjects/cordova-plugin-hand-contacts"
+        },
+        "is_top_level": true,
         "variables": {}
     }
 }
