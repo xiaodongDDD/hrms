@@ -30,11 +30,74 @@
   //plansDetailCtrl.$inject = [];
 
   function faceEcognitionSettingCtrl($scope,
-                              $stateParams,
-                              baseConfig,
-                              hmsPopup,
-                              faceEcognitionService) {
+                                     $state,
+                                     baseConfig,
+                                     hmsPopup,
+                                     faceEcognitionService) {
     var vm = this;
 
+    vm.loginFace = loginFace;
+    vm.ecognition = ecognition;
+    vm.setting = setting;
+
+    function loginFace() {
+      hmsPopup.showPopup('此功能下一版本上线');
+    }
+
+    function ecognition() {
+      var error = function (result) {
+        if (baseConfig.debug) {
+          alert('ecognition.error ' + angular.toJson(result));
+        }
+        hmsPopup.showPopup('人脸识别出错，请重新验证！');
+      };
+      var success = function (result) {
+        uploadServe(result.imgPath);
+      }
+      pluginface.faceDetect('', success, error);
+    }
+
+    function uploadServe(imgUrl) {
+      var success = function (res) {
+        hmsPopup.hideLoading();
+        if (baseConfig.debug) {
+          alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
+        }
+        var result = JSON.parse(res.response);
+        if(result.rows[0] && result.rows[0].person_id && result.rows[0].person_id == window.localStorage.empno){
+          hmsPopup.showPopup('验证成功！');
+        }else{
+          hmsPopup.showPopup('验证失败，请重新验证！');
+        }
+        //hmsPopup.showPopup('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
+      };
+
+      var error = function (response) {
+        hmsPopup.hideLoading();
+        if (baseConfig.debug) {
+          alert('uploadImage.error ' + angular.toJson(response));
+        }
+        hmsPopup.showPopup('验证出现异常，请重新验证！');
+      };
+
+      var onProgress = function (progressEvent) {
+        var progress;
+        if (progressEvent.lengthComputable) {
+          progress = progressEvent.loaded / progressEvent.total * 100;
+          hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
+        } else {
+        }
+        if (progress == 100) {
+          hmsPopup.showLoading('信息识别中');
+        }
+        $scope.$apply();
+      }
+
+      faceEcognitionService.uploadImage('/faceidentify', imgUrl, onProgress, success, error);
+    }
+
+    function setting() {
+      $state.go('tab.face-ecognition');
+    }
   }
 })();

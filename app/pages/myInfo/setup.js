@@ -33,24 +33,30 @@ angular.module('myInfoModule')
 
       $scope.gesture = {};
 
+      if(baseConfig){
+        console.log('SetupCtrl.window.localStorage.neeGuide ' + window.localStorage.neeGuide);
+        console.log('SetupCtrl.window.localStorage.guideHelpAuto ' + window.localStorage.guideHelpAuto);
+      }
+
       if (!window.localStorage.timesheetAuto) {
         $scope.timesheetAuto = false;
-        window.localStorage.timesheetAuto= "false";
+        window.localStorage.timesheetAuto = "false";
         if (baseConfig.debug) {
           console.log('timesheet自动填写功能默认关闭');
         }
       }
-      if(!window.localStorage.messagePush){
+
+      if (!window.localStorage.messagePush) {
         $scope.messagePush = false;
-        window.localStorage.messagePush= "false";
+        window.localStorage.messagePush = "false";
         if (baseConfig.debug) {
           console.log('消息推送功能默认关闭');
         }
       }
 
-      if(!window.localStorage.gestureLock){
+      if (!window.localStorage.gestureLock) {
         $scope.gesture.lock = false;
-        window.localStorage.gestureLock= "false";
+        window.localStorage.gestureLock = "false";
         if (baseConfig.debug) {
           console.log('手势密码功能默认关闭');
         }
@@ -61,7 +67,7 @@ angular.module('myInfoModule')
         if (baseConfig.debug) {
           console.log('打开timesheet自动填写功能');
         }
-      }else{
+      } else {
         $scope.timesheetAuto = false;
         if (baseConfig.debug) {
           console.log('关闭timesheet自动填写功能');
@@ -72,7 +78,7 @@ angular.module('myInfoModule')
         if (baseConfig.debug) {
           console.log('打开消息推送功能');
         }
-      }else{
+      } else {
         $scope.messagePush = false;
         if (baseConfig.debug) {
           console.log('关闭消息推送功能');
@@ -83,49 +89,58 @@ angular.module('myInfoModule')
         if (baseConfig.debug) {
           console.log('打开手势密码功能');
         }
-      }else{
+      } else {
         $scope.gesture.lock = false;
         if (baseConfig.debug) {
           console.log('关闭手势密码功能');
         }
       }
 
-      $scope.clickTimesheetAuto=function(){
-        $scope.timesheetAuto=!$scope.timesheetAuto;
-        if($scope.timesheetAuto==true){
-          window.localStorage.timesheetAuto="true";
+      $scope.clickTimesheetAuto = function () {
+        $scope.timesheetAuto = !$scope.timesheetAuto;
+        if ($scope.timesheetAuto == true) {
+          window.localStorage.timesheetAuto = "true";
           if (baseConfig.debug) {
             console.log('打开timesheet自动填写功能');
           }
-        }else if($scope.timesheetAuto==false){
-          window.localStorage.timesheetAuto="false";
+        } else if ($scope.timesheetAuto == false) {
+          window.localStorage.timesheetAuto = "false";
           if (baseConfig.debug) {
             console.log('关闭timesheet自动填写功能');
           }
         }
       };
 
-      $scope.clickMessagePush=function(){
-        $scope.messagePush=!$scope.messagePush;
-        if($scope.messagePush==true){
-          window.localStorage.messagePush="true";
+      $scope.clickMessagePush = function () {
+        $scope.messagePush = !$scope.messagePush;
+        if ($scope.messagePush == true) {
+          window.localStorage.messagePush = "true";
           if (baseConfig.debug) {
             console.log('打开消息推送功能');
           }
-        }else if($scope.messagePush==false){
+        } else if ($scope.messagePush == false) {
           $timeout(function () {
-            $scope.messagePush=false;
+            $scope.messagePush = false;
             $scope.$apply();
-          },500);
-          window.localStorage.messagePush="false";
+          }, 500);
+          window.localStorage.messagePush = "false";
           if (baseConfig.debug) {
             console.log('关闭消息推送功能');
           }
         }
       };
 
-      $scope.clickGestureLock=function(){
-        if( $scope.gesture.lock ){
+      $scope.clickGuideHelpAuto = function () {
+        $scope.guideHelpAuto= !$scope.guideHelpAuto;
+        if ($scope.guideHelpAuto == true) {
+          window.localStorage.guideHelpAuto = "true";
+        }else if ($scope.guideHelpAuto == false) {
+          window.localStorage.guideHelpAuto = "false";
+        }
+      }
+
+      $scope.clickGestureLock = function () {
+        if ($scope.gesture.lock) {
           $scope.gesture.lock = false;
           $state.go('tab.gesture-password-setting', {
             'Operation': 0
@@ -150,6 +165,18 @@ angular.module('myInfoModule')
             $scope.slippingEnableFlag = false;
           }
         }
+
+        if (!window.localStorage.guideHelpAuto) {
+          window.localStorage.guideHelpAuto = "false";
+          $scope.guideHelpAuto = false;
+        }else{
+          if (window.localStorage.guideHelpAuto == "true") {
+            $scope.guideHelpAuto = true;
+          } else {
+            $scope.guideHelpAuto = false;
+          }
+        }
+
       };
 
       //console.log('navigator.userAgent  ' + navigator.userAgent)
@@ -164,29 +191,29 @@ angular.module('myInfoModule')
       };
 
       $scope.$on('$ionicView.beforeEnter', function (e) {
-        if(baseConfig.debug) {
+        if (baseConfig.debug) {
           console.log('setUpCtrl.$ionicView.beforeEnter');
         }
         initSetting();
       });
 
 
-      $rootScope.$on('REMOVE_GESTURE_PASSWORD', function(){
-       $scope.gesture.lock = false;
-        window.localStorage.gestureLock="false";
+      $rootScope.$on('REMOVE_GESTURE_PASSWORD', function () {
+        $scope.gesture.lock = false;
+        window.localStorage.gestureLock = "false";
         if (baseConfig.debug) {
           console.log('关闭手势密码功能');
         }
       });
-      $rootScope.$on('INIT_GESTURE_PASSWORD', function(){
-       $scope.gesture.lock = true;
-        window.localStorage.gestureLock="true";
+      $rootScope.$on('INIT_GESTURE_PASSWORD', function () {
+        $scope.gesture.lock = true;
+        window.localStorage.gestureLock = "true";
         if (baseConfig.debug) {
           console.log('打开手势密码功能');
         }
       });
 
-      $scope.clickChangePassword = function(){
+      $scope.clickChangePassword = function () {
         $state.go('tab.gesture-password-setting', {
           'Operation': 1
         });
@@ -195,7 +222,7 @@ angular.module('myInfoModule')
         }
       };
 
-      $scope.goBack=function(){//返回按钮
+      $scope.goBack = function () {//返回按钮
         $ionicHistory.goBack();
       }
 

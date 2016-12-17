@@ -39,9 +39,9 @@
     </div>
 
     <div class="face-ecognition-result" ng-if="vm.faceEcognitionResult">
-      <div class="face-area">
-        <div class="face-img">
-          <img ng-src="{{vm.faceResult.imgUrl}}">
+      <div class="face-area" ng-style="vm.faceStyle.area">
+        <div class="face-img" ng-style="vm.faceStyle.imageOuter">
+          <img ng-src="{{vm.faceResult.imgUrl}}" ng-style="vm.faceStyle.imageInner">
         </div>
         <div class="face-identification">
           <img src="build/img/myInfo/success@3x.png">
@@ -49,59 +49,64 @@
       </div>
 
       <div class="face-result-list">
-        <div class="face-result-item">
-          <div class="face-item">
-            <div class="item-img">
-              <img src="build/img/myInfo/sex@3x.png">
-            </div>
-            <div class="item-name">
-              性别:
-            </div>
-            <div class="item-value" ng-bind="vm.faceResult.gender">
-            </div>
-          </div>
-        </div>
-
-        <div class="face-result-item">
-          <div class="face-item">
-            <div class="item-img">
-              <img src="build/img/myInfo/age@3x.png">
-            </div>
-            <div class="item-name">
-              年龄:
-            </div>
-            <div class="item-value" ng-bind="vm.faceResult.age">
-
-            </div>
-          </div>
-        </div>
-
-        <div class="face-result-item">
-          <div class="face-item">
-            <div class="item-img">
-              <img src="build/img/myInfo/expression@3x.png">
-            </div>
-            <div class="item-name">
-              表情:
-            </div>
-            <div class="item-value" ng-bind="vm.faceResult.expression">
-            </div>
-          </div>
-        </div>
-
         <div class="face-result-item last-line">
-          <div class="face-item">
-            <div class="item-img">
-              <img src="build/img/myInfo/charm@3x.png">
+          <div class="row no-padding">
+            <div class="col col-50 no-padding">
+              <div class="face-item has-right-line">
+                <div class="item-img">
+                  <img src="build/img/myInfo/sex@3x.png">
+                </div>
+                <div class="item-name">
+                  性别:
+                </div>
+                <div class="item-value" ng-bind="vm.faceResult.gender">
+                </div>
+              </div>
             </div>
-            <div class="item-name">
-              魅力:
+            <div class="col col-50 no-padding">
+              <div class="face-item">
+                <div class="item-img">
+                  <img src="build/img/myInfo/age@3x.png">
+                </div>
+                <div class="item-name">
+                  年龄:
+                </div>
+                <div class="item-value" ng-bind="vm.faceResult.age">
+                </div>
+              </div>
             </div>
-            <div class="item-value" ng-bind="vm.faceResult.beauty">
+          </div>
+        </div>
+        <div class="face-result-item">
+          <div class="row no-padding">
+            <div class="col col-50 no-padding">
+              <div class="face-item has-right-line">
+                <div class="item-img">
+                  <img src="build/img/myInfo/expression@3x.png">
+                </div>
+                <div class="item-name">
+                  表情:
+                </div>
+                <div class="item-value" ng-bind="vm.faceResult.expression">
+                </div>
+              </div>
+            </div>
+            <div class="col col-50 no-padding">
+              <div class="face-item">
+                <div class="item-img">
+                  <img src="build/img/myInfo/charm@3x.png">
+                </div>
+                <div class="item-name">
+                  魅力:
+                </div>
+                <div class="item-value" ng-bind="vm.faceResult.beauty">
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="last-background"></div>
 
       <!--
       <div>
@@ -120,7 +125,7 @@
       <div class="face-result-button">
         <div class="re-face" ng-click="vm.reFaceEcognition()">
           <div class="re-face-item">
-            <img src="build/img/myInfo/photo@3x.png">
+            <img src="build/img/myInfo/photo-2@3x.png">
             <div class="text">重新扫描</div>
           </div>
         </div>

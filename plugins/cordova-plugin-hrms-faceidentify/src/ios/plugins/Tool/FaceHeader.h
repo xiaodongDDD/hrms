@@ -17,4 +17,5 @@
 #import "ToastUtils.h"
 #import <AFNetworkingFramwork/AFNetworkReachabilityManager.h>
 #define GroupId @"handhand"
+#import "ZLProgressHUD.h"
 #endif /* Header_h */

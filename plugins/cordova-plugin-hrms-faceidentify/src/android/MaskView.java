@@ -52,11 +52,11 @@ public class MaskView extends ImageView {
                 | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG
                 | Canvas.FULL_COLOR_LAYER_SAVE_FLAG
                 | Canvas.CLIP_TO_LAYER_SAVE_FLAG | Canvas.ALL_SAVE_FLAG);
-        mPaint.setAlpha(175);
+        mPaint.setAlpha(125);
         canvas.drawRect(shelterR, mPaint);
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
         mPaint.setColor(Color.WHITE);
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, (widthScreen-20)/2, mPaint);
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, widthScreen*9/20, mPaint);
         canvas.restoreToCount(sc);
         mPaint.setXfermode(null);
         mPaint.setColor(Color.WHITE);

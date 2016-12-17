@@ -12,12 +12,23 @@
       <div class="row setup-panel-row1">
         <label class="setup-label">Timesheet滑动填写</label>
       </div>
+      <div class="row setup-panel-row1">
+        <label class="setup-label">开启导航</label>
+      </div>
       <div class="row setup-panel-row2">
         <label class="setup-label">消息推送</label>
       </div>
       <div class="ts-toggle-position">
         <label class="toggle toggle-positive">
           <input type="checkbox" ng-checked="slippingEnableFlag" ng-click="changeSlippingSetting()">
+          <div class="track setup-track">
+            <div class="handle setup-handle"></div>
+          </div>
+        </label>
+      </div>
+      <div class="guide-toggle-position">
+        <label class="toggle toggle-positive">
+          <input type="checkbox" ng-checked="guideHelpAuto" ng-click="clickGuideHelpAuto()">
           <div class="track setup-track">
             <div class="handle setup-handle"></div>
           </div>

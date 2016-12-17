@@ -22,6 +22,23 @@ angular.module('loginModule').controller('TabsCtrl',
         });
       }
 
+      $scope.showGuideFlag;
+
+      $scope.buttonTapped = function () {
+        $scope.showGuideFlag = false;
+      }
+
+      if(baseConfig){
+        console.log('window.localStorage.neeGuideHelp ' + window.localStorage.neeGuideHelp);
+        console.log('window.localStorage.guideHelpAuto ' + window.localStorage.guideHelpAuto);
+      }
+
+      if(!window.localStorage.neeGuideHelp || window.localStorage.neeGuideHelp == "true" || window.localStorage.guideHelpAuto == "true"){
+        window.localStorage.neeGuideHelp = "false";
+        $scope.showGuideFlag = true;
+      }else{
+      }
+
       $scope.$on('$ionicView.beforeEnter', function () {
         var statename = $state.current.name;
         if (baseConfig.debug) {
