@@ -113,7 +113,7 @@
           hmsPopup.showPopup('采集成功');
 
           faceEcognitionService.setFaceEcognitionFlag(true);
-          $state.go("tab.face-ecognition-setting");
+          $state.go("tab.face-ecognition-setting",{"from": "collection"});
         }else{
           hmsPopup.showPopup('采集信息采集失败，请重新采集！');
         }

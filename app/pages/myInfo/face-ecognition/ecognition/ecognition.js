@@ -11,7 +11,7 @@
     $stateProvider
       .state('tab.face-ecognition-setting', {
         url: '/myInfo/face-ecognition-setting',
-        params: {},
+        params: {"from": ""},
         views: {
           'tab-myInfo': {
             prefetchTemplate: false,
@@ -31,7 +31,9 @@
 
   function faceEcognitionSettingCtrl($scope,
                                      $state,
+                                     $ionicHistory,
                                      baseConfig,
+                                     $stateParams,
                                      hmsPopup,
                                      faceEcognitionService) {
     var vm = this;
@@ -39,9 +41,18 @@
     vm.loginFace = loginFace;
     vm.ecognition = ecognition;
     vm.setting = setting;
+    vm.goBack = goBack;
 
     function loginFace() {
       hmsPopup.showPopup('此功能下一版本上线');
+    }
+    
+    function goBack() {
+      if($stateParams.from == "collection"){
+        $ionicHistory.goBack(-2);
+      }else {
+        $ionicHistory.goBack();
+      }
     }
 
     //人脸识别

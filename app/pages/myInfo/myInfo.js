@@ -137,7 +137,7 @@ angular.module('myInfoModule')
 
       $scope.faceRecognition = function () {
         if(faceEcognitionService.getFaceEcognitionFlag()){
-          $state.go('tab.face-ecognition-setting');
+          $state.go("tab.face-ecognition-setting",{"from": "setting"});
         }else{
           $state.go('tab.face-ecognition');
         }
