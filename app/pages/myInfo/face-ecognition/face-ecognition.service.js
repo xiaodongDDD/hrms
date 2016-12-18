@@ -16,19 +16,19 @@
 
     var expressionList = [
       {
-        from: 0,
+        from: -1,
         to: 10,
         man: "苦瓜脸么",
         woman: "苦瓜脸么"
       },
       {
         from: 11,
-        to: 30,
+        to: 20,
         man: "不苟言笑",
         woman: "不苟言笑"
       },
       {
-        from: 31,
+        from: 21,
         to: 50,
         man: "迷之微笑",
         woman: "迷之微笑"
@@ -41,7 +41,7 @@
       },
       {
         from: 76,
-        to: 100,
+        to: 101,
         man: "眉飞眼笑",
         woman: "一笑倾城"
       }

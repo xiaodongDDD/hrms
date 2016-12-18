@@ -131,7 +131,12 @@ Android测试环境
   二 Android 打包
   
 4.正式环境PROD appID com.hand-china.hrms
+
   iOS版本 Android 打包 通用插件下载
+
+  cordova plugin rm cordova-plugin-hrms-faceidentify
+  cordova plugin add http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git
+  
   cordova plugin rm com.handmobile.cordovaplugin.hotpatch
   cordova plugin add http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH/
   

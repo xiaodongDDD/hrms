@@ -66,10 +66,10 @@
           alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
         }
         var result = JSON.parse(res.response);
-        if(result.rows[0] && result.rows[0].con && result.rows[0].confidence > 90){
-          hmsPopup.showPopup('验证成功！' + result.rows[0].confidence);
+        if(result.rows[0] && result.rows[0].confidence && result.rows[0].confidence > 80){
+          hmsPopup.showPopup('验证成功！匹配度' + result.rows[0].confidence);
         }else{
-          hmsPopup.showPopup('验证失败，请重新验证或重新设置！' + result.rows[0].confidence);
+          hmsPopup.showPopup('验证失败，请重新验证或重新设置！匹配度' + result.rows[0].confidence);
         }
         //hmsPopup.showPopup('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
       };

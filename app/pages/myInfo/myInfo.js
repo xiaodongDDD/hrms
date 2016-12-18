@@ -17,6 +17,7 @@ angular.module('myInfoModule')
     'hmsCacheService',
     'messageService',
     'faceEcognitionService',
+    '$timeout',
     function ($scope,
               $state,
               baseConfig,
@@ -29,7 +30,8 @@ angular.module('myInfoModule')
               hmsJpushService,
               hmsCacheService,
               messageService,
-              faceEcognitionService) {
+              faceEcognitionService,
+              $timeout) {
       if (baseConfig.debug) {
         console.log('myInfoCtrl.enter');
         console.log('myInfoCtrl.enter ');
@@ -66,6 +68,20 @@ angular.module('myInfoModule')
           "p_employee_code": window.localStorage.empno
         }
       };
+
+      $timeout(function () {
+        var faceUrl = baseConfig.queryPath + "/isUpload";//获取用户信息
+        hmsHttp.post(faceUrl).success(function (result) {
+          if(result.success == true){
+            if(baseConfig.debug){
+              console.log('faceEcognitionService.setFaceEcognitionFlag');
+            }
+            faceEcognitionService.setFaceEcognitionFlag(true);
+          }
+        },function (response) {
+        })
+      },200);
+
 
       hmsHttp.post(url, param).success(function (result) {
         $scope.showLoading = false;
@@ -120,9 +136,6 @@ angular.module('myInfoModule')
       };
 
       $scope.faceRecognition = function () {
-        if(window.localStorage.faceEcognition=='true'){
-          faceEcognitionService.setFaceEcognitionFlag(true);
-        }
         if(faceEcognitionService.getFaceEcognitionFlag()){
           $state.go('tab.face-ecognition-setting');
         }else{

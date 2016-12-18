@@ -305,7 +305,7 @@
                 if (self.successBlock) {
                     if (!isPassed) {
                         
-                        [ToastUtils showLong:@"识别成功！"];
+                      //  [ToastUtils showLong:@"识别成功！"];
                         isPassed = YES;
                         NSDictionary *faceDetail = face[0];
                         self.successBlock([compassImage imageAtRect:CGRectMake([faceDetail[@"x"] integerValue]-35, [faceDetail[@"y"] integerValue]-60, [faceDetail[@"width"] integerValue]+70, [faceDetail[@"height"] integerValue]+70)],face[0]);

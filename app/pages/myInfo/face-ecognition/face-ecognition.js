@@ -168,7 +168,11 @@
       if (result.gender && result.gender < 50) {
         vm.faceResult.gender = '女';
         sex = 'woman';
-      } else if (result.gender && result.gender > 50) {
+      } else if (result.gender && result.gender == 50) {
+        vm.faceResult.gender = '中性';
+        sex = 'woman';
+      }
+      else if (result.gender && result.gender > 50) {
         vm.faceResult.gender = '男';
         sex = 'man';
       }

@@ -979,7 +979,7 @@ angular.module('applicationModule')
           };
           var success = function (result) {
             if (result.status == 'S') {
-              hmsPopup.showPopup('处理工作流成功!');
+              //hmsPopup.showPopup('处理工作流成功!');
               if ($stateParams.type == 'WORKFLOWDETAIL') {
                 workFLowListService.setRefreshWorkflowList(true);
               }

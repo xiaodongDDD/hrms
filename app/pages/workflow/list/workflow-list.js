@@ -352,7 +352,7 @@ angular.module('applicationModule')
             if(result.error_count && result.error_count != 0){
               hmsPopup.showPopup(result.message);
             }else{
-              hmsPopup.showPopup('批量处理工作流成功!');
+              //hmsPopup.showPopup('批量处理工作流成功!');
             }
             $scope.batchProcessFlag = false;
             $scope.fetchTodoList(true);
@@ -397,7 +397,7 @@ angular.module('applicationModule')
             var index = $scope.list.indexOf(item);
             console.log('submitAction.success.index ' + index)
             $scope.list.splice(index, 1);
-            hmsPopup.showPopup('处理工作流成功!');
+            //hmsPopup.showPopup('处理工作流成功!');
           }
           else {
             hmsPopup.showPopup('处理工作流失败,请进入详细界面填写完整信息!');
