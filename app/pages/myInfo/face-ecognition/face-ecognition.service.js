@@ -81,7 +81,7 @@
       if (progressEvent.lengthComputable) {
         progress = progressEvent.loaded / progressEvent.total * 100;
         if (progress == 100) {
-          hmsPopup.hidePopup();
+          //hmsPopup.hidePopup();
         } else {
           hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
         }
