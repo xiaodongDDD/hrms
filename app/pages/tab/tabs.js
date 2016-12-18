@@ -46,7 +46,7 @@ angular.module('loginModule').controller('TabsCtrl',
         }
         //tabs中存在的主页面不需要隐藏，hidetabs=false
         if (statename != 'tab.message' && statename != 'tab.application' &&
-          statename != 'tab.contactCrm' && statename != 'tab.myInfo') {
+          statename != 'tab.contact' && statename != 'tab.myInfo') {
           $scope.hideTabs = true;
         } else {
           if (TabsService.getManualReturnFlag() === true) {

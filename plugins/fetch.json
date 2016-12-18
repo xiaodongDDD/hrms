@@ -56,17 +56,18 @@
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY": "6e0b08078306f45ac8331d54"
+            "API_KEY": "22b25063349b6beef7bde524"
         }
     },
     "hand-im-plugin-device": {
         "source": {
-            "type": "local",
-            "path": "E:\\hrms4\\hand-im-plugin-device"
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
+            "subdir": "."
         },
         "is_top_level": true,
         "variables": {
-            "RONG_KEY": "0vnjpoadnd4cz"
+            "RONG_KEY": "e5t4ouvptpsaa"
         }
     }
 }
