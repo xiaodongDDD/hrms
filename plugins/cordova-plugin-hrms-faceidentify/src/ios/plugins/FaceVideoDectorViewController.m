@@ -58,9 +58,8 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //初始化一个计时器每两秒钟检测一次人脸
-        timer = [NSTimer scheduledTimerWithTimeInterval:1.2f repeats:YES block:^(NSTimer * _Nonnull timer) {
-            isDetecting = YES;
-        }];
+
+        timer = [NSTimer scheduledTimerWithTimeInterval:1.2f target:self selector:@selector(faceDetectFunction) userInfo:nil repeats:YES];
     });
     
     AFNetworkReachabilityStatus status = [[AFNetworkReachabilityManager sharedManager] networkReachabilityStatus];
@@ -68,6 +67,11 @@
         [ToastUtils showAtTop:@"当前网络环境不好，请检查网络！"];
     }
     
+}
+
+- (void)faceDetectFunction
+{
+    isDetecting = YES;
 }
 
 - (void)initUI
@@ -160,9 +164,7 @@
     [timer invalidate];
     timer = nil;
     //初始化一个计时器每两秒钟检测一次人脸
-    timer = [NSTimer scheduledTimerWithTimeInterval:1.2f repeats:YES block:^(NSTimer * _Nonnull timer) {
-        isDetecting = YES;
-    }];
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.2f target:self selector:@selector(faceDetectFunction) userInfo:nil repeats:YES];
     
 }
 
