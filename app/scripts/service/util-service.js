@@ -76,7 +76,7 @@ angular.module('HmsModule')
               console.log(postName + " End!");
             }
             hmsPopup.hideLoading();
-            if (status == '401') {
+            if (status == '401' || status == '403') {
               window.localStorage.token = '';
               goBackLogin($state);
               hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!');

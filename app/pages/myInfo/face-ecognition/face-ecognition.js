@@ -163,21 +163,42 @@
       }
       var sex = '';
       vm.faceResult.imgUrl = result.imgPath;
-      vm.faceResult.age = result.age;
-      vm.faceResult.beauty = result.beauty;
-      if (result.gender && result.gender < 50) {
-        vm.faceResult.gender = '女';
-        sex = 'woman';
-      } else if (result.gender && result.gender == 50) {
+      if(result.age){
+        vm.faceResult.age = result.age;
+      }else{
+        vm.faceResult.age = 18;
+      }
+      if(result.beauty){
+        vm.faceResult.beauty = result.beauty;
+      }
+      else{
+        vm.faceResult.beauty = 80;
+      }
+
+      try{
+        if (result.gender && result.gender < 50) {
+          vm.faceResult.gender = '女';
+          sex = 'woman';
+        } else if (result.gender && result.gender == 50) {
+          vm.faceResult.gender = '中性';
+          sex = 'woman';
+        }
+        else if (result.gender && result.gender > 50) {
+          vm.faceResult.gender = '男';
+          sex = 'man';
+        }
+      }catch(e){
         vm.faceResult.gender = '中性';
         sex = 'woman';
       }
-      else if (result.gender && result.gender > 50) {
-        vm.faceResult.gender = '男';
-        sex = 'man';
-      }
-      vm.faceResult.expression = faceEcognitionService.getExpression(result.expression, sex);
 
+      if(result.expression){
+        vm.faceResult.expression = faceEcognitionService.getExpression(result.expression, sex);
+      }
+      else{
+        vm.faceResult.expression = '没有表情'
+      }
+      
       vm.faceResult.img = result.imgPath;
       vm.faceEcognitionResult = true;
       $scope.$apply();
