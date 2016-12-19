@@ -316,7 +316,8 @@ angular.module('myApp')
       //$urlRouterProvider.otherwise('/guide'); return;
 
       if (!window.localStorage.needGuid || window.localStorage.needGuid == "true"
-        || !window.localStorage.appCacheVersion || window.localStorage.appCacheVersion != baseConfig.version.currentVersion) {
+        || !window.localStorage.appCacheVersion || window.localStorage.appCacheVersion != baseConfig.version.currentVersion
+        ) {
         if (baseConfig.debug) {
           console.log('app.js into guide ');
         }

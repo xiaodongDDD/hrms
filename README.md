@@ -88,6 +88,9 @@ Android测试环境
 3.测试环境打包 
   iOS版本 Android 打包 通用插件下载
   
+  cordova plugin rm com.hand.scancard
+  cordova plugin add git clone http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git
+  
   cordova plugin rm cordova-plugin-hrms-faceidentify
   cordova plugin add http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git
   
@@ -133,6 +136,9 @@ Android测试环境
 4.正式环境PROD appID com.hand-china.hrms
 
   iOS版本 Android 打包 通用插件下载
+  
+  cordova plugin rm com.hand.scancard
+  cordova plugin add http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git
 
   cordova plugin rm cordova-plugin-hrms-faceidentify
   cordova plugin add http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git
@@ -144,7 +150,7 @@ Android测试环境
   cordova plugin add http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git --variable RONG_KEY=e5t4ouvptpsaa
   
   cordova plugin rm jpush-phonegap-plugin
-  cordova plugin add jpush-phonegap-plugin --variable API_KEY=22b25063349b6beef7bde524
+  cordova plugin add jpush-phonegap-plugin@2.2.0 --variable API_KEY=22b25063349b6beef7bde524
   
   一 iOS 打包
   (1) CDVPlugin-Bridging-Header.h 修改融云app key   e5t4ouvptpsaa 

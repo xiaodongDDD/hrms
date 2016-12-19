@@ -46,7 +46,7 @@
     function loginFace() {
       hmsPopup.showPopup('此功能下一版本上线');
     }
-    
+
     function goBack() {
       if($stateParams.from == "collection"){
         $ionicHistory.goBack(-2);
@@ -61,7 +61,7 @@
         if (baseConfig.debug) {
           alert('ecognition.error ' + angular.toJson(result));
         }
-        hmsPopup.showPopup('验证失败，请重新验证或重新设置！');
+        hmsPopup.showPopup('验证失败，请重新验证或补充照片！');
       };
       var success = function (result) {
         uploadServe(result.imgPath);

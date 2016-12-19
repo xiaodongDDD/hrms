@@ -20,13 +20,13 @@
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/*">
-            <uses-permission android:name="android.permission.CAMERA"/>
+            <uses-permission android:name="android.permission.CAMERA"/>  
             <uses-permission android:name="android.permission.INTERNET" />
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-            <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-        </config-file>
+            <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" /> 
+        </config-file> 
     </platform>
 
    <platform name="ios">
@@ -36,24 +36,27 @@
         <!--<param name="onload" value="true"/>-->
       </feature>
     </config-file>
-
+  
   <config-file target="*-Info.plist"  parent="CFBundleDevelopmentRegion">
       <string>zh_CN</string>
 
     </config-file>
-  
-  <!--相册权限-->
-  <config-file target="*-Info.plist"  parent="NSPhotoLibraryUsageDescription">
-      <string> </string>
-  </config-file>
+
+
+
 
     <!-- 源码    -->
     <header-file src="src/ios/scanCard.h"/>
     <source-file src="src/ios/scanCard.mm"/>
 
+
   <!-- Fundamental frameworks -->
    <framework src="libstdc++.tbd" />
    <framework src="libstdc++.dylib" />
+
+
+
+
 
 </platform>
 
