@@ -70,16 +70,6 @@ angular.module('applicationModule')
           type: "HCRM_CUSTOMER",
           flag:false,
           data:[]
-        },{
-          typeName:"线索",
-          flag:false,
-          type: "HCRM_CLUE",
-          data:[]
-        },{
-          typeName:"商机",
-          flag:false,
-          type: "HCRM_OPPORTUNITY",
-          data:[]
         }
       ];
       $scope.searchParam = {

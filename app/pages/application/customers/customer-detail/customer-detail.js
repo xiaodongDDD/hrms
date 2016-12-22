@@ -65,6 +65,8 @@ angular.module('customerModule')
         console.log( $stateParams.customerDetail);
         $rootScope.$broadcast("REFRESH_CUSTOMER_HISTORY");
         $rootScope.img = "build/img/tabs/edit_add@3x_5.png";
+        $scope.permissionFlag =  false;
+        $scope.imgButton = true;
         $scope.customer = {};
         $scope.application = [];
         $scope.permission =[];
@@ -86,13 +88,11 @@ angular.module('customerModule')
         }, {
           title: "商机",
           icon: "icon_business"
-        }, {
-          title: "合同",
-          icon: "icon_product"
-        }, {
-          title: "变更日志",
-          icon: "icon_letter"
         }];
+        //  , {
+        //  title: "变更日志",
+        //  icon: "icon_letter"
+        //}];
 
         $scope.showMenuFlag = -1;
         $scope.subHeadersSelect = [true];
@@ -100,15 +100,11 @@ angular.module('customerModule')
         function getCustomerDetailSuccess(response) {
         if (response.returnCode == "S") {
           $scope.customer = response.customer_detail;
+          $scope.customer.approveShow = $scope.customer.approveTypeName=='已审核'||$scope.customer.approveTypeName==''?'':'('+$scope.customer.approveTypeName+')';
           if(response.situtions){
             $scope.application = response.situtions;
           }else{
             $scope.application =[];
-          }
-          if(response.permissions){
-            $scope.permission = response.permissions;
-          }else{
-            $scope.permission =[];
           }
           console.log($scope.customer);
         }
@@ -135,7 +131,8 @@ angular.module('customerModule')
               {text: '共享'},
               {text: '转移'},
               {text: '修改'},
-              {text: $scope.customer.dataStatusName=='启用'?'禁用客户':'启用客户'}
+              {text: $scope.customer.dataStatusName=='启用'?'禁用客户':'启用客户'},
+              {text: '提交审批'},
             ],
             cancelText: '取消',
             cancel: function () {
@@ -143,34 +140,99 @@ angular.module('customerModule')
             },
             buttonClicked: function (index) {
               if (index == 0) {//共享
-                $scope.showShareSelect();
-              } else if (index == 1) {
-                $scope.showSelectDiv('transfer');
+                for(var i=0;i<$scope.permission.length;i++){
+                  if($scope.permission[i]=='HCRM_OPERATION_SHARE'){
+                    $scope.showShareSelect();
+                    $scope.permissionFlag =true;
+                  }
+                }
+                if(!$scope.permissionFlag){
+                  hmsPopup.showPopup('权限不足！');
+                }else{
+                  $scope.permissionFlag =  false;
+                }
 
-                $scope.selectItem = function ($index) {
-                  $scope.showSelectDiv();
-                  var date = $filter('date')(new Date(), 'yyyy-MM-dd');
-                  var transferParam = {
-                    "customerId": $scope.customer.customerId,
-                    "transferBeforEmp": window.localStorage.empno,
-                    "transferAfterEmp": $scope.items[$index].userId,
-                    "effectiveDate": date,
-                    "description": "转移原因"
-                  };
-                  customerDetailService.customerTransfer(transferCustomerSuccess, transferParam);
-                };
+              } else if (index == 1) {//客户转移
+                for(var i=0;i<$scope.permission.length;i++){
+                  if($scope.permission[i]=='HCRM_OPERATION_TRANSFER'){
+                    $scope.showSelectDiv('transfer');
+
+                    $scope.selectItem = function ($index) {
+                      $scope.showSelectDiv();
+                      var date = $filter('date')(new Date(), 'yyyy-MM-dd');
+                      var transferParam = {
+                        "customerId": $scope.customer.customerId,
+                        "transferBeforEmp": window.localStorage.empno,
+                        "transferAfterEmp": $scope.items[$index].userId,
+                        "effectiveDate": date,
+                        "description": "转移原因"
+                      };
+                      customerDetailService.customerTransfer(transferCustomerSuccess, transferParam);
+                    };
+                    $scope.permissionFlag =true;
+                  }
+                }
+                if(!$scope.permissionFlag){
+                  hmsPopup.showPopup('权限不足！');
+                }else{
+                  $scope.permissionFlag =  false;
+                }
+
               } else if (index == 2) {//修改
-                customerDetailService.setIsEdit(true);
-                customerAddService.setIsAdd(true);
-                customerDetailService.setEditCustomer($scope.customer);
-                customerDetailService.setApplication($scope.application);
-                $state.go('tab.improveInformation');
-              } else if (index == 3) {
-                 for(var i=0;i<$scope.permission.length;i++){
-                   //if($scope.permission[i].)
-                 }
-                console.log('数组======'+$scope.permission[0],'值===='+$scope.permission[0].HCRM_OPERATION_CREATE);
-                  customerDetailService.disableCustomer(disableCustomerSuccess,$scope.customer.customerId,$scope.customer.dataStatus);
+                for(var i=0;i<$scope.permission.length;i++){
+                  if($scope.permission[i]=='HCRM_OPERATION_EDIT'){
+                    customerDetailService.setIsEdit(true);
+                    customerAddService.setIsAdd(true);
+                    customerDetailService.setEditCustomer($scope.customer);
+                    customerDetailService.setApplication($scope.application);
+                    $scope.permissionFlag =true;
+                    if($scope.customer.approveTypeName=='未提交'||$scope.customer.approveTypeName=='已拒绝'){
+                      $state.go('tab.customerAdd');
+                    }else {
+                      $state.go('tab.improveInformation');
+                    }
+                  }
+                }
+                if(!$scope.permissionFlag){
+                  hmsPopup.showPopup('权限不足！');
+                }else{
+                  $scope.permissionFlag =  false;
+                }
+
+              } else if (index == 3) {//客户禁用启用
+                for(var i=0;i<$scope.permission.length;i++){
+                  if($scope.permission[i]=='HCRM_OPERATION_ENABLE'||$scope.permission[i]=='HCRM_OPERATION_DISABLE'){
+                    customerDetailService.disableCustomer(disableCustomerSuccess,$scope.customer.customerId,$scope.customer.dataStatus);
+                    $scope.permissionFlag =true;
+                  }
+                }
+                if(!$scope.permissionFlag){
+                  hmsPopup.showPopup('权限不足！');
+                }else{
+                  $scope.permissionFlag =  false;
+                }
+
+
+              }else if (index == 4) {//客户审批
+                if($scope.customer.approveType=='HCRM_SUBMITTED'||$scope.customer.approveType=='HCRM_APPROVED'){
+                  hmsPopup.showPopup('该客户已提交审批！');
+                }else {
+                  for(var i=0;i<$scope.permission.length;i++){
+                    if($scope.permission[i]=='HCRM_OPERATION_APPROVAL_COMMIT'){
+                      customerService.submitReview(customerCheckSuccess,$scope.customer.customerId);
+                      $scope.permissionFlag =true;
+                      customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+                    }
+                  }
+                  if(!$scope.permissionFlag){
+                    hmsPopup.showPopup('权限不足！');
+                  }else{
+                    $scope.permissionFlag =  false;
+                  }
+
+                }
+
+
               }
               return true;
             }
@@ -222,13 +284,23 @@ angular.module('customerModule')
       console.log("enter外面");
       console.log($ionicHistory.viewHistory().backView);
       console.log(angular.toJson($stateParams.customerDetail));
-      $rootScope.$on('$ionicView.enter', function (e) {
+      $scope.$on('$ionicView.enter', function (e) {
         console.log($ionicHistory.viewHistory().backView);
         console.log(angular.toJson($stateParams.customerDetail));
         /*$scope.customerId = $stateParams.customerDetail.customerId;*/
         $scope.customerId =window.localStorage.customerId;
           console.log($scope.customerId);
+        $scope.permissionValue = {
+          recordId : $scope.customerId,
+          modularCode :'HCRM_MODULAR_CUSTOMER'
+        }
+        if(customerDetailService.getTabNumber()==3){
+          $scope.imgButton = false;
+        }else {
+          $scope.imgButton = true;
+        }
         customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+        customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
         $scope.$apply();
         //$scope.selectSubHeader(0);
         $scope.selectSubHeader(customerDetailService.getTabNumber());
@@ -280,6 +352,7 @@ angular.module('customerModule')
           $ionicScrollDelegate.$getByHandle('detailScroll').scrollTop(true);
           $scope.transformButton($index);
           if ($index == 0) {
+            $scope.imgButton = true;
             var addData = {
               customerId: $scope.customerId,
               fullName: $scope.customer.fullName
@@ -289,15 +362,32 @@ angular.module('customerModule')
               $state.go('tab.plans-add',{planData:addData});
             }
           } else if ($index == 1) {
+            $scope.imgButton = true;
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-detail/customer-detail-detail.html";
             $scope.chooseThis = function () {
-              customerDetailService.setIsEdit(true);
-              customerAddService.setIsAdd(true);
-              customerDetailService.setEditCustomer($scope.customer);
-              customerDetailService.setApplication($scope.application);
-              $state.go('tab.improveInformation');
+
+              for(var i=0;i<$scope.permission.length;i++){
+                if($scope.permission[i]=='HCRM_OPERATION_EDIT'){
+                  customerDetailService.setIsEdit(true);
+                  customerAddService.setIsAdd(true);
+                  customerDetailService.setEditCustomer($scope.customer);
+                  customerDetailService.setApplication($scope.application);
+                  $scope.permissionFlag =true;
+                  if($scope.customer.approveTypeName=='未提交'||$scope.customer.approveTypeName=='已拒绝'){
+                    $state.go('tab.customerAdd');
+                  }else {
+                    $state.go('tab.improveInformation');
+                  }
+                }
+              }
+              if(!$scope.permissionFlag){
+                hmsPopup.showPopup('权限不足！');
+              }else{
+                $scope.permissionFlag =  false;
+              }
             }
           } else if ($index == 2) {
+            $scope.imgButton = true;
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-contact/customer-detail-contact.html";
             $scope.chooseThis = function () {
               var addData = {
@@ -360,8 +450,10 @@ angular.module('customerModule')
               }
             }
           } else if ($index == 3) {
+            $scope.imgButton = false;
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-collaborators/customer-detail-collaborators.html";
           } else if($index == 4) {
+            $scope.imgButton = true;
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-clue/customer-detail-clue.html";
             validCustomerContactsSuccess = function(response){
               $scope.showCrmLoading = false;
@@ -381,10 +473,15 @@ angular.module('customerModule')
               }
             };
             $scope.chooseThis = function () {
+              if($scope.customer.dataStatus == 'HCRM_DISABLE'){
+                hmsPopup.showPopup('该客户已被禁用，无法创建线索');
+                return ;
+              }
               $scope.showCrmLoading = true;
               customerDetailService.getCustomerContacts(validCustomerContactsSuccess, 1, 10, $scope.customerId);
             }
           } else if ($index == 5) {
+            $scope.imgButton = true;
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-opportunity/customer-detail-opportunity.html";
             validCustomerContactsSuccess = function(response){
               $scope.showCrmLoading = false;
@@ -405,10 +502,14 @@ angular.module('customerModule')
             };
 
             $scope.chooseThis = function () {
+              if($scope.customer.dataStatus == 'HCRM_DISABLE'){
+                hmsPopup.showPopup('该客户已被禁用，无法创建商机');
+                return ;
+              }
               $scope.showCrmLoading = true;
               customerDetailService.getCustomerContacts(validCustomerContactsSuccess, 1, 10, $scope.customerId);
             }
-          } else if ($index == 7) {
+          } else if ($index == 6) {
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-change-log/customer-detail-change-log.html";
           }
           if ($scope.subHeadersSelect[$index])
@@ -423,6 +524,7 @@ angular.module('customerModule')
           console.log("goBck--===");
           console.log(customer);
           console.log($ionicHistory.viewHistory());
+          customerDetailService.setIsEdit(false);
           customerDetailService.setTabNumber(0);
           if ($ionicHistory.viewHistory().backView && customerDetailService.getIsCustomerAdd()===false) {
             $ionicHistory.goBack();
@@ -463,17 +565,26 @@ angular.module('customerModule')
         contactLocal.contactLocal(info, onSaveContactSuccess, onSaveContactError);
       };
       function dealScanData(msg) { //处理名片扫描插件的返回数据
+        console.log(JSON.parse(msg));
         try {
           $scope.scanCardModal.show();
+          console.log(JSON.parse(msg));
           if (JSON.parse(msg)) {
             $scope.manInfo = {
               emp_name: '',
               mobil: '',
               email: '',
               organization: '',
-              fullName: ""
+              fullName: "",
+              department:"",
+              position:"",
+              street:"",
+              postal_code:""
             };
             msg = JSON.parse(msg);
+            console.log(angular.toJson(msg));
+            $scope.testI = msg;
+            console.log(angular.toJson(msg));
             try {
               $scope.manInfo.emp_name = msg.formatted_name[0].item;
             } catch (e) {
@@ -504,10 +615,37 @@ angular.module('customerModule')
             try {
               var organization = msg.organization;
               if (organization.length > 0) {
-                $scope.manInfo.organization = organization[0].item.name;
+                /*  $scope.manInfo.organization = organization[1].item.name;
+                 $scope.manInfo.department = organization[0].item.name;*/
+                if(organization[0].item.hasOwnProperty('name')){
+                  $scope.manInfo.organization = organization[0].item.name;
+                  $scope.manInfo.department="";
+                }else{
+                  $scope.manInfo.department = organization[0].item.unit;
+                  $scope.manInfo.organization = organization[1].item.name;
+                }
               }
             } catch (e) {
               $scope.manInfo.organization = '';
+              $scope.manInfo.department = '';
+            }
+            try {
+              var address = msg.address;
+              if (address.length > 0) {
+                $scope.manInfo.street = address[0].item.street;
+                $scope.manInfo.postal_code = address[0].item.postal_code;
+              }
+            } catch (e) {
+              $scope.manInfo.street = '';
+              $scope.manInfo.postal_code='';
+            }
+            try {
+              var title = msg.title;
+              if (title.length > 0) {
+                $scope.manInfo.position = title[0].item;
+              }
+            } catch (e) {
+              $scope.manInfo.position = '';
             }
             try {
               /*  alert("扫描成功");*/
@@ -515,17 +653,11 @@ angular.module('customerModule')
               $scope.scanCardModal.show();
             } catch (e) {
             }
-          }else{
-            $scope.manInfo = {
-              emp_name: '',
-              mobil: '',
-              email: '',
-              organization: '',
-              fullName: ""
-            };
           }
           hmsPopup.hideLoading();
-        } catch (e) {
+        }
+        catch
+          (e) {
           hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
           hmsPopup.hideLoading();
         }
@@ -549,21 +681,21 @@ angular.module('customerModule')
           "fullName": $scope.manInfo.organization,
           "name": $scope.manInfo.emp_name,
           "sex": "",
-          "department": "",
-          "position": "",
+          "department": $scope.manInfo.department,
+          "position": $scope.manInfo.position,
           "phone": $scope.manInfo.mobil,
           "tel": "",
           "email": $scope.manInfo.email,
           "wechat": "",
           "role": "",
           "status": "HCRM_ENABLE",
-          "statusValue":"有效",
+          statusValue: "有效",
           "addressCountry": "",
           "addressProvince": "",
           "addressCity": "",
           "addressZone": "",
-          "addressDetails": "",
-          "addressZipCode": ""
+          "addressDetails": $scope.manInfo.street,
+          "addressZipCode":  $scope.manInfo.postal_code
         };
         if ($scope.manInfo.organization != "") {
           $scope.searchParam = {
@@ -576,16 +708,16 @@ angular.module('customerModule')
             if (result.returnCode == 'S') {
               hmsPopup.hideLoading();
               /* $scope.searchData = result.search_result;*/
-              if( result.customer_list.length!=0){
+              if (result.customer_list.length != 0) {
                 contact.customerId = result.customer_list[0].customerId;
                 contact.fullName = result.customer_list[0].fullName;
-              }else{
+              } else {
                 contact.customerId = "";
-                contact.fullName="";
+                contact.fullName = "";
               }
               $state.go('tab.addLinkman', {param: contact});
               $scope.scanCardModal.hide();
-            }else{
+            } else {
               hmsPopup.hideLoading();
               hmsPopup.showPopup("没有找到匹配的客户");
               $state.go('tab.addLinkman', {param: contact});
@@ -612,6 +744,7 @@ angular.module('customerModule')
       $scope.scanBusinessCard = function () { //名片扫描添加联系人到通讯录
         if (ionic.Platform.isWebView()) {
           var options = {
+            title: '名片扫描',
             buttonLabels: ['拍照', '从相册中选择'],
             addCancelButtonWithLabel: '取消',
             androidEnableCancelButton: true,
@@ -657,50 +790,29 @@ angular.module('customerModule')
         name: ""
       };
       $scope.items = [];
-      //$scope.nowSelectTarget = {};
-      ////客户转移
-      //$scope.selectTargets = [{
-      //  'key': 'transfer',
-      //  'interface': customerService.getEmployee,  //获得选择项的接口
-      //    'params': [transferEmployeeSuccess,'',1,1000],  //获得选择项时接口所需参数
-      //  'showKey': 'name',            //选择界面显示的数据
-      //  'dataKey': 'employeeId',      //对象内最终操作提交所需的数据变量
-      //  'dataModel': '$scope.data.userId',  //最终操作提交所需的数据变量
-      //  'showDataModel': '$scope.showData.name' //显示在界面上的ng-model
-      //}];
-      //function isContains(str, substr) {
-      //  return new RegExp(substr).test(str);
-      //}
-      //
-      //Array.prototype.clone = function () {
-      //  return [].concat(this);
-      //};
 
       $scope.searchValueKey = '';
       $scope.sourceItems = [];
       $scope.noDataFlag = false;
 
       $scope.searchValue = function () {
-        var notShowNum = 0;
+        $ionicScrollDelegate.$getByHandle('transferScroll').scrollTop(false);
+        $scope.items = [];
         if ($scope.searchValueKey == '') {
-          $scope.noDataFlag = false;
-          $scope.items = $scope.sourceItems.clone();
+          customerService.getEmployee(transferEmployeeSuccess,'',1,1000);
         }
         else {
-          for (var i = 0; i < $scope.sourceItems.length; i++) {
-            if (isContains($scope.sourceItems[i][$scope.nowSelectTarget['showKey']], $scope.searchValueKey))
-              $scope.items[i] = $scope.sourceItems[i];
-            else {
-              $scope.items[i] = '';
-              notShowNum++;
-            }
-          }
-          $scope.noDataFlag = notShowNum == $scope.sourceItems.length;
+          customerService.getEmployee(transferEmployeeSuccess,$scope.searchValueKey,1,1000);
         }
       };
-      $scope.showSelectDiv = function (key) {
+      $scope.showSelectDiv = function () {
+        $ionicScrollDelegate.$getByHandle('transferScroll').scrollTop(false);
         $scope.showSelect = !$scope.showSelect;
         customerService.getEmployee(transferEmployeeSuccess,'',1,1000);
+      };
+      $scope.clearSelectFilter = function(){
+        $scope.searchValueKey = '';
+        $scope.searchValue();
       };
 
       var transferEmployeeSuccess = function (response) {
@@ -720,6 +832,19 @@ angular.module('customerModule')
       };
       ///////////////////////分享客户选择/////////////////////////////
 
+      var getTeamSuccess = function (response) {
+        $scope.showCrmLoading = false;
+        console.log("more");
+        if(response.returnCode == 'S'){
+          for(var i = 0; i < response.sale_team_list.length; i++){
+            response.sale_team_list[i].showModal = response.sale_team_list[i].saleTeamName;
+          }
+          $scope.shareData = $scope.shareData.concat(response.sale_team_list);
+        } else {
+          $scope.moreDataCanBeLoaded = false;
+        }
+      };
+
       var getEmployeeSuccess = function (response) {
         $scope.showCrmLoading = false;
         console.log("more");
@@ -737,10 +862,14 @@ angular.module('customerModule')
       };
 
       $scope.loadMoreData = function () {
-        console.log("上拉加载" + $scope.moreDataCanBeLoaded);
-        $scope.selectValue.page++;
-        customerService.getEmployee(getEmployeeSuccess,$scope.selectValue.keyWord,$scope.selectValue.page,$scope.selectValue.pageSize);
-        //$scope.$broadcast('scroll.infiniteScrollComplete');
+        if($scope.inPersonal){
+          console.log("上拉加载" + $scope.moreDataCanBeLoaded);
+          $scope.selectValue.page++;
+          customerService.getEmployee(getEmployeeSuccess,$scope.selectValue.keyWord,$scope.selectValue.page,$scope.selectValue.pageSize);
+
+        }else{
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        }
       };
 
       Array.prototype.clone = function () {
@@ -755,12 +884,12 @@ angular.module('customerModule')
       };
       $scope.shareValue = {
         "customerId": '',
-        "shareType": "SALE",
+        "shareType": "HCRM_SHARE_SALE",
         "fullName":'',
         "saleId": "",
         "teamId": "",
-        "beginDate": "",
-        "endDate": ""
+        "beginDate": "2000-01-01",
+        "endDate": "5000-01-01"
       }
       $scope.moreDataCanBeLoaded = false;
       $scope.clearFilter = function () {
@@ -788,30 +917,43 @@ angular.module('customerModule')
         $scope.showShareFlag = !$scope.showShareFlag;
         if($scope.inPersonal){
           customerService.getEmployee(getEmployeeSuccess,$scope.selectValue.keyWord,$scope.selectValue.page,$scope.selectValue.pageSize);
+        }else{
+          customerDetailService.getSaleTeam(getTeamSuccess,'');
         }
       };
 
       $scope.inPersonal = true;
 
       $scope.changePersonal = function (flag) {
+        $ionicScrollDelegate.$getByHandle('shareScroll').scrollTop(false);
         $scope.showCrmLoading=true;
         if (flag == $scope.inPersonal)
           return;
         $scope.shareData=[];
+        $scope.selectValue.keyWord=''
         $scope.selectValue.page= 1;
         $scope.inPersonal = flag;
         if($scope.inPersonal){
           customerService.getEmployee(getEmployeeSuccess,$scope.selectValue.keyWord,$scope.selectValue.page,$scope.selectValue.pageSize);
+        }else{
+          customerDetailService.getSaleTeam(getTeamSuccess,'');
         }
       };
 
       $scope.selectShare = function ($index) {
         //拿到选择的值
         if($scope.inPersonal){
-          $scope.shareValue.saleId =  $scope.shareData[0].userId
+          $scope.shareValue.saleId =  $scope.shareData[$index].userId
           $scope.shareValue.fullName = $scope.customer.fullName;
           $scope.shareValue.customerId =$scope.customer.customerId;
-          $scope.shareValue.shareType = 'SALE';
+          $scope.shareValue.shareType = 'HCRM_SHARE_SALE';
+          console.log('共享权限==='+angular.toJson($scope.shareValue ));
+          customerDetailService.shareCustomer(shareCustomerSuccess,$scope.shareValue);
+        }else {
+          $scope.shareValue.teamId =  $scope.shareData[$index].saleTeamId
+          $scope.shareValue.fullName = $scope.customer.fullName;
+          $scope.shareValue.customerId =$scope.customer.customerId;
+          $scope.shareValue.shareType = 'HCRM_SHARE_TEAM';
           customerDetailService.shareCustomer(shareCustomerSuccess,$scope.shareValue);
         }
           $scope.showShareSelect();
@@ -819,15 +961,16 @@ angular.module('customerModule')
       };
       //搜索分享人
       $scope.filterShare = function () {
-        if ($scope.selectValue.keyWord == '')
-          $scope.shareData = $scope.placeData.clone();
-        else {
-          for (var i = 0; i < $scope.placeData.length; i++) {
-            if (isContains($scope.placeData[i].addressName, $scope.selectValue.keyWord))
-              $scope.shareData[i] = $scope.placeData[i];
-            else
-              $scope.shareData[i] = '';
-          }
+        $ionicScrollDelegate.$getByHandle('shareScroll').scrollTop(false);
+        if($scope.inPersonal){
+           $scope.shareData = [];
+           $scope.selectValue.page = 1;
+           customerService.getEmployee(getEmployeeSuccess,$scope.selectValue.keyWord,$scope.selectValue.page,$scope.selectValue.pageSize);
+
+        }else {
+          $scope.shareData = [];
+          $scope.selectValue.page = 1;
+          customerDetailService.getSaleTeam(getTeamSuccess,$scope.selectValue.keyWord);
         }
       }
 
@@ -835,6 +978,8 @@ angular.module('customerModule')
       var disableCustomerSuccess = function (data) {
         if(data.returnCode=='S'){
           hmsPopup.showPopup(data.returnMsg);
+          customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+          customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
         }else{
           hmsPopup.showPopup(data.returnMsg);
         }
@@ -843,6 +988,8 @@ angular.module('customerModule')
       var shareCustomerSuccess = function (data) {
         if(data.returnCode=='S'){
           hmsPopup.showPopup(data.returnMsg);
+          customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+          customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
         }else{
           hmsPopup.showPopup(data.returnMsg);
         }
@@ -852,10 +999,31 @@ angular.module('customerModule')
       var transferCustomerSuccess = function (data) {
         if(data.returnCode=='S'){
           hmsPopup.showPopup(data.returnMsg);
+          customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+          customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
         }else{
           hmsPopup.showPopup(data.returnMsg);
         }
       }
+      //权限获取
+      var getPermissionsSuccess = function (data) {
+        if(data.returnCode=='S'){
+          $scope.permission = data.permissions;
+        }else{
+          hmsPopup.showPopup(data.returnMsg);
+        }
+      }
+      //客户审批
+      var customerCheckSuccess = function(data){
+        $scope.showCrmLoading = false;
+        if(data.returnCode == 'S'){
+          hmsPopup.showPopup(data.returnMsg);
+          customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+          customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
+        }else{
+          hmsPopup.showPopup(data.returnMsg);
+        }
+      };
 
     }]);
 
@@ -868,7 +1036,6 @@ angular.module('customerModule')
               hmsPopup,
               baseConfig,
               $http) {
-
       var isCustomerAdd = false;
       var isEdit = false;
       var tabNumber = 0;
@@ -905,6 +1072,18 @@ angular.module('customerModule')
           hmsPopup.showPopup(response);
         });
       };
+      //所属团队
+      this.getSaleTeam = function (success,keyWord) {
+        var params = {
+          keyWord:keyWord
+        };
+        hmsHttp.post(baseUrl + 'query_sale_team', params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
       //禁用、启用客户
       this.disableCustomer = function(success,customerId,dataStatus){
         var params = {
@@ -939,6 +1118,16 @@ angular.module('customerModule')
           // hmsPopup.showPopup(response);
         });
       };
+      this.getPermissions = function (success, key) { //权限获取
+        hmsHttp.post(baseUrl + 'all_permissions', key).success(function (result) {
+          success(result);
+          hmsPopup.hideLoading();
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          // hmsPopup.showPopup(response);
+        });
+      };
+
       this.setIsCustomerAdd = function (val) {
         isCustomerAdd = val;
       };

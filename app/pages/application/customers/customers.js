@@ -36,7 +36,7 @@ angular.module('customerModule')
     'customerService',
     'ionicDatePicker',
     'baseConfig',
-    'competitorListService',
+    'opportunityAddService',
     '$ionicScrollDelegate',
     function ($scope,
               $rootScope,
@@ -53,7 +53,7 @@ angular.module('customerModule')
               customerService,
               ionicDatePicker,
               baseConfig,
-              competitorListService,
+              opportunityAddService,
               $ionicScrollDelegate) {
       $scope.isIos = false;
       $scope.showShift = false;
@@ -99,7 +99,9 @@ angular.module('customerModule')
         pageSize:20,
         sortname:'',
         sortorder:'',
-        queryType:'ALL_CUSTOMER'
+        queryType:'ALL_CUSTOMER',
+        approveType:'',
+        dataStatus:''
       };
       if(ionic.Platform.isIOS() || ionic.Platform.isIPad()){
         $scope.isIos = true;
@@ -143,7 +145,7 @@ angular.module('customerModule')
           $scope.loadMoreDataFlag =false;
           $scope.subHeadersSelect = [false,false];
           $scope.subHeadersSelect[$index] = true;
-          $ionicScrollDelegate.scrollTop(true);
+          $ionicScrollDelegate.scrollTop(false);
         }
         //hmsPopup.showLoading();
         console.log("切换type之后传的值：==="+$scope.data.page);
@@ -178,17 +180,21 @@ angular.module('customerModule')
       var queryCustomerSuccess = function(response){
         //hmsPopup.hideLoading();
         $scope.showLoading = false;
+        $ionicScrollDelegate.scrollTop(false);
         if(response.returnCode == "S"){
           if(response.customer_list.length===0){
             //未找到数据
             $scope.loadMoreDataFlag = false;
+          }else{
+            $scope.customers = response.customer_list;
+            $scope.loadMoreDataFlag = true;
+            console.log($scope.customers.length)
           }
-          $scope.customers = response.customer_list;
-          $scope.loadMoreDataFlag = true;
-          console.log($scope.customers.length)
+
         } else {
           alert(response.returnMsg);
         }
+        //$scope.$broadcast('scroll.infiniteScrollComplete');
       };
       customerService.queryCustomer(queryCustomerSuccess,error,$scope.data);
       //下拉刷新
@@ -247,6 +253,16 @@ angular.module('customerModule')
         text: '所在城市降序',
         icon: 'icon_house_blue'
       },{
+        flag: 'desc',
+        name: 'creationDate',
+        text: '创建时间最近',
+        icon: 'icon_day'
+      },{
+        flag: 'asc',
+        name: 'creationDate',
+        text: '创建时间最早',
+        icon: 'icon_day'
+      },{
         flag: 'asc',
         name: 'saleArea',
         nameSecond:'saleTeam',
@@ -262,7 +278,7 @@ angular.module('customerModule')
         icon: 'icon_flat_blue'
       }];
 
-      $scope.lastSelectSortIndex = -1;
+      $scope.lastSelectSortIndex = 4;
 
       $scope.selectSort = function(index){
         if(index<4){
@@ -292,7 +308,9 @@ angular.module('customerModule')
         incomeScale: "",//收入规模
         creationDateFrom: '',
         creationDateTo: '',
-        address:''
+        address:'',
+        approveType:'',
+        dataStatus:''
       };
 
       $scope.items = [];
@@ -337,6 +355,41 @@ angular.module('customerModule')
         }
 
       };
+      var initApprove = function () {
+        $scope.showCrmLoading = false;
+        $scope.items = [{
+          approveType:'',
+          name:'不限'
+        },{
+          approveType:'HCRM_NEW',
+          name:'未提交'
+        },{
+          approveType:'HCRM_SUBMITTED',
+          name:'已提交'
+        },{
+          approveType:'HCRM_APPROVED',
+          name:'已审核'
+        },{
+          approveType:'HCRM_REJECTED',
+          name:'已拒绝'
+        }];
+      }
+      var initDataStatus = function () {
+        $scope.showCrmLoading = false;
+        $scope.items = [{
+          statusType:'',
+          name:'不限'
+        },{
+          statusType:'HCRM_VALID',
+          name:'启用'
+        },{
+          statusType:'HCRM_DISABLE',
+          name:'禁用'
+        },{
+          statusType:'HCRM_LIMITED',
+          name:'受限'
+        }];
+      }
       //所属大区
       var getSaleAreaSuccess = function (response) {
         $scope.showCrmLoading = false;
@@ -450,7 +503,7 @@ angular.module('customerModule')
         }
       };
       /*  console.log(upData);*/
-      competitorListService.getValueList(listInitSuccess, business_value_list);
+      opportunityAddService.getValueList(listInitSuccess, business_value_list);
       var showValueInList = function (code) {
         $scope.showCrmLoading = false;
         var valueObj = getValueObjByCode(code);
@@ -538,6 +591,22 @@ angular.module('customerModule')
         'dataKey': 'value',
         'dataModel': '$scope.data.incomeScale',
         'showDataModel': '$scope.showData.incomeScale'
+      },{
+        'key' : 'approve',
+        'interface' :  initApprove,
+        'params' : [],
+        'showKey' : 'name',
+        'dataKey' : 'approveType',
+        'dataModel' : '$scope.data.approveType',
+        'showDataModel' : '$scope.showData.approveType'
+      },{
+        'key' : 'status',
+        'interface' :  initDataStatus,
+        'params' : [],
+        'showKey' : 'name',
+        'dataKey' : 'statusType',
+        'dataModel' : '$scope.data.dataStatus',
+        'showDataModel' : '$scope.showData.dataStatus'
       }];
 
 
@@ -732,7 +801,9 @@ angular.module('customerModule')
           pageSize:20,
           sortname:$scope.value.sortname,
           sortorder:$scope.value.sortorder,
-          queryType:$scope.value.queryType
+          queryType:$scope.value.queryType,
+          approveType:'',
+          dataStatus:''
         };
 
         //界面显示的数据
@@ -949,13 +1020,13 @@ angular.module('customerModule')
         $scope.showShift = !$scope.showShift;
         console.log(JSON.stringify($scope.data));
         customerService.queryCustomer(queryCustomerSuccess,error,$scope.data);
-        $ionicScrollDelegate.scrollTop(true);
+        $ionicScrollDelegate.scrollTop(false);
       };
       $scope.sort = function(){
         $scope.data.page = 1;
         $scope.showLoading = true;
         customerService.queryCustomer(queryCustomerSuccess,error,$scope.data);
-        $ionicScrollDelegate.scrollTop(true);
+        $ionicScrollDelegate.scrollTop(false);
       };
 
       //$rootScope.$on('$ionicView.enter', function (e) {
@@ -1155,6 +1226,64 @@ angular.module('customerModule')
           hmsPopup.hideLoading();
         });
       };
+
+
+      //上传附件的进度管控
+     this.processProgress =function (progressEvent, scope, prompt) {
+        var progress;
+        if (progressEvent.lengthComputable) {
+          progress = progressEvent.loaded / progressEvent.total * 100;
+          if (progress == 100) {
+            //hmsPopup.hidePopup();
+          } else {
+            hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
+          }
+        } else {
+        }
+        if (progress == 100) {
+          hmsPopup.showLoading(prompt);
+        }
+        scope.$apply();
+      }
+
+      //将附件上传到腾讯服务器中进行采集或者识别
+      this.uploadImage = function (imgPath, success, error) {
+        if (baseConfig.debug) {
+          //alert('uploadImage.start ');
+        }
+
+        var url = baseConfig.queryPath;
+        //var options = new FileUploadOptions();
+        //options.filekey = "file";
+        //options.mimeType = "image/jpeg";
+        //options.chunkedMode = false;
+        //options.params = 'crm';
+        //options.headers = {
+        //  Authorization: 'Bearer' + ' ' + window.localStorage.token
+        //}
+        var options = new FileUploadOptions(
+          'file', 'image.jpg', 'image/jpeg', null,
+          {"Authorization": "Bearer " + window.localStorage.token}, 'POST');
+         console.log('url=='+url,'token=='+window.localStorage.token,'图片URL=='+imgPath);
+        var trustAllHosts = true;
+        var fileTransfer = new FileTransfer();
+
+        if (baseConfig.debug) {
+          alert('uploadImage.start url ' + angular.toJson(url));
+          alert('uploadImage.start options ' + angular.toJson(options));
+          alert('uploadImage.start imgPath ' + angular.toJson(imgPath));
+        }
+
+        hmsPopup.showLoading('提交处理中');
+
+        fileTransfer.upload(
+          imgPath,
+          encodeURI(url),//上传服务器的接口地址
+          success,
+          error,
+          options
+        );
+      }
 
       this.getIsCustomer = function () {
         return isCustomer;

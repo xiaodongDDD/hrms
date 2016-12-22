@@ -235,17 +235,26 @@ angular.module('customerModule')
         contactLocal.contactLocal(info, onSaveContactSuccess, onSaveContactError);
       };
       function dealScanData(msg) { //处理名片扫描插件的返回数据
+        console.log(JSON.parse(msg));
         try {
           $scope.scanCardModal.show();
+          console.log(JSON.parse(msg));
           if (JSON.parse(msg)) {
             $scope.manInfo = {
               emp_name: '',
               mobil: '',
               email: '',
               organization: '',
-              fullName: ""
+              fullName: "",
+              department:"",
+              position:"",
+              street:"",
+              postal_code:""
             };
             msg = JSON.parse(msg);
+            console.log(angular.toJson(msg));
+            $scope.testI = msg;
+            console.log(angular.toJson(msg));
             try {
               $scope.manInfo.emp_name = msg.formatted_name[0].item;
             } catch (e) {
@@ -276,10 +285,37 @@ angular.module('customerModule')
             try {
               var organization = msg.organization;
               if (organization.length > 0) {
-                $scope.manInfo.organization = organization[0].item.name;
+                /*  $scope.manInfo.organization = organization[1].item.name;
+                 $scope.manInfo.department = organization[0].item.name;*/
+                if(organization[0].item.hasOwnProperty('name')){
+                  $scope.manInfo.organization = organization[0].item.name;
+                  $scope.manInfo.department="";
+                }else{
+                  $scope.manInfo.department = organization[0].item.unit;
+                  $scope.manInfo.organization = organization[1].item.name;
+                }
               }
             } catch (e) {
               $scope.manInfo.organization = '';
+              $scope.manInfo.department = '';
+            }
+            try {
+              var address = msg.address;
+              if (address.length > 0) {
+                $scope.manInfo.street = address[0].item.street;
+                $scope.manInfo.postal_code = address[0].item.postal_code;
+              }
+            } catch (e) {
+              $scope.manInfo.street = '';
+              $scope.manInfo.postal_code='';
+            }
+            try {
+              var title = msg.title;
+              if (title.length > 0) {
+                $scope.manInfo.position = title[0].item;
+              }
+            } catch (e) {
+              $scope.manInfo.position = '';
             }
             try {
               /*  alert("扫描成功");*/
@@ -289,12 +325,13 @@ angular.module('customerModule')
             }
           }
           hmsPopup.hideLoading();
-        } catch (e) {
+        }
+        catch
+          (e) {
           hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
           hmsPopup.hideLoading();
         }
       }
-
       $scope.scanBusinessCard = function () { //名片扫描添加联系人到通讯录
         if (ionic.Platform.isWebView()) {
           var options = {

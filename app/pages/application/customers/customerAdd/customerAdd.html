@@ -30,6 +30,10 @@
     <div class="searchMess" ng-click="showMessage()">
       查询企业工商信息>>
     </div>
+    <div class="searchMess" ng-click="copyFullName(items[0].input)">
+      复制客户名称>>
+    </div>
+
     <button class="button button-block logout-button" ng-disabled="showLoadings" ng-click="add()">
       <img class="button-img" src="build/img/application/information/icon_confirm@3x.png">{{bilingual.confirm}}
     </button>

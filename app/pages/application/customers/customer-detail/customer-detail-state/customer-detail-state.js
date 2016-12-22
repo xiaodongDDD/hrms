@@ -13,6 +13,7 @@ angular.module('customerModule')
     'hmsHttp',
     '$rootScope',
     'customerDetailService',
+    '$ionicScrollDelegate',
     function ($scope,
               $state,
               customerDetailStateService,
@@ -21,7 +22,8 @@ angular.module('customerModule')
               $timeout,
               hmsHttp,
               $rootScope,
-              customerDetailService) {
+              customerDetailService,
+              $ionicScrollDelegate) {
       console.log('CustomerDetailStateCtrl');
 
       customerDetailService.setTabNumber(0);
@@ -40,14 +42,19 @@ angular.module('customerModule')
       var querySaleStatesSuccess = function(response){
         //hmsPopup.hideLoading();
         $scope.showLoading = false;
+        $scope.$broadcast('scroll.refreshComplete');
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+        $ionicScrollDelegate.$getByHandle('detailScroll').scrollTop(false);
         if(response.returnCode == "S"){
           if(response.dynamics.length===0){
             hmsPopup.showPopup('未找到数据');
             $scope.loadMoreDataFlag = false;
+          }else{
+            $scope.states = response.dynamics;
+            $scope.loadMoreDataFlag = true;
+            /*   console.log($scope.customers.length)*/
           }
-          $scope.states = response.dynamics;
-          $scope.loadMoreDataFlag = true;
-       /*   console.log($scope.customers.length)*/
+
         } else {
           alert(response.returnMsg);
         }
@@ -94,7 +101,7 @@ angular.module('customerModule')
         $scope.doRefresh();
 
       });
-      $rootScope.$on('$ionicView.beforeEnter', function (e) {
+      $scope.$on('$ionicView.beforeEnter', function (e) {
        $scope.value =  {
          page: 1,
          pageSize: 10,

@@ -43,6 +43,7 @@ angular.module('customerModule')
     '$ionicModal',
     '$ionicScrollDelegate',
     'customerDetailService',
+    'opportunityAddService',
     'improveInformationService',
     function($scope,
              $state,
@@ -67,10 +68,10 @@ angular.module('customerModule')
              $ionicModal,
              $ionicScrollDelegate,
              customerDetailService,
+             opportunityAddService,
              improveInformationService) {
       $scope.goBack=function(){
         customerService.setIsCustomer(false);
-        customerDetailService.setIsEdit(false)
         $ionicHistory.goBack();
       };
 
@@ -82,6 +83,11 @@ angular.module('customerModule')
 
       //初始化数据
       $scope.loading = function () {
+        $scope.imageUrl = '';
+        $scope.imagevalue = 'build/img/application/information/camera3x.png';
+        $scope.customer = {};
+        $scope.validCredit = false;
+        $scope.validParagraph = false;
         $scope.showLoading = false;
         $scope.applicationStatus= addApplicationService.getApplicationList();
         $scope.showFlag=[false,false,false,false,false,false,false];
@@ -108,14 +114,16 @@ angular.module('customerModule')
         $scope.creditCode={
           text: $scope.bilingual.credit_code,
             input:"",
-            placeholder:"请输入",
-            important:false
+            placeholder:"对于中国区域，二选一必输",
+            important:false,
+            readonlyFlag:false
         }
         $scope.dutyParagraph = {
           text: $scope.bilingual.duty_paragraph,
           input:"",
-          placeholder:"请输入",
-          important:false
+          placeholder:"对于中国区域，二选一必输",
+          important:false,
+          readonlyFlag: false
         }
         //联系人输入信息
         $scope.contact =[{
@@ -231,7 +239,8 @@ angular.module('customerModule')
           addressZone:'',//区
           isListed:'Y',//是否上市
           website:'',
-          addressDetail:''
+          addressDetail:'',
+          attribute1:''
         };
 
         //界面显示的数据
@@ -289,7 +298,8 @@ angular.module('customerModule')
           "dataStatus": "HCRM_VALID",
           "attachments": [],
           "situations": $scope.applicationStatus,
-          "contacts": []
+          "contacts": [],
+          "logoUrl":''
         }
         $scope.items = [];
         $scope.nowSelectTarget = {};
@@ -299,8 +309,14 @@ angular.module('customerModule')
         $scope.saveValue = customerDetailService.getEditCustomer();
         $scope.applicationStatus = customerDetailService.getApplication();
         addApplicationService.setApplicationList($scope.applicationStatus);
-        $scope.customerName.fullName = $scope.saveValue.fullName;
-        $scope.customerName.simpleName = $scope.saveValue.simpleName;
+        if(customerDetailService.getEditCustomer().approveTypeName=='已提交'||customerDetailService.getEditCustomer().approveTypeName=='已审核'){
+          $scope.customerName.fullName = $scope.saveValue.fullName;
+          $scope.customerName.simpleName = $scope.saveValue.simpleName;
+        }
+        $scope.imageUrl = $scope.saveValue.logoUrl;
+        if($scope.imageUrl!==''){
+          $scope.imagevalue = $scope.imageUrl;
+        }
         $scope.basicInformation[0].input = $scope.saveValue.englishName;
         $scope.basicInformation[1].input = $scope.saveValue.simpleCode;
         $scope.basicInformation[2].input = $scope.saveValue.registerId;
@@ -328,6 +344,7 @@ angular.module('customerModule')
         $scope.data.incomeScale = $scope.saveValue.incomeScale;
         $scope.others[0].input = $scope.saveValue.itStatusDes;
         $scope.others[1].input = $scope.saveValue.otherDescription;
+        $scope.data.attribute1 = customerDetailService.getEditCustomer().approveType;
 
         $scope.showData.fullName = $scope.saveValue.parentFullName;//上级客户
         $scope.showData.saleAreaName = $scope.saveValue.saleArea;//所属大区
@@ -342,6 +359,25 @@ angular.module('customerModule')
         $scope.showData.address = $scope.saveValue.countryName+$scope.saveValue.provinceName+$scope.saveValue.cityName+$scope.saveValue.zoneName;
         $scope.showData.isListed = $scope.saveValue.listedName;
         $scope.showData.saleBelong = $scope.saveValue.saleArea+"|"+$scope.saveValue.saleTeam;
+        if($scope.creditCode.input!=''){
+          $scope.validCredit = true;
+        }
+        if( $scope.dutyParagraph.input!=''){
+          $scope.validParagraph = true;
+        }
+        if( customerDetailService.getEditCustomer().approveTypeName=='已提交'|| customerDetailService.getEditCustomer().approveTypeName=='已审核'){
+          console.log( '改变FLAG'+customerDetailService.getEditCustomer().approveTypeName);
+          if($scope.creditCode.input==''){
+            $scope.creditCode.readonlyFlag = false;
+          }else {
+            $scope.creditCode.readonlyFlag = true;
+          }
+          if( $scope.dutyParagraph.input==''){
+            $scope.dutyParagraph.readonlyFlag = false;
+          }else {
+            $scope.dutyParagraph.readonlyFlag = true;
+          }
+        }
       }
 
       $scope.areaValue = {"orgType":"HCRM_SALE_AREA"}
@@ -373,8 +409,13 @@ angular.module('customerModule')
 
       //检测社会统一信用代码
       $scope.validCreditCode = function () {
-        if($scope.creditCode.input!==''){
-          customerService.validCreditCode(validCreditCodeSuccess,$scope.creditCode.input,'');
+        if($scope.creditCode.input!==''&&$scope.creditCode.readonlyFlag==false){
+          if(customerDetailService.getIsEdit()){
+            customerService.validCreditCode(validCreditCodeSuccess,$scope.creditCode.input,customerDetailService.getEditCustomer().customerId);
+          }else {
+            customerService.validCreditCode(validCreditCodeSuccess,$scope.creditCode.input,'');
+          }
+
         }
       }
       var validCreditCodeSuccess = function(data){
@@ -383,13 +424,27 @@ angular.module('customerModule')
           hmsPopup.showPopupCustomerAdd(data.returnMsg,data.flagMsg,data.customerName,data.approveStatusName,
             data.saleArea,data.saleTeam,data.saleEmployeeName,data.saleEmployeeCode);
           $scope.creditCode.input = '';
+          if(customerDetailService.getIsEdit()&&(customerDetailService.getEditCustomer().approveTypeName=='已提交'|| customerDetailService.getEditCustomer().approveTypeName=='已审核')){
+            $scope.validCredit = false;
+          }else{
+            $scope.validCredit = false;
+            //$scope.validParagraph = false;
+          }
+
+        }else{
+          $scope.validCredit = true;
         }
       };
 
       //检测税号
       $scope.validDutyParagraph = function () {
-        if($scope.dutyParagraph.input!==''){
-          customerService.validParagraph(validDutyParagraphSuccess,$scope.dutyParagraph.input,'');
+        if($scope.dutyParagraph.input!==''&&$scope.dutyParagraph.readonlyFlag==false){
+          if(customerDetailService.getIsEdit()){
+            customerService.validParagraph(validDutyParagraphSuccess,$scope.dutyParagraph.input,customerDetailService.getEditCustomer().customerId);
+          }else {
+            customerService.validParagraph(validDutyParagraphSuccess,$scope.dutyParagraph.input,'');
+          }
+
         }
       }
       var validDutyParagraphSuccess = function(data){
@@ -398,6 +453,14 @@ angular.module('customerModule')
          hmsPopup.showPopupCustomerAdd(data.returnMsg,data.flagMsg,data.customerName,data.approveStatusName,
            data.saleArea,data.saleTeam,data.saleEmployeeName,data.saleEmployeeCode);
           $scope.dutyParagraph.input = '';
+          if(customerDetailService.getIsEdit()&&(customerDetailService.getEditCustomer().approveTypeName=='已提交'|| customerDetailService.getEditCustomer().approveTypeName=='已审核')){
+            $scope.validParagraph = false;
+          }else{
+            //$scope.validCredit = false;
+            $scope.validParagraph = false;
+          }
+        }else {
+          $scope.validParagraph = true;
         }
       };
       //检测手机格式
@@ -407,9 +470,11 @@ angular.module('customerModule')
           if (phoneNumber($scope.phone.input)||phoneNumber86($scope.phone.input)) {
             //hmsPopup.showPopup("手机号码格式错误")
             console.log('格式正确')
+            return true;
           }else{
             hmsPopup.showPopup("手机号码格式错误,请重新输入！")
             $scope.phone.input="";
+            return false;
           }
         }
       }
@@ -814,7 +879,7 @@ angular.module('customerModule')
       $scope.showSaleSelect = function(){
         $scope.showSaleSelectFlag = true;
         $scope.showLoading = true;
-        improveInformationService.getSaleArea(getSaleAreaSuccess);
+        opportunityAddService.getSaleArea(getSaleAreaSuccess);
       };
 
       $scope.selectArea = function(area){
@@ -823,7 +888,7 @@ angular.module('customerModule')
         $scope.showData.saleAreaName = area.saleAreaName;
         $scope.data.saleAreaId = area.saleAreaId;
         $scope.showLoading = true;
-        improveInformationService.getSaleTeam(getSaleTeamSuccess, area.saleAreaId);
+        opportunityAddService.getSaleTeam(getSaleTeamSuccess, area.saleAreaId);
       };
 
       $scope.selectTeam = function(team){
@@ -1063,101 +1128,177 @@ angular.module('customerModule')
       //  getCountry($scope.selectedPlaces[$index].addressId);
       //  $scope.showData.address="";
       //};
-      $scope.checkData = function () {
-        if(customerDetailService.getIsEdit()){
-          $scope.saveValue = {
-            "customerId": customerDetailService.getEditCustomer().customerId,
-            "customerCode": customerDetailService.getEditCustomer().customerCode,
-            "fullName": $scope.customerName.fullName,
-            "simpleName": $scope.customerName.simpleName,
-            "englishName": $scope.basicInformation[0].input,
-            "simpleCode": $scope.basicInformation[1].input,
-            "registerId": $scope.basicInformation[2].input,
-            "creditCode": $scope.creditCode.input,
-            "dutyParagraph": $scope.dutyParagraph.input,
-            "parentCustomersId": $scope.data.parentCustomersId,
-            "addressCountry": $scope.data.addressCountry,
-            "addressProvince": $scope.data.addressProvince,
-            "addressCity": $scope.data.addressCity,
-            "addressZone": $scope.data.addressZone,
-            "addressDetails":$scope.data.addressDetail,
-            "addressZipCode": $scope.contact[0].input,
-            "phone": $scope.phone.input,
-            "fax": $scope.contact[1].input,
-            "website": $scope.contact[2].input,
-            "saleAreaId": $scope.data.saleAreaId,
-            "saleTeamId": $scope.data.saleTeamId,
-            "normalEmployeeId": $scope.data.normalEmployeeId,
-            "enterpriseNature": $scope.data.enterpriseNature,
-            "majorIndustry": $scope.data.majorIndustry,
-            "subIndustry": $scope.data.subIndustry,
-            "isListed": $scope.data.isListed,
-            "workerScale": $scope.data.workerScale,
-            "incomeScale": $scope.data.incomeScale,
-            "itStatusDes": $scope.others[0].input,
-            "otherDescription":  $scope.others[1].input,
-            "dataStatus": "HCRM_VALID",
-            "attachments": [],
-            "situations": addApplicationService.getApplicationList(),
-            "contacts": []
 
-          }
-        }else {
-          $scope.saveValue = {
-            "customerId": '',
-            "customerCode": "",
-            "fullName": $scope.customerName.fullName,
-            "simpleName": $scope.customerName.simpleName,
-            "englishName": $scope.basicInformation[0].input,
-            "simpleCode": $scope.basicInformation[1].input,
-            "registerId": $scope.basicInformation[2].input,
-            "creditCode": $scope.creditCode.input,
-            "dutyParagraph": $scope.dutyParagraph.input,
-            "parentCustomersId": $scope.data.parentCustomersId,
-            "addressCountry": $scope.data.addressCountry,
-            "addressProvince": $scope.data.addressProvince,
-            "addressCity": $scope.data.addressCity,
-            "addressZone": $scope.data.addressZone,
-            "addressDetails":$scope.data.addressDetail,
-            "addressZipCode": $scope.contact[0].input,
-            "phone": $scope.phone.input,
-            "fax": $scope.contact[1].input,
-            "website": $scope.contact[2].input,
-            "saleAreaId": $scope.data.saleAreaId,
-            "saleTeamId": $scope.data.saleTeamId,
-            "normalEmployeeId": $scope.data.normalEmployeeId,
-            "enterpriseNature": $scope.data.enterpriseNature,
-            "majorIndustry": $scope.data.majorIndustry,
-            "subIndustry": $scope.data.subIndustry,
-            "isListed": $scope.data.isListed,
-            "workerScale": $scope.data.workerScale,
-            "incomeScale": $scope.data.incomeScale,
-            "itStatusDes": $scope.others[0].input,
-            "otherDescription":  $scope.others[1].input,
-            "dataStatus": "HCRM_VALID",
-            "attachments": [],
-            "situations": $scope.applicationStatus,
-            "contacts": []
-          }
-        }
 
-        console.log(JSON.stringify($scope.saveValue));
-        if($scope.saveValue.addressCountry===""){
-          hmsPopup.showPopup("国家不能为空");
-        }else if($scope.saveValue.addressDetails===""){
-          hmsPopup.showPopup("详细地址不能为空");
-        }else if($scope.saveValue.saleAreaId===""){
-          hmsPopup.showPopup("所属大区不能为空");
-        }else if($scope.saveValue.addressCountry==1037) {
-          if ($scope.saveValue.creditCode === '' && $scope.saveValue.dutyParagraph === '') {
-            hmsPopup.showPopup("税号与社会统一信用代码不能同时为空");
+
+        var success = function (res) {
+          hmsPopup.hideLoading();
+          var result = JSON.parse(res.response);
+          if (baseConfig.debug) {
+            alert('complete.success ' + angular.toJson());
+          }
+          if(result.success == true){
+            //hmsPopup.showPopup('上传成功');
+            console.log('上传成功。。。'+angular.toJson(result))
+            $scope.imageUrl = result.rows[0].objectUrl;
+            $scope.saveValue.logoUrl =  $scope.imageUrl;
+
           }else{
-              $scope.save();
+            console.log('上传失败了。。。'+angular.toJson(result))
+            hmsPopup.showPopup('上传失败！');
           }
-        }else {
           $scope.save();
+        };
+
+        var error = function (response) {
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            alert('complete.error ' + angular.toJson(response));
+          }
+          console.log('上传错误了。。。'+angular.toJson(response))
+          hmsPopup.showPopup('上传失败！');
+        };
+
+
+      $scope.checkData = function () {
+
+        if($scope.creditCode.input==''||$scope.creditCode.readonlyFlag){
+          $scope.validCredit = true;
         }
+        if($scope.dutyParagraph.input==''||$scope.dutyParagraph.readonlyFlag){
+          $scope.validParagraph = true;
+        }
+
+        $timeout(function () {
+          if(customerDetailService.getIsEdit()){
+
+            $scope.saveValue = {
+              "customerId": customerDetailService.getEditCustomer().customerId,
+              "customerCode": customerDetailService.getEditCustomer().customerCode,
+              "fullName": $scope.customerName.fullName,
+              "simpleName": $scope.customerName.simpleName,
+              "englishName": $scope.basicInformation[0].input,
+              "simpleCode": $scope.basicInformation[1].input,
+              "registerId": $scope.basicInformation[2].input,
+              "creditCode": $scope.creditCode.input,
+              "dutyParagraph": $scope.dutyParagraph.input,
+              "parentCustomersId": $scope.data.parentCustomersId,
+              "addressCountry": $scope.data.addressCountry,
+              "addressProvince": $scope.data.addressProvince,
+              "addressCity": $scope.data.addressCity,
+              "addressZone": $scope.data.addressZone,
+              "addressDetails":$scope.data.addressDetail,
+              "addressZipCode": $scope.contact[0].input,
+              "phone": $scope.phone.input,
+              "fax": $scope.contact[1].input,
+              "website": $scope.contact[2].input,
+              "saleAreaId": $scope.data.saleAreaId,
+              "saleTeamId": $scope.data.saleTeamId,
+              "normalEmployeeId": $scope.data.normalEmployeeId,
+              "enterpriseNature": $scope.data.enterpriseNature,
+              "majorIndustry": $scope.data.majorIndustry,
+              "subIndustry": $scope.data.subIndustry,
+              "isListed": $scope.data.isListed,
+              "workerScale": $scope.data.workerScale,
+              "incomeScale": $scope.data.incomeScale,
+              "itStatusDes": $scope.others[0].input,
+              "otherDescription":  $scope.others[1].input,
+              "dataStatus": "HCRM_VALID",
+              "attachments": [],
+              "situations": addApplicationService.getApplicationList(),
+              "contacts": [],
+              "attribute1":$scope.data.attribute1,
+              "logoUrl" :$scope.imageUrl
+            }
+          }else {
+            $scope.saveValue = {
+              "customerId": '',
+              "customerCode": "",
+              "fullName": $scope.customerName.fullName,
+              "simpleName": $scope.customerName.simpleName,
+              "englishName": $scope.basicInformation[0].input,
+              "simpleCode": $scope.basicInformation[1].input,
+              "registerId": $scope.basicInformation[2].input,
+              "creditCode": $scope.creditCode.input,
+              "dutyParagraph": $scope.dutyParagraph.input,
+              "parentCustomersId": $scope.data.parentCustomersId,
+              "addressCountry": $scope.data.addressCountry,
+              "addressProvince": $scope.data.addressProvince,
+              "addressCity": $scope.data.addressCity,
+              "addressZone": $scope.data.addressZone,
+              "addressDetails":$scope.data.addressDetail,
+              "addressZipCode": $scope.contact[0].input,
+              "phone": $scope.phone.input,
+              "fax": $scope.contact[1].input,
+              "website": $scope.contact[2].input,
+              "saleAreaId": $scope.data.saleAreaId,
+              "saleTeamId": $scope.data.saleTeamId,
+              "normalEmployeeId": $scope.data.normalEmployeeId,
+              "enterpriseNature": $scope.data.enterpriseNature,
+              "majorIndustry": $scope.data.majorIndustry,
+              "subIndustry": $scope.data.subIndustry,
+              "isListed": $scope.data.isListed,
+              "workerScale": $scope.data.workerScale,
+              "incomeScale": $scope.data.incomeScale,
+              "itStatusDes": $scope.others[0].input,
+              "otherDescription":  $scope.others[1].input,
+              "dataStatus": "HCRM_VALID",
+              "attachments": [],
+              "situations": $scope.applicationStatus,
+              "contacts": [],
+              "logoUrl" :''
+            }
+          }
+
+          console.log(JSON.stringify($scope.saveValue));
+          if($scope.saveValue.addressCountry===""){
+            hmsPopup.showPopup("国家不能为空");
+
+          }else if($scope.saveValue.addressDetails===""){
+            hmsPopup.showPopup("详细地址不能为空");
+
+          }else if($scope.saveValue.saleAreaId===""){
+            hmsPopup.showPopup("所属大区不能为空");
+
+          }else if($scope.validCredit==false){
+
+          }else if($scope.validParagraph==false){
+
+          }else if($scope.saveValue.addressCountry==1037) {
+            if ($scope.saveValue.creditCode === '' && $scope.saveValue.dutyParagraph === '') {
+              hmsPopup.showPopup("税号与社会统一信用代码不能同时为空");
+
+            }else{
+              if(customerDetailService.getIsEdit()){
+                if($scope.imagevalue =='build/img/application/information/camera3x.png'||
+                $scope.imageUrl == $scope.imagevalue){
+                  $scope.save();
+                }else {
+                  customerService.uploadImage($scope.imagevalue, success, error);
+                  //$scope.save();
+                }
+              }else {
+                if($scope.imagevalue =='build/img/application/information/camera3x.png'){
+                  $scope.save();
+                }else {
+                  customerService.uploadImage($scope.imagevalue, success, error);
+                  //$scope.save();
+                }
+              }
+
+
+            }
+          }else {
+            if($scope.imagevalue =='build/img/application/information/camera3x.png'){
+              $scope.save();
+            }else {
+              customerService.uploadImage($scope.imagevalue, success, error);
+            }
+          }
+        },500);
+
       }
+
 
     //客户审批
       var customerCheckSuccess = function(data){
@@ -1167,12 +1308,19 @@ angular.module('customerModule')
           }else{
           hmsPopup.showPopup(data.returnMsg);
         }
+        $state.go('tab.customer-detail',{
+          customerDetail:$scope.customer
+        });
         };
 
       var successConfirm = function (res,data) {
         console.log('提交审核：==='+res);
         if(res){
           customerService.submitReview(customerCheckSuccess,data);
+        }else {
+          $state.go('tab.customer-detail',{
+            customerDetail:$scope.customer
+          });
         }
       }
 
@@ -1184,8 +1332,6 @@ angular.module('customerModule')
              hmsHttp.post(teamUrl,$scope.saveValue).success(function(data){
                hmsPopup.hideLoading();
                if(data.returnCode==='S'){
-                 hmsPopup.showPopup('修改成功！');
-
                  customerAddService.setIsAdd(false);
                  customerService.setIsCustomer(false);
                  customerAddService.setCustomer({});
@@ -1193,7 +1339,13 @@ angular.module('customerModule')
                  customerDetailService.setIsContact(true);
                  customerDetailService.setIsCustomerAdd(true);
                  customerDetailService.setTabNumber(1);
-                 $scope.goState('tab.customer-detail');
+                 if(customerDetailService.getEditCustomer().approveTypeName!='已提交'&&customerDetailService.getEditCustomer().approveTypeName!='已审核'){
+                   hmsPopup.confirmCrmCheck('修改成功，是否现在提交审核？',$scope,successConfirm,customerDetailService.getEditCustomer().customerId);
+                 }else{
+                   hmsPopup.showPopup('修改成功！');
+                   $state.go('tab.customer-detail');
+                 }
+
                }else {
                  hmsPopup.showPopup(data.returnMsg);
                }
@@ -1214,9 +1366,8 @@ angular.module('customerModule')
                  window.localStorage.customerId = data.customer.customerId;
                  customerDetailService.setIsCustomerAdd(true);
                  hmsPopup.confirmCrmCheck('保存成功，是否现在提交审核？',$scope,successConfirm,data.customer.customerId);
-                 $state.go('tab.customer-detail',{
-                   customerDetail:data.customer
-                 });
+                 $scope.customer =data.customer;
+
                }else {
                  hmsPopup.showPopup(data.returnMsg);
                }
@@ -1229,7 +1380,7 @@ angular.module('customerModule')
         $scope.showBig = false;
       }
 
-      $scope.imagevalue = 'build/img/application/information/camera3x.png';
+
       $scope.isShow_image = false;
       $scope.va_phote_succflag = false;
       $scope.showImageUploadChoices = function() {
@@ -1276,14 +1427,14 @@ angular.module('customerModule')
       $scope.readalbum  = function() {
         var sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
         var options = {
-          quality: 100,
+          quality: 20,
           sourceType: sourceType,
           destinationType: Camera.DestinationType.FILE_URL, //1, //'FILE_URL',
           encodingType: Camera.EncodingType.JPEG, //0, //'JPEG',
           mediaType: Camera.MediaType.PICTURE, //0, //'PICTURE',
           saveToPhotoAlbum: false,
           cameraDirection: Camera.Direction.BACK, // 0, //'BACK'
-          targetWidth: 1366, targetHeight: 768,
+          //targetWidth: 1366, targetHeight: 768,
           correctOrientation: true
         };
         if (navigator.camera) {
@@ -1356,7 +1507,7 @@ angular.module('customerModule')
         var options = {
           destinationType: Camera.DestinationType.FILE_URI,
           sourceType: Camera.PictureSourceType.CAMERA,
-          quality: 100,
+          quality: 30,
           correctOrientation: true
         };
         $cordovaCamera.getPicture(options).then(function(imageURI) {
@@ -1395,14 +1546,14 @@ angular.module('customerModule')
         }else
          if(addApplicationService.getIsApplication()===false){
               addApplicationService.cleanApplication();
-              $ionicScrollDelegate.scrollTop(true);
+              $ionicScrollDelegate.scrollTop(false);
               $scope.loading();
            if(customerDetailService.getIsEdit()){
              $scope.editCustomer();
            }
         }else{
           addApplicationService.setIsApplication(false);
-          $ionicScrollDelegate.scrollBottom(true);
+          $ionicScrollDelegate.scrollBottom(false);
         }
       } )
 
@@ -1420,30 +1571,6 @@ angular.module('customerModule')
               baseConfig) {
 
       var isEdit = false;
-      //得到所属区域
-      this.getSaleArea = function(success) {
-        var params = {
-          orgType: "HCRM_SALE_AREA"
-        };
-        hmsHttp.post(baseUrl + 'query_sale_area', params).success(function(result) {
-          success(result);
-        }).error(function(response, status) {
-          hmsPopup.showPopup(response);
-        });
-      };
-
-      //得到所属团队
-      this.getSaleTeam = function(success, organizationId) {
-        var params = {
-          organizationId: organizationId,
-          orgType: "HCRM_SALE_TEAM"
-        };
-        hmsHttp.post(baseUrl + 'query_sale_team', params).success(function(result) {
-          success(result);
-        }).error(function(response, status) {
-          hmsPopup.showPopup(response);
-        });
-      };
       return {
         setIsEdit:function(val){
           isEdit=val;

@@ -9,16 +9,16 @@
       </div>
       <div class="sifting-area">
         <img src="build/img/application/opportunity/icon_top_search@3x.png">
-        <input type="text" placeholder="搜索" ng-change="filterShare()" ng-model="selectCity.placeKey"/>
-        <img src="build/img/application/icon_circle@3x.png" ng-show="selectCity.placeKey != ''" ng-click="clearFilter()">
+        <input type="text" placeholder="搜索" ng-change="filterShare()" ng-model="selectValue.keyWord"/>
+        <img src="build/img/application/icon_circle@3x.png" ng-show="selectValue.keyWord != ''" ng-click="clearFilter()">
       </div>
       <div class="country-in">
         <div ng-click="changePersonal(true)" ng-class="{true:'selected'}[inPersonal]">个人</div>
         <div ng-click="changePersonal(false)" ng-class="{false:'selected'}[inPersonal]">团队</div>
       </div>
-
-      <div class="list country" ng-class="{true:'in-china'}[inPersonal]">
-        <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="countryScroll">
+      <!--ng-class="{true:'in-china'}[inPersonal]"-->
+      <div class="list country" >
+        <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="shareScroll">
           <div class="list-item" ng-repeat="data in shareData track by $index" ng-click="selectShare($index)" ng-show="data != ''">
             {{data.showModal}}<img src="build/img/application/right_arrow@3x.png"/>
           </div>

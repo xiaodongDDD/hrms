@@ -38,14 +38,18 @@
         input-box="creditCode.input"
         important="creditCode.important"
         last-line="false"
-        hms-input="validCreditCode()">
+        place-holder="creditCode.placeholder"
+        hms-input="validCreditCode()"
+        is-change="creditCode.readonlyFlag">
       </hms-input-item>
       <hms-input-item
         label-name="dutyParagraph.text"
         input-box="dutyParagraph.input"
         important="dutyParagraph.important"
         last-line="false"
-        hms-input="validDutyParagraph()">
+        place-holder="dutyParagraph.placeholder"
+        hms-input="validDutyParagraph()"
+        is-change="dutyParagraph.readonlyFlag">
       </hms-input-item>
 
 
@@ -94,13 +98,18 @@
         last-line="false"
         show-bottom-line ="false" >
       </hms-input-item>
-      <hms-input-item
-        label-name="phone.text"
-        input-box="phone.input"
-        important="phone.important"
-        last-line="false"
-        hms-input="validPhone()">
-      </hms-input-item>
+      <div class="common-item-input">
+        <div >{{phone.text }}</div>
+        <input type="tel" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="phone.input"/>
+        <div class="common-light-line-long"></div>
+      </div>
+      <!--<hms-input-item-->
+        <!--label-name="phone.text"-->
+        <!--input-box="phone.input"-->
+        <!--important="phone.important"-->
+        <!--last-line="false"-->
+        <!--hms-input="validPhone()">-->
+      <!--</hms-input-item>-->
       <hms-input-item
         ng-repeat="x in contact"
         label-name="x.text"
