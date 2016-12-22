@@ -71,7 +71,7 @@
                   {{plan.name}}
                   <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.planSource + '复制') : (plan.dataStatusName) }}</span>
                 </span>
-                  <span class="plan-time">{{plan.timeBucketName}}<img src="build/img/application/plans/star.png" style="    width: 16px;
+                  <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'" src="build/img/application/plans/star.png" style="    width: 16px;
     height: 16px;
     position: absolute;
     right: 5px;"/></span>
