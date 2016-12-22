@@ -306,7 +306,7 @@
       }
       var period = {
         "date": dateRange.mondayStr
-      }
+      };
       $state.go('tab.weekly-report', {"type": "QUERY", "authority": getAuthorityType(), "period": period})
       //}
     }
@@ -351,7 +351,7 @@
          $scope.calendarStyle.height = "300px";
          $ionicScrollDelegate.$getByHandle('plan-scroll').freezeScroll(false);*/
       }
-    };
+    }
 
     //日历上拉缩小
     function onDragUp() {
@@ -364,11 +364,11 @@
 
     function goBack() {
       $ionicHistory.goBack();
-    };
+    }
 
     function goState(url) {
       $state.go(url);
-    };
+    }
 
     function goSetPlan() {
       $state.go('tab.plans-add');
@@ -537,7 +537,7 @@
       }
 
       if (calendarFlag) {
-        var listHeight = viewHeaderHeight + length / 7 * 50
+        var listHeight = viewHeaderHeight + length / 7 * 50;
         $scope.contentHeight.height = 'calc(100vh - ' + listHeight + 'px)';
         $scope.calendarStyle.height = 50 + length / 7 * 50;
       } else {
@@ -721,7 +721,7 @@
       $scope.timeItems[1].flag = false;
       $scope.timeItems[2].flag = false;
       $scope.timeItems[$index].flag = true;
-    };
+    }
 
     function showVoiceDiv() {
       $scope.showVoice = !$scope.showVoice;

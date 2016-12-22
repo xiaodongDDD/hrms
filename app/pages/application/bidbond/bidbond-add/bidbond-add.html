@@ -1,0 +1,187 @@
+<ion-modal-view style="width: 100vw;background: white;" class="crm hrms-pancel-corlor bidbond-add">
+
+  <!--头部信息-->
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()">
+    <h2 class="title">
+      	{{'BIDBOND_ADD.BIDBOND_APPLICATION' | T}}
+    </h2>
+    <button class="button button-clear" ng-click="saveBidbond()">{{ 'SAVE' | T }}</button>
+  </ion-header-bar>
+
+  <crm-loading ng-if="showCrmLoading"></crm-loading>
+
+  <!--保证金申请内容-->
+  <ion-content delegate-handle="slide-img">
+  <div class="crm-disable" ng-if="showDisable"></div>
+<!--商机及相关信息-->
+  <div class="common-input-area">
+
+  	<!--商机选择（非指令）-->
+   <div class="hms-select-item-style" ng-click="showSelectDiv('business')" >
+	<div class="hms-select-content  last-line" style="height: 67px;" >
+		<div class="hms-select-area col col-23"  style="height: 57px;max-width: 35%;">
+			<div class="hms-select-header ng-binding" style="height: 57px;line-height:57px;padding-top:0px;font-size: 16px;color: #666666;">
+				{{('BIDBOND_ADD.CHOOSE_OPPO' | T)}}
+			</div>
+		</div>
+            <div class="row info-item-con col col-50">
+              <div class="info-item-con" style="height: 57px;line-height:57px;font-size: 16px;width: 100%;text-align: right;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+                {{(showData.opportunityName === "" ||showData.opportunityName === null || showData.opportunityName===
+                undefined)?"请选择":showData.opportunityName}}
+              </div>
+            </div>
+		<div class="hms-select-arrow col-center">
+			<i><img src="build/img/contact/right_arrow@3x.png"></i>
+		</div>
+		<div class="hms-select-blank"></div>
+	</div>
+</div>
+
+
+  <!--商机相关信息（指令）-->
+        <hms-select-item
+          label-name="titleList.customer"
+          input-box="showData.fullName"
+          important="true"
+          is-change="readonly.readonlyFlag">
+        </hms-select-item>
+
+        <hms-select-item
+          label-name="titleList.company"
+          input-box="showData.companyName"
+          important="true"
+          hms-select="showSelectDiv('company')">
+        </hms-select-item>
+
+        <hms-select-item
+          label-name="titleList.project"
+          input-box="showData.projectName"
+          important="true"
+          hms-select="showSelectDiv('project')">
+        </hms-select-item>
+
+        <hms-select-item
+          label-name="titleList.unitId"
+          input-box="showData.hrFullUnitName"
+          important="true"
+          hms-select="showSelectDiv('unitId')">
+        </hms-select-item>
+
+        <hms-select-item
+          label-name="titleList.occurredDate"
+          input-box="data.occurredDate"
+          important="true"
+          show-line="true"
+          hms-select="selectDate('occurredDate')"
+          img-url="build/img/application/opportunity/icon_day.png">
+        </hms-select-item>
+    </div>
+
+    <!--付款信息（指令）-->
+    <div class="common-input-area">
+    	<!--标题栏-->
+      <div class="common-input-area-title" ng-click="hideArea(0)">
+        <img src="build/img/application/opportunity/opportunity-add/icon_base_message@3x.png"/>
+        	{{'BIDBOND_ADD.PAYMENT_INFO' | T}}
+        <div>{{hideAreaFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+      </div>
+      <!--付款信息内容-->
+      <div ng-if="!hideAreaFlag[0]">
+
+		<!--付款类型默认为“投标保证金”，且不可修改-->
+      	<div class="hms-input-item-style1" >
+      		<div class="hms-input-header">{{('BIDBOND_ADD.PAYMENT_TYPE' | T)}}</div>
+      		<div class="hms-input-content last-line" >
+      			<input type="text" placeholder="{{'BIDBOND_ADD.BIDBOND' | T}}" ng-model="inputBox" readonly="readonly">
+      		</div>
+      	</div>
+
+      	<hms-input-item
+          label-name="titleList.paymentAmount"
+          input-box="data.paymentAmount"
+          important="true">
+        </hms-input-item>
+
+        <hms-select-item
+          label-name="titleList.currency"
+          input-box="showData.currencyName"
+          important="true"
+          hms-select="showSelectDiv('currency')">
+        </hms-select-item>
+
+        <hms-select-item
+          label-name="titleList.expectPaymentType"
+          input-box="showData.expectPaymentTypeValue"
+          important="true"
+          hms-select="showSelectDiv('expectPaymentType')">
+        </hms-select-item>
+
+        <hms-select-item
+          label-name="titleList.transferEndDate"
+          input-box="data.transferEndDate"
+          hms-select="selectDate('transferEndDate')"
+          img-url="build/img/application/opportunity/icon_day.png">
+        </hms-select-item>
+
+        <hms-select-item
+          label-name="titleList.latestPaymentDate"
+          input-box="data.latestPaymentDate"
+          important="true"
+          hms-select="selectDate('latestPaymentDate')"
+          img-url="build/img/application/opportunity/icon_day.png">
+        </hms-select-item>
+
+        <hms-select-item
+          label-name="titleList.fromBasicAccount"
+          input-box="showData.fromBasicAccountValue"
+          important="true"
+          hms-select="showSelectDiv('fromBasicAccount')">
+        </hms-select-item>
+
+        <hms-select-item
+          label-name="titleList.expectRetrieveDate"
+          input-box="data.expectRetrieveDate"
+          important="true"
+          hms-select="selectDate('expectRetrieveDate')"
+          img-url="build/img/application/opportunity/icon_day.png">
+        </hms-select-item>
+
+         <hms-input-item
+          label-name="titleList.retrieveCondition"
+          input-box="data.retrieveCondition"
+          important="true">
+        </hms-input-item>
+
+        <hms-input-item
+          label-name="titleList.payeeName"
+          input-box="data.payeeName"
+          important="true">
+        </hms-input-item>
+
+        <hms-input-item
+          label-name="titleList.dueBanck"
+          input-box="data.dueBanck"
+          important="true">
+        </hms-input-item>
+
+        <hms-input-item
+          label-name="titleList.dueBanckAccount"
+          input-box="data.dueBanckAccount"
+          important="true">
+        </hms-input-item>
+
+        <hms-input-item
+          label-name="titleList.paymentContent"
+          input-box="data.paymentContent"
+          important="true">
+        </hms-input-item>
+
+      </div>
+    </div>
+
+    <!--底部留出空间-->
+	<div style="height: 20px;"></div>
+  </ion-content>
+
+</ion-modal-view>

@@ -12,7 +12,8 @@ HmsModule
         showLine: '=showLine',
         isLastLine: '=lastLine',
         imgUrl: '=imgUrl',
-        $hmsSelect: '&hmsSelect'
+        notEditable: '=notEditable',
+        $hmsSelect: '&hmsSelect',
       },
       template: '<div class="hms-select-item-style" ng-click="selectValue()" ' +
       'ng-class="{true:\'last-line\'}[isLastLine && !showLine]">' +
@@ -24,7 +25,7 @@ HmsModule
       '<span ng-if="!inputBox || inputBox == \'\'" style="color:#b2b2b2">请选择</span>' +
       '</div></div>' +
       '<div class="hms-select-arrow col-center">' +
-      '<i><img src="{{imgUrlValue}}"></i>' +
+      '<i><img src="{{imgUrlValue}}" ng-if="!notEditable"></i>' +
       '</div>' +
       '<div class="hms-select-blank"></div>' +
       '</div>' +
@@ -36,12 +37,15 @@ HmsModule
         else{
           scope.imgUrlValue = attrs.imgUrl;
         }
-        scope.selectValue = function () {
-          //console.log('selectValue...');
-          if (scope.$hmsSelect) {
-            scope.$hmsSelect();
-          }
-        };
+        if(scope.notEditable)
+          scope.selectValue = function(){};
+        else
+          scope.selectValue = function () {
+            //console.log('selectValue...');
+            if (scope.$hmsSelect) {
+              scope.$hmsSelect();
+            }
+          };
       }
     }
   })

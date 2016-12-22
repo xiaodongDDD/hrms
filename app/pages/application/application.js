@@ -158,7 +158,7 @@ angular.module('applicationModule')
         }, {
           appName:"保证金",
           imageUrl: "build/img/application/application/personnelPolicy@3x.png",
-          destUrl: "tab.opportunities"
+          destUrl: "tab.bidbond"
         }, {
           appName: "立项",
           imageUrl: "build/img/application/application/personnelPolicy@3x.png",
