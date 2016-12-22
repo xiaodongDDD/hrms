@@ -77,6 +77,9 @@
     background-position: bottom !important;
     background-size: 100% 1px !important;
     background-repeat: no-repeat !important;
+    .title{
+      color: #444 !important;
+    }
   }
 
   ion-header-bar {
@@ -1692,6 +1695,7 @@
   }
   .popup-body {
     padding: 10px 15px 15px;
+    color: #444;
   }
   .popup-buttons {
     min-height: 0 !important;
