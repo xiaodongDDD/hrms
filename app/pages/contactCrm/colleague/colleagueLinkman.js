@@ -47,7 +47,7 @@ angular.module('contactModule')
           }
         } catch (e) {
         }
-      };
+      }
 
       getInitStructureInfo.getCurrentStructure(getCurrentDepartInfo);
 
@@ -56,7 +56,7 @@ angular.module('contactModule')
         if ($scope.customContactsInfo.length > 15) {
           $scope.customContactsInfo = $scope.customContactsInfo.slice(0, 15);
         }
-      };
+      }
 
 
       $scope.$on('$ionicView.beforeEnter', function (e) {
@@ -88,7 +88,7 @@ angular.module('contactModule')
       };
 
       $scope.goInputSearch = function () { //去搜索界面
-        $state.go('tab.contactSearch');
+        $state.go('tab.contactCrmSearch');
       };
 
       $scope.goStructure = function (flag) {
@@ -108,55 +108,4 @@ angular.module('contactModule')
       $scope.goDetailInfo = function (newEmployeeNumber) {
         $state.go('tab.employeeDetail', {employeeNumber: newEmployeeNumber});
       };
-    }])
-  .factory('getInitStructureInfo', ['hmsHttp', 'baseConfig', function (hmsHttp,baseConfig) {
-    var _currentStructureUrl =  baseConfig.queryPath + '/dept/getStaffDeptInfo';
-    var _structureUrl =   baseConfig.queryPath + '/dept/getDetail';
-    this._returnData = {};
-    return {
-      getCurrentStructure: function (callback) {
-        hmsHttp.post(_currentStructureUrl).success(function (response) {
-          if (response.returnData) {
-          } else {
-            response.returnData = {};
-          }
-          callback(response.returnData);
-        }).error(function (error) {
-        });
-      },
-      getStructure: function (callback, newId) {
-        var params = {
-          "id": newId
-        };
-
-        hmsHttp.post(_structureUrl, params).success(function (response) {
-          try {
-            this._returnData = response.returnData;
-          } catch (e) {
-            this._returnData = {};
-          }
-          callback(this._returnData);
-        }.bind(this)).error(function (error) {
-        });
-      }
-    }
-  }])
-  .factory('commonContactService', [function () {
-    var _pageName = '';
-    var _newEmp = {};
-
-    return {
-      setGoContactFlg: function (newPage) {
-        _pageName = newPage;
-      },
-      getContactFlag: function () {
-        return _pageName;
-      },
-      setEmpInfo: function (newEmp) {
-        _newEmp = newEmp;
-      },
-      getEmpInfo: function () {
-        return _newEmp;
-      }
-    }
-  }]);
+    }]);

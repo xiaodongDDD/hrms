@@ -1,0 +1,86 @@
+<ion-view class="contact-employee-detail">
+  <div class="row common-head">
+    <button class="button button-clear back-button" ng-click="$hmsGoBack()">
+      <i class="ion-ios-arrow-back"></i>
+      <span class="back-text">返回</span>
+    </button>
+    <button class="button button-clear img-button" ng-click="telPhone()">
+      <img class="img-icon" ng-src="build/img/contact/dial-2@3x.png"/>
+    </button>
+  </div>
+
+  <div id="employee-bg" class="human-head-image">
+  </div>
+
+  <div class="row">
+  </div>
+  <div class="img-section">
+    <img class="img-employee" ng-cloak ng-src="{{employeeInfo.avatar}}"/>
+  </div>
+  <div class="employee-name" ng-cloak>
+    {{employeeInfo.emp_name}} {{employeeInfo.emp_code}}
+  </div>
+  <ion-content class="employee-content" has-bouncing="true" elastic-image="employee-bg">
+    <hms-loading ng-if="contactLoading" style="padding-top: 30px"></hms-loading>
+    <ion-item class="item-info">
+      <div class="section-bg" ng-bind="employeeInfo.rootUnitName">
+      </div>
+      <div class="row icon-row">
+        <div class="col col-40 np-padding-margin" id="unfold" ng-click="unfold()" >
+          <div class="row">
+            <img src="build/img/myInfo/position.png" class="col-image" style="margin: 0 9px 0 6px;"/>
+            <span class="info-text-label" id="txt" ng-bind="employeeInfo.position_name" style="margin: 0 auto;"></span>
+          </div>
+        </div>
+        <div class="col col-25 np-padding-margin">
+          <div class="row">
+            <img src="build/img/contact/status@3x.png" class="col-image" style="margin: 0 9px 0 0;"/>
+            <span class="info-text-label" ng-bind="employeeInfo.emp_status"></span>
+          </div>
+        </div>
+        <!--<div class="col-1">
+        </div>-->
+        <div class="col col-25 np-padding-margin">
+          <div class="row">
+            <img src="build/img/myInfo/baseland.png" class="col-image" style="margin: 0 9px 0 0;"/>
+            <span class="info-text-label" ng-bind="employeeInfo.base_name"></span>
+          </div>
+        </div>
+      </div>
+    </ion-item>
+    <ion-item class="item-employee">
+      <div class="row item-row">
+        <img src="build/img/myInfo/icon-mail.png" class="mail-img"/>
+
+        <div class="col col-15">邮箱</div>
+        <div class="col col-80 col-item" style="padding-right: 26px;" ng-bind="employeeInfo.email"></div>
+      </div>
+      <div class="item-line"></div>
+      <div class="row item-row">
+        <img src="build/img/myInfo/icon-telephone.png" class="tel-img"/>
+
+        <div class="col col-25">电话1</div>
+        <a class="col col-70 col-item" style="padding-right: 30px;" ng-bind="employeeInfo.mobil" href="tel: {{employeeInfo.mobil}}"></a>
+      </div>
+      <div class="item-line" ng-if="employeeInfo.mobil2"></div>
+      <div class="row item-row" ng-if="employeeInfo.mobil2">
+        <img src="build/img/myInfo/icon-telephone.png" class="tel-img"/>
+
+        <div class="col col-25">电话2</div>
+        <a class="col col-70 col-item" style="padding-right: 30px;" ng-bind="employeeInfo.mobil2" href="tel: {{employeeInfo.mobil2}}"></a>
+      </div>
+    </ion-item>
+    <ion-item class="item-employee">
+      <div class="row item-row1">
+        <div class="col col-15">家乡</div>
+        <div class="col col-80 col-item" ng-bind="employeeInfo.native_place"></div>
+      </div>
+      <div class="item-line"></div>
+      <div class="row item-row1">
+        <div class="col col-20">微信号</div>
+        <div class="col col-75 col-item" ng-bind="employeeInfo.wxNumber"></div>
+      </div>
+    </ion-item>
+    <div class="button button-clear employee-button" ng-click="goImTalk()">发起会话</div>
+  </ion-content>
+</ion-view>

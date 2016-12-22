@@ -1,0 +1,58 @@
+<ion-view class="contact-structure">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="goLastPage()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <div class="title title-contact">
+      <div class="title-header title-filter" ng-bind="departmentName"></div>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <div class="row search-contact-input input-height">
+      <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
+             ng-click="goInputSearch()"/>
+    </div>
+    <ion-scroll delegate-handle="contactStructureDelegate" scrollbar-x="false" direction="x"
+                class="dept-scroll-contact" ng-if="showScroll">
+      <div class="row row-scroll-contact">
+        <div ng-repeat="i in currentStackList" class="dept-stack">
+          <div ng-bind="i.name" class="dept-stack-name"
+               ng-class="$index === (currentStackList.length -1)?'end-dept-stack-name':''"
+               ng-if="currentStackList.length > 1"
+               ng-click="goBackStack($index,currentStackList.length,i.id)"></div>
+          <i class="ion-ios-arrow-right" ng-if="$index != (currentStackList.length -1)"></i>
+        </div>
+      </div>
+    </ion-scroll>
+
+    <div class="children-dept">
+      <ion-item class="dept-item"
+                ng-class="$index == (childrenDept.length-1)?'dept-item-end':''"
+                ng-repeat="i in childrenDept"
+                ng-click="nextStructure(i.departmentId)">
+        <div class="row dept-item-row">
+          <label class="dept-label" ng-bind="i.departmentName"></label>
+          <label class="dept-label-number" ng-bind="i.totalStaffNumber"></label>
+        </div>
+        <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
+      </ion-item>
+    </div>
+    <hms-loading style="padding-top: 30%;" ng-if="showLoading"></hms-loading>
+    <div class="contact-item row no-padding"
+         ng-repeat="i in deptStaff"
+         ng-click="goDetailInfo(i.accountNumber)">
+      <div class="col col-15 item-logo">
+        <img class="contact-item-logo" ng-cloak ng-src="{{i.avatar | filterImg:i.genderId}}"/>
+      </div>
+      <div class="col col-85 item-name" ng-bind="i.userName">
+      </div>
+      <div class="item-line"></div>
+      <div class="admin-content" ng-if="hasAdmin&&$index === 0">
+        <!--<i class="icon ion-ios-star"></i>-->
+        <img ng-src="build/img/contact/star@3x.png" style="width: 13px;height: 15px;"/>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

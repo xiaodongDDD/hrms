@@ -10,6 +10,7 @@
   <ion-content  delegate-handle="slideimgs" style="background: #f5f5f5;bottom: 50px;" class="customerLinkman contact-content">
   <!--  <div ng-if="subHeadersSelect[0]" ng-include="'build/pages/contact/customerLinkman/customerLinkman.html'"></div>
     <div ng-if="subHeadersSelect[1]" ng-include="'build/pages/contact/colleague/colleagueLinkman.html'"></div>-->
+    <div ng-if="showCustomer==0">
     <crm-loading ng-if="showLoading"></crm-loading>
     <div class="titles">
       <div class="title-img">
@@ -103,5 +104,50 @@
         distance="1%">
       </ion-infinite-scroll>
     </ion-list>
+    </div>
+    <div ng-if="showCustomer==1">
+     <!-- <div ng-include="'build/pages/contactCrm/colleague/colleagueLinkman.html'"></div>-->
+      <div class="row search-contact-input input-height">
+        <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
+               ng-click="goInputSearch()"/>
+      </div>
+      <div class="org-structure">
+        <div class="contact-item row no-padding" ng-click="goStructure()">
+          <div class="col col-15 item-logo">
+            <img class="contact-item-logo" src="build/img/login/login-hand.png"/>
+          </div>
+          <div class="col col-75 item-name">
+            上海汉得信息技术股份有限公司
+          </div>
+          <div class="item-line"></div>
+          <div class="item-arrow"></div>
+        </div>
+        <div class="contact-item row no-padding" ng-click="goStructure('current')">
+          <div class="col col-15 item-logo">
+            <img class="contact-item-logo" src="build/img/contact/line@3x.png"/>
+          </div>
+          <ion-spinner icon="ios-small" style="align-self: center;padding-left: 30%;"
+                       ng-if="structureName === ''"></ion-spinner>
+          <div class="col col-75 item-name" ng-bind="structureName">
+          </div>
+          <div class="item-arrow"></div>
+        </div>
+      </div>
+      <div class="custom-link-man" ng-if="customContactsInfo.length !== 0">
+        常用联系人
+      </div>
+      <div class="contact-item row no-padding"
+           ng-repeat="i in customContactsInfo"
+           ng-click="goDetailInfo(i.employeeNumber)"
+        >
+        <div class="col col-15 item-logo">
+          <img class="contact-item-logo" ng-cloak ng-src="{{i.imgUrl | filterImg}}"/>
+        </div>
+        <div class="col col-85 item-name" ng-bind="i.name">
+        </div>
+        <div class="item-line"></div>
+        <div class="tel-img" ng-click="telNumber($event,i.tel)"></div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

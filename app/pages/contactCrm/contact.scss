@@ -1,5 +1,11 @@
 
-
+.custom-link-man {
+  color: $color-text-key;
+  font-size: 16/17*$font-size-big;
+  padding-left: 15px;
+  padding-top: 10px;
+  height: 40px;
+}
 .customerLinkman{
   .item-complex .item-content, .item-radio .item-content {
     position: relative;
