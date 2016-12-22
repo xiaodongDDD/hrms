@@ -26,7 +26,8 @@ angular.module('myApp', [
   'customerModule',
   'opportunityModule',
   'clueModule',
-  'planModule'
+  'planModule',
+  'bidbondModule'
 ]);
 
 angular.module('myApp')

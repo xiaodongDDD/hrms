@@ -398,7 +398,11 @@ angular.module('opportunityModule')
 
         $scope.validNameFlag = true;
 
-        $scope.editFlag = false;
+        $scope.editFlag = $state.current.name == 'tab.opportunity-detail';
+        $scope.promoteFlag = $state.current.name == 'tab.clue-detail';
+        $scope.customerDataFlag = $state.current.name == 'tab.customer-detail';
+
+        console.log($scope.promoteFlag);
 
         opportunityAddService.getEmployeeDetail(function(response){
           $scope.data.saleAreaId = response.employee_detail.saleAreaId;
@@ -429,7 +433,6 @@ angular.module('opportunityModule')
       };
 
       $scope.$on('PROMOTE_CLUE',function(){
-        $scope.promoteFlag = true;
         $scope.firstInEdit = true;
         var tempOpportunity = clueDetailDataService.getClue();
         $scope.nameBeforeEdit = tempOpportunity.opportunityName;
@@ -470,8 +473,8 @@ angular.module('opportunityModule')
         };
 
         $scope.needCompetitorFlag = ($scope.data.opportunityStatus == 'HCRM_HOT_CHANCE' ||
-                                     $scope.data.opportunityStatus == 'HCRM_PROBABLY_WIN' ||
-                                     $scope.data.opportunityStatus == 'HCRM_WIN_CONFIRMED');
+        $scope.data.opportunityStatus == 'HCRM_PROBABLY_WIN' ||
+        $scope.data.opportunityStatus == 'HCRM_WIN_CONFIRMED');
 
         $scope.showWinCompanyFlag = $scope.data.opportunityStatus == "HCRM_LOST";
         $scope.sourceCustomer = {
@@ -484,7 +487,6 @@ angular.module('opportunityModule')
       });
 
       $scope.$on('EDIT_OPPORTUNITY',function(){
-        $scope.editFlag = true;
         $scope.firstInEdit = true;
         var tempOpportunity = opportunityDetailDataService.getOpportunity();
         $scope.nameBeforeEdit = tempOpportunity.opportunityName;
@@ -528,8 +530,8 @@ angular.module('opportunityModule')
 
 
         $scope.needCompetitorFlag = ($scope.data.opportunityStatus == 'HCRM_HOT_CHANCE' ||
-                                     $scope.data.opportunityStatus == 'HCRM_PROBABLY_WIN' ||
-                                     $scope.data.opportunityStatus == 'HCRM_WIN_CONFIRMED');
+        $scope.data.opportunityStatus == 'HCRM_PROBABLY_WIN' ||
+        $scope.data.opportunityStatus == 'HCRM_WIN_CONFIRMED');
 
         $scope.showWinCompanyFlag = $scope.data.opportunityStatus == "HCRM_LOST";
 
@@ -548,9 +550,7 @@ angular.module('opportunityModule')
 
       });
 
-      $scope.customerDataFlag = false;
       $scope.$on('HAVE_DATA',function(event,data){
-        $scope.customerDataFlag = true;
         $scope.data.customerId = data.customerId;
         $scope.showData.customerName = data.customerName;
         $scope.data.theYear = (new Date()).getFullYear();
@@ -707,8 +707,8 @@ angular.module('opportunityModule')
       var promoteClueSuccess = function(response){
         hmsPopup.hideLoading();
         if(response.returnCode == "S"){
-            hmsPopup.showPopup("线索提升成功");
-            $scope.$emit('CLUE_PROMOTE_SUCCESS');
+          hmsPopup.showPopup("线索提升成功");
+          $scope.$emit('CLUE_PROMOTE_SUCCESS');
         } else {
           hmsPopup.showPopup(response.returnMsg);
         }
@@ -1244,25 +1244,17 @@ angular.module('opportunityModule')
 
       $scope.showSelectDiv = function(key){
 
-        if($scope.promoteFlag && key == 'customer')
-          return ;
-
-        if($scope.customerDataFlag && key == 'customer')
-          return ;
-
-        if($scope.editFlag && key == 'customer')
-          return ;
+        console.log('showSelectDiv key ' + key);
 
         if(!$scope.editCustomerFlag && key == 'income_scale'){
           hmsPopup.showPopup('抱歉，你没有权限修改该客户。');
           return ;
         }
-        if(!$scope.editCustomerFlag && key == 'is_listed'){
+
+        if(!$scope.editCustomerFlag && key == 'isListed'){
           hmsPopup.showPopup('抱歉，你没有权限修改该客户。');
           return ;
         }
-
-        console.log('showSelectDiv key ' + key);
 
         $scope.searchModel.searchValueKey = '';
         $scope.nowPage = 1;

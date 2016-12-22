@@ -21,7 +21,8 @@
           label-name="titleList.customer"
           input-box="showData.customerName"
           important="true"
-          hms-select="showSelectDiv('customer')">
+          hms-select="showSelectDiv('customer')"
+          not-editable="editFlag || promoteFlag || customerDataFlag">
         </hms-select-item>
         <hms-select-item
           ng-if="!editFlag || editCustomerFlag"
@@ -183,7 +184,8 @@
           input-box="showData.saleBelong"
           important="true"
           hms-select="showSaleSelect()"
-          show-line="true">
+          show-line="true"
+          not-editable="promoteFlag || editFlag">
         </hms-select-item>
       </div>
     </div>
@@ -241,10 +243,10 @@
         </div>
 
         <!--<div class="pre-money-div-outer">-->
-          <!--<div class="pre-money-div">-->
-            <!--<span>{{ 'NEW_OPPORTUNITY.ANTICIPATED_REVENUE' | T }}</span><b>￥</b>{{data.preMoney}}-->
-          <!--</div>-->
-          <!--<p>{{ 'NEW_OPPORTUNITY.ADVANCE_DESCRIPTION' | T }}</p>-->
+        <!--<div class="pre-money-div">-->
+        <!--<span>{{ 'NEW_OPPORTUNITY.ANTICIPATED_REVENUE' | T }}</span><b>￥</b>{{data.preMoney}}-->
+        <!--</div>-->
+        <!--<p>{{ 'NEW_OPPORTUNITY.ADVANCE_DESCRIPTION' | T }}</p>-->
         <!--</div>-->
 
       </div>
