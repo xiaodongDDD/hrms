@@ -1,0 +1,217 @@
+<ion-view view-title="商机" class="crm hrms-pancel-corlor opportunities">
+  <crm-loading ng-if="showLoading"></crm-loading>
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
+    <div class="header-select-button">
+      <div ng-class="{false:'selected'}[myOpportunityFlag]" ng-click="changeModel(false)">所有商机</div>
+      <div ng-class="{true:'selected'}[myOpportunityFlag]" ng-click="changeModel(true)">我的商机</div>
+    </div>
+    <img class="sub-icon" src="build/img/application/opportunity/icon_top_search_strong@3x.png" ng-click="goSearch()"/>
+    <img src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="showAddOpportunity()"/>
+  </ion-header-bar>
+  <ion-content ng-class="{false:'hide-head'}[showHead]" has-bouncing="false" scroll="false">
+    <div class="board">
+      <div ng-click="selectBoardItem(0)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[0]]"><div class="num">10</div><div>3210.5万￥</div><div>{{ 'OPPORTUNITIES.BOARD.GOING' | T }}</div></div>
+      <div ng-click="selectBoardItem(1)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[1]]"><div class="num">12</div><div class="need-board">￥2210.5万</div><div>{{ 'OPPORTUNITIES.BOARD.NEW' | T }}</div></div>
+      <div ng-click="selectBoardItem(2)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[2]]"><div class="num">10</div><div class="need-board">￥1400.5万</div><div>{{ 'OPPORTUNITIES.BOARD.WIN' | T }}</div></div>
+      <div ng-click="selectBoardItem(3)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[3]]"><div class="num">10</div><div class="need-board">￥210.5万</div><div>{{ 'OPPORTUNITIES.BOARD.CLOSE' | T }}</div></div>
+    </div>
+
+    <div class="opportunity-content" on-drag="onDrag($event)" ng-class="{false:'show-more'}[showHead]">
+      <ion-scroll direction="y" scrollbar-y="false" has-bouncing="true" delegate-handle="opportunityScroll">
+        <ion-refresher
+          pulling-text="正在刷新数据"
+          pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="opportunity-item" ng-click="goDetail(opportunity)" ng-repeat="opportunity in opportunities">
+          <div class="item-header">
+            {{ 'OPPORTUNITIES.CREATION_DATE' | T }}:{{opportunity.creationDate.split(' ')[0]}}
+            <span>
+              <img src="build/img/application/opportunity/icon_hot@3x.png" ng-show="opportunity.opportunityStatus == 'HCRM_HOT_CHANCE'"/>
+              {{opportunity.opportunityStatusName}}
+            </span>
+          </div>
+          <div class="opportunity-info">
+            <div>
+              <div class="opportunity-name">{{opportunity.opportunityName}}</div>
+              <div class="opportunity-belong">
+                {{opportunity.customerName}}
+              </div>
+              <div class="opportunity-belong">
+                <img src="build/img/application/opportunity/icon_leader_gray@3x.png"/>{{opportunity.saleEmployeeName}}
+                <img src="build/img/application/opportunity/icon_flat_gray@3x.png"/>{{opportunity.saleAreaName}}&nbsp;
+                <img src="build/img/application/opportunity/icon_team_gray@3x.png"/>{{opportunity.saleTeamName}}
+              </div>
+            </div>
+            <div class="more-bottom-margin">
+              <span class="cost-title">{{ 'OPPORTUNITIES.ANTICIPATED_REVENUE' | T }}</span>
+              <span class="money">￥{{opportunity.preMoney}}</span>
+            </div>
+          </div>
+        </div>
+        <ion-infinite-scroll
+          on-infinite="loadMoreOpportunity()"
+          distance="1%"
+          ng-if="moreOpportunityCanBeLoaded">
+        </ion-infinite-scroll>
+
+      </ion-scroll>
+    </div>
+  </ion-content>
+
+  <div class="bottom-button" ng-class="{true:'showUp'}[showHead]">
+    <div ng-click="showShiftDiv()"><img src="build/img/application/opportunity/icon_select_blue@3x.png"/>{{ 'FILTER' | T }}</div>
+    <div ng-click="showSortDiv()"><img src="build/img/application/opportunity/icon_select_list@3x.png"/>{{ 'SORT' | T }}</div>
+  </div>
+
+  <div class="common-fix-div sifting-fix-div" ng-class="{true:'showUp'}[showShift]">
+
+    <div class="sifting-header">
+      <img ng-click="showShiftDiv()" src="build/img/application/customer/detail/top_left_arrow@3x.png"/>
+      {{ 'OPPORTUNITIES.SIFTING.OPPORTUNITY' | T }}
+    </div>
+
+    <ion-scroll direction="y" scrollbar-y="false" has-bouncing="true" class="sifting-scroll">
+      <div class="sifting-item">
+        <img src="build/img/application/customer/icon_up@3x.png"/>
+        <span>数据状态</span>
+        <span class="item-content select-radio">
+          <div class="yes" ng-click="selectStatus(1)">
+            <img class="select" ng-src="{{'build/img/application/plans/' + (siftingShowData.status == 1 ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+            启用
+          </div>
+          <div class="no" ng-click="selectStatus(-1)">
+            <img class="select" ng-src="{{'build/img/application/plans/' + (siftingShowData.status == -1 ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+            禁用
+          </div>
+          <div class="no" ng-click="selectStatus(0)">
+            <img class="select" ng-src="{{'build/img/application/plans/' + (siftingShowData.status == 0 ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+            不限
+          </div>
+        </span>
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('opportunity_status')">
+        <img src="build/img/application/opportunity/icon_share@3x.png"/>
+        <span>{{ 'OPPORTUNITIES.SIFTING.STATE' | T }}</span>
+        <span class="item-content">{{siftingShowData.opportunityStatus}}</span>
+        <img src="build/img/application/opportunity/right_arrow@3x.png" class="right-img">
+      </div>
+      <div class="sifting-item"  ng-click="showSelectDiv('sale_area')">
+        <img src="build/img/application/opportunity/icon_team@3x.png"/>
+        <span>所属大区</span>
+        <span class="item-content">{{siftingShowData.saleArea}}</span>
+        <img src="build/img/application/opportunity/right_arrow@3x.png" class="right-img">
+      </div>
+      <div class="sifting-item"  ng-click="showSelectDiv('sale_team')">
+        <img src="build/img/application/opportunity/icon_team@3x.png"/>
+        <span>所属团队</span>
+        <span class="item-content">{{siftingShowData.saleTeam}}</span>
+        <img src="build/img/application/opportunity/right_arrow@3x.png" class="right-img">
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('customer_employee')">
+        <img src="build/img/application/opportunity/icon_bottom4_selected@3x.png"/>
+        <span>负责人</span>
+        <span class="item-content">{{siftingShowData.employee}}</span>
+        <img src="build/img/application/opportunity/right_arrow@3x.png" class="right-img">
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('year')">
+        <img src="build/img/application/opportunity/icon_shutdown@3x.png"/>
+        <span>{{ 'OPPORTUNITIES.SIFTING.CLOSE_YEAR' | T }}</span>
+        <span class="item-content">{{siftingKey.finishYear}}</span>
+        <img src="build/img/application/opportunity/right_arrow@3x.png" class="right-img">
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('business_from')">
+        <img src="build/img/application/opportunity/icon_change@3x.png"/>
+        <span>{{ 'OPPORTUNITIES.SIFTING.FROM' | T }}</span>
+        <span class="item-content">{{siftingShowData.businessFrom}}</span>
+        <img src="build/img/application/opportunity/right_arrow@3x.png" class="right-img">
+      </div>
+      <div class="sifting-item" ng-click="showSelectDiv('opportunity_sale_stage')">
+        <img src="build/img/application/opportunity/icon_state@3x.png"/>
+        <span>{{ 'OPPORTUNITIES.SIFTING.SALE_STATE' | T }}</span>
+        <span class="item-content">{{siftingShowData.saleStage}}</span>
+        <img src="build/img/application/opportunity/right_arrow@3x.png" class="right-img">
+      </div>
+      <div class="sifting-item multi-item">
+        <img src="build/img/application/opportunity/icon_play@3x.png"/>
+        <span>{{ 'OPPORTUNITIES.SIFTING.START_DATE' |  T }}</span>
+        <div class="time-area">
+          <div ng-click="selectDate('prjBeginDateFrom')">{{siftingKey.prjBeginDateFrom == '' ? 'From' : siftingKey.prjBeginDateFrom}}</div>
+          <span class="line">~</span>
+          <div ng-click="selectDate('prjBeginDateTo')">{{siftingKey.prjBeginDateTo == '' ? 'To' : siftingKey.prjBeginDateTo}}</div>
+        </div>
+      </div>
+      <div class="sifting-item multi-item">
+        <img src="build/img/application/opportunity/icon_day.png"/>
+        <span>{{ 'OPPORTUNITIES.SIFTING.SIGN_DATE' | T }}</span>
+        <div class="time-area">
+          <div ng-click="selectDate('preSignDateFrom')">{{siftingKey.preSignDateFrom == '' ? 'From' : siftingKey.preSignDateFrom}}</div>
+          <span class="line">~</span>
+          <div ng-click="selectDate('preSignDateTo')">{{siftingKey.preSignDateTo == '' ? 'To' : siftingKey.preSignDateTo}}</div>
+        </div>
+      </div>
+      <div class="sifting-item multi-item">
+        <img src="build/img/application/opportunity/icon_day.png"/>
+        <span>{{ 'OPPORTUNITIES.SIFTING.CREATE_DATE' | T }}</span>
+        <div class="time-area">
+          <div ng-click="selectDate('creationDateFrom')">{{siftingKey.creationDateFrom == '' ? 'From' : siftingKey.creationDateFrom}}</div>
+          <span class="line">~</span>
+          <div ng-click="selectDate('creationDateTo')">{{siftingKey.creationDateTo == '' ? 'To' : siftingKey.creationDateTo}}</div>
+        </div>
+      </div>
+    </ion-scroll>
+
+    <ion-footer-bar class="common-footer" ng-if="showShift">
+      <div class="footer-wrap">
+        <div class="footer-button "  ng-click="showShiftDiv()">
+          <div class="left-div">{{'CANCEL'|T}}</div>
+        </div>
+        <div class="footer-button" ng-click="clearSifting()">
+          <div class="two-div">{{'CLEAR'|T}}</div>
+        </div>
+        <div class="button-confirm" ng-click="sifting()">
+          <div>
+            <img src="build/img/application/information/icon_confirm@3x.png">
+            {{'CONFIRM'|T}}
+          </div>
+        </div>
+      </div>
+    </ion-footer-bar>
+  </div>
+
+  <div class="common-fix-div sifting-fix-div sort-div" ng-class="{true:'showUp'}[showSort]" ng-click="showSortDiv()" on-drag="dragHideSort($event)">
+    <div class="sifting-header">
+      商机排序
+    </div>
+    <ion-scroll scrollbar-y="false" has-bouncing="false">
+      <div class="sifting-item" ng-repeat="item in sortList track by $index" ng-click="selectSort($index)">
+        <img ng-src="{{'build/img/application/opportunity/' + item.icon + '.png'}}"/>
+        <span>{{item.text}}</span>
+        <img src="build/img/application/icon_right@3x.png" class="right-img" ng-show="lastSelectSortIndex == $index">
+      </div>
+    </ion-scroll>
+  </div>
+
+  <!--所属选择区域-->
+  <!--<div class="common-fix-div" ng-class="{true:'showUp'}[showSaleSelectFlag]">-->
+    <!--<div class="common-fix-div-header">-->
+      <!--<img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="saleBack()"/>-->
+      <!--请选择-->
+    <!--</div>-->
+    <!--<div class="sifting-area">-->
+      <!--<img src="build/img/application/opportunity/icon_top_search@3x.png">-->
+      <!--<input type="text" placeholder="搜索..."/>-->
+    <!--</div>-->
+    <!--<div class="value-list-header">-->
+      <!--{{showSaleTeam ? siftingShowData.saleArea : '所属区域'}}-->
+    <!--</div>-->
+    <!--<div class="list list-has-header">-->
+      <!--<ion-scroll direction="y" has-bouncing="true" scrollbar-y="false">-->
+        <!--<div class="list-item" ng-repeat="saleArea in saleAreas" ng-click="selectArea(saleArea)" ng-hide="showSaleTeam">{{saleArea.saleAreaName}}</div>-->
+        <!--<div class="list-item" ng-repeat="saleTeam in saleTeams" ng-click="selectTeam(saleTeam)" ng-show="showSaleTeam">{{saleTeam.saleTeamName}}</div>-->
+      <!--</ion-scroll>-->
+    <!--</div>-->
+  <!--</div>-->
+
+
+</ion-view>

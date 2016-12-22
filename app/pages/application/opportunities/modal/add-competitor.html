@@ -1,0 +1,40 @@
+<ion-modal-view class="add-competitor"><!--添加竞争对手-->
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="showAddCompetitor(false)">
+    <h2 class="title">{{ 'NEW_OPPORTUNITY.ADD_COMPETITORS' | T }}</h2>
+  </ion-header-bar>
+  <ion-content>
+    <div>
+
+      <hms-select-item
+        label-name="titleList.competitors"
+        input-box="newCompetitor.fullName"
+        important="true"
+        hms-select="showSelectDiv('competitor')">
+      </hms-select-item>
+
+      <hms-input-item
+        label-name="titleList.productName"
+        input-box="newCompetitor.productName"
+        important="true">
+      </hms-input-item>
+
+      <hms-input-item
+        label-name="titleList.advantage"
+        input-box="newCompetitor.advantage"
+        important="true">
+      </hms-input-item>
+
+      <hms-input-item
+        label-name="titleList.otherDescription"
+        input-box="newCompetitor.description">
+      </hms-input-item>
+
+    </div>
+    <div class="add-button">
+      <button ng-click="addCompetitor()">
+        <img src="build/img/application/information/icon_confirm@3x.png">{{ 'OK' | T }}
+      </button>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,54 @@
+<ion-modal-view class="add-presales-forecast"><!--售前预测-->
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="showAddEstimate()">
+    <h2 class="title"> {{ 'NEW_OPPORTUNITY.ADD_ESTIMATE' | T }}</h2>
+  </ion-header-bar>
+  <ion-content>
+    <div>
+
+      <hms-select-item
+        label-name="titleList.productTypeName"
+        input-box="newEstimate.productTypeName"
+        important="true"
+        hms-select="showSelectDiv('product_type')">
+      </hms-select-item>
+
+      <hms-select-item
+        label-name="titleList.newEstimateProductModel"
+        input-box="newEstimateProductModel"
+        important="true"
+        hms-select="showEstimateProductSelectDiv()">
+      </hms-select-item>
+
+      <hms-select-item
+        label-name="titleList.unitName"
+        input-box="newEstimate.unitName"
+        hms-select="showSelectDiv('business_unit')">
+      </hms-select-item>
+
+      <div class="common-item-input">
+        <div>{{titleList.manday}}</div>
+        <input type="tel" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="newEstimate.manday"/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <div class="common-item-input">
+        <div>{{titleList.unitPrice}}</div>
+        <input type="tel" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="newEstimate.unitPrice"/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+
+    </div>
+    <div class="add-button" ng-if="!editEstimateFlag">
+      <button ng-click="addEstimate()">
+        <img src="build/img/application/information/icon_confirm@3x.png">{{ 'OK' | T }}
+      </button>
+    </div>
+    <div class="add-button" ng-if="editEstimateFlag">
+      <button ng-click="saveEstimate()">
+        <img src="build/img/application/information/icon_confirm@3x.png">{{ 'OK' | T }}
+      </button>
+    </div>
+  </ion-content>
+</ion-modal-view>

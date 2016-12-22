@@ -1,0 +1,109 @@
+<div ng-controller="OpportunityDetailContactCtrl" class="OpportunityDetailContact">
+  <crm-loading ng-if="showCrmLoading"></crm-loading>
+  <ion-refresher
+    pulling-text="正在刷新数据"
+    pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+  </ion-refresher>
+  <ion-list>
+    <ion-item ng-repeat="item in linkmanData"  style="padding:0!important;background: #ffffff">
+      <div class="row row-center" style="padding:0;height: 80px">
+        <div class="col col-60" ng-click="goDetail(item)">
+          <div class="row row-center">
+            <div class="col">
+              <span> <img src="{{item.sexImg}}" style="width:20px;    position: relative;
+    top: 5px;"></span>
+              <span style="font-size: 17px;color:#333333;margin-left:5px;">{{item.name}}</span>
+              <span class="linkRole" style=" margin-left:10px; font-size: 14px;
+    color: #aaaaaa;">{{item.roleName}}</span>
+            </div>
+
+          </div>
+          <div class="row row-center" style="    height: 30px;
+    line-height: 30px;
+    padding-left: 33px;
+    font-size: 15px;
+    margin-top: 0px;
+    padding-top: 5px;
+    margin-bottom: 8px;" >
+            <div class="col">
+               <span style="margin-right: 5px;color:#666666">
+              {{item.department}}
+            </span>
+            <span style="color:#666666">
+              {{item.position}}
+            </span>
+            </div>
+
+          </div>
+        </div>
+        <div class="col col-40" style="padding-top: 9px">
+          <div class="row row-center" ng-click="goDetail(item)">
+            <div class="col" style="text-align: right">
+              <span  class="state-date"> {{item.contactTypeName}}</span>
+            </div>
+
+
+          </div>
+          <div class="row row-center">
+            <div class="col item-phone">
+              <a  href="tel:{{item.phone}}">
+                <img src="build/img/contact/icon_phone_green@3x.png" style="width: 26px;">
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <ion-option-button class=" button-delete-icon"
+                         ng-click="deleteItem(item,$index)"  style="color:#FE9073">
+        <img src="build/img/contact/icon_delete_white@3x.png" style="">
+        xxxx
+      </ion-option-button>
+      <!--<ion-option-button class=" button-assertive"
+                         ng-click="deleteItem(item,$index)" style="background: #FE9073">
+        <img src="build/img/contact/icon_delete_white@3x.png" style="width: 26px;">
+      </ion-option-button>-->
+    </ion-item>
+  </ion-list>
+  <ion-infinite-scroll
+    immediate-check="false"
+    ng-if="moreDataCanBeLoaded"
+    on-infinite="loadMore()"
+    distance="1%">
+  </ion-infinite-scroll>
+  <div class="last-div"></div>
+</div>
+<style>
+  .button-delete-icon{
+    background: #FE9073
+  }
+  .button-delete-icon img{
+    width: 20px;
+    position: relative;
+    left: 16px;
+  }
+  .item-complex .item-content, .item-radio .item-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 !important;
+    /* padding: 16px 49px 16px 16px; */
+    border: none;
+    background-color: #fff;
+  }
+  .item-phone{
+    text-align: right;
+    padding-right: 12px;
+  }
+  .state-date {
+    position: relative;
+    display: inline-block;
+    border-radius: 13px;
+    color: white;
+    background: #a1d8fa;
+    padding: 1px 7px 1px 8px;
+    height: 22px;
+    line-height: 20px;
+    box-shadow: 0 0 0 5px white;
+    font-size: 14px;
+  }
+</style>

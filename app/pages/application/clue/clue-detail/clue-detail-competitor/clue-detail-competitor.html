@@ -1,0 +1,23 @@
+<div ng-controller="ClueDetailCompetitorCtrl" class="OpportunityDetailCompetitor">
+  <crm-loading ng-if="showCrmLoading"></crm-loading>
+  <ion-refresher
+    pulling-text="正在刷新数据"
+    pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+  </ion-refresher>
+  <div class="info-item" ng-repeat="item in competitors"
+       ng-click="goCompetitorDetail(item)">
+    <div class="div-top">
+      <div class="div-bottom-left">{{item.fullName}}</div>
+      <div class="div-bottom-right2">{{item.dataStatusName}}</div>
+    </div>
+    <div class="div-bottom">
+      <div class="div-bottom-left">{{item.shortName}}</div>
+      <div class="div-bottom-right1"> {{item.areaPropertyName}}</div>
+      <div class="div-bottom-right2">
+        <img ng-src="build/img/competitor/{{item.areaPropertyName}}@3x.png">
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+  </div>
+  <div class="last-div"></div>
+</div>

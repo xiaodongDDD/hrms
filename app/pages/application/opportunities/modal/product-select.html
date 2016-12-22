@@ -1,0 +1,24 @@
+<ion-modal-view class="product-select">
+  <crm-loading ng-if="showCrmLoading"></crm-loading>
+  <ion-header-bar align-title="center" class="bar-stable">
+        <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="productBack()"/>
+    <h2 class="title">请选择</h2>
+  </ion-header-bar>
+  <ion-content>
+    <div class="sifting-area">
+      <img src="build/img/application/opportunity/icon_top_search@3x.png">
+      <input type="text" placeholder="搜索..."/>
+    </div>
+    <div class="value-list-header">
+      {{newEstimate.productName == '' ? '产品品牌' : '二级产品'}}
+    </div>
+    <div class="list list-has-header">
+      <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="productScroll">
+        <div class="list-item" ng-repeat="product in products" ng-click="selectProduct($index)">
+          {{product.categotyName}}
+          <img src="build/img/application/opportunity/right_arrow@3x.png" ng-hide="newEstimate.productName"/>
+        </div>
+      </ion-scroll>
+    </div>
+  </ion-content>
+</ion-modal-view>

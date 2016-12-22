@@ -1,0 +1,26 @@
+<ion-modal-view class="product-select">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="saleBack()"/>
+    <h2 class="title">请选择</h2>
+  </ion-header-bar>
+  <ion-content>
+    <div class="sifting-area">
+      <img src="build/img/application/opportunity/icon_top_search@3x.png">
+      <input type="text" placeholder="搜索..."/>
+    </div>
+    <div class="value-list-header">
+      {{showSaleTeam ? showData.saleArea : '所属区域'}}
+    </div>
+    <div class="list list-has-header">
+      <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="saleScroll">
+        <div class="list-item" ng-repeat="saleArea in saleAreas" ng-click="selectArea(saleArea)" ng-hide="showSaleTeam">
+          {{saleArea.saleAreaName}}
+          <img src="build/img/application/opportunity/right_arrow@3x.png"/>
+        </div>
+        <div class="list-item" ng-repeat="saleTeam in saleTeams" ng-click="selectTeam(saleTeam)" ng-show="showSaleTeam">
+          {{saleTeam.saleTeamName}}
+        </div>
+      </ion-scroll>
+    </div>
+  </ion-content>
+</ion-modal-view>

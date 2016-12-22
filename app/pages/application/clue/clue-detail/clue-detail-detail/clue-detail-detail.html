@@ -1,0 +1,167 @@
+<div ng-controller="clueDetailDetailCtrl">
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(4)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_custom_small@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.CUSTOMER_INFO' | T }}
+      <div>{{hideAreaFlag[4] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-if="!hideAreaFlag[4]">
+
+      <div class="common-item-input">
+        <div>{{titleList.customer}}</div>
+        <input type="text" ng-model="clue.customerName" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+      <div class="common-item-input">
+        <div>{{titleList.customerContacts}}</div>
+        <input type="text" ng-model="clue.customersContactsName" placeholder="无" readonly/>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(0)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_base_message@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.BASE_INFO' | T }}
+      <div>{{hideAreaFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-if="!hideAreaFlag[0]">
+      <!--线索编号-->
+      <div class="common-item-input">
+        <div>{{ 'NEW_CLUE.CLUE_CODE' | T }}</div>
+        <input type="text" ng-model="clue.opportunityCode" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <div class="common-item-input">
+        <div>{{ 'NEW_CLUE.CLUE_NAME' | T }}</div>
+        <input type="text" ng-model="clue.opportunityName" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+
+      <div class="common-item-input">
+        <div>{{titleList.clueStatus}}</div>
+        <input type="text" ng-model="clue.opportunityStatusName" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <div class="common-item-input">
+        <div>{{titleList.ownedIndustry}}</div>
+        <input type="text" ng-model="clue.industry" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+
+      <div class="common-item-input">
+        <div>{{titleList.businessFrom}}</div>
+        <input type="text" ng-model="clue.businessFromName" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <div class="common-item-input">
+        <div>{{titleList.theCompany}}</div>
+        <input type="text" ng-model="clue.theCompanyName" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <div class="common-item-input" ng-show="clue.businessFrom == 'ORIGINALS'">
+        <div>{{titleList.originalFactoryFrom}}</div>
+        <input type="text" ng-model="clue.originalFactoryFromName" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <div class="common-item-input">
+        <div>{{titleList.prjBeginDate}}</div>
+        <input type="text" ng-model="clue.prjBeginDate" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <div class="common-item-input">
+        <div>{{titleList.preSignDate}}</div>
+        <input type="text" ng-model="clue.preSignDate" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <!--创建年份-->
+      <div class="common-item-input">
+        <div>{{ 'NEW_CLUE.CREATION_YEAR' | T }}</div>
+        <input type="text" ng-model="clue.creationYear" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+      <!--关闭年份-->
+      <div class="common-item-input">
+        <div>{{ 'NEW_CLUE.FINISH_YEAR' | T }}</div>
+        <input type="text" ng-model="clue.finishYear" placeholder="无" readonly/>
+      </div>
+
+    </div>
+
+  </div>
+
+   <!--竞争对手-->
+  <!--<div class="common-input-area">-->
+    <!--<div class="common-input-area-title" ng-click="hideArea(1)">-->
+      <!--<img src="build/img/application/opportunity/opportunity-add/icon_pk_blue@3x.png"/>-->
+      <!--{{ 'NEW_OPPORTUNITY.COMPETITORS' | T }}-->
+      <!--<div>{{hideAreaFlag[1] ? ("SHOW" | T) : ("HIDE" | T) }}</div>-->
+    <!--</div>-->
+    <!--<div ng-if="!hideAreaFlag[1]">-->
+      <!--<div ng-repeat="competitor in competitors">-->
+        <!--<div class="common-input-area-subtitle has-bottom-border text-black" ng-class="{true:'has-top-border'}[$index > 0]">-->
+          <!--{{competitor.fullName}}-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<div class="common-item-input">-->
+            <!--<div>{{titleList.productName}}</div>-->
+            <!--<input type="text" ng-model="competitor.productName" placeholder="无" readonly/>-->
+            <!--<div class="common-light-line-long"></div>-->
+          <!--</div>-->
+          <!--<div class="common-item-input">-->
+            <!--<div>{{titleList.advantage}}</div>-->
+            <!--<input type="text" ng-model="competitor.advantage" placeholder="无" readonly/>-->
+            <!--<div class="common-light-line-long"></div>-->
+          <!--</div>-->
+          <!--<div class="common-item-input">-->
+            <!--<div>{{titleList.otherDescription}}</div>-->
+            <!--<input type="text" ng-model="competitor.description" placeholder="无" readonly/>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+  <!--</div>-->
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(2)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_team@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.BELONG' | T }}
+      <div>{{hideAreaFlag[2] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-if="!hideAreaFlag[2]">
+      <div class="common-item-input">
+        <div>{{titleList.saleBelong}}</div>
+        <input type="text" ng-model="clue.saleBelong" placeholder="无" readonly/>
+      </div>
+    </div>
+  </div>
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(3)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_other@3x.png"/>
+      {{ 'OTHER' | T }}
+      <div>{{hideAreaFlag[3] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-if="!hideAreaFlag[3]">
+
+      <div class="common-item-input">
+        <div>{{titleList.description}}</div>
+        <input type="text" ng-model="clue.description" placeholder="无" readonly/>
+        <div class="common-light-line-long"></div>
+      </div>
+    </div>
+  </div>
+
+</div>

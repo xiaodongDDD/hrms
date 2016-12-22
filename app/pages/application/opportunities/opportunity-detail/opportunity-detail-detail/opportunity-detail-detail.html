@@ -1,0 +1,234 @@
+<div ng-controller="opportunityDetailDetailCtrl" class="opportunity-detail-detail">
+  <div class="common-input-area">
+    <div class="common-input-area-title">
+      <img src="build/img/application/opportunity/opportunity-add/icon_custom_small@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.CUSTOMER_INFO' | T }}<div ng-click="hideArea(4)">{{hideAreaFlag[4] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-hide="hideAreaFlag[4]">
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.SELECT_CUSTOMER' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.customerName" readonly/>
+      </div>
+    </div>
+  </div>
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(0)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_base_message@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.BASE_INFO' | T }}<div >{{hideAreaFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-hide="hideAreaFlag[0]">
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.OPPORTUNITY_NAME' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.opportunityName" ng-blur="validName()"/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.OPPORTUNITY_STATE' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.opportunityStatusName" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select" ng-if="opportunity.opportunityStatus == 'HCRM_LOST'">
+        <div>{{ 'NEW_OPPORTUNITY.WINNING_COMPETITOR' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.winningCompetitorName" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.INDUSTRY' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.industry" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.SELECT_CUSTOMER_CONTACTS' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.customersContactsName" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.SOURCE' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.businessFromName" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.COMPANY_PROPERTY' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.theCompany" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.COMPANY_YEAR' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.theYear" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.START_DATE' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.prjBeginDate" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.SIGN_DATE' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.preSignDate" readonly/>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(1)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_pk_blue@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.COMPETITORS' | T }}<div >{{hideAreaFlag[1] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-hide="hideAreaFlag[1]">
+      <div ng-repeat="competitor in competitors">
+        <div class="common-input-area-subtitle has-bottom-border text-black" ng-class="{true:'has-top-border'}[$index > 0]">
+          {{competitor.fullName}}
+        </div>
+        <div>
+          <div class="common-item-select">
+            <div>{{ 'NEW_OPPORTUNITY.COMPETITORS_PRODUCT' | T }}</div>
+            <input type="text" placeholder="无" ng-model="competitor.productName" readonly/>
+            <div class="common-light-line"></div>
+          </div>
+          <div class="common-item-select">
+            <div>{{ 'NEW_OPPORTUNITY.COMPETITORS_OPPONENT' | T }}</div>
+            <input type="text" placeholder="无" ng-model="competitor.advantage" readonly/>
+            <div class="common-light-line"></div>
+          </div>
+          <div class="common-item-select">
+            <div>{{ 'NEW_OPPORTUNITY.OTHER_DESCRIPTION' | T }}</div>
+            <input type="text" placeholder="无" ng-model="competitor.description" readonly/>
+          </div>
+        </div>
+      </div>
+
+     <!-- <div class="common-input-area-subtitle">
+        {{ 'NEW_OPPORTUNITY.ADD_COMPETITORS' | T }}
+        <img src="build/img/application/opportunity/opportunity-add/icon_addmore@3x.png" ng-click="showAddCompetitor()"/>
+      </div>-->
+
+    </div>
+
+  </div>
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(2)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_team@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.BELONG' | T }}<div >{{hideAreaFlag[2] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-hide="hideAreaFlag[2]">
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.LONG_BELONG' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.saleBelong" readonly/>
+      </div>
+    </div>
+  </div>
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(3)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_other@3x.png"/>
+      {{ 'OTHER' | T }}<div >{{hideAreaFlag[3] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-hide="hideAreaFlag[3]">
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.OPPORTUNITY_DESCRIPTION' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.description" readonly/>
+      </div>
+    </div>
+  </div>
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(5)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_phonecall@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.ADVANCE_INFORMATION' | T }}<div >{{hideAreaFlag[5] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-hide="hideAreaFlag[5]">
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.SALE_STATE' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.saleStageName" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.ADVANCE_LEADER' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.preSaleEmployeeName" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.CHARGING_MODE' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.chargingModeName" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.CURRENCY' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.currencyName" readonly/>
+        <div class="common-light-line"></div>
+      </div>
+
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.ANTICIPATED_REVENUE' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.preMoney" readonly/>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(6)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_link_small@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.ADVANCE_ESTIMATE' | T }}<div>{{hideAreaFlag[6] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-hide="hideAreaFlag[6]">
+      <div ng-repeat="estimate in estimates">
+        <div class="common-input-area-subtitle has-bottom-border has-shadow"
+             ng-class="{true:'has-top-border'}[$index > 0]">
+          No.{{($index + 1) + " " + estimate.unitName}}
+        </div>
+        <div>
+          <div class="estimate-product">
+            <div class="product-info">
+              <div class="product-info-content">{{estimate.productTypeName}}</div>
+              <div class="product-info-title">{{ 'NEW_OPPORTUNITY.PRODUCT_TYPE' | T }}</div>
+            </div>
+            <div class="product-info">
+              <div class="product-info-content">{{estimate.productName}}</div>
+              <div class="product-info-title">{{ 'NEW_OPPORTUNITY.ESTIMATE_PRODUCT' | T }}</div>
+            </div>
+            <div class="product-info">
+              <div class="product-info-content">{{estimate.level2ProductName}}</div>
+              <div class="product-info-title">{{ 'NEW_OPPORTUNITY.ESTIMATE_SUB_PRODUCT' | T }}</div>
+            </div>
+          </div>
+          <div class="estimate-cost">
+            <div class="number">
+              <div>{{estimate.manday}}</div>
+              <div>{{ 'NEW_OPPORTUNITY.MAN_DAY' | T }}</div>
+            </div>
+            <div class="sign bigger">*</div>
+            <div class="number">
+              <div>{{estimate.unitPrice}}</div>
+              <div>{{ 'NEW_OPPORTUNITY.PRICE' | T }} ({{opportunity.currencyName == '' ? 'RMB' : opportunity.currencyName}})</div>
+            </div>
+            <div class="sign">=</div>
+            <div class="number">
+              <div>{{estimate.total}}</div>
+              <div>{{ 'NEW_OPPORTUNITY.TOTAL' | T }} ({{opportunity.currencyName == '' ? 'RMB' : opportunity.currencyName}})</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="common-input-area">
+    <div class="common-input-area-title" ng-click="hideArea(7)">
+      <img src="build/img/application/opportunity/opportunity-add/icon_business2@3x.png"/>
+      {{ 'NEW_OPPORTUNITY.RISK' | T }}<div >{{hideAreaFlag[7] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+    </div>
+    <div ng-hide="hideAreaFlag[7]">
+      <div class="common-item-select">
+        <div>{{ 'NEW_OPPORTUNITY.RISK' | T }}</div>
+        <input type="text" placeholder="无" ng-model="opportunity.prjRisk" readonly/>
+      </div>
+    </div>
+  </div>
+  <div class="last-div"></div>
+
+</div>

@@ -1,0 +1,131 @@
+
+.OpportunityDetailContact
+.transmit-search {
+  /* width: 78%; */
+  /* margin-left: 15px; */
+  background: white;
+  /* height: 28px; */
+  color: gray;
+  margin-top: 5px;
+  padding-left: 15px;
+  border-radius: 15px;
+}
+
+.OpportunityDetailContact .transmit-search .transmit-button {
+  float: left;
+  width: 8%;
+  margin-top: 5px;
+  font-size: 18px; }
+.OpportunityDetailContact .transmit-search input {
+  float: left;
+  width: 85%;
+  height: 20px;
+  line-height: 20px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none; }
+.employee-clear-img-scan{
+  width: 30px;height: 30px;margin: auto;
+}
+.employee-history-img{
+  width: 18px;height: 18px; margin-top: 1px;margin-left: 2px;
+}
+.history-logo {
+  padding-left: 10px;
+  color: #999;
+}
+.history-line {
+  border-bottom: 1px solid #ddd;
+  align-self: center;
+  margin-left: -2%;
+}
+
+.employee-clear-img {
+  width: 18px;
+  height: 18px;
+  background-color: rgba(250, 250, 250, 0.6);
+  margin-right: 10px;
+  border-radius: 50%;
+  float: right;
+  margin-top: -23px;
+}
+.title-style{
+  border-bottom: 1px #ddd solid;height: 30px;color: #999;padding: 5px;font-size:16px
+}
+.title-left{
+  float: left
+}
+.title-right{
+  float: right;color:#0066FF
+}
+.content-style{
+  font-size: 15px;
+}
+.clear{
+  clear: both;
+}
+.CustomerDetailContact{
+  .ion-ios-telephone{
+    color: #000000;
+  }
+  .row+.row {
+    margin: 0!important;
+  }
+  .failure{
+    background: #CCCCCC;
+    padding: 1px;
+    font-size: 13px;
+    border: 1px solid #AAAAAA;
+    border-radius: 1px;
+    text-align: center;
+  }
+  .link-item{
+    border-bottom: 1px solid #E1E1E1;
+  }
+  .linkRole{
+    margin-left: 15px;
+    font-size: 13px;
+    color: #aaaaaa;
+  }
+  .duty{
+    color: #868585;
+    margin-left: 10px;
+  }
+
+  .linkclass{
+    background: #B0E3FF;
+    padding: 1px;
+    font-size: 13px;
+    border: 1px solid #aaaaaa;
+    border-radius: 1px;
+    text-align: center;
+  }
+  .info-item-con{
+    color: #AAAAAA;
+    text-align: right;
+  }
+  .item-complex .item-content, .item-radio .item-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 !important;
+    /* padding: 16px 49px 16px 16px; */
+    border: none;
+    background-color: #fff;
+  }
+  .state-date {
+    position: relative;
+    display: inline-block;
+    border-radius: 13px;
+    color: white;
+    background: #a1d8fa;
+    padding: 0 2vw;
+    height: 25px;
+    line-height: 25px;
+    left: -2vw;
+    box-shadow: 0 0 0 5px white;
+  }
+  .item-phone{
+    text-align: right;
+
+  }
+}

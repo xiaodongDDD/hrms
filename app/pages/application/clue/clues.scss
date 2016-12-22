@@ -1,0 +1,165 @@
+.clues{
+
+  .common-fix-div .bar-footer {
+    padding: 0;color: #666666;height: 60px;
+  }
+
+  .clue-item{
+    width: 100%;
+
+    .item-header{
+      padding: 0 10px;
+      font-size: 0.9em;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      background: #f5f5f5;
+      color: #959595;
+      border:none;
+      background-image:linear-gradient(0deg,#ddd,#ddd 50%,transparent 50%);
+      background-position:bottom;
+      background-size:100% 1px;
+      background-repeat:no-repeat;
+      span{
+        font-size: inherit;
+        color: #333333;
+        float: right;
+        height: 40px;
+        line-height: 40px;
+        img{
+          height: 24px;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .clue-info{
+      width: 100%;
+      padding: 0 10px 10px;
+      border:none;
+      background-image:linear-gradient(0deg,#ddd,#ddd 50%,transparent 50%);
+      background-position:bottom;
+      background-size:100% 1px;
+      background-repeat:no-repeat;
+      div:first-child{
+        margin-top: 10px;
+        line-height: 30px;
+        font-size: 1em;
+        width: 100%;
+        .clue-name{
+          height: 30px;
+          line-height: 30px;
+          width: 100%;
+          font-size: 1.1em;
+          color: #333333;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .clue-belong{
+          width: 100%;
+          height: 30px;
+          line-height: 30px;
+          img{
+            height: 20px;
+            vertical-align: middle;
+            margin-left: 2vw;
+            margin-right: 6px;
+          }
+          img:first-child{
+            margin-right: 10px;
+            margin-left: 0;
+          }
+          color: #959595;
+        }
+      }
+    }
+
+  }
+
+  .bottom-button{
+    z-index: 1001;
+    position: fixed;
+    bottom: -50px;
+    right: 0;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    transition: transform 0.5s;
+    -webkit-transition: transform 0.5s;
+    border-top: 1px solid rgba(233, 233, 233, 0.5);
+    div{
+      position: relative;
+      flex: 1;
+      background: white;
+      color: #666666;
+      font-weight: bold;
+      text-align: center;
+      line-height: 50px;
+      height: 50px;
+      img{
+        height: 20px;
+        width: 20px;
+        vertical-align: middle;
+        margin-right: 1vw;
+      }
+    }
+    div:first-child:after{
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 10px;
+      height: 30px;
+      width: 1px;
+      background: rgba(233, 233, 233, 0.5);
+    }
+  }
+
+  .bottom-button.showUp{
+    transform: translateY(-50px);
+    -webkit-transform: translateY(-50px);
+  }
+
+  .common-fix-div.sort-div{
+    bottom: 50px;
+    .sifting-item .right-img{
+      width: 18px;
+    }
+    overflow: visible;
+    .sifting-header{
+      height: 44px !important;
+      padding-top: 0;
+    }
+    height: auto;
+    .sifting-item.selected{
+      box-shadow: 0 0 5px 1px #999;
+    }
+    ion-footer-bar{
+      background: transparent;
+      position: relative;
+      .footer-button{
+        width: 50vw;
+        div{
+          width: auto;
+        }
+      }
+    }
+  }
+
+  .sifting-fix-div{
+    z-index: 1002;
+  }
+
+  .common-fix-div.sort-div.showUp:before{
+    position: absolute;
+    content: '';
+    top: -200vh;
+    left: 0;
+    height: 200vh;
+    width: 100vw;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+    //box-shadow: 0 0 0 200vh rgba(37, 37, 37, 0.8);
+  }
+
+
+}
