@@ -4,7 +4,7 @@
 HmsModule
   .directive('hmsSelectItem', function () {
     return {
-      restrict: 'ACE',
+      restrict: 'E',
       scope: {
         inputLabelName: '=labelName',
         inputBox: '=inputBox',
@@ -88,7 +88,7 @@ HmsModule
   })
   .directive('hmsInputItem', function () {
     return {
-      restrict: 'ACE',
+      restrict: 'E',
       scope: {
         inputLabelName: '=labelName',
         inputBox: '=inputBox',
