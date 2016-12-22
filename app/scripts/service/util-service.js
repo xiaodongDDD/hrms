@@ -238,6 +238,82 @@ angular.module('HmsModule')
           );
         }
       };
+      //检测客户是否重名
+      this.showPopupCustomer = function (template,customerName,approveStatus,saleArea,saleTeam,saleEmployeeName,saleEmployeeCode, title) {
+        if (!baseConfig.nativeScreenFlag) {
+          $ionicPopup.show({
+            title:title,
+            template: template+'</br></br><div class="crm-customer-popup" >匹配客户: '+customerName+
+            '</div><div class="crm-customer-popup">客户状态: '+approveStatus+'</div>'+
+            '<div class="crm-customer-popup">所属大区: '+saleArea+'</div><div class="crm-customer-popup">所属团队: '+saleTeam+
+            '</div><div class="crm-customer-popup">负责人: '+saleEmployeeName+'('+saleEmployeeCode+')</div>',
+            buttons: [{
+              text: '确定',
+              type: 'button button-cux-popup-confirm'
+            }]
+          });
+        } else {
+          var alertDismissed = function () {
+          };
+          navigator.notification.alert(
+            template, // message
+            alertDismissed, // callback
+            title, // title
+            '确定' // buttonName
+          );
+        }
+      };
+      //检测客户税号和统一社会信用代码
+      this.showPopupCustomerAdd = function (template,flagMsg,customerName,approveStatus,saleArea,saleTeam,saleEmployeeName,saleEmployeeCode, title) {
+        if (!baseConfig.nativeScreenFlag) {
+          $ionicPopup.show({
+            title:title,
+            template: template+'</br></br><div class="crm-customer-popup">'+flagMsg+'</div><div class="crm-customer-popup" >匹配客户: '+customerName+
+            '</div><div class="crm-customer-popup">客户状态: '+approveStatus+'</div>'+
+            '<div class="crm-customer-popup">所属大区: '+saleArea+'</div><div class="crm-customer-popup">所属团队: '+saleTeam+
+            '</div><div class="crm-customer-popup">负责人: '+saleEmployeeName+'('+saleEmployeeCode+')</div>',
+            buttons: [{
+              text: '确定',
+              type: 'button button-cux-popup-confirm'
+            }]
+          });
+        } else {
+          var alertDismissed = function () {
+          };
+          navigator.notification.alert(
+            template, // message
+            alertDismissed, // callback
+            title, // title
+            '确定' // buttonName
+          );
+        }
+      };
+
+      this.confirmCrmCheck = function (message,$scope,onConfirm,data) {
+        if (!baseConfig.nativeScreenFlag) {
+          var confirmPopup = $ionicPopup.confirm({
+            scope: $scope,
+            template: message,
+            cancelText: '取消',
+            cancelType: 'button-cux-popup-cancel',
+            okText: '确定',
+            okType: 'button-cux-popup-confirm'
+          });
+          confirmPopup.then(function(res){
+            onConfirm(res,data);
+
+          });
+        } else {
+          navigator.notification.confirm(
+            message, // message
+            function (index) {
+              onConfirm(index-1);
+            }, // callback to invoke with index of button pressed
+            title, // title
+            ['取消' , '确定'] // buttonLabels
+          );
+        }
+      };
 
       this.confirm = function (message, title, onConfirm) {
         if (!baseConfig.nativeScreenFlag) {

@@ -1208,7 +1208,7 @@ angular.module('customerModule')
               "situations": addApplicationService.getApplicationList(),
               "contacts": [],
               "attribute1":$scope.data.attribute1,
-              "logoUrl" :''
+              "logoUrl" :$scope.imageUrl
             }
           }else {
             $scope.saveValue = {
