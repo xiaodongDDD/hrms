@@ -25,7 +25,8 @@ angular.module('myApp', [
   'addModule',
   'customerModule',
   'opportunityModule',
-  'clueModule'
+  'clueModule',
+  'planModule'
 ]);
 
 angular.module('myApp')

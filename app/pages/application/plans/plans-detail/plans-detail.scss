@@ -1,0 +1,116 @@
+.plans-detail {
+  .info-item {
+    height: 50px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-bottom: 1px solid rgba(226, 227, 228, 0.6);
+  }
+
+  .info-item-name {
+    font-size: 16px;
+  }
+
+  .required:after {
+    content: '  *';
+    color: #fe9073;
+  }
+
+  ion-footer-bar {
+    padding: 0;
+    color: #666666;
+    height: 60px;
+  }
+
+  .sifting-item{
+    &.select-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 16px;
+      div {
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+        img {
+          position: static;
+          width: 20px;
+          height: 20px;
+          margin-right: 2vw;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+  .info-item-con div {
+    width: 100%;
+  }
+
+  .info-item-con img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+  .info-item-con {
+  /*  color: #AAAAAA;*/
+    text-align: right;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .footer-wrap {
+    width: 100%;
+    height: 100%;
+    /* margin-top: 32px; */
+    margin-top: 3px;
+    .button-confirm {
+      float: left;
+      width: 39%;
+      height: 44px;
+      line-height: 44px;
+      text-align: center;
+      div{
+        margin: 5px;
+        border-radius: 30px;
+        background: #32A4EC;
+        color: #ffffff;
+        img {
+          width: 20px;
+          position: relative;
+          top: 4px;
+          right: 5px;
+        }
+      }
+    }
+    .button-confirm2 {
+      width: 90%;
+      height: 44px;
+      line-height: 44px;
+      text-align: center;
+      margin-left: 5%;
+      div {
+        margin: 5px;
+        border-radius: 30px;
+        background: #32A4EC;
+        color: #ffffff;
+        img {
+          width: 20px;
+          position: relative;
+          top: 4px;
+          right: 5px;
+        }
+      }
+    }
+    .footer-button {
+      float: left;
+      width: 55%;
+      height: 44px;
+      margin-left: 3%;
+      line-height: 44px;
+      text-align: center;
+      div {
+        margin: 5px;
+        border-radius: 30px;
+        background: #E6F4FD;
+      }
+    }
+  }
+}

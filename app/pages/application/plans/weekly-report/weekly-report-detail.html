@@ -1,0 +1,73 @@
+<ion-view view-title="周报" class="crm weekly-report-detail">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button" ng-click="$ionicGoBack()">{{'CANCEL'|T}}</button>
+    </div>
+    <h2 class="title">周报</h2>
+  </ion-header-bar>
+  <ion-content>
+    <crm-loading ng-if="vm.showLoading"></crm-loading>
+    <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
+    <div ng-if="!vm.showLoading">
+      <hms-select-image-item
+        image-icon="vm.icon"
+        prompt="vm.title"
+        important="true"
+        select-value="vm.weeklyDetail.period"
+        last-line="false"
+        hms-select="vm.showDateSelect()">
+      </hms-select-image-item>
+
+      <div style="width:96%;margin-left: 6%;background: #fff;margin-top: 10px;height:40px">
+        <div style="width: 25%;float: left;height: 40px;display: table">
+          <div class="info-item-name required" style="vertical-align: middle;display: table-cell;height: 40px;">
+            周报内容
+          </div>
+        </div>
+
+        <div style="width:17%;float:left;height: 40px;display:table;" ng-if="vm.holdText">
+          <div style="vertical-align:middle; display:table-cell;height:40px;width: 50px;text-align:center;">
+            <img src="build/img/plans/icon_weave@3x.png" style="width: 50px;">
+          </div>
+        </div>
+        <div style="width: 19%;float: left;height: 40px;display:table;" ng-if="vm.holdText">
+          <div style="color: #666;vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+            按住说话<br>松开结束
+          </div>
+          <!-- <div  style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;"> 松开结束</div>-->
+        </div>
+        <div style="width: 17%;float: left;height: 40px;display:table;" ng-if="vm.holdText">
+          <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+            <img src="build/img/plans/icon_weave@3x.png" style="width: 50px">
+          </div>
+        </div>
+        <div style="width:54%;float: left;;height: 40px;" ng-if="!vm.holdText"></div>
+        <div style="width: 18%;float: left;height: 40px;line-height: 40px;display:table;">
+          <div on-touch="vm.voiceTo()" on-release="vm.onRelease()"
+               style="vertical-align:middle;height: 40px;width:100%;text-align:center;">
+            <img src="build/img/plans/icon_voice@3x.png" style="width:35px;">
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="row" style="padding-left:17px;">
+        <div class="row text-wrap">
+            <textarea id="weeklyReportDetail" placeholder="{{ 'PLAN_ADD.PLEASE_FILL_OUT' | T }}"
+                      ng-model="vm.weeklyDetail.content" style="height: 180px;width: 100%"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="weekly-save" ng-if="vm.authority == 'MY'">
+      <div class="weekly-button" ng-click="vm.saveWeekReport()">
+        <div>
+          <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
+          保存
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </ion-content>
+</ion-view>

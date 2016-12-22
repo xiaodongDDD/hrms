@@ -1,0 +1,145 @@
+<ion-view view-title="销售计划" class="crm plans-detail">
+
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button" ng-click="vm.goBack()">{{'CANCEL'|T}}</button>
+    </div>
+    <h2 class="title">销售计划-{{vm.planDetail.status}}</h2>
+  </ion-header-bar>
+
+  <ion-content>
+    <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
+    <!--查询修改销售计划-->
+    <hms-select-image-item
+      image-icon="vm.iconList.customer"
+      prompt="vm.titleList.relateCustomer"
+      important="true"
+      select-value="vm.planDetail.relateCustomer"
+      last-line="true"
+      hms-select="vm.showWeekChoose('contact')">
+    </hms-select-image-item>
+
+    <hms-select-image-item
+      image-icon="vm.iconList.opportunity"
+      prompt="vm.titleList.relateOpportunity"
+      important="true"
+      select-value="vm.planDetail.relateOpportunity"
+      last-line="true"
+      hms-select="vm.showWeekChoose('business')">
+    </hms-select-image-item>
+
+    <hms-select-image-item
+      image-icon="vm.iconList.schedule"
+      prompt="vm.titleList.scheduleDate"
+      important="true"
+      select-value="vm.planDetail.scheduleDateStr"
+      last-line="true"
+      hms-select="vm.choosePlanTime()">
+    </hms-select-image-item>
+    <div class="hms-select-image-item row row-center info-item">
+      <div class="col col-8 ">
+        <img src="build/img/competitor/icon_area@3x.png" class="info-img">
+      </div>
+      <div class="col col-42">
+        <div class="row">
+          <span class="info-item-name">是否重要</span>
+        </div>
+      </div>
+      <div class="col col-25" ng-repeat="important in importantItems track by $index" >
+        <div class="row row-center info-item-con" ng-click="selectImportant($index,important)">
+          <img
+            ng-src="{{'build/img/application/plans/' + (importantNum==$index ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}">{{item.description}}
+          {{important.description}}
+        </div>
+      </div>
+    </div>
+    <div class="info-item sifting-item select-item select-info-item">
+      <div ng-repeat="timeItem in vm.timeItems track by $index"
+           ng-click="vm.selectTime($index,timeItem)">
+        <img
+          ng-src="{{'build/img/application/plans/' + (vm.timeItemsBucket.number == $index? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+        {{timeItem.description}}
+      </div>
+    </div>
+
+
+
+    <div style="width:96%;margin-left: 6%;background: #fff;margin-top: 10px;height:40px">
+      <div style="width: 25%;float: left;height: 40px;display: table">
+        <div class="info-item-name required" style="vertical-align: middle;display: table-cell;height: 40px;">
+          计划内容
+        </div>
+      </div>
+      <div style="width:17%;float:left;height: 40px;display:table;" ng-if="holdText">
+        <div style="vertical-align:middle; display:table-cell;height:40px;width: 50px;text-align:center;">
+          <img src="build/img/plans/icon_weave@3x.png" style="width: 50px;">
+        </div>
+      </div>
+      <div style="width: 19%;float: left;height: 40px;display:table;" ng-if="holdText">
+        <div style="color: #666;vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+          按住说话<br>松开结束
+        </div>
+        <!-- <div  style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;"> 松开结束</div>-->
+      </div>
+      <div style="width: 17%;float: left;height: 40px;display:table;" ng-if="holdText">
+        <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+          <img src="build/img/plans/icon_weave@3x.png" style="width: 50px">
+        </div>
+      </div>
+      <div style="width:54%;float: left;;height: 40px;" ng-if="!holdText"></div>
+      <div style="width: 18%;float: left;height: 40px;line-height: 40px;display:table;">
+        <div on-touch="vm.voiceTo()" on-release="vm.onRelease()"
+             style="vertical-align:middle;height: 40px;width:100%;text-align:center;">
+          <img src="build/img/plans/icon_voice@3x.png" style="width:35px;">
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div class="row" style="padding-left:17px;">
+      <div class="row text-wrap">
+            <textarea id="planDetailText" placeholder="{{ 'PLAN_ADD.PLEASE_FILL_OUT' | T }}" style="width: 100%"
+                      ng-model="vm.saleContent"></textarea>
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar ng-if="vm.planType==0">
+    <div class="footer-wrap" >
+      <div class="footer-button" ng-click="vm.cancelPlan()">
+        <div>取消销售计划</div>
+      </div>
+      <div class="button-confirm" ng-click="vm.savePlan()" align="center">
+        <div>
+          <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
+          {{ 'SAVE' | T }}
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </ion-footer-bar>
+  <ion-footer-bar ng-if="vm.planType==1">
+    <div class="footer-wrap">
+      <div class="button-confirm2" ng-click="vm.copyPlan()" align="center">
+        <div>
+          <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
+          复制到我的计划
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </ion-footer-bar>
+  <ion-footer-bar ng-if="vm.planType==2">
+    <div class="footer-wrap">
+      <div class="button-confirm2" ng-click="vm.cancelPlan()" align="center">
+        <div>
+          <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
+          取消销售计划
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </ion-footer-bar>
+</ion-view>

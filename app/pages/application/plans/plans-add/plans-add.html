@@ -1,0 +1,389 @@
+<ion-view view-title="销售新增" class="crm plans-add">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button" ng-click="goBackPlan()">{{'CANCEL'|T}}</button>
+    </div>
+    <h2 class="title">{{'PLAN_ADD.CREATE_ADD_PLAN'|T}}</h2>
+  </ion-header-bar>
+  <ion-content>
+    <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
+    <div class="row row-center">
+      <div class="col slideparam" ng-class="{true:'col slideparamSelect',false:'col slideparam'}[slideParam==1]"
+           ng-click="showSlide(0)">销售计划
+      </div>
+      <div class="col slideparam" ng-class="{true:'col slideparamSelect',false:'col slideparam'}[slideParam==0]"
+           ng-click="showSlide(1)">周报
+      </div>
+    </div>
+    <!--销售计划-->
+    <div ng-show="slideParam==0">
+      <div class="plan-wrap">
+        <div class="row row-center info-item" ng-click="showSelectDiv('contact')">
+          <div class="col col-8">
+            <img src="build/img/plans/icon_partner@3x.png" class="info-img">
+          </div>
+          <div class="col col-30">
+            <div class="row">
+              <div class="info-item-name">{{ 'PLAN_ADD.ASSOCIATE_CUSTOMERS' | T }}</div>
+            </div>
+          </div>
+          <div class="col col-55">
+            <div class="row info-item-con">
+              <div class="info-item-con">
+                {{(showData.fullName === "" ||showData.fullName === null || showData.fullName===
+                undefined)?"请选择":showData.fullName}}
+              </div>
+            </div>
+          </div>
+          <div class="col col-7" style="text-align: right;">
+            <i><img src="build/img/contact/right_arrow@3x.png" style="    width: 15px;
+    position: relative;
+    top: 2px;"></i>
+          </div>
+          <div class="common-light-line"></div>
+        </div>
+        <div class="row row-center info-item" ng-click="showSelectDiv('business')">
+          <div class="col col-8">
+            <img src="build/img/plans/icon_money2@3x.png" class="info-img">
+          </div>
+          <div class="col col-30">
+            <div class="row">
+              <div class="info-item-name">{{ 'PLAN_ADD.RELATED_OPPORTUNITIES' | T }}</div>
+            </div>
+          </div>
+          <div class="col col-55">
+            <div class="row info-item-con">
+              <div class="info-item-con">
+                {{(showData.opportunityName === "" ||showData.opportunityName === null || showData.opportunityName===
+                undefined)?"请选择":showData.opportunityName}}
+              </div>
+            </div>
+          </div>
+          <div class="col col-7" style="text-align: right;">
+            <i><img src="build/img/contact/right_arrow@3x.png" style="    width: 15px;
+    position: relative;
+    top: 2px;"></i>
+          </div>
+          <div class="common-light-line"></div>
+        </div>
+        <div class="row row-center info-item" ng-click="choosePlanTime()">
+          <div class="col col-8">
+            <img src="build/img/plans/icon_plan@3x.png" class="info-img">
+          </div>
+          <div class="col col-33">
+            <div class="row">
+              <div class="info-item-name required">计划日期</div>
+            </div>
+          </div>
+          <div class="col col-52">
+            <div class="row info-item-con">
+              <div class="info-item-con">
+                {{data.planDate}}&nbsp;&nbsp;{{showData.week}}
+              </div>
+            </div>
+          </div>
+          <div class="col col-7" style="text-align: right;">
+            <i><img src="build/img/contact/right_arrow@3x.png" style="    width: 15px;
+    position: relative;
+    top: 2px;"></i>
+          </div>
+          <div class="common-light-line"></div>
+        </div>
+        <div class="row row-center info-item">
+          <div class="col col-8 ">
+            <img src="build/img/competitor/icon_area@3x.png" class="info-img">
+          </div>
+          <div class="col col-42">
+            <div class="row">
+              <span class="info-item-name">是否重要</span>
+            </div>
+          </div>
+          <div class="col col-25" ng-repeat="important in importantItems track by $index" >
+            <div class="row row-center info-item-con" ng-click="selectImportant($index,important)">
+              <img
+                ng-src="{{'build/img/application/plans/' + (importantNum==$index ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}">{{item.description}}
+              {{important.description}}
+            </div>
+          </div>
+        </div>
+<!--        <div class="row row-center info-item" ng-click="choosePlanTime()">
+          <div class="col col-8">
+            <img src="build/img/plans/icon_plan@3x.png" class="info-img">
+          </div>
+          <div class="col col-33">
+            <div class="row">
+              <div class="info-item-name required">是否重要</div>
+            </div>
+          </div>
+          <div class="col col-59">
+            <div class="info-item  sifting-item select-item select-info-item">
+              <div ng-repeat="important in importantItems track by $index" ng-click="selectImportant($index,important)">
+                <img
+                  ng-src="{{'build/img/application/plans/' + (importantNum==$index? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+                {{important.description}}
+              </div>
+            </div>
+          </div>
+          <div class="common-light-line"></div>
+        </div>-->
+        <div class="info-item  sifting-item select-item select-info-item">
+          <div ng-repeat="timeItem in timeItems track by $index" ng-click="selectTime($index,timeItem)">
+            <img
+              ng-src="{{'build/img/application/plans/' + (num==$index? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+            {{timeItem.description}}
+          </div>
+        </div>
+        <!--<div class="info-item  sifting-item select-item select-info-item">
+          <div ng-repeat="important in importantItems track by $index" ng-click="selectImportant($index,important)">
+            <img
+              ng-src="{{'build/img/application/plans/' + (importantNum==$index? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+            {{important.description}}
+          </div>
+        </div>-->
+      </div>
+
+      <!--<div class="hms-crm-textarea">
+        <div class="hms-crm-textarea-header">
+          计划内容
+        </div>
+        <div class="hms-crm-textarea-content">
+            <textarea placeholder="{{ 'PLAN_ADD.PLEASE_FILL_OUT' | T }}"
+                      ng-model="data.saleContent"></textarea>
+        </div>
+        <div class="hms-crm-textarea-voice">
+          <div class="row">
+            <div class="col-33">
+
+            </div>
+          </div>
+        </div>
+        <div class="hms-crm-textarea-voice-button">
+
+        </div>
+      </div>-->
+
+      <div style="width:96%;margin-left: 6%;background: #fff;margin-top: 10px;height:40px">
+        <div style="width: 25%;float: left;height: 40px;display: table">
+          <div class="info-item-name required" style="vertical-align: middle;display: table-cell;height: 40px;">
+            计划内容
+          </div>
+        </div>
+        <div style="width:17%;float:left;height: 40px;display:table;" ng-if="holdText">
+          <div style="vertical-align:middle; display:table-cell;height:40px;width: 50px;text-align:center;">
+            <img src="build/img/plans/icon_weave@3x.png" style="width: 50px;">
+          </div>
+        </div>
+        <div style="width: 19%;float: left;height: 40px;display:table;" ng-if="holdText">
+          <div style="color: #666;vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+            按住说话<br>松开结束
+          </div>
+          <!-- <div  style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;"> 松开结束</div>-->
+        </div>
+        <div style="width: 17%;float: left;height: 40px;display:table;" ng-if="holdText">
+          <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+            <img src="build/img/plans/icon_weave@3x.png" style="width: 50px">
+          </div>
+        </div>
+        <div style="width:54%;float: left;;height: 40px;" ng-if="!holdText"></div>
+        <div style="width: 18%;float: left;height: 40px;line-height: 40px;display:table;">
+          <div on-touch="voiceTo()" on-release="onRelease()"
+               style="vertical-align:middle;height: 40px;width:100%;text-align:center;">
+            <img src="build/img/plans/icon_voice@3x.png" style="width:35px;">
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <!--      <div class="row" style="padding-left:15px;height: 35px;">
+              <div class="col col-8">
+                <img src="build/img/plans/icon_plan2@3x.png" class="info-img">
+              </div>
+              <div class="col col-72">
+                <div class="row">
+                  <div class="info-item-name">{{ 'PLAN_ADD.PLAN_CONTENT' | T }}</div>
+                </div>
+              </div>
+              <div class="col col-20" >
+                <div on-touch="voiceTo()" on-release="onRelease()"
+                     style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+                  <img src="build/img/plans/icon_voice@3x.png" style="width:40px;">
+                </div>
+              </div>
+            </div>-->
+      <div class="clear"></div>
+      <div class="row" style="padding-left:17px;">
+        <div class="row text-wrap">
+            <textarea id="text" placeholder="{{ 'PLAN_ADD.PLEASE_FILL_OUT' | T }}"
+                      ng-model="data.saleContent"></textarea>
+        </div>
+
+      </div>
+
+      <!--<div class="small_voice" ng-click="showVoice()" ng-if="!showVoiceFlag">-->
+      <!--<img src="build/img/plans/icon_voice@3x.png">-->
+      <!--</div>-->
+    </div>
+    <!--周报-->
+    <div ng-show="slideParam==1">
+      <div style=" margin: 0 15px 0 15px;">
+        <div class="row row-center info-item" ng-click="showWeekChoose()">
+          <div class="col col-8">
+            <img src="build/img/plans/icon_plan@3x.png" class="info-img">
+          </div>
+          <div class="col col-28">
+            <div class="row">
+              <div class="info-item-name required">请选择</div>
+            </div>
+          </div>
+          <div class="col col-57">
+            <div class="row info-item-con">
+              <div class="info-item-con">
+                {{year}}年 {{chooseWeek}}
+              </div>
+            </div>
+          </div>
+          <div class="col col-7" style="text-align: right;">
+            <i><img src="build/img/contact/right_arrow@3x.png" style="    width: 15px;
+    position: relative;
+    top: 2px;"></i>
+          </div>
+        </div>
+      </div>
+     <!-- <div class="row" style="padding-left:15px;height: 35px;">
+        <div class="col col-8">
+          <img src="build/img/plans/icon_plan2@3x.png" class="info-img">
+        </div>
+        <div class="col col-42">
+          <div class="row">
+            <div class="info-item-name">周报内容</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-wrap-week">
+        <textarea placeholder="{{ 'PLAN_ADD.PLEASE_FILL_OUT' | T }}" ng-model="weekData.summaryContent"></textarea>
+      </div>-->
+      <div style="    margin-left:22px;background: #fff;margin-top: 10px;height:40px">
+        <div style="width: 25%;float: left;height: 40px;display: table;">
+          <div class="info-item-name required" style="vertical-align: middle;display: table-cell;height: 40px;">
+            周报内容
+          </div>
+        </div>
+        <div style="width:18%;float:left;height: 40px;display:table;" ng-if="holdText2">
+          <div style="vertical-align:middle; display:table-cell;height:40px;width: 55px;text-align:center;">
+            <img src="build/img/plans/icon_weave@3x.png" style="width: 55px;">
+          </div>
+        </div>
+        <div style="width: 19%;float: left;height: 40px;display:table;" ng-if="holdText2">
+          <div style="color: #666;vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+            按住说话<br>松开结束
+          </div>
+          <!-- <div  style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;"> 松开结束</div>-->
+        </div>
+        <div style="width: 18%;float: left;height: 40px;display:table;" ng-if="holdText2">
+          <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+            <img src="build/img/plans/icon_weave@3x.png" style="width: 55px">
+          </div>
+        </div>
+        <div style="width:55%;float: left;;height: 40px;" ng-if="!holdText2"></div>
+        <div style="width: 18%;float: left;height: 40px;line-height: 40px;display:table;">
+          <div on-touch="voiceWeekTo()" on-release="onWeekRelease()"
+               style="vertical-align:middle;height: 40px;width:100%;text-align:center;">
+            <img src="build/img/plans/icon_voice@3x.png" style="width:35px;">
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="text-wrap-week">
+        <textarea id="text2" placeholder="{{ 'PLAN_ADD.PLEASE_FILL_OUT' | T }}" ng-model="weekData.summaryContent"></textarea>
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar ng-show="slideParam==0">
+    <div class="footer-wrap">
+      <div class="footer-button" ng-click="savePlansTo()">
+        <div> {{ 'PLAN_ADD.SAVE_CREATE' | T }}</div>
+      </div>
+      <div class="button-confirm" ng-click="savePlans()" align="center">
+        <div>
+          <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
+          {{ 'SAVE' | T }}
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </ion-footer-bar>
+  <ion-footer-bar ng-show="slideParam==1">
+    <div class="footer-wrap">
+      <div class="button-confirm2" ng-click="saveWeeklyAdd()" align="center">
+        <div>
+          <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
+          {{ 'SAVE' | T }}
+        </div>
+      </div>
+      <!-- <div class="button-confirm" ng-click="saveWeeklyAdd()" align="center">
+           <img src="build/img/application/information/icon_confirm@3x.png" style="">
+           {{ 'SAVE' | T }}
+       </div>-->
+    </div>
+    <div>
+    </div>
+  </ion-footer-bar>
+  <div class="common-fix-div" ng-class="{true:'showUp'}[showSelect]">
+    <div class="common-fix-div-header">
+      <span class="left" ng-click="showSelectDiv()">返回</span>
+      请选择
+      <span class="right">清选</span>
+    </div>
+    <div class="sifting-area">
+      <input type="text" placeholder="{{'PLAN_ADD.SEARCH'}}" ng-change="searchValue()" ng-model="searchValueKey"/>
+    </div>
+    <div class="list">
+      <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false">
+        <div class="list-item" ng-repeat="item in items track by $index" ng-show="item != ''"
+             ng-click="selectItem($index)">
+          {{item[nowSelectTarget['showKey']]}}
+        </div>
+      </ion-scroll>
+    </div>
+  </div>
+  <div class="common-fix-div" ng-class="{true:'showUp'}[showWeek]" style="background: none">
+    <div class="year" on-release="onReleaseYear($event)">&lt; {{year}} &gt;</div>
+    <div class="scroll-container" on-drag="onDragScroll($event)" on-release="onReleaseScroll($event)">
+      <div class="stage" ng-style="stageRotate">
+        <div class="scroll-item" ng-repeat="week in weeks track by $index" ng-style="rotates[$index]"
+             ng-class="{true:'selected'}[nowIndex == $index]">{{getWeekString(week)}}
+        </div>
+      </div>
+    </div>
+    <div class="select-week" ng-click="selectWeek(nowIndex)">确定</div>
+  </div>
+  <!--  <div style="width:88%;margin-left: 6%;background: #fff;position: fixed;bottom:60px;z-index: 1000"  ng-if="holdText">
+      <div style="width:37%;float:left;height: 40px;display:table;"  >
+        <div style="vertical-align:middle; display:table-cell;height:40px;width: 75px;text-align:center;">
+          <img src="build/img/plans/icon_weave@3x.png" style="width: 75px;">
+        </div>
+      </div>
+      <div style="width: 26%;float: left;height: 40px;display:table;">
+        <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+          按住说话<br>松开结束
+        </div>
+        &lt;!&ndash; <div  style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;"> 松开结束</div>&ndash;&gt;
+      </div>
+      <div style="width: 37%;float: left;height: 40px;display:table;" >
+        <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+          <img src="build/img/plans/icon_weave@3x.png" style="width: 75px">
+        </div>
+      </div>
+      &lt;!&ndash;   <div style="width:86%;float: left;;height: 40px;" ng-if="!holdText"></div>
+         <div style="width: 13%;float: left;height: 40px;line-height: 40px;display:table;">
+           <div on-touch="voiceTo()" on-release="onRelease()"
+                style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+             <img src="build/img/plans/icon_voice@3x.png" style="width:40px;">
+           </div>
+         </div>&ndash;&gt;
+      <div class="clear"></div>
+    </div>-->
+</ion-view>
+<style>
+
+</style>

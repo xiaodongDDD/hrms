@@ -97,5 +97,22 @@
         "variables": {
             "RONG_KEY": "e5t4ouvptpsaa"
         }
+    },
+    "iflytekPlugin": {
+        "source": {
+            "type": "local",
+            "path": "E:\\yuyin\\PLUGINIFLYTEK"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.verso.cordova.clipboard": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/VersoSolutions/CordovaClipboard.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
