@@ -1,0 +1,64 @@
+<ion-view class="transmit-person-modal">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="transmit-search">
+      <div class="transmit-button">
+        <i class="ion-ios-search search-i"></i>
+      </div>
+      <input id="employeeInputSearch" placeholder="搜索" autofocus="true"
+             ng-model="contactKey.getValue"
+             ng-change="searchContacts()">
+      <img src="build/img/login/login-clear.png" class="employee-clear-img"
+           ng-if="showClear"
+           ng-click="clearInputContent()"/>
+    </div>
+    <div class="buttons">
+      <button class="button button-icon icon" ng-click="hideContactSearch()">
+        <span class="back-text">取消</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="employee-search-content">
+    <div ng-if="showHistory">
+      <div class="row history">
+        <img ng-src="build/img/contact/history@3x.png"/>
+        <span class="col-25 history-logo">历史记录</span>
+        <label class="col-80 history-line"></label>
+      </div>
+      <ion-list>
+        <ion-item class="employee-item" ng-repeat="values in historys track by $index"
+                  ng-class="{'no-top-border-color':$index===0}"
+                  ng-click="getHistoryItem(values)"
+                  ng-bind-html="values.historyItem">
+        </ion-item>
+      </ion-list>
+      <div class="clear-button">
+        <div class="button button-clear" ng-if="historys.length !== 0" ng-click="deleteHistory()">清除历史数据</div>
+      </div>
+    </div>
+    <hms-loading ng-if="contactLoading" style="padding-top: 80px"></hms-loading>
+    <div class="search-result-item row"
+         ng-class="{'first-item':$index === 0}"
+         ng-repeat="i in resultList"
+         ng-click="selectEmployeeItem(i)">
+      <img class="human-img" ng-cloak ng-src="{{i.avatar | filterImg:i.gender}}"/>
+      <div class="col col-80 col-padding">
+        <div class="row name" ng-cloak>
+          <span ng-bind-html="i.emp_name"></span>
+          <span ng-bind-html="'('+i.emp_code+')'"></span>
+          <!--{{i.emp_name}}({{i.emp_code}})-->
+          <span class="employee-status" ng-bind="i.status"></span>
+        </div>
+        <div class="row mail-tel" ng-bind-html="i.email">
+        </div>
+        <div class="row mail-tel" ng-bind-html="i.emp_mobil">
+        </div>
+      </div>
+      <div class="tel-img" ng-click="telSaveNumber($event,i)"></div>
+    </div>
+    <ion-infinite-scroll on-infinite="loadMore()"
+                         ng-if="showInfinite"
+                         immediate-check="false"
+                         distance="0.5%">
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

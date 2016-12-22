@@ -1,4 +1,14 @@
 .crm {
+  .bar .buttons .button {
+   color: #444!important;
+    font-size: 17px;
+  }
+  .bar.bar-stable .title {
+    color: #444!important;
+    font-size: 17px;
+    left: 0px !important;
+    right: 0px !important;
+  }
   .hideContent {
     width: 100%;
     height: 60px;
@@ -152,11 +162,6 @@
     }
   }
 
-  .popup-body {
-    padding: 10px;
-    overflow: auto;
-    text-align: center;
-  }
 
   ion-header-bar {
     background: #f8f8f8 !important;
@@ -1682,6 +1687,12 @@
     color: #333333 !important;
   }
 }
+.popup-body {
+  padding: 10px;
+  overflow: auto;
+  text-align: center;
+}
+
 .popup {
   border-radius: 20px !important;
   overflow: hidden !important;
