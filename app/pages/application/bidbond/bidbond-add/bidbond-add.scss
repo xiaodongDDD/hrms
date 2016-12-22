@@ -1,0 +1,58 @@
+.bidbond-add {
+
+  ion-content {
+    background: white;
+  }
+
+  ion-header-bar {
+    background: #f8f8f8 !important;
+    border-bottom: 1px solid #cecbc9;
+    * {
+      color: #666666 !important;
+    }
+  }
+
+  .input-error {
+    color: red;
+    animation: shake 0.5s ease;
+    -webkit-animation: shake 0.5s ease;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+      -webkit-transform: translateX(0);
+    }
+    33% {
+      transform: translateX(-5vw);
+      -webkit-transform: translateX(-5vw);
+    }
+    66% {
+      transform: translateX(5vw);
+      -webkit-transform: translateX(5vw);
+    }
+    100% {
+      transform: translateX(0);
+      -webkit-transform: translateX(0);
+    }
+  }
+
+  .has-bottom-border {
+    border-bottom: 1px solid rgba(210, 210, 210, 0.3);
+  }
+
+  .has-top-border {
+    border-top: 1px solid rgba(210, 210, 210, 0.3);
+  }
+
+  .has-bottom-border.text-black {
+    color: #333333;
+  }
+
+ 
+
+
+
+
+
+}
