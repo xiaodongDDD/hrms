@@ -154,7 +154,7 @@ angular.module('applicationModule')
         {
           appName: "销售计划",
           imageUrl: "build/img/application/application/personnelPolicy@3x.png",
-          destUrl: "tab.clues"
+          destUrl: "tab.plans"
         }, {
           appName:"保证金",
           imageUrl: "build/img/application/application/personnelPolicy@3x.png",

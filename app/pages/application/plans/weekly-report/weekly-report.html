@@ -1,0 +1,28 @@
+<ion-view view-title="周报列表" class="crm weekly-report">
+
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button" ng-click="$ionicGoBack()">{{'CANCEL'|T}}</button>
+    </div>
+    <h2 class="title">周报列表</h2>
+  </ion-header-bar>
+
+  <ion-content>
+    <crm-loading ng-if="vm.showLoading"></crm-loading>
+
+    <div ng-if="!vm.showLoading">
+      <div class="plan-item" ng-repeat="weeklyReport in vm.weeklyReportList" ng-click="vm.goDetail(weeklyReport)">
+        <div class="plan-head">
+          <img ng-src="build/img/application/plans/user_img@3x.png"/>
+          <div>
+            <span class="plan-head-base">
+                  {{weeklyReport.employeeName}}
+            </span>
+            <span class="plan-time">{{weeklyReport.period}}</span>
+          </div>
+        </div>
+        <div class="plan-content">周报内容：{{weeklyReport.content}}</div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,192 @@
+<ion-view view-title="销售计划-查询" class="crm hrms-pancel-corlor plans">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
+    <div class="header-select-button">
+      <div ng-class="{true:'selected'}[planAuthority.MY.selected]" ng-click="changePlanAuthority('MY')">我的</div>
+      <div ng-class="{true:'selected'}[planAuthority.OTHER.selected]" ng-click="changePlanAuthority('OTHER')">下属</div>
+    </div>
+    <div class="plan-change-buttton" ng-click="goWeeklyReport()">{{planMode}}</div>
+    <img src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="goPlansAdd()"/>
+  </ion-header-bar>
+
+  <ion-content has-bouncing="false" scroll="false">
+
+    <div class="select-head">
+      <div class="icon-area">
+        <img ng-src="{{'build/img/application/plans/icon_plan' + (showAsMonth ? '_selected@3x.png' : '@3x.png')}}"
+             ng-click="changeShowModel(true)"/>
+        <img ng-src="{{'build/img/application/plans/icon_time_gray' + (!showAsMonth ? '_selected@3x.png' : '@3x.png')}}"
+             ng-click="changeShowModel(false)"/>
+      </div>
+      <div on-release="onReleaseYear($event)"  ng-if="showAsMonth"  class="calendar-date">
+        <span ng-show="showAsMonth" class="black-font">{{year + '年' + month + '月'}}</span>
+      </div>
+      <div on-release="onReleaseYear($event)" ng-if="!showAsMonth"  class="change-date">
+        <span ng-hide="showAsMonth" ng-class="{true:'selected'}[planPeriod.current.selected]" ng-click="changePlanPeriod('current')">本周</span>
+        <span ng-hide="showAsMonth" ng-class="{true:'selected'}[planPeriod.next.selected]" ng-click="changePlanPeriod('next')">下周</span>
+      </div>
+      <div class="operate-area">
+        <span ng-class="{true:'selected'}[planPeriod.period.selected]"
+              ng-click="showAsMonth ? selectThisMonth() : selectRange()">{{showAsMonth ? '本月' : '选择日期范围'}}</span>
+        <img src="build/img/application/plans/icon_select_gray@3x.png"/>
+      </div>
+    </div>
+
+    <div ng-if="showAsMonth">
+      <div class="calendar scale-animation" ng-style="calendarStyle"
+           on-swipe-right="onGestureCalendar('right')"
+           on-swipe-left="onGestureCalendar('left')"
+           on-swipe-down="onGestureCalendar('down')"
+           on-swipe-up="onGestureCalendar('up')">
+        <span class="weekday-background"></span>
+        <div ng-repeat="weekday in weekdays track by $index" class="highlight">{{weekday}}</div>
+        <div class="date" ng-repeat="day in days track by $index"
+             ng-class="{0:'highlight',1:'selected',2:'today'}[day.state]" ng-click="select($index)">
+          <i ng-class="{true:'has-content'}[day.hasContent]" ng-if="day.state != 2">{{day.num}}</i>
+          <i ng-class="{true:'has-content'}[day.hasContent]" ng-if="day.state == 2">今</i>
+        </div>
+      </div>
+    </div>
+
+    <div class="plans-content" ng-style="contentHeight">
+      <div class="row group-head top-head" ng-show="!showAsMonth">
+        <div class="col col-67" style="margin: 0; padding:0;">{{nowShowDate ? getDayString(nowShowDate) : ""}} {{nowShowDate}}</div>
+        <div class="col col-33" style="margin: 0; padding:0; text-align: right"
+             ng-click="goWeeklyReportList(nowShowDate)">查看周报
+        </div>
+      </div>
+
+      <ion-scroll direction="y" scrollbar-y="true" has-bouncing="true"
+                  delegate-handle="plan-scroll"
+                  on-release="onRelease($event)"
+                  on-swipe-up="onDragUp()" ng-style="contentHeight" class="scale-animation">
+        <div ng-if="showAsMonth">
+          <crm-loading ng-if="calendarLoadingFlag"></crm-loading>
+          <div ng-if="!calendarLoadingFlag">
+            <div class="plan-item" ng-repeat="plan in plans" ng-click="goDetail(plan)">
+              <div class="plan-head">
+                <img ng-src="build/img/application/plans/user_img@3x.png"/>
+                <div>
+                <span class="plan-head-base">
+                  {{plan.name}}
+                  <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName}}</span>
+                </span>
+                  <span class="plan-time">{{plan.timeBucketName}}</span>
+                </div>
+              </div>
+              <div class="plan-title">
+                {{plan.customerFullName}}
+                <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
+                {{plan.opportunityFullName}} {{plan.planSource == "" ? "" : ('[从:' + plan.planSource + '复制]')}}
+              </div>
+              <div class="plan-content">计划内容：{{plan.saleContent}}</div>
+            </div>
+            <ion-infinite-scroll
+              on-infinite="loadMorePlans()"
+              distance="1%"
+              ng-if="morePlanCanBeLoaded"
+              immediate-check="false">
+            </ion-infinite-scroll>
+          </div>
+        </div>
+
+
+        <div ng-if="!showAsMonth" on-drag="onDrag()" on-swipe="onSwipe()" on-release="onReleaseList()">
+          <crm-loading ng-if="planListLoadingFlag"></crm-loading>
+          <div ng-if="!planListLoadingFlag">
+            <div class="plan-group" ng-repeat="group in planGroups">
+              <div class="row group-head">
+                <div class="col col-67" style="margin: 0; padding:0;">{{group.date ? getDayString(group.date) : ""}} {{group.date}}</div>
+                <div class="col col-33" style="margin: 0; padding:0; text-align: right"
+                     ng-click="goWeeklyReportList(group.date)">查看周报
+                </div>
+              </div>
+              <div class="plan-item" ng-repeat="plan in group.plans" ng-click="goDetail(plan)">
+                <div class="plan-head">
+                  <img ng-src="build/img/application/plans/user_img@3x.png"/>
+                  <div>
+                <span class="plan-head-base">
+                  {{plan.name}}
+                  <span class="plan-place">{{plan.dataStatusName}}</span>
+                </span>
+                    <span class="plan-time">{{plan.timeBucketName}}</span>
+                  </div>
+                </div>
+                <div class="plan-title">
+                  {{plan.customerFullName}}
+                  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
+                  {{plan.opportunityFullName}} {{plan.planSource == "" ? "" : ('[从' + plan.planSource + '辅助]')}}
+                </div>
+                <div class="plan-content">计划内容：{{plan.saleContent}}</div>
+              </div>
+            </div>
+            <ion-infinite-scroll
+              on-infinite="loadMorePlans()"
+              distance="1%"
+              ng-if="moreGroupPlanCanBeLoaded"
+              immediate-check="false">
+            </ion-infinite-scroll>
+          </div>
+        </div>
+      </ion-scroll>
+    </div>
+  </ion-content>
+
+  <div class="common-fix-div" ng-class="{true:'showUp'}[showNew]">
+
+    <div class="sifting-header">
+      <span class="left" ng-click="showNewDiv()">取消</span>
+      新建销售计划
+    </div>
+
+    <div class="sifting-item">
+      <img src="build/img/application/plans/icon_custom_small@3x.png"/>
+      <span>关联客户</span>
+      <span class="item-content">请选择</span>
+      <img src="build/img/application/opportunity/right_arrow@3x.png">
+    </div>
+    <div class="sifting-item">
+      <img src="build/img/application/plans/icon_business_selected@3x.png"/>
+      <span>关联商机</span>
+      <span class="item-content">请选择</span>
+      <img src="build/img/application/opportunity/right_arrow@3x.png">
+    </div>
+    <div class="sifting-item">
+      <img src="build/img/application/plans/icon_day@3x.png"/>
+      <span>计划时间</span>
+      <span class="item-content">请选择</span>
+      <img src="build/img/application/opportunity/right_arrow@3x.png">
+    </div>
+    <div class="sifting-item select-item">
+      <div ng-repeat="timeItem in timeItems track by $index" ng-click="selectTime($index)">
+        <img
+          ng-src="{{'build/img/application/plans/' + (timeItem.flag ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}"/>
+        {{timeItem.text}}
+      </div>
+    </div>
+    <div class="input-area">
+      <div class="input-title">
+        <img src="build/img/application/plans/icon_plan2@3x.png"/>
+        <span>计划时间</span>
+      </div>
+      <div class="input-content">
+        <textarea placeholder="请输入"></textarea>
+        <img src="build/img/application/plans/icon_voice@3x.png" ng-click="showVoiceDiv()"/>
+      </div>
+    </div>
+    <div class="sifting-button-area">
+      <button>保存并创建下一条</button>
+      <button class="ok">确定</button>
+    </div>
+
+    <div class="voice-div" ng-class="{true:'showUp'}[showVoice]">
+      <img class="voice-close" src="build/img/application/plans/icon_wrong@3x.png" ng-click="showVoiceDiv()">
+      <div class="text-div">
+        <img src="build/img/application/plans/icon_weave@3x.png">
+        按住说话
+        <img src="build/img/application/plans/icon_weave@3x.png">
+      </div>
+      <img src="build/img/application/plans/icon_voice@3x.png" class="voice-icon"/>
+    </div>
+  </div>
+</ion-view>

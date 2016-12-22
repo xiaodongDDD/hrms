@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="iflytekPlugin" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>pluginIflytek</name>
+    <js-module name="pluginIflytek" src="www/pluginIflytek.js">
+        <clobbers target="cordova.plugins.pluginIflytek" />
+    </js-module>
+    
+
+	<platform name="android">
+        <source-file src="src/android/VoiceToTextPlugin.java" target-dir="src/hand"/>
+        <source-file src="src/android/PermissionHelper.java" target-dir="src/hand"/>
+        <source-file src="src/android/JsonParser.java" target-dir="src/hand"/>
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="VoiceToTextPlugin">
+                <param name="android-package" value="hand.VoiceToTextPlugin"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/libs/Sunflower.jar" target-dir="libs" />
+        <source-file src="src/android/libs/Msc.jar" target-dir="libs" />
+        <source-file src="src/android/libs/arm64-v8a/libmsc.so" target-dir="libs/arm64-v8a" />
+        <source-file src="src/android/libs/armeabi/libmsc.so" target-dir="libs/armeabi" />
+        <source-file src="src/android/libs/armeabi-v7a/libmsc.so" target-dir="libs/armeabi-v7a" />
+        <source-file src="src/android/libs/mips/libmsc.so" target-dir="libs/mips" />
+        <source-file src="src/android/libs/mips64/libmsc.so" target-dir="libs/mips64" />
+        <source-file src="src/android/libs/x86/libmsc.so" target-dir="libs/x86" />
+        <source-file src="src/android/libs/x86_64/libmsc.so" target-dir="libs/x86_64" />
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+          <uses-permission android:name="android.permission.RECORD_AUDIO" />
+          <uses-permission android:name="android.permission.INTERNET" />
+          <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+        <meta-data android:name="IFLYTEK_APPKEY"android:value="'580441bf'" /> 
+        <meta-data android:name="IFLYTEK_CHANNEL" android:value="Android_Demo"/>
+        </config-file>
+    </platform>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="VoiceToTextPlugin">
+                <param name="ios-package" value="VoiceRecognizePlugin"/>
+            </feature>
+        </config-file>
+        
+        <!--麦克风权限-->
+        <config-file target="*-Info.plist"  parent="NSMicrophoneUsageDescription">
+            <string>Whether or not allowed?</string>
+        </config-file>
+        
+        <!-- 源码    -->
+        <header-file src="src/ios/plugins/AppDelegate+TestPlugin.h"/>
+        <source-file src="src/ios/plugins/AppDelegate+TestPlugin.m"/>
+        <header-file src="src/ios/plugins/IATConfig.h"/>
+        <source-file src="src/ios/plugins/IATConfig.m"/>
+        
+        <header-file src="src/ios/plugins/VoiceRecognizePlugin.h"/>
+        <source-file src="src/ios/plugins/VoiceRecognizePlugin.m"/>
+        
+        <header-file src="src/ios/plugins/ISRDataHelper.h"/>
+        <source-file src="src/ios/plugins/ISRDataHelper.m"/>
+        
+        <header-file src="src/ios/plugins/MYSpeechRecongizer.h"/>
+        <source-file src="src/ios/plugins/MYSpeechRecongizer.m"/>
+        
+        <!-- 必须的frameworks -->
+        <framework src="SystemConfiguration.framework"  />
+        <framework src="CoreGraphics.framework"  />
+        <framework src="CoreTelephony.framework" />
+        <framework src="src/ios/libs/iflyMSC.framework"    custom="true" />
+        <framework src="Foundation.framework" />
+        <framework src="AudioToolbox.framework"  />
+        <framework src="UIKit.framework" />
+        <framework src="CoreLocation.framework"  />
+        <framework src="AddressBook.framework" />
+        <framework src="QuartzCore.framework" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="AVFoundation.framework"/>
+        <framework src="libz.tbd" />
+        <framework src="libc++.tbd" />
+    </platform>
+</plugin>
