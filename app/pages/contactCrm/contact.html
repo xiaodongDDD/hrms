@@ -97,6 +97,7 @@
         </div>
       </ion-item>
       <ion-infinite-scroll
+        immediate-check="false"
         ng-if="moreDataCanBeLoaded"
         on-infinite="loadMore()"
         distance="1%">

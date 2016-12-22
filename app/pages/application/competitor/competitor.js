@@ -345,38 +345,4 @@ angular.module('competitorModule')
         competitorListService.getCompetitorList(getListSuccessInit, error, $scope.data);
       };
 
-    }]).service('competitorListService', ['hmsHttp',
-    'hmsPopup',
-    'baseConfig',
-    function (hmsHttp,
-              hmsPopup,
-              baseConfig) {
-      var baseUrl = baseConfig.crmPath;
-      //查询竞争对手列表
-      this.getCompetitorList = function (success, error, params) {
-        hmsHttp.post(baseUrl + 'query_competitor_list', params).success(function (result) {
-
-          success(result);
-        }).error(function (response, status) {
-          error(response);
-          hmsPopup.showPopup(response);
-          hmsPopup.hideLoading();
-        });
-      };
-      //得到值列表
-      this.getValueList = function(success, list) {
-        var params = {lookupList : []};
-        for(var i = 0; i < list.length; i++){
-          params.lookupList.push({
-            code : list[i].code,
-            lastUpdateDate: window.localStorage[list[i].lastUpdateDate]
-          })
-        }
-        hmsHttp.post(baseUrl + 'query_lookup', params).success(function(result) {
-          success(result);
-        }).error(function(response, status) {
-          hmsPopup.showPopup(response);
-          hmsPopup.hideLoading();
-        });
-      };
-    }]);
+    }])

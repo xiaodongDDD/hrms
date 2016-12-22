@@ -62,7 +62,7 @@ angular.module('customerModule')
         $state.go(val);
       };
       $scope.showLoadings = false;
-      var baseUrl = baseConfig.crmPath;
+      var baseUrl = baseConfig.basePath;
       //多语言字段
       $scope.bilingual = CloneData.getCustomer_add();
 
@@ -173,7 +173,7 @@ angular.module('customerModule')
               hmsPopup,
               baseConfig) {
 
-      var baseUrl = baseConfig.crmPath;
+      var baseUrl = baseConfig.basePath;
       var customer = {};
       var isAdd = true;
 

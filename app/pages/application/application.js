@@ -21,7 +21,7 @@ angular.module('applicationModule')
               workFLowListService,
               contractListService,
               applicationService) {
-      
+
       $scope.animationsEnabled = false;
       $scope.openDoor = 0;
       $scope.fetchWorkflowData = true;
@@ -131,7 +131,7 @@ angular.module('applicationModule')
        ]
        }];*/
       //CRM
-      $scope.manageApp = [{
+      $scope.crmApp = [{
         list: [{
           appName:"客户",
           imageUrl: "build/img/application/application/personnelPolicy@3x.png",

@@ -785,6 +785,7 @@ angular.module('contactModule')
               baseConfig) {
 
       var baseUrl = baseConfig.basePath;
+      console.log("addlinkmand"+baseUrl);
       this.getCustomer = function (success, key) {
         hmsHttp.post(baseUrl + 'parent_customer', key).success(function (result) {
           hmsPopup.hideLoading();

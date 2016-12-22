@@ -5,6 +5,7 @@
     <button class="button button-clear" ng-click="saveCompetitor(value)">{{'SAVE'|T}}</button>
   </ion-header-bar>
   <ion-content>
+    <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
     <div style="margin-left:12px;margin-right:10px;">
       <div class="row row-center info-item">
         <div class="col col-8 ">
@@ -36,7 +37,7 @@
           </div>
         </div>
       </div>
-      <div class="row row-center info-item" ng-click="showType()">
+      <div class="row row-center info-item">
         <div class="col col-8 ">
           <img src="build/img/competitor/icon_area@3x.png" class="info-img">
         </div>
@@ -49,6 +50,22 @@
           <div class="row row-center info-item-con" ng-click="clickThis($index,item)">
             <img
               ng-src="{{'build/img/application/plans/' + (num==$index ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}">{{item.description}}
+          </div>
+        </div>
+      </div>
+      <div class="row row-center info-item" ng-if="showStatus">
+        <div class="col col-8 ">
+          <img src="build/img/application/customer/icon_flat_blue@3x.png" class="info-img">
+        </div>
+        <div class="col col-36">
+          <div class="row">
+            <span class="info-item-name">建档状态</span>
+          </div>
+        </div>
+        <div class="col col-28" ng-repeat="item in statusData" style="text-align:center">
+          <div class="row row-center info-item-con" ng-click="clickThisStatus($index,item)">
+            <img
+              ng-src="{{'build/img/application/plans/' + (numStatus==$index ? 'icon_selected@3x.png' : 'icon_normal@3x.png')}}">{{item.description}}
           </div>
         </div>
       </div>
