@@ -1692,6 +1692,9 @@
   .popup-head {
     padding: 20px 10px 0;
     border: none;
+    .popup-title{
+      color: #444 !important;
+    }
   }
   .popup-body {
     padding: 10px 15px 15px;

@@ -102,7 +102,7 @@ angular.module('clueModule')
 
       function initData(){
 
-        $scope.editFlag = false;
+        $scope.editFlag = $state.current.name == 'tab.clue-detail';
 
         $scope.validNameFlag = true;
 
@@ -187,7 +187,6 @@ angular.module('clueModule')
       //////////////////////编辑////////////////////////
 
       $scope.$on('EDIT_CLUE',function(){
-        $scope.editFlag = true;
         $scope.firstInEdit = true;
         var tempOpportunity = clueDetailDataService.getClue();
         $scope.nameBeforeEdit = tempOpportunity.opportunityName;
@@ -460,9 +459,6 @@ angular.module('clueModule')
       });
 
       $scope.showSelectDiv = function(key){
-
-        if($scope.editFlag && key == 'customer')
-          return ;
 
         $scope.searchModel.searchValueKey = '';
         $scope.nowPage = 1;
