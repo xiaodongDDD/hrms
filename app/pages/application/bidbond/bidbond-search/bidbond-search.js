@@ -182,7 +182,7 @@ angular.module('bidbondModule')
       $scope.deleteHistory = function () {
         console.log($scope.historys);
         for (var i = 0; i < $scope.historys.length; i++) {
-          historyOpportunity.removeHistory($scope.historys[i]);
+          historyBidbond.removeHistory($scope.historys[i]);
           console.log($scope.historys[i])
         }
         console.log($scope.historys);
