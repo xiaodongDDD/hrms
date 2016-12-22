@@ -2,30 +2,6 @@
  * Created by ZaraNengap on 2016/10/11.
  */
 'use strict';
-// angular.module('opportunityModule')
-//   .config(['$stateProvider',
-//     function ($stateProvider) {
-//       $stateProvider
-//         .state('tab.opportunity-add', {
-//           url: '/opportunities/opportunity-add',
-//           views: {
-//             'tab-application': {
-//               templateUrl: 'build/pages/application/opportunities/opportunity-add/opportunity-add.html',
-//               controller: 'OpportunityAddCtrl'
-//             }
-//           }
-//         })
-//         .state('tab.opportunity-add2', {
-//           url: '/opportunities/opportunity-add',
-//           views:{
-//             'tab-add': {
-//               templateUrl: 'build/pages/application/opportunities/opportunity-add/opportunity-add.html',
-//               controller: 'OpportunityAddCtrl'
-//             }
-//           }
-//
-//         })
-//}]);
 
 angular.module('opportunityModule')
 
