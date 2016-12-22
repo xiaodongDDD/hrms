@@ -105,8 +105,15 @@
         color: #333333;
         font-size: 1.3em;
         line-height: 20px;
+        width: 55vw;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        white-space: normal;
       }
-
       span:last-child{
         font-size: 1.1em;
         line-height: 16px;

@@ -1,4 +1,4 @@
-<ion-view class="transmit-person-modal globelSearch">
+<ion-view class="crm transmit-person-modal globelSearch">
   <ion-header-bar class="bar-stable" align-title="center">
     <form ng-submit="searchResult(selectParam)" class="form-style" >
       <div class="transmit-search">
@@ -68,9 +68,9 @@
           <div class=" repeat-item" ng-repeat="x in item.data" ng-click="goDetail(x)" >
             <div class="content-style" ng-bind-html="x.fullName " ></div>
           </div>
-          <div class=" repeat-item" ng-repeat="x in item.data" ng-click="goDetail(x)" >
-            <div class="content-style" ng-bind-html="x.fullName " ></div>
-          </div>
+          <!--<div class=" repeat-item" ng-repeat="x in item.data" ng-click="goDetail(x)" >-->
+            <!--<div class="content-style" ng-bind-html="x.fullName " ></div>-->
+          <!--</div>-->
         </div>
       </div>
     </div>

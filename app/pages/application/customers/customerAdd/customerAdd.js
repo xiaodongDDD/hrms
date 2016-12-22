@@ -6,7 +6,7 @@ angular.module('customerModule')
           url: '/customers/customerAdd',
           views: {
             'tab-application': {
-              prefetchTemplate: false,
+              //prefetchTemplate: false,
               templateUrl: 'build/pages/application/customers/customerAdd/customerAdd.html',
               controller: 'customerAddCtrl'
             }
@@ -18,6 +18,7 @@ angular.module('customerModule')
 
   .controller('customerAddCtrl', [
     '$scope',
+    '$rootScope',
     '$state',
     '$ionicHistory',
     'publicMethod',
@@ -32,7 +33,10 @@ angular.module('customerModule')
     'customerService',
     '$ionicModal',
     '$cordovaInAppBrowser',
+    'customerDetailService',
+    '$cordovaClipboard',
     function ($scope,
+              $rootScope,
               $state,
               $ionicHistory,
               publicMethod,
@@ -46,7 +50,9 @@ angular.module('customerModule')
               baseConfig,
               customerService,
               $ionicModal,
-              $cordovaInAppBrowser) {
+              $cordovaInAppBrowser,
+              customerDetailService,
+              $cordovaClipboard) {
 
 
       $scope.goBack = function () {
@@ -81,6 +87,12 @@ angular.module('customerModule')
         placeholder: "请输入",
         important: false
       }];
+      if(customerDetailService.getIsEdit()){
+        console.log('修改页面过来的~~~！！'+customerDetailService.getEditCustomer().fullName,'+++'+customerDetailService.getEditCustomer().simpleName)
+        $scope.items[0].input = customerDetailService.getEditCustomer().fullName;
+        $scope.items[1].input = customerDetailService.getEditCustomer().simpleName;
+      }
+
       //工信部modal
       $ionicModal.fromTemplateUrl('build/pages/application/customers/model/guideModal.html', {
         scope: $scope,
@@ -118,19 +130,70 @@ angular.module('customerModule')
       $scope.closeModal=function(){
         $scope.guideModal.hide();
       };
+
+      ////长按复制
+      //stop_browser_behavior: false
+      //self.touchStart = function (e) {
+      //  self.startCoordinates = getPointerCoordinates(e);
+      //  if (ionic.tap.ignoreScrollStart(e)) {
+      //    return;
+      //  }
+      //  if (ionic.tap.containsOrIsTextInput(e.target)) {
+      //    // do not start if the target is a text input
+      //    // if there is a touchmove on this input, then we can start the scroll
+      //    self.__hasStarted = false;
+      //    return;
+      //  }
+      //  self.__isSelectable = true;
+      //  self.__enableScrollY = true;
+      //  self.__hasStarted = true;
+      //  self.doTouchStart(e.touches, e.timeStamp);
+      //  // e.preventDefault();
+      //};
+
+      $scope.copyFullName = function (value) {
+        if (ionic.Platform.isIOS()) {
+          $cordovaClipboard
+            .copy(value)
+            .then(function () {
+              hmsPopup.showPopup(options, '客户名称已复制至手机粘贴板');
+            }, function () {
+              hmsPopup.showPopup("复制失败，请重新尝试");
+            });
+        }else{
+          cordova.plugins.clipboard.copy(
+            value,
+            function(r){hmsPopup.showPopup('客户名称已复制至手机粘贴板');},
+            function(e){hmsPopup.showPopup("复制失败，请重新尝试");}
+          );
+        }
+      }
+
+
       $scope.add = function () {
-        $scope.customer = {
-          //customerId:'',
-          fullName: $scope.items[0].input,
-          simpleName: $scope.items[1].input
-        };
+          $scope.customer = {
+            //customerId:'',
+            fullName: $scope.items[0].input,
+            simpleName: $scope.items[1].input
+          };
+
         if ($scope.customer.fullName === "") {
           hmsPopup.showPopup('客户全称不能为空！');
         } else {
           $scope.showLoadings = true;
           customerAddService.setCustomer($scope.customer);
+          if(customerDetailService.getIsEdit()) {
+            var param = {
+              customerId:customerDetailService.getEditCustomer().customerId,
+              fullName: $scope.items[0].input
+            }
+          }else {
+            var param = {
+              fullName: $scope.items[0].input
+            }
+          }
           var saveUrl = baseUrl + "valid_name";
-          hmsHttp.post(saveUrl, $scope.customer).success(function (data) {
+          hmsHttp.post(saveUrl, param).success(function (data) {
             /*  console.log(data);*/
             $scope.showLoadings = false;
             if(data.returnCode==='S'){
@@ -144,15 +207,21 @@ angular.module('customerModule')
         }
 
       };
-      $scope.$on('$ionicView.beforeEnter', function (e) {
+      $scope.$on('$ionicView.enter', function (e) {
         customerAddService.setIsAdd(true);
         if(customerService.getIsCustomer()==true){
+          console.log('进来了。。。。')
           $scope.customer = {
             fullName:'',
             simpleName:''
           };
           $scope.items[0].input = '';
           $scope.items[1].input = '';
+        }
+        if(customerDetailService.getIsEdit()){
+          console.log('修改页面过来的~~~！！'+customerDetailService.getEditCustomer().fullName,'+++'+customerDetailService.getEditCustomer().simpleName)
+          $scope.items[0].input = customerDetailService.getEditCustomer().fullName;
+          $scope.items[1].input = customerDetailService.getEditCustomer().simpleName;
         }
 
         //if(customerDetailService.getIsEdit()!==null){

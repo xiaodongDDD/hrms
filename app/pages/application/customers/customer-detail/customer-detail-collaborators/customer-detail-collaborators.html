@@ -61,7 +61,7 @@
           <div class="col col-60" ng-click="goDetail(item)">
             <div class="row row-center">
               <div class="col">
-                <span style="font-size: 17px;color:#333333;margin-left:5px;">{{item.name}}</span>
+                <span style="font-size: 17px;color:#333333;margin-left:5px;">{{item.name==''?'大区':item.name}}</span>
               <span class="linkRole" style=" margin-left:10px; font-size: 14px;
     color: #aaaaaa;" ng-if="item.employeeCode!=''">({{item.employeeCode}})</span>
               </div>
@@ -84,12 +84,12 @@
           <div class="col col-40" style="padding-top: 9px;">
             <div class="row row-center" ng-click="goDetail(item)">
               <div class="col" style="text-align: right">
-                <span class="state-date"> {{item.shareType=='HCRM_SHARE_TEAM'?'协作团队':'协作人'}}</span>
+                <span class="state-date"> {{item.shareType=='HCRM_SHARE_TEAM'||item.shareType=='TEAM'?'协作团队':'协作人'}}</span>
               </div>
             </div>
             <div class="row row-center">
               <div class="col item-phone">
-                <a href="tel:{{item.phoneNumber}}" ng-if="item.shareType!='HCRM_SHARE_TEAM'">
+                <a href="tel:{{item.phoneNumber}}" ng-if="item.shareType!='HCRM_SHARE_TEAM'&&item.shareType!='TEAM'">
                   <img src="build/img/contact/icon_phone_green@3x.png" style="width: 26px;">
                 </a>
               </div>
