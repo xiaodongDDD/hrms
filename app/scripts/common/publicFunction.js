@@ -206,6 +206,13 @@ function inArrayVaule(array, value) {
   }
   return false;
 }
+function inArrayBondIdVaule(array, value) {
+  for (var i = 0; i < array.length; i++) {
+    if (array[i].bondId === value)
+      return true;
+  }
+  return false;
+}
 //判断输入是否为十一位电话号码
 function phoneNumber(str) {
   var reg = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
