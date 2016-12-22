@@ -149,7 +149,7 @@ Android测试环境
   cordova plugin rm hand-im-plugin-device
   cordova plugin add http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git --variable RONG_KEY=e5t4ouvptpsaa
   
-  cordova plugin rm jpush-phonegap-plugin
+  cordova plugin rm cn.jpush.phonegap.JPushPlugin
   cordova plugin add jpush-phonegap-plugin@2.2.0 --variable API_KEY=22b25063349b6beef7bde524
   
   一 iOS 打包

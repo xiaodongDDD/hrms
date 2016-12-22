@@ -104,13 +104,18 @@
         height: 25px;
         line-height: 25px;
       }
-
+      .first-row{
+        line-height: 20px;
+        position: relative;
+        top: -8px;
+        padding: 0px!important;
+      }
       .customer-company,.customer-location {
         font-size: 16px;
         text-overflow:ellipsis;
         white-space:nowrap;
         overflow:hidden;
-        width: 200px;
+        width: 170px;
       }
 
       .customer-location,.customer-group {
@@ -227,19 +232,19 @@
   }
   .status-blue{
     position: relative;
-    top: -7px;
+    //top: -7px;
     font-size: 16px;
     color: #32a4ec;
   }
   .status-red{
     position: relative;
-    top: -7px;
+    //top: -7px;
     font-size: 16px;
     color: #FE8D60;
   }
   .status-green{
     position: relative;
-    top: -7px;
+    //top: -7px;
     font-size: 16px;
     color: #61CC73;
   }

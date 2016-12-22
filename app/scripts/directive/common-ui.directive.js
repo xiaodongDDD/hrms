@@ -4,7 +4,7 @@
 HmsModule
   .directive('hmsSelectItem', function () {
     return {
-      restrict: 'E',
+      restrict: 'ACE',
       scope: {
         inputLabelName: '=labelName',
         inputBox: '=inputBox',
@@ -12,6 +12,7 @@ HmsModule
         showLine: '=showLine',
         isLastLine: '=lastLine',
         imgUrl: '=imgUrl',
+        notEditable: '=notEditable',
         $hmsSelect: '&hmsSelect',
       },
       template: '<div class="hms-select-item-style" ng-click="selectValue()" ' +
@@ -24,7 +25,7 @@ HmsModule
       '<span ng-if="!inputBox || inputBox == \'\'" style="color:#b2b2b2">请选择</span>' +
       '</div></div>' +
       '<div class="hms-select-arrow col-center">' +
-      '<i><img src="{{imgUrlValue}}"></i>' +
+      '<i><img src="{{imgUrlValue}}" ng-if="!notEditable"></i>' +
       '</div>' +
       '<div class="hms-select-blank"></div>' +
       '</div>' +
@@ -36,12 +37,15 @@ HmsModule
         else{
           scope.imgUrlValue = attrs.imgUrl;
         }
-        scope.selectValue = function () {
-          //console.log('selectValue...');
-          if (scope.$hmsSelect) {
-            scope.$hmsSelect();
-          }
-        };
+        if(scope.notEditable)
+          scope.selectValue = function(){};
+        else
+          scope.selectValue = function () {
+            //console.log('selectValue...');
+            if (scope.$hmsSelect) {
+              scope.$hmsSelect();
+            }
+          };
       }
     }
   })
@@ -61,10 +65,10 @@ HmsModule
       '<div class="col col-10">' +
       '<img ng-src="{{imageIcon}}" class="info-img">' +
       '</div>' +
-      '<div class="col col-30">' +
+      '<div class="col col-33">' +
       '<div class="info-item-name">{{prompt}}<span ng-if="isImportant">&nbsp;*</span></div>' +
       '</div>' +
-      '<div class="col col-55">' +
+      '<div class="col col-50">' +
       '<div class="info-item-prompt" ng-if="!selectValue || selectValue == \'\'">请选择</div>' +
       '<div class="info-item-content" ng-if="selectValue && selectValue != \'\'" ng-bind="selectValue" ></div>' +
       '</div>' +
@@ -84,7 +88,7 @@ HmsModule
   })
   .directive('hmsInputItem', function () {
     return {
-      restrict: 'E',
+      restrict: 'ACE',
       scope: {
         inputLabelName: '=labelName',
         inputBox: '=inputBox',
@@ -93,6 +97,8 @@ HmsModule
         isImportant: '=important',
         isLastLine: '=lastLine',
         $hmsInput: '&hmsInput',
+        isChange: '=isChange',
+        typeValue:'=typeValue'
       },
       template: '<div class="hms-input-item-style1" ' +
       'ng-class="{true:\'last-line\'}[isLastLine && !showLine]">' +
@@ -100,14 +106,14 @@ HmsModule
       '{{inputLabelName}}<span ng-if="isImportant">&nbsp;*</span>' +
       '</div>' +
       '<div class="hms-input-content" ng-class="{true:\'last-line\'}[!isLastLine && !showLine]"><input ' +
-      'type="text" placeholder="{{placeHolderValue}}" ng-model="inputBox" ng-blur="inputBlur()"></div>' +
+      'type="text" placeholder="{{placeHolderValue}}" ng-model="inputBox" ng-blur="inputBlur()" ng-readonly="isChange"></div>' +
       '</div>',
       link: function (scope, element, attrs) {
-        if(!attrs.placeHolder || attrs.placeHolder == ''){
+        if(!scope.placeHolder || scope.placeHolder == ''){
           scope.placeHolderValue = '请输入';
         }
         else{
-          scope.placeHolderValue = attrs.placeHolder;
+          scope.placeHolderValue = scope.placeHolder;
         }
         scope.inputBlur = function () {
           console.log('blur...');
@@ -124,6 +130,21 @@ HmsModule
       restrict: 'E',
       template: '<div class="crm-hide-small-content">' +
       '<div class="loading-crm"></div>' +
+      '</div>',
+      replace: true, //使用模板替换原始标记
+      transclude: false,    // 不复制原始HTML内容
+      controller: ["$scope", function ($scope) {
+      }],
+      link: function (scope, element, attrs, controller) {
+      }
+    };
+
+  }])
+  .directive('crmSmallLoading', ['$rootScope', function ($rootScope) {
+    return {
+      restrict: 'E',
+      template: '<div class="crm-hide-small-loading">' +
+      '<div class="loading-small-crm"></div>' +
       '</div>',
       replace: true, //使用模板替换原始标记
       transclude: false,    // 不复制原始HTML内容
