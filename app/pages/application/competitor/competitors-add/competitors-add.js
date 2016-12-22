@@ -35,7 +35,7 @@ angular.module('competitorModule')
     'baseConfig',
     'addCompetitorsService',
     '$rootScope',
-    'competitorListService',
+    'addLinkmanService',
     '$stateParams',
     'competitorDetailService',
     function ($scope,
@@ -51,10 +51,11 @@ angular.module('competitorModule')
               baseConfig,
               addCompetitorsService,
               $rootScope,
-              competitorListService,
+              addLinkmanService,
               $stateParams,
               competitorDetailService) {
       $rootScope.img = "";
+      $scope.showSmallCrmLoading = false;
       $scope.$on('$ionicView.enter', function (e) {
         console.log($stateParams.competitors);
         if (isNotNullObj($stateParams.competitors)) {
@@ -64,6 +65,12 @@ angular.module('competitorModule')
           }else{
             $scope.num = 1;
           }
+          if($stateParams.competitors.dataStatus=="HCRM_ENABLE"){
+            $scope.numStatus=0;
+          }else{
+            $scope.numStatus=1;
+          }
+          $scope.showStatus=true;
 
         } else {
           $scope.value = {
@@ -73,13 +80,15 @@ angular.module('competitorModule')
             "fullName": "",
             "areaProperty": "",
             "areaPropertyName": "",
-            "dataStatus": "",
-            "dataStatusName": "",
+            "dataStatus": "HCRM_ENABLE",
+            "dataStatusName": "有效",
             "competitorAdvDesc": "",
             "competitorDisadvDesc": "",
             "competitorProducts": []
           };
+          $scope.showStatus=false;
           $scope.num = 0;
+          $scope.numStatus=0;
         }
       });
       $scope.title = {
@@ -123,6 +132,10 @@ angular.module('competitorModule')
       $scope.clickThis = function (num, item) {
         $scope.num = num;
         $scope.value.areaProperty = item.value;
+      };
+      $scope.clickThisStatus = function (num, item) {
+        $scope.numStatus = num;
+        $scope.value.dataStatus = item.value;
       };
       $ionicModal.fromTemplateUrl('build/pages/application/competitor/competitors-add/product-add/product-add.html', {
         scope: $scope
@@ -198,15 +211,21 @@ angular.module('competitorModule')
           });
       };
       $scope.onReleaseAdvantage1 = function () {
+        $scope.showSmallCrmLoading = true;
         $scope.holdText1 = false;
+        $timeout(function () {
+          console.log("timeout");
+          $scope.showSmallCrmLoading = false;
+        }, 5000);
         cordova.plugins.pluginIflytek.stopRecorderRecognize(
           function (msg) {
-            $timeout(function () {
-              insertText(document.getElementById('advantage1'), msg);
-            }, 0);
+            $scope.showSmallCrmLoading = false;
+            hmsPopup.showPopup(msg);
           }, function (msg) {
             $timeout(function () {
               insertText(document.getElementById('advantage1'), msg);
+              $scope.$apply();
+              $scope.showSmallCrmLoading = false;
             }, 0);
           });
       };
@@ -220,20 +239,30 @@ angular.module('competitorModule')
           });
       };
       $scope.onReleaseAdvantage2 = function () {
+        $scope.showSmallCrmLoading = true;
         $scope.holdText = false;
+        $timeout(function () {
+          console.log("timeout");
+          $scope.showSmallCrmLoading = false;
+        }, 5000);
         cordova.plugins.pluginIflytek.stopRecorderRecognize(
           function (msg) {
-            $timeout(function () {
-              insertText(document.getElementById('advantage2'), msg);
-            }, 0);
+            $scope.showSmallCrmLoading = false;
+            hmsPopup.showPopup(msg);
           }, function (msg) {
             $timeout(function () {
               insertText(document.getElementById('advantage2'), msg);
+              $scope.$apply();
+              $scope.showSmallCrmLoading = false;
             }, 0);
           });
       };
       var upData = [
         {
+          "code": "HCRM.COMPETITOR_DATA_STATUS",
+          "lastUpdateDate": "COMPETITOR_DATA_STATUS_DATE",
+          localList: 'COMPETITOR_DATA_STATUS'
+        },{
           "code": "HCRM.COMPETITOR_AREA_PROPERTY",
           "lastUpdateDate": "COMPETITOR_AREA_PROPERTY_DATE",
           localList: 'COMPETITOR_AREA_PROPERTY'
@@ -269,12 +298,36 @@ angular.module('competitorModule')
           }
         }
       };
-      competitorListService.getValueList(valueListSuccess, 'HCRM.COMPETITOR_AREA_PROPERTY', window.localStorage.COMPETITOR_AREA_PROPERTY_DATE);
+      $scope.statusData=[];
+      function valueStatusListSuccess(response){
+        if (response.returnCode == 'S') {
+          var code = response.lookup_detail[0].lookup_code;
+          var lastUpdateDate = response.lookup_detail[0].last_update_date;
+          var valueObj = getValueObjByCode(code);
+          console.log(valueObj);
+          if (lastUpdateDate == window.localStorage[valueObj.lastUpdateDate]) {
+            console.log("====一样");
+            console.log(valueObj);
+            $scope.statusData = $scope.statusData.concat(JSON.parse(window.localStorage[valueObj.localList]));
+            console.log($scope.statusData);
+            /* $scope.$apply();*/
+          } else {
+            console.log("====bu一样");
+            console.log(valueObj);
+            window.localStorage[valueObj.lastUpdateDate] = lastUpdateDate;
+            window.localStorage[valueObj.localList] = JSON.stringify(response.lookup_detail[0].lookup_value_list);
+            $scope.statusData = $scope.statusData.concat(response.lookup_detail[0].lookup_value_list);
+            /* $scope.$apply();*/
+          }
+        }
+      }
+      addLinkmanService.getValueList(valueListSuccess, 'HCRM.COMPETITOR_AREA_PROPERTY', window.localStorage.COMPETITOR_AREA_PROPERTY_DATE);
+      addLinkmanService.getValueList(valueStatusListSuccess, 'HCRM.COMPETITOR_DATA_STATUS', window.localStorage.COMPETITOR_DATA_STATUS_DATE);
       $scope.saveCompetitor = function (value) {
         $scope.value.competitorAdvDesc= $('#advantage1').val();
         $scope.value.competitorDisadvDesc= $('#advantage2').val();
-      /*  console.log(valYuyin);*/
-        console.log("=====")
+        /*  console.log(valYuyin);*/
+        console.log("=====");
         console.log( $scope.value.competitorAdvDesc);
         hmsPopup.showLoading("正在保存");
         console.log(value);
@@ -283,9 +336,14 @@ angular.module('competitorModule')
         } else {
           value.areaProperty = "HCRM_LOCAL";
         }
- /*       if (value.competitorProducts.length == 0) {
-          value.competitorProducts.push($scope.product);
-        }*/
+        if ($scope.numStatus == 0) {
+          value.dataStatusName ="HCRM_ENABLE";
+        } else {
+          value.dataStatusName = "HCRM_DISABLE";
+        }
+        /*       if (value.competitorProducts.length == 0) {
+         value.competitorProducts.push($scope.product);
+         }*/
         console.log(value);
         var competitor = {
           competitorId: "-9999",

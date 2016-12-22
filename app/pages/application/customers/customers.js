@@ -973,7 +973,7 @@ angular.module('customerModule')
               hmsPopup,
               baseConfig) {
 
-      var baseUrl = baseConfig.crmPath;
+      var baseUrl = baseConfig.basePath;
       var customer = {};
       var isCustomer = true;
 

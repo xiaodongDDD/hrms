@@ -75,7 +75,7 @@ angular.module('contactModule')
       /*console.log($ionicHistory.viewHistory().currentView.stateName);
       console.log('contactDetailCtrl.enter');*/
       $rootScope.img = "build/img/tabs/edit_add@3x_5.png";
-      var url = baseConfig.crmPath + "customer_contact_detail";
+      var url = baseConfig.basePath + "customer_contact_detail";
       var data = {
         contactId: $stateParams.contactData.contactId
       };

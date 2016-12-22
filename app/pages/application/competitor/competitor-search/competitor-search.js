@@ -166,19 +166,3 @@ angular.module('competitorModule')
           $scope.historys = [];
         };
       }])
-  .service('CompetitorSearchService', ['hmsHttp',
-    'hmsPopup',
-    'baseConfig', function (hmsHttp, hmsPopup, baseConfig) {
-      console.log(baseConfig.crmPath);
-      var baseUrl = baseConfig.crmPath;
-      console.log(baseUrl);
-      this.getSearchData = function (success, key) {
-        hmsHttp.post(baseUrl + 'search_competitor', key).success(function (result) {
-          hmsPopup.hideLoading();
-          success(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup(response.error_description);
-        });
-      }
-    }]);

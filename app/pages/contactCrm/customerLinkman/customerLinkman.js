@@ -448,39 +448,3 @@ angular.module('contactModule')
         $scope.showSelectDiv();
       };
     }])
-  .service('customerLinkman', ['hmsHttp',
-    'hmsPopup',
-    'baseConfig',
-    function (hmsHttp,
-              hmsPopup,
-              baseConfig) {
-
-      var baseUrl = baseConfig.crmPath;
-      this.getCustomer = function (success, key) {
-        hmsHttp.post(baseUrl + 'parent_customer', key).success(function (result) {
-          hmsPopup.hideLoading();
-          success(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
-        });
-      };
-      this.getSearchResult = function (success, key) {
-        hmsHttp.post(baseUrl + 'query_contacts', key).success(function (result) {
-          hmsPopup.hideLoading();
-          success(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
-        });
-      };
-      this.getGetContactsList = function (success, key) {
-        hmsHttp.post(baseUrl + 'customer_contact_list', key).success(function (result) {
-          hmsPopup.hideLoading();
-          success(result);
-        }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
-        });
-      };
-    }]);

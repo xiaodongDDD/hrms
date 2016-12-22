@@ -89,7 +89,7 @@ angular.module('contactModule')
       $scope.showResult = false;
       $scope.linkmanData = [];
       $scope.hideAreaFlag = [];
-      var url = baseConfig.crmPath + "customer_contact_list";
+      var url = baseConfig.basePath + "customer_contact_list";
       $scope.data = {
         pageSize: "10",
         page: "1",
