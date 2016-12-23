@@ -21,7 +21,7 @@
     height: 60px;
   }
 
-  .sifting-item{
+  .sifting-item {
     &.select-item {
       display: flex;
       justify-content: space-between;
@@ -51,7 +51,7 @@
     margin-right: 5px;
   }
   .info-item-con {
-  /*  color: #AAAAAA;*/
+    /*  color: #AAAAAA;*/
     text-align: right;
     padding-left: 0;
     padding-right: 0;
@@ -67,7 +67,7 @@
       height: 44px;
       line-height: 44px;
       text-align: center;
-      div{
+      div {
         margin: 5px;
         border-radius: 30px;
         background: #32A4EC;
@@ -111,6 +111,28 @@
         border-radius: 30px;
         background: #E6F4FD;
       }
+    }
+  }
+  .comment-title {
+    text-align: right;
+    position: relative;
+    color: #bfbfbf;
+    width: 92%;
+    img {
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      top: 1px;
+      right: -20px;
+    }
+  }
+  .comment-text{
+    margin: 2px 10px 5px 15px;
+    color: #666666;
+    background: #f2f2f2;
+    padding:5px 5px 5px 5px;
+    i {
+      color: #00a5ee;
     }
   }
 }

@@ -45,8 +45,10 @@
                            $cordovaDatePicker,
                            $timeout) {
     var vm = this;
+    vm.showCommentFlag=false;
     $scope.showSmallCrmLoading = false;
     var authority = $stateParams.authority;
+/*    vm.showComment=showComment;*/
     var detail = $stateParams.planDetail;
     console.log(detail);
     if (baseConfig.debug) {
@@ -564,7 +566,12 @@
           }, 0);
         });
     };
-
+    $scope.showComment=function(){
+      console.log("======");
+      vm.showCommentFlag=!vm.showCommentFlag;
+      console.log( vm.showCommentFlag);
+      /*    plan.annotate=vm.planDetail.annotate;*/
+    }
     function selectTime($index, item) {
       vm.timeItemsBucket.number = $index;
       vm.timeItemsBucket.value = item.value;

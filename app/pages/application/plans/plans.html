@@ -70,7 +70,7 @@
                 <div>
                 <span class="plan-head-base">
                   {{plan.name}}
-                  <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.planSource + '复制') : (plan.dataStatusName) }}</span>
+                  <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.resourceName + '复制') : (plan.dataStatusName) }}</span>
                 </span>
                   <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'" src="build/img/application/plans/star.png" style="    width: 16px;
     height: 16px;
@@ -89,12 +89,8 @@
               <div class="plan-content">计划内容：{{plan.saleContent}}</div>
               </div>
               <div ng-if="planAuthority.OTHER.selected" ng-click="showComment(plan)">
-                <div style="text-align:right;position:relative;color:#bfbfbf;width: 92%;">点评<img src="build/img/application/plans/common.png" style="width: 16px;
-    height: 16px;
-    position: absolute;
-    top: 1px;
-    right: -20px;"/></div>
-                <div style="padding: 0px 15px 5px 15px;" ng-if="plan.annotate!=''">
+                <div class="comment-title">点评<img src="build/img/application/plans/common.png"/></div>
+                <div class="comment-text" ng-if="plan.annotate!=''">
                   <i>{{plan.leaderName}}:</i>{{plan.annotate}}
                 </div>
               </div>
@@ -117,29 +113,37 @@
                      ng-click="goWeeklyReportList(group.date)">查看周报
                 </div>
               </div>
-              <div class="plan-item" ng-repeat="plan in group.plans" ng-click="goDetail(plan)">
-                <div class="plan-head">
-                  <img ng-src="build/img/application/plans/user_img@3x.png"/>
-                  <div>
+              <div class="plan-item" ng-repeat="plan in group.plans" >
+                <div class="plan-content-tilte" ng-click="goDetail(plan)">
+                  <div class="plan-head">
+                    <img ng-src="build/img/application/plans/user_img@3x.png"/>
+                    <div>
                 <span class="plan-head-base">
                   {{plan.name}}
-                  <span class="plan-place">{{plan.dataStatusName}}</span>
+                  <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.resourceName + '复制') : (plan.dataStatusName) }}</span>
                 </span>
-                    <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'" src="build/img/application/plans/star.png" style="    width: 16px;
+                  <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'" src="build/img/application/plans/star.png" style="    width: 16px;
     height: 16px;
     position: absolute;
     right: 5px;"/></span>
+                    </div>
+                  </div>
+                  <div class="plan-title">
+                    {{plan.customerFullName==""?"":("客户 "+plan.customerFullName)}}
+                    <!--  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
+                      {{plan.opportunityFullName}}-->
+                  </div>
+                  <div style=" font-size: 1.2em;color: #333333;">
+                    {{plan.opportunityFullName==""?"":("商机 "+plan.opportunityFullName)}}
+                  </div>
+                  <div class="plan-content">计划内容：{{plan.saleContent}}</div>
+                </div>
+                <div ng-if="planAuthority.OTHER.selected" ng-click="showComment(plan)">
+                  <div class="comment-title">点评<img src="build/img/application/plans/common.png"/></div>
+                  <div class="comment-text" ng-if="plan.annotate!=''">
+                    <i>{{plan.leaderName}}:</i>{{plan.annotate}}
                   </div>
                 </div>
-                <div class="plan-title">
-                  {{plan.customerFullName==" "?"":("客户 "+plan.customerFullName)}}
-                  <!--  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
-                    {{plan.opportunityFullName}}-->
-                </div>
-                <div style=" font-size: 1.2em;color: #333333;">
-                  {{plan.opportunityFullName==""?"":("商机 "+plan.opportunityFullName)}}
-                </div>
-                <div class="plan-content">计划内容：{{plan.saleContent}}</div>
               </div>
             </div>
             <ion-infinite-scroll
@@ -153,9 +157,22 @@
       </ion-scroll>
     </div>
   </ion-content>
-  <div style="position: fixed;bottom: 0;">
-    测试测试测试
-  </div>
+  <ion-footer-bar ng-if="showCommentFlag">
+    <form style="float:left;width:80%;"  ng-submit="annotateSubmit(planDetail)">
+      <textarea id="comment-text" style="overflow-y:visible ;width:100%;border: none;word-break:break-all" placeholder="请输入" ng-model="planDetail.annotate"></textarea>
+    </form>
+    <div style="float:left;width:15%">
+      <img src="build/img/application/plans/icon_voice@3x.png" style="width: 25px;">
+    </div>
+  </ion-footer-bar>
+<!--  <div style="position: fixed;bottom: 0;height: 40px;    width: 100%;padding: 5px 0 0 5px;" ng-if="showCommentFlag">
+   &lt;!&ndash; 测试测试测试&ndash;&gt;
+   &lt;!&ndash; {{planDetail.annotate}}&ndash;&gt;
+    <form style="float:left;width:80%;"  ng-submit="annotateSubmit(planDetail)">
+      <textarea style="height: 40px;width:100%;border: none;" placeholder="请输入" ng-model="planDetail.annotate"></textarea>
+    </form>
+    <div style="float:left;width:20%">测试</div>
+  </div>-->
   <div class="common-fix-div" ng-class="{true:'showUp'}[showNew]">
 
     <div class="sifting-header">

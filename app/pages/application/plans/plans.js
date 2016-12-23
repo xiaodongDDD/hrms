@@ -31,6 +31,7 @@
                      $ionicScrollDelegate,
                      $timeout,
                      $rootScope,
+                     hmsPopup,
                      plansService,
                      baseConfig) {
     var vm = $scope;
@@ -40,6 +41,7 @@
     vm.showNew = false;
     vm.lastHeight = 'calc(100vh - 88px)';
     vm.plans = [];
+    vm.newPlan={};
     vm.planGroups = [];
     vm.headHeight = 36;
     vm.noTitleItemHeight = 113;
@@ -78,7 +80,7 @@
 
     vm.calendarLoadingFlag = true;
     vm.planListLoadingFlag = true;
-
+    vm.showCommentFlag=false;
     //////////////数据相关/////////////////
     vm.page = 1;
     vm.pageSize = 10;
@@ -324,14 +326,74 @@
       var date2 = date.replace(/-/g, "/");
       goWeeklyReportDetail(date2)
     }
+   $scope.annotateSubmit=function(planDetail){
+   /*  console.log("ssssss");*/
+     console.log(planDetail);
+     var params={
+       planId:planDetail.planId,
+       annotate: planDetail.annotate
+     };
+     var annotateSuccess=function(result){
+       vm.showCommentFlag=false;
+       if(result.returnCode=="S"){
 
+       }else{
+         hmsPopup.showPopup=result.returnMsg;
+         console.log(result);
+       }
+     };
+     var annotatError=function(result){
+       vm.showCommentFlag=false;
+       console.log(result);
+     };
+     plansService.saleAnnotate(annotateSuccess,annotatError,params);
+   };
+/*    $watch ('planDetail.annotate',function(){
+
+    });*/
+    window.document.onkeydown = disableRefresh;
+    function disableRefresh(evt){
+      evt = (evt) ? evt : window.event;
+      if (evt.keyCode) {
+        if(evt.keyCode ==13){
+          //do something
+          console.log("planDetail");
+          console.log(vm.planDetail);
+          var params={
+            planId:vm.planDetail.planId,
+            annotate: vm.planDetail.annotate
+          };
+          var annotateSuccess=function(result){
+            vm.showCommentFlag=false;
+            if(result.returnCode=="S"){
+
+            }else{
+              hmsPopup.showPopup=result.returnMsg;
+              console.log(result);
+            }
+          };
+          var annotatError=function(result){
+            vm.showCommentFlag=false;
+            console.log(result);
+          };
+          plansService.saleAnnotate(annotateSuccess,annotatError,params);
+        }
+      }
+    }
     //进入计划明细界面
     function goDetail(detail) {
       $state.go('tab.plans-detail', {"authority": getAuthorityType(), "planDetail": detail});
     }
+    vm.planDetail={
+
+    };
     function showComment(plan){
       console.log(plan);
-      vm.showCommentFlag=true;
+      vm.planDetail=plan;
+      vm.showCommentFlag=!vm.showCommentFlag;
+      console.log("=====");
+      console.log(vm.planDetail);
+  /*    plan.annotate=vm.planDetail.annotate;*/
     }
     function onRelease($event) {
       if (!$scope.showAsMonth) {
