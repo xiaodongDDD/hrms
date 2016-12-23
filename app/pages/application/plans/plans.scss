@@ -215,11 +215,15 @@
     ion-scroll{
       height: 100%;
       width: 100%;
+
       .plan-item{
         width: 100%;
-        padding: 12px 15px;
+      /*  padding: 12px 15px;*/
         background: white;
         border-bottom:1px solid rgba(221, 221, 221, 0.6);
+        .plan-content-tilte{
+          padding: 15px 15px 5px 15px;
+        }
         .plan-head{
           position: relative;
           display: flex;

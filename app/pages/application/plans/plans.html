@@ -63,7 +63,8 @@
         <div ng-if="showAsMonth">
           <crm-loading ng-if="calendarLoadingFlag"></crm-loading>
           <div ng-if="!calendarLoadingFlag">
-            <div class="plan-item" ng-repeat="plan in plans" ng-click="goDetail(plan)">
+            <div class="plan-item" ng-repeat="plan in plans" >
+              <div class="plan-content-tilte" ng-click="goDetail(plan)">
               <div class="plan-head">
                 <img ng-src="build/img/application/plans/user_img@3x.png"/>
                 <div>
@@ -78,7 +79,7 @@
                 </div>
               </div>
               <div class="plan-title">
-                {{plan.customerFullName==" "?"":("客户 "+plan.customerFullName)}}
+                {{plan.customerFullName==""?"":("客户 "+plan.customerFullName)}}
               <!--  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
                 {{plan.opportunityFullName}}-->
               </div>
@@ -86,6 +87,17 @@
                 {{plan.opportunityFullName==""?"":("商机 "+plan.opportunityFullName)}}
               </div>
               <div class="plan-content">计划内容：{{plan.saleContent}}</div>
+              </div>
+              <div ng-if="planAuthority.OTHER.selected" ng-click="showComment(plan)">
+                <div style="text-align:right;position:relative;color:#bfbfbf;width: 92%;">点评<img src="build/img/application/plans/common.png" style="width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 1px;
+    right: -20px;"/></div>
+                <div style="padding: 0px 15px 5px 15px;" ng-if="plan.annotate!=''">
+                  <i>{{plan.leaderName}}:</i>{{plan.annotate}}
+                </div>
+              </div>
             </div>
             <ion-infinite-scroll
               on-infinite="loadMorePlans()"
@@ -113,13 +125,19 @@
                   {{plan.name}}
                   <span class="plan-place">{{plan.dataStatusName}}</span>
                 </span>
-                    <span class="plan-time">{{plan.timeBucketName}}</span>
+                    <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'" src="build/img/application/plans/star.png" style="    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 5px;"/></span>
                   </div>
                 </div>
                 <div class="plan-title">
-                  {{plan.customerFullName}}
-                  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
-                  {{plan.opportunityFullName}} {{plan.planSource == "" ? "" : ('[从' + plan.planSource + '辅助]')}}
+                  {{plan.customerFullName==" "?"":("客户 "+plan.customerFullName)}}
+                  <!--  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
+                    {{plan.opportunityFullName}}-->
+                </div>
+                <div style=" font-size: 1.2em;color: #333333;">
+                  {{plan.opportunityFullName==""?"":("商机 "+plan.opportunityFullName)}}
                 </div>
                 <div class="plan-content">计划内容：{{plan.saleContent}}</div>
               </div>
@@ -135,7 +153,9 @@
       </ion-scroll>
     </div>
   </ion-content>
-
+  <div style="position: fixed;bottom: 0;">
+    测试测试测试
+  </div>
   <div class="common-fix-div" ng-class="{true:'showUp'}[showNew]">
 
     <div class="sifting-header">

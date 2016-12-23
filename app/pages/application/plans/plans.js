@@ -46,7 +46,7 @@
     vm.itemHeight = 133;
     vm.nowShowDate = '';
     vm.scrollFlag = [];
-
+    $scope.Authority="MY";
     var currentCalendarType = 'MONTH';
     var currentCalendarCache;
     var currentCalendarPos;
@@ -133,6 +133,7 @@
     vm.goWeeklyReportList = goWeeklyReportList;
 
     vm.goDetail = goDetail;
+    vm.showComment=showComment;//评论
     vm.onRelease = onRelease;
     vm.onDragUp = onDragUp;
     vm.goBack = goBack;
@@ -328,7 +329,10 @@
     function goDetail(detail) {
       $state.go('tab.plans-detail', {"authority": getAuthorityType(), "planDetail": detail});
     }
-
+    function showComment(plan){
+      console.log(plan);
+      vm.showCommentFlag=true;
+    }
     function onRelease($event) {
       if (!$scope.showAsMonth) {
         return;
@@ -803,6 +807,7 @@
         planDateTo: dateText,
         type: getAuthorityType()
       };
+      $scope.Authority=params.type;
       console.log(params);
       $scope.plans = [];
       vm.calendarLoadingFlag = true;
