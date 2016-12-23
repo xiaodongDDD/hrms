@@ -48,7 +48,7 @@
     $scope.showSmallCrmLoading = false;
     var authority = $stateParams.authority;
     var detail = $stateParams.planDetail;
-
+    console.log(detail);
     if (baseConfig.debug) {
       console.log('plansDetailCtrl authority ' + angular.toJson(authority));
       console.log('plansDetailCtrl detail' + angular.toJson(detail));
@@ -124,13 +124,15 @@
     };
 
     vm.planDetail = {
+      "leaderName":detail.leaderName,
       "relateCustomer": detail.customerFullName,
       "relateCustomerId": detail.customerId,
       "relateOpportunity": detail.opportunityFullName,
       "relateOpportunityId": detail.opportunityId,
+      "annotate":detail.annotate,
       "scheduleDate": "",
       "scheduleDateStr": "",
-      "isImportant":"Y"
+      "isImportant":detail.isImportant
     };
 
     vm.iconList = {
@@ -245,12 +247,14 @@
       var str = detail.planDate;
       str = str.replace(/-/g, "/");
       var date = new Date(str);
-
+      console.log(detail);
+      console.log("=====");
       vm.planDetail.scheduleDate = date;
       vm.planDetail.scheduleDateStr = plansService.getDateString(date) + ' ' + showTime(date);
-
+      vm.planDetail.annotate=detail.annotate;
       vm.saleContent = detail.saleContent;
       vm.planDetail.status = detail.dataStatusName;
+      console.log(vm.planDetail);
       var listSuccessInit = function (result) {
         vm.timeItemsBucket.number = 0;
         //console.log(result.lookup_detail[0].lookup_value_list);
@@ -380,6 +384,7 @@
         "customerFullName": vm.planDetail.relateCustomer,
         "opportunityId": vm.planDetail.relateOpportunityId,
         "opportunityFullName": vm.planDetail.relateOpportunity,
+        "annotate":vm.planDetail.annotate,
         "planDate": plansService.getDateTimeString(vm.planDetail.scheduleDate),
         "planSource": detail.planSource,
         "planType": 'HCRM_NEW_PLAN',
@@ -387,7 +392,7 @@
         "timeBucket": timeBucket,
         "dataStatus": detail.dataStatus,
         "userId": detail.userId,
-        "planId": detail.planId,
+        "planId": detail.planId
       };
       if (baseConfig.debug) {
         console.log('savePlan params ' + angular.toJson(params));
@@ -421,6 +426,7 @@
         "customerId": detail.customerId,
         "customerFullName": detail.customerFullName,
         "opportunityId": detail.opportunityId,
+        "annotate":detail.annotate,
         "opportunityFullName": detail.opportunityFullName,
         "planDate": detail.planDate,
         "planSource": detail.planSource,
@@ -429,7 +435,7 @@
         "timeBucket": detail.timeBucket,
         "dataStatus": detail.dataStatus,
         "userId": detail.userId,
-        "planId": detail.planId,
+        "planId": detail.planId
       };
       if (baseConfig.debug) {
         console.log('savePlan params ' + angular.toJson(params));
