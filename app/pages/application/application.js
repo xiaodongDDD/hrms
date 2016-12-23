@@ -160,10 +160,6 @@ angular.module('applicationModule')
           imageUrl: "build/img/application/application/personnelPolicy@3x.png",
           destUrl: "tab.bidbond"
         }, {
-          appName: "立项",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
-          destUrl: "tab.clues"
-        }, {
           appName:"竞争对手",
           imageUrl: "build/img/application/application/personnelPolicy@3x.png",
           destUrl: "tab.competitor"

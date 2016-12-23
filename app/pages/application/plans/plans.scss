@@ -1,7 +1,7 @@
-.plans{
+.plans {
 
-  ion-header-bar{
-    .plan-change-buttton{
+  ion-header-bar {
+    .plan-change-buttton {
       font-size: 16px;
       width: 50px;
       height: 23px;
@@ -27,14 +27,15 @@
       left: 50%;
       transform: translateX(-50%);
       -webkit-transform: translateX(-50%);
-      overflow: hidden; }
+      overflow: hidden;
+    }
   }
 
-  ion-content{
+  ion-content {
     height: calc(100vh - 44px);
     overflow-y: hidden !important;
   }
-  .select-head{
+  .select-head {
     height: 44px;
     width: 100vw;
     position: relative;
@@ -43,21 +44,21 @@
     line-height: 44px;
     z-index: 6;
     border-bottom: 1px solid rgba(221, 221, 221, 0.6);
-    .icon-area{
+    .icon-area {
       height: 44px;
       line-height: 44px;
-      img{
+      img {
         width: 30px;
         height: 40px;
         padding: 10px 5px;
         vertical-align: middle;
       }
     }
-    .operate-area{
+    .operate-area {
       position: absolute;
       top: 0;
       right: 5vw;
-      img{
+      img {
         width: 20px;
         height: 40px;
         padding: 10px 0px;
@@ -65,11 +66,11 @@
         position: relative;
         right: -5px;
       }
-      span{
+      span {
         padding: 0 2vw;
       }
     }
-    span{
+    span {
       display: inline-block;
       height: 20px;
       line-height: 20px;
@@ -78,38 +79,38 @@
       padding: 0 2vw;
       color: #a6b0bd;
     }
-    span.selected{
+    span.selected {
       background: #00a5ee;
       color: white;
       overflow: hidden;
     }
-    .calendar-date{
+    .calendar-date {
       position: absolute;
       top: 50%;
-      left:50%;
-      transform: translate(-50%,-50%);
-      -webkit-transform: translate(-50%,-50%);
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
     }
-    .change-date{
+    .change-date {
       position: absolute;
       top: 50%;
-      left:40%;
-      transform: translate(-50%,-50%);
-      -webkit-transform: translate(-50%,-50%);
+      left: 40%;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
     }
-    .black-font{
-      color:#666666;
+    .black-font {
+      color: #666666;
     }
   }
 
-  .scale-animation{
+  .scale-animation {
     -webkit-transition: height cubic-bezier(0.1, 0.7, 0.1, 1) 0.6s;
     -moz-transition: height cubic-bezier(0.1, 0.7, 0.1, 1) 0.6s;
     -o-transition: height cubic-bezier(0.1, 0.7, 0.1, 1) 0.6s;
-    transition: height cubic-bezier(0.1, 0.7, 0.1, 1)0.6s;
+    transition: height cubic-bezier(0.1, 0.7, 0.1, 1) 0.6s;
   }
 
-  .calendar{
+  .calendar {
     width: 100vw;
     flex-wrap: wrap;
     display: flex;
@@ -119,7 +120,7 @@
     box-shadow: 0 0 15px 10px #e5ecef;
     z-index: 5;
 
-    .weekday-background{
+    .weekday-background {
       display: inline-block;
       position: absolute;
       height: 20px;
@@ -130,24 +131,24 @@
       background: white;
       top: 15px;
     }
-    div{
+    div {
       background: transparent;
       position: relative;
       width: 14%;
       height: 40px;
       line-height: 40px;
       text-align: center;
-      color:#959595;
+      color: #959595;
       padding: 5px 0;
       box-sizing: content-box;
     }
-    i{
+    i {
       z-index: 2;
       position: relative;
       font-size: 16px;
     }
-    i.has-content:after{
-      content:'';
+    i.has-content:after {
+      content: '';
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
@@ -160,12 +161,12 @@
       background: #00a5ee;
       border: 2px solid white;
     }
-    div.highlight{
+    div.highlight {
       color: #333333;
     }
-    div.selected:before{
+    div.selected:before {
       border: 2px solid #fe9073;
-      background: rgba(254,144,115,0.5);
+      background: rgba(254, 144, 115, 0.5);
       content: '';
       position: absolute;
       height: 40px;
@@ -177,10 +178,10 @@
       transform: translateX(-50%);
       -webkit-transform: translateX(-50%);
     }
-    div.today{
+    div.today {
       color: white;
     }
-    div.today:before{
+    div.today:before {
       content: '';
       position: absolute;
       height: 40px;
@@ -195,62 +196,63 @@
     }
   }
 
-  .plans-content{
-    .group-head{
+  .plans-content {
+    .group-head {
       height: 36px;
       line-height: 36px;
       padding: 0 5vw;
       background: #f5f5f5;
       color: #959595;
- /*     border-top:1px solid rgba(221, 221, 221, 0.6);*/
+      /*     border-top:1px solid rgba(221, 221, 221, 0.6);*/
       border-bottom: 1px solid rgba(221, 221, 221, 0.6);
     }
-    .top-head{
+    .top-head {
       width: 100vw;
       z-index: 10;
       position: fixed;
       left: 0;
       border-top: 1px solid rgba(221, 221, 221, 0.6);
     }
-    ion-scroll{
+    ion-scroll {
       height: 100%;
       width: 100%;
 
-      .plan-item{
+      .plan-item {
         width: 100%;
-      /*  padding: 12px 15px;*/
+        /*  padding: 12px 15px;*/
         background: white;
-        border-bottom:1px solid rgba(221, 221, 221, 0.6);
-        .plan-content-tilte{
-          padding: 15px 15px 5px 15px;
+        border-bottom: 1px solid rgba(221, 221, 221, 0.6);
+        padding-bottom: 10px;
+        .plan-content-tilte {
+          padding: 15px 15px 0px 15px;
         }
-        .plan-head{
+        .plan-head {
           position: relative;
           display: flex;
           height: 45px;
           width: 100%;
-          img{
+          img {
             height: 45px;
             width: 45px;
             border-radius: 50%;
           }
-          div{
+          div {
             margin-left: 15px;
             flex: 1;
-            span{
+            span {
               display: block;
               height: 20px;
               line-height: 20px;
             }
-            .plan-head-base{
+            .plan-head-base {
               color: #333333;
               width: 100%;
               margin-top: 3px;
-              .plan-place{
-                font-size:13px;
+              .plan-place {
+                font-size: 13px;
                 float: right;
                 color: #666666;
-                img{
+                img {
                   width: 20px;
                   height: 20px;
                   vertical-align: middle;
@@ -258,19 +260,19 @@
                 }
               }
             }
-            .plan-time{
+            .plan-time {
               color: #959595;
               margin-top: 2px;
             }
           }
         }
-        .plan-title{
+        .plan-title {
           font-size: 1.2em;
           padding-top: 15px;
           padding-bottom: 2px;
           color: #333333;
         }
-        .plan-content{
+        .plan-content {
           color: #666666;
           padding: 3px 0;
           overflow: hidden;
@@ -284,21 +286,21 @@
     }
   }
 
-  .sifting-button-area{
-    button:first-child{
+  .sifting-button-area {
+    button:first-child {
       width: 50vw;
     }
   }
 
-  .sifting-item.select-item{
+  .sifting-item.select-item {
     display: flex;
     justify-content: space-between;
     padding: 0 5vw;
-    div{
+    div {
       display: inline-block;
       height: 50px;
       line-height: 50px;
-      img{
+      img {
         position: static;
         width: 20px;
         height: 20px;
@@ -308,22 +310,22 @@
     }
   }
 
-  .input-area{
+  .input-area {
     height: calc(100vh - 300px);
     position: relative;
-    .input-title{
+    .input-title {
       height: 50px;
       width: 100vw;
       padding: 0 calc(5vw + 30px);
       display: flex;
       position: relative;
-      span{
+      span {
         display: inline-block;
         height: 50px;
         line-height: 50px;
         color: #333333;
       }
-      img{
+      img {
         position: absolute;
         width: 20px;
         height: 20px;
@@ -331,18 +333,18 @@
         left: 5vw;
       }
     }
-    .input-content{
+    .input-content {
       color: #959595;
       height: calc(100% - 50px);
       padding: 0 5vw;
-      textarea{
+      textarea {
         width: 100%;
         height: calc(100% - 100px);
         resize: none;
         color: #959595;
       }
     }
-    img{
+    img {
       position: absolute;
       width: 50px;
       height: 50px;
@@ -351,7 +353,7 @@
     }
   }
 
-  .left{
+  .left {
     position: absolute;
     left: 5vw;
     height: 20px;
@@ -359,7 +361,7 @@
     top: 11px;
   }
 
-  .voice-div{
+  .voice-div {
     height: 150px;
     width: 100%;
     box-shadow: 0 1px 1px 1px #959595;
@@ -370,7 +372,7 @@
     bottom: -150px;
     z-index: 99;
     background: white;
-    .voice-close{
+    .voice-close {
       position: absolute;
       top: 10px;
       right: 10px;
@@ -378,21 +380,21 @@
       width: 20px;
       border-radius: 50%;
     }
-    .text-div{
+    .text-div {
       width: 100%;
       height: 50px;
       line-height: 50px;
       text-align: center;
       font-size: 1.2em;
       color: #666666;
-      img{
+      img {
         height: auto;
         width: 20vw;
         margin: 0 5vw;
         vertical-align: middle;
       }
     }
-    .voice-icon{
+    .voice-icon {
       position: absolute;
       width: 70px;
       height: 70px;
@@ -400,9 +402,30 @@
       left: calc(50vw - 35px);
     }
   }
-  .voice-div.showUp{
+  .voice-div.showUp {
     transform: translateY(-150px);
     -webkit-transform: translateY(-150px);
   }
-
+  .comment-title {
+    text-align: right;
+    position: relative;
+    color: #bfbfbf;
+    width: 92%;
+    img {
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      top: 1px;
+      right: -20px;
+    }
+  }
+  .comment-text{
+    margin: 2px 10px 5px 15px;
+    color: #666666;
+    background: #f2f2f2;
+    padding:5px 5px 5px 5px;
+    i {
+      color: #00a5ee;
+    }
+  }
 }

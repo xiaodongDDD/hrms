@@ -29,7 +29,8 @@
       setRefreshDataFlag: setRefreshDataFlag,
       getRefreshDataFlag: getRefreshDataFlag,
       getMondayAndSunday: getMondayAndSunday,
-      getNextMondayAndSundayByDate: getNextMondayAndSundayByDate
+      getNextMondayAndSundayByDate: getNextMondayAndSundayByDate,
+      saleAnnotate:saleAnnotate
     };
 
     return service;
@@ -195,7 +196,15 @@
         error(response);
       });
     }
-
+   //添加批注
+    function saleAnnotate(success,error,params){
+      hmsHttp.post(baseUrl+"sale_annotate", params).success(function (result) {
+        success(result);
+      }).error(function (response, status) {
+        hmsPopup.hideLoading();
+        error(response);
+      });
+    }
     //
     function getHasPlanList(success, params, planSearchIsRunning) {
       hmsHttp.post(baseUrl + 'plan_list', params).success(function (result) {

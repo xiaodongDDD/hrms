@@ -102,54 +102,65 @@
                       ng-model="vm.saleContent"></textarea>
       </div>
     </div>
-    <div ng-if="vm.planType==1" ng-click="showComment(plan)"  style="margin: 0 15px;">
-                <span style="text-align:right;color:#bfbfbf;">点评<img src="build/img/application/plans/common.png" style="width: 16px;
-    height: 16px;
-    position: absolute;
-    right: 15px;"/></span>
+    <div ng-click="showComment()">
+    <div ng-if="vm.planType==1&&vm.planDetail.annotate!=''" class="comment-title">点评<img src="build/img/application/plans/common.png"/></div>
+    <div ng-if="vm.planType==1&&vm.planDetail.annotate!=''" class="comment-text">
+      <i>{{vm.planDetail.leaderName}}:</i>{{vm.planDetail.annotate}}
     </div>
-    <div style="margin: 0 15px;background: #f2f2f2;color: #333333;padding:5px 5px 5px 0">
-
-      <i style="color: #00a5ee;">{{vm.planDetail.leaderName}}:</i> {{vm.planDetail.annotate}}
     </div>
+   <!-- <div ng-if="vm.planType==1&&vm.planDetail.annotate!=''" class="comment-style" ng-click="showComment(plan)">
+                <span>点评<img src="build/img/application/plans/common.png"/></span>
+    </div>
+    <div  ng-if="vm.planType==1&&vm.planDetail.annotate!=''" class="comment-text">
+      <i>{{vm.planDetail.leaderName}}:</i> {{vm.planDetail.annotate}}
+    </div>-->
   </ion-content>
-  <ion-footer-bar ng-if="vm.planType==0">
-    <div class="footer-wrap" >
-      <div class="footer-button" ng-click="vm.cancelPlan()">
-        <div>取消销售计划</div>
-      </div>
-      <div class="button-confirm" ng-click="vm.savePlan()" align="center">
-        <div>
-          <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
-          {{ 'SAVE' | T }}
+    <ion-footer-bar ng-if="vm.planType==0">
+      <div class="footer-wrap" >
+        <div class="footer-button" ng-click="vm.cancelPlan()">
+          <div>取消销售计划</div>
+        </div>
+        <div class="button-confirm" ng-click="vm.savePlan()" align="center">
+          <div>
+            <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
+            {{ 'SAVE' | T }}
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-    </div>
-  </ion-footer-bar>
-  <ion-footer-bar ng-if="vm.planType==1">
-    <div class="footer-wrap">
-      <div class="button-confirm2" ng-click="vm.copyPlan()" align="center">
-        <div>
-          <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
-          复制到我的计划
+      <div>
+      </div>
+    </ion-footer-bar>
+    <ion-footer-bar ng-if="vm.planType==1">
+      <div class="footer-wrap">
+        <div class="button-confirm2" ng-click="vm.copyPlan()" align="center">
+          <div>
+            <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
+            复制到我的计划
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-    </div>
-  </ion-footer-bar>
-  <ion-footer-bar ng-if="vm.planType==2">
-    <div class="footer-wrap">
-      <div class="button-confirm2" ng-click="vm.cancelPlan()" align="center">
-        <div>
-          <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
-          取消销售计划
+      <div>
+      </div>
+    </ion-footer-bar>
+    <ion-footer-bar ng-if="vm.planType==2">
+      <div class="footer-wrap">
+        <div class="button-confirm2" ng-click="vm.cancelPlan()" align="center">
+          <div>
+            <img src="build/img/application/information/icon_confirm@3x.png" style="width: 20px;">
+            取消销售计划
+          </div>
         </div>
       </div>
-    </div>
-    <div>
+      <div>
+      </div>
+    </ion-footer-bar>
+
+  <ion-footer-bar  ng-if="showCommentFlag">
+    <form style="float:left;width:80%;"  ng-submit="annotateSubmit(planDetail)">
+      <textarea id="comment-text" style="overflow-y:visible ;width:100%;border: none;word-break:break-all" placeholder="请输入" ng-model="planDetail.annotate"></textarea>
+    </form>
+    <div style="float:left;width:20%">
+      <img src="build/img/application/plans/icon_voice@3x.png" style="width: 16px;">
     </div>
   </ion-footer-bar>
 </ion-view>
