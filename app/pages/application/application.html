@@ -36,7 +36,7 @@
     </div>
     <div class="application-outer">
       <div class="hms-animated application-left" ng-class="{true: 'start', false: ''}[animationsEnabled]">
-        <div class="appRegion">
+        <!--<div class="appRegion">
           <div class="appAreaBorder">
             <div class="appTitle office">CRM</div>
           </div>
@@ -51,7 +51,7 @@
               <div class="appText">{{appItem.appName}}</div>
             </div>
           </div>
-        </div>
+        </div>-->
         <div class="appRegion">
           <div class="appTitle office">个人办公</div>
           <div class="appArea" ng-repeat="appList in officeApp">
@@ -101,7 +101,7 @@
         </div>
       </div>
       <div class="hms-animated application-right" ng-class="{true: 'start', false: ''}[animationsEnabled]">
-        <div class="appRegion">
+        <<!--div class="appRegion">
           <div class="appTitle"></div>
           <div class="appArea" ng-repeat="appList in crmApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
@@ -113,7 +113,7 @@
               <div class="appText">{{appItem.appName}}</div>
             </div>
           </div>
-        </div>
+        </div>-->
         <div class="appRegion">
           <div class="appTitle"></div>
           <div class="appArea" ng-repeat="appList in officeApp">

@@ -1,0 +1,91 @@
+<ion-view view-title="保证金" class="crm bidbond">
+	<!--头部信息-->
+	<ion-header-bar align-title="center" class="bar-stable">
+		<img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()" />
+		<h2 class="title">{{'BIDBOND.BIDBOND'|T}}</h2>
+		<img src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="goState()" />
+	</ion-header-bar>
+
+	<!--搜索栏-->
+	<div class="row bar bar-subheader titles">
+		<div>
+			<div class="title-img">
+				<img src="build/img/contact/icon_search@3x.png">
+			</div>
+			<input ng-click="goSearch()" placeholder="{{'BIDBOND.SEARCH'|T}}" ng-readonly="true">
+			<img ng-click="showShiftDiv()" src="build/img/contact/icon_select_blue@3x.png" style="width: 43px;position: absolute;right: 2px;top: 2px;border: 10px solid transparent;" />
+		</div>
+	</div>
+
+	<!--页面内容-->
+	<ion-content class="margin-top" delegate-handle="slideimgs">
+		<div class="hideContent" ng-hide="showContent">
+			<div class="hide-icon">
+				<ion-spinner icon="ios-small" class="spinner spinner-ios"></ion-spinner>
+			</div>
+		</div>
+		<div ng-show="showContent">
+			<ion-refresher pulling-text="正在刷新数据" pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+			</ion-refresher>
+
+			<!--商机列表-->
+			<div class="opportunity-item" style="background-position: top bottom;" ng-repeat="item in bidbond"
+				ng-click="goEditBidbond(item)">
+				<div class="item-header">
+					{{'BIDBOND.APPLY_DATE'|T}}：{{item.applicationDate}}
+					<span>
+              			{{item.workflowStatusName}}
+           			</span>
+				</div>
+				<div class="opportunity-info">
+
+						<div class="opportunity-name">{{item.fullName}}</div>
+
+					<div class="more-bottom-margin">
+						<span class="cost-title">{{'BIDBOND.APPLY_AMOUNT'|T}}</span>
+						<span class="money">￥{{item.paymentAmount}}</span>
+					</div>
+				</div>
+			</div>
+
+			<ion-infinite-scroll   immediate-check="false" ng-if="moreDataCanBeLoaded" on-infinite="loadMore()" distance="1%">
+			</ion-infinite-scroll>
+		</div>
+	</ion-content>
+
+	<!--筛选页面-->
+	<div class="common-fix-div sifting-fix-div" ng-class="{true:'showUp'}[showShift]">
+		<div class="sifting-header"  ng-class="{true:'sifting-header-ios',false:'sifting-header'}[isIos]">
+			<img ng-click="showShiftDiv()"  src="build/img/application/customer/detail/top_left_arrow@3x.png" /> {{'BIDBOND.BIDBOND_FILTER'|T}}
+		</div>
+		<div class="sifting-item" ng-click="showSelectDiv('currency')">
+			<img src="build/img/application/customer/icon_money@3x.png" />
+			<span>{{'BIDBOND.CURRENCY'|T}}</span>
+			<span class="item-content">{{showData.currencyName}}</span>
+			<img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+		</div>
+		<div class="sifting-item" ng-click="showSelectDiv('status')">
+			<img src="build/img/application/customer/icon_flat_blue@3x.png" />
+			<span>{{'BIDBOND.STATUS'|T}}</span>
+			<span class="item-content">{{showData.workflowStatusName}}</span>
+			<img class="right-img" src="build/img/application/opportunity/right_arrow@3x.png">
+		</div>
+
+		<!--筛选页面底部按钮-->
+		<ion-footer-bar class="common-footer" ng-if="showShift">
+			<div class="footer-wrap">
+				<div class="footer-button " ng-click="showShiftDiv()">
+					<div class="left-div">{{'CANCEL'|T}}</div>
+				</div>
+				<div class="footer-button" ng-click="clearSifting()">
+					<div class="two-div">{{'CLEAR'|T}}</div>
+				</div>
+				<div class="button-confirm" ng-click="sifting()">
+					<div>
+						<img src="build/img/application/information/icon_confirm@3x.png"> {{'CONFIRM'|T}}
+					</div>
+				</div>
+			</div>
+		</ion-footer-bar>
+	</div>
+</ion-view>

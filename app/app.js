@@ -26,7 +26,8 @@ angular.module('myApp', [
   'customerModule',
   'opportunityModule',
   'clueModule',
-  'planModule'
+  'planModule',
+  'bidbondModule'
 ]);
 
 angular.module('myApp')
@@ -51,6 +52,8 @@ angular.module('myApp')
     'historyContact',
     'historyCompetitor',
     'historyOpportunity',
+    'historyBidbond',
+    
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -70,7 +73,8 @@ angular.module('myApp')
               history,
               historyContact,
               historyCompetitor,
-              historyOpportunity
+              historyOpportunity,
+              historyBidbond
     ) {
 
       $ionicPlatform.ready(function () {
@@ -79,6 +83,7 @@ angular.module('myApp')
         historyCompetitor.initDB();//初始化竞争对手查询数据库
         historyCompetitor.initDB();//初始化竞争对手查询数据库
         historyOpportunity.initDB();//初始化商机查询数据库
+        historyBidbond.initDB();//初始化保证金查询数据库
         try{
           navigator.splashscreen.hide();
         }catch(e){
