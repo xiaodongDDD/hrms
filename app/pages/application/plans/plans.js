@@ -384,9 +384,7 @@
     function goDetail(detail) {
       $state.go('tab.plans-detail', {"authority": getAuthorityType(), "planDetail": detail});
     }
-    vm.planDetail={
-
-    };
+    vm.planDetail={};
     function showComment(plan){
       console.log(plan);
       vm.planDetail=plan;
