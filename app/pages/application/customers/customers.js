@@ -824,32 +824,32 @@ angular.module('customerModule')
         };
       };
 
-      var options = {
-        date: new Date(),
-        mode: 'date',
-        titleText: '请选择时间',
-        okText: '确定',
-        cancelText: '取消',
-        doneButtonLabel: '确认',
-        cancelButtonLabel: '取消',
-        locale: 'zh_cn',
-        androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
-      };
-
-      $cordovaDatePicker.show(options).then(function (dateNo) {
-        if (dateNo) {
-          var year = dateNo.getFullYear();
-          var month = dateNo.getMonth() + 1;
-          var date = dateNo.getDate();
-          $scope.data.creationDateFrom = year + '-' + month + '-' + date;
-          $scope.showData.creationDateFrom = year + '-' + month + '-' + date;
-          console.log($scope.data.planDate);
-
-          //$scope.showData.week = showTime(dateNo);
-          //console.log($scope.showData.week);
-        }
-        $scope.$apply();
-      });
+      //var options = {
+      //  date: new Date(),
+      //  mode: 'date',
+      //  titleText: '请选择时间',
+      //  okText: '确定',
+      //  cancelText: '取消',
+      //  doneButtonLabel: '确认',
+      //  cancelButtonLabel: '取消',
+      //  locale: 'zh_cn',
+      //  androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+      //};
+      //
+      //$cordovaDatePicker.show(options).then(function (dateNo) {
+      //  if (dateNo) {
+      //    var year = dateNo.getFullYear();
+      //    var month = dateNo.getMonth() + 1;
+      //    var date = dateNo.getDate();
+      //    $scope.data.creationDateFrom = year + '-' + month + '-' + date;
+      //    $scope.showData.creationDateFrom = year + '-' + month + '-' + date;
+      //    console.log($scope.data.planDate);
+      //
+      //    //$scope.showData.week = showTime(dateNo);
+      //    //console.log($scope.showData.week);
+      //  }
+      //  $scope.$apply();
+      //});
 
 
       $scope.selectDate = function(key){
