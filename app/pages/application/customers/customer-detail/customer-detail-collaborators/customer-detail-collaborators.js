@@ -326,6 +326,11 @@ angular.module('customerModule')
         $scope.searchModel.searchValueKey = '';
         $scope.searchSelectValue();
       };
+
+      $scope.goEmployeeDetail = function (newEmployeeNumber) {
+        $state.go('tab.employeeDetailCrm', {employeeNumber: newEmployeeNumber});
+      };
+
     }]);
 angular.module('customerModule')
 .service('customerDetailCollaborator',function(baseConfig,hmsHttp,hmsPopup){
