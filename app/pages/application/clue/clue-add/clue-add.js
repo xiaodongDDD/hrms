@@ -15,6 +15,7 @@ angular.module('clueModule')
     '$ionicModal',
     'T',
     'clueDetailDataService',
+    'crmEmployeeService',
     function($scope,
              baseConfig,
              $ionicHistory,
@@ -25,7 +26,8 @@ angular.module('clueModule')
              $ionicScrollDelegate,
              $ionicModal,
              T,
-             clueDetailDataService) {
+             clueDetailDataService,
+             crmEmployeeService) {
 
       $scope.titleList = {
         competitors: T.T('NEW_OPPORTUNITY.COMPETITORS'),
@@ -169,16 +171,23 @@ angular.module('clueModule')
         $scope.sourceItems = [];
         $scope.noDataFlag = false;
 
-        opportunityAddService.getEmployeeDetail(function(response){
-          $scope.data.saleAreaId = response.employee_detail.saleAreaId;
-          $scope.data.saleTeamId = response.employee_detail.saleTeamId;
-          $scope.showData.saleArea = response.employee_detail.saleArea;
-          $scope.showData.saleTeam = response.employee_detail.saleTeam;
-          if($scope.showData.saleArea != '')
-            $scope.showData.saleBelong = $scope.showData.saleArea;
-          if($scope.showData.saleTeam != '')
-            $scope.showData.saleBelong += " | " + $scope.showData.saleTeam;
-        });
+        var employeeDetail = crmEmployeeService.getEmployeeDetail();
+        if(!employeeDetail){
+          crmEmployeeService.initDetail(function(){
+            employeeDetail = crmEmployeeService.getEmployeeDetail();
+            $scope.data.saleAreaId = employeeDetail.saleAreaId;
+            $scope.data.saleTeamId = employeeDetail.saleTeamId;
+            $scope.showData.saleArea = employeeDetail.saleArea;
+            $scope.showData.saleTeam = employeeDetail.saleTeam;
+            $scope.showData.saleBelong = employeeDetail.saleBelong;
+          });
+        } else {
+          $scope.data.saleAreaId = employeeDetail.saleAreaId;
+          $scope.data.saleTeamId = employeeDetail.saleTeamId;
+          $scope.showData.saleArea = employeeDetail.saleArea;
+          $scope.showData.saleTeam = employeeDetail.saleTeam;
+          $scope.showData.saleBelong = employeeDetail.saleBelong;
+        }
 
       }
 

@@ -19,6 +19,7 @@ angular.module('opportunityModule')
     'T',
     'opportunityDetailDataService',
     'clueDetailDataService',
+    'crmEmployeeService',
     function($scope,
              baseConfig,
              $ionicHistory,
@@ -31,7 +32,8 @@ angular.module('opportunityModule')
              $ionicModal,
              T,
              opportunityDetailDataService,
-             clueDetailDataService) {
+             clueDetailDataService,
+             crmEmployeeService) {
 
       $rootScope.img="";
 
@@ -380,16 +382,23 @@ angular.module('opportunityModule')
 
         console.log($scope.promoteFlag);
 
-        opportunityAddService.getEmployeeDetail(function(response){
-          $scope.data.saleAreaId = response.employee_detail.saleAreaId;
-          $scope.data.saleTeamId = response.employee_detail.saleTeamId;
-          $scope.showData.saleArea = response.employee_detail.saleArea;
-          $scope.showData.saleTeam = response.employee_detail.saleTeam;
-          if($scope.showData.saleArea != '')
-            $scope.showData.saleBelong = $scope.showData.saleArea;
-          if($scope.showData.saleTeam != '')
-            $scope.showData.saleBelong += " | " + $scope.showData.saleTeam;
-        });
+        var employeeDetail = crmEmployeeService.getEmployeeDetail();
+        if(!employeeDetail){
+          crmEmployeeService.initDetail(function(){
+            employeeDetail = crmEmployeeService.getEmployeeDetail();
+            $scope.data.saleAreaId = employeeDetail.saleAreaId;
+            $scope.data.saleTeamId = employeeDetail.saleTeamId;
+            $scope.showData.saleArea = employeeDetail.saleArea;
+            $scope.showData.saleTeam = employeeDetail.saleTeam;
+            $scope.showData.saleBelong = employeeDetail.saleBelong;
+          });
+        } else {
+          $scope.data.saleAreaId = employeeDetail.saleAreaId;
+          $scope.data.saleTeamId = employeeDetail.saleTeamId;
+          $scope.showData.saleArea = employeeDetail.saleArea;
+          $scope.showData.saleTeam = employeeDetail.saleTeam;
+          $scope.showData.saleBelong = employeeDetail.saleBelong;
+        }
 
       };
 

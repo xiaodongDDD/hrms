@@ -16,6 +16,9 @@
             templateUrl: 'build/pages/application/plans/plans.html',
             controller: 'PlansCtrl'
           }
+        },
+        params:{
+          data:""
         }
       })
   }
@@ -28,6 +31,7 @@
                      $state,
                      publicMethod,
                      $ionicHistory,
+                     $stateParams,
                      $ionicScrollDelegate,
                      $timeout,
                      $rootScope,
@@ -1008,6 +1012,9 @@
         getWeekPlan(new Date());
       }
     }
+
+    if($stateParams.data == 'WEEK')
+      changeShowModel(false);
 
   }
 }());
