@@ -13,6 +13,7 @@
     "queryPath": "http://wechat.hand-china.com/hcrm_web/i/api",
     "imPath": "http://wechat.hand-china.com/hcrm_web",
     "pluginBusinessPath": "http://wechat.hand-china.com",
+    "tengxuntuyouServer": "https://api.youtu.qq.com/youtu/api/detectface",
     "pkgIdentifier": "",
     "appEnvironment": "UAT",
     "expUploadUrl": "http://172.20.0.71:8099/handhr_aurora/hand_app_fileupload.svc",

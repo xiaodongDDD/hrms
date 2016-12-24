@@ -35,7 +35,9 @@
                                      baseConfig,
                                      $stateParams,
                                      hmsPopup,
-                                     faceEcognitionService) {
+                                     faceEcognitionService,
+                                     hmsReturnView,
+                                     TabsService) {
     var vm = this;
 
     vm.loginFace = loginFace;
@@ -48,11 +50,8 @@
     }
 
     function goBack() {
-      if($stateParams.from == "collection"){
-        $ionicHistory.goBack(-2);
-      }else {
-        $ionicHistory.goBack();
-      }
+      TabsService.setManualReturnFlag(true);
+      hmsReturnView.returnToState('tab.myInfo');
     }
 
     //人脸识别
@@ -63,10 +62,39 @@
         }
         hmsPopup.showPopup('验证失败，请重新验证或补充照片！');
       };
+
       var success = function (result) {
         uploadServe(result.imgPath);
+      };
+
+      if(faceEcognitionService.getNoPluginMode()){
+        //临时解决方案
+        catchImage();
+      }else{
+        //pluginface.faceDetect('', success, error);
       }
-      pluginface.faceDetect('', success, error);
+    }
+
+    //
+    function catchImage() {
+      navigator.camera.getPicture(onSuccess, onFail, {
+        quality: 90,
+        targetWidth: 450,
+        targetHeight: 450,
+        destinationType: Camera.DestinationType.FILE_URI,
+        cameraDirection: Camera.Direction.FRONT
+      });
+
+      function onFail(result) {
+        if (baseConfig.debug) {
+          alert('ecognition.error ' + angular.toJson(result));
+        }
+        //hmsPopup.showPopup('验证失败，请重新验证或补充照片！');
+      }
+
+      function onSuccess(imageURI) {
+        uploadServe(imageURI);
+      }
     }
 
     //上传到服务器进行验证
@@ -77,9 +105,9 @@
           alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
         }
         var result = JSON.parse(res.response);
-        if(result.rows[0] && result.rows[0].confidence && result.rows[0].confidence > 80){
+        if (result.rows[0] && result.rows[0].confidence && result.rows[0].confidence > 80) {
           hmsPopup.showPopup('验证成功！匹配度' + result.rows[0].confidence);
-        }else{
+        } else {
           hmsPopup.showPopup('验证失败，请重新验证或重新设置！匹配度' + result.rows[0].confidence);
         }
         //hmsPopup.showPopup('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
@@ -94,7 +122,7 @@
       };
 
       var onProgress = function (progressEvent) {
-        faceEcognitionService.processProgress(progressEvent,$scope,'验证中');
+        faceEcognitionService.processProgress(progressEvent, $scope, '验证中');
       }
 
       faceEcognitionService.uploadImage('/faceVerify', imgUrl, onProgress, success, error);

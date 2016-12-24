@@ -64,10 +64,11 @@ angular.module('loginModule')
 
       var goToMain = function () {
         //$state.go("login");
-        if (window.localStorage.token && window.localStorage.token != "") {
+        if (window.localStorage.token && window.localStorage.token != "" && window.localStorage.isHrms2108) {
           //checkVersionService.checkAppVersion();
           $state.go("tab.message");
         } else {
+          window.localStorage.isHrms2108 = "true";
           $state.go("login");
         }
       };
