@@ -52,3 +52,40 @@ angular.module('applicationModule')
       };
 
     }]);
+
+angular.module('applicationModule')
+  .service('crmEmployeeService', [
+    'baseConfig',
+    'hmsPopup',
+    'opportunityAddService',
+    function (baseConfig,
+              hmsPopup,
+              opportunityAddService) {
+
+    this.crmEmployeeDetail = null;
+
+    this.initDetail = function(success){
+      var that = this;
+      opportunityAddService.getEmployeeDetail(function(response){
+        if(response.returnCode == 'S'){
+          if(response.employee_detail.saleArea != '')
+            response.employee_detail.saleBelong = response.employee_detail.saleArea;
+          if(response.employee_detail.saleTeam != '')
+            response.employee_detail.saleBelong += " | " + response.employee_detail.saleTeam;
+          that.crmEmployeeDetail = response.employee_detail;
+          success();
+        } else {
+          if(response.returnCode == 'E')
+            hmsPopup.showPopup(response.returnMsg);
+          else
+            hmsPopup.showPopup('crm数据获取失败，请检查网络或联系管理员');
+        }
+      });
+    };
+
+    this.getEmployeeDetail = function(){
+      return this.crmEmployeeDetail;
+    }
+
+  }]);
+

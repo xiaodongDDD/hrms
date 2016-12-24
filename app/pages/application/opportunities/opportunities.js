@@ -778,8 +778,6 @@ angular.module('opportunityModule')
         $scope.$broadcast('scroll.refreshComplete');
       };
 
-      $scope.moreOpportunityCanBeLoaded = false;
-
       var getMoreOpportunitiesSuccess = function(response){
         if(response.returnCode == "S"){
           $scope.opportunities = $scope.opportunities.concat(response.opportunity_list);
