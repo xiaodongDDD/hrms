@@ -189,7 +189,7 @@ angular.module('customerModule')
             $scope.loadMoreDataFlag = false;
           }else{
             $scope.customers = response.customer_list;
-            $scope.loadMoreDataFlag = true;
+            $scope.loadMoreDataFlag = $scope.loadMoreDataFlag = response.customer_list.length==$scope.data.pageSize;
             console.log($scope.customers.length)
           }
 

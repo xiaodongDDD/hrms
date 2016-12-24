@@ -96,6 +96,22 @@ angular.module('customerModule')
         //$ionicScrollDelegate.$getByHandle("slideimgs").resize();
       };
 
+      $scope.goDetail = function (detail) {
+        if(detail.operationType=='SALE_PLAN'){
+          $state.go('tab.plans-detail', {"authority":true,"planId": detail.planId});
+        }
+
+      }
+
+      ////获取当前是什么查询权限
+      //function getAuthorityType() {
+      //  var authority = 'OTHER';
+      //  if (vm.planAuthority.MY.selected) {
+      //    authority = 'MY';
+      //  }
+      //  return authority;
+      //}
+
       $rootScope.$on("REFRESH_ADD_PLAN", function () {
         console.log(  $scope.value);
         $scope.doRefresh();
@@ -110,6 +126,9 @@ angular.module('customerModule')
        console.log("销售动态页面的ID==="+window.localStorage.customerId)
         $scope.$apply();
      })
+
+
+
     }]);
 
 angular.module('customerModule')

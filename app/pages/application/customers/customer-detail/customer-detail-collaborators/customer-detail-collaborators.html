@@ -58,7 +58,7 @@
       </ion-item>
       <ion-item ng-repeat="item in collaborators" style="padding:0!important;background: #ffffff">
         <div class="row row-center" style="padding:0;height: 80px">
-          <div class="col col-60" ng-click="goDetail(item)">
+          <div class="col col-60" ng-click="goEmployeeDetail(item.employeeCode)">
             <div class="row row-center">
               <div class="col">
                 <span style="font-size: 17px;color:#333333;margin-left:5px;">{{item.name==''?'大区':item.name}}</span>
