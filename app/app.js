@@ -53,7 +53,7 @@ angular.module('myApp')
     'historyCompetitor',
     'historyOpportunity',
     'historyBidbond',
-    
+
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -247,6 +247,7 @@ angular.module('myApp')
             }
           }
         })
+
         .state('tab.contactCrm', {
           url: '/contactCrm',
           views: {
@@ -338,7 +339,7 @@ angular.module('myApp')
         if (window.localStorage.token && window.localStorage.token != "" && window.localStorage.isHrms2108) {
 
           window.localStorage.isHrms2108 = "true";
-          
+
           if (window.localStorage.getItem('gesturePassword') && window.localStorage.getItem('gesturePassword') != '') {
             $urlRouterProvider.otherwise('/gesture-lock');
           } else {

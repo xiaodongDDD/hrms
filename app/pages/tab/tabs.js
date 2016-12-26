@@ -22,6 +22,8 @@ angular.module('loginModule').controller('TabsCtrl',
         });
       }
 
+      $scope.hasCrm = baseConfig.hasCrm;
+
       $scope.showGuideFlag;
 
       $scope.buttonTapped = function () {
@@ -46,7 +48,7 @@ angular.module('loginModule').controller('TabsCtrl',
         }
         //tabs中存在的主页面不需要隐藏，hidetabs=false
         if (statename != 'tab.message' && statename != 'tab.application' &&
-          statename != 'tab.contact' && statename != 'tab.myInfo') {
+          statename != 'tab.contact' && statename != 'tab.myInfo' && statename != 'tab.contactCrm') {
           $scope.hideTabs = true;
         } else {
           if (TabsService.getManualReturnFlag() === true) {
@@ -63,7 +65,7 @@ angular.module('loginModule').controller('TabsCtrl',
         }
         //tabs中存在的主页面不需要隐藏，hidetabs=false
         if (statename === 'tab.message' || statename === 'tab.application' ||
-          statename === 'tab.contact' || statename === 'tab.myInfo') {
+          statename === 'tab.contact' || statename === 'tab.myInfo' || statename === 'tab.contactCrm') {
           $scope.hideTabs = false;
         }
       });

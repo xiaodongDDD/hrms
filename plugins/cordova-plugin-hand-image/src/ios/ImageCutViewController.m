@@ -141,7 +141,7 @@
 
     
     
-    [self updateZoomScale];
+    //[self updateZoomScale];
     
     [self setCropSize:_cropSize];
     
@@ -269,7 +269,7 @@
     
     NSData *data = UIImagePNGRepresentation([self cropImage]);
     
-    _imageExtCount = _imageExtCount%2+1;
+    _imageExtCount = _imageExtCount%10+1;
     NSString* imageUrl = [NSString stringWithFormat:@"%@/tmp/crop%ld.png", NSHomeDirectory(), (long)_imageExtCount];
     
     [data writeToFile: imageUrl atomically:YES];
@@ -348,7 +348,17 @@
     [[self scrollView] setMinimumZoomScale:min];
     [[self scrollView] setMaximumZoomScale:max + 5.0f];
     
-    [[self scrollView] setZoomScale:max animated:YES];
+    
+    CGRect screen = [ UIScreen mainScreen ].applicationFrame;
+    CGFloat xInitScale =  screen.size.width / width;
+    CGFloat yInitScale =  (screen.size.height-44) / height ;
+    CGFloat minInit = MAX(xInitScale, yInitScale);
+
+    if (min>minInit) {
+        minInit = min;
+    }
+    
+    [[self scrollView] setZoomScale:minInit animated:NO];
 }
 
 

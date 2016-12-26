@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="calendar-container">
+    <div class="calendar-container" ng-if="hasCrm">
       <img src="build/img/application/app_banner@3x.png" class="calendar-head"/>
       <div class="calendar-content">
         <div class="application-calendar">
@@ -50,14 +50,14 @@
       </div>
     </div>
 
-    <div class="message-area">
+    <div class="message-area" ng-if="hasCrm">
       <div ng-click="goWrite(days[nowSelectedDate])" ng-class="{0:'TS-refuse-message',1:'TS-commit-message',2:'TS-approval-message'}[days[nowSelectedDate].timeSheetValue]">TS{{days[nowSelectedDate].timeSheetText}} {{days[nowSelectedDate].project}}</div>
       <div ng-click="goPlan()" ng-class="{true:'plan-has-message'}[days[nowSelectedDate].planCount != 0]">销售计划： {{days[nowSelectedDate].planCount}}条 </div>
     </div>
 
     <div class="application-outer">
       <div class="hms-animated application-left" ng-class="{true: 'start', false: ''}[animationsEnabled]">
-        <div class="appRegion">
+        <div class="appRegion" ng-if="hasCrm">
           <div class="appAreaBorder">
             <div class="appTitle office">CRM</div>
           </div>
@@ -122,7 +122,7 @@
         </div>
       </div>
       <div class="hms-animated application-right" ng-class="{true: 'start', false: ''}[animationsEnabled]">
-        <div class="appRegion">
+        <div class="appRegion" ng-if="hasCrm">
           <div class="appTitle"></div>
           <div class="appArea" ng-repeat="appList in crmApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
