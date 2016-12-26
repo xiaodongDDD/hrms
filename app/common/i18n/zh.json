@@ -185,10 +185,10 @@
   "OPPORTUNITIES": {
     "ALL_OPPORTUNITIES": "所有商机",
     "BOARD": {
-      "GOING": "进行中",
-      "NEW": "当年新增",
-      "WIN": "当年赢取",
-      "CLOSE": "当年关闭"
+      "ALL": "所有",
+      "HOT": "当年热门",
+      "BIG": "当年赢面大",
+      "WIN": "当年赢取"
     },
     "SEARCH_PLACEHOLDER": "搜索联系人、客户名称",
     "CREATION_DATE":"创建时间",
