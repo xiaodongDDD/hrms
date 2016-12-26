@@ -10,8 +10,8 @@
     <img src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="goPlansAdd()"/>
   </ion-header-bar>
 
-  <ion-content has-bouncing="false" scroll="false">
-
+  <ion-content has-bouncing="false" scroll="false" on-touch="hideCommont()">
+    <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
     <div class="select-head">
       <div class="icon-area">
         <img ng-src="{{'build/img/application/plans/icon_plan' + (showAsMonth ? '_selected@3x.png' : '@3x.png')}}"
@@ -96,9 +96,9 @@
                 </div>
                 <div class="plan-content">计划内容：{{plan.saleContent}}</div>
               </div>
-              <div ng-if="planAuthority.OTHER.selected" ng-click="showComment(plan)">
-                <div class="comment-title">点评<img src="build/img/application/plans/common.png"/></div>
-                <div class="comment-text" ng-if="plan.annotate!=''">
+              <div  >
+                <div ng-if="planAuthority.OTHER.selected" class="comment-title" ng-click="showComment(plan)">点评<img  src="build/img/application/plans/common.png"/></div>
+                <div class="comment-text" id="annotate" ng-if="plan.annotate!=''">
                   <i>{{plan.leaderName}}:</i>{{plan.annotate}}
                 </div>
               </div>
@@ -150,9 +150,9 @@
                   </div>
                   <div class="plan-content">计划内容：{{plan.saleContent}}</div>
                 </div>
-                <div ng-if="planAuthority.OTHER.selected" ng-click="showComment(plan)">
-                  <div class="comment-title">点评<img src="build/img/application/plans/common.png"/></div>
-                  <div class="comment-text" ng-if="plan.annotate!=''">
+                <div>
+                  <div  ng-if="planAuthority.OTHER.selected"  ng-click="showComment(plan)" class="comment-title" >点评<img  src="build/img/application/plans/common.png"/></div>
+                  <div class="comment-text"  ng-if="plan.annotate!=''">
                     <i>{{plan.leaderName}}:</i>{{plan.annotate}}
                   </div>
                 </div>
@@ -169,7 +169,7 @@
       </ion-scroll>
     </div>
   </ion-content>
-  <div ng-if="holdAnnotate" class="bar bar-footer" style="bottom:44px;background:none;">
+  <div ng-if="holdAnnotate" class="bar bar-footer" style="bottom:44px;">
     <div style="width:30%;float:left;height: 40px;display:table;">
       <div style="vertical-align:middle; display:table-cell;height:40px;width: 60px;text-align:center;">
         <img src="build/img/plans/icon_weave@3x.png" style="width: 60px;">
@@ -187,23 +187,32 @@
       </div>
     </div>
   </div>
-  <ion-footer-bar ng-if="showCommentFlag">
+
+  <div class="bar " id="bar-footer2" style="bottom:0px;" id="test" ng-if="showCommentFlag">
     <div style="float:left;width:10%;display:table;"  on-touch="touchAnnotate()" on-release="annotateRelease()">
       <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
-        <img src="build/img/application/plans/icon_voice@3x.png" style="width: 20px;">
+        <img src="build/img/application/plans/icon_voice@3x.png" style="width: 20px;    position: absolute;
+    bottom: 12px;
+    left: 10px;">
       </div>
     </div>
-    <form style="float:left;width:80%;">
-      <textarea id="comment-text" style="overflow-y:visible ;width:100%;border: none;word-break:break-all;border: 1px solid #ddd;
+    <div style="float:left;width:80%;">
+      <textarea  id="comment-text" oninput="this.style.height = '40px';
+              this.style.height = this.scrollHeight + 'px';
+              this.parentNode.style.height = '0px';
+              this.parentNode.style.height = this.scrollHeight + 0 + 'px'" style="overflow-y:visible;width:100%;word-break:break-all;border: 1px solid #ddd;
     border-radius: 5px;"
                 placeholder="" ng-model="planDetail.annotate"></textarea>
-    </form>
+      <!--div contenteditable="true" id="comment-text" >{{planDetail.annotate}}</div>-->
+    </div>
     <div style="float:left;width:10%;display:table;" ng-click="annotateSubmit(planDetail)">
-      <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
+      <div style="vertical-align:middle; display:table-cell;position: absolute;
+    bottom: 12px;
+    right: 5px;">
       发送
       </div>
     </div>
-  </ion-footer-bar>
+  </div>
   <!--  <div style="position: fixed;bottom: 0;height: 40px;    width: 100%;padding: 5px 0 0 5px;" ng-if="showCommentFlag">
      &lt;!&ndash; 测试测试测试&ndash;&gt;
      &lt;!&ndash; {{planDetail.annotate}}&ndash;&gt;
@@ -271,3 +280,12 @@
     </div>
   </div>
 </ion-view>
+<style>
+  #bar-footer2 {
+    bottom: 0;
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    background-position: top;
+    height: auto;
+  }
+</style>

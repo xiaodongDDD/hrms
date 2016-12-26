@@ -7,7 +7,7 @@
     <h2 class="title">销售计划-{{vm.planDetail.status}}</h2>
   </ion-header-bar>
 
-  <ion-content>
+  <ion-content on-touch="hideCommont()">
     <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
     <!--查询修改销售计划-->
     <hms-select-image-item
@@ -102,8 +102,8 @@
                       ng-model="vm.saleContent"></textarea>
       </div>
     </div>
-    <div ng-click="showComment()">
-    <div ng-if="vm.planType==1&&vm.planDetail.annotate!=''" class="comment-title">点评<img src="build/img/application/plans/common.png"/></div>
+    <div >
+    <div ng-if="vm.planType==1" ng-click="showComment()" class="comment-title">点评<img  src="build/img/application/plans/common.png"/></div>
     <div ng-if="vm.planType==1&&vm.planDetail.annotate!=''" class="comment-text">
       <i>{{vm.planDetail.leaderName}}:</i>{{vm.planDetail.annotate}}
     </div>
@@ -115,7 +115,7 @@
       <i>{{vm.planDetail.leaderName}}:</i> {{vm.planDetail.annotate}}
     </div>-->
   </ion-content>
-  <div ng-if="showCommentFlag"  class="bar bar-footer" style="bottom:104px;background:none;">
+  <div ng-if="holdAnnotate"  class="bar bar-footer" style="bottom:104px;background:none;">
     <div style="width:30%;float:left;height: 40px;display:table;">
       <div style="vertical-align:middle; display:table-cell;height:40px;width: 60px;text-align:center;">
         <img src="build/img/plans/icon_weave@3x.png" style="width: 60px;">
@@ -133,20 +133,27 @@
       </div>
     </div>
   </div>
-  <div ng-if="showCommentFlag"   class="bar bar-footer" style="bottom:60px;background:none;">
+  <div ng-if="showCommentFlag"   class="bar bar-footer" style="bottom:60px;height: auto;">
 
-    <div style="float:left;width:10%;display:table;">
+    <div style="float:left;width:10%;display:table;"  on-touch="touchAnnotate()" on-release="annotateRelease()">
       <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
-        <img src="build/img/application/plans/icon_voice@3x.png" style="width: 20px;">
+        <img src="build/img/application/plans/icon_voice@3x.png" style="width: 20px;    position: absolute;
+    bottom: 12px;
+    left: 10px;">
       </div>
     </div>
-    <form style="float:left;width:80%;">
-      <textarea id="comment-text" style="overflow-y:visible ;width:100%;border: none;word-break:break-all;border: 1px solid #ddd;
+    <div style="float:left;width:80%;">
+      <textarea oninput="this.style.height = '40px';
+              this.style.height = this.scrollHeight + 'px';
+              this.parentNode.style.height = '0px';
+              this.parentNode.style.height = this.scrollHeight + 0 + 'px'"  id="commentAdd" style="overflow-y:visible ;width:100%;word-break:break-all;border: 1px solid #ddd;
     border-radius: 5px;"
-                placeholder="" ng-model="planDetail.annotate"></textarea>
-    </form>
-    <div style="float:left;width:10%;display:table;" ng-click="annotateSubmit(planDetail)">
-      <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
+                placeholder="" ng-model="vm.planDetail.annotate"></textarea>
+    </div>
+    <div style="float:left;width:10%;display:table;" ng-click="annotateSubmit()">
+      <div style="vertical-align:middle; display:table-cell;position: absolute;
+    bottom: 12px;
+    right: 5px;">
         发送
       </div>
     </div>

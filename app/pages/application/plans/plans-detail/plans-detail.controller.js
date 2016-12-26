@@ -46,7 +46,8 @@
                            $cordovaDatePicker,
                            $timeout) {
     var vm = this;
-    vm.showCommentFlag=false;
+  /*  if( $stateParams.planDetail)*/
+    $scope.showCommentFlag=false;
     $scope.showSmallCrmLoading = false;
     var authority = $stateParams.authority;
 /*    vm.showComment=showComment;*/
@@ -613,12 +614,58 @@
           }, 0);
         });
     };
+    $scope.hideCommont=function(){
+      $scope.showCommentFlag=false;
+      var item = $('#commentAdd');
+      if (ionic.Platform.isWebView()) {
+        $timeout(function () {
+          cordova.plugins.Keyboard.close();
+          console.log("失焦");
+          item.blur();
+          $scope.$apply();
+        },300);
+      }
+    };
     $scope.showComment=function(){
       console.log("======");
-      vm.showCommentFlag=!vm.showCommentFlag;
-      console.log( vm.showCommentFlag);
+      $scope.showCommentFlag=!$scope.showCommentFlag;
+      var item = $('#commentAdd');
+      if (ionic.Platform.isWebView()) {
+        $timeout(function () {
+          cordova.plugins.Keyboard.show();
+          console.log("聚焦");
+          item.focus();
+          $scope.$apply();
+        },300);
+      }
+      console.log(detail);
       /*    plan.annotate=vm.planDetail.annotate;*/
-    }
+    };
+    $scope.annotateSubmit=function(){
+      /*  console.log("ssssss");*/
+      console.log("发送");
+      var annotate=detail.annotate = $('#commentAdd').val();
+      console.log(detail);
+      var params={
+        planId:detail.planId,
+        annotate: annotate
+      };
+   /*   getPlanByLastSelectDay();*/
+      var annotateSuccess=function(result){
+        $scope.showCommentFlag=false;
+        if(result.returnCode=="S"){
+          init();
+        }else{
+          hmsPopup.showPopup=result.returnMsg;
+          console.log(result);
+        }
+      };
+      var annotatError=function(result){
+        vm.showCommentFlag=false;
+        console.log(result);
+      };
+      plansService.saleAnnotate(annotateSuccess,annotatError,params);
+    };
     function selectTime($index, item) {
       vm.timeItemsBucket.number = $index;
       vm.timeItemsBucket.value = item.value;
@@ -630,5 +677,48 @@
     function goBack() {
       $ionicHistory.goBack();
     }
+    $scope.showSmallCrmLoading=false;
+    $scope.holdAnnotate = false;
+    $scope.touchAnnotate=function(){
+      $scope.holdAnnotate = true;
+      cordova.plugins.pluginIflytek.startRecorerRecognize(
+        function (msg) {
+        }, function (msg) {
+
+        });
+    };
+    $scope.annotateRelease=function(){
+      $scope.holdAnnotate = false;
+      $scope.showSmallCrmLoading = true;
+      console.log("结束录音");
+      $timeout(function () {
+        console.log("timeout");
+        $scope.showSmallCrmLoading = false;
+        /*  hmsPopup.showPopup("识别失败，请重新尝试！");*/
+      }, 5000);
+      cordova.plugins.pluginIflytek.stopRecorderRecognize(
+        function (msg) {
+          hmsPopup.hideLoading();
+          console.log("测试错误");
+          $scope.showSmallCrmLoading = false;
+          $('#voice-img').removeClass('big-img');
+          hmsPopup.showPopup(msg);
+          /*       $timeout(function () {
+           insertText(document.getElementById('text'), msg);
+           $scope.$apply();
+           $scope.showSmallCrmLoading = false;
+           }, 0);*/
+          /*  $scope.$apply();*/
+        }, function (msg) {
+          $('#voice-img').removeClass('big-img');
+          console.log("测试正确");
+          /* $scope.$apply();*/
+          $timeout(function () {
+            insertText(document.getElementById('commentAdd'), msg);
+            $scope.$apply();
+            $scope.showSmallCrmLoading = false;
+          }, 0);
+        });
+    };
   }
 })();
