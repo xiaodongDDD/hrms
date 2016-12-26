@@ -331,7 +331,7 @@
     }
    $scope.annotateSubmit=function(planDetail){
    /*  console.log("ssssss");*/
-     var annotate=planDetail.annotate = $('#comment-text').val();
+     var annotate=planDetail.annotate = $("#comment-text").val();
      console.log(planDetail);
      var params={
        planId:planDetail.planId,
@@ -340,7 +340,8 @@
      var annotateSuccess=function(result){
        vm.showCommentFlag=false;
        if(result.returnCode=="S"){
-
+         initSelect();
+         getPlanByLastSelectDay();
        }else{
          hmsPopup.showPopup=result.returnMsg;
          console.log(result);
@@ -386,14 +387,31 @@
     }
     //进入计划明细界面
     function goDetail(detail) {
+      console.log(detail);
+      console.log(vm.planAuthority.OTHER.selected);
+      detail.showCommentFlag=vm.planAuthority.OTHER.selected;
+     /* detail.leaderName=;*/
       $state.go('tab.plans-detail', {"authority": getAuthorityType(), "planDetail": detail});
     }
     vm.planDetail={};
     function showComment(plan){
       console.log(plan);
       vm.planDetail=plan;
-      vm.showCommentFlag=!vm.showCommentFlag;
+      vm.showCommentFlag=true;
+      var item = $('#comment-text');
+      $scope.testH=$('#annotate').height();
+      console.log( $scope.testH);
+      if (ionic.Platform.isWebView()) {
+        $timeout(function () {
+          cordova.plugins.Keyboard.show();
+          console.log("聚焦");
+          item.focus();
+          $scope.$apply();
+        }, 300);
+      }
+
       console.log("=====");
+      console.log(vm.showCommentFlag);
       console.log(vm.planDetail);
   /*    plan.annotate=vm.planDetail.annotate;*/
     }
@@ -1088,7 +1106,9 @@
         alert('aaa');
       });
     });*/
-    $scope.holdAnnotate=false;
+ /*   $scope.holdAnnotate=false;*/
+    $scope.showSmallCrmLoading=false;
+    $scope.holdAnnotate = false;
     $scope.touchAnnotate=function(){
       $scope.holdAnnotate = true;
       cordova.plugins.pluginIflytek.startRecorerRecognize(
@@ -1097,7 +1117,18 @@
 
         });
     };
-
+    $scope.hideCommont=function(){
+      $scope.showCommentFlag=false;
+      var item = $('#comment-text');
+      if (ionic.Platform.isWebView()) {
+        cordova.plugins.Keyboard.close();
+        $timeout(function () {
+          console.log("失焦");
+          item.blur();
+          $scope.$apply();
+        },300);
+      }
+    };
     if($stateParams.data == 'WEEK')
       changeShowModel(false);
 
@@ -1119,6 +1150,7 @@
     }
     $scope.annotateRelease=function(){
       $scope.holdAnnotate = false;
+      $scope.showSmallCrmLoading = true;
       console.log("结束录音");
       $timeout(function () {
         console.log("timeout");
@@ -1149,6 +1181,20 @@
           }, 0);
         });
     };
+/*   var text  = $("#comment-text");
+    $scope.areaHight=function(){
+      console.log(text);
+      text.scrollTop = 0;
+      var srcollH=$("#annotate").height();
+      console.log(srcollH);
+      $("#comment-text").on("input",function(){
+    /!*    $(this).css({height:'500px'});*!/
+        $(this).css({height:srcollH+'px'});
+        console.log( $(this).height());
+        $(this).css({height:(this.scrollHeight)+"px"});
+        $('#test').css({height:(this.scrollHeight)+"px"});
+      });
+    };*/
 
   }
 }());
