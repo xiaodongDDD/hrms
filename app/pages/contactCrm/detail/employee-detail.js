@@ -36,6 +36,7 @@ angular.module('contactModule')
 		'contactService',
 		'$cordovaActionSheet',
     '$state',
+    'customerDetailService',
 		function($scope,
 			$ionicScrollDelegate,
 			$ionicModal,
@@ -48,7 +49,8 @@ angular.module('contactModule')
 			$ionicActionSheet,
 			contactService,
 			$cordovaActionSheet,
-      $state) {
+      $state,
+      customerDetailService) {
 			/**
 			 * var section
 			 */
@@ -100,11 +102,15 @@ angular.module('contactModule')
 			initEmployeeData();
 
 			$scope.goBackPage = function() {
-        if ($ionicHistory.viewHistory().backView ) {
-          $ionicHistory.goBack();
-
-        }else {
+        if (customerDetailService.getIsEdit()) {
           $state.go('tab.customer-detail');
+        }else {
+          if($ionicHistory.viewHistory().backView){
+            $ionicHistory.goBack();
+          }else{
+            $state.go('tab.contactCrm');
+          }
+
         }
 
 			};

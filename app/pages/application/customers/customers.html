@@ -188,11 +188,11 @@
         <img src="build/img/application/opportunity/icon_day.png"/>
         <span>{{ 'CONTACTS.CREATE_DATA' | T }}</span>
         <div class="time-area">
-          <div ng-click="selectDate('creationDateFrom')">{{showData.creationDateFrom == '' ? 'From' :
+          <div ng-click="creationDateFrom()">{{showData.creationDateFrom == '' ? 'From' :
             showData.creationDateFrom}}
           </div>
           <span class="line">~</span>
-          <div ng-click="selectDate('creationDateTo')">{{showData.creationDateTo == '' ? 'To' :
+          <div ng-click="creationDateTo()">{{showData.creationDateTo == '' ? 'To' :
             showData.creationDateTo}}
           </div>
         </div>
