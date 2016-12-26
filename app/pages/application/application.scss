@@ -299,6 +299,10 @@ $applicationColor: white !default;
       }
     }
 
+    .calendar-head{
+      width: 100vw;
+    }
+
     .application-calendar{
       flex-wrap: wrap;
       display: flex;

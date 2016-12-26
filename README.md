@@ -101,7 +101,7 @@ Android测试环境
   iOS版本 Android 打包 通用插件下载
   
   cordova plugin rm com.hand.scancard
-  cordova plugin add git clone http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git
+  cordova plugin add http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git
   
   cordova plugin rm cordova-plugin-hrms-faceidentify
   cordova plugin add http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git

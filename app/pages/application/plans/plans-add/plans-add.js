@@ -397,7 +397,6 @@ angular.module('planModule')
           }
         }
       };
-
       $scope.savePlansTo = function () {
         hmsPopup.showLoading("正在保存");
         $scope.data.saleContent = $('#text').val();

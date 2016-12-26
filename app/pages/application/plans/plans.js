@@ -137,7 +137,6 @@
 
     vm.goWeeklyReport = goWeeklyReport;
     vm.goWeeklyReportList = goWeeklyReportList;
-
     vm.goDetail = goDetail;
     vm.showComment=showComment;//评论
     vm.onRelease = onRelease;
@@ -332,10 +331,11 @@
     }
    $scope.annotateSubmit=function(planDetail){
    /*  console.log("ssssss");*/
+     var annotate=planDetail.annotate = $('#comment-text').val();
      console.log(planDetail);
      var params={
        planId:planDetail.planId,
-       annotate: planDetail.annotate
+       annotate: annotate
      };
      var annotateSuccess=function(result){
        vm.showCommentFlag=false;
@@ -1077,9 +1077,78 @@
         getWeekPlan(new Date());
       }
     }
+   //失焦事件
+/*
+    $("document").on("blur","#textArea",function(){
+      console.log("失焦")
+    });
+*/
+/*    $(function(){
+      $('#comment-text').blur(function(){
+        alert('aaa');
+      });
+    });*/
+    $scope.holdAnnotate=false;
+    $scope.touchAnnotate=function(){
+      $scope.holdAnnotate = true;
+      cordova.plugins.pluginIflytek.startRecorerRecognize(
+        function (msg) {
+        }, function (msg) {
+
+        });
+    };
 
     if($stateParams.data == 'WEEK')
       changeShowModel(false);
+
+    function insertText(obj, str) {
+      if (document.selection) {
+        var sel = document.selection.createRange();
+        sel.text = str;
+      } else if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') {
+        var startPos = obj.selectionStart,
+          endPos = obj.selectionEnd,
+          cursorPos = startPos,
+          tmpStr = obj.value;
+        obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos, tmpStr.length);
+        cursorPos += str.length;
+        obj.selectionStart = obj.selectionEnd = cursorPos;
+      } else {
+        obj.value += str;
+      }
+    }
+    $scope.annotateRelease=function(){
+      $scope.holdAnnotate = false;
+      console.log("结束录音");
+      $timeout(function () {
+        console.log("timeout");
+        $scope.showSmallCrmLoading = false;
+        /*  hmsPopup.showPopup("识别失败，请重新尝试！");*/
+      }, 5000);
+      cordova.plugins.pluginIflytek.stopRecorderRecognize(
+        function (msg) {
+          hmsPopup.hideLoading();
+          console.log("测试错误");
+          $scope.showSmallCrmLoading = false;
+          $('#voice-img').removeClass('big-img');
+          hmsPopup.showPopup(msg);
+          /*       $timeout(function () {
+           insertText(document.getElementById('text'), msg);
+           $scope.$apply();
+           $scope.showSmallCrmLoading = false;
+           }, 0);*/
+          /*  $scope.$apply();*/
+        }, function (msg) {
+          $('#voice-img').removeClass('big-img');
+          console.log("测试正确");
+          /* $scope.$apply();*/
+          $timeout(function () {
+            insertText(document.getElementById('comment-text'), msg);
+            $scope.$apply();
+            $scope.showSmallCrmLoading = false;
+          }, 0);
+        });
+    };
 
   }
 }());

@@ -127,6 +127,7 @@ angular.module('myInfoModule')
         window.localStorage.gestureLock = false;
         window.localStorage.removeItem('gesturePassword');
         window.localStorage.removeItem('myInfoImg');
+        faceEcognitionService.setFaceEcognitionFlag(false);
         $state.go('login');
         if (HandIMPlugin) {
           HandIMPlugin.exitApp(function () {

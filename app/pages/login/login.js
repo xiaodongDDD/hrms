@@ -388,7 +388,7 @@ angular.module('loginModule')
               $scope.showLoginButton = false;
               $scope.showButtonIcon = false;
               checkVersionService.checkAppVersion();
-              imService.initImData();
+              //imService.initImData();
               if (ionic.Platform.isWebView()) {
                 imService.initImData();
               }
