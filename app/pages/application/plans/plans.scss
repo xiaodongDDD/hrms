@@ -410,12 +410,14 @@
     text-align: right;
     position: relative;
     color: #bfbfbf;
+    padding-right: 5px;
     width: 92%;
+    font-size:13px;
     img {
-      width: 16px;
+      width: 18px;
       height: 16px;
       position: absolute;
-      top: 1px;
+      top: 0px;
       right: -20px;
     }
   }

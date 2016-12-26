@@ -10,6 +10,7 @@ angular.module('myApp')
           url: '/flight-ticket-detail',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/flight-ticket/flight-ticket-detail.html',
               controller: 'FlightTicketDetailCtrl'
             }

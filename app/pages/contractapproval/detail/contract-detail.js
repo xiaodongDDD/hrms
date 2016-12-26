@@ -9,6 +9,7 @@ angular.module('myApp')
           url: '/contract-detail',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/contractapproval/detail/contract-detail.html',
               controller: 'ContractDetailCtrl'
             }
@@ -27,6 +28,7 @@ angular.module('myApp')
             url: '/contract-detail/authorDetail',
             views: {
               'tab-application': {
+                prefetchTemplate: false,
                 templateUrl: 'build/pages/contact/detail/employee-detail.html',
                 controller: 'contactEmployeeDetailCtl'
               }
@@ -496,7 +498,7 @@ angular.module('applicationModule')
 
     };
 
-    // add by luyufei 
+    // add by luyufei
     var paramData = {};
     this.saveData = function(d){
       paramData = d;

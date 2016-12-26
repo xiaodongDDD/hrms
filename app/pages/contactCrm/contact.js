@@ -141,11 +141,15 @@ angular.module('contactModule')
       };
       //初始化历史记录
       $scope.init = function () {
+      /*  $timeout(function(){
+          $scope.showLoading = false;
+        },3000);*/
         historyContact.getAllHistory(function (data) {
-          console.log("初始化历史纪录")
+          console.log("初始化历史纪录");
           $scope.showLoading = false;
           console.log(data);    //还没保存数据目前打印的是空数组
           $scope.historyContact = data;
+          $scope.$apply();
           /* $scope.birthdays = data;*/
         })
       };

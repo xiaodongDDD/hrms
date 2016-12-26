@@ -524,7 +524,7 @@ angular.module('planModule')
         'dataKey': 'opportunityId',      //对象内最终操作提交所需的数据变量
         'dataModel': '$scope.data.opportunityId',  //最终操作提交所需的数据变量
         'showDataModel': '$scope.showData.opportunityName', //显示在界面上的ng-model,
-        'searchInterface': plansAddService.getSearchOpportunity,
+        'searchInterface': plansAddService.getBusiness,
         'searchParams': getOpportunitySearchSuccess,
         'needShowMore': true
       }];

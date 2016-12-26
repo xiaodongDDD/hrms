@@ -186,10 +186,10 @@
   "OPPORTUNITIES": {
     "ALL_OPPORTUNITIES": "All Business Opportunities",
     "BOARD": {
-      "GOING": "Going",
-      "NEW": "New",
-      "WIN": "Won",
-      "CLOSE": "Closed"
+      "ALL": "All",
+      "HOT": "Hot",
+      "BIG": "Probably",
+      "WIN": "Win"
     },
     "SEARCH_PLACEHOLDER": "Search contact、client...",
     "CREATION_DATE":"Create date",

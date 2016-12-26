@@ -12,6 +12,7 @@ angular.module('myApp')
           url: '/contact/contactStructure',
           views: {
             'tab-contact': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/contact/structure/structure.html',
               controller: 'structureCtl'
             }

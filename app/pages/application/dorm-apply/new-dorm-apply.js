@@ -10,6 +10,7 @@ angular.module('myApp')
           url: '/new-dorm-apply',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/dorm-apply/new-dorm-apply.html',
               controller: 'NewDormApplyCtrl'
             }

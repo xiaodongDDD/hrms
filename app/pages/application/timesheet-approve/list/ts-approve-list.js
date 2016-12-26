@@ -13,6 +13,7 @@ angular.module('myApp')
           url: 'application/tsApproveList',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/timesheet-approve/list/ts-approve-list.html',
               controller: 'tsApproveListCtrl'
             }

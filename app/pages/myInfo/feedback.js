@@ -10,6 +10,7 @@ angular.module('myApp')
           url: '/feedback',
           views: {
             'tab-myInfo': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/myInfo/feedback.html',
               controller: 'FeedbackCtrl'
             }

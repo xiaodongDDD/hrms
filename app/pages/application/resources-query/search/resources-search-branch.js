@@ -11,6 +11,7 @@ angular.module('myApp')
           url: 'application/resources/resourcesSearchBranch',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/resources-query/search/resources-search-branch.html',
               controller: 'resourcesSearchBranchCtl'
             }

@@ -6,6 +6,7 @@ angular.module('myApp')
           url: '/personnel-policy',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/personnel-policy/personnel-policy.html',
               controller: 'PersonnelPolicyCtrl'
             }

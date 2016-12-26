@@ -7,6 +7,7 @@ angular.module('myApp')
           url: 'contact/carpooling-create-contactSearch',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/contact/search/contact-search.html',
               controller: 'employeeSearchCtl'
             }
@@ -16,6 +17,7 @@ angular.module('myApp')
           url: '/carpooling-map-choose',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/carpooling/carpooling-create/carpooling-map-choose.html',
               controller: 'mapChooseCtrl'
             }

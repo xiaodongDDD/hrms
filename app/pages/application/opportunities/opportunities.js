@@ -31,6 +31,7 @@ angular.module('opportunityModule')
     'ionicDatePicker',
     '$ionicModal',
     '$ionicScrollDelegate',
+    '$cordovaDatePicker',
     function($scope,
              baseConfig,
              $timeout,
@@ -41,7 +42,8 @@ angular.module('opportunityModule')
              $rootScope,
              ionicDatePicker,
              $ionicModal,
-             $ionicScrollDelegate) {
+             $ionicScrollDelegate,
+             $cordovaDatePicker) {
       $rootScope.img="";
       $scope.goBack = function(){
         $ionicHistory.goBack();
@@ -140,6 +142,20 @@ angular.module('opportunityModule')
       $scope.selectBoardItem = function(index){
         $scope.boardItemSelected = [];
         $scope.boardItemSelected[index] = true;
+        if(index == 0){
+          $scope.siftingKey.opportunityStatus = '';
+        } else if(index == 1){
+          $scope.siftingKey.opportunityStatus = 'HCRM_HOT_CHANCE';
+        } else if(index == 2){
+          $scope.siftingKey.opportunityStatus = 'HCRM_PROBABLY_WIN';
+        } else if(index == 3){
+          $scope.siftingKey.opportunityStatus = 'HCRM_WIN_CONFIRMED';
+        }
+        $scope.showLoading = true;
+        $scope.moreOpportunityCanBeLoaded = false;
+        $scope.siftingKey.page = 1;
+        $scope.siftingKey.pageSize = 10;
+        opportunityService.getOpportunities(initOpportunitySuccess,$scope.siftingKey, getMoreDataFailure);
       };
 
       $scope.dragHideSort = function($event){
@@ -242,6 +258,7 @@ angular.module('opportunityModule')
           $scope.showLoading = true;
           $scope.lastSelectSortIndex = 5;
           opportunityService.getOpportunities(initOpportunitySuccess,$scope.siftingKey, getMoreDataFailure);
+          opportunityService.getBoardData(getBoardDataSuccess, $scope.queryType);
         }
       };
 
@@ -250,6 +267,7 @@ angular.module('opportunityModule')
         $scope.siftingKey.page = 1;
         $scope.siftingKey.pageSize = 10;
         opportunityService.getOpportunities(initOpportunitySuccess,$scope.siftingKey, getMoreDataFailure);
+        opportunityService.getBoardData(getBoardDataSuccess, $scope.queryType);
       });
 
       $scope.showLoading = true;
@@ -262,10 +280,36 @@ angular.module('opportunityModule')
           $scope.opportunities = response.opportunity_list;
           $timeout(function(){
             $scope.moreOpportunityCanBeLoaded = response.opportunity_list.length == $scope.siftingKey.pageSize;
-          }, 500)
+          }, 500);
         } else {
           hmsPopup.showPopup(response.returnMsg);
         }
+      };
+
+      var getBoardDataSuccess = function(response){
+        if(response.returnCode == "S"){
+          $scope.boardData = {
+            hotOppCount: response.hotOppCount,
+            winOppCount: response.winOppCount,
+            larOppCount: response.larOppCount,
+            hotMoney: parseInt(response.opportunity_money.hotMoney),
+            winMoney: parseInt(response.opportunity_money.winMoney),
+            larMoney: parseInt(response.opportunity_money.larMoney)
+          }
+        } else {
+          hmsPopup.showPopup('看板数据获取失败，请联系管理员');
+        }
+      };
+
+      opportunityService.getBoardData(getBoardDataSuccess, $scope.queryType);
+
+      $scope.getMoneyString = function(money){
+        if(money > 100000000)
+          return (money/100000000).toFixed(1) + '亿';
+        else if(money > 10000)
+          return (money/10000).toFixed(1) + '万';
+        else
+          return money.toFixed(2);
       };
 
       $scope.sortList = [{
@@ -679,7 +723,89 @@ angular.module('opportunityModule')
       };
 
       $scope.selectDate = function(key){
-        eval("ionicDatePicker.openDatePicker(" + key + ")");
+        if (ionic.Platform.isWebView()) {
+          var options = {
+            date: new Date(),
+            mode: 'date',
+            titleText: '请选择时间',
+            okText: '确定',
+            cancelText: '取消',
+            doneButtonLabel: '确认',
+            cancelButtonLabel: '取消',
+            locale: 'zh_cn',
+            androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+          };
+
+          if(key == 'prjBeginDateFrom'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.prjBeginDateFrom = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.prjBeginDateFrom);
+              }
+              $scope.$apply();
+            });
+          } else if(key == 'prjBeginDateTo'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.prjBeginDateTo = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.prjBeginDateTo);
+              }
+              $scope.$apply();
+            });
+          }else if(key == 'preSignDateFrom'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.preSignDateFrom = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.preSignDateFrom);
+              }
+              $scope.$apply();
+            });
+          }else if(key == 'preSignDateTo'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.preSignDateTo = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.preSignDateTo);
+              }
+              $scope.$apply();
+            });
+          }else if(key == 'creationDateFrom'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.creationDateFrom = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.creationDateFrom);
+              }
+              $scope.$apply();
+            });
+          }else if(key == 'creationDateTo'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.creationDateTo = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.creationDateTo);
+              }
+              $scope.$apply();
+            });
+          }
+        }else{
+          eval("ionicDatePicker.openDatePicker(" + key + ")");
+        }
       };
 
       $scope.searchModel = {
@@ -912,6 +1038,19 @@ angular.module('opportunityModule')
           pageSize: pageSize
         };
         hmsHttp.post(baseUrl + 'customer_employee', params).success(function(result) {
+          success(result);
+        }).error(function(response, status) {
+          hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
+
+      //得到看板数据
+      this.getBoardData = function(success, type){
+        var params = {
+          type: type
+        };
+        hmsHttp.post(baseUrl + 'opportunity_performance', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
           hmsPopup.showPopup(response);
