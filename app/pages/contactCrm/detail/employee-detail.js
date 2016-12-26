@@ -35,6 +35,8 @@ angular.module('contactModule')
 		'$ionicActionSheet',
 		'contactService',
 		'$cordovaActionSheet',
+    '$state',
+    'customerDetailService',
 		function($scope,
 			$ionicScrollDelegate,
 			$ionicModal,
@@ -46,7 +48,9 @@ angular.module('contactModule')
 			imService,
 			$ionicActionSheet,
 			contactService,
-			$cordovaActionSheet) {
+			$cordovaActionSheet,
+      $state,
+      customerDetailService) {
 			/**
 			 * var section
 			 */
@@ -98,7 +102,17 @@ angular.module('contactModule')
 			initEmployeeData();
 
 			$scope.goBackPage = function() {
-				$ionicHistory.goBack();
+        if (customerDetailService.getIsEdit()) {
+          $state.go('tab.customer-detail');
+        }else {
+          if($ionicHistory.viewHistory().backView){
+            $ionicHistory.goBack();
+          }else{
+            $state.go('tab.contactCrm');
+          }
+
+        }
+
 			};
 
 			function storeCommonLinkman(newObject) { //存储为常用联系人

@@ -13,7 +13,8 @@
         url: '/plans/plans-detail',
         params: {
           "authority": '',
-          planDetail: {}
+          planDetail: {},
+          planId:''
         },
         views: {
           'tab-application': {
@@ -50,6 +51,37 @@
     var authority = $stateParams.authority;
 /*    vm.showComment=showComment;*/
     var detail = $stateParams.planDetail;
+    var planId = $stateParams.planId;
+    var param = {
+      "planId":''
+    }
+
+
+
+    var getPlanSuccess = function (data) {
+      $scope.showSmallCrmLoading = false;
+      if(data.returnCode=='S'){
+          detail = data.saleplan_detail;
+        console.log('拿到值===='+angular.toJson(detail));
+        vm.planDetail.relateCustomer = data.saleplan_detail.customerFullName;
+        vm.planDetail.relateCustomerId = data.saleplan_detail.customerId;
+        vm.planDetail.relateOpportunity = data.saleplan_detail.opportunityFullName;
+        vm.planDetail.relateOpportunityId = data.saleplan_detail.opportunityId;
+        init();
+      }else {
+        hmsPopup.showPopup(data.returnMsg);
+      }
+    }
+    var error = function () {
+      $scope.showSmallCrmLoading = false;
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    }
+
+    if(planId!=''&& planId!=undefined){
+      param.planId = planId;
+
+      plansService.getPlanByDate(getPlanSuccess,error,param);
+    }
     console.log(detail);
     if (baseConfig.debug) {
       console.log('plansDetailCtrl authority ' + angular.toJson(authority));
@@ -175,8 +207,10 @@
     }).then(function (modal) {
       $scope.crmSelectModal = modal;
     });
+   if(planId==''||!planId){
+     init();
+   }
 
-    init();
 
     //克隆对象
     function cloneObj(obj) {
@@ -245,9 +279,22 @@
     }
 
     function init() {
+      vm.planDetail = {
+        "leaderName":detail.leaderName,
+        "relateCustomer": detail.customerFullName,
+        "relateCustomerId": detail.customerId,
+        "relateOpportunity": detail.opportunityFullName,
+        "relateOpportunityId": detail.opportunityId,
+        "annotate":detail.annotate,
+        "scheduleDate": "",
+        "scheduleDateStr": "",
+        "isImportant":detail.isImportant
+      };
       //vm.planType = 0;
+      //var str = '';
+      console.log(angular.toJson(detail));
       var str = detail.planDate;
-      str = str.replace(/-/g, "/");
+      str = str.replace(/-/g, "/");//注释掉的地方
       var date = new Date(str);
       console.log(detail);
       console.log("=====");

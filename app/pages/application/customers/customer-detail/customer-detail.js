@@ -43,6 +43,8 @@ angular.module('customerModule')
     'customerService',
     'customerAddService',
     '$filter',
+    '$cordovaGeolocation',
+    '$http',
     function ($scope,
               $ionicHistory,
               $state,
@@ -61,11 +63,15 @@ angular.module('customerModule')
               contactLocal,
               customerService,
               customerAddService,
-              $filter) {
+              $filter,
+              $cordovaGeolocation,
+              $http) {
         console.log( $stateParams.customerDetail);
         $rootScope.$broadcast("REFRESH_CUSTOMER_HISTORY");
         $rootScope.img = "build/img/tabs/edit_add@3x_5.png";
         $scope.permissionFlag =  false;
+        $scope.myLocation = {};
+        $scope.cusLocation = {};
         $scope.imgButton = true;
         $scope.customer = {};
         $scope.application = [];
@@ -284,10 +290,12 @@ angular.module('customerModule')
       console.log("enter外面");
       console.log($ionicHistory.viewHistory().backView);
       console.log(angular.toJson($stateParams.customerDetail));
+
       $scope.$on('$ionicView.enter', function (e) {
         console.log($ionicHistory.viewHistory().backView);
         console.log(angular.toJson($stateParams.customerDetail));
         /*$scope.customerId = $stateParams.customerDetail.customerId;*/
+        customerDetailService.setIsEdit(true);
         $scope.customerId =window.localStorage.customerId;
           console.log($scope.customerId);
         $scope.permissionValue = {
@@ -1024,6 +1032,73 @@ angular.module('customerModule')
           hmsPopup.showPopup(data.returnMsg);
         }
       };
+
+      $scope.showLocation = function () {
+        var hideSheet = $ionicActionSheet.show({
+          buttons: [
+            {text: '复制地址'},
+            {text: '地图导航'}
+          ],
+          cancelText: '取消',
+          cancel: function () {
+            // add cancel code..
+          },
+          buttonClicked: function (index) {
+            console.log(index);
+            if (index == 0) {
+              $scope.copyAddress();
+            } else if (index == 1) {
+              $scope.openLocation();
+            }
+          }
+        });
+      }
+
+      //地图
+      $scope.openLocation = function () {
+        //通过客户地址返回客户所在地经纬度
+       var cusUrl = "http://api.map.baidu.com/geocoder/v2/?callback=renderOption()&output=json&address="+$scope.customer.zoneName +
+          "&city="+$scope.customer.cityName+"&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
+        $http.post(cusUrl).success(function (data) {
+          console.log('请求数据成功！！');
+          console.log(data);
+          var result = angular.toJson(data);
+          if(data.result!=''){
+            console.log("json==="+data.result.location);
+            $scope.cusLocation.lat = data.result.location.lat;
+            $scope.cusLocation.lng = data.result.location.lng;
+            // 通过 Ip 定位自己返回经纬度 、详细地址信息。
+            var locUrl = "https://api.map.baidu.com/location/ip?ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2&coor=bd09ll"
+            $http.post(locUrl).success(function (data) {
+              console.log('请求数据成功！！');
+              console.log(data);
+              if(data.content==''){
+                hmsPopup.showPopup('当前位置定位失败');
+              }else {
+                $scope.myLocation.address = data.content.address;
+                $scope.myLocation.province = data.content.address_detail.province;
+                $scope.myLocation.lat = data.content.point.y;
+                $scope.myLocation.lng = data.content.point.x;
+                var url = "https://api.map.baidu.com/direction?origin=latlng:"+$scope.myLocation.lat+","+$scope.myLocation.lng+"|name:"+ $scope.myLocation.address+
+                  "&destination=latlng:"+$scope.cusLocation.lat+","+$scope.cusLocation.lng+"|name:"+$scope.customer.cityName+
+                  "&mode=driving&origin_region="+$scope.myLocation.province+"&destination_region="+$scope.customer.cityName+
+                  "&output=html&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
+                window.open(encodeURI(url), '_system', 'location=yes');
+              }
+            }).error(function (data) {
+              console.log('请求数据失败！！');
+            })
+
+          }else {
+            hmsPopup.showPopup('客户位置解析失败');
+          }
+        }).error(function (data) {
+            console.log('请求数据失败！！');
+          })
+
+        //console.log('当前位置信息====='+positions.lat,positions.long);39.898785,116.42903
+
+      }
 
     }]);
 

@@ -189,7 +189,7 @@ angular.module('customerModule')
             $scope.loadMoreDataFlag = false;
           }else{
             $scope.customers = response.customer_list;
-            $scope.loadMoreDataFlag = true;
+            $scope.loadMoreDataFlag = $scope.loadMoreDataFlag = response.customer_list.length==$scope.data.pageSize;
             console.log($scope.customers.length)
           }
 
@@ -824,67 +824,90 @@ angular.module('customerModule')
         };
       };
 
-      //var options = {
-      //  date: new Date(),
-      //  mode: 'date',
-      //  titleText: '请选择时间',
-      //  okText: '确定',
-      //  cancelText: '取消',
-      //  doneButtonLabel: '确认',
-      //  cancelButtonLabel: '取消',
-      //  locale: 'zh_cn',
-      //  androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+      $scope.creationDateFrom = function () {
+        var options = {
+          date: new Date(),
+          mode: 'date',
+          titleText: '请选择时间',
+          okText: '确定',
+          cancelText: '取消',
+          doneButtonLabel: '确认',
+          cancelButtonLabel: '取消',
+          locale: 'zh_cn',
+          androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+        };
+
+        $cordovaDatePicker.show(options).then(function (dateNo) {
+          if (dateNo) {
+            var year = dateNo.getFullYear();
+            var month = dateNo.getMonth() + 1;
+            var date = dateNo.getDate();
+            $scope.data.creationDateFrom = year + '-' + month + '-' + date;
+            $scope.showData.creationDateFrom = year + '-' + month + '-' + date;
+          }
+          $scope.$apply();
+        });
+      };
+
+      $scope.creationDateTo = function () {
+        var options1 = {
+          date: new Date(),
+          mode: 'date',
+          titleText: '请选择时间',
+          okText: '确定',
+          cancelText: '取消',
+          doneButtonLabel: '确认',
+          cancelButtonLabel: '取消',
+          locale: 'zh_cn',
+          androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+        };
+
+        $cordovaDatePicker.show(options1).then(function (dateNo) {
+          if (dateNo) {
+            var year = dateNo.getFullYear();
+            var month = dateNo.getMonth() + 1;
+            var date = dateNo.getDate();
+            $scope.data.creationDateTo = year + '-' + month + '-' + date;
+            $scope.showData.creationDateTo = year + '-' + month + '-' + date;
+          }
+          $scope.$apply();
+        });
+      };
+
+
+      //$scope.selectDate = function(key){
+      //  eval("ionicDatePicker.openDatePicker(" + key + ")");
       //};
       //
-      //$cordovaDatePicker.show(options).then(function (dateNo) {
-      //  if (dateNo) {
-      //    var year = dateNo.getFullYear();
-      //    var month = dateNo.getMonth() + 1;
-      //    var date = dateNo.getDate();
-      //    $scope.data.creationDateFrom = year + '-' + month + '-' + date;
-      //    $scope.showData.creationDateFrom = year + '-' + month + '-' + date;
-      //    console.log($scope.data.planDate);
+      //var creationDateFrom = {
+      //  callback: function (val) {
+      //    var selectedDate = new Date(val);
+      //    var dateText = selectedDate.getFullYear() + "-" + ((selectedDate.getMonth() + 1) > 9 ? (selectedDate.getMonth() + 1) : ("0" + (selectedDate.getMonth() + 1))) + "-" + (selectedDate.getDate() > 9 ? selectedDate.getDate() : ("0" + selectedDate.getDate()));
+      //    $scope.showData.creationDateFrom = dateText;
+      //    $scope.data.creationDateFrom = dateText;
+      //  },
+      //  from: new Date(2012, 1, 1),
+      //  to: new Date(2017, 10, 30),
+      //  inputDate: new Date(),
+      //  mondayFirst: true,
+      //  closeOnSelect: false,
+      //  templateType: 'popup'
+      //};
       //
-      //    //$scope.showData.week = showTime(dateNo);
-      //    //console.log($scope.showData.week);
-      //  }
-      //  $scope.$apply();
-      //});
-
-
-      $scope.selectDate = function(key){
-        eval("ionicDatePicker.openDatePicker(" + key + ")");
-      };
-
-      var creationDateFrom = {
-        callback: function (val) {
-          var selectedDate = new Date(val);
-          var dateText = selectedDate.getFullYear() + "-" + ((selectedDate.getMonth() + 1) > 9 ? (selectedDate.getMonth() + 1) : ("0" + (selectedDate.getMonth() + 1))) + "-" + (selectedDate.getDate() > 9 ? selectedDate.getDate() : ("0" + selectedDate.getDate()));
-          $scope.showData.creationDateFrom = dateText;
-          $scope.data.creationDateFrom = dateText;
-        },
-        from: new Date(2012, 1, 1),
-        to: new Date(2017, 10, 30),
-        inputDate: new Date(),
-        mondayFirst: true,
-        closeOnSelect: false,
-        templateType: 'popup'
-      };
-
-      var creationDateTo = {
-        callback: function (val) {
-          var selectedDate = new Date(val);
-          var dateText = selectedDate.getFullYear() + "-" + ((selectedDate.getMonth() + 1) > 9 ? (selectedDate.getMonth() + 1) : ("0" + (selectedDate.getMonth() + 1))) + "-" + (selectedDate.getDate() > 9 ? selectedDate.getDate() : ("0" + selectedDate.getDate()));
-          $scope.showData.creationDateTo = dateText;
-          $scope.data.creationDateTo = dateText;
-        },
-        from: new Date(2012, 1, 1),
-        to: new Date(2017, 10, 30),
-        inputDate: new Date(),
-        mondayFirst: true,
-        closeOnSelect: false,
-        templateType: 'popup'
-      };
+      //var creationDateTo = {
+      //  callback: function (val) {
+      //    var selectedDate = new Date(val);
+      //    var dateText = selectedDate.getFullYear() + "-" + ((selectedDate.getMonth() + 1) > 9 ? (selectedDate.getMonth() + 1) : ("0" + (selectedDate.getMonth() + 1))) + "-" + (selectedDate.getDate() > 9 ? selectedDate.getDate() : ("0" + selectedDate.getDate()));
+      //    $scope.showData.creationDateTo = dateText;
+      //    $scope.data.creationDateTo = dateText;
+      //  },
+      //  from: new Date(2012, 1, 1),
+      //  to: new Date(2017, 10, 30),
+      //  inputDate: new Date(),
+      //  mondayFirst: true,
+      //  closeOnSelect: false,
+      //  templateType: 'popup'
+      //};
 
 
       ///////////////////////城市选择/////////////////////////////
