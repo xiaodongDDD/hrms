@@ -200,4 +200,22 @@ angular.module('applicationModule')
           hmsPopup.hideLoading();
         });
       };
+
+      this.getWeekTimeSheet = function (success, startDate, endDate){
+        var url = baseConfig.businessPath + "/timesheet_process/get_week_timesheets";
+        var params = {
+          "params":{
+            "p_employee_number": window.localStorage.empno,
+            "p_begin_date": startDate,
+            "p_end_date": endDate
+          }
+        };
+        hmsHttp.post(url, params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (response) {
+          hmsPopup.hideLoading();
+        });
+      }
+
     }]);

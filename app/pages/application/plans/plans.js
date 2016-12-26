@@ -16,6 +16,9 @@
             templateUrl: 'build/pages/application/plans/plans.html',
             controller: 'PlansCtrl'
           }
+        },
+        params:{
+          data:""
         }
       })
   }
@@ -28,6 +31,7 @@
                      $state,
                      publicMethod,
                      $ionicHistory,
+                     $stateParams,
                      $ionicScrollDelegate,
                      $timeout,
                      $rootScope,
@@ -1094,6 +1098,9 @@
         });
     };
 
+    if($stateParams.data == 'WEEK')
+      changeShowModel(false);
+
     function insertText(obj, str) {
       if (document.selection) {
         var sel = document.selection.createRange();
@@ -1142,6 +1149,7 @@
           }, 0);
         });
     };
+
   }
 }());
 
