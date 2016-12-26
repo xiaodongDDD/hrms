@@ -31,6 +31,7 @@ angular.module('opportunityModule')
     'ionicDatePicker',
     '$ionicModal',
     '$ionicScrollDelegate',
+    '$cordovaDatePicker',
     function($scope,
              baseConfig,
              $timeout,
@@ -41,7 +42,8 @@ angular.module('opportunityModule')
              $rootScope,
              ionicDatePicker,
              $ionicModal,
-             $ionicScrollDelegate) {
+             $ionicScrollDelegate,
+             $cordovaDatePicker) {
       $rootScope.img="";
       $scope.goBack = function(){
         $ionicHistory.goBack();
@@ -721,7 +723,89 @@ angular.module('opportunityModule')
       };
 
       $scope.selectDate = function(key){
-        eval("ionicDatePicker.openDatePicker(" + key + ")");
+        if (ionic.Platform.isWebView()) {
+          var options = {
+            date: new Date(),
+            mode: 'date',
+            titleText: '请选择时间',
+            okText: '确定',
+            cancelText: '取消',
+            doneButtonLabel: '确认',
+            cancelButtonLabel: '取消',
+            locale: 'zh_cn',
+            androidTheme: window.datePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
+          };
+
+          if(key == 'prjBeginDateFrom'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.prjBeginDateFrom = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.prjBeginDateFrom);
+              }
+              $scope.$apply();
+            });
+          } else if(key == 'prjBeginDateTo'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.prjBeginDateTo = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.prjBeginDateTo);
+              }
+              $scope.$apply();
+            });
+          }else if(key == 'preSignDateFrom'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.preSignDateFrom = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.preSignDateFrom);
+              }
+              $scope.$apply();
+            });
+          }else if(key == 'preSignDateTo'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.preSignDateTo = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.preSignDateTo);
+              }
+              $scope.$apply();
+            });
+          }else if(key == 'creationDateFrom'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.creationDateFrom = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.creationDateFrom);
+              }
+              $scope.$apply();
+            });
+          }else if(key == 'creationDateTo'){
+            $cordovaDatePicker.show(options).then(function (dateNo) {
+              if (dateNo) {
+                var year = dateNo.getFullYear();
+                var month = dateNo.getMonth() + 1;
+                var date = dateNo.getDate();
+                $scope.siftingKey.creationDateTo = year + '-' + month + '-' + date;
+                console.log($scope.siftingKey.creationDateTo);
+              }
+              $scope.$apply();
+            });
+          }
+        }else{
+          eval("ionicDatePicker.openDatePicker(" + key + ")");
+        }
       };
 
       $scope.searchModel = {
