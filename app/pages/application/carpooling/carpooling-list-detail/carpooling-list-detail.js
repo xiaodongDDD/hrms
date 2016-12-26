@@ -7,6 +7,7 @@ angular.module('myApp')
           url: '/carpooling-list-detail',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/carpooling/carpooling-list-detail/carpooling-list-detail.html',
               controller: 'ListDetailCtrl'
             }

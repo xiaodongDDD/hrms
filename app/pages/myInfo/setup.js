@@ -10,6 +10,7 @@ angular.module('myApp')
           url: '/setup',
           views: {
             'tab-myInfo': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/myInfo/setup.html',
               controller: 'SetupCtrl'
             }

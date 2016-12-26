@@ -12,6 +12,7 @@ angular.module('myApp')
           params: {timeOffData: {}},
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/time-off-manage/time-off-manage-detail.html',
               controller: 'TimeOffManageDetailCtrl'
             }

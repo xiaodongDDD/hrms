@@ -10,6 +10,7 @@ angular.module('myApp')
           params: {dayRange: {}},
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/timesheet/batch/batch-write.html',
               controller: 'TimeSheetBatchWriteCtrl'
             }

@@ -7,6 +7,7 @@ angular.module('myApp')
           params: {day: {}},
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/timesheet/write/write.html',
               controller: 'TimeSheetWriteCtrl'
             }

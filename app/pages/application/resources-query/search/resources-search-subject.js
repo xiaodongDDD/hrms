@@ -11,6 +11,7 @@ angular.module('myApp')
           url: 'application/resources/resourcesSearchSubject',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/resources-query/search/resources-search-subject.html',
               controller: 'resourcesSearchSubjectCtl'
             }

@@ -11,6 +11,7 @@ angular.module('loginModule')
           params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": ""},
           views: {
             'tab-message': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/workflow/detail/detail.html',
               controller: 'WorkFLowDetailCtrl'
             }
@@ -22,6 +23,7 @@ angular.module('loginModule')
           params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": ""},
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/workflow/detail/detail.html',
               controller: 'WorkFLowDetailCtrl'
             }
@@ -33,6 +35,7 @@ angular.module('loginModule')
           params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": ""},
           views: {
             'tab-contact': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/workflow/detail/detail.html',
               controller: 'WorkFLowDetailCtrl'
             }
@@ -44,6 +47,7 @@ angular.module('loginModule')
           params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": ""},
           views: {
             'tab-myInfo': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/workflow/detail/detail.html',
               controller: 'WorkFLowDetailCtrl'
             }

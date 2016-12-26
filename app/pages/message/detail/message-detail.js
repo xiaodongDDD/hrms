@@ -10,6 +10,7 @@ angular.module('myApp')
           url: 'message/detail',
           views: {
             'tab-message': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/message/detail/message-detail.html',
               controller: 'messageDetailCtrl'
             }

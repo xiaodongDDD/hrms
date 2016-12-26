@@ -11,6 +11,7 @@ angular.module('myApp')
           url: 'contact/contactSearch',
           views: {
             'tab-contact': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/contact/search/contact-search.html',
               controller: 'employeeSearchCtl'
             }
