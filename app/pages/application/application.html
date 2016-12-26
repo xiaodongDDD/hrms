@@ -35,15 +35,17 @@
       </div>
     </div>
 
-    <img src="build/img/application/app_banner@3x.png" class="calendar-head"/>
-
-    <div class="application-calendar">
-      <span class="weekday-background"></span>
-      <div ng-repeat="weekday in weekdays track by $index" class="highlight head-item">{{weekday}}</div>
-      <div ng-repeat="day in days track by $index" class="date-item" ng-class="{true:'selected'}[nowSelectedDate == $index]" ng-click="selectDate($index)">
-        {{getDateText(day)}}
-        <span class="TS-state" ng-class="{0:'TS-refuse',1:'TS-commit',2:'TS-approval'}[day.timeSheetValue]"></span>
-        <span class="plan-state" ng-class="{true:'plan-has'}[day.planCount != 0]"></span>
+    <div class="calendar-container">
+      <img src="build/img/application/app_banner@3x.png" class="calendar-head"/>
+      <div class="calendar-content">
+        <div class="application-calendar">
+          <div ng-repeat="weekday in weekdays track by $index" class="highlight head-item">{{weekday}}</div>
+          <div ng-repeat="day in days track by $index" class="date-item" ng-class="{true:'selected'}[nowSelectedDate == $index]" ng-click="selectDate($index)">
+            {{getDateText(day)}}
+            <span class="TS-state" ng-class="{0:'TS-refuse',1:'TS-commit',2:'TS-approval'}[day.timeSheetValue]"></span>
+            <span class="plan-state" ng-class="{true:'plan-has'}[day.planCount != 0]"></span>
+          </div>
+        </div>
       </div>
     </div>
 
