@@ -115,6 +115,42 @@
       <i>{{vm.planDetail.leaderName}}:</i> {{vm.planDetail.annotate}}
     </div>-->
   </ion-content>
+  <div ng-if="showCommentFlag"  class="bar bar-footer" style="bottom:104px;background:none;">
+    <div style="width:30%;float:left;height: 40px;display:table;">
+      <div style="vertical-align:middle; display:table-cell;height:40px;width: 60px;text-align:center;">
+        <img src="build/img/plans/icon_weave@3x.png" style="width: 60px;">
+      </div>
+    </div>
+    <div style="width: 40%;float: left;height: 40px;display:table;">
+      <div style="color: #666;vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+        按住说话 松开结束
+      </div>
+      <!-- <div  style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;"> 松开结束</div>-->
+    </div>
+    <div style="width: 30%;float: left;height: 40px;display:table;">
+      <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+        <img src="build/img/plans/icon_weave@3x.png" style="width:60px">
+      </div>
+    </div>
+  </div>
+  <div ng-if="showCommentFlag"   class="bar bar-footer" style="bottom:60px;background:none;">
+
+    <div style="float:left;width:10%;display:table;">
+      <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
+        <img src="build/img/application/plans/icon_voice@3x.png" style="width: 20px;">
+      </div>
+    </div>
+    <form style="float:left;width:80%;">
+      <textarea id="comment-text" style="overflow-y:visible ;width:100%;border: none;word-break:break-all;border: 1px solid #ddd;
+    border-radius: 5px;"
+                placeholder="" ng-model="planDetail.annotate"></textarea>
+    </form>
+    <div style="float:left;width:10%;display:table;" ng-click="annotateSubmit(planDetail)">
+      <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
+        发送
+      </div>
+    </div>
+  </div>
     <ion-footer-bar ng-if="vm.planType==0">
       <div class="footer-wrap" >
         <div class="footer-button" ng-click="vm.cancelPlan()">
@@ -155,12 +191,12 @@
       </div>
     </ion-footer-bar>
 
-  <ion-footer-bar  ng-if="showCommentFlag">
+ <!-- <ion-footer-bar  ng-if="showCommentFlag">
     <form style="float:left;width:80%;"  ng-submit="annotateSubmit(planDetail)">
       <textarea id="comment-text" style="overflow-y:visible ;width:100%;border: none;word-break:break-all" placeholder="请输入" ng-model="planDetail.annotate"></textarea>
     </form>
     <div style="float:left;width:20%">
       <img src="build/img/application/plans/icon_voice@3x.png" style="width: 16px;">
     </div>
-  </ion-footer-bar>
+  </ion-footer-bar>-->
 </ion-view>

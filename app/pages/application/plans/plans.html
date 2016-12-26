@@ -1,6 +1,7 @@
 <ion-view view-title="销售计划-查询" class="crm hrms-pancel-corlor plans">
   <ion-header-bar align-title="center" class="bar-stable">
     <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
+
     <div class="header-select-button">
       <div ng-class="{true:'selected'}[planAuthority.MY.selected]" ng-click="changePlanAuthority('MY')">我的</div>
       <div ng-class="{true:'selected'}[planAuthority.OTHER.selected]" ng-click="changePlanAuthority('OTHER')">下属</div>
@@ -18,12 +19,14 @@
         <img ng-src="{{'build/img/application/plans/icon_time_gray' + (!showAsMonth ? '_selected@3x.png' : '@3x.png')}}"
              ng-click="changeShowModel(false)"/>
       </div>
-      <div on-release="onReleaseYear($event)"  ng-if="showAsMonth"  class="calendar-date">
+      <div on-release="onReleaseYear($event)" ng-if="showAsMonth" class="calendar-date">
         <span ng-show="showAsMonth" class="black-font">{{year + '年' + month + '月'}}</span>
       </div>
-      <div on-release="onReleaseYear($event)" ng-if="!showAsMonth"  class="change-date">
-        <span ng-hide="showAsMonth" ng-class="{true:'selected'}[planPeriod.current.selected]" ng-click="changePlanPeriod('current')">本周</span>
-        <span ng-hide="showAsMonth" ng-class="{true:'selected'}[planPeriod.next.selected]" ng-click="changePlanPeriod('next')">下周</span>
+      <div on-release="onReleaseYear($event)" ng-if="!showAsMonth" class="change-date">
+        <span ng-hide="showAsMonth" ng-class="{true:'selected'}[planPeriod.current.selected]"
+              ng-click="changePlanPeriod('current')">本周</span>
+        <span ng-hide="showAsMonth" ng-class="{true:'selected'}[planPeriod.next.selected]"
+              ng-click="changePlanPeriod('next')">下周</span>
       </div>
       <div class="operate-area">
         <span ng-class="{true:'selected'}[planPeriod.period.selected]"
@@ -39,6 +42,7 @@
            on-swipe-down="onGestureCalendar('down')"
            on-swipe-up="onGestureCalendar('up')">
         <span class="weekday-background"></span>
+
         <div ng-repeat="weekday in weekdays track by $index" class="highlight">{{weekday}}</div>
         <div class="date" ng-repeat="day in days track by $index"
              ng-class="{0:'highlight',1:'selected',2:'today'}[day.state]" ng-click="select($index)">
@@ -50,7 +54,9 @@
 
     <div class="plans-content" ng-style="contentHeight">
       <div class="row group-head top-head" ng-show="!showAsMonth">
-        <div class="col col-67" style="margin: 0; padding:0;">{{nowShowDate ? getDayString(nowShowDate) : ""}} {{nowShowDate}}</div>
+        <div class="col col-67" style="margin: 0; padding:0;">{{nowShowDate ? getDayString(nowShowDate) : ""}}
+          {{nowShowDate}}
+        </div>
         <div class="col col-33" style="margin: 0; padding:0; text-align: right"
              ng-click="goWeeklyReportList(nowShowDate)">查看周报
         </div>
@@ -63,30 +69,32 @@
         <div ng-if="showAsMonth">
           <crm-loading ng-if="calendarLoadingFlag"></crm-loading>
           <div ng-if="!calendarLoadingFlag">
-            <div class="plan-item" ng-repeat="plan in plans" >
+            <div class="plan-item" ng-repeat="plan in plans">
               <div class="plan-content-tilte" ng-click="goDetail(plan)">
-              <div class="plan-head">
-                <img ng-src="build/img/application/plans/user_img@3x.png"/>
-                <div>
+                <div class="plan-head">
+                  <img ng-src="build/img/application/plans/user_img@3x.png"/>
+
+                  <div>
                 <span class="plan-head-base">
                   {{plan.name}}
                   <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.resourceName + '复制') : (plan.dataStatusName) }}</span>
                 </span>
-                  <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'" src="build/img/application/plans/star.png" style="    width: 16px;
+                  <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'"
+                                                                      src="build/img/application/plans/star.png" style="    width: 16px;
     height: 16px;
     position: absolute;
     right: 5px;"/></span>
+                  </div>
                 </div>
-              </div>
-              <div class="plan-title">
-                {{plan.customerFullName==""?"":("客户 "+plan.customerFullName)}}
-              <!--  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
-                {{plan.opportunityFullName}}-->
-              </div>
-              <div style=" font-size: 1.2em;color: #333333;">
-                {{plan.opportunityFullName==""?"":("商机 "+plan.opportunityFullName)}}
-              </div>
-              <div class="plan-content">计划内容：{{plan.saleContent}}</div>
+                <div class="plan-title">
+                  {{plan.customerFullName==""?"":("客户 "+plan.customerFullName)}}
+                  <!--  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
+                    {{plan.opportunityFullName}}-->
+                </div>
+                <div style=" font-size: 1.2em;color: #333333;">
+                  {{plan.opportunityFullName==""?"":("商机 "+plan.opportunityFullName)}}
+                </div>
+                <div class="plan-content">计划内容：{{plan.saleContent}}</div>
               </div>
               <div ng-if="planAuthority.OTHER.selected" ng-click="showComment(plan)">
                 <div class="comment-title">点评<img src="build/img/application/plans/common.png"/></div>
@@ -108,21 +116,25 @@
           <div ng-if="!planListLoadingFlag">
             <div class="plan-group" ng-repeat="group in planGroups">
               <div class="row group-head">
-                <div class="col col-67" style="margin: 0; padding:0;">{{group.date ? getDayString(group.date) : ""}} {{group.date}}</div>
+                <div class="col col-67" style="margin: 0; padding:0;">{{group.date ? getDayString(group.date) : ""}}
+                  {{group.date}}
+                </div>
                 <div class="col col-33" style="margin: 0; padding:0; text-align: right"
                      ng-click="goWeeklyReportList(group.date)">查看周报
                 </div>
               </div>
-              <div class="plan-item" ng-repeat="plan in group.plans" >
+              <div class="plan-item" ng-repeat="plan in group.plans">
                 <div class="plan-content-tilte" ng-click="goDetail(plan)">
                   <div class="plan-head">
                     <img ng-src="build/img/application/plans/user_img@3x.png"/>
+
                     <div>
                 <span class="plan-head-base">
                   {{plan.name}}
                   <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.resourceName + '复制') : (plan.dataStatusName) }}</span>
                 </span>
-                  <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'" src="build/img/application/plans/star.png" style="    width: 16px;
+                  <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'"
+                                                                      src="build/img/application/plans/star.png" style="    width: 16px;
     height: 16px;
     position: absolute;
     right: 5px;"/></span>
@@ -157,22 +169,49 @@
       </ion-scroll>
     </div>
   </ion-content>
-  <ion-footer-bar ng-if="showCommentFlag">
-    <form style="float:left;width:80%;"  ng-submit="annotateSubmit(planDetail)">
-      <textarea id="comment-text" style="overflow-y:visible ;width:100%;border: none;word-break:break-all" placeholder="请输入" ng-model="planDetail.annotate"></textarea>
+  <div ng-if="holdAnnotate" class="bar bar-footer" style="bottom:44px;background:none;">
+    <div style="width:30%;float:left;height: 40px;display:table;">
+      <div style="vertical-align:middle; display:table-cell;height:40px;width: 60px;text-align:center;">
+        <img src="build/img/plans/icon_weave@3x.png" style="width: 60px;">
+      </div>
+    </div>
+    <div style="width: 40%;float: left;height: 40px;display:table;">
+      <div style="color: #666;vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+        按住说话 松开结束
+      </div>
+      <!-- <div  style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;"> 松开结束</div>-->
+    </div>
+    <div style="width: 30%;float: left;height: 40px;display:table;">
+      <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+        <img src="build/img/plans/icon_weave@3x.png" style="width:60px">
+      </div>
+    </div>
+  </div>
+  <ion-footer-bar>
+    <div style="float:left;width:10%;display:table;"  on-touch="touchAnnotate()" on-release="annotateRelease()">
+      <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
+        <img src="build/img/application/plans/icon_voice@3x.png" style="width: 20px;">
+      </div>
+    </div>
+    <form style="float:left;width:80%;">
+      <textarea id="comment-text" style="overflow-y:visible ;width:100%;border: none;word-break:break-all;border: 1px solid #ddd;
+    border-radius: 5px;"
+                placeholder="" ng-model="planDetail.annotate"></textarea>
     </form>
-    <div style="float:left;width:15%">
-      <img src="build/img/application/plans/icon_voice@3x.png" style="width: 25px;">
+    <div style="float:left;width:10%;display:table;" ng-click="annotateSubmit(planDetail)">
+      <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
+      发送
+      </div>
     </div>
   </ion-footer-bar>
-<!--  <div style="position: fixed;bottom: 0;height: 40px;    width: 100%;padding: 5px 0 0 5px;" ng-if="showCommentFlag">
-   &lt;!&ndash; 测试测试测试&ndash;&gt;
-   &lt;!&ndash; {{planDetail.annotate}}&ndash;&gt;
-    <form style="float:left;width:80%;"  ng-submit="annotateSubmit(planDetail)">
-      <textarea style="height: 40px;width:100%;border: none;" placeholder="请输入" ng-model="planDetail.annotate"></textarea>
-    </form>
-    <div style="float:left;width:20%">测试</div>
-  </div>-->
+  <!--  <div style="position: fixed;bottom: 0;height: 40px;    width: 100%;padding: 5px 0 0 5px;" ng-if="showCommentFlag">
+     &lt;!&ndash; 测试测试测试&ndash;&gt;
+     &lt;!&ndash; {{planDetail.annotate}}&ndash;&gt;
+      <form style="float:left;width:80%;"  ng-submit="annotateSubmit(planDetail)">
+        <textarea style="height: 40px;width:100%;border: none;" placeholder="请输入" ng-model="planDetail.annotate"></textarea>
+      </form>
+      <div style="float:left;width:20%">测试</div>
+    </div>-->
   <div class="common-fix-div" ng-class="{true:'showUp'}[showNew]">
 
     <div class="sifting-header">
@@ -222,6 +261,7 @@
 
     <div class="voice-div" ng-class="{true:'showUp'}[showVoice]">
       <img class="voice-close" src="build/img/application/plans/icon_wrong@3x.png" ng-click="showVoiceDiv()">
+
       <div class="text-div">
         <img src="build/img/application/plans/icon_weave@3x.png">
         按住说话
