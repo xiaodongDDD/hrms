@@ -22,7 +22,7 @@ angular.module('loginModule').controller('TabsCtrl',
         });
       }
 
-      $scope.hasCrm = baseConfig.hasCrm;
+      $scope.hasCrm = !baseConfig.appStoreFlag;
 
       $scope.showGuideFlag;
 

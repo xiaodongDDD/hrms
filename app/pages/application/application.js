@@ -258,7 +258,7 @@ angular.module('applicationModule')
         }
       ];
 
-      $scope.hasCrm = baseConfig.hasCrm;
+      $scope.hasCrm = !baseConfig.appStoreFlag;
 
       if($scope.hasCrm){
         $scope.weekdays = ['一','二','三','四','五','六','日'];
