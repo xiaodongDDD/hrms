@@ -856,6 +856,10 @@ angular.module('customerModule')
       $scope.saleAreas = [];
       $scope.saleTeams = [];
       $scope.showSaleTeam = false;
+      $scope.areaSearch = {
+        key:''
+      };
+      $scope.inArea = true;
 
       var getSaleAreaSuccess= function(response){
         $scope.showLoading = false;
@@ -865,13 +869,14 @@ angular.module('customerModule')
 
       var getSaleTeamSuccess= function(response){
         $scope.showLoading = false;
-        if(response.returnCode == "S")
+        if(response.returnCode == "S"){
           var obj = {
             saleTeamId:'',
             saleTeamName:'空'
           };
           $scope.saleTeams = response.sale_team_list;
           $scope.saleTeams.unshift(obj);
+        }
       };
 
       $scope.showSaleSelectFlag = false;
@@ -879,20 +884,23 @@ angular.module('customerModule')
       $scope.showSaleSelect = function(){
         $scope.showSaleSelectFlag = true;
         $scope.showLoading = true;
-        opportunityAddService.getSaleArea(getSaleAreaSuccess);
+        customerService.getSaleArea(getSaleAreaSuccess,'','HCRM_SALE_AREA');
       };
 
       $scope.selectArea = function(area){
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
+        $scope.areaSearch.key='';
+        $scope.inArea = false;
         $scope.showSaleTeam = true;
         $scope.showData.saleAreaName = area.saleAreaName;
         $scope.data.saleAreaId = area.saleAreaId;
         $scope.showLoading = true;
-        opportunityAddService.getSaleTeam(getSaleTeamSuccess, area.saleAreaId);
+        opportunityAddService.getSaleTeam(getSaleTeamSuccess,area.saleAreaId);
       };
 
       $scope.selectTeam = function(team){
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
+        $scope.areaSearch.key='';
         $scope.showSaleTeam = false;
         $scope.showSaleSelectFlag = false;
         $scope.showData.team = team.saleTeamName;
@@ -903,19 +911,50 @@ angular.module('customerModule')
       $scope.saleBack = function(){
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
         //当目录在一级时，返回
-        if(!$scope.showSaleTeam)
+        if(!$scope.showSaleTeam){
           $scope.showSaleSelectFlag = false;
+          $scope.inArea = true;
+          $scope.data.saleAreaId = '';
+        }
         //否则跳到一级,并清空第二级数据
       else{
-        $scope.showSaleTeam = false;
-        $scope.saleTeams = [];
+          customerService.getSaleArea(getSaleAreaSuccess,'','HCRM_SALE_AREA');
+          $scope.showSaleTeam = false;
+          $scope.saleTeams = [];
+          $scope.inArea = true;
+          $scope.data.saleAreaId = '';
+          $scope.areaSearch.key = '';
       }
     };
+
+      $scope.filterArea = function () {
+        $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
+        $scope.saleTeams = [];
+        if($scope.inArea){
+          if($scope.areaSearch.key==''){
+            $$scope.saleAreas = [];
+            customerService.getSaleArea(getSaleAreaSuccess,'','HCRM_SALE_AREA');
+          }else {
+            $scope.saleAreas = [];
+            customerService.getSaleArea(getSaleAreaSuccess,$scope.areaSearch.key,'HCRM_SALE_AREA');
+          }
+        }else {
+          //if($scope.areaSearch.key==''){
+          //  customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.majorIndustry);
+          //}else {
+          //  customerService.getIndustry(getSubIndustrySuccess,$scope.industrySearch.key, $scope.data.majorIndustry);
+          //}
+        }
+      }
 
       //所属行业级联
       $scope.majorIndustrys = [];
       $scope.subIndustrys = [];
       $scope.showSubIndustry = false;
+      $scope.industrySearch = {
+        key:''
+      };
+      $scope.inMajor = true;
 
       var getMajorIndustrySuccess= function(response){
         $scope.showLoading = false;
@@ -925,13 +964,15 @@ angular.module('customerModule')
 
       var getSubIndustrySuccess= function(response){
         $scope.showLoading = false;
-        if(response.returnCode == "S")
+        if(response.returnCode == "S"){
           var obj = {
             industryId:'',
             industryName:'空'
           };
-        $scope.subIndustrys = response.industry_list;
-        $scope.subIndustrys.unshift(obj);
+          $scope.subIndustrys = response.industry_list;
+          $scope.subIndustrys.unshift(obj);
+        }
+
       };
 
       $scope.showIndustrySelectFlag = false;
@@ -939,20 +980,23 @@ angular.module('customerModule')
       $scope.showIndustrySelect = function(){
         $scope.showIndustrySelectFlag = true;
         $scope.showLoading = true;
-        customerService.getIndustry(getMajorIndustrySuccess,0);
+        customerService.getIndustry(getMajorIndustrySuccess,'',0);
       };
 
       $scope.selectMajor = function(industry){
         $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
+        $scope.industrySearch.key ='';
         $scope.showSubIndustry = true;
+        $scope.inMajor = false;
         $scope.showData.majorIndustry = industry.industryName;
         $scope.data.majorIndustry = industry.industryId;
         $scope.showLoading = true;
-        customerService.getIndustry(getSubIndustrySuccess, industry.industryId);
+        customerService.getIndustry(getSubIndustrySuccess,'', industry.industryId);
       };
 
       $scope.selectSub = function(industry){
         $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
+        $scope.industrySearch.key='';
         $scope.showSubIndustry = false;
         $scope.showIndustrySelectFlag = false;
         $scope.showData.subIndustry = industry.industryName;
@@ -963,14 +1007,41 @@ angular.module('customerModule')
       $scope.industryBack = function(){
         $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
         //当目录在一级时，返回
-        if(!$scope.showSubIndustry)
+        if(!$scope.showSubIndustry){
           $scope.showIndustrySelectFlag = false;
+          $scope.inMajor = true;
+          $scope.data.majorIndustry='';
+        }
         //否则跳到一级,并清空第二级数据
         else{
+          customerService.getIndustry(getMajorIndustrySuccess,'', 0);
+          $scope.industrySearch.key='';
           $scope.showSubIndustry = false;
+          $scope.inMajor = true;
           $scope.subIndustrys = [];
+          $scope.data.majorIndustry='';
         }
       };
+
+      $scope.filterIndustry = function () {
+        $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
+        $scope.subIndustrys = [];
+        if($scope.inMajor){
+          if($scope.industrySearch.key==''){
+            $scope.majorIndustrys = [];
+            customerService.getIndustry(getMajorIndustrySuccess,'', 0);
+          }else {
+            $scope.majorIndustrys = [];
+            customerService.getIndustry(getMajorIndustrySuccess,$scope.industrySearch.key, 0);
+          }
+        }else {
+          if($scope.industrySearch.key==''){
+            customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.majorIndustry);
+          }else {
+            customerService.getIndustry(getSubIndustrySuccess,$scope.industrySearch.key, $scope.data.majorIndustry);
+          }
+        }
+      }
       ///////////////////////城市选择/////////////////////////////
       Array.prototype.clone = function () {
         return [].concat(this);
