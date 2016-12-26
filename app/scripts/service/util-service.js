@@ -346,6 +346,35 @@ angular.module('HmsModule')
           );
         }
       };
+      
+    this.confirmDIY = function (message, title,okText,cancelText, onConfirm,onBack) {
+      if (!baseConfig.nativeScreenFlag) {
+        var confirmPopup = $ionicPopup.confirm({
+          title: (angular.isDefined(title) ? title : "提示"),
+          template: message,
+          cancelText: cancelText,
+          cancelType: 'button-cux-popup-cancel',
+          okText: okText,
+          okType: 'button-cux-popup-confirm'
+        });
+        confirmPopup.then(function(res){
+          if(res){
+            onConfirm(res);
+          }else{
+            onBack(res)
+          }
+        });
+      } else {
+        navigator.notification.confirm(
+          message, // message
+          function (index) {
+            onConfirm(index-1);
+          }, // callback to invoke with index of button pressed
+          title, // title
+          ['取消' , '确定'] // buttonLabels
+        );
+      }
+    };      
 
       this.confirmShare = function (title, message,  shareConfirm) {
         if (!baseConfig.nativeScreenFlag) {
