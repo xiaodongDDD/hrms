@@ -8,6 +8,7 @@ angular.module('myApp')
           url: '/contractlist',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/contractapproval/list/contractlist.html',
               controller: 'contractlistCtrl'
             }

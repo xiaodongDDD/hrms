@@ -7,6 +7,7 @@ angular.module('myApp')
           url: '/carpooling-map-choose',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/carpooling/carpooling-create/carpooling-map-choose.html',
               controller: 'mapChooseCtrl'
             }
@@ -24,7 +25,7 @@ angular.module('applicationModule')
     '$ionicHistory',
     'carpoolingCreateService',
     '$timeout',
-    function ($rootScope,$scope,hmsHttp,hmsPopup,$ionicHistory,carpoolingCreateService,$timeout) {
+    function ($rootScope, $scope, hmsHttp, hmsPopup, $ionicHistory, carpoolingCreateService, $timeout) {
       $scope.$on('$ionicView.enter', function () {
       });
 
@@ -40,8 +41,6 @@ angular.module('applicationModule')
       $scope.showLocation = false;
 
 
-
-
       //var windowsArr = [];
       //var marker = [];
       var mapObj = new AMap.Map("mapContainer", {
@@ -53,35 +52,36 @@ angular.module('applicationModule')
       init();//载入时判断是否有数据
       locCity();
 
-      AMap.plugin(['AMap.Autocomplete','AMap.Driving','AMap.PlaceSearch'],function(){
+      AMap.plugin(['AMap.Autocomplete', 'AMap.Driving', 'AMap.PlaceSearch'], function () {
         var marker = new AMap.Marker({
-          map:mapObj,
-          bubble:true
+          map: mapObj,
+          bubble: true
         });
         var driving = new AMap.Driving({
           map: mapObj,
         });
         var placeSearch = new AMap.PlaceSearch({
-          city:'',
-          map:mapObj
+          city: '',
+          map: mapObj
         });
 
         var departure = {
           city: "",
-          input:"departure"
+          input: "departure"
         };
 
         var autoOptions = {
           city: ""
         };
-        autocomplete= new AMap.Autocomplete(autoOptions);
 
-        departureComplete= new AMap.Autocomplete(departure);
+        var autocomplete = new AMap.Autocomplete(autoOptions);
 
-        AMap.event.addListener(departureComplete, "select", function(e){
-          if(e.poi.location == undefined || e.poi.location == ""){
-            autocomplete.search(e.poi.name, function(status, result){
-              if(result.info == "OK" && result.count > 0  && result.tips.length > 1){
+        var departureComplete = new AMap.Autocomplete(departure);
+
+        AMap.event.addListener(departureComplete, "select", function (e) {
+          if (e.poi.location == undefined || e.poi.location == "") {
+            autocomplete.search(e.poi.name, function (status, result) {
+              if (result.info == "OK" && result.count > 0 && result.tips.length > 1) {
                 var location = result.tips[1].location;
                 marker.setPosition(location);
                 mapObj.setCenter(marker.getPosition());
@@ -91,58 +91,58 @@ angular.module('applicationModule')
                 //$scope.departure = result.tips[1].name;
                 $scope.departure = G('departure').value;
                 pathPlan();
-              }else{
+              } else {
                 hmsPopup.showShortCenterToast("地址无效请重新选择");
               }
             });
-          }else if(e.poi.location){
+          } else if (e.poi.location) {
             marker.setPosition(e.poi.location);
             $scope.depaLocLng = e.poi.location.lng;
             $scope.depaLocLat = e.poi.location.lat;
             mapObj.setCenter(marker.getPosition());
             $scope.departure = e.poi.name;
             pathPlan();
-          }else{
+          } else {
             placeSearch.search(e.poi.name)
           }
         });
 
         var destination = {
           city: "",
-          input:"destination"
+          input: "destination"
         };
-        destinationComplete= new AMap.Autocomplete(destination);
-        AMap.event.addListener(destinationComplete, "select", function(e){  //坑爹的API必须写两套fuck！
-          if(e.poi.location == undefined || e.poi.location==""){
-            autocomplete.search(e.poi.name, function(status, result){
-              if(result.info == "OK" && result.count > 0  && result.tips.length > 1) {
-                  var location = result.tips[1].location;
-                  marker.setPosition(location);
-                  mapObj.setCenter(marker.getPosition());
-                  $scope.destLocLng = location.lng;
-                  $scope.destLocLat = location.lat;
-                  //$scope.destination = result.tips[1].name;//destination名称跟输入框
-                 $scope.destination = G('destination').value;
-                  pathPlan();
-              }else{
+        var destinationComplete = new AMap.Autocomplete(destination);
+        AMap.event.addListener(destinationComplete, "select", function (e) {  //坑爹的API必须写两套fuck！
+          if (e.poi.location == undefined || e.poi.location == "") {
+            autocomplete.search(e.poi.name, function (status, result) {
+              if (result.info == "OK" && result.count > 0 && result.tips.length > 1) {
+                var location = result.tips[1].location;
+                marker.setPosition(location);
+                mapObj.setCenter(marker.getPosition());
+                $scope.destLocLng = location.lng;
+                $scope.destLocLat = location.lat;
+                //$scope.destination = result.tips[1].name;//destination名称跟输入框
+                $scope.destination = G('destination').value;
+                pathPlan();
+              } else {
                 hmsPopup.showShortCenterToast("地址无效，请重新选择");
               }
             });
-          }else if(e.poi.location){
+          } else if (e.poi.location) {
             marker.setPosition(e.poi.location);
             $scope.destLocLng = e.poi.location.lng;
             $scope.destLocLat = e.poi.location.lat;
             mapObj.setCenter(marker.getPosition());
             $scope.destination = e.poi.name;
             pathPlan();
-          }else{
+          } else {
             placeSearch.search(e.poi.name)
           }
         });
 
         //exchange
-        $scope.exchange = function() {
-          var departure   = G("departure").value;
+        $scope.exchange = function () {
+          var departure = G("departure").value;
           var destination = G("destination").value;
           G("departure").value = destination;
           G("destination").value = departure;
@@ -159,58 +159,58 @@ angular.module('applicationModule')
           }
         }
 
-        function pathPlan(){
-          if($scope.depaLocLng && $scope.depaLocLat){
-            if(!($scope.destLocLng == $scope.depaLocLng && $scope.destLocLat == $scope.depaLocLat)){
-              $timeout(function() {
-                driving.search([$scope.depaLocLng,$scope.depaLocLat], [$scope.destLocLng,$scope.destLocLat], function(status, result){});
-              },500);
-            }else{
+        function pathPlan() {
+          if ($scope.depaLocLng && $scope.depaLocLat) {
+            if (!($scope.destLocLng == $scope.depaLocLng && $scope.destLocLat == $scope.depaLocLat)) {
+              $timeout(function () {
+                driving.search([$scope.depaLocLng, $scope.depaLocLat], [$scope.destLocLng, $scope.destLocLat], function (status, result) {
+                });
+              }, 500);
+            } else {
               hmsPopup.showShortCenterToast("起点与终点不可重复");
             }
           }
         }
 
-    });
+      });
 
       //myCallback
-      $scope.myCallback = function(){
+      $scope.myCallback = function () {
         var departure = G("departure").value;
         var destination = G("destination").value;
         var state = true;
 
 
-
-        if(departure == ""){//清掉输入框则清空数据
+        if (departure == "") {//清掉输入框则清空数据
           $scope.depaLocLng = "";
           $scope.depaLocLat = "";
           $scope.departure = "";
-        }else if(departure != $scope.departure){
+        } else if (departure != $scope.departure) {
           $scope.depaLocLng = "";
           $scope.depaLocLat = "";
           $scope.departure = "";
           hmsPopup.showShortCenterToast("请定位起点");
           state = false;
         }
-        if(destination == ""){//清掉输入框则清空数据
+        if (destination == "") {//清掉输入框则清空数据
           $scope.destLocLng = "";
           $scope.destLocLat = "";
           $scope.destination = "";
-        }else if(destination != $scope.destination){
+        } else if (destination != $scope.destination) {
           $scope.destLocLng = "";
           $scope.destLocLat = "";
           $scope.destination = "";
           hmsPopup.showShortCenterToast("请定位终点");
           state = false;
         }
-        if(state){
-          $scope.createLocation={
-            startLng:$scope.depaLocLng,
-            startLat:$scope.depaLocLat,
-            endLng:  $scope.destLocLng,
-            endLat:  $scope.destLocLat,
-            start:   $scope.departure,
-            end:     $scope.destination
+        if (state) {
+          $scope.createLocation = {
+            startLng: $scope.depaLocLng,
+            startLat: $scope.depaLocLat,
+            endLng: $scope.destLocLng,
+            endLat: $scope.destLocLat,
+            start: $scope.departure,
+            end: $scope.destination
           }
           carpoolingCreateService.setLocation($scope.createLocation);
           $rootScope.$broadcast("SET_LOCATION");
@@ -218,62 +218,66 @@ angular.module('applicationModule')
         }
       }
 
-      function init(){
+      function init() {
         var location = carpoolingCreateService.getLocation();
         $scope.depaLocLng = location.startLng;
         $scope.depaLocLat = location.startLat;
-        $scope.destLocLng=location.endLng;
-        $scope.destLocLat=location.endLat;
-        $scope.departure=location.start;
+        $scope.destLocLng = location.endLng;
+        $scope.destLocLat = location.endLat;
+        $scope.departure = location.start;
         $scope.destination = location.end;
-        if(($scope.departure != undefined) && ($scope.destination != undefined) ){
-          document.getElementById("departure").value =  $scope.departure;
-          document.getElementById("destination").value =  $scope.destination;
-          AMap.service(["AMap.Driving"], function() {
+        if (($scope.departure != undefined) && ($scope.destination != undefined)) {
+          document.getElementById("departure").value = $scope.departure;
+          document.getElementById("destination").value = $scope.destination;
+          AMap.service(["AMap.Driving"], function () {
             var driving = new AMap.Driving({
               map: mapObj,
             });
-            driving.search([$scope.depaLocLng,$scope.depaLocLat], [$scope.destLocLng,$scope.destLocLat], function(status, result){});
+            driving.search([$scope.depaLocLng, $scope.depaLocLat], [$scope.destLocLng, $scope.destLocLat], function (status, result) {
+            });
           });
-        }else if(($scope.departure != undefined)&&($scope.destination == undefined)){
-          document.getElementById("departure").value =  $scope.departure;
-        }else if (($scope.destination != undefined)&&($scope.departure == undefined)){
-          document.getElementById("destination").value =  $scope.destination;
+        } else if (($scope.departure != undefined) && ($scope.destination == undefined)) {
+          document.getElementById("departure").value = $scope.departure;
+        } else if (($scope.destination != undefined) && ($scope.departure == undefined)) {
+          document.getElementById("destination").value = $scope.destination;
         }
       }
-      function G(id){
-        return  document.getElementById(id);
+
+      function G(id) {
+        return document.getElementById(id);
       }
-      function exchangeStartEnd(){
-        $scope.depaLocLat = [$scope.destLocLat,$scope.destLocLat=$scope.depaLocLat][0];
-        $scope.depaLocLng = [$scope.destLocLng,$scope.destLocLng=$scope.depaLocLng][0];
-        $scope.departure = [$scope.destination,$scope.destination=$scope.departure][0];
+
+      function exchangeStartEnd() {
+        $scope.depaLocLat = [$scope.destLocLat, $scope.destLocLat = $scope.depaLocLat][0];
+        $scope.depaLocLng = [$scope.destLocLng, $scope.destLocLng = $scope.depaLocLng][0];
+        $scope.departure = [$scope.destination, $scope.destination = $scope.departure][0];
       }
+
       //定位城市
 
-      function  locCity(){
-        if(window.localStorage && (window.localStorage.searchCity!= "false") ){
+      function locCity() {
+        if (window.localStorage && (window.localStorage.searchCity != "false")) {
           $scope.showLocation = true;
           $scope.cityCode = window.localStorage.locCity;
           mapObj.setCity($scope.cityCode);
-        }else{
+        } else {
           $scope.showLocation = true;
           $scope.cityCode = "上海";
           mapObj.setCity("上海");//如果获取不到当前位置则默认为上海
         }
       }
     }])
-    .factory('carpoolingCreateService',[function () {
-      var createLocation = {};
-      return{
-      getLocation:function () {
+  .factory('carpoolingCreateService', [function () {
+    var createLocation = {};
+    return {
+      getLocation: function () {
         return createLocation;
       },
-      setLocation:function(location){
+      setLocation: function (location) {
         createLocation = location;
       },
-      clear:function(){
+      clear: function () {
         createLocation = {};
       }
     }
-    }]);
+  }]);

@@ -7,6 +7,7 @@ angular.module('myApp')
           params: {"detail": {}, "processedFlag": {}, "myPrsonalApplicationFlag": false, "type": "", 'fromLock': true},
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/workflow/detail/detail.html',
               controller: 'WorkFLowDetailCtrl'
             }
@@ -16,6 +17,7 @@ angular.module('myApp')
           $stateProvider
             .state('workflow-employee', {
               url: 'workflow-employee',
+              prefetchTemplate: false,
               templateUrl: 'build/pages/contact/detail/employee-detail.html',
               controller: 'contactEmployeeDetailCtl',
               params: {
@@ -27,6 +29,7 @@ angular.module('myApp')
               url: '/tab-application-workflow-employee',
               views: {
                 'tab-application': {
+                  prefetchTemplate: false,
                   templateUrl: 'build/pages/contact/detail/employee-detail.html',
                   controller: 'contactEmployeeDetailCtl'
                 }
@@ -39,6 +42,7 @@ angular.module('myApp')
               url: '/tab-message-workflow-employee',
               views: {
                 'tab-message': {
+                  prefetchTemplate: false,
                   templateUrl: 'build/pages/contact/detail/employee-detail.html',
                   controller: 'contactEmployeeDetailCtl'
                 }
@@ -51,6 +55,7 @@ angular.module('myApp')
               url: '/tab-contact-workflow-employee',
               views: {
                 'tab-contact': {
+                  prefetchTemplate: false,
                   templateUrl: 'build/pages/contact/detail/employee-detail.html',
                   controller: 'contactEmployeeDetailCtl'
                 }
@@ -63,6 +68,7 @@ angular.module('myApp')
               url: '/tab-myInfo-workflow-employee',
               views: {
                 'tab-myInfo': {
+                  prefetchTemplate: false,
                   templateUrl: 'build/pages/contact/detail/employee-detail.html',
                   controller: 'contactEmployeeDetailCtl'
                 }

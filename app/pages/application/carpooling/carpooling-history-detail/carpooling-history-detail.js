@@ -7,6 +7,7 @@ angular.module('myApp')
           url: '/carpooling-history-detail',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/carpooling/carpooling-history-detail/carpooling-history-detail.html',
               controller: 'HistoryDetailCtrl'
             }
@@ -19,6 +20,7 @@ angular.module('myApp')
           url: '/tab-application-carpooling-employee',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/contact/detail/employee-detail.html',
               controller: 'contactEmployeeDetailCtl'
             }

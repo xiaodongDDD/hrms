@@ -9,6 +9,7 @@ angular.module('myApp')
           url: '/timesheet',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/timesheet/query/query.html',
               controller: 'TimeSheetQueryCtrl'
             }
@@ -19,6 +20,7 @@ angular.module('myApp')
           url: '/workflow-message',
           views: {
             'tab-message': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/timesheet/query/query.html',
               controller: 'TimeSheetQueryCtrl'
             }

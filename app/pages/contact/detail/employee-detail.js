@@ -11,6 +11,7 @@ angular.module('myApp')
 					url: 'contact/employeeDetail',
 					views: {
 						'tab-contact': {
+              prefetchTemplate: false,
 							templateUrl: 'build/pages/contact/detail/employee-detail.html',
 							controller: 'contactEmployeeDetailCtl'
 						}

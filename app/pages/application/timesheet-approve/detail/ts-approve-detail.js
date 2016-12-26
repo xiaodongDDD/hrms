@@ -11,6 +11,7 @@ angular.module('myApp')
           url: 'application/tsApproveDetail',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/timesheet-approve/detail/ts-approve-detail.html',
               controller: 'tsApproveDetailCtrl'
             }

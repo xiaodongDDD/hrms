@@ -9,6 +9,7 @@ angular.module('myApp')
           url: '/houses-photo-list',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/houses-sublease/houses-photo-list.html',
               controller: 'HousesPhotoListCtrl'
             }

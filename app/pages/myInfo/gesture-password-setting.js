@@ -10,6 +10,7 @@ angular.module('myApp')
           url: '/gesture-password-setting',
           views: {
             'tab-myInfo': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/myInfo/gesture-password-setting.html',
               controller: 'GesturePasswordSettingCtrl'
             }

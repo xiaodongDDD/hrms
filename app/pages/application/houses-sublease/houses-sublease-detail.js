@@ -9,6 +9,7 @@ angular.module('myApp')
           url: '/houses-sublease-detail',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/houses-sublease/houses-sublease-detail.html',
               controller: 'HousesSubleaseDetailCtrl'
             }
@@ -21,6 +22,7 @@ angular.module('myApp')
           url: '/tab-application-house-employee',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/contact/detail/employee-detail.html',
               controller: 'contactEmployeeDetailCtl'
             }

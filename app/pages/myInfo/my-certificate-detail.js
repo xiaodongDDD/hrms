@@ -10,6 +10,7 @@ angular.module('myApp')
           url: '/my-certificate-detail',
           views: {
             'tab-myInfo': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/myInfo/my-certificate-detail.html',
               controller: 'MyCertificateDetailCtrl'
             }

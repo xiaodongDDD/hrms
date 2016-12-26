@@ -7,6 +7,7 @@ angular.module('myApp')
           params: {day: {}},
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/workflow/list/workflow-list.html',
               controller: 'WorkFLowListCtrl'
             }

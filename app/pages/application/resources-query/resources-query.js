@@ -6,6 +6,7 @@ angular.module('myApp')
           url: '/resources-query',
           views: {
             'tab-application': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/resources-query/resources-query.html',
               controller: 'resourceQueryController'
             }
