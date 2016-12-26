@@ -11,10 +11,21 @@
   </ion-header-bar>
   <ion-content ng-class="{false:'hide-head'}[showHead]" has-bouncing="false" scroll="false">
     <div class="board">
-      <div ng-click="selectBoardItem(0)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[0]]"><div class="num">10</div><div>3210.5万￥</div><div>{{ 'OPPORTUNITIES.BOARD.GOING' | T }}</div></div>
-      <div ng-click="selectBoardItem(1)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[1]]"><div class="num">12</div><div class="need-board">￥2210.5万</div><div>{{ 'OPPORTUNITIES.BOARD.NEW' | T }}</div></div>
-      <div ng-click="selectBoardItem(2)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[2]]"><div class="num">10</div><div class="need-board">￥1400.5万</div><div>{{ 'OPPORTUNITIES.BOARD.WIN' | T }}</div></div>
-      <div ng-click="selectBoardItem(3)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[3]]"><div class="num">10</div><div class="need-board">￥210.5万</div><div>{{ 'OPPORTUNITIES.BOARD.CLOSE' | T }}</div></div>
+      <div ng-click="selectBoardItem(0)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[0]]">
+        <div class="all">{{ 'OPPORTUNITIES.BOARD.ALL' | T }}</div>
+      </div>
+      <div ng-click="selectBoardItem(1)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[1]]">
+        <div class="num">{{boardData.hotOppCount}}</div><div class="need-board">{{getMoneyString(boardData.hotMoney)}}</div>
+        <div>{{ 'OPPORTUNITIES.BOARD.HOT' | T }}</div>
+      </div>
+      <div ng-click="selectBoardItem(2)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[2]]">
+        <div class="num">{{boardData.larOppCount}}</div><div class="need-board">{{getMoneyString(boardData.larMoney)}}</div>
+        <div>{{ 'OPPORTUNITIES.BOARD.BIG' | T }}</div>
+      </div>
+      <div ng-click="selectBoardItem(3)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[3]]">
+        <div class="num">{{boardData.winOppCount}}</div><div class="need-board">{{getMoneyString(boardData.winMoney)}}</div>
+        <div>{{ 'OPPORTUNITIES.BOARD.WIN' | T }}</div>
+      </div>
     </div>
 
     <div class="opportunity-content" on-drag="onDrag($event)" ng-class="{false:'show-more'}[showHead]">
