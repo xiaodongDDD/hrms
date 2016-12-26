@@ -375,6 +375,7 @@ angular.module('customerModule')
           approveType:'HCRM_REJECTED',
           name:'已拒绝'
         }];
+        $scope.sourceItems = $scope.items.clone();
       }
       var initDataStatus = function () {
         $scope.showCrmLoading = false;
@@ -391,6 +392,7 @@ angular.module('customerModule')
           statusType:'HCRM_LIMITED',
           name:'受限'
         }];
+        $scope.sourceItems = $scope.items.clone();
       }
       //所属大区
       var getSaleAreaSuccess = function (response) {
@@ -472,8 +474,9 @@ angular.module('customerModule')
         $scope.showCrmLoading = false;
         $scope.moreDataCanBeLoaded = response.parent_customer_list.length == $scope.pageSize;
         if(response.returnCode == 'S'){
-          $scope.items = response.parent_customer_list;
+          $scope.items = $scope.items.concat(response.parent_customer_list);
         }
+        $scope.$broadcast('scroll.infiniteScrollComplete');
       };
     //负责人分页查询
       var getEmployeeSuccess = function (response) {
@@ -537,7 +540,7 @@ angular.module('customerModule')
       }, {
         'key': 'belongs_region',
         'interface': customerService.getSaleArea,
-        'params': [getSaleAreaSuccess, 'HCRM_SALE_AREA'],
+        'params': [getSaleAreaSuccess,'', 'HCRM_SALE_AREA'],
         'showKey': 'saleAreaName',
         'dataKey': 'saleAreaId',
         'dataModel': '$scope.data.saleAreaId',
@@ -572,7 +575,7 @@ angular.module('customerModule')
       }, {
         'key': 'major_industry',
         'interface': customerService.getIndustry,
-        'params': [getMajorSuccess,0],
+        'params': [getMajorSuccess,'',0],
         'showKey': 'industryName',
         'dataKey': 'industryId',
         'dataModel': '$scope.data.majorIndustry',
@@ -580,7 +583,7 @@ angular.module('customerModule')
       }, {
         'key': 'sub_industry',
         'interface': customerService.getIndustry,
-        'params': [getSubSuccess,$scope.data.majorIndustry],
+        'params': [getSubSuccess,'',$scope.data.majorIndustry],
         'showKey': 'industryName',
         'dataKey': 'industryId',
         'dataModel': '$scope.data.subIndustry',
@@ -685,7 +688,7 @@ angular.module('customerModule')
         if($scope.nowSelectTarget['key'] == 'major_industry'){
           $scope.data.subIndustry = '';
           $scope.showData.subIndustry = '';
-          $scope.selectTargets[6].params = [getSubSuccess,$scope.data.majorIndustry];
+          $scope.selectTargets[6].params = [getSubSuccess,'',$scope.data.majorIndustry];
         }
         $scope.showSelectDiv();
       };
@@ -1141,9 +1144,10 @@ angular.module('customerModule')
       };
 
       //所属大区
-      this.getSaleArea = function (success, orgType) {
+      this.getSaleArea = function (success,organizationName, orgType) {
         var params = {
-          orgType: orgType
+          orgType: orgType,
+          organizationName:organizationName
         };
         hmsHttp.post(baseUrl + 'query_sale_area', params).success(function (result) {
           success(result);
@@ -1237,9 +1241,10 @@ angular.module('customerModule')
       };
 
       //所属行业级联
-      this.getIndustry = function (success,parentIndustryId) {
+      this.getIndustry = function (success,industryName,parentIndustryId) {
         var params={
-          parentIndustryId:parentIndustryId
+          parentIndustryId:parentIndustryId,
+          industryName:industryName
         };
         hmsHttp.post(baseUrl + 'industry_lookup',params).success(function (result) {
           success(result);
