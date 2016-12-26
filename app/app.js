@@ -280,6 +280,7 @@ angular.module('myApp')
           params: {message: {}},
           views: {
             'tab-message': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/message/detail/message-detail.html',
               controller: 'messageDetailCtrl'
             }
@@ -307,6 +308,7 @@ angular.module('myApp')
           url: '/myTimesheet',
           views: {
             'tab-message': {
+              prefetchTemplate: false,
               templateUrl: 'build/pages/application/timesheet/query/query.html',
               controller: 'TimeSheetQueryCtrl'
             }
