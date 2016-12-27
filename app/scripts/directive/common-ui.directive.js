@@ -142,7 +142,7 @@ HmsModule
       template: '<div class="bar directive-box" id="bar-footer2">' +
       '<div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">' +
       '<div style="">' +
-      '<img src="build/img/application/plans/icon_voice@3x.png" style="">' +
+      '<img src="build/img/application/plans/icon_voice@3x.png">' +
       '</div>' +
       '</div>' +
       '<div class="common-content">' +
@@ -166,7 +166,6 @@ HmsModule
           }
         };
       }
-
     }
   }])
   .directive('crmLoading', ['$rootScope', function ($rootScope) {
@@ -207,4 +206,54 @@ HmsModule
         element[0].style.height = (screen.height - 44) + 'px';
       }
     }
-  });
+  })
+  .directive('keyboardshow', function($rootScope, $ionicPlatform, $timeout, $ionicHistory, $cordovaKeyboard) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attributes) {
+        if (ionic.Platform.isAndroid()) {
+
+        }else{
+          window.addEventListener('native.keyboardshow',function (e){
+
+            angular.element(element).css({
+              'bottom':e.keyboardHeight + 'px'
+            });
+
+
+          });
+
+          window.addEventListener('native.keyboardhide',function (e){
+            angular.element(element).css({
+              'bottom':0
+            });
+          });
+        }
+      }
+    };
+  })
+.directive('footerkeyboardshow', function($rootScope, $ionicPlatform, $timeout, $ionicHistory, $cordovaKeyboard) {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attributes) {
+      if (ionic.Platform.isAndroid()) {
+
+      }else{
+        window.addEventListener('native.keyboardshow',function (e){
+
+          angular.element(element).css({
+            'bottom':e.keyboardHeight + 44 + 'px'
+          });
+
+
+        });
+
+        window.addEventListener('native.keyboardhide',function (e){
+          angular.element(element).css({
+            'bottom':0
+          });
+        });
+      }
+    }
+  };
+});

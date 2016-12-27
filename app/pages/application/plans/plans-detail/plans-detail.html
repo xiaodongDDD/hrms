@@ -109,24 +109,26 @@
     </div>
     </div>
   </ion-content>
-  <div ng-if="holdAnnotate" class="bar bar-footer holdFooter">
-    <div class="wave-hold">
-      <div>
-        <img src="build/img/plans/icon_weave@3x.png">
+  <div ng-if="holdAnnotate" class="holdFooter">
+    <div class="wave">
+      <div class="wave-hold">
+        <div>
+          <img src="build/img/plans/icon_weave@3x.png">
+        </div>
       </div>
-    </div>
-    <div class="wave-text">
-      <div>
-        按住说话 松开结束
+      <div class="wave-text">
+        <div>
+          按住说话 松开结束
+        </div>
       </div>
-    </div>
-    <div class="wave-hold">
-      <div>
-        <img src="build/img/plans/icon_weave@3x.png">
+      <div class="wave-hold">
+        <div>
+          <img src="build/img/plans/icon_weave@3x.png">
+        </div>
       </div>
     </div>
   </div>
-  <div ng-if="showCommentFlag"   class="bar bar-footer" style="bottom:60px;height: auto;max-height:110px;">
+  <div ng-if="showCommentFlag"  footerkeyboardshow class="bar bar-footer" style="bottom:60px;height: auto;max-height:110px;">
     <div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">
       <div style="">
         <img src="build/img/application/plans/icon_voice@3x.png" style="">
