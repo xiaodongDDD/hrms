@@ -1,4 +1,4 @@
-<ion-view view-title="销售计划-查询" class="crm hrms-pancel-corlor plans">
+<hmsDialogBox view-title="销售计划-查询" class="crm hrms-pancel-corlor plans">
   <ion-header-bar align-title="center" class="bar-stable">
     <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
 
@@ -182,20 +182,19 @@
       </div>
     </div>
   </div>
-
+ <!-- <hms-dialog-box></hms-dialog-box>-->
   <div class="bar " id="bar-footer2" ng-if="showCommentFlag">
     <div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">
       <div style="">
         <img src="build/img/application/plans/icon_voice@3x.png" style="">
       </div>
     </div>
-    <div class="common-content" style="">
+    <div class="common-content">
       <textarea  id="comment-text" oninput="this.style.height = '40px';
-              this.style.height = this.scrollHeight + '40px';
+              this.style.height = this.scrollHeight + 'px';
               this.parentNode.style.height = '0px';
               this.parentNode.style.height = this.scrollHeight + 0 + 'px';"
                 placeholder="" ng-model="planDetail.annotate"></textarea>
-      <!--div contenteditable="true" id="comment-text" >{{planDetail.annotate}}</div>-->
     </div>
     <div class="common-submit"  ng-click="annotateSubmit(planDetail)">
       <div>

@@ -125,6 +125,50 @@ HmsModule
 
     }
   })
+  .directive('hmsDialogBox',[function(){
+    return {
+      restrict: 'E',
+      scope: {
+        inputLabelName: '=labelName',
+        inputBox: '=inputBox',
+        placeHolder: '=placeHolder',
+        showLine: '=showBottomLine',
+        isImportant: '=important',
+        isLastLine: '=lastLine',
+        $hmsInput: '&hmsInput',
+        isChange: '=isChange',
+        typeValue:'=typeValue'
+      },
+      template: '<div class="bar directive-box" id="bar-footer2">' +
+      '<div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">' +
+      '<div style="">' +
+      '<img src="build/img/application/plans/icon_voice@3x.png" style="">' +
+      '</div>' +
+      '</div>' +
+      '<div class="common-content">' +
+      '<textarea  id="comment-text" oninput="this.style.height =\'40px\';this.style.height = this.scrollHeight + \'px\';this.parentNode.style.height = \'0px\';this.parentNode.style.height = this.scrollHeight + 0 + \'px\';" placeholder="" ng-model="planDetail.annotate"></textarea>' +
+      ' </div> ' +
+      '<div class="common-submit"  ng-click="annotateSubmit(planDetail)"> ' +
+      '<div>发送 </div> ' +
+      '</div>' +
+      ' </div>',
+      link: function (scope, element, attrs) {
+        if(!scope.placeHolder || scope.placeHolder == ''){
+          scope.placeHolderValue = '请输入';
+        }
+        else{
+          scope.placeHolderValue = scope.placeHolder;
+        }
+        scope.inputBlur = function () {
+          console.log('blur...');
+          if (scope.$hmsInput) {
+            scope.$hmsInput();
+          }
+        };
+      }
+
+    }
+  }])
   .directive('crmLoading', ['$rootScope', function ($rootScope) {
     return {
       restrict: 'E',
