@@ -47,6 +47,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 /**
  * Created by xiangwang on 2016/12/17.
  */
@@ -107,6 +108,7 @@ public class FaceSerchActivity extends Activity {
         initWH();
         notify = NotifyMessageManager.getInstance();
         handler = new MyHandler(FaceSerchActivity.this);
+        timer = new Timer(true);
         APP_ID = Config.APP_ID;
         SECRET_ID = Config.SECRET_ID;
         SECRET_KEY = Config.SECRET_KEY;
@@ -252,7 +254,7 @@ public class FaceSerchActivity extends Activity {
                     Bitmap mImage = surfaceView.getPicture();
                     //保存图片
                     String path = getFilesDir().getPath();
-                    FileUtil.saveBitmap(FileUtil.centerSquareScaleBitmap(mImage,(faceRight-faceLeft)*mImage.getWidth()/w_screen+20),path);
+                    FileUtil.saveBitmap(FileUtil.centerSquareScaleBitmap(mImage, (faceRight - faceLeft) * mImage.getWidth() / w_screen + 20), path);
                     if (mImage != null) {
                         try {
                             JSONObject respose = faceYoutu.DetectFace(mImage, 1);
@@ -285,7 +287,6 @@ public class FaceSerchActivity extends Activity {
         }else{
             //开启定时器进行获取视频流图片检测
             textv_face_info.setText("请将人脸放入圆圈内");
-            timer = new Timer(true);
             TimerTask task = new TimerTask(){
                 public void run() {
                     Message message = new Message();
@@ -293,7 +294,9 @@ public class FaceSerchActivity extends Activity {
                     handler.sendMessage(message);
                 }
             };
-            timer.schedule(task, 3000, 3000);
+            if(timer!=null){
+                timer.schedule(task, 3000, 3000);
+            }
         }
     }
     private void stopGoogleFaceDetect(){
@@ -338,8 +341,11 @@ public class FaceSerchActivity extends Activity {
                             JSONObject faceObj = jsonArr.getJSONObject(0);
                             //获取保存的图片路径
                             String imgPath = FileUtil.getSavePath();
-                            faceObj.put("imgPath",imgPath);
+                            faceObj.put("imgPath", imgPath);
                             myAct.notify.sendNotifyMessage(faceObj.toString());
+                            if(myAct.timer!=null){
+                                myAct.timer.cancel();
+                            }
                             myAct.finish();
                         }
                     }catch (JSONException e) {
@@ -375,6 +381,9 @@ public class FaceSerchActivity extends Activity {
         stopGoogleFaceDetect();
         //关闭摄像头
         CameraInterface.getInstance().doStopCamera();
+        if(timer!=null){
+            timer.cancel();
+        }
         super.onDestroy();
     }
 }

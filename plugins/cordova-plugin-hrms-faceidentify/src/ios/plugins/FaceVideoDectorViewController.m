@@ -174,10 +174,7 @@
 
 -(void)dealloc
 {
-    if (self.captureService) {
-        [self.captureService stopRunning];
-        self.captureService = nil;
-    }
+    self.captureService = nil;
     [timer invalidate];
     timer = nil;
 }

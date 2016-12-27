@@ -149,6 +149,9 @@ Android测试环境
 
   iOS版本 Android 打包 通用插件下载
   
+  cordova plugin rm cordova-plugin-baidu-geolocation
+  cordova plugin add https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu --variable BAIDUMAPKEY=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2
+  
   cordova plugin rm com.hand.scancard
   cordova plugin add http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git
 

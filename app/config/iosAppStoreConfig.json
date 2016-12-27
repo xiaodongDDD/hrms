@@ -23,10 +23,10 @@
     "appRootFile": "helloCordova",
     "appUpId":"com.hand-china.mobile",
     "version":{
-      "currentVersion": "2.1.0",
-      "currentversionName": "此版本为正式版本2.1.0",
-      "currentSubVersion": "11",
-      "currentSubVersionName": "资源增量包11"
+      "currentVersion": "2.2.0",
+      "currentversionName": "此版本为正式版本2.2.0",
+      "currentSubVersion": "1",
+      "currentSubVersionName": "资源增量包1"
     }
   }
 }

@@ -98,7 +98,7 @@ public class FaceCompareActivity extends Activity {
         if (ContextCompat.checkSelfPermission(FaceCompareActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
         {
             //不具有camera权限 申请权限
-            ActivityCompat.requestPermissions( FaceCompareActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
+            ActivityCompat.requestPermissions(FaceCompareActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
         }else{
         init();}
     }
@@ -122,6 +122,7 @@ public class FaceCompareActivity extends Activity {
         initWH();
         notify = NotifyMessageManager.getInstance();
         handler = new MyHandler(FaceCompareActivity.this);
+        timer = new Timer(true);
         APP_ID = Config.APP_ID;
         SECRET_ID = Config.SECRET_ID;
         SECRET_KEY = Config.SECRET_KEY;
@@ -288,7 +289,6 @@ public class FaceCompareActivity extends Activity {
         }else{
             //开启定时器进行获取视频流图片检测
             textv_face_info.setText("请将人脸放入圆圈内");
-            timer = new Timer(true);
             TimerTask task = new TimerTask(){
                 public void run() {
                     Message message = new Message();
@@ -296,7 +296,9 @@ public class FaceCompareActivity extends Activity {
                     handler.sendMessage(message);
                 }
             };
-            timer.schedule(task,3000, 3000);
+            if(timer!=null){
+                timer.schedule(task,3000, 3000);
+            }
         }
     }
     private void stopGoogleFaceDetect(){
@@ -343,6 +345,9 @@ public class FaceCompareActivity extends Activity {
                             String imgPath = FileUtil.getSavePath();
                             faceObj.put("imgPath",imgPath);
                             myAct.notify.sendNotifyMessage(faceObj.toString());
+                            if(myAct.timer!=null){
+                                myAct.timer.cancel();
+                            }
                             myAct.finish();
                         }
                     }catch (JSONException e) {
@@ -378,6 +383,9 @@ public class FaceCompareActivity extends Activity {
         stopGoogleFaceDetect();
         //关闭摄像头
         CameraInterface.getInstance().doStopCamera();
+        if(timer!=null){
+            timer.cancel();
+        }
         super.onDestroy();
     }
 
