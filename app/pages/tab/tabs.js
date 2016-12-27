@@ -22,8 +22,6 @@ angular.module('loginModule').controller('TabsCtrl',
         });
       }
 
-      $scope.hasCrm = !baseConfig.appStoreFlag;
-
       $scope.showGuideFlag;
 
       $scope.buttonTapped = function () {

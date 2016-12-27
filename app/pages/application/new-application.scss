@@ -326,6 +326,7 @@ $applicationColor: white !default;
         left: 0;
         width: 100%;
         .application-calendar{
+          padding-bottom: 10px;
           overflow: hidden;
           flex-wrap: wrap;
           display: flex;
@@ -344,7 +345,6 @@ $applicationColor: white !default;
           .date-item{
             height: 30px;
             line-height: 25px;
-            padding: 5px 0;
           }
           div{
             background: transparent;
@@ -355,7 +355,7 @@ $applicationColor: white !default;
             box-sizing: content-box;
             span{
               position: absolute;
-              bottom: 7px;
+              bottom: 4px;
               background: #959595;
               height: 4px;
               width: 4px;

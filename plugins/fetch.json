@@ -18,7 +18,7 @@
     "cordova-plugin-hand-contacts": {
         "source": {
             "type": "local",
-            "path": "/Users/zaranengap/WebstormProjects/cordova-plugin-hand-contacts"
+            "path": "E:\\yuyin\\PLUGINIFLYTEK"
         },
         "is_top_level": true,
         "variables": {}
@@ -49,10 +49,21 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-youtuishare": {
+    "hand-im-plugin-device": {
         "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
+            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "RONG_KEY": "0vnjpoadnd4cz"
+        }
+    },
+    "cordova-plugin-hrms-faceidentify": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
             "subdir": "."
         },
         "is_top_level": true,
@@ -67,39 +78,20 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-hrms-faceidentify": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "com.handmobile.cordovaplugin.hotpatch": {
         "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH/cordova",
             "subdir": "."
         },
         "is_top_level": true,
         "variables": {}
     },
-    "hand-im-plugin-device": {
+    "cordova-plugin-youtuishare": {
         "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
+            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
             "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {
-            "RONG_KEY": "e5t4ouvptpsaa"
-        }
-    },
-    "cn.jpush.phonegap.JPushPlugin": {
-        "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin@2.2.0"
         },
         "is_top_level": true,
         "variables": {
