@@ -540,7 +540,7 @@ angular.module('customerModule')
       }, {
         'key': 'belongs_region',
         'interface': customerService.getSaleArea,
-        'params': [getSaleAreaSuccess,'', 'HCRM_SALE_AREA'],
+        'params': [getSaleAreaSuccess,''],
         'showKey': 'saleAreaName',
         'dataKey': 'saleAreaId',
         'dataModel': '$scope.data.saleAreaId',
@@ -548,7 +548,7 @@ angular.module('customerModule')
       }, {
         'key': 'team',
         'interface': customerService.getSaleTeam,
-        'params': [getSaleTeamSuccess,$scope.data.saleAreaId],
+        'params': [getSaleTeamSuccess,'',$scope.data.saleAreaId],
         'showKey': 'saleTeamName',
         'dataKey': 'saleTeamId',
         'dataModel': '$scope.data.saleTeamId',
@@ -683,7 +683,7 @@ angular.module('customerModule')
         if($scope.nowSelectTarget['key'] == 'belongs_region'){
           $scope.data.saleTeamId = '';
           $scope.showData.team = '';
-          $scope.selectTargets[2].params = [getSaleTeamSuccess, $scope.data.saleAreaId];
+          $scope.selectTargets[2].params = [getSaleTeamSuccess,'',$scope.data.saleAreaId];
         }
         if($scope.nowSelectTarget['key'] == 'major_industry'){
           $scope.data.subIndustry = '';
@@ -1144,9 +1144,9 @@ angular.module('customerModule')
       };
 
       //所属大区
-      this.getSaleArea = function (success,organizationName, orgType) {
+      this.getSaleArea = function (success,organizationName) {
         var params = {
-          orgType: orgType,
+          orgType: 'HCRM_SALE_AREA',
           organizationName:organizationName
         };
         hmsHttp.post(baseUrl + 'query_sale_area', params).success(function (result) {
@@ -1158,8 +1158,9 @@ angular.module('customerModule')
       };
 
       //所属团队
-      this.getSaleTeam = function (success,organizationId) {
+      this.getSaleTeam = function (success,keyWord,organizationId) {
         var params = {
+          keyWord:keyWord,
           organizationId: organizationId,
           orgType: "HCRM_SALE_TEAM"
         };

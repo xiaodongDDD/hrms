@@ -856,7 +856,7 @@ angular.module('customerModule')
       $scope.saleAreas = [];
       $scope.saleTeams = [];
       $scope.showSaleTeam = false;
-      $scope.areaSearch = {
+      $scope.areaValue = {
         key:''
       };
       $scope.inArea = true;
@@ -884,12 +884,12 @@ angular.module('customerModule')
       $scope.showSaleSelect = function(){
         $scope.showSaleSelectFlag = true;
         $scope.showLoading = true;
-        customerService.getSaleArea(getSaleAreaSuccess,'','HCRM_SALE_AREA');
+        customerService.getSaleArea(getSaleAreaSuccess,'');
       };
 
       $scope.selectArea = function(area){
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
-        $scope.areaSearch.key='';
+        $scope.areaValue.key='';
         $scope.inArea = false;
         $scope.showSaleTeam = true;
         $scope.showData.saleAreaName = area.saleAreaName;
@@ -900,7 +900,7 @@ angular.module('customerModule')
 
       $scope.selectTeam = function(team){
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
-        $scope.areaSearch.key='';
+        $scope.areaValue.key='';
         $scope.showSaleTeam = false;
         $scope.showSaleSelectFlag = false;
         $scope.showData.team = team.saleTeamName;
@@ -915,15 +915,16 @@ angular.module('customerModule')
           $scope.showSaleSelectFlag = false;
           $scope.inArea = true;
           $scope.data.saleAreaId = '';
+          $scope.areaValue.key = '';
         }
         //否则跳到一级,并清空第二级数据
       else{
-          customerService.getSaleArea(getSaleAreaSuccess,'','HCRM_SALE_AREA');
+          customerService.getSaleArea(getSaleAreaSuccess,'');
           $scope.showSaleTeam = false;
           $scope.saleTeams = [];
           $scope.inArea = true;
           $scope.data.saleAreaId = '';
-          $scope.areaSearch.key = '';
+          $scope.areaValue.key = '';
       }
     };
 
@@ -931,19 +932,29 @@ angular.module('customerModule')
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
         $scope.saleTeams = [];
         if($scope.inArea){
-          if($scope.areaSearch.key==''){
-            $$scope.saleAreas = [];
-            customerService.getSaleArea(getSaleAreaSuccess,'','HCRM_SALE_AREA');
+          if($scope.areaValue.key==''){
+            $scope.saleAreas = [];
+            customerService.getSaleArea(getSaleAreaSuccess,'');
           }else {
             $scope.saleAreas = [];
-            customerService.getSaleArea(getSaleAreaSuccess,$scope.areaSearch.key,'HCRM_SALE_AREA');
+            customerService.getSaleArea(getSaleAreaSuccess,$scope.areaValue.key);
           }
         }else {
-          //if($scope.areaSearch.key==''){
-          //  customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.majorIndustry);
-          //}else {
-          //  customerService.getIndustry(getSubIndustrySuccess,$scope.industrySearch.key, $scope.data.majorIndustry);
-          //}
+          if($scope.areaValue.key==''){
+            customerService.getSaleTeam(getSaleTeamSuccess,'', $scope.data.saleAreaId);
+          }else {
+            customerService.getSaleTeam(getSaleTeamSuccess,$scope.areaValue.key,$scope.data.saleAreaId);
+          }
+        }
+      }
+      $scope.clearAreaFilter = function () {
+        $scope.areaValue.key='';
+        if($scope.inArea){
+          $scope.saleAreas = [];
+          customerService.getSaleArea(getSaleAreaSuccess,'');
+        }else {
+          $scope.saleTeams = [];
+          customerService.getSaleTeam(getSaleTeamSuccess,'', $scope.data.saleAreaId);
         }
       }
 
@@ -1040,6 +1051,17 @@ angular.module('customerModule')
           }else {
             customerService.getIndustry(getSubIndustrySuccess,$scope.industrySearch.key, $scope.data.majorIndustry);
           }
+        }
+      }
+
+      $scope.clearIndustryFilter = function () {
+        $scope.industrySearch.key='';
+        if($scope.inMajor){
+          $scope.majorIndustrys = [];
+          customerService.getIndustry(getMajorIndustrySuccess,'', 0);
+        }else {
+          $scope.subIndustrys = [];
+          customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.majorIndustry);
         }
       }
       ///////////////////////城市选择/////////////////////////////

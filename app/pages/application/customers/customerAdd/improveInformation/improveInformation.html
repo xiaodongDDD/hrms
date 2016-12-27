@@ -305,7 +305,8 @@
     </div>
     <div class="sifting-area">
       <img src="build/img/application/opportunity/icon_top_search@3x.png">
-      <input type="text" placeholder="搜索..." ng-model="areaSearch.key" ng-change="filterArea()"/>
+      <input type="text" placeholder="搜索..." ng-model="areaValue.key" ng-change="filterArea()"/>
+      <img src="build/img/application/icon_circle@3x.png" ng-show="areaValue.key != ''" ng-click="clearAreaFilter()">
     </div>
     <div class="value-list-header">
       {{showSaleTeam ? showData.saleAreaName : '所属区域'}}
@@ -329,6 +330,7 @@
     <div class="sifting-area">
       <img src="build/img/application/opportunity/icon_top_search@3x.png">
       <input type="text" placeholder="搜索..." ng-model="industrySearch.key" ng-change="filterIndustry()"/>
+      <img src="build/img/application/icon_circle@3x.png" ng-show="industrySearch.key != ''" ng-click="clearIndustryFilter()">
     </div>
     <div class="value-list-header">
       {{showSubIndustry ? showData.majorIndustry : '主行业'}}
