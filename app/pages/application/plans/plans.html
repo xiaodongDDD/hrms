@@ -10,9 +10,9 @@
     <img src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="goPlansAdd()"/>
   </ion-header-bar>
 
-  <ion-content has-bouncing="false" scroll="false" on-touch="hideCommont()">
+  <ion-content has-bouncing="false" scroll="false">
     <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
-    <div class="select-head">
+    <div class="select-head" on-touch="hideCommont()">
       <div class="icon-area">
         <img ng-src="{{'build/img/application/plans/icon_plan' + (showAsMonth ? '_selected@3x.png' : '@3x.png')}}"
              ng-click="changeShowModel(true)"/>
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div ng-if="showAsMonth">
+    <div ng-if="showAsMonth" on-touch="hideCommont()">
       <div class="calendar scale-animation" ng-style="calendarStyle"
            on-swipe-right="onGestureCalendar('right')"
            on-swipe-left="onGestureCalendar('left')"
@@ -53,7 +53,7 @@
     </div>
 
     <div class="plans-content" ng-style="contentHeight">
-      <div class="row group-head top-head" ng-show="!showAsMonth">
+      <div class="row group-head top-head" ng-show="!showAsMonth" on-touch="hideCommont()">
         <div class="col col-67" style="margin: 0; padding:0;">{{nowShowDate ? getDayString(nowShowDate) : ""}}
           {{nowShowDate}}
         </div>
@@ -70,7 +70,7 @@
           <crm-loading ng-if="calendarLoadingFlag"></crm-loading>
           <div ng-if="!calendarLoadingFlag">
             <div class="plan-item" ng-repeat="plan in plans">
-              <div class="plan-content-tilte" ng-click="goDetail(plan)">
+              <div class="plan-content-tilte" ng-click="goDetail(plan)" on-touch="hideCommont()">
                 <div class="plan-head">
                   <img ng-src="build/img/application/plans/user_img@3x.png"/>
 
@@ -98,7 +98,7 @@
               </div>
               <div  >
                 <div ng-if="planAuthority.OTHER.selected" class="comment-title" ng-click="showComment(plan)">点评<img  src="build/img/application/plans/common.png"/></div>
-                <div class="comment-text" id="annotate" ng-if="plan.annotate!=''">
+                <div on-touch="hideCommont()" class="comment-text" id="annotate" ng-if="plan.annotate!=''">
                   <i>{{plan.leaderName}}:</i>{{plan.annotate}}
                 </div>
               </div>
@@ -115,7 +115,7 @@
           <crm-loading ng-if="planListLoadingFlag"></crm-loading>
           <div ng-if="!planListLoadingFlag">
             <div class="plan-group" ng-repeat="group in planGroups">
-              <div class="row group-head">
+              <div class="row group-head" on-touch="hideCommont()">
                 <div class="col col-67" style="margin: 0; padding:0;">{{group.date ? getDayString(group.date) : ""}}
                   {{group.date}}
                 </div>
@@ -124,7 +124,7 @@
                 </div>
               </div>
               <div class="plan-item" ng-repeat="plan in group.plans">
-                <div class="plan-content-tilte" ng-click="goDetail(plan)">
+                <div on-touch="hideCommont()" class="plan-content-tilte" ng-click="goDetail(plan)">
                   <div class="plan-head">
                     <img ng-src="build/img/application/plans/user_img@3x.png"/>
 
@@ -152,7 +152,7 @@
                 </div>
                 <div>
                   <div  ng-if="planAuthority.OTHER.selected"  ng-click="showComment(plan)" class="comment-title" >点评<img  src="build/img/application/plans/common.png"/></div>
-                  <div class="comment-text"  ng-if="plan.annotate!=''">
+                  <div on-touch="hideCommont()" class="comment-text"  ng-if="plan.annotate!=''">
                     <i>{{plan.leaderName}}:</i>{{plan.annotate}}
                   </div>
                 </div>

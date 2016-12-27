@@ -139,6 +139,8 @@
   }
   .holdFooter {
     bottom: 44px;
+    background:none;
+    z-index: 1000;
     .wave-hold {
       width: 30%;
       float: left;

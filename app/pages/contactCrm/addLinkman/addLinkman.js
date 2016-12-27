@@ -82,6 +82,7 @@ angular.module('contactModule')
             "contactType": $stateParams.param.contactType,
             "name": $stateParams.param.name,
             "sex": $stateParams.param.sex,
+            "isPrimary":$stateParams.param.isPrimary,
             "department": $stateParams.param.department,
             "position": $stateParams.param.position,
             "phone": $stateParams.param.phone,
@@ -121,6 +122,11 @@ angular.module('contactModule')
             statusValue: $stateParams.param.statusValue
           };
           $scope.pushNotification.checked = false;
+          if($scope.data.isPrimary=="Y"){
+            $scope.importantContact.checked = true;
+          }else{
+            $scope.importantContact.checked = false;
+          }
           console.log($scope.data);
         } else {
           $scope.data = {
@@ -129,6 +135,7 @@ angular.module('contactModule')
             "contactType": "",
             "name": "",
             "sex": "",
+            "isPrimary":"N",
             "department": "",
             "position": "",
             "phone": "",
@@ -182,10 +189,16 @@ angular.module('contactModule')
           $state.go('tab.application');
         }
       };
-
+    /*  $scope.pushNotification=true;*/
       $rootScope.img = "build/img/tabs/edit_add@3x_5.png";
       $scope.pushNotificationChange = function () {
+        $scope.pushNotification.checked=!$scope.pushNotification.checked;
+        console.log($scope.pushNotification);
         console.log('Push Notification Change', $scope.pushNotification.checked);
+      };
+      $scope.importantContactChange= function () {
+        $scope.importantContact.checked=!$scope.importantContact.checked;
+        console.log('Push contact Change', $scope.importantContact.checked);
       };
       $scope.hideArea = function (num) {
         $scope.hideAreaFlag[num] = !$scope.hideAreaFlag[num];
@@ -229,6 +242,7 @@ angular.module('contactModule')
       $scope.noDataFlag = false;
       $scope.screenHeig = window.innerHeight;
       $scope.pushNotification = {checked: true};
+      $scope.importantContact={checked:false};
       $scope.bilingual = CloneData.getQuickCreate();
       console.log($scope.bilingual);
       var upData = [
@@ -288,11 +302,11 @@ angular.module('contactModule')
       Array.prototype.clone = function () {
         return [].concat(this);
       };
-      $scope.pushNotificationChange = function () {
+     /* $scope.pushNotificationChange = function () {
         console.log('Push Notification Change', $scope.pushNotification.checked);
       };
 
-      $scope.pushNotification = {checked: true};
+      $scope.pushNotification = {checked: true};*/
       $scope.saveLinkman = function () {
         hmsPopup.showLoading("保存中");
         console.log($scope.data);
@@ -300,6 +314,11 @@ angular.module('contactModule')
         console.log(angular.toJson($scope.data));
         console.log("呵呵呵呵");
         console.log($scope.data.contactType);
+        if ($scope.importantContact.checked == true){
+          $scope.data.isPrimary="Y";
+        }else{
+          $scope.data.isPrimary="N";
+        }
         if ($scope.data.contactType == "") {
           /*   $scope.showLoading = false;*/
           hmsPopup.hideLoading();

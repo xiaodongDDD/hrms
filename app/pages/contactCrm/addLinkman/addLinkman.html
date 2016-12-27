@@ -7,21 +7,31 @@
   <ion-content  delegate-handle="slideimgs">
     <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
     <div class="config-info">
-     <div class="row" ng-click="" style="   ">
+      <div class="row setup-panel-row1">
+        <label class="setup-label">{{bilingual.SaveContact}}</label>
+      </div>
+      <div class="ts-toggle-position">
+        <label class="toggle toggle-positive">
+          <input type="checkbox" ng-checked="pushNotification.checked" ng-click="pushNotificationChange()">
+          <div class="track setup-track">
+            <div class="handle setup-handle"></div>
+          </div>
+        </label>
+      </div>
+    <!-- <div class="row" ng-click="" style="   ">
         <ion-toggle ng-model="pushNotification.checked"
-                    ng-change="pushNotificationChange()" style="margin-left:-4px;
-    color: #000;font-size: 1.1em">
+                    ng-change="pushNotificationChange()" style="margin-left:0px;font-size: 14px;color: #32acec;">
           {{bilingual.SaveContact}}
         </ion-toggle>
 
       </div>
-      <div style="    border-bottom: 1px solid rgba(221, 221, 221, 0.4);
+      <div style="border-bottom: 1px solid rgba(221, 221, 221, 0.5);
     padding: 0;
-    width: 90%;
-    margin-left: 5%;"></div>
-      <div class="row" style=" margin-top: 5px;" ng-click="showSelectDiv('contact')">
+    width: 95%;
+    margin-left: 5%;;"></div>-->
+      <div class="row" style="color: #32acec;" ng-click="showSelectDiv('contact')">
         <div class="col col-40 col-center">
-          <div style="margin-left:6px;font-size: 1.2em">{{bilingual.pleaseSave}}</div>
+          <div style="margin-left:10px;font-size:14px">{{bilingual.pleaseSave}}</div>
         </div>
         <div class="col col-50 ">
           <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.fullName" style="padding-bottom: 5px;width: 100%;text-align: right" readonly/>
@@ -37,6 +47,21 @@
         {{bilingual.basicInfo}}<div>{{hideAreaFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
       </div>
       <div class="info-content" ng-if="!hideAreaFlag[0]">
+        <div class="row setup-panel-row2">
+          <label class="setup-label2">主要联系人</label>
+        </div>
+        <div class="im-toggle-position">
+          <label class="toggle toggle-positive">
+            <input type="checkbox" ng-checked="importantContact.checked" ng-click="importantContactChange()">
+            <div class="track setup-track">
+              <div class="handle setup-handle"></div>
+            </div>
+          </label>
+        </div>
+        <div style="    border-bottom: 1px solid rgba(221, 221, 221, 0.5);
+    padding: 0;
+    width: 95%;
+    margin-left: 5%;"></div>
    <hms-select-item
           label-name="bilingual.contactType"
           input-box="showData.contactTypeValue"
@@ -129,12 +154,11 @@
         {{bilingual.contactInfo}}<div >{{hideAreaFlag[1] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
       </div>
       <div class="info-content" ng-if="!hideAreaFlag[1]">
-     <hms-input-item
-          label-name="bilingual.mobile"
-          input-box="data.phone"
-          important="true"
-          last-line="false">
-        </hms-input-item>
+        <div class="common-item-input-tel">
+          <div class="required">{{bilingual.mobile}}</div>
+          <input type="tel" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.phone"/>
+          <div class="common-light-line-long-tel"></div>
+        </div>
     <!--    <div class="common-item-input">
           <div class="required">{{bilingual.mobile}}</div>
           <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.phone"/>
@@ -170,12 +194,11 @@
           important="true"
           last-line="false">
         </hms-input-item>
-        <hms-input-item
-          label-name="bilingual.offPhone"
-          input-box="data.tel"
-          important="false"
-          last-line="false">
-        </hms-input-item>
+        <div class="common-item-input-tel">
+          <div>{{bilingual.offPhone}}</div>
+          <input type="tel" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.tel"/>
+          <div class="common-light-line-long-tel"></div>
+        </div>
         <hms-input-item
           label-name="bilingual.weChat"
           input-box="data.wechat"

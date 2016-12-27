@@ -397,8 +397,10 @@
     function showComment(plan){
       console.log(plan);
       vm.planDetail=plan;
-      vm.showCommentFlag=true;
+      vm.showCommentFlag=!vm.showCommentFlag;
       var item = $('#comment-text');
+      if( vm.showCommentFlag==true){
+
 
    /*   $scope.testH=$('#annotate').height();
       console.log( $scope.testH);*/
@@ -427,7 +429,14 @@
           console.log(itemHeight.style.height);
         });
       }
-
+      }else{
+        $timeout(function () {
+          console.log("失焦");
+          cordova.plugins.Keyboard.close();
+          item.blur();
+          $scope.$apply();
+        },300);
+      }
       console.log("=====");
       console.log(vm.showCommentFlag);
       console.log(vm.planDetail);
@@ -1136,7 +1145,8 @@
         });
     };
     $scope.hideCommont=function(){
-      $scope.showCommentFlag=false;
+      vm.showCommentFlag=false;
+      console.log("content----"+vm.showCommentFlag);
       var item = $('#comment-text');
       if (ionic.Platform.isWebView()) {
         cordova.plugins.Keyboard.close();

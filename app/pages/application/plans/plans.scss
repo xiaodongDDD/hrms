@@ -439,7 +439,9 @@
     max-height: 110px;
   }
   .holdFooter {
+    z-index:1000;
     bottom: 44px;
+    background:none;
     .wave-hold {
       width: 30%;
       float: left;
