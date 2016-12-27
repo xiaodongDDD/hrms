@@ -43,6 +43,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -83,6 +85,7 @@ public class FaceCompareActivity extends Activity {
     private NotifyMessageManager notify;
     //屏幕宽度
     private int w_screen;
+    private Timer timer;
     public static void actionStart(Context context){
         Intent intent = new Intent(context,FaceCompareActivity.class);
         context.startActivity(intent);
@@ -225,7 +228,6 @@ public class FaceCompareActivity extends Activity {
                         textv_face_info.setText("未检测到人脸");
                     }
                     if(times>=10 && pictureLock){
-                        pictureLock = false;
                         textv_face_info.setVisibility(View.GONE);
                         //检测
                         detect();
@@ -242,6 +244,7 @@ public class FaceCompareActivity extends Activity {
 
     }
     private void detect(){
+        pictureLock = false;
         if(loadingDialog!=null) {
             loadingDialog.setText("正在检测人脸,请等待...");
             loadingDialog.show();}
@@ -252,20 +255,20 @@ public class FaceCompareActivity extends Activity {
                     Bitmap mImage = surfaceView.getPicture();
                     //保存图片
                     String path = getFilesDir().getPath();
-                    FileUtil.saveBitmap(FileUtil.centerSquareScaleBitmap(mImage,(faceRight-faceLeft)*mImage.getWidth()/w_screen+20),path);
+                    FileUtil.saveBitmap(FileUtil.centerSquareScaleBitmap(mImage, (faceRight - faceLeft) * mImage.getWidth() / w_screen + 20), path);
                     if (mImage != null) {
                         try {
                             JSONObject respose = faceYoutu.DetectFace(mImage, 1);
                             Message msg = new Message();
                             msg.what = 0x100;
-                            Bundle bundle=new Bundle();
+                            Bundle bundle = new Bundle();
                             bundle.putString("respose", respose.toString());
                             msg.setData(bundle);
                             handler.sendMessage(msg);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }else{
+                    } else {
                         Message msg = new Message();
                         handler.sendEmptyMessage(0x101);
                     }
@@ -282,6 +285,18 @@ public class FaceCompareActivity extends Activity {
             }
             CameraInterface.getInstance().getCameraDevice().setFaceDetectionListener(googleFaceDetect);
             CameraInterface.getInstance().getCameraDevice().startFaceDetection();
+        }else{
+            //开启定时器进行获取视频流图片检测
+            textv_face_info.setText("请将人脸放入圆圈内");
+            timer = new Timer(true);
+            TimerTask task = new TimerTask(){
+                public void run() {
+                    Message message = new Message();
+                    message.what = 0x103;
+                    handler.sendMessage(message);
+                }
+            };
+            timer.schedule(task,3000, 3000);
         }
     }
     private void stopGoogleFaceDetect(){
@@ -344,6 +359,11 @@ public class FaceCompareActivity extends Activity {
                     myAct. times = 0;
                     myAct.pictureLock = true;
                     myAct.textv_face_info.setVisibility(View.VISIBLE);
+                    break;
+                case 0x103:
+                    if(myAct.pictureLock){
+                        myAct.detect();
+                    }
                     break;
                 default:
                     break;

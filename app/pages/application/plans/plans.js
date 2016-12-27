@@ -731,11 +731,11 @@
     function onReleaseYear($event) {
       if ($event.gesture.deltaX > 0) {
         $scope.year = $scope.year + 1;
-        getMonthDays($scope.year, $scope.month);
+        getMonthDays($scope.year, $scope.month, reCalculateViewHeight, true);
       }
       else if ($event.gesture.deltaX < 0) {
         $scope.year = $scope.year - 1;
-        getMonthDays($scope.year, $scope.month);
+        getMonthDays($scope.year, $scope.month, reCalculateViewHeight, true);
       }
     }
 
