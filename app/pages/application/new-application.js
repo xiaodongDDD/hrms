@@ -4,7 +4,7 @@
 //应用模块
 angular.module('applicationModule')
 
-  .controller('applicationCtrl', [
+  .controller('newApplicationCtrl', [
     '$scope',
     '$state',
     '$ionicGesture',
@@ -142,34 +142,34 @@ angular.module('applicationModule')
       $scope.crmApp = [{
         list: [{
           appName:"客户",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/client@3x.png",
           destUrl: "tab.customers"
         }, {
           appName: "联系人",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/contact-crm@3x.png",
           destUrl: "tab.contactCrm"
         }, {
           appName: "线索",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/clue@3x.png",
           destUrl: "tab.clues"
         }, {
           appName:"商机",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/opportunity@3x.png",
           destUrl: "tab.opportunities"
         }]
       },{
         list:[
         {
           appName: "销售计划",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/plan@3x.png",
           destUrl: "tab.plans"
         }, {
           appName:"保证金",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/ensurefond@3x.png",
           destUrl: "tab.bidbond"
         }, {
           appName:"竞争对手",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/PK@3x.png",
           destUrl: "tab.competitor"
         }
       ]
@@ -257,6 +257,152 @@ angular.module('applicationModule')
           ]
         }
       ];
+
+      $scope.hasCrm = !baseConfig.appStoreFlag;
+      $scope.goSearch=function(){
+        $state.go('tab.globelSearch');
+      };
+      if($scope.hasCrm){
+        $scope.weekdays = ['一','二','三','四','五','六','日'];
+        $scope.days = [];
+
+        crmEmployeeService.initDetail(function(){});
+
+        (function getDays() {
+          var today = new Date();
+          var day = today.getDay();
+          if(day == 0){
+            day = 7;
+          }
+          var weekStart = new Date(today);
+          weekStart.setDate(weekStart.getDate() - (day - 1));
+          for(var i = 0; i < 7; i++){
+            var tempDate = new Date(weekStart);
+            tempDate.setDate(tempDate.getDate() + i);
+            tempDate.planCount = 0;
+            $scope.days.push(tempDate);
+            if(tempDate.getDate() == today.getDate())
+              $scope.nowSelectedDate = i;
+          }
+        })();
+
+        $scope.getDateText = function(date){
+          return date.getDate() == (new Date).getDate() ? '今' : date.getDate()
+        };
+
+        $scope.selectDate = function($index){
+          $scope.nowSelectedDate = $index;
+        };
+
+        // -1 ~ 2 未填写 拒绝 未审批 已审批
+        var getTimeSheetSuccess = function(response){
+          if(response.returnCode == 'S'){
+            var resultIndex = 0;
+            var noMoreFlag = response.timesheet_list.length == 0;
+            for(var i = 0; i < $scope.days.length; i++){
+              if(!noMoreFlag && response.timesheet_list[resultIndex].record_date.substr(-2,2) == $scope.days[i].getDate()){
+                $scope.days[i].project = response.timesheet_list[resultIndex].project_name;
+                $scope.days[i].timeSheetValue = response.timesheet_list[resultIndex].is_verified + 1;
+                $scope.days[i].timeSheetText = response.timesheet_list[resultIndex].is_verified_value;
+                $scope.days[i].money = response.timesheet_list[resultIndex].allowance;
+                resultIndex++;
+                if(resultIndex == response.timesheet_list.length)
+                  noMoreFlag = true;
+              } else {
+                $scope.days[i].project = '';
+                $scope.days[i].timeSheetValue = -1;
+                $scope.days[i].timeSheetText= '未填写';
+                $scope.days[i].money = "";
+              }
+            }
+          } else {
+            hmsPopup.showPopup(response.returnMsg)
+          }
+        };
+
+        var getHasPlanListSuccess = function(response){
+          if(response.returnCode == 'S'){
+            var resultIndex = 0;
+            var noMoreFlag = response.saleplan_list.length == 0;
+            for(var i = 0; i < $scope.days.length; i++){
+              if(!noMoreFlag && response.saleplan_list[resultIndex].planDate.substr(-2,2) == $scope.days[i].getDate()){
+                $scope.days[i].planCount = response.saleplan_list[resultIndex].planCount;
+                resultIndex++;
+                if(resultIndex == response.saleplan_list.length - 1)
+                  noMoreFlag = true;
+              } else {
+                $scope.days[i].planCount = 0;
+              }
+            }
+          } else {
+            hmsPopup.showPopup(response.returnMsg)
+          }
+        };
+
+        function formatDateByDate(date) {
+          return date.getFullYear() + '-' +
+            (((date.getMonth() + 1) < 10) ? ('0' + (date.getMonth() + 1)) : (date.getMonth() + 1)) + '-' +
+            ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
+        }
+
+        (function initCalendarDate(){
+          var today = new Date();
+          var day = today.getDay();
+          if(day == 0)
+            day = 7;
+          var weekStart = new Date(today);
+          weekStart.setDate(weekStart.getDate() - (day - 1));
+          var weekEnd = new Date(today);
+          weekEnd.setDate(weekEnd.getDate() + (7 - day));
+          var params = {
+            "page": 1,
+            "pageSize": 7,
+            "planDateFrom": formatDateByDate(weekStart),
+            "planDateTo": formatDateByDate(weekEnd),
+            "type": "MY"
+          };
+          plansService.getHasPlanList(getHasPlanListSuccess, params);
+          TimeSheetService.getWeekTimeSheet(getTimeSheetSuccess, formatDateByDate(weekStart), formatDateByDate(weekEnd));
+        })();
+
+        $scope.goPlan = function(){
+          $state.go('tab.plans',{
+            data: 'WEEK'
+          })
+        };
+
+        // -1 ~ 2 未填写 拒绝 未审批 已审批
+        $scope.goWrite = function(date){
+          var style_outline,style_color;
+          if (date.timeSheetValue == -1) {
+            style_outline = 'each-day';
+            style_color = 'day-item';
+          } else if (date.timeSheetValue == 1) {
+            style_outline = 'each-day attendance';
+            style_color = 'day-item attendance';
+          } else if (date.timeSheetValue == 2) {
+            style_outline = 'each-day approve';
+            style_color = 'day-item approve';
+          } else if (date.timeSheetValue == 0) {
+            style_outline = 'each-day reject';
+            style_color = 'day-item reject';
+          }
+          var day = {
+            "day":date.getDate(),
+            "style_outline":style_outline,
+            "style_color":style_color,
+            "money":date.money,
+            "project":date.project_name,
+            "each_day":formatDateByDate(date).replace(/-/g,''),
+            "lockFlag":false,
+            "choosed":false
+          };
+          $state.go('tab.timesheet-write',{
+            day: day
+          })
+        };
+
+      }
 
       var initSetting = function () {
         if (!window.localStorage.slippingEnableFlag) {

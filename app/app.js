@@ -238,6 +238,16 @@ angular.module('myApp')
           }
         })
 
+        .state('tab.new-application', {
+          url: '/new-application',
+          views: {
+            'tab-application': {
+              templateUrl: 'build/pages/application/new-application.html',
+              controller: 'newApplicationCtrl'
+            }
+          }
+        })
+
         .state('tab.contact', {
           url: '/contact',
           views: {

@@ -47,7 +47,7 @@ angular.module('loginModule').controller('TabsCtrl',
           console.log('$ionicView.beforeEnter statename ' + statename);
         }
         //tabs中存在的主页面不需要隐藏，hidetabs=false
-        if (statename != 'tab.message' && statename != 'tab.application' &&
+        if (statename != 'tab.message' && statename != 'tab.application' && statename != 'tab.new-application' &&
           statename != 'tab.contact' && statename != 'tab.myInfo' && statename != 'tab.contactCrm') {
           $scope.hideTabs = true;
         } else {
@@ -64,7 +64,7 @@ angular.module('loginModule').controller('TabsCtrl',
           console.log('$ionicView.afterEnter statename ' + statename);
         }
         //tabs中存在的主页面不需要隐藏，hidetabs=false
-        if (statename === 'tab.message' || statename === 'tab.application' ||
+        if (statename === 'tab.message' || statename === 'tab.application' || statename === 'tab.new-application' ||
           statename === 'tab.contact' || statename === 'tab.myInfo' || statename === 'tab.contactCrm') {
           $scope.hideTabs = false;
         }
