@@ -75,15 +75,13 @@
                   <img ng-src="build/img/application/plans/user_img@3x.png"/>
 
                   <div>
-                <span class="plan-head-base">
-                  {{plan.name}}
-                  <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.resourceName + '复制') : (plan.dataStatusName) }}</span>
-                </span>
-                  <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'"
-                                                                      src="build/img/application/plans/star.png" style="    width: 16px;
-    height: 16px;
-    position: absolute;
-    right: 5px;"/></span>
+                    <span class="plan-head-base">
+                      {{plan.name}}
+                      <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.resourceName + '复制') : (plan.dataStatusName) }}</span>
+                    </span>
+                    <span class="plan-time">{{plan.timeBucketName}}
+                      <img ng-if="plan.isImportant=='Y'" src="build/img/application/plans/star.png" style="width: 16px;height: 16px;position: absolute;right: 5px;"/>
+                    </span>
                   </div>
                 </div>
                 <div class="plan-title">
@@ -115,7 +113,7 @@
           <crm-loading ng-if="planListLoadingFlag"></crm-loading>
           <div ng-if="!planListLoadingFlag">
             <div class="plan-group" ng-repeat="group in planGroups">
-              <div class="row group-head" on-touch="hideCommont()">
+              <div class="row group-head group-head-flag" on-touch="hideCommont()">
                 <div class="col col-67" style="margin: 0; padding:0;">{{group.date ? getDayString(group.date) : ""}}
                   {{group.date}}
                 </div>
@@ -127,17 +125,14 @@
                 <div on-touch="hideCommont()" class="plan-content-tilte" ng-click="goDetail(plan)">
                   <div class="plan-head">
                     <img ng-src="build/img/application/plans/user_img@3x.png"/>
-
                     <div>
-                <span class="plan-head-base">
-                  {{plan.name}}
-                  <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.resourceName + '复制') : (plan.dataStatusName) }}</span>
-                </span>
-                  <span class="plan-time">{{plan.timeBucketName}}<img ng-if="plan.isImportant=='Y'"
-                                                                      src="build/img/application/plans/star.png" style="    width: 16px;
-    height: 16px;
-    position: absolute;
-    right: 5px;"/></span>
+                      <span class="plan-head-base">
+                        {{plan.name}}
+                        <span class="plan-place"><!--<img src="build/img/application/plans/icon_road@3x.png"/>-->{{plan.dataStatusName=="复制" ? ('从' + plan.resourceName + '复制') : (plan.dataStatusName) }}</span>
+                      </span>
+                      <span class="plan-time">{{plan.timeBucketName}}
+                        <img ng-if="plan.isImportant=='Y'" src="build/img/application/plans/star.png" style="width: 16px;height: 16px;position: absolute;right: 5px;"/>
+                      </span>
                     </div>
                   </div>
                   <div class="plan-title">

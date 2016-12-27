@@ -740,21 +740,14 @@
     }
 
     function initScrollFlag() {
-      var top = 0;
-      $scope.scrollFlag = [];
-      for (var i = 0; i < $scope.planGroups.length; i++) {
-        var groupHeight = 0;
-        for(var j = 0; j < $scope.planGroups[i].plans.length; j++){
-          if(($scope.planGroups[i].plans[j].customerFullName && $scope.planGroups[i].plans[j].customerFullName) != '' || ($scope.planGroups[i].plans[j].opportunityFullName && $scope.planGroups[i].plans[j].opportunityFullName) )
-            groupHeight += $scope.itemHeight;
-          else
-            groupHeight += $scope.noTitleItemHeight;
-        }
-        var height = $scope.headHeight + groupHeight;
-        top += height;
-        $scope.scrollFlag.push(top);
-      }
-      console.log($scope.scrollFlag);
+      $timeout(function(){
+        $scope.scrollFlag = [];
+        var headGroup = angular.element('.group-head-flag');
+        if(headGroup.length > 1)
+          for(var i = 1; i < headGroup.length; i++)
+            $scope.scrollFlag.push(headGroup[i].offsetTop);
+        console.log($scope.scrollFlag);
+      }, 500)
     }
 
     function onSwipe() {
@@ -965,6 +958,7 @@
       $scope.groupPageSize = 10;
       $scope.groupStartDate = formatDateByDate(weekStart);
       $scope.groupEndDate = formatDateByDate(weekEnd);
+      $scope.nowShowDate = $scope.groupStartDate;
       var params = {
         planDateFrom: $scope.groupStartDate,
         planDateTo: $scope.groupEndDate,
@@ -996,6 +990,7 @@
       $scope.groupPageSize = 10;
       $scope.groupStartDate = dateFrom;
       $scope.groupEndDate = dateTo;
+      $scope.nowShowDate = $scope.groupStartDate;
       var params = {
         planDateFrom: $scope.groupStartDate,
         planDateTo: $scope.groupEndDate,
