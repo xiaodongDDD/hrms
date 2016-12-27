@@ -149,23 +149,37 @@
     [self setupPreviewView];
     
     //旋转动画
-    CATransform3D rotationTransform = CATransform3DMakeRotation(M_PI_2, 0, 0, 1);
-    CABasicAnimation* rotationAnimation =
-    [CABasicAnimation animationWithKeyPath:@"transform.rotation.y"];//"z"还可以是“x”“y”，表示沿z轴旋转
-    rotationAnimation.toValue = [NSValue valueWithCATransform3D:rotationTransform];
     
-    rotationAnimation.duration = 1.5f;
-    rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]; //缓入缓出
-    rotationAnimation.cumulative = YES;
+    if (isDefaultDirection) {
+        [UIView transitionWithView:self.previewView duration: 0.5 options: UIViewAnimationOptionTransitionFlipFromLeft animations: nil completion:^(BOOL finished) {
+            [self flipCard];
+        }];
+    }else{
+        [UIView transitionWithView:self.previewView duration: 0.5 options: UIViewAnimationOptionTransitionFlipFromRight animations: nil completion:^(BOOL finished) {
+            [self flipCard];
+        }];
+        
+    }
     
-    [self.previewLayer addAnimation:rotationAnimation forKey:@"rotate"];
-    
+}
+
+- (void)flipCard
+{
     //重新开始计时
     [timer invalidate];
     timer = nil;
     //初始化一个计时器每两秒钟检测一次人脸
     timer = [NSTimer scheduledTimerWithTimeInterval:1.2f target:self selector:@selector(faceDetectFunction) userInfo:nil repeats:YES];
-    
+}
+
+-(void)dealloc
+{
+    if (self.captureService) {
+        [self.captureService stopRunning];
+        self.captureService = nil;
+    }
+    [timer invalidate];
+    timer = nil;
 }
 
 
@@ -311,7 +325,14 @@
                         isPassed = YES;
                         NSDictionary *faceDetail = face[0];
                         self.successBlock([compassImage imageAtRect:CGRectMake([faceDetail[@"x"] integerValue]-35, [faceDetail[@"y"] integerValue]-60, [faceDetail[@"width"] integerValue]+70, [faceDetail[@"height"] integerValue]+70)],face[0]);
-                        [self dismissViewControllerAnimated:YES completion:nil];
+                        [self dismissViewControllerAnimated:YES completion:^{
+                            if (self.captureService) {
+                                [self.captureService stopRunning];
+                                self.captureService = nil;
+                            }
+                            [timer invalidate];
+                            timer = nil;
+                        }];
                     }
                 }
                 
@@ -330,7 +351,14 @@
                     [ToastUtils showLong:@"识别失败！"];
                     isPassed = YES;
                     self.successBlock(nil,nil);
-                    [self dismissViewControllerAnimated:YES completion:nil];
+                    [self dismissViewControllerAnimated:YES completion:^{
+                        if (self.captureService) {
+                            [self.captureService stopRunning];
+                            self.captureService = nil;
+                        }
+                        [timer invalidate];
+                        timer = nil;
+                    }];
                 }
             }
             

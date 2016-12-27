@@ -350,7 +350,7 @@ public class CamcardPlugin extends CordovaPlugin {
       try {
         fileOutputStream = new FileOutputStream(photoFile);
         if (photoBitmap != null) {
-          if (photoBitmap.compress(Bitmap.CompressFormat.JPEG, 70, fileOutputStream)) {
+          if (photoBitmap.compress(Bitmap.CompressFormat.JPEG, 30, fileOutputStream)) {
             fileOutputStream.flush();
             fileOutputStream.close();
           }
