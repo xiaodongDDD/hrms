@@ -75,6 +75,7 @@ angular.module('contactModule')
       console.log($ionicHistory.viewHistory().backView);
       /*    $scope.showCrmLoading=false;//loading展示*/
       $scope.$on('$ionicView.enter', function (e) {
+        console.log($stateParams.param);
         if (isNotNullObj($stateParams.param)) {
           $scope.data = {
             "contactId": $stateParams.param.contactId,

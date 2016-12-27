@@ -374,7 +374,7 @@ angular.module('contactModule')
                     statusValue: $scope.contactDetail.statusName
                   };
                   console.log($ionicHistory.viewHistory().backView);
-                  if($ionicHistory.viewHistory().backView.stateName=="tab.contact"){
+                  if($ionicHistory.viewHistory().backView.stateName=="tab.contactCrm"){
                     $state.go("tab.addLinkman2", {param: param});
                   }else{
                     $state.go("tab.addLinkman", {param: param});
@@ -461,7 +461,7 @@ angular.module('contactModule')
                   statusValue: $scope.contactDetail.statusName
                 };
                 console.log($ionicHistory.viewHistory().backView);
-                if($ionicHistory.viewHistory().backView.stateName=="tab.contact"){
+                if($ionicHistory.viewHistory().backView.stateName=="tab.contactCrm"){
                   $state.go("tab.addLinkman2", {param: param});
                 }else{
                   $state.go("tab.addLinkman", {param: param});
