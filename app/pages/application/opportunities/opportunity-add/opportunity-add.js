@@ -21,7 +21,6 @@ angular.module('opportunityModule')
     'clueDetailDataService',
     'crmEmployeeService',
     '$cordovaDatePicker',
-    'customerService',
     function($scope,
              baseConfig,
              $ionicHistory,
@@ -36,8 +35,7 @@ angular.module('opportunityModule')
              opportunityDetailDataService,
              clueDetailDataService,
              crmEmployeeService,
-             $cordovaDatePicker,
-             customerService) {
+             $cordovaDatePicker) {
 
       $rootScope.img="";
 
@@ -1542,107 +1540,63 @@ angular.module('opportunityModule')
       $scope.saleAreas = [];
       $scope.saleTeams = [];
       $scope.showSaleTeam = false;
-      $scope.areaValue = {
-        key:''
-      };
-      $scope.inArea = true;
 
       var getSaleAreaSuccess= function(response){
-        $scope.showLoading = false;
+        $scope.showCrmLoading = false;
         if(response.returnCode == "S")
           $scope.saleAreas = response.sale_area_list;
       };
 
       var getSaleTeamSuccess= function(response){
-        $scope.showLoading = false;
+        $scope.showCrmLoading = false;
         if(response.returnCode == "S"){
-          var obj = {
-            saleTeamId:'',
-            saleTeamName:'空'
-          };
-          $scope.saleTeams = response.sale_team_list;
-          $scope.saleTeams.unshift(obj);
+          $scope.saleTeams = [{
+            saleTeamName: "空",
+            saleTeamId: ""
+          }];
+          $scope.saleTeams = $scope.saleTeams.concat(response.sale_team_list);
         }
       };
 
       $scope.showSaleSelectFlag = false;
 
       $scope.showSaleSelect = function(){
+        if($scope.promoteFlag)
+          return ;
         $scope.showSaleSelectFlag = true;
-        $scope.showLoading = true;
-        customerService.getSaleArea(getSaleAreaSuccess,'');
+        $scope.showCrmLoading = true;
+        opportunityAddService.getSaleArea(getSaleAreaSuccess);
       };
 
       $scope.selectArea = function(area){
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
-        $scope.areaValue.key='';
-        $scope.inArea = false;
         $scope.showSaleTeam = true;
-        $scope.showData.saleAreaName = area.saleAreaName;
+        $scope.showData.saleArea = area.saleAreaName;
         $scope.data.saleAreaId = area.saleAreaId;
-        $scope.showLoading = true;
-        opportunityAddService.getSaleTeam(getSaleTeamSuccess,area.saleAreaId);
+        $scope.showCrmLoading = true;
+        opportunityAddService.getSaleTeam(getSaleTeamSuccess, area.saleAreaId);
       };
 
       $scope.selectTeam = function(team){
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
-        $scope.areaValue.key='';
         $scope.showSaleTeam = false;
         $scope.showSaleSelectFlag = false;
-        $scope.showData.team = team.saleTeamName;
-        $scope.showData.saleBelong = $scope.showData.saleAreaName + " | " + $scope.showData.team;
+        $scope.showData.saleTeam = team.saleTeamName;
+        $scope.showData.saleBelong = $scope.showData.saleArea + " | " + $scope.showData.saleTeam;
         $scope.data.saleTeamId = team.saleTeamId;
       };
 
       $scope.saleBack = function(){
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
         //当目录在一级时，返回
-        if(!$scope.showSaleTeam){
+        if(!$scope.showSaleTeam)
           $scope.showSaleSelectFlag = false;
-          $scope.inArea = true;
-          $scope.data.saleAreaId = '';
-          $scope.areaValue.key = '';
-        }
         //否则跳到一级,并清空第二级数据
         else{
-          customerService.getSaleArea(getSaleAreaSuccess,'');
           $scope.showSaleTeam = false;
           $scope.saleTeams = [];
-          $scope.inArea = true;
-          $scope.data.saleAreaId = '';
-          $scope.areaValue.key = '';
         }
       };
-
-      $scope.filterArea = function () {
-        $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
-        $scope.saleTeams = [];
-        if($scope.inArea){
-          if($scope.areaValue.key==''){
-            $scope.saleAreas = [];
-            customerService.getSaleArea(getSaleAreaSuccess,'');
-          }else {
-            $scope.saleAreas = [];
-            customerService.getSaleArea(getSaleAreaSuccess,$scope.areaValue.key);
-          }
-        }else {
-          if($scope.areaValue.key==''){
-            customerService.getSaleTeam(getSaleTeamSuccess,'', $scope.data.saleAreaId);
-          }else {
-            customerService.getSaleTeam(getSaleTeamSuccess,$scope.areaValue.key,$scope.data.saleAreaId);
-          }
-        }
-      }
-      $scope.clearAreaFilter = function () {
-        $scope.areaValue.key='';
-        if($scope.inArea){
-          $scope.saleAreas = [];
-          customerService.getSaleArea(getSaleAreaSuccess,'');
-        }else {
-          $scope.saleTeams = [];
-          customerService.getSaleTeam(getSaleTeamSuccess,'', $scope.data.saleAreaId);
-        }
-      }
 
       //校验名称
       $scope.validNameFlag = true;
@@ -1679,10 +1633,6 @@ angular.module('opportunityModule')
       $scope.majorIndustrys = [];
       $scope.subIndustrys = [];
       $scope.showSubIndustry = false;
-      $scope.industrySearch = {
-        key:''
-      };
-      $scope.inMajor = true;
 
       var getMajorIndustrySuccess= function(response){
         $scope.showLoading = false;
@@ -1692,95 +1642,68 @@ angular.module('opportunityModule')
 
       var getSubIndustrySuccess= function(response){
         $scope.showLoading = false;
-        if(response.returnCode == "S"){
+        if(response.returnCode == "S")
           var obj = {
             industryId:'',
             industryName:'空'
           };
-          $scope.subIndustrys = response.industry_list;
-          $scope.subIndustrys.unshift(obj);
-        }
-
+        $scope.subIndustrys = response.industry_list;
+        $scope.subIndustrys.unshift(obj);
       };
 
       $scope.showIndustrySelectFlag = false;
 
-      $scope.showIndustrySelect = function(){
+      $scope.showIndustrySelect = function(key){
+        $scope.isCustomerIndustry = key == 'customer';
+        if(!$scope.editCustomerFlag && $scope.isCustomerIndustry){
+          hmsPopup.showPopup('抱歉，你没有权限修改该客户。');
+          return ;
+        }
         $scope.showIndustrySelectFlag = true;
         $scope.showLoading = true;
-        customerService.getIndustry(getMajorIndustrySuccess,'',0);
+        opportunityAddService.getIndustry(getMajorIndustrySuccess,0);
       };
 
       $scope.selectMajor = function(industry){
         $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
-        $scope.industrySearch.key ='';
         $scope.showSubIndustry = true;
-        $scope.inMajor = false;
-        $scope.showData.majorIndustry = industry.industryName;
-        $scope.data.majorIndustry = industry.industryId;
+        if($scope.isCustomerIndustry){
+          $scope.showData.cusMajorIndustry = industry.industryName;
+          $scope.data.cusMajorIndustry = industry.industryId;
+        } else {
+          $scope.showData.majorIndustry = industry.industryName;
+          $scope.data.majorIndustry = industry.industryId;
+        }
         $scope.showLoading = true;
-        customerService.getIndustry(getSubIndustrySuccess,'', industry.industryId);
+        opportunityAddService.getIndustry(getSubIndustrySuccess, industry.industryId);
       };
 
       $scope.selectSub = function(industry){
         $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
-        $scope.industrySearch.key='';
         $scope.showSubIndustry = false;
         $scope.showIndustrySelectFlag = false;
-        $scope.showData.subIndustry = industry.industryName;
-        $scope.showData.industry = $scope.showData.majorIndustry + " | " + $scope.showData.subIndustry;
-        $scope.data.subIndustry = industry.industryId;
+        if($scope.isCustomerIndustry){
+          $scope.showData.cusSubIndustry = industry.industryName;
+          $scope.showData.cusIndustry = $scope.showData.cusMajorIndustry + " | " + $scope.showData.cusSubIndustry;
+          $scope.data.cusSubIndustry = industry.industryId;
+        } else {
+          $scope.showData.subIndustry = industry.industryName;
+          $scope.showData.industry = $scope.showData.majorIndustry + " | " + $scope.showData.subIndustry;
+          $scope.data.subIndustry = industry.industryId;
+        }
       };
 
       $scope.industryBack = function(){
         $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
         //当目录在一级时，返回
-        if(!$scope.showSubIndustry){
+        if(!$scope.showSubIndustry)
           $scope.showIndustrySelectFlag = false;
-          $scope.inMajor = true;
-          $scope.data.majorIndustry='';
-        }
         //否则跳到一级,并清空第二级数据
         else{
-          customerService.getIndustry(getMajorIndustrySuccess,'', 0);
-          $scope.industrySearch.key='';
           $scope.showSubIndustry = false;
-          $scope.inMajor = true;
           $scope.subIndustrys = [];
-          $scope.data.majorIndustry='';
         }
       };
-
-      $scope.filterIndustry = function () {
-        $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
-        $scope.subIndustrys = [];
-        if($scope.inMajor){
-          if($scope.industrySearch.key==''){
-            $scope.majorIndustrys = [];
-            customerService.getIndustry(getMajorIndustrySuccess,'', 0);
-          }else {
-            $scope.majorIndustrys = [];
-            customerService.getIndustry(getMajorIndustrySuccess,$scope.industrySearch.key, 0);
-          }
-        }else {
-          if($scope.industrySearch.key==''){
-            customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.majorIndustry);
-          }else {
-            customerService.getIndustry(getSubIndustrySuccess,$scope.industrySearch.key, $scope.data.majorIndustry);
-          }
-        }
-      }
-
-      $scope.clearIndustryFilter = function () {
-        $scope.industrySearch.key='';
-        if($scope.inMajor){
-          $scope.majorIndustrys = [];
-          customerService.getIndustry(getMajorIndustrySuccess,'', 0);
-        }else {
-          $scope.subIndustrys = [];
-          customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.majorIndustry);
-        }
-      }
 
 
     }]);
