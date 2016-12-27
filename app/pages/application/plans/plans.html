@@ -94,9 +94,9 @@
                 </div>
                 <div class="plan-content">计划内容：{{plan.saleContent}}</div>
               </div>
-              <div  >
-                <div ng-if="planAuthority.OTHER.selected" class="comment-title" ng-click="showComment(plan)">点评<img  src="build/img/application/plans/common.png"/></div>
-                <div on-touch="hideCommont()" class="comment-text" id="annotate" ng-if="plan.annotate!=''">
+              <div   ng-click="showComment(plan)">
+                <div ng-if="planAuthority.OTHER.selected" class="comment-title">点评<img  src="build/img/application/plans/common.png"/></div>
+                <div  class="comment-text" id="annotate" ng-if="plan.annotate!=''">
                   <i>{{plan.leaderName}}:</i>{{plan.annotate}}
                 </div>
               </div>
@@ -145,9 +145,9 @@
                   </div>
                   <div class="plan-content">计划内容：{{plan.saleContent}}</div>
                 </div>
-                <div>
-                  <div  ng-if="planAuthority.OTHER.selected"  ng-click="showComment(plan)" class="comment-title" >点评<img  src="build/img/application/plans/common.png"/></div>
-                  <div on-touch="hideCommont()" class="comment-text"  ng-if="plan.annotate!=''">
+                <div ng-click="showComment(plan)">
+                  <div  ng-if="planAuthority.OTHER.selected"   class="comment-title" >点评<img  src="build/img/application/plans/common.png"/></div>
+                  <div class="comment-text"  ng-if="plan.annotate!=''">
                     <i>{{plan.leaderName}}:</i>{{plan.annotate}}
                   </div>
                 </div>
