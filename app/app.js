@@ -213,7 +213,7 @@ angular.module('myApp')
           url: '/tab',
           caches: true,
           abstract: true,
-          templateUrl: 'build/pages/tab/tabs.html',
+          templateUrl: baseConfig.appStoreFlag ? 'build/pages/tab/tabs.html' : 'build/pages/tab/new-tabs.html',
           controller: 'TabsCtrl'
         })
 
