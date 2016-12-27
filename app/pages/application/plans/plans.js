@@ -399,15 +399,31 @@
       vm.planDetail=plan;
       vm.showCommentFlag=true;
       var item = $('#comment-text');
-      $scope.testH=$('#annotate').height();
-      console.log( $scope.testH);
+      var itemHeight= document.getElementById("comment-text");
+   /*   $scope.testH=$('#annotate').height();
+      console.log( $scope.testH);*/
       if (ionic.Platform.isWebView()) {
         $timeout(function () {
           cordova.plugins.Keyboard.show();
           console.log("聚焦");
           item.focus();
           $scope.$apply();
+          itemHeight.style.height = '40px';
+          itemHeight.scrollTop = 0; //防抖动
+          itemHeight.style.height=itemHeight.scrollHeight+"px";
+          console.log(itemHeight.style.height);
         }, 300);
+      }else{
+        $timeout(function () {
+        /*  cordova.plugins.Keyboard.show();*/
+          console.log("聚焦");
+         /* item.focus();*/
+          $scope.$apply();
+          itemHeight.style.height = '40px';
+          itemHeight.scrollTop = 0; //防抖动
+          itemHeight.style.height=itemHeight.scrollHeight+"px";
+          console.log(itemHeight.style.height);
+        });
       }
 
       console.log("=====");
