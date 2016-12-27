@@ -9,14 +9,18 @@
 #import "AppDelegate.h"
 #import "scanCard.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "ScanCardImageUtil.h"
+
 @interface scanCard ()<UIImagePickerControllerDelegate>
 
+
 @end
-@implementation scanCard
+@implementation scanCard{}
 
 
 - (void)takePicture:(CDVInvokedUrlCommand *)command;
 {
+    
     NSLog(@"test begin1231");
     //    UIAlertView *alertview = [[UIAlertView alloc] initWithTitle:@"标题" message:@"打开相机" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     //    [alertview show];
@@ -74,6 +78,9 @@
     imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
     imagePickerController.allowsEditing = NO;
     imagePickerController.delegate = (id <UINavigationControllerDelegate, UIImagePickerControllerDelegate> )self;
+    
+    
+    
     UIViewController *view = [self viewController];
     
     
@@ -85,6 +92,8 @@
     
     
 }
+
+
 
 
 - (void)returnMess:(CDVInvokedUrlCommand *)command
@@ -279,9 +288,16 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
     NSLog(@"impgPick");
+    
+    //    self.imgeView.image = [ScanCardImageUtil changeValueForSharpenilter:0.3 image:image];
+    
+    UIImage *image1 = [ScanCardImageUtil changeValueContrastFilter:0.6 image:image];
+    
+    
+    
     [picker dismissViewControllerAnimated:YES completion:^
      {
-         [self reconizeCardWithCardImage:image];
+         [self reconizeCardWithCardImage:image1];
      }];
 }
 
@@ -314,7 +330,7 @@
     
     
     //第一步，创建URL
-    NSString *url = @"http://bcr2.intsig.net/BCRService/BCR_VCF2?user=yanjun.li@hand-china.com&pass=T6LD4LTJG8GK5RT3&lang=15&json=1";
+    NSString *url = @"https://bcr2.intsig.net/BCRService/BCR_VCF2?user=yanjun.li@hand-china.com&pass=T6LD4LTJG8GK5RT3&lang=15&json=1";
     //    NSMutableDictionary * dir=[[NSMutableDictionary alloc] init];
     //    [dir setValue:@"mobile.hand@vip.hand-china.com" forKey:@"user"];
     //    [dir setValue:@"T6LD4LTJG8GK5RT3" forKey:@"pass"];
@@ -322,6 +338,8 @@
     //    [dir setValue:@"1" forKey:@"json"];
     //    NSDictionary *resultDict = [self postRequestWithURL:url postParems:nil picFile:image];
     //    NSLog(@"返回的字典是%@", resultDict);
+    
+    
     NSString *result = [self postRequestWithURL:url postParems:nil picFile:image];
     
     if ([result isEqualToString:@""]) {

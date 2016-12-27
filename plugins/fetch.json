@@ -88,18 +88,19 @@
             "RONG_KEY": "0vnjpoadnd4cz"
         }
     },
-    "com.hand.scancard": {
-        "source": {
-            "type": "local",
-            "path": "/Users/zaranengap/WebstormProjects/com.hand.scancard"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-hand-image": {
         "source": {
             "type": "git",
             "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHANDIMAGE/-.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.hand.scancard": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
             "subdir": "."
         },
         "is_top_level": true,

@@ -1,18 +1,20 @@
 <ion-view view-title="应用" class="application">
-  <ion-header-bar align-title="center" class="bar-stable">
-    <h1 class="title">应用</h1>
-    <!--<div class="buttons">
-      <button class="button button-clear" style="font-size: 26px" ng-click="openSetting()">
-        <i class="ion-ios-gear-outline"></i>
-      </button>
-    </div>-->
-    <div class="buttons">
-      <button class="button button-clear" style="font-size: 16px" ng-click="freshMenuList()">
-        刷新
-      </button>
-    </div>
 
-  </ion-header-bar>
+  <!--<ion-header-bar align-title="center" class="bar-stable">-->
+    <!--<h1 class="title">应用</h1>-->
+    <!--&lt;!&ndash;<div class="buttons">-->
+      <!--<button class="button button-clear" style="font-size: 26px" ng-click="openSetting()">-->
+        <!--<i class="ion-ios-gear-outline"></i>-->
+      <!--</button>-->
+    <!--</div>&ndash;&gt;-->
+    <!--<div class="buttons">-->
+      <!--<button class="button button-clear" style="font-size: 16px" ng-click="freshMenuList()">-->
+        <!--刷新-->
+      <!--</button>-->
+    <!--</div>-->
+
+  <!--</ion-header-bar>-->
+
   <ion-content class="mainApplication" style="bottom:48px;" scrollbar-y="false">
     <div on-release="onRelease()" class="application-setting-outer"
          ng-show="animationsEnabled">
@@ -37,7 +39,8 @@
     </div>
 
     <div class="calendar-container" ng-if="hasCrm">
-      <img src="build/img/application/app_banner@3x.png" class="calendar-head"/>
+      <div class="crm-search"><img src="build/img/application/search@3x.png"/>搜索客户、商机、线索</div>
+      <img src="build/img/application/banner@3x.png" class="calendar-head"/>
       <div class="calendar-content">
         <div class="application-calendar">
           <div ng-repeat="weekday in weekdays track by $index" class="highlight head-item">{{weekday}}</div>
@@ -59,7 +62,7 @@
       <div class="hms-animated application-left" ng-class="{true: 'start', false: ''}[animationsEnabled]">
         <div class="appRegion" ng-if="hasCrm">
           <div class="appAreaBorder">
-            <div class="appTitle office">CRM</div>
+            <div class="appTitle office"><img src="build/img/application/line@3x.png"/>CRM</div>
           </div>
           <div class="appArea" ng-repeat="appList in crmApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1"
@@ -74,7 +77,7 @@
           </div>
         </div>
         <div class="appRegion">
-          <div class="appTitle office">个人办公</div>
+          <div class="appTitle office"><img src="build/img/application/line@3x.png"/>个人办公</div>
           <div class="appArea" ng-repeat="appList in officeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
@@ -94,7 +97,7 @@
         </div>
 
         <div class="appRegion">
-          <div class="appTitle project">项目门户</div>
+          <div class="appTitle project"><img src="build/img/application/line@3x.png"/>项目门户</div>
           <div class="appArea" ng-repeat="appList in projectApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
@@ -108,7 +111,7 @@
         </div>
 
         <div class="appRegion">
-          <div class="appTitle employee">员工社区</div>
+          <div class="appTitle employee"><img src="build/img/application/line@3x.png"/>员工社区</div>
           <div class="appArea" ng-repeat="appList in employeeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
