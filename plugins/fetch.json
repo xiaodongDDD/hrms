@@ -15,6 +15,40 @@
         "is_top_level": false,
         "variables": {}
     },
+    "cordova-plugin-hand-contacts": {
+        "source": {
+            "type": "local",
+            "path": "/Users/zaranengap/WebstormProjects/cordova-plugin-hand-contacts"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "iflytekPlugin": {
+        "source": {
+            "type": "local",
+            "path": "E:\\yuyin\\PLUGINIFLYTEK"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.verso.cordova.clipboard": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/VersoSolutions/CordovaClipboard.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-hand-image": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHANDIMAGE/-.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "cordova-plugin-youtuishare": {
         "source": {
             "type": "git",
@@ -24,10 +58,11 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-hand-contacts": {
+    "com.hand.scancard": {
         "source": {
-            "type": "local",
-            "path": "/Users/zaranengap/WebstormProjects/cordova-plugin-hand-contacts"
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
+            "subdir": "."
         },
         "is_top_level": true,
         "variables": {}
@@ -50,33 +85,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "iflytekPlugin": {
-        "source": {
-            "type": "local",
-            "path": "E:\\yuyin\\PLUGINIFLYTEK"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "com.verso.cordova.clipboard": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/VersoSolutions/CordovaClipboard.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "jpush-phonegap-plugin": {
-        "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin"
-        },
-        "is_top_level": true,
-        "variables": {
-            "API_KEY": "6e0b08078306f45ac8331d54"
-        }
-    },
     "hand-im-plugin-device": {
         "source": {
             "type": "git",
@@ -85,25 +93,17 @@
         },
         "is_top_level": true,
         "variables": {
-            "RONG_KEY": "0vnjpoadnd4cz"
+            "RONG_KEY": "e5t4ouvptpsaa"
         }
     },
-    "cordova-plugin-hand-image": {
+    "cn.jpush.phonegap.JPushPlugin": {
         "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHANDIMAGE/-.git",
-            "subdir": "."
+            "type": "registry",
+            "id": "jpush-phonegap-plugin@2.2.0"
         },
         "is_top_level": true,
-        "variables": {}
-    },
-    "com.hand.scancard": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
+        "variables": {
+            "API_KEY": "22b25063349b6beef7bde524"
+        }
     }
 }

@@ -53,19 +53,12 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         Log.i(TAG, "surfaceCreated...");
         CameraInterface.getInstance().setCallBack(this);
         String contextName = mContext.getClass().getName();
-        //运行时权限检测
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-        {
-            //不具有camera权限 申请权限
-            ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.CAMERA}, 1);
+        if("com.hand.face.ui.FaceCompareActivity".equals(contextName)){
+            CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_FRONT);
+        }else if("com.hand.face.ui.FaceSerchActivity".equals(contextName)){
+            CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_BACK);
         }else{
-            if("com.hand.face.ui.FaceCompareActivity".equals(contextName)){
-                CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_FRONT);
-            }else if("com.hand.face.ui.FaceSerchActivity".equals(contextName)){
-                CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_BACK);
-            }else{
-                CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_FRONT);
-            }
+            CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_FRONT);
         }
     }
 

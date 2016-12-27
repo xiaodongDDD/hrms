@@ -1,8 +1,10 @@
 package com.hand.face.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -12,6 +14,8 @@ import android.hardware.Camera.Face;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +51,7 @@ import java.util.concurrent.Executors;
  * 视频流获取检测到人脸的那一帧视频
  */
 public class FaceCompareActivity extends Activity {
+    private static final int CAMERA_PERMISSION_REQUEST = 1;
     private static final String TAG = "FaceCompareActivity";
     CameraSurfaceView surfaceView = null;
     FaceView faceView;
@@ -86,6 +91,28 @@ public class FaceCompareActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Utils.getResourceId(FaceCompareActivity.this, "activity_video", "layout"));
+        //运行时权限检测
+        if (ContextCompat.checkSelfPermission(FaceCompareActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            //不具有camera权限 申请权限
+            ActivityCompat.requestPermissions( FaceCompareActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
+        }else{
+        init();}
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case CAMERA_PERMISSION_REQUEST: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    init();
+                } else {
+                }
+                return;
+            }
+        }
+    }
+    private void init(){
         initUI();
         initViewParams();
         //计算测量范围

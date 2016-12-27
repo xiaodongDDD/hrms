@@ -112,8 +112,8 @@ Android测试环境
   cordova plugin rm hand-im-plugin-device
   cordova plugin add http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git  --variable RONG_KEY=0vnjpoadnd4cz
   
-  cordova plugin rm jpush-phonegap-plugin
-  cordova plugin add jpush-phonegap-plugin --variable API_KEY=6e0b08078306f45ac8331d54
+  cordova plugin rm cn.jpush.phonegap.JPushPlugin
+  cordova plugin add jpush-phonegap-plugin@2.2.0 --variable API_KEY=6e0b08078306f45ac8331d54
   
   cordova plugin rm cordova-plugin-youtuishare
   cordova plugin add http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git
