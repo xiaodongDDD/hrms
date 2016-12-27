@@ -399,7 +399,7 @@
       vm.planDetail=plan;
       vm.showCommentFlag=true;
       var item = $('#comment-text');
-      var itemHeight= document.getElementById("comment-text");
+
    /*   $scope.testH=$('#annotate').height();
       console.log( $scope.testH);*/
       if (ionic.Platform.isWebView()) {
@@ -408,6 +408,7 @@
           console.log("聚焦");
           item.focus();
           $scope.$apply();
+          var itemHeight= document.getElementById("comment-text");
           itemHeight.style.height = '40px';
           itemHeight.scrollTop = 0; //防抖动
           itemHeight.style.height=itemHeight.scrollHeight+"px";
@@ -419,6 +420,7 @@
           console.log("聚焦");
          /* item.focus();*/
           $scope.$apply();
+          var itemHeight= document.getElementById("comment-text");
           itemHeight.style.height = '40px';
           itemHeight.scrollTop = 0; //防抖动
           itemHeight.style.height=itemHeight.scrollHeight+"px";

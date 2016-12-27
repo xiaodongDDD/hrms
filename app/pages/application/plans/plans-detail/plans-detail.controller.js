@@ -741,13 +741,14 @@
       console.log("======");
       $scope.showCommentFlag=!$scope.showCommentFlag;
       var item = $('#commentAdd');
-      var itemHeight= document.getElementById("commentAdd");
+
       if (ionic.Platform.isWebView()) {
         $timeout(function () {
           cordova.plugins.Keyboard.show();
           console.log("聚焦");
           item.focus();
           $scope.$apply();
+          var itemHeight= document.getElementById("commentAdd");
           itemHeight.style.height = '40px';
           itemHeight.scrollTop = 0; //防抖动
           itemHeight.style.height=itemHeight.scrollHeight+"px";
@@ -759,6 +760,7 @@
           console.log("聚焦");
           /* item.focus();*/
           $scope.$apply();
+          var itemHeight= document.getElementById("commentAdd");
           itemHeight.style.height = '40px';
           itemHeight.scrollTop = 0; //防抖动
           itemHeight.style.height=itemHeight.scrollHeight+"px";
