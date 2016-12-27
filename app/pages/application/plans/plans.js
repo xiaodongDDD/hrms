@@ -794,15 +794,20 @@
 
     function openCalendarPage() { //跳到原生日历界面--获取截止日期
       var success = function (response) {
+     /*  alert(response);*/
         try {
-          var result = response.result;
+          var data =  JSON.parse(response);
+          var result = data.result;
           var startDate = result[0];
           var endDate = result[1];
-          getWeekPlanByPeriod(startDate,endDate,true)
+          getWeekPlanByPeriod(startDate,endDate,true);
+          console.log(result);
         } catch (e) {
+          console.log(e);
         }
       };
       var error = function (response) {
+        console.log(response);
       };
 
       if (ionic.Platform.isWebView()) {
