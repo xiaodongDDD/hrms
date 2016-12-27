@@ -14,7 +14,7 @@
         params: {
           "authority": '',
           planDetail: {},
-          planId:''
+          planId: ''
         },
         views: {
           'tab-application': {
@@ -46,30 +46,29 @@
                            $cordovaDatePicker,
                            $timeout) {
     var vm = this;
-  /*  if( $stateParams.planDetail)*/
-    $scope.showCommentFlag=false;
+    /*  if( $stateParams.planDetail)*/
+    $scope.showCommentFlag = false;
     $scope.showSmallCrmLoading = false;
     var authority = $stateParams.authority;
-/*    vm.showComment=showComment;*/
+    /*    vm.showComment=showComment;*/
     var detail = $stateParams.planDetail;
     var planId = $stateParams.planId;
     var param = {
-      "planId":''
+      "planId": ''
     }
-
 
 
     var getPlanSuccess = function (data) {
       $scope.showSmallCrmLoading = false;
-      if(data.returnCode=='S'){
-          detail = data.saleplan_detail;
-        console.log('拿到值===='+angular.toJson(detail));
+      if (data.returnCode == 'S') {
+        detail = data.saleplan_detail;
+        console.log('拿到值====' + angular.toJson(detail));
         vm.planDetail.relateCustomer = data.saleplan_detail.customerFullName;
         vm.planDetail.relateCustomerId = data.saleplan_detail.customerId;
         vm.planDetail.relateOpportunity = data.saleplan_detail.opportunityFullName;
         vm.planDetail.relateOpportunityId = data.saleplan_detail.opportunityId;
         init();
-      }else {
+      } else {
         hmsPopup.showPopup(data.returnMsg);
       }
     }
@@ -78,10 +77,10 @@
       $scope.$broadcast('scroll.infiniteScrollComplete');
     }
 
-    if(planId!=''&& planId!=undefined){
+    if (planId != '' && planId != undefined) {
       param.planId = planId;
 
-      plansService.getPlanByDate(getPlanSuccess,error,param);
+      plansService.getPlanByDate(getPlanSuccess, error, param);
     }
     console.log(detail);
     if (baseConfig.debug) {
@@ -117,20 +116,20 @@
     if (detail.planType == 'HCRM_COPY_PLAN' && authority == 'MY') {
       vm.planType = 2;
     }
-    if(detail.isImportant=="Y"){
-      $scope.importantNum=1;
-    }else{
-      $scope.importantNum=0;
+    if (detail.isImportant == "Y") {
+      $scope.importantNum = 1;
+    } else {
+      $scope.importantNum = 0;
     }
-    $scope.searchModel={
-      searchValueKey:""
+    $scope.searchModel = {
+      searchValueKey: ""
     };
     vm.planDetail = {
       "relateCustomerId": $stateParams.planDetail.customerId,
       "relateOpportunityId": $stateParams.planDetail.opportunityId
     };
-   /* $scope.nowPage=1;
-    $scope.pageSize=20;*/
+    /* $scope.nowPage=1;
+     $scope.pageSize=20;*/
     //通用选择弹窗
     var selectTargets = [{
       'key': 'contact',
@@ -146,7 +145,7 @@
     }, {
       'key': 'business',
       'interface': plansAddService.getBusiness,  //获得选择项的接口
-      'params': [getBusinessSuccess, $scope.searchModel.searchValueKey, pageControl.nowPage, pageControl.pageSize,vm.planDetail.relateCustomerId],  //获得选择项时接口所需参数
+      'params': [getBusinessSuccess, $scope.searchModel.searchValueKey, pageControl.nowPage, pageControl.pageSize, vm.planDetail.relateCustomerId],  //获得选择项时接口所需参数
       'showKey': 'opportunityName',            //选择界面显示的数据
       'dataKey': 'opportunityId',      //对象内最终操作提交所需的数据变量
       'dataModel': 'vm.planDetail.relateOpportunityId',  //最终操作提交所需的数据变量
@@ -155,51 +154,51 @@
       'searchParams': getOpportunitySearchSuccess,
       'needShowMore': true
     }];
-/*    var selectTargets = {
-      'contact': {
-        'key': "contact",
-        'interface': opportunityAddService.getCustomers,  //获得选择项的接口
-        'params': [
-          initCustomerSuccess,
-          pageControl.nowPage,
-          pageControl.pageSize,
-          'MY_CUSTOMER'],  //获得选择项时接口所需参数
-        'showKey': 'fullName',            //选择界面显示的数据
-        'dataKey': 'customerId',      //对象内最终操作提交所需的数据变量
-        'dataModel': 'vm.planDetail.relateCustomerId',  //最终操作提交所需的数据变量
-        'showDataModel': 'vm.planDetail.relateCustomer', //显示在界面上的ng-model
-        'searchInterface': opportunityAddService.searchCustomer,
-        'searchParams': getCustomerSearchSuccess,
-        'needShowMore': true
-      },
-      'business': {
-        'key': "business",
-        'interface': plansAddService.getBusiness,  //获得选择项的接口
-        'params': [
-          getBusinessSuccess,
-          pageControl.nowPage,
-          pageControl.pageSize,
-          detail.customerId],  //获得选择项时接口所需参数
-        'showKey': 'opportunityName',            //选择界面显示的数据
-        'dataKey': 'opportunityId',      //对象内最终操作提交所需的数据变量
-        'dataModel': 'vm.planDetail.relateOpportunityId',  //最终操作提交所需的数据变量
-        'showDataModel': 'vm.planDetail.relateOpportunity', //显示在界面上的ng-model,
-        'searchInterface': plansAddService.getSearchOpportunity,
-        'searchParams': getOpportunitySearchSuccess,//要换的！！！
-        'needShowMore': true
-      }
-    };*/
+    /*    var selectTargets = {
+     'contact': {
+     'key': "contact",
+     'interface': opportunityAddService.getCustomers,  //获得选择项的接口
+     'params': [
+     initCustomerSuccess,
+     pageControl.nowPage,
+     pageControl.pageSize,
+     'MY_CUSTOMER'],  //获得选择项时接口所需参数
+     'showKey': 'fullName',            //选择界面显示的数据
+     'dataKey': 'customerId',      //对象内最终操作提交所需的数据变量
+     'dataModel': 'vm.planDetail.relateCustomerId',  //最终操作提交所需的数据变量
+     'showDataModel': 'vm.planDetail.relateCustomer', //显示在界面上的ng-model
+     'searchInterface': opportunityAddService.searchCustomer,
+     'searchParams': getCustomerSearchSuccess,
+     'needShowMore': true
+     },
+     'business': {
+     'key': "business",
+     'interface': plansAddService.getBusiness,  //获得选择项的接口
+     'params': [
+     getBusinessSuccess,
+     pageControl.nowPage,
+     pageControl.pageSize,
+     detail.customerId],  //获得选择项时接口所需参数
+     'showKey': 'opportunityName',            //选择界面显示的数据
+     'dataKey': 'opportunityId',      //对象内最终操作提交所需的数据变量
+     'dataModel': 'vm.planDetail.relateOpportunityId',  //最终操作提交所需的数据变量
+     'showDataModel': 'vm.planDetail.relateOpportunity', //显示在界面上的ng-model,
+     'searchInterface': plansAddService.getSearchOpportunity,
+     'searchParams': getOpportunitySearchSuccess,//要换的！！！
+     'needShowMore': true
+     }
+     };*/
 
     vm.planDetail = {
-      "leaderName":detail.leaderName,
+      "leaderName": detail.leaderName,
       "relateCustomer": detail.customerFullName,
       "relateCustomerId": detail.customerId,
       "relateOpportunity": detail.opportunityFullName,
       "relateOpportunityId": detail.opportunityId,
-      "annotate":detail.annotate,
+      "annotate": detail.annotate,
       "scheduleDate": "",
       "scheduleDateStr": "",
-      "isImportant":detail.isImportant
+      "isImportant": detail.isImportant
     };
 
     vm.iconList = {
@@ -240,9 +239,9 @@
     }).then(function (modal) {
       $scope.crmSelectModal = modal;
     });
-   if(planId==''||!planId){
-     init();
-   }
+    if (planId == '' || !planId) {
+      init();
+    }
     Array.prototype.clone = function () {
       return [].concat(this);
     };
@@ -315,15 +314,15 @@
 
     function init() {
       vm.planDetail = {
-        "leaderName":detail.leaderName,
+        "leaderName": detail.leaderName,
         "relateCustomer": detail.customerFullName,
         "relateCustomerId": detail.customerId,
         "relateOpportunity": detail.opportunityFullName,
         "relateOpportunityId": detail.opportunityId,
-        "annotate":detail.annotate,
+        "annotate": detail.annotate,
         "scheduleDate": "",
         "scheduleDateStr": "",
-        "isImportant":detail.isImportant
+        "isImportant": detail.isImportant
       };
       //vm.planType = 0;
       //var str = '';
@@ -335,7 +334,7 @@
       console.log("=====");
       vm.planDetail.scheduleDate = date;
       vm.planDetail.scheduleDateStr = plansService.getDateString(date) + ' ' + showTime(date);
-      vm.planDetail.annotate=detail.annotate;
+      vm.planDetail.annotate = detail.annotate;
       vm.saleContent = detail.saleContent;
       vm.planDetail.status = detail.dataStatusName;
       console.log(vm.planDetail);
@@ -353,7 +352,7 @@
       plansAddService.getValueList(listSuccessInit, "HCRM.TIME_BUCKET", "");
     }
 
-    function showSelectDiv (key) {
+    function showSelectDiv(key) {
       $scope.moreDataCanBeLoaded = false;
       $scope.searchModel.searchValueKey = '';
       $scope.nowPage = 1;
@@ -393,80 +392,80 @@
       $scope.sourceTargetData = cloneObj($scope.nowSelectTarget);
       $scope.showLoading = true;
       if (key == 'business')
-        selectTargets[1].params = [getBusinessSuccess, $scope.searchModel.searchValueKey,pageControl.nowPage, pageControl.pageSize,vm.planDetail.relateCustomerId];
+        selectTargets[1].params = [getBusinessSuccess, $scope.searchModel.searchValueKey, pageControl.nowPage, pageControl.pageSize, vm.planDetail.relateCustomerId];
       $scope.nowSelectTarget.interface.apply(null, $scope.nowSelectTarget.params);
     };
-/*    function showSelectDiv(key) {
-      if (baseConfig.debug) {
-        console.log('showSelectDiv key ' + key);
-      }
-      $scope.moreDataCanBeLoaded = false;
-      pageControl.nowPage = 1;
+    /*    function showSelectDiv(key) {
+     if (baseConfig.debug) {
+     console.log('showSelectDiv key ' + key);
+     }
+     $scope.moreDataCanBeLoaded = false;
+     pageControl.nowPage = 1;
 
-      //打开模态框
-      if ($scope.showSelect) {
-        $scope.showCrmLoading = false;
-        $scope.crmSelectModal.hide();
-      } else {
-        $scope.showCrmLoading = true;
-        $scope.crmSelectModal.show();
-      }
-      $scope.showSelect = !$scope.showSelect;
+     //打开模态框
+     if ($scope.showSelect) {
+     $scope.showCrmLoading = false;
+     $scope.crmSelectModal.hide();
+     } else {
+     $scope.showCrmLoading = true;
+     $scope.crmSelectModal.show();
+     }
+     $scope.showSelect = !$scope.showSelect;
 
-      if (!$scope.showSelect) {
-        $scope.items = [];
-        return;
-      }
+     if (!$scope.showSelect) {
+     $scope.items = [];
+     return;
+     }
 
-      $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
+     $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
 
-      $scope.nowSelectTarget = angular.copy(selectTargets[key]);
-      console.log( $scope.nowSelectTarget);
-      //初始化一个空值
-      if ($scope.showSelect) {
-        var showKey = $scope.nowSelectTarget['showKey'];
-        var dataKey = $scope.nowSelectTarget['dataKey'];
-        eval('$scope.items = [{' + showKey + ': "空",' + dataKey + ': ""}]');
-      }
+     $scope.nowSelectTarget = angular.copy(selectTargets[key]);
+     console.log( $scope.nowSelectTarget);
+     //初始化一个空值
+     if ($scope.showSelect) {
+     var showKey = $scope.nowSelectTarget['showKey'];
+     var dataKey = $scope.nowSelectTarget['dataKey'];
+     eval('$scope.items = [{' + showKey + ': "空",' + dataKey + ': ""}]');
+     }
 
-      if (baseConfig.debug) {
-        console.log($scope.nowSelectTarget.params);
-      }
+     if (baseConfig.debug) {
+     console.log($scope.nowSelectTarget.params);
+     }
 
-      $scope.sourceTargetData = cloneObj($scope.nowSelectTarget);
-      //$scope.showLoading = true;
+     $scope.sourceTargetData = cloneObj($scope.nowSelectTarget);
+     //$scope.showLoading = true;
 
-      if (key == 'business' || vm.planDetail.relateCustomerId != '') {
-        selectTargets[key].params[3] = vm.planDetail.relateCustomerId;
-      }
+     if (key == 'business' || vm.planDetail.relateCustomerId != '') {
+     selectTargets[key].params[3] = vm.planDetail.relateCustomerId;
+     }
 
-      $scope.nowSelectTarget.interface.apply(null, $scope.nowSelectTarget.params);
-    }*/
+     $scope.nowSelectTarget.interface.apply(null, $scope.nowSelectTarget.params);
+     }*/
 
- /*   function selectItem($index) {
-      var item = $scope.items[$index];
-      var dynamicValue = $scope.nowSelectTarget;
-      var id = item[dynamicValue.dataKey];  //接口所需数据
-      var name = item[dynamicValue.showKey];
+    /*   function selectItem($index) {
+     var item = $scope.items[$index];
+     var dynamicValue = $scope.nowSelectTarget;
+     var id = item[dynamicValue.dataKey];  //接口所需数据
+     var name = item[dynamicValue.showKey];
 
-      name = (name == '空') ? "" : name;
-      var idModal = dynamicValue.dataModel;                 //最终操作提交所需的数据变量
-      var nameModal = dynamicValue.showDataModel;         //显示用的数据变量ng-model
-      eval(idModal + " = id");
-      eval(nameModal + " = name");
+     name = (name == '空') ? "" : name;
+     var idModal = dynamicValue.dataModel;                 //最终操作提交所需的数据变量
+     var nameModal = dynamicValue.showDataModel;         //显示用的数据变量ng-model
+     eval(idModal + " = id");
+     eval(nameModal + " = name");
 
-      if (dynamicValue.key == 'contact') {
-        vm.planDetail.opportunityId = '';
-        vm.planDetail.relateOpportunity = '';
-        selectTargets['business'].params[3] = vm.planDetail.relateCustomerId;
-      }
-      showSelectDiv();
-    }*/
-    $scope.clearSelectFilter = function(){
+     if (dynamicValue.key == 'contact') {
+     vm.planDetail.opportunityId = '';
+     vm.planDetail.relateOpportunity = '';
+     selectTargets['business'].params[3] = vm.planDetail.relateCustomerId;
+     }
+     showSelectDiv();
+     }*/
+    $scope.clearSelectFilter = function () {
       $scope.searchModel.searchValueKey = '';
-     searchSelectValue();
+      searchSelectValue();
     };
-    function selectItem($index){
+    function selectItem($index) {
       var data = $scope.items[$index][$scope.nowSelectTarget['dataKey']];  //接口所需数据
       var showKey = $scope.items[$index][$scope.nowSelectTarget['showKey']];
       showKey = (showKey == '空') ? "" : showKey;
@@ -493,10 +492,11 @@
           vm.planDetail.relateCustomerId = $scope.items[$index].customerId;
           vm.planDetail.relateCustomer = $scope.items[$index].customerName;
         }
-        selectTargets[1].params = [getBusinessSuccess, $scope.searchModel.searchValueKey,pageControl.nowPage, pageControl.pageSize,vm.planDetail.relateCustomerId];
+        selectTargets[1].params = [getBusinessSuccess, $scope.searchModel.searchValueKey, pageControl.nowPage, pageControl.pageSize, vm.planDetail.relateCustomerId];
       }
-     showSelectDiv();
+      showSelectDiv();
     }
+
     function loadMore() {
       pageControl.nowPage++;
       $scope.nowSelectTarget.params[1] = pageControl.nowPage;
@@ -545,7 +545,7 @@
         "customerFullName": vm.planDetail.relateCustomer,
         "opportunityId": vm.planDetail.relateOpportunityId,
         "opportunityFullName": vm.planDetail.relateOpportunity,
-        "annotate":vm.planDetail.annotate,
+        "annotate": vm.planDetail.annotate,
         "planDate": plansService.getDateTimeString(vm.planDetail.scheduleDate),
         "planSource": detail.planSource,
         "planType": 'HCRM_NEW_PLAN',
@@ -587,7 +587,7 @@
         "customerId": detail.customerId,
         "customerFullName": detail.customerFullName,
         "opportunityId": detail.opportunityId,
-        "annotate":detail.annotate,
+        "annotate": detail.annotate,
         "opportunityFullName": detail.opportunityFullName,
         "planDate": detail.planDate,
         "planSource": detail.planSource,
@@ -608,7 +608,7 @@
           $ionicHistory.goBack();
           hmsPopup.showPopup('复制销售计划成功！');
         } else {
-          if (result.returnCode=="E") {
+          if (result.returnCode == "E") {
             hmsPopup.showPopup(result.returnMsg);
           } else {
             hmsPopup.showPopup('复制销售计划出现报错，请联系管理员！');
@@ -619,14 +619,15 @@
       hmsPopup.showLoading('复制销售计划中');
       plansService.copyPlan(success, params);
     }
-    $scope.importantItems=[
+
+    $scope.importantItems = [
       {
-        description:"一般",
-        value:"N"
+        description: "一般",
+        value: "N"
       },
       {
-        description:"重要",
-        value:"Y"
+        description: "重要",
+        value: "Y"
       }
     ];
     //取消销售计划
@@ -725,8 +726,8 @@
           }, 0);
         });
     };
-    $scope.hideCommont=function(){
-      $scope.showCommentFlag=false;
+    $scope.hideCommont = function () {
+      $scope.showCommentFlag = false;
       var item = $('#commentAdd');
       if (ionic.Platform.isWebView()) {
         $timeout(function () {
@@ -734,71 +735,80 @@
           console.log("失焦");
           item.blur();
           $scope.$apply();
-        },300);
+        }, 300);
       }
     };
-    $scope.showComment=function(){
+    $scope.showComment = function () {
       console.log("======");
-      $scope.showCommentFlag=!$scope.showCommentFlag;
+      $scope.showCommentFlag = !$scope.showCommentFlag;
       var item = $('#commentAdd');
-
-      if (ionic.Platform.isWebView()) {
+      if ($scope.showCommentFlag == true) {
+        if (ionic.Platform.isWebView()) {
+          $timeout(function () {
+            cordova.plugins.Keyboard.show();
+            console.log("聚焦");
+            item.focus();
+            $scope.$apply();
+            var itemHeight = document.getElementById("commentAdd");
+            itemHeight.style.height = '40px';
+            itemHeight.scrollTop = 0; //防抖动
+            itemHeight.style.height = itemHeight.scrollHeight + "px";
+            console.log(itemHeight.style.height);
+          }, 300);
+        } else {
+          $timeout(function () {
+            /*  cordova.plugins.Keyboard.show();*/
+            console.log("聚焦");
+            /* item.focus();*/
+            $scope.$apply();
+            var itemHeight = document.getElementById("commentAdd");
+            itemHeight.style.height = '40px';
+            itemHeight.scrollTop = 0; //防抖动
+            itemHeight.style.height = itemHeight.scrollHeight + "px";
+            console.log(itemHeight.style.height);
+          });
+        }
+      } else {
         $timeout(function () {
-          cordova.plugins.Keyboard.show();
-          console.log("聚焦");
-          item.focus();
+          console.log("失焦");
+          cordova.plugins.Keyboard.close();
+          item.blur();
           $scope.$apply();
-          var itemHeight= document.getElementById("commentAdd");
-          itemHeight.style.height = '40px';
-          itemHeight.scrollTop = 0; //防抖动
-          itemHeight.style.height=itemHeight.scrollHeight+"px";
-          console.log(itemHeight.style.height);
         }, 300);
-      }else{
-        $timeout(function () {
-          /*  cordova.plugins.Keyboard.show();*/
-          console.log("聚焦");
-          /* item.focus();*/
-          $scope.$apply();
-          var itemHeight= document.getElementById("commentAdd");
-          itemHeight.style.height = '40px';
-          itemHeight.scrollTop = 0; //防抖动
-          itemHeight.style.height=itemHeight.scrollHeight+"px";
-          console.log(itemHeight.style.height);
-        });
       }
       console.log(detail);
-      /*    plan.annotate=vm.planDetail.annotate;*/
+      vm.planDetail.annotate=detail.annotate;
     };
-    $scope.annotateSubmit=function(){
+    $scope.annotateSubmit = function () {
       /*  console.log("ssssss");*/
       console.log("发送");
-      var annotate=detail.annotate = $('#commentAdd').val();
+      var annotate = detail.annotate = $('#commentAdd').val();
       console.log(detail);
-      var params={
-        planId:detail.planId,
+      var params = {
+        planId: detail.planId,
         annotate: annotate
       };
-   /*   getPlanByLastSelectDay();*/
-      var annotateSuccess=function(result){
-        $scope.showCommentFlag=false;
-        if(result.returnCode=="S"){
+      /*   getPlanByLastSelectDay();*/
+      var annotateSuccess = function (result) {
+        $scope.showCommentFlag = false;
+        if (result.returnCode == "S") {
           init();
-        }else{
-          hmsPopup.showPopup=result.returnMsg;
+        } else {
+          hmsPopup.showPopup = result.returnMsg;
           console.log(result);
         }
       };
-      var annotatError=function(result){
-        vm.showCommentFlag=false;
+      var annotatError = function (result) {
+        vm.showCommentFlag = false;
         console.log(result);
       };
-      plansService.saleAnnotate(annotateSuccess,annotatError,params);
+      plansService.saleAnnotate(annotateSuccess, annotatError, params);
     };
     function selectTime($index, item) {
       vm.timeItemsBucket.number = $index;
       vm.timeItemsBucket.value = item.value;
     }
+
     $scope.selectImportant = function ($index, item) {
       $scope.importantNum = $index;
       vm.planDetail.isImportant = item.value;
@@ -806,9 +816,10 @@
     function goBack() {
       $ionicHistory.goBack();
     }
-    $scope.showSmallCrmLoading=false;
+
+    $scope.showSmallCrmLoading = false;
     $scope.holdAnnotate = false;
-    $scope.touchAnnotate=function(){
+    $scope.touchAnnotate = function () {
       $scope.holdAnnotate = true;
       cordova.plugins.pluginIflytek.startRecorerRecognize(
         function (msg) {
@@ -816,7 +827,7 @@
 
         });
     };
-    $scope.annotateRelease=function(){
+    $scope.annotateRelease = function () {
       $scope.holdAnnotate = false;
       $scope.showSmallCrmLoading = true;
       console.log("结束录音");

@@ -1,4 +1,104 @@
 .addLinkman{
+  .content-style{
+    background-color: #fafafa;
+  }
+  .setup-panel{
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    width: 97%;
+    margin-left: 1.5%;
+    background-color: #ffffff;
+    margin-top: 8px;
+    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+  }
+  .setup-panel-row1{
+    padding: 0px;
+    margin: 0px;
+    margin-left: 20px;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #f4f4f4;
+  }
+
+  .setup-panel-row2{
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height:60px;
+    margin-left:5vw;
+  }
+
+  .setup-label{
+    font-size: 14px;
+    color: #32a4ec;
+    margin-top: 14px;
+  }
+  .setup-label2{
+    font-size: 14px;
+    color: #32a4ec;
+    margin-top: 22px;
+  }
+
+  .ts-toggle-position{
+    position: absolute;
+    top: 7px;
+    right: 20px;
+    height: 20px;
+    width: 33px;
+  }
+  .im-toggle-position{
+    position: absolute;
+    top: 157px;
+    right: 20px;
+    height: 20px;
+    width: 33px;
+  }
+  .guide-toggle-position{
+    position: absolute;
+    top: 52px;
+    right: 15px;
+    height: 20px;
+    width: 33px;
+  }
+
+  .message-toggle-position{
+    position: absolute;
+    top: 97px;
+    right: 15px;
+    height: 20px;
+    width: 33px;
+  }
+
+  .setup-track{
+    height: 20px;
+    width: 33px;
+    margin-top: 5px;
+    border: 1px solid #d2d2d2;
+  }
+
+  .setup-handle{
+    height: 18px;
+    width: 18px;
+    top: 11px;
+    border:none;
+  }
+  .toggle.toggle-positive input:checked + .track{
+    background-color: #4CD964;
+    border-color: #4CD964;
+  }
+  .toggle input:checked + .track .handle{
+    -webkit-transform:translate3d(12px,0,0);
+    transform: translate3d(12px,0,0);
+    background-color: #ffffff;
+  }
+
+
+  .required:after {
+    content: '  *';
+    color: #fe9073;
+  }
+
   ion-header-bar {
     background: #f8f8f8 !important;
     border-bottom:1px solid rgba(178, 178, 178, 0.3);
@@ -8,8 +108,9 @@
     position: relative;
     right: -6px;
   }
-  .item-toggle, .item-toggle.item-complex .item-content {
-    /* padding-right: 99px; */
+
+/*  .item-toggle, .item-toggle.item-complex .item-content {
+    /!* padding-right: 99px; *!/
     width: 100%;
     border: none;
   }
@@ -18,7 +119,7 @@
     top: 10px;
     right: 10px!important;
     z-index: 3;
-  }
+  }*/
   input{
     border: none;
     background-color: #ffffff!important;
