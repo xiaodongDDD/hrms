@@ -1044,26 +1044,27 @@ angular.module('customerModule')
             // add cancel code..
           },
           buttonClicked: function (index) {
-            console.log(index);
             if (index == 0) {
               $scope.copyAddress();
             } else if (index == 1) {
               $scope.openLocation();
             }
+            return true;
           }
         });
       }
-
-      //地图
-      $scope.openLocation = function () {
+      var onSuccess = function (position1) {
+        console.log('成功=='+angular.toJson(position1));
+        $scope.myLocation.lat = position1.coords.latitude;
+        $scope.myLocation.lng = position1.coords.longitude;
         //通过客户地址返回客户所在地经纬度
-       var cusUrl = "http://api.map.baidu.com/geocoder/v2/?callback=renderOption()&output=json&address="+$scope.customer.zoneName +
+        var cusUrl = "http://api.map.baidu.com/geocoder/v2/?callback=renderOption()&output=json&address="+$scope.customer.zoneName +
           "&city="+$scope.customer.cityName+"&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
         $http.post(cusUrl).success(function (data) {
           console.log('请求数据成功！！');
           console.log(data);
           var result = angular.toJson(data);
-          if(data.result!=''){
+          if(data.result!=''&&data.result.location!=''){
             console.log("json==="+data.result.location);
             $scope.cusLocation.lat = data.result.location.lat;
             $scope.cusLocation.lng = data.result.location.lng;
@@ -1077,8 +1078,6 @@ angular.module('customerModule')
               }else {
                 $scope.myLocation.address = data.content.address;
                 $scope.myLocation.province = data.content.address_detail.province;
-                $scope.myLocation.lat = data.content.point.y;
-                $scope.myLocation.lng = data.content.point.x;
                 var url = "https://api.map.baidu.com/direction?origin=latlng:"+$scope.myLocation.lat+","+$scope.myLocation.lng+"|name:"+ $scope.myLocation.address+
                   "&destination=latlng:"+$scope.cusLocation.lat+","+$scope.cusLocation.lng+"|name:"+$scope.customer.cityName+
                   "&mode=driving&origin_region="+$scope.myLocation.province+"&destination_region="+$scope.customer.cityName+
@@ -1090,13 +1089,29 @@ angular.module('customerModule')
             })
 
           }else {
-            hmsPopup.showPopup('客户位置解析失败');
+            hmsPopup.showPopup('客户位置解析错误');
           }
         }).error(function (data) {
-            console.log('请求数据失败！！');
-          })
+          console.log('请求数据失败！！');
+        })
+      };
 
-        //console.log('当前位置信息====='+positions.lat,positions.long);39.898785,116.42903
+      var onError = function (error) {
+        console.log('错误== '+error);
+        //alert('错误== '+angular.toJson(error));
+        hmsPopup.showPopup(angular.toJson(error));
+      }
+
+
+      //地图
+      $scope.openLocation = function () {
+        var options = {
+          enableHighAccuracy: true,  // 是否使用 GPS
+          maximumAge: 30000,         // 缓存时间
+          timeout: 27000,            // 超时时间
+          coorType: 'bd09ll'         // 默认是 gcj02，可填 bd09ll 以获取百度经纬度用于访问百度 API
+        }
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
       }
 
