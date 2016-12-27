@@ -47,7 +47,7 @@
       }
     ];
 
-    var noPluginMode = true;
+    var noPluginMode = false;
 
     service = {
       uploadImage: uploadImage,
@@ -165,14 +165,15 @@
       }
 
       try {
-        if (result.gender && result.gender < 50) {
+        var gender = parseInt(result.gender);
+        if (gender < 50) {
           faceInfo.gender = '女';
           sex = 'woman';
-        } else if (result.gender && result.gender == 50) {
+        } else if (gender == 50) {
           faceInfo.gender = '中性';
           sex = 'woman';
         }
-        else if (result.gender && result.gender > 50) {
+        else if (gender > 50) {
           faceInfo.gender = '男';
           sex = 'man';
         }
@@ -187,6 +188,8 @@
       else {
         faceInfo.expression = '没有表情'
       }
+
+      //console.log('result.faceInfo ' + angular.toJson(faceInfo));
 
       return faceInfo;
     }

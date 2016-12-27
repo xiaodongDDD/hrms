@@ -51,7 +51,8 @@
 
     function goBack() {
       TabsService.setManualReturnFlag(true);
-      hmsReturnView.returnToState('tab.myInfo');
+      //hmsReturnView.returnToState('tab.myInfo');
+      $ionicHistory.goBack();
     }
 
     //人脸识别
@@ -71,7 +72,7 @@
         //临时解决方案
         catchImage();
       }else{
-        //pluginface.faceDetect('', success, error);
+        pluginface.faceDetect('', success, error);
       }
     }
 

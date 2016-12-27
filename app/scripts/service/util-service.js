@@ -76,10 +76,15 @@ angular.module('HmsModule')
               console.log(postName + " End!");
             }
             hmsPopup.hideLoading();
-            if (status == '401' || status == '403') {
+            if (status == '401') {
               window.localStorage.token = '';
               goBackLogin($state);
               hmsPopup.showShortCenterToast('另一个设备在登陆你的账号,请重新登陆!');
+            }
+            else if (status == '403') {
+              window.localStorage.token = '';
+              goBackLogin($state);
+              hmsPopup.showShortCenterToast('用户令牌失效,请重新登陆!');
             }
             else if (status == '404') {
               hmsPopup.showShortCenterToast('后端服务器请求失败,请联系管理员!');

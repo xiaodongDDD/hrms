@@ -49,6 +49,33 @@
         "is_top_level": true,
         "variables": {}
     },
+    "com.hand.scancard": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-hrms-faceidentify": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.handmobile.cordovaplugin.hotpatch": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "hand-im-plugin-device": {
         "source": {
             "type": "git",
@@ -60,32 +87,15 @@
             "RONG_KEY": "0vnjpoadnd4cz"
         }
     },
-    "cordova-plugin-hrms-faceidentify": {
+    "cn.jpush.phonegap.JPushPlugin": {
         "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
-            "subdir": "."
+            "type": "registry",
+            "id": "jpush-phonegap-plugin@2.2.0"
         },
         "is_top_level": true,
-        "variables": {}
-    },
-    "com.hand.scancard": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "com.handmobile.cordovaplugin.hotpatch": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH/cordova",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
+        "variables": {
+            "API_KEY": "6e0b08078306f45ac8331d54"
+        }
     },
     "cordova-plugin-youtuishare": {
         "source": {
@@ -94,8 +104,6 @@
             "subdir": "."
         },
         "is_top_level": true,
-        "variables": {
-            "API_KEY": "22b25063349b6beef7bde524"
-        }
+        "variables": {}
     }
 }

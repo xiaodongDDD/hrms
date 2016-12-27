@@ -358,6 +358,9 @@ angular.module('myApp')
             $urlRouterProvider.otherwise('/tab/message');
           }
         } else {
+
+          window.localStorage.isHrms2108 = "true";
+          
           $urlRouterProvider.otherwise('/login');
         }
       }
