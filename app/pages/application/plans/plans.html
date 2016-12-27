@@ -169,58 +169,45 @@
       </ion-scroll>
     </div>
   </ion-content>
-  <div ng-if="holdAnnotate" class="bar bar-footer" style="bottom:44px;">
-    <div style="width:30%;float:left;height: 40px;display:table;">
-      <div style="vertical-align:middle; display:table-cell;height:40px;width: 60px;text-align:center;">
-        <img src="build/img/plans/icon_weave@3x.png" style="width: 60px;">
+  <div ng-if="holdAnnotate" class="bar bar-footer holdFooter">
+    <div class="wave-hold">
+      <div>
+        <img src="build/img/plans/icon_weave@3x.png">
       </div>
     </div>
-    <div style="width: 40%;float: left;height: 40px;display:table;">
-      <div style="color: #666;vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+    <div class="wave-text">
+      <div>
         按住说话 松开结束
       </div>
       <!-- <div  style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;"> 松开结束</div>-->
     </div>
-    <div style="width: 30%;float: left;height: 40px;display:table;">
-      <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
-        <img src="build/img/plans/icon_weave@3x.png" style="width:60px">
+    <div class="wave-hold">
+      <div>
+        <img src="build/img/plans/icon_weave@3x.png">
       </div>
     </div>
   </div>
 
-  <div class="bar " id="bar-footer2" style="bottom:0px;" id="test" ng-if="showCommentFlag">
-    <div style="float:left;width:10%;display:table;"  on-touch="touchAnnotate()" on-release="annotateRelease()">
-      <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
-        <img src="build/img/application/plans/icon_voice@3x.png" style="width: 20px;    position: absolute;
-    bottom: 12px;
-    left: 10px;">
+  <div class="bar " id="bar-footer2" ng-if="showCommentFlag">
+    <div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">
+      <div style="">
+        <img src="build/img/application/plans/icon_voice@3x.png" style="">
       </div>
     </div>
-    <div style="float:left;width:80%;">
+    <div class="common-content" style="">
       <textarea  id="comment-text" oninput="this.style.height = '40px';
-              this.style.height = this.scrollHeight + 'px';
+              this.style.height = this.scrollHeight + '40px';
               this.parentNode.style.height = '0px';
-              this.parentNode.style.height = this.scrollHeight + 0 + 'px'" style="overflow-y:visible;width:100%;word-break:break-all;border: 1px solid #ddd;
-    border-radius: 5px;"
+              this.parentNode.style.height = this.scrollHeight + 0 + 'px';"
                 placeholder="" ng-model="planDetail.annotate"></textarea>
       <!--div contenteditable="true" id="comment-text" >{{planDetail.annotate}}</div>-->
     </div>
-    <div style="float:left;width:10%;display:table;" ng-click="annotateSubmit(planDetail)">
-      <div style="vertical-align:middle; display:table-cell;position: absolute;
-    bottom: 12px;
-    right: 5px;">
+    <div class="common-submit"  ng-click="annotateSubmit(planDetail)">
+      <div>
       发送
       </div>
     </div>
   </div>
-  <!--  <div style="position: fixed;bottom: 0;height: 40px;    width: 100%;padding: 5px 0 0 5px;" ng-if="showCommentFlag">
-     &lt;!&ndash; 测试测试测试&ndash;&gt;
-     &lt;!&ndash; {{planDetail.annotate}}&ndash;&gt;
-      <form style="float:left;width:80%;"  ng-submit="annotateSubmit(planDetail)">
-        <textarea style="height: 40px;width:100%;border: none;" placeholder="请输入" ng-model="planDetail.annotate"></textarea>
-      </form>
-      <div style="float:left;width:20%">测试</div>
-    </div>-->
   <div class="common-fix-div" ng-class="{true:'showUp'}[showNew]">
 
     <div class="sifting-header">
@@ -280,12 +267,3 @@
     </div>
   </div>
 </ion-view>
-<style>
-  #bar-footer2 {
-    bottom: 0;
-    border-top-width: 1px;
-    border-bottom-width: 0;
-    background-position: top;
-    height: auto;
-  }
-</style>

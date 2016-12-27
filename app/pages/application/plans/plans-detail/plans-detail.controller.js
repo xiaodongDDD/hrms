@@ -741,13 +741,29 @@
       console.log("======");
       $scope.showCommentFlag=!$scope.showCommentFlag;
       var item = $('#commentAdd');
+      var itemHeight= document.getElementById("commentAdd");
       if (ionic.Platform.isWebView()) {
         $timeout(function () {
           cordova.plugins.Keyboard.show();
           console.log("聚焦");
           item.focus();
           $scope.$apply();
-        },300);
+          itemHeight.style.height = '40px';
+          itemHeight.scrollTop = 0; //防抖动
+          itemHeight.style.height=itemHeight.scrollHeight+"px";
+          console.log(itemHeight.style.height);
+        }, 300);
+      }else{
+        $timeout(function () {
+          /*  cordova.plugins.Keyboard.show();*/
+          console.log("聚焦");
+          /* item.focus();*/
+          $scope.$apply();
+          itemHeight.style.height = '40px';
+          itemHeight.scrollTop = 0; //防抖动
+          itemHeight.style.height=itemHeight.scrollHeight+"px";
+          console.log(itemHeight.style.height);
+        });
       }
       console.log(detail);
       /*    plan.annotate=vm.planDetail.annotate;*/

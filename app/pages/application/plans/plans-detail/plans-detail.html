@@ -108,52 +108,40 @@
       <i>{{vm.planDetail.leaderName}}:</i>{{vm.planDetail.annotate}}
     </div>
     </div>
-   <!-- <div ng-if="vm.planType==1&&vm.planDetail.annotate!=''" class="comment-style" ng-click="showComment(plan)">
-                <span>点评<img src="build/img/application/plans/common.png"/></span>
-    </div>
-    <div  ng-if="vm.planType==1&&vm.planDetail.annotate!=''" class="comment-text">
-      <i>{{vm.planDetail.leaderName}}:</i> {{vm.planDetail.annotate}}
-    </div>-->
   </ion-content>
-  <div ng-if="holdAnnotate"  class="bar bar-footer" style="bottom:104px;background:none;">
-    <div style="width:30%;float:left;height: 40px;display:table;">
-      <div style="vertical-align:middle; display:table-cell;height:40px;width: 60px;text-align:center;">
-        <img src="build/img/plans/icon_weave@3x.png" style="width: 60px;">
+  <div ng-if="holdAnnotate" class="bar bar-footer holdFooter">
+    <div class="wave-hold">
+      <div>
+        <img src="build/img/plans/icon_weave@3x.png">
       </div>
     </div>
-    <div style="width: 40%;float: left;height: 40px;display:table;">
-      <div style="color: #666;vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
+    <div class="wave-text">
+      <div>
         按住说话 松开结束
       </div>
-      <!-- <div  style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;"> 松开结束</div>-->
     </div>
-    <div style="width: 30%;float: left;height: 40px;display:table;">
-      <div style="vertical-align:middle; display:table-cell;height: 40px;width:100%;text-align:center;">
-        <img src="build/img/plans/icon_weave@3x.png" style="width:60px">
+    <div class="wave-hold">
+      <div>
+        <img src="build/img/plans/icon_weave@3x.png">
       </div>
     </div>
   </div>
-  <div ng-if="showCommentFlag"   class="bar bar-footer" style="bottom:60px;height: auto;">
-
-    <div style="float:left;width:10%;display:table;"  on-touch="touchAnnotate()" on-release="annotateRelease()">
-      <div style="vertical-align:middle; display:table-cell;height:40px;width: 20px;text-align:center;">
-        <img src="build/img/application/plans/icon_voice@3x.png" style="width: 20px;    position: absolute;
-    bottom: 12px;
-    left: 10px;">
+  <div ng-if="showCommentFlag"   class="bar bar-footer" style="bottom:60px;height: auto;max-height:110px;">
+    <div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">
+      <div style="">
+        <img src="build/img/application/plans/icon_voice@3x.png" style="">
       </div>
     </div>
-    <div style="float:left;width:80%;">
-      <textarea oninput="this.style.height = '40px';
-              this.style.height = this.scrollHeight + 'px';
+    <div class="common-content" style="">
+      <textarea  id="commentAdd" oninput="this.style.height = '40px';
+              this.style.height = this.scrollHeight + '40px';
               this.parentNode.style.height = '0px';
-              this.parentNode.style.height = this.scrollHeight + 0 + 'px'"  id="commentAdd" style="overflow-y:visible ;width:100%;word-break:break-all;border: 1px solid #ddd;
-    border-radius: 5px;"
-                placeholder="" ng-model="vm.planDetail.annotate"></textarea>
+              this.parentNode.style.height = this.scrollHeight + 0 + 'px';"
+                 placeholder="" ng-model="planDetail.annotate"></textarea>
+      <!--div contenteditable="true" id="comment-text" >{{planDetail.annotate}}</div>-->
     </div>
-    <div style="float:left;width:10%;display:table;" ng-click="annotateSubmit()">
-      <div style="vertical-align:middle; display:table-cell;position: absolute;
-    bottom: 12px;
-    right: 5px;">
+    <div class="common-submit"  ng-click="annotateSubmit()">
+      <div>
         发送
       </div>
     </div>
@@ -197,13 +185,4 @@
       <div>
       </div>
     </ion-footer-bar>
-
- <!-- <ion-footer-bar  ng-if="showCommentFlag">
-    <form style="float:left;width:80%;"  ng-submit="annotateSubmit(planDetail)">
-      <textarea id="comment-text" style="overflow-y:visible ;width:100%;border: none;word-break:break-all" placeholder="请输入" ng-model="planDetail.annotate"></textarea>
-    </form>
-    <div style="float:left;width:20%">
-      <img src="build/img/application/plans/icon_voice@3x.png" style="width: 16px;">
-    </div>
-  </ion-footer-bar>-->
 </ion-view>
