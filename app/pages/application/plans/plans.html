@@ -164,7 +164,7 @@
       </ion-scroll>
     </div>
   </ion-content>
-  <div ng-if="holdAnnotate" class="bar bar-footer holdFooter">
+  <div keyboardshow ng-if="holdAnnotate" class="holdFooter">
     <div class="wave-hold">
       <div>
         <img src="build/img/plans/icon_weave@3x.png">
@@ -182,8 +182,8 @@
       </div>
     </div>
   </div>
- <!-- <hms-dialog-box></hms-dialog-box>-->
-  <div class="bar " id="bar-footer2" ng-if="showCommentFlag">
+  <!--<hms-dialog-box></hms-dialog-box>-->
+  <div class="bar " keyboardshow id="bar-footer2" ng-if="showCommentFlag">
     <div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">
       <div style="">
         <img src="build/img/application/plans/icon_voice@3x.png" style="">

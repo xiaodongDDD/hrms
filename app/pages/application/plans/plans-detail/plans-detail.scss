@@ -138,9 +138,16 @@
     }
   }
   .holdFooter {
-    bottom: 110px;
-    background:none;
-    z-index: 1000;
+    width: 100%;
+    margin-top:90%;
+    z-index: 10000000;
+    position: fixed;
+    height: 30px;
+    background: none;
+    .wave{
+      height: 100%;
+      width: 100%;
+    }
     .wave-hold {
       width: 30%;
       float: left;
