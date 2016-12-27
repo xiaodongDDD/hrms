@@ -115,7 +115,7 @@
           <crm-loading ng-if="planListLoadingFlag"></crm-loading>
           <div ng-if="!planListLoadingFlag">
             <div class="plan-group" ng-repeat="group in planGroups">
-              <div class="row group-head">
+              <div class="row group-head group-head-flag">
                 <div class="col col-67" style="margin: 0; padding:0;">{{group.date ? getDayString(group.date) : ""}}
                   {{group.date}}
                 </div>
