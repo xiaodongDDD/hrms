@@ -35,7 +35,8 @@
                               hmsPopup,
                               faceEcognitionService,
                               $state,
-                              $http) {
+                              $http,
+                              $ionicHistory) {
     var vm = this;
     window.localStorage.faceEcognition = 'true';
     vm.faceEcognitionResult = false;
@@ -55,6 +56,14 @@
     ];
     vm.faceResult = {};
     vm.progress = {};
+
+    /*var im = {
+      "face_id": "1848085924808818687",
+      "x": 90, "y": 267, "height": 176, "width": 176,
+      "pitch": 16, "roll": -4, "yaw": -5, "age": 23, "gender": 11,
+      "glass": false, "expression": 32, "beauty": 100
+    };
+    console.log('test im analysisFaceInfo ' + angular.toJson(faceEcognitionService.analysisFaceInfo(im)));*/
 
     var width = document.body.clientWidth;
 
@@ -116,7 +125,8 @@
           hmsPopup.showPopup('采集成功');
 
           faceEcognitionService.setFaceEcognitionFlag(true);
-          $state.go("tab.face-ecognition-setting", {"from": "collection"});
+          //$state.go("tab.face-ecognition-setting", {"from": "collection"});
+          $ionicHistory.goBack();
         } else {
           hmsPopup.showPopup('采集信息采集失败，请重新采集！');
         }
@@ -181,14 +191,15 @@
       }
 
       try {
-        if (result.gender && result.gender < 50) {
+        var gender = parseInt(result.gender);
+        if (gender < 50) {
           vm.faceResult.gender = '女';
           sex = 'woman';
-        } else if (result.gender && result.gender == 50) {
+        } else if (gender == 50) {
           vm.faceResult.gender = '中性';
           sex = 'woman';
         }
-        else if (result.gender && result.gender > 50) {
+        else if (gender > 50) {
           vm.faceResult.gender = '男';
           sex = 'man';
         }
@@ -215,11 +226,11 @@
         console.log('faceEcognition.work...');
       }
 
-      if(faceEcognitionService.getNoPluginMode()){
+      if (faceEcognitionService.getNoPluginMode()) {
         //临时解决方案
         uploadToAliServe();
-      }else{
-        //pluginface.faceDetect('', faceEcognitionSuccess, faceEcognitionError);
+      } else {
+        pluginface.faceDetect('', faceEcognitionSuccess, faceEcognitionError);
       }
 
     }
@@ -227,7 +238,7 @@
     //上传图片到阿里云
     function uploadToAliServe() {
       navigator.camera.getPicture(onSuccess, onFail, {
-        quality: 90,
+        quality: 80,
         targetWidth: 500,
         targetHeight: 500,
         destinationType: Camera.DestinationType.FILE_URI,
@@ -250,7 +261,6 @@
         faceEcognitionService.uploadLocalImageToAaLi('/objectUpload', imageURI, win);
 
         function win(res) {
-          hmsPopup.hideLoading();
 
           if (baseConfig.debug == false) {
             //alert('complete.success ' + angular.toJson(JSON.parse(res.response)));
@@ -265,24 +275,25 @@
                 //alert('result ' + angular.toJson(result));
                 //alert('result.success ' + result.success);
                 //alert('result.rows[0] ' + angular.toJson(result.rows[0]));
-                if(result.success == true && result.rows[0]){
+                if (result.success == true && result.rows[0]) {
                   var mySign = result.rows[0].mySign;
-                  getYouTuInfo(imageResult.returnData.objectUrl, imageURI, mySign,'识别信息中');
+                  getYouTuInfo(imageResult.returnData.objectUrl, imageURI, mySign, '识别信息中');
                 }
-                else{
+                else {
                   hmsPopup.showPopup('识别失败，请重新识别_！');
                 }
               }
             );
           }
-          else{
+          else {
+            hmsPopup.hideLoading();
             hmsPopup.showPopup('识别失败，请重新识别__！');
           }
         }
       }
     }
 
-    function getYouTuInfo(imageOuterURI, localUrl, mySign,prompt) {
+    function getYouTuInfo(imageOuterURI, localUrl, mySign, prompt) {
       var params = {
         "app_id": "10009373",
         "url": imageOuterURI,
