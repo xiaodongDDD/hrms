@@ -259,7 +259,9 @@ angular.module('applicationModule')
       ];
 
       $scope.hasCrm = !baseConfig.appStoreFlag;
-
+      $scope.goSearch=function(){
+        $state.go('tab.globelSearch');
+      };
       if($scope.hasCrm){
         $scope.weekdays = ['一','二','三','四','五','六','日'];
         $scope.days = [];
