@@ -21,6 +21,7 @@ angular.module('opportunityModule')
     'clueDetailDataService',
     'crmEmployeeService',
     '$cordovaDatePicker',
+    'customerService',
     function($scope,
              baseConfig,
              $ionicHistory,
@@ -35,7 +36,8 @@ angular.module('opportunityModule')
              opportunityDetailDataService,
              clueDetailDataService,
              crmEmployeeService,
-             $cordovaDatePicker) {
+             $cordovaDatePicker,
+             customerService) {
 
       $rootScope.img="";
 
@@ -1598,6 +1600,39 @@ angular.module('opportunityModule')
         }
       };
 
+      //筛选区域团队
+      $scope.filterArea = function () {
+        $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
+        $scope.saleTeams = [];
+        if(!$scope.showSaleTeam){
+          if($scope.areaValue.key==''){
+            $scope.saleAreas = [];
+            customerService.getSaleArea(getSaleAreaSuccess,'');
+          }else {
+            $scope.saleAreas = [];
+            customerService.getSaleArea(getSaleAreaSuccess,$scope.areaValue.key);
+          }
+        }else {
+          if($scope.areaValue.key==''){
+            customerService.getSaleTeam(getSaleTeamSuccess,'', $scope.data.saleAreaId);
+          }else {
+            customerService.getSaleTeam(getSaleTeamSuccess,$scope.areaValue.key,$scope.data.saleAreaId);
+          }
+        }
+      };
+
+      //清空筛选
+      $scope.clearAreaFilter = function () {
+        $scope.areaValue.key='';
+        if(!$scope.showSaleTeam){
+          $scope.saleAreas = [];
+          customerService.getSaleArea(getSaleAreaSuccess,'');
+        }else {
+          $scope.saleTeams = [];
+          customerService.getSaleTeam(getSaleTeamSuccess,'', $scope.data.saleAreaId);
+        }
+      };
+
       //校验名称
       $scope.validNameFlag = true;
       var validNameSuccess= function(response){
@@ -1702,6 +1737,48 @@ angular.module('opportunityModule')
         else{
           $scope.showSubIndustry = false;
           $scope.subIndustrys = [];
+        }
+      };
+
+      $scope.filterIndustry = function () {
+        $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
+        $scope.subIndustrys = [];
+        //主行业
+        if(!$scope.showSubIndustry){
+          if($scope.industrySearch.key==''){
+            $scope.majorIndustrys = [];
+            customerService.getIndustry(getMajorIndustrySuccess,'', 0);
+          }else {
+            $scope.majorIndustrys = [];
+            customerService.getIndustry(getMajorIndustrySuccess,$scope.industrySearch.key, 0);
+          }
+        }else {
+          if($scope.industrySearch.key==''){
+            if($scope.isCustomerIndustry)
+              customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.cusMajorIndustry);
+            else
+              customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.majorIndustry);
+          }else {
+            if($scope.isCustomerIndustry)
+              customerService.getIndustry(getSubIndustrySuccess,$scope.industrySearch.key, $scope.data.cusMajorIndustry);
+            else
+              customerService.getIndustry(getSubIndustrySuccess,$scope.industrySearch.key, $scope.data.majorIndustry);
+          }
+        }
+      };
+
+      $scope.clearIndustryFilter = function () {
+        $scope.industrySearch.key='';
+        //主行业
+        if(!$scope.showSubIndustry){
+          $scope.majorIndustrys = [];
+          customerService.getIndustry(getMajorIndustrySuccess,'', 0);
+        }else {
+          $scope.subIndustrys = [];
+          if($scope.isCustomerIndustry)
+            customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.cusMajorIndustry);
+          else
+            customerService.getIndustry(getSubIndustrySuccess,'', $scope.data.majorIndustry);
         }
       };
 
