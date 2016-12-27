@@ -10,17 +10,13 @@ navigation history that also transitions its views in and out.
   </ion-tab>
 
   <!-- Application Tab -->
-  <ion-tab title="应用" icon-off="application-off" icon-on="application-on" href="#/tab/new-application">
+  <ion-tab title="应用" icon-off="application-off" icon-on="application-on" href="#/tab/application">
     <ion-nav-view name="tab-application"></ion-nav-view>
   </ion-tab>
 
   <!-- Contact Tab -->
-  <ion-tab title="通讯录" icon-off="contact-off" icon-on="contact-on" href="#/tab/contact" hidden="{{hasCrm}}">
+  <ion-tab title="通讯录" icon-off="contact-off" icon-on="contact-on" href="#/tab/contact">
     <ion-nav-view name="tab-contact"></ion-nav-view>
-  </ion-tab>
-
-  <ion-tab title="通讯录" icon-off="contact-off" icon-on="contact-on" href="#/tab/contactCrm" hidden="{{!hasCrm}}">
-    <ion-nav-view name="tab-contactCrm"></ion-nav-view>
   </ion-tab>
 
   <!-- Account Tab -->
@@ -28,6 +24,7 @@ navigation history that also transitions its views in and out.
     <ion-nav-view name="tab-myInfo"></ion-nav-view>
   </ion-tab>
 </ion-tabs>
+
 <div class="application-guide" ng-if="showGuideFlag">
   <div style="height: 100%;width: 100%;background: none" ng-click="buttonTapped()"></div>
 </div>
