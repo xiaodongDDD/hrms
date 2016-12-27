@@ -6,15 +6,20 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -30,18 +35,25 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class CamcardPlugin extends CordovaPlugin {
 
-  private static final String imgSavePath = "/sdcard/camcard";
   private static final int PHOTO_WITH_CAMERA = 0;
   private static final int PHOTO_WITH_DATA = 1;
   private CallbackContext mCallbackContext;
   private String imgName = "camcard.jpg";
   protected final static String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
+  private boolean hasCameraPermission = false;
+  private boolean hasWritePermission = false;
+  private String imagePath;
+
+  @Override
+  public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+    super.initialize(cordova, webView);
+    File externalFilesDir = cordova.getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+    imagePath = externalFilesDir.getAbsolutePath();
+  }
 
   @Override
   public void onRestoreStateForActivityResult(Bundle state, CallbackContext callbackContext) {
@@ -55,12 +67,9 @@ public class CamcardPlugin extends CordovaPlugin {
 
     if ("takePicture".equals(action)) {
       checkTakePhotoPermission();
-//      takePhoto();
-
       return true;
     } else if ("choosePicture".equals(action)) {
       checkPickPhotoPermission();
-
       return true;
     }
     callbackContext.error("error");
@@ -68,22 +77,26 @@ public class CamcardPlugin extends CordovaPlugin {
   }
 
   private void checkTakePhotoPermission() {
-    final List<String> permissionsList = new ArrayList<String>();
-    if (!PermissionHelper.hasPermission(this, Manifest.permission.CAMERA))
-      permissionsList.add(Manifest.permission.CAMERA);
-    if (!PermissionHelper.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-      permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-    if (permissionsList.size() != 0) {
-      PermissionHelper.requestPermissions(this, 100, permissions);
-    } else {
-      //已经不是第一次,已经有权限
+    if (PermissionHelper.hasPermission(this, Manifest.permission.CAMERA)) {
+      hasCameraPermission = true;
+    }
+    if (PermissionHelper.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+      hasWritePermission = true;
+    }
+    if (!hasWritePermission && !hasCameraPermission) {//两个权限都没有
+      PermissionHelper.requestPermissions(this, 1, permissions);
+    } else if (!hasCameraPermission) {//没有照相机权限
+      PermissionHelper.requestPermission(this, 2, Manifest.permission.CAMERA);
+    } else if (!hasWritePermission) {//没有sd卡写权限
+      PermissionHelper.requestPermission(this, 3, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    } else {//有权限
       takePhoto();
     }
   }
 
   private void checkPickPhotoPermission() {
     if (!PermissionHelper.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-      PermissionHelper.requestPermission(this, 101, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+      PermissionHelper.requestPermission(this, 4, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     } else {
       //已经不是第一次,已经有权限
       pickPhoto();
@@ -92,20 +105,33 @@ public class CamcardPlugin extends CordovaPlugin {
 
   @Override
   public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException {
-    if (requestCode == 100) {
-      if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-        takePhoto();
-      } else {
-        Toast.makeText(cordova.getActivity(), "授权失败", Toast.LENGTH_SHORT).show();
-        mCallbackContext.error("cancel");
-      }
-    } else if (requestCode == 101) {
-      if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        pickPhoto();
-      } else {
-        Toast.makeText(cordova.getActivity(), "授权失败", Toast.LENGTH_SHORT).show();
-        mCallbackContext.error("cancel");
-      }
+
+    switch (requestCode) {
+      case 1:
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+          takePhoto();
+        } else {
+          Toast.makeText(cordova.getActivity(), "授权失败", Toast.LENGTH_SHORT).show();
+          mCallbackContext.error("cancel");
+        }
+        break;
+      case 2:
+      case 3:
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          takePhoto();
+        } else {
+          Toast.makeText(cordova.getActivity(), "授权失败", Toast.LENGTH_SHORT).show();
+          mCallbackContext.error("cancel");
+        }
+        break;
+      case 4:
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          pickPhoto();
+        } else {
+          Toast.makeText(cordova.getActivity(), "授权失败", Toast.LENGTH_SHORT).show();
+          mCallbackContext.error("cancel");
+        }
+        break;
     }
   }
 
@@ -114,7 +140,6 @@ public class CamcardPlugin extends CordovaPlugin {
     intent.setType("image/*");  // 开启Pictures画面Type设定为image
     intent.setAction(Intent.ACTION_GET_CONTENT); //使用Intent.ACTION_GET_CONTENT这个Action
     cordova.startActivityForResult(this, intent, PHOTO_WITH_DATA); //取得相片后返回到本画面
-
   }
 
   /**
@@ -122,8 +147,7 @@ public class CamcardPlugin extends CordovaPlugin {
    */
   private void takePhoto() {
     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //调用系统相机
-//      Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"image.jpg"));
-    Uri imageUri = Uri.fromFile(new File(getCacheDir(), "image.jpg"));
+    Uri imageUri = Uri.fromFile(new File(imagePath, "image.jpg"));
     //指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 
@@ -138,13 +162,10 @@ public class CamcardPlugin extends CordovaPlugin {
         case PHOTO_WITH_CAMERA: {//拍照获取图片
           String status = Environment.getExternalStorageState();
           if (status.equals(Environment.MEDIA_MOUNTED)) { //是否有SD卡
-
-            Bitmap bitmap = BitmapFactory.decodeFile(getCacheDir() + "image.jpg");
-
+            Bitmap smallBitmap = zoomBitmap(imagePath + "/image.jpg");
+            smallBitmap = Edit.Brightness(smallBitmap, 30);
             //保存图片
-            savePhotoToSDCard(imgSavePath, imgName, bitmap);
-            Bitmap smallBitmap = getSmallBitmap(imgSavePath + "/" + imgName);
-            savePhotoToSDCard(imgSavePath, imgName, smallBitmap);
+            savePhotoToSDCard(imagePath, imgName, smallBitmap);
             cardRecognize();
 
           } else {
@@ -160,12 +181,10 @@ public class CamcardPlugin extends CordovaPlugin {
           try {
             //使用ContentProvider通过URI获取原始图片
             Bitmap photo = MediaStore.Images.Media.getBitmap(resolver, originalUri);
-            savePhotoToSDCard(imgSavePath, imgName, photo);
-            File imgFile = new File(imgSavePath, imgName);
-            if (imgFile.length() > 300000) {
-              Bitmap smallBitmap = getSmallBitmap(imgSavePath + "/" + imgName);
-              savePhotoToSDCard(imgSavePath, imgName, smallBitmap);
-            }
+            savePhotoToSDCard(imagePath, "image.jpg", photo);
+            Bitmap smallBitmap = zoomBitmap(imagePath + File.separator + "image.jpg");
+            smallBitmap = Edit.Brightness(smallBitmap, 30);
+            savePhotoToSDCard(imagePath, imgName, smallBitmap);
             cardRecognize();
 
           } catch (FileNotFoundException e) {
@@ -187,16 +206,14 @@ public class CamcardPlugin extends CordovaPlugin {
       @Override
       public void run() {
         try {
-//          File file = new File(imgSavePath,imgName);
-          String filepath = imgSavePath + "/" + imgName;
+          String filepath = imagePath + File.separator + imgName;
           File file = new File(filepath);
           Log.e("399", file.getAbsolutePath());
-          URL url = new URL("http://bcr2.intsig.net/BCRService/BCR_VCF2?user=yanjun.li@hand-china.com&pass=T6LD4LTJG8GK5RT3&lang=15&json=1&size=" + file.length());
+          URL url = new URL("https://bcr2.intsig.net/BCRService/BCR_VCF2?user=yanjun.li@hand-china.com&pass=T6LD4LTJG8GK5RT3&lang=15&json=1&size=" + file.length());
           HttpURLConnection con = (HttpURLConnection) url.openConnection();
           con.setDoOutput(true);
           con.setDoInput(true);
           con.setRequestMethod("POST");
-//          con.setRequestProperty("transfer-encoding", "chunked");
           OutputStream out = con.getOutputStream();
           FileInputStream inputStream = new FileInputStream(file);
           byte[] data = new byte[2048];
@@ -219,7 +236,7 @@ public class CamcardPlugin extends CordovaPlugin {
             while ((len = inputStream2.read(data)) != -1) {
               bos.write(data, 0, len);
             }
-//            Log.e("399", "result ="+bos.toString());
+            Log.e("399", "result =" + bos.toString());
             Log.e("399", "callbackContext2: " + mCallbackContext);
             mCallbackContext.success(bos.toString());
             inputStream2.close();
@@ -241,15 +258,78 @@ public class CamcardPlugin extends CordovaPlugin {
 
   }
 
+  private Bitmap zoomBitmap(String imagePath) {
+    BitmapFactory.Options options = new BitmapFactory.Options();
+    options.inJustDecodeBounds = true;
+    BitmapFactory.decodeFile(imagePath, options);
+    int outWidth = options.outWidth;
+    int outHeight = options.outHeight;
+    WindowManager windowManager = cordova.getActivity().getWindowManager();
+    int winWidth = windowManager.getDefaultDisplay().getWidth();
+    int winHeight = windowManager.getDefaultDisplay().getHeight();
+
+    int scale = 1;
+    int scaleWidth = outWidth / winWidth;
+    int scaleHeight = outHeight / winHeight;
+    if (scaleWidth >= scaleHeight && scaleWidth > 1) {
+      scale = scaleWidth;
+    }
+    if (scaleHeight > scaleWidth && scaleHeight > 1) {
+      scale = scaleHeight;
+    }
+    options.inJustDecodeBounds = false;
+    options.inSampleSize = scale;
+    Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
+    int degree = readPictureDegree(imagePath);
+    bitmap = rotaingImageView(degree, bitmap);
+    return bitmap;
+  }
+
   /**
-   * 创建图片不同的文件名
-   **/
-  private String createPhotoFileName() {
-    String fileName = "";
-    Date date = new Date(System.currentTimeMillis());  //系统当前时间
-    SimpleDateFormat dateFormat = new SimpleDateFormat("'IMG'_yyyyMMdd_HHmmss");
-    fileName = dateFormat.format(date) + ".jpg";
-    return fileName;
+   * 读取图片属性：旋转的角度
+   *
+   * @param path 图片绝对路径
+   * @return degree旋转的角度
+   */
+  public static int readPictureDegree(String path) {
+    int degree = 0;
+    try {
+      ExifInterface exifInterface = new ExifInterface(path);
+      int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+      switch (orientation) {
+        case ExifInterface.ORIENTATION_ROTATE_90:
+          degree = 90;
+          break;
+        case ExifInterface.ORIENTATION_ROTATE_180:
+          degree = 180;
+          break;
+        case ExifInterface.ORIENTATION_ROTATE_270:
+          degree = 270;
+          break;
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return degree;
+  }
+
+  /**
+   * 旋转图片
+   *
+   * @param angle
+   * @param bitmap
+   * @return Bitmap
+   */
+  public static Bitmap rotaingImageView(int angle, Bitmap bitmap) {
+    //旋转图片 动作
+    Matrix matrix = new Matrix();
+    ;
+    matrix.postRotate(angle);
+    Log.e("marykay", "angle2=" + angle);
+    // 创建新的图片
+    Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+      bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    return resizedBitmap;
   }
 
   /**
@@ -270,7 +350,7 @@ public class CamcardPlugin extends CordovaPlugin {
       try {
         fileOutputStream = new FileOutputStream(photoFile);
         if (photoBitmap != null) {
-          if (photoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)) {
+          if (photoBitmap.compress(Bitmap.CompressFormat.JPEG, 70, fileOutputStream)) {
             fileOutputStream.flush();
             fileOutputStream.close();
           }
@@ -292,110 +372,4 @@ public class CamcardPlugin extends CordovaPlugin {
       }
     }
   }
-
-  //计算图片的缩放值
-  public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-    final int height = options.outHeight;
-    final int width = options.outWidth;
-    int inSampleSize = 1;
-
-    if (height > reqHeight || width > reqWidth) {
-      final int heightRatio = Math.round((float) height / (float) reqHeight);
-      final int widthRatio = Math.round((float) width / (float) reqWidth);
-      inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-    }
-    return inSampleSize;
-  }
-
-  // 根据路径获得图片并压缩，返回bitmap用于显示
-  public static Bitmap getSmallBitmap(String filePath) {
-    final BitmapFactory.Options options = new BitmapFactory.Options();
-    options.inJustDecodeBounds = true;
-    BitmapFactory.decodeFile(filePath, options);
-
-    // Calculate inSampleSize
-    options.inSampleSize = calculateInSampleSize(options, 288, 480);
-//      options.inSampleSize = calculateInSampleSize(options, 400, 800);
-
-    // Decode bitmap with inSampleSize set
-    options.inJustDecodeBounds = false;
-
-    return BitmapFactory.decodeFile(filePath, options);
-  }
-
-  /**
-   * 获取缓存目录
-   */
-  public String getCacheDir() {
-    return getDir("cache");
-  }
-
-  /**
-   * 获取应用目录，当SD卡存在时，获取SD卡上的目录，当SD卡不存在时，获取应用的cache目录
-   */
-  public String getDir(String name) {
-    StringBuilder sb = new StringBuilder();
-    if (isSDCardAvailable()) {
-      sb.append(getExternalStoragePath());
-    } else {
-      sb.append(getCachePath());
-    }
-    sb.append(name);
-    sb.append(File.separator);
-    String path = sb.toString();
-    if (createDirs(path)) {
-      return path;
-    } else {
-      return null;
-    }
-  }
-
-  /**
-   * 判断SD卡是否挂载
-   */
-  public boolean isSDCardAvailable() {
-    if (Environment.MEDIA_MOUNTED.equals(Environment
-      .getExternalStorageState())) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * 获取SD下的应用目录
-   */
-  public String getExternalStoragePath() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(Environment.getExternalStorageDirectory().getAbsolutePath());
-    sb.append(File.separator);
-    String root_dir = "Android/data/" + cordova.getActivity().getPackageName();
-    sb.append(root_dir);
-    sb.append(File.separator);
-    return sb.toString();
-  }
-
-  /**
-   * 获取应用的cache目录
-   */
-  public String getCachePath() {
-    File f = cordova.getActivity().getCacheDir();
-    if (null == f) {
-      return null;
-    } else {
-      return f.getAbsolutePath() + "/";
-    }
-  }
-
-  /**
-   * 创建文件夹
-   */
-  public static boolean createDirs(String dirPath) {
-    File file = new File(dirPath);
-    if (!file.exists() || !file.isDirectory()) {
-      return file.mkdirs();
-    }
-    return true;
-  }
-
 }

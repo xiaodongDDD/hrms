@@ -12,6 +12,7 @@
   <platform name="android">
         <source-file src="src/android/CamcardPlugin.java" target-dir="src/camcard"/>
         <source-file src="src/android/PermissionHelper.java" target-dir="src/camcard"/>
+        <source-file src="src/android/Edit.java" target-dir="src/camcard"/>
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="scanCard">
@@ -43,12 +44,54 @@
     </config-file>
 
 
+ <config-file target="*-Info.plist"  parent="NSPhotoLibraryUsageDescription">
+      <string>photoLibraryDesciption</string>
+
+    </config-file>
 
 
     <!-- 源码    -->
     <header-file src="src/ios/scanCard.h"/>
     <source-file src="src/ios/scanCard.mm"/>
 
+    <header-file src="src/ios/ScanCardImageUtil.h"/>
+    <source-file src="src/ios/ScanCardImageUtil.m"/>
+
+
+   <!-- libGPUImage    -->
+    <source-file src="src/ios/libGPUImage.a" framework="true" />
+
+
+    <header-file src="src/ios/usr/local/include/GPUImageSharpenFilter.h"/>
+    
+    <header-file src="src/ios/usr/local/include/GPUImagePicture.h"/>
+    <header-file src="src/ios/usr/local/include/GPUImageContrastFilter.h"/>
+
+
+    <header-file src="src/ios/usr/local/include/GPUImageOutput.h"/>
+
+    <header-file src="src/ios/usr/local/include/GPUImageFramebuffer.h"/>
+
+
+     <header-file src="src/ios/usr/local/include/GPUImageFilter.h"/>
+
+     <header-file src="src/ios/usr/local/include/GPUImageContext.h"/>
+
+
+
+     <header-file src="src/ios/usr/local/include/GLProgram.h"/>
+     
+     
+     
+
+     <header-file src="src/ios/usr/local/include/GPUImageFramebufferCache.h"/>
+
+
+
+
+
+
+   
 
   <!-- Fundamental frameworks -->
    <framework src="libstdc++.tbd" />

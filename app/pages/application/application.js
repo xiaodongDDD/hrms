@@ -142,34 +142,34 @@ angular.module('applicationModule')
       $scope.crmApp = [{
         list: [{
           appName:"客户",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/client@3x.png",
           destUrl: "tab.customers"
         }, {
           appName: "联系人",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/contact-crm@3x.png",
           destUrl: "tab.contactCrm"
         }, {
           appName: "线索",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/clue@3x.png",
           destUrl: "tab.clues"
         }, {
           appName:"商机",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/opportunity@3x.png",
           destUrl: "tab.opportunities"
         }]
       },{
         list:[
         {
           appName: "销售计划",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/plan@3x.png",
           destUrl: "tab.plans"
         }, {
           appName:"保证金",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/ensurefond@3x.png",
           destUrl: "tab.bidbond"
         }, {
           appName:"竞争对手",
-          imageUrl: "build/img/application/application/personnelPolicy@3x.png",
+          imageUrl: "build/img/application/PK@3x.png",
           destUrl: "tab.competitor"
         }
       ]
