@@ -121,6 +121,7 @@ angular.module('HmsModule')
   .service('hmsPopup', ['$ionicLoading', '$cordovaToast', '$ionicPopup', 'baseConfig',
     function ($ionicLoading, $cordovaToast, $ionicPopup, baseConfig) {
       this.showLoading = function (content) {
+        content = !content ? '加载中' : content;
         $ionicLoading.show({
           template: '<ion-spinner icon="ios" class="spinner spinner-ios spinner-stable"></ion-spinner>' +
           '<div style="color: white;font-size: 12px;text-align: center;height:25px;line-height: 25px;">' + content + '</div>'
@@ -346,7 +347,7 @@ angular.module('HmsModule')
           );
         }
       };
-      
+
     this.confirmDIY = function (message, title,okText,cancelText, onConfirm,onBack) {
       if (!baseConfig.nativeScreenFlag) {
         var confirmPopup = $ionicPopup.confirm({
@@ -374,7 +375,7 @@ angular.module('HmsModule')
           ['取消' , '确定'] // buttonLabels
         );
       }
-    };      
+    };
 
       this.confirmShare = function (title, message,  shareConfirm) {
         if (!baseConfig.nativeScreenFlag) {
