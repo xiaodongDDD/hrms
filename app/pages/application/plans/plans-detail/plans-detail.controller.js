@@ -738,6 +738,9 @@
     };
     $scope.showComment = function () {
       console.log("======");
+      if(vm.planType!=1){
+        return;
+      }
       $scope.showCommentFlag = !$scope.showCommentFlag;
       var item = $('#commentAdd');
       if ($scope.showCommentFlag == true) {

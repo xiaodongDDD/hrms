@@ -87,7 +87,8 @@ angular.module('planModule')
       };*/
       $scope.data = {
         "customerId": "",
-        "opportunityId": ""
+        "opportunityId": "",
+        "isImportant":"N"
       };
   /*    $scope.$on('$ionicView.enter', function (e) {
         if (isNotNullObj($stateParams.planData)) {
@@ -154,7 +155,7 @@ angular.module('planModule')
             "opportunityId": $stateParams.planData.opportunityId,
             "timeBucket": "HCRM_MORNING",
             "saleContent": "",
-            "isImportant": $stateParams.planData.isImportant,
+            "isImportant": "N",
             "userId": window.localStorage.empno,
             "planType": "HCRM_NEW_PLAN",
             "planSource": null,
@@ -184,7 +185,7 @@ angular.module('planModule')
             "opportunityId": "",
             "timeBucket": "HCRM_MORNING",
             "saleContent": "",
-            "isImportant":"",
+            "isImportant":"N",
             "userId": window.localStorage.empno,
             "planType": "HCRM_NEW_PLAN",
             "planSource": null,
@@ -258,6 +259,7 @@ angular.module('planModule')
           plansService.setRefreshDataFlag(true);
           hmsPopup.showPopup(result.returnMsg);
           if (isNotNullObj($stateParams.planData)) {
+            console.log("hhh");
             $scope.backNeedFresh = true;
             $scope.data = {
               "planDate": $filter('date')(new Date(), 'yyyy-MM-dd'),
@@ -265,9 +267,9 @@ angular.module('planModule')
               "opportunityId": $stateParams.planData.opportunityId,
               "timeBucket": "HCRM_MORNING",
               "saleContent": "",
-              "isImportant":$stateParams.planData.isImportant,
+              "isImportant":"N",
               "userId": window.localStorage.empno,
-              "planType": "",
+              "planType": "HCRM_NEW_PLAN",
               "planSource": null,
               "dataStatus": "HCRM_VALID"
             };
@@ -285,10 +287,10 @@ angular.module('planModule')
               "customerId": "",
               "opportunityId": "",
               "timeBucket": "HCRM_MORNING",
-              "isImportant":"Y",
+              "isImportant":"N",
               "saleContent": "",
               "userId": window.localStorage.empno,
-              "planType": "",
+              "planType": "HCRM_NEW_PLAN",
               "planSource": null,
               "dataStatus": "HCRM_VALID"
             };
@@ -300,6 +302,7 @@ angular.module('planModule')
               week: showTime(new Date()),
               saleContent: ""
             };
+            $scope.importantNum=0;
           }
         } else {
           hmsPopup.showPopup(result.returnMsg);
