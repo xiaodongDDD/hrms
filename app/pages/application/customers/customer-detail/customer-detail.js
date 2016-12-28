@@ -124,7 +124,7 @@ angular.module('customerModule')
           $cordovaClipboard
             .copy(textAddress)
             .then(function () {
-              hmsPopup.showPopup(textAddress, '地址复制成功');
+              hmsPopup.showPopup('地址复制成功:'+textAddress);
             }, function () {
               hmsPopup.showPopup("复制失败，请重新尝试");
             });
@@ -319,7 +319,7 @@ angular.module('customerModule')
         //  $scope.selectSubHeader(0);
         //}
       });
-      
+
         $ionicModal.fromTemplateUrl('build/pages/application/bidbond/bidbond-add/bidbond-add.html', {
 			scope: $scope,
 			animation: 'slide-in-up'
@@ -1080,7 +1080,7 @@ angular.module('customerModule')
         $http.post(cusUrl).success(function (data) {
           console.log('请求数据成功！！');
           console.log(data);
-          if(data.result!=''&&data.status==0&&data.result.level!='UNKNOWN'){
+          if(data.result!=''&&data.status==0&&(data.result.level=='城市'||data.result.level=='区县'||data.result.level=='道路')){
             console.log("json==="+angular.toJson(data.result.location));
             $scope.cusLocation.lat = data.result.location.lat;
             $scope.cusLocation.lng = data.result.location.lng;
