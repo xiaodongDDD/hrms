@@ -45,10 +45,10 @@
           <div class="history-item-img with-table" ng-click="goDetail(values)">
             <div class="width-table-cell with-center"><img ng-src="build/img/application/icon_money_main@3x.png"></div>
           </div>
-          <div class="with-table history-type" ng-click="goDetail(values)" style="width: 13%;">
+          <div class="with-table history-type" ng-click="goDetail(values)" style="width: 14%;">
             <div class="width-table-cell">{{'BIDBOND.BIDBOND'|T}}</div>
           </div>
-          <div class="history-item-right" style="width: 68%;">
+          <div class="history-item-right" style="width: 67%;">
             <div class="with-table history-name" ng-click="goDetail(values)">{{values.fullname}}</div>
             <div class="history-item-img2 with-table" ng-click="deleteItem(values,$index)">
               <div class="width-table-cell with-right"><img src="build/img/application/icon_wrong@3x.png"></div>
@@ -66,22 +66,13 @@
         </div>
       </div>
       <div id="dataS" ng-repeat="item in searchData" ng-if="searchParam.keyWord!=''">
-        <!--<div class="type-list">-->
-          <!--<div class="type-logo"><img ng-src="build/img/competitor/{{item.type}}@3x.png"></div>-->
-          <!--<div class="type-type">{{item.typeName}}</div>-->
-          <!--<div class="clear"></div>-->
-        <!--</div>-->
+
         <div class="repeat-arrow" >
           <div class=" repeat-item" ng-repeat="x in item.data" ng-click="goDetail(x)">
             <div class="content-style" ng-bind-html="x.fullName " ></div>
           </div>
         </div>
       </div>
-      <!--<ion-infinite-scroll
-        on-infinite="loadMore()"
-        distance="1%"
-        ng-if="moreDataCanBeLoaded&&searchParam.keyWord!=''">
-      </ion-infinite-scroll>-->
 
     </div>
   </ion-content>

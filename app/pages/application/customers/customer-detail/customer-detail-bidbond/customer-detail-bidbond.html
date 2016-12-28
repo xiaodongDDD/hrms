@@ -1,9 +1,27 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-	</head>
-	<body>
-	</body>
-</html>
+<div ng-controller="CustomerDetailBidbondCtrl" class="crm customer-detail-bidbond">
+	<crm-loading ng-if="showLoading"></crm-loading>
+	<ion-refresher pulling-text="正在刷新数据" pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+	</ion-refresher>
+
+	<div class="opportunity-item" style="background-position: top bottom;" ng-repeat="item in bidbond" ng-click="goEditBidbond(item)">
+		<div class="item-header">
+			{{'BIDBOND.APPLY_DATE'|T}}：{{item.applicationDate}}
+			<span>
+              	{{item.workflowStatusName}}
+           	</span>
+		</div>
+		<div class="opportunity-info">
+
+			<div class="opportunity-name">{{item.fullName}}</div>
+
+			<div class="more-bottom-margin">
+				<span class="cost-title">{{'BIDBOND.APPLY_AMOUNT'|T}}</span>
+				<span class="money">￥{{item.paymentAmount}}</span>
+			</div>
+		</div>
+	</div>
+
+	<ion-infinite-scroll   immediate-check="false" ng-if="moreDataCanBeLoaded" on-infinite="loadMore()" distance="1%">
+	</ion-infinite-scroll>
+
+</div>
