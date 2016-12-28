@@ -94,7 +94,7 @@
                 </div>
                 <div class="plan-content">计划内容：{{plan.saleContent}}</div>
               </div>
-              <div   ng-click="showComment(plan)">
+              <div  ng-click="showComment(plan)">
                 <div ng-if="planAuthority.OTHER.selected" class="comment-title">点评<img  src="build/img/application/plans/common.png"/></div>
                 <div  class="comment-text" id="annotate" ng-if="plan.annotate!=''">
                   <i>{{plan.leaderName}}:</i>{{plan.annotate}}

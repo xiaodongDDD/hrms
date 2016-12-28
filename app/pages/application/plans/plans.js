@@ -236,7 +236,7 @@
 
     //切换查询计划的权限
     function changePlanAuthority(type) {
-
+      vm.showCommentFlag=false;
       if (vm.planSearchIsRunning) {
         return;
       }
@@ -328,6 +328,7 @@
 
     //进入我的或者下属的周报界面，根据权限判断
     function goWeeklyReport() {
+      vm.showCommentFlag=false;
       var date = $scope.lastSelectDay;
       var date2 = date.year + '/' + date.month + '/' + date.date;
       goWeeklyReportDetail(date2);
@@ -407,6 +408,9 @@
 
     vm.planDetail = {};
     function showComment(plan) {
+      if(vm.planAuthority.OTHER.selected==false){
+        return;
+      }
       console.log(plan);
       vm.planDetail = plan;
       vm.showCommentFlag = !vm.showCommentFlag;
@@ -853,6 +857,7 @@
     }
 
     function goPlansAdd() {
+      vm.showCommentFlag=false;
       var planData = formatDate($scope.lastSelectDay.year, $scope.lastSelectDay.month, $scope.lastSelectDay.date);
       console.log('initSelect $scope.lastSelectDay ' + angular.toJson($scope.lastSelectDay));
       $scope.data = {
