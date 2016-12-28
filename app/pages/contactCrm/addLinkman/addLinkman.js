@@ -75,6 +75,7 @@ angular.module('contactModule')
       console.log($ionicHistory.viewHistory().backView);
       /*    $scope.showCrmLoading=false;//loading展示*/
       $scope.$on('$ionicView.enter', function (e) {
+        console.log($stateParams.param);
         if (isNotNullObj($stateParams.param)) {
           $scope.data = {
             "contactId": $stateParams.param.contactId,
@@ -82,6 +83,7 @@ angular.module('contactModule')
             "contactType": $stateParams.param.contactType,
             "name": $stateParams.param.name,
             "sex": $stateParams.param.sex,
+            "isPrimary":$stateParams.param.isPrimary,
             "department": $stateParams.param.department,
             "position": $stateParams.param.position,
             "phone": $stateParams.param.phone,
@@ -121,6 +123,11 @@ angular.module('contactModule')
             statusValue: $stateParams.param.statusValue
           };
           $scope.pushNotification.checked = false;
+          if($scope.data.isPrimary=="Y"){
+            $scope.importantContact.checked = true;
+          }else{
+            $scope.importantContact.checked = false;
+          }
           console.log($scope.data);
         } else {
           $scope.data = {
@@ -129,6 +136,7 @@ angular.module('contactModule')
             "contactType": "",
             "name": "",
             "sex": "",
+            "isPrimary":"N",
             "department": "",
             "position": "",
             "phone": "",
@@ -182,10 +190,16 @@ angular.module('contactModule')
           $state.go('tab.application');
         }
       };
-
+      /*  $scope.pushNotification=true;*/
       $rootScope.img = "build/img/tabs/edit_add@3x_5.png";
       $scope.pushNotificationChange = function () {
+        $scope.pushNotification.checked=!$scope.pushNotification.checked;
+        console.log($scope.pushNotification);
         console.log('Push Notification Change', $scope.pushNotification.checked);
+      };
+      $scope.importantContactChange= function () {
+        $scope.importantContact.checked=!$scope.importantContact.checked;
+        console.log('Push contact Change', $scope.importantContact.checked);
       };
       $scope.hideArea = function (num) {
         $scope.hideAreaFlag[num] = !$scope.hideAreaFlag[num];
@@ -229,6 +243,7 @@ angular.module('contactModule')
       $scope.noDataFlag = false;
       $scope.screenHeig = window.innerHeight;
       $scope.pushNotification = {checked: true};
+      $scope.importantContact={checked:false};
       $scope.bilingual = CloneData.getQuickCreate();
       console.log($scope.bilingual);
       var upData = [
@@ -288,11 +303,11 @@ angular.module('contactModule')
       Array.prototype.clone = function () {
         return [].concat(this);
       };
-      $scope.pushNotificationChange = function () {
-        console.log('Push Notification Change', $scope.pushNotification.checked);
-      };
+      /* $scope.pushNotificationChange = function () {
+       console.log('Push Notification Change', $scope.pushNotification.checked);
+       };
 
-      $scope.pushNotification = {checked: true};
+       $scope.pushNotification = {checked: true};*/
       $scope.saveLinkman = function () {
         hmsPopup.showLoading("保存中");
         console.log($scope.data);
@@ -300,7 +315,16 @@ angular.module('contactModule')
         console.log(angular.toJson($scope.data));
         console.log("呵呵呵呵");
         console.log($scope.data.contactType);
-        if ($scope.data.contactType == "") {
+        if ($scope.importantContact.checked == true){
+          $scope.data.isPrimary="Y";
+        }else{
+          $scope.data.isPrimary="N";
+        }
+        if($scope.data.customerId==""){
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup("请选择关联客户");
+        }
+        else if ($scope.data.contactType == "") {
           /*   $scope.showLoading = false;*/
           hmsPopup.hideLoading();
           hmsPopup.showPopup("联系人类型不能为空")
@@ -583,30 +607,30 @@ angular.module('contactModule')
         $scope.searchSelectValue();
         $ionicScrollDelegate.scrollTop();
       };
-/*      $scope.clearSelectFilter = function () {
-        $scope.nowPage = 1;
-        $scope.searchModel.searchValueKey = '';
-        $scope.searchSelectValue();
-        $ionicScrollDelegate.scrollTop();
-        /!* $scope.items = $scope.data.clone();*!/
-      };*/
+      /*      $scope.clearSelectFilter = function () {
+       $scope.nowPage = 1;
+       $scope.searchModel.searchValueKey = '';
+       $scope.searchSelectValue();
+       $ionicScrollDelegate.scrollTop();
+       /!* $scope.items = $scope.data.clone();*!/
+       };*/
       $scope.searchSelectValue = function(){
         $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
         if($scope.nowSelectTarget['searchInterface']){
           //需要接口搜索的
           $scope.showCrmLoading = true;
           $scope.moreDataCanBeLoaded = false;
-   /*       if($scope.searchModel.searchValueKey == ''){
-            $scope.items = [];
-            $scope.nowPage = 1;
-            $scope.nowSelectTarget = cloneObj($scope.sourceTargetData);
-            $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
-          } else{*/
-            $scope.items = [];
-            $scope.nowPage = 1;
-            $scope.pageSize = 15;
-            $scope.nowSelectTarget.searchInterface.call(null,$scope.nowSelectTarget.searchParams,$scope.searchModel.searchValueKey,$scope.nowPage,$scope.pageSize);
-         /* }*/
+          /*       if($scope.searchModel.searchValueKey == ''){
+           $scope.items = [];
+           $scope.nowPage = 1;
+           $scope.nowSelectTarget = cloneObj($scope.sourceTargetData);
+           $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
+           } else{*/
+          $scope.items = [];
+          $scope.nowPage = 1;
+          $scope.pageSize = 15;
+          $scope.nowSelectTarget.searchInterface.call(null,$scope.nowSelectTarget.searchParams,$scope.searchModel.searchValueKey,$scope.nowPage,$scope.pageSize);
+          /* }*/
         } else {
           //本地字段搜索的
           $scope.nowPage = 1;

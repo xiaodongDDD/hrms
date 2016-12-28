@@ -16,6 +16,9 @@
             templateUrl: 'build/pages/application/plans/plans.html',
             controller: 'PlansCtrl'
           }
+        },
+        params:{
+          data:""
         }
       })
   }
@@ -28,9 +31,11 @@
                      $state,
                      publicMethod,
                      $ionicHistory,
+                     $stateParams,
                      $ionicScrollDelegate,
                      $timeout,
                      $rootScope,
+                     hmsPopup,
                      plansService,
                      baseConfig) {
     var vm = $scope;
@@ -40,13 +45,14 @@
     vm.showNew = false;
     vm.lastHeight = 'calc(100vh - 88px)';
     vm.plans = [];
+    vm.newPlan={};
     vm.planGroups = [];
     vm.headHeight = 36;
     vm.noTitleItemHeight = 113;
     vm.itemHeight = 133;
     vm.nowShowDate = '';
     vm.scrollFlag = [];
-
+    $scope.Authority="MY";
     var currentCalendarType = 'MONTH';
     var currentCalendarCache;
     var currentCalendarPos;
@@ -78,7 +84,7 @@
 
     vm.calendarLoadingFlag = true;
     vm.planListLoadingFlag = true;
-
+    vm.showCommentFlag=false;
     //////////////数据相关/////////////////
     vm.page = 1;
     vm.pageSize = 10;
@@ -131,8 +137,8 @@
 
     vm.goWeeklyReport = goWeeklyReport;
     vm.goWeeklyReportList = goWeeklyReportList;
-
     vm.goDetail = goDetail;
+    vm.showComment=showComment;//评论
     vm.onRelease = onRelease;
     vm.onDragUp = onDragUp;
     vm.goBack = goBack;
@@ -188,9 +194,9 @@
     }
 
     /*if (!ionic.Platform.isWebView()) {
-      viewHeaderHeight = 138;
-      calendarHideHeight = 90;
-    }*/
+     viewHeaderHeight = 138;
+     calendarHideHeight = 90;
+     }*/
 
     //初始化数据
     init();
@@ -200,6 +206,8 @@
         console.log('PlansCtrl.$ionicView.afterEnter');
       }
       if (plansService.getRefreshDataFlag()) {
+        console.log("新增之后？？");
+        init();
         plansService.setRefreshDataFlag(false);
         if (!$scope.showAsMonth) {
           getWeekPlan(new Date());
@@ -323,12 +331,122 @@
       var date2 = date.replace(/-/g, "/");
       goWeeklyReportDetail(date2)
     }
+    $scope.annotateSubmit=function(planDetail){
+      /*  console.log("ssssss");*/
+      var annotate=planDetail.annotate = $("#comment-text").val();
+      console.log(planDetail);
+      var params={
+        planId:planDetail.planId,
+        annotate: annotate
+      };
+      var annotateSuccess=function(result){
+        vm.showCommentFlag=false;
+        if(result.returnCode=="S"){
+          initSelect();
+          getPlanByLastSelectDay();
+        }else{
+          hmsPopup.showPopup=result.returnMsg;
+          console.log(result);
+        }
+      };
+      var annotatError=function(result){
+        vm.showCommentFlag=false;
+        console.log(result);
+      };
+      plansService.saleAnnotate(annotateSuccess,annotatError,params);
+    };
+    /*    $watch ('planDetail.annotate',function(){
 
+     });*/
+    window.document.onkeydown = disableRefresh;
+    function disableRefresh(evt){
+      evt = (evt) ? evt : window.event;
+      if (evt.keyCode) {
+        if(evt.keyCode ==13){
+          //do something
+          console.log("planDetail");
+          console.log(vm.planDetail);
+          var params={
+            planId:vm.planDetail.planId,
+            annotate: vm.planDetail.annotate
+          };
+          var annotateSuccess=function(result){
+            vm.showCommentFlag=false;
+            if(result.returnCode=="S"){
+
+            }else{
+              hmsPopup.showPopup=result.returnMsg;
+              console.log(result);
+            }
+          };
+          var annotatError=function(result){
+            vm.showCommentFlag=false;
+            console.log(result);
+          };
+          plansService.saleAnnotate(annotateSuccess,annotatError,params);
+        }
+      }
+    }
     //进入计划明细界面
     function goDetail(detail) {
+      console.log(detail);
+      console.log(vm.planAuthority.OTHER.selected);
+      detail.showCommentFlag=vm.planAuthority.OTHER.selected;
+      /* detail.leaderName=;*/
       $state.go('tab.plans-detail', {"authority": getAuthorityType(), "planDetail": detail});
     }
+    vm.planDetail={};
+    function showComment(plan){
+      console.log(plan);
+      vm.planDetail=plan;
+      vm.showCommentFlag=!vm.showCommentFlag;
+      var item = $('#comment-text');
+      if( vm.showCommentFlag==true){
 
+
+        /*   $scope.testH=$('#annotate').height();
+         console.log( $scope.testH);*/
+        if (ionic.Platform.isWebView()) {
+          cordova.plugins.Keyboard.show();
+          $timeout(function () {
+            var itemHeight= document.getElementById("comment-text");
+            itemHeight.style.height = '40px';
+            itemHeight.scrollTop = 0; //防抖动
+            itemHeight.style.height=itemHeight.scrollHeight+"px";
+            console.log(itemHeight.style.height);
+            $timeout(function () {
+              console.log("聚焦");
+              item.focus();
+            },300);
+          });
+        }else{
+          $timeout(function () {
+            /*  cordova.plugins.Keyboard.show();*/
+            var itemHeight= document.getElementById("comment-text");
+            itemHeight.style.height = '40px';
+            itemHeight.scrollTop = 0; //防抖动
+            itemHeight.style.height=itemHeight.scrollHeight+"px";
+            console.log(itemHeight.style.height);
+            $timeout(function () {
+              console.log("聚焦");
+              item.focus();
+            },300);
+            $scope.$apply();
+          });
+        }
+      }else{
+        $timeout(function () {
+          console.log("失焦");
+          cordova.plugins.Keyboard.close();
+          item.blur();
+          $scope.$apply();
+        },300);
+      }
+      console.log("=====");
+      console.log(vm.showCommentFlag);
+      console.log(vm.planDetail);
+      /*    plan.annotate=vm.planDetail.annotate;*/
+    }
     function onRelease($event) {
       if (!$scope.showAsMonth) {
         return;
@@ -618,30 +736,23 @@
     function onReleaseYear($event) {
       if ($event.gesture.deltaX > 0) {
         $scope.year = $scope.year + 1;
-        getMonthDays($scope.year, $scope.month);
+        getMonthDays($scope.year, $scope.month, reCalculateViewHeight, true);
       }
       else if ($event.gesture.deltaX < 0) {
         $scope.year = $scope.year - 1;
-        getMonthDays($scope.year, $scope.month);
+        getMonthDays($scope.year, $scope.month, reCalculateViewHeight, true);
       }
     }
 
     function initScrollFlag() {
-      var top = 0;
-      $scope.scrollFlag = [];
-      for (var i = 0; i < $scope.planGroups.length; i++) {
-        var groupHeight = 0;
-        for(var j = 0; j < $scope.planGroups[i].plans.length; j++){
-          if(($scope.planGroups[i].plans[j].customerFullName && $scope.planGroups[i].plans[j].customerFullName) != '' || ($scope.planGroups[i].plans[j].opportunityFullName && $scope.planGroups[i].plans[j].opportunityFullName) )
-            groupHeight += $scope.itemHeight;
-          else
-            groupHeight += $scope.noTitleItemHeight;
-        }
-        var height = $scope.headHeight + groupHeight;
-        top += height;
-        $scope.scrollFlag.push(top);
-      }
-      console.log($scope.scrollFlag);
+      $timeout(function(){
+        $scope.scrollFlag = [];
+        var headGroup = angular.element('.group-head-flag');
+        if(headGroup.length > 1)
+          for(var i = 1; i < headGroup.length; i++)
+            $scope.scrollFlag.push(headGroup[i].offsetTop);
+        console.log($scope.scrollFlag);
+      }, 500)
     }
 
     function onSwipe() {
@@ -688,15 +799,20 @@
 
     function openCalendarPage() { //跳到原生日历界面--获取截止日期
       var success = function (response) {
+        /*  alert(response);*/
         try {
-          var result = response.result;
+          var data =  JSON.parse(response);
+          var result = data.result;
           var startDate = result[0];
           var endDate = result[1];
-          getWeekPlanByPeriod(startDate,endDate,true)
+          getWeekPlanByPeriod(startDate,endDate,true);
+          console.log(result);
         } catch (e) {
+          console.log(e);
         }
       };
       var error = function (response) {
+        console.log(response);
       };
 
       if (ionic.Platform.isWebView()) {
@@ -803,6 +919,7 @@
         planDateTo: dateText,
         type: getAuthorityType()
       };
+      $scope.Authority=params.type;
       console.log(params);
       $scope.plans = [];
       vm.calendarLoadingFlag = true;
@@ -851,6 +968,7 @@
       $scope.groupPageSize = 10;
       $scope.groupStartDate = formatDateByDate(weekStart);
       $scope.groupEndDate = formatDateByDate(weekEnd);
+      $scope.nowShowDate = $scope.groupStartDate;
       var params = {
         planDateFrom: $scope.groupStartDate,
         planDateTo: $scope.groupEndDate,
@@ -882,6 +1000,7 @@
       $scope.groupPageSize = 10;
       $scope.groupStartDate = dateFrom;
       $scope.groupEndDate = dateTo;
+      $scope.nowShowDate = $scope.groupStartDate;
       var params = {
         planDateFrom: $scope.groupStartDate,
         planDateTo: $scope.groupEndDate,
@@ -1008,6 +1127,107 @@
         getWeekPlan(new Date());
       }
     }
+    //失焦事件
+    /*
+     $("document").on("blur","#textArea",function(){
+     console.log("失焦")
+     });
+     */
+    /*    $(function(){
+     $('#comment-text').blur(function(){
+     alert('aaa');
+     });
+     });*/
+    /*   $scope.holdAnnotate=false;*/
+    $scope.showSmallCrmLoading=false;
+    $scope.holdAnnotate = false;
+    $scope.touchAnnotate=function(){
+      $scope.holdAnnotate = true;
+      cordova.plugins.pluginIflytek.startRecorerRecognize(
+        function (msg) {
+        }, function (msg) {
+
+        });
+    };
+    $scope.hideCommont=function(){
+      vm.showCommentFlag=false;
+      console.log("content----"+vm.showCommentFlag);
+      var item = $('#comment-text');
+      if (ionic.Platform.isWebView()) {
+        cordova.plugins.Keyboard.close();
+        $timeout(function () {
+          console.log("失焦");
+          item.blur();
+          $scope.$apply();
+        },300);
+      }
+    };
+    if($stateParams.data == 'WEEK')
+      changeShowModel(false);
+
+    function insertText(obj, str) {
+      if (document.selection) {
+        var sel = document.selection.createRange();
+        sel.text = str;
+      } else if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') {
+        var startPos = obj.selectionStart,
+          endPos = obj.selectionEnd,
+          cursorPos = startPos,
+          tmpStr = obj.value;
+        obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos, tmpStr.length);
+        cursorPos += str.length;
+        obj.selectionStart = obj.selectionEnd = cursorPos;
+      } else {
+        obj.value += str;
+      }
+    }
+    $scope.annotateRelease=function(){
+      $scope.holdAnnotate = false;
+      $scope.showSmallCrmLoading = true;
+      console.log("结束录音");
+      $timeout(function () {
+        console.log("timeout");
+        $scope.showSmallCrmLoading = false;
+        /*  hmsPopup.showPopup("识别失败，请重新尝试！");*/
+      }, 5000);
+      cordova.plugins.pluginIflytek.stopRecorderRecognize(
+        function (msg) {
+          hmsPopup.hideLoading();
+          console.log("测试错误");
+          $scope.showSmallCrmLoading = false;
+          $('#voice-img').removeClass('big-img');
+          hmsPopup.showPopup(msg);
+          /*       $timeout(function () {
+           insertText(document.getElementById('text'), msg);
+           $scope.$apply();
+           $scope.showSmallCrmLoading = false;
+           }, 0);*/
+          /*  $scope.$apply();*/
+        }, function (msg) {
+          $('#voice-img').removeClass('big-img');
+          console.log("测试正确");
+          /* $scope.$apply();*/
+          $timeout(function () {
+            insertText(document.getElementById('comment-text'), msg);
+            $scope.$apply();
+            $scope.showSmallCrmLoading = false;
+          }, 0);
+        });
+    };
+    /*   var text  = $("#comment-text");
+     $scope.areaHight=function(){
+     console.log(text);
+     text.scrollTop = 0;
+     var srcollH=$("#annotate").height();
+     console.log(srcollH);
+     $("#comment-text").on("input",function(){
+     /!*    $(this).css({height:'500px'});*!/
+     $(this).css({height:srcollH+'px'});
+     console.log( $(this).height());
+     $(this).css({height:(this.scrollHeight)+"px"});
+     $('#test').css({height:(this.scrollHeight)+"px"});
+     });
+     };*/
 
   }
 }());

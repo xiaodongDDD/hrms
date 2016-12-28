@@ -7,23 +7,33 @@
   <ion-content  delegate-handle="slideimgs">
     <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
     <div class="config-info">
-     <div class="row" ng-click="" style="   ">
-        <ion-toggle ng-model="pushNotification.checked"
-                    ng-change="pushNotificationChange()" style="margin-left:-4px;
-    color: #000;font-size: 1.1em">
-          {{bilingual.SaveContact}}
-        </ion-toggle>
-
+      <div class="row setup-panel-row1">
+        <label class="setup-label">{{bilingual.SaveContact}}</label>
       </div>
-      <div style="    border-bottom: 1px solid rgba(221, 221, 221, 0.4);
-    padding: 0;
-    width: 90%;
-    margin-left: 5%;"></div>
-      <div class="row" style=" margin-top: 5px;" ng-click="showSelectDiv('contact')">
-        <div class="col col-40 col-center">
-          <div style="margin-left:6px;font-size: 1.2em">{{bilingual.pleaseSave}}</div>
+      <div class="ts-toggle-position">
+        <label class="toggle toggle-positive">
+          <input type="checkbox" ng-checked="pushNotification.checked" ng-click="pushNotificationChange()">
+          <div class="track setup-track">
+            <div class="handle setup-handle"></div>
+          </div>
+        </label>
+      </div>
+      <!-- <div class="row" ng-click="" style="   ">
+          <ion-toggle ng-model="pushNotification.checked"
+                      ng-change="pushNotificationChange()" style="margin-left:0px;font-size: 14px;color: #32acec;">
+            {{bilingual.SaveContact}}
+          </ion-toggle>
+
         </div>
-        <div class="col col-50 ">
+        <div style="border-bottom: 1px solid rgba(221, 221, 221, 0.5);
+      padding: 0;
+      width: 95%;
+      margin-left: 5%;;"></div>-->
+      <div class="row" style="color: #32a4ec" ng-click="showSelectDiv('contact')">
+        <div class="col col-45 col-center">
+          <div class="required" style="margin-left:10px;font-size:14px">{{bilingual.pleaseSave}}</div>
+        </div>
+        <div class="col col-45 ">
           <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.fullName" style="padding-bottom: 5px;width: 100%;text-align: right" readonly/>
         </div>
         <div class="col col-10 col-center">
@@ -37,90 +47,105 @@
         {{bilingual.basicInfo}}<div>{{hideAreaFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
       </div>
       <div class="info-content" ng-if="!hideAreaFlag[0]">
-   <hms-select-item
+        <div class="row setup-panel-row2">
+          <label class="setup-label2">主要联系人</label>
+        </div>
+        <div class="im-toggle-position">
+          <label class="toggle toggle-positive">
+            <input type="checkbox" ng-checked="importantContact.checked" ng-click="importantContactChange()">
+            <div class="track setup-track">
+              <div class="handle setup-handle"></div>
+            </div>
+          </label>
+        </div>
+        <div style="    border-bottom: 1px solid rgba(221, 221, 221, 0.5);
+    padding: 0;
+    width: 95%;
+    margin-left: 5%;"></div>
+        <hms-select-item
           label-name="bilingual.contactType"
           input-box="showData.contactTypeValue"
           important="true"
           hms-select="showSelectDiv('contactType')"
           last-line="false">
         </hms-select-item>
-     <!--   <div class="common-item-select" ng-click="showSelectDiv('contactType')">
-          <div class="required">{{bilingual.contactType}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.contactTypeValue" readonly/>
-          <i><img src="build/img/contact/right_arrow@3x.png"></i>
-          <div class="common-light-line"></div>
-        </div>-->
-      <hms-input-item
+        <!--   <div class="common-item-select" ng-click="showSelectDiv('contactType')">
+             <div class="required">{{bilingual.contactType}}</div>
+             <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.contactTypeValue" readonly/>
+             <i><img src="build/img/contact/right_arrow@3x.png"></i>
+             <div class="common-light-line"></div>
+           </div>-->
+        <hms-input-item
           label-name="bilingual.name"
           input-box="data.name"
           important="true"
           last-line="false">
         </hms-input-item>
-     <!--   <div class="common-item-input">
-          <div class="required">{{bilingual.name}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.name"/>
-          <div class="common-light-line"></div>
-        </div>-->
-       <hms-select-item
+        <!--   <div class="common-item-input">
+             <div class="required">{{bilingual.name}}</div>
+             <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.name"/>
+             <div class="common-light-line"></div>
+           </div>-->
+        <hms-select-item
           label-name="bilingual.sex"
           input-box="showData.sexValue"
           important="true"
           hms-select="showSelectDiv('sex')"
           last-line="false">
         </hms-select-item>
-      <!--  <div class="common-item-select" ng-click="showSelectDiv('sex')">
-          <div class="required">{{bilingual.sex}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}"  ng-model="showData.sexValue" readonly/>
-          <i><img src="build/img/contact/right_arrow@3x.png"></i>
-          <div class="common-light-line"></div>
-        </div>-->
-       <hms-input-item
+        <!--  <div class="common-item-select" ng-click="showSelectDiv('sex')">
+            <div class="required">{{bilingual.sex}}</div>
+            <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}"  ng-model="showData.sexValue" readonly/>
+            <i><img src="build/img/contact/right_arrow@3x.png"></i>
+            <div class="common-light-line"></div>
+          </div>-->
+        <hms-input-item
           label-name="bilingual.department"
           input-box="data.department"
           important="true"
           last-line="false">
         </hms-input-item>
-     <!--   <div class="common-item-input">
-          <div class="required">{{bilingual.department}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.department"/>
-          <div class="common-light-line"></div>
-        </div>-->
-   <hms-input-item
+        <!--   <div class="common-item-input">
+             <div class="required">{{bilingual.department}}</div>
+             <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.department"/>
+             <div class="common-light-line"></div>
+           </div>-->
+        <hms-input-item
           label-name="bilingual.duty"
           input-box="data.position"
           important="true"
           last-line="false">
         </hms-input-item>
-      <!--  <div class="common-item-input">
-          <div class="required">{{bilingual.duty}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.position"/>
-          <div class="common-light-line"></div>
-        </div>-->
-      <hms-select-item
+        <!--  <div class="common-item-input">
+            <div class="required">{{bilingual.duty}}</div>
+            <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.position"/>
+            <div class="common-light-line"></div>
+          </div>-->
+        <hms-select-item
           label-name="bilingual.status"
           input-box="showData.statusValue"
           important="true"
           hms-select="showSelectDiv('status')"
           last-line="false">
         </hms-select-item>
-      <!--  <div class="common-item-select" ng-click="showSelectDiv('status')">
-          <div  class="required">{{'ADD.STATUS'|T}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.statusValue" readonly/>
-          <i><img src="build/img/contact/right_arrow@3x.png"></i>
-          <div class="common-light-line"></div>
-        </div>-->
-       <hms-select-item
+        <!--  <div class="common-item-select" ng-click="showSelectDiv('status')">
+            <div  class="required">{{'ADD.STATUS'|T}}</div>
+            <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.statusValue" readonly/>
+            <i><img src="build/img/contact/right_arrow@3x.png"></i>
+            <div class="common-light-line"></div>
+          </div>-->
+        <hms-select-item
           label-name="bilingual.role"
           input-box="showData.roleValue"
           important="false"
           hms-select="showSelectDiv('contactRole')"
           last-line="false">
         </hms-select-item>
-     <!--   <div class="common-item-select" ng-click="showSelectDiv('contactRole')">
-          <div>{{bilingual.role}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.roleValue" readonly/>
-          <i><img src="build/img/contact/right_arrow@3x.png"></i>
-        </div>-->
+        <!--   <div class="common-item-select" ng-click="showSelectDiv('contactRole')">
+             <div>{{bilingual.role}}</div>
+             <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.roleValue" readonly/>
+             <i><img src="build/img/contact/right_arrow@3x.png"></i>
+           </div>-->
       </div>
     </div>
     <div class="common-input-area">
@@ -129,53 +154,51 @@
         {{bilingual.contactInfo}}<div >{{hideAreaFlag[1] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
       </div>
       <div class="info-content" ng-if="!hideAreaFlag[1]">
-     <hms-input-item
-          label-name="bilingual.mobile"
-          input-box="data.phone"
-          important="true"
-          last-line="false">
-        </hms-input-item>
-    <!--    <div class="common-item-input">
+        <div class="common-item-input-tel">
           <div class="required">{{bilingual.mobile}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.phone"/>
-          <div class="common-light-line"></div>
-        </div>-->
-       <hms-input-item
+          <input type="tel" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.phone"/>
+          <div class="common-light-line-long-tel"></div>
+        </div>
+        <!--    <div class="common-item-input">
+              <div class="required">{{bilingual.mobile}}</div>
+              <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.phone"/>
+              <div class="common-light-line"></div>
+            </div>-->
+        <hms-input-item
           label-name="bilingual.mail"
           input-box="data.email"
           important="true"
           last-line="false">
         </hms-input-item>
-      <!--  <div class="common-item-input">
-          <div class="required">{{bilingual.mail}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.email"/>
-          <div class="common-light-line"></div>
-        </div>-->
-     <hms-select-item
+        <!--  <div class="common-item-input">
+            <div class="required">{{bilingual.mail}}</div>
+            <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.email"/>
+            <div class="common-light-line"></div>
+          </div>-->
+        <hms-select-item
           label-name="bilingual.address"
           input-box="showData.address"
           important="true"
           hms-select="showCountrySelect()"
           last-line="false">
         </hms-select-item>
-       <!-- <div class="common-item-select" ng-click="showCountrySelect()">
-          <div class="required">{{bilingual.address}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.address" readonly/>
-          <i><img src="build/img/contact/right_arrow@3x.png"></i>
-          <div class="common-light-line"></div>
-        </div>-->
-      <hms-input-item
+        <!-- <div class="common-item-select" ng-click="showCountrySelect()">
+           <div class="required">{{bilingual.address}}</div>
+           <input type="text" placeholder="{{ 'PLEASE_SELECT' | T }}" ng-model="showData.address" readonly/>
+           <i><img src="build/img/contact/right_arrow@3x.png"></i>
+           <div class="common-light-line"></div>
+         </div>-->
+        <hms-input-item
           label-name="bilingual.detaiAddress"
           input-box="data.addressDetails"
           important="true"
           last-line="false">
         </hms-input-item>
-        <hms-input-item
-          label-name="bilingual.offPhone"
-          input-box="data.tel"
-          important="false"
-          last-line="false">
-        </hms-input-item>
+        <div class="common-item-input-tel">
+          <div>{{bilingual.offPhone}}</div>
+          <input type="tel" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.tel"/>
+          <div class="common-light-line-long-tel"></div>
+        </div>
         <hms-input-item
           label-name="bilingual.weChat"
           input-box="data.wechat"
@@ -194,30 +217,30 @@
           important="false"
           last-line="false">
         </hms-input-item>
-    <!--    <div class="common-item-input">
-          <div class="required">{{'ADD.DETAIL_ADDRESS'|T}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.addressDetails"/>
-          <div class="common-light-line"></div>
-        </div>-->
+        <!--    <div class="common-item-input">
+              <div class="required">{{'ADD.DETAIL_ADDRESS'|T}}</div>
+              <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.addressDetails"/>
+              <div class="common-light-line"></div>
+            </div>-->
         <!--<div class="common-item-input">
           <div>{{bilingual.offPhone}}</div>
           <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.tel"/>
           <div class="common-light-line"></div>
         </div>-->
-     <!--   <div class="common-item-input">
-          <div>{{bilingual.weChat}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.wechat"/>
-          <div class="common-light-line"></div>
-        </div>-->
- <!--       <div class="common-item-input">
-          <div>{{bilingual.zipCode}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.addressZipCode"/>
-          <div class="common-light-line"></div>
-        </div>
-        <div class="common-item-input">
-          <div>{{bilingual.remark}}</div>
-          <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.remark"/>
-        </div>-->
+        <!--   <div class="common-item-input">
+             <div>{{bilingual.weChat}}</div>
+             <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.wechat"/>
+             <div class="common-light-line"></div>
+           </div>-->
+        <!--       <div class="common-item-input">
+                 <div>{{bilingual.zipCode}}</div>
+                 <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.addressZipCode"/>
+                 <div class="common-light-line"></div>
+               </div>
+               <div class="common-item-input">
+                 <div>{{bilingual.remark}}</div>
+                 <input type="text" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="data.remark"/>
+               </div>-->
       </div>
     </div>
   </ion-content>

@@ -7,25 +7,25 @@
     <h2 class="title">销售计划-{{vm.planDetail.status}}</h2>
   </ion-header-bar>
 
-  <ion-content>
+  <ion-content class="sifting-scroll">
     <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
     <!--查询修改销售计划-->
     <hms-select-image-item
       image-icon="vm.iconList.customer"
       prompt="vm.titleList.relateCustomer"
-      important="true"
+      important="false"
       select-value="vm.planDetail.relateCustomer"
       last-line="true"
-      hms-select="vm.showWeekChoose('contact')">
+      hms-select="vm.showWeekChoose('contact')"  on-touch="hideCommont()">
     </hms-select-image-item>
 
     <hms-select-image-item
       image-icon="vm.iconList.opportunity"
       prompt="vm.titleList.relateOpportunity"
-      important="true"
+      important="false"
       select-value="vm.planDetail.relateOpportunity"
       last-line="true"
-      hms-select="vm.showWeekChoose('business')">
+      hms-select="vm.showWeekChoose('business')"  on-touch="hideCommont()">
     </hms-select-image-item>
 
     <hms-select-image-item
@@ -34,9 +34,9 @@
       important="true"
       select-value="vm.planDetail.scheduleDateStr"
       last-line="true"
-      hms-select="vm.choosePlanTime()">
+      hms-select="vm.choosePlanTime()"  on-touch="hideCommont()">
     </hms-select-image-item>
-    <div class="hms-select-image-item row row-center info-item">
+    <div on-touch="hideCommont()" class="hms-select-image-item row row-center info-item">
       <div class="col col-8 ">
         <img src="build/img/competitor/icon_area@3x.png" class="info-img">
       </div>
@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div class="info-item sifting-item select-item select-info-item">
+    <div on-touch="hideCommont()" class="info-item sifting-item select-item select-info-item">
       <div ng-repeat="timeItem in vm.timeItems track by $index"
            ng-click="vm.selectTime($index,timeItem)">
         <img
@@ -64,7 +64,7 @@
 
 
 
-    <div style="width:96%;margin-left: 6%;background: #fff;margin-top: 10px;height:40px">
+    <div on-touch="hideCommont()" style="width:96%;margin-left: 6%;background: #fff;margin-top: 10px;height:40px">
       <div style="width: 25%;float: left;height: 40px;display: table">
         <div class="info-item-name required" style="vertical-align: middle;display: table-cell;height: 40px;">
           计划内容
@@ -96,13 +96,58 @@
       <div class="clear"></div>
     </div>
     <div class="clear"></div>
-    <div class="row" style="padding-left:17px;">
+    <div on-touch="hideCommont()" class="row" style="padding-left:17px;">
       <div class="row text-wrap">
             <textarea id="planDetailText" placeholder="{{ 'PLAN_ADD.PLEASE_FILL_OUT' | T }}" style="width: 100%"
                       ng-model="vm.saleContent"></textarea>
       </div>
     </div>
+    <div >
+      <div ng-if="vm.planType==1" ng-click="showComment()" class="comment-title">点评<img  src="build/img/application/plans/common.png"/></div>
+      <div on-touch="hideCommont()" ng-if="vm.planDetail.annotate!=''" class="comment-text">
+        <i>{{vm.planDetail.leaderName}}:</i>{{vm.planDetail.annotate}}
+      </div>
+    </div>
   </ion-content>
+  <div ng-if="holdAnnotate" class="holdFooter">
+    <div class="wave">
+      <div class="wave-hold">
+        <div>
+          <img src="build/img/plans/icon_weave@3x.png">
+        </div>
+      </div>
+      <div class="wave-text">
+        <div>
+          按住说话 松开结束
+        </div>
+      </div>
+      <div class="wave-hold">
+        <div>
+          <img src="build/img/plans/icon_weave@3x.png">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-if="showCommentFlag"  footerkeyboardshow class="bar bar-footer" style="bottom:60px;height: auto;max-height:110px;">
+    <div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">
+      <div style="">
+        <img src="build/img/application/plans/icon_voice@3x.png" style="">
+      </div>
+    </div>
+    <div class="common-content" style="">
+      <textarea  id="commentAdd" oninput="this.style.height = '40px';
+              this.style.height = this.scrollHeight + 'px';
+              this.parentNode.style.height = '0px';
+              this.parentNode.style.height = this.scrollHeight + 0 + 'px';"
+                 placeholder="" ng-model="vm.planDetail.annotate"></textarea>
+      <!--div contenteditable="true" id="comment-text" >{{planDetail.annotate}}</div>-->
+    </div>
+    <div class="common-submit"  ng-click="annotateSubmit()">
+      <div>
+        发送
+      </div>
+    </div>
+  </div>
   <ion-footer-bar ng-if="vm.planType==0">
     <div class="footer-wrap" >
       <div class="footer-button" ng-click="vm.cancelPlan()">

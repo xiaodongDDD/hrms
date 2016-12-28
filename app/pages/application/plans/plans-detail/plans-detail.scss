@@ -1,4 +1,8 @@
 .plans-detail {
+  .sifting-scroll{
+    width: 100vw;
+    height: calc(100vh - 104px);
+  }
   .info-item {
     height: 50px;
     padding-left: 0px;
@@ -21,7 +25,7 @@
     height: 60px;
   }
 
-  .sifting-item{
+  .sifting-item {
     &.select-item {
       display: flex;
       justify-content: space-between;
@@ -51,7 +55,7 @@
     margin-right: 5px;
   }
   .info-item-con {
-  /*  color: #AAAAAA;*/
+    /*  color: #AAAAAA;*/
     text-align: right;
     padding-left: 0;
     padding-right: 0;
@@ -67,7 +71,7 @@
       height: 44px;
       line-height: 44px;
       text-align: center;
-      div{
+      div {
         margin: 5px;
         border-radius: 30px;
         background: #32A4EC;
@@ -111,6 +115,115 @@
         border-radius: 30px;
         background: #E6F4FD;
       }
+    }
+  }
+  .comment-title {
+    text-align: right;
+    position: relative;
+    color: #bfbfbf;
+    width: 92%;
+    padding-right: 5px;
+    font-size:13px;
+    img {
+      width: 18px;
+      height: 16px;
+      position: absolute;
+      top: 0px;
+      right: -20px;
+    }
+  }
+  .comment-text{
+    margin: 2px 10px 5px 15px;
+    color: #666666;
+    background: #f2f2f2;
+    padding:5px 5px 5px 5px;
+    i {
+      color: #00a5ee;
+    }
+  }
+  .holdFooter {
+    width: 100%;
+    margin-top:90%;
+    z-index: 10000000;
+    position: fixed;
+    height: 30px;
+    background: none;
+    .wave{
+      height: 100%;
+      width: 100%;
+    }
+    .wave-hold {
+      width: 30%;
+      float: left;
+      height: 40px;
+      display: table;
+      div {
+        vertical-align: middle;
+        display: table-cell;
+        height: 40px;
+        width: 60px;
+        text-align: center;
+      }
+      img {
+        width: 60px;
+      }
+    }
+    .wave-text {
+      width: 40%;
+      float: left;
+      height: 40px;
+      display: table;
+      div {
+        color: #666;
+        vertical-align: middle;
+        display: table-cell;
+        height: 40px;
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+  .common-voice {
+    float: left;
+    width: 10%;
+    display: table;
+    div {
+      vertical-align: middle;
+      display: table-cell;
+      height: 40px;
+      width: 20px;
+      text-align: center;
+    }
+    img {
+      width: 20px;
+      position: absolute;
+      bottom: 12px;
+      left: 10px;
+    }
+  }
+  .common-content {
+    float: left;
+    width: 80%;
+    max-height: 110px;
+    textarea {
+      overflow-y: visible;
+      width: 100%;
+      word-break: break-all;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      max-height: 100px;
+    }
+  }
+  .common-submit {
+    float: left;
+    width: 10%;
+    display: table;
+    div {
+      vertical-align: middle;
+      display: table-cell;
+      position: absolute;
+      bottom: 12px;
+      right: 5px;
     }
   }
 }
