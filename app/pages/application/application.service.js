@@ -38,10 +38,10 @@ angular.module('applicationModule')
       };
 
       this.fetchMenuList = function (success, error) {
-        var url = baseConfig.businessPath + "/common_info/get_user_menu_list";
+        var url = baseConfig.businessPath + "/common_info/get_user_menu_list_v2";
         var params = {
           "params": {
-            "p_user_code": window.localStorage.empno,
+            "p_user_code": window.localStorage.empno
           }
         };
         hmsHttp.post(url, params).success(function (result) {
