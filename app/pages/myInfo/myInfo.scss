@@ -1,35 +1,33 @@
-.platform-android{
-  .my-info{
-    .shrink-image{//头部的可伸缩头像背景
-      height: 148px;
+.platform-android {
+  .my-info {
+    .shrink-image { //头部的可伸缩头像背景
+      height: 178px;
       width: 100%;
       z-index: 100;
-      -webkit-filter: blur(5px) brightness(0.7);
-      filter: blur(5px) brightness(0.7);
+      background: url('../img/myInfo/myInfoBg.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
-    .content-style{
+    .content-style {
       background-color: transparent;
-      padding-top: 148px;
+      top: 178px;
     }
-    .header-item{
+    .header-item {
       margin: 0px;
       padding: 0px;
       border: none;
       height: 148px;
       width: 100%;
       background-color: transparent;
-      position: absolute;
-      top: -148px;
-      left: 0px;
-      z-index: 100;
     }
-    .header-item-image-row{
+    .header-item-image-row {
       height: 70px;
       width: 100%;
       text-align: center;
       margin-top: 15px;
     }
-    .setup-button{
+    .setup-button {
       position: absolute;
       top: 0px;
       right: 5px;
@@ -41,40 +39,68 @@
       line-height: 40px;
       z-index: 999;
     }
+
+    .logout-button {
+      position: absolute;
+      top: 0px;
+      left: 15px;
+      border: none;
+      margin: 0px;
+      padding: 0px;
+      width: 100px;
+      min-height: 40px;
+      line-height: 40px;
+      z-index: 999;
+      .img-area {
+        float: left;
+        width: 30px;
+        height: 40px;
+        line-height: 40px;
+      }
+      .text-area {
+        color: white;
+        float: left;
+        width: 50%;
+        height: 25px;
+        line-height: 25px;
+        margin-top: 10px;
+      }
+    }
   }
 }
-.platform-ios{
-  .my-info{
-    .shrink-image{//头部的可伸缩头像背景
-      height: 168px;
+
+.platform-ios {
+  .my-info {
+    .shrink-image { //头部的可伸缩头像背景
+      height: 178px;
       width: 100%;
       z-index: 100;
-      -webkit-filter: blur(5px) brightness(0.7);
-      filter: blur(5px) brightness(0.7);
+      //-webkit-filter: blur(5px) brightness(0.7);
+      //filter: blur(5px) brightness(0.7);
+      background: url('../img/myInfo/myInfoBg.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
-    .content-style{
+    .content-style {
       background-color: transparent;
-      padding-top: 168px;
+      top: 178px;
     }
-    .header-item{
+    .header-item {
       margin: 0px;
       padding: 0px;
       border: none;
       height: 168px;
       width: 100%;
       background-color: transparent;
-      position: absolute;
-      top: -168px;
-      left: 0px;
-      z-index: 100;
     }
-    .header-item-image-row{
+    .header-item-image-row {
       height: 70px;
       width: 100%;
       text-align: center;
       margin-top: 35px;
     }
-    .setup-button{
+    .setup-button {
       position: absolute;
       top: 20px;
       right: 5px;
@@ -86,77 +112,104 @@
       line-height: 40px;
       z-index: 999;
     }
+    .logout-button {
+      position: absolute;
+      top: 20px;
+      left: 15px;
+      border: none;
+      margin: 0px;
+      padding: 0px;
+      width: 100px;
+      min-height: 40px;
+      line-height: 40px;
+      z-index: 999;
+      .img-area {
+        float: left;
+        width: 30px;
+        height: 40px;
+        line-height: 40px;
+      }
+      .text-area {
+        color: white;
+        float: left;
+        width: 50%;
+        height: 25px;
+        line-height: 25px;
+        margin-top: 10px;
+      }
+    }
   }
 }
-.my-info{
+
+.my-info {
   background-color: #fafafa;
-  .header-image{
+  .header-image {
     width: 76px;
     height: 76px;
     border-radius: 50%;
     border: 3px solid #ffffff;
   }
-  .header-item-label-row1{
+  .header-item-label-row1 {
     height: 24px;
     width: 100%;
     text-align: center;
     margin-top: 10px;
   }
-  .header-item-label-row2{
+  .header-item-label-row2 {
     height: 22px;
     width: 100%;
     text-align: center;
   }
-  .name-label{
+  .name-label {
     color: #ffffff;
     font-size: 1.0625rem;
   }
-  .employee-number-label{
+  .employee-number-label {
     color: #ffffff;
     font-size: 0.875rem;
   }
-  .setup-image{
+  .setup-image {
     width: 22px;
     height: 22px;
     margin-top: 11px;
   }
-  .info-item{
+  .info-item {
     margin: 0px;
     padding: 0px;
     border: none;
-    height: 84px;
+    height: 74px;
     width: 100%;
     background-color: #ffffff;
-    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    //box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
   }
-  .icon-row{
+  .icon-row {
     padding: 0px;
     margin: 0px;
     height: 40px;
-    margin-top: 10px;
+    margin-top: 2px;
   }
-  .center-style{
+  .center-style {
     padding: 0px;
     margin: 0px;
     text-align: center;
   }
-  .col-image{
+  .col-image {
     width: 40px;
     height: 40px;
     margin-left: auto;
     margin-right: auto;
   }
-  .text-row{
+  .text-row {
     padding: 0px;
     margin: 0px;
     height: 20px;
     margin-top: 5px;
   }
-  .info-text-label{
+  .info-text-label {
     font-size: 0.875rem;
-    color:#9b9b9b;
+    color: #9b9b9b;
   }
-  .colorful-part{
+  .colorful-part {
     height: 140px;
     width: 100%;
     background-color: #ffffff;
@@ -164,7 +217,7 @@
     border-top: 1px solid #f2f2f2;
     border-bottom: 1px solid #f2f2f2;
   }
-  .common-part{
+  .common-part {
     height: 94px;
     width: 100%;
     background-color: #ffffff;
@@ -172,44 +225,46 @@
     border-top: 1px solid #f2f2f2;
     border-bottom: 1px solid #f2f2f2;
   }
-  .login-item{
+  .login-item {
     opacity: 1;
     margin: 0px;
     padding: 0px;
     border: none;
     height: 46px;
-    border-bottom: 1px solid #e8e8e8;
     padding-left: 20px;
   }
-  .login-item-row{
+  .login-item-row {
     padding: 0px;
     margin: 0px;
     height: 100%;
+    &.has-line {
+      border-bottom: 1px solid #e8e8e8;
+    }
   }
-  .login-icon-shelter{
+  .login-icon-shelter {
     height: 24px;
     width: 24px;
     margin-top: 11px;
   }
-  .login-icon{
+  .login-icon {
     width: 15px;
     height: 16px;
     margin-top: 4px;
   }
-  .login-label{
+  .login-label {
     font-size: 0.875rem;
     color: #4a4a4a;
     margin-left: 7px;
     margin-top: 13px;
   }
-  .arrow-icon{
+  .arrow-icon {
     position: absolute;
     top: 18px;
     right: 15px;
     width: 6px;
     height: 11px;
   }
-  .certificate-item{
+  .certificate-item {
     opacity: 1;
     margin: 0px;
     padding: 0px;
@@ -217,29 +272,32 @@
     height: 46px;
     padding-left: 20px;
   }
-  .feedback-item-row{
+  .feedback-item-row {
     padding: 0px;
     margin: 0px;
     height: 46px;
+    &.has-line {
+      border-bottom: 1px solid #e8e8e8;
+    }
   }
-  .feedback-icon{
+  .feedback-icon {
     width: 15px;
     height: 15px;
     margin-top: 4px;
   }
-  .help-icon{
+  .help-icon {
     width: 16px;
     height: 16px;
     margin-top: 4px;
   }
-  .version-label{
+  .version-label {
     position: absolute;
-    top:13px;
+    top: 13px;
     right: 36px;
     font-size: 0.875rem;
     color: #9b9b9b;
   }
-  .logout-button{
+  .logout-button-nouse {
     margin: 0px;
     padding: 0px;
     border: none;
@@ -253,20 +311,21 @@
     margin-left: 5%;
     margin-top: 30px;
   }
-  .login-item.item.activated{
+  .login-item.item.activated {
     background-color: #f8f8f8;
     //opacity: 0.2;
   }
-  .certificate-item.item.activated{
+  .certificate-item.item.activated {
     background-color: #f8f8f8;
     //opacity: 0.2;
   }
 }
-.setup{
-  .content-style{
+
+.setup {
+  .content-style {
     background-color: #fafafa;
   }
-  .setup-panel{
+  .setup-panel {
     margin: 0px;
     padding: 0px;
     border: none;
@@ -274,9 +333,9 @@
     margin-left: 1.5%;
     background-color: #ffffff;
     margin-top: 8px;
-    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
   }
-  .setup-panel-row1{
+  .setup-panel-row1 {
     padding: 0px;
     margin: 0px;
     margin-left: 20px;
@@ -285,7 +344,7 @@
     border-bottom: 1px solid #f4f4f4;
   }
 
-  .setup-panel-row2{
+  .setup-panel-row2 {
     padding: 0px;
     margin: 0px;
     width: 100%;
@@ -293,13 +352,13 @@
     margin-left: 20px;
   }
 
-  .setup-label{
+  .setup-label {
     font-size: 0.9375rem;
     color: #4a4a4a;
     margin-top: 12px;
   }
 
-  .ts-toggle-position{
+  .ts-toggle-position {
     position: absolute;
     top: 7px;
     right: 15px;
@@ -307,7 +366,7 @@
     width: 33px;
   }
 
-  .guide-toggle-position{
+  .guide-toggle-position {
     position: absolute;
     top: 52px;
     right: 15px;
@@ -315,7 +374,7 @@
     width: 33px;
   }
 
-  .message-toggle-position{
+  .message-toggle-position {
     position: absolute;
     top: 97px;
     right: 15px;
@@ -323,34 +382,35 @@
     width: 33px;
   }
 
-  .setup-track{
+  .setup-track {
     height: 20px;
     width: 33px;
     margin-top: 5px;
     border: 1px solid #d2d2d2;
   }
 
-  .setup-handle{
+  .setup-handle {
     height: 18px;
     width: 18px;
     top: 11px;
-    border:none;
+    border: none;
   }
-  .toggle.toggle-positive input:checked + .track{
+  .toggle.toggle-positive input:checked + .track {
     background-color: #24559c;
     border-color: #24559c;
   }
-  .toggle input:checked + .track .handle{
-    -webkit-transform:translate3d(12px,0,0);
-    transform: translate3d(12px,0,0);
+  .toggle input:checked + .track .handle {
+    -webkit-transform: translate3d(12px, 0, 0);
+    transform: translate3d(12px, 0, 0);
     background-color: #ffffff;
   }
 }
-.feedback{
-  .content-style{
+
+.feedback {
+  .content-style {
     background-color: #fafafa;
   }
-  .type-item{
+  .type-item {
     padding: 0px;
     margin: 0px;
     width: 100%;
@@ -359,37 +419,37 @@
     border-bottom: 1px solid #d2d2d2;
     background-color: transparent;
   }
-  .label-row{
+  .label-row {
     padding: 0px;
     margin: 0px;
     margin-top: 10px;
     height: 18px;
   }
-  .feedback-label{
+  .feedback-label {
     font-size: 0.875rem;
     color: #9b9b9b;
     margin-left: 15px;
   }
-  .type-row1{
+  .type-row1 {
     padding: 0px;
     margin: 0px;
     width: 100%;
     height: 30px;
     margin-top: 10px;
   }
-  .type-row2{
+  .type-row2 {
     padding: 0px;
     margin: 0px;
     width: 100%;
     height: 30px;
     margin-top: 10px;
   }
-  .common-col{
-    margin:0px;
+  .common-col {
+    margin: 0px;
     padding: 0px;
     text-align: center;
   }
-  .selected-button{
+  .selected-button {
     margin: 0px;
     padding: 0px;
     min-height: 30px;
@@ -403,7 +463,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  .non-selected-button{
+  .non-selected-button {
     margin: 0px;
     padding: 0px;
     min-height: 28px;
@@ -417,7 +477,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  .feedback-textarea{
+  .feedback-textarea {
     resize: none;
     background-color: #ffffff;
     color: #9b9b9b;
@@ -428,62 +488,63 @@
   }
 
 }
-.my-info-detail{
-  .content-style{
+
+.my-info-detail {
+  .content-style {
     background-color: #fafafa;
   }
-  .info-card-item1{
+  .info-card-item1 {
     margin: 0px;
     padding: 0px;
     width: 97%;
     height: 225px;
     margin-left: 1.5%;
     margin-top: 24px;
-    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
     border: none;
     border-radius: 5px;
   }
-  .info-card-item2{
+  .info-card-item2 {
     margin: 0px;
     padding: 0px;
     width: 97%;
     height: 175px;
     margin-left: 1.5%;
     margin-top: 8px;
-    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
     border: none;
   }
-  .info-card-item-email{
+  .info-card-item-email {
     margin: 0px;
     padding: 0px;
     width: 97%;
     height: 190px;
     margin-left: 1.5%;
     margin-top: 8px;
-    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
     border: none;
   }
-  .info-card-item3{
+  .info-card-item3 {
     margin: 0px;
     padding: 0px;
     width: 97%;
     height: 140px;
     margin-left: 1.5%;
     margin-top: 8px;
-    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
     border: none;
   }
-  .info-card-item4{
+  .info-card-item4 {
     margin: 0px;
     padding: 0px;
     width: 97%;
     height: 70px;
     margin-left: 1.5%;
     margin-top: 8px;
-    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.3);
+    box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.3);
     border: none;
   }
-  .card-row-with-bottom{
+  .card-row-with-bottom {
     padding: 0px;
     margin: 0px;
     width: 100%;
@@ -491,58 +552,58 @@
     margin-left: 15px;
     border-bottom: 1px solid #e8e8e8;
   }
-  .card-row-without-bottom{
+  .card-row-without-bottom {
     padding: 0px;
     margin: 0px;
     width: 100%;
     height: 35px;
     margin-left: 15px;
   }
-  .normal-col{
+  .normal-col {
     padding: 0px;
     margin: 0px;
     margin-top: 8px;
   }
-  .left-label{
+  .left-label {
     font-size: 0.9375rem;
     color: #4a4a4a;
   }
-  .right-label{
+  .right-label {
     font-size: 0.9375rem;
     color: #9b9b9b;
   }
-  .portrait-shelter{
+  .portrait-shelter {
     position: absolute;
     top: -18px;
     right: 22px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border:5px solid #ffffff;
+    border: 5px solid #ffffff;
     background-color: #ffffff;
     z-index: 999;
   }
-  .portrait-icon{
+  .portrait-icon {
     width: 40px;
     height: 40px;
     border-radius: 50%;
   }
-  .no-space{
+  .no-space {
     margin: 0px;
     padding: 0px;
   }
-  .left-icon-label{
+  .left-icon-label {
     font-size: 0.9375rem;
     color: #4a4a4a;
     margin-left: 8px;
   }
-  .right-icon-label{
+  .right-icon-label {
     font-size: 0.9375rem;
     color: #9b9b9b;
     margin-top: 10px;
     padding-right: 20px;
   }
-  .email-textarea{
+  .email-textarea {
     text-align: left;
     font-size: 0.9375rem;
     color: #9b9b9b;
@@ -553,7 +614,7 @@
     background-color: #ffffff;
     padding-top: 0px;
   }
-  .department-textarea{
+  .department-textarea {
     text-align: left;
     font-size: 0.9375rem;
     line-height: 1rem;
@@ -565,7 +626,7 @@
     background-color: #ffffff;
     padding-top: 0px;
   }
-  .email-row{
+  .email-row {
     padding: 0px;
     margin: 0px;
     width: 100%;
@@ -573,37 +634,38 @@
     margin-left: 15px;
     border-bottom: 1px solid #e8e8e8;
   }
-  .icon-shelter{
+  .icon-shelter {
     width: 16px;
     height: 16px;
   }
-  .mail-img{
+  .mail-img {
     width: 14px;
     height: 11px;
   }
-  .base-img{
+  .base-img {
     width: 14px;
     height: 16px;
   }
-  .social-img{
+  .social-img {
     width: 14px;
     height: 14px;
   }
-  .phone-img{
+  .phone-img {
     width: 14px;
     height: 13px;
   }
 }
-.my-certificate{
-  .content-style{
+
+.my-certificate {
+  .content-style {
     background-color: #fafafa;
   }
-  .add-icon{
+  .add-icon {
     width: 24px;
     height: 24px;
     margin-top: 5px;
   }
-  .certificate-item{
+  .certificate-item {
     padding: 0px;
     margin: 0px;
     border: none;
@@ -613,47 +675,47 @@
     height: 78px;
     margin-top: 8px;
     border-radius: 5px;
-    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
+    box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.5);
   }
-  .certificate-item.ng-enter{
+  .certificate-item.ng-enter {
     -webkit-animation: fadeIn 0.5s;
     animation: fadeIn .5s;
   }
-  .certificate-item.ng-enter-stagger{
+  .certificate-item.ng-enter-stagger {
     -webkit-animation-delay: 90ms;
     animation-delay: 90ms;
     -webkit-animation-duration: 0ms;
     animation-duration: 0ms;
   }
-  .certificate-row{
+  .certificate-row {
     padding: 0px;
     margin: 0px;
     width: 100%;
     height: 20px;
     margin-top: 24px;
   }
-  .certificate-label{
+  .certificate-label {
     color: #24559c;
     font-size: 0.9375rem;
     margin-left: 24px;
   }
-  .orange-arrow-image{
+  .orange-arrow-image {
     width: 22px;
     height: 22px;
     position: absolute;
     top: 26px;
     right: 11px;
   }
-  .item.activated{
+  .item.activated {
     //background-color: #ffffff;
     //opacity: 0.4;
   }
-  .add-image{
+  .add-image {
     width: 26px;
     height: 22px;
     margin-top: 12px;
   }
-  .no-data-shelter{
+  .no-data-shelter {
     position: absolute;
     top: 100px;
     left: 0px;
@@ -663,84 +725,87 @@
     width: 100%;
     height: 250px;
   }
-  .no-data-no-space{
-    padding:0px;
+  .no-data-no-space {
+    padding: 0px;
     margin: 0px;
     text-align: center;
   }
-  .no-data-image{
+  .no-data-image {
     margin-left: auto;
     margin-right: auto;
     width: 200px;
     height: 200px;
   }
-  .no-data-label{
+  .no-data-label {
     font-size: 1.125rem;
     color: #245597;
     margin-left: auto;
     margin-right: auto;
   }
-  .no-data-no-space-label-row{
-    padding:0px;
+  .no-data-no-space-label-row {
+    padding: 0px;
     margin: 0px;
     text-align: center;
     margin-top: 10px;
   }
 }
-.platform-android{
-  .my-certificate-detail{
-    .cancel-button-image{
+
+.platform-android {
+  .my-certificate-detail {
+    .cancel-button-image {
       width: 30px;
       height: 30px;
       margin-top: 5px;
     }
   }
 }
-.platform-ios{
-  .my-certificate-detail{
-    .cancel-button-image{
+
+.platform-ios {
+  .my-certificate-detail {
+    .cancel-button-image {
       width: 30px;
       height: 30px;
       margin-top: 18px;
     }
   }
 }
-.my-certificate-detail{
-  .content-style{
+
+.my-certificate-detail {
+  .content-style {
     background-color: #fafafa;
   }
-  .item{
-    &.activated{
+  .item {
+    &.activated {
       background-color: #ffffff;
       opacity: 0.4;
     }
   }
- .certificate-item{
-   margin: 0px;
-   padding: 0px;
-   border: none;
-   width: 92%;
-   height: 108px;
-   margin-left: 4%;
-   margin-top: 10px;
-   background-color: #ffffff;
-   border-radius: 10px;
-   box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
- }
- .info-shelter{
-   width: 78px;
-   height: 24px;
-   background-color: #ecf0f1;
-   border-top-right-radius: 5px;
-   border-bottom-right-radius: 5px;
-   margin-top: 10px;
- }
-  .info-label{
+  .certificate-item {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    width: 92%;
+    height: 108px;
+    margin-left: 4%;
+    margin-top: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.5);
+  }
+  .info-shelter {
+    width: 78px;
+    height: 24px;
+    background-color: #ecf0f1;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-top: 10px;
+  }
+  .info-label {
     color: #24559c;
     font-size: 0.75rem;
     margin-left: 16px;
   }
-  .row-item1{
+  .row-item1 {
     width: 100%;
     height: 37px;
     padding: 0px;
@@ -748,7 +813,7 @@
     border: none;
     background: transparent;
   }
-  .row-item2{
+  .row-item2 {
     width: 100%;
     height: 36px;
     padding: 0px;
@@ -756,7 +821,7 @@
     border: none;
     background: transparent;
   }
-  .certificate-row1{
+  .certificate-row1 {
     padding: 0px;
     margin: 0px;
     border: none;
@@ -765,7 +830,7 @@
     height: 37px;
     border-bottom: 1px solid #f4f4f4;
   }
-  .certificate-row2{
+  .certificate-row2 {
     padding: 0px;
     margin: 0px;
     border: none;
@@ -773,51 +838,51 @@
     margin-left: 10px;
     height: 36px;
   }
-  .left-label1{
+  .left-label1 {
     font-size: 1rem;
     color: #4a4a4a;
     margin-left: 5px;
     margin-top: 7px;
   }
-  .left-label2{
+  .left-label2 {
     font-size: 1rem;
     color: #4a4a4a;
     margin-left: 5px;
     margin-top: 6px;
   }
-  .right-label{
+  .right-label {
     position: absolute;
     top: 6px;
     right: 10px;
     font-size: 1rem;
     color: #9b9b9b;
   }
-  .certificate-input{
+  .certificate-input {
     position: absolute;
     top: 1px;
     right: 10px;
     font-size: 1rem;
     color: #9b9b9b;
     width: 60%;
-    height:30px;
+    height: 30px;
     background: transparent;
     text-align: right;
   }
-  input[readonly]:not(.cloned-text-input){
+  input[readonly]:not(.cloned-text-input) {
     background-color: transparent;
   }
-  .label-row{
+  .label-row {
     margin: 0px;
     padding: 0px;
     width: 90%;
     margin-top: 10px;
     margin-left: 5%;
   }
-  .no-space{
+  .no-space {
     margin: 0px;
     padding: 0px;
   }
-  .image-square-item{
+  .image-square-item {
     padding: 0px;
     margin: 0px;
     border: none;
@@ -828,7 +893,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  .delete-icon{
+  .delete-icon {
     font-size: 1.6rem;
     color: #b95756;
     position: absolute;
@@ -838,12 +903,12 @@
     padding-bottom: 10px;
   }
 
-  .camera-image{
+  .camera-image {
     width: 90px;
     height: 90px;
     padding: 27.5px 25px;
   }
-  .common-image{
+  .common-image {
     width: 90px;
     height: 90px;
     background-size: cover;
@@ -851,12 +916,12 @@
     background-position: center, center;
     background-color: #d2d2d2;
   }
-  .black-shelter{
+  .black-shelter {
     width: 90px;
     height: 90px;
     background-color: rgba(0, 0, 0, 0.7);
   }
-  .commit-button{
+  .commit-button {
     min-height: 40px;
     line-height: 40px;
     margin: 0px;
@@ -870,24 +935,24 @@
     color: #ffffff;
     font-size: 1rem;
   }
-  .black-page{//大图页
+  .black-page { //大图页
     position: fixed;
     top: 0px;
     left: 0;
     z-index: 200;
     width: 100%;
-    height:100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
   }
-  .black-page.ng-enter{
+  .black-page.ng-enter {
     -webkit-animation: fadeIn 0.5s;
     animation: fadeIn .5s;
   }
-  .black-head{
+  .black-head {
     width: 100%;
     height: 60px;
   }
-  .cancel-button{
+  .cancel-button {
     padding: 0px;
     margin: 0px;
     width: 55px;
@@ -896,76 +961,79 @@
     border: none;
     right: 5px;
   }
-  .scroll-height{
+  .scroll-height {
     width: 100%;
     height: 100%;
   }
-  .flank{
+  .flank {
     padding-left: 0px;
     padding-right: 0px;
     text-align: center;
   }
-  .scroll-bottom-line{
+  .scroll-bottom-line {
     width: 100%;
     height: 100px;
     background-color: transparent;
   }
-  .picture-position{
+  .picture-position {
     width: 100%;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center, center;
   }
-  .clear-back{
+  .clear-back {
 
   }
-  .blur-back{
+  .blur-back {
     -webkit-filter: blur(5px);
     filter: blur(5px);
   }
 }
-.platform-android{
-  .new-certificate{
-    .cancel-button-image{
+
+.platform-android {
+  .new-certificate {
+    .cancel-button-image {
       width: 30px;
       height: 30px;
       margin-top: 5px;
     }
   }
 }
-.platform-ios{
-  .new-certificate{
-    .cancel-button-image{
+
+.platform-ios {
+  .new-certificate {
+    .cancel-button-image {
       width: 30px;
       height: 30px;
       margin-top: 18px;
     }
   }
 }
-.new-certificate{
-  .content-style{
+
+.new-certificate {
+  .content-style {
     background-color: #fafafa;
   }
-  .upload-card{
+  .upload-card {
     background-color: #ffffff;
     width: 97.4%;
     margin-left: 1.3%;
     margin-top: 5px;
-    box-shadow: 0px 2px 4px 0px rgba(155,155,155,0.5);
+    box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.5);
     border-bottom-right-radius: 30px;
   }
-  .common-item{
+  .common-item {
     padding: 0px;
     margin: 0px;
     border: none;
   }
-  .image-item{
+  .image-item {
     padding: 0px;
     margin: 0px;
     border: none;
     background-color: transparent;
   }
-  .common-row{
+  .common-row {
     padding: 0px;
     margin: 0px;
     border-bottom: 1px solid #d2d2d2;
@@ -973,27 +1041,27 @@
     margin-left: 5.5%;
     height: 40px;
   }
-  .common-label{
+  .common-label {
     color: #4a4a4a;
     font-size: 1rem;
     margin-top: 10px;
   }
-  .choose-label{
+  .choose-label {
     color: #9b9b9b;
     font-size: 1rem;
     position: absolute;
     top: 9px;
     right: 42px;
   }
-  .gray-arrow-icon{
+  .gray-arrow-icon {
     width: 24px;
     height: 24px;
     position: absolute;
     top: 9px;
     right: 12px;
   }
-  .certificate-input{
-    background-color:transparent;
+  .certificate-input {
+    background-color: transparent;
     height: 22px;
     width: 60%;
     color: #9b9b9b;
@@ -1003,33 +1071,33 @@
     right: 15px;
     text-align: right;
   }
-  .label-row{
+  .label-row {
     margin: 0px;
     padding: 0px;
     margin-top: 10px;
     margin-left: 5.5%;
   }
-  .upload-label{
+  .upload-label {
     font-size: 1rem;
     color: #4a4a4a;
   }
-  .upload-description-label{
+  .upload-description-label {
     font-size: 0.75rem;
     color: #4a4a4a;
   }
-  .upload-bottom{
+  .upload-bottom {
     width: 100%;
     height: 20px
   }
-  .no-space{
+  .no-space {
     margin: 0px;
     padding: 0px;
   }
-  .item.activated{
+  .item.activated {
     opacity: 0.4;
     background-color: #ffffff;
   }
-  .image-square-item{
+  .image-square-item {
     padding: 0px;
     margin: 0px;
     border: none;
@@ -1038,7 +1106,7 @@
     border: 1px solid #d2d2d2;
     background-color: transparent;
   }
-  .delete-icon{
+  .delete-icon {
     font-size: 1.6rem;
     color: #b95756;
     position: absolute;
@@ -1048,12 +1116,12 @@
     padding-bottom: 10px;
   }
 
-  .camera-image{
+  .camera-image {
     width: 90px;
     height: 90px;
     padding: 27.5px 25px;
   }
-  .common-image{
+  .common-image {
     width: 90px;
     height: 90px;
     background-size: cover;
@@ -1061,30 +1129,30 @@
     background-position: center, center;
     background-color: #d2d2d2;
   }
-  .black-shelter{
+  .black-shelter {
     width: 90px;
     height: 90px;
     background-color: rgba(0, 0, 0, 0.7);
   }
 
-  .black-page{//大图页
-     position: fixed;
-     top: 0px;
-     left: 0;
-     z-index: 200;
-     width: 100%;
-     height:100%;
-     background-color: rgba(0, 0, 0, 0.7);
-   }
-  .black-page.ng-enter{
+  .black-page { //大图页
+    position: fixed;
+    top: 0px;
+    left: 0;
+    z-index: 200;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .black-page.ng-enter {
     -webkit-animation: fadeIn 0.5s;
     animation: fadeIn .5s;
   }
-  .black-head{
+  .black-head {
     width: 100%;
     height: 60px;
   }
-  .cancel-button{
+  .cancel-button {
     padding: 0px;
     margin: 0px;
     width: 55px;
@@ -1093,21 +1161,21 @@
     border: none;
     right: 5px;
   }
-  .scroll-height{
+  .scroll-height {
     width: 100%;
     height: 100%;
   }
-  .flank{
+  .flank {
     padding-left: 0px;
     padding-right: 0px;
     text-align: center;
   }
-  .scroll-bottom-line{
+  .scroll-bottom-line {
     width: 100%;
     height: 100px;
     background-color: transparent;
   }
-  .commit-button{
+  .commit-button {
     min-height: 40px;
     line-height: 40px;
     margin: 0px;
@@ -1121,21 +1189,22 @@
     color: #ffffff;
     font-size: 1rem;
   }
-  .picture-position{
+  .picture-position {
     width: 100%;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center, center;
   }
-  .clear-back{
+  .clear-back {
 
   }
-  .blur-back{
+  .blur-back {
     -webkit-filter: blur(5px);
     filter: blur(5px);
   }
 }
-.new-certificate-type-modal{
+
+.new-certificate-type-modal {
   position: absolute;
   top: 52%;
   bottom: 0%;
@@ -1143,37 +1212,38 @@
   width: 100%;
   background-color: #ffffff;
   border-radius: 6px;
-  .header-color{
+  .header-color {
     background-color: #ffffff;
   }
-  .title-color{
+  .title-color {
     color: #26579e;
     font-size: 1rem;
     border-bottom: none;
   }
-  .change-line{
+  .change-line {
     width: 100%;
     height: 1px;
-    background:-webkit-linear-gradient(right,#3D7BC4,#17468F,#3D7BC4);
+    background: -webkit-linear-gradient(right, #3D7BC4, #17468F, #3D7BC4);
   }
   .back-color {
     background-color: #ffffff;
   }
-  .list{
+  .list {
     border: none;
   }
-  .certificate-item{
+  .certificate-item {
     width: 94%;
     margin-left: 3%;
-    color:#9b9b9b;
+    color: #9b9b9b;
     padding-left: 0px;
     padding-right: 0px;
     padding-top: 10px;
     padding-bottom: 10px;
-    border-left: none;border-right: none;
+    border-left: none;
+    border-right: none;
     border-bottom: 1px solid #d2d2d2
   }
-  .item.activated{
+  .item.activated {
     background-color: #ffffff;
     opacity: 0.4;
   }

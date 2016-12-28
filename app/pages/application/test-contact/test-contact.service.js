@@ -64,11 +64,11 @@ angular.module('applicationModule')
       }
     }])
 
-  .directive('contactQuickBar', function () {
+  .directive('contactQuickBarDir', function () {
       return {
         restrict: 'E',
         replace: true,
-        require: ['contactQuickBar'],
+        require: ['contactQuickBarDir'],
         controller: 'contactQuickBarCtrl',
         template: '<div><div class="contact-quick-bar-header" ng-if="showHeaderFlag" ng-bind="contactHeaderItem"></div>' +
         '<div class="contact-quick-bar" ng-style="quickBarStyle">' +

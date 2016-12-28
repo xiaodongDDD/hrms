@@ -99,6 +99,28 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
     }
   }])
 
+  .directive('elasticImage2', ['$ionicScrollDelegate', function ($ionicScrollDelegate) {
+    return {
+      restrict: 'A',
+      link: function ($scope, $scroller, $attr) {
+        var image = document.getElementById($attr.elasticImage2);
+        var imageHeight = 178;//image.offsetHeight;
+
+        $scroller.bind('scroll', function (e) {
+          if(e.detail.scrollTop <= 0){
+            var scrollTop = e.detail.scrollTop;
+            var newImageHeight = imageHeight - scrollTop;
+            image.style.height = newImageHeight + 'px';
+          }else{
+            var newImageHeight = imageHeight;
+            image.style.height = newImageHeight + 'px';
+          }
+          $scope.$apply();
+        });
+      }
+    }
+  }])
+
   .directive('circleRotate', ['$timeout','baseConfig', function ($timeout,baseConfig) {
     return {
       restrict: 'A',

@@ -1,5 +1,5 @@
-$workflow-bule: #2A5BA1;
-$workflow-bule-content: #24559C;
+$workflow-bule: white;
+$workflow-bule-content: #1F8CEB;
 $workflow-black: #4A4A4A;
 $workflow-gray: #9B9B9B;
 $workflow-gray-line: #D2D2D2;
@@ -29,12 +29,12 @@ $workflow-gray-line: #D2D2D2;
     margin-left: auto;
     margin-right: auto;
     .selected{
-      background: white;
+      background: #00a5ee;
       color: $workflow-bule;
     }
     .no-selected{
       background: none;
-      color: white;
+      color: #00a5ee;
       &.activated{
         background: #64ACFF;
         color: white;
@@ -42,7 +42,7 @@ $workflow-gray-line: #D2D2D2;
       }
     }
     .to-do-list {
-      border: 1px solid white;
+      border: 1px solid #00a5ee;
       float: left;
       width: 70px;
       margin-top: 0px;
@@ -53,9 +53,9 @@ $workflow-gray-line: #D2D2D2;
       font-size: 13px;
     }
     .done-list {
-      border-top: 1px solid white;
-      border-bottom: 1px solid white;
-      border-right: 1px solid white;
+      border-top: 1px solid #00a5ee;
+      border-bottom: 1px solid #00a5ee;
+      border-right: 1px solid #00a5ee;
       float: left;
       margin-top: 0px;
       width: 70px;
@@ -64,9 +64,9 @@ $workflow-gray-line: #D2D2D2;
       font-size: 13px;
     }
     .mine-list {
-      border-top: 1px solid white;
-      border-bottom: 1px solid white;
-      border-right: 1px solid white;
+      border-top: 1px solid #00a5ee;
+      border-bottom: 1px solid #00a5ee;
+      border-right: 1px solid #00a5ee;
       float: left;
       margin-top: 0px;
       width: 70px;
