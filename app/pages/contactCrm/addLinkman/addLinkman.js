@@ -185,7 +185,6 @@ angular.module('contactModule')
         /* console.log($ionicHistory.viewHistory().backView);*/
         if ($ionicHistory.viewHistory().backView) {
           $ionicHistory.goBack();
-
         } else {
           $state.go('tab.application');
         }
@@ -809,8 +808,6 @@ angular.module('contactModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
         });
       };
       this.addContact = function (success, key) {
@@ -818,8 +815,6 @@ angular.module('contactModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
         });
 
       };
@@ -834,10 +829,8 @@ angular.module('contactModule')
         hmsHttp.post(baseUrl + 'query_lookup', params).success(function (result) {
           hmsPopup.hideLoading();
           success(result);
-        }).error(function (response, status) {
-          hmsPopup.showPopup('网络连接错误');
-          hmsPopup.hideLoading();
-        });
+        }).error(function (error) {
+        });;
       };
 
       //得到客户列表
@@ -849,10 +842,8 @@ angular.module('contactModule')
         };
         hmsHttp.post(baseUrl + 'query_customer_list', params).success(function (result) {
           success(result);
-        }).error(function (response, status) {
-          hmsPopup.showPopup('网络连接错误');
-          hmsPopup.hideLoading();
-        });
+        }).error(function (error) {
+        });;
       };
       this.searchCustomer = function (success, keyWord, page, pageSize) {
         var params = {
@@ -862,9 +853,8 @@ angular.module('contactModule')
         };
         hmsHttp.post(baseUrl + 'saleplan_customers', params).success(function (result) {
           success(result);
-        }).error(function (response, status) {
-          hmsPopup.showPopup(response);
-        });
+        }).error(function (error) {
+        });;
       };
     }
   ]);
