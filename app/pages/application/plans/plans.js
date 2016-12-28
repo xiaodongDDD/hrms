@@ -37,9 +37,15 @@
                      $rootScope,
                      hmsPopup,
                      plansService,
-                     baseConfig) {
+                     baseConfig,
+                     $ionicPlatform) {
     var vm = $scope;
-
+    //将页面的状态栏设置成黑色
+    $ionicPlatform.ready(function () {
+      if (window.StatusBar) {
+        StatusBar.styleDefault();
+      }
+    });
     vm.planMode = '看周报';
     vm.showAsMonth = true;
     vm.showNew = false;
@@ -413,27 +419,24 @@
             itemHeight.style.height = '40px';
             itemHeight.scrollTop = 0; //防抖动
             itemHeight.style.height = itemHeight.scrollHeight + "px";
-            console.log(itemHeight.style.height);
-            console.log("聚焦");
-            $timeout(function(){
-              cordova.plugins.Keyboard.show();
+            cordova.plugins.Keyboard.show();
+            $timeout(function () {
               item.focus();
               $scope.$apply();
-              console.log("测试");
-            },300);
-          },300);
+            }, 0);
+          }, 300);
         } else {
           $timeout(function () {
-            item.focus();
-            $scope.$apply();
-            /*  cordova.plugins.Keyboard.show();*/
             var itemHeight = document.getElementById("comment-text");
             itemHeight.style.height = '40px';
             itemHeight.scrollTop = 0; //防抖动
             itemHeight.style.height = itemHeight.scrollHeight + "px";
-            console.log(itemHeight.style.height);
-            console.log("聚焦");
-          },300);
+            cordova.plugins.Keyboard.show();
+            $timeout(function () {
+              item.focus();
+              $scope.$apply();
+            }, 0);
+          }, 300);
         }
       } else {
         $timeout(function () {
@@ -750,8 +753,8 @@
       $timeout(function () {
         $scope.scrollFlag = [];
         var headGroup = angular.element('.group-head-flag');
-        if(headGroup.length > 1)
-          for(var i = 0; i < headGroup.length; i++)
+        if (headGroup.length > 1)
+          for (var i = 0; i < headGroup.length; i++)
             $scope.scrollFlag.push(headGroup[i].offsetTop);
         console.log($scope.scrollFlag);
       }, 500)
@@ -802,7 +805,11 @@
     function openCalendarPage() { //跳到原生日历界面--获取截止日期
       var success = function (response) {
         try {
-          var data = JSON.parse(response);
+          if (ionic.Platform.isAndroid()) {
+            var data = JSON.parse(response);
+          } else {
+            var data = response;
+          }
           var result = data.result;
           var startDate = result[0];
           var endDate = result[1];
@@ -1039,7 +1046,7 @@
 
       $scope.$broadcast('scroll.infiniteScrollComplete');
 
-      if($scope.page == 1)
+      if ($scope.page == 1)
         $ionicScrollDelegate.$getByHandle('plan-scroll').scrollTop(true);
       $ionicScrollDelegate.$getByHandle('plan-scroll').resize();
 
