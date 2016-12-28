@@ -94,7 +94,10 @@ angular.module('customerModule')
         }, {
           title: "商机",
           icon: "icon_business"
-        }];
+        }, {
+		  title: "保证金",
+		  icon: "icon_moeny_gray"
+		}];
         //  , {
         //  title: "变更日志",
         //  icon: "icon_letter"
@@ -316,6 +319,13 @@ angular.module('customerModule')
         //  $scope.selectSubHeader(0);
         //}
       });
+      
+        $ionicModal.fromTemplateUrl('build/pages/application/bidbond/bidbond-add/bidbond-add.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.addbidbondModel = modal;
+		});
 
       var pickContact = function(){
         ContactsPlugin.pickContact(function(response){
@@ -517,7 +527,13 @@ angular.module('customerModule')
               $scope.showCrmLoading = true;
               customerDetailService.getCustomerContacts(validCustomerContactsSuccess, 1, 10, $scope.customerId);
             }
-          } else if ($index == 6) {
+          }else if($index == 6) {
+				$scope.imgButton = true;
+				$scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-bidbond/customer-detail-bidbond.html";
+				$scope.chooseThis = function() {
+					$state.go('tab.bidbond-add');
+				}
+		  } else if ($index == 7) {
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-change-log/customer-detail-change-log.html";
           }
           if ($scope.subHeadersSelect[$index])

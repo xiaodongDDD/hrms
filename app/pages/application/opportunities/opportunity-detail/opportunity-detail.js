@@ -165,6 +165,9 @@ angular.module('opportunityModule')
       }, {
         title: "负责人",
         icon: "icon_partner"
+   	  }, {
+		title: "保证金",
+		icon: "icon_moeny_gray"
       // }, {
       //   title: "报价",
       //   icon: "icon_moeny_gray"
@@ -383,6 +386,13 @@ angular.module('opportunityModule')
       }).then(function (modal) {
         $scope.opportunityAddCompetitorModel = modal;
       });
+      
+      $ionicModal.fromTemplateUrl('build/pages/application/bidbond/bidbond-add/bidbond-add.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	  }).then(function(modal) {
+			$scope.addbidbondModel = modal;
+	  });
 
       $scope.$on('CLOSE_OPPORTUNITY_ADD', function () {
         $scope.opportunityAddModel.hide();
@@ -529,6 +539,13 @@ angular.module('opportunityModule')
         } else if ($index == 4) {
           $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-principal/opportunity-detail-principal.html";
         }
+        else if($index == 5) {
+		  $scope.contentInner = "build/pages/application/opportunity/opportunity-detail/opportunity-detail-bidbond/opportunity-detail-bidbond.html";
+	 	  $scope.chooseThis = function() {
+			 $state.go('tab.bidbond-add');
+		  }
+	  }
+        
         if ($scope.subHeadersSelect[$index])
           return 0;
         else {
