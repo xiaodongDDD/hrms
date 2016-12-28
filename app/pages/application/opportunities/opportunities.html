@@ -1,7 +1,7 @@
 <ion-view view-title="商机" class="crm hrms-pancel-corlor opportunities">
   <crm-loading ng-if="showLoading"></crm-loading>
   <ion-header-bar align-title="center" class="bar-stable">
-    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="$hmsGoBack()"/>
     <div class="header-select-button">
       <div ng-class="{false:'selected'}[myOpportunityFlag]" ng-click="changeModel(false)">所有商机</div>
       <div ng-class="{true:'selected'}[myOpportunityFlag]" ng-click="changeModel(true)">我的商机</div>
