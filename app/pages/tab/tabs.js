@@ -7,6 +7,7 @@ angular.module('loginModule').controller('TabsCtrl',
 
       $scope.cacheImgList = [];
       $scope.cacheImgList.push({"url": "build/img/application/carpooling/Bar@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/myInfo/myInfoBg.png"});
       $scope.cacheImgList.push({"url": "build/img/tabs/message-G@3x.png"});
       $scope.cacheImgList.push({"url": "build/img/tabs/message-f@3x.png"});
       $scope.cacheImgList.push({"url": "build/img/tabs/application-F@3x.png"});
@@ -15,6 +16,7 @@ angular.module('loginModule').controller('TabsCtrl',
       $scope.cacheImgList.push({"url": "build/img/myInfo/background.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/man-portrait.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/woman-portrait.png"});
+
       if (window.localStorage.myInfoImg && window.localStorage.myInfoImg != '') {
         $scope.cacheImgList.push({"url": window.localStorage.myInfoImg + ""});
         hmsCacheService.loadImageCache(window.localStorage.myInfoImg, function () {

@@ -532,6 +532,10 @@ angular.module('messageModule')
           }
         });
 
+        messageService.registerDeviceInfo();
+
+        checkVersionService.checkAppVersion();
+
         if (!$scope.firstRefresh) {
           $timeout(function () {
             refreshMessageList(true);

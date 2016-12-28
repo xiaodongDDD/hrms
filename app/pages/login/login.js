@@ -398,14 +398,12 @@ angular.module('loginModule')
               hmsHttp.post(url, {}).success(function (response) {
                 $scope.showLoginButton = false;
                 $scope.showButtonIcon = false;
-                checkVersionService.checkAppVersion();
                 if(response.returnCode == 'S')
                   window.localStorage.crm = response.message == 'Y';
                 $state.go("tab.message");
               }).error(function (response, status) {
                 $scope.showLoginButton = false;
                 $scope.showButtonIcon = false;
-                checkVersionService.checkAppVersion();
                 window.localStorage.crm = false;
                 $state.go("tab.message");
               });

@@ -17,54 +17,54 @@ angular.module('applicationModule')
                 contactService) {
 
         /*var colorList = [
-          {
-            "border": "1px solid #dd1144"
-          },
-          {
-            "border": "1px solid #4b8bf4"
-          },
-          {
-            "border": "1px solid #F99D32"
-          },
-          {
-            "border": "1px solid #5CB281"
-          },
-          {
-            "border": "1px solid #6BB9F0"
-          },
-        ];*/
+         {
+         "border": "1px solid #dd1144"
+         },
+         {
+         "border": "1px solid #4b8bf4"
+         },
+         {
+         "border": "1px solid #F99D32"
+         },
+         {
+         "border": "1px solid #5CB281"
+         },
+         {
+         "border": "1px solid #6BB9F0"
+         },
+         ];*/
         var loadMyInfoImageCacheFlag = false;
 
         var colorList = [
           {
-            "background": "#dd1144","color":"white"
+            "background": "#dd1144", "color": "white"
           },
           {
-            "background": "#4b8bf4","color":"white"
+            "background": "#4b8bf4", "color": "white"
           },
           {
-            "background": "#F99D32","color":"white"
+            "background": "#F99D32", "color": "white"
           },
           {
-            "background": "#5CB281","color":"white"
+            "background": "#5CB281", "color": "white"
           },
           {
-            "background": "#6BB9F0","color":"white"
+            "background": "#6BB9F0", "color": "white"
           },
           {
-            "background": "#94c840","color":"white"
+            "background": "#94c840", "color": "white"
           },
           {
-            "background": "#0a9dc7","color":"white"
+            "background": "#0a9dc7", "color": "white"
           },
           {
-            "background": "#e6b500","color":"white"
+            "background": "#e6b500", "color": "white"
           },
           {
-            "background": "#d45b7a","color":"white"
+            "background": "#d45b7a", "color": "white"
           },
           {
-            "background": "#ffabd7","color":"white"
+            "background": "#ffabd7", "color": "white"
           }
         ];
 
@@ -124,13 +124,13 @@ angular.module('applicationModule')
         var getRandomColor = function (userId) {
           //alert('getRandomColor.userId ' + userId)
           var index;
-          try{
-            index = parseInt(userId)%9;
-          }catch(e){
+          try {
+            index = parseInt(userId) % 9;
+          } catch (e) {
             index = 1;
           }
           //var index = parseInt(Math.random() * 4);
-          if(baseConfig.debug){
+          if (baseConfig.debug) {
             console.log('getRandomColor.Math.random() ' + Math.random())
             console.log('getRandomColor.index ' + index);
             console.log('getRandomColor.colorList[index] ' + angular.toJson(colorList[index]));
@@ -201,8 +201,8 @@ angular.module('applicationModule')
               userName = data.message.sendId;
             }
 
-            if(userIcon.indexOf("http://") == 0){
-            }else{
+            if (userIcon.indexOf("http://") == 0) {
+            } else {
               userIcon = '';
             }
 
@@ -345,7 +345,9 @@ angular.module('applicationModule')
             } else {
               callImgUrl = '';
             }
-            HandIMPlugin.callNetPhone(function(){},function(){},baseInfo.emp_code,baseInfo.emp_name,callImgUrl);
+            HandIMPlugin.callNetPhone(function () {
+            }, function () {
+            }, baseInfo.emp_code, baseInfo.emp_name, callImgUrl);
             return true;
           } else if (btnIndex == 3) {
             contactService.contactLocal(baseInfo);
@@ -437,8 +439,7 @@ angular.module('applicationModule')
           hmsHttp.post(url, params).success(function (result) {
           }).error(function (response, status) {
           });
-        }
-        ;
+        };
 
 
         this.searchEmployee = function (myscope, page, loadMoreFlag) {
@@ -467,7 +468,7 @@ angular.module('applicationModule')
               if (response.total && response.total > 0) {
                 myscope.employeeList = [];
                 angular.forEach(response.rows, function (data) {
-                  if(data.avatar && data.avatar != ""){
+                  if (data.avatar && data.avatar != "") {
                     data.avatar = data.avatar + '64';
                   }
                   myscope.employeeList.push(data);
@@ -495,6 +496,86 @@ angular.module('applicationModule')
           }).error(function (error) {
             myscope.$broadcast('scroll.infiniteScrollComplete');
           });
+        };
+
+        function toIPhoneModel(model) {
+          var dictionary = {
+            "i386"    :"Simulator",
+            "x86_64"  :"Simulator",
+            "iPod1,1":"iPod Touch",         // (Original)
+            "iPod2,1":"iPod Touch 2",       // (Second Generation)
+            "iPod3,1":"iPod Touch 3",       // (Third Generation)
+            "iPod4,1":"iPod Touch 4",       // (Third Generation)
+            "iPod7,1":"iPod Touch 6",       // (6th Generation)
+            "iPhone1,1":"iPhone",           // (Original)
+            "iPhone1,2":"iPhone 3G",        // (3G)
+            "iPhone2,1":"iPhone 3GS",       // (3GS)
+            "iPad1,1":"iPad",               // (Original)
+            "iPad2,1":"iPad 2",             // (2nd Generation)
+            "iPad3,1":"new iPad",           // (3rd Generation)
+            "iPhone3,1":"iPhone 4",         // (GSM)
+            "iPhone3,3":"iPhone 4",         // (CDMA/Verizon/Sprint)
+            "iPhone4,1":"iPhone 4S",
+            "iPhone5,1":"iPhone 5",         // (model A1428, AT&T/Canada)
+            "iPhone5,2":"iPhone 5",         // (model A1429, everything else)
+            "iPad3,4":"iPad 4th Generation",// (4th Generation)
+            "iPad2,5":"iPad Mini",          // (Original)
+            "iPhone5,3":"iPhone 5c",        // (model A1456, A1532 | GSM)
+            "iPhone5,4":"iPhone 5c",        // (model A1507, A1516, A1526 (China), A1529 | Global)
+            "iPhone6,1":"iPhone 5s",        // (model A1433, A1533 | GSM)
+            "iPhone6,2":"iPhone 5s",        // (model A1457, A1518, A1528 (China), A1530 | Global)
+            "iPhone7,1":"iPhone 6 Plus",
+            "iPhone7,2":"iPhone 6",
+            "iPhone8,1":"iPhone 6S",
+            "iPhone8,2":"iPhone 6S Plus",
+            "iPhone8,4":"iPhone SE",
+            "iPhone9,1":"iPhone 7",
+            "iPhone9,3":"iPhone 7",
+            "iPhone9,2":"iPhone 7 Plus",
+            "iPhone9,4":"iPhone 7 Plus",
+            "iPad4,1":"iPad Air",           // 5th Generation iPad (iPad Air) - Wifi
+            "iPad4,2":"iPad Air",           // 5th Generation iPad (iPad Air) - Cellular
+            "iPad4,4":"iPad Mini",          // (2nd Generation iPad Mini - Wifi)
+            "iPad4,5":"iPad Mini",          // (2nd Generation iPad Mini - Cellular)
+            "iPad4,7":"iPad Mini",          // (3rd Generation iPad Mini - Wifi (model A1599))
+            "iPad6,7":"iPad Pro (12.9\")",  // iPad Pro 12.9 inches - (model A1584)
+            "iPad6,8":"iPad Pro (12.9\")",  // iPad Pro 12.9 inches - (model A1652)
+            "iPad6,3":"iPad Pro (9.7\")",   // iPad Pro 9.7 inches - (model A1673)
+            "iPad6,4":"iPad Pro (9.7\")"    // iPad Pro 9.7 inches - (models A1674 and A1675)
+          };
+          if(dictionary[model]){
+            return dictionary[model];
+          } else {
+            return "Unknown IOS model";
+          }
         }
-      }])
-;
+
+        this.registerDeviceInfo = function () {
+          var url = baseConfig.queryPath + '/device/insertOrUpdate';
+
+          var model;
+          var appVersion = baseConfig.version.currentVersion + '.' + baseConfig.version.currentSubVersion;
+          if( ionic.Platform.isIOS() ){
+            model = toIPhoneModel(device.model);
+          } else {
+            model  = device.model;
+          }
+
+          var params = {
+            "deviceBrand": model,
+            "deviceType": device.manufacturer,
+            "operationSystem": device.platform,
+            "operationSystemVersion": device.version,
+            "clientVersion": appVersion,
+            "ime": device.uuid,
+            "width": window.innerWidth,
+            "height": window.innerHeight,
+            "pixelRatio": window.devicePixelRatio
+          };
+          alert('registerDeviceInfo.params ' + angular.toJson(params));
+          hmsHttp.post(url, params).success(function (result) {
+            alert('registerDeviceInfo.result ' + angular.toJson(result));
+          }).error(function (response, status) {
+          });
+        }
+      }]);

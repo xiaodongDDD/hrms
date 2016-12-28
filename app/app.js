@@ -121,7 +121,7 @@ angular.module('myApp')
           }
           if (!window.localStorage.token || window.localStorage.token == '') {
           } else {
-            checkVersionService.checkAppVersion();
+            //checkVersionService.checkAppVersion();
           }
 
           var initImChatList = function () {

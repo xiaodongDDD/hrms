@@ -63,6 +63,7 @@ angular.module('HmsModule')
             var localVersion = baseConfig.version.currentVersion.split('.');
 
             if (dealVersionUtil(localVersion,serveVersion)) {
+
               function selectAction(buttonIndex) { // update from pgy
                 if (buttonIndex == 1) { //确认按钮
                   window.open('https://itunes.apple.com/us/app/id1004914790?ls=1&mt=8', '_system', 'location=yes');
@@ -83,6 +84,7 @@ angular.module('HmsModule')
                   var minVersion = response.returnData.subVersiorNumber;
                   var minUpdateUrl = response.returnData.subDownloadUrl;
                   var subDownloadDesc = response.returnData.subDownloadDesc;
+                  var subForceUpdate = response.returnData.sub_force_update;
                   if(parseInt(minVersion) > parseInt(baseConfig.version.currentSubVersion)){
                     function selectAction_min(buttonIndex) { // update from pgy
                       if (buttonIndex == 1) { //确认按钮
@@ -131,6 +133,7 @@ angular.module('HmsModule')
                 serveVersionParams.bigUpdateUrl = response.returnData.downloadUrl;
                 serveVersionParams.minVersion = response.returnData.subVersiorNumber;
                 serveVersionParams.minUpdateUrl = response.returnData.subDownloadUrl;
+                serveVersionParams.subForceUpdate = response.returnData.sub_force_update;
               } catch (e) {
               }
               try {
