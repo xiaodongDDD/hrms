@@ -38,7 +38,8 @@
                      hmsPopup,
                      plansService,
                      baseConfig,
-                     $ionicPlatform) {
+                     $ionicPlatform,
+                     $cordovaKeyboard) {
     var vm = $scope;
     //将页面的状态栏设置成黑色
     $ionicPlatform.ready(function () {
@@ -1213,6 +1214,17 @@
           }, 0);
         });
     };
+    $ionicPlatform.registerBackButtonAction(function (e) {
+      console.log("====registerBackButtonAction");
+      if($ionicHistory.backView()) {
+        console.log($cordovaKeyboard.isVisible());
+        if($cordovaKeyboard.isVisible()) {
+          $cordovaKeyboard.close();
+        }else {
+          $ionicHistory.goBack();
+        }
+      }
+    }, 101);
   }
 }());
 

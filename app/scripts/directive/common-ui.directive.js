@@ -227,6 +227,10 @@ HmsModule
             angular.element(element).css({
               'bottom':0
             });
+            cordova.plugins.Keyboard.isVisible = true;
+            $timeout(function() {
+              cordova.plugins.Keyboard.isVisible = false;
+            },100);
           });
         }
       }
@@ -252,6 +256,10 @@ HmsModule
           angular.element(element).css({
             'bottom':60
           });
+          cordova.plugins.Keyboard.isVisible = true;
+          $timeout(function() {
+            cordova.plugins.Keyboard.isVisible = false;
+          },100);
         });
       }
     }

@@ -74,7 +74,8 @@ angular.module('myApp')
               historyContact,
               historyCompetitor,
               historyOpportunity,
-              historyBidbond
+              historyBidbond,
+              $cordovaKeyboard
     ) {
 
       $ionicPlatform.ready(function () {
@@ -88,7 +89,6 @@ angular.module('myApp')
           navigator.splashscreen.hide();
         }catch(e){
         }
-
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -360,7 +360,7 @@ angular.module('myApp')
         } else {
 
           window.localStorage.isHrms2108 = "true";
-          
+
           $urlRouterProvider.otherwise('/login');
         }
       }
