@@ -729,8 +729,10 @@ angular.module('opportunityModule')
             hmsPopup.showPopup("添加商机成功");
             $scope.$emit('OPPORTUNITY_ADD_SUCCESS');
           }
-        } else {
+        } else if(response.returnCode == "E"){
           hmsPopup.showPopup(response.returnMsg);
+        } else {
+          hmsPopup.showPopup("保存失败，请检查网络或联系管理员");
         }
       };
 
@@ -739,8 +741,10 @@ angular.module('opportunityModule')
         if(response.returnCode == "S"){
           hmsPopup.showPopup("线索提升成功");
           $scope.$emit('CLUE_PROMOTE_SUCCESS');
-        } else {
+        } else if(response.returnCode == "E"){
           hmsPopup.showPopup(response.returnMsg);
+        } else {
+          hmsPopup.showPopup("保存失败，请检查网络或联系管理员");
         }
       };
 

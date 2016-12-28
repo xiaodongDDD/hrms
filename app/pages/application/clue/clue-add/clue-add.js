@@ -825,8 +825,10 @@ angular.module('clueModule')
             hmsPopup.showPopup("添加线索成功");
             $scope.$emit('CLUE_ADD_SUCCESS');
           }
-        } else {
+        } else if(response.returnCode == "E"){
           hmsPopup.showPopup(response.returnMsg);
+        } else {
+          hmsPopup.showPopup("保存失败，请检查网络或联系管理员");
         }
       };
 

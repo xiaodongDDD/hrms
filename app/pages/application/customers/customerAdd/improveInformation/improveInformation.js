@@ -1439,8 +1439,10 @@ angular.module('customerModule')
                    $state.go('tab.customer-detail');
                  }
 
-               }else {
+               }else if(data.returnCode==='E'){
                  hmsPopup.showPopup(data.returnMsg);
+               } else {
+                 hmsPopup.showPopup('保存失败，请检查网络或联系管理员');
                }
              })
            }else {
@@ -1461,8 +1463,10 @@ angular.module('customerModule')
                  hmsPopup.confirmCrmCheck('保存成功，是否现在提交审核？',$scope,successConfirm,data.customer.customerId);
                  $scope.customer =data.customer;
 
-               }else {
+               }else if(data.returnCode==='E'){
                  hmsPopup.showPopup(data.returnMsg);
+               } else {
+                 hmsPopup.showPopup('保存失败，请检查网络或联系管理员');
                }
              })
            }
