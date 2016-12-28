@@ -43,6 +43,7 @@ angular.module('opportunityModule')
     'opportunityDetailDataService',
     'OpportunityDetailCompetitorService',
     'opportunityPermissionService',
+    'opportunityBidbondService',
     function ($scope,
               $ionicHistory,
               $state,
@@ -63,7 +64,8 @@ angular.module('opportunityModule')
               $ionicModal,
               opportunityDetailDataService,
               OpportunityDetailCompetitorService,
-              opportunityPermissionService) {
+              opportunityPermissionService,
+    		  opportunityBidbondService) {
 
       $rootScope.$broadcast("REFRESH_CUSTOMER_HISTORY");
 
@@ -540,7 +542,7 @@ angular.module('opportunityModule')
           $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-principal/opportunity-detail-principal.html";
         }
         else if($index == 5) {
-		  $scope.contentInner = "build/pages/application/opportunity/opportunity-detail/opportunity-detail-bidbond/opportunity-detail-bidbond.html";
+		  $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-bidbond/opportunity-detail-bidbond.html";
 	 	  $scope.chooseThis = function() {
 			 $state.go('tab.bidbond-add');
 		  }
