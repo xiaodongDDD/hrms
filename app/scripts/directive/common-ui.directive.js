@@ -242,7 +242,7 @@ HmsModule
         window.addEventListener('native.keyboardshow',function (e){
 
           angular.element(element).css({
-            'bottom':e.keyboardHeight + 44 + 'px'
+            'bottom':e.keyboardHeight  + 'px'
           });
 
 
@@ -250,7 +250,7 @@ HmsModule
 
         window.addEventListener('native.keyboardhide',function (e){
           angular.element(element).css({
-            'bottom':0
+            'bottom':60
           });
         });
       }
