@@ -345,7 +345,7 @@
     "BANK":"Bank of payee",
     "ACCOUNT":"Account of payee",
     "PAY_CONTENT":"Payment content" ,
-    "CHOOSE_OPPO":"Choose oppotunity"
+    "CHOOSE_CUS":"Choose customer"
   },
   "BIDBOND":{
     "BIDBOND":"Bidbond",

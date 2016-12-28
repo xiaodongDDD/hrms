@@ -128,6 +128,7 @@ angular.module('bidbondModule')
 					} else {
 						$scope.showDisable = true;
 						/*    hmsPopup.showPopup($stateParams.param.workflowStatusName+"，不可编辑");*/
+						document.getElementById("saveBtn").style.display="none";
 					}
 				} else {
 
