@@ -156,7 +156,7 @@ angular.module('planModule')
             "saleContent": "",
             "isImportant": $stateParams.planData.isImportant,
             "userId": window.localStorage.empno,
-            "planType": "",
+            "planType": "HCRM_NEW_PLAN",
             "planSource": null,
             "dataStatus": "HCRM_VALID"
           };
@@ -186,7 +186,7 @@ angular.module('planModule')
             "saleContent": "",
             "isImportant":"",
             "userId": window.localStorage.empno,
-            "planType": "",
+            "planType": "HCRM_NEW_PLAN",
             "planSource": null,
             "dataStatus": "HCRM_VALID"
           };
