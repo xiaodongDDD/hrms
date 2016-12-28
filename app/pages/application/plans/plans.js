@@ -427,12 +427,12 @@
             }, 0);
           }, 300);
         } else {
-          $timeout(function () {
-            var itemHeight = document.getElementById("comment-text");
-            itemHeight.style.height = '40px';
-            itemHeight.scrollTop = 0; //防抖动
-            itemHeight.style.height = itemHeight.scrollHeight + "px";
-            cordova.plugins.Keyboard.show();
+            $timeout(function () {
+              var itemHeight = document.getElementById("comment-text");
+              itemHeight.style.height = '40px';
+              itemHeight.scrollTop = 0; //防抖动
+              itemHeight.style.height = itemHeight.scrollHeight + "px";
+              cordova.plugins.Keyboard.show();
             $timeout(function () {
               item.focus();
               $scope.$apply();
@@ -1218,6 +1218,7 @@
       console.log("====registerBackButtonAction");
       if($ionicHistory.backView()) {
         console.log($cordovaKeyboard.isVisible());
+        console.log(cordova.plugins.Keyboard.isVisible);
         if($cordovaKeyboard.isVisible()) {
           $cordovaKeyboard.close();
         }else {
