@@ -55,9 +55,7 @@
     var planId = $stateParams.planId;
     var param = {
       "planId": ''
-    }
-
-
+    };
     var getPlanSuccess = function (data) {
       $scope.showSmallCrmLoading = false;
       if (data.returnCode == 'S') {
@@ -79,7 +77,6 @@
 
     if (planId != '' && planId != undefined) {
       param.planId = planId;
-
       plansService.getPlanByDate(getPlanSuccess, error, param);
     }
     console.log(detail);

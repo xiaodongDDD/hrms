@@ -85,12 +85,12 @@
                   </div>
                 </div>
                 <div class="plan-title">
-                  {{plan.customerFullName==""?"":("客户 "+plan.customerFullName)}}
+                  {{plan.customerFullName==""?"":("客户："+plan.customerFullName)}}
                   <!--  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
                     {{plan.opportunityFullName}}-->
                 </div>
-                <div style=" font-size: 1.2em;color: #333333;">
-                  {{plan.opportunityFullName==""?"":("商机 "+plan.opportunityFullName)}}
+                <div style=" font-size: 15px;color: #333333;">
+                  {{plan.opportunityFullName==""?"":("商机："+plan.opportunityFullName)}}
                 </div>
                 <div class="plan-content">计划内容：{{plan.saleContent}}</div>
               </div>
@@ -136,12 +136,13 @@
                     </div>
                   </div>
                   <div class="plan-title">
-                    {{plan.customerFullName==""?"":("客户 "+plan.customerFullName)}}
+
+                    {{plan.customerFullName==""?"":("客户："+plan.customerFullName)}}
                     <!--  <span ng-if="plan.opportunityFullName && plan.opportunityFullName != ''">：</span>
                       {{plan.opportunityFullName}}-->
                   </div>
-                  <div style=" font-size: 1.2em;color: #333333;">
-                    {{plan.opportunityFullName==""?"":("商机 "+plan.opportunityFullName)}}
+                  <div style=" font-size:15px;color: #333333;">
+                    {{plan.opportunityFullName==""?"":("商机："+plan.opportunityFullName)}}
                   </div>
                   <div class="plan-content">计划内容：{{plan.saleContent}}</div>
                 </div>
@@ -194,11 +195,11 @@
               this.style.height = this.scrollHeight + 'px';
               this.parentNode.style.height = '0px';
               this.parentNode.style.height = this.scrollHeight + 0 + 'px';"
-                placeholder="" ng-model="planDetail.annotate"></textarea>
+                 placeholder="" ng-model="planDetail.annotate"></textarea>
     </div>
     <div class="common-submit"  ng-click="annotateSubmit(planDetail)">
       <div>
-      发送
+        发送
       </div>
     </div>
   </div>

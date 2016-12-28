@@ -190,7 +190,6 @@ angular.module('contactModule')
           $state.go('tab.application');
         }
       };
-    /*  $scope.pushNotification=true;*/
       $rootScope.img = "build/img/tabs/edit_add@3x_5.png";
       $scope.pushNotificationChange = function () {
         $scope.pushNotification.checked=!$scope.pushNotification.checked;
@@ -303,11 +302,6 @@ angular.module('contactModule')
       Array.prototype.clone = function () {
         return [].concat(this);
       };
-     /* $scope.pushNotificationChange = function () {
-        console.log('Push Notification Change', $scope.pushNotification.checked);
-      };
-
-      $scope.pushNotification = {checked: true};*/
       $scope.saveLinkman = function () {
         hmsPopup.showLoading("保存中");
         console.log($scope.data);
@@ -320,7 +314,11 @@ angular.module('contactModule')
         }else{
           $scope.data.isPrimary="N";
         }
-        if ($scope.data.contactType == "") {
+        if($scope.data.customerId==""){
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup("请选择关联客户");
+        }
+        else if ($scope.data.contactType == "") {
           /*   $scope.showLoading = false;*/
           hmsPopup.hideLoading();
           hmsPopup.showPopup("联系人类型不能为空")
@@ -603,30 +601,30 @@ angular.module('contactModule')
         $scope.searchSelectValue();
         $ionicScrollDelegate.scrollTop();
       };
-/*      $scope.clearSelectFilter = function () {
-        $scope.nowPage = 1;
-        $scope.searchModel.searchValueKey = '';
-        $scope.searchSelectValue();
-        $ionicScrollDelegate.scrollTop();
-        /!* $scope.items = $scope.data.clone();*!/
-      };*/
+      /*      $scope.clearSelectFilter = function () {
+       $scope.nowPage = 1;
+       $scope.searchModel.searchValueKey = '';
+       $scope.searchSelectValue();
+       $ionicScrollDelegate.scrollTop();
+       /!* $scope.items = $scope.data.clone();*!/
+       };*/
       $scope.searchSelectValue = function(){
         $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
         if($scope.nowSelectTarget['searchInterface']){
           //需要接口搜索的
           $scope.showCrmLoading = true;
           $scope.moreDataCanBeLoaded = false;
-   /*       if($scope.searchModel.searchValueKey == ''){
-            $scope.items = [];
-            $scope.nowPage = 1;
-            $scope.nowSelectTarget = cloneObj($scope.sourceTargetData);
-            $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
-          } else{*/
-            $scope.items = [];
-            $scope.nowPage = 1;
-            $scope.pageSize = 15;
-            $scope.nowSelectTarget.searchInterface.call(null,$scope.nowSelectTarget.searchParams,$scope.searchModel.searchValueKey,$scope.nowPage,$scope.pageSize);
-         /* }*/
+          /*       if($scope.searchModel.searchValueKey == ''){
+           $scope.items = [];
+           $scope.nowPage = 1;
+           $scope.nowSelectTarget = cloneObj($scope.sourceTargetData);
+           $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
+           } else{*/
+          $scope.items = [];
+          $scope.nowPage = 1;
+          $scope.pageSize = 15;
+          $scope.nowSelectTarget.searchInterface.call(null,$scope.nowSelectTarget.searchParams,$scope.searchModel.searchValueKey,$scope.nowPage,$scope.pageSize);
+          /* }*/
         } else {
           //本地字段搜索的
           $scope.nowPage = 1;

@@ -194,9 +194,9 @@
     }
 
     /*if (!ionic.Platform.isWebView()) {
-      viewHeaderHeight = 138;
-      calendarHideHeight = 90;
-    }*/
+     viewHeaderHeight = 138;
+     calendarHideHeight = 90;
+     }*/
 
     //初始化数据
     init();
@@ -206,6 +206,8 @@
         console.log('PlansCtrl.$ionicView.afterEnter');
       }
       if (plansService.getRefreshDataFlag()) {
+        console.log("新增之后？？");
+        init();
         plansService.setRefreshDataFlag(false);
         if (!$scope.showAsMonth) {
           getWeekPlan(new Date());
@@ -329,33 +331,33 @@
       var date2 = date.replace(/-/g, "/");
       goWeeklyReportDetail(date2)
     }
-   $scope.annotateSubmit=function(planDetail){
-   /*  console.log("ssssss");*/
-     var annotate=planDetail.annotate = $("#comment-text").val();
-     console.log(planDetail);
-     var params={
-       planId:planDetail.planId,
-       annotate: annotate
-     };
-     var annotateSuccess=function(result){
-       vm.showCommentFlag=false;
-       if(result.returnCode=="S"){
-         initSelect();
-         getPlanByLastSelectDay();
-       }else{
-         hmsPopup.showPopup=result.returnMsg;
-         console.log(result);
-       }
-     };
-     var annotatError=function(result){
-       vm.showCommentFlag=false;
-       console.log(result);
-     };
-     plansService.saleAnnotate(annotateSuccess,annotatError,params);
-   };
-/*    $watch ('planDetail.annotate',function(){
+    $scope.annotateSubmit=function(planDetail){
+      /*  console.log("ssssss");*/
+      var annotate=planDetail.annotate = $("#comment-text").val();
+      console.log(planDetail);
+      var params={
+        planId:planDetail.planId,
+        annotate: annotate
+      };
+      var annotateSuccess=function(result){
+        vm.showCommentFlag=false;
+        if(result.returnCode=="S"){
+          initSelect();
+          getPlanByLastSelectDay();
+        }else{
+          hmsPopup.showPopup=result.returnMsg;
+          console.log(result);
+        }
+      };
+      var annotatError=function(result){
+        vm.showCommentFlag=false;
+        console.log(result);
+      };
+      plansService.saleAnnotate(annotateSuccess,annotatError,params);
+    };
+    /*    $watch ('planDetail.annotate',function(){
 
-    });*/
+     });*/
     window.document.onkeydown = disableRefresh;
     function disableRefresh(evt){
       evt = (evt) ? evt : window.event;
@@ -390,7 +392,7 @@
       console.log(detail);
       console.log(vm.planAuthority.OTHER.selected);
       detail.showCommentFlag=vm.planAuthority.OTHER.selected;
-     /* detail.leaderName=;*/
+      /* detail.leaderName=;*/
       $state.go('tab.plans-detail', {"authority": getAuthorityType(), "planDetail": detail});
     }
     vm.planDetail={};
@@ -400,35 +402,36 @@
       vm.showCommentFlag=!vm.showCommentFlag;
       var item = $('#comment-text');
       if( vm.showCommentFlag==true){
-
-
-   /*   $scope.testH=$('#annotate').height();
-      console.log( $scope.testH);*/
-      if (ionic.Platform.isWebView()) {
-        $timeout(function () {
+        /*   $scope.testH=$('#annotate').height();
+         console.log( $scope.testH);*/
+        if (ionic.Platform.isWebView()) {
           cordova.plugins.Keyboard.show();
-          console.log("聚焦");
-          item.focus();
-          $scope.$apply();
-          var itemHeight= document.getElementById("comment-text");
-          itemHeight.style.height = '40px';
-          itemHeight.scrollTop = 0; //防抖动
-          itemHeight.style.height=itemHeight.scrollHeight+"px";
-          console.log(itemHeight.style.height);
-        }, 300);
-      }else{
-        $timeout(function () {
-        /*  cordova.plugins.Keyboard.show();*/
-          console.log("聚焦");
-         /* item.focus();*/
-          $scope.$apply();
-          var itemHeight= document.getElementById("comment-text");
-          itemHeight.style.height = '40px';
-          itemHeight.scrollTop = 0; //防抖动
-          itemHeight.style.height=itemHeight.scrollHeight+"px";
-          console.log(itemHeight.style.height);
-        });
-      }
+          $timeout(function () {
+            var itemHeight= document.getElementById("comment-text");
+            itemHeight.style.height = '40px';
+            itemHeight.scrollTop = 0; //防抖动
+            itemHeight.style.height=itemHeight.scrollHeight+"px";
+            console.log(itemHeight.style.height);
+            $timeout(function () {
+              console.log("聚焦");
+              item.focus();
+            },300);
+          });
+        }else{
+          $timeout(function () {
+            /*  cordova.plugins.Keyboard.show();*/
+            var itemHeight= document.getElementById("comment-text");
+            itemHeight.style.height = '40px';
+            itemHeight.scrollTop = 0; //防抖动
+            itemHeight.style.height=itemHeight.scrollHeight+"px";
+            console.log(itemHeight.style.height);
+            $timeout(function () {
+              console.log("聚焦");
+              item.focus();
+            },300);
+            $scope.$apply();
+          });
+        }
       }else{
         $timeout(function () {
           console.log("失焦");
@@ -440,7 +443,7 @@
       console.log("=====");
       console.log(vm.showCommentFlag);
       console.log(vm.planDetail);
-  /*    plan.annotate=vm.planDetail.annotate;*/
+      /*    plan.annotate=vm.planDetail.annotate;*/
     }
     function onRelease($event) {
       if (!$scope.showAsMonth) {
@@ -794,7 +797,6 @@
 
     function openCalendarPage() { //跳到原生日历界面--获取截止日期
       var success = function (response) {
-     /*  alert(response);*/
         try {
           var data =  JSON.parse(response);
           var result = data.result;
@@ -1122,18 +1124,6 @@
         getWeekPlan(new Date());
       }
     }
-   //失焦事件
-/*
-    $("document").on("blur","#textArea",function(){
-      console.log("失焦")
-    });
-*/
-/*    $(function(){
-      $('#comment-text').blur(function(){
-        alert('aaa');
-      });
-    });*/
- /*   $scope.holdAnnotate=false;*/
     $scope.showSmallCrmLoading=false;
     $scope.holdAnnotate = false;
     $scope.touchAnnotate=function(){
@@ -1209,21 +1199,6 @@
           }, 0);
         });
     };
-/*   var text  = $("#comment-text");
-    $scope.areaHight=function(){
-      console.log(text);
-      text.scrollTop = 0;
-      var srcollH=$("#annotate").height();
-      console.log(srcollH);
-      $("#comment-text").on("input",function(){
-    /!*    $(this).css({height:'500px'});*!/
-        $(this).css({height:srcollH+'px'});
-        console.log( $(this).height());
-        $(this).css({height:(this.scrollHeight)+"px"});
-        $('#test').css({height:(this.scrollHeight)+"px"});
-      });
-    };*/
-
   }
 }());
 
