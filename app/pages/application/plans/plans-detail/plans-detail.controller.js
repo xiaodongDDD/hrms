@@ -742,21 +742,21 @@
       if ($scope.showCommentFlag == true) {
         if (ionic.Platform.isWebView()) {
           $timeout(function () {
-            cordova.plugins.Keyboard.show();
-            console.log("聚焦");
-            item.focus();
-            $scope.$apply();
             var itemHeight = document.getElementById("commentAdd");
             itemHeight.style.height = '40px';
             itemHeight.scrollTop = 0; //防抖动
             itemHeight.style.height = itemHeight.scrollHeight + "px";
             console.log(itemHeight.style.height);
+            cordova.plugins.Keyboard.show();
+            console.log("聚焦");
+            item.focus();
+            $scope.$apply();
           }, 300);
         } else {
           $timeout(function () {
             /*  cordova.plugins.Keyboard.show();*/
             console.log("聚焦");
-            /* item.focus();*/
+             item.focus();
             $scope.$apply();
             var itemHeight = document.getElementById("commentAdd");
             itemHeight.style.height = '40px';

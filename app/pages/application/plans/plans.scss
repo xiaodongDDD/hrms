@@ -440,7 +440,7 @@
   }
   .holdFooter {
     width: 100%;
-    margin-top:90%;
+    margin-top:55%;
     z-index: 10000000;
     position: fixed;
     height: 30px;
@@ -503,7 +503,7 @@
     width: 80%;
     max-height: 110px;
     textarea {
-      overflow-y: visible;
+      overflow-y: auto;
       width: 100%;
       word-break: break-all;
       border: 1px solid #ddd;
