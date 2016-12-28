@@ -344,7 +344,7 @@
     "BANK":"收款人银行",
     "ACCOUNT":"收款人账号",
     "PAY_CONTENT":"付款说明",
-    "CHOOSE_OPPO":"请选择商机"
+    "CHOOSE_CUS":"请选择客户"
   },
   "BIDBOND":{
     "BIDBOND":"保证金",

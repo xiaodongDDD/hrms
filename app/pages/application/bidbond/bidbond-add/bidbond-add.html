@@ -6,7 +6,7 @@
     <h2 class="title">
       	{{'BIDBOND_ADD.BIDBOND_APPLICATION' | T}}
     </h2>
-    <button class="button button-clear" ng-click="saveBidbond()">{{ 'SAVE' | T }}</button>
+    <button class="button button-clear" id="saveBtn" ng-click="saveBidbond()">{{ 'SAVE' | T }}</button>
   </ion-header-bar>
 
   <crm-loading ng-if="showCrmLoading"></crm-loading>
@@ -18,17 +18,17 @@
   <div class="common-input-area">
 
   	<!--商机选择（非指令）-->
-   <div class="hms-select-item-style" ng-click="showSelectDiv('business')" >
+   <div class="hms-select-item-style" ng-click="showSelectDiv('customer')" >
 	<div class="hms-select-content  last-line" style="height: 67px;" >
 		<div class="hms-select-area col col-23"  style="height: 57px;max-width: 35%;">
 			<div class="hms-select-header ng-binding" style="height: 57px;line-height:57px;padding-top:0px;font-size: 16px;color: #666666;">
-				{{('BIDBOND_ADD.CHOOSE_OPPO' | T)}}
+				{{('BIDBOND_ADD.CHOOSE_CUS' | T)}}
 			</div>
 		</div>
             <div class="row info-item-con col col-50">
               <div class="info-item-con" style="height: 57px;line-height:57px;font-size: 16px;width: 100%;text-align: right;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-                {{(showData.opportunityName === "" ||showData.opportunityName === null || showData.opportunityName===
-                undefined)?"请选择":showData.opportunityName}}
+                {{(showData.fullName === "" ||showData.fullName === null || showData.fullName===
+                undefined)?"请选择":showData.fullName}}
               </div>
             </div>
 		<div class="hms-select-arrow col-center">
@@ -41,8 +41,8 @@
 
   <!--商机相关信息（指令）-->
         <hms-select-item
-          label-name="titleList.customer"
-          input-box="showData.fullName"
+          label-name="titleList.oppotunityName"
+          input-box="showData.oppotunityName"
           important="true"
           is-change="readonly.readonlyFlag">
         </hms-select-item>
