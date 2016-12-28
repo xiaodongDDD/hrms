@@ -545,6 +545,7 @@
         "annotate": vm.planDetail.annotate,
         "planDate": plansService.getDateTimeString(vm.planDetail.scheduleDate),
         "planSource": detail.planSource,
+        "isImportant":vm.planDetail.isImportant,
         "planType": 'HCRM_NEW_PLAN',
         "saleContent": vm.saleContent,
         "timeBucket": timeBucket,
