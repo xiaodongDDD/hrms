@@ -393,28 +393,21 @@ angular.module('loginModule')
               if (ionic.Platform.isWebView()) {
                 imService.initImData();
               }
-
               //检查crm权限
-              function checkCrmError(){
+              var url = baseConfig.basePath + "user_role";
+              hmsHttp.post(url, {}).success(function (response) {
                 $scope.showLoginButton = false;
                 $scope.showButtonIcon = false;
                 checkVersionService.checkAppVersion();
-                window.localStorage.crm = 'N';
+                if(response.returnCode == 'S')
+                  window.localStorage.crm = response.message == 'Y';
                 $state.go("tab.message");
-              }
-              var url = baseConfig.basePath + "user_role";
-              hmsHttp.post(url, {}).success(function (result) {
-                if(result != 'Y' && result != 'N'){
-                  checkCrmError();
-                } else {
-                  $scope.showLoginButton = false;
-                  $scope.showButtonIcon = false;
-                  checkVersionService.checkAppVersion();
-                  window.localStorage.crm = result;
-                  $state.go("tab.message");
-                }
               }).error(function (response, status) {
-                checkCrmError();
+                $scope.showLoginButton = false;
+                $scope.showButtonIcon = false;
+                checkVersionService.checkAppVersion();
+                window.localStorage.crm = false;
+                $state.go("tab.message");
               });
 
             } else {
