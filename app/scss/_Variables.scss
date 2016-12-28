@@ -33,9 +33,14 @@ $global-background: #f8f8f8 !default;
     border-color: #b2b2b2;
     //background-color: #f8f8f8;
     //background-image: linear-gradient(0deg, #b2b2b2, #b2b2b2 50%, transparent 50%);
-    color: $color-base;
-    background-image: url("../img/NaviBar@3x.png");
-    background-size: cover;
+    color: #1F8CEB;
+    background: white;
+    background-image: linear-gradient(0deg,#ddd,#ddd 50%,transparent 50%);
+    background-position: bottom;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    //background-image: url("../img/NaviBar@3x.png");
+    //background-size: cover;
   }
   &.bar-modal {
     height: 40px;
@@ -48,7 +53,7 @@ $global-background: #f8f8f8 !default;
 .bar {
   &.bar-stable {
     .title {
-      color: $color-base;
+      color: #1F8CEB;
       font-size: $font-size-big;
       left: 0px !important;
       right: 0px !important;
@@ -60,7 +65,7 @@ $global-background: #f8f8f8 !default;
 .bar {
   .buttons {
     .button {
-      color: $color-base;
+      color: #1F8CEB;
       font-size: $font-size-big;
     }
   }

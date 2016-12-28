@@ -14,9 +14,13 @@ angular.module('utilModule').factory('httpRequestHeader', function (baseConfig) 
         var timestamp = new Date().getTime();
         var token = CryptoJS.MD5(window.localStorage.token + timestamp);
         config.headers.timestamp = timestamp;
-        config.headers.token     = token;
+        config.headers.token = token;
         config.headers.loginName = window.localStorage.empno;
-        config.headers.appVersion = baseConfig.version.currentVersion + '_' + baseConfig.version.currentSubVersion;
+        config.headers.appVersion = baseConfig.version.currentVersion + '.' + baseConfig.version.currentSubVersion;
+        config.headers["Content-Type"] = 'application/json;charset=UTF-8';
+        config.headers['X-Requested-With'] = 'XMLHttpRequest';
+        config.headers['X-hmapfront-client'] = 'APP';
+        config.headers['X-hmapfront-version'] = baseConfig.version.currentVersion + '.' + baseConfig.version.currentSubVersion;
       }
       return config;
     }

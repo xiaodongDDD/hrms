@@ -1,13 +1,6 @@
 <ion-view view-title="我的" class="my-info">
   <!--style="background: url('build/img/myInfo/background.png');-->
-  <div id="portrait-image" class="shrink-image"
-       ng-style="portraitImageLarge">
-  </div>
-  <button class="button button-icon setup-button" ng-click="setup()">
-    <img src="build/img/myInfo/setup.png" class="setup-image"/>
-  </button>
-  <ion-content class="content-style" has-bouncing="true" elastic-image="portrait-image" style="bottom:48px;">
-    <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
+  <div id="elasticImageLittle" class="shrink-image">
     <ion-item class="header-item" ng-click="checkMyInfo()">
       <div class="header-item-image-row">
         <img ng-src="{{defaultPortrait}}" class="header-image"/>
@@ -19,16 +12,28 @@
         <label class="employee-number-label" ng-bind="personalInfo.employee_number"></label>
       </div>
     </ion-item>
+  </div>
+  <button class="button button-icon setup-button" ng-click="setup()">
+    <img src="build/img/myInfo/setup.png" class="setup-image"/>
+  </button>
+  <div class="logout-button" ng-click="logout()">
+    <div class="img-area">
+      <img src="build/img/myInfo/logout@3x.png" class="setup-image"/>
+    </div>
+    <div class="text-area">退出</div>
+  </div>
+  <ion-content class="content-style" has-bouncing="true" elastic-image2="elasticImageLittle" style="bottom:48px;">
+    <hms-loading ng-if="showLoading" style="padding-top: 110px"></hms-loading>
     <ion-item class="info-item">
       <div class="row icon-row">
         <div class="col col-33 center-style">
-          <img src="build/img/myInfo/position.png" class="col-image"/>
+          <img src="build/img/myInfo/position@3x.png" class="col-image"/>
         </div>
         <div class="col col-33 center-style">
-          <img src="build/img/myInfo/level.png" class="col-image"/>
+          <img src="build/img/myInfo/level@3x.png" class="col-image"/>
         </div>
         <div class="col col-33 center-style">
-          <img src="build/img/myInfo/baseland.png" class="col-image"/>
+          <img src="build/img/myInfo/baseland@3x.png" class="col-image"/>
         </div>
       </div>
       <div class="row text-row">
@@ -45,7 +50,7 @@
     </ion-item>
     <div class="colorful-part">
       <ion-item class="login-item" ng-click="faceRecognition()">
-        <div class="row login-item-row">
+        <div class="row login-item-row has-line">
           <div class="login-icon-shelter">
             <img src="build/img/myInfo/face-recognition@3x.png" class="login-icon"/>
           </div>
@@ -55,7 +60,7 @@
         <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
       </ion-item>
       <ion-item class="login-item" ng-click="feedback()">
-        <div class="row login-item-row">
+        <div class="row login-item-row has-line">
           <div class="login-icon-shelter">
             <img src="build/img/myInfo/feedback.png" class="feedback-icon"/>
           </div>
@@ -75,7 +80,7 @@
     </div>
     <div class="common-part">
       <ion-item class="login-item" ng-click="checkHelp()">
-        <div class="row login-item-row">
+        <div class="row login-item-row has-line">
           <div class="login-icon-shelter">
             <img src="build/img/myInfo/help.png" class="help-icon"/>
           </div>
@@ -87,12 +92,12 @@
         <div class="row feedback-item-row">
           <div class="login-icon-shelter">
             <img src="build/img/myInfo/version.png" class="help-icon"/>
-        </div>
+          </div>
           <label class="login-label" ng-bind="currentVersion"></label>
         </div>
         <img src="build/img/application/dorm-apply/arrow-gray.png" class="arrow-icon"/>
       </ion-item>
     </div>
-    <button class="button button-block logout-button" ng-click="logout()">注销登录</button>
+    <!--<button class="button button-block logout-button" ng-click="logout()">注销登录</button>-->
   </ion-content>
 </ion-view>
