@@ -18,6 +18,7 @@ angular.module('loginModule')
     'imService',
     '$rootScope',
     'hmsJpushService',
+    'hmsHttp',
     function ($scope,
               $state,
               baseConfig,
@@ -31,7 +32,8 @@ angular.module('loginModule')
               hmsPopup,
               imService,
               $rootScope,
-              hmsJpushService) {
+              hmsJpushService,
+              hmsHttp) {
 
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
@@ -302,6 +304,7 @@ angular.module('loginModule')
           return "Unknown IOS model";
         }
       }
+
       function loginPost(){//后台采用HAP后更改成包含Content-type的方式，账号密码采用encodeURIComponent()转换，这样可以传特殊符号
         var deviceInfo="";
         if(ionic.Platform.isAndroid()){
@@ -338,6 +341,7 @@ angular.module('loginModule')
           url:url
         })
       }
+
       $scope.login = function () {//登录功能
         if (window.localStorage.empno != $scope.loginInfo.username) {
           localStorage.removeItem('key_history1');
@@ -385,14 +389,34 @@ angular.module('loginModule')
               window.localStorage.empno = $scope.loginInfo.username;
               window.localStorage.checkboxSavePwd = $scope.rememberPassword;
               $scope.bigPortrait = "build/img/login/login-hand.png";
-              $scope.showLoginButton = false;
-              $scope.showButtonIcon = false;
-              checkVersionService.checkAppVersion();
               //imService.initImData();
               if (ionic.Platform.isWebView()) {
                 imService.initImData();
               }
-              $state.go("tab.message");
+
+              //检查crm权限
+              function checkCrmError(){
+                $scope.showLoginButton = false;
+                $scope.showButtonIcon = false;
+                checkVersionService.checkAppVersion();
+                window.localStorage.crm = 'N';
+                $state.go("tab.message");
+              }
+              var url = baseConfig.basePath + "user_role";
+              hmsHttp.post(url, {}).success(function (result) {
+                if(result != 'Y' && result != 'N'){
+                  checkCrmError();
+                } else {
+                  $scope.showLoginButton = false;
+                  $scope.showButtonIcon = false;
+                  checkVersionService.checkAppVersion();
+                  window.localStorage.crm = result;
+                  $state.go("tab.message");
+                }
+              }).error(function (response, status) {
+                checkCrmError();
+              });
+
             } else {
               $scope.bigPortrait = "build/img/login/login-hand.png";
               $scope.showLoginButton = false;
