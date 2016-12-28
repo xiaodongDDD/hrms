@@ -212,7 +212,12 @@ HmsModule
       restrict: 'A',
       link: function(scope, element, attributes) {
         if (ionic.Platform.isAndroid()) {
-
+          window.addEventListener('native.keyboardhide',function (e){
+            cordova.plugins.Keyboard.isVisible = true;
+            $timeout(function() {
+              cordova.plugins.Keyboard.isVisible = false;
+            },100);
+          });
         }else{
           window.addEventListener('native.keyboardshow',function (e){
 
@@ -241,7 +246,12 @@ HmsModule
     restrict: 'A',
     link: function(scope, element, attributes) {
       if (ionic.Platform.isAndroid()) {
-
+        window.addEventListener('native.keyboardhide',function (e){
+          cordova.plugins.Keyboard.isVisible = true;
+          $timeout(function() {
+            cordova.plugins.Keyboard.isVisible = false;
+          },100);
+        });
       }else{
         window.addEventListener('native.keyboardshow',function (e){
 
