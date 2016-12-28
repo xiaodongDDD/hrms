@@ -33,6 +33,7 @@ angular.module('applicationModule')
       $scope.animationsEnabled = false;
       $scope.openDoor = 0;
       $scope.fetchWorkflowData = true;
+      $scope.hasCrm = window.localStorage.crm == 'true';
 
       var menuFetchFlag = false;
 
@@ -360,7 +361,8 @@ angular.module('applicationModule')
           "planDateTo": formatDateByDate(weekEnd),
           "type": "MY"
         };
-        plansService.getHasPlanList(getHasPlanListSuccess, params);
+        if($scope.hasCrm)
+          plansService.getHasPlanList(getHasPlanListSuccess, params);
         TimeSheetService.getWeekTimeSheet(getTimeSheetSuccess, formatDateByDate(weekStart), formatDateByDate(weekEnd));
       })();
 

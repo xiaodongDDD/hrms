@@ -1,6 +1,7 @@
 <ion-view view-title="通讯录" class="crm crm-contact">
   <ion-header-bar align-title="center" class="bar-stable">
-    <div class="header-select-button">
+    <div class="title" ng-if="!hasCrm">通讯录</div>
+    <div class="header-select-button" ng-if="hasCrm">
       <div class="selected" ng-click="selectSubHeader(0)" ng-class="{true:'selected'}[subHeadersSelect[0]]">  {{bilingual.customer}}</div>
       <div ng-click="selectSubHeader(1)" ng-class="{true:'selected'}[subHeadersSelect[1]]">  {{bilingual.colleague}}</div>
     </div>

@@ -48,6 +48,7 @@ angular.module('contactModule')
               getInitStructureInfo) {
 
       console.log($ionicHistory.viewHistory());
+      $scope.hasCrm = window.localStorage.crm == 'true';
       $scope.searched = {
         "page": 1,
         "pageSize": 10,
@@ -498,6 +499,9 @@ angular.module('contactModule')
           $scope.subHeadersSelect[$index] = true;
         }
       };
+      if(!$scope.hasCrm){
+        $scope.selectSubHeader(1);
+      }
 
       var pickContact = function(){
 

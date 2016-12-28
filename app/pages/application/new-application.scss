@@ -362,20 +362,22 @@ $applicationColor: white !default;
             text-align: center;
             color: #333;
             box-sizing: content-box;
-            span{
+            .dot-container{
               position: absolute;
+              width: 14px;
               bottom: 4px;
-              background: #959595;
-              height: 4px;
-              width: 4px;
-              border-radius: 50%;
-              box-sizing: content-box;
-            }
-            .TS-state{
-              left: calc(50% - 5px);
-            }
-            .plan-state{
-              right: calc(50% - 5px);
+              left: calc(50% - 7px);
+              display: flex;
+              justify-content: space-around;
+              span{
+                display: inline-block;
+                flex-wrap: nowrap;
+                background: #959595;
+                height: 4px;
+                width: 4px;
+                border-radius: 50%;
+                box-sizing: content-box;
+              }
             }
           }
           div.selected{
