@@ -586,7 +586,7 @@
         if ($scope.days[i].state == 1) {
           $scope.days[i].state = 0;
         }
-        if (isToday($scope.year, $scope.month, $scope.days[i].num))
+        if (isToday($scope.year, $scope.month, $scope.days[i].num) && $scope.days[i].state != -1)
           $scope.days[i].state = 2;
         if (($scope.days[i].state == 0 || $scope.days[i].state == 2) &&
           $scope.days[i].num == $scope.lastSelectDay.date &&
@@ -744,7 +744,7 @@
         $scope.scrollFlag = [];
         var headGroup = angular.element('.group-head-flag');
         if(headGroup.length > 1)
-          for(var i = 1; i < headGroup.length; i++)
+          for(var i = 0; i < headGroup.length; i++)
             $scope.scrollFlag.push(headGroup[i].offsetTop);
         console.log($scope.scrollFlag);
       }, 500)
@@ -754,9 +754,9 @@
       $timeout(function () {
         var top = $ionicScrollDelegate.$getByHandle('plan-scroll').getScrollPosition().top;
         var lastIndex = 0;
-        for (var i = 0; i < $scope.scrollFlag.length - 1; i++)
+        for (var i = 0; i < $scope.scrollFlag.length; i++)
           if (top >= $scope.scrollFlag[i]) {
-            lastIndex = i + 1;
+            lastIndex = i;
           }
         $scope.nowShowDate = $scope.planGroups[lastIndex].date;
       }, 500);
@@ -767,9 +767,9 @@
       if (top <= 0)
         return;
       var lastIndex = 0;
-      for (var i = 0; i < $scope.scrollFlag.length - 1; i++)
+      for (var i = 0; i < $scope.scrollFlag.length; i++)
         if (top >= $scope.scrollFlag[i]) {
-          lastIndex = i + 1;
+          lastIndex = i;
         }
       $scope.nowShowDate = $scope.planGroups[lastIndex].date;
     }
@@ -784,9 +784,9 @@
       $timeout(function () {
         var top = $ionicScrollDelegate.$getByHandle('plan-scroll').getScrollPosition().top;
         var lastIndex = 0;
-        for (var i = 0; i < $scope.scrollFlag.length - 1; i++)
+        for (var i = 0; i < $scope.scrollFlag.length; i++)
           if (top >= $scope.scrollFlag[i]) {
-            lastIndex = i + 1;
+            lastIndex = i;
           }
         $scope.nowShowDate = $scope.planGroups[lastIndex].date;
       }, 1000);
@@ -1028,7 +1028,8 @@
 
       $scope.$broadcast('scroll.infiniteScrollComplete');
 
-      $ionicScrollDelegate.$getByHandle('plan-scroll').scrollTop(true);
+      if($scope.page == 1)
+        $ionicScrollDelegate.$getByHandle('plan-scroll').scrollTop(true);
       $ionicScrollDelegate.$getByHandle('plan-scroll').resize();
 
       if (response.returnCode == "S") {
