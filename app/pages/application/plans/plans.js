@@ -17,8 +17,8 @@
             controller: 'PlansCtrl'
           }
         },
-        params:{
-          data:""
+        params: {
+          data: ""
         }
       })
   }
@@ -45,14 +45,14 @@
     vm.showNew = false;
     vm.lastHeight = 'calc(100vh - 88px)';
     vm.plans = [];
-    vm.newPlan={};
+    vm.newPlan = {};
     vm.planGroups = [];
     vm.headHeight = 36;
     vm.noTitleItemHeight = 113;
     vm.itemHeight = 133;
     vm.nowShowDate = '';
     vm.scrollFlag = [];
-    $scope.Authority="MY";
+    $scope.Authority = "MY";
     var currentCalendarType = 'MONTH';
     var currentCalendarCache;
     var currentCalendarPos;
@@ -84,7 +84,7 @@
 
     vm.calendarLoadingFlag = true;
     vm.planListLoadingFlag = true;
-    vm.showCommentFlag=false;
+    vm.showCommentFlag = false;
     //////////////数据相关/////////////////
     vm.page = 1;
     vm.pageSize = 10;
@@ -100,7 +100,7 @@
 
     var bigMonth = [1, 3, 5, 7, 8, 10, 12];
 
-    vm.weekdays = ['一', '二', '三', '四', '五', '六','日'];
+    vm.weekdays = ['一', '二', '三', '四', '五', '六', '日'];
 
     vm.days = [];
 
@@ -138,7 +138,7 @@
     vm.goWeeklyReport = goWeeklyReport;
     vm.goWeeklyReportList = goWeeklyReportList;
     vm.goDetail = goDetail;
-    vm.showComment=showComment;//评论
+    vm.showComment = showComment;//评论
     vm.onRelease = onRelease;
     vm.onDragUp = onDragUp;
     vm.goBack = goBack;
@@ -175,8 +175,8 @@
     vm.changeShowModel = changeShowModel;
     vm.getDayString = getDayString;
 
-    function getDayString(thisDate){
-      return  '星期' + vm.weekdays[(new Date(thisDate)).getDay()];
+    function getDayString(thisDate) {
+      return '星期' + vm.weekdays[(new Date(thisDate)).getDay()];
     }
 
     $scope.contentHeight = {};
@@ -331,120 +331,124 @@
       var date2 = date.replace(/-/g, "/");
       goWeeklyReportDetail(date2)
     }
-    $scope.annotateSubmit=function(planDetail){
+
+    $scope.annotateSubmit = function (planDetail) {
       /*  console.log("ssssss");*/
-      var annotate=planDetail.annotate = $("#comment-text").val();
+      var annotate = planDetail.annotate = $("#comment-text").val();
       console.log(planDetail);
-      var params={
-        planId:planDetail.planId,
+      var params = {
+        planId: planDetail.planId,
         annotate: annotate
       };
-      var annotateSuccess=function(result){
-        vm.showCommentFlag=false;
-        if(result.returnCode=="S"){
+      var annotateSuccess = function (result) {
+        vm.showCommentFlag = false;
+        if (result.returnCode == "S") {
           initSelect();
           getPlanByLastSelectDay();
-        }else{
-          hmsPopup.showPopup=result.returnMsg;
+        } else {
+          hmsPopup.showPopup = result.returnMsg;
           console.log(result);
         }
       };
-      var annotatError=function(result){
-        vm.showCommentFlag=false;
+      var annotatError = function (result) {
+        vm.showCommentFlag = false;
         console.log(result);
       };
-      plansService.saleAnnotate(annotateSuccess,annotatError,params);
+      plansService.saleAnnotate(annotateSuccess, annotatError, params);
     };
     /*    $watch ('planDetail.annotate',function(){
 
      });*/
     window.document.onkeydown = disableRefresh;
-    function disableRefresh(evt){
+    function disableRefresh(evt) {
       evt = (evt) ? evt : window.event;
       if (evt.keyCode) {
-        if(evt.keyCode ==13){
+        if (evt.keyCode == 13) {
           //do something
           console.log("planDetail");
           console.log(vm.planDetail);
-          var params={
-            planId:vm.planDetail.planId,
+          var params = {
+            planId: vm.planDetail.planId,
             annotate: vm.planDetail.annotate
           };
-          var annotateSuccess=function(result){
-            vm.showCommentFlag=false;
-            if(result.returnCode=="S"){
+          var annotateSuccess = function (result) {
+            vm.showCommentFlag = false;
+            if (result.returnCode == "S") {
 
-            }else{
-              hmsPopup.showPopup=result.returnMsg;
+            } else {
+              hmsPopup.showPopup = result.returnMsg;
               console.log(result);
             }
           };
-          var annotatError=function(result){
-            vm.showCommentFlag=false;
+          var annotatError = function (result) {
+            vm.showCommentFlag = false;
             console.log(result);
           };
-          plansService.saleAnnotate(annotateSuccess,annotatError,params);
+          plansService.saleAnnotate(annotateSuccess, annotatError, params);
         }
       }
     }
+
     //进入计划明细界面
     function goDetail(detail) {
       console.log(detail);
       console.log(vm.planAuthority.OTHER.selected);
-      detail.showCommentFlag=vm.planAuthority.OTHER.selected;
+      detail.showCommentFlag = vm.planAuthority.OTHER.selected;
       /* detail.leaderName=;*/
       $state.go('tab.plans-detail', {"authority": getAuthorityType(), "planDetail": detail});
     }
-    vm.planDetail={};
-    function showComment(plan){
+
+    vm.planDetail = {};
+    function showComment(plan) {
       console.log(plan);
-      vm.planDetail=plan;
-      vm.showCommentFlag=!vm.showCommentFlag;
+      vm.planDetail = plan;
+      vm.showCommentFlag = !vm.showCommentFlag;
       var item = $('#comment-text');
-      if( vm.showCommentFlag==true){
+      if (vm.showCommentFlag == true) {
         /*   $scope.testH=$('#annotate').height();
          console.log( $scope.testH);*/
         if (ionic.Platform.isWebView()) {
-          cordova.plugins.Keyboard.show();
           $timeout(function () {
-            var itemHeight= document.getElementById("comment-text");
+            var itemHeight = document.getElementById("comment-text");
             itemHeight.style.height = '40px';
             itemHeight.scrollTop = 0; //防抖动
-            itemHeight.style.height=itemHeight.scrollHeight+"px";
+            itemHeight.style.height = itemHeight.scrollHeight + "px";
             console.log(itemHeight.style.height);
-            $timeout(function () {
-              console.log("聚焦");
+            console.log("聚焦");
+            $timeout(function(){
+              cordova.plugins.Keyboard.show();
               item.focus();
+              $scope.$apply();
+              console.log("测试");
             },300);
-          });
-        }else{
+          },300);
+        } else {
           $timeout(function () {
-            /*  cordova.plugins.Keyboard.show();*/
-            var itemHeight= document.getElementById("comment-text");
-            itemHeight.style.height = '40px';
-            itemHeight.scrollTop = 0; //防抖动
-            itemHeight.style.height=itemHeight.scrollHeight+"px";
-            console.log(itemHeight.style.height);
-            $timeout(function () {
-              console.log("聚焦");
-              item.focus();
-            },300);
+            item.focus();
             $scope.$apply();
-          });
+            /*  cordova.plugins.Keyboard.show();*/
+            var itemHeight = document.getElementById("comment-text");
+            itemHeight.style.height = '40px';
+            itemHeight.scrollTop = 0; //防抖动
+            itemHeight.style.height = itemHeight.scrollHeight + "px";
+            console.log(itemHeight.style.height);
+            console.log("聚焦");
+          },300);
         }
-      }else{
+      } else {
         $timeout(function () {
           console.log("失焦");
           cordova.plugins.Keyboard.close();
           item.blur();
           $scope.$apply();
-        },300);
+        }, 300);
       }
       console.log("=====");
       console.log(vm.showCommentFlag);
       console.log(vm.planDetail);
       /*    plan.annotate=vm.planDetail.annotate;*/
     }
+
     function onRelease($event) {
       if (!$scope.showAsMonth) {
         return;
@@ -501,10 +505,10 @@
       var monthStart = new Date(year, month - 1, 1);
       var monthEnd = new Date(year, month - 1, lastDay);
       var startWeekday = monthStart.getDay();
-      if(startWeekday == 0)
+      if (startWeekday == 0)
         startWeekday = 7;
       var endWeekday = monthEnd.getDay();
-      if(endWeekday == 0)
+      if (endWeekday == 0)
         endWeekday = 7;
       for (var i = 0; i < lastDay; i++) {
         $scope.days[i + startWeekday - 1] = {
@@ -631,12 +635,12 @@
 
 
     function recalculateYear(offset) {
-      if(offset == 1){
-        $scope.year =  $scope.month == 12 ? $scope.year + offset : $scope.year;
+      if (offset == 1) {
+        $scope.year = $scope.month == 12 ? $scope.year + offset : $scope.year;
         $scope.month = $scope.month == 12 ? 1 : $scope.month + offset;
       }
-      else{
-        $scope.year =  $scope.month == 1 ? $scope.year + offset : $scope.year;
+      else {
+        $scope.year = $scope.month == 1 ? $scope.year + offset : $scope.year;
         $scope.month = $scope.month == 1 ? 12 : $scope.month + offset;
       }
     }
@@ -743,11 +747,11 @@
     }
 
     function initScrollFlag() {
-      $timeout(function(){
+      $timeout(function () {
         $scope.scrollFlag = [];
         var headGroup = angular.element('.group-head-flag');
-        if(headGroup.length > 1)
-          for(var i = 1; i < headGroup.length; i++)
+        if (headGroup.length > 1)
+          for (var i = 1; i < headGroup.length; i++)
             $scope.scrollFlag.push(headGroup[i].offsetTop);
         console.log($scope.scrollFlag);
       }, 500)
@@ -798,11 +802,11 @@
     function openCalendarPage() { //跳到原生日历界面--获取截止日期
       var success = function (response) {
         try {
-          var data =  JSON.parse(response);
+          var data = JSON.parse(response);
           var result = data.result;
           var startDate = result[0];
           var endDate = result[1];
-          getWeekPlanByPeriod(startDate,endDate,true);
+          getWeekPlanByPeriod(startDate, endDate, true);
           console.log(result);
         } catch (e) {
           console.log(e);
@@ -841,10 +845,10 @@
     }
 
     function goPlansAdd() {
-      var planData=formatDate($scope.lastSelectDay.year, $scope.lastSelectDay.month, $scope.lastSelectDay.date);
+      var planData = formatDate($scope.lastSelectDay.year, $scope.lastSelectDay.month, $scope.lastSelectDay.date);
       console.log('initSelect $scope.lastSelectDay ' + angular.toJson($scope.lastSelectDay));
       $scope.data = {
-        "planDate":planData,
+        "planDate": planData,
         "customerId": "",
         "opportunityId": "",
         "timeBucket": "",
@@ -853,9 +857,9 @@
         "planType": "",
         "planSource": null,
         "dataStatus": "HCRM_VALID",
-        lastSelectDay:$scope.lastSelectDay
+        lastSelectDay: $scope.lastSelectDay
       };
-      $state.go('tab.plans-add',{planData:$scope.data});
+      $state.go('tab.plans-add', {planData: $scope.data});
     }
 
     function formatDate(year, month, date) {
@@ -874,7 +878,7 @@
     function getHasPlanListSuccess(response) {
       if (response.returnCode == "S") {
         var j = 0;
-        angular.forEach($scope.days,function (data) {
+        angular.forEach($scope.days, function (data) {
           data.hasContent = false;
         });
         for (var i = 0; i < response.saleplan_list.length; i++) {
@@ -916,7 +920,7 @@
         planDateTo: dateText,
         type: getAuthorityType()
       };
-      $scope.Authority=params.type;
+      $scope.Authority = params.type;
       console.log(params);
       $scope.plans = [];
       vm.calendarLoadingFlag = true;
@@ -947,7 +951,7 @@
     function getWeekPlan(date) {
 
       var day = date.getDay();
-      if(day == 0){
+      if (day == 0) {
         day = 7;
       }
       var weekStart = new Date(date);
@@ -955,7 +959,7 @@
       var weekEnd = new Date(date);
       weekEnd.setDate(weekEnd.getDate() + (7 - day));
 
-      if(baseConfig.debug){
+      if (baseConfig.debug) {
         console.log('getWeekPlan  date.getDay() ' + date.getDay());
         console.log('getWeekPlan  weekStart ' + weekStart);
         console.log('getWeekPlan  weekEnd ' + weekEnd);
@@ -992,7 +996,7 @@
 
 
     //根据范围查询计划
-    function getWeekPlanByPeriod(dateFrom,dateTo,pluginFlag) {
+    function getWeekPlanByPeriod(dateFrom, dateTo, pluginFlag) {
       $scope.groupPage = 1;
       $scope.groupPageSize = 10;
       $scope.groupStartDate = dateFrom;
@@ -1023,7 +1027,7 @@
     }
 
     //得到时间范围内销售计划成功后
-    function getGroupPlanSuccess(response,pluginFlag) {
+    function getGroupPlanSuccess(response, pluginFlag) {
       if (baseConfig.debug) {
         console.log('getGroupPlanSuccess.response ' + angular.toJson(response));
         console.log('getGroupPlanSuccess $scope.planGroups ' + angular.toJson($scope.planGroups));
@@ -1124,9 +1128,10 @@
         getWeekPlan(new Date());
       }
     }
-    $scope.showSmallCrmLoading=false;
+
+    $scope.showSmallCrmLoading = false;
     $scope.holdAnnotate = false;
-    $scope.touchAnnotate=function(){
+    $scope.touchAnnotate = function () {
       $scope.holdAnnotate = true;
       cordova.plugins.pluginIflytek.startRecorerRecognize(
         function (msg) {
@@ -1134,9 +1139,9 @@
 
         });
     };
-    $scope.hideCommont=function(){
-      vm.showCommentFlag=false;
-      console.log("content----"+vm.showCommentFlag);
+    $scope.hideCommont = function () {
+      vm.showCommentFlag = false;
+      console.log("content----" + vm.showCommentFlag);
       var item = $('#comment-text');
       if (ionic.Platform.isWebView()) {
         cordova.plugins.Keyboard.close();
@@ -1144,10 +1149,10 @@
           console.log("失焦");
           item.blur();
           $scope.$apply();
-        },300);
+        }, 300);
       }
     };
-    if($stateParams.data == 'WEEK')
+    if ($stateParams.data == 'WEEK')
       changeShowModel(false);
 
     function insertText(obj, str) {
@@ -1166,7 +1171,8 @@
         obj.value += str;
       }
     }
-    $scope.annotateRelease=function(){
+
+    $scope.annotateRelease = function () {
       $scope.holdAnnotate = false;
       $scope.showSmallCrmLoading = true;
       console.log("结束录音");
