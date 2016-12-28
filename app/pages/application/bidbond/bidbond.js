@@ -57,7 +57,8 @@ angular.module('bidbondModule')
 			$scope.showData = {
 				fullName: "",
 				currencyName: "",
-				workflowStatusName: ""
+				workflowStatusName: "",
+				customerName: ""
 			};
 
 			$scope.data = {

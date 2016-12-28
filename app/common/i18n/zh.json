@@ -343,7 +343,7 @@
     "PAYEE_NAME":"收款人姓名",
     "BANK":"收款人银行",
     "ACCOUNT":"收款人账号",
-    "PAY_CONTENT":"付款内容",
+    "PAY_CONTENT":"付款说明",
     "CHOOSE_OPPO":"请选择商机"
   },
   "BIDBOND":{

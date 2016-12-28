@@ -486,7 +486,19 @@ angular.module('bidbondModule')
 					hmsPopup.showPopup("费用所属项目不能为空！");
 					return;
 				}
+				if($scope.showData.projectName == '') {
+					hmsPopup.showPopup("费用所属项目不能为空！");
+					return;
+				}
+				if($scope.showData.hrFullUnitName == '') {
+					hmsPopup.showPopup("费用所属部门不能为空！");
+					return;
+				}
 				if($scope.data.hrUnitId == '') {
+					hmsPopup.showPopup("费用所属部门不能为空！");
+					return;
+				}
+				if($scope.data.unitId == '') {
 					hmsPopup.showPopup("费用所属部门不能为空！");
 					return;
 				}
@@ -499,6 +511,10 @@ angular.module('bidbondModule')
 					return;
 				}
 				if($scope.data.currency == '') {
+					hmsPopup.showPopup("币种不能为空！");
+					return;
+				}
+				if($scope.showData.currencyName == '') {
 					hmsPopup.showPopup("币种不能为空！");
 					return;
 				}
@@ -532,6 +548,10 @@ angular.module('bidbondModule')
 				}
 				if($scope.data.dueBanckAccount == '') {
 					hmsPopup.showPopup("收款人账号不能为空！");
+					return;
+				}
+				if($scope.data.paymentContent == '') {
+					hmsPopup.showPopup("付款内容不能为空！");
 					return;
 				}
 				$scope.data.applicationBy = $scope.personalInfo.userId;
