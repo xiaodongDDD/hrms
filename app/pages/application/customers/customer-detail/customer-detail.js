@@ -1058,14 +1058,14 @@ angular.module('customerModule')
         $scope.myLocation.lat = position1.coords.latitude;
         $scope.myLocation.lng = position1.coords.longitude;
         //通过客户地址返回客户所在地经纬度
-        var cusUrl = "http://api.map.baidu.com/geocoder/v2/?callback=renderOption()&output=json&address="+$scope.customer.zoneName +
-          "&city="+$scope.customer.cityName+"&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
+        var cusUrl = "http://api.map.baidu.com/geocoder/v2/?callback=renderOption()&output=json&address="+$scope.customer.cityName+
+          $scope.customer.zoneName+$scope.customer.addressDetails+ "&city="+$scope.customer.cityName+"&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
+        //alert(cusUrl);
         $http.post(cusUrl).success(function (data) {
           console.log('请求数据成功！！');
           console.log(data);
-          var result = angular.toJson(data);
-          if(data.result!=''&&data.result.location!=''){
-            console.log("json==="+data.result.location);
+          if(data.result!=''&&data.status==0&&data.result.level!='UNKNOWN'){
+            console.log("json==="+angular.toJson(data.result.location));
             $scope.cusLocation.lat = data.result.location.lat;
             $scope.cusLocation.lng = data.result.location.lng;
             // 通过 Ip 定位自己返回经纬度 、详细地址信息。
@@ -1079,7 +1079,7 @@ angular.module('customerModule')
                 $scope.myLocation.address = data.content.address;
                 $scope.myLocation.province = data.content.address_detail.province;
                 var url = "https://api.map.baidu.com/direction?origin=latlng:"+$scope.myLocation.lat+","+$scope.myLocation.lng+"|name:"+ $scope.myLocation.address+
-                  "&destination=latlng:"+$scope.cusLocation.lat+","+$scope.cusLocation.lng+"|name:"+$scope.customer.cityName+
+                  "&destination=latlng:"+$scope.cusLocation.lat+","+$scope.cusLocation.lng+"|name:"+$scope.customer.addressDetails+
                   "&mode=driving&origin_region="+$scope.myLocation.province+"&destination_region="+$scope.customer.cityName+
                   "&output=html&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
                 window.open(encodeURI(url), '_system', 'location=yes');
@@ -1093,13 +1093,14 @@ angular.module('customerModule')
           }
         }).error(function (data) {
           console.log('请求数据失败！！');
+          hmsPopup.showPopup('客户位置解析错误');
         })
       };
 
       var onError = function (error) {
         console.log('错误== '+error);
         //alert('错误== '+angular.toJson(error));
-        hmsPopup.showPopup(angular.toJson(error));
+        hmsPopup.showPopup('当前定位失败！'+angular.toJson(error));
       }
 
 
