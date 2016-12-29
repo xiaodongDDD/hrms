@@ -32,7 +32,7 @@ angular.module('opportunityModule')
 					var length = response.bidbond.length;
 					$scope.moreOpportunityCanBeLoaded = length == $scope.pageSize
 				} else {
-					hmsPopup.showPopup(response.returnMsg);
+//					hmsPopup.showPopup(response.returnMsg);
 				}
 			};
 
@@ -68,7 +68,7 @@ angular.module('opportunityModule')
 					var length = response.bidbond.length;
 					$scope.moreDataCanBeLoaded = length == $scope.pageSize;
 				} else {
-					hmsPopup.showPopup(response.returnMsg);
+//					hmsPopup.showPopup(response.returnMsg);
 				}
 			};
 
@@ -104,7 +104,7 @@ angular.module('opportunityModule')
 				hmsHttp.post(baseUrl + 'opportunity_bidbond', key).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 

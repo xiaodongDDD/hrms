@@ -556,7 +556,7 @@ angular.module('bidbondModule')
 					return;
 				}
 				if($scope.data.paymentContent == '') {
-					hmsPopup.showPopup("付款内容不能为空！");
+					hmsPopup.showPopup("付款说明不能为空！");
 					return;
 				}
 
@@ -892,11 +892,11 @@ angular.module('bidbondModule')
 				//						customerName: $scope.showData.customerName
 				//					};
 
-//				if($scope.nowSelectTarget['key'] == 'business') {
-//					console.log($scope.items[$index]);
-//					$scope.showData.fullName = $scope.items[$index].customerName;
-//					$scope.data.customerId = $scope.items[$index].customerId;
-//				}
+				if($scope.nowSelectTarget['key'] == 'business') {
+					console.log($scope.items[$index]);
+					$scope.showData.fullName = $scope.items[$index].customerName;
+					$scope.data.customerId = $scope.items[$index].customerId;
+				}
 
 				$scope.showSelectDiv();
 			};
