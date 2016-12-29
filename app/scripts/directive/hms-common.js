@@ -104,7 +104,7 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
       restrict: 'A',
       link: function ($scope, $scroller, $attr) {
         var image = document.getElementById($attr.elasticImage2);
-        var imageHeight = 178;//image.offsetHeight;
+        var imageHeight = 200;//image.offsetHeight;
 
         $scroller.bind('scroll', function (e) {
           if(e.detail.scrollTop <= 0){

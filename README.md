@@ -118,8 +118,9 @@ Android测试环境
   cordova plugin rm cordova-plugin-youtuishare
   cordova plugin add http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git
   
-  cordova plugin rm cordova-plugin-baidu-geolocation
-  cordova plugin add https://github.com/ETENG-OSP/cordova-plugin-baidu-geolocation.git --variable BAIDUMAPKEY=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2 --save
+  cordova plugin rm cordova-plugin-geolocation-baidu
+  cordova plugin add https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu --variable BAIDUMAPKEY=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2
+  
   一 iOS 打包
   
   (1) CDVPlugin-Bridging-Header.h 修改融云app key   0vnjpoadnd4cz 
@@ -151,7 +152,7 @@ Android测试环境
 
   iOS版本 Android 打包 通用插件下载
   
-  cordova plugin rm cordova-plugin-baidu-geolocation
+  cordova plugin rm cordova-plugin-geolocation-baidu
   cordova plugin add https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu --variable BAIDUMAPKEY=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2
   
   cordova plugin rm com.hand.scancard

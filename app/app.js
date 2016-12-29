@@ -95,8 +95,14 @@ angular.module('myApp')
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
           cordova.plugins.Keyboard.disableScroll(true);
         }
-        if (window.StatusBar) {
+        //将页面的导航bar设置成白色
+        /*if (window.StatusBar) {
           StatusBar.styleLightContent();
+        }*/
+
+        //将页面的导航bar设置成黑色
+        if (window.StatusBar) {
+          StatusBar.styleDefault();
         }
 
         //全局的返回上一个页面的函数

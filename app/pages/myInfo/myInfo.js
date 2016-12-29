@@ -18,6 +18,7 @@ angular.module('myInfoModule')
     'messageService',
     'faceEcognitionService',
     '$timeout',
+    '$ionicPlatform',
     function ($scope,
               $state,
               baseConfig,
@@ -31,7 +32,8 @@ angular.module('myInfoModule')
               hmsCacheService,
               messageService,
               faceEcognitionService,
-              $timeout) {
+              $timeout,
+              $ionicPlatform) {
       if (baseConfig.debug) {
         console.log('myInfoCtrl.enter');
         console.log('myInfoCtrl.enter ');

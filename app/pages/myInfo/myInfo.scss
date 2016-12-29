@@ -1,7 +1,7 @@
 .platform-android {
   .my-info {
     .shrink-image { //头部的可伸缩头像背景
-      height: 178px;
+      height: 200px;
       width: 100%;
       z-index: 100;
       background: url('../img/myInfo/myInfoBg.png');
@@ -11,7 +11,7 @@
     }
     .content-style {
       background-color: transparent;
-      top: 178px;
+      top: 200px;
     }
     .header-item {
       margin: 0px;
@@ -72,7 +72,7 @@
 .platform-ios {
   .my-info {
     .shrink-image { //头部的可伸缩头像背景
-      height: 178px;
+      height: 200px;
       width: 100%;
       z-index: 100;
       //-webkit-filter: blur(5px) brightness(0.7);
@@ -84,7 +84,7 @@
     }
     .content-style {
       background-color: transparent;
-      top: 178px;
+      top: 200px;
     }
     .header-item {
       margin: 0px;
