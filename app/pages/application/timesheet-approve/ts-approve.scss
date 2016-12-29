@@ -1,9 +1,15 @@
+.timesheet-approve{
+  background: #48ACF8; /* 为较旧的或者不支持的浏览器设置备用属性 */
+  background: -moz-linear-gradient(top, #48ACF8, #FAFAFA 8%);
+  background: -webkit-gradient(linear, 0 0, 0 60%, from(#48ACF8), to(#FAFAFA));
+}
+
 //审批列表背景
 .ts-list-bg {
   border-color: #b2b2b2;
   color: $color-base;
-  background-image: url("./../img/application/timesheet-approve/list/BG@3x.png");
-  background-size: cover;
+  //background-image: url("./../img/application/timesheet-approve/list/BG@3x.png");
+  //background-size: cover;
   padding-top: 85px;
   top: 35px;
   width: 100%;
@@ -259,61 +265,6 @@
   right: 2%;
   background-image: url("./../img/application/timesheet-approve/list/rocketTop@3x.png");
   background-size: cover;
-}
-
-@media screen and (max-width: 320px) and (min-width: 300px) {
-  .platform-ios .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #7ca5d5);
-    background: linear-gradient(top, #17468F, #3D7BC4, #7ca5d5); /* 标准的语法 */
-  }
-  .platform-android .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #5d90cc);
-    background: linear-gradient(top, #17468F, #3D7BC4, #5d90cc); /* 标准的语法 */
-  }
-}
-
-@media screen and (max-width: 350px) and (min-width: 321px) {
-  .platform-ios .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #79a3d4);
-    background: linear-gradient(top, #17468F, #3D7BC4, #79a3d4); /* 标准的语法 */
-  }
-  .platform-android .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #5c8fcc);
-    background: linear-gradient(top, #17468F, #3D7BC4, #5c8fcc); /* 标准的语法 */
-  }
-}
-
-@media screen and (max-width: 389px) and (min-width: 351px) {
-  .platform-ios .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #6898cf);
-    background: linear-gradient(top, #17468F, #3D7BC4, #6898cf); /* 标准的语法 */
-  }
-  .platform-android .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #548ac9);
-    background: linear-gradient(top, #17468F, #3D7BC4, #548ac9); /* 标准的语法 */
-  }
-}
-
-@media screen and (max-width: 401px) and (min-width: 390px) {
-  .platform-ios .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #6696cf);
-    background: linear-gradient(top, #17468F, #3D7BC4, #6696cf); /* 标准的语法 */
-  }
-  .platform-android .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #4881c4);
-    background: linear-gradient(top, #17468F, #3D7BC4, #4881c4); /* 标准的语法 */
-  }
-}
-
-@media screen and (min-width: 402px) {
-  .platform-ios .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #6092cd);
-    background: linear-gradient(top, #17468F, #3D7BC4, #6092cd); /* 标准的语法 */
-  }
-  .platform-android .custom-head-background {
-    background: -webkit-linear-gradient(top, #17468F, #3D7BC4, #4a80c2);
-    background: linear-gradient(top, #17468F, #3D7BC4, #4a80c2); /* 标准的语法 */
-  }
 }
 
 .custom-head {

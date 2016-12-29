@@ -572,9 +572,9 @@ angular.module('applicationModule')
             "height": window.innerHeight,
             "pixelRatio": window.devicePixelRatio
           };
-          alert('registerDeviceInfo.params ' + angular.toJson(params));
+          //alert('registerDeviceInfo.params ' + angular.toJson(params));
           hmsHttp.post(url, params).success(function (result) {
-            alert('registerDeviceInfo.result ' + angular.toJson(result));
+            //alert('registerDeviceInfo.result ' + angular.toJson(result));
           }).error(function (response, status) {
           });
         }

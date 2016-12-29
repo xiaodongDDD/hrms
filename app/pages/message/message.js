@@ -528,9 +528,16 @@ angular.module('messageModule')
         console.log('同事.$ionicView.leave');
       });
 
+      $timeout(function () {
+        messageService.registerDeviceInfo();
+      },1000);
+
       $scope.$on('$ionicView.enter', function (e) {
 
-        messageService.registerDeviceInfo();
+        try{
+          navigator.splashscreen.hide();
+        }catch(e){
+        }
 
         checkVersionService.checkAppVersion();
 
