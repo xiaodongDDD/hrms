@@ -1005,7 +1005,11 @@ angular.module('customerModule')
           customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
           customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
         }else{
-          hmsPopup.showPopup(data.returnMsg);
+          if(data.returnMsg){
+            hmsPopup.showPopup(data.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       }
       //客户分享
@@ -1015,7 +1019,11 @@ angular.module('customerModule')
           customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
           customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
         }else{
-          hmsPopup.showPopup(data.returnMsg);
+          if(data.returnMsg){
+            hmsPopup.showPopup(data.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       }
 
@@ -1026,15 +1034,23 @@ angular.module('customerModule')
           customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
           customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
         }else{
-          hmsPopup.showPopup(data.returnMsg);
+          if(data.returnMsg){
+            hmsPopup.showPopup(data.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       }
       //权限获取
       var getPermissionsSuccess = function (data) {
-        if(data.returnCode=='S'){
+        if(data.returnCode=='S'&& data.returnCode){
           $scope.permission = data.permissions;
         }else{
-          hmsPopup.showPopup(data.returnMsg);
+          if(data.returnMsg){
+            hmsPopup.showPopup(data.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       }
       //客户审批
@@ -1045,7 +1061,11 @@ angular.module('customerModule')
           customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
           customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
         }else{
-          hmsPopup.showPopup(data.returnMsg);
+          if(data.returnMsg){
+            hmsPopup.showPopup(data.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
 

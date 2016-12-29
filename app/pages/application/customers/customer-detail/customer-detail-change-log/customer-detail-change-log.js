@@ -38,12 +38,18 @@ angular.module('customerModule')
           if(response.logs.length===0){
             hmsPopup.showPopup('未找到数据');
             $scope.loadMoreDataFlag = false;
+          }else {
+            $scope.status = response.logs;
+            $scope.loadMoreDataFlag = response.logs.length==$scope.value.pageSize;
           }
-          $scope.status = response.logs;
-          $scope.loadMoreDataFlag = true;
+
           /*   console.log($scope.customers.length)*/
         } else {
-          alert(response.returnMsg);
+          if(response.returnMsg){
+            hmsPopup.showPopup(response.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
       customerDetailChangeLogService.queryChangeLog(queryChangeLogSuccess,error,$scope.value);

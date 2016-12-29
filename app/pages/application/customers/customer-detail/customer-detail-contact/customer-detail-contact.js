@@ -65,7 +65,11 @@ angular.module('customerModule')
           }
         } else {
           $scope.moreDataCanBeLoaded = false;
-          hmsPopup.showPopup(data.returnMsg);
+          if(data.returnMsg){
+            hmsPopup.showPopup(data.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       };
@@ -86,7 +90,11 @@ angular.module('customerModule')
             $scope.linkmanData =  data.customer_contact_list;
         } else {
           $scope.moreDataCanBeLoaded = false;
-          hmsPopup.showPopup(data.returnMsg);
+            if(data.returnMsg){
+              hmsPopup.showPopup(data.returnMsg)
+            }else{
+              hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+            }
         }
       };
       $scope.doRefresh = function () {
