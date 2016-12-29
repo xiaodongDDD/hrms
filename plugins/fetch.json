@@ -28,9 +28,8 @@
     },
     "hand-im-plugin-device": {
         "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
-            "subdir": "."
+            "type": "local",
+            "path": "E:\\hrms4\\hand-im-plugin-device"
         },
         "is_top_level": true,
         "variables": {
