@@ -251,14 +251,14 @@ $applicationColor: white !default;
               border-radius: 30px;
             }
             .app-item-content {
-              height: 30px;
-              width: 30px;
+              height: 40px;
+              width: 40px;
               display: inline-block;
-              line-height: 30px;
+              line-height: 40px;
               position: relative;
               background: none;
-              margin-top: 10px;
               text-align: center;
+              margin-top: 5px;
               .app-extra {
                 position: absolute;
                 top: -6px;
@@ -269,7 +269,7 @@ $applicationColor: white !default;
                 padding: 2px;
                 border-radius: 8px;
                 font-size: 10px;
-                background: #6BB9F0;
+                background: #f3515b;
                 color: white;
                 text-align: center;
               }
@@ -281,7 +281,7 @@ $applicationColor: white !default;
                 height: 16px;
                 line-height: 16px;
                 border-radius: 8px;
-                background: #6BB9F0;
+                background: #f3515b;
                 text-align: center;
               }
               .app-extra-refresh .spinner svg {
@@ -291,16 +291,16 @@ $applicationColor: white !default;
                 fill: white;
               }
               img {
-                width: 25px;
+                width: 40px;
                 vertical-align: middle;
               }
             }
 
           }
           .appText {
-            margin-top: 2px;
+            margin-top: 5px;
             text-align: center;
-            font-size: 14px;
+            font-size: 12px;
           }
         }
       }
