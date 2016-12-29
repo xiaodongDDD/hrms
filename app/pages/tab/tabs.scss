@@ -4,7 +4,8 @@ $tab-item-small-size: 21px;
 ion-tabs.tabs-color-active-positive .tab-item.tab-item-active,
 ion-tabs.tabs-color-active-positive .tab-item.active,
 ion-tabs.tabs-color-active-positive .tab-item.activated {
-  color: #1F8CEB;
+  //color: #1F8CEB;
+  color: #c73f3a;
 }
 
 .application-guide {
@@ -185,6 +186,90 @@ ion-tabs.tabs-color-active-positive .tab-item.activated {
 
   .mine-off-new {
     background-image: url("../img/tabs/mine-outline@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $tab-item-size;
+  }
+
+
+  .message-on-spring {
+    background-image: url("../img/tabs/spring/message@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $tab-item-size;
+  }
+
+  .message-off-spring {
+    background-image: url("../img/tabs/spring/message-outline@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $tab-item-size;
+  }
+
+  .tab-item.activated {
+    .message-off-spring {
+      background-image: url("../img/tabs/spring/message-outline@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: $tab-item-size;
+    }
+    .application-off-spring {
+      background-image: url("../img/tabs/spring/center-outline@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: $tab-item-small-size;
+    }
+    .contact-off-spring {
+      background-image: url("../img/tabs/spring/contact-outline@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: $tab-item-small-size;
+    }
+    .mine-off-spring {
+      background-image: url("../img/tabs/spring/mine-outline@3x.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: $tab-item-size;
+    }
+  }
+
+  .application-on-spring {
+    background-image: url("../img/tabs/spring/center@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $tab-item-small-size;
+  }
+
+  .application-off-spring {
+    background-image: url("../img/tabs/spring/center-outline@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $tab-item-small-size;
+  }
+
+  .contact-on-spring {
+    background-image: url("../img/tabs/spring/contact@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $tab-item-small-size;
+  }
+
+  .contact-off-spring {
+    background-image: url("../img/tabs/spring/contact-outline@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $tab-item-small-size;
+  }
+
+  .mine-on-spring {
+    background-image: url("../img/tabs/spring/mine@3x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: $tab-item-size;
+  }
+
+  .mine-off-spring {
+    background-image: url("../img/tabs/spring/mine-outline@3x.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: $tab-item-size;
