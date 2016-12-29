@@ -259,6 +259,12 @@ angular.module('contactModule')
            $ionicScrollDelegate.$getByHandle("slideimgs").resize();
            });*/
 
+        }else{
+          if(result.returnMsg){
+            hmsPopup.showPopup(result.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
         $scope.$broadcast('scroll.refreshComplete');
       };

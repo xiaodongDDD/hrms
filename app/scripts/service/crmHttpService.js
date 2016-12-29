@@ -15,7 +15,6 @@ angular.module('serviceModule')
           success(result);
         }).error(function (response, status) {
           error(response);
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -31,7 +30,6 @@ angular.module('serviceModule')
         hmsHttp.post(baseUrl + 'query_lookup', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -48,7 +46,6 @@ angular.module('serviceModule')
         success(result);
       }).error(function (response, status) {
         hmsPopup.hideLoading();
-        hmsPopup.showPopup(response.error_description);
       });
     }
   }])
@@ -71,7 +68,6 @@ angular.module('serviceModule')
       hmsHttp.post(baseUrl + 'query_competitor_detail', params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        hmsPopup.showPopup(response);
         hmsPopup.hideLoading();
       });
 
@@ -81,7 +77,6 @@ angular.module('serviceModule')
       hmsHttp.post(baseUrl + 'competitor_update', params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        hmsPopup.showPopup(response);
         hmsPopup.hideLoading();
       });
 
@@ -91,7 +86,6 @@ angular.module('serviceModule')
       hmsHttp.post(baseUrl + 'delete_product', params).success(function(result) {
         success(result);
       }).error(function(response, status) {
-        hmsPopup.showPopup(response);
         hmsPopup.hideLoading();
       });
 
@@ -114,7 +108,6 @@ angular.module('serviceModule')
           success(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
         });
       };
       this.getSearchResult = function (success, key) {
@@ -123,7 +116,6 @@ angular.module('serviceModule')
           success(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
         });
       };
       this.getGetContactsList = function (success, key) {
@@ -132,7 +124,6 @@ angular.module('serviceModule')
           success(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
         });
       };
     }]);
@@ -151,7 +142,6 @@ angular.module('contactModule')
           success(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
         });
       };
       this.addContact = function (success, key) {
@@ -160,7 +150,6 @@ angular.module('contactModule')
           success(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup('网络连接错误');
         });
 
       };
@@ -176,7 +165,6 @@ angular.module('contactModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('网络连接错误');
           hmsPopup.hideLoading();
         });
       };
@@ -191,7 +179,6 @@ angular.module('contactModule')
         hmsHttp.post(baseUrl + 'query_customer_list', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('网络连接错误');
           hmsPopup.hideLoading();
         });
       };
@@ -204,7 +191,6 @@ angular.module('contactModule')
         hmsHttp.post(baseUrl + 'saleplan_customers', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
         });
       };
     }

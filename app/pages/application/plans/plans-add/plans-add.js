@@ -249,7 +249,12 @@ angular.module('planModule')
             $state.go('tab.application');
           }
         } else {
-          hmsPopup.showPopup(result.returnMsg);
+          if (result.returnMsg) {
+            hmsPopup.showPopup(result.returnMsg);
+          }
+          else {
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+          }
         }
       };
       var addToSuccessInit = function (result) {
@@ -305,7 +310,12 @@ angular.module('planModule')
             $scope.importantNum=0;
           }
         } else {
-          hmsPopup.showPopup(result.returnMsg);
+          if (result.returnMsg) {
+            hmsPopup.showPopup(result.returnMsg);
+          }
+          else {
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+          }
         }
       };
       $scope.importantItems=[
@@ -327,7 +337,12 @@ angular.module('planModule')
           $scope.items = $scope.items.concat(response.customer_list);
           $scope.sourceItems = $scope.items.clone();
         } else {
-          $scope.showCrmLoading = false;
+          if (response.returnMsg) {
+            $scope.showCrmLoading = false;
+          }
+          else {
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+          }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       };
@@ -349,8 +364,13 @@ angular.module('planModule')
           $scope.items = $scope.items.concat(response.opportunity_list);
           $scope.sourceItems = $scope.items.clone();
         } else {
-          $scope.showCrmLoading = false;
-          $scope.moreDataCanBeLoaded = false;
+          if (response.returnMsg) {
+            $scope.showCrmLoading = false;
+            $scope.moreDataCanBeLoaded = false;
+          }
+          else {
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+          }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       };
@@ -946,7 +966,6 @@ angular.module('planModule')
         hmsHttp.post(baseUrl + 'saleplan_customers', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
         });
       };
 
@@ -961,7 +980,6 @@ angular.module('planModule')
         hmsHttp.post(baseUrl + 'saleplan_opportunitys', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -977,7 +995,6 @@ angular.module('planModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -987,7 +1004,6 @@ angular.module('planModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -997,7 +1013,6 @@ angular.module('planModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1012,7 +1027,6 @@ angular.module('planModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       }

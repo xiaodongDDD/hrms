@@ -66,8 +66,10 @@ angular.module('competitorModule')
               }
             }
             console.log($scope.searchData);
-          } else {
+          } else if(result.returnCode == 'E'){
             $scope.showContent = true;
+          } else {
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
           }
         };
         $scope.goDetail = function (item) {

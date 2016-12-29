@@ -957,6 +957,13 @@
         $scope.plans = $scope.plans.concat(response.saleplan_list);
         $scope.morePlanCanBeLoaded = (response.saleplan_list.length % $scope.pageSize == 0) && (response.saleplan_list.length != 0);
         //$ionicScrollDelegate.$getByHandle('plan-scroll').scrollTop(true);
+      }else{
+        if(response.returnMsg){
+          $scope.showContent=true;
+          hmsPopup.showPopup(response.returnMsg)
+        }else{
+          hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+        }
       }
     }
 
@@ -1072,6 +1079,13 @@
           $scope.nowShowDate = $scope.planGroups[0].date;
         }
         initScrollFlag();
+      }else{
+        if(response.returnMsg){
+          $scope.showContent=true;
+          hmsPopup.showPopup(response.returnMsg)
+        }else{
+          hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+        }
       }
     }
 

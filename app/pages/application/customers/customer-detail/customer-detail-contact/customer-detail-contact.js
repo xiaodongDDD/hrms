@@ -63,9 +63,12 @@ angular.module('customerModule')
             console.log("没有数据了" + $scope.moreDataCanBeLoaded);
             $scope.moreDataCanBeLoaded = false;
           }
-        } else {
+        } else if (data.returnCode == 'E') {
           $scope.moreDataCanBeLoaded = false;
           hmsPopup.showPopup(data.returnMsg);
+        } else {
+          $scope.moreDataCanBeLoaded = false;
+          hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       };
@@ -85,8 +88,13 @@ angular.module('customerModule')
           }
             $scope.linkmanData =  data.customer_contact_list;
         } else {
-          $scope.moreDataCanBeLoaded = false;
-          hmsPopup.showPopup(data.returnMsg);
+
+            if(data.returnMsg){
+              $scope.moreDataCanBeLoaded = false;
+              hmsPopup.showPopup(data.returnMsg);
+            }else{
+              hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+            }
         }
       };
       $scope.doRefresh = function () {
@@ -117,7 +125,11 @@ angular.module('customerModule')
           $scope.linkmanData.splice(index, 1);
           hmsPopup.showPopup(data.returnMsg);
         } else {
-          hmsPopup.showPopup(data.returnMsg);
+          if(data.returnMsg){
+            hmsPopup.showPopup(data.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
       $scope.deleteItem = function (item, index) {
@@ -435,7 +447,6 @@ angular.module('customerModule')
         success(result, index);
       }).error(function (response, status) {
         hmsPopup.hideLoading();
-        hmsPopup.showPopup(response.error_description);
       });
     };
   }]);

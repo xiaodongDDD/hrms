@@ -290,6 +290,13 @@ angular.module('contactModule')
               window.localStorage[valueObj.localList] = JSON.stringify(response.lookup_detail[i].lookup_value_list);
             }
           }
+        }else{
+          if(response.returnMsg){
+            $scope.showContent=true;
+            hmsPopup.showPopup(response.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
       /*  console.log(upData);*/
@@ -416,9 +423,13 @@ angular.module('contactModule')
               $timeout(function () {
                 $ionicHistory.goBack();
               });
-            } else {
-              /*  $scope.showLoading = false;*/
-              hmsPopup.showPopup(data.returnMsg);
+            }else{
+              if(data.returnMsg){
+                $scope.showContent=true;
+                hmsPopup.showPopup(data.returnMsg)
+              }else{
+                hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+              }
             }
 
           };
@@ -830,7 +841,7 @@ angular.module('contactModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (error) {
-        });;
+        });
       };
 
       //得到客户列表
@@ -843,7 +854,7 @@ angular.module('contactModule')
         hmsHttp.post(baseUrl + 'query_customer_list', params).success(function (result) {
           success(result);
         }).error(function (error) {
-        });;
+        });
       };
       this.searchCustomer = function (success, keyWord, page, pageSize) {
         var params = {
@@ -854,7 +865,7 @@ angular.module('contactModule')
         hmsHttp.post(baseUrl + 'saleplan_customers', params).success(function (result) {
           success(result);
         }).error(function (error) {
-        });;
+        });
       };
     }
   ]);
