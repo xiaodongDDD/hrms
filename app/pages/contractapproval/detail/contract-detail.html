@@ -1,12 +1,12 @@
-<ion-view class="contract-detail workflow-detail">
+<ion-view class="contract-detail workflow-detail-old">
 
   <ion-header-bar align-title="center" class="bar-stable" style="background:none">
     <div class="buttons">
-      <button ng-style="filterBlurStyle(filterBlur)" ng-click="$ionicGoBack()" class="button button-icon icon ion-ios-arrow-back" style="padding:0px;">
+      <button ng-style="filterBlurStyle(filterBlur)" ng-click="$ionicGoBack()" class="button button-icon icon ion-ios-arrow-back" style="padding:0px; color:white;">
         <span class="back-text">返回</span>
       </button>
     </div>
-    <h1 ng-style="filterBlurStyle(filterBlur)" class="title">审批详情</h1>
+    <h1 ng-style="filterBlurStyle(filterBlur)" class="title" style="color:white;">审批详情</h1>
     <div class="buttons">
       <button ng-style="filterBlurStyle(filterBlur)" class="button button-clear" ng-click="showProcDiv()">
         <i class="icon ion-more" style="color: white;font-size: 30px"></i>
@@ -119,7 +119,7 @@
                 ng-class="{true:'no-activated'}[noNextDataFlag]">下一条</a>
             <a class="hms-array-selector" ng-click="showEssenceDiv()">查看合同要素</a>
           </div>
-          
+
         </div>
       </div>
       <div class="hms-singal-array-content" ng-if="showContractFlag">

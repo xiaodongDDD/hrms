@@ -1,5 +1,5 @@
-<ion-view view-title="合同管理" class="workflow contractflow">
-  
+<ion-view view-title="合同管理" class="workflow-old contractflow">
+
   <ion-header-bar align-title="center" class="bar-stable padding-zero">
     <div class="buttons" ng-if="!isWxWebview">
       <button class="button button-icon icon ion-ios-arrow-back" ng-click="goBack()">
@@ -18,7 +18,7 @@
             <div ng-class="{'contract-subheader-marker-selected hrms-bg-blue':subheadereAnimaFlag&&subheaderSelectFlag[i],
                             'contract-subheader-marker-deselected hrms-bg-blue':subheadereAnimaFlag&&subheaderDeselectAnimaFlag[i],
                             'contract-subheader-marker-show hrms-bg-blue':!subheadereAnimaFlag&&subheaderSelectFlag[i],
-                            'contract-subheader-marker-hide':!subheadereAnimaFlag&&!subheaderSelectFlag[i]}" 
+                            'contract-subheader-marker-hide':!subheadereAnimaFlag&&!subheaderSelectFlag[i]}"
                             class="contract-subheader-marker">
                             <!--4个class分别为。selected，选中时动画；deselected：反选时动画；show：从子页返回时，无动画地显示（选中）；hide：从子页返回时，无动画地隐藏（未选中）-->
             </div>
