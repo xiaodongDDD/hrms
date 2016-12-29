@@ -578,18 +578,93 @@ angular.module('contactModule')
         };
         var onSaveContactSuccess = function () {
           hmsPopup.showPopup("添加成功");
-          $scope.scanCardModal.hide();
+          if($scope.hasCrm)
+            $scope.crmScanCardModal.hide();
+          else
+            $scope.scanCardModal.hide();
         };
         var onSaveContactError = function () {
           hmsPopup.showPopup("添加失败");
-          $scope.scanCardModal.hide();
+          if($scope.hasCrm)
+            $scope.crmScanCardModal.hide();
+          else
+            $scope.scanCardModal.hide();
         };
         //保存到本地
         contactLocal.contactLocal(info, onSaveContactSuccess, onSaveContactError);
       };
+
+      $scope.set2localContact = function () {
+        contactService.contactLocal($scope.manInfo,$scope.scanCardModal);
+      };
+
       function dealScanData(msg) { //处理名片扫描插件的返回数据
+        // alert("msg " + jsonFormat(JSON.parse(msg)));
         try {
-          $scope.scanCardModal.show();
+          if (JSON.parse(msg)) {
+            $scope.manInfo = {
+              emp_name: '',
+              mobil: '',
+              email: '',
+              organization: ''
+            };
+            msg = JSON.parse(msg);
+            try {
+              $scope.manInfo.emp_name = msg.formatted_name[0].item;
+            } catch (e) {
+              try {
+                $scope.manInfo.emp_name = msg.name[0].item.family_name + msg.name[0].item.given_name;
+              } catch (e) {
+                $scope.manInfo.emp_name = '';
+              }
+            }
+            try {
+              var phones = msg.telephone;
+              if (phones.length > 0) {
+                $scope.manInfo.mobil = phones[0].item.number;
+              } else {
+                $scope.manInfo.mobil = "";
+              }
+            } catch (e) {
+              $scope.manInfo.mobil = '';
+            }
+            try {
+              var emails = msg.email;
+              if (emails.length > 0) {
+                $scope.manInfo.email = emails[0].item;
+              }
+            } catch (e) {
+              $scope.manInfo.email = '';
+            }
+            try {
+              var organization = msg.organization;
+              if (organization.length > 0) {
+                $scope.manInfo.organization = organization[0].item.name;
+              }
+            } catch (e) {
+              $scope.manInfo.organization = '';
+            }
+
+            try {
+              angular.element('.contact').css({
+                'WebkitFilter': 'blur(5px) brightness(1)',
+                'filter': 'blur(5px) brightness(1)'
+              });
+              $scope.$apply();
+              $scope.scanCardModal.show();
+            } catch (e) {
+            }
+          }
+          hmsPopup.hideLoading();
+        } catch (e) {
+          hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
+          hmsPopup.hideLoading();
+        }
+      };
+
+      function dealCrmScanData(msg) { //处理名片扫描插件的返回数据
+        try {
+          $scope.crmScanCardModal.show();
           if (JSON.parse(msg)) {
             $scope.manInfo = {
               emp_name: '',
@@ -637,7 +712,7 @@ angular.module('contactModule')
             try {
               /*  alert("扫描成功");*/
               $scope.$apply();
-              $scope.scanCardModal.show();
+              $scope.crmScanCardModal.show();
             } catch (e) {
             }
           } else {
@@ -659,6 +734,14 @@ angular.module('contactModule')
       // 创建名片扫描结果的modal现实页面
       (function scanCardModal() {
         $ionicModal.fromTemplateUrl('build/pages/application/model/scan-card-result.html', {
+          scope: $scope
+        }).then(function (modal) {
+          $scope.crmScanCardModal = modal;
+        });
+      })();
+
+      (function scanCardModal() {
+        $ionicModal.fromTemplateUrl('build/pages/contact/modal/scan-card-result.html', {
           scope: $scope
         }).then(function (modal) {
           $scope.scanCardModal = modal;
@@ -710,19 +793,28 @@ angular.module('contactModule')
                 contact.fullName = "";
               }
               $state.go('tab.addLinkman', {param: contact});
-              $scope.scanCardModal.hide();
+              if($scope.hasCrm)
+                $scope.crmScanCardModal.hide();
+              else
+                $scope.scanCardModal.hide();
             } else {
               hmsPopup.hideLoading();
               hmsPopup.showPopup("没有找到匹配的客户");
               $state.go('tab.addLinkman', {param: contact});
-              $scope.scanCardModal.hide();
+              if($scope.hasCrm)
+                $scope.crmScanCardModal.hide();
+              else
+                $scope.scanCardModal.hide();
             }
           };
           customerSearchService.getSearchData(searchSuccessInit, $scope.searchParam)
         } else {
           hmsPopup.hideLoading();
           $state.go('tab.addLinkman', {param: contact});
-          $scope.scanCardModal.hide();
+          if($scope.hasCrm)
+            $scope.crmScanCardModal.hide();
+          else
+            $scope.scanCardModal.hide();
           console.log($scope.searchData);
         }
 
@@ -754,7 +846,10 @@ angular.module('contactModule')
                 if (btnIndex == 1) {
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.takePicturefun(function (msg) {
-                    dealScanData(msg);
+                    if($scope.hasCrm)
+                      dealCrmScanData(msg);
+                    else
+                      dealScanData(msg);
                   }, function (error) {
                     hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
                     hmsPopup.hideLoading();
@@ -763,7 +858,10 @@ angular.module('contactModule')
                 } else if (btnIndex == 2) {
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.choosePicturefun(function (msg) {
-                    dealScanData(msg);
+                    if($scope.hasCrm)
+                      dealCrmScanData(msg);
+                    else
+                      dealScanData(msg);
                   }, function (error) {
                     hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
                     hmsPopup.hideLoading();

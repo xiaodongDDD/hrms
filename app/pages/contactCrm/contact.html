@@ -5,7 +5,7 @@
       <div class="selected" ng-click="selectSubHeader(0)" ng-class="{true:'selected'}[subHeadersSelect[0]]">  {{bilingual.customer}}</div>
       <div ng-click="selectSubHeader(1)" ng-class="{true:'selected'}[subHeadersSelect[1]]">  {{bilingual.colleague}}</div>
     </div>
-    <img class="sub-icon" src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="showMore()"/>
+    <img class="sub-icon" src="build/img/application/opportunity/icon_add_black@3x.png" ng-if="hasCrm" ng-click="showMore()"/>
     <img src="build/img/contact/icon_code@3x.png"  ng-controller="ScanCardController"  ng-click="scanBusinessCard()"/>
   </ion-header-bar>
   <ion-content  delegate-handle="slideimgs" style="background: #f5f5f5;bottom: 50px;" class="customerLinkman contact-content">
