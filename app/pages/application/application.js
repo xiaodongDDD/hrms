@@ -17,6 +17,7 @@ angular.module('applicationModule')
     'plansService',
     'hmsPopup',
     'crmEmployeeService',
+    '$ionicScrollDelegate',
     function ($scope,
               $state,
               $ionicGesture,
@@ -28,7 +29,8 @@ angular.module('applicationModule')
               TimeSheetService,
               plansService,
               hmsPopup,
-              crmEmployeeService) {
+              crmEmployeeService,
+              $ionicScrollDelegate) {
 
       $scope.animationsEnabled = false;
       $scope.openDoor = 0;
@@ -263,6 +265,21 @@ angular.module('applicationModule')
       $scope.goSearch=function(){
         $state.go('tab.globelSearch');
       };
+
+      $scope.scrollStyle = {
+        height:""
+      };
+
+      $timeout(function(){
+        var titleHeight = angular.element('.calendar-container')[0].clientHeight - 5;
+        var otherHeight = titleHeight + 49;
+        if($scope.hasCrm)
+          otherHeight += 69;
+        else
+          otherHeight += 34;
+        $scope.scrollStyle.height = "calc(100vh - " + otherHeight + "px)";
+        $ionicScrollDelegate.$getByHandle('app-scroll').resize();
+      },500);
 
       $scope.weekdays = ['一','二','三','四','五','六','日'];
       $scope.days = [];
