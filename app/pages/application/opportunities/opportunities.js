@@ -121,7 +121,7 @@ angular.module('opportunityModule')
 
       $scope.showShift = false;
       $scope.showSort = false;
-      $scope.showHead = false;
+      $scope.showHead = true;
 
       $scope.onDrag = function($event){
         var deltaY = $event.gesture.deltaY;
@@ -283,7 +283,8 @@ angular.module('opportunityModule')
             $scope.moreOpportunityCanBeLoaded = response.opportunity_list.length == $scope.siftingKey.pageSize;
           }, 500);
         } else {
-          hmsPopup.showPopup(response.returnMsg);
+          if(response.returnCode == "E" && response.returnMsg != '')
+            hmsPopup.showShortCenterToast('获取负责人失败，请联系管理员');
         }
       };
 
@@ -297,9 +298,8 @@ angular.module('opportunityModule')
             winMoney: parseInt(response.opportunity_money.winMoney),
             larMoney: parseInt(response.opportunity_money.larMoney)
           };
-          $scope.showHead = true;
         } else {
-          hmsPopup.showPopup('看板数据获取失败，请联系管理员');
+          hmsPopup.showShortCenterToast('看板数据获取失败，请联系管理员');
         }
       };
 
@@ -942,7 +942,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_opportunity_list', key).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取商机失败，请联系管理员');
           hmsPopup.hideLoading();
           failure();
         });
@@ -961,7 +961,6 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_lookup', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -975,7 +974,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'business_from', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取商机来源失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -988,7 +987,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_sale_area', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取区域失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -1002,7 +1001,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_sale_team', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取团队失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -1015,7 +1014,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'opportunity_status', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取商机状态失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -1029,7 +1028,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'customer_employee', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取负责人失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -1044,7 +1043,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'customer_employee', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取负责人失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -1057,7 +1056,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'opportunity_performance', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取看板数据失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };

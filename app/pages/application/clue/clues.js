@@ -149,7 +149,7 @@ angular.module('clueModule')
 
       var failure = function(response){
         $scope.showLoading = false;
-        hmsPopup.showPopup(response);
+        hmsPopup.showShortCenterToast(response);
         $scope.moreClueCanBeLoaded = false;
         $scope.$broadcast('scroll.infiniteScrollComplete');
       };
@@ -164,7 +164,10 @@ angular.module('clueModule')
             $scope.moreClueCanBeLoaded = response.clue_list.length == $scope.siftingKey.pageSize;
           }, 500)
         } else {
-          hmsPopup.showPopup(response.returnMsg);
+          if(response.returnMsg)
+            hmsPopup.showShortCenterToast(response.returnMsg);
+          else
+            hmsPopup.showShortCenterToast('获取失败，请检查网络或联系管理员');
         }
       };
 
@@ -692,7 +695,7 @@ angular.module('clueModule')
         hmsHttp.post(baseUrl + 'query_clue_list', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast(response);
           hmsPopup.hideLoading();
           failure(response);
         });

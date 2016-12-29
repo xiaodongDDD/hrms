@@ -590,27 +590,27 @@ angular.module('opportunityModule')
       $scope.addEstimate = function(){
 
         if($scope.newEstimate.productType == ''){
-          hmsPopup.showPopup('产品类别不能为空');
+          hmsPopup.showShortCenterToast('产品类别不能为空');
           return ;
         }
 
         if($scope.newEstimate.level2Product == ''){
-          hmsPopup.showPopup('二级产品不能为空');
+          hmsPopup.showShortCenterToast('二级产品不能为空');
           return ;
         }
 
         if($scope.newEstimate.productType == ''){
-          hmsPopup.showPopup('产品类型不能为空');
+          hmsPopup.showShortCenterToast('产品类型不能为空');
           return ;
         }
 
         if($scope.newEstimate.manday < 0 || isNaN(Number($scope.newEstimate.manday))){
-          hmsPopup.showPopup('人天必须为数字正数或0');
+          hmsPopup.showShortCenterToast('人天必须为数字正数或0');
           return ;
         }
 
         if($scope.newEstimate.unitPrice < 0 || isNaN(Number($scope.newEstimate.unitPrice))){
-          hmsPopup.showPopup('单价必须为数字正数或0');
+          hmsPopup.showShortCenterToast('单价必须为数字正数或0');
           return ;
         }
 
@@ -650,23 +650,23 @@ angular.module('opportunityModule')
 
       $scope.saveEstimate = function(){
         if($scope.newEstimate.productType == ''){
-          hmsPopup.showPopup('产品类别不能为空');
+          hmsPopup.showShortCenterToast('产品类别不能为空');
           return ;
         }
         if($scope.newEstimate.level2Product == ''){
-          hmsPopup.showPopup('二级产品不能为空');
+          hmsPopup.showShortCenterToast('二级产品不能为空');
           return ;
         }
         if($scope.newEstimate.productType == ''){
-          hmsPopup.showPopup('产品类型不能为空');
+          hmsPopup.showShortCenterToast('产品类型不能为空');
           return ;
         }
         if($scope.newEstimate.manday < 0 || isNaN(Number($scope.newEstimate.manday))){
-          hmsPopup.showPopup('人天必须为数字正数或0');
+          hmsPopup.showShortCenterToast('人天必须为数字正数或0');
           return ;
         }
         if($scope.newEstimate.unitPrice < 0 || isNaN(Number($scope.newEstimate.unitPrice))) {
-          hmsPopup.showPopup('单价必须为数字正数或0');
+          hmsPopup.showShortCenterToast('单价必须为数字正数或0');
           return ;
         }
         $scope.newEstimate.total = $scope.newEstimate.manday * $scope.newEstimate.unitPrice;
@@ -694,15 +694,15 @@ angular.module('opportunityModule')
 
       $scope.addCompetitor = function(){
         if($scope.newCompetitor.competitorId == ''){
-          hmsPopup.showPopup('竞争对手名称不能为空');
+          hmsPopup.showShortCenterToast('竞争对手名称不能为空');
           return ;
         }
         if($scope.newCompetitor.productName == ''){
-          hmsPopup.showPopup('竞争产品不能为空');
+          hmsPopup.showShortCenterToast('竞争产品不能为空');
           return ;
         }
         if($scope.newCompetitor.advantage == ''){
-          hmsPopup.showPopup('对手优势不能为空');
+          hmsPopup.showShortCenterToast('对手优势不能为空');
           return ;
         }
         $scope.competitors.push($scope.newCompetitor);
@@ -722,29 +722,29 @@ angular.module('opportunityModule')
         if(response.returnCode == "S"){
           $ionicScrollDelegate.$getByHandle('slide-img').scrollTop(false);
           if($scope.editFlag){
-            hmsPopup.showPopup("添加修改成功");
+            hmsPopup.showShortCenterToast("添加修改成功");
             $scope.$emit('OPPORTUNITY_EDIT_SUCCESS');
           } else {
             $scope.initData();
-            hmsPopup.showPopup("添加商机成功");
+            hmsPopup.showShortCenterToast("添加商机成功");
             $scope.$emit('OPPORTUNITY_ADD_SUCCESS');
           }
         } else if(response.returnCode == "E"){
-          hmsPopup.showPopup(response.returnMsg);
+          hmsPopup.showShortCenterToast(response.returnMsg);
         } else {
-          hmsPopup.showPopup("保存失败，请检查网络或联系管理员");
+          hmsPopup.showShortCenterToast("保存失败，请检查网络或联系管理员");
         }
       };
 
       var promoteClueSuccess = function(response){
         hmsPopup.hideLoading();
         if(response.returnCode == "S"){
-          hmsPopup.showPopup("线索提升成功");
+          hmsPopup.showShortCenterToast("线索提升成功");
           $scope.$emit('CLUE_PROMOTE_SUCCESS');
         } else if(response.returnCode == "E"){
-          hmsPopup.showPopup(response.returnMsg);
+          hmsPopup.showShortCenterToast(response.returnMsg);
         } else {
-          hmsPopup.showPopup("保存失败，请检查网络或联系管理员");
+          hmsPopup.showShortCenterToast("保存失败，请检查网络或联系管理员");
         }
       };
 
@@ -755,95 +755,95 @@ angular.module('opportunityModule')
         console.log($scope.estimates);
 
         if($scope.data.customerId == ''){
-          hmsPopup.showPopup("关联客户不能为空！");
+          hmsPopup.showShortCenterToast("关联客户不能为空！");
           return ;
         }
         if($scope.showData.incomeScale == ''){
-          hmsPopup.showPopup("收入规模不能为空！");
+          hmsPopup.showShortCenterToast("收入规模不能为空！");
           return ;
         }
         if($scope.showData.isListed == ''){
-          hmsPopup.showPopup("是否上市不能为空！");
+          hmsPopup.showShortCenterToast("是否上市不能为空！");
           return ;
         }
         if($scope.showData.industry == ''){
-          hmsPopup.showPopup("行业不能为空！");
+          hmsPopup.showShortCenterToast("行业不能为空！");
           return ;
         }
         if($scope.showData.subIndustry == '空' || $scope.showData.subIndustry == ''){
-          hmsPopup.showPopup("明细行业不能为空！");
+          hmsPopup.showShortCenterToast("明细行业不能为空！");
           return ;
         }
         if(!$scope.validNameFlag){
-          hmsPopup.showPopup("商机名称重复，请重新输入！");
+          hmsPopup.showShortCenterToast("商机名称重复，请重新输入！");
           return ;
         }
         if($scope.data.opportunityStatus == ''){
-          hmsPopup.showPopup("商机状态不能为空！");
+          hmsPopup.showShortCenterToast("商机状态不能为空！");
           return ;
         }
         if($scope.data.fullName == ''){
-          hmsPopup.showPopup("商机名称不能为空！");
+          hmsPopup.showShortCenterToast("商机名称不能为空！");
           return ;
         }
         if($scope.showData.customerContactsName == ''){
-          hmsPopup.showPopup("关联客户联系人不能为空！");
+          hmsPopup.showShortCenterToast("关联客户联系人不能为空！");
           return ;
         }
         if($scope.showData.businessFrom == ''){
-          hmsPopup.showPopup("商机来源不能为空！");
+          hmsPopup.showShortCenterToast("商机来源不能为空！");
           return ;
         }
         if($scope.isOrigin && $scope.showData.originalFactoryFrom == ''){
-          hmsPopup.showPopup("当商机来源为原厂时原厂划分不能为空！");
+          hmsPopup.showShortCenterToast("当商机来源为原厂时原厂划分不能为空！");
           return ;
         }
         if($scope.data.prjBeginDate == ''){
-          hmsPopup.showPopup("项目开始日期不能为空！");
+          hmsPopup.showShortCenterToast("项目开始日期不能为空！");
           return ;
         }
         if($scope.data.preSignDate == ''){
-          hmsPopup.showPopup("项目签署日期不能为空！");
+          hmsPopup.showShortCenterToast("项目签署日期不能为空！");
           return ;
         }
         if($scope.showData.theCompany == ''){
-          hmsPopup.showPopup("公司属性不能为空！");
+          hmsPopup.showShortCenterToast("公司属性不能为空！");
           return ;
         }
         if($scope.showData.saleArea == ''){
-          hmsPopup.showPopup("所属项目大区不能为空！");
+          hmsPopup.showShortCenterToast("所属项目大区不能为空！");
           return ;
         }
         if($scope.showData.saleStage == ''){
-          hmsPopup.showPopup("销售阶段不能为空！");
+          hmsPopup.showShortCenterToast("销售阶段不能为空！");
           return ;
         }
         if($scope.showData.preSaleEmployee == ''){
-          hmsPopup.showPopup("预销售顾问不能为空！");
+          hmsPopup.showShortCenterToast("预销售顾问不能为空！");
           return ;
         }
         if($scope.showData.chargingMode == ''){
-          hmsPopup.showPopup("计费模式不能为空！");
+          hmsPopup.showShortCenterToast("计费模式不能为空！");
           return ;
         }
         if($scope.showData.currency == ''){
-          hmsPopup.showPopup("货币不能为空！");
+          hmsPopup.showShortCenterToast("货币不能为空！");
           return ;
         }
         if($scope.data.preMoney == ''){
-          hmsPopup.showPopup("预计合同金额不能为空！");
+          hmsPopup.showShortCenterToast("预计合同金额不能为空！");
           return ;
         }
         if($scope.estimates.length == 0){
-          hmsPopup.showPopup("必须输入至少一条售前预估！");
+          hmsPopup.showShortCenterToast("必须输入至少一条售前预估！");
           return ;
         }
         if($scope.needCompetitorFlag && $scope.competitors.length == 0){
-          hmsPopup.showPopup("商机状态如果选择了'热门商机、赢面大、赢取商机'，则必输'竞争对手'!");
+          hmsPopup.showShortCenterToast("商机状态如果选择了'热门商机、赢面大、赢取商机'，则必输'竞争对手'!");
           return ;
         }
         if($scope.showWinCompanyFlag && $scope.data.winningCompetitorId == ''){
-          hmsPopup.showPopup("丢失商机时赢单公司不能为空!");
+          hmsPopup.showShortCenterToast("丢失商机时赢单公司不能为空!");
           return ;
         }
         hmsPopup.showLoading($scope.data.winningCompetitorId);
@@ -1385,7 +1385,7 @@ angular.module('opportunityModule')
         if($scope.nowSelectTarget['key'] == 'competitor'){
           for(var i = 0; i < $scope.competitors.length; i++) {
             if($scope.competitors[i].competitorId == data){
-              hmsPopup.showPopup('已添加过该竞争对手！请重新选择');
+              hmsPopup.showShortCenterToast('已添加过该竞争对手！请重新选择');
               return ;
             }
           }
@@ -1642,7 +1642,7 @@ angular.module('opportunityModule')
       var validNameSuccess= function(response){
         $scope.validNameFlag = response.returnFlag;
         if(!$scope.validNameFlag)
-          hmsPopup.showPopup('商机名称重复！请重新输入');
+          hmsPopup.showShortCenterToast('商机名称重复！请重新输入');
       };
 
       $scope.validName = function(){
@@ -1695,7 +1695,7 @@ angular.module('opportunityModule')
       $scope.showIndustrySelect = function(key){
         $scope.isCustomerIndustry = key == 'customer';
         if(!$scope.editCustomerFlag && $scope.isCustomerIndustry){
-          hmsPopup.showPopup('抱歉，你没有权限修改该客户。');
+          hmsPopup.showShortCenterToast('抱歉，你没有权限修改该客户。');
           return ;
         }
         $scope.showIndustrySelectFlag = true;
@@ -1812,7 +1812,7 @@ angular.module('opportunityModule')
           console.log(result);
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('保存商机失败，请联系管理员');
           hmsPopup.hideLoading();
         });
 
@@ -1830,7 +1830,7 @@ angular.module('opportunityModule')
           console.log(result);
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('编辑商机失败，请联系管理员');
           hmsPopup.hideLoading();
         });
 
@@ -1845,7 +1845,7 @@ angular.module('opportunityModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('提升线索失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -1860,7 +1860,7 @@ angular.module('opportunityModule')
           console.log(result);
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('线索保存失败，请联系管理员');
           hmsPopup.hideLoading();
         });
 
@@ -1875,7 +1875,7 @@ angular.module('opportunityModule')
           console.log(result);
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('线索编辑失败，请联系管理员');
           hmsPopup.hideLoading();
         });
 
@@ -1891,7 +1891,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_customer_list', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('客户列表获取失败，请联系管理员');
         });
       };
 
@@ -1906,7 +1906,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'customer_contact_list', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('客户联系人获取失败，请联系管理员');
         });
       };
 
@@ -1919,7 +1919,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_sale_employee', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('预销售顾问获取失败，请联系管理员');
         });
       };
 
@@ -1933,7 +1933,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_sale_employee', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('搜索失败，请联系管理员');
         });
       };
 
@@ -1953,7 +1953,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'product_categoty', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取产品失败，请联系管理员');
         });
       };
 
@@ -1966,7 +1966,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'business_unit', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取事业部失败，请联系管理员');
         });
       };
 
@@ -1979,7 +1979,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'inside_company', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获得公司属性失败，请联系管理员');
         });
       };
 
@@ -1992,7 +1992,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'business_from', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获取商机来源失败，请联系管理员');
         });
       };
 
@@ -2008,7 +2008,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_lookup', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+
         });
       };
 
@@ -2020,7 +2020,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'opportunity_valid_name', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+
         });
       };
 
@@ -2032,7 +2032,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_sale_area', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('所属区域获取失败，请联系管理员');
         });
       };
 
@@ -2045,7 +2045,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_sale_team', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('所属团队获取失败，请联系管理员');
         });
       };
 
@@ -2058,7 +2058,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'query_competitor_list', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('竞争对手获取失败，请联系管理员');
         });
       };
 
@@ -2072,7 +2072,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'select_customers', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('搜索失败，请联系管理员');
         });
       };
 
@@ -2084,7 +2084,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'search_competitor', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('搜索失败，请联系管理员');
         });
       };
 
@@ -2110,7 +2110,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'opportunity_status', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获得商机状态失败，请联系管理员');
         });
       };
 
@@ -2122,7 +2122,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'industry_lookup',params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获得行业失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -2134,7 +2134,7 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'get_condition',params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          hmsPopup.showShortCenterToast('获得客户信息失败，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -2143,7 +2143,6 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'employee_detail', {}).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
