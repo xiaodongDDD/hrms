@@ -235,6 +235,7 @@ angular.module('contactModule')
 
 
       $scope.selectEmployeeItem = function (newEmp) { //跳到个人详情界面
+        console.log("====跳到个人详情");
         dealHistory(newEmp.emp_name);
         $scope.showHistory = true;
         $scope.showClear = false;
@@ -245,7 +246,7 @@ angular.module('contactModule')
           $rootScope.$broadcast("SEND_EMP_INFO");
           $ionicHistory.goBack();
         } else {
-          $state.go('tab.employeeDetail', {employeeNumber: newEmp.emp_code});
+          $state.go('tab.employeeDetailCrm', {employeeNumber: newEmp.emp_code});
         }
       };
 

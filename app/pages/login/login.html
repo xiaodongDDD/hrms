@@ -1,6 +1,53 @@
 <ion-view view-title="登录" class="login" calculate-portrait="big-portrait,little-portrait">
   <ion-content class="content-style" has-bouncing="false" scrollbar-y="false" delegate-handle="loginScroll">
-    <ion-item class="login-item">
+    <div>
+      <img src="build/img/login/logo@3x.png" style="width: 50%;
+    height: 45px;
+    margin-left: 25%;
+    margin-top: 102px;">
+    </div>
+    <div>
+      <ion-item class="login-item">
+      <!--  <label ng-class="{'focus-user-label':!focusUsername,'blur-user-label':focusUsername}">用户名</label>-->
+        <div style="position: absolute;
+    left: 9%;
+    top: 80px;">
+          <img src="build/img/login/user@3x.png" style="width:16px;">
+        </div>
+        <input type="text" autocomplete="off" class="username-input" ng-model="loginInfo.username"
+               ng-change="usernameChange()" placeholder="请输入工号"/>
+        <ion-item class="user-clear-item" ng-show="showUserClearButton">
+          <button class="button button-block clear-button" ng-click="clearUsername()">
+            <img src="build/img/login/cancel@3x.png" class="clear-image"/>
+          </button>
+        </ion-item>
+        <div class="gray-line"></div>
+       <!-- <label ng-class="{'focus-password-label':!focusPassword,'blur-password-label':focusPassword}">密码</label>-->
+        <div style="position: absolute;
+    left: 9%;
+    top: 133px;">
+          <img src="build/img/login/password@3x.png" style="width:16px;">
+        </div>
+        <input type="password" autocomplete="off" class="password-input" ng-model="loginInfo.password" placeholder="请输入密码"
+             ng-change="passwordChange()"/>
+        <ion-item class="password-clear-item" ng-show="showPasswordClearButton">
+          <button class="button button-block clear-button" ng-click="clearPassword()">
+            <img src="build/img/login/login-clear.png" class="clear-image"/>
+          </button>
+        </ion-item>
+        <div class="gray-line"></div>
+        <!--<ion-item class="login-checkbox-item">
+          <img ng-src="{{passwordChecked}}" class="login-checkbox-icon" ng-click="savePassword()"/>
+          <button class="button button-block"
+                  ng-class="{'remember-password-button remember-password-unchecked':!rememberPassword,'remember-password-button remember-password-checked':rememberPassword}"
+                  ng-click="savePassword()">记住密码
+          </button>
+        </ion-item>-->
+    </div>
+    <div>
+      <div ng-class="{true:'hasPassword',false:'noPassword'}[loginInfo.password!='']" ng-click="login()">登录</div>
+    </div>
+ <!--   <ion-item class="login-item">
       <label ng-class="{'focus-user-label':!focusUsername,'blur-user-label':focusUsername}">用户名</label>
       <input type="text" autocomplete="off" class="username-input" ng-model="loginInfo.username"
              ng-focus="usernameFocus()" ng-blur="usernameBlur()" ng-change="usernameChange()"/>
@@ -33,20 +80,20 @@
       <button id="real-button" class="button button-block login-button finish-button" ng-show="showLoginButton"><img
         src="build/img/login/login-ready.png" class="button-icon" ng-show="showButtonIcon"/></button>
     </ion-item>
-    <!--<div class="row wechat-row">-->
-      <!--<div class="col-40 wechat-left-col">-->
-        <!--<div class="wechat-left-line"></div>-->
-      <!--</div>-->
-      <!--<div class="col-20 wechat-center-line">-->
-        <!--<button class="button button-icon wechat-button" ng-click="goToWechat()">-->
-          <!--<img src="build/img/login/login-wechat.png" class="wechat-image"/>-->
-        <!--</button>-->
-      <!--</div>-->
-      <!--<div class="col-40 wechat-right-col">-->
-        <!--<div class="wechat-right-line"></div>-->
-      <!--</div>-->
-    <!--</div>-->
+    &lt;!&ndash;<div class="row wechat-row">&ndash;&gt;
+      &lt;!&ndash;<div class="col-40 wechat-left-col">&ndash;&gt;
+        &lt;!&ndash;<div class="wechat-left-line"></div>&ndash;&gt;
+      &lt;!&ndash;</div>&ndash;&gt;
+      &lt;!&ndash;<div class="col-20 wechat-center-line">&ndash;&gt;
+        &lt;!&ndash;<button class="button button-icon wechat-button" ng-click="goToWechat()">&ndash;&gt;
+          &lt;!&ndash;<img src="build/img/login/login-wechat.png" class="wechat-image"/>&ndash;&gt;
+        &lt;!&ndash;</button>&ndash;&gt;
+      &lt;!&ndash;</div>&ndash;&gt;
+      &lt;!&ndash;<div class="col-40 wechat-right-col">&ndash;&gt;
+        &lt;!&ndash;<div class="wechat-right-line"></div>&ndash;&gt;
+      &lt;!&ndash;</div>&ndash;&gt;
+    &lt;!&ndash;</div>&ndash;&gt;
     <img ng-src="{{bigPortrait}}" class="big-portrait" ng-show="showBigPortrait" id="big-portrait"/>
-    <img ng-src="{{littlePortrait}}" class="little-portrait" ng-show="showLittlePortrait" id="little-portrait"/>
+    <img ng-src="{{littlePortrait}}" class="little-portrait" ng-show="showLittlePortrait" id="little-portrait"/>-->
   </ion-content>
 </ion-view>
