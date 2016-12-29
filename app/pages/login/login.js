@@ -355,6 +355,7 @@ angular.module('loginModule')
         $scope.bigPortrait = "build/img/login/login-hand.png";
         $timeout(function () {
           window.localStorage.empno = $scope.loginInfo.username;
+          window.localStorage.password = $scope.loginInfo.password;
           if ($scope.rememberPassword == true) {
             window.localStorage.password = $scope.loginInfo.password;
           } else if ($scope.rememberPassword == false) {

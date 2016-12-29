@@ -287,7 +287,7 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
     }
   }])
 
-  .directive('calculatePortrait', function () {
+/*  .directive('calculatePortrait', function () {
     return {
       restrict: 'A',
       link: function ($scope, $scroller, $attr) {
@@ -316,7 +316,7 @@ HmsModule.directive('hideTabs', ['$rootScope', function ($rootScope) {
         myBigPortrait.style.top = bigPortraitVariable * clientWidth / 375 - calculationBig / 2 + "px";
       }
     }
-  });
+  });*/
 /**
  * @description:loading tag
  *
