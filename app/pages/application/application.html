@@ -40,9 +40,11 @@
 
     <div class="calendar-container">
       <div class="crm-search" ng-click="goSearch()" ng-if="hasCrm"><img src="build/img/application/search@3x.png"/>搜索客户、商机、线索</div>
-      <img src="build/img/application/banner@3x.png" class="calendar-head"/>
+      <img ng-src="{{titleBg}}" class="calendar-head"/>
       <div class="calendar-content">
         <div class="application-calendar">
+          <img ng-src="{{titleBg}}" class="blur-bg"/>
+          <div class="white-bg"></div>
           <div ng-repeat="weekday in weekdays track by $index" class="highlight head-item">{{weekday}}</div>
           <div ng-repeat="day in days track by $index" class="date-item" ng-class="{true:'selected'}[nowSelectedDate == $index]" ng-click="selectDate($index)">
             {{getDateText(day)}}

@@ -1180,8 +1180,10 @@
         }, 300);
       }
     };
-    if ($stateParams.data == 'WEEK')
-      changeShowModel(false);
+
+    if ($stateParams.data == 'UP'){
+      $scope.onGestureCalendar('up')
+    }
 
     function insertText(obj, str) {
       if (document.selection) {
