@@ -13,7 +13,7 @@
     <div ng-if="!vm.showLoading">
       <div class="plan-item" ng-repeat="weeklyReport in vm.weeklyReportList" ng-click="vm.goDetail(weeklyReport)">
         <div class="plan-head">
-          <img ng-src="build/img/application/plans/user_img@3x.png"/>
+          <img ng-src="{{weeklyReport.headUrl}}"/>
           <div>
             <span class="plan-head-base">
                   {{weeklyReport.employeeName}}
