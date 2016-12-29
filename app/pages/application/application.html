@@ -1,18 +1,20 @@
-<ion-view view-title="应用" class="application">
-  <ion-header-bar align-title="center" class="bar-stable">
-    <h1 class="title">应用</h1>
-    <!--<div class="buttons">
-      <button class="button button-clear" style="font-size: 26px" ng-click="openSetting()">
-        <i class="ion-ios-gear-outline"></i>
-      </button>
-    </div>-->
-    <div class="buttons">
-      <button class="button button-clear" style="font-size: 16px" ng-click="freshMenuList()">
-        刷新
-      </button>
-    </div>
+<ion-view view-title="应用" class="new-application">
 
-  </ion-header-bar>
+  <!--<ion-header-bar align-title="center" class="bar-stable">-->
+    <!--<h1 class="title">应用</h1>-->
+    <!--&lt;!&ndash;<div class="buttons">-->
+      <!--<button class="button button-clear" style="font-size: 26px" ng-click="openSetting()">-->
+        <!--<i class="ion-ios-gear-outline"></i>-->
+      <!--</button>-->
+    <!--</div>&ndash;&gt;-->
+    <!--<div class="buttons">-->
+      <!--<button class="button button-clear" style="font-size: 16px" ng-click="freshMenuList()">-->
+        <!--刷新-->
+      <!--</button>-->
+    <!--</div>-->
+
+  <!--</ion-header-bar>-->
+
   <ion-content class="mainApplication" style="bottom:48px;" scrollbar-y="false">
     <div on-release="onRelease()" class="application-setting-outer"
          ng-show="animationsEnabled">
@@ -36,10 +38,49 @@
       </div>
     </div>
 
+    <div class="calendar-container">
+      <div class="crm-search" ng-click="goSearch()" ng-if="hasCrm"><img src="build/img/application/search@3x.png"/>搜索客户、商机、线索</div>
+      <img src="build/img/application/banner@3x.png" class="calendar-head"/>
+      <div class="calendar-content">
+        <div class="application-calendar">
+          <div ng-repeat="weekday in weekdays track by $index" class="highlight head-item">{{weekday}}</div>
+          <div ng-repeat="day in days track by $index" class="date-item" ng-class="{true:'selected'}[nowSelectedDate == $index]" ng-click="selectDate($index)">
+            {{getDateText(day)}}
+            <div class="dot-container">
+              <span class="TS-state" ng-class="{0:'TS-refuse',1:'TS-commit',2:'TS-approval'}[day.timeSheetValue]"></span>
+              <span class="plan-state" ng-class="{true:'plan-has'}[day.planCount != 0]" ng-if="hasCrm"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message-area">
+      <div class="message-area-item" ng-click="goWrite(days[nowSelectedDate])" ng-class="{0:'TS-refuse-message',1:'TS-commit-message',2:'TS-approval-message'}[days[nowSelectedDate].timeSheetValue]">{{days[nowSelectedDate].timeSheetText}}TS{{days[nowSelectedDate].project == "" ? "" : "： " + days[nowSelectedDate].project}}</div>
+      <div class="slim-line" ng-if="hasCrm"></div>
+      <div class="message-area-item" ng-if="hasCrm" ng-click="goPlan()" ng-class="{true:'plan-has-message'}[days[nowSelectedDate].planCount != 0]">销售计划： {{days[nowSelectedDate].planCount}}条 </div>
+    </div>
+
     <div class="application-outer">
       <div class="hms-animated application-left" ng-class="{true: 'start', false: ''}[animationsEnabled]">
+        <div class="appRegion firstLine" ng-if="hasCrm">
+          <div class="appAreaBorder">
+            <div class="appTitle office"><img src="build/img/application/line@3x.png"/>CRM</div>
+          </div>
+          <div class="appArea" ng-repeat="appList in crmApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1"
+                 ng-click="goPage(appItem)">
+              <div class="appItem">
+                <div class="app-item-content">
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
+              </div>
+              <div class="appText">{{appItem.appName}}</div>
+            </div>
+          </div>
+        </div>
         <div class="appRegion">
-          <div class="appTitle office">个人办公</div>
+          <div class="appTitle office"><img src="build/img/application/line@3x.png"/>个人办公</div>
           <div class="appArea" ng-repeat="appList in officeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
@@ -59,7 +100,7 @@
         </div>
 
         <div class="appRegion">
-          <div class="appTitle project">项目门户</div>
+          <div class="appTitle project"><img src="build/img/application/line@3x.png"/>项目门户</div>
           <div class="appArea" ng-repeat="appList in projectApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
@@ -73,7 +114,7 @@
         </div>
 
         <div class="appRegion">
-          <div class="appTitle employee">员工社区</div>
+          <div class="appTitle employee"><img src="build/img/application/line@3x.png"/>员工社区</div>
           <div class="appArea" ng-repeat="appList in employeeApp">
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
               <div class="appItem" ng-click="goPage(appItem)">
@@ -87,6 +128,19 @@
         </div>
       </div>
       <div class="hms-animated application-right" ng-class="{true: 'start', false: ''}[animationsEnabled]">
+        <div class="appRegion firstLine" ng-if="hasCrm">
+          <div class="appTitle"></div>
+          <div class="appArea" ng-repeat="appList in crmApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
+              <div class="appItem" ng-click="goPage(appItem)">
+                <div class="app-item-content">
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
+              </div>
+              <div class="appText">{{appItem.appName}}</div>
+            </div>
+          </div>
+        </div>
         <div class="appRegion">
           <div class="appTitle"></div>
           <div class="appArea" ng-repeat="appList in officeApp">

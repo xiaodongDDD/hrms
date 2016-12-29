@@ -213,7 +213,7 @@ angular.module('myApp')
           url: '/tab',
           caches: true,
           abstract: true,
-          templateUrl: baseConfig.appStoreFlag ? 'build/pages/tab/tabs.html' : 'build/pages/tab/new-tabs.html',
+          templateUrl: 'build/pages/tab/tabs.html',
           controller: 'TabsCtrl'
         })
 
@@ -228,21 +228,21 @@ angular.module('myApp')
           }
         })
 
-        .state('tab.application', {
-          url: '/application',
+        .state('tab.old-application', {
+          url: '/old-application',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/application.html',
+              templateUrl: 'build/pages/application/old-application.html',
               controller: 'applicationCtrl'
             }
           }
         })
 
-        .state('tab.new-application', {
-          url: '/new-application',
+        .state('tab.application', {
+          url: '/application',
           views: {
             'tab-application': {
-              templateUrl: 'build/pages/application/new-application.html',
+              templateUrl: 'build/pages/application/application.html',
               controller: 'newApplicationCtrl'
             }
           }
