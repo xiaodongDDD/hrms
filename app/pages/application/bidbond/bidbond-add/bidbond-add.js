@@ -73,6 +73,7 @@ angular.module('bidbondModule')
 				if(isNotNullObj($stateParams.param)) {
 					//	$scope.data = $stateParams.param;
 					$scope.data = {
+						bondId: $stateParams.param.bondId,
 						opportunityId: $stateParams.param.opportunityId,
 						opportunityCode: $stateParams.param.opportunityCode,
 						customerCode: $stateParams.param.customerCode,
@@ -95,11 +96,13 @@ angular.module('bidbondModule')
 						paymentContent: $stateParams.param.paymentContent,
 						applicationBy: $stateParams.param.applicationBy,
 						applicationDate: $stateParams.param.applicationDate,
+						workflowStatus: $stateParams.param.workflowStatus,
 						attachments: [],
 					};
 
 					//界面显示的数据
 					$scope.showData = {
+						bondId: $stateParams.param.bondId,
 						opportunityName: $stateParams.param.fullName,
 						fullName: $stateParams.param.customerName,
 						companyName: $stateParams.param.companyName,
@@ -121,7 +124,8 @@ angular.module('bidbondModule')
 						applicationBy: $stateParams.param.applicationBy,
 						applicationDate: $stateParams.param.applicationDate,
 						attachments: $stateParams.param.attachments,
-						hrFullUnitName: $stateParams.param.hrFullUnitName
+						hrFullUnitName: $stateParams.param.hrFullUnitName,
+						workflowStatusName: $stateParams.param.workflowStatusName
 					};
 					if($stateParams.param.workflowStatus == 0 || $stateParams.param.workflowStatus == -1 || !$stateParams.param.workflowStatus) {
 
@@ -423,8 +427,7 @@ angular.module('bidbondModule')
 						$scope.$emit('BIDBOND_EDIT_SUCCESS');
 					} else {
 						$scope.initData();
-						/*		hmsPopup.showPopup("新建保证金成功");*/
-						//		hmsPopup.prompt('请问是否现在提交保证金申请？');
+
 						var confirmPopup = function(index) {
 							console.log(index);
 							if(index) {
@@ -555,10 +558,15 @@ angular.module('bidbondModule')
 					hmsPopup.showPopup("付款内容不能为空！");
 					return;
 				}
+				
 				$scope.data.applicationBy = $scope.personalInfo.userId;
-				if($stateParams.param.workflowStatus == 0 || $stateParams.param.workflowStatus == -1 || !$stateParams.param.workflowStatus) {
+				
+				if(!$stateParams.param.workflowStatus) {
 					hmsPopup.showLoading();
 					addbidbondService.SaveBidbonds(saveBidbondSuccess, $scope.data);
+				} else if($stateParams.param.workflowStatus == 0 || $stateParams.param.workflowStatus == -1) {
+					hmsPopup.showLoading();
+					addbidbondService.EditBidbonds(saveBidbondSuccess, $scope.data);
 				} else {
 					/* $scope.showDisable=true;*/
 					hmsPopup.showPopup($stateParams.param.workflowStatusName + "，不可编辑");
@@ -706,7 +714,7 @@ angular.module('bidbondModule')
 			$scope.selectTargets = [{
 				'key': 'business',
 				'interface': addbidbondService.getOpportunity, //获得选择项的接口
-				'params': [getOpportunitySuccess, $scope.nowPage, $scope.pageSize], //获得选择项时接口所需参数
+				'params': [getOpportunitySuccess, $scope.nowPage, $scope.pageSize, $scope.data.customerId], //获得选择项时接口所需参数
 				'showKey': 'opportunityName', //选择界面显示的数据
 				'dataKey': 'opportunityId', //对象内最终操作提交所需的数据变量
 				'dataModel': '$scope.data.opportunityId', //最终操作提交所需的数据变量
@@ -774,6 +782,18 @@ angular.module('bidbondModule')
 				'dataModel': '$scope.data.fromBasicAccount',
 				'showDataModel': '$scope.showData.fromBasicAccountValue'
 			}];
+			
+			
+			$scope.$watch('data.customerId', function(newValue, oldValue) {
+				$scope.nowPage = 1;
+				$scope.selectTargets[6].params = [getOpportunitySuccess, $scope.nowPage, $scope.pageSize, newValue];
+				if($scope.firstInEdit) {
+					$scope.firstInEdit = false;
+					return;
+				}
+				$scope.data.opportunityId = "";
+				$scope.showData.opportunityName = "";
+			});
 
 			//通用选择框
 			$ionicModal.fromTemplateUrl('build/pages/modals/crmSelectModal.html', {
@@ -880,12 +900,13 @@ angular.module('bidbondModule')
 				var showDataModel = $scope.nowSelectTarget['showDataModel']; //显示用的数据变量ng-model
 				eval(dataModel + " = data");
 				eval(showDataModel + " = showKey");
-				if($scope.nowSelectTarget['key'] == 'business') {
+				
+				if($scope.nowSelectTarget['key'] == 'customer') {
 					/*   $scope.data.customerId = '';
 					 $scope.showData.fullName = '';*/
 					console.log($scope.items[$index]);
-					$scope.showData.fullName = $scope.items[$index].customerName;
-					$scope.data.customerId = $scope.items[$index].customerId;
+					$scope.showData.opportunityName = $scope.items[$index].opportunityName;
+					$scope.data.opportunityId = $scope.items[$index].opportunityId;
 				}
 				$scope.showSelectDiv();
 			};
@@ -988,16 +1009,30 @@ angular.module('bidbondModule')
 					hmsPopup.hideLoading();
 				});
 			};
+			
+			//	编辑保证金
+			this.EditBidbonds = function(success, data) {
+
+				var params = data;
+
+				console.log(JSON.stringify(params));
+
+				hmsHttp.post(baseUrl + 'save_bidbond', params).success(function(result) {
+					console.log(result);
+					success(result);
+				}).error(function(response, status) {
+					hmsPopup.showPopup(response);
+					hmsPopup.hideLoading();
+				});
+			};
+
 
 			//获取商机
 			this.getOpportunity = function(success, page, pageSize, customerId) {
 				var params = {
-					"page": page,
-					"pageSize": pageSize,
-					"queryType": "ALL_OPPORTUNITY",
-					"customerId": customerId,
-					"opportunityStatus": "",
-					"status": ""
+		          page: page,
+		          pageSize: pageSize,
+		          customerId: customerId
 				};
 				hmsHttp.post(baseUrl + 'query_opportunity_list', params).success(function(result) {
 					success(result);
