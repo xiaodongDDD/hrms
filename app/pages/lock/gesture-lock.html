@@ -1,3 +1,4 @@
+<!--
 <ion-view view-title="锁屏页面" class="gesture-lock">
   <ion-content class="content-style">
     <div class="lock-panel">
@@ -5,6 +6,20 @@
       <canvas id="container"></canvas>
     </div>
   </ion-content>
+  <div class="black-page" ng-if="errorLock">
+    <div class="black-head"></div>
+    <div class="error-lock">
+      {{unlockTimeString}} 解除锁定
+    </div>
+  </div>
+</ion-view>
+-->
+<ion-view view-title="锁屏页面" class="gesture-password-setting">
+  <div class="lock-panel">
+    <h4 id="description"></h4>
+    <canvas id="container"></canvas>
+  </div>
+  <div class="show-change" ng-click="goLogin()">切换登陆方式</div>
   <div class="black-page" ng-if="errorLock">
     <div class="black-head"></div>
     <div class="error-lock">

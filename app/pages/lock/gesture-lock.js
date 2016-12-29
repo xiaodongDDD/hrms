@@ -38,7 +38,9 @@ angular.module('myInfoModule')
               hmsJpushService,
               $ionicHistory,
               hmsPopup) {
-
+      $scope.goLogin=function(){
+        $state.go('login');
+      };
       $scope.$on('$ionicView.enter', function () {
         $scope.operation = 2;
         $scope.errorLock = Boolean( window.localStorage.errorLock );
