@@ -66,15 +66,14 @@
             "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
         }
     },
-<<<<<<< HEAD
     "cordova-plugin-device": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-device"
-        },
-        "is_top_level": true,
-        "variables": {}
-=======
+      "source": {
+        "type": "registry",
+        "id": "cordova-plugin-device"
+      },
+      "is_top_level": true,
+      "variables": {}
+    },
     "cordova-plugin-baidu-geolocation": {
         "source": {
             "type": "git",
@@ -85,6 +84,5 @@
         "variables": {
             "API_KEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
         }
->>>>>>> wkh
     }
 }
