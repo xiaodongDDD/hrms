@@ -636,7 +636,12 @@
           $ionicHistory.goBack();
           hmsPopup.showPopup('取消销售计划成功！');
         } else {
-          hmsPopup.showPopup(result.returnMsg);
+          if (result.returnMsg) {
+            hmsPopup.showPopup(result.returnMsg);
+          }
+          else {
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+          }
         }
       }
 
@@ -795,8 +800,12 @@
         if (result.returnCode == "S") {
           init();
         } else {
-          hmsPopup.showPopup = result.returnMsg;
-          console.log(result);
+          if (result.returnMsg) {
+            hmsPopup.showPopup(result.returnMsg);
+          }
+          else {
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+          }
         }
       };
       var annotatError = function (result) {

@@ -107,7 +107,12 @@ angular.module('applicationModule')
           }
           console.log($scope.searchData);
         }else{
-          $scope.showContent=true;
+          if(result.returnMsg){
+            $scope.showContent=true;
+            hmsPopup.showPopup(result.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
       $scope.goDetail = function (item) {
@@ -222,7 +227,6 @@ angular.module('applicationModule')
           success(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup(response.error_description);
         });
       }
     }]);

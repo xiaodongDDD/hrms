@@ -207,7 +207,7 @@ HmsModule
       }
     }
   })
-  .directive('keyboardshow', function($rootScope, $ionicPlatform, $timeout, $ionicHistory, $cordovaKeyboard) {
+  .directive('keyboardshow', function($rootScope, $ionicPlatform, $timeout) {
     return {
       restrict: 'A',
       link: function(scope, element, attributes) {
@@ -220,14 +220,11 @@ HmsModule
           });
         }else{
           window.addEventListener('native.keyboardshow',function (e){
-
             angular.element(element).css({
               'bottom':e.keyboardHeight + 'px'
             });
 
-
           });
-
           window.addEventListener('native.keyboardhide',function (e){
             angular.element(element).css({
               'bottom':0

@@ -109,8 +109,12 @@ angular.module('contactModule')
             }
           }
           $scope.searchData = result.customer_contact_list;
-        } else {
-          hmsPopup.showPopup(result.returnMsg);
+        }else{
+          if(result.returnMsg){
+            hmsPopup.showPopup(result.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
         if(result.customer_contact_list.length<$scope.searched.pageSize||result.customer_contact_list.length==0){
           $scope.moreDataCanBeLoaded=false;
@@ -128,7 +132,11 @@ angular.module('contactModule')
           }
           $scope.searchData = $scope.searchData.concat(result.customer_contact_list) ;
         } else {
-          hmsPopup.showPopup(result.returnMsg);
+          if(result.returnMsg){
+            hmsPopup.showPopup(result.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
         if(result.customer_contact_list.length<$scope.searched.pageSize||result.customer_contact_list.length==0){
           $scope.moreDataCanBeLoaded=false;

@@ -183,6 +183,11 @@ angular.module('competitorModule')
           var initDeletSuccess = function (data) {
             console.log(data);
             console.log(angular.toJson($scope.value.competitorProducts));
+            if(data.returnMsg){
+              hmsPopup.showPopup(data.returnMsg);
+            }else{
+              hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+            }
           };
           addCompetitorsService.deleteProduct(initDeletSuccess, deleteProuctDes);
         }
@@ -375,9 +380,11 @@ angular.module('competitorModule')
               "competitorDisadvDesc": "",
               "competitorProducts": []
             };
-          } else {
+          } else if(data.returnCode == "E"){
             $scope.value.competitorProducts = [];
             hmsPopup.showShortCenterToast(data.returnMsg);
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
           }
         };
         var initCheckSuccess = function (result) {
@@ -395,9 +402,12 @@ angular.module('competitorModule')
              $scope.value. competitorProducts= [];
              hmsPopup.showShortCenterToast(result.returnMsg);
              }*/
-          }else{
+          }else if(result.returnCode == "E"){
             hmsPopup.hideLoading();
             hmsPopup.showPopup(result.returnMsg);
+          }else{
+            hmsPopup.hideLoading();
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
           }
         };
         if (!isNotNullObj($stateParams.competitors)) {

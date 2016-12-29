@@ -88,6 +88,11 @@ angular.module('competitorModule')
             $scope.moreDataCanBeLoaded = false;
           }
         } else {
+          if(result.returnMsg){
+            hmsPopup.showPopup(result.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
       var error = function (response) {
@@ -97,6 +102,12 @@ angular.module('competitorModule')
         $scope.showContent = true;
         if (result.returnCode == "S") {
           $scope.competitors = result.competitor_list;
+        } else{
+          if(result.returnMsg){
+            hmsPopup.showPopup(result.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
         $scope.$broadcast('scroll.refreshComplete');
       };
@@ -119,9 +130,13 @@ angular.module('competitorModule')
             console.log("没有数据了" + $scope.moreDataCanBeLoaded);
             $scope.moreDataCanBeLoaded = false;
           }
-        } else {
-          $scope.moreDataCanBeLoaded = false;
-          hmsPopup.showPopup(result.returnMsg);
+        } else{
+          if(result.returnMsg){
+            $scope.moreDataCanBeLoaded = false;
+            hmsPopup.showPopup(result.returnMsg);
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       };
@@ -182,6 +197,12 @@ angular.module('competitorModule')
               window.localStorage[valueObj.lastUpdateDate] = lastUpdateDate;
               window.localStorage[valueObj.localList] = JSON.stringify(response.lookup_detail[i].lookup_value_list);
             }
+          }
+        }else{
+          if(response.returnMsg){
+            hmsPopup.showPopup(response.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
           }
         }
         ;
