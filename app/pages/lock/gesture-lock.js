@@ -65,6 +65,11 @@ angular.module('myInfoModule')
             operation: $scope.operation,
             descID: 'description',
             canvasID: 'container',
+            fillStyle :  '#fe9073',
+            strokeStyle :  '#fe9073',
+            miniFillStyle :  '#fe9073',
+            miniStrokeStyle :  '#fe9073',
+            outFillStyle:"rgba(254, 144, 115, 0.4)",
             haveDelta: true,
             successUnlockCallback: function(){
               var desc = document.getElementById('description');

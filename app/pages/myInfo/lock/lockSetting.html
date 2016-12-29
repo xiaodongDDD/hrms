@@ -1,0 +1,21 @@
+<ion-view view-title="手势密码设置" class="crm gesture-password-setting">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
+    <div class="buttons" ng-show="(operation == 0)">
+     <!-- <button class="button button-icon ion-ios-refresh-empty" id="setting-reset">
+        <span class="back-button-text">重设</span>
+      </button>-->
+    </div>
+  </ion-header-bar>
+ <!-- <div class="content-style-lock">-->
+    <div class="lock-panel">
+      <div ng-show="(operation == 0)" class="gesture-des-show">设置手势密码，方便您的登录</div>
+      <canvas id="mini-container"></canvas>
+      <div id="setting-description"></div>
+      <canvas id="setting-container"></canvas>
+    </div>
+    <div ng-click="showchangeCheck()" class="show-change">切换验证方式</div>
+<!--  </div>-->
+</ion-view>
+
+

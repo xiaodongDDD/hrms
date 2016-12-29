@@ -209,6 +209,33 @@ angular.module('HmsModule')
           );
         }
       };
+      this.confirmNoTitle = function (message, onConfirm) {
+        if (!baseConfig.nativeScreenFlag) {
+          var confirmPopup = $ionicPopup.confirm({
+            template: message,
+            cancelText: '取消',
+            cancelType: 'button-cux-popup-cancel',
+            okText: '确定',
+            okType: 'button-cux-popup-confirm'
+          });
+          confirmPopup.then(function(res){
+            if(res){
+              onConfirm(res);
+            }else{
+
+            }
+          });
+        } else {
+          navigator.notification.confirm(
+            message, // message
+            function (index) {
+              onConfirm(index-1);
+            }, // callback to invoke with index of button pressed
+            title, // title
+            ['取消' , '确定'] // buttonLabels
+          );
+        }
+      };
       //弹出是否确认的窗口
       this.prompt = function (myscope, title, popup, pluginPopup) {
         if (!baseConfig.nativeScreenFlag) {

@@ -141,7 +141,7 @@ angular.module('myInfoModule')
       }
 
       $scope.clickGestureLock = function () {
-        if ($scope.gesture.lock) {
+/*        if ($scope.gesture.lock) {
           $scope.gesture.lock = false;
           $state.go('tab.gesture-password-setting', {
             'Operation': 0
@@ -151,8 +151,20 @@ angular.module('myInfoModule')
           $state.go('tab.gesture-password-setting', {
             'Operation': 3
           });
+        }*/
+        console.log( $scope.gesture.lock);
+        if( $scope.gesture.lock){
+          console.log("初始化");
+          $scope.gesture.lock = false;
+          $state.go('tab.lockSetting', {
+            'Operation': 0
+          });
+        } else {
+          $scope.gesture.lock = true;
+          $state.go('tab.lockSetting', {
+            'Operation': 3
+          });
         }
-
       };
 
       var initSetting = function () {
@@ -215,7 +227,13 @@ angular.module('myInfoModule')
       });
 
       $scope.clickChangePassword = function () {
-        $state.go('tab.gesture-password-setting', {
+  /*      $state.go('tab.gesture-password-setting', {
+          'Operation': 1
+        });
+        if (baseConfig.debug) {
+          console.log('修改手势密码');
+        }*/
+        $state.go('tab.lockSetting', {
           'Operation': 1
         });
         if (baseConfig.debug) {

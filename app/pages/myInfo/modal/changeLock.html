@@ -1,0 +1,31 @@
+<ion-modal-view class="crm changeLock">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="closeModel()"/>
+    <h2 class="title">更换验证方式</h2>
+  </ion-header-bar>
+  <ion-content>
+    <div class="row" style="border-bottom: 1px solid rgba(221, 221, 221, 0.6);font-size: 15px;padding-left: 9px;">
+      <div class="col" style="color:#666;">
+        请输入您的登录密码，以验证身份
+      </div>
+    </div>
+    <div class="row row-center" style="border-bottom: 1px solid rgba(221, 221, 221, 0.6);padding-left: 9px;">
+      <div class="col col-30" style="font-size: 16px;color:#333;">登录密码</div>
+      <div class="col col-60">
+        <input type="password" style="font-size: 16px;" ng-model="loginData.password" placeholder="请输入登录密码">
+      </div>
+       <div class="col col-10">
+         <img src="build/img/application/icon_circle@3x.png"  ng-if="loginData.password!=''" style="width: 20px" ng-click="clearPassWord()">
+       </div>
+    </div>
+    <div ng-click="changeCheck()" style="width:100%;margin-top:20px;" align="center">
+      <button style="width: 150px;
+    height: 40px;
+    border: none;
+    border-radius: 30px;
+    background: #32A4EC;
+    color: #fff;">下一步
+      </button>
+    </div>
+  </ion-content>
+</ion-modal-view>

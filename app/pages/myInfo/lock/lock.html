@@ -1,0 +1,28 @@
+<ion-view view-title="设置" class="gesture-password-setting">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png"  ng-click="goBack()"/>
+    <h2 class="title">手势密码</h2>
+  </ion-header-bar>
+  <ion-content class="content-style">
+    <div style="margin-top: 40px;">
+      <div class="lock-top">手势密码，可作为登录密码</div>
+      <div class="setup-panel-row">
+        <span class="setup-label">手势密码开关</span>
+      </div>
+      <div class="ts-toggle-position" ng-click="clickGestureLock()">
+        <span class="toggle toggle-balanced">
+          <input type="checkbox" ng-model="gesture.lock" >
+
+          <div class="track setup-track">
+            <div class="handle setup-handle"></div>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div>
+      <div class=" setup-panel-row" ng-if="gesture.lock" ng-click="clickChangePassword()">
+        <label class="setup-label">修改手势密码</label>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
