@@ -22,8 +22,11 @@
 }
 
 .time-off-header-bg {
-  background-image: url("./../img/application/time-off-manage/HeaderBar-Large@3x.png");
-  background-size: cover;
+  //background-image: url("./../img/application/time-off-manage/HeaderBar-Large@3x.png");
+  //background-size: cover;
+  background: #48ACF8; /* 为较旧的或者不支持的浏览器设置备用属性 */
+  background: -moz-linear-gradient(top, #48ACF8, #FAFAFA 8%);
+  background: -webkit-gradient(linear, 50% 50%, 50% 50%, from(#48ACF8), to(#FAFAFA));
   .time-off-header-bar {
     display: -webkit-box;
     display: -webkit-flex;
@@ -144,7 +147,7 @@
     display: block;
     font-size: 18px;
     &.paid-holiday {
-      color: #25569D;
+      color: #48ACF8;
     }
     &.paid-sick-leave {
       color: #417505;
@@ -272,7 +275,7 @@
     margin-left: 1.3%;
     margin-top: 4px;
     margin-bottom: 4px;
-    color: #3964A4;
+    color: #48ACF8;
   }
   .time-off-item {
     position: relative;
@@ -291,7 +294,7 @@
       height: 90px;
       border-radius: 5px 0px 0px 5px;
       &.paid-holiday {
-        border-left: 3px solid #24559C;
+        border-left: 3px solid #48ACF8;
       }
       &.paid-sick-leave {
         border-left: 3px solid #417505;
@@ -313,7 +316,7 @@
         padding-top: 5px;
         padding-bottom: 3px;
         &.paid-holiday {
-          color: #24559C;
+          color: #48ACF8;
         }
         &.paid-sick-leave {
           color: #417505;
@@ -322,7 +325,7 @@
           color: #F99D32;
         }
         &.default-holiday {
-          color: #24559C;
+          color: #48ACF8;
         }
       }
       .item-off-item-text {
@@ -360,7 +363,7 @@
           color: #F99D32;
         }
         &.default-holiday {
-          color: #24559C;
+          color: #48ACF8;
         }
       }
       .approve-status {
