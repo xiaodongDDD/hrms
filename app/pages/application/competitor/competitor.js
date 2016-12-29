@@ -201,11 +201,8 @@ angular.module('competitorModule')
         }else{
           if(response.returnMsg){
             hmsPopup.showPopup(response.returnMsg)
-          }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
           }
         }
-        ;
       };
       /*  console.log(upData);*/
       competitorListService.getValueList(listInitSuccess, upData);
