@@ -184,11 +184,11 @@ angular.module('messageModule')
       ];
 
       //将页面的导航bar设置成白色
-      $ionicPlatform.ready(function () {
+      /*$ionicPlatform.ready(function () {
         if (window.StatusBar) {
-          StatusBar.styleLightContent();
+          StatusBar.styleDefault();
         }
-      });
+      });*/
 
       $scope.firstRefresh = false;
 
@@ -524,13 +524,11 @@ angular.module('messageModule')
         return false;
       }, 101);
 
+      $scope.$on('$ionicView.leave', function (e) {
+        console.log('同事.$ionicView.leave');
+      });
+
       $scope.$on('$ionicView.enter', function (e) {
-        //将页面的导航bar设置成白色
-        $ionicPlatform.ready(function () {
-          if (window.StatusBar) {
-            StatusBar.styleLightContent();
-          }
-        });
 
         messageService.registerDeviceInfo();
 

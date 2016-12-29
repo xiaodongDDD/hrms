@@ -2,17 +2,17 @@
  * Created by gusenlin on 16/4/24.
  */
 angular.module('loginModule').controller('TabsCtrl',
-  ['$scope', '$rootScope', '$state', 'baseConfig', 'TabsService','hmsCacheService','messageService',
-    function ($scope, $rootScope, $state, baseConfig, TabsService,hmsCacheService,messageService) {
+  ['$scope', '$rootScope', '$state', 'baseConfig', 'TabsService', 'hmsCacheService', 'messageService','$ionicPlatform',
+    function ($scope, $rootScope, $state, baseConfig, TabsService, hmsCacheService, messageService,$ionicPlatform) {
 
       $scope.cacheImgList = [];
       $scope.cacheImgList.push({"url": "build/img/application/carpooling/Bar@3x.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/myInfoBg.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/message-G@3x.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/message-f@3x.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/application-F@3x.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/contact-B@3x.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/mine-B@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/message@3x%202.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/message-outline@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/center@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/contact@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/mine@3x.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/background.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/man-portrait.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/woman-portrait.png"});
@@ -30,15 +30,15 @@ angular.module('loginModule').controller('TabsCtrl',
         $scope.showGuideFlag = false;
       }
 
-      if(baseConfig){
+      if (baseConfig) {
         console.log('window.localStorage.neeGuideHelp ' + window.localStorage.neeGuideHelp);
         console.log('window.localStorage.guideHelpAuto ' + window.localStorage.guideHelpAuto);
       }
 
-      if(!window.localStorage.neeGuideHelp || window.localStorage.neeGuideHelp == "true" || window.localStorage.guideHelpAuto == "true"){
+      if (!window.localStorage.neeGuideHelp || window.localStorage.neeGuideHelp == "true" || window.localStorage.guideHelpAuto == "true") {
         window.localStorage.neeGuideHelp = "false";
         $scope.showGuideFlag = true;
-      }else{
+      } else {
       }
 
       $scope.$on('$ionicView.beforeEnter', function () {
@@ -56,6 +56,18 @@ angular.module('loginModule').controller('TabsCtrl',
           }
         }
         TabsService.setManualReturnFlag(false);
+
+        $ionicPlatform.ready(function () {
+          if (statename === 'tab.myInfo' || statename === 'tab.application') {
+            if (window.StatusBar) {
+              StatusBar.styleLightContent();
+            }
+          } else {
+            if (window.StatusBar) {
+              StatusBar.styleDefault();
+            }
+          }
+        });
       });
 
       $scope.$on('$ionicView.afterEnter', function () {

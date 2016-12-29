@@ -25,6 +25,7 @@ angular.module('contactModule')
     '$ionicActionSheet',
     'customerSearchService',
     'getInitStructureInfo',
+    '$ionicPlatform',
     function ($scope,
               $state,
               historyContact,
@@ -45,7 +46,8 @@ angular.module('contactModule')
               $cordovaActionSheet,
               $ionicActionSheet,
               customerSearchService,
-              getInitStructureInfo) {
+              getInitStructureInfo,
+              $ionicPlatform) {
 
       console.log($ionicHistory.viewHistory());
       $scope.hasCrm = window.localStorage.crm == 'true';
@@ -880,9 +882,7 @@ angular.module('contactModule')
           hmsPopup.showShortCenterToast('暂不支持网页端的名片扫描!');
         }
       };
-      $scope.$on('$ionicView.enter', function (e) {
-        console.log('同事.$ionicView.enter');
-      });
+      
       {
         $scope.customContactsInfo = [];
         $scope.showTopInput = false; // 默认不显示bar上的搜索框
