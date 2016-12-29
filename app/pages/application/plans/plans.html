@@ -72,7 +72,7 @@
             <div class="plan-item" ng-repeat="plan in plans">
               <div class="plan-content-tilte" ng-click="goDetail(plan)" on-touch="hideCommont()">
                 <div class="plan-head">
-                  <img ng-src="build/img/application/plans/user_img@3x.png"/>
+                  <img ng-src="{{plan.headUrl}}"/>
 
                   <div>
                     <span class="plan-head-base">
@@ -124,7 +124,7 @@
               <div class="plan-item" ng-repeat="plan in group.plans">
                 <div on-touch="hideCommont()" class="plan-content-tilte" ng-click="goDetail(plan)">
                   <div class="plan-head">
-                    <img ng-src="build/img/application/plans/user_img@3x.png"/>
+                    <img ng-src="{{plan.headUrl}}"/>
                     <div>
                       <span class="plan-head-base">
                         {{plan.name}}

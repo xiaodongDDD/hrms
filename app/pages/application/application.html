@@ -85,8 +85,8 @@
           <div class="appRegion">
             <div class="appTitle office"><img src="build/img/application/line@3x.png"/>个人办公</div>
             <div class="appArea" ng-repeat="appList in officeApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
-                <div class="appItem" ng-click="goPage(appItem)">
+              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
+                <div class="appItem">
                   <div class="app-item-content">
                     <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
                          ng-bind="appItem.count">
@@ -105,8 +105,8 @@
           <div class="appRegion">
             <div class="appTitle project"><img src="build/img/application/line@3x.png"/>项目门户</div>
             <div class="appArea" ng-repeat="appList in projectApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
-                <div class="appItem" ng-click="goPage(appItem)">
+              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
+                <div class="appItem">
                   <div class="app-item-content">
                     <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                   </div>
@@ -119,8 +119,8 @@
           <div class="appRegion">
             <div class="appTitle employee"><img src="build/img/application/line@3x.png"/>员工社区</div>
             <div class="appArea" ng-repeat="appList in employeeApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1">
-                <div class="appItem" ng-click="goPage(appItem)">
+              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
+                <div class="appItem">
                   <div class="app-item-content">
                     <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                   </div>
@@ -134,8 +134,8 @@
           <div class="appRegion firstLine" ng-if="hasCrm">
             <div class="appTitle"></div>
             <div class="appArea" ng-repeat="appList in crmApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
-                <div class="appItem" ng-click="goPage(appItem)">
+              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
+                <div class="appItem" >
                   <div class="app-item-content">
                     <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                   </div>
@@ -147,8 +147,8 @@
           <div class="appRegion">
             <div class="appTitle"></div>
             <div class="appArea" ng-repeat="appList in officeApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
-                <div class="appItem" ng-click="goPage(appItem)">
+              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
+                <div class="appItem">
                   <div class="app-item-content">
                     <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
                          ng-bind="appItem.count">
@@ -167,8 +167,8 @@
           <div class="appRegion">
             <div class="appTitle"></div>
             <div class="appArea" ng-repeat="appList in projectApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
-                <div class="appItem" ng-click="goPage(appItem)">
+              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
+                <div class="appItem" >
                   <div class="app-item-content">
                     <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                   </div>
@@ -181,8 +181,8 @@
           <div class="appRegion">
             <div class="appTitle"></div>
             <div class="appArea" ng-repeat="appList in employeeApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3">
-                <div class="appItem" ng-click="goPage(appItem)">
+              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
+                <div class="appItem">
                   <div class="app-item-content">
                     <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                   </div>

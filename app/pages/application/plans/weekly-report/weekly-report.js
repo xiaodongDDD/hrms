@@ -74,7 +74,8 @@
               "beginDate": data.beginDate,
               "endDate": data.endDate,
               "period": data.beginDate.substr(0, 10) + '~' + data.endDate.substr(0, 10),
-              "content": data.summaryContent
+              "content": data.summaryContent,
+              "headUrl": data.headUrl
             }
             vm.weeklyReportList.push(item);
           })
