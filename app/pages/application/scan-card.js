@@ -12,6 +12,7 @@ angular.module('applicationModule')
     '$state',
     'contactLocal',
     'customerSearchService',
+    '$cordovaClipboard',
     function ($scope,
               $ionicModal,
               $cordovaActionSheet,
@@ -19,7 +20,8 @@ angular.module('applicationModule')
               hmsPopup,
               $state,
               contactLocal,
-              customerSearchService) {
+              customerSearchService,
+              $cordovaClipboard) {
       $scope.saveToLocalContacts = function () {
         var info = {
           email: $scope.manInfo.email,
@@ -41,17 +43,26 @@ angular.module('applicationModule')
         contactLocal.contactLocal(info, onSaveContactSuccess, onSaveContactError);
       };
       function dealScanData(msg) { //处理名片扫描插件的返回数据
+        console.log(JSON.parse(msg));
         try {
           $scope.scanCardModal.show();
+          console.log(JSON.parse(msg));
           if (JSON.parse(msg)) {
             $scope.manInfo = {
               emp_name: '',
               mobil: '',
               email: '',
               organization: '',
-              fullName: ""
+              fullName: "",
+              department:"",
+              position:"",
+              street:"",
+              postal_code:""
             };
             msg = JSON.parse(msg);
+            console.log(angular.toJson(msg));
+            $scope.testI = msg;
+            console.log(angular.toJson(msg));
             try {
               $scope.manInfo.emp_name = msg.formatted_name[0].item;
             } catch (e) {
@@ -82,10 +93,37 @@ angular.module('applicationModule')
             try {
               var organization = msg.organization;
               if (organization.length > 0) {
-                $scope.manInfo.organization = organization[0].item.name;
+                /*  $scope.manInfo.organization = organization[1].item.name;
+                 $scope.manInfo.department = organization[0].item.name;*/
+                if(organization[0].item.hasOwnProperty('name')){
+                  $scope.manInfo.organization = organization[0].item.name;
+                  $scope.manInfo.department="";
+                }else{
+                  $scope.manInfo.department = organization[0].item.unit;
+                  $scope.manInfo.organization = organization[1].item.name;
+                }
               }
             } catch (e) {
               $scope.manInfo.organization = '';
+              $scope.manInfo.department = '';
+            }
+            try {
+              var address = msg.address;
+              if (address.length > 0) {
+                $scope.manInfo.street = address[0].item.street;
+                $scope.manInfo.postal_code = address[0].item.postal_code;
+              }
+            } catch (e) {
+              $scope.manInfo.street = '';
+              $scope.manInfo.postal_code='';
+            }
+            try {
+              var title = msg.title;
+              if (title.length > 0) {
+                $scope.manInfo.position = title[0].item;
+              }
+            } catch (e) {
+              $scope.manInfo.position = '';
             }
             try {
               /*  alert("扫描成功");*/
@@ -93,17 +131,11 @@ angular.module('applicationModule')
               $scope.scanCardModal.show();
             } catch (e) {
             }
-          } else {
-            $scope.manInfo = {
-              emp_name: '',
-              mobil: '',
-              email: '',
-              organization: '',
-              fullName: ""
-            };
           }
           hmsPopup.hideLoading();
-        } catch (e) {
+        }
+        catch
+          (e) {
           hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
           hmsPopup.hideLoading();
         }
@@ -127,8 +159,8 @@ angular.module('applicationModule')
           "fullName": $scope.manInfo.organization,
           "name": $scope.manInfo.emp_name,
           "sex": "",
-          "department": "",
-          "position": "",
+          "department": $scope.manInfo.department,
+          "position": $scope.manInfo.position,
           "phone": $scope.manInfo.mobil,
           "tel": "",
           "email": $scope.manInfo.email,
@@ -140,8 +172,8 @@ angular.module('applicationModule')
           "addressProvince": "",
           "addressCity": "",
           "addressZone": "",
-          "addressDetails": "",
-          "addressZipCode": ""
+          "addressDetails": $scope.manInfo.street,
+          "addressZipCode":  $scope.manInfo.postal_code
         };
         if ($scope.manInfo.organization != "") {
           $scope.searchParam = {
@@ -190,6 +222,7 @@ angular.module('applicationModule')
       $scope.scanBusinessCard = function () { //名片扫描添加联系人到通讯录
         if (ionic.Platform.isWebView()) {
           var options = {
+            title: '名片扫描',
             buttonLabels: ['拍照', '从相册中选择'],
             addCancelButtonWithLabel: '取消',
             androidEnableCancelButton: true,
@@ -203,15 +236,18 @@ angular.module('applicationModule')
                   warn(btnIndex);
                 }
                 if (btnIndex == 1) {
+                  console.log("进入");
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.takePicturefun(function (msg) {
                     dealScanData(msg);
                   }, function (error) {
+                    console.log(error);
                     hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
                     hmsPopup.hideLoading();
                   });
                   return true;
                 } else if (btnIndex == 2) {
+                  console.log("2进入");
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.choosePicturefun(function (msg) {
                     dealScanData(msg);
@@ -229,4 +265,5 @@ angular.module('applicationModule')
       };
 
     }
-  ]);
+  ])
+;

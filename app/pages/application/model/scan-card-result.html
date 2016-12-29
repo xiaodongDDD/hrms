@@ -1,8 +1,10 @@
 <ion-modal-view class="scan-card-modal">
   <ion-header-bar align-title="center" class="bar-stable">
-    <button class="button button-clear" style="color: white;" ng-click="resetScanCard()">{{ 'SCAN_CARD.RESCAN' | T }}</button>
-    <h1 class="title">{{ 'SCAN_CARD.SCAN_RESULT' | T }}</h1>
-    <button class="button button-clear" style="color: white;" ng-click="scanCardModal.hide()">{{ 'CANCEL' | T }}</button>
+    <button class="button button-clear"  ng-click="resetScanCard()">{{ 'SCAN_CARD.RESCAN' | T }}
+    </button>
+    <div class="title">{{ 'SCAN_CARD.SCAN_RESULT' | T }}</div>
+    <button class="button button-clear"  ng-click="scanCardModal.hide()">{{ 'CANCEL' | T }}
+    </button>
   </ion-header-bar>
   <ion-content>
     <div class="scan-card-list">
@@ -38,10 +40,81 @@
           <input ng-model="manInfo.organization" type="text"/>
         </div>
       </ion-item>
+      <ion-item class="row scan-card-item">
+        <div class="col-25  scan-card-item-name">
+          部门
+        </div>
+        <div class="col-75 scan-card-item-content">
+          <input ng-model="manInfo.department" type="text"/>
+        </div>
+      </ion-item>
+      <ion-item class="row scan-card-item">
+        <div class="col-25  scan-card-item-name">
+          职位
+        </div>
+        <div class="col-75 scan-card-item-content">
+          <input ng-model="manInfo.position" type="text"/>
+        </div>
+      </ion-item>
+      <ion-item class="row scan-card-item">
+        <div class="col-25  scan-card-item-name">
+          详细地址
+        </div>
+        <div class="col-75 scan-card-item-content">
+          <input ng-model="manInfo.street" type="text"/>
+        </div>
+      </ion-item>
+      <ion-item class="row scan-card-item">
+        <div class="col-25  scan-card-item-name">
+          邮编
+        </div>
+        <div class="col-75 scan-card-item-content">
+          <input ng-model="manInfo.postal_code" type="text"/>
+        </div>
+      </ion-item>
+      <!--      <ion-item class="row scan-card-item">
+              <div class="col-25  scan-card-item-name">
+                职位
+              </div>
+              <div class="col-75 scan-card-item-content">
+                <input ng-model="manInfo.organization" type="text"/>
+              </div>
+            </ion-item>
+            <ion-item class="row scan-card-item">
+              <div class="col-25  scan-card-item-name">
+                部门
+              </div>
+              <div class="col-75 scan-card-item-content">
+                <input ng-model="manInfo.organization" type="text"/>
+              </div>
+            </ion-item>
+            <ion-item class="row scan-card-item">
+              <div class="col-25  scan-card-item-name">
+               邮编
+              </div>
+              <div class="col-75 scan-card-item-content">
+                <input ng-model="manInfo.organization" type="text"/>
+              </div>
+            </ion-item>
+            <ion-item class="row scan-card-item">
+              <div class="col-25  scan-card-item-name">
+               详细地址
+              </div>
+              <div class="col-75 scan-card-item-content">
+                <input ng-model="manInfo.organization" type="text"/>
+              </div>
+            </ion-item>
+            {{manInfo}}
+            {{testI}}-->
+      <!--   {{manInfo}}
+         <button ng-click="copyJson()">复制</button>{{testI}}-->
     </div>
-      <div class="button button-clear scan-left-button" style="" ng-click="saveToLocalContacts()">保存至手机通讯录</div>
-      <div class="button button-clear scan-right-button" style="" ng-click="saveToContacts()">添加至客户联系人</div>
+
   </ion-content>
+  <ion-footer-bar>
+    <div class="button button-clear scan-left-button" style="font-size:15px" ng-click="saveToLocalContacts()">保存至手机通讯录</div>
+    <div class="button button-clear scan-right-button" style="font-size:15px" ng-click="saveToContacts()">添加至客户联系人</div>
+  </ion-footer-bar>
 </ion-modal-view>
 
 

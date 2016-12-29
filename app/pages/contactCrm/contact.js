@@ -26,6 +26,7 @@ angular.module('contactModule')
     'customerSearchService',
     'getInitStructureInfo',
     '$ionicPlatform',
+    'contactService',
     function ($scope,
               $state,
               historyContact,
@@ -47,7 +48,8 @@ angular.module('contactModule')
               $ionicActionSheet,
               customerSearchService,
               getInitStructureInfo,
-              $ionicPlatform) {
+              $ionicPlatform,
+              contactService) {
 
       console.log($ionicHistory.viewHistory());
       $scope.hasCrm = window.localStorage.crm == 'true';
@@ -671,17 +673,26 @@ angular.module('contactModule')
       };
 
       function dealCrmScanData(msg) { //处理名片扫描插件的返回数据
+        console.log(JSON.parse(msg));
         try {
-          $scope.crmScanCardModal.show();
+          $scope.scanCardModal.show();
+          console.log(JSON.parse(msg));
           if (JSON.parse(msg)) {
             $scope.manInfo = {
               emp_name: '',
               mobil: '',
               email: '',
               organization: '',
-              fullName: ""
+              fullName: "",
+              department:"",
+              position:"",
+              street:"",
+              postal_code:""
             };
             msg = JSON.parse(msg);
+            console.log(angular.toJson(msg));
+            $scope.testI = msg;
+            console.log(angular.toJson(msg));
             try {
               $scope.manInfo.emp_name = msg.formatted_name[0].item;
             } catch (e) {
@@ -712,33 +723,53 @@ angular.module('contactModule')
             try {
               var organization = msg.organization;
               if (organization.length > 0) {
-                $scope.manInfo.organization = organization[0].item.name;
+                /*  $scope.manInfo.organization = organization[1].item.name;
+                 $scope.manInfo.department = organization[0].item.name;*/
+                if(organization[0].item.hasOwnProperty('name')){
+                  $scope.manInfo.organization = organization[0].item.name;
+                  $scope.manInfo.department="";
+                }else{
+                  $scope.manInfo.department = organization[0].item.unit;
+                  $scope.manInfo.organization = organization[1].item.name;
+                }
               }
             } catch (e) {
               $scope.manInfo.organization = '';
+              $scope.manInfo.department = '';
+            }
+            try {
+              var address = msg.address;
+              if (address.length > 0) {
+                $scope.manInfo.street = address[0].item.street;
+                $scope.manInfo.postal_code = address[0].item.postal_code;
+              }
+            } catch (e) {
+              $scope.manInfo.street = '';
+              $scope.manInfo.postal_code='';
+            }
+            try {
+              var title = msg.title;
+              if (title.length > 0) {
+                $scope.manInfo.position = title[0].item;
+              }
+            } catch (e) {
+              $scope.manInfo.position = '';
             }
             try {
               /*  alert("扫描成功");*/
               $scope.$apply();
-              $scope.crmScanCardModal.show();
+              $scope.scanCardModal.show();
             } catch (e) {
             }
-          } else {
-            $scope.manInfo = {
-              emp_name: '',
-              mobil: '',
-              email: '',
-              organization: '',
-              fullName: ""
-            };
           }
           hmsPopup.hideLoading();
-        } catch (e) {
+        }
+        catch
+          (e) {
           hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
           hmsPopup.hideLoading();
         }
       }
-
       // 创建名片扫描结果的modal现实页面
       (function scanCardModal() {
         $ionicModal.fromTemplateUrl('build/pages/application/model/scan-card-result.html', {
@@ -766,21 +797,21 @@ angular.module('contactModule')
           "fullName": $scope.manInfo.organization,
           "name": $scope.manInfo.emp_name,
           "sex": "",
-          "department": "",
-          "position": "",
+          "department": $scope.manInfo.department,
+          "position": $scope.manInfo.position,
           "phone": $scope.manInfo.mobil,
           "tel": "",
           "email": $scope.manInfo.email,
           "wechat": "",
           "role": "",
           "status": "HCRM_ENABLE",
-          "statusValue": "有效",
+          statusValue: "有效",
           "addressCountry": "",
           "addressProvince": "",
           "addressCity": "",
           "addressZone": "",
-          "addressDetails": "",
-          "addressZipCode": ""
+          "addressDetails": $scope.manInfo.street,
+          "addressZipCode":  $scope.manInfo.postal_code
         };
         if ($scope.manInfo.organization != "") {
           $scope.searchParam = {
@@ -882,7 +913,7 @@ angular.module('contactModule')
           hmsPopup.showShortCenterToast('暂不支持网页端的名片扫描!');
         }
       };
-      
+
       {
         $scope.customContactsInfo = [];
         $scope.showTopInput = false; // 默认不显示bar上的搜索框
