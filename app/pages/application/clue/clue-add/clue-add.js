@@ -748,7 +748,7 @@ angular.module('clueModule')
       var validNameSuccess= function(response){
         $scope.validNameFlag = response.returnFlag;
         if(!$scope.validNameFlag)
-          hmsPopup.showPopup('商机名称重复！请重新输入');
+          hmsPopup.showShortCenterToast('商机名称重复！请重新输入');
       };
 
       $scope.validName = function(){
@@ -790,15 +790,15 @@ angular.module('clueModule')
 
       $scope.addCompetitor = function(){
         if($scope.newCompetitor.competitorId == ''){
-          hmsPopup.showPopup('竞争对手名称不能为空');
+          hmsPopup.showShortCenterToast('竞争对手名称不能为空');
           return ;
         }
         if($scope.newCompetitor.productName == ''){
-          hmsPopup.showPopup('竞争产品不能为空');
+          hmsPopup.showShortCenterToast('竞争产品不能为空');
           return ;
         }
         if($scope.newCompetitor.advantage == ''){
-          hmsPopup.showPopup('对手优势不能为空');
+          hmsPopup.showShortCenterToast('对手优势不能为空');
           return ;
         }
         $scope.competitors.push($scope.newCompetitor);
@@ -818,17 +818,17 @@ angular.module('clueModule')
         if(response.returnCode == "S"){
           $ionicScrollDelegate.$getByHandle("slide-img").scrollTop(false);
           if($scope.editFlag){
-            hmsPopup.showPopup("修改线索成功");
+            hmsPopup.showShortCenterToast("修改线索成功");
             $scope.$emit('CLUE_EDIT_SUCCESS');
           } else {
             initData();
-            hmsPopup.showPopup("添加线索成功");
+            hmsPopup.showShortCenterToast("添加线索成功");
             $scope.$emit('CLUE_ADD_SUCCESS');
           }
         } else if(response.returnCode == "E"){
-          hmsPopup.showPopup(response.returnMsg);
+          hmsPopup.showShortCenterToast(response.returnMsg);
         } else {
-          hmsPopup.showPopup("保存失败，请检查网络或联系管理员");
+          hmsPopup.showShortCenterToast("保存失败，请检查网络或联系管理员");
         }
       };
 
@@ -836,47 +836,47 @@ angular.module('clueModule')
         console.log($scope.data);
 
         if($scope.data.customerId == ''){
-          hmsPopup.showPopup("关联客户不能为空！");
+          hmsPopup.showShortCenterToast("关联客户不能为空！");
           return ;
         }
         if(!$scope.validNameFlag){
-          hmsPopup.showPopup("线索名称重复，请重新输入！");
+          hmsPopup.showShortCenterToast("线索名称重复，请重新输入！");
           return ;
         }
         if($scope.data.opportunityStatus == ''){
-          hmsPopup.showPopup("线索状态不能为空！");
+          hmsPopup.showShortCenterToast("线索状态不能为空！");
           return ;
         }
         if($scope.data.fullName == ''){
-          hmsPopup.showPopup("线索名称不能为空！");
+          hmsPopup.showShortCenterToast("线索名称不能为空！");
           return ;
         }
         if($scope.showData.customerContactsName == ''){
-          hmsPopup.showPopup("关联客户联系人不能为空！");
+          hmsPopup.showShortCenterToast("关联客户联系人不能为空！");
           return ;
         }
         if($scope.showData.businessFrom == ''){
-          hmsPopup.showPopup("线索来源不能为空！");
+          hmsPopup.showShortCenterToast("线索来源不能为空！");
           return ;
         }
         if($scope.isOrigin && $scope.showData.originalFactoryFrom == ''){
-          hmsPopup.showPopup("当线索来源为原厂时原厂划分不能为空！");
+          hmsPopup.showShortCenterToast("当线索来源为原厂时原厂划分不能为空！");
           return ;
         }
         if($scope.data.prjBeginDate == ''){
-          hmsPopup.showPopup("项目开始日期不能为空！");
+          hmsPopup.showShortCenterToast("项目开始日期不能为空！");
           return ;
         }
         if($scope.data.preSignDate == ''){
-          hmsPopup.showPopup("项目签署日期不能为空！");
+          hmsPopup.showShortCenterToast("项目签署日期不能为空！");
           return ;
         }
         if($scope.showData.saleArea == ''){
-          hmsPopup.showPopup("所属项目大区不能为空！");
+          hmsPopup.showShortCenterToast("所属项目大区不能为空！");
           return ;
         }
         if($scope.showData.theCompany == ''){
-          hmsPopup.showPopup("公司属性不能为空！");
+          hmsPopup.showShortCenterToast("公司属性不能为空！");
           return ;
         }
         hmsPopup.showLoading();

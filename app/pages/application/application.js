@@ -34,6 +34,7 @@ angular.module('applicationModule')
       $scope.openDoor = 0;
       $scope.fetchWorkflowData = true;
       $scope.hasCrm = window.localStorage.crm == 'true';
+      $scope.titleBg = 'build/img/application/banner@3x.png';
 
       var menuFetchFlag = false;
 
@@ -316,7 +317,10 @@ angular.module('applicationModule')
             }
           }
         } else {
-          hmsPopup.showPopup(response.returnMsg)
+          if(response.returnMsg != '')
+            hmsPopup.showShortCenterToast(response.returnMsg);
+          else
+            hmsPopup.showShortCenterToast('获取TS状态失败，请检查网络或联系管理员');
         }
       };
 
@@ -335,7 +339,10 @@ angular.module('applicationModule')
             }
           }
         } else {
-          hmsPopup.showPopup(response.returnMsg)
+          if(response.returnMsg != '')
+            hmsPopup.showShortCenterToast(response.returnMsg);
+          else
+            hmsPopup.showShortCenterToast('获取销售计划状态失败，请检查网络或联系管理员');
         }
       };
 
@@ -345,7 +352,7 @@ angular.module('applicationModule')
           ((date.getDate() < 10) ? ('0' + date.getDate()) : date.getDate());
       }
 
-      (function initCalendarDate(){
+      function initCalendarDate(){
         var today = new Date();
         var day = today.getDay();
         if(day == 0)
@@ -364,11 +371,11 @@ angular.module('applicationModule')
         if($scope.hasCrm)
           plansService.getHasPlanList(getHasPlanListSuccess, params);
         TimeSheetService.getWeekTimeSheet(getTimeSheetSuccess, formatDateByDate(weekStart), formatDateByDate(weekEnd));
-      })();
+      };
 
       $scope.goPlan = function(){
         $state.go('tab.plans',{
-          data: 'WEEK'
+          data: 'UP'
         })
       };
 
@@ -541,6 +548,7 @@ angular.module('applicationModule')
           console.log('applicationCtrl.$ionicView.beforeEnter');
         }
         initSetting();
+        initCalendarDate();
 
         if (menuFetchFlag) {
           getWorkflowNum();
