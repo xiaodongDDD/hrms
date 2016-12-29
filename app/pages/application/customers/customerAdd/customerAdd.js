@@ -199,8 +199,13 @@ angular.module('customerModule')
             if(data.returnCode==='S'){
               $state.go('tab.improveInformation');
             } else {
-              hmsPopup.showPopupCustomer(data.returnMsg,data.customerName,data.approveStatusName,
-                data.saleArea,data.saleTeam,data.saleEmployeeName,data.saleEmployeeCode);
+              if(data.returnMsg){
+                hmsPopup.showPopupCustomer(data.returnMsg,data.customerName,data.approveStatusName,
+                  data.saleArea,data.saleTeam,data.saleEmployeeName,data.saleEmployeeCode);
+              }else {
+                hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+              }
+
             }
 
           })

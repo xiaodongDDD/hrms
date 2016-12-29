@@ -29,7 +29,7 @@ angular.module('customerModule')
       customerDetailService.setTabNumber(0);
       $scope.value =  {
         page: 1,
-        pageSize: 10,
+        pageSize: 15,
         customerId: window.localStorage.customerId
       };
       $scope.showLoading = true;
@@ -51,12 +51,16 @@ angular.module('customerModule')
             $scope.loadMoreDataFlag = false;
           }else{
             $scope.states = response.dynamics;
-            $scope.loadMoreDataFlag = true;
+            $scope.loadMoreDataFlag = result.dynamics.length== $scope.value.pageSize;
             /*   console.log($scope.customers.length)*/
           }
 
         } else {
-          alert(response.returnMsg);
+          if(response.returnMsg){
+            hmsPopup.showPopup(response.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
       customerDetailStateService.querySaleStates(querySaleStatesSuccess,error,$scope.value);
@@ -73,14 +77,20 @@ angular.module('customerModule')
 
       var loadMoreListSuccess = function (result) {
         if (result.returnCode == "S") {
-          $scope.states = $scope.states.concat(result.dynamics);
           if (result.dynamics.length == 0) {
             console.log("没有数据了" + $scope.loadMoreDataFlag);
             $scope.loadMoreDataFlag = false;
+          }else {
+            $scope.states = $scope.states.concat(result.dynamics);
+            $scope.loadMoreDataFlag = result.dynamics.length== $scope.value.pageSize;
           }
         } else {
           $scope.loadMoreDataFlag = false;
-          hmsPopup.showPopup(result.returnMsg);
+          if(result.returnMsg){
+            hmsPopup.showPopup(result.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       };

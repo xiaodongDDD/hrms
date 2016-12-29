@@ -93,11 +93,10 @@ angular.module('customerModule')
           $scope.collaborators.splice(index, 1);
           hmsPopup.showPopup(result.returnMsg);
         } else {
-          if (result.returnMsg) {
-            hmsPopup.showPopup(result.returnMsg);
-          }
-          else {
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+          if(result.returnMsg){
+            hmsPopup.showPopup(result.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
           }
         }
       };
@@ -181,7 +180,11 @@ angular.module('customerModule')
         if (reslut.returnCode == 'S') {
           hmsPopup.showPopup(reslut.returnMsg);
         } else {
-          hmsPopup.showPopup(reslut.returnMsg);
+          if(result.returnMsg){
+            hmsPopup.showPopup(result.returnMsg)
+          }else{
+            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
       //搜索框
