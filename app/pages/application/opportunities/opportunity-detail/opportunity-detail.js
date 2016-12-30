@@ -388,7 +388,7 @@ angular.module('opportunityModule')
       }).then(function (modal) {
         $scope.opportunityAddCompetitorModel = modal;
       });
-      
+
       $ionicModal.fromTemplateUrl('build/pages/application/bidbond/bidbond-add/bidbond-add.html', {
 		scope: $scope,
 		animation: 'slide-in-up'
@@ -547,7 +547,7 @@ angular.module('opportunityModule')
 			 $state.go('tab.bidbond-add');
 		  }
 	  }
-        
+
         if ($scope.subHeadersSelect[$index])
           return 0;
         else {
@@ -631,12 +631,14 @@ angular.module('opportunityModule')
           organization: $scope.manInfo.organization
         };
         var onSaveContactSuccess = function () {
+          hmsPopup.hideLoading();
           hmsPopup.showPopup("添加成功");
-          $scope.scanCardModal.hide();
+          $scope.crmScanCardModal.hide();
         };
         var onSaveContactError = function () {
+          hmsPopup.hideLoading();
           hmsPopup.showPopup("添加失败");
-          $scope.scanCardModal.hide();
+          $scope.crmScanCardModal.hide();
         };
         //保存到本地
         contactLocal.contactLocal(info, onSaveContactSuccess, onSaveContactError);
@@ -644,7 +646,7 @@ angular.module('opportunityModule')
       function dealScanData(msg) { //处理名片扫描插件的返回数据
         console.log(JSON.parse(msg));
         try {
-          $scope.scanCardModal.show();
+          $scope.crmScanCardModal.show();
           console.log(JSON.parse(msg));
           if (JSON.parse(msg)) {
             $scope.manInfo = {
@@ -727,7 +729,7 @@ angular.module('opportunityModule')
             try {
               /*  alert("扫描成功");*/
               $scope.$apply();
-              $scope.scanCardModal.show();
+              $scope.crmScanCardModal.show();
             } catch (e) {
             }
           }
@@ -744,7 +746,7 @@ angular.module('opportunityModule')
         $ionicModal.fromTemplateUrl('build/pages/application/model/scan-card-result.html', {
           scope: $scope
         }).then(function (modal) {
-          $scope.scanCardModal = modal;
+          $scope.crmScanCardModal = modal;
         });
       })();
       $scope.saveToContacts = function () {
@@ -792,19 +794,19 @@ angular.module('opportunityModule')
                 contact.fullName = "";
               }
               $state.go('tab.addLinkman', {param: contact});
-              $scope.scanCardModal.hide();
+              $scope.crmScanCardModal.hide();
             } else {
               hmsPopup.hideLoading();
               hmsPopup.showPopup("没有找到匹配的客户");
               $state.go('tab.addLinkman', {param: contact});
-              $scope.scanCardModal.hide();
+              $scope.crmScanCardModal.hide();
             }
           };
           customerSearchService.getSearchData(searchSuccessInit, $scope.searchParam)
         } else {
           hmsPopup.hideLoading();
           $state.go('tab.addLinkman', {param: contact});
-          $scope.scanCardModal.hide();
+          $scope.crmScanCardModal.hide();
           console.log($scope.searchData);
         }
 

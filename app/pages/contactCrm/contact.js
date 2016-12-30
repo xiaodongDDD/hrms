@@ -529,56 +529,6 @@ angular.module('contactModule')
           hmsPopup.showPopup('选取错误，请重新选择');
         });
       };
-
-      $scope.showMore = function () {
-        if (ionic.Platform.isWebView()) {
-          console.log("webView");
-          var options = {
-            buttonLabels: ['手工录入', '名片扫描', '从手机通讯录导入'],
-            addCancelButtonWithLabel: '取消',
-            androidEnableCancelButton: true,
-            androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT,
-            title: '新建联系人'
-          };
-          document.addEventListener("deviceready", function () {
-            $cordovaActionSheet.show(options)
-              .then(function (btnIndex) {
-                if (btnIndex == 1) {
-                  $state.go('tab.addLinkman2');
-                  return true;
-                } else if (btnIndex == 2) {
-                  $scope.scanBusinessCard();
-                  return true;
-                } else if (btnIndex == 3) {
-                  pickContact();
-                }
-              });
-          }, false);
-        } else {
-          var hideSheet = $ionicActionSheet.show({
-            buttons: [
-              {text: '手工录入'},
-              {text: '名片扫描'},
-              {text: '从手机通讯录导入'}
-            ],
-            cancelText: '取消',
-            cancel: function () {
-              // add cancel code..
-            },
-            titleText: '新建联系人',
-            buttonClicked: function (index) {
-              console.log(index);
-              if (index == 0) {
-                $state.go('tab.addLinkman2');
-              } else if (index == 1) {
-                $scope.scanBusinessCard();
-              } else if (index == 2) {
-                pickContact();
-              }
-            }
-          });
-        }
-      };
       $scope.saveToLocalContacts = function () {
         var info = {
           email: $scope.manInfo.email,
@@ -587,14 +537,16 @@ angular.module('contactModule')
           organization: $scope.manInfo.organization
         };
         var onSaveContactSuccess = function () {
-          hmsPopup.showPopup("添加成功");
+          hmsPopup.hideLoading();
+          hmsPopup.showShortCenterToast("添加成功");
           if($scope.hasCrm)
             $scope.crmScanCardModal.hide();
           else
             $scope.scanCardModal.hide();
         };
         var onSaveContactError = function () {
-          hmsPopup.showPopup("添加失败");
+          hmsPopup.hideLoading();
+          hmsPopup.showShortCenterToast("添加失败");
           if($scope.hasCrm)
             $scope.crmScanCardModal.hide();
           else
@@ -610,6 +562,7 @@ angular.module('contactModule')
 
       function dealScanData(msg) { //处理名片扫描插件的返回数据
         // alert("msg " + jsonFormat(JSON.parse(msg)));
+        console.log("HEHEHEHEHEHH");
         try {
           if (JSON.parse(msg)) {
             $scope.manInfo = {
@@ -675,7 +628,6 @@ angular.module('contactModule')
       function dealCrmScanData(msg) { //处理名片扫描插件的返回数据
         console.log(JSON.parse(msg));
         try {
-          $scope.scanCardModal.show();
           console.log(JSON.parse(msg));
           if (JSON.parse(msg)) {
             $scope.manInfo = {
@@ -758,7 +710,7 @@ angular.module('contactModule')
             try {
               /*  alert("扫描成功");*/
               $scope.$apply();
-              $scope.scanCardModal.show();
+              $scope.crmScanCardModal.show();
             } catch (e) {
             }
           }
@@ -786,7 +738,10 @@ angular.module('contactModule')
           $scope.scanCardModal = modal;
         });
       })();
-
+     $scope.closescanCardModal=function(){
+       $scope.crmScanCardModal.hide();
+       $scope.scanCardModal.hide();
+     };
       $scope.saveToContacts = function () {
         hmsPopup.showLoading("加载中");
         //需要客户模糊查询接口
@@ -832,10 +787,13 @@ angular.module('contactModule')
                 contact.fullName = "";
               }
               $state.go('tab.addLinkman', {param: contact});
-              if($scope.hasCrm)
+              if($scope.hasCrm){
                 $scope.crmScanCardModal.hide();
-              else
+              }
+              else{
                 $scope.scanCardModal.hide();
+              }
+
             } else {
               hmsPopup.hideLoading();
               hmsPopup.showPopup("没有找到匹配的客户");
@@ -850,10 +808,11 @@ angular.module('contactModule')
         } else {
           hmsPopup.hideLoading();
           $state.go('tab.addLinkman', {param: contact});
-          if($scope.hasCrm)
+          if($scope.hasCrm){
             $scope.crmScanCardModal.hide();
-          else
+          } else{
             $scope.scanCardModal.hide();
+          }
           console.log($scope.searchData);
         }
 
@@ -885,10 +844,12 @@ angular.module('contactModule')
                 if (btnIndex == 1) {
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.takePicturefun(function (msg) {
-                    if($scope.hasCrm)
+                    console.log($scope.hasCrm);
+                    if($scope.hasCrm){
                       dealCrmScanData(msg);
-                    else
+                    }else{
                       dealScanData(msg);
+                    }
                   }, function (error) {
                     hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
                     hmsPopup.hideLoading();
@@ -897,10 +858,11 @@ angular.module('contactModule')
                 } else if (btnIndex == 2) {
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.choosePicturefun(function (msg) {
-                    if($scope.hasCrm)
+                    if($scope.hasCrm){
                       dealCrmScanData(msg);
-                    else
+                    }else{
                       dealScanData(msg);
+                    }
                   }, function (error) {
                     hmsPopup.showShortCenterToast('扫描失败！请重新扫描！');
                     hmsPopup.hideLoading();
@@ -913,7 +875,55 @@ angular.module('contactModule')
           hmsPopup.showShortCenterToast('暂不支持网页端的名片扫描!');
         }
       };
-
+      $scope.showMore = function () {
+        if (ionic.Platform.isWebView()) {
+          console.log("webView");
+          var options = {
+            buttonLabels: ['手工录入', '名片扫描', '从手机通讯录导入'],
+            addCancelButtonWithLabel: '取消',
+            androidEnableCancelButton: true,
+            androidTheme: window.plugins.actionsheet.ANDROID_THEMES.THEME_HOLO_LIGHT,
+            title: '新建联系人'
+          };
+          document.addEventListener("deviceready", function () {
+            $cordovaActionSheet.show(options)
+              .then(function (btnIndex) {
+                if (btnIndex == 1) {
+                  $state.go('tab.addLinkman2');
+                  return true;
+                } else if (btnIndex == 2) {
+                  $scope.scanBusinessCard();
+                  return true;
+                } else if (btnIndex == 3) {
+                  pickContact();
+                }
+              });
+          }, false);
+        } else {
+          var hideSheet = $ionicActionSheet.show({
+            buttons: [
+              {text: '手工录入'},
+              {text: '名片扫描'},
+              {text: '从手机通讯录导入'}
+            ],
+            cancelText: '取消',
+            cancel: function () {
+              // add cancel code..
+            },
+            titleText: '新建联系人',
+            buttonClicked: function (index) {
+              console.log(index);
+              if (index == 0) {
+                $state.go('tab.addLinkman2');
+              } else if (index == 1) {
+                $scope.scanBusinessCard();
+              } else if (index == 2) {
+                pickContact();
+              }
+            }
+          });
+        }
+      };
       {
         $scope.customContactsInfo = [];
         $scope.showTopInput = false; // 默认不显示bar上的搜索框
