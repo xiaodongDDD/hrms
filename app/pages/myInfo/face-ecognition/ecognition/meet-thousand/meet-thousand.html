@@ -1,0 +1,204 @@
+<ion-view class="meetThousand">
+  <div class="head active-head-info">
+    <div class="head-info {{vm.headHeight}} {{vm.addressClass}}">
+      <div class="back-button" ng-click="vm.goBack()">
+        <img ng-if="!vm.isTopScorll" src="build/img/myInfo/meetThousand/Back-Chevron@3x.png">
+        <img ng-if="vm.isTopScorll" src="build/img/myInfo/meetThousand/Back-Chevron-b@3x.png">
+      </div>
+      <div class="{{vm.titleClass}}">认识汉得千人</div>
+      <div class="help-button">
+        <img ng-if="!vm.isTopScorll" src="build/img/myInfo/meetThousand/help-w@3x.png">
+        <img ng-if="vm.isTopScorll" src="build/img/myInfo/meetThousand/help-b@3x.png">
+      </div>
+      <div ng-if="vm.isTopScorll" class="sub-title">当前排名：{{vm.topInfo.rank}}</div>
+      <div ng-if="!vm.isTopScorll&&vm.isRank" class="ranking-avatar">
+        <div class="avatar-circle">
+          <div>
+            <div></div>
+            <img class="sex-img" src="build/img/myInfo/meetThousand/male-2@3x.png">
+          </div>
+        </div>
+        <div class="avatar">
+          <img class="avatar-img" ng-src="{{vm.headPortrait}}">
+
+        </div>
+      </div>
+      <div ng-if="!vm.isTopScorll&&vm.isRank" class="mutual-fans-info">
+        <div class="num-info">{{vm.summaryInfo.intersectionCnt}}</div>
+        <div class="desc-info">我的互粉</div>
+      </div>
+      <div ng-if="!vm.isTopScorll&&vm.isRank" class="ranking-info">
+        <div class="ranking-num">{{vm.topInfo.rank}}</div>
+        <div class="ranking-desc">我的排名</div>
+      </div>
+      <div ng-if="!vm.isRank" class="fans-avatar">
+        <div class="avatar-circle">
+          <div>
+            <div></div>
+            <img class="sex-img" src="build/img/myInfo/meetThousand/male-2@3x.png">
+          </div>
+        </div>
+        <div class="avatar">
+          <img class="avatar-img" ng-src="{{vm.headPortrait}}">
+
+        </div>
+      </div>
+      <div ng-if="!vm.isRank" class="user-info">{{vm.summaryInfo.empName}}&nbsp;{{vm.summaryInfo.empNo}}</div>
+      <div ng-if="!vm.isRank" class="fans-info">
+        <div class="num-info">
+          {{vm.summaryInfo.intersectionMaleCnt}}<img class="sex-img" src="build/img/myInfo/meetThousand/male-2@3x.png">
+          <span style="margin-left: 14px">{{vm.summaryInfo.intersectionFemaleCnt}}</span><img class="sex-img"
+                                                                                              src="build/img/myInfo/meetThousand/female-2@3x.png">
+        </div>
+        <div class="desc-info">
+          互粉统计
+        </div>
+      </div>
+      <img ng-if="!vm.isTopScorll" src="build/img/myInfo/meetThousand/BG@3x.png">
+    </div>
+    <div ng-if="vm.isRank" class="address-info {{vm.addressClass}}">
+      <ion-scroll direction="x" scrollbar-x="false">
+        <div class="address-detail-all {{vm.colorAddressArr[0]}}" ng-click="vm.addressTab(0)">全汉得</div>
+        <div class="address-detail {{vm.colorAddressArr[1]}}" ng-click="vm.addressTab(1)">上海</div>
+        <div class="address-detail {{vm.colorAddressArr[2]}}" ng-click="vm.addressTab(2)">北京</div>
+        <div class="address-detail {{vm.colorAddressArr[3]}}" ng-click="vm.addressTab(3)">广州</div>
+        <div class="address-detail {{vm.colorAddressArr[4]}}" ng-click="vm.addressTab(4)">成都</div>
+        <div class="address-detail {{vm.colorAddressArr[5]}}" ng-click="vm.addressTab(5)">武汉</div>
+        <div class="address-detail-xian {{vm.colorAddressArr[6]}}" ng-click="vm.addressTab(6)">西安</div>
+      </ion-scroll>
+    </div>
+    <div ng-if="!vm.isTopScorll&&vm.isRank" class="active-info">
+      <img src="build/img/myInfo/meetThousand/notice@3x.png">
+      <div ng-if="vm.isStart">共有<span>6666</span>人参与活动</div>
+      <div ng-if="!vm.isStart">年会尚未开始</div>
+    </div>
+    <div ng-if="!vm.isRank" class="fans-tab">
+      <div class="row ">
+        <div class="col col-border {{vm.colorFansTabArr[0]}}" id="fans-tab-one" ng-click="vm.fansTab(0)">
+          <div>{{vm.summaryInfo.intersectionCnt}}</div>
+          <div>互粉</div>
+        </div>
+        <div class="col col-border {{vm.colorFansTabArr[1]}}" id="fans-tab-two" ng-click="vm.fansTab(1)">
+          <div>{{vm.summaryInfo.followerCnt}}</div>
+          <div>粉我的</div>
+        </div>
+        <div class="col col-border {{vm.colorFansTabArr[2]}}" id="fans-tab-three" ng-click="vm.fansTab(2)">
+          <div>{{vm.summaryInfo.followingCnt}}</div>
+          <div>我粉的</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ion-content class=" active-content" has-bouncing="false" style="margin-bottom:51px;" ng-style="vm.top"
+               on-swipe-down="vm.rankDown()" on-swipe-up="vm.rankUp()">
+    <div ng-if="(vm.isRank&&vm.isStart&&vm.topInfo.topList.length>0)" class="rank-list">
+      <div class="three-info">
+        <img src="build/img/myInfo/meetThousand/BG-leadboard@3x.png">
+        <div class="first-prize-portrait">
+          <img src="{{vm.topInfo.topList[0].photo}}">
+        </div>
+        <div class="first-prize-mark">
+          <img src="build/img/myInfo/meetThousand/1@3x.png">
+        </div>
+        <div class="first-prize-name">{{vm.topInfo.topList[0].empName}}</div>
+        <div class="first-prize-score">{{vm.topInfo.topList[0].point}}</div>
+
+        <div class="second-prize-portrait" ng-if="vm.topInfo.topList.length>=2">
+          <img src="{{vm.topInfo.topList[1].photo}}">
+        </div>
+        <div class="second-prize-mark" ng-if="vm.topInfo.topList.length>=2">
+          <img src="build/img/myInfo/meetThousand/2@3x.png">
+        </div>
+        <div class="second-prize-name" ng-if="vm.topInfo.topList.length>=2">
+          {{vm.topInfo.topList[1].empName}}
+        </div>
+        <div class="second-prize-score" ng-if="vm.topInfo.topList.length>=2">
+          {{vm.topInfo.topList[1].point}}
+        </div>
+
+        <div class="third-prize-portrait" ng-if="vm.topInfo.topList.length>=3">
+          <img src="{{vm.topInfo.topList[2].photo}}">
+        </div>
+        <div class="third-prize-mark" ng-if="vm.topInfo.topList.length>=3">
+          <img src="build/img/myInfo/meetThousand/3@3x.png">
+        </div>
+        <div class="third-prize-name" ng-if="vm.topInfo.topList.length>=3">
+          {{vm.topInfo.topList[2].empName}}
+        </div>
+        <div class="third-prize-score" ng-if="vm.topInfo.topList.length>=3">
+          {{vm.topInfo.topList[2].point}}
+        </div>
+
+      </div>
+
+      <div class="other-ranking">
+        <div ng-repeat="info in vm.topOtherInfo" class="{{($index+4)%2==0?'rank-back-color2':'rank-back-color1'}}">
+          <div class="ranking">{{$index+4<10?0:''}}{{$index+4}}</div>
+          <div class="head-portrait">
+            <img src="{{info.photo}}">
+            <div class="sex">
+              <img ng-if="info.empGender=='1'" src="build/img/myInfo/meetThousand/male-2@3x.png">
+              <img ng-if="info.empGender=='2'" src="build/img/myInfo/meetThousand/female-2@3x.png">
+            </div>
+          </div>
+          <div class="name">{{info.empName}}</div>
+          <div class="score">{{info.point}}</div>
+          <div class="base-line"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div ng-if="(!vm.isStart&&vm.isRank)||(vm.isRank&&vm.topInfo.topList.length==0)" class="not-start-info">
+      <div class="not-start-image">
+        <img src="build/img/myInfo/meetThousand/annual-meeting@3x.png">
+      </div>
+      <div class="not-start-text">
+        参加上海年会并签到，方可加入榜单哦~
+      </div>
+    </div>
+    <div ng-if="!vm.isRank" class="fans-list" ng-repeat="fans in vm.fansList">
+      <div>
+        <div>
+          <div class="avatar">
+            <img class="avatar-img" src="{{fans.photo}}">
+            <img ng-if="fans.empGender=='2'" class="sex-img" src="build/img/myInfo/meetThousand/female-2@3x.png">
+            <img ng-if="fans.empGender=='1'" class="sex-img" src="build/img/myInfo/meetThousand/male-2@3x.png">
+          </div>
+          <div class="info">
+            <div>{{fans.empName}}</div>
+            <div>{{fans.point}}</div>
+          </div>
+          <div class="fans-status">
+            <img ng-if=" vm.fansStatus==0" src="build/img/myInfo/meetThousand/follow-each@3x.png">
+            <img ng-if=" vm.fansStatus==1" src="build/img/myInfo/meetThousand/follow@3x.png">
+            <div ng-if=" vm.fansStatus==0" class="fans-desc">互粉</div>
+            <div ng-if=" vm.fansStatus==1" style="color:#7ED321;">粉ta</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+  <div class="meetThousand-foot">
+    <div class="right-line"></div>
+    <div class="left-line"></div>
+    <div class="scanner">
+      <img ng-click="vm.faceScanner()" src="build/img/myInfo/meetThousand/scan@3x.png">
+    </div>
+    <div class="left-icon">
+      <div ng-click="vm.rankingMutualFans(0)">
+        <img ng-if="vm.isRank" src="build/img/myInfo/meetThousand/leadboard@3x.png">
+        <img ng-if="!vm.isRank" src="build/img/myInfo/meetThousand/leadboard-outline@3x.png">
+        <div id="rankingDesc " class="{{vm.colorTabsArr[0]}}">排行榜</div>
+      </div>
+    </div>
+    <div class="right-icon ">
+      <div ng-click="vm.rankingMutualFans(1)">
+        <img ng-if="!vm.isRank" src="build/img/myInfo/meetThousand/fan@3x.png">
+        <img ng-if="vm.isRank" src="build/img/myInfo/meetThousand/fan-outline@3x.png">
+        <div id="mutualFansDesc " class="{{vm.colorTabsArr[1]}}">我的互粉</div>
+      </div>
+    </div>
+  </div>
+</ion-view>
