@@ -131,9 +131,9 @@ angular.module('bidbondModule')
 					};
 
 					if($stateParams.param.workflowStatus == 0 || $stateParams.param.workflowStatus == -1 || !$stateParams.param.workflowStatus) {
-//												hmsPopup.showLoading();
+						//												hmsPopup.showLoading();
 					} else {
-//												hmsPopup.showLoading();
+						//												hmsPopup.showLoading();
 						$scope.showDisable = true;
 						/*    hmsPopup.showPopup($stateParams.param.workflowStatusName+"，不可编辑");*/
 						document.getElementById("saveBtn").style.display = "none";
@@ -625,7 +625,8 @@ angular.module('bidbondModule')
 			};
 
 			//=====================================================================================
-
+			
+			//	客户
 			var getCustomerSuccess = function(response) {
 				$scope.showCrmLoading = false;
 				if(response.returnCode == 'S') {
@@ -648,15 +649,7 @@ angular.module('bidbondModule')
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 			};
 
-			var getOpportunitySearchSuccess = function(response) {
-				$scope.showCrmLoading = false;
-				$scope.moreDataCanBeLoaded = response.opportunity_list.length == $scope.pageSize;
-				if(response.returnCode == 'S') {
-					$scope.items = $scope.items.concat(response.opportunity_list);
-				}
-				$scope.$broadcast('scroll.infiniteScrollComplete');
-			};
-
+			//	保证金
 			var getOpportunitySuccess = function(response) {
 				$scope.showCrmLoading = false;
 				console.log(response);
@@ -670,6 +663,16 @@ angular.module('bidbondModule')
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 			};
 
+			var getOpportunitySearchSuccess = function(response) {
+				$scope.showCrmLoading = false;
+				$scope.moreDataCanBeLoaded = response.opportunity_list.length == $scope.pageSize;
+				if(response.returnCode == 'S') {
+					$scope.items = $scope.items.concat(response.opportunity_list);
+				}
+				$scope.$broadcast('scroll.infiniteScrollComplete');
+			};
+
+			// 所属公司
 			var getCompanySuccess = function(response) {
 				$scope.showCrmLoading = false;
 				console.log(response);
@@ -683,6 +686,7 @@ angular.module('bidbondModule')
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 			};
 
+			// 所属项目
 			var getProjectSuccess = function(response) {
 				$scope.showCrmLoading = false;
 				console.log(response);
@@ -696,6 +700,7 @@ angular.module('bidbondModule')
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 			};
 
+			// 所属部门
 			var getUnitIdSuccess = function(response) {
 				$scope.showCrmLoading = false;
 				console.log(response);
@@ -890,18 +895,19 @@ angular.module('bidbondModule')
 				eval(dataModel + " = data");
 				eval(showDataModel + " = showKey");
 
-				//				if($scope.nowSelectTarget['key'] == 'customer')
-				//					$scope.sourceCustomer = {
-				//						customerId: $scope.data.customerId,
-				//						customerName: $scope.showData.customerName
-				//					};
+//				if($scope.nowSelectTarget['key'] == 'customer') {
+//					console.log($scope.items[$index]);
+//					$scope.showData.opportunityName = $scope.items[$index].opportunityName;
+//					$scope.data.opportunityId = $scope.items[$index].opportunityId;
+//				}
 
-				if($scope.nowSelectTarget['key'] == 'business') {
-					console.log($scope.items[$index]);
-					$scope.showData.fullName = $scope.items[$index].customerName;
-					$scope.data.customerId = $scope.items[$index].customerId;
+				if($scope.nowSelectTarget['key'] == 'customer') {
+		
+					window.localStorage.customerId = $scope.items[$index].customerId;
+					$scope.data.opportunityId = $scope.items[$index].opportunityId;
+					$scope.showData.opportunityName = $scope.items[$index].opportunityName;
+					$scope.selectTargets[1].params = [getOpportunitySuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
 				}
-
 				$scope.showSelectDiv();
 			};
 
@@ -1025,9 +1031,9 @@ angular.module('bidbondModule')
 					"page": page,
 					"pageSize": pageSize,
 					"queryType": "ALL_OPPORTUNITY",
-					"customerId": customerId,
-					"opportunityStatus": "",
-					"status": ""
+					"customerId": customerId
+//					"opportunityId": "",
+//					"opportunityType": "HCRM_OPPORTUNITY"
 				};
 				hmsHttp.post(baseUrl + 'query_opportunity_list', params).success(function(result) {
 					success(result);
@@ -1059,7 +1065,9 @@ angular.module('bidbondModule')
 				var params = {
 					page: page,
 					pageSize: pageSize,
-					queryType: queryType
+					queryType: queryType,
+//					"opportunityId": "",
+//					"opportunityType": "HCRM_OPPORTUNITY"
 				};
 				hmsHttp.post(baseUrl + 'query_customer_list', params).success(function(result) {
 					success(result);
