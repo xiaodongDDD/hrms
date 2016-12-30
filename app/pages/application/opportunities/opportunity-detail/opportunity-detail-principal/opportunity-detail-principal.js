@@ -260,4 +260,8 @@ angular.module('customerModule')
           }
         }
       };
+
+      $scope.goEmployeeDetail = function (newEmployeeNumber) {
+        $state.go('tab.employeeDetailCrm2', {employeeNumber: newEmployeeNumber});
+      };
     }]);
