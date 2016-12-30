@@ -606,10 +606,12 @@ angular.module('customerModule')
           organization: $scope.manInfo.organization
         };
         var onSaveContactSuccess = function () {
+          hmsPopup.hideLoading();
           hmsPopup.showPopup("添加成功");
           $scope.scanCardModal.hide();
         };
         var onSaveContactError = function () {
+          hmsPopup.hideLoading();
           hmsPopup.showPopup("添加失败");
           $scope.scanCardModal.hide();
         };
@@ -619,7 +621,7 @@ angular.module('customerModule')
       function dealScanData(msg) { //处理名片扫描插件的返回数据
         console.log(JSON.parse(msg));
         try {
-          $scope.scanCardModal.show();
+          $scope.crmScanCardModal.show();
           console.log(JSON.parse(msg));
           if (JSON.parse(msg)) {
             $scope.manInfo = {
@@ -702,7 +704,7 @@ angular.module('customerModule')
             try {
               /*  alert("扫描成功");*/
               $scope.$apply();
-              $scope.scanCardModal.show();
+              $scope.crmScanCardModal.show();
             } catch (e) {
             }
           }
@@ -720,7 +722,7 @@ angular.module('customerModule')
         $ionicModal.fromTemplateUrl('build/pages/application/model/scan-card-result.html', {
           scope: $scope
         }).then(function (modal) {
-          $scope.scanCardModal = modal;
+          $scope.crmScanCardModal = modal;
         });
       })();
       $scope.saveToContacts = function () {
@@ -768,19 +770,19 @@ angular.module('customerModule')
                 contact.fullName = "";
               }
               $state.go('tab.addLinkman', {param: contact});
-              $scope.scanCardModal.hide();
+              $scope.crmScanCardModal.hide();
             } else {
               hmsPopup.hideLoading();
               hmsPopup.showPopup("没有找到匹配的客户");
               $state.go('tab.addLinkman', {param: contact});
-              $scope.scanCardModal.hide();
+              $scope.crmScanCardModal.hide();
             }
           };
           customerSearchService.getSearchData(searchSuccessInit, $scope.searchParam)
         } else {
           hmsPopup.hideLoading();
           $state.go('tab.addLinkman', {param: contact});
-          $scope.scanCardModal.hide();
+          $scope.crmScanCardModal.hide();
           console.log($scope.searchData);
         }
 

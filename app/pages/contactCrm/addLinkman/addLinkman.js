@@ -368,12 +368,21 @@ angular.module('contactModule')
               emp_name: $scope.data.name,
               organization: $scope.data.department
             };
+            var onSaveContactSuccess = function () {
+              hmsPopup.hideLoading();
+              hmsPopup.showShortCenterToast("添加成功");
+            };
+            var onSaveContactError = function () {
+              hmsPopup.hideLoading();
+              hmsPopup.showShortCenterToast("添加失败");
+            };
             //保存到本地
-            contactLocal.contactLocal(info);
+            contactLocal.contactLocal(info,onSaveContactSuccess,onSaveContactError,onSaveContactSuccess,onSaveContactError);
           }
           var initAddContactSuccess = function (data) {
             hmsPopup.hideLoading();
             if (data.returnCode == "S") {
+              $stateParams.param={};
               $scope.data = {
                 "contactId": "",
                 "customerId": "",
@@ -419,16 +428,17 @@ angular.module('contactModule')
                 statusValue: "有效"
               };
               $rootScope.$broadcast("REFRESH_ADD_LINKMAN");
-              hmsPopup.showPopup(data.returnMsg);
+              hmsPopup.showShortCenterToast(data.returnMsg);
               $timeout(function () {
                 $ionicHistory.goBack();
               });
             }else{
               if(data.returnMsg){
                 $scope.showContent=true;
-                hmsPopup.showPopup(data.returnMsg)
+                hmsPopup.showPopup(data.returnMsg);
+                console.log(data.returnMsg);
               }else{
-                hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+                hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
               }
             }
 
@@ -438,7 +448,7 @@ angular.module('contactModule')
             hmsHttp.post(statusurl, $scope.data).success(function (data) {
               hmsPopup.hideLoading();
               $rootScope.$broadcast("REFRESH_LINKMAN_UPDATE");
-              hmsPopup.showPopup(data.returnMsg);
+              hmsPopup.showShortCenterToast(data.returnMsg);
               console.log($ionicHistory.viewHistory().backView);
               $timeout(function () {
                 $ionicHistory.goBack();
