@@ -1,0 +1,35 @@
+.face-affirm{
+  .head-back{
+    background: rgba(255,255,255,0.90);
+    box-shadow: 0px 0px 0px 0px rgba(178,178,178,0.50);
+  }
+  .title{
+    font-family: PingFangSC-Semibold;
+    font-size: 17px;
+    color: #1F8CEB;
+    letter-spacing: -0.41px;
+  }
+  .has-footer{
+    bottom: 139px;
+  }
+  .foot{
+    height: 139px;
+    background-image: none;
+    padding: 0px;
+    .note-info{
+      position: relative;
+      height: 16px;
+      width: 100%;
+      text-align: center;
+      margin-top: 15px;
+      font-family:PingFangSC-Regular;
+      font-size: 16px;
+      color: #D2D2D2;
+      letter-spacing: 0px;
+      line-height: 16px;
+    }
+  }
+  .face-affirm-content{
+
+  }
+}

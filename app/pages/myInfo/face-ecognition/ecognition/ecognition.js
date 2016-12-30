@@ -44,6 +44,7 @@
     vm.ecognition = ecognition;
     vm.setting = setting;
     vm.goBack = goBack;
+    vm.meetThousand=meetThousand;
 
     function loginFace() {
       hmsPopup.showPopup('此功能下一版本上线');
@@ -131,6 +132,10 @@
 
     function setting() {
       $state.go('tab.face-ecognition');
+    }
+
+    function meetThousand() {
+      $state.go('tab.face-ecognition-meetThousand');
     }
   }
 })();
