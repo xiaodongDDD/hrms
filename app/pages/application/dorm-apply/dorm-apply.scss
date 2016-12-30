@@ -759,6 +759,12 @@
     }
   }
 }
+.dorm-apply-detail-back{
+  color: #fff;
+}
+.dorm-apply-detail-back{
+  color: #fff!important;
+}
 .dorm-apply-detail-a{//住宿详情界面(已申请，已拒绝)
   .has-header{
     top: 126px;
@@ -792,6 +798,7 @@
     background-color: transparent;
     background-size:100% 0px;
   }
+
   .time-line-circle-done{
     width: 20px;
     height: 20px;
