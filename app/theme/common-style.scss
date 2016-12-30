@@ -185,6 +185,10 @@
     .header-select-button {
       width: 40vw;
       display: flex;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
       border-radius: 20px;
       background: white;
       border: 1px solid #00a5ee;
@@ -198,6 +202,11 @@
       div {
         color: #00a5ee;
         flex: 1;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -moz-box-flex: 1;
+        -moz-flex: 1;
+        -ms-flex: 1;
         text-align: center;
         height: 30px;
         line-height: 30px;
@@ -1135,6 +1144,10 @@
         line-height: 44px;
         color: #666666;
         display: flex;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
         img.common-fix-div-header-back {
           padding: 0;
           top: 0;
@@ -1148,6 +1161,11 @@
         * {
           padding: 0 1vw;
           flex: 1;
+          -webkit-box-flex: 1;
+          -webkit-flex: 1;
+          -moz-box-flex: 1;
+          -moz-flex: 1;
+          -ms-flex: 1;
           height: 44px;
           line-height: 44px;
         }
@@ -1254,9 +1272,18 @@
       height: 50px;
       width: 100vw;
       display: flex;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
       div {
         width: 50%;
         flex: 1;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -moz-box-flex: 1;
+        -moz-flex: 1;
+        -ms-flex: 1;
         color: #666666;
         line-height: 50px;
         height: 50px;
@@ -1418,6 +1445,10 @@
     width: 100vw;
     padding: 0 calc(5vw + 30px);
     display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     position: relative;
     border: none;
     border-bottom: 1px solid rgba(221, 221, 221, 0.6);
@@ -1435,6 +1466,11 @@
     }
     .item-content {
       flex: 1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-box-flex: 1;
+      -moz-flex: 1;
+      -ms-flex: 1;
       color: #959595;
       text-align: right;
       margin-left: 10px;
@@ -1443,7 +1479,12 @@
       position: relative;
       left: 30px;
       display: flex;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
     }
     img {
       position: absolute;
@@ -1514,10 +1555,20 @@
     padding-right: 5vw;
     div {
       flex: 1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-box-flex: 1;
+      -moz-flex: 1;
+      -ms-flex: 1;
       height: 50px;
       line-height: 50px;
       display: flex;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       width: 70%;
       div {
         display: inline-block;
@@ -1546,8 +1597,13 @@
     width: 100vw;
     height: 50px;
     display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     padding: 5px 5vw;
     justify-content: space-between;
+    -webkit-justify-content: space-between;
     button {
       background: #E6F4FD;
       color: #333333;

@@ -74,7 +74,12 @@
   .estimate-product {
     height: 75px;
     display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     justify-content: center;
+    -webkit-justify-content: center;
     position: relative;
     width: 100vw;
     .product-info {
@@ -118,6 +123,10 @@
 
   .estimate-cost {
     display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     height: 80px;
     padding: 12px 0;
     div {
@@ -142,6 +151,11 @@
     }
     .sign {
       flex: 0;
+      -webkit-box-flex: 0;
+      -webkit-flex: 0;
+      -moz-box-flex: 0;
+      -moz-flex: 0;
+      -ms-flex: 0;
       line-height: 26px;
       color: #898989;
     }
@@ -302,9 +316,18 @@
     height: 50px;
     width: 100vw;
     display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     div {
       width: 50%;
       flex: 1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-box-flex: 1;
+      -moz-flex: 1;
+      -ms-flex: 1;
       color: #666666;
       line-height: 50px;
       height: 50px;

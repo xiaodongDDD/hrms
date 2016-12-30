@@ -98,6 +98,10 @@
     width: 100%;
     padding: 10px 3vw;
     display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     background: white;
     position: relative;
     box-shadow: 0 8px 5px #e5ecef;
@@ -113,6 +117,11 @@
 
     .info-area{
       flex: 1;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -moz-box-flex: 1;
+      -moz-flex: 1;
+      -ms-flex: 1;
       height: 70px;
       padding-top: 10px;
       padding-left: 2%;

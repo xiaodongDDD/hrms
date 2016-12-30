@@ -42,7 +42,12 @@
     border-top: 1px solid #e5e5e5;
     border-bottom: 2px solid #e5e5e5;
     display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     justify-content: space-around;
+    -webkit-justify-content: space-around;
     span{
       display: inline-block;
       min-width: 50px;
