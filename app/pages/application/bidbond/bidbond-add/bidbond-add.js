@@ -96,6 +96,7 @@ angular.module('bidbondModule')
 						paymentContent: $stateParams.param.paymentContent,
 						applicationBy: $stateParams.param.applicationBy,
 						applicationDate: $stateParams.param.applicationDate,
+						applicationId: $stateParams.param.applicationId,
 						workflowStatus: $stateParams.param.workflowStatus,
 						attachments: [],
 					};
@@ -123,6 +124,7 @@ angular.module('bidbondModule')
 						paymentContent: $stateParams.param.paymentContent,
 						applicationBy: $stateParams.param.applicationBy,
 						applicationDate: $stateParams.param.applicationDate,
+						applicationId: $stateParams.param.applicationId,
 						attachments: $stateParams.param.attachments,
 						hrFullUnitName: $stateParams.param.hrFullUnitName,
 						workflowStatusName: $stateParams.param.workflowStatusName
@@ -159,6 +161,7 @@ angular.module('bidbondModule')
 						paymentContent: "",
 						applicationBy: "",
 						applicationDate: getToday(),
+						applicationId: "",
 						attachments: [],
 						unitId: "",
 						companyId: "",
@@ -186,7 +189,8 @@ angular.module('bidbondModule')
 						projectName: "",
 						hrFullUnitName: "",
 						companyName: "",
-						workflowStatusName: '新建'
+						workflowStatusName: '新建',
+						applicationId: ""
 					};
 				}
 			});

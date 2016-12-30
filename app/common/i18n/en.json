@@ -354,7 +354,8 @@
     "APPLY_AMOUNT":"Application amount",
     "BIDBOND_FILTER":"Bidbond filter",
     "CURRENCY":"Currency",
-    "STATUS":"Current status"
+    "STATUS":"Current status",
+    "APPLICATIONID":"applicationID"
   },
   "CLUE":{
     "LONG_BELONG":"Belong",

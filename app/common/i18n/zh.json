@@ -353,7 +353,8 @@
     "APPLY_AMOUNT":"申请金额",
     "BIDBOND_FILTER":"保证金筛选",
     "CURRENCY":"币种",
-    "STATUS":"当前状态"
+    "STATUS":"当前状态",
+    "APPLICATIONID":"申请编号"
   },
   "CLUE":{
     "LONG_BELONG":"线索所属团队",

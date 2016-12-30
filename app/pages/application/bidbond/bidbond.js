@@ -58,7 +58,8 @@ angular.module('bidbondModule')
 				fullName: "",
 				currencyName: "",
 				workflowStatusName: "",
-				customerName: ""
+				customerName: "",
+				applicationId: ""
 			};
 
 			$scope.data = {
@@ -68,7 +69,8 @@ angular.module('bidbondModule')
 				pageSize: "10",
 				fullName: "",
 				shortName: "",
-				workflowStatus: ""
+				workflowStatus: "",
+				applicationId: ""
 			};
 
 			$scope.items = [];
@@ -91,6 +93,13 @@ angular.module('bidbondModule')
 					$state.go('tab.application');
 				}
 			};
+			
+//			console.log($scope.data.applicationId);
+//			if (!$scope.data.applicationId ) {
+//				document.getElementById("appid").style.display = "none";
+//			} else{
+//				document.getElementById("appid").style.display = "block";
+//			}
 
 			//=====================================新增保证金（开始）===================================
 
