@@ -1128,7 +1128,7 @@ angular.module('customerModule')
         $http.post(cusUrl).success(function (data) {
           console.log('请求数据成功！！');
           console.log(data);
-          if(data.result!=''&&data.status==0&&(data.result.level=='城市'||data.result.level=='区县'||data.result.level=='道路'||data.result.level=='旅游景点')){
+          if(data.result!=''&&data.status==0&&(data.result.level=='城市'||data.result.level=='区县'||data.result.level=='道路'||data.result.level=='旅游景点'||data.result.level=='购物')){
             console.log("json==="+angular.toJson(data.result.location));
             $scope.cusLocation.lat = data.result.location.lat;
             $scope.cusLocation.lng = data.result.location.lng;
