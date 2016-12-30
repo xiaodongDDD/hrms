@@ -18,6 +18,7 @@ angular.module('customerModule')
     '$rootScope',
     'customerSearchService',
     'customerDetailService',
+    '$ionicHistory',
     function ($scope,
               $state,
               hmsPopup,
@@ -31,7 +32,8 @@ angular.module('customerModule')
               customerDetailContact,
               $rootScope,
               customerSearchService,
-              customerDetailService) {
+              customerDetailService,
+              $ionicHistory) {
       console.log("CustomerDetailContactCtrl");
       customerDetailService.setTabNumber(2);
       customerDetailService.setIsContact(false);
@@ -66,9 +68,9 @@ angular.module('customerModule')
         } else if (data.returnCode == 'E') {
           $scope.moreDataCanBeLoaded = false;
           if(data.returnMsg){
-            hmsPopup.showPopup(data.returnMsg)
+            hmsPopup.showShortCenterToast(data.returnMsg)
           }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
           }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -91,9 +93,9 @@ angular.module('customerModule')
         } else {
           $scope.moreDataCanBeLoaded = false;
             if(data.returnMsg){
-              hmsPopup.showPopup(data.returnMsg)
+              hmsPopup.showShortCenterToast(data.returnMsg)
             }else{
-              hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+              hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
             }
         }
       };
@@ -123,12 +125,12 @@ angular.module('customerModule')
       var deleteSuccessinit = function (data, index) {
         if (data.returnCode == 'S') {
           $scope.linkmanData.splice(index, 1);
-          hmsPopup.showPopup(data.returnMsg);
+          hmsPopup.showShortCenterToast(data.returnMsg);
         } else {
           if(data.returnMsg){
-            hmsPopup.showPopup(data.returnMsg)
+            hmsPopup.showShortCenterToast(data.returnMsg)
           }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
           }
         }
       };
@@ -141,7 +143,14 @@ angular.module('customerModule')
         customerDetailContact.deleteItemFun(deleteSuccessinit, deleteData, index);
       };
       $scope.goDetail = function (item) {
-        $state.go('tab.contactDetail3', {contactData: item});
+        console.log($ionicHistory.viewHistory().backView);
+        console.log($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail");
+        if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+          $state.go('tab.contactDetail4', {contactData: item});
+        }else{
+          $state.go('tab.contactDetail3', {contactData: item});
+        }
+
       };
       $scope.saveToLocalContacts = function () {
         var info = {
@@ -151,11 +160,11 @@ angular.module('customerModule')
           organization: $scope.manInfo.organization
         };
         var onSaveContactSuccess=function(){
-          hmsPopup.showPopup("添加成功");
+          hmsPopup.showShortCenterToast("添加成功");
           $scope.scanCardModal.hide();
         };
         var onSaveContactError=function(){
-          hmsPopup.showPopup("添加失败");
+          hmsPopup.showShortCenterToast("添加失败");
           $scope.scanCardModal.hide();
         };
         //保存到本地

@@ -1,3 +1,11 @@
+
+.crm-hide-small-content {
+  width: 100%;
+  margin-top: 50px;
+  z-index: 10000000;
+  position: fixed;
+  height: 100%;
+}
 .crm {
   .bar .buttons .button {
    color: #444!important;
@@ -1032,63 +1040,7 @@
     padding-top: 20px;
   }
 
-  .platform-ios {
-    .sifting-header {
-      height: 64px;
-      padding-top: 20px;
-      width: 100%;
-      position: relative;
-      text-align: center;
-      color: #333333;
-      background: #f8f8f8;
-      line-height: 44px;
-      font-size: 1.2em;
-      border: none;
-      background-image: linear-gradient(0deg, #ddd, #ddd 50%, transparent 50%);
-      background-position: bottom;
-      background-size: 100% 1px;
-      background-repeat: no-repeat;
-      img {
-        width: 23px;
-        height: 23px;
-        position: absolute;
-        top: 20px;
-        box-sizing: content-box;
-        border: 10px solid transparent;
-        z-index: 5;
-        left: 2px;
-      }
-    }
-    .common-fix-div {
-      .common-fix-div-header {
-        height: 64px;
-        padding-top: 20px;
-        img {
-          top: 20px;
-          box-sizing: content-box;
-          border: 10px solid transparent;
-          z-index: 5;
-          left: 0vw !important;
-        }
-        .left, .right {
-          top: 20px;
 
-        }
-      }
-      .list {
-        height: calc(100vh - 110px);
-      }
-      .list.list-has-header {
-        height: calc(100vh - 150px);
-      }
-      .list.country {
-        height: calc(100vh - 160px);
-      }
-      .list.country.in-china {
-        height: calc(100vh - 200px);
-      }
-    }
-  }
 
   .noData {
     width: 100%;
@@ -1882,4 +1834,61 @@
 
 .ionic_datepicker_popup .popup-body .month_select, .ionic_datepicker_popup .popup-body .year_select {
   border-bottom: 1px solid #32acec !important;
+}
+.platform-ios {
+  .sifting-header {
+    height: 64px;
+    padding-top: 20px;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    color: #333333;
+    background: #f8f8f8;
+    line-height: 44px;
+    font-size: 1.2em;
+    border: none;
+    background-image: linear-gradient(0deg, #ddd, #ddd 50%, transparent 50%);
+    background-position: bottom;
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    img {
+      width: 23px;
+      height: 23px;
+      position: absolute;
+      top: 20px;
+      box-sizing: content-box;
+      border: 10px solid transparent;
+      z-index: 5;
+      left: 2px;
+    }
+  }
+  .common-fix-div {
+    .common-fix-div-header {
+      height: 64px;
+      padding-top: 20px;
+      img {
+        top: 20px;
+        box-sizing: content-box;
+        border: 10px solid transparent;
+        z-index: 5;
+        left: 0vw !important;
+      }
+      .left, .right {
+        top: 20px;
+
+      }
+    }
+    .list {
+      height: calc(100vh - 110px);
+    }
+    .list.list-has-header {
+      height: calc(100vh - 150px);
+    }
+    .list.country {
+      height: calc(100vh - 160px);
+    }
+    .list.country.in-china {
+      height: calc(100vh - 200px);
+    }
+  }
 }

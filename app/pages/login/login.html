@@ -11,8 +11,8 @@
       <!--  <label ng-class="{'focus-user-label':!focusUsername,'blur-user-label':focusUsername}">用户名</label>-->
         <div style="position: absolute;
     left: 9%;
-    top: 80px;">
-          <img src="build/img/login/user@3x.png" style="width:16px;">
+    top: 78px;">
+          <img src="build/img/login/user@3x.png" style="width:18px;">
         </div>
         <input type="text" autocomplete="off" class="username-input" ng-model="loginInfo.username"
                ng-change="usernameChange()" placeholder="请输入工号"/>
@@ -25,14 +25,14 @@
        <!-- <label ng-class="{'focus-password-label':!focusPassword,'blur-password-label':focusPassword}">密码</label>-->
         <div style="position: absolute;
     left: 9%;
-    top: 133px;">
-          <img src="build/img/login/password@3x.png" style="width:16px;">
+    top: 152px;">
+          <img src="build/img/login/password@3x.png" style="width:18px;">
         </div>
         <input type="password" autocomplete="off" class="password-input" ng-model="loginInfo.password" placeholder="请输入密码"
              ng-change="passwordChange()"/>
         <ion-item class="password-clear-item" ng-show="showPasswordClearButton">
           <button class="button button-block clear-button" ng-click="clearPassword()">
-            <img src="build/img/login/login-clear.png" class="clear-image"/>
+            <img src="build/img/login/cancel@3x.png" class="clear-image"/>
           </button>
         </ion-item>
         <div class="gray-line"></div>
