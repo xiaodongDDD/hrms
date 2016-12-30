@@ -1,0 +1,29 @@
+<div class="crm">
+  <ion-modal-view style="width: 100vw;background: none;">
+    <crm-loading ng-if="showCrmLoading"></crm-loading>
+    <!--所属选择区域-->
+    <div class="common-fix-div" ng-class="{true:'showUp'}[showSaleSelectFlag]">
+      <div class="common-fix-div-header">
+        <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="saleBack()"/>
+        请选择
+      </div>
+      <div class="sifting-area">
+        <img src="build/img/application/opportunity/icon_top_search@3x.png">
+        <input type="text" placeholder="搜索..." ng-model="areaValue.key" ng-change="filterArea()"/>
+        <img src="build/img/application/icon_circle@3x.png" ng-show="areaValue.key != ''" ng-click="clearAreaFilter()">
+      </div>
+      <div class="value-list-header">
+        {{showSaleTeam ? showData.saleAreaName : '所属区域'}}
+      </div>
+      <div class="list list-has-header">
+        <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="saleScroll">
+          <div class="list-item" ng-repeat="saleArea in saleAreas" ng-click="selectArea(saleArea)" ng-hide="showSaleTeam">
+            {{saleArea.saleAreaName}}
+            <img src="build/img/application/opportunity/right_arrow@3x.png"/>
+          </div>
+          <div class="list-item" ng-repeat="saleTeam in saleTeams" ng-click="selectTeam(saleTeam)" ng-show="showSaleTeam">{{saleTeam.saleTeamName}}</div>
+        </ion-scroll>
+      </div>
+    </div>
+  </ion-modal-view>
+</div>

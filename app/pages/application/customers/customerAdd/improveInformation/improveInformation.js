@@ -862,13 +862,13 @@ angular.module('customerModule')
       $scope.inArea = true;
 
       var getSaleAreaSuccess= function(response){
-        $scope.showLoading = false;
+        $scope.showCrmLoading = false;
         if(response.returnCode == "S")
           $scope.saleAreas = response.sale_area_list;
       };
 
       var getSaleTeamSuccess= function(response){
-        $scope.showLoading = false;
+        $scope.showCrmLoading = false;
         if(response.returnCode == "S"){
           var obj = {
             saleTeamId:'',
@@ -878,12 +878,22 @@ angular.module('customerModule')
           $scope.saleTeams.unshift(obj);
         }
       };
-
+      $ionicModal.fromTemplateUrl('build/pages/modals/crmAreaModal.html', {
+        scope: $scope,
+        animation: 'slide-in-right'
+      }).then(function (modal1) {
+        $scope.crmAreaModal = modal1;
+      });
       $scope.showSaleSelectFlag = false;
 
       $scope.showSaleSelect = function(){
         $scope.showSaleSelectFlag = true;
-        $scope.showLoading = true;
+        if($scope.showSaleSelectFlag){
+          $scope.crmAreaModal.show();
+        }else {
+          $scope.crmAreaModal.hide();
+        }
+        $scope.showCrmLoading = true;
         customerService.getSaleArea(getSaleAreaSuccess,'');
       };
 
@@ -894,15 +904,17 @@ angular.module('customerModule')
         $scope.showSaleTeam = true;
         $scope.showData.saleAreaName = area.saleAreaName;
         $scope.data.saleAreaId = area.saleAreaId;
-        $scope.showLoading = true;
+        $scope.showCrmLoading = true;
         opportunityAddService.getSaleTeam(getSaleTeamSuccess,area.saleAreaId);
       };
 
       $scope.selectTeam = function(team){
         $ionicScrollDelegate.$getByHandle('saleScroll').scrollTop(false);
+        $scope.inArea = true;
         $scope.areaValue.key='';
         $scope.showSaleTeam = false;
         $scope.showSaleSelectFlag = false;
+        $scope.crmAreaModal.hide();
         $scope.showData.team = team.saleTeamName;
         $scope.showData.saleBelong = $scope.showData.saleAreaName + " | " + $scope.showData.team;
         $scope.data.saleTeamId = team.saleTeamId;
@@ -913,6 +925,7 @@ angular.module('customerModule')
         //当目录在一级时，返回
         if(!$scope.showSaleTeam){
           $scope.showSaleSelectFlag = false;
+          $scope.crmAreaModal.hide();
           $scope.inArea = true;
           $scope.data.saleAreaId = '';
           $scope.areaValue.key = '';
@@ -968,13 +981,13 @@ angular.module('customerModule')
       $scope.inMajor = true;
 
       var getMajorIndustrySuccess= function(response){
-        $scope.showLoading = false;
+        $scope.showCrmLoading = false;
         if(response.returnCode == "S")
           $scope.majorIndustrys = response.industry_list;
       };
 
       var getSubIndustrySuccess= function(response){
-        $scope.showLoading = false;
+        $scope.showCrmLoading = false;
         if(response.returnCode == "S"){
           var obj = {
             industryId:'',
@@ -986,11 +999,22 @@ angular.module('customerModule')
 
       };
 
+      $ionicModal.fromTemplateUrl('build/pages/modals/crmIndustryModal.html', {
+        scope: $scope,
+        animation: 'slide-in-right'
+      }).then(function (modal1) {
+        $scope.crmIndustryModal = modal1;
+      });
       $scope.showIndustrySelectFlag = false;
 
       $scope.showIndustrySelect = function(){
-        $scope.showIndustrySelectFlag = true;
-        $scope.showLoading = true;
+        $scope.showIndustrySelectFlag = !$scope.showIndustrySelectFlag;
+        if($scope.showIndustrySelectFlag){
+          $scope.crmIndustryModal.show();
+        }else {
+          $scope.crmIndustryModal.hide();
+        }
+        $scope.showCrmLoading = true;
         customerService.getIndustry(getMajorIndustrySuccess,'',0);
       };
 
@@ -1001,7 +1025,7 @@ angular.module('customerModule')
         $scope.inMajor = false;
         $scope.showData.majorIndustry = industry.industryName;
         $scope.data.majorIndustry = industry.industryId;
-        $scope.showLoading = true;
+        $scope.showCrmLoading = true;
         customerService.getIndustry(getSubIndustrySuccess,'', industry.industryId);
       };
 
@@ -1010,6 +1034,7 @@ angular.module('customerModule')
         $scope.industrySearch.key='';
         $scope.showSubIndustry = false;
         $scope.showIndustrySelectFlag = false;
+        $scope.crmIndustryModal.hide();
         $scope.showData.subIndustry = industry.industryName;
         $scope.showData.industry = $scope.showData.majorIndustry + " | " + $scope.showData.subIndustry;
         $scope.data.subIndustry = industry.industryId;
@@ -1020,6 +1045,7 @@ angular.module('customerModule')
         //当目录在一级时，返回
         if(!$scope.showSubIndustry){
           $scope.showIndustrySelectFlag = false;
+          $scope.crmIndustryModal.hide();
           $scope.inMajor = true;
           $scope.data.majorIndustry='';
         }

@@ -1,0 +1,29 @@
+<div class="crm">
+  <ion-modal-view style="width: 100vw;background: none;">
+    <crm-loading ng-if="showCrmLoading"></crm-loading>
+    <!--所属行业选择-->
+    <div class="common-fix-div" ng-class="{true:'showUp'}[showIndustrySelectFlag]">
+      <div class="common-fix-div-header">
+        <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="industryBack()"/>
+        请选择
+      </div>
+      <div class="sifting-area">
+        <img src="build/img/application/opportunity/icon_top_search@3x.png">
+        <input type="text" placeholder="搜索..." ng-model="industrySearch.key" ng-change="filterIndustry()"/>
+        <img src="build/img/application/icon_circle@3x.png" ng-show="industrySearch.key != ''" ng-click="clearIndustryFilter()">
+      </div>
+      <div class="value-list-header">
+        {{showSubIndustry ? showData.majorIndustry : '主行业'}}
+      </div>
+      <div class="list list-has-header">
+        <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="industryScroll">
+          <div class="list-item" ng-repeat="industry in majorIndustrys" ng-click="selectMajor(industry)" ng-hide="showSubIndustry">
+            {{industry.industryName}}
+            <img src="build/img/application/opportunity/right_arrow@3x.png"/>
+          </div>
+          <div class="list-item" ng-repeat="industry in subIndustrys" ng-click="selectSub(industry)" ng-show="showSubIndustry">{{industry.industryName}}</div>
+        </ion-scroll>
+      </div>
+    </div>
+  </ion-modal-view>
+</div>
