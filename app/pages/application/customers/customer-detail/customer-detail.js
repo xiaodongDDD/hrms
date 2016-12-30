@@ -1100,7 +1100,7 @@ angular.module('customerModule')
         $http.post(cusUrl).success(function (data) {
           console.log('请求数据成功！！');
           console.log(data);
-          if(data.result!=''&&data.status==0&&(data.result.level=='城市'||data.result.level=='区县'||data.result.level=='道路')){
+          if(data.result!=''&&data.status==0&&(data.result.level=='城市'||data.result.level=='区县'||data.result.level=='道路'||data.result.level=='旅游景点')){
             console.log("json==="+angular.toJson(data.result.location));
             $scope.cusLocation.lat = data.result.location.lat;
             $scope.cusLocation.lng = data.result.location.lng;
@@ -1125,11 +1125,11 @@ angular.module('customerModule')
             })
 
           }else {
-            hmsPopup.showPopup('客户位置解析错误');
+            hmsPopup.showPopup('客户地址解析失败，请检查客户地址是否正确');
           }
         }).error(function (data) {
           console.log('请求数据失败！！');
-          hmsPopup.showPopup('客户位置解析错误');
+          hmsPopup.showPopup('客户地址解析失败，请检查客户地址是否正确');
         })
       };
 
