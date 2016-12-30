@@ -505,6 +505,8 @@ angular.module('contactModule')
             $state.go("tab.customer-detail2");
           }else if($ionicHistory.viewHistory().backView.stateName =="tab.opportunity-detail"){
             $state.go("tab.customer-detail");
+          }else if($ionicHistory.viewHistory().backView.stateName =="tab.contact-search"){
+            $state.go("tab.customer-detail2");
           } else {
             console.log("从别的地方进来的");
             $ionicHistory.goBack();
