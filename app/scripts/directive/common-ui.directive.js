@@ -171,7 +171,7 @@ HmsModule
   .directive('crmLoading', ['$rootScope', function ($rootScope) {
     return {
       restrict: 'E',
-      template: '<div class="crm-hide-small-content">' +
+      template: '<div class="crm crm-hide-small-content">' +
       '<div class="loading-crm"></div>' +
       '</div>',
       replace: true, //使用模板替换原始标记

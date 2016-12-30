@@ -19,6 +19,19 @@ angular.module('planModule')
             }
           }
         })
+        .state('tab.plans-add2', {
+          url: '/plans/plans-add',
+          params: {
+            planData: {}
+          },
+          views: {
+            'tab-contactCrm': {
+              prefetchTemplate: false,
+              templateUrl: 'build/pages/application/plans/plans-add/plans-add.html',
+              controller: 'PlansAddCtrl'
+            }
+          }
+        })
     }]);
 
 angular.module('planModule')
@@ -650,7 +663,7 @@ angular.module('planModule')
 
       $ionicModal.fromTemplateUrl('build/pages/modals/crmSelectModal.html', {
         scope: $scope,
-        animation: 'slide-in-right'
+        animation: 'slide-in-up'
       }).then(function (modal1) {
         $scope.crmSelectModal = modal1;
       });

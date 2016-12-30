@@ -7,29 +7,27 @@
     background-color: transparent;
   }
   .hasPassword{
-    width: 50%;
-    height: 50px;
+    width: 45%;
+    height:45px;
     background: #1F8CEB;
     border-radius: 50px;
     color: #fff;
-    margin-left: 25%;
+    margin-left: 27.5%;
     /* font-weight: 400; */
-    line-height: 50px;
+    line-height: 45px;
     text-align: center;
-    font-weight: 600;
   }
   .noPassword{
-    width: 50%;
-    height: 50px;
+    width: 45%;
+    height:45px;
     background: none;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.8);
     border-radius: 50px;
-    color: #fff;
-    margin-left: 25%;
+    color:rgba(255, 255, 255, 0.8);
+    margin-left: 27.5%;
     /* font-weight: 400; */
-    line-height: 50px;
+    line-height: 45px;
     text-align: center;
-    font-weight: 600;
   }
   .login-item{
     padding: 0px;
@@ -51,7 +49,7 @@
     font-size: 1rem;
     background-color: transparent;
     width:82.6%;
-    margin-left:17.7%;
+    margin-left:18.7%;
     height: 32px;
     padding-bottom: 3px;
     border: none;
@@ -64,11 +62,11 @@
     font-size: 12px;
     letter-spacing: -1px;
     background-color: transparent;
-    width:82.6%;
-    margin-left: 17.7%;
+    width: 82.6%;
+    margin-left: 18.7%;
     height: 31px;
     border: none;
-    margin-top: 21px;
+    margin-top: 42px;
     z-index: 100;
   }
   input::-webkit-input-placeholder {
@@ -285,7 +283,7 @@
     -webkit-transition: all 0.2s ease-in 0s;
     opacity: 1;
     position: absolute;
-    top:124px;
+    top:149px;
     right:0px;
     height: 34px;
     padding: 0px;
@@ -311,8 +309,8 @@
   .clear-image{
     width: 24px;
     height: 34px;
-    padding-left: 10px;
-    padding-top: 5px;
+    padding-left: 12px;
+    padding-top: 7px;
     padding-bottom: 15px;
   }
 

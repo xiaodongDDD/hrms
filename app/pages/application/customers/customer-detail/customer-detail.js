@@ -20,6 +20,20 @@ angular.module('customerModule')
             }
           }
         })
+        .state('tab.customer-detail2', {
+          url: '/customers/customer-detail',
+          /*   cache:false,*/
+          params:{
+            customerDetail:{}
+          },
+          views: {
+            'tab-contactCrm': {
+              prefetchTemplate: false,
+              templateUrl: 'build/pages/application/customers/customer-detail/customer-detail.html',
+              controller: 'CustomerDetailCtrl'
+            }
+          }
+        })
     }]);
 
 angular.module('customerModule')
@@ -377,7 +391,11 @@ angular.module('customerModule')
             };
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-state/customer-detail-state.html";
             $scope.chooseThis = function () {
-              $state.go('tab.plans-add',{planData:addData});
+              if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+                $state.go('tab.plans-add2',{planData:addData});
+              }else{
+                $state.go('tab.plans-add',{planData:addData});
+              }
             }
           } else if ($index == 1) {
             $scope.imgButton = true;
@@ -430,7 +448,11 @@ angular.module('customerModule')
                        warn(btnIndex);
                        }*/
                       if (btnIndex == 1) {
-                        $state.go('tab.addLinkman', {param: addData});
+                        if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+                          $state.go('tab.addLinkman2', {param: addData});
+                        }else{
+                          $state.go('tab.addLinkman', {param: addData});
+                        }
                         return true;
                       } else if (btnIndex == 2) {
 
@@ -457,7 +479,13 @@ angular.module('customerModule')
                   buttonClicked: function (index) {
                     console.log(index);
                     if (index == 0) {
-                      $state.go('tab.addLinkman', {param: addData});
+                      console.log($ionicHistory.viewHistory().backView);
+                      if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+                        $state.go('tab.addLinkman2', {param: addData});
+                      }else{
+                        $state.go('tab.addLinkman', {param: addData});
+                      }
+
                     } else if (index == 1) {
                       $scope.scanBusinessCard();
                     } else if (index == 2) {

@@ -1,7 +1,8 @@
 <ion-modal-view class="crm crm-time-modal">
   <ion-header-bar align-title="center" class="bar-stable">
-    <button ng-click="goBack()">关闭</button>
+    <button class= "crm-time-button" ng-click="goBack()">关闭</button>
     <h2 class="title" on-release="onReleaseYear($event)">&lt; {{year}} &gt;</h2>
+    <button class= "crm-time-button" ng-click="selectWeek(nowIndex)">确定</button>
   </ion-header-bar>
   <ion-content has-bouncing="false">
     <div class="scroll-container" on-drag="onDragScroll($event)" on-release="onReleaseScroll($event)">
@@ -11,6 +12,6 @@
         </div>
       </div>
     </div>
-    <div class="select-week" ng-click="selectWeek(nowIndex)">确定</div>
+    <!--<div class="select-week" ng-click="selectWeek(nowIndex)">确定</div>-->
   </ion-content>
 </ion-modal-view>

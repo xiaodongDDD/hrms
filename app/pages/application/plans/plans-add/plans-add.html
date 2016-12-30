@@ -328,24 +328,6 @@
     <div>
     </div>
   </ion-footer-bar>
-  <div class="common-fix-div" ng-class="{true:'showUp'}[showSelect]">
-    <div class="common-fix-div-header">
-      <span class="left" ng-click="showSelectDiv()">返回</span>
-      请选择
-      <span class="right">清选</span>
-    </div>
-    <div class="sifting-area">
-      <input type="text" placeholder="{{'PLAN_ADD.SEARCH'}}" ng-change="searchValue()" ng-model="searchValueKey"/>
-    </div>
-    <div class="list">
-      <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false">
-        <div class="list-item" ng-repeat="item in items track by $index" ng-show="item != ''"
-             ng-click="selectItem($index)">
-          {{item[nowSelectTarget['showKey']]}}
-        </div>
-      </ion-scroll>
-    </div>
-  </div>
   <div class="common-fix-div" ng-class="{true:'showUp'}[showWeek]" style="background: none">
     <div class="year" on-release="onReleaseYear($event)">&lt; {{year}} &gt;</div>
     <div class="scroll-container" on-drag="onDragScroll($event)" on-release="onReleaseScroll($event)">

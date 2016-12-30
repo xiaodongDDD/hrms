@@ -14,6 +14,7 @@ angular.module('customerModule')
     '$rootScope',
     'customerDetailService',
     '$ionicScrollDelegate',
+    '$ionicHistory',
     function ($scope,
               $state,
               customerDetailStateService,
@@ -23,7 +24,8 @@ angular.module('customerModule')
               hmsHttp,
               $rootScope,
               customerDetailService,
-              $ionicScrollDelegate) {
+              $ionicScrollDelegate,
+              $ionicHistory) {
       console.log('CustomerDetailStateCtrl');
 
       customerDetailService.setTabNumber(0);
@@ -108,9 +110,16 @@ angular.module('customerModule')
 
       $scope.goDetail = function (detail) {
         if(detail.operationType=='SALE_PLAN'){
-          $state.go('tab.plans-detail', {"authority":true,"planId": detail.planId});
-        }
+          console.log("SALE_PLAN")
+          if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+            console.log("contactDetail")
+            $state.go('tab.plans-detail2', {"authority":true,"planId": detail.planId});
+          }else{
+            console.log("else")
+            $state.go('tab.plans-detail', {"authority":true,"planId": detail.planId});
+          }
 
+        }
       }
 
       ////获取当前是什么查询权限

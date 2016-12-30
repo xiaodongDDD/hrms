@@ -25,6 +25,22 @@
           }
         }
       })
+      .state('tab.plans-detail2', {
+        url: '/plans/plans-detail',
+        params: {
+          "authority": '',
+          planDetail: {},
+          planId: ''
+        },
+        views: {
+          'tab-contactCrm': {
+            prefetchTemplate: false,
+            templateUrl: 'build/pages/application/plans/plans-detail/plans-detail.html',
+            controller: 'plansDetailCtrl',
+            controllerAs: 'vm'
+          }
+        }
+      })
   }
 
   angular
