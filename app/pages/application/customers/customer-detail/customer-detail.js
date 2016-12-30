@@ -1171,7 +1171,7 @@ angular.module('customerModule')
       //地图
       $scope.openLocation = function () {
         var options = {
-          enableHighAccuracy: true,  // 是否使用 GPS
+          enableHighAccuracy: false,  // 是否使用 GPS
           maximumAge: 30000,         // 缓存时间
           timeout: 27000,            // 超时时间
           coorType: 'bd09ll'         // 默认是 gcj02，可填 bd09ll 以获取百度经纬度用于访问百度 API
