@@ -18,7 +18,19 @@ angular.module('myApp')
 					params: {
 						'employeeNumber': ""
 					}
-				});
+				})
+      .state('tab.employeeDetailCrm2', {
+        url: 'contactCrm/employeeDetailCrm',
+        views: {
+          'tab-application': {
+            templateUrl: 'build/pages/contactCrm/detail/employee-detail.html',
+            controller: 'contactEmployeeCrmDetailCtl'
+          }
+        },
+        params: {
+          'employeeNumber': ""
+        }
+      });
 		}
 	]);
 angular.module('contactModule')
