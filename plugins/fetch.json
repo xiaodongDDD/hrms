@@ -67,12 +67,12 @@
         }
     },
     "cordova-plugin-device": {
-      "source": {
-        "type": "registry",
-        "id": "cordova-plugin-device"
-      },
-      "is_top_level": true,
-      "variables": {}
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
     "cordova-plugin-baidu-geolocation": {
         "source": {
@@ -84,5 +84,13 @@
         "variables": {
             "API_KEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
         }
+    },
+    "cordova-plugin-geolocation": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-geolocation"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
