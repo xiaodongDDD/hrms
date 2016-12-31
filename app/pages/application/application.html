@@ -15,7 +15,11 @@
 
   <!--</ion-header-bar>-->
 
-  <ion-content class="mainApplication" style="bottom:48px;" scrollbar-y="false" scroll="false">
+  <div class="application-header" ng-style="headerStyle">
+    应用
+  </div>
+
+  <ion-content class="mainApplication" style="bottom:48px;" scrollbar-y="false" on-drag="onDragContent()" on-swipe="onSwipeContent()">
     <div on-release="onRelease()" class="application-setting-outer"
          ng-show="animationsEnabled">
     </div>
@@ -63,136 +67,134 @@
       <div class="message-area-item" ng-if="hasCrm" ng-click="goPlan()" ng-class="{true:'plan-has-message'}[days[nowSelectedDate].planCount != 0]">销售计划： {{days[nowSelectedDate].planCount}}条 </div>
     </div>
 
-    <ion-scroll delegate-handle="app-scroll" direction="y" scrollbar-y="false" ng-style="scrollStyle">
-      <div class="application-outer">
-        <div class="hms-animated application-left" ng-class="{true: 'start', false: ''}[animationsEnabled]">
-          <div class="appRegion firstLine" ng-if="hasCrm">
-            <div class="appAreaBorder">
-              <div class="appTitle office"><img src="build/img/application/line@3x.png"/>CRM</div>
-            </div>
-            <div class="appArea" ng-repeat="appList in crmApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1"
-                   ng-click="goPage(appItem)">
-                <div class="appItem">
-                  <div class="app-item-content">
-                    <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
-                  </div>
-                </div>
-                <div class="appText">{{appItem.appName}}</div>
-              </div>
-            </div>
+    <div class="application-outer">
+      <div class="hms-animated application-left" ng-class="{true: 'start', false: ''}[animationsEnabled]">
+        <div class="appRegion firstLine" ng-if="hasCrm">
+          <div class="appAreaBorder">
+            <div class="appTitle office"><img src="build/img/application/line@3x.png"/>CRM</div>
           </div>
-          <div class="appRegion">
-            <div class="appTitle office"><img src="build/img/application/line@3x.png"/>个人办公</div>
-            <div class="appArea" ng-repeat="appList in officeApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
-                <div class="appItem">
-                  <div class="app-item-content">
-                    <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
-                         ng-bind="appItem.count">
-                    </div>
-                    <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">
-                      <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
-                    </div>
-                    <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
-                  </div>
+          <div class="appArea" ng-repeat="appList in crmApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1"
+                 ng-click="goPage(appItem)">
+              <div class="appItem">
+                <div class="app-item-content">
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
-                <div class="appText">{{appItem.appName}}</div>
               </div>
-            </div>
-          </div>
-
-          <div class="appRegion">
-            <div class="appTitle project"><img src="build/img/application/line@3x.png"/>项目门户</div>
-            <div class="appArea" ng-repeat="appList in projectApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
-                <div class="appItem">
-                  <div class="app-item-content">
-                    <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
-                  </div>
-                </div>
-                <div class="appText">{{appItem.appName}}</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="appRegion">
-            <div class="appTitle employee"><img src="build/img/application/line@3x.png"/>员工社区</div>
-            <div class="appArea" ng-repeat="appList in employeeApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
-                <div class="appItem">
-                  <div class="app-item-content">
-                    <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
-                  </div>
-                </div>
-                <div class="appText">{{appItem.appName}}</div>
-              </div>
+              <div class="appText">{{appItem.appName}}</div>
             </div>
           </div>
         </div>
-        <div class="hms-animated application-right" ng-class="{true: 'start', false: ''}[animationsEnabled]">
-          <div class="appRegion firstLine" ng-if="hasCrm">
-            <div class="appTitle"></div>
-            <div class="appArea" ng-repeat="appList in crmApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
-                <div class="appItem" >
-                  <div class="app-item-content">
-                    <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+        <div class="appRegion">
+          <div class="appTitle office"><img src="build/img/application/line@3x.png"/>个人办公</div>
+          <div class="appArea" ng-repeat="appList in officeApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
+              <div class="appItem">
+                <div class="app-item-content">
+                  <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
+                       ng-bind="appItem.count">
                   </div>
+                  <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">
+                    <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
+                  </div>
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
-                <div class="appText">{{appItem.appName}}</div>
               </div>
+              <div class="appText">{{appItem.appName}}</div>
             </div>
           </div>
-          <div class="appRegion">
-            <div class="appTitle"></div>
-            <div class="appArea" ng-repeat="appList in officeApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
-                <div class="appItem">
-                  <div class="app-item-content">
-                    <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
-                         ng-bind="appItem.count">
-                    </div>
-                    <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">
-                      <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
-                    </div>
-                    <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
-                  </div>
-                </div>
-                <div class="appText">{{appItem.appName}}</div>
-              </div>
-            </div>
-          </div>
+        </div>
 
-          <div class="appRegion">
-            <div class="appTitle"></div>
-            <div class="appArea" ng-repeat="appList in projectApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
-                <div class="appItem" >
-                  <div class="app-item-content">
-                    <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
-                  </div>
+        <div class="appRegion">
+          <div class="appTitle project"><img src="build/img/application/line@3x.png"/>项目门户</div>
+          <div class="appArea" ng-repeat="appList in projectApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
+              <div class="appItem">
+                <div class="app-item-content">
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
-                <div class="appText">{{appItem.appName}}</div>
               </div>
+              <div class="appText">{{appItem.appName}}</div>
             </div>
           </div>
+        </div>
 
-          <div class="appRegion">
-            <div class="appTitle"></div>
-            <div class="appArea" ng-repeat="appList in employeeApp">
-              <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
-                <div class="appItem">
-                  <div class="app-item-content">
-                    <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
-                  </div>
+        <div class="appRegion">
+          <div class="appTitle employee"><img src="build/img/application/line@3x.png"/>员工社区</div>
+          <div class="appArea" ng-repeat="appList in employeeApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
+              <div class="appItem">
+                <div class="app-item-content">
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
-                <div class="appText">{{appItem.appName}}</div>
               </div>
+              <div class="appText">{{appItem.appName}}</div>
             </div>
           </div>
         </div>
       </div>
-    </ion-scroll>
+      <div class="hms-animated application-right" ng-class="{true: 'start', false: ''}[animationsEnabled]">
+        <div class="appRegion firstLine" ng-if="hasCrm">
+          <div class="appTitle"></div>
+          <div class="appArea" ng-repeat="appList in crmApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
+              <div class="appItem" >
+                <div class="app-item-content">
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
+              </div>
+              <div class="appText">{{appItem.appName}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="appRegion">
+          <div class="appTitle"></div>
+          <div class="appArea" ng-repeat="appList in officeApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
+              <div class="appItem">
+                <div class="app-item-content">
+                  <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
+                       ng-bind="appItem.count">
+                  </div>
+                  <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">
+                    <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
+                  </div>
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
+              </div>
+              <div class="appText">{{appItem.appName}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="appRegion">
+          <div class="appTitle"></div>
+          <div class="appArea" ng-repeat="appList in projectApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
+              <div class="appItem" >
+                <div class="app-item-content">
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
+              </div>
+              <div class="appText">{{appItem.appName}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="appRegion">
+          <div class="appTitle"></div>
+          <div class="appArea" ng-repeat="appList in employeeApp">
+            <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
+              <div class="appItem">
+                <div class="app-item-content">
+                  <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
+                </div>
+              </div>
+              <div class="appText">{{appItem.appName}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

@@ -107,6 +107,7 @@ angular.module('clueModule')
       function initData(){
 
         $scope.editFlag = $state.current.name == 'tab.clue-detail';
+        $scope.customerDataFlag = $state.current.name == 'tab.customer-detail';
 
         $scope.validNameFlag = true;
 
@@ -544,30 +545,37 @@ angular.module('clueModule')
           $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
       };
 
-      var validCustomerContactsSuccess = function(response){
-        $scope.showCrmLoading = false;
-        if(response.returnCode == 'S'){
-          console.log(response.customer_contact_list.length);
-          if(response.customer_contact_list.length == 0){
-            hmsPopup.showPopup('客户缺少"主要联系人"信息，请补充信息后再进行创建');
-          } else{
-            opportunityAddService.getCustomerDetail(getCustomerDetailSuccess, $scope.data.customerId);
-          }
-        }
-      };
-
       var getCustomerDetailSuccess = function(response){
         if(response.dataStatus == "HCRM_DISABLE"){
-          $scope.data.customerId = $scope.sourceCustomer.customerId;
-          $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          if($scope.sourceCustomer){
+            $scope.data.customerId = $scope.sourceCustomer.customerId;
+            $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          }
           hmsPopup.showPopup('该客户已被禁用，不能进行操作！');
+          if($scope.customerDataFlag)
+            $scope.goBack();
           $scope.showCrmLoading = false;
           return ;
         }
         if(response.approveType != "HCRM_APPROVED"){
-          $scope.data.customerId = $scope.sourceCustomer.customerId;
-          $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          if($scope.sourceCustomer){
+            $scope.data.customerId = $scope.sourceCustomer.customerId;
+            $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          }
           hmsPopup.showPopup('客户未审核，不能进行创建！');
+          if($scope.customerDataFlag)
+            $scope.goBack();
+          $scope.showCrmLoading = false;
+          return ;
+        }
+        if(!response.contactFlag){
+          if($scope.sourceCustomer){
+            $scope.data.customerId = $scope.sourceCustomer.customerId;
+            $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          }
+          hmsPopup.showPopup('客户缺少主要联系人，不能进行创建！');
+          if($scope.customerDataFlag)
+            $scope.goBack();
           $scope.showCrmLoading = false;
           return ;
         }
@@ -596,7 +604,7 @@ angular.module('clueModule')
             customerName: $scope.showData.customerName
           };
           $scope.showCrmLoading = true;
-          opportunityAddService.getCustomerContacts(validCustomerContactsSuccess, 1, 10, data);
+          opportunityAddService.getCustomerDetail(getCustomerDetailSuccess, $scope.data.customerId);
           return;
         }
         $scope.showSelectDiv();

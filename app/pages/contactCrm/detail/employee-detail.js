@@ -20,7 +20,7 @@ angular.module('myApp')
 					}
 				})
       .state('tab.employeeDetailCrm2', {
-        url: 'contactCrm/employeeDetailCrm',
+        url: '/opportunity-detail/employeeDetailCrm',
         views: {
           'tab-application': {
             templateUrl: 'build/pages/contactCrm/detail/employee-detail.html',
@@ -114,17 +114,15 @@ angular.module('contactModule')
 			initEmployeeData();
 
 			$scope.goBackPage = function() {
-    /*    if (customerDetailService.getIsEdit()) {
-          $state.go('tab.customer-detail2');
-        }else {*/
-          if($ionicHistory.viewHistory().backView){
+        if (customerDetailService.getIsEdit()) {
+          $state.go('tab.customer-detail');
+        }else {
+          if ($ionicHistory.viewHistory().backView) {
             $ionicHistory.goBack();
-          }else{
+          } else {
             $state.go('tab.contactCrm');
           }
-
-       /* }*/
-
+        }
 			};
 
 			function storeCommonLinkman(newObject) { //存储为常用联系人
