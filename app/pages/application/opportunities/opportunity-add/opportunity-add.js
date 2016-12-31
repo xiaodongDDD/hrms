@@ -1055,7 +1055,7 @@ angular.module('opportunityModule')
             $scope.goBack();
           return ;
         }
-        if(!response.HCRM_OPERATION_EDIT && (response.incomeScale == "" || response.majorIndustry == "" || response.isListed == "" || !response.contactFlag)){
+        if(!response.contactFlag || (!response.HCRM_OPERATION_EDIT && (response.incomeScale == "" || response.majorIndustry == "" || response.isListed == ""))){
           if($scope.sourceCustomer){
             $scope.data.customerId = $scope.sourceCustomer.customerId;
             $scope.showData.customerName = $scope.sourceCustomer.customerName;
