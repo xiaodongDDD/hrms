@@ -310,9 +310,9 @@ angular.module('contactModule')
         }else{
           if(response.returnMsg){
             $scope.showContent=true;
-            hmsPopup.showPopup(response.returnMsg)
+            hmsPopup.showShortCenterToast(response.returnMsg)
           }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
           }
         }
       };
@@ -394,7 +394,7 @@ angular.module('contactModule')
               hmsPopup.showShortCenterToast("添加失败");
             };
             //保存到本地
-            contactLocal.contactLocal(info,onSaveContactSuccess,onSaveContactError,onSaveContactSuccess,onSaveContactError);
+            contactLocal.contactLocal(info,onSaveContactSuccess,onSaveContactError);
           }
           var initAddContactSuccess = function (data) {
             hmsPopup.hideLoading();

@@ -562,7 +562,6 @@ angular.module('contactModule')
 
       function dealScanData(msg) { //处理名片扫描插件的返回数据
         // alert("msg " + jsonFormat(JSON.parse(msg)));
-        console.log("HEHEHEHEHEHH");
         try {
           if (JSON.parse(msg)) {
             $scope.manInfo = {
@@ -626,9 +625,7 @@ angular.module('contactModule')
       };
 
       function dealCrmScanData(msg) { //处理名片扫描插件的返回数据
-        console.log(JSON.parse(msg));
         try {
-          console.log(JSON.parse(msg));
           if (JSON.parse(msg)) {
             $scope.manInfo = {
               emp_name: '',
@@ -642,9 +639,7 @@ angular.module('contactModule')
               postal_code:""
             };
             msg = JSON.parse(msg);
-            console.log(angular.toJson(msg));
             $scope.testI = msg;
-            console.log(angular.toJson(msg));
             try {
               $scope.manInfo.emp_name = msg.formatted_name[0].item;
             } catch (e) {

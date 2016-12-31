@@ -351,6 +351,7 @@ angular.module('loginModule')
         $scope.showLoginButton = true;
         $scope.showButtonIcon = true;
         $scope.showBigPortrait = true;
+        hmsPopup.showLoading('登录中...');
         //$scope.bigPortrait = "build/img/login/login-portrait.png";
         $scope.bigPortrait = "build/img/login/login-hand.png";
         $timeout(function () {
@@ -363,10 +364,12 @@ angular.module('loginModule')
           }
 
           if (!$scope.loginInfo.username || $scope.loginInfo.username == '') {
+            hmsPopup.hideLoading();
             hmsPopup.showPopup('用户名不能为空');
             return;
           }
           if (!$scope.loginInfo.password || $scope.loginInfo.password == '') {
+            hmsPopup.hideLoading();
             hmsPopup.showPopup('密码不能为空');
             return;
           }
@@ -375,7 +378,7 @@ angular.module('loginModule')
           //var phoneNumber = "PC";
           //var params = "username=" + encodeURIComponent($scope.loginInfo.username) + "&password=" + encodeURIComponent($scope.loginInfo.password) + "&p_phone_no=" + phoneNumber;
 
-          hmsPopup.showLoading('登录中...');
+
 
           loginPost().success(function (result) {
             hmsPopup.hideLoading();
