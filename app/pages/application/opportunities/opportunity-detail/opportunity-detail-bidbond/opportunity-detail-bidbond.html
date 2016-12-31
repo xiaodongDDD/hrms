@@ -8,10 +8,9 @@
 		<div class="item-header">
 			{{'BIDBOND.APPLY_DATE'|T}}：{{item.applicationDate}}
 			<span>{{item.workflowStatusName}}</span>
-			
 		</div>
-		<div class="opportunity-info">
 
+		<div class="opportunity-info">
 			<div class="opportunity-name">{{item.fullName}}</div>
 			<div class="opportunity-belong">{{item.customerName}}</div>
 			<div class="opportunity-belong" id="appid" ng-show="item.applicationId!=''">{{'BIDBOND.APPLICATIONID'|T}}：{{item.applicationId}}</div>
@@ -23,7 +22,7 @@
 		</div>
 	</div>
 
-	<ion-infinite-scroll   immediate-check="false" ng-if="moreDataCanBeLoaded" on-infinite="loadMore()" distance="1%">
+	<ion-infinite-scroll immediate-check="false" ng-if="moreDataCanBeLoaded" on-infinite="loadMore()" distance="1%">
 	</ion-infinite-scroll>
 
 </div>

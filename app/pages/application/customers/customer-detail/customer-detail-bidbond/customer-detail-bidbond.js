@@ -40,6 +40,7 @@ angular.module('customerModule')
 				$state.go("tab.bidbond-add", {
 					param: result
 				});
+				hmsPopup.showLoading();
 			}
 
 			customerBidbondService.getBidbond(initBidbondSuccess, {
@@ -72,7 +73,7 @@ angular.module('customerModule')
 				}
 			};
 
-			$scope.loadMoreOpportunity = function() {
+			$scope.loadMoreBidbond = function() {
 				$scope.page++;
 				customerBidbondService.getBidbond(getMoreBidbondSuccess, {
 					page: $scope.page,
@@ -81,7 +82,7 @@ angular.module('customerModule')
 				});
 			};
 
-			$scope.$on('REFRESH_OPPORTUNITY', function() {
+			$scope.$on('REFRESH_BIDBOND', function() {
 				$scope.doRefresh();
 			});
 
