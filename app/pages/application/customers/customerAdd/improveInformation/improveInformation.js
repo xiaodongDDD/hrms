@@ -1265,7 +1265,7 @@ angular.module('customerModule')
 
           }else{
             console.log('上传失败了。。。'+angular.toJson(result))
-            hmsPopup.showPopup('上传失败！');
+            //hmsPopup.showPopup('上传失败！');
           }
           $scope.save();
         };
@@ -1276,7 +1276,8 @@ angular.module('customerModule')
             alert('complete.error ' + angular.toJson(response));
           }
           console.log('上传错误了。。。'+angular.toJson(response))
-          hmsPopup.showPopup('上传失败！');
+          //hmsPopup.showPopup('上传失败！');
+          $scope.save();
         };
 
 

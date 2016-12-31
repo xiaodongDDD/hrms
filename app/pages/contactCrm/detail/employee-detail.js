@@ -115,7 +115,7 @@ angular.module('contactModule')
 
 			$scope.goBackPage = function() {
         if (customerDetailService.getIsEdit()) {
-          $state.go('tab.customer-detail');
+          $state.go('tab.customer-detail2');
         }else {
           if($ionicHistory.viewHistory().backView){
             $ionicHistory.goBack();

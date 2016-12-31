@@ -57,12 +57,6 @@ angular.module('customerModule')
             /*   console.log($scope.customers.length)*/
           }
 
-        } else {
-          if(response.returnMsg){
-            hmsPopup.showPopup(response.returnMsg)
-          }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
-          }
         }
       };
       customerDetailStateService.querySaleStates(querySaleStatesSuccess,error,$scope.value);
@@ -85,13 +79,6 @@ angular.module('customerModule')
           }else {
             $scope.states = $scope.states.concat(result.dynamics);
             $scope.loadMoreDataFlag = result.dynamics.length== $scope.value.pageSize;
-          }
-        } else {
-          $scope.loadMoreDataFlag = false;
-          if(result.returnMsg){
-            hmsPopup.showPopup(result.returnMsg)
-          }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
           }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
