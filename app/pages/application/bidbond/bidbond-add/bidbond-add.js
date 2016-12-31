@@ -66,7 +66,9 @@ angular.module('bidbondModule')
 			$scope.showSmallCrmLoading = false;
 			$scope.sourceItems = [];
 			$scope.noDataFlag = false;
-//			$rootScope.img = "";
+			//			$rootScope.img = "";
+
+			$scope.showLoading = true;
 
 			$scope.readonly = {
 				readonlyFlag: false
@@ -81,10 +83,9 @@ angular.module('bidbondModule')
 				var date = new Date();
 				return date.Format("yyyy-MM-dd hh:mm:ss");
 			};
-			
 
 			$scope.$on('$ionicView.enter', function(e) {
-				
+				$scope.showLoading = false;
 				console.log($stateParams.param);
 				if(isNotNullObj($stateParams.param)) {
 					hmsPopup.hideLoading();
@@ -148,13 +149,13 @@ angular.module('bidbondModule')
 					};
 
 					if($stateParams.param.workflowStatus == 0 || $stateParams.param.workflowStatus == -1 || !$stateParams.param.workflowStatus) {
-					
+
 					} else {
 						$scope.showDisable = true;
 						/*    hmsPopup.showPopup($stateParams.param.workflowStatusName+"，不可编辑");*/
 						document.getElementById("saveBtn").style.display = "none";
 					}
-					
+
 				} else {
 
 					$scope.data = {
@@ -463,9 +464,17 @@ angular.module('bidbondModule')
 									console.log(result);
 
 									if(result.returnCode == "S") {
+										$rootScope.$broadcast("REFRESH_ADD_BIDBOND");
 										hmsPopup.showPopup(result.returnMsg);
-										$state.go('tab.bidbond');
-										$rootScope.$broadcast("REFRESH_BIDBOND_ADD");
+
+										$timeout(function() {
+											$ionicHistory.goBack();
+										});
+										//	$state.go('tab.bidbond');
+										//	$rootScope.$broadcast("REFRESH_BIDBOND_ADD");
+										//	$scope.$on('$ionicView.beforeEnter', function(e) {
+										//		$scope.doRefresh();
+										//	})
 
 									} else {
 										hmsPopup.showPopup(result.returnMsg);
@@ -479,7 +488,15 @@ angular.module('bidbondModule')
 						var onBack = function(index) {
 							console.log("onback" + index);
 							if(!index) {
-								$state.go('tab.bidbond');
+								$rootScope.$broadcast("REFRESH_ADD_BIDBOND");
+								//		$state.go('tab.bidbond');
+								//	$scope.$on('$ionicView.beforeEnter', function(e) {
+								//		$scope.doRefresh();
+								//	})
+								$timeout(function() {
+									$ionicHistory.goBack();
+								});
+
 							}
 						};
 
@@ -1046,7 +1063,7 @@ angular.module('bidbondModule')
 					console.log(result);
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			};
@@ -1062,7 +1079,7 @@ angular.module('bidbondModule')
 					console.log(result);
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			};
@@ -1078,7 +1095,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'saleplan_customers', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 				});
 			};
 			//搜索客户
@@ -1091,7 +1108,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'select_customers', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1106,7 +1123,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'saleplan_opportunitys', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			};
@@ -1122,7 +1139,7 @@ angular.module('bidbondModule')
 					hmsPopup.hideLoading();
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			}
@@ -1137,7 +1154,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'inside_company', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1151,7 +1168,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'query_projects', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1165,7 +1182,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'query_units', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1186,7 +1203,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'query_lookup', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1198,7 +1215,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'opportunity_valid_name', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 				});
 			};
 			this.validbidbond = function(success, id) {
@@ -1208,14 +1225,14 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'valid_bidbond', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 				});
 			};
 			this.bidbondSubmit = function(success, params) {
 				hmsHttp.post(baseUrl + 'bidbond_submit', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 				});
 			};
 

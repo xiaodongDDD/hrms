@@ -10,37 +10,45 @@ angular.module('customerModule')
 		'$timeout',
 		'customerBidbondService',
 		'$ionicScrollDelegate',
+		'customerDetailService',
+		'$rootScope',
 		function($scope,
 			$state,
 			hmsPopup,
 			$timeout,
 			customerBidbondService,
-			$ionicScrollDelegate) {
+			$ionicScrollDelegate,
+			customerDetailService,
+			$rootScope) {
 
+			customerDetailService.setTabNumber(6);
 			$scope.page = 1;
 			$scope.pageSize = 10;
 			$scope.customerId = window.localStorage.customerId;
 
 			$scope.showLoading = true;
 
-		      var initBidbondSuccess = function(response){
-		        $scope.showLoading = false;
-		        $scope.$broadcast('scroll.refreshComplete');
-		        $scope.bidbond = [];
-		        if(response.returnCode == "S"){
-		          $scope.bidbond = response.bidbond;
-		          var length = response.bidbond.length;
-		          $scope.moreOpportunityCanBeLoaded = length == $scope.pageSize
-		        } else {
-//		          hmsPopup.showPopup(response.returnMsg);
-		        }
-		      };			
+			$rootScope.$on("REFRESH_ADD_BIDBOND", function() {
+				$scope.doRefresh();
+			});
+
+			var initBidbondSuccess = function(response) {
+				$scope.showLoading = false;
+				$scope.$broadcast('scroll.refreshComplete');
+				$scope.bidbond = [];
+				if(response.returnCode == "S") {
+					$scope.bidbond = response.bidbond;
+					var length = response.bidbond.length;
+					$scope.moreOpportunityCanBeLoaded = length == $scope.pageSize
+				} else {
+					//		          hmsPopup.showPopup(response.returnMsg);
+				}
+			};
 
 			$scope.goEditBidbond = function(result) {
 				$state.go("tab.bidbond-add", {
 					param: result
 				});
-				hmsPopup.showLoading();
 			}
 
 			customerBidbondService.getBidbond(initBidbondSuccess, {
@@ -69,7 +77,7 @@ angular.module('customerModule')
 					var length = response.bidbond.length;
 					$scope.moreDataCanBeLoaded = length == $scope.pageSize;
 				} else {
-//					hmsPopup.showPopup(response.returnMsg);
+					//					hmsPopup.showPopup(response.returnMsg);
 				}
 			};
 
@@ -105,7 +113,7 @@ angular.module('customerModule')
 				hmsHttp.post(baseUrl + 'customer_bidbond', key).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-//					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 
