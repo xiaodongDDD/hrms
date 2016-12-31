@@ -6,7 +6,38 @@
   padding-top: 10px;
   height: 40px;
 }
+.contact-guide1 {
+  position: absolute;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url(../img/contact/contact-guide.png);
+  background-size: cover;
+  z-index: 1000000;
+}
+.contact-guide2 {
+  position: absolute;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url(../img/contact/contact-guide2.png);
+  background-size: cover;
+  z-index: 1000000;
+}
+.contact-guide3 {
+  position: absolute;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url(../img/contact/contact-guide3.png);
+  background-size: cover;
+  z-index: 1000000;
+}
 .customerLinkman{
+
   .item-complex .item-content, .item-radio .item-content {
     position: relative;
     z-index: 2;
