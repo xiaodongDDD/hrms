@@ -1033,6 +1033,7 @@ angular.module('customerModule')
         $ionicScrollDelegate.$getByHandle('industryScroll').scrollTop(false);
         $scope.industrySearch.key='';
         $scope.showSubIndustry = false;
+        $scope.inMajor = true;
         $scope.showIndustrySelectFlag = false;
         $scope.crmIndustryModal.hide();
         $scope.showData.subIndustry = industry.industryName;
