@@ -61,13 +61,14 @@ angular.module('customerModule')
             $scope.informationStatus =[];
           }
           console.log($scope.customer);
-        }else {
-          if(response.returnMsg){
-            hmsPopup.showPopup(response.returnMsg)
-          }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
-          }
         }
+        //else {
+        //  if(response.returnMsg){
+        //    hmsPopup.showPopup(response.returnMsg)
+        //  }else{
+        //    hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+        //  }
+        //}
       }
       customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
 
