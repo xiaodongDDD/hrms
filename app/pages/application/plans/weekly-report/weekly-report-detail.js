@@ -351,10 +351,11 @@
         "endDate": vm.weeklyDetail.endDate,
         "summaryContent": vm.weeklyDetail.content
       };
-
+      params.summaryContent=$("#weeklyReportDetail").val();
+      console.log(vm.weeklyDetail.content);
       if (vm.weeklyDetail.period == "") {
         hmsPopup.showPopup("请选择日期");
-      } else if (vm.weeklyDetail.content == "") {
+      } else if (params.summaryContent == "") {
         hmsPopup.showPopup("周报内容不能为空");
       } else {
         hmsPopup.showLoading('提交周报中');
