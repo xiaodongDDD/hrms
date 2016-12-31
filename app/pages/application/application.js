@@ -266,20 +266,43 @@ angular.module('applicationModule')
         $state.go('tab.globelSearch');
       };
 
-      $scope.scrollStyle = {
-        height:""
-      };
+      $scope.imgHeight = 0;
 
       $timeout(function(){
-        var titleHeight = angular.element('.calendar-container')[0].clientHeight - 5;
-        var otherHeight = titleHeight + 49;
-        if($scope.hasCrm)
-          otherHeight += 69;
-        else
-          otherHeight += 34;
-        $scope.scrollStyle.height = "calc(100vh - " + otherHeight + "px)";
-        $ionicScrollDelegate.$getByHandle('app-scroll').resize();
+        $scope.imgHeight = angular.element('.calendar-container')[0].clientHeight - 5;
       },500);
+
+      $scope.headerStyle = {
+        opacity: 0
+      };
+
+      $scope.onDragContent = function(){
+        var top = $ionicScrollDelegate.getScrollPosition().top;
+        if(top >= $scope.imgHeight) {
+          $scope.headerStyle.opacity = 1;
+          return;
+        }
+        if(top <= 0) {
+          $scope.headerStyle.opacity = 0;
+          return;
+        }
+        $scope.headerStyle.opacity = (top / $scope.imgHeight).toFixed(1);
+      };
+
+      $scope.onSwipeContent = function(){
+        $timeout(function(){
+          var top = $ionicScrollDelegate.getScrollPosition().top;
+          if(top >= $scope.imgHeight) {
+            $scope.headerStyle.opacity = 1;
+            return;
+          }
+          if(top <= 0) {
+            $scope.headerStyle.opacity = 0;
+            return;
+          }
+          $scope.headerStyle.opacity = (top / $scope.imgHeight).toFixed(1);
+        },500);
+      };
 
       $scope.weekdays = ['一','二','三','四','五','六','日'];
       $scope.days = [];

@@ -20,7 +20,7 @@ angular.module('myApp')
 					}
 				})
       .state('tab.employeeDetailCrm2', {
-        url: 'contactCrm/employeeDetailCrm',
+        url: '/opportunity-detail/employeeDetailCrm',
         views: {
           'tab-application': {
             templateUrl: 'build/pages/contactCrm/detail/employee-detail.html',
@@ -117,6 +117,7 @@ angular.module('contactModule')
         if (customerDetailService.getIsEdit()) {
           $state.go('tab.customer-detail');
         }else {
+          console.log($ionicHistory.viewHistory())
           if($ionicHistory.viewHistory().backView){
             $ionicHistory.goBack();
           }else{
