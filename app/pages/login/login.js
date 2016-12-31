@@ -325,7 +325,6 @@ angular.module('loginModule')
             encodeURIComponent($scope.loginInfo.password) + "&device_info=" + deviceInfo + "&device_model=" + encodeURIComponent(model) +
             "&device_version=" + encodeURIComponent(device.version) + "&device_uuid=" + encodeURIComponent(device.uuid);
         } catch (e) {
-          alert('No device!');
           url=baseConfig.loginPath+"username=" + encodeURIComponent($scope.loginInfo.username) + "&password=" +
             encodeURIComponent($scope.loginInfo.password) + "&device_info=" + deviceInfo;
         }
