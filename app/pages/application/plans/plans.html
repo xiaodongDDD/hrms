@@ -12,7 +12,7 @@
 
   <ion-content has-bouncing="false" scroll="false">
     <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
-    <div class="select-head" on-touch="hideCommont()">
+    <div class="select-head">
       <div class="icon-area">
         <img ng-src="{{'build/img/application/plans/icon_plan' + (showAsMonth ? '_selected@3x.png' : '@3x.png')}}"
              ng-click="changeShowModel(true)"/>
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div ng-if="showAsMonth" on-touch="hideCommont()">
+    <div ng-if="showAsMonth">
       <div class="calendar scale-animation" ng-style="calendarStyle"
            on-swipe-right="onGestureCalendar('right')"
            on-swipe-left="onGestureCalendar('left')"
@@ -53,7 +53,7 @@
     </div>
 
     <div class="plans-content" ng-style="contentHeight">
-      <div class="row group-head top-head" ng-show="!showAsMonth" on-touch="hideCommont()">
+      <div class="row group-head top-head" ng-show="!showAsMonth">
         <div class="col col-67" style="margin: 0; padding:0;">{{nowShowDate ? getDayString(nowShowDate) : ""}}
           {{nowShowDate}}
         </div>
@@ -70,7 +70,7 @@
           <crm-loading ng-if="calendarLoadingFlag"></crm-loading>
           <div ng-if="!calendarLoadingFlag">
             <div class="plan-item" ng-repeat="plan in plans">
-              <div class="plan-content-tilte" ng-click="goDetail(plan)" on-touch="hideCommont()">
+              <div class="plan-content-tilte" ng-click="goDetail(plan)">
                 <div class="plan-head">
                   <img ng-src="{{plan.headUrl}}"/>
 
@@ -113,7 +113,7 @@
           <crm-loading ng-if="planListLoadingFlag"></crm-loading>
           <div ng-if="!planListLoadingFlag">
             <div class="plan-group" ng-repeat="group in planGroups">
-              <div class="row group-head group-head-flag" on-touch="hideCommont()">
+              <div class="row group-head group-head-flag">
                 <div class="col col-67" style="margin: 0; padding:0;">{{group.date ? getDayString(group.date) : ""}}
                   {{group.date}}
                 </div>
@@ -122,7 +122,7 @@
                 </div>
               </div>
               <div class="plan-item" ng-repeat="plan in group.plans">
-                <div on-touch="hideCommont()" class="plan-content-tilte" ng-click="goDetail(plan)">
+                <div class="plan-content-tilte" ng-click="goDetail(plan)">
                   <div class="plan-head">
                     <img ng-src="{{plan.headUrl}}"/>
                     <div>
@@ -165,7 +165,7 @@
       </ion-scroll>
     </div>
   </ion-content>
-  <div keyboardshow ng-if="holdAnnotate" class="holdFooter">
+  <div keyboardshow ng-if="holdAnnotate"  class="holdFooter">
     <div class="wave-hold">
       <div>
         <img src="build/img/plans/icon_weave@3x.png">
@@ -184,7 +184,7 @@
     </div>
   </div>
   <!--<hms-dialog-box></hms-dialog-box>-->
-  <div class="bar " keyboardshow id="bar-footer2" ng-if="showCommentFlag">
+  <div class="bar"   style="z-index:100;" keyboardshow id="bar-footer2" ng-if="showCommentFlag">
     <div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">
       <div style="">
         <img src="build/img/application/plans/icon_voice@3x.png" style="">
@@ -203,7 +203,7 @@
       </div>
     </div>
   </div>
-  <div class="common-fix-div" ng-class="{true:'showUp'}[showNew]">
+<!--  <div class="common-fix-div" ng-class="{true:'showUp'}[showNew]">
 
     <div class="sifting-header">
       <span class="left" ng-click="showNewDiv()">取消</span>
@@ -260,5 +260,10 @@
       </div>
       <img src="build/img/application/plans/icon_voice@3x.png" class="voice-icon"/>
     </div>
-  </div>
+  </div>-->
+  <div  on-touch="hideCommont()"  ng-if="showCommentFlag" style="position: fixed;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 10;"></div>
 </ion-view>

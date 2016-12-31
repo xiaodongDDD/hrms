@@ -57,7 +57,6 @@ angular.module('opportunityModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
