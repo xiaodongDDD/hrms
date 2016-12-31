@@ -51,6 +51,7 @@ angular.module('contactModule')
     '$http',
     '$ionicScrollDelegate',
     'competitorListService',
+    'customerDetailService',
     function ($scope,
               $state,
               $ionicHistory,
@@ -67,7 +68,8 @@ angular.module('contactModule')
               $rootScope,
               $http,
               $ionicScrollDelegate,
-              competitorListService) {
+              competitorListService,
+              customerDetailService) {
       console.log($stateParams.param);
       $scope.hideAreaFlag = [];
       $scope.items = [];
@@ -127,6 +129,21 @@ angular.module('contactModule')
             $scope.importantContact.checked = true;
           }else{
             $scope.importantContact.checked = false;
+          }
+          function getCustomerDetailSuccess(response) {
+            if (response.returnCode == "S") {
+              $scope.customer = response.customer_detail;
+              console.log($scope.customer);
+              $scope.data.addressCountry=response.customer_detail.addressCountry;
+              $scope.data.addressProvince=response.customer_detail.addressProvince;
+              $scope.data.addressCity=response.customer_detail.addressCity;
+              $scope.data.addressZone=response.customer_detail.addressZone;
+              $scope.showData.address=response.customer_detail.countryName+response.customer_detail.provinceName+response.customer_detail.cityName+response.customer_detail.zoneName;
+              $scope.data.addressDetails=response.customer_detail.addressDetails;
+            }
+          }
+          if($stateParams.param.customerId!=""&&$stateParams.param.customerId!=undefined){
+            customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $stateParams.param.customerId);
           }
           console.log($scope.data);
         } else {
@@ -614,6 +631,26 @@ angular.module('contactModule')
         var showDataModel = $scope.nowSelectTarget['showDataModel'];         //显示用的数据变量ng-model
         eval(dataModel + " = data");
         eval(showDataModel + " = showKey");
+        if ($scope.nowSelectTarget['key'] == 'contact') {
+          /*   $scope.data.customerId = '';
+           $scope.showData.fullName = '';*/
+          /*  console.log($scope.items[$index]);
+           $scope.showData.fullName =  $scope.items[$index].customerName;
+           $scope.data.customerId =  $scope.items[$index].customerId;*/
+          function getCustomerDetailSuccess(response) {
+            if (response.returnCode == "S") {
+              $scope.customer = response.customer_detail;
+              console.log($scope.customer);
+              $scope.data.addressCountry=response.customer_detail.addressCountry;
+              $scope.data.addressProvince=response.customer_detail.addressProvince;
+              $scope.data.addressCity=response.customer_detail.addressCity;
+              $scope.data.addressZone=response.customer_detail.addressZone;
+              $scope.showData.address=response.customer_detail.countryName+response.customer_detail.provinceName+response.customer_detail.cityName+response.customer_detail.zoneName;
+              $scope.data.addressDetails=response.customer_detail.addressDetails;
+            }
+          }
+          customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.data.customerId);
+        }
         $scope.showSelectDiv();
       };
       $scope.clearSelectFilter = function(){

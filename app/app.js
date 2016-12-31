@@ -195,7 +195,7 @@ angular.module('myApp')
 
       $ionicConfigProvider.platform.ios.navBar.alignTitle('center');
       $ionicConfigProvider.platform.android.navBar.alignTitle('center');
-
+      $ionicConfigProvider.scrolling.jsScrolling(true);
       //$ionicConfigProvider.platform.ios.backButton.previousTitleText('').icon('ion-ios-arrow-thin-left');
       $ionicConfigProvider.platform.android.backButton.previousTitleText('').icon('ion-android-arrow-back');
 
