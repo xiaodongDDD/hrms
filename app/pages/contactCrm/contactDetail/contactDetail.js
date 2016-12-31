@@ -389,6 +389,7 @@ angular.module('contactModule')
                       addressCity: $scope.contactDetail.addressCity,
                       addressZone: $scope.contactDetail.addressZone,
                       addressDetails: $scope.contactDetail.addressDetails,
+                      isPrimary: $scope.contactDetail.isPrimary,
                       tel: $scope.contactDetail.tel,//办公电话
                       wechat: $scope.contactDetail.wechat,
                       addressZipCode: $scope.contactDetail.addressZipCode,//邮编
@@ -475,6 +476,7 @@ angular.module('contactModule')
                     addressCountry: $scope.contactDetail.addressCountry,
                     addressCity: $scope.contactDetail.addressCity,
                     addressZone: $scope.contactDetail.addressZone,
+                    isPrimary: $scope.contactDetail.isPrimary,
                     addressDetails: $scope.contactDetail.addressDetails,
                     tel: $scope.contactDetail.tel,//办公电话
                     wechat: $scope.contactDetail.wechat,

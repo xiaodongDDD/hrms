@@ -50,7 +50,36 @@ angular.module('contactModule')
               getInitStructureInfo,
               $ionicPlatform,
               contactService) {
+      $scope.showContactGuide1;
+      $scope.showContactGuide2=false;
+      $scope.showContactGuide3=false;
+      $scope.buttonTapped = function (index) {
 
+        if(buttonTapped==1){
+          $scope.showContactGuide1 = false;
+          $scope.showContactGuide2 = true;
+          $scope.showContactGuide3 = false;
+        }else if(buttonTapped==2){
+          $scope.showContactGuide1 = false;
+          $scope.showContactGuide2 = false;
+          $scope.showContactGuide3 = true;
+        }else if(buttonTapped==3){
+        $scope.showContactGuide1 = false;
+        $scope.showContactGuide2 = false;
+        $scope.showContactGuide3 = false;
+      }
+      };
+
+      if (baseConfig) {
+        console.log('window.localStorage.neeGuideHelp ' + window.localStorage.neeGuideHelp);
+        console.log('window.localStorage.guideHelpAuto ' + window.localStorage.guideHelpAuto);
+      }
+
+      if (!window.localStorage.neeGuideHelp || window.localStorage.neeGuideHelp == "true" || window.localStorage.guideHelpAuto == "true") {
+        window.localStorage.neeGuideHelp = "false";
+        $scope.showContactGuide1 = true;
+      } else {
+      }
       console.log($ionicHistory.viewHistory());
       $scope.hasCrm = window.localStorage.crm == 'true';
       $scope.searched = {
