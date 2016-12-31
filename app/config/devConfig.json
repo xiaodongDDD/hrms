@@ -12,6 +12,7 @@
     "businessPath": "http://wechat.hand-china.com/hcrm_web/api/l",
     "queryPath": "http://wechat.hand-china.com/hcrm_web/i/api",
     "imPath": "http://wechat.hand-china.com/hcrm_web",
+    "imPathCrm": "http://wechat.hand-china.com/hcrm_web/api/imageUpload",
     "pluginBusinessPath": "http://wechat.hand-china.com",
     "tengxuntuyouServer": "https://api.youtu.qq.com/youtu/api/detectface",
     "pkgIdentifier": "",
