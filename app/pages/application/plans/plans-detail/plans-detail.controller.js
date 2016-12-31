@@ -763,7 +763,6 @@
         return;
       }
       $scope.showCommentFlag = !$scope.showCommentFlag;
-      var item = $('#commentAdd');
       if ($scope.showCommentFlag == true) {
         if (ionic.Platform.isWebView()) {
           $timeout(function () {
@@ -772,11 +771,9 @@
             itemHeight.scrollTop = 0; //防抖动
             itemHeight.style.height = itemHeight.scrollHeight + "px";
             cordova.plugins.Keyboard.show();
-            $timeout(function () {
-              item.focus();
-              $scope.$apply();
-            }, 0);
-          }, 300);
+            itemHeight.focus();
+            $scope.$apply();
+          },0);
         } else {
           $timeout(function () {
             var itemHeight = document.getElementById("commentAdd");
@@ -784,11 +781,9 @@
             itemHeight.scrollTop = 0; //防抖动
             itemHeight.style.height = itemHeight.scrollHeight + "px";
             cordova.plugins.Keyboard.show();
-            $timeout(function () {
-              item.focus();
-              $scope.$apply();
-            }, 0);
-          });
+            itemHeight.focus();
+            $scope.$apply();
+          },0);
         }
       } else {
         $timeout(function () {
