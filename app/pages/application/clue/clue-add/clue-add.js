@@ -546,6 +546,7 @@ angular.module('clueModule')
       };
 
       var getCustomerDetailSuccess = function(response){
+        $scope.showCrmLoading = false;
         if(response.dataStatus == "HCRM_DISABLE"){
           if($scope.sourceCustomer){
             $scope.data.customerId = $scope.sourceCustomer.customerId;
@@ -554,20 +555,18 @@ angular.module('clueModule')
           hmsPopup.showPopup('该客户已被禁用，不能进行操作！');
           if($scope.customerDataFlag)
             $scope.goBack();
-          $scope.showCrmLoading = false;
           return ;
         }
-        if(response.approveType != "HCRM_APPROVED"){
-          if($scope.sourceCustomer){
-            $scope.data.customerId = $scope.sourceCustomer.customerId;
-            $scope.showData.customerName = $scope.sourceCustomer.customerName;
-          }
-          hmsPopup.showPopup('客户未审核，不能进行创建！');
-          if($scope.customerDataFlag)
-            $scope.goBack();
-          $scope.showCrmLoading = false;
-          return ;
-        }
+        // if(response.approveType != "HCRM_APPROVED"){
+        //   if($scope.sourceCustomer){
+        //     $scope.data.customerId = $scope.sourceCustomer.customerId;
+        //     $scope.showData.customerName = $scope.sourceCustomer.customerName;
+        //   }
+        //   hmsPopup.showPopup('客户未审核，不能进行创建！');
+        //   if($scope.customerDataFlag)
+        //     $scope.goBack();
+        //   return ;
+        // }
         if(!response.contactFlag){
           if($scope.sourceCustomer){
             $scope.data.customerId = $scope.sourceCustomer.customerId;
@@ -576,7 +575,6 @@ angular.module('clueModule')
           hmsPopup.showPopup('客户缺少主要联系人，不能进行创建！');
           if($scope.customerDataFlag)
             $scope.goBack();
-          $scope.showCrmLoading = false;
           return ;
         }
         console.log(response);

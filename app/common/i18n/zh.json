@@ -136,6 +136,7 @@
     "OPPORTUNITY_STATE":"商机状态",
     "WINNING_COMPETITOR":"赢单公司",
     "INDUSTRY":"行业",
+    "MAJOR_INDUSTRY":"主行业",
     "CONTACT":"客户联系人",
     "SOURCE":"商机来源",
     "SOURCE_SOURCE":"原厂划分",

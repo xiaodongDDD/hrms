@@ -137,6 +137,7 @@
     "OPPORTUNITY_STATE":"Opportunity state",
     "WINNING_COMPETITOR":"Winning competitor"
     "INDUSTRY":"Industry",
+    "MAJOR_INDUSTRY":"Major industry",
     "CONTACT":"The client's point of contact",
     "SOURCE":"The source of opportunity",
     "SOURCE_SOURCE":"Original division",

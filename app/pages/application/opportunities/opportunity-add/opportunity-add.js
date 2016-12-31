@@ -54,6 +54,7 @@ angular.module('opportunityModule')
         productTypeName: T.T('NEW_OPPORTUNITY.PRODUCT_TYPE'),
         opportunityStatus: T.T('NEW_OPPORTUNITY.OPPORTUNITY_STATE'),
         ownedIndustry: T.T('NEW_OPPORTUNITY.INDUSTRY'),
+        majorIndustry: T.T('NEW_OPPORTUNITY.MAJOR_INDUSTRY'),
         customerContacts: T.T('NEW_OPPORTUNITY.SELECT_CUSTOMER_CONTACTS'),
         businessFrom: T.T('NEW_OPPORTUNITY.SOURCE'),
         originalFactoryFrom: T.T('NEW_OPPORTUNITY.SOURCE_SOURCE'),
@@ -1033,13 +1034,13 @@ angular.module('opportunityModule')
       };
 
       var getCustomerDetailSuccess = function(response){
+        $scope.showCrmLoading = false;
         if(response.dataStatus == "HCRM_DISABLE"){
           if($scope.sourceCustomer){
             $scope.data.customerId = $scope.sourceCustomer.customerId;
             $scope.showData.customerName = $scope.sourceCustomer.customerName;
           }
           hmsPopup.showPopup('该客户已被禁用，不能进行操作！');
-          $scope.showCrmLoading = false;
           if($scope.promoteFlag || $scope.customerDataFlag)
             $scope.goBack();
           return ;
@@ -1050,7 +1051,6 @@ angular.module('opportunityModule')
             $scope.showData.customerName = $scope.sourceCustomer.customerName;
           }
           hmsPopup.showPopup('客户未审核，不能进行创建！');
-          $scope.showCrmLoading = false;
           if($scope.promoteFlag || $scope.customerDataFlag)
             $scope.goBack();
           return ;
@@ -1061,7 +1061,6 @@ angular.module('opportunityModule')
             $scope.showData.customerName = $scope.sourceCustomer.customerName;
           }
           hmsPopup.showPopup('客户缺少：主要联系人、行业、是否上市、收入规模 信息，不得创建商机，请补充客户信息后再进行创建！');
-          $scope.showCrmLoading = false;
           if($scope.promoteFlag || $scope.customerDataFlag)
             $scope.goBack();
           return ;
