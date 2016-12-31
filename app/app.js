@@ -367,7 +367,7 @@ angular.module('myApp')
 
           window.localStorage.isHrms2108 = "true";
 
-          $urlRouterProvider.otherwise('/guide');
+          $urlRouterProvider.otherwise('/login');
         }
       }
 
