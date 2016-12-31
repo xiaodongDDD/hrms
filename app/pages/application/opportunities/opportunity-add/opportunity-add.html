@@ -364,7 +364,7 @@
       <img src="build/img/application/icon_circle@3x.png" ng-show="industrySearch.key != ''" ng-click="clearIndustryFilter()">
     </div>
     <div class="value-list-header">
-      {{showSubIndustry ? showData.majorIndustry : '主行业'}}
+      {{isCustomerIndustry ? (showSubIndustry ? showData.cusMajorIndustry : '主行业') : (showSubIndustry ? showData.majorIndustry : '主行业')}}
     </div>
     <div class="list list-has-header">
       <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="industryScroll">
