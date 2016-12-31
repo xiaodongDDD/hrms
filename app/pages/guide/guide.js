@@ -16,38 +16,18 @@ angular.module('loginModule')
               guideService) {
 
       console.log('loginCtrl.enter');
-
+      console.log("guide");
       window.localStorage.needGuid = "false";
-
-      var getHeight = function () {
-
-        //alert('document.body.scrollHeight ' + document.body.scrollHeight);
-
-        var height = document.body.scrollHeight + "";
-        if (height == "0") {
-        }
-        else {
-          return height + 'px';
-        }
-
-        //alert('document.body.scrollHeight ' + document.body.clientHeight);
-
-        height = document.body.clientHeight + "";
-        if (height == "0") {
-        }
-        else {
-          return height + 'px';
-        }
-
-        return '100%';
-      };
-
+      if (ionic.Platform.isAndroid()) {
       $scope.actualHeight = {
-        "height": getHeight()
+        "height": screen.height-18+"px"
       };
-
+      }else{
+        $scope.actualHeight = {
+          "height": screen.height+"px"
+        };
+      }
       $scope.clientHeight = 'height: ' + document.body.clientHeight + 'px';
-
       $scope.skipGuide = function () {
         if (baseConfig.debug) {
           console.log("跳过导航页到登陆页");

@@ -56,7 +56,30 @@
     margin-top: 74px;
     z-index: 100;
   }
-
+  .login_user_img{
+    position: absolute;
+    left: 9%;
+    top: 78px;
+    img{
+      width:18px;
+    }
+  }
+  .login_pwd_img{
+    position: absolute;
+    left: 9%;
+    top: 152px;
+    img{
+      width:18px;
+    }
+  }
+  .hand_logo{
+    img{
+      width: 50%;
+      height: 45px;
+      margin-left: 25%;
+      margin-top: 102px;
+    }
+  }
   .password-input{
     color: rgba(255, 255, 255, 0.8);
     font-size: 12px;
