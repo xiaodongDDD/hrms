@@ -20,6 +20,7 @@ angular.module('customerModule')
     '$timeout',
     'customerDetailCollaborator',
     'customerService',
+    '$ionicHistory',
     function ($scope,
               $state,
               hmsPopup,
@@ -35,7 +36,8 @@ angular.module('customerModule')
               customerDetailService,
               $timeout,
               customerDetailCollaborator,
-              customerService) {
+              customerService,
+              $ionicHistory) {
       console.log("CustomerDetailContactCtrl");
       customerDetailService.setTabNumber(3);
       var url = baseConfig.basePath + "customer_collaborator";
@@ -342,7 +344,11 @@ angular.module('customerModule')
       };
 
       $scope.goEmployeeDetail = function (newEmployeeNumber) {
+        if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
         $state.go('tab.employeeDetailCrm', {employeeNumber: newEmployeeNumber});
+        }else{
+          $state.go('tab.employeeDetailCrm2', {employeeNumber: newEmployeeNumber});
+        }
       };
 
     }]);

@@ -114,16 +114,16 @@ angular.module('contactModule')
 			initEmployeeData();
 
 			$scope.goBackPage = function() {
-        if (customerDetailService.getIsEdit()) {
+    /*    if (customerDetailService.getIsEdit()) {
           $state.go('tab.customer-detail2');
-        }else {
+        }else {*/
           if($ionicHistory.viewHistory().backView){
             $ionicHistory.goBack();
           }else{
             $state.go('tab.contactCrm');
           }
 
-        }
+       /* }*/
 
 			};
 
@@ -131,7 +131,7 @@ angular.module('contactModule')
 				//storedb(LINK_MAN).remove(newObject, function (err) {
 				//});
 				storedb(LINK_MAN).insert(newObject, function(err) {});
-			};
+			}
 
 			$scope.telPhone = function() { //响应拨打电话按钮的方法
 				var options = {
