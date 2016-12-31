@@ -637,10 +637,10 @@ angular.module('customerModule')
         $scope.nowPage = 1;
         if ($scope.showSelect) {
           $scope.crmSelectModal.hide();
-          $scope.showLoading = false;
+          $scope.showCrmLoading = false;
         } else {
           $scope.crmSelectModal.show();
-          $scope.showLoading = true;
+          $scope.showCrmLoading = true;
         }
         $scope.showSelect = !$scope.showSelect;
         $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
@@ -659,7 +659,7 @@ angular.module('customerModule')
         if(key == 'sale_team')
           $scope.selectTargets[6].params = [getTeamSuccess, $scope.siftingKey.saleAreaId];
         if($scope.nowSelectTarget.interface != showValueInList && $scope.nowSelectTarget.key != 'year')
-          $scope.showLoading = true;
+          $scope.showCrmLoading = true;
         $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
       };
 
@@ -734,7 +734,7 @@ angular.module('customerModule')
         $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
         if($scope.nowSelectTarget['searchInterface']){
           //需要接口搜索的
-          $scope.showLoading = true;
+          $scope.showCrmLoading = true;
           $scope.moreDataCanBeLoaded = false;
           if($scope.searchModel.searchValueKey == ''){
             $scope.items = [];
@@ -1321,7 +1321,7 @@ angular.module('customerModule')
           //alert('uploadImage.start ');
         }
 
-        var url = baseConfig.queryPath;
+        var url = baseConfig.imPathCrm;
         //var options = new FileUploadOptions();
         //options.filekey = "file";
         //options.mimeType = "image/jpeg";

@@ -49,7 +49,7 @@ angular.module('customerModule')
         $ionicScrollDelegate.$getByHandle('detailScroll').scrollTop(false);
         if(response.returnCode == "S"){
           if(response.dynamics.length===0){
-            hmsPopup.showPopup('未找到数据');
+            //hmsPopup.showPopup('未找到数据');
             $scope.loadMoreDataFlag = false;
           }else{
             $scope.states = response.dynamics;
