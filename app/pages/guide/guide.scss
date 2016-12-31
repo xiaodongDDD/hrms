@@ -57,8 +57,15 @@
     display: inline-block;
     margin: 0px 6px;
     width: 8px;
-    color: #FAFAFA;
+    color: #c7c7c7;
     text-decoration: none;
     opacity: 0.3;
+  }
+ 
+  .slider-pager .slider-pager-page.active {
+    -webkit-transition: opacity .4s ease-in;
+    transition: opacity .4s ease-in;
+    opacity: 1;
+    color: #1F8CEB!important;
   }
 }
