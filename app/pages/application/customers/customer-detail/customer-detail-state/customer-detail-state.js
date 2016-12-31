@@ -154,7 +154,7 @@ angular.module('customerModule')
           success(result);
         }).error(function (response, status) {
           error(response);
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       }

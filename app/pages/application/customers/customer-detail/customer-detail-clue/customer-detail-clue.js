@@ -29,7 +29,11 @@ angular.module('customerModule')
           var length = response.customer_opportunity.length;
           $scope.moreOpportunityCanBeLoaded = length == $scope.pageSize
         } else {
-          hmsPopup.showPopup(response.returnMsg);
+          if(response.returnMsg){
+            hmsPopup.showShortCenterToast(response.returnMsg)
+          }else{
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
 
@@ -55,7 +59,11 @@ angular.module('customerModule')
           var length = response.customer_opportunity.length;
           $scope.moreOpportunityCanBeLoaded = length == $scope.pageSize;
         } else {
-          hmsPopup.showPopup(response.returnMsg);
+          if(response.returnMsg){
+            hmsPopup.showShortCenterToast(response.returnMsg)
+          }else{
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
+          }
         }
       };
 

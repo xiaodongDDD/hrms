@@ -46,9 +46,9 @@ angular.module('customerModule')
           /*   console.log($scope.customers.length)*/
         } else {
           if(response.returnMsg){
-            hmsPopup.showPopup(response.returnMsg)
+            hmsPopup.showShortCenterToast(response.returnMsg)
           }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
           }
         }
       };
@@ -83,7 +83,7 @@ angular.module('customerModule')
           success(result);
         }).error(function (response, status) {
           error(response);
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       }
