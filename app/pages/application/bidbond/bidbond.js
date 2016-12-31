@@ -93,13 +93,18 @@ angular.module('bidbondModule')
 					$state.go('tab.application');
 				}
 			};
-			$scope.$on('CLOSE_BIDBOND_ADD', function() {
-				$scope.addbidbondModel().hide();
-			});
 
-			$rootScope.$on("REFRESH_BIDBOND_ADD", function() {
+			$rootScope.$on("REFRESH_ADD_BIDBOND", function() {
 				$scope.doRefresh();
 			});
+
+			//			$rootScope.$on("REFRESH_BIDBOND_ADD", function() {
+			//				$scope.doRefresh();
+			//			});
+
+			//			$scope.$on('$ionicView.beforeEnter', function(e) {
+			//					$scope.doRefresh();
+			//			})
 
 			//=====================================新增保证金（开始）===================================
 
@@ -199,7 +204,7 @@ angular.module('bidbondModule')
 				$state.go("tab.bidbond-add", {
 					param: result
 				});
-				hmsPopup.showLoading();
+				//				hmsPopup.showLoading();
 			};
 
 			function getBidbondSuccess(response) {
@@ -281,9 +286,9 @@ angular.module('bidbondModule')
 				bidbondListService.getbidbondList(getListSuccessInitConcat, error, $scope.data);
 				$scope.$broadcast('scroll.refreshComplete');
 			};
-			$rootScope.$on("REFRESH_BIDBOND_ADD", function() {
-				$scope.doRefresh();
-			});
+			//			$rootScope.$on("REFRESH_BIDBOND_ADD", function() {
+			//				$scope.doRefresh();
+			//			});
 			$scope.moreDataCanBeLoaded = true;
 			var getMoreListSuccessInitConcat = function(result) {
 				if(result.returnCode == "S") {
@@ -530,7 +535,7 @@ angular.module('bidbondModule')
 					success(result);
 				}).error(function(response, status) {
 					error(response);
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			};
@@ -559,7 +564,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'bidbond_detail', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 
