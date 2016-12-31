@@ -236,7 +236,7 @@
 
     //切换查询计划的权限
     function changePlanAuthority(type) {
-      vm.showCommentFlag=false;
+      vm.showCommentFlag = false;
       if (vm.planSearchIsRunning) {
         return;
       }
@@ -328,7 +328,7 @@
 
     //进入我的或者下属的周报界面，根据权限判断
     function goWeeklyReport() {
-      vm.showCommentFlag=false;
+      vm.showCommentFlag = false;
       var date = $scope.lastSelectDay;
       var date2 = date.year + '/' + date.month + '/' + date.date;
       goWeeklyReportDetail(date2);
@@ -408,13 +408,13 @@
 
     vm.planDetail = {};
     function showComment(plan) {
-      if(vm.planAuthority.OTHER.selected==false){
+      if (vm.planAuthority.OTHER.selected == false) {
         return;
       }
       console.log(plan);
       vm.planDetail = plan;
       vm.showCommentFlag = !vm.showCommentFlag;
-      var item = $('#comment-text');
+      //var item = $('#comment-text');
       if (vm.showCommentFlag == true) {
         /*   $scope.testH=$('#annotate').height();
          console.log( $scope.testH);*/
@@ -425,23 +425,19 @@
             itemHeight.scrollTop = 0; //防抖动
             itemHeight.style.height = itemHeight.scrollHeight + "px";
             cordova.plugins.Keyboard.show();
-            $timeout(function () {
-              item.focus();
-              $scope.$apply();
-            }, 0);
-          }, 300);
+            itemHeight.focus();
+            $scope.$apply();
+          }, 0);
         } else {
-            $timeout(function () {
-              var itemHeight = document.getElementById("comment-text");
-              itemHeight.style.height = '40px';
-              itemHeight.scrollTop = 0; //防抖动
-              itemHeight.style.height = itemHeight.scrollHeight + "px";
-              cordova.plugins.Keyboard.show();
-            $timeout(function () {
-              item.focus();
-              $scope.$apply();
-            }, 0);
-          }, 300);
+          $timeout(function () {
+            var itemHeight = document.getElementById("comment-text");
+            itemHeight.style.height = '40px';
+            itemHeight.scrollTop = 0; //防抖动
+            itemHeight.style.height = itemHeight.scrollHeight + "px";
+            cordova.plugins.Keyboard.show();
+            itemHeight.focus();
+            $scope.$apply();
+          }, 0);
         }
       } else {
         $timeout(function () {
@@ -857,7 +853,7 @@
     }
 
     function goPlansAdd() {
-      vm.showCommentFlag=false;
+      vm.showCommentFlag = false;
       var planData = formatDate($scope.lastSelectDay.year, $scope.lastSelectDay.month, $scope.lastSelectDay.date);
       console.log('initSelect $scope.lastSelectDay ' + angular.toJson($scope.lastSelectDay));
       $scope.data = {
@@ -957,11 +953,11 @@
         $scope.plans = $scope.plans.concat(response.saleplan_list);
         $scope.morePlanCanBeLoaded = (response.saleplan_list.length % $scope.pageSize == 0) && (response.saleplan_list.length != 0);
         //$ionicScrollDelegate.$getByHandle('plan-scroll').scrollTop(true);
-      }else{
-        if(response.returnMsg){
-          $scope.showContent=true;
+      } else {
+        if (response.returnMsg) {
+          $scope.showContent = true;
           hmsPopup.showPopup(response.returnMsg)
-        }else{
+        } else {
           hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
         }
       }
@@ -1079,11 +1075,11 @@
           $scope.nowShowDate = $scope.planGroups[0].date;
         }
         initScrollFlag();
-      }else{
-        if(response.returnMsg){
-          $scope.showContent=true;
+      } else {
+        if (response.returnMsg) {
+          $scope.showContent = true;
           hmsPopup.showPopup(response.returnMsg)
-        }else{
+        } else {
           hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
         }
       }
@@ -1181,7 +1177,7 @@
       }
     };
 
-    if ($stateParams.data == 'UP'){
+    if ($stateParams.data == 'UP') {
       $scope.onGestureCalendar('up')
     }
 
@@ -1237,12 +1233,12 @@
     };
     $ionicPlatform.registerBackButtonAction(function (e) {
       console.log("====registerBackButtonAction");
-      if($ionicHistory.backView()) {
+      if ($ionicHistory.backView()) {
         console.log($cordovaKeyboard.isVisible());
         console.log(cordova.plugins.Keyboard.isVisible);
-        if($cordovaKeyboard.isVisible()) {
+        if ($cordovaKeyboard.isVisible()) {
           $cordovaKeyboard.close();
-        }else {
+        } else {
           $ionicHistory.goBack();
         }
       }

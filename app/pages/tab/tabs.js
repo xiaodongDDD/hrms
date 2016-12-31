@@ -8,11 +8,12 @@ angular.module('loginModule').controller('TabsCtrl',
       $scope.cacheImgList = [];
       $scope.cacheImgList.push({"url": "build/img/application/carpooling/Bar@3x.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/myInfoBg.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/message@3x%202.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/message-outline@3x.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/center@3x.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/contact@3x.png"});
-      $scope.cacheImgList.push({"url": "build/img/tabs/mine@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/login-back.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/spring/message@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/spring/message-outline@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/spring/center@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/spring/contact@3x.png"});
+      $scope.cacheImgList.push({"url": "build/img/tabs/spring/mine@3x.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/background.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/man-portrait.png"});
       $scope.cacheImgList.push({"url": "build/img/myInfo/woman-portrait.png"});
@@ -58,7 +59,7 @@ angular.module('loginModule').controller('TabsCtrl',
         TabsService.setManualReturnFlag(false);
 
         $ionicPlatform.ready(function () {
-          if (statename === 'tab.myInfo' || statename === 'tab.application') {
+          if (statename === 'tab.myInfo') {
             if (window.StatusBar) {
               StatusBar.styleLightContent();
             }
