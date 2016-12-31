@@ -16,7 +16,7 @@
       important="false"
       select-value="vm.planDetail.relateCustomer"
       last-line="true"
-      hms-select="vm.showWeekChoose('contact')"  on-touch="hideCommont()">
+      hms-select="vm.showWeekChoose('contact')"  >
     </hms-select-image-item>
 
     <hms-select-image-item
@@ -25,7 +25,7 @@
       important="false"
       select-value="vm.planDetail.relateOpportunity"
       last-line="true"
-      hms-select="vm.showWeekChoose('business')"  on-touch="hideCommont()">
+      hms-select="vm.showWeekChoose('business')" >
     </hms-select-image-item>
 
     <hms-select-image-item
@@ -34,9 +34,9 @@
       important="true"
       select-value="vm.planDetail.scheduleDateStr"
       last-line="true"
-      hms-select="vm.choosePlanTime()"  on-touch="hideCommont()">
+      hms-select="vm.choosePlanTime()">
     </hms-select-image-item>
-    <div on-touch="hideCommont()" class="hms-select-image-item row row-center info-item">
+    <div class="hms-select-image-item row row-center info-item">
       <div class="col col-8 ">
         <img src="build/img/competitor/icon_area@3x.png" class="info-img">
       </div>
@@ -53,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div on-touch="hideCommont()" class="info-item sifting-item select-item select-info-item">
+    <div class="info-item sifting-item select-item select-info-item">
       <div ng-repeat="timeItem in vm.timeItems track by $index"
            ng-click="vm.selectTime($index,timeItem)">
         <img
@@ -64,7 +64,7 @@
 
 
 
-    <div on-touch="hideCommont()" style="width:96%;margin-left: 6%;background: #fff;margin-top: 10px;height:40px">
+    <div style="width:96%;margin-left: 6%;background: #fff;margin-top: 10px;height:40px">
       <div style="width: 25%;float: left;height: 40px;display: table">
         <div class="info-item-name required" style="vertical-align: middle;display: table-cell;height: 40px;">
           计划内容
@@ -96,7 +96,7 @@
       <div class="clear"></div>
     </div>
     <div class="clear"></div>
-    <div on-touch="hideCommont()" class="row" style="padding-left:17px;">
+    <div class="row" style="padding-left:17px;">
       <div class="row text-wrap">
             <textarea id="planDetailText" placeholder="{{ 'PLAN_ADD.PLEASE_FILL_OUT' | T }}" style="width: 100%"
                       ng-model="vm.saleContent"></textarea>
@@ -128,7 +128,7 @@
       </div>
     </div>
   </div>
-  <div ng-if="showCommentFlag" footerkeyboardshow class="bar bar-footer" style="bottom:60px;height: auto;max-height:110px;">
+  <div  style="z-index:100;" ng-if="showCommentFlag" footerkeyboardshow class="bar bar-footer" style="bottom:60px;height: auto;max-height:110px;">
     <div class="common-voice"  on-touch="touchAnnotate()" on-release="annotateRelease()">
       <div style="">
         <img src="build/img/application/plans/icon_voice@3x.png" style="">
@@ -187,4 +187,9 @@
       <div>
       </div>
     </ion-footer-bar>
+  <div  on-touch="hideCommont()"  ng-if="showCommentFlag" style="    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 10;"></div>
 </ion-view>

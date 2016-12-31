@@ -262,6 +262,10 @@ angular.module('opportunityModule')
                     hmsPopup.showPopup('商机已被停用，无法进行操作。');
                     return ;
                   }
+                  if($scope.opportunity.opportunityStatus == 'HCRM_CLOSED'){
+                    hmsPopup.showPopup('商机已关闭，无法进行操作。');
+                    return ;
+                  }
                   if(!opportunityPermissionService.checkPermission('HCRM_OPERATION_EDIT')){
                     hmsPopup.showPopup('抱歉，你没有权限这么做。');
                     return ;
@@ -413,6 +417,17 @@ angular.module('opportunityModule')
 
       $scope.$on('COMPETITOR_ADD_SUCCESS', function () {
         $scope.opportunityAddCompetitorModel.hide();
+        opportunityDetailDataService.setOpportunityItem('opportunityId', $stateParams.data.opportunityId);
+        opportunityPermissionService.updatePermission();
+        initOpportunityData();
+      });
+
+      $scope.$on('CLOSE_BIDBOND', function () {
+        $scope.addbidbondModel.hide();
+      });
+
+      $scope.$on('BIDBOND_ADD_SUCCESS', function () {
+        $scope.addbidbondModel.hide();
         opportunityDetailDataService.setOpportunityItem('opportunityId', $stateParams.data.opportunityId);
         opportunityPermissionService.updatePermission();
         initOpportunityData();
@@ -909,7 +924,7 @@ angular.module('opportunityModule')
           // hmsPopup.showPopup(response);
         });
       };
-      this.transformStatus = function (success, key) { //降级商机为线索
+      this.transformStatus = function (success, key) { //更改状态
         hmsHttp.post(baseUrlTest + 'transform_status', key).success(function (result) {
           success(result);
           hmsPopup.hideLoading();

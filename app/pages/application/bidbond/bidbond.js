@@ -93,13 +93,18 @@ angular.module('bidbondModule')
 					$state.go('tab.application');
 				}
 			};
-			
-//			console.log($scope.data.applicationId);
-//			if (!$scope.data.applicationId ) {
-//				document.getElementById("appid").style.display = "none";
-//			} else{
-//				document.getElementById("appid").style.display = "block";
-//			}
+
+			$rootScope.$on("REFRESH_ADD_BIDBOND", function() {
+				$scope.doRefresh();
+			});
+
+			//			$rootScope.$on("REFRESH_BIDBOND_ADD", function() {
+			//				$scope.doRefresh();
+			//			});
+
+			//			$scope.$on('$ionicView.beforeEnter', function(e) {
+			//					$scope.doRefresh();
+			//			})
 
 			//=====================================新增保证金（开始）===================================
 
@@ -180,19 +185,7 @@ angular.module('bidbondModule')
 				$scope.addbidbondModel.show();
 			};
 
-			//=========================================新增保证金（结束）==========================================
-
-			$scope.goEditBidbond = function(result) {
-//				if(result.workflowStatus == 0 || result.workflowStatus == -1) {
-
-					$state.go("tab.bidbond-add", {
-						param: result
-					});
-//				}
-
-			};
-			//	=============================================编辑保证金（开始）==============================================
-			///////////////////数据相关/////////////////////
+			//======================================新增保证金（结束）======================================
 
 			Array.prototype.clone = function() {
 				return [].concat(this);
@@ -203,10 +196,16 @@ angular.module('bidbondModule')
 			};
 			console.log($stateParams.param);
 			$scope.bondId = $stateParams.param.bondId;
-
 			$scope.bidbondDetail = {};
 
-	/*		hmsPopup.showLoading();*/
+			//======================================编辑保证金（开始）======================================
+
+			$scope.goEditBidbond = function(result) {
+				$state.go("tab.bidbond-add", {
+					param: result
+				});
+				//				hmsPopup.showLoading();
+			};
 
 			function getBidbondSuccess(response) {
 				hmsPopup.hideLoading();
@@ -239,7 +238,7 @@ angular.module('bidbondModule')
 				}
 			}
 
-		/*	bidbondEditService.getBidbondDetail(getBidbondSuccess, $scope.bondId);*/
+			/*	bidbondEditService.getBidbondDetail(getBidbondSuccess, $scope.bondId);*/
 
 			$rootScope.$on("REFRESH_BIDBOND_ADD", function() {
 				bidbondEditService.getBidbondDetail(getBidbondSuccess, $scope.bondId);
@@ -256,7 +255,7 @@ angular.module('bidbondModule')
 			};
 
 			$scope.Global = "HCRM_GLOBAL";
-			/*   hmsPopup.showLoading("加载中...");*/
+
 			$scope.bidbond = []; //保证金列表
 
 			var getListSuccessInit = function(result) {
@@ -287,9 +286,9 @@ angular.module('bidbondModule')
 				bidbondListService.getbidbondList(getListSuccessInitConcat, error, $scope.data);
 				$scope.$broadcast('scroll.refreshComplete');
 			};
-			$rootScope.$on("REFRESH_BIDBOND_ADD", function() {
-				$scope.doRefresh();
-			});
+			//			$rootScope.$on("REFRESH_BIDBOND_ADD", function() {
+			//				$scope.doRefresh();
+			//			});
 			$scope.moreDataCanBeLoaded = true;
 			var getMoreListSuccessInitConcat = function(result) {
 				if(result.returnCode == "S") {
@@ -536,7 +535,7 @@ angular.module('bidbondModule')
 					success(result);
 				}).error(function(response, status) {
 					error(response);
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			};
@@ -565,7 +564,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'bidbond_detail', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					hmsPopup.showPopup(response);
+					//					hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 

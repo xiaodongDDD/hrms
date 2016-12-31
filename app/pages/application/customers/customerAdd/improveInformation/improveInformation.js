@@ -1265,6 +1265,7 @@ angular.module('customerModule')
 
           }else{
             console.log('上传失败了。。。'+angular.toJson(result))
+            hmsPopup.showShortCenterToast('上传失败');
             //hmsPopup.showPopup('上传失败！');
           }
           $scope.save();
@@ -1277,6 +1278,7 @@ angular.module('customerModule')
           }
           console.log('上传错误了。。。'+angular.toJson(response))
           //hmsPopup.showPopup('上传失败！');
+          hmsPopup.showShortCenterToast('上传错误')
           $scope.save();
         };
 
@@ -1468,9 +1470,11 @@ angular.module('customerModule')
                  }
 
                }else if(data.returnCode==='E'){
-                 hmsPopup.showPopup(data.returnMsg);
-               } else {
-                 hmsPopup.showPopup('保存失败，请检查网络或联系管理员');
+                 if(data.returnMsg){
+                   hmsPopup.showPopup(data.returnMsg);
+                 } else {
+                   hmsPopup.showPopup('保存失败，请检查网络或联系管理员');
+                 }
                }
              })
            }else {

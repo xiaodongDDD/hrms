@@ -340,6 +340,16 @@ angular.module('customerModule')
 		}).then(function(modal) {
 			$scope.addbidbondModel = modal;
 		});
+		
+		$scope.$on('BIDBOND_ADD_SUCCESS', function() {
+			$scope.addbidbondModel().hide();
+			$scope.$broadcast("REFRESH_BIDBOND");
+			$ionicScrollDelegate.$getByHandle('detailScroll').scrollTop(false);
+		});
+		
+		$scope.$on('CLOSE_BIDBOND_ADD', function() {
+			$scope.addbidbondModel.hide();
+		});
 
       var pickContact = function(){
         ContactsPlugin.pickContact(function(response){
@@ -501,59 +511,45 @@ angular.module('customerModule')
           } else if($index == 4) {
             $scope.imgButton = true;
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-clue/customer-detail-clue.html";
-            validCustomerContactsSuccess = function(response){
-              $scope.showCrmLoading = false;
-              if(response.returnCode == 'S'){
-                if(response.customer_contact_list.length == 0){
-                  hmsPopup.showPopup('客户缺少"主要联系人"信息，请补充信息后再进行创建');
-                } else{
-                  $scope.searchModel = {
-                    searchValueKey: ''
-                  };
-                  $scope.clueAddModel.show();
-                  $scope.$broadcast("HAVE_DATA",{
-                    customerId : $scope.customerId,
-                    customerName : $scope.customer.fullName
-                  });
-                }
-              }
-            };
             $scope.chooseThis = function () {
               if($scope.customer.dataStatus == 'HCRM_DISABLE'){
                 hmsPopup.showPopup('该客户已被禁用，无法创建线索');
                 return ;
               }
-              $scope.showCrmLoading = true;
-              customerDetailService.getCustomerContacts(validCustomerContactsSuccess, 1, 10, $scope.customerId);
+              if($scope.customer.approveType != "HCRM_APPROVED"){
+                hmsPopup.showPopup('该客户未审核，无法创建线索');
+                return ;
+              }
+              $scope.searchModel = {
+                searchValueKey: ''
+              };
+              $scope.clueAddModel.show();
+              $scope.$broadcast("HAVE_DATA",{
+                customerId : $scope.customerId,
+                customerName : $scope.customer.fullName
+              });
             }
           } else if ($index == 5) {
             $scope.imgButton = true;
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-opportunity/customer-detail-opportunity.html";
-            validCustomerContactsSuccess = function(response){
-              $scope.showCrmLoading = false;
-              if(response.returnCode == 'S'){
-                if(response.customer_contact_list.length == 0){
-                  hmsPopup.showPopup('客户缺少"主要联系人"信息，请补充信息后再进行创建');
-                } else{
-                  $scope.searchModel = {
-                    searchValueKey: ''
-                  };
-                  $scope.opportunityAddModel.show();
-                  $scope.$broadcast("HAVE_DATA",{
-                    customerId : $scope.customerId,
-                    customerName : $scope.customer.fullName
-                  });
-                }
-              }
-            };
 
             $scope.chooseThis = function () {
               if($scope.customer.dataStatus == 'HCRM_DISABLE'){
                 hmsPopup.showPopup('该客户已被禁用，无法创建商机');
                 return ;
               }
-              $scope.showCrmLoading = true;
-              customerDetailService.getCustomerContacts(validCustomerContactsSuccess, 1, 10, $scope.customerId);
+              if($scope.customer.approveType != "HCRM_APPROVED"){
+                hmsPopup.showPopup('该客户未审核，无法创建商机');
+                return ;
+              }
+              $scope.searchModel = {
+                searchValueKey: ''
+              };
+              $scope.opportunityAddModel.show();
+              $scope.$broadcast("HAVE_DATA",{
+                customerId : $scope.customerId,
+                customerName : $scope.customer.fullName
+              });
             }
           }else if($index == 6) {
 				$scope.imgButton = true;
@@ -1209,7 +1205,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'query_customer_detail', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
 
@@ -1226,7 +1222,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'customer_contact_list', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
         });
       };
       //所属团队
@@ -1237,7 +1233,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'query_sale_team', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1251,7 +1247,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'customer_transform_status', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
         });
       };
 
@@ -1262,7 +1258,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'customer_share', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
         });
       };
 

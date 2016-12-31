@@ -156,7 +156,7 @@ angular.module('customerModule')
       $scope.customers = [];
 
       $scope.goBack = function () {
-        $ionicHistory.goBack();
+        $state.go('tab.application');
       };
 
       $scope.goState = function (url) {
@@ -637,10 +637,10 @@ angular.module('customerModule')
         $scope.nowPage = 1;
         if ($scope.showSelect) {
           $scope.crmSelectModal.hide();
-          $scope.showLoading = false;
+          $scope.showCrmLoading = false;
         } else {
           $scope.crmSelectModal.show();
-          $scope.showLoading = true;
+          $scope.showCrmLoading = true;
         }
         $scope.showSelect = !$scope.showSelect;
         $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
@@ -659,7 +659,7 @@ angular.module('customerModule')
         if(key == 'sale_team')
           $scope.selectTargets[6].params = [getTeamSuccess, $scope.siftingKey.saleAreaId];
         if($scope.nowSelectTarget.interface != showValueInList && $scope.nowSelectTarget.key != 'year')
-          $scope.showLoading = true;
+          $scope.showCrmLoading = true;
         $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
       };
 
@@ -734,7 +734,7 @@ angular.module('customerModule')
         $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
         if($scope.nowSelectTarget['searchInterface']){
           //需要接口搜索的
-          $scope.showLoading = true;
+          $scope.showCrmLoading = true;
           $scope.moreDataCanBeLoaded = false;
           if($scope.searchModel.searchValueKey == ''){
             $scope.items = [];
@@ -1121,7 +1121,7 @@ angular.module('customerModule')
           success(result);
         }).error(function (response, status) {
           error(response);
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       }
@@ -1131,7 +1131,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'select_customers', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       }
@@ -1148,7 +1148,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'parent_customer', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1162,7 +1162,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'query_sale_area', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1177,7 +1177,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'query_sale_team', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1192,7 +1192,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'customer_employee', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1207,7 +1207,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'query_notSales', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1218,7 +1218,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'employee_detail',params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1232,7 +1232,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'valid_dutyParagraph',params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1246,7 +1246,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'valid_creditCode',params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1260,7 +1260,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'industry_lookup',params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1279,7 +1279,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'query_lookup', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1291,7 +1291,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'customer_approve',params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1321,7 +1321,7 @@ angular.module('customerModule')
           //alert('uploadImage.start ');
         }
 
-        var url = baseConfig.queryPath;
+        var url = baseConfig.imPathCrm;
         //var options = new FileUploadOptions();
         //options.filekey = "file";
         //options.mimeType = "image/jpeg";

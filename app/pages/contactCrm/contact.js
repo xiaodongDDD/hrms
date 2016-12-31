@@ -781,7 +781,7 @@ angular.module('contactModule')
                 contact.customerId = "";
                 contact.fullName = "";
               }
-              $state.go('tab.addLinkman', {param: contact});
+              $state.go('tab.addLinkman2', {param: contact});
               if($scope.hasCrm){
                 $scope.crmScanCardModal.hide();
               }
@@ -792,7 +792,7 @@ angular.module('contactModule')
             } else {
               hmsPopup.hideLoading();
               hmsPopup.showPopup("没有找到匹配的客户");
-              $state.go('tab.addLinkman', {param: contact});
+              $state.go('tab.addLinkman2', {param: contact});
               if($scope.hasCrm)
                 $scope.crmScanCardModal.hide();
               else
@@ -802,7 +802,7 @@ angular.module('contactModule')
           customerSearchService.getSearchData(searchSuccessInit, $scope.searchParam)
         } else {
           hmsPopup.hideLoading();
-          $state.go('tab.addLinkman', {param: contact});
+          $state.go('tab.addLinkman2', {param: contact});
           if($scope.hasCrm){
             $scope.crmScanCardModal.hide();
           } else{

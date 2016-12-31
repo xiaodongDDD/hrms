@@ -54,6 +54,7 @@ angular.module('opportunityModule')
         productTypeName: T.T('NEW_OPPORTUNITY.PRODUCT_TYPE'),
         opportunityStatus: T.T('NEW_OPPORTUNITY.OPPORTUNITY_STATE'),
         ownedIndustry: T.T('NEW_OPPORTUNITY.INDUSTRY'),
+        majorIndustry: T.T('NEW_OPPORTUNITY.MAJOR_INDUSTRY'),
         customerContacts: T.T('NEW_OPPORTUNITY.SELECT_CUSTOMER_CONTACTS'),
         businessFrom: T.T('NEW_OPPORTUNITY.SOURCE'),
         originalFactoryFrom: T.T('NEW_OPPORTUNITY.SOURCE_SOURCE'),
@@ -1033,30 +1034,34 @@ angular.module('opportunityModule')
       };
 
       var getCustomerDetailSuccess = function(response){
+        $scope.showCrmLoading = false;
         if(response.dataStatus == "HCRM_DISABLE"){
-          $scope.data.customerId = $scope.sourceCustomer.customerId;
-          $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          if($scope.sourceCustomer){
+            $scope.data.customerId = $scope.sourceCustomer.customerId;
+            $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          }
           hmsPopup.showPopup('该客户已被禁用，不能进行操作！');
-          $scope.showCrmLoading = false;
-          if($scope.promoteFlag)
-            $scope.goBack();
-          return ;
-        }
-        if(!response.HCRM_OPERATION_EDIT && (response.incomeScale == null || response.majorIndustry == null || response.isListed == null)){
-          $scope.data.customerId = $scope.sourceCustomer.customerId;
-          $scope.showData.customerName = $scope.sourceCustomer.customerName;
-          hmsPopup.showPopup('客户缺少：主要联系人、行业、是否上市、收入规模 信息，不得创建商机，请补充客户信息后再进行创建！');
-          $scope.showCrmLoading = false;
-          if($scope.promoteFlag)
+          if($scope.promoteFlag || $scope.customerDataFlag)
             $scope.goBack();
           return ;
         }
         if(response.approveType != "HCRM_APPROVED"){
-          $scope.data.customerId = $scope.sourceCustomer.customerId;
-          $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          if($scope.sourceCustomer){
+            $scope.data.customerId = $scope.sourceCustomer.customerId;
+            $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          }
           hmsPopup.showPopup('客户未审核，不能进行创建！');
-          $scope.showCrmLoading = false;
-          if($scope.promoteFlag)
+          if($scope.promoteFlag || $scope.customerDataFlag)
+            $scope.goBack();
+          return ;
+        }
+        if(!response.contactFlag || (!response.HCRM_OPERATION_EDIT && (response.incomeScale == "" || response.majorIndustry == "" || response.isListed == ""))){
+          if($scope.sourceCustomer){
+            $scope.data.customerId = $scope.sourceCustomer.customerId;
+            $scope.showData.customerName = $scope.sourceCustomer.customerName;
+          }
+          hmsPopup.showPopup('客户缺少：主要联系人、行业、是否上市、收入规模 信息，不得创建商机，请补充客户信息后再进行创建！');
+          if($scope.promoteFlag || $scope.customerDataFlag)
             $scope.goBack();
           return ;
         }
@@ -1376,18 +1381,6 @@ angular.module('opportunityModule')
           $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
       };
 
-      var validCustomerContactsSuccess = function(response){
-        $scope.showCrmLoading = false;
-        if(response.returnCode == 'S'){
-          if(response.customer_contact_list.length == 0){
-            hmsPopup.showPopup('客户缺少"主要联系人"信息，请补充信息后再进行创建');
-            if($scope.promoteFlag)
-              $scope.goBack();
-          } else
-            opportunityAddService.getCustomerDetail(getCustomerDetailSuccess, $scope.data.customerId);
-        }
-      };
-
       $scope.selectItem = function($index){
         var data = $scope.items[$index][$scope.nowSelectTarget['dataKey']];  //接口所需数据
         if($scope.nowSelectTarget['key'] == 'competitor'){
@@ -1421,7 +1414,7 @@ angular.module('opportunityModule')
         }
         if($scope.nowSelectTarget['key'] == 'customer'){
           $scope.showCrmLoading = true;
-          opportunityAddService.getCustomerContacts(validCustomerContactsSuccess, 1, 10, data);
+          opportunityAddService.getCustomerDetail(getCustomerDetailSuccess, $scope.data.customerId);
           return;
         }
         if($scope.nowSelectTarget['key'] == 'opportunity_status'){

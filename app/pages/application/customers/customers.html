@@ -1,7 +1,7 @@
 <ion-view view-title="客户" class="crm hrms-pancel-corlor customer-inquire">
   <crm-loading ng-if="showLoading"></crm-loading>
   <ion-header-bar align-title="center" class="bar-stable">
-    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="$hmsGoBack()"/>
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack()"/>
     <div class="header-select-button">
       <div ng-click="selectSubHeader(0)" ng-class="{true:'selected'}[subHeadersSelect[0]]">{{bilingual.all_customer}}
       </div>

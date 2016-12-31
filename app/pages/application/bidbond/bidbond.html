@@ -29,19 +29,16 @@
 			</ion-refresher>
 
 			<!--商机列表-->
-			<div class="opportunity-item" style="background-position: top bottom;" ng-repeat="item in bidbond"
-				ng-click="goEditBidbond(item)">
+			<div class="opportunity-item" style="background-position: top bottom;" ng-repeat="item in bidbond" ng-click="goEditBidbond(item)">
 				<div class="item-header">
 					{{'BIDBOND.APPLY_DATE'|T}}：{{item.applicationDate}}
-					<span>
-              			{{item.workflowStatusName}}
-           			</span>
+					<span>{{item.workflowStatusName}}</span>
 				</div>
-				<div class="opportunity-info">
 
-						<div class="opportunity-name">{{item.fullName}}</div>
-					    <div class="opportunity-belong">{{item.customerName}}</div>
-					    <div class="opportunity-belong" id="appid" ng-show="item.applicationId!=''">{{'BIDBOND.APPLICATIONID'|T}}：{{item.applicationId}}</div>
+				<div class="opportunity-info">
+					<div class="opportunity-name">{{item.fullName}}</div>
+					<div class="opportunity-belong">{{item.customerName}}</div>
+					<div class="opportunity-belong" id="appid" ng-show="item.applicationId!=''">{{'BIDBOND.APPLICATIONID'|T}}：{{item.applicationId}}</div>
 
 					<div class="more-bottom-margin">
 						<span class="cost-title">{{'BIDBOND.APPLY_AMOUNT'|T}}</span>
@@ -50,15 +47,15 @@
 				</div>
 			</div>
 
-			<ion-infinite-scroll   immediate-check="false" ng-if="moreDataCanBeLoaded" on-infinite="loadMore()" distance="1%">
+			<ion-infinite-scroll immediate-check="false" ng-if="moreDataCanBeLoaded" on-infinite="loadMore()" distance="1%">
 			</ion-infinite-scroll>
 		</div>
 	</ion-content>
 
 	<!--筛选页面-->
 	<div class="common-fix-div sifting-fix-div" ng-class="{true:'showUp'}[showShift]">
-		<div class="sifting-header"  ng-class="{true:'sifting-header-ios',false:'sifting-header'}[isIos]">
-			<img ng-click="showShiftDiv()"  src="build/img/application/customer/detail/top_left_arrow@3x.png" /> {{'BIDBOND.BIDBOND_FILTER'|T}}
+		<div class="sifting-header" ng-class="{true:'sifting-header-ios',false:'sifting-header'}[isIos]">
+			<img ng-click="showShiftDiv()" src="build/img/application/customer/detail/top_left_arrow@3x.png" /> {{'BIDBOND.BIDBOND_FILTER'|T}}
 		</div>
 		<div class="sifting-item" ng-click="showSelectDiv('currency')">
 			<img src="build/img/application/customer/icon_money@3x.png" />

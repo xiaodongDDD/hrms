@@ -181,6 +181,7 @@
     vm.loadMorePlans = loadMorePlans;
     vm.changeShowModel = changeShowModel;
     vm.getDayString = getDayString;
+    vm.nextGuide = nextGuide;
 
     function getDayString(thisDate) {
       return '星期' + vm.weekdays[(new Date(thisDate)).getDay()];
@@ -188,6 +189,26 @@
 
     $scope.contentHeight = {};
     $scope.calendarStyle = {};
+
+    if(!window.localStorage.firstInPlan)
+      window.localStorage.firstInPlan = true;
+    $scope.showGuide = window.localStorage.firstInPlan;
+
+    var guideImgs = [
+      "build/img/plans/guide1.png",
+      "build/img/plans/guide2.png",
+      "build/img/plans/guide3.png"
+    ];
+    $scope.guideIndex = 0;
+    $scope.guideImg = guideImgs[0];
+
+    function nextGuide (){
+      if($scope.guideIndex == 3){
+        window.localStorage.firstInPlan = false;
+        $scope.showGuide = false;
+      }
+      $scope.guideImg = guideImgs[++$scope.guideIndex];
+    }
 
     var viewHeaderHeight;
     var calendarHideHeight;

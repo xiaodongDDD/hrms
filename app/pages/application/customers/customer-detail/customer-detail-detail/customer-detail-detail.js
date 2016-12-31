@@ -62,20 +62,20 @@ angular.module('customerModule')
           }
           console.log($scope.customer);
         }
-        //else {
-        //  if(response.returnMsg){
-        //    hmsPopup.showPopup(response.returnMsg)
-        //  }else{
-        //    hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
-        //  }
-        //}
+        else {
+          if(response.returnMsg){
+            hmsPopup.showShortCenterToast(response.returnMsg)
+          }else{
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
+          }
+        }
       }
       customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
 
       $rootScope.$on('$ionicView.beforeEnter', function (e) {
+        $scope.customerId = window.localStorage.customerId;
+        $ionicScrollDelegate.$getByHandle("detailScroll").scrollTop(false);
         if(customerDetailService.getIsCustomerAdd()){
-          $ionicScrollDelegate.$getByHandle("detailScroll").scrollTop(false);
-          $scope.customerId = window.localStorage.customerId;
           customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
           $scope.$apply();
         }

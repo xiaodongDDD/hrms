@@ -96,9 +96,9 @@ angular.module('customerModule')
           hmsPopup.showPopup(result.returnMsg);
         } else {
           if(result.returnMsg){
-            hmsPopup.showPopup(result.returnMsg)
+            hmsPopup.showShortCenterToast(result.returnMsg)
           }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
           }
         }
       };
@@ -167,10 +167,10 @@ angular.module('customerModule')
         } else {
           if (response.returnMsg) {
             $scope.moreDataCanBeLoaded = false;
-            hmsPopup.showPopup(response.returnMsg);
+            hmsPopup.showShortCenterToast(response.returnMsg)
           }
-          else {
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+          else{
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
           }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -182,10 +182,10 @@ angular.module('customerModule')
         if (reslut.returnCode == 'S') {
           hmsPopup.showPopup(reslut.returnMsg);
         } else {
-          if(result.returnMsg){
-            hmsPopup.showPopup(result.returnMsg)
+          if(reslut.returnMsg){
+            hmsPopup.showShortCenterToast(reslut.returnMsg)
           }else{
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
           }
         }
       };
@@ -361,7 +361,7 @@ angular.module('customerModule')
         success(result, index);
       }).error(function (response, status) {
         hmsPopup.hideLoading();
-        hmsPopup.showPopup(response.error_description);
+        //hmsPopup.showPopup(response.error_description);
       });
     };
   });
