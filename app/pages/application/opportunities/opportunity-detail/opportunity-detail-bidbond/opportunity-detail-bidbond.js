@@ -40,6 +40,7 @@ angular.module('opportunityModule')
 				$state.go("tab.bidbond-add", {
 					param: result
 				});
+				hmsPopup.showLoading();
 			}
 
 			opportunityBidbondService.getBidbond(initBidbondSuccess, {
@@ -81,7 +82,7 @@ angular.module('opportunityModule')
 				});
 			};
 
-			$scope.$on('REFRESH_OPPORTUNITY', function() {
+			$scope.$on('REFRESH_BIDBOND', function() {
 				$scope.doRefresh();
 			});
 

@@ -417,6 +417,17 @@ angular.module('opportunityModule')
         opportunityPermissionService.updatePermission();
         initOpportunityData();
       });
+      
+      $scope.$on('CLOSE_BIDBOND', function () {
+        $scope.addbidbondModel.hide();
+      });
+
+      $scope.$on('BIDBOND_ADD_SUCCESS', function () {
+        $scope.addbidbondModel.hide();
+        opportunityDetailDataService.setOpportunityItem('opportunityId', $stateParams.data.opportunityId);
+        opportunityPermissionService.updatePermission();
+        initOpportunityData();
+      });
 
       $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-state/opportunity-detail-state.html";
       $scope.selectSubHeader = function ($index) {

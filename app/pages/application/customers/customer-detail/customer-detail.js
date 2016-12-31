@@ -340,6 +340,16 @@ angular.module('customerModule')
 		}).then(function(modal) {
 			$scope.addbidbondModel = modal;
 		});
+		
+		$scope.$on('BIDBOND_ADD_SUCCESS', function() {
+			$scope.addbidbondModel().hide();
+			$scope.$broadcast("REFRESH_BIDBOND");
+			$ionicScrollDelegate.$getByHandle('detailScroll').scrollTop(false);
+		});
+		
+		$scope.$on('CLOSE_BIDBOND_ADD', function() {
+			$scope.addbidbondModel.hide();
+		});
 
       var pickContact = function(){
         ContactsPlugin.pickContact(function(response){
@@ -1195,7 +1205,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'query_customer_detail', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
 
@@ -1212,7 +1222,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'customer_contact_list', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
         });
       };
       //所属团队
@@ -1223,7 +1233,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'query_sale_team', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -1237,7 +1247,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'customer_transform_status', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
         });
       };
 
@@ -1248,7 +1258,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'customer_share', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
+          //hmsPopup.showPopup(response);
         });
       };
 
