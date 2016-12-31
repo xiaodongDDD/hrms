@@ -210,7 +210,7 @@ angular.module('HmsModule')
         }
       };
       this.confirmNoTitle = function (message, onConfirm) {
-        if (!baseConfig.nativeScreenFlag) {
+  /*      if (!baseConfig.nativeScreenFlag) {*/
           var confirmPopup = $ionicPopup.confirm({
             template: message,
             cancelText: '取消',
@@ -225,7 +225,7 @@ angular.module('HmsModule')
 
             }
           });
-        } else {
+/*        } else {
           navigator.notification.confirm(
             message, // message
             function (index) {
@@ -234,7 +234,7 @@ angular.module('HmsModule')
             title, // title
             ['取消' , '确定'] // buttonLabels
           );
-        }
+        }*/
       };
       //弹出是否确认的窗口
       this.prompt = function (myscope, title, popup, pluginPopup) {
@@ -273,7 +273,7 @@ angular.module('HmsModule')
       };
       //检测客户是否重名
       this.showPopupCustomer = function (template,customerName,approveStatus,saleArea,saleTeam,saleEmployeeName,saleEmployeeCode, title) {
-        if (!baseConfig.nativeScreenFlag) {
+    /*    if (!baseConfig.nativeScreenFlag) {*/
           $ionicPopup.show({
             title:title,
             template: template+'</br></br><div class="crm-customer-popup" >匹配客户: '+customerName+
@@ -285,7 +285,7 @@ angular.module('HmsModule')
               type: 'button button-cux-popup-confirm'
             }]
           });
-        } else {
+/*        } else {
           var alertDismissed = function () {
           };
           navigator.notification.alert(
@@ -294,11 +294,11 @@ angular.module('HmsModule')
             title, // title
             '确定' // buttonName
           );
-        }
+        }*/
       };
       //检测客户税号和统一社会信用代码
       this.showPopupCustomerAdd = function (template,flagMsg,customerName,approveStatus,saleArea,saleTeam,saleEmployeeName,saleEmployeeCode, title) {
-        if (!baseConfig.nativeScreenFlag) {
+       /* if (!baseConfig.nativeScreenFlag) {*/
           $ionicPopup.show({
             title:title,
             template: template+'</br></br><div class="crm-customer-popup">'+flagMsg+'</div><div class="crm-customer-popup" >匹配客户: '+customerName+
@@ -310,7 +310,7 @@ angular.module('HmsModule')
               type: 'button button-cux-popup-confirm'
             }]
           });
-        } else {
+    /*    } else {
           var alertDismissed = function () {
           };
           navigator.notification.alert(
@@ -319,11 +319,11 @@ angular.module('HmsModule')
             title, // title
             '确定' // buttonName
           );
-        }
+        }*/
       };
 
       this.confirmCrmCheck = function (message,$scope,onConfirm,data) {
-        if (!baseConfig.nativeScreenFlag) {
+    /*    if (!baseConfig.nativeScreenFlag) {*/
           var confirmPopup = $ionicPopup.confirm({
             scope: $scope,
             template: message,
@@ -336,7 +336,7 @@ angular.module('HmsModule')
             onConfirm(res,data);
 
           });
-        } else {
+/*        } else {
           navigator.notification.confirm(
             message, // message
             function (index) {
@@ -345,7 +345,7 @@ angular.module('HmsModule')
             title, // title
             ['取消' , '确定'] // buttonLabels
           );
-        }
+        }*/
       };
 
       this.confirm = function (message, title, onConfirm) {
@@ -381,7 +381,7 @@ angular.module('HmsModule')
       };
 
     this.confirmDIY = function (message, title,okText,cancelText, onConfirm,onBack) {
-      if (!baseConfig.nativeScreenFlag) {
+  /*    if (!baseConfig.nativeScreenFlag) {*/
         var confirmPopup = $ionicPopup.confirm({
           title: (angular.isDefined(title) ? title : "提示"),
           template: message,
@@ -397,7 +397,7 @@ angular.module('HmsModule')
             onBack(res)
           }
         });
-      } else {
+    /*  } else {
         navigator.notification.confirm(
           message, // message
           function (index) {
@@ -406,7 +406,7 @@ angular.module('HmsModule')
           title, // title
           ['取消' , '确定'] // buttonLabels
         );
-      }
+      }*/
     };
 
       this.confirmShare = function (title, message,  shareConfirm) {
