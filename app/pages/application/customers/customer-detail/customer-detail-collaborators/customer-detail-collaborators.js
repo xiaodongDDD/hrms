@@ -181,6 +181,7 @@ angular.module('customerModule')
       var transferCustomerSuccess = function (reslut) {
         if (reslut.returnCode == 'S') {
           hmsPopup.showPopup(reslut.returnMsg);
+          $scope.doRefresh();
         } else {
           if(reslut.returnMsg){
             hmsPopup.showShortCenterToast(reslut.returnMsg)

@@ -242,6 +242,7 @@ angular.module('opportunityModule')
       var transferSuccessInit = function (result) {
         console.log(result);
         opportunityPermissionService.updatePermission();
+        $scope.selectSubHeader(4);
         hmsPopup.showPopup(result.returnMsg);
       };
       var getCustomerEmployeeSuccess = function (response) {
