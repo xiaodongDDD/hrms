@@ -31,6 +31,7 @@ angular.module('customerModule')
 
       customerDetailService.setIsEdit(false)
       customerDetailService.setTabNumber(1)
+      $scope.customerId =  customerDetailService.getCustomerId();
       var baseUrl = baseConfig.basePath;
       $scope.showFlag=[false,false,false,false,false,false,false];
       //$scope.customer = {};
@@ -73,7 +74,8 @@ angular.module('customerModule')
       customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
 
       $rootScope.$on('$ionicView.beforeEnter', function (e) {
-        $scope.customerId = window.localStorage.customerId;
+        $scope.customerId =  customerDetailService.getCustomerId();
+        console.log('详情页面的详情'+$scope.customerId);
         $ionicScrollDelegate.$getByHandle("detailScroll").scrollTop(false);
         if(customerDetailService.getIsCustomerAdd()){
           customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);

@@ -1438,7 +1438,11 @@ angular.module('customerModule')
         if(data.returnCode == 'S'){
           hmsPopup.showPopup(data.returnMsg);
           }else{
-          hmsPopup.showPopup(data.returnMsg);
+          if(data.returnMsg){
+            hmsPopup.showPopup(data.returnMsg);
+          }else {
+            hmsPopup.showPopup('提交失败，请检查网络或者联系管理员！');
+          }
         }
         $state.go('tab.customer-detail',{
           customerDetail:$scope.customer
@@ -1500,6 +1504,7 @@ angular.module('customerModule')
                  customerDetailService.setIsContact(true);
                  customerDetailService.setTabNumber(2);
                  window.localStorage.customerId = data.customer.customerId;
+                 customerDetailService.setCustomerId(data.customer.customerId);
                  customerDetailService.setIsCustomerAdd(true);
                  hmsPopup.confirmCrmCheck('保存成功，是否现在提交审核？',$scope,successConfirm,data.customer.customerId);
                  $scope.customer =data.customer;

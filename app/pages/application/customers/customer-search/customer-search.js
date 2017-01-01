@@ -18,8 +18,8 @@ angular.module('myApp')
         })
     }]);
 angular.module('applicationModule')
-  .controller('customerSearchCtrl', ['$scope', '$state', '$ionicHistory', 'history', 'hmsPopup', '$timeout', '$rootScope', 'customerSearchService',
-    function ($scope, $state, $ionicHistory, history, hmsPopup, $timeout, $rootScope, customerSearchService) {
+  .controller('customerSearchCtrl', ['$scope', '$state', '$ionicHistory', 'history', 'hmsPopup', '$timeout', '$rootScope', 'customerSearchService','customerDetailService',
+    function ($scope, $state, $ionicHistory, history, hmsPopup, $timeout, $rootScope, customerSearchService,customerDetailService) {
       var item = $('#employeeInputSearch');
       $scope.showContent = true;
       function blurInput() { //初始化input框-自动聚焦
@@ -116,6 +116,7 @@ angular.module('applicationModule')
         }
         console.log(item);
           window.localStorage.customerId = item.customerId;
+          customerDetailService.setCustomerId(item.customerId);
           $state.go('tab.customer-detail',{
             customerDetail:item
           });
@@ -136,6 +137,7 @@ angular.module('applicationModule')
         }
         console.log(item);
         window.localStorage.customerId = item.value;
+        customerDetailService.setCustomerId(item.value);
         $state.go('tab.customer-detail',{
           customerDetail:item
         });

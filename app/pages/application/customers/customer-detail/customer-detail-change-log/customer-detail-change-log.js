@@ -12,6 +12,7 @@ angular.module('customerModule')
     '$timeout',
     'hmsHttp',
     '$rootScope',
+    'customerDetailService',
     function ($scope,
               $state,
               customerDetailChangeLogService,
@@ -19,12 +20,13 @@ angular.module('customerModule')
               hmsPopup,
               $timeout,
               hmsHttp,
-              $rootScope) {
+              $rootScope,
+              customerDetailService) {
       console.log('CustomerDetailChangeCtrl');
       $scope.value =  {
         page: 1,
         pageSize: 20,
-        customerId: window.localStorage.customerId
+        customerId: customerDetailService.getCustomerId()
       }
       $scope.showLoading = true;
       $scope.loadMoreDataFlag = false;

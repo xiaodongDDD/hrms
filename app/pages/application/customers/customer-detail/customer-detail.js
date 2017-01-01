@@ -313,7 +313,7 @@ angular.module('customerModule')
         console.log(angular.toJson($stateParams.customerDetail));
         /*$scope.customerId = $stateParams.customerDetail.customerId;*/
         customerDetailService.setIsEdit(true);
-        $scope.customerId =window.localStorage.customerId;
+        $scope.customerId =  customerDetailService.getCustomerId();
           console.log($scope.customerId);
         $scope.permissionValue = {
           recordId : $scope.customerId,
@@ -340,13 +340,13 @@ angular.module('customerModule')
 		}).then(function(modal) {
 			$scope.addbidbondModel = modal;
 		});
-		
+
 		$scope.$on('BIDBOND_ADD_SUCCESS', function() {
 			$scope.addbidbondModel().hide();
 			$scope.$broadcast("REFRESH_BIDBOND");
 			$ionicScrollDelegate.$getByHandle('detailScroll').scrollTop(false);
 		});
-		
+
 		$scope.$on('CLOSE_BIDBOND_ADD', function() {
 			$scope.addbidbondModel.hide();
 		});
@@ -1196,6 +1196,7 @@ angular.module('customerModule')
               baseConfig,
               $http) {
       var isCustomerAdd = false;
+      var customerId = '';
       var isEdit = false;
       var tabNumber = 0;
       var editCustomer = {};
@@ -1322,6 +1323,12 @@ angular.module('customerModule')
       };
       this.getIsContact=function(){
         return contactFlag;
+      };
+      this.setCustomerId=function(val){
+        customerId = val;
+      };
+      this.getCustomerId=function(){
+        return customerId;
       };
       this.getCustomerEmployee = function (page,pageSize,keyWord,success) { //查询客户负责人
         var params = {

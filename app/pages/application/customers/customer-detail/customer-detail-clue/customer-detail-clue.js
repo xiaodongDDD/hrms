@@ -8,15 +8,17 @@ angular.module('customerModule')
     'hmsPopup',
     '$timeout',
     'customerOpportunityService',
+    'customerDetailService',
     function ($scope,
               $state,
               hmsPopup,
               $timeout,
-              customerOpportunityService) {
+              customerOpportunityService,
+              customerDetailService) {
 
       $scope.page = 1;
       $scope.pageSize = 10;
-      $scope.customerId = window.localStorage.customerId;
+      $scope.customerId = customerDetailService.getCustomerId();
 
       $scope.showLoading = true;
 

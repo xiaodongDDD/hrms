@@ -22,8 +22,8 @@ angular.module('myApp')
         })
     }]);
 angular.module('applicationModule')
-  .controller('globelSearchCtrl', ['$scope', '$state', '$ionicHistory', 'history', 'hmsPopup', '$timeout', '$rootScope', 'globelSearchService','$ionicScrollDelegate','$stateParams','T',
-    function ($scope, $state, $ionicHistory, history, hmsPopup, $timeout, $rootScope, globelSearchService,$ionicScrollDelegate,$stateParams,T) {
+  .controller('globelSearchCtrl', ['$scope', '$state', '$ionicHistory', 'history', 'hmsPopup', '$timeout', '$rootScope', 'globelSearchService','$ionicScrollDelegate','$stateParams','T','customerDetailService',
+    function ($scope, $state, $ionicHistory, history, hmsPopup, $timeout, $rootScope, globelSearchService,$ionicScrollDelegate,$stateParams,T,customerDetailService) {
       $scope.showContent=true;
       var item = $('#employeeInputSearch');
       $scope.showLoading=false;
@@ -134,6 +134,7 @@ angular.module('applicationModule')
           $state.go('tab.clue-detail', {data:item.value});
         } else if (item.type == "HCRM_CUSTOMER") {
           window.localStorage.customerId = item.value;
+          customerDetailService.setCustomerId(item.value);
           $state.go('tab.customer-detail');
         }else if(item.type == "HCRM_COMPETITOR"){
           item.competitorId = item.value;
