@@ -44,6 +44,8 @@ angular.module('opportunityModule')
     'OpportunityDetailCompetitorService',
     'opportunityPermissionService',
     'opportunityBidbondService',
+    '$cordovaGeolocation',
+    '$http',
     function ($scope,
               $ionicHistory,
               $state,
@@ -65,7 +67,9 @@ angular.module('opportunityModule')
               opportunityDetailDataService,
               OpportunityDetailCompetitorService,
               opportunityPermissionService,
-    		  opportunityBidbondService) {
+    		      opportunityBidbondService,
+              $cordovaGeolocation,
+              $http) {
 
       $rootScope.$broadcast("REFRESH_CUSTOMER_HISTORY");
 
@@ -94,7 +98,10 @@ angular.module('opportunityModule')
       };
       $scope.items = [];
       $scope.nowSelectTarget = {};
+      $scope.myLocation = {};
+      $scope.cusLocation = {};
       hmsPopup.showLoading("加载中...");
+
 
       //获得竞争列表并存储至service
       var getListSuccessInit = function (result) {
@@ -918,8 +925,8 @@ angular.module('opportunityModule')
         $scope.myLocation.lat = position1.coords.latitude;
         $scope.myLocation.lng = position1.coords.longitude;
         //通过客户地址返回客户所在地经纬度
-        var cusUrl = "http://api.map.baidu.com/geocoder/v2/?callback=renderOption()&output=json&address="+$scope.customer.cityName+
-          $scope.customer.zoneName+$scope.customer.addressDetails+ "&city="+$scope.customer.cityName+"&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
+        var cusUrl = "http://api.map.baidu.com/geocoder/v2/?callback=renderOption()&output=json&address="+$scope.customerAddress.cityName+
+          $scope.customerAddress.zoneName+$scope.customerAddress.addressDetails+ "&city="+$scope.customerAddress.cityName+"&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
         //alert(cusUrl);
         $http.post(cusUrl).success(function (data) {
           console.log('请求数据成功！！');
@@ -939,8 +946,8 @@ angular.module('opportunityModule')
                 $scope.myLocation.address = data.content.address;
                 $scope.myLocation.province = data.content.address_detail.province;
                 var url = "https://api.map.baidu.com/direction?origin=latlng:"+$scope.myLocation.lat+","+$scope.myLocation.lng+"|name:"+ $scope.myLocation.address+
-                  "&destination=latlng:"+$scope.cusLocation.lat+","+$scope.cusLocation.lng+"|name:"+$scope.customer.addressDetails+
-                  "&mode=driving&origin_region="+$scope.myLocation.province+"&destination_region="+$scope.customer.cityName+
+                  "&destination=latlng:"+$scope.cusLocation.lat+","+$scope.cusLocation.lng+"|name:"+$scope.customerAddress.addressDetails+
+                  "&mode=driving&origin_region="+$scope.myLocation.province+"&destination_region="+$scope.customerAddress.cityName+
                   "&output=html&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
                 window.open(encodeURI(url), '_system', 'location=yes');
               }
