@@ -69,6 +69,7 @@ angular.module('contactModule')
     '$timeout',
     '$cordovaActionSheet',
     '$cordovaClipboard',
+    'customerDetailService',
     function ($scope,
               $state,
               publicMethod,
@@ -83,7 +84,8 @@ angular.module('contactModule')
               $rootScope,
               $timeout,
               $cordovaActionSheet,
-              $cordovaClipboard) {
+              $cordovaClipboard,
+              customerDetailService) {
       /*console.log($ionicHistory.viewHistory().currentView.stateName);
       console.log('contactDetailCtrl.enter');*/
       $scope.showContactDetailGuide;
@@ -160,7 +162,12 @@ angular.module('contactModule')
                 $scope.contactDetail.statusCodeChange = "HCRM_DISABLE";
               }
             } else {
-              hmsPopup.showPopup(data.returnMsg);
+              if (data.returnMsg) {
+                hmsPopup.showPopup(result.returnMsg);
+              }
+              else {
+                hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+              }
 
             }
 
@@ -506,6 +513,7 @@ angular.module('contactModule')
           }
         };
         $scope.goContactDetail = function (item) {
+          customerDetailService.setCustomerId(item.customerId);
           window.localStorage.customerId = item.customerId;
           /* console.log("客户详情");*/
           console.log($ionicHistory.viewHistory().backView);

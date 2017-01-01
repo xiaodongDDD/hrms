@@ -7,7 +7,7 @@
   <ion-list>
     <ion-item ng-repeat="item in linkmanData"  style="padding:0!important;background: #ffffff">
       <div class="row row-center" style="padding:0;height: 80px">
-        <div class="col col-57" ng-click="goDetail(item)">
+        <div class="col col-67" ng-click="goDetail(item)">
           <div class="row row-center">
             <div class="col">
               <span> <img src="{{item.sexImg}}" style="width:20px;    position: relative;
@@ -36,12 +36,12 @@
 
           </div>
         </div>
-        <div class="col col-43" style="padding-top: 9px">
+        <div class="col col-33" style="padding-top: 9px">
           <div class="row row-center" style="padding-left: 0;" ng-click="goDetail(item)">
             <div ng-if="item.isPrimary=='Y'">
               <span  class="state-date">主要</span>
             </div>
-            <div class="col" style="text-align: right">
+            <div style="margin-left:10px;text-align: right">
               <span  class="state-date"> {{item.contactTypeName}}</span>
             </div>
           </div>
