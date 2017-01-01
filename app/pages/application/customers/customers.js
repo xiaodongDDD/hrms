@@ -1332,7 +1332,7 @@ angular.module('customerModule')
           //alert('uploadImage.start ');
         }
 
-        var url = baseConfig.imPathCrm;
+        var url = baseConfig.imPath+'/api/imageUpload';
         //var options = new FileUploadOptions();
         //options.filekey = "file";
         //options.mimeType = "image/jpeg";
