@@ -949,25 +949,27 @@ angular.module('bidbondModule')
 				//				}
 
 				if($scope.nowSelectTarget['key'] == 'customer') {
-
 					window.localStorage.customerId = $scope.items[$index].customerId;
 					$scope.data.opportunityId = "";
 					$scope.showData.opportunityName = "";
-					$scope.nowPage=1;
+					$scope.nowPage = 1;
+					$scope.searchModel.searchValueKey = "";
 					$scope.selectTargets[1].params = [getOpportunitySuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
 				}
+				
 				console.log(showKey);
 				console.log(data);
 				console.log($scope.items[$index].customerName);
+				
 				if($scope.nowSelectTarget['key'] == 'business') {
-						$scope.nowPage=1;
+					$scope.nowPage = 1;
+					$scope.searchModel.searchValueKey = "";
 					if($scope.items[$index].customerName != "") {
 						$scope.data.customerId = $scope.items[$index].customerId;
 						$scope.showData.fullName = $scope.items[$index].customerName;
 					}
-					$scope.selectTargets[1].params = [getOpportunitySuccess, $scope.showData.fullName, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
+					$scope.selectTargets[1].params = [getOpportunitySuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
 				}
-
 				$scope.showSelectDiv();
 			};
 
