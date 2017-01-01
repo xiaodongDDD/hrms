@@ -516,15 +516,11 @@ angular.module('customerModule')
                 hmsPopup.showPopup('该客户已被禁用，无法创建线索');
                 return ;
               }
-              // if($scope.customer.approveType != "HCRM_APPROVED"){
-              //   hmsPopup.showPopup('该客户未审核，无法创建线索');
-              //   return ;
-              // }
               $scope.searchModel = {
                 searchValueKey: ''
               };
               $scope.clueAddModel.show();
-              $scope.$broadcast("HAVE_DATA",{
+              $scope.$broadcast("HAVE_DATA_CLUE",{
                 customerId : $scope.customerId,
                 customerName : $scope.customer.fullName
               });

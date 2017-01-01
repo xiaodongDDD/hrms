@@ -54,7 +54,7 @@ angular.module('clueModule')
         $scope.$emit('CLOSE_CLUE_ADD');
       };
 
-      $scope.$on('HAVE_DATA',function(event,data){
+      $scope.$on('HAVE_DATA_CLUE',function(event,data){
         $scope.data.customerId = data.customerId;
         $scope.showData.customerName = data.customerName;
       });
