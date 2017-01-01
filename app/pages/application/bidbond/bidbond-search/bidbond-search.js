@@ -203,7 +203,7 @@ angular.module('bidbondModule')
           success(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup(response.error_description);
+//        hmsPopup.showPopup(response.error_description);
         });
       }
       this.getBidbond = function (success, key) {
@@ -217,7 +217,7 @@ angular.module('bidbondModule')
           success(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup(response.error_description);
+//        hmsPopup.showPopup(response.error_description);
         });
       }
     }
