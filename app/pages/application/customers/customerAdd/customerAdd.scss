@@ -166,3 +166,13 @@
   text-align: left;
   margin-left: 10px;
 }
+.customer-add-guide{
+  position: absolute;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url(../img/application/customer/customerAddGuide.png);
+  background-size: cover;
+  z-index: 1000000;
+}

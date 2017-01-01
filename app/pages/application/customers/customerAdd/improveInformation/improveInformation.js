@@ -74,7 +74,16 @@ angular.module('customerModule')
         customerService.setIsCustomer(false);
         $ionicHistory.goBack();
       };
-
+      $scope.showCustomerAddImgGuide;
+      $scope.buttonTapped=function(){
+        $scope.showCustomerAddImgGuide = false;
+        window.localStorage.showCustomerAddImgGuide=false;
+      };
+      if (!window.localStorage.showCustomerAddImgGuide || window.localStorage.guideHelpAuto == "true") {
+        window.localStorage.showCustomerAddImgGuide="false";
+        $scope.showCustomerAddImgGuide = true;
+      } else {
+      }
       $scope.goState = function (val) {
         $state.go(val);
       };

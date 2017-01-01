@@ -54,7 +54,16 @@ angular.module('customerModule')
               customerDetailService,
               $cordovaClipboard) {
 
-
+      $scope.showCustomerAddGuide;
+      $scope.buttonTapped=function(){
+        $scope.showCustomerAddGuide = false;
+        window.localStorage.showCustomerAddGuide=false;
+      };
+      if (!window.localStorage.showCustomerAddGuide || window.localStorage.guideHelpAuto == "true") {
+        window.localStorage.showCustomerAddGuide="false";
+        $scope.showCustomerAddGuide = true;
+      } else {
+      }
       $scope.goBack = function () {
         if ($ionicHistory.viewHistory().backView) {
           $ionicHistory.goBack();

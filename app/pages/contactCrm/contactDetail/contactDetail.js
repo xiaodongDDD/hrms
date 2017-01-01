@@ -86,7 +86,17 @@ angular.module('contactModule')
               $cordovaClipboard) {
       /*console.log($ionicHistory.viewHistory().currentView.stateName);
       console.log('contactDetailCtrl.enter');*/
+      $scope.showContactDetailGuide;
       $scope.showLoading = true;
+      $scope.buttonTapped=function(){
+        $scope.showContactDetailGuide = false;
+        window.localStorage.showContactDetailGuide=false;
+      };
+      if (!window.localStorage.showContactDetailGuide || window.localStorage.guideHelpAuto == "true") {
+        window.localStorage.showContactDetailGuide="false";
+        $scope.showContactDetailGuide = true;
+      } else {
+      }
       $scope.$on('$ionicView.enter', function (e) {
         $rootScope.img = "build/img/tabs/edit_add@3x_5.png";
         var url = baseConfig.basePath + "customer_contact_detail";
