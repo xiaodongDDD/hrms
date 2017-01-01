@@ -498,7 +498,7 @@ angular.module('opportunityModule')
           saleTeam: tempOpportunity.saleTeamName,
           customerName: tempOpportunity.customerName,
           customerContactsName: tempOpportunity.customersContactsName,
-          saleBelong: tempOpportunity.saleAreaName + ' | ' + tempOpportunity.saleTeamName,
+          saleBelong: tempOpportunity.saleAreaName + (tempOpportunity.saleTeamName == "" ? "" : (' | ' + tempOpportunity.saleTeamName)),
           originalFactoryFrom: tempOpportunity.originalFactoryFromName,
           winningCompetitor: tempOpportunity.winningCompetitorName
         };
@@ -512,6 +512,20 @@ angular.module('opportunityModule')
           customerId: $scope.data.customerId,
           customerName: $scope.showData.customerName
         };
+
+        if(tempOpportunity.majorIndustryName == "") {
+          $scope.showData.industry = "";
+        }
+        else {
+          $scope.showData.majorIndustry = tempOpportunity.majorIndustryName;
+          $scope.showData.industry = tempOpportunity.majorIndustryName;
+          $scope.data.majorIndustry = tempOpportunity.majorIndustry;
+          if(tempOpportunity.subIndustryName != ""){
+            $scope.showData.subIndustry = tempOpportunity.subIndustryName;
+            $scope.showData.industry = tempOpportunity.majorIndustryName + " | " + tempOpportunity.subIndustryName;
+            $scope.data.subIndustry = tempOpportunity.subIndustry;
+          }
+        }
 
         opportunityAddService.getCustomerDetail(getCustomerDetailSuccess, $scope.data.customerId);
 
@@ -779,7 +793,7 @@ angular.module('opportunityModule')
           hmsPopup.showShortCenterToast("商机名称重复，请重新输入！");
           return ;
         }
-        if($scope.data.opportunityStatus == ''){
+        if($scope.showData.opportunityStatus == ''){
           hmsPopup.showShortCenterToast("商机状态不能为空！");
           return ;
         }
@@ -990,6 +1004,7 @@ angular.module('opportunityModule')
 
       var getCompetitorResultSuccess = function(response){
         var flag = false;
+        scope.showCrmLoading = false;
         if(response.returnCode == 'S'){
           $scope.items = [];
           for(var i = 0; i < response.search_result.length; i++){

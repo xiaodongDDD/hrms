@@ -1051,7 +1051,8 @@ angular.module('opportunityModule')
       //得到看板数据
       this.getBoardData = function(success, type){
         var params = {
-          type: type
+          type: type,
+          theYear: (new Date()).getFullYear()
         };
         hmsHttp.post(baseUrl + 'opportunity_performance', params).success(function(result) {
           success(result);

@@ -167,9 +167,9 @@ angular.module('opportunityModule')
       }, {
         title: "负责人",
         icon: "icon_partner"
-   	  }, {
-		title: "保证金",
-		icon: "icon_moeny_gray"
+   	  // }, {
+		  //   title: "保证金",
+		  //   icon: "icon_moeny_gray"
       // }, {
       //   title: "报价",
       //   icon: "icon_moeny_gray"
