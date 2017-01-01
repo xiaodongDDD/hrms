@@ -470,7 +470,7 @@ angular.module('opportunityModule')
               hmsPopup.showPopup('商机已被停用，无法进行操作。');
               return ;
             }
-            if($scope.opportunity.opportunityStatus == 'HCRM_CLOSED'){
+            if($scope.opportunity.opportunityStatus == 'HCRM_SALE_CLOSED'){
               hmsPopup.showPopup('商机已关闭，无法进行操作。');
               return ;
             }
