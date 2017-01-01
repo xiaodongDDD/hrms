@@ -57,16 +57,17 @@
 
   <div class="common-fix-div" ng-class="{true:'showUp'}[showSelect]">
     <div class="common-fix-div-header">
-      <span class="left" ng-click="showSelectDiv()">返回</span>
+      <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="showSelectDiv()"/>
       请选择
-      <span class="right">清选</span>
     </div>
     <div class="sifting-area">
-      <input type="text" placeholder="搜索..." ng-change="searchValue()" ng-model="searchValueKey"/>
+      <img src="build/img/application/opportunity/icon_top_search@3x.png">
+      <input type="search" placeholder="搜索" ng-change="searchValue()" ng-model="searchValueKey"/>
+      <img src="build/img/application/icon_circle@3x.png" ng-show="searchValueKey != ''" ng-click="clearSelectFilter()">
     </div>
     <div class="list">
-      <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false">
-        <div class="item" ng-repeat="item in items track by $index" ng-click="selectItem($index)">{{item[nowSelectTarget['showKey']]}}</div>
+      <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="transferScroll">
+        <div class="list-item" ng-repeat="item in items track by $index" ng-click="selectItem($index)">{{item.showModal}}</div>
       </ion-scroll>
     </div>
   </div>
