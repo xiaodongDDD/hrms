@@ -170,10 +170,9 @@ angular.module('contactModule')
         }
 
         initContactDetail();
-        $rootScope.$on("REFRESH_LINKMAN_UPDATE", function () {
-          $scope.showLoading = true;
-          initContactDetail();
-        });
+      /*  $rootScope.$on("REFRESH_LINKMAN_UPDATE", function () {
+          $scope.showLoading = true;*/
+      /*  });*/
         //长按复制
         stop_browser_behavior: false
         self.touchStart = function (e) {
@@ -369,7 +368,7 @@ angular.module('contactModule')
                       hmsPopup.hideLoading();
                       if (data.returnCode == "S") {
                         hmsPopup.showPopup(data.returnMsg);
-                        $rootScope.$broadcast("REFRESH_LINKMAN_UPDATE");
+                        initContactDetail();
                       } else {
                         hmsPopup.showPopup(data.returnMsg);
                       }
@@ -458,7 +457,7 @@ angular.module('contactModule')
                     hmsPopup.hideLoading();
                     if (data.returnCode == "S") {
                       hmsPopup.showPopup(data.returnMsg);
-                      $rootScope.$broadcast("REFRESH_LINKMAN_UPDATE");
+                      initContactDetail();
                     } else {
                       hmsPopup.showPopup(data.returnMsg);
                     }
