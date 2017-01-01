@@ -192,7 +192,8 @@
 
     if(!window.localStorage.notFirstInPlan)
       window.localStorage.notFirstInPlan = false;
-    $scope.showGuide = !window.localStorage.notFirstInPlan;
+    $scope.showGuide = window.localStorage.notFirstInPlan == 'false';
+    console.log($scope.showGuide);
 
     var guideImgs = [
       "build/img/plans/guide1.png",
