@@ -57,6 +57,7 @@ angular.module('clueModule')
       $scope.$on('HAVE_DATA_CLUE',function(event,data){
         $scope.data.customerId = data.customerId;
         $scope.showData.customerName = data.customerName;
+        opportunityAddService.getCustomerDetail(getCustomerDetailSuccess, $scope.data.customerId);
       });
 
       $scope.hideAreaFlag = [];
