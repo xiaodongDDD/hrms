@@ -98,11 +98,11 @@ angular.module('planModule')
         week: showTime(new Date()),
         saleContent: ""
       };*/
-      $scope.data = {
-        "customerId": "",
-        "opportunityId": "",
-        "isImportant":"N"
-      };
+/*      $scope.data = {
+        "customerId": $stateParams.planData.customerId,
+        "opportunityId": $stateParams.planData.opportunityId,
+        "isImportant":$stateParams.planData.isImportant
+      };*/
   /*    $scope.$on('$ionicView.enter', function (e) {
         if (isNotNullObj($stateParams.planData)) {
           console.log("====");
@@ -168,7 +168,7 @@ angular.module('planModule')
             "opportunityId": $stateParams.planData.opportunityId,
             "timeBucket": "HCRM_MORNING",
             "saleContent": "",
-            "isImportant": "N",
+            "isImportant":$stateParams.planData.isImportant,
             "userId": window.localStorage.empno,
             "planType": "HCRM_NEW_PLAN",
             "planSource": null,
@@ -184,11 +184,16 @@ angular.module('planModule')
         /*  var date = new Date(2013,08,30);
           alert(date.getTime());*/
           /*     new Date().getFullYear();*/
+          if($stateParams.planData.planDate){
+            $scope.data.planDate=$stateParams.planData.planDate;
+          }else{
+            $scope.data.planDate= $filter('date')(new Date(), 'yyyy-MM-dd');
+          }
           $scope.showData = {
             fullName: $stateParams.planData.fullName,
             opportunityName: $stateParams.planData.opportunityName,
             planTime: "",
-            week: showTime(new Date($stateParams.planData.planDate)),
+            week: showTime(new Date($scope.data.planDate)),
             saleContent: ""
           };
         } else {
@@ -214,6 +219,30 @@ angular.module('planModule')
             saleContent: ""
           };
         }
+        //通用选择弹窗
+        $scope.selectTargets = [{
+          'key': 'contact',
+          'interface': plansAddService.searchCustomer,  //获得选择项的接口
+          'params': [initCustomerSuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize],  //获得选择项时接口所需参数
+          'showKey': 'fullName',            //选择界面显示的数据
+          'dataKey': 'customerId',      //对象内最终操作提交所需的数据变量
+          'dataModel': '$scope.data.customerId',  //最终操作提交所需的数据变量
+          'showDataModel': '$scope.showData.fullName', //显示在界面上的ng-model
+          'searchInterface': plansAddService.searchCustomer,
+          'searchParams': getCustomerSearchSuccess,
+          'needShowMore': true
+        }, {
+          'key': 'business',
+          'interface': plansAddService.getBusiness,  //获得选择项的接口
+          'params': [getBusinessSuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId],  //获得选择项时接口所需参数
+          'showKey': 'opportunityName',            //选择界面显示的数据
+          'dataKey': 'opportunityId',      //对象内最终操作提交所需的数据变量
+          'dataModel': '$scope.data.opportunityId',  //最终操作提交所需的数据变量
+          'showDataModel': '$scope.showData.opportunityName', //显示在界面上的ng-model,
+          'searchInterface': plansAddService.getBusiness,
+          'searchParams': getOpportunitySearchSuccess,
+          'needShowMore': true
+        }];
       });
       $scope.items = [];
       $scope.weekData = {
@@ -540,30 +569,7 @@ angular.module('planModule')
             }, 0);
           });
       };
-      //通用选择弹窗
-      $scope.selectTargets = [{
-        'key': 'contact',
-        'interface': plansAddService.searchCustomer,  //获得选择项的接口
-        'params': [initCustomerSuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize],  //获得选择项时接口所需参数
-        'showKey': 'fullName',            //选择界面显示的数据
-        'dataKey': 'customerId',      //对象内最终操作提交所需的数据变量
-        'dataModel': '$scope.data.customerId',  //最终操作提交所需的数据变量
-        'showDataModel': '$scope.showData.fullName', //显示在界面上的ng-model
-        'searchInterface': plansAddService.searchCustomer,
-        'searchParams': getCustomerSearchSuccess,
-        'needShowMore': true
-      }, {
-        'key': 'business',
-        'interface': plansAddService.getBusiness,  //获得选择项的接口
-        'params': [getBusinessSuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId],  //获得选择项时接口所需参数
-        'showKey': 'opportunityName',            //选择界面显示的数据
-        'dataKey': 'opportunityId',      //对象内最终操作提交所需的数据变量
-        'dataModel': '$scope.data.opportunityId',  //最终操作提交所需的数据变量
-        'showDataModel': '$scope.showData.opportunityName', //显示在界面上的ng-model,
-        'searchInterface': plansAddService.getBusiness,
-        'searchParams': getOpportunitySearchSuccess,
-        'needShowMore': true
-      }];
+
       $scope.loadMore = function () {
         console.log('loadMore ...');
         $scope.nowPage++;

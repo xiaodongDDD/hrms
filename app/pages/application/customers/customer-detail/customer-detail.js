@@ -396,8 +396,8 @@ angular.module('customerModule')
           if ($index == 0) {
             $scope.imgButton = true;
             var addData = {
-              customerId: $scope.customerId,
-              fullName: $scope.customer.fullName
+              customerId: $stateParams.customerDetail.customerId,
+              fullName:$stateParams.customerDetail.fullName
             };
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-state/customer-detail-state.html";
             $scope.chooseThis = function () {
