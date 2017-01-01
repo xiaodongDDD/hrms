@@ -39,6 +39,8 @@ angular.module('clueModule')
     '$filter',
     'opportunityPermissionService',
     '$cordovaClipboard',
+    '$cordovaGeolocation',
+    '$http',
     function($scope,
              $state,
              publicMethod,
@@ -55,7 +57,9 @@ angular.module('clueModule')
              $ionicModal,
              $filter,
              opportunityPermissionService,
-             $cordovaClipboard) {
+             $cordovaClipboard,
+             $cordovaGeolocation,
+             $http) {
 
       $scope.clueId = $stateParams.data;
 
@@ -73,7 +77,8 @@ angular.module('clueModule')
         window.localStorage.customerId = $scope.clue.customerId;
         $state.go('tab.customer-detail');
       };
-
+      $scope.myLocation = {};
+      $scope.cusLocation = {};
       $scope.subHeaders = [{
         title:"销售动态",
         icon:"icon_windmill"
@@ -516,6 +521,91 @@ angular.module('clueModule')
         $scope.searchModel.searchValueKey = '';
         $scope.searchSelectValue();
       };
+
+
+      //地图导航
+      $scope.showLocation = function () {
+        var hideSheet = $ionicActionSheet.show({
+          buttons: [
+            {text: '复制地址'},
+            {text: '地图导航'}
+          ],
+          cancelText: '取消',
+          cancel: function () {
+            // add cancel code..
+          },
+          buttonClicked: function (index) {
+            if (index == 0) {
+              $scope.copyAddress();
+            } else if (index == 1) {
+              $scope.openLocation();
+            }
+            return true;
+          }
+        });
+      }
+      var onSuccess = function (position1) {
+        console.log('成功=='+angular.toJson(position1));
+        $scope.myLocation.lat = position1.coords.latitude;
+        $scope.myLocation.lng = position1.coords.longitude;
+        //通过客户地址返回客户所在地经纬度
+        var cusUrl = "http://api.map.baidu.com/geocoder/v2/?callback=renderOption()&output=json&address="+$scope.customerAddress.cityName+
+          $scope.customerAddress.zoneName+$scope.customerAddress.addressDetails+ "&city="+$scope.customerAddress.cityName+"&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
+        //alert(cusUrl);
+        $http.post(cusUrl).success(function (data) {
+          console.log('请求数据成功！！');
+          console.log(data);
+          if(data.result!=''&&data.status==0&&(data.result.level=='城市'||data.result.level=='区县'||data.result.level=='道路'||data.result.level=='旅游景点'||data.result.level=='购物')){
+            console.log("json==="+angular.toJson(data.result.location));
+            $scope.cusLocation.lat = data.result.location.lat;
+            $scope.cusLocation.lng = data.result.location.lng;
+            // 通过 Ip 定位自己返回经纬度 、详细地址信息。
+            var locUrl = "https://api.map.baidu.com/location/ip?ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2&coor=bd09ll"
+            $http.post(locUrl).success(function (data) {
+              console.log('请求数据成功！！');
+              console.log(data);
+              if(data.content==''){
+                hmsPopup.showPopup('当前位置定位失败');
+              }else {
+                $scope.myLocation.address = data.content.address;
+                $scope.myLocation.province = data.content.address_detail.province;
+                var url = "https://api.map.baidu.com/direction?origin=latlng:"+$scope.myLocation.lat+","+$scope.myLocation.lng+"|name:"+ $scope.myLocation.address+
+                  "&destination=latlng:"+$scope.cusLocation.lat+","+$scope.cusLocation.lng+"|name:"+$scope.customerAddress.addressDetails+
+                  "&mode=driving&origin_region="+$scope.myLocation.province+"&destination_region="+$scope.customerAddress.cityName+
+                  "&output=html&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2";
+                window.open(encodeURI(url), '_system', 'location=yes');
+              }
+            }).error(function (data) {
+              console.log('请求数据失败！！');
+            })
+
+          }else {
+            hmsPopup.showPopup('客户地址解析失败，请检查客户地址是否正确');
+          }
+        }).error(function (data) {
+          console.log('请求数据失败！！');
+          hmsPopup.showPopup('客户地址解析失败，请检查客户地址是否正确');
+        })
+      };
+
+      var onError = function (error) {
+        console.log('错误== '+error);
+        //alert('错误== '+angular.toJson(error));
+        hmsPopup.showPopup('当前定位失败！'+angular.toJson(error));
+      }
+
+
+      //地图
+      $scope.openLocation = function () {
+        var options = {
+          enableHighAccuracy: true,  // 是否使用 GPS
+          maximumAge: 30000,         // 缓存时间
+          timeout: 27000,            // 超时时间
+          coorType: 'bd09ll'         // 默认是 gcj02，可填 bd09ll 以获取百度经纬度用于访问百度 API
+        }
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+
+      }
 
     }]);
 

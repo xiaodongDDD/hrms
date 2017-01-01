@@ -982,6 +982,7 @@ angular.module('opportunityModule')
         navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
       }
+
     }]).directive('scrollHeight', function ($window) {
     return {
       restrict: 'AE',
