@@ -190,9 +190,9 @@
     $scope.contentHeight = {};
     $scope.calendarStyle = {};
 
-    if(!window.localStorage.firstInPlan)
-      window.localStorage.firstInPlan = true;
-    $scope.showGuide = window.localStorage.firstInPlan;
+    if(!window.localStorage.notFirstInPlan)
+      window.localStorage.notFirstInPlan = false;
+    $scope.showGuide = !window.localStorage.notFirstInPlan;
 
     var guideImgs = [
       "build/img/plans/guide1.png",
@@ -204,7 +204,7 @@
 
     function nextGuide (){
       if($scope.guideIndex == 3){
-        window.localStorage.firstInPlan = false;
+        window.localStorage.notFirstInPlan = true;
         $scope.showGuide = false;
       }
       $scope.guideImg = guideImgs[++$scope.guideIndex];

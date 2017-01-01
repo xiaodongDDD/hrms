@@ -557,16 +557,6 @@ angular.module('clueModule')
             $scope.goBack();
           return ;
         }
-        // if(response.approveType != "HCRM_APPROVED"){
-        //   if($scope.sourceCustomer){
-        //     $scope.data.customerId = $scope.sourceCustomer.customerId;
-        //     $scope.showData.customerName = $scope.sourceCustomer.customerName;
-        //   }
-        //   hmsPopup.showPopup('客户未审核，不能进行创建！');
-        //   if($scope.customerDataFlag)
-        //     $scope.goBack();
-        //   return ;
-        // }
         if(!response.contactFlag){
           if($scope.sourceCustomer){
             $scope.data.customerId = $scope.sourceCustomer.customerId;
