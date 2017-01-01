@@ -24,8 +24,8 @@
     "appRootFile": "helloCordova",
     "appUpId":"com.hand-china.hrms",
     "version":{
-      "currentVersion": "2.1.0",
-      "currentversionName": "此版本为正式版本2.1.0",
+      "currentVersion": "2.3.0",
+      "currentversionName": "此版本为正式版本2.3.0",
       "currentSubVersion": "5",
       "currentSubVersionName": "资源增量包5"
     }

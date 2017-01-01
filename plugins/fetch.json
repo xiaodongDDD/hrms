@@ -73,6 +73,16 @@
         "is_top_level": true,
         "variables": {}
     },
+    "hand-im-plugin-device": {
+        "source": {
+            "type": "local",
+            "path": "E:\\hrms4\\hand-im-plugin-device"
+        },
+        "is_top_level": true,
+        "variables": {
+            "RONG_KEY": "e5t4ouvptpsaa"
+        }
+    },
     "cn.jpush.phonegap.JPushPlugin": {
         "source": {
             "type": "registry",
@@ -80,7 +90,7 @@
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY": "6e0b08078306f45ac8331d54"
+            "API_KEY": "22b25063349b6beef7bde524"
         }
     }
 }

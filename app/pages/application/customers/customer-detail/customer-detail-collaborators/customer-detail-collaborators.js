@@ -268,7 +268,7 @@ angular.module('customerModule')
           "customerId": customerDetailService.getCustomerId(),
           "transferBeforEmp": window.localStorage.empno,
           "transferAfterEmp": data,
-          "effectiveDate": date,
+          "effectiveDate": "",
           "description": "转移原因"
         };
         console.log('客户转移值=='+angular.toJson(transferParam));

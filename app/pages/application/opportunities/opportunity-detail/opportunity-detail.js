@@ -321,7 +321,7 @@ angular.module('opportunityModule')
                       "opportunityId": param.opportunityId,
                       "transferBeforEmp": window.localStorage.empno,
                       "transferAfterEmp": $scope.data.employeeId,
-                      "effectiveDate": date,
+                      "effectiveDate": "",
                       "description": "转移原因"
                     };
                     opportunityDetailService.opportunityTransfer(transferSuccessInit, transferParam);
@@ -391,7 +391,7 @@ angular.module('opportunityModule')
                     "opportunityId": param.opportunityId,
                     "transferBeforEmp": window.localStorage.empno,
                     "transferAfterEmp": $scope.data.employeeId,
-                    "effectiveDate": date,
+                    "effectiveDate": "",
                     "description": "转移原因"
                   };
                   opportunityDetailService.opportunityTransfer(transferSuccessInit, transferParam);
