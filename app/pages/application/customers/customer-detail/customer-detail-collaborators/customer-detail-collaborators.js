@@ -44,7 +44,7 @@ angular.module('customerModule')
       $scope.collaboratorData = {
         "page": 1,
         "pageSize": 10,
-        "customerId": window.localStorage.customerId
+        "customerId": customerDetailService.getCustomerId()
       };
       $scope.searchModel = {
         searchValueKey: ""
@@ -120,7 +120,7 @@ angular.module('customerModule')
         $scope.data  = {
           "page": 1,
           "pageSize": 10,
-          "customerId": window.localStorage.customerId
+          "customerId": customerDetailService.getCustomerId()
         };
         $scope.moreDataCanBeLoaded = true;
         customerDetailCollaborator.getCollaborator(doRefreshSuccess, $scope.data );
@@ -140,7 +140,7 @@ angular.module('customerModule')
         console.log(item);
         var deleteData = {
           shareId: item.shareId,
-          customerId:window.localStorage.customerId
+          customerId:customerDetailService.getCustomerId()
         };
         customerDetailService.collaboratorInvalid(deleteData, invalidSuccess, index);
       };
@@ -265,7 +265,7 @@ angular.module('customerModule')
         eval(showDataModel + " = showKey");
         var date = $filter('date')(new Date(), 'yyyy-MM-dd');
         var transferParam = {
-          "customerId": window.localStorage.customerId,
+          "customerId": customerDetailService.getCustomerId(),
           "transferBeforEmp": window.localStorage.empno,
           "transferAfterEmp": data,
           "effectiveDate": date,

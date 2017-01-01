@@ -43,7 +43,7 @@ angular.module('customerModule')
         contactId: "",
         contactType: "",
         status: "",
-        customerId: window.localStorage.customerId
+        customerId: customerDetailService.getCustomerId()
       };
       $scope.linkmanData = [];
  /*     hmsPopup.showLoading("加载中");*/
@@ -106,7 +106,7 @@ angular.module('customerModule')
           contactId: "",
           contactType: "",
           status: "",
-          customerId: window.localStorage.customerId
+          customerId: customerDetailService.getCustomerId()
         };
         $scope.moreDataCanBeLoaded = true;
         customerLinkman.getGetContactsList(doRefreshSuccess, $scope.data );

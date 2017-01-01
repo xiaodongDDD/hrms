@@ -39,6 +39,7 @@ angular.module('customerModule')
     'opportunityAddService',
     '$ionicScrollDelegate',
     '$cordovaDatePicker',
+    'customerDetailService',
     function ($scope,
               $rootScope,
               $state,
@@ -56,7 +57,8 @@ angular.module('customerModule')
               baseConfig,
               opportunityAddService,
               $ionicScrollDelegate,
-              $cordovaDatePicker) {
+              $cordovaDatePicker,
+              customerDetailService) {
       $scope.isIos = false;
       $scope.showShift = false;
       $scope.showSort = false;
@@ -170,6 +172,7 @@ angular.module('customerModule')
 
       $scope.goDetail = function (customer) {
         window.localStorage.customerId = customer.customerId;
+        customerDetailService.setCustomerId(customer.customerId);
         window.localStorage.fullName= customer.fullName;
         customerService.setIsCustomer(true);
         console.log(customer);

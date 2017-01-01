@@ -32,7 +32,7 @@ angular.module('customerModule')
       $scope.value =  {
         page: 1,
         pageSize: 15,
-        customerId: window.localStorage.customerId
+        customerId: customerDetailService.getCustomerId()
       };
       $scope.showLoading = true;
       $scope.loadMoreDataFlag = false;
@@ -53,7 +53,7 @@ angular.module('customerModule')
             $scope.loadMoreDataFlag = false;
           }else{
             $scope.states = response.dynamics;
-            $scope.loadMoreDataFlag = result.dynamics.length== $scope.value.pageSize;
+            $scope.loadMoreDataFlag = response.dynamics.length== $scope.value.pageSize;
             /*   console.log($scope.customers.length)*/
           }
 
@@ -127,7 +127,7 @@ angular.module('customerModule')
        $scope.value =  {
          page: 1,
          pageSize: 10,
-         customerId: window.localStorage.customerId
+         customerId: customerDetailService.getCustomerId()
        };
        console.log("销售动态页面的ID==="+window.localStorage.customerId)
         $scope.$apply();

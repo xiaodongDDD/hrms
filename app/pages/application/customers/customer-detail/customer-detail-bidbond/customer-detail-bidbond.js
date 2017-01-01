@@ -24,7 +24,7 @@ angular.module('customerModule')
 			customerDetailService.setTabNumber(6);
 			$scope.page = 1;
 			$scope.pageSize = 10;
-			$scope.customerId = window.localStorage.customerId;
+			$scope.customerId = customerDetailService.getCustomerId();
 
 			$scope.showLoading = true;
 
