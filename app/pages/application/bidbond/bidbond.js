@@ -63,12 +63,10 @@ angular.module('bidbondModule')
 			};
 
 			$scope.data = {
-				dataStatus: "",
 				currency: "",
 				page: 1,
 				pageSize: "10",
-				fullName: "",
-				shortName: "",
+				customerId: "",
 				workflowStatus: "",
 				applicationId: ""
 			};

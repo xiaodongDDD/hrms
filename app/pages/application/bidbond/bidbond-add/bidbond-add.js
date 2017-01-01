@@ -73,10 +73,10 @@ angular.module('bidbondModule')
 			$scope.readonly = {
 				readonlyFlag: false
 			};
-			$scope.data = {
+		/*	$scope.data = {
 				"customerId": "",
 				"opportunityId": ""
-			};
+			};*/
 
 			$scope.showDisable = false;
 			var getToday = function() {
@@ -211,6 +211,79 @@ angular.module('bidbondModule')
 						applicationId: ""
 					};
 				}
+					//通用选择弹窗
+			$scope.selectTargets = [{
+				'key': 'customer',
+				'interface': addbidbondService.getCustomers, //获得选择项的接口
+				'params': [getCustomerSuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize], //获得选择项时接口所需参数
+				'dataKey': 'customerId', //对象内最终操作提交所需的数据变量
+				'showKey': 'fullName', //选择界面显示的数据
+				'dataModel': '$scope.data.customerId', //最终操作提交所需的数据变量
+				'showDataModel': '$scope.showData.fullName', //显示在界面上的ng-model
+				'searchInterface': addbidbondService.getCustomers,
+				'searchParams': getCustomerSearchSuccess,
+				'needShowMore': true
+			}, {
+				'key': 'business',
+				'interface': addbidbondService.getOpportunity, //获得选择项的接口
+				'params': [getOpportunitySuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId], //获得选择项时接口所需参数
+				'showKey': 'opportunityName', //选择界面显示的数据
+				'dataKey': 'opportunityId', //对象内最终操作提交所需的数据变量
+				'dataModel': '$scope.data.opportunityId', //最终操作提交所需的数据变量
+				'showDataModel': '$scope.showData.opportunityName', //显示在界面上的ng-model,
+				'searchInterface': addbidbondService.getOpportunity,
+				'searchParams': getOpportunitySearchSuccess,
+				'needShowMore': true
+			}, {
+				'key': 'company',
+				'interface': addbidbondService.getCompany,
+				'params': [getCompanySuccess, $scope.nowPage, $scope.pageSize],
+				'showKey': 'companyName',
+				'dataKey': 'theCompany',
+				'dataModel': '$scope.data.companyId',
+				'showDataModel': '$scope.showData.companyName'
+			}, {
+				'key': 'project',
+				'interface': addbidbondService.getProject,
+				'params': [getProjectSuccess, $scope.nowPage, $scope.pageSize],
+				'dataKey': 'projectId',
+				'showKey': 'projectName',
+				'dataModel': '$scope.data.projectId',
+				'showDataModel': '$scope.showData.projectName'
+			}, {
+				'key': 'unitId',
+				'interface': addbidbondService.getUnitId,
+				'params': [getUnitIdSuccess, $scope.nowPage, $scope.pageSize],
+				'dataKey': 'hrUnitId',
+				'showKey': 'hrFullUnitName',
+				'dataModel': '$scope.data.unitId',
+				'showDataModel': '$scope.showData.hrFullUnitName'
+			}, {
+				'key': 'currency',
+				'interface': showValueInList,
+				'params': ['HCRM.CURRENCY'],
+				'showKey': 'description',
+				'dataKey': 'value',
+				'dataModel': '$scope.data.currency',
+				'showDataModel': '$scope.showData.currencyName'
+			}, {
+				'key': 'expectPaymentType',
+				'interface': showValueInList,
+				'params': ['HCRM.DEPOSIT_PAYMENT'],
+				'showKey': 'description',
+				'dataKey': 'value',
+				'dataModel': '$scope.data.expectPaymentType',
+				'showDataModel': '$scope.showData.expectPaymentTypeValue'
+			}, {
+				'key': 'fromBasicAccount',
+				'interface': showValueInList,
+				'params': ['HCRM.YES_NO'],
+				'showKey': 'description',
+				'dataKey': 'value',
+				'dataModel': '$scope.data.fromBasicAccount',
+				'showDataModel': '$scope.showData.fromBasicAccountValue'
+			}];
+
 			});
 
 			$scope.titleList = {
@@ -763,79 +836,7 @@ angular.module('bidbondModule')
 			//根据时间戳刷新页面值列表
 			addbidbondService.getValueList(getValueListSuccess, bidbond_value_list);
 
-			//通用选择弹窗
-			$scope.selectTargets = [{
-				'key': 'customer',
-				'interface': addbidbondService.getCustomers, //获得选择项的接口
-				'params': [getCustomerSuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize], //获得选择项时接口所需参数
-				'dataKey': 'customerId', //对象内最终操作提交所需的数据变量
-				'showKey': 'fullName', //选择界面显示的数据
-				'dataModel': '$scope.data.customerId', //最终操作提交所需的数据变量
-				'showDataModel': '$scope.showData.fullName', //显示在界面上的ng-model
-				'searchInterface': addbidbondService.getCustomers,
-				'searchParams': getCustomerSearchSuccess,
-				'needShowMore': true
-			}, {
-				'key': 'business',
-				'interface': addbidbondService.getOpportunity, //获得选择项的接口
-				'params': [getOpportunitySuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId], //获得选择项时接口所需参数
-				'showKey': 'opportunityName', //选择界面显示的数据
-				'dataKey': 'opportunityId', //对象内最终操作提交所需的数据变量
-				'dataModel': '$scope.data.opportunityId', //最终操作提交所需的数据变量
-				'showDataModel': '$scope.showData.opportunityName', //显示在界面上的ng-model,
-				'searchInterface': addbidbondService.getOpportunity,
-				'searchParams': getOpportunitySearchSuccess,
-				'needShowMore': true
-			}, {
-				'key': 'company',
-				'interface': addbidbondService.getCompany,
-				'params': [getCompanySuccess, $scope.nowPage, $scope.pageSize],
-				'showKey': 'companyName',
-				'dataKey': 'theCompany',
-				'dataModel': '$scope.data.companyId',
-				'showDataModel': '$scope.showData.companyName'
-			}, {
-				'key': 'project',
-				'interface': addbidbondService.getProject,
-				'params': [getProjectSuccess, $scope.nowPage, $scope.pageSize],
-				'dataKey': 'projectId',
-				'showKey': 'projectName',
-				'dataModel': '$scope.data.projectId',
-				'showDataModel': '$scope.showData.projectName'
-			}, {
-				'key': 'unitId',
-				'interface': addbidbondService.getUnitId,
-				'params': [getUnitIdSuccess, $scope.nowPage, $scope.pageSize],
-				'dataKey': 'hrUnitId',
-				'showKey': 'hrFullUnitName',
-				'dataModel': '$scope.data.unitId',
-				'showDataModel': '$scope.showData.hrFullUnitName'
-			}, {
-				'key': 'currency',
-				'interface': showValueInList,
-				'params': ['HCRM.CURRENCY'],
-				'showKey': 'description',
-				'dataKey': 'value',
-				'dataModel': '$scope.data.currency',
-				'showDataModel': '$scope.showData.currencyName'
-			}, {
-				'key': 'expectPaymentType',
-				'interface': showValueInList,
-				'params': ['HCRM.DEPOSIT_PAYMENT'],
-				'showKey': 'description',
-				'dataKey': 'value',
-				'dataModel': '$scope.data.expectPaymentType',
-				'showDataModel': '$scope.showData.expectPaymentTypeValue'
-			}, {
-				'key': 'fromBasicAccount',
-				'interface': showValueInList,
-				'params': ['HCRM.YES_NO'],
-				'showKey': 'description',
-				'dataKey': 'value',
-				'dataModel': '$scope.data.fromBasicAccount',
-				'showDataModel': '$scope.showData.fromBasicAccountValue'
-			}];
-
+		
 			//			$scope.$watch('data.customerId', function(newValue, oldValue) {
 			//				$scope.nowPage = 1;
 			//				$scope.selectTargets[6].params = [getOpportunitySuccess, $scope.nowPage, $scope.pageSize, newValue];
@@ -942,11 +943,6 @@ angular.module('bidbondModule')
 				eval(dataModel + " = data");
 				eval(showDataModel + " = showKey");
 
-				//				if($scope.nowSelectTarget['key'] == 'customer') {
-				//					console.log($scope.items[$index]);
-				//					$scope.showData.opportunityName = $scope.items[$index].opportunityName;
-				//					$scope.data.opportunityId = $scope.items[$index].opportunityId;
-				//				}
 
 				if($scope.nowSelectTarget['key'] == 'customer') {
 					window.localStorage.customerId = $scope.items[$index].customerId;
