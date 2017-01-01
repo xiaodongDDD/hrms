@@ -242,6 +242,7 @@ angular.module('opportunityModule')
       var transferSuccessInit = function (result) {
         console.log(result);
         opportunityPermissionService.updatePermission();
+        $scope.selectSubHeader(4);
         hmsPopup.showPopup(result.returnMsg);
       };
       // var getCustomerEmployeeSuccess = function (response) {
@@ -315,8 +316,8 @@ angular.module('opportunityModule')
                     var transferParam = {
                       "opportunityId": param.opportunityId,
                       "transferBeforEmp": window.localStorage.empno,
-                      "transferAfterEmp": $scope.items[$index].employeeId,
-                      "effectiveDate": date,
+                      "transferAfterEmp": $scope.data.employeeId,
+                      "effectiveDate": "",
                       "description": "转移原因"
                     };
                     opportunityDetailService.opportunityTransfer(transferSuccessInit, transferParam);
@@ -380,8 +381,8 @@ angular.module('opportunityModule')
                   var transferParam = {
                     "opportunityId": param.opportunityId,
                     "transferBeforEmp": window.localStorage.empno,
-                    "transferAfterEmp": $scope.items[$index].employeeId,
-                    "effectiveDate": date,
+                    "transferAfterEmp": $scope.data.employeeId,
+                    "effectiveDate": "",
                     "description": "转移原因"
                   };
                   opportunityDetailService.opportunityTransfer(transferSuccessInit, transferParam);

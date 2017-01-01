@@ -214,7 +214,7 @@ angular.module('customerModule')
           "customerId": window.localStorage.customerId,
           "transferBeforEmp": $scope.leading_official.employeeCode,
           "transferAfterEmp": $scope.data.employeeId,
-          "effectiveDate": $filter('date')(new Date(), 'yyyy-MM-dd'),
+          "effectiveDate": "",
           "description": "转移原因"
         };
         customerDetailService.transferEmployee(transferParam, transferSuccess);

@@ -181,6 +181,7 @@ angular.module('customerModule')
       var transferCustomerSuccess = function (reslut) {
         if (reslut.returnCode == 'S') {
           hmsPopup.showPopup(reslut.returnMsg);
+          $scope.doRefresh();
         } else {
           if(reslut.returnMsg){
             hmsPopup.showShortCenterToast(reslut.returnMsg)
@@ -268,7 +269,7 @@ angular.module('customerModule')
           "customerId": customerDetailService.getCustomerId(),
           "transferBeforEmp": window.localStorage.empno,
           "transferAfterEmp": data,
-          "effectiveDate": date,
+          "effectiveDate": "",
           "description": "转移原因"
         };
         console.log('客户转移值=='+angular.toJson(transferParam));

@@ -188,7 +188,7 @@ angular.module('customerModule')
                         "customerId": $scope.customer.customerId,
                         "transferBeforEmp": window.localStorage.empno,
                         "transferAfterEmp": $scope.items[$index].userId,
-                        "effectiveDate": date,
+                        "effectiveDate": "",
                         "description": "转移原因"
                       };
                       customerDetailService.customerTransfer(transferCustomerSuccess, transferParam);
@@ -1060,6 +1060,7 @@ angular.module('customerModule')
       var transferCustomerSuccess = function (data) {
         if(data.returnCode=='S'){
           hmsPopup.showPopup(data.returnMsg);
+          $scope.selectSubHeader(3);
           customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
           customerDetailService.getPermissions(getPermissionsSuccess,$scope.permissionValue );
         }else{
