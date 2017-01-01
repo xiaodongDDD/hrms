@@ -83,7 +83,6 @@ angular.module('clueModule')
         hmsHttp.post(baseUrl + 'sale_dynamics', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           failure();
         });
 

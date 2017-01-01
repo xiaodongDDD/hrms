@@ -1037,7 +1037,6 @@ angular.module('opportunityModule')
           console.log(result);
           that.permissions = result.permissions.clone();
         }).error(function (response, status) {
-          hmsPopup.showPopup(response);
         });
       };
 

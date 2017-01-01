@@ -2099,7 +2099,6 @@ angular.module('opportunityModule')
         hmsHttp.post(baseUrl + 'business_unit', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
         });
       };
 
