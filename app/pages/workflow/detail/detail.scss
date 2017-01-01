@@ -513,6 +513,17 @@
 }
 
 .transmit-person-modal {
+
+  .bar.bar-stable {
+    background: #f8f8f8 !important;
+  }
+
+  .bar .buttons .button {
+    color: gray;
+    font-size: 17px;
+    margin-top: 2px;
+  }
+
   .transmit-search {
     width: 78%;
     margin-left: 15px;
@@ -522,7 +533,7 @@
     margin-top: 5px;
     padding-left: 15px;
     border-radius: 15px;
-    border: 1px solid #1F8CEB;
+    background: #e3e4e6;
     .transmit-button {
       float: left;
       width: 8%;
@@ -537,6 +548,7 @@
       margin-top: 4px;
       margin-bottom: 4px;
       border: none;
+      background: #e3e4e6;
     }
   }
 }

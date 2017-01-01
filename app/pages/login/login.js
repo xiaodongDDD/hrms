@@ -38,7 +38,7 @@ angular.module('loginModule')
       //将页面的导航bar设置成白色
       $ionicPlatform.ready(function () {
         if (window.StatusBar) {
-          StatusBar.styleLightContent();
+          StatusBar.styleDefault();
         }
       });
       /////////////////////////////////////

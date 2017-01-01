@@ -269,7 +269,7 @@
           color: #4A4A4A;
           font-size: 16px;
           input[type=date] {
-            background-color:transparent; 
+            background-color:transparent;
           }
         }
         .hms-singal-array-value {
@@ -505,35 +505,6 @@
           text-align: right;
         }
       }
-    }
-  }
-
-}
-
-.transmit-person-modal {
-  .transmit-search {
-    width: 78%;
-    margin-left: 15px;
-    background: white;
-    height: 28px;
-    color: gray;
-    margin-top: 5px;
-    padding-left: 15px;
-    border-radius: 15px;
-    .transmit-button {
-      float: left;
-      width: 8%;
-      margin-top: 5px;
-      font-size: 18px;
-    }
-    input {
-      float: left;
-      width: 85%;
-      height: 20px;
-      line-height: 20px;
-      margin-top: 4px;
-      margin-bottom: 4px;
-      border: none;
     }
   }
 }
