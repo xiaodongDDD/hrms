@@ -108,10 +108,11 @@ angular.module('customerModule')
         }, {
           title: "商机",
           icon: "icon_business"
-        }, {
-		  title: "保证金",
-		  icon: "icon_moeny_gray"
-		}];
+        }];
+      //,{
+		//  title: "保证金",
+		//  icon: "icon_moeny_gray"
+		//}];
         //  , {
         //  title: "变更日志",
         //  icon: "icon_letter"
