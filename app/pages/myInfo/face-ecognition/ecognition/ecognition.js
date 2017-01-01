@@ -45,6 +45,8 @@
     vm.setting = setting;
     vm.goBack = goBack;
     vm.meetThousand=meetThousand;
+    //上传图片到阿里云
+    vm.uploadAliYun =  uploadAliYun;
 
     function loginFace() {
       hmsPopup.showPopup('此功能下一版本上线');
@@ -136,6 +138,10 @@
 
     function meetThousand() {
       $state.go('tab.face-ecognition-meetThousand');
+    }
+
+    function uploadAliYun(){
+      $state.go('tab.upload-aliyun');
     }
   }
 })();
