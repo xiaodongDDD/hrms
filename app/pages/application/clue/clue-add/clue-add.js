@@ -569,7 +569,8 @@ angular.module('clueModule')
           return ;
         }
         console.log(response);
-        $scope.showSelectDiv();
+        if(!$scope.editFlag && !$scope.customerDataFlag)
+          $scope.showSelectDiv();
       };
 
       $scope.selectItem = function($index){
