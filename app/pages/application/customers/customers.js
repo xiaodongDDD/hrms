@@ -407,6 +407,11 @@ angular.module('customerModule')
         }];
         $scope.sourceItems = $scope.items.clone();
       }
+
+      //var valueError = function (response) {
+      //  $scope.showCrmLoading = false;
+      //  $scope.crmSelectModal.hide();
+      //}
       //所属大区
       var getSaleAreaSuccess = function (response) {
         $scope.showCrmLoading = false;
@@ -1087,6 +1092,7 @@ angular.module('customerModule')
         $scope.showLoading = true;
         $scope.data.page = 1;
         $scope.showShift = !$scope.showShift;
+        $scope.customers = [];
         console.log(JSON.stringify($scope.data));
         customerService.queryCustomer(queryCustomerSuccess,error,$scope.data);
         $ionicScrollDelegate.scrollTop(false);
@@ -1094,6 +1100,7 @@ angular.module('customerModule')
       $scope.sort = function(){
         $scope.data.page = 1;
         $scope.showLoading = true;
+        $scope.customers = [];
         customerService.queryCustomer(queryCustomerSuccess,error,$scope.data);
         $ionicScrollDelegate.scrollTop(false);
       };
@@ -1165,6 +1172,7 @@ angular.module('customerModule')
         hmsHttp.post(baseUrl + 'query_sale_area', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
+          //error(response);
           //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
