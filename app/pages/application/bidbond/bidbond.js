@@ -535,7 +535,7 @@ angular.module('bidbondModule')
 					success(result);
 				}).error(function(response, status) {
 					error(response);
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			};
@@ -564,7 +564,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'bidbond_detail', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 

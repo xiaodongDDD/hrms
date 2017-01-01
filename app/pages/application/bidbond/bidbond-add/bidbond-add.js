@@ -953,18 +953,19 @@ angular.module('bidbondModule')
 					window.localStorage.customerId = $scope.items[$index].customerId;
 					$scope.data.opportunityId = "";
 					$scope.showData.opportunityName = "";
+					$scope.nowPage=1;
 					$scope.selectTargets[1].params = [getOpportunitySuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
 				}
 				console.log(showKey);
 				console.log(data);
 				console.log($scope.items[$index].customerName);
 				if($scope.nowSelectTarget['key'] == 'business') {
-
+						$scope.nowPage=1;
 					if($scope.items[$index].customerName != "") {
 						$scope.data.customerId = $scope.items[$index].customerId;
 						$scope.showData.fullName = $scope.items[$index].customerName;
 					}
-					$scope.selectTargets[1].params = [getOpportunitySuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
+					$scope.selectTargets[1].params = [getOpportunitySuccess, $scope.showData.fullName, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
 				}
 
 				$scope.showSelectDiv();
@@ -1027,7 +1028,7 @@ angular.module('bidbondModule')
 			var validNameSuccess = function(response) {
 				$scope.validNameFlag = response.returnFlag;
 				if(!$scope.validNameFlag)
-					hmsPopup.showPopup('商机名称重复！请重新输入');
+					hmsPopup.showPopup('名称重复！请重新输入');
 			};
 
 			$scope.validName = function() {
@@ -1063,7 +1064,7 @@ angular.module('bidbondModule')
 					console.log(result);
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			};
@@ -1079,7 +1080,7 @@ angular.module('bidbondModule')
 					console.log(result);
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			};
@@ -1095,7 +1096,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'saleplan_customers', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 				});
 			};
 			//搜索客户
@@ -1108,7 +1109,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'select_customers', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1123,7 +1124,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'saleplan_opportunitys', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			};
@@ -1139,7 +1140,7 @@ angular.module('bidbondModule')
 					hmsPopup.hideLoading();
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 			}
@@ -1154,7 +1155,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'inside_company', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1168,7 +1169,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'query_projects', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1182,7 +1183,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'query_units', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1203,7 +1204,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'query_lookup', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//		hmsPopup.showPopup(response);
 				});
 			};
 
@@ -1215,7 +1216,7 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'opportunity_valid_name', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 				});
 			};
 			this.validbidbond = function(success, id) {
@@ -1225,14 +1226,14 @@ angular.module('bidbondModule')
 				hmsHttp.post(baseUrl + 'valid_bidbond', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 				});
 			};
 			this.bidbondSubmit = function(success, params) {
 				hmsHttp.post(baseUrl + 'bidbond_submit', params).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 				});
 			};
 

@@ -41,7 +41,7 @@ angular.module('customerModule')
 					var length = response.bidbond.length;
 					$scope.moreOpportunityCanBeLoaded = length == $scope.pageSize
 				} else {
-					//		          hmsPopup.showPopup(response.returnMsg);
+					//	 hmsPopup.showPopup(response.returnMsg);
 				}
 			};
 
@@ -77,7 +77,7 @@ angular.module('customerModule')
 					var length = response.bidbond.length;
 					$scope.moreDataCanBeLoaded = length == $scope.pageSize;
 				} else {
-					//					hmsPopup.showPopup(response.returnMsg);
+					//	hmsPopup.showPopup(response.returnMsg);
 				}
 			};
 
@@ -113,7 +113,7 @@ angular.module('customerModule')
 				hmsHttp.post(baseUrl + 'customer_bidbond', key).success(function(result) {
 					success(result);
 				}).error(function(response, status) {
-					//					hmsPopup.showPopup(response);
+					//	hmsPopup.showPopup(response);
 					hmsPopup.hideLoading();
 				});
 
