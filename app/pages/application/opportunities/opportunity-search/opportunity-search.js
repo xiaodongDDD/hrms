@@ -209,7 +209,6 @@ angular.module('competitorModule')
           success(result);
         }).error(function (response, status) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup(response.error_description);
         });
       }
     }]);

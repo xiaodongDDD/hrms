@@ -166,7 +166,6 @@ angular.module('contactModule')
 
           }).error(function (data) {
             hmsPopup.hideLoading();
-            hmsPopup.showPopup(data.error_description);
           });
         }
 

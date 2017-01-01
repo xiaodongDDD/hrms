@@ -537,7 +537,6 @@ angular.module('clueModule')
         hmsHttp.post(baseUrl + 'clue_detail', params).success(function(result) {
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
 
@@ -551,7 +550,6 @@ angular.module('clueModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -565,7 +563,6 @@ angular.module('clueModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -575,7 +572,6 @@ angular.module('clueModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -589,7 +585,6 @@ angular.module('clueModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -604,7 +599,6 @@ angular.module('clueModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
@@ -614,7 +608,6 @@ angular.module('clueModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function(response, status) {
-          hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
