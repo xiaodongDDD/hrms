@@ -345,6 +345,10 @@ angular.module('contactModule')
           /*   $scope.showLoading = false;*/
           hmsPopup.hideLoading();
           hmsPopup.showPopup("联系人类型不能为空")
+        }    else if ($scope.data.sex == "") {
+          /*   $scope.showLoading = false;*/
+          hmsPopup.hideLoading();
+          hmsPopup.showPopup("性别不能为空")
         } else if ($scope.data.name == "") {
           hmsPopup.hideLoading();
           hmsPopup.showPopup("联系人姓名不能为空")

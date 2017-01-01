@@ -59,6 +59,7 @@ angular.module('opportunityModule')
     'opportunityBidbondService',
     '$cordovaGeolocation',
     '$http',
+    'customerService',
     function ($scope,
               $ionicHistory,
               $state,
@@ -82,7 +83,8 @@ angular.module('opportunityModule')
               opportunityPermissionService,
     		      opportunityBidbondService,
               $cordovaGeolocation,
-              $http) {
+              $http,
+              customerService) {
 
       $rootScope.$broadcast("REFRESH_CUSTOMER_HISTORY");
 
@@ -156,6 +158,11 @@ angular.module('opportunityModule')
 
       initOpportunityData();
 
+      var getEmployeeDetailSuccess=function(result){
+       console.log(result);
+        $scope.userId=result.employee_detail.userId;
+      };
+      customerService.getEmployeeDetail(getEmployeeDetailSuccess);
       $scope.copyAddress = function () {
         if($scope.noPermissionCopy){
           hmsPopup.showPopup('抱歉，您无权查看该客户地址');
@@ -315,9 +322,9 @@ angular.module('opportunityModule')
                     var date = $filter('date')(new Date(), 'yyyy-MM-dd');
                     var transferParam = {
                       "opportunityId": param.opportunityId,
-                      "transferBeforEmp": window.localStorage.empno,
-                      "transferAfterEmp": $scope.items[$index].employeeId,
-                      "effectiveDate": date,
+                      "transferBeforEmp": $scope.userId,
+                      "transferAfterEmp": $scope.items[$index].userId,
+                      "effectiveDate": "",
                       "description": "转移原因"
                     };
                     opportunityDetailService.opportunityTransfer(transferSuccessInit, transferParam);
@@ -380,9 +387,9 @@ angular.module('opportunityModule')
                   var date = $filter('date')(new Date(), 'yyyy-MM-dd');
                   var transferParam = {
                     "opportunityId": param.opportunityId,
-                    "transferBeforEmp": window.localStorage.empno,
-                    "transferAfterEmp": $scope.items[$index].employeeId,
-                    "effectiveDate": date,
+                    "transferBeforEmp":$scope.userId,
+                    "transferAfterEmp": $scope.items[$index].userId,
+                    "effectiveDate":  "",
                     "description": "转移原因"
                   };
                   opportunityDetailService.opportunityTransfer(transferSuccessInit, transferParam);
@@ -1075,6 +1082,14 @@ angular.module('opportunityModule')
           pageSize: pageSize
         };
         hmsHttp.post(baseUrlTest + 'customer_employee', params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          //hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
+      this.getEmployeeDetail = function (success) {
+        hmsHttp.post(baseUrlTest + 'employee_detail').success(function (result) {
           success(result);
         }).error(function (response, status) {
           //hmsPopup.showPopup(response);
