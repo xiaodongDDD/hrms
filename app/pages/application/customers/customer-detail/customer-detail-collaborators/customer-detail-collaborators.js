@@ -103,18 +103,27 @@ angular.module('customerModule')
         }
       };
       var doRefreshSuccess=function(data){
-        console.log(data);
-        $scope.showCrmLoading = false;
-        if(data.collaborators.length<$scope.collaboratorData.pageSize||data.collaborators.length==0){
-          $scope.moreDataCanBeLoaded = false;
-        }
-        $scope.collaborators = data.collaborators;
-        for (var i = 0; i < $scope.collaborators.length; i++) {
-          if ($scope.collaborators[i].shareType == "HCRM_SHARE_TEAM"||$scope.collaborators[i].shareType == "TEAM") {
-            $scope.collaborators[i].name = $scope.collaborators[i].saleTeam;
+        if(data.returnCode=="S"){
+          console.log(data);
+          $scope.showCrmLoading = false;
+          if(data.collaborators.length<$scope.collaboratorData.pageSize||data.collaborators.length==0){
+            $scope.moreDataCanBeLoaded = false;
+          }
+          $scope.collaborators = data.collaborators;
+          for (var i = 0; i < $scope.collaborators.length; i++) {
+            if ($scope.collaborators[i].shareType == "HCRM_SHARE_TEAM"||$scope.collaborators[i].shareType == "TEAM") {
+              $scope.collaborators[i].name = $scope.collaborators[i].saleTeam;
+            }
+          }
+          $scope.leading_official = data.leading_official;
+        }else{
+          if(data.returnMsg){
+            hmsPopup.showShortCenterToast(data.returnMsg);
+          }else{
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！');
           }
         }
-        $scope.leading_official = data.leading_official;
+
       };
       $scope.doRefresh=function(){
         $scope.data  = {
