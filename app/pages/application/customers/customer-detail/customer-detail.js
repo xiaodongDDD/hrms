@@ -340,13 +340,13 @@ angular.module('customerModule')
 		}).then(function(modal) {
 			$scope.addbidbondModel = modal;
 		});
-		
+
 		$scope.$on('BIDBOND_ADD_SUCCESS', function() {
 			$scope.addbidbondModel().hide();
 			$scope.$broadcast("REFRESH_BIDBOND");
 			$ionicScrollDelegate.$getByHandle('detailScroll').scrollTop(false);
 		});
-		
+
 		$scope.$on('CLOSE_BIDBOND_ADD', function() {
 			$scope.addbidbondModel.hide();
 		});
@@ -516,10 +516,10 @@ angular.module('customerModule')
                 hmsPopup.showPopup('该客户已被禁用，无法创建线索');
                 return ;
               }
-              if($scope.customer.approveType != "HCRM_APPROVED"){
-                hmsPopup.showPopup('该客户未审核，无法创建线索');
-                return ;
-              }
+              // if($scope.customer.approveType != "HCRM_APPROVED"){
+              //   hmsPopup.showPopup('该客户未审核，无法创建线索');
+              //   return ;
+              // }
               $scope.searchModel = {
                 searchValueKey: ''
               };

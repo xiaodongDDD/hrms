@@ -463,6 +463,10 @@ angular.module('opportunityModule')
               hmsPopup.showPopup('商机已被停用，无法进行操作。');
               return ;
             }
+            if($scope.opportunity.opportunityStatus == 'HCRM_CLOSED'){
+              hmsPopup.showPopup('商机已关闭，无法进行操作。');
+              return ;
+            }
             if(!opportunityPermissionService.checkPermission('HCRM_OPERATION_EDIT')){
               hmsPopup.showPopup('抱歉，你没有权限这么做。');
               return ;
@@ -477,6 +481,10 @@ angular.module('opportunityModule')
           $scope.chooseThis = function () {
             if($scope.opportunity.status == 'HCRM_DISABLE'){
               hmsPopup.showPopup('商机已被停用，无法进行操作。');
+              return ;
+            }
+            if($scope.opportunity.opportunityStatus == 'HCRM_CLOSED'){
+              hmsPopup.showPopup('商机已关闭，无法进行操作。');
               return ;
             }
             if(!opportunityPermissionService.checkPermission('HCRM_OPERATION_EDIT')){

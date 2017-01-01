@@ -128,6 +128,8 @@
   .calendar {
     width: 100vw;
     flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
     display: flex;
     display: -webkit-box;
     display: -webkit-flex;
