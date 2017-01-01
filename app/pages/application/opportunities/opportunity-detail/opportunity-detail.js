@@ -244,14 +244,14 @@ angular.module('opportunityModule')
         opportunityPermissionService.updatePermission();
         hmsPopup.showPopup(result.returnMsg);
       };
-      var getCustomerEmployeeSuccess = function (response) {
-        if (response.returnCode == 'S') {
-          $scope.items = $scope.items.concat(response.employee_list);
-          $scope.sourceItems = $scope.items.clone();
-        }
-
-        /* hmsPopup.showPopup(result.returnMsg);*/
-      };
+      // var getCustomerEmployeeSuccess = function (response) {
+      //   if (response.returnCode == 'S') {
+      //     $scope.items = $scope.items.concat(response.employee_list);
+      //     $scope.sourceItems = $scope.items.clone();
+      //   }
+      //
+      //   /* hmsPopup.showPopup(result.returnMsg);*/
+      // };
       $scope.showMenu = function () {
         $scope.statusTitle = $scope.opportunity.status == "HCRM_ENABLE" ? "停用商机" : "启用商机";
         if (ionic.Platform.isWebView()) {
@@ -308,19 +308,14 @@ angular.module('opportunityModule')
                     return true;
                   }
                   $scope.showSelectDiv('transfer');
+
                   $scope.selectItem = function ($index) {
-                    var data = $scope.items[$index][$scope.nowSelectTarget['dataKey']];  //接口所需数据
-                    var showKey = $scope.items[$index][$scope.nowSelectTarget['showKey']];
-                    var dataModel = $scope.nowSelectTarget['dataModel'];                 //最终操作提交所需的数据变量
-                    var showDataModel = $scope.nowSelectTarget['showDataModel'];         //显示用的数据变量ng-model
-                    eval(dataModel + " = data");
-                    eval(showDataModel + " = showKey");
                     $scope.showSelectDiv();
                     var date = $filter('date')(new Date(), 'yyyy-MM-dd');
                     var transferParam = {
                       "opportunityId": param.opportunityId,
                       "transferBeforEmp": window.localStorage.empno,
-                      "transferAfterEmp": $scope.data.employeeId,
+                      "transferAfterEmp": $scope.items[$index].employeeId,
                       "effectiveDate": date,
                       "description": "转移原因"
                     };
@@ -378,19 +373,14 @@ angular.module('opportunityModule')
                   return true;
                 }
                 $scope.showSelectDiv('transfer');
+
                 $scope.selectItem = function ($index) {
-                  var data = $scope.items[$index][$scope.nowSelectTarget['dataKey']];  //接口所需数据
-                  var showKey = $scope.items[$index][$scope.nowSelectTarget['showKey']];
-                  var dataModel = $scope.nowSelectTarget['dataModel'];                 //最终操作提交所需的数据变量
-                  var showDataModel = $scope.nowSelectTarget['showDataModel'];         //显示用的数据变量ng-model
-                  eval(dataModel + " = data");
-                  eval(showDataModel + " = showKey");
                   $scope.showSelectDiv();
                   var date = $filter('date')(new Date(), 'yyyy-MM-dd');
                   var transferParam = {
                     "opportunityId": param.opportunityId,
                     "transferBeforEmp": window.localStorage.empno,
-                    "transferAfterEmp": $scope.data.employeeId,
+                    "transferAfterEmp": $scope.items[$index].employeeId,
                     "effectiveDate": date,
                     "description": "转移原因"
                   };
@@ -403,6 +393,53 @@ angular.module('opportunityModule')
 
           });
         }
+      };
+      $scope.data = {
+        employeeId: ""
+      };
+      $scope.showData = {
+        name: ""
+      };
+      $scope.items = [];
+
+      $scope.searchValueKey = '';
+      $scope.sourceItems = [];
+      $scope.noDataFlag = false;
+
+      $scope.searchValue = function () {
+        $ionicScrollDelegate.$getByHandle('transferScroll').scrollTop(false);
+        $scope.items = [];
+        if ($scope.searchValueKey == '') {
+          opportunityDetailService.getEmployee(transferEmployeeSuccess,'',1,1000);
+        }
+        else {
+          opportunityDetailService.getEmployee(transferEmployeeSuccess,$scope.searchValueKey,1,1000);
+        }
+      };
+      $scope.showSelectDiv = function () {
+        $ionicScrollDelegate.$getByHandle('transferScroll').scrollTop(false);
+        $scope.showSelect = !$scope.showSelect;
+        opportunityDetailService.getEmployee(transferEmployeeSuccess,'',1,1000);
+      };
+      $scope.clearSelectFilter = function(){
+        $scope.searchValueKey = '';
+        $scope.searchValue();
+      };
+
+      var transferEmployeeSuccess = function (response) {
+        $scope.showCrmLoading = false;
+        console.log("more");
+        if(response.returnCode == 'S'){
+          for(var i = 0; i < response.employee_list.length; i++){
+            response.employee_list[i].showModal = response.employee_list[i].name + ' (' + response.employee_list[i].employeeCode + ')   ' + response.employee_list[i].organizationName;
+          }
+          $scope.items = $scope.items.concat(response.employee_list);
+          $scope.sourceItems = $scope.items.clone();
+          $scope.moreDataCanBeLoaded = response.employee_list.length == $scope.pageSize;
+        } else {
+          $scope.moreDataCanBeLoaded = false;
+        }
+        $scope.$broadcast('scroll.infiniteScrollComplete');
       };
 
       $ionicModal.fromTemplateUrl('build/pages/application/opportunities/opportunity-add/opportunity-add.html', {
@@ -623,17 +660,10 @@ angular.module('opportunityModule')
         $scope.buttonImg = $scope.isEdit ? "build/img/application/customer/detail/edit@3x.png" : "build/img/application/customer/detail/edit_add@3x_5.png";
         console.log(index);
       };
+
       $scope.selectSubHeader(0);
       //通用选择弹窗
-      $scope.selectTargets = [{
-        'key': 'transfer',
-        'interface': opportunityDetailService.getCustomerEmployee,  //获得选择项的接口
-        'params': [getCustomerEmployeeSuccess],  //获得选择项时接口所需参数
-        'showKey': 'name',            //选择界面显示的数据
-        'dataKey': 'employeeId',      //对象内最终操作提交所需的数据变量
-        'dataModel': '$scope.data.employeeId',  //最终操作提交所需的数据变量
-        'showDataModel': '$scope.showData.name' //显示在界面上的ng-model
-      }];
+
       function isContains(str, substr) {
         return new RegExp(substr).test(str);
       }
@@ -642,43 +672,6 @@ angular.module('opportunityModule')
         return [].concat(this);
       };
 
-      $scope.searchValueKey = '';
-      $scope.sourceItems = [];
-      $scope.noDataFlag = false;
-
-      $scope.searchValue = function () {
-        var notShowNum = 0;
-        if ($scope.searchValueKey == '') {
-          $scope.noDataFlag = false;
-          $scope.items = $scope.sourceItems.clone();
-        }
-        else {
-          for (var i = 0; i < $scope.sourceItems.length; i++) {
-            if (isContains($scope.sourceItems[i][$scope.nowSelectTarget['showKey']], $scope.searchValueKey))
-              $scope.items[i] = $scope.sourceItems[i];
-            else {
-              $scope.items[i] = '';
-              notShowNum++;
-            }
-          }
-          $scope.noDataFlag = notShowNum == $scope.sourceItems.length;
-        }
-      };
-      $scope.showSelectDiv = function (key) {
-        $scope.showSelect = !$scope.showSelect;
-        if (!$scope.showSelect) {
-          $scope.items = [];
-          return 0;
-        }
-        for (var i = 0; i < $scope.selectTargets.length; i++) {
-          if (key == $scope.selectTargets[i].key) {
-            $scope.nowSelectTarget = $scope.selectTargets[i];
-            break;
-          }
-        }
-        hmsPopup.showLoading();
-        $scope.nowSelectTarget.interface.apply(null, $scope.nowSelectTarget.params);
-      };
       //扫描名片
       $scope.saveToLocalContacts = function () {
         var info = {
@@ -1070,6 +1063,20 @@ angular.module('opportunityModule')
           hmsPopup.hideLoading();
         }).error(function (response, status) {
           // hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
+      //负责人
+      this.getEmployee = function (success, keyWord , page, pageSize) {
+        var params = {
+          keyWord:keyWord,
+          page: page,
+          pageSize: pageSize
+        };
+        hmsHttp.post(baseUrlTest + 'customer_employee', params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          //hmsPopup.showPopup(response);
           hmsPopup.hideLoading();
         });
       };
