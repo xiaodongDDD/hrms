@@ -348,6 +348,36 @@ angular.module('HmsModule')
         }*/
       };
 
+      this.confirmOnly = function (message, title, onConfirm) {
+        if (!baseConfig.nativeScreenFlag) {
+          var confirmPopup = $ionicPopup.confirm({
+            title: (angular.isDefined(title) ? title : "提示"),
+            template: message,
+            okText: '确定',
+            okType: 'button-cux-popup-confirm'
+          });
+          confirmPopup.then(function (res) {
+            if (baseConfig.debug) {
+              console.log('this.confirm.res ' + angular.toJson(res))
+            }
+            var index = 0;
+            if (res) {
+              index = 1;
+            }
+            onConfirm(index);
+          });
+        } else {
+          navigator.notification.confirm(
+            message, // message
+            function (index) {
+              onConfirm(index - 1);
+            }, // callback to invoke with index of button pressed
+            title, // title
+            ['确定'] // buttonLabels
+          );
+        }
+      };
+
       this.confirm = function (message, title, onConfirm) {
         if (!baseConfig.nativeScreenFlag) {
           var confirmPopup = $ionicPopup.confirm({

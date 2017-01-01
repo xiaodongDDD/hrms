@@ -29,7 +29,7 @@ angular.module('HmsModule')
         updateContent: ''
       };
 
-      var dealVersionUtil = function (localVersion,serveVersion){
+      var dealVersionUtil = function (localVersion, serveVersion) {
         if (parseInt(localVersion[0]) < parseInt(serveVersion[0])) {
           return true;
         } else if (parseInt(localVersion[0]) == parseInt(serveVersion[0])) {
@@ -57,12 +57,12 @@ angular.module('HmsModule')
           }
           var result = response.results;
           var appstoreVersion = '';
-          if(result[0]){
+          if (result[0]) {
             appstoreVersion = result[0].version;
             var serveVersion = appstoreVersion.split('.');
             var localVersion = baseConfig.version.currentVersion.split('.');
 
-            if (dealVersionUtil(localVersion,serveVersion)) {
+            if (dealVersionUtil(localVersion, serveVersion)) {
 
               function selectAction(buttonIndex) { // update from pgy
                 if (buttonIndex == 1) { //确认按钮
@@ -72,8 +72,8 @@ angular.module('HmsModule')
                 }
               };
               hmsPopup.confirm('', "AppStore有新版本更新", selectAction);
-            }else{
-              if(appstoreVersion === baseConfig.version.currentVersion) {
+            } else {
+              if (appstoreVersion === baseConfig.version.currentVersion) {
 
                 if (baseConfig.debug) {
                   console.log("appstoreVersion " + appstoreVersion);
@@ -85,23 +85,34 @@ angular.module('HmsModule')
                   var minUpdateUrl = response.returnData.subDownloadUrl;
                   var subDownloadDesc = response.returnData.subDownloadDesc;
                   var subForceUpdate = response.returnData.sub_force_update;
-                  if(parseInt(minVersion) > parseInt(baseConfig.version.currentSubVersion)){
-                    function selectAction_min(buttonIndex) { // update from pgy
-                      if (buttonIndex == 1) { //确认按钮
-                        hotpatch.updateNewVersion(minUpdateUrl);
-                      } else { //取消按钮
-                        return;
+                  if (parseInt(minVersion) > parseInt(baseConfig.version.currentSubVersion)) {
+                    if (subForceUpdate == 'Y') {
+                      function selectAction_min_v2(buttonIndex) { // update from pgy
+                        if (buttonIndex == 0) { //确认按钮
+                          hotpatch.updateNewVersion(minUpdateUrl);
+                        }
                       }
-                    };
-                    hmsPopup.confirm(subDownloadDesc, "小版本更新", selectAction_min);
-                  }else{
-                    if (newName === 'MY_INFO'){
+
+                      hmsPopup.confirmOnly(subDownloadDesc, "小版本更新", selectAction_min_v2);
+                    } else {
+                      function selectAction_min(buttonIndex) { // update from pgy
+                        if (buttonIndex == 1) { //确认按钮
+                          hotpatch.updateNewVersion(minUpdateUrl);
+                        } else { //取消按钮
+                          return;
+                        }
+                      }
+
+                      hmsPopup.confirm(subDownloadDesc, "小版本更新", selectAction_min);
+                    }
+                  } else {
+                    if (newName === 'MY_INFO') {
                       hmsPopup.showShortCenterToast("当前为最新版本");
                     }
                   }
                 });
-              }else{
-                if (newName === 'MY_INFO'){
+              } else {
+                if (newName === 'MY_INFO') {
                   hmsPopup.showShortCenterToast("当前为最新版本");
                 }
               }
@@ -187,18 +198,28 @@ angular.module('HmsModule')
                   alert(serveVersionParams.updateContent);
                 }
               } else {
-                if (serveVersionParams.bigVersion === baseConfig.version.currentVersion && parseInt(serveVersionParams.minVersion) > parseInt(baseConfig.version.currentSubVersion)) {
-                  if (ionic.Platform.isWebView()) {
+                if (serveVersionParams.bigVersion === baseConfig.version.currentVersion &&
+                  parseInt(serveVersionParams.minVersion) > parseInt(baseConfig.version.currentSubVersion)) {
+
+                  if (serveVersionParams.subForceUpdate == 'Y') {
+                    function selectAction_min_v2(buttonIndex) { // update from pgy
+                      alert('selectAction_min_v2.buttonIndex ' + buttonIndex);
+                      if (buttonIndex == 0) { //确认按钮
+                        hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
+                      }
+                    }
+
+                    hmsPopup.confirmOnly(serveVersionParams.subDownloadDesc, "小版本更新", selectAction_min_v2);
+                  } else {
                     function selectAction_min(buttonIndex) { // update from pgy
                       if (buttonIndex == 1) { //确认按钮
                         hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
                       } else { //取消按钮
                         return;
                       }
-                    };
+                    }
+
                     hmsPopup.confirm(serveVersionParams.subDownloadDesc, "小版本更新", selectAction_min);
-                  } else {
-                    alert(serveVersionParams.subDownloadDesc);
                   }
                 } else {
                   if (newName === 'MY_INFO')
