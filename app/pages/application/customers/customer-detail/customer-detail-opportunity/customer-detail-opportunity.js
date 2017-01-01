@@ -9,11 +9,13 @@ angular.module('customerModule')
     'hmsPopup',
     '$timeout',
     'customerOpportunityService',
+    '$ionicHistory',
     function ($scope,
               $state,
               hmsPopup,
               $timeout,
-              customerOpportunityService) {
+              customerOpportunityService,
+              $ionicHistory) {
 
       $scope.page = 1;
       $scope.pageSize = 10;
@@ -39,7 +41,12 @@ angular.module('customerModule')
       };
 
       $scope.goDetail=function(para) {
-        $state.go("tab.opportunity-detail",{data:para});
+        console.log($ionicHistory.viewHistory().backView.stateName);
+        if ($ionicHistory.viewHistory().backView.stateName == "tab.contactDetail") {
+          $state.go("tab.opportunity-detail2",{data:para});
+        }else{
+          $state.go("tab.opportunity-detail",{data:para});
+        }
       };
 
       customerOpportunityService.getOpportunities(initOpportunitySuccess,{page:$scope.page,pageSize:$scope.pageSize,customerId: $scope.customerId,opportunityType:"HCRM_OPPORTUNITY"});

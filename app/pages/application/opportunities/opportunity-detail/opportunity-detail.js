@@ -19,6 +19,19 @@ angular.module('opportunityModule')
             }
           }
         })
+        .state('tab.opportunity-detail2', {
+          url: '/opportunity-detail',
+          params: {
+            data: {}
+          },
+          views: {
+            'tab-contactCrm': {
+              prefetchTemplate: false,
+              templateUrl: 'build/pages/application/opportunities/opportunity-detail/opportunity-detail.html',
+              controller: 'opportunityDetailCtrl'
+            }
+          }
+        })
     }]);
 angular.module('opportunityModule')
   .controller('opportunityDetailCtrl', [
@@ -192,7 +205,13 @@ angular.module('opportunityModule')
       }
       ];
       $scope.goCustomer = function () {
-        $state.go("tab.customer-detail");
+    /*    $state.go("tab.customer-detail");*/
+        console.log($ionicHistory.viewHistory().backView.stateName);
+        if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"){
+          $state.go('tab.customer-detail2');
+        }else{
+          $state.go('tab.customer-detail');
+        }
       };
 
       $scope.hideTitleFlag = false;

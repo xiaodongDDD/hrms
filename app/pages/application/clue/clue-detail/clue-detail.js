@@ -18,6 +18,19 @@ angular.module('clueModule')
             }
           }
         })
+        .state('tab.clue-detail2', {
+          url: '/clue-detail',
+          params:{
+            data:{}
+          },
+          views: {
+            'tab-contactCrm': {
+              prefetchTemplate: false,
+              templateUrl: 'build/pages/application/clue/clue-detail/clue-detail.html',
+              controller: 'ClueDetailCtrl'
+            }
+          }
+        })
     }]);
 
 angular.module('clueModule')
@@ -75,7 +88,13 @@ angular.module('clueModule')
 
       $scope.goCustomer = function(){
         window.localStorage.customerId = $scope.clue.customerId;
-        $state.go('tab.customer-detail');
+     /*   $state.go('tab.customer-detail');*/
+        console.log($ionicHistory.viewHistory().backView.stateName);
+        if ($ionicHistory.viewHistory().backView.stateName == "tab.customer-detail2") {
+          $state.go("tab.customer-detail2");
+        }else{
+          $state.go("tab.customer-detail");
+        }
       };
       $scope.myLocation = {};
       $scope.cusLocation = {};
