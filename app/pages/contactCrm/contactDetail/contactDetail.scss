@@ -9,7 +9,16 @@
   .header-button {
   }
 }
-
+.contact-detail-guide{
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: url(../img/contact/contactDetailGuide.png);
+    background-size: cover;
+    z-index: 1000000;
+}
 .contactDetail {
   a {
     text-decoration: none;

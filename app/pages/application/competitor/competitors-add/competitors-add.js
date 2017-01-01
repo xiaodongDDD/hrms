@@ -56,6 +56,16 @@ angular.module('competitorModule')
               competitorDetailService) {
       $rootScope.img = "";
       $scope.showSmallCrmLoading = false;
+      $scope.showCompetitorAddGuide;
+      $scope.buttonTapped=function(){
+        $scope.showCompetitorAddGuide = false;
+        window.localStorage.showCompetitorAddGuide=false;
+      };
+      if (!window.localStorage.showCompetitorAddGuide || window.localStorage.guideHelpAuto == "true") {
+        window.localStorage.showCompetitorAddGuide="false";
+        $scope.showCompetitorAddGuide = true;
+      } else {
+      }
       $scope.$on('$ionicView.enter', function (e) {
         console.log($stateParams.competitors);
         if (isNotNullObj($stateParams.competitors)) {

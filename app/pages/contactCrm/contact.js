@@ -54,34 +54,34 @@ angular.module('contactModule')
       $scope.showContactGuide2=false;
       $scope.showContactGuide3=false;
       $scope.buttonTapped = function (index) {
-
-        if(buttonTapped==1){
+        if(index==1){
           $scope.showContactGuide1 = false;
           $scope.showContactGuide2 = true;
           $scope.showContactGuide3 = false;
-        }else if(buttonTapped==2){
+        }else if(index==2){
           $scope.showContactGuide1 = false;
           $scope.showContactGuide2 = false;
           $scope.showContactGuide3 = true;
-        }else if(buttonTapped==3){
+        }else if(index==3){
         $scope.showContactGuide1 = false;
         $scope.showContactGuide2 = false;
         $scope.showContactGuide3 = false;
-      }
+          window.localStorage.showContactGuide=false;
+        }
       };
-
+      $scope.hasCrm = window.localStorage.crm == 'true';
       if (baseConfig) {
-        console.log('window.localStorage.neeGuideHelp ' + window.localStorage.neeGuideHelp);
+        console.log('window.localStorage.showContactGuide ' + window.localStorage.showContactGuide);
         console.log('window.localStorage.guideHelpAuto ' + window.localStorage.guideHelpAuto);
       }
 
-      if (!window.localStorage.neeGuideHelp || window.localStorage.neeGuideHelp == "true" || window.localStorage.guideHelpAuto == "true") {
-        window.localStorage.neeGuideHelp = "false";
+      if ($scope.hasCrm==true&&(!window.localStorage.showContactGuide || window.localStorage.guideHelpAuto == "true")) {
+        window.localStorage.showContactGuide="false";
         $scope.showContactGuide1 = true;
       } else {
       }
       console.log($ionicHistory.viewHistory());
-      $scope.hasCrm = window.localStorage.crm == 'true';
+
       $scope.searched = {
         "page": 1,
         "pageSize": 10,

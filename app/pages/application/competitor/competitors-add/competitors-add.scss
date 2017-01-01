@@ -1,3 +1,13 @@
+.competitor-add-guide{
+  position: absolute;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url(../img/competitor/competitor-add-guide.png);
+  background-size: cover;
+  z-index: 1000000;
+}
 .competitors-add {
   .pro-add-bg {
     background: #f5f5f5
