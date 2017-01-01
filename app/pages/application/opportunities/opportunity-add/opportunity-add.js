@@ -1004,7 +1004,7 @@ angular.module('opportunityModule')
 
       var getCompetitorResultSuccess = function(response){
         var flag = false;
-        scope.showCrmLoading = false;
+        $scope.showCrmLoading = false;
         if(response.returnCode == 'S'){
           $scope.items = [];
           for(var i = 0; i < response.search_result.length; i++){

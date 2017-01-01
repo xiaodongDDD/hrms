@@ -301,13 +301,14 @@ angular.module('opportunityModule')
         } else {
           hmsPopup.showShortCenterToast('看板数据获取失败，请联系管理员');
         }
+        console.log($scope.boardData)
       };
 
       opportunityService.getBoardData(getBoardDataSuccess, $scope.queryType);
 
       $scope.getMoneyString = function(money){
         if(!money)
-          return '';
+          return '0.00';
         if(money > 100000000)
           return (money/100000000).toFixed(1) + '亿';
         else if(money > 10000)
