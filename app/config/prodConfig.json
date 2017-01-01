@@ -1,9 +1,9 @@
 {
   "baseConfig": {
     "debug": false,
-    "isMobilePlatform": false,
+    "isMobilePlatform": true,
     "clearTable": true,
-    "nativeScreenFlag":false,
+    "nativeScreenFlag":true,
     "appStoreFlag": false,
     "isWeixinWebview": false,
     "basePath": "https://mobile-app.hand-china.com/hmap/r/api?sysName=CRM&apiName=",
