@@ -613,6 +613,7 @@ angular.module('planModule')
       };
 
       $scope.searchSelectValue = function () {
+        console.log($scope.nowPage);
         $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
         if ($scope.nowSelectTarget['searchInterface']) {
           //需要接口搜索的
@@ -728,15 +729,18 @@ angular.module('planModule')
         if ($scope.nowSelectTarget['key'] == 'contact') {
           /*   $scope.data.customerId = '';
            $scope.showData.fullName = '';*/
+          $scope.nowPage=1;
           window.localStorage.customerId = $scope.items[$index].customerId;
           $scope.data.opportunityId = "";
           $scope.showData.opportunityName = "";
           $scope.selectTargets[1].params = [getBusinessSuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
+
         }
         console.log(showKey);
         console.log(data);
         console.log($scope.items[$index].customerName);
         if ($scope.nowSelectTarget['key'] == 'business') {
+          $scope.nowPage=1;
           /*   $scope.data.customerId = '';
            $scope.showData.fullName = '';*/
           if ($scope.items[$index].customerName != "") {
@@ -744,6 +748,7 @@ angular.module('planModule')
             $scope.showData.fullName = $scope.items[$index].customerName;
           }
           $scope.selectTargets[1].params = [getBusinessSuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
+
         }
         $scope.showSelectDiv();
       };

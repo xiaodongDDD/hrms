@@ -1,9 +1,9 @@
 {
   "baseConfig": {
     "debug": false,
-    "isMobilePlatform": true,
+    "isMobilePlatform": false,
     "clearTable": true,
-    "nativeScreenFlag":true,
+    "nativeScreenFlag":false,
     "appStoreFlag": false,
     "isWeixinWebview": false,
     "wxLoginPath": "https://mobile-app.hand-china.com/hmap/oauth/token?client_id=wx_client&client_secret=secret&grant_type=password&",

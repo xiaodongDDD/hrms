@@ -490,6 +490,7 @@
       if ($scope.nowSelectTarget['key'] == 'contact') {
         /*   $scope.data.customerId = '';
          $scope.showData.fullName = '';*/
+        pageControl.nowPage=1;
         window.localStorage.customerId = $scope.items[$index].customerId;
         vm.planDetail.relateOpportunityId = "";
         vm.planDetail.relateOpportunity = "";
@@ -499,6 +500,7 @@
       console.log(data);
       console.log($scope.items[$index].customerName);
       if ($scope.nowSelectTarget['key'] == 'business') {
+        pageControl.nowPage=1;
         /*   $scope.data.customerId = '';
          $scope.showData.fullName = '';*/
         if ($scope.items[$index].customerName != "") {
