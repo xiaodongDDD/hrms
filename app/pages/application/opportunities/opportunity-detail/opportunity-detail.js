@@ -556,12 +556,20 @@ angular.module('opportunityModule')
         } else if ($index == 4) {
           $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-principal/opportunity-detail-principal.html";
         }
-        else if($index == 5) {
+		else if($index == 5) {
 		  $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-bidbond/opportunity-detail-bidbond.html";
 	 	  $scope.chooseThis = function() {
-			 $state.go('tab.bidbond-add');
+  			var addData = {
+				customerId: window.localStorage.customerId,
+				customerName: window.localStorage.fullName,
+				fullName: window.localStorage.opportunityName,
+				opportunityId: window.localStorage.opportunityId
+			};
+			 $state.go('tab.bidbond-add', {
+					param: addData
+			});
 		  }
-	  }
+	    }
 
         if ($scope.subHeadersSelect[$index])
           return 0;

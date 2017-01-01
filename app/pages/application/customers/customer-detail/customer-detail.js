@@ -554,10 +554,16 @@ angular.module('customerModule')
           }else if($index == 6) {
 				$scope.imgButton = true;
 				$scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-bidbond/customer-detail-bidbond.html";
+					var addData = {
+						customerId: window.localStorage.customerId,
+						customerName: window.localStorage.fullName
+					};
 				$scope.chooseThis = function() {
-					$state.go('tab.bidbond-add');
+					$state.go('tab.bidbond-add', {
+							param: addData
+					});
 				}
-		  } else if ($index == 7) {
+		  }else if ($index == 7) {
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-change-log/customer-detail-change-log.html";
           }
           if ($scope.subHeadersSelect[$index])
