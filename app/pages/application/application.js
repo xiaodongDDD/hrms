@@ -286,10 +286,11 @@ angular.module('applicationModule')
         }
         if(top <= 0) {
           $scope.headerStyle.opacity = 0;
+          $scope.showHeader = false;
           return;
         }
+        $scope.showHeader = true;
         $scope.headerStyle.opacity = (top / $scope.imgHeight).toFixed(1);
-        $scope.showHeader = $scope.headerStyle.opacity != 0;
       };
 
       $scope.onSwipeContent = function(){
