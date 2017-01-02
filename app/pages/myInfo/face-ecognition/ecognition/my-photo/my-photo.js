@@ -54,6 +54,7 @@
     vm.showActionSheet = showActionSheet;
 
     $scope.$on('$ionicView.enter', function (e) {
+      hmsPopup.showLoading();
       vm.getPhotoList();
     });
     //路由
@@ -101,8 +102,9 @@
       var url = baseConfig.queryPath + '/photo/getMyPhotos';
       hmsHttp.post(url, {}).success(function (result) {
         console.log(result);
-
+        hmsPopup.hideLoading();
         vm.photoList = result.rows;
+
         $ionicScrollDelegate.resize();
       }).error(function (err, status) {
         console.log(err);
