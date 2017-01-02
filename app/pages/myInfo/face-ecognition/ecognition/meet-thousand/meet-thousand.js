@@ -32,7 +32,7 @@
                                             hmsReturnView,
                                             hmsHttp,
                                             $ionicScrollDelegate,
-                                            faceEcognitionService) {
+                                            faceEcognitionService,$timeout) {
       var vm = this;
       vm.isStart=false;//年会是否开始---默认false
       vm.headPortrait='';//头像
@@ -107,12 +107,12 @@
       vm.addressTab=addressTab;
       vm.faceScanner=faceScanner;
 
-
       getSummaryInfo();//拉取概要信息
-      addressTab(0);
       rankingMutualFans(0);//界面默认 我的互粉
+      $timeout(function () {
+        addressTab(0);
 
-
+      },1000);
      //获取概要信息
       function getSummaryInfo() {
         var param='';
