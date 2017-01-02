@@ -7,9 +7,32 @@
     <h1 class="title">人脸识别确认</h1>
   </ion-header-bar>
   <ion-content class="face-affirm-content">
-jj
-  </ion-content>
-  <ion-footer-bar class="foot">
+      <div class="iphone">
+        <img src="build/img/myInfo/meetThousand/confirm@3x.png">
+      </div>
+      <div class="matching-rate">
+        {{ vm.info.confidence}}
+      </div>
+      <div class="matching-rate-desc">匹配度</div>
+      <div class="face-user-info">
+        <div>
+          <img class="name-img" src="build/img/myInfo/meetThousand/name@3x.png">
+          <div>姓名：<span>{{vm.info.name}}</span></div>
+        </div>
+        <div>
+          <div>性别：<span>{{vm.info.gender}}</span></div>
+          <img class="sex-img" src="build/img/myInfo/meetThousand/sex@3x.png">
+        </div>
+        <div>
+          <div>工号：<span>{{vm.info.person_id}}</span></div>
+          <img class="id-img" src="build/img/myInfo/meetThousand/ID@3x.png">
+        </div>
+      </div>
     <div class="note-info">请您确认以上信息无误后再确认粉ta哦~</div>
-  </ion-footer-bar>
+    <div class="fans-button">
+      <button class="not" ng-click="vm.goBack()">不粉ta</button>
+      <button class="yes" ng-click="vm.createNewFocus(vm.info.person_id)">粉ta</button>
+    </div>
+  </ion-content>
+
 </ion-view>

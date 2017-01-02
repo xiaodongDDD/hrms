@@ -10,6 +10,12 @@
     $stateProvider
       .state('tab.face-ecognition-face-affirm', {
         url: '/myInfo/face-ecognition-face-affirm',
+        params:{
+          confidence:'',
+          name:'',
+          gender:'',
+          person_id:''
+        },
         views: {
           'tab-myInfo': {
             prefetchTemplate: false,
@@ -32,8 +38,42 @@
                             hmsReturnView,
                             hmsHttp,
                             $ionicScrollDelegate) {
+      var vm=this;
+      vm.info={};
+
+      vm.createNewFocus=createNewFocus;
+      vm.goBack=goBack;
 
 
+      $scope.$on('$ionicView.enter', function (e) {
+        vm.info.name=$stateParams.name;
+        vm.info.gender=$stateParams.gender;
+        vm.info.person_id=$stateParams.person_id;
+        vm.info.confidence=$stateParams.confidence;
+      });
+
+
+
+
+      function goBack() {
+        $ionicHistory.goBack();
+      }
+
+      //新增关注
+      function createNewFocus(empNo) {
+        alert(empNo);
+        var params={
+          idolNo:empNo
+        };
+        var url=baseConfig.queryPath +'/annualMeeting/create';
+        hmsHttp.post(url,params).success(function (result) {
+            alert(angular.toJson(result));
+            goBack();
+        }).error(function (err,status) {
+          console.log(err);
+          console.log(status)
+        })
+      }
 
     }
 })();

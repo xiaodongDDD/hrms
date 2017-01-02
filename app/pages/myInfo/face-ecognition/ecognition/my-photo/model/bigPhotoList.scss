@@ -1,0 +1,46 @@
+.bigPhotoList{
+  .actionSheet{
+    color: red;
+    font-size: 16px;
+  }
+  background-color: black;
+  .color{
+    color: #FFF;
+  }
+  .head{
+
+    background-image: none;
+    background-color: black;
+  }
+  .bigPhotoList-content{
+    .margin-top{
+      height: 50px;
+      width: 100%;
+    }
+    .bigPhoto{
+      width: 100%;
+    }
+  }
+  .foot{
+    height: 50px;
+    background-image: none;
+   background-color: black;
+    >div{
+      width: 100%;
+      height: auto;
+      text-align: right;
+      >div{
+        display: inline-block;
+        height: 40px;
+        width: 40px;
+        padding: 5px;
+        margin-right: 15px;
+        >img{
+          height: 30px;
+          width: 30px;
+        }
+      }
+
+    }
+  }
+}
