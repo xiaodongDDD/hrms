@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.hand.face.myinterface.NotifyMessage;
 import com.hand.face.ui.FaceCompareActivity;
+import com.hand.face.ui.FaceSerchActivity;
 import com.hand.face.utils.NotifyMessageManager;
 import com.hand.face.utils.Utils;
 import com.youtu.sign.Base64Util;
@@ -35,7 +36,31 @@ public class FacePlugin extends CordovaPlugin implements NotifyMessage {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         mCallbackContext = callbackContext;
         if("faceDetect".equals(action)){
-            FaceCompareActivity.actionStart(cordova.getActivity());
+            if(args!=null && args.length()>0){
+                JSONObject obj = args.getJSONObject(0);
+                if(obj!=null){
+                    if(obj.has("direction")){
+                        String value = obj.getString("direction");
+                        if(value!=null && !value.isEmpty()){
+                            if("front".equals(value)){
+                                FaceCompareActivity.actionStart(cordova.getActivity());
+                            }else if("back".equals(value)){
+                                FaceSerchActivity.actionStart(cordova.getActivity());
+                            }else{
+                                FaceCompareActivity.actionStart(cordova.getActivity());
+                            }
+                        }else{
+                            FaceCompareActivity.actionStart(cordova.getActivity());
+                        }
+                    }else{
+                        FaceCompareActivity.actionStart(cordova.getActivity());
+                    }
+                }else{
+                    FaceCompareActivity.actionStart(cordova.getActivity());
+                }
+            }else{
+                FaceCompareActivity.actionStart(cordova.getActivity());
+            }
             return true;
         }else if("getLocalImage".equals(action)){
             String imgPath = args.getString(0);
