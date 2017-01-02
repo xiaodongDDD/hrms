@@ -1,17 +1,18 @@
 <ion-view class="meetThousand">
- 
   <div class="head active-head-info">
-    <div class="head-info {{vm.headHeight}} {{vm.addressClass}}">
-      <div class="back-button" ng-click="vm.goBack()">
+    <div class="ios-head"></div>
+    <div class="head-info {{vm.headHeight}} {{vm.addressClass}}" ng-style="vm.styleHeight">
+
+      <div class="back-button" ng-click="vm.goBack()" ng-style="vm.cssTop.button">
         <img ng-if="!vm.isTopScorll" src="build/img/myInfo/meetThousand/Back-Chevron@3x.png">
         <img ng-if="vm.isTopScorll" src="build/img/myInfo/meetThousand/Back-Chevron-b@3x.png">
       </div>
-      <div class="{{vm.titleClass}}">认识汉得千人</div>
-      <div class="help-button">
+      <div class="{{vm.titleClass}}" ng-style="vm.cssTop.title">认识汉得千人</div>
+      <div class="help-button" ng-style="vm.cssTop.button">
         <img ng-if="!vm.isTopScorll" src="build/img/myInfo/meetThousand/help-w@3x.png">
         <img ng-if="vm.isTopScorll" src="build/img/myInfo/meetThousand/help-b@3x.png">
       </div>
-      <div ng-if="vm.isTopScorll" class="sub-title">当前排名：{{vm.topInfo.rank}}</div>
+      <div ng-if="vm.isTopScorll" class="sub-title" ng-style="vm.cssTop.subTitle">当前排名：{{vm.topInfo.rank}}</div>
       <div ng-if="!vm.isTopScorll&&vm.isRank" class="ranking-avatar">
         <div class="avatar-circle">
           <div>

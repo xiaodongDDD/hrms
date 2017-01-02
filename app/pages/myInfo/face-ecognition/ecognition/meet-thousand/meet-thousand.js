@@ -51,9 +51,82 @@
         'un-active-color',
         'un-active-color',
         'un-active-color',0];
-      vm.top={
-       'top':'239px'
-      };
+      vm.cssTop=null;
+      if(ionic.Platform.isIOS()){
+       /* vm.cssTop={
+          button:{
+            'top':'31px'
+          },
+          title:{
+            'top':'33px'
+          },
+          subTitle:{
+            'top':'47px'
+          },
+          top:{
+            'top':'259px'
+          },
+          fansTop:{
+            'top':'206px'
+          }
+        };*/
+        vm.cssTop={
+          button:{
+            'top':'31px'
+          },
+          title:{
+            'top':'33px'
+          },
+          subTitle:{
+            'top':'47px'
+          },
+          top:{
+            'top':'259px'
+          },
+          fansTop:{
+            'top':'206px'
+          },
+          defaultHeight:{
+            'height':'167px'
+          },
+          fansHeight:{
+            'height':'136px'
+          },
+          rankUpHeight:{
+            'height':'84px'
+          }
+        };
+      }else{
+        vm.cssTop={
+          button:{
+            'top':'11px'
+          },
+          title:{
+            'top':'13px'
+          },
+          subTitle:{
+            'top':'27px'
+          },
+          top:{
+            'top':'239px'
+          },
+          fansTop:{
+            'top':'186px'
+          },
+          defaultHeight:{
+            'height':'147px'
+          },
+          fansHeight:{
+            'height':'116px'
+          },
+          rankUpHeight:{
+            'height':'64px'
+          }
+        };
+      }
+
+
+
       vm.titleClass='default-title';
       vm.addressClass='default-address';
 
@@ -248,11 +321,9 @@
           vm.topOtherInfo=[];
           vm.isRank=true;
           vm.isTopScorll=false;
-
+          vm.styleHeight=vm.cssTop.defaultHeight;
           vm.headHeight='default-height';
-          vm.top={
-            'top':'239px'
-          };
+          vm.top= vm.cssTop.top;
           vm.addressClass='default-address';
           getTopInfo(topInfoParams.area);
           $ionicScrollDelegate.resize();
@@ -260,11 +331,10 @@
           fansTab(0);//默认互粉
           vm.isRank=false;
           vm.isTopScorll=false;
+          vm.styleHeight=vm.cssTop.fansHeight;
           vm.headHeight='fans-height';
           vm.titleClass='default-title';
-          vm.top={
-            'top':'186px'
-          };
+          vm.top= vm.cssTop.fansTop;
           $ionicScrollDelegate.resize();
         }
       }
@@ -313,6 +383,7 @@
         if(vm.isRank&&vm.isStart){
           vm.isTopScorll=true;
           vm.top='up-scroll-top';
+          vm.styleHeight=vm.cssTop.rankUpHeight;
           vm.headHeight='rank-up-height';
           vm.top={
             'top':'0px'
@@ -326,10 +397,9 @@
         if(vm.isRank){
           vm.isTopScorll=false;
           vm.top='default-top';
+          vm.styleHeight=vm.cssTop.defaultHeight;
           vm.headHeight='default-height';
-          vm.top={
-            'top':'239px'
-          };
+          vm.top= vm.cssTop.top;
           vm.titleClass='default-title';
           vm.addressClass='default-address';
         }
