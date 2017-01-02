@@ -353,7 +353,7 @@
           //临时解决方案
           catchImage();
         }else{
-          pluginface.faceDetect({"direction":"front"}, success, error);
+          pluginface.faceDetect({"direction":"back"}, success, error);
         }
       }
 
