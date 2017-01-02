@@ -122,9 +122,10 @@
           alert('complete.success ' + angular.toJson());
         }
         if (result.success == true) {
+          alert('complete.success ' + angular.toJson(result));
           hmsPopup.showPopup('采集成功');
 
-          faceEcognitionService.setFaceEcognitionFlag(true);
+          // faceEcognitionService.setFaceEcognitionFlag(true);
           //$state.go("tab.face-ecognition-setting", {"from": "collection"});
           $ionicHistory.goBack();
         } else {

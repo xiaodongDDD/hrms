@@ -1,0 +1,38 @@
+<ion-view class="my-photo">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="vm.goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">我的照片</h1>
+  </ion-header-bar>
+  <ion-content class="my-photo-content">
+
+      <div class="desc">
+        <div >
+          <img src="build/img/myInfo/meetThousand/face@3x.png">
+        </div>
+        <div class="info">添加多种表情，验证成功率更高哦~</div>
+      </div>
+
+      <div class="photo-show">
+
+        <div ng-repeat="photo in vm.photoList track by $index"  >
+          <img src="{{photo.url}}" ng-click="vm.showPhotoList($index)">
+          <img ng-if="photo.isCover=='Y'" class="love-img" src="build/img/myInfo/meetThousand/love-r@3x.png">
+        </div>
+
+        <div ng-if="vm.photoList.length<=9" ng-click=" vm.faceEcognition()">
+          <img src="build/img/myInfo/meetThousand/image@3x.png">
+        </div>
+
+      </div>
+      <div class="note-info">
+        <div style="height: 40px"></div>
+        <div>说明:加<img src="build/img/myInfo/meetThousand/love-r@3x.png">图片将用于年会抽奖身份核对</div>
+        <div>记得选一张最美的哦~</div>
+      </div>
+
+  </ion-content>
+</ion-view>

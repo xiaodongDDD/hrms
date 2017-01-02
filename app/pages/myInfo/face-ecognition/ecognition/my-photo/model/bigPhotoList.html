@@ -1,0 +1,31 @@
+<ion-modal-view class="bigPhotoList">
+  <ion-header-bar align-title="center" class=" head">
+    <div class="buttons">
+      <button style="color: white"  class="button button-icon ion-ios-arrow-back color" ng-click="vm .closeModal()">
+      </button>
+    </div>
+    <h1 class="title color">{{vm.count+1}}/{{vm.photoList.length}}</h1>
+    <div class="buttons" slide="right">
+      <button style="color: white" class="button button-icon ion-trash-a " ng-click="vm.showActionSheet()">
+      </button>
+    </div>
+  </ion-header-bar>
+
+    <ion-content class="bigPhotoList-content">
+      <div class="margin-top"></div>
+      <ion-slide-box does-continue="false" show-pager="false" active-slide="vm.count">
+        <ion-slide ng-repeat="bigPhoto in  vm.photoList">
+            <img class="bigPhoto" src="{{bigPhoto.url}}">
+        </ion-slide>
+      </ion-slide-box>
+    </ion-content>
+    <ion-footer-bar class="foot">
+       <div>
+         <div ng-click="vm.setCover()">
+           <img ng-if="vm.photoList[vm.count].isCover=='N'" src="build/img/myInfo/meetThousand/love-g@3x.png">
+           <img ng-if="vm.photoList[vm.count].isCover=='Y'" src="build/img/myInfo/meetThousand/love-r@3x.png">
+         </div>
+
+       </div>
+    </ion-footer-bar>
+</ion-modal-view>

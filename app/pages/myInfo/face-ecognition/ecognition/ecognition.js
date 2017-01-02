@@ -133,7 +133,7 @@
     }
 
     function setting() {
-      $state.go('tab.face-ecognition');
+      $state.go('tab.face-ecognition-my-photo');
     }
 
     function meetThousand() {

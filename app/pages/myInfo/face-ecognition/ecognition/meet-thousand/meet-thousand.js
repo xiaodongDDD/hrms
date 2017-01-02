@@ -31,13 +31,15 @@
                                             hmsPopup,
                                             hmsReturnView,
                                             hmsHttp,
-                                            $ionicScrollDelegate) {
+                                            $ionicScrollDelegate,
+                                            faceEcognitionService) {
       var vm = this;
-      vm.isStart=true;//年会是否开始---默认false
+      vm.isStart=false;//年会是否开始---默认false
       vm.headPortrait='';//头像
       vm.isTopScorll=false;//排行榜是否上滑 默认false
       vm.isRank=true; //点击 排行榜true 我的互粉false
       vm.fansStatus=0;//区分粉 状态 0：互粉  1：粉我的
+      vm.isSpinner=true;
       //界面元素属性设置
       vm.colorFansTabArr=['active-color','un-active-color','un-active-color',0];
       vm.colorTabsArr=['active-color','un-active-color',0];
@@ -59,12 +61,22 @@
       var intersectionArr=[];//互粉
       var followerArr=[];//粉我的
       var followingArr=[];//我的关注
+      var relationType='';
       /*---界面展示信息--*/
+
       vm.summaryInfo=null;
+
       vm.headPortrait=window.localStorage.myInfoImg;//头像
+
       vm.fansList=[];
       vm.topInfo=null;
       vm.topOtherInfo=[];//非前三
+      vm.noData='true';
+    /*  vm.fansInfo={
+        intersection:0,
+        follower:0,
+        following:0
+      };*/
 
       /*--请求初始参数信息--*/
       //follower我的粉丝    following我的关注    intersection我的互粉
@@ -83,7 +95,9 @@
       vm.getSummaryInfo=getSummaryInfo;//获取概要信息
       vm.getTopInfo=getTopInfo;//获取总排行榜
       vm.queryRelation=queryRelation;//根据关注关系获取信息
-
+      vm.doRefresh=doRefresh;
+      vm.loadMore=loadMore;
+      vm.createNewFocus=createNewFocus;
 
       vm.goBack=goBack;
       vm.rankUp=rankUp;
@@ -94,9 +108,8 @@
       vm.faceScanner=faceScanner;
 
 
-      getSummaryInfo();
+      getSummaryInfo();//拉取概要信息
       addressTab(0);
-      fansTab(0);//默认互粉
       rankingMutualFans(0);//界面默认 我的互粉
 
 
@@ -106,8 +119,11 @@
         var url=baseConfig.queryPath +'/annualMeeting/summary';
         console.log(url);
         hmsHttp.post(url,param).success(function (result) {
-          console.log(result.rows[0])
+          console.log(result);
           vm.summaryInfo=result.rows[0];
+
+          console.log( vm.isStart);
+          console.log( vm.summaryInfo)
         }).error(function (err,status) {
           console.log(err);
           console.log(status)
@@ -118,11 +134,12 @@
       function getTopInfo(area) {
         topInfoParams.area=area;
         var url=baseConfig.queryPath +'/annualMeeting/top';
-        console.log(url);
         hmsHttp.post(url,topInfoParams).success(function (result) {
           // console.log('总排行前20:'+angular.toJson(result));
           vm.topInfo=result.rows[0];
+          vm.isStart=result.rows[0].flag=='Y'?true:false;
           vm.topOtherInfo=result.rows[0].topList.slice(3);
+          vm.isSpinner=false;
           console.log(vm.topInfo)
         }).error(function (err,status) {
           console.log(err);
@@ -137,18 +154,80 @@
         console.log(queryRelationParams);
         var url=baseConfig.queryPath +'/annualMeeting/queryRelation';
         hmsHttp.post(url,queryRelationParams).success(function (result) {
-          console.log(url)
-          console.log(result);
-          vm.fansList= result.rows
+          if(result.rows.length==10){
+            vm.noData=true;
+          }else{
+            vm.noData=false;
+          }
+
+         /* vm.fansInfo[type]=result.rows[0].num;*/
+          console.log(result.rows[0].num);
+          vm.fansList= result.rows[0].list;
+          vm.isSpinner=false;
+          $ionicScrollDelegate.resize();
         }).error(function (err,status) {
           console.log(err);
           console.log(status)
         })
       }
 
+      //新增关注
+      function createNewFocus(empNo) {
+        if(vm.fansStatus==0){
+          return;
+        }
+        var params={
+          idolNo:empNo
+        };
+        var url=baseConfig.queryPath +'/annualMeeting/create';
+        hmsHttp.post(url,params).success(function (result) {
+          console.log(result)
+          queryRelation(relationType);
+          $ionicScrollDelegate.resize();
+        }).error(function (err,status) {
+          console.log(err);
+          console.log(status)
+        })
+      }
 
+      //下拉刷新
+      function doRefresh() {
+        vm.isSpinner=false;
+        if(vm.isRank){
+          getTopInfo(topInfoParams.area)
+        }else{
+          getSummaryInfo();
+          queryRelationParams.page=1;
+          queryRelation(relationType);
+          console.log('重新获取不同关注关系列表！')
+        }
+        $scope.$broadcast('scroll.refreshComplete');
+      }
+      //上拉加载
+      function loadMore() {
+        vm.isSpinner=false;
+        console.log('触发上拉');
+        if(!vm.isRank){
+          queryRelationParams.type=relationType;
+          queryRelationParams.page=queryRelationParams.page+1;
 
+          var url=baseConfig.queryPath +'/annualMeeting/queryRelation';
+          hmsHttp.post(url,queryRelationParams).success(function (result) {
+            if(result.rows.length==10){
+              vm.noData=true;
+            }else{
+              vm.noData=false;
+            }
+            vm.fansList= vm.fansList.concat(result.rows);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
 
+          }).error(function (err,status) {
+            console.log(err);
+            console.log(status)
+          })
+        }
+
+      }
 
       //返回上级菜单
       function goBack() {
@@ -157,7 +236,7 @@
 
       //点击我的互粉 排行榜
       function rankingMutualFans(num) {
-
+        vm.isSpinner=true;
         var index=vm.colorTabsArr[2];
         if(num!=vm.colorTabsArr[2]){
           vm.colorTabsArr[num]='active-color';
@@ -165,6 +244,8 @@
           vm.colorTabsArr[2]=num;
         }
         if(num==0){
+          vm.topInfo=[];
+          vm.topOtherInfo=[];
           vm.isRank=true;
           vm.isTopScorll=false;
 
@@ -173,8 +254,10 @@
             'top':'239px'
           };
           vm.addressClass='default-address';
+          getTopInfo(topInfoParams.area);
           $ionicScrollDelegate.resize();
         }else {
+          fansTab(0);//默认互粉
           vm.isRank=false;
           vm.isTopScorll=false;
           vm.headHeight='fans-height';
@@ -184,11 +267,11 @@
           };
           $ionicScrollDelegate.resize();
         }
-
-
       }
 
       function fansTab(num) {
+        vm.fansList=[];
+        vm.isSpinner=true;
         var index=vm.colorFansTabArr[3];
         if(num!=vm.colorFansTabArr[3]){
           vm.colorFansTabArr[num]='active-color';
@@ -196,17 +279,24 @@
           vm.colorFansTabArr[3]=num;
         }
         vm.fansStatus=num;
+        queryRelationParams.page=1;
         if(num==0){
-
           queryRelation('intersection');
+          relationType='intersection';
         }else if(num==1){
           queryRelation('follower');
+          relationType='follower'
         }else{
           queryRelation('following');
+          relationType='following'
         }
+        $ionicScrollDelegate.resize();
       }
 
       function addressTab(num) {
+        vm.topInfo=[];
+        vm.topOtherInfo=[];
+        vm.isSpinner=true;
         console.log(num);
         var address=['ALL','SH','BJ','GZ','CD','WH','XA'];
         var index=vm.colorAddressArr[7];
@@ -246,9 +336,82 @@
         $ionicScrollDelegate.resize();
       }
 
+      //人脸识别
       function faceScanner() {
-        // $state.go('tab.face-ecognition-face-affirm')
-        hmsPopup.showShortCenterToast('等等。。。');
+        var error = function (result) {
+          if (baseConfig.debug) {
+            alert('ecognition.error ' + angular.toJson(result));
+          }
+          hmsPopup.showPopup('验证失败，请重新验证或补充照片！');
+        };
+
+        var success = function (result) {
+          uploadServe(result.imgPath);
+        };
+
+        if(faceEcognitionService.getNoPluginMode()){
+          //临时解决方案
+          catchImage();
+        }else{
+          pluginface.faceDetect({"direction":"front"}, success, error);
+        }
       }
+
+      //
+      function catchImage() {
+        navigator.camera.getPicture(onSuccess, onFail, {
+          quality: 90,
+          targetWidth: 450,
+          targetHeight: 450,
+          destinationType: Camera.DestinationType.FILE_URI,
+          cameraDirection: Camera.Direction.BACK
+        });
+
+        function onFail(result) {
+          if (baseConfig.debug) {
+            alert('ecognition.error ' + angular.toJson(result));
+          }
+          //hmsPopup.showPopup('验证失败，请重新验证或补充照片！');
+        }
+
+        function onSuccess(imageURI) {
+          uploadServe(imageURI);
+        }
+      }
+
+      //上传到服务器进行验证
+      function uploadServe(imgUrl) {
+        var success = function (res) {
+          hmsPopup.showPopup(angular.toJson(JSON.parse(res.response)));
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
+          }
+          var result = JSON.parse(res.response);
+          if (result.rows[0] && result.rows[0].confidence && result.rows[0].confidence > 80) {
+            $state.go('tab.face-ecognition-face-affirm',result.rows[0]);
+          } else {
+            hmsPopup.showPopup('匹配失败，请重新扫描匹配！');
+          }
+          //hmsPopup.showPopup('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
+        };
+
+        var error = function (response) {
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            alert('uploadImage.error ' + angular.toJson(response));
+          }
+          hmsPopup.showPopup('匹配出现异常，请重新匹配！');
+        };
+
+        var onProgress = function (progressEvent) {
+          faceEcognitionService.processProgress(progressEvent, $scope, '匹配中');
+        };
+
+        faceEcognitionService.uploadImage('/faceidentify', imgUrl, onProgress, success, error);
+      }
+
+
+
     }
 })();

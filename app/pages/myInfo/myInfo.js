@@ -71,7 +71,7 @@ angular.module('myInfoModule')
         }
       };
 
-      $timeout(function () {
+      /*$timeout(function () {
         var faceUrl = baseConfig.queryPath + "/isUpload";//获取用户信息
         hmsHttp.post(faceUrl).success(function (result) {
           if(result.success == true){
@@ -82,7 +82,7 @@ angular.module('myInfoModule')
           }
         },function (response) {
         })
-      },200);
+      },200);*/
 
 
       hmsHttp.post(url, param).success(function (result) {
@@ -206,6 +206,18 @@ angular.module('myInfoModule')
       };
 
       $scope.$on('$ionicView.enter', function (e) {
+        $timeout(function () {
+          var faceUrl = baseConfig.queryPath + "/isUpload";//获取用户信息
+          hmsHttp.post(faceUrl).success(function (result) {
+            if(result.success == true){
+              if(baseConfig.debug){
+                console.log('faceEcognitionService.setFaceEcognitionFlag');
+              }
+              faceEcognitionService.setFaceEcognitionFlag(true);
+            }
+          },function (response) {
+          })
+        },200);
         if (baseConfig.debug) {
           console.log('myInfoCtrl.$ionicView.enter');
         }
