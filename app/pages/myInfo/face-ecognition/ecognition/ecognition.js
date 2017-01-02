@@ -48,6 +48,9 @@
     //上传图片到阿里云
     vm.uploadAliYun =  uploadAliYun;
 
+    $scope.$on('$destroy', function (e) {
+    });
+
     function loginFace() {
       hmsPopup.showPopup('此功能下一版本上线');
     }
