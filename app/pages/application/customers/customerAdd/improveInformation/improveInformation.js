@@ -1572,7 +1572,7 @@ angular.module('customerModule')
         var options = {
           quality: 20,
           sourceType: sourceType,
-          destinationType: Camera.DestinationType.FILE_URL, //1, //'FILE_URL',
+          destinationType: Camera.DestinationType.FILE_URI, //1, //'FILE_URL',
           encodingType: Camera.EncodingType.JPEG, //0, //'JPEG',
           mediaType: Camera.MediaType.PICTURE, //0, //'PICTURE',
           saveToPhotoAlbum: false,
@@ -1650,7 +1650,7 @@ angular.module('customerModule')
         var options = {
           destinationType: Camera.DestinationType.FILE_URI,
           sourceType: Camera.PictureSourceType.CAMERA,
-          quality: 30,
+          quality: 20,
           correctOrientation: true
         };
         $cordovaCamera.getPicture(options).then(function(imageURI) {
