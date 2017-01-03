@@ -61,14 +61,20 @@
 
       //新增关注
       function createNewFocus(empNo) {
-        alert(empNo);
+       /* alert(empNo);*/
         var params={
           idolNo:empNo
         };
         var url=baseConfig.queryPath +'/annualMeeting/create';
         hmsHttp.post(url,params).success(function (result) {
-            alert(angular.toJson(result));
-            goBack();
+           /* alert(angular.toJson(result));*/
+            if(result.success){
+              goBack();
+            }else{
+              hmsPopup.showPopup('不可以粉自己哦~');
+              goBack();
+            }
+
         }).error(function (err,status) {
           console.log(err);
           console.log(status)

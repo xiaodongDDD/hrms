@@ -2,7 +2,7 @@
   background-color:  #F6F7F7;
 
   .active-content{
-    /*transition: all 0.5s ease 0s;*/
+    transition: all 0.5s ease 0s;
   }
   .default-top{
     top:239px;
@@ -12,7 +12,7 @@
   }
   .head{
     position: absolute;
-
+    transition: height 0.4s ease 0s ;
     z-index:5;
     top: 0px;
     width: 100%;
@@ -20,11 +20,10 @@
 
     .default-height{
 
-      background-image: linear-gradient(-222deg, #67D2F9 29%, #48ACF8 100%);
+      background-image: linear-gradient(-222deg, #48ACF8 29%, #67D2F9 100%);
     }
     .rank-up-height{
-
-      background-image: linear-gradient(-222deg, #67D2F9 29%, #48ACF8 100%);
+      background-image: linear-gradient(-222deg, #48ACF8 29%, #67D2F9 100%);
     }
 
 
@@ -32,7 +31,7 @@
     .head-info{
       position: relative;
       width: 100%;
-   /*   transition: height 0.4s ease 0s ;*/
+
 
       .back-button{
         z-index: 6;
@@ -292,12 +291,11 @@
       background-color: #FFF;
     }
     .active-address{
-      background: rgba(255,255,255,0.90);
-      box-shadow: 0px 0px 0px 0px rgba(178,178,178,0.50);
+      background: rgba(255,255,255,1);
+      box-shadow: 0px 1px 0px 0px rgba(178,178,178,0.90);
     }
     .fans-height{
-
-      background-image: linear-gradient(-222deg, #67D2F9 29%, #48ACF8 100%);
+      background-image: linear-gradient(-222deg, #48ACF8 29%, #67D2F9 100%);
     }
     .address-info{
       position: relative;
@@ -655,10 +653,10 @@
 
       }
       .rank-back-color1{
-        background-color: #F6F7F7;
+        background-color: #FFF;
       }
       .rank-back-color2{
-        background-color: #F6F7F7;
+        background-color: #FFF;
       }
     }
   }

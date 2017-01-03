@@ -61,7 +61,8 @@
       getNoPluginMode: getNoPluginMode,
       aliYunAuthorMoni: aliYunAuthorMoni,
       aliYunAuthor: aliYunAuthorMoni,
-      faceIdentifyByImageUrl: faceIdentifyByImageUrl
+      faceIdentifyByImageUrl: faceIdentifyByImageUrl,
+      scanProcessProgress:scanProcessProgress
     };
 
     return service;
@@ -97,6 +98,23 @@
           //hmsPopup.hidePopup();
         } else {
           hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
+        }
+      } else {
+      }
+      if (progress == 100) {
+        hmsPopup.showLoading(prompt);
+      }
+      scope.$apply();
+    }
+    //上传附件的进度管控
+    function scanProcessProgress(progressEvent, scope, prompt) {
+      var progress;
+      if (progressEvent.lengthComputable) {
+        progress = progressEvent.loaded / progressEvent.total * 100;
+        if (progress == 100) {
+          //hmsPopup.hidePopup();
+        } else {
+          hmsPopup.showLoading('扫描中...');
         }
       } else {
       }
@@ -303,7 +321,7 @@
       });
       return deferred.promise;
     }
-    
+
     function faceIdentifyByImageUrl(url,imageUrl) {
       var deferred = $q.defer();
       var url = baseConfig.queryPath + url;
@@ -317,6 +335,6 @@
       });
       return deferred.promise;
     }
-    
+
   }
 })();

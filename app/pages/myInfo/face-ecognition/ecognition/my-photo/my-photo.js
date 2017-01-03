@@ -41,7 +41,7 @@
     var vm = this;
     vm.photoList = [];
     vm.count = 0;
-
+    vm.totalNum=0;
 
     vm.goBack = goBack;
     vm.getPhotoList = getPhotoList;
@@ -73,7 +73,7 @@
       if (photo.isCover == 'Y') {
         hmsPopup.showPopup('Sorry，无法取消，可点击其他图片进行更换');
       } else {
-        hmsPopup.confirm("是否更换这张照片，用于年会演讲身份核对？", "提示", function (index) {
+        hmsPopup.confirm("是否更换这张照片，用于年会摇奖身份核对？", "提示", function (index) {
           if (index == 0) {
             console.log('取消')
           } else {
@@ -102,9 +102,11 @@
       var url = baseConfig.queryPath + '/photo/getMyPhotos';
       hmsHttp.post(url, {}).success(function (result) {
         console.log(result);
-        hmsPopup.hideLoading();
-        vm.photoList = result.rows;
 
+        vm.photoList = result.rows;
+        vm.totalNum=result.total
+        hmsPopup.hideLoading();
+        console.log(vm.totalNum);
         $ionicScrollDelegate.resize();
       }).error(function (err, status) {
         console.log(err);

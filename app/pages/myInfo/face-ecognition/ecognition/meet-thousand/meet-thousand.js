@@ -32,8 +32,12 @@
                                             hmsReturnView,
                                             hmsHttp,
                                             $ionicScrollDelegate,
-                                            faceEcognitionService,$timeout) {
+                                            faceEcognitionService,
+                                            $timeout,
+                                            meetThousandServe) {
       var vm = this;
+
+      console.log(typeof window.localStorage.getItem('first'))
       vm.isStart=false;//年会是否开始---默认false
       vm.headPortrait='';//头像
       vm.isTopScorll=false;//排行榜是否上滑 默认false
@@ -52,6 +56,7 @@
         'un-active-color',
         'un-active-color',0];
       vm.cssTop=null;
+      vm.titleTop=null;
       if(ionic.Platform.isIOS()){
        /* vm.cssTop={
           button:{
@@ -77,6 +82,9 @@
           title:{
             'top':'33px'
           },
+          rankUpTitle:{
+            'top':'25px'
+          },
           subTitle:{
             'top':'47px'
           },
@@ -93,7 +101,7 @@
             'height':'136px'
           },
           rankUpHeight:{
-            'height':'84px'
+            'height':'70px'
           }
         };
       }else{
@@ -103,6 +111,9 @@
           },
           title:{
             'top':'13px'
+          },
+          rankUpTitle:{
+            'top':'5px'
           },
           subTitle:{
             'top':'27px'
@@ -120,7 +131,7 @@
             'height':'116px'
           },
           rankUpHeight:{
-            'height':'64px'
+            'height':'50px'
           }
         };
       }
@@ -162,7 +173,7 @@
 
       var topInfoParams={
           pageSize:20,
-          area:''
+          area:'all'
       };
 
       /*--请求--*/
@@ -182,11 +193,13 @@
       vm.faceScanner=faceScanner;
 
       getSummaryInfo();//拉取概要信息
-      rankingMutualFans(0);//界面默认 我的互粉
-      $timeout(function () {
+      rankingMutualFans(0);//
+
+
+      /*$timeout(function () {
         addressTab(0);
 
-      },1000);
+      },1000);*/
      //获取概要信息
       function getSummaryInfo() {
         var param='';
@@ -195,9 +208,7 @@
         hmsHttp.post(url,param).success(function (result) {
           console.log(result);
           vm.summaryInfo=result.rows[0];
-
-          console.log( vm.isStart);
-          console.log( vm.summaryInfo)
+          console.log( vm.summaryInfo.empGender==2)
         }).error(function (err,status) {
           console.log(err);
           console.log(status)
@@ -266,6 +277,7 @@
 
       //下拉刷新
       function doRefresh() {
+        console.log('下拉刷新');
         vm.isSpinner=false;
         if(vm.isRank){
           getTopInfo(topInfoParams.area)
@@ -319,24 +331,26 @@
           vm.colorTabsArr[2]=num;
         }
         if(num==0){
-          vm.topInfo=[];
-          vm.topOtherInfo=[];
-          vm.isRank=true;
-          vm.isTopScorll=false;
           vm.styleHeight=vm.cssTop.defaultHeight;
           vm.headHeight='default-height';
           vm.top= vm.cssTop.top;
           vm.addressClass='default-address';
+          vm.titleTop=vm.cssTop.title;
+          vm.topInfo=[];
+          vm.topOtherInfo=[];
+          vm.isRank=true;
+          vm.isTopScorll=false;
           getTopInfo(topInfoParams.area);
           $ionicScrollDelegate.resize();
         }else {
           fansTab(0);//默认互粉
-          vm.isRank=false;
-          vm.isTopScorll=false;
+          vm.titleTop=vm.cssTop.title;
           vm.styleHeight=vm.cssTop.fansHeight;
           vm.headHeight='fans-height';
           vm.titleClass='default-title';
           vm.top= vm.cssTop.fansTop;
+          vm.isRank=false;
+          vm.isTopScorll=false;
           $ionicScrollDelegate.resize();
         }
       }
@@ -382,6 +396,7 @@
       }
 
       function rankUp() {
+
         if(isHeaderBar == false){
           isHeaderBar = true;
           if(vm.isRank&&vm.isStart){
@@ -397,10 +412,12 @@
             vm.addressClass='active-address';
           }
           $ionicScrollDelegate.resize();
+
         }
       }
 
       function rankDown() {
+
         if(isHeaderBar == true) {
           isHeaderBar = false;
           if (vm.isRank) {
@@ -414,11 +431,14 @@
             vm.addressClass = 'default-address';
           }
           $ionicScrollDelegate.resize();
+
         }
       }
 
       //人脸识别
+
       function faceScanner() {
+
         var error = function (result) {
           if (baseConfig.debug) {
             alert('ecognition.error ' + angular.toJson(result));
@@ -431,6 +451,18 @@
           identifyByImageUrl(result.aliyunPath)
         };
 
+        /*if(meetThousandServe.getLocalStorage('first')==null){
+         /!* hmsPopup.showPopup('快开始扫周围的同事吧~');*!/
+        /!*  meetThousandServe.setLocalStorage('first',1);*!/
+          if(faceEcognitionService.getNoPluginMode()){
+            //临时解决方案
+            catchImage();
+          }else{
+            pluginface.faceDetect({"direction":"back"}, success, error);
+          }
+        }else{
+
+        }*/
         if(faceEcognitionService.getNoPluginMode()){
           //临时解决方案
           catchImage();
@@ -490,13 +522,15 @@
       //上传到服务器进行验证
       function uploadServe(imgUrl) {
         var success = function (res) {
-          hmsPopup.showPopup(angular.toJson(JSON.parse(res.response)));
+          /*hmsPopup.showPopup(angular.toJson(JSON.parse(res.response)));*/
           hmsPopup.hideLoading();
           if (baseConfig.debug) {
             alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
           }
           var result = JSON.parse(res.response);
-          if (result.rows[0] && result.rows[0].confidence && result.rows[0].confidence > 80) {
+
+          // && result.rows[0].confidence > 80
+          if (result.rows[0] && result.rows[0].confidence ) {
             $state.go('tab.face-ecognition-face-affirm',result.rows[0]);
           } else {
             hmsPopup.showPopup('匹配失败，请重新扫描匹配！');
@@ -513,12 +547,11 @@
         };
 
         var onProgress = function (progressEvent) {
-          faceEcognitionService.processProgress(progressEvent, $scope, '匹配中');
+          faceEcognitionService.scanProcessProgress(progressEvent, $scope, '匹配中');
         };
 
         faceEcognitionService.uploadImage('/faceidentify', imgUrl, onProgress, success, error);
       }
-
 
 
     }

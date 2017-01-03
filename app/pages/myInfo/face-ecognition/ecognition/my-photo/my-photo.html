@@ -7,7 +7,7 @@
     </div>
     <h1 class="title">我的照片</h1>
   </ion-header-bar>
-  <ion-content class="my-photo-content">
+  <ion-content class="my-photo-content" has-bouncing="true">
 
       <div class="desc">
         <div >
@@ -23,13 +23,13 @@
           <img ng-if="photo.isCover=='Y'" class="love-img" src="build/img/myInfo/meetThousand/love-r@3x.png">
         </div>
 
-        <div ng-if="vm.photoList.length<=9" ng-click=" vm.faceEcognition()">
+        <div ng-if=" vm.totalNum<9" ng-click=" vm.faceEcognition()">
           <img src="build/img/myInfo/meetThousand/image@3x.png">
         </div>
 
       </div>
       <div class="note-info">
-        <div style="height: 40px"></div>
+        <div style="height: 20px"></div>
         <div>说明:加<img src="build/img/myInfo/meetThousand/love-r@3x.png">图片将用于年会抽奖身份核对</div>
         <div>记得选一张最美的哦~</div>
       </div>
