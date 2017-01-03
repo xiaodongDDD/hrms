@@ -234,6 +234,11 @@ function isEmailAddress(obj) {
   flag = pattern.test(obj);
   return flag;
 }
+//去除所有空格
+function tirmWhitespace(str){
+  var num=str.replace(/\s+/g, "");
+  return num;
+}
 
 //获得UUID
 function guUUID() {
