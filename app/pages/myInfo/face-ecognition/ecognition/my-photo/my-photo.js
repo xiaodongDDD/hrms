@@ -41,7 +41,7 @@
     var vm = this;
     vm.photoList = [];
     vm.count = 0;
-
+    vm.totalNum=0;
 
     vm.goBack = goBack;
     vm.getPhotoList = getPhotoList;
@@ -102,9 +102,11 @@
       var url = baseConfig.queryPath + '/photo/getMyPhotos';
       hmsHttp.post(url, {}).success(function (result) {
         console.log(result);
-        hmsPopup.hideLoading();
-        vm.photoList = result.rows;
 
+        vm.photoList = result.rows;
+        vm.totalNum=result.total
+        hmsPopup.hideLoading();
+        console.log(vm.totalNum);
         $ionicScrollDelegate.resize();
       }).error(function (err, status) {
         console.log(err);

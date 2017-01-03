@@ -101,7 +101,7 @@
             'height':'136px'
           },
           rankUpHeight:{
-            'height':'84px'
+            'height':'70px'
           }
         };
       }else{
@@ -131,7 +131,7 @@
             'height':'116px'
           },
           rankUpHeight:{
-            'height':'64px'
+            'height':'50px'
           }
         };
       }
