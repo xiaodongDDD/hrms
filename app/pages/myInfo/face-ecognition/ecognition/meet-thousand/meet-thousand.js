@@ -448,8 +448,8 @@
 
         var success = function (result) {
           alert('ecognition.success ' + angular.toJson(result));
-          //uploadServe(result.imageUrl);
-          identifyByImageUrl(result.aliyunPath)
+          uploadServe(result.imageUrl);
+          // identifyByImageUrl(result.aliyunPath)
         };
 
         /*if(meetThousandServe.getLocalStorage('first')==null){
