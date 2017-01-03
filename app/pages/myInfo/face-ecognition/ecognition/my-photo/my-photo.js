@@ -43,6 +43,12 @@
     vm.count = 0;
     vm.totalNum=0;
 
+    var width = document.body.clientWidth/3;
+
+    vm.imgHeight = {
+      "height": width + 'px'
+    }
+
     vm.goBack = goBack;
     vm.getPhotoList = getPhotoList;
     vm.faceEcognition = faceEcognition;

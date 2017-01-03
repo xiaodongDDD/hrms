@@ -18,7 +18,7 @@
 
       <div class="photo-show">
 
-        <div ng-repeat="photo in vm.photoList track by $index"  >
+        <div ng-repeat="photo in vm.photoList track by $index" ng-style="vm.imgHeight">
           <img src="{{photo.url}}" ng-click="vm.showPhotoList($index)">
           <img ng-if="photo.isCover=='Y'" class="love-img" src="build/img/myInfo/meetThousand/love-r@3x.png">
         </div>

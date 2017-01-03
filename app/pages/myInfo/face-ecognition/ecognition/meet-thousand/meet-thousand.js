@@ -239,7 +239,7 @@
         console.log(queryRelationParams);
         var url=baseConfig.queryPath +'/annualMeeting/queryRelation';
         hmsHttp.post(url,queryRelationParams).success(function (result) {
-          if(result.rows.length==10){
+          if(result.rows[0] && result.rows[0].list.length==10){
             vm.noData=true;
           }else{
             vm.noData=false;
@@ -299,12 +299,12 @@
 
           var url=baseConfig.queryPath +'/annualMeeting/queryRelation';
           hmsHttp.post(url,queryRelationParams).success(function (result) {
-            if(result.rows.length==10){
+            if(result.rows[0] && result.rows[0].list.length==10){
               vm.noData=true;
             }else{
               vm.noData=false;
             }
-            vm.fansList= vm.fansList.concat(result.rows);
+            vm.fansList= vm.fansList.concat(result.rows[0].list);
             $scope.$broadcast('scroll.infiniteScrollComplete');
 
           }).error(function (err,status) {
