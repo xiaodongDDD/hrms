@@ -72,6 +72,7 @@
         <div class="address-detail-xian {{vm.colorAddressArr[6]}}" ng-click="vm.addressTab(6)">西安</div>
       </ion-scroll>
     </div>
+    <div ng-if="!vm.isTopScorll&&vm.isRank" style="height: 10px;background-color:  #F6F7F7;"></div>
     <div ng-if="!vm.isTopScorll&&vm.isRank" class="active-info">
       <img src="build/img/myInfo/meetThousand/notice@3x.png">
       <div ng-if="vm.isStart">共有<span>{{vm.topInfo.totalNum}}</span>人参与活动</div>
@@ -95,15 +96,19 @@
     </div>
   </div>
   <ion-content class=" active-content" has-bouncing="false" style="margin-bottom:51px;" ng-style="vm.top"
-               on-drag-down="vm.rankDown()" on-drag-up="vm.rankUp()">
-    <ion-refresher
+               on-swipe-down="vm.rankDown()" on-swipe-up="vm.rankUp()">
+   <!-- <ion-refresher
       pulling-text="下拉刷新..."
       on-refresh="vm.doRefresh()">
+    </ion-refresher>-->
+    <ion-refresher on-refresh="vm.doRefresh()"
+
+                   pulling-text="正在刷新数据..."
+                   pulling-icon="ion-ios-loop">
     </ion-refresher>
 
-
     <div ng-if="vm.isSpinner" style="margin-top: 50px;text-align: center">
-      <ion-spinner icon="android" ></ion-spinner>
+      <ion-spinner icon="lines" class="spinner-calm"></ion-spinner>
     </div>
     <div ng-if="(vm.isRank&&vm.isStart&&vm.topInfo.topList.length>0)" class="rank-list">
       <div class="three-info">

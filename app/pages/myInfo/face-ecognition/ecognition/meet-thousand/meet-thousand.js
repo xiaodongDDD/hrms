@@ -447,12 +447,18 @@
         };
 
         var success = function (result) {
+
           //alert('ecognition.success ' + angular.toJson(result));
           //uploadServe(result.imageUrl);
           hmsPopup.showLoading('匹配中');
-          $timeout(function () {
+          /*$timeout(function () {
             identifyByImageUrl(result.aliyunPath);
-          },500);
+          },500);*/
+
+
+        /*  alert('ecognition.success ' + angular.toJson(result));*/
+          uploadServe(result.imageUrl);
+          // identifyByImageUrl(result.aliyunPath)
 
         };
 
