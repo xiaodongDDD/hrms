@@ -332,6 +332,8 @@ angular.module('contactModule')
         console.log(angular.toJson($scope.data));
         console.log("呵呵呵呵");
         console.log($scope.data.contactType);
+        $scope.data.phone=tirmWhitespace($scope.data.phone);
+        $scope.data.tel=tirmWhitespace($scope.data.tel);
         if ($scope.importantContact.checked == true){
           $scope.data.isPrimary="Y";
         }else{

@@ -61,6 +61,7 @@ angular.module('customerModule')
       $scope.collaborators = [];
       $scope.leading_official = {};
       $scope.showCrmLoading = true;
+      $scope.showLeading=true;
 /*      hmsHttp.post(url, data).success(function (data) {
         $scope.showCrmLoading = false;
         $scope.collaborators = data.collaborators;
@@ -92,6 +93,7 @@ angular.module('customerModule')
         }else{
           $scope.showCrmLoading = false;
           $scope.moreDataCanBeLoaded = false;
+          $scope.showLeading=false;
           if(data.returnMsg){
             hmsPopup.showShortCenterToast(data.returnMsg);
           }else{

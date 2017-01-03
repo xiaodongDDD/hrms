@@ -39,6 +39,7 @@ angular.module('customerModule')
         "pageSize": 10,
         "customerId": window.localStorage.customerId
       };
+      $scope.showLeading=true;
       $scope.searchModel = {
         searchValueKey: ""
       };
@@ -116,6 +117,7 @@ angular.module('customerModule')
           hmsPopup.showPopup(reslut.returnMsg);
         } else {
           hmsPopup.hideLoading();
+          $scope.showLeading=false;
           hmsPopup.showPopup(reslut.returnMsg);
         }
       };
