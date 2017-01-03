@@ -857,7 +857,7 @@ angular.module('planModule')
       }
 
       $scope.onDragScroll = function ($event) {
-        $scope.sourceDeg -= $event.gesture.deltaY / 20;
+        $scope.sourceDeg -= $event.gesture.deltaY / 15;
         $scope.stageRotate = {
           "transform": "rotateX(" + $scope.sourceDeg + "deg)",
           "-webkit-transform": "rotateX(" + $scope.sourceDeg + "deg)"
