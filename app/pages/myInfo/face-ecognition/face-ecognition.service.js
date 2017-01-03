@@ -331,6 +331,8 @@
       hmsHttp.post(url, params).success(function (response) {
         deferred.resolve(response);
       }).error(function (response) {
+        hmsPopup.hideLoading();
+        hmsPopup.showPopup('匹配失败，请重新匹配！');
         deferred.reject(response);
       });
       return deferred.promise;
