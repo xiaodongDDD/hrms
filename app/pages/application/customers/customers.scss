@@ -140,6 +140,19 @@
         padding: 0;
         margin: 0;
       }
+      .city-col{
+        padding-left: 3px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .area-col{
+        padding-left: 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        text-align: right;
+      }
       span {
         /*display: inline-block;
         height: 25px;

@@ -418,7 +418,7 @@ angular.module('customerModule')
 
       //检测社会统一信用代码
       $scope.validCreditCode = function () {
-        if($scope.creditCode.input!==''&&$scope.creditCode.readonlyFlag==false){
+        if($scope.creditCode.input!==''&&$scope.creditCode.input!='000000'&&$scope.creditCode.readonlyFlag==false){
           if(customerDetailService.getIsEdit()){
             customerService.validCreditCode(validCreditCodeSuccess,$scope.creditCode.input,customerDetailService.getEditCustomer().customerId);
           }else {
@@ -1294,7 +1294,7 @@ angular.module('customerModule')
 
       $scope.checkData = function () {
 
-        if($scope.creditCode.input==''||$scope.creditCode.readonlyFlag){
+        if($scope.creditCode.input==''||$scope.creditCode.input=='000000'||$scope.creditCode.readonlyFlag){
           $scope.validCredit = true;
         }
         if($scope.dutyParagraph.input==''||$scope.dutyParagraph.readonlyFlag){
