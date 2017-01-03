@@ -7,17 +7,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-baidu-geolocation": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ETENG-OSP/cordova-plugin-baidu-geolocation.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {
-            "API_KEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
-        }
-    },
     "cordova-plugin-geolocation": {
         "source": {
             "type": "registry",
@@ -25,6 +14,17 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-geolocation-baidu": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
+        }
     },
     "com.hand.scancard": {
         "source": {
@@ -82,16 +82,5 @@
         },
         "is_top_level": true,
         "variables": {}
-    },
-    "cordova-plugin-geolocation-baidu": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {
-            "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
-        }
     }
 }

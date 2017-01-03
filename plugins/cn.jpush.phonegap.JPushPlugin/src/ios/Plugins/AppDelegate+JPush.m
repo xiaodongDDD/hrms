@@ -10,7 +10,6 @@
 #import "JPushPlugin.h"
 #import "JPUSHService.h"
 #import <objc/runtime.h>
-#import <RongIMLib/RongIMLib.h>
 
 @implementation AppDelegate (JPush)
 
@@ -37,17 +36,6 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [JPUSHService registerDeviceToken:deviceToken];
-    NSString *token =
-          [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"
-                                                                 withString:@""]
-            stringByReplacingOccurrencesOfString:@">"
-            withString:@""]
-           stringByReplacingOccurrencesOfString:@" "
-           withString:@""];
-          NSLog(@"token = %@",token);
-          [[NSUserDefaults standardUserDefaults]setObject:token forKey:@"device_token"];
-
-          [[RCIMClient sharedRCIMClient] setDeviceToken:token];
 }
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
