@@ -310,6 +310,7 @@
 
       //点击我的互粉 排行榜
       function rankingMutualFans(num) {
+        isHeaderBar = true;
         vm.isSpinner=true;
         var index=vm.colorTabsArr[2];
         if(num!=vm.colorTabsArr[2]){
