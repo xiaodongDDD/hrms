@@ -46,25 +46,40 @@
         </div>
       </div>
       <div class="customer-line2">
+        <!--<div class="row no-padding">-->
+          <!--<div class="col no-padding" style="padding-left: 3px"-->
+               <!--ng-class="{true:'col-40',false:'col-20'}[!customer.saleTeam || customer.saleTeam == '']">-->
+                <!--<img class="team1" src="build/img/application/customer/icon_house_blue@3x.png">-->
+                <!--<span>{{customer.countryName=='中国'?customer.provinceName : customer.countryName}}</span>-->
+          <!--</div>-->
+          <!--<div class="col no-padding" ng-class="{true:'col-40',false:'col-33'}[!customer.saleTeam || customer.saleTeam == '']">-->
+            <!--<img class="team1" style="margin-left: 10px" src="build/img/application/customer/icon_flat_blue@3x.png">-->
+            <!--<span class="">{{customer.saleArea}}</span>-->
+          <!--</div>-->
+
+          <!--<div class="col no-padding" style="text-align:right"-->
+               <!--nng-class="{true:'col-20',false:'col-33'}[!customer.saleTeam || customer.saleTeam == '']">-->
+            <!--<img class="team" src="build/img/application/customer/icon_team_red@3x.png">-->
+            <!--<span class="">{{customer.saleTeam}}</span>-->
+          <!--</div>-->
+        <!--</div> -->
         <div class="row no-padding">
-          <!--<img class="house" src="build/img/application/customer/icon_house_blue@3x.png">
-          <span class="customer-location">{{customer.cityName}}</span>
-          <img class="house" style="margin-left: 10px" src="build/img/application/customer/icon_flat_blue@3x.png">
-          <span class="customer-location">{{customer.saleArea}}</span>
-          <span class="customer-group">{{customer.saleTeam}}</span>
-          <img class="team customer-group" src="build/img/application/customer/icon_team_red@3x.png">-->
-          <div class="col no-padding" style="padding-left: 3px"
-               ng-class="{true:'col-80',false:'col-67'}[!customer.saleTeam || customer.saleTeam == '']">
-            <img class="team1" src="build/img/application/customer/icon_house_blue@3x.png">
-            <span>{{customer.countryName=='中国'?customer.provinceName : customer.countryName}}</span>
-            <img class="team1" style="margin-left: 10px" src="build/img/application/customer/icon_flat_blue@3x.png">
+          <div class="col no-padding city-col" style="padding-left: 3px"
+               ng-class="{true:'col-40',false:'col-24'}[!customer.saleTeam || customer.saleTeam == '']">
+                <!--<img class="team1" src="build/img/application/customer/icon_house_blue@3x.png">-->
+                <img class="team1" src="build/img/application/customer/icon_flat_blue@3x.png">
+                <span>{{customer.countryName=='中国'?customer.provinceName : customer.countryName}}</span>
+          </div>
+          <div class="col no-padding area-col"  ng-class="{true:'col-60',false:'col-76'}[!customer.saleTeam || customer.saleTeam == '']">
             <span class="">{{customer.saleArea}}</span>
+            <span class="">{{customer.saleTeam==''?'':'-  '}}{{customer.saleTeam}}</span>
           </div>
-          <div class="col no-padding" style="text-align:right"
-               nng-class="{true:'col-20',false:'col-33'}[!customer.saleTeam || customer.saleTeam == '']">
-            <img class="team" src="build/img/application/customer/icon_team_red@3x.png">
-            <span class="">{{customer.saleTeam}}</span>
-          </div>
+
+          <!--<div class="col no-padding" style="text-align:right"-->
+               <!--ng-class="{true:'col-20',false:'col-25'}[!customer.saleTeam || customer.saleTeam == '']">-->
+            <!--&lt;!&ndash;<img class="team" src="build/img/application/customer/icon_team_red@3x.png">&ndash;&gt;-->
+            <!--<span class="">{{customer.saleTeam}}</span>-->
+          <!--</div>-->
         </div>
       </div>
     </div>

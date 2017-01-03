@@ -415,6 +415,8 @@ angular.module('contactModule')
                     console.log($ionicHistory.viewHistory().backView);
                     if ($ionicHistory.viewHistory().backView.stateName == "tab.contactCrm") {
                       $state.go("tab.addLinkman2", {param: param});
+                    }else if($ionicHistory.viewHistory().backView.stateName =='tab.contact-search'){
+                      $state.go("tab.addLinkman2", {param: param});
                     } else {
                       $state.go("tab.addLinkman", {param: param});
                     }
@@ -502,6 +504,8 @@ angular.module('contactModule')
                   };
                   console.log($ionicHistory.viewHistory().backView);
                   if ($ionicHistory.viewHistory().backView.stateName == "tab.contactCrm") {
+                    $state.go("tab.addLinkman2", {param: param});
+                  }else if($ionicHistory.viewHistory().backView.stateName =='tab.contact-search'){
                     $state.go("tab.addLinkman2", {param: param});
                   } else {
                     $state.go("tab.addLinkman", {param: param});

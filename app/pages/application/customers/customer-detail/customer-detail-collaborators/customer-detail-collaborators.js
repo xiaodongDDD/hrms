@@ -61,6 +61,7 @@ angular.module('customerModule')
       $scope.collaborators = [];
       $scope.leading_official = {};
       $scope.showCrmLoading = true;
+      $scope.showLeading=true;
 /*      hmsHttp.post(url, data).success(function (data) {
         $scope.showCrmLoading = false;
         $scope.collaborators = data.collaborators;
@@ -75,6 +76,8 @@ angular.module('customerModule')
         hmsPopup.showPopup(data.returnMsg);
       });*/
       var getCollaboratorList=function(data){
+        if(data.returnCode=="S"){
+
         $scope.showCrmLoading = false;
         if(data.collaborators.length<$scope.collaboratorData.pageSize||data.collaborators.length==0){
           $scope.moreDataCanBeLoaded = false;
@@ -86,6 +89,17 @@ angular.module('customerModule')
           }
         }
         $scope.leading_official = data.leading_official;
+
+        }else{
+          $scope.showCrmLoading = false;
+          $scope.moreDataCanBeLoaded = false;
+          $scope.showLeading=false;
+          if(data.returnMsg){
+            hmsPopup.showShortCenterToast(data.returnMsg);
+          }else{
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！');
+          }
+        }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       };
       customerDetailCollaborator.getCollaborator(getCollaboratorList, $scope.collaboratorData );

@@ -1391,7 +1391,8 @@ angular.module('opportunityModule')
           }
         }
         if($scope.nowSelectTarget['searchInterface'] && $scope.searchModel.searchValueKey != ''){
-          $scope.nowSelectTarget.searchInterface.call(null,$scope.nowSelectTarget.searchParams,$scope.searchModel.searchValueKey,$scope.nowPage,$scope.pageSize);
+          $scope.nowSelectTarget.searchInterface.call(null,$scope.nowSelectTarget.searchParams,
+            $scope.searchModel.searchValueKey,$scope.nowPage,$scope.pageSize);
         } else
           $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
       };
@@ -1466,7 +1467,8 @@ angular.module('opportunityModule')
             $scope.items = [];
             $scope.nowPage = 1;
             $scope.pageSize = 15;
-            $scope.nowSelectTarget.searchInterface.call(null,$scope.nowSelectTarget.searchParams,$scope.searchModel.searchValueKey,$scope.nowPage,$scope.pageSize);
+            $scope.nowSelectTarget.searchInterface.call(null,$scope.nowSelectTarget.searchParams,
+              $scope.searchModel.searchValueKey,$scope.nowPage,$scope.pageSize);
           }
         } else {
           //本地字段搜索的
