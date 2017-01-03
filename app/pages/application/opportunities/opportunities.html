@@ -15,15 +15,15 @@
         <div class="all">{{ 'OPPORTUNITIES.BOARD.ALL' | T }}</div>
       </div>
       <div ng-click="selectBoardItem(1)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[1]]">
-        <div class="num">{{boardData.hotOppCount}}</div><div class="need-board">{{getMoneyString(boardData.hotMoney)}}</div>
+        <div class="num">{{boardData.hotOppCount}}</div><div class="need-board">¥{{getMoneyString(boardData.hotMoney)}}</div>
         <div>{{ 'OPPORTUNITIES.BOARD.HOT' | T }}</div>
       </div>
       <div ng-click="selectBoardItem(2)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[2]]">
-        <div class="num">{{boardData.larOppCount}}</div><div class="need-board">{{getMoneyString(boardData.larMoney)}}</div>
+        <div class="num">{{boardData.larOppCount}}</div><div class="need-board">¥{{getMoneyString(boardData.larMoney)}}</div>
         <div>{{ 'OPPORTUNITIES.BOARD.BIG' | T }}</div>
       </div>
       <div ng-click="selectBoardItem(3)" class="board-item" ng-class="{true:'selected'}[boardItemSelected[3]]">
-        <div class="num">{{boardData.winOppCount}}</div><div class="need-board">{{getMoneyString(boardData.winMoney)}}</div>
+        <div class="num">{{boardData.winOppCount}}</div><div class="need-board">¥{{getMoneyString(boardData.winMoney)}}</div>
         <div>{{ 'OPPORTUNITIES.BOARD.WIN' | T }}</div>
       </div>
     </div>
@@ -56,7 +56,7 @@
             </div>
             <div class="more-bottom-margin">
               <span class="cost-title">{{ 'OPPORTUNITIES.ANTICIPATED_REVENUE' | T }}</span>
-              <span class="money">￥{{opportunity.preMoney}}</span>
+              <span class="money">{{opportunity.preMoney}} {{opportunity.currencyName}}</span>
             </div>
           </div>
         </div>

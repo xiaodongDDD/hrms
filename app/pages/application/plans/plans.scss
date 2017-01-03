@@ -229,6 +229,7 @@
       border-bottom: 1px solid rgba(221, 221, 221, 0.6);
     }
     .top-head {
+      top: 88px;
       width: 100vw;
       z-index: 10;
       position: fixed;
@@ -585,6 +586,16 @@
       bottom: -4px;
       right: 5px;
       height: 40px;
+    }
+  }
+}
+
+.platform-ios{
+  .plans{
+    .plans-content {
+      .top-head {
+        top: 108px;
+      }
     }
   }
 }
