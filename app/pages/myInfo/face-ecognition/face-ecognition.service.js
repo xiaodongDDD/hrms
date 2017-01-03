@@ -60,7 +60,9 @@
       compressImage: compressImage,
       getNoPluginMode: getNoPluginMode,
       aliYunAuthorMoni: aliYunAuthorMoni,
-      aliYunAuthor: aliYunAuthorMoni
+      aliYunAuthor: aliYunAuthorMoni,
+      scanProcessProgress:scanProcessProgress
+
     };
 
     return service;
@@ -96,6 +98,23 @@
           //hmsPopup.hidePopup();
         } else {
           hmsPopup.showLoading('上传图片进度为 ' + Math.round(progress) + '%');
+        }
+      } else {
+      }
+      if (progress == 100) {
+        hmsPopup.showLoading(prompt);
+      }
+      scope.$apply();
+    }
+    //上传附件的进度管控
+    function scanProcessProgress(progressEvent, scope, prompt) {
+      var progress;
+      if (progressEvent.lengthComputable) {
+        progress = progressEvent.loaded / progressEvent.total * 100;
+        if (progress == 100) {
+          //hmsPopup.hidePopup();
+        } else {
+          hmsPopup.showLoading('扫描中...');
         }
       } else {
       }

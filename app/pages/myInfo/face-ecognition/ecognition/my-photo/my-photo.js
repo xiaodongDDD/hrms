@@ -73,7 +73,7 @@
       if (photo.isCover == 'Y') {
         hmsPopup.showPopup('Sorry，无法取消，可点击其他图片进行更换');
       } else {
-        hmsPopup.confirm("是否更换这张照片，用于年会演讲身份核对？", "提示", function (index) {
+        hmsPopup.confirm("是否更换这张照片，用于年会摇奖身份核对？", "提示", function (index) {
           if (index == 0) {
             console.log('取消')
           } else {
