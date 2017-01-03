@@ -1,8 +1,8 @@
 
 #import "UIImage+FaceExtensions.h"
 
-#define MAX_IMAGEPIX_WIDTH 400.0f          // max pix 400.0px
-#define MAX_IMAGEPIX_HEIGHT 400.0f          // max pix 400.0px
+#define MAX_IMAGEPIX_WIDTH 200.0f          // max pix 200.0px
+#define MAX_IMAGEPIX_HEIGHT 200.0f          // max pix 200.0px
 #define MAX_IMAGEDATA_LEN 300000.0f   // max data length 300K
 
 CGFloat DegreesToRadians(CGFloat degrees);

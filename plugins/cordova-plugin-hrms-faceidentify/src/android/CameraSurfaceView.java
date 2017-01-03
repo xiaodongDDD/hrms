@@ -57,7 +57,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
             cameraId = CameraInfo.CAMERA_FACING_FRONT;
         }else if("com.hand.face.ui.FaceSerchActivity".equals(contextName)){
             CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_BACK);
-            cameraId = CameraInfo.CAMERA_FACING_FRONT;
+            cameraId = CameraInfo.CAMERA_FACING_BACK;
         }else{
             CameraInterface.getInstance().doOpenCamera(null, CameraInfo.CAMERA_FACING_FRONT);
             cameraId = CameraInfo.CAMERA_FACING_FRONT;
@@ -100,7 +100,11 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 1;
             bmp = BitmapFactory.decodeByteArray(jpegData, 0, jpegData.length, options);
-            bmp =  rotaingImageView(-orientation, bmp);//旋转图片
+            if(CameraInfo.CAMERA_FACING_FRONT == CameraInterface.getInstance().getCameraId()){
+                bmp =  rotaingImageView(-orientation, bmp);//旋转图片
+            }else{
+                bmp =  rotaingImageView(orientation, bmp);//旋转图片
+            }
         }
         return bmp;
     }

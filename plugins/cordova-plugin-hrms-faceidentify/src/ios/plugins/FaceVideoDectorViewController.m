@@ -10,7 +10,7 @@
 #import "WBCaptureService.h"
 #import "UIImage+FaceDetect.h"
 #import "FaceHeader.h"
-
+#import <AliyunOSSiOS/AliyunOSSiOS.h>
 
 @interface FaceVideoDectorViewController ()<WBCaptureServiceDelegate>
 {
@@ -20,6 +20,7 @@
     NSTimer *timer;
     BOOL isPassed;
     BOOL isWorking;
+    OSSClient *client;
 }
 @property (nonatomic,strong)WBCaptureService *captureService;
 @property (nonatomic,strong) AVCaptureVideoPreviewLayer *previewLayer;
@@ -49,8 +50,18 @@
     return _captureService;
 }
 
+- (void)initSDK{
+    NSString *endpoint = @"https://img-cn-shanghai.aliyuncs.com";
+    
+    // 明文设置secret的方式建议只在测试时使用，更多鉴权模式参考后面链接给出的官网完整文档的`访问控制`章节
+    id<OSSCredentialProvider> credential = [[OSSPlainTextAKSKPairCredentialProvider alloc] initWithPlainTextAccessKey:@"LTAIf20TU2Tdb8jz" secretKey:@"7f2vPdAYXeImOg80I6y43huIvu171i"];
+    
+    client = [[OSSClient alloc] initWithEndpoint:endpoint credentialProvider:credential];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initSDK];
     
     isDefaultDirection = YES;
     [self.captureService startRunning];
@@ -58,7 +69,7 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //初始化一个计时器每两秒钟检测一次人脸
-
+        
         timer = [NSTimer scheduledTimerWithTimeInterval:1.2f target:self selector:@selector(faceDetectFunction) userInfo:nil repeats:YES];
     });
     
@@ -174,6 +185,7 @@
 
 -(void)dealloc
 {
+    [self.captureService stopRunning];
     self.captureService = nil;
     [timer invalidate];
     timer = nil;
@@ -298,11 +310,13 @@
 {
     isWorking = YES;
     
-    //    NSLog(@"原始Size:%@,大小:%lu",NSStringFromCGSize(image.size),UIImagePNGRepresentation(image).length/1024);
+    //NSLog(@"原始Size:%@,大小:%lu",NSStringFromCGSize(image.size),UIImagePNGRepresentation(image).length/1024);
     NSString *auth = [Auth appSign:1000000 userId:nil];
     TXQcloudFrSDK *sdk = [[TXQcloudFrSDK alloc] initWithName:[Conf instance].appId authorization:auth endPoint:[Conf instance].API_END_POINT];
+    
     UIImage *compassImage = [image compressedImage];
-    //NSLog(@"大小:%lu",[image compassImage].length/1024);
+    
+    //NSLog(@"大小:%lu",UIImagePNGRepresentation(compassImage).length/1024);
     [sdk detectFace:compassImage successBlock:^(id responseObject) {
         isWorking = NO;
         NSDictionary *dict = responseObject;
@@ -318,18 +332,14 @@
                 if (self.successBlock) {
                     if (!isPassed) {
                         
-                      //  [ToastUtils showLong:@"识别成功！"];
+                        //  [ToastUtils showLong:@"识别成功！"];
                         isPassed = YES;
                         NSDictionary *faceDetail = face[0];
-                        self.successBlock([compassImage imageAtRect:CGRectMake([faceDetail[@"x"] integerValue]-35, [faceDetail[@"y"] integerValue]-60, [faceDetail[@"width"] integerValue]+70, [faceDetail[@"height"] integerValue]+70)],face[0]);
-                        [self dismissViewControllerAnimated:YES completion:^{
-                            if (self.captureService) {
-                                [self.captureService stopRunning];
-                                self.captureService = nil;
-                            }
-                            [timer invalidate];
-                            timer = nil;
-                        }];
+                        NSMutableDictionary *mutiDict = [NSMutableDictionary dictionaryWithDictionary:faceDetail];
+                        NSString *aliyunPath = [self uploadFile:UIImagePNGRepresentation(compassImage)];
+                        [mutiDict setObject:aliyunPath forKey:@"aliyunPath"];
+                        self.successBlock([compassImage imageAtRect:CGRectMake([faceDetail[@"x"] integerValue]-35, [faceDetail[@"y"] integerValue]-60, [faceDetail[@"width"] integerValue]+70, [faceDetail[@"height"] integerValue]+70)],mutiDict);
+                        [self dismissViewControllerAnimated:YES completion:nil];
                     }
                 }
                 
@@ -348,14 +358,7 @@
                     [ToastUtils showLong:@"识别失败！"];
                     isPassed = YES;
                     self.successBlock(nil,nil);
-                    [self dismissViewControllerAnimated:YES completion:^{
-                        if (self.captureService) {
-                            [self.captureService stopRunning];
-                            self.captureService = nil;
-                        }
-                        [timer invalidate];
-                        timer = nil;
-                    }];
+                    [self dismissViewControllerAnimated:YES completion:nil];
                 }
             }
             
@@ -363,6 +366,36 @@
     }];
 }
 
+#pragma mark - 上传图片
+- (NSString *)uploadFile:(NSData *)imageData
+{
+    
+    //上传任务 http://handbk.oss-cn-shanghai.aliyuncs.com/abcde.png
+    OSSPutObjectRequest * put = [OSSPutObjectRequest new];
+    
+    put.bucketName = @"handbk";
+    put.objectKey = [NSString stringWithFormat:@"%lf.png",[[NSDate date] timeIntervalSince1970]];
+    
+    put.uploadingData = imageData; // 直接上传NSData
+    
+    put.uploadProgress = ^(int64_t bytesSent, int64_t totalByteSent, int64_t totalBytesExpectedToSend) {
+        NSLog(@"上传阿里%lld, %lld, %lld", bytesSent, totalByteSent, totalBytesExpectedToSend);
+    };
+    
+    OSSTask * putTask = [client putObject:put];
+    
+    [putTask continueWithBlock:^id(OSSTask *task) {
+        NSLog(@"操作码:%@",task);
+        if (!task.error) {
+            NSLog(@"upload object success!");
+        } else {
+            NSLog(@"upload object failed, error: %@" , task.error);
+        }
+        return nil;
+    }];
+    //[putTask waitUntilFinished];
+    return [NSString stringWithFormat:@"http://handbk.oss-cn-shanghai.aliyuncs.com/%@",put.objectKey];
+}
 
 - (void)showMessage:(NSString *)message
 {

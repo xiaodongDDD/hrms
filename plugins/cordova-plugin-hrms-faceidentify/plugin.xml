@@ -181,5 +181,8 @@
         <framework src="libz.tbd" />
         <framework src="libstdc++.tbd" />
         <framework src="libz.1.2.5.tbd" />
+        <framework src="libresolv.tbd" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="src/ios/plugins/AliyunOSSiOS.framework" custom="true" />
     </platform>
 </plugin>

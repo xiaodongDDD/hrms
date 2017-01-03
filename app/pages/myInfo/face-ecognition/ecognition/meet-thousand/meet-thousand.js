@@ -427,6 +427,7 @@
         };
 
         var success = function (result) {
+          alert('ecognition.success ' + angular.toJson(result));
           //uploadServe(result.imageUrl);
           identifyByImageUrl(result.aliyunPath)
         };
@@ -464,15 +465,15 @@
       function identifyByImageUrl(aliyunPath) {
         if(aliyunPath && aliyunPath != ''){
           hmsPopup.showLoading('匹配中');
-          faceEcognitionService.faceIdentifyByImageUrl('/faceidentifyByUrl',aliyunPath).then(function (res) {
+          faceEcognitionService.faceIdentifyByImageUrl('/faceidentifyByUrl',aliyunPath).then(function (result) {
 
-            alert('faceEcognitionService.faceIdentifyByImageUrl res '+ angular.toJson(res));
+            alert('faceEcognitionService.faceIdentifyByImageUrl res '+ angular.toJson(result));
 
             hmsPopup.hideLoading();
             if (baseConfig.debug) {
               alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
             }
-            var result = JSON.parse(res.response);
+            //var result = JSON.parse(res.response);
             if (result.rows[0] && result.rows[0].confidence && result.rows[0].confidence > 80) {
               $state.go('tab.face-ecognition-face-affirm',result.rows[0]);
             } else {
