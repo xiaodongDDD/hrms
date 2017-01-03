@@ -810,8 +810,7 @@
     function selectThisMonth() {
       $scope.year = nowDate.getFullYear();
       $scope.month = nowDate.getMonth() + 1;
-      getMonthDays($scope.year, $scope.month);
-      reCalculateViewHeight(true, $scope.days.length);
+      getMonthDays($scope.year, $scope.month, reCalculateViewHeight, true);
     }
 
     function onReleaseList() {
