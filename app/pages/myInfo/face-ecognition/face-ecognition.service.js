@@ -231,7 +231,6 @@
       }
     }
 
-
     function compressImage(fileUrl, x, y, imgWidth) {
       var deferred = $q.defer();
       var canvas = document.createElement('CANVAS');

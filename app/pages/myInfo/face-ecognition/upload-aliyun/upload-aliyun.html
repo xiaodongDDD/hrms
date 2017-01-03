@@ -1,4 +1,4 @@
-<ion-view view-title="上传图片到阿里云">
+<ion-view view-title="上传图片到阿里云" class="face-ecognition">
   <ion-header-bar align-title="center" class="bar-stable">
     <div class="buttons">
       <button class="button button-icon ion-ios-arrow-back" ng-click="$hmsGoBack()">
@@ -33,6 +33,16 @@
 
     <br/>
 
+    <input type="file" custom-on-change="vm.uploadFile">
+
+    <button ng-click= "vm.change()">upload me</button>
+
+    <div class="re-face" ng-click="vm.faceEcognition()">
+      <div class="re-face-item">
+        <img src="build/img/myInfo/photo-2@3x.png">
+        <div class="text">重新扫描</div>
+      </div>
+    </div>
 
     <div id="container">
       <a id="selectfiles" href="javascript:void(0);" class='btn'>选择文件</a>

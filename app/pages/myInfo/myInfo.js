@@ -72,17 +72,17 @@ angular.module('myInfoModule')
       };
 
       /*$timeout(function () {
-        var faceUrl = baseConfig.queryPath + "/isUpload";//获取用户信息
-        hmsHttp.post(faceUrl).success(function (result) {
-          if(result.success == true){
-            if(baseConfig.debug){
-              console.log('faceEcognitionService.setFaceEcognitionFlag');
-            }
-            faceEcognitionService.setFaceEcognitionFlag(true);
-          }
-        },function (response) {
-        })
-      },200);*/
+       var faceUrl = baseConfig.queryPath + "/isUpload";//获取用户信息
+       hmsHttp.post(faceUrl).success(function (result) {
+       if(result.success == true){
+       if(baseConfig.debug){
+       console.log('faceEcognitionService.setFaceEcognitionFlag');
+       }
+       faceEcognitionService.setFaceEcognitionFlag(true);
+       }
+       },function (response) {
+       })
+       },200);*/
 
 
       hmsHttp.post(url, param).success(function (result) {
@@ -119,29 +119,34 @@ angular.module('myInfoModule')
       });
       $scope.logout = function () {//注销登录
         //取消绑定推送服务
-        hmsJpushService.bind(window.localStorage.empno + 'LOGOUT');
-        window.localStorage.token = "";
-        window.localStorage.password = "";
-        window.localStorage.checkboxSavePwd = "";
-        window.localStorage.timesheetAuto = "";
-        window.localStorage.messagePush = "";
-        window.localStorage.access_token = "";
-        window.localStorage.gestureLock = false;
-        window.localStorage.removeItem('gesturePassword');
-        window.localStorage.removeItem('myInfoImg');
-        faceEcognitionService.setFaceEcognitionFlag(false);
-        $state.go('login');
-        if (HandIMPlugin) {
-          HandIMPlugin.exitApp(function () {
-          }, function () {
-          }, "LOGOUT")
+        function exit(buttonIndex) {
+          if (buttonIndex == 1) {
+            hmsJpushService.bind(window.localStorage.empno + 'LOGOUT');
+            window.localStorage.token = "";
+            window.localStorage.password = "";
+            window.localStorage.checkboxSavePwd = "";
+            window.localStorage.timesheetAuto = "";
+            window.localStorage.messagePush = "";
+            window.localStorage.access_token = "";
+            window.localStorage.gestureLock = false;
+            window.localStorage.removeItem('gesturePassword');
+            window.localStorage.removeItem('myInfoImg');
+            faceEcognitionService.setFaceEcognitionFlag(false);
+            $state.go('login');
+            if (HandIMPlugin) {
+              HandIMPlugin.exitApp(function () {
+              }, function () {
+              }, "LOGOUT")
+            }
+          }
         }
+        hmsPopup.confirm('确认退出登录吗?', '', exit);
       };
 
       $scope.faceRecognition = function () {
-        if(faceEcognitionService.getFaceEcognitionFlag()){
-          $state.go("tab.face-ecognition-setting",{"from": "setting"});
-        }else{
+        if (faceEcognitionService.getFaceEcognitionFlag()) {
+          $state.go("tab.face-ecognition-setting", {"from": "setting"});
+        } else {
           $state.go('tab.face-ecognition');
         }
       };
@@ -209,15 +214,15 @@ angular.module('myInfoModule')
         $timeout(function () {
           var faceUrl = baseConfig.queryPath + "/isUpload";//获取用户信息
           hmsHttp.post(faceUrl).success(function (result) {
-            if(result.success == true){
-              if(baseConfig.debug){
+            if (result.success == true) {
+              if (baseConfig.debug) {
                 console.log('faceEcognitionService.setFaceEcognitionFlag');
               }
               faceEcognitionService.setFaceEcognitionFlag(true);
             }
-          },function (response) {
+          }, function (response) {
           })
-        },200);
+        }, 200);
         if (baseConfig.debug) {
           console.log('myInfoCtrl.$ionicView.enter');
         }

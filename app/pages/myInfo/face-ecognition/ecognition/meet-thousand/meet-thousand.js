@@ -125,7 +125,8 @@
         };
       }
 
-
+      //
+      var isHeaderBar = true;
 
       vm.titleClass='default-title';
       vm.addressClass='default-address';
@@ -380,30 +381,39 @@
       }
 
       function rankUp() {
-        if(vm.isRank&&vm.isStart){
-          vm.isTopScorll=true;
-          vm.top='up-scroll-top';
-          vm.styleHeight=vm.cssTop.rankUpHeight;
-          vm.headHeight='rank-up-height';
-          vm.top={
-            'top':'0px'
-          };
-          vm.titleClass='active-title';
-          vm.addressClass='active-address';
+        if(isHeaderBar == false){
+          isHeaderBar = true;
+          if(vm.isRank&&vm.isStart){
+            console.log('rankUp...');
+            vm.isTopScorll=true;
+            vm.top='up-scroll-top';
+            vm.styleHeight=vm.cssTop.rankUpHeight;
+            vm.headHeight='rank-up-height';
+            vm.top={
+              'top':'0px'
+            };
+            vm.titleClass='active-title';
+            vm.addressClass='active-address';
+          }
+          $ionicScrollDelegate.resize();
         }
-        $ionicScrollDelegate.resize();
       }
+
       function rankDown() {
-        if(vm.isRank){
-          vm.isTopScorll=false;
-          vm.top='default-top';
-          vm.styleHeight=vm.cssTop.defaultHeight;
-          vm.headHeight='default-height';
-          vm.top= vm.cssTop.top;
-          vm.titleClass='default-title';
-          vm.addressClass='default-address';
+        if(isHeaderBar == true) {
+          isHeaderBar = false;
+          if (vm.isRank) {
+            console.log('rankDown...');
+            vm.isTopScorll = false;
+            vm.top = 'default-top';
+            vm.styleHeight = vm.cssTop.defaultHeight;
+            vm.headHeight = 'default-height';
+            vm.top = vm.cssTop.top;
+            vm.titleClass = 'default-title';
+            vm.addressClass = 'default-address';
+          }
+          $ionicScrollDelegate.resize();
         }
-        $ionicScrollDelegate.resize();
       }
 
       //人脸识别

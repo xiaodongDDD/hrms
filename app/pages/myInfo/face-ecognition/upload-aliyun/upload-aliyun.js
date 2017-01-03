@@ -25,14 +25,37 @@
 
   angular
     .module('myInfoModule')
+    .directive('customOnChange',customOnChange);
+
+  function customOnChange() {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+        var onChangeHandler = scope.$eval(attrs.customOnChange);
+        element.bind('change', onChangeHandler);
+      }
+    };
+  }
+
+  angular
+    .module('myInfoModule')
     .controller('uploadALiYunCtrl', uploadALiYunCtrl);
 
   function uploadALiYunCtrl($scope,
-                              $stateParams,
-                              baseConfig,
-                              hmsPopup) {
+                            $stateParams,
+                            baseConfig,
+                            hmsPopup) {
     var vm = this;
 
+    vm.upFiles = '';
+
+    vm.faceEcognition = faceEcognition;
+    vm.change = change;
+
+    vm.uploadFile = function(event){
+      var files = event.target.files;
+      alert('uploadFile files ' + angular.toJson(files));
+    };
 
     var accessid = ''
     var accesskey = ''
@@ -48,45 +71,37 @@
     var timestamp;
     var now = timestamp = Date.parse(new Date()) / 1000;
 
-    function send_request()
-    {
+    function send_request() {
       var xmlhttp = null;
-      if (window.XMLHttpRequest)
-      {
-        xmlhttp=new XMLHttpRequest();
+      if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
       }
-      else if (window.ActiveXObject)
-      {
-        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+      else if (window.ActiveXObject) {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
       }
 
-      if (xmlhttp!=null)
-      {
+      if (xmlhttp != null) {
         var severUrl = 'xxx'
-        xmlhttp.open( "GET", severUrl, false );
-        xmlhttp.send( null );
+        xmlhttp.open("GET", severUrl, false);
+        xmlhttp.send(null);
         return xmlhttp.responseText
       }
-      else
-      {
+      else {
         alert("Your browser does not support XMLHTTP.");
       }
     };
 
     function check_object_radio() {
       var tt = document.getElementsByName('myradio');
-      for (var i = 0; i < tt.length ; i++ )
-      {
-        if(tt[i].checked)
-        {
+      for (var i = 0; i < tt.length; i++) {
+        if (tt[i].checked) {
           g_object_name_type = tt[i].value;
           break;
         }
       }
     }
 
-    function get_signature()
-    {
+    function get_signature() {
       //可以判断当前expire是否超过了当前时间,如果超过了当前时间,就重新取一下.3s 做为缓冲
 
       host = 'http://handbk.img-cn-shanghai.aliyuncs.com'
@@ -119,38 +134,30 @@
       return suffix;
     }
 
-    function calculate_object_name(filename)
-    {
-      if (g_object_name_type == 'local_name')
-      {
+    function calculate_object_name(filename) {
+      if (g_object_name_type == 'local_name') {
         g_object_name += "${filename}"
       }
-      else if (g_object_name_type == 'random_name')
-      {
+      else if (g_object_name_type == 'random_name') {
         var suffix = get_suffix(filename)
         g_object_name = key + random_string(10) + suffix
       }
       return ''
     }
 
-    function get_uploaded_object_name(filename)
-    {
-      if (g_object_name_type == 'local_name')
-      {
+    function get_uploaded_object_name(filename) {
+      if (g_object_name_type == 'local_name') {
         var tmp_name = g_object_name
         var tmp_name = tmp_name.replace("${filename}", filename);
         return tmp_name
       }
-      else if(g_object_name_type == 'random_name')
-      {
+      else if (g_object_name_type == 'random_name') {
         return g_object_name
       }
     }
 
-    function set_upload_param(up, filename, ret)
-    {
-      if (ret == false)
-      {
+    function set_upload_param(up, filename, ret) {
+      if (ret == false) {
         ret = get_signature()
       }
       g_object_name = key;
@@ -159,11 +166,11 @@
         calculate_object_name(filename)
       }
       var new_multipart_params = {
-        'key' : g_object_name,
+        'key': g_object_name,
         'policy': policyBase64,
         'OSSAccessKeyId': accessid,
-        'success_action_status' : '200', //让服务端返回200,不然，默认会返回204
-        'callback' : callbackbody,
+        'success_action_status': '200', //让服务端返回200,不然，默认会返回204
+        'callback': callbackbody,
         'signature': signature,
       };
 
@@ -176,66 +183,67 @@
     }
 
     var uploader = new plupload.Uploader({
-      runtimes : 'html5,flash,silverlight,html4',
-      browse_button : 'selectfiles',
+      runtimes: 'html5,flash,silverlight,html4',
+      browse_button: 'selectfiles',
       //multi_selection: false,
       container: document.getElementById('container'),
-      flash_swf_url : 'lib/plupload-2.1.2/js/Moxie.swf',
-      silverlight_xap_url : 'lib/plupload-2.1.2/js/Moxie.xap',
-      url : 'http://oss.aliyuncs.com',
+      flash_swf_url: 'lib/plupload-2.1.2/js/Moxie.swf',
+      silverlight_xap_url: 'lib/plupload-2.1.2/js/Moxie.xap',
+      url: 'http://oss.aliyuncs.com',
 
       filters: {
-        mime_types : [ //只允许上传图片和zip,rar文件
-          { title : "Image files", extensions : "jpg,gif,png,bmp" },
-          { title : "Zip files", extensions : "zip,rar" }
+        mime_types: [ //只允许上传图片和zip,rar文件
+          {title: "Image files", extensions: "jpg,gif,png,bmp"},
+          {title: "Zip files", extensions: "zip,rar"}
         ],
-        max_file_size : '10mb', //最大只能上传10mb的文件
-        prevent_duplicates : true //不允许选取重复文件
+        max_file_size: '10mb', //最大只能上传10mb的文件
+        prevent_duplicates: true //不允许选取重复文件
       },
 
       init: {
-        PostInit: function() {
+        PostInit: function () {
           document.getElementById('ossfile').innerHTML = '';
-          document.getElementById('postfiles').onclick = function() {
+          document.getElementById('postfiles').onclick = function () {
             set_upload_param(uploader, '', false);
             return false;
           };
         },
 
-        FilesAdded: function(up, files) {
-          plupload.each(files, function(file) {
+        FilesAdded: function (up, files) {
+          plupload.each(files, function (file) {
+
+            alert("file:" + angular.toJson(file));
+
             document.getElementById('ossfile').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b>'
-              +'<div class="progress"><div class="progress-bar" style="width: 0%"></div></div>'
-              +'</div>';
+              + '<div class="progress"><div class="progress-bar" style="width: 0%"></div></div>'
+              + '</div>';
           });
         },
 
-        BeforeUpload: function(up, file) {
+        BeforeUpload: function (up, file) {
           check_object_radio();
           set_upload_param(up, file.name, true);
         },
 
-        UploadProgress: function(up, file) {
+        UploadProgress: function (up, file) {
           var d = document.getElementById(file.id);
           d.getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
           var prog = d.getElementsByTagName('div')[0];
           var progBar = prog.getElementsByTagName('div')[0]
-          progBar.style.width= 2*file.percent+'px';
+          progBar.style.width = 2 * file.percent + 'px';
           progBar.setAttribute('aria-valuenow', file.percent);
         },
 
-        FileUploaded: function(up, file, info) {
-          if (info.status == 200)
-          {
+        FileUploaded: function (up, file, info) {
+          if (info.status == 200) {
             document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = 'upload to oss success, object name:' + get_uploaded_object_name(file.name);
           }
-          else
-          {
+          else {
             document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = info.response;
           }
         },
 
-        Error: function(up, err) {
+        Error: function (up, err) {
           if (err.code == -600) {
             document.getElementById('console').appendChild(document.createTextNode("\n选择的文件太大了,可以根据应用情况，在upload.js 设置一下上传的最大大小"));
           }
@@ -245,8 +253,7 @@
           else if (err.code == -602) {
             document.getElementById('console').appendChild(document.createTextNode("\n这个文件已经上传过一遍了"));
           }
-          else
-          {
+          else {
             document.getElementById('console').appendChild(document.createTextNode("\nError xml:" + err.response));
           }
         }
@@ -254,6 +261,75 @@
     });
 
     uploader.init();
+
+
+    var faceEcognitionError = function (result) {
+      if (baseConfig.debug) {
+        alert('faceEcogniition.success ' + angular.toJson(result));
+      }
+    };
+
+    var faceEcognitionSuccess = function (result) {
+
+      function onSuccess(fileEntry) {//3.有这个文件就跳过来进入这个文件目录了
+        fileEntry.file(function (file) {//这里file才变为对象，有name什么的属性了。
+
+          alert("fs.root.getFile file.name " + file.name);
+          alert("fs.root.getFile fileEntry.fullPath " + fileEntry.fullPath);
+
+          dispay("DateCreated:" + file.dateCreated);
+          dispay("DateLastAccessed:" + file.dateLastAccessed);
+          dispay("DateLastModified:" + file.dateLastModified);
+          dispay("Drive:" + file.drive);
+          dispay("Name:" + file.name);
+          dispay("ParentFolder:" + file.parentFolder);
+          dispay("Path:" + file.path);
+          dispay("ShortName:" + file.shortName);
+          dispay("ShortPath:" + file.shortPath);
+          dispay("Size:" + file.size);
+          dispay("Type:" + file.type);
+          dispay("file:" + angular.toJson(file));
+
+
+          uploader.addFile(file, 'testPlugin.png');
+
+          $scope.$apply();
+
+          function dispay(value) {
+            alert(value);
+          }
+
+          var reader = new FileReader();
+          reader.readAsText(file);
+          reader.onloadend = function () { //<span style="font-family: Arial, Helvetica, sans-serif;">这里才开始读哦～</span>
+            var read_result = this.result; //存结果
+            alert("fs.root.getFile read_result " + read_result);
+          }
+        });
+      }
+
+      function onError(evt) {//4.如果错误就跳过来，比如没有此文件……
+        alert('error' + evt.target.error.code);
+      }
+
+      var path = result.imgPath; //1.定义文件位置
+      window.resolveLocalFileSystemURL(path, onSuccess, onError); //2.进入这个位置
+    }
+
+
+    function change(file) {
+      var f = document.getElementById("fileTest").files;
+      alert('change file ' + angular.toJson(f[0]));
+      uploader.addFile(vm.upFiles, 'testPlugin.png');
+    }
+
+    //人脸识别
+    function faceEcognition() {
+      if (baseConfig.debug) {
+        console.log('faceEcognition.work...');
+      }
+      pluginface.faceDetect('', faceEcognitionSuccess, faceEcognitionError);
+    }
 
   }
 })();
