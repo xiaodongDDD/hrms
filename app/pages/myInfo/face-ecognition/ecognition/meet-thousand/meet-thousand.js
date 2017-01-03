@@ -426,7 +426,30 @@
         };
 
         var success = function (result) {
-          uploadServe(result.imgPath);
+          //uploadServe(result.aliyunPath);
+          if(result.aliyunPath && result.aliyunPath != ''){
+            hmsPopup.showLoading('匹配中');
+            faceEcognitionService.faceIdentifyByImageUrl('/faceidentifyByUrl',result.aliyunPath).then(function (res) {
+
+              alert('faceEcognitionService.faceIdentifyByImageUrl res '+ angular.toJson(res));
+
+              hmsPopup.hideLoading();
+              if (baseConfig.debug) {
+                alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
+              }
+              var result = JSON.parse(res.response);
+              if (result.rows[0] && result.rows[0].confidence && result.rows[0].confidence > 80) {
+                $state.go('tab.face-ecognition-face-affirm',result.rows[0]);
+              } else {
+                hmsPopup.showPopup('匹配失败，请重新扫描匹配！');
+              }
+            }).then(function () {
+              hmsPopup.hideLoading();
+              hmsPopup.showPopup('匹配失败，请重新匹配！');
+            })
+          }else{
+            hmsPopup.showPopup('匹配失败，请重新匹配！');
+          }
         };
 
         if(faceEcognitionService.getNoPluginMode()){

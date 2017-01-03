@@ -60,7 +60,8 @@
       compressImage: compressImage,
       getNoPluginMode: getNoPluginMode,
       aliYunAuthorMoni: aliYunAuthorMoni,
-      aliYunAuthor: aliYunAuthorMoni
+      aliYunAuthor: aliYunAuthorMoni,
+      faceIdentifyByImageUrl: faceIdentifyByImageUrl
     };
 
     return service;
@@ -302,5 +303,20 @@
       });
       return deferred.promise;
     }
+    
+    function faceIdentifyByImageUrl(url,imageUrl) {
+      var deferred = $q.defer();
+      var url = baseConfig.queryPath + url;
+      var params = {
+        "url": imageUrl
+      }
+      hmsHttp.post(url, params).success(function (response) {
+        deferred.resolve(response);
+      }).error(function (response) {
+        deferred.reject(response);
+      });
+      return deferred.promise;
+    }
+    
   }
 })();
