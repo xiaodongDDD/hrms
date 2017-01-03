@@ -447,9 +447,13 @@
         };
 
         var success = function (result) {
-          alert('ecognition.success ' + angular.toJson(result));
+          //alert('ecognition.success ' + angular.toJson(result));
           //uploadServe(result.imageUrl);
-          identifyByImageUrl(result.aliyunPath)
+          hmsPopup.showLoading('匹配中');
+          $timeout(function () {
+            identifyByImageUrl(result.aliyunPath);
+          },500);
+
         };
 
         /*if(meetThousandServe.getLocalStorage('first')==null){
@@ -499,7 +503,7 @@
           hmsPopup.showLoading('匹配中');
           faceEcognitionService.faceIdentifyByImageUrl('/faceidentifyByUrl',aliyunPath).then(function (result) {
 
-            alert('faceEcognitionService.faceIdentifyByImageUrl res '+ angular.toJson(result));
+            //alert('faceEcognitionService.faceIdentifyByImageUrl res '+ angular.toJson(result));
 
             hmsPopup.hideLoading();
             if (baseConfig.debug) {
