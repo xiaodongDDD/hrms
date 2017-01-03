@@ -173,9 +173,9 @@
     };
 
     var faceEcognitionSuccess = function (result) {
-      //if (baseConfig.debug) {
+      if (baseConfig.debug) {
         alert('faceEcogniition.error ' + angular.toJson(result));
-      //}
+      }
       var sex = '';
       vm.faceResult.imgUrl = result.imgPath;
       vm.faceResult.imgUrlSrc = result.imgPath;
@@ -243,7 +243,7 @@
           function dispay(value){
             alert(value);
           }
-          
+
           var reader = new FileReader();
           reader.readAsText(file);
           reader.onloadend = function() { //<span style="font-family: Arial, Helvetica, sans-serif;">这里才开始读哦～</span>
@@ -255,8 +255,8 @@
       function onError(evt) {//4.如果错误就跳过来，比如没有此文件……
         alert('error'+evt.target.error.code);
       }
-      var path = result.imgPath; //1.定义文件位置
-      window.resolveLocalFileSystemURL(path, onSuccess,onError); //2.进入这个位置
+      //var path = result.imgPath; //1.定义文件位置
+      //window.resolveLocalFileSystemURL(path, onSuccess,onError); //2.进入这个位置
 
     }
 
