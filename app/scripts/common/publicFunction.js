@@ -215,13 +215,17 @@ function inArrayBondIdVaule(array, value) {
 }
 //判断输入是否为十一位电话号码
 function phoneNumber(str) {
+  var num=str.replace(/\s+/g, "");
+  console.log(num);
   var reg = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-  return reg.test(str);
+  return reg.test(num);
 }
 //判断+86后11位电话号码
 function phoneNumber86(str) {
+  var num=str.replace(/\s+/g, "");
+  console.log(num);
   var reg = /^(\+86|\+86+\s)+(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-  return reg.test(str);
+  return reg.test(num);
 }
 
 //邮件格式

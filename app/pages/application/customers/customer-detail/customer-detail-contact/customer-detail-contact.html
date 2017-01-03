@@ -6,8 +6,7 @@
   </ion-refresher>
   <ion-list style="">
     <ion-item ng-repeat="item in linkmanData"  style="padding:0!important;background: #ffffff">
-      <div class="row row-center" style="padding:0;height: 80px">
-        <div class="col col-67" ng-click="goDetail(item)">
+       <!-- <div class="col col-67" ng-click="goDetail(item)">-->
           <div class="row row-center">
             <div class="col">
               <span> <img src="{{item.sexImg}}" style="width:20px;    position: relative;
@@ -15,6 +14,10 @@
               <span style="font-size: 17px;color:#333333;margin-left:5px;">{{item.name}}</span>
               <span class="linkRole" style=" margin-left:10px; font-size: 14px;
     color: #aaaaaa;">{{item.roleName}}</span>
+              <span  class="state-date">主要</span>
+            </div>
+            <div class="col">
+              <span  class="state-date"> {{item.contactTypeName}}</span>
             </div>
           </div>
           <div class="row row-center" style="    height: 30px;
@@ -32,14 +35,18 @@
               {{item.position}}
             </span>
             </div>
-
-          </div>
-        </div>
-        <div class="col col-33" style="padding-top: 9px">
-          <div class="row row-center" style="padding-left: 0;" ng-click="goDetail(item)">
-            <div ng-if="item.isPrimary=='Y'">
-              <span  class="state-date">主要</span>
+            <div class="col item-phone">
+              <a  href="tel:{{item.phone}}">
+                <img src="build/img/contact/icon_phone_green@3x.png" style="width: 26px;">
+              </a>
             </div>
+          </div>
+       <!-- </div>-->
+        <!--<div class="col col-33" style="padding-top: 9px">-->
+          <!--<div class="row row-center" style="padding-left: 0;" ng-click="goDetail(item)">
+           &lt;!&ndash; <div ng-if="item.isPrimary=='Y'">
+              <span  class="state-date">主要</span>
+            </div>&ndash;&gt;
             <div style="margin-left:10px;text-align: right">
               <span  class="state-date"> {{item.contactTypeName}}</span>
             </div>
@@ -51,9 +58,8 @@
                </a>
             </div>
 
-          </div>
-        </div>
-      </div>
+          </div>-->
+      <!--  </div>-->
       <ion-option-button class=" button-delete-icon"
                          ng-click="deleteItem(item,$index)"  style="color:#FE9073">
         <img src="build/img/contact/icon_delete_white@3x.png" style="">
