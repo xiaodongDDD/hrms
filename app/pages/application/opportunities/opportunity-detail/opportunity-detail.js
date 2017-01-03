@@ -304,7 +304,9 @@ angular.module('opportunityModule')
                     hmsPopup.showPopup('抱歉，你没有权限这么做。');
                     return ;
                   }
-                  opportunityDetailService.demoteOpportunity(demoteSuccessInit, $scope.opportunity);
+                  hmsPopup.confirmNoTitle("是否将该商机专为线索",function (){
+                    opportunityDetailService.demoteOpportunity(demoteSuccessInit, $scope.opportunity);
+                  });
                   return true;
                 } else if (btnIndex == 3) {
                   if($scope.opportunity.status == 'HCRM_DISABLE'){
@@ -370,7 +372,9 @@ angular.module('opportunityModule')
                   hmsPopup.showPopup('抱歉，你没有权限这么做。');
                   return ;
                 }
-                opportunityDetailService.demoteOpportunity(demoteSuccessInit, $scope.opportunity);
+                hmsPopup.confirmNoTitle("是否将该商机专为线索",function (){
+                  opportunityDetailService.demoteOpportunity(demoteSuccessInit, $scope.opportunity);
+                });
               } else if (index == 2) {
                 if($scope.opportunity.status == 'HCRM_DISABLE'){
                   hmsPopup.showPopup('商机已被停用，无法进行操作。');
