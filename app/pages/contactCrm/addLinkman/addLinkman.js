@@ -332,8 +332,11 @@ angular.module('contactModule')
         console.log(angular.toJson($scope.data));
         console.log("呵呵呵呵");
         console.log($scope.data.contactType);
-        $scope.data.phone=tirmWhitespace($scope.data.phone);
-        $scope.data.tel=tirmWhitespace($scope.data.tel);
+/*        if( $scope.data.phone!='') {
+          console.log("======phone");
+
+        }
+      */
         if ($scope.importantContact.checked == true){
           $scope.data.isPrimary="Y";
         }else{
@@ -368,7 +371,7 @@ angular.module('contactModule')
           hmsPopup.showPopup("手机号码不能为空")
         } else if ((phoneNumber($scope.data.phone) || phoneNumber86($scope.data.phone) ) == false) {
           hmsPopup.hideLoading();
-          hmsPopup.showPopup("手机号码格式错误")
+          hmsPopup.showPopup("手机号码格式错误");
         } else if ($scope.data.email == "") {
           hmsPopup.hideLoading();
           hmsPopup.showPopup("电子邮箱不能为空")
@@ -383,6 +386,11 @@ angular.module('contactModule')
           hmsPopup.showPopup("地址不能为空")
         }
         else {
+          $scope.data.phone = tirmWhitespace($scope.data.phone);
+         /* if( $scope.data.tel!=''){
+            console.log("======");
+            $scope.data.tel=tirmWhitespace($scope.data.tel);
+          }*/
           //保存到通讯录
           if ($scope.pushNotification.checked == true) {
             var info = {
