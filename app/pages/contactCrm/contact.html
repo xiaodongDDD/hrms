@@ -108,9 +108,15 @@
     </div>
     <div ng-if="showCustomer==1">
      <!-- <div ng-include="'build/pages/contactCrm/colleague/colleagueLinkman.html'"></div>-->
-      <div class="row search-contact-input input-height">
+      <!--<div class="row search-contact-input input-height">
         <input type="search" class="text-input" placeholder="搜索" ng-readonly="true"
                ng-click="goInputSearch()"/>
+      </div>-->
+      <div class="titles-coll">
+        <div class="title-img">
+          <img src="build/img/contact/icon_search@3x.png">
+        </div>
+        <input  ng-click="goInputSearch()" placeholder="搜索" ng-readonly="true">
       </div>
       <div class="org-structure">
         <div class="contact-item row no-padding" ng-click="goStructure()">
