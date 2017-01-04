@@ -2,22 +2,22 @@
  * Created by bobo on 2016/12/27.
  */
 (function () {
-    'use strict';
-    angular
-      .module('myInfoModule')
-      .config(config);
-    function config($stateProvider) {
-      $stateProvider
-        .state('tab.face-ecognition-meetThousand', {
-          url: '/myInfo/face-ecognition-meetThousand',
-          views: {
-            'tab-myInfo': {
-              prefetchTemplate: false,
-              templateUrl: 'build/pages/myInfo/face-ecognition/ecognition/meet-thousand/meet-thousand.html',
-              controller: 'faceEcognitionMeetThousandCtrl',
-              controllerAs: 'vm'
-            }
+  'use strict';
+  angular
+    .module('myInfoModule')
+    .config(config);
+  function config($stateProvider) {
+    $stateProvider
+      .state('tab.face-ecognition-meetThousand', {
+        url: '/myInfo/face-ecognition-meetThousand',
+        views: {
+          'tab-myInfo': {
+            prefetchTemplate: false,
+            templateUrl: 'build/pages/myInfo/face-ecognition/ecognition/meet-thousand/meet-thousand.html',
+            controller: 'faceEcognitionMeetThousandCtrl',
+            controllerAs: 'vm'
           }
+        }
       })
   }
 
@@ -290,6 +290,11 @@
     rankingMutualFans(0);//
 
 
+    $scope.$on('$ionicView.enter', function (e) {
+      getSummaryInfo();
+      queryRelation(relationType)
+    });
+
     /*$timeout(function () {
      addressTab(0);
 
@@ -537,8 +542,8 @@
 
 
     function faceScanner(value) {
-      if(value||relationType=='follower'){
-      }else{
+      if (value || relationType == 'follower') {
+      } else {
         return
       }
 
@@ -552,23 +557,21 @@
       var success = function (result) {
         //alert('ecognition.success ' + angular.toJson(result));
         //uploadServe(result.imageUrl);
-        hmsPopup.showLoading('匹配中');
+        // hmsPopup.showLoading('匹配中');
         $timeout(function () {
           identifyByImageUrl(result.aliyunPath);
         }, 0);
       };
       if (meetThousandServe.getLocalStorage('first') == null) {
 
-        hmsPopup.confirmOnly('快开始扫周围的同事吧~', '提示', function (index) {
-          if (index == 0) {
-            if (faceEcognitionService.getNoPluginMode()) {
-              //临时解决方案
-              catchImage();
-            } else {
-              pluginface.faceDetect({"direction": "back"}, success, error);
-            }
-            meetThousandServe.setLocalStorage('first', 1)
+        meetThousandServe.alertPopup('快开始扫周围的同事吧~',function () {
+          if (faceEcognitionService.getNoPluginMode()) {
+            //临时解决方案
+            catchImage();
+          } else {
+            pluginface.faceDetect({"direction": "back"}, success, error);
           }
+          meetThousandServe.setLocalStorage('first', 1)
         });
       } else {
         if (faceEcognitionService.getNoPluginMode()) {
@@ -665,6 +668,8 @@
       var url = window.localStorage.getItem('activityHelpUrl');
       cordova.InAppBrowser.open(url, '_system', 'location=no,toolbar=yes,enableViewportScale=yes,toolbarposition=top,closebuttoncaption=关闭');
     }
+
+
   }
 })();
 
