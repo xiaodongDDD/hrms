@@ -78,7 +78,7 @@
         //临时解决方案
         catchImage();
       }else{
-        pluginface.faceDetect('', success, error);
+        pluginface.faceDetect({"direction": "front"}, success, error);
       }
     }
 

@@ -22,5 +22,7 @@ typedef void(^FaceVideoDectorSuccessRecognizer)(UIImage *image,NSDictionary *dic
 
 @property (nonatomic,assign)FaceRecognizerType faceRecognizerType;
 
+@property (nonatomic,strong)NSDictionary *dict;
+
 @property (nonatomic,copy)NSString *userId;
 @end
