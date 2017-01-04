@@ -13,34 +13,40 @@
         <img ng-if="vm.isTopScorll" src="build/img/myInfo/meetThousand/help-b@3x.png">
       </div>
       <div ng-if="vm.isTopScorll" class="sub-title" ng-style="vm.cssTop.subTitle">当前排名：{{vm.topInfo.rank}}</div>
-      <div ng-if="!vm.isTopScorll&&vm.isRank" class="ranking-avatar">
-        <div class="avatar-circle">
-          <div>
-            <div></div>
-            <img ng-if="vm.summaryInfo.empGender==1" class="sex-img" src="build/img/myInfo/meetThousand/male-2@3x.png">
-            <img ng-if="vm.summaryInfo.empGender==2" class="sex-img" src="build/img/myInfo/meetThousand/female-2@3x.png">
+
+      <div ng-if="!vm.isTopScorll&&vm.isRank">
+        <div class="ranking-avatar">
+          <div class="avatar-circle">
+            <div>
+              <div></div>
+              <img ng-if="vm.summaryInfo.empGender==1" class="sex-img"
+                   src="build/img/myInfo/meetThousand/male-2@3x.png">
+              <img ng-if="vm.summaryInfo.empGender==2" class="sex-img"
+                   src="build/img/myInfo/meetThousand/female-2@3x.png">
+            </div>
+          </div>
+          <div class="avatar">
+            <img class="avatar-img" ng-src="{{vm.headPortrait}}">
+
           </div>
         </div>
-        <div class="avatar">
-          <img class="avatar-img" ng-src="{{vm.headPortrait}}">
-
+        <div class="mutual-fans-info">
+          <div class="num-info">{{vm.summaryInfo.intersectionCnt}}</div>
+          <div class="desc-info">我的互粉</div>
         </div>
-      </div>
-      <div ng-if="!vm.isTopScorll&&vm.isRank" class="mutual-fans-info">
-        <div class="num-info" >{{vm.summaryInfo.intersectionCnt}}</div>
-        <div class="desc-info">我的互粉</div>
-      </div>
-      <div ng-if="!vm.isTopScorll&&vm.isRank" class="ranking-info">
-        <div class="ranking-num" ng-if="!vm.isStart">_ _</div>
-        <div class="ranking-num" ng-if="vm.isStart">{{vm.topInfo.rank}}</div>
-        <div class="ranking-desc">我的排名</div>
+        <div class="ranking-info">
+          <div class="ranking-num" ng-if="!vm.isStart">_ _</div>
+          <div class="ranking-num" ng-if="vm.isStart">{{vm.topInfo.rank}}</div>
+          <div class="ranking-desc">我的排名</div>
+        </div>
       </div>
       <div ng-if="!vm.isRank" class="fans-avatar">
         <div class="avatar-circle">
           <div>
             <div></div>
             <img ng-if="vm.summaryInfo.empGender==1" class="sex-img" src="build/img/myInfo/meetThousand/male-2@3x.png">
-            <img ng-if="vm.summaryInfo.empGender==2" class="sex-img" src="build/img/myInfo/meetThousand/female-2@3x.png">
+            <img ng-if="vm.summaryInfo.empGender==2" class="sex-img"
+                 src="build/img/myInfo/meetThousand/female-2@3x.png">
           </div>
         </div>
         <div class="avatar">
@@ -59,7 +65,7 @@
           互粉统计
         </div>
       </div>
-    <!--  <div ng-if="!vm.isTopScorll" class="head-bg">-->
+      <!--  <div ng-if="!vm.isTopScorll" class="head-bg">-->
     </div>
     <div ng-if="vm.isRank" class="address-info {{vm.addressClass}}">
       <ion-scroll direction="x" scrollbar-x="false">
@@ -97,10 +103,10 @@
   </div>
   <ion-content class=" active-content" has-bouncing="false" style="margin-bottom:51px;" ng-style="vm.top"
                on-swipe-down="vm.rankDown()" on-swipe-up="vm.rankUp()">
-   <!-- <ion-refresher
-      pulling-text="下拉刷新..."
-      on-refresh="vm.doRefresh()">
-    </ion-refresher>-->
+    <!-- <ion-refresher
+       pulling-text="下拉刷新..."
+       on-refresh="vm.doRefresh()">
+     </ion-refresher>-->
     <ion-refresher on-refresh="vm.doRefresh()"
 
                    pulling-text="正在刷新数据..."
@@ -174,7 +180,7 @@
         参加上海年会并签到，方可加入榜单哦~
       </div>
     </div>
-    <div ng-if="!vm.isRank" class="fans-list" ng-repeat="fans in vm.fansList track by $index">
+    <div ng-if="!vm.isSpinner&&!vm.isRank" class="fans-list" ng-repeat="fans in vm.fansList track by $index">
       <div>
         <div>
           <div class="avatar">
@@ -196,7 +202,7 @@
       </div>
     </div>
 
-    <ion-infinite-scroll ng-if="!vm.isRank&&vm.noData"  on-infinite="vm.loadMore()" distance="1%"></ion-infinite-scroll>
+    <ion-infinite-scroll ng-if="!vm.isRank&&vm.noData" on-infinite="vm.loadMore()" distance="1%"></ion-infinite-scroll>
   </ion-content>
   <div class="meetThousand-foot">
     <div class="right-line"></div>
@@ -211,8 +217,8 @@
         <div id="rankingDesc " class="{{vm.colorTabsArr[0]}}">排行榜</div>
       </div>
     </div>
-    <div class="right-icon " >
-      <div  ng-click="vm.rankingMutualFans(1)">
+    <div class="right-icon ">
+      <div ng-click="vm.rankingMutualFans(1)">
         <img ng-if="!vm.isRank" src="build/img/myInfo/meetThousand/fan@3x.png">
         <img ng-if="vm.isRank" src="build/img/myInfo/meetThousand/fan-outline@3x.png">
         <div id="mutualFansDesc " class="{{vm.colorTabsArr[1]}}">我的互粉</div>

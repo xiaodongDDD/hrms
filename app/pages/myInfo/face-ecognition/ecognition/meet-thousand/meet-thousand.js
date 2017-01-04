@@ -437,34 +437,30 @@
       }
       if (num == 0) {
         vm.styleHeight = vm.cssTop.defaultHeight;
+        vm.isRank = true;
         $timeout(function () {
-          vm.isRank = true;
-          $timeout(function () {
-            vm.headHeight = 'default-height';
-            vm.top = vm.cssTop.top;
-            vm.addressClass = 'default-address';
-            vm.titleTop = vm.cssTop.title;
-            //vm.topInfo = [];
-            vm.topOtherInfo = [];
-            vm.isTopScorll = false;
-            getTopInfo(topInfoParams.area);
-            $ionicScrollDelegate.resize();
-          }, 0);
-        }, 0);
+          vm.headHeight = 'default-height';
+          vm.top = vm.cssTop.top;
+          vm.addressClass = 'default-address';
+          vm.titleTop = vm.cssTop.title;
+          //vm.topInfo = [];
+          vm.topOtherInfo = [];
+          vm.isTopScorll = false;
+          getTopInfo(topInfoParams.area);
+          $ionicScrollDelegate.resize();
+        }, 100);
       } else {
         vm.styleHeight = vm.cssTop.fansHeight;
+        vm.isRank = false;
         $timeout(function () {
-          vm.isRank = false;
-          $timeout(function () {
-            fansTab(0);//默认互粉
-            vm.titleTop = vm.cssTop.title;
-            vm.headHeight = 'fans-height';
-            vm.titleClass = 'default-title';
-            vm.top = vm.cssTop.fansTop;
-            vm.isTopScorll = false;
-            $ionicScrollDelegate.resize();
-          }, 0);
-        }, 0);
+          fansTab(0);//默认互粉
+          vm.titleTop = vm.cssTop.title;
+          vm.headHeight = 'fans-height';
+          vm.titleClass = 'default-title';
+          vm.top = vm.cssTop.fansTop;
+          vm.isTopScorll = false;
+          $ionicScrollDelegate.resize();
+        }, 100);
       }
     }
 
