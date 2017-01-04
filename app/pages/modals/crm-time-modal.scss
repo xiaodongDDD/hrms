@@ -20,8 +20,8 @@
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
-      transition: transform 0.5s;
-      -webkit-transition: transform 0.5s;
+      transition: transform 0.2s;
+      -webkit-transition: transform 0.2s;
       //overflow: hidden;
       .scroll-item {
         background: white;
@@ -35,8 +35,8 @@
         text-align: center;
         line-height: 40px;
         color: #d5d5d5;
-        transition: color 1s;
-        -webkit-transition: color 1s;
+        transition: color 0.5s;
+        -webkit-transition: color 0.5s;
       }
       .scroll-item.selected {
         color: #333333;

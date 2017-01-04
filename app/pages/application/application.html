@@ -78,6 +78,12 @@
                  ng-click="goPage(appItem)">
               <div class="appItem">
                 <div class="app-item-content">
+                  <div class="app-extra" ng-if="appItem.hasWorkflowNum&&!fetchWorkflowData&&appItem.count!=0"
+                       ng-bind="appItem.count">
+                  </div>
+                  <div ng-if="appItem.hasWorkflowNum&&fetchWorkflowData" class="app-extra-refresh">
+                    <ion-spinner icon="ios" class="spinner spinner-ios"></ion-spinner>
+                  </div>
                   <img ng-src="{{appItem.imageUrl}}" ng-if="appItem.imageUrl!=''"/>
                 </div>
               </div>
