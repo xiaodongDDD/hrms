@@ -103,7 +103,7 @@
           'height': '136px'
         },
         rankUpHeight: {
-          'height': '72px'
+          'height': '75px'
         }
       };
     } else {
@@ -133,7 +133,7 @@
           'height': '116px'
         },
         rankUpHeight: {
-          'height': '52px'
+          'height': '55px'
         }
       };
     }
@@ -199,7 +199,7 @@
     vm.fansTab = fansTab;
     vm.addressTab = addressTab;
     vm.faceScanner = faceScanner;
-
+    vm.openHelpURl=openHelpURl;
     getSummaryInfo();//拉取概要信息
     rankingMutualFans(0);//
 
@@ -572,4 +572,10 @@
 
     faceEcognitionService.uploadImage('/faceidentify', imgUrl, onProgress, success, error);
   }
+
+  function openHelpURl() {
+    var url=window.localStorage.getItem('activityHelpUrl');
+    cordova.InAppBrowser.open(url, '_system', 'location=no,toolbar=yes,enableViewportScale=yes,toolbarposition=top,closebuttoncaption=关闭');
+  }
+
 })();
