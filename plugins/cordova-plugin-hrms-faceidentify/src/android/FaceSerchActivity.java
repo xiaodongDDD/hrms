@@ -24,6 +24,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.oss.ClientConfiguration;
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.OSS;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
+import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSPlainTextAKSKCredentialProvider;
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
+import com.alibaba.sdk.android.oss.model.PutObjectRequest;
+import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.hand.face.common.Config;
 import com.hand.face.common.LoadingDialog;
 import com.hand.face.myinterface.CameraInterface;
@@ -52,6 +64,11 @@ import java.util.concurrent.Executors;
  * Created by xiangwang on 2016/12/17.
  */
 public class FaceSerchActivity extends Activity {
+    private String endpoint = "http://oss-cn-shanghai.aliyuncs.com";
+    private String nameSapce = "http://handbk.oss-cn-shanghai.aliyuncs.com";
+    private OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("LTAIf20TU2Tdb8jz", "7f2vPdAYXeImOg80I6y43huIvu171i");
+    private OSS oss;
+
     private static final int CAMERA_PERMISSION_REQUEST = 1;
     private static final String TAG = "FaceCompareActivity";
     CameraSurfaceView surfaceView = null;
@@ -93,6 +110,12 @@ public class FaceSerchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(Utils.getResourceId(FaceSerchActivity.this, "activity_video", "layout"));
+        ClientConfiguration conf = new ClientConfiguration();
+        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
+        conf.setSocketTimeout(30 * 1000); // socket超时，默认15秒
+        conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
+        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
+        oss = new OSSClient(FaceSerchActivity.this, endpoint, credentialProvider,conf);
         //运行时权限检测
         if (ContextCompat.checkSelfPermission(FaceSerchActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
         {
@@ -235,7 +258,11 @@ public class FaceSerchActivity extends Activity {
 //                    faceView.setFaces(faces);
                     break;
                 case EventUtil.CAMERA_HAS_STARTED_PREVIEW:
-                    startGoogleFaceDetect();
+                    try {
+                        startGoogleFaceDetect();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
             super.handleMessage(msg);
@@ -275,7 +302,7 @@ public class FaceSerchActivity extends Activity {
             });
         }
     }
-    private void startGoogleFaceDetect(){
+    private void startGoogleFaceDetect() throws Exception{
         Camera.Parameters params = CameraInterface.getInstance().getCameraParams();
         if(params.getMaxNumDetectedFaces() > 0){
             if(faceView != null){
@@ -307,9 +334,7 @@ public class FaceSerchActivity extends Activity {
             faceView.clearFaces();
         }
     }
-    public interface NV21ImgCallBack{
-        public void getImgBuffer(byte[] nv21);
-    }
+
     // 防止handler出现内存泄露 写成静态类
     static class MyHandler extends Handler {
         // 持有当前activity的弱引用
@@ -342,11 +367,12 @@ public class FaceSerchActivity extends Activity {
                             //获取保存的图片路径
                             String imgPath = FileUtil.getSavePath();
                             faceObj.put("imgPath", imgPath);
-                            myAct.notify.sendNotifyMessage(faceObj.toString());
+                            myAct.uploadImage(imgPath, faceObj);
+//                            myAct.notify.sendNotifyMessage(faceObj.toString());
                             if(myAct.timer!=null){
                                 myAct.timer.cancel();
                             }
-                            myAct.finish();
+//                            myAct.finish();
                         }
                     }catch (JSONException e) {
                         //打开检测锁 重置检测次数
@@ -385,5 +411,56 @@ public class FaceSerchActivity extends Activity {
             timer.cancel();
         }
         super.onDestroy();
+    }
+    private void uploadImage(String url,final JSONObject obj){
+        if(loadingDialog!=null) {
+            loadingDialog.setText("正在上传图片,请等待...");
+            loadingDialog.show();}
+        final String time = System.currentTimeMillis()+"";
+        // 构造上传请求
+        PutObjectRequest put = new PutObjectRequest("handbk",time+".jpg", url);
+        // 异步上传时可以设置进度回调
+        put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
+            @Override
+            public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+                Log.d("PutObject", "currentSize: " + currentSize + " totalSize: " + totalSize);
+            }
+        });
+        OSSAsyncTask task = oss.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            @Override
+            public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                Log.d("PutObject", "UploadSuccess");
+                try {
+                    obj.put("aliyunPath", nameSapce+time+".jpg");
+                    Log.d("PutObject", obj.toString());
+                    notify.sendNotifyMessage(obj.toString());
+                    if(loadingDialog!=null && loadingDialog.isShowing()) loadingDialog.dismiss();
+                    FaceSerchActivity.this.finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+//                Toast.makeText(FaceCompareActivity.this,"上传成功"+result.toString(),Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                // 请求异常
+                if (clientExcepion != null) {
+                    // 本地异常如网络异常等
+                    clientExcepion.printStackTrace();
+                }
+                if (serviceException != null) {
+                    // 服务异常
+                    Log.e("ErrorCode", serviceException.getErrorCode());
+                    Log.e("RequestId", serviceException.getRequestId());
+                    Log.e("HostId", serviceException.getHostId());
+                    Log.e("RawMessage", serviceException.getRawMessage());
+                }
+                if(loadingDialog!=null && loadingDialog.isShowing()) loadingDialog.dismiss();
+                FaceSerchActivity.this.finish();
+                Toast.makeText(FaceSerchActivity.this,"图片上传失败",Toast.LENGTH_SHORT).show();
+            }
+        });
+        // task.cancel(); // 可以取消任务
+        // task.waitUntilFinished(); // 可以等待任务完成
     }
 }
