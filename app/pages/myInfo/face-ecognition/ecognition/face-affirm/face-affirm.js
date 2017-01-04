@@ -71,7 +71,11 @@
             if(result.success){
               goBack();
             }else{
-              hmsPopup.showPopup('不可以粉自己哦~');
+              if(result.rows[0]=='1'){
+                hmsPopup.showPopup('不可以粉自己哦~');
+              }else{
+                hmsPopup.showPopup('已经粉过的人~');
+              }
               goBack();
             }
 

@@ -151,7 +151,7 @@
 
       <div class="other-ranking">
         <div ng-repeat="info in vm.topOtherInfo" class="{{($index+4)%2==0?'rank-back-color2':'rank-back-color1'}}">
-          <div class="ranking">{{$index+4<10?0:''}}{{$index+4}}</div>
+          <div class="ranking">{{info.rank<10?0:''}}{{info.rank}}</div>
           <div class="head-portrait">
             <img src="{{info.photo}}">
             <div class="sex">
