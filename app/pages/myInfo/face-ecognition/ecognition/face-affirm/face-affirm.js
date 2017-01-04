@@ -67,7 +67,7 @@
         };
         var url=baseConfig.queryPath +'/annualMeeting/create';
         hmsHttp.post(url,params).success(function (result) {
-          /*  alert(angular.toJson(result));*/
+            alert(angular.toJson(result));
             if(result.success){
               goBack();
             }else{

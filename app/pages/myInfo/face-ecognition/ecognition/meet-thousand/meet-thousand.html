@@ -8,7 +8,7 @@
         <img ng-if="vm.isTopScorll" src="build/img/myInfo/meetThousand/Back-Chevron-b@3x.png">
       </div>
       <div class="{{vm.titleClass}}" ng-style="vm.titleTop">认识汉得千人</div>
-      <div class="help-button" ng-style="vm.cssTop.button">
+      <div class="help-button" ng-style="vm.cssTop.button" ng-click="vm.openHelpURl()">
         <img ng-if="!vm.isTopScorll" src="build/img/myInfo/meetThousand/help-w@3x.png">
         <img ng-if="vm.isTopScorll" src="build/img/myInfo/meetThousand/help-b@3x.png">
       </div>
@@ -174,7 +174,7 @@
         参加上海年会并签到，方可加入榜单哦~
       </div>
     </div>
-    <div ng-if="!vm.isRank" class="fans-list" ng-repeat="fans in vm.fansList">
+    <div ng-if="!vm.isRank" class="fans-list" ng-repeat="fans in vm.fansList track by $index">
       <div>
         <div>
           <div class="avatar">
