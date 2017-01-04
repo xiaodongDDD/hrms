@@ -387,10 +387,11 @@ angular.module('contactModule')
         }
         else {
           $scope.data.phone = tirmWhitespace($scope.data.phone);
-         /* if( $scope.data.tel!=''){
+          console.log($scope.data.tel!=undefined);
+          if( $scope.data.tel!=''&&$scope.data.tel!=undefined){
             console.log("======");
             $scope.data.tel=tirmWhitespace($scope.data.tel);
-          }*/
+          }
           //保存到通讯录
           if ($scope.pushNotification.checked == true) {
             var info = {

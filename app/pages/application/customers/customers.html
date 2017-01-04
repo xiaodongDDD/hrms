@@ -33,15 +33,15 @@
         <div class="row no-padding first-row" >
           <!--<span ng-class="{'status-blue':customer.approveTypeName =='已提交','status-green':customer.approveTypeName =='未提交',-->
           <!--'status-red':customer.approveTypeName =='已拒绝'}" >-->
-           <div class="col col-70 no-padding customer-company">
+           <div class="col no-padding customer-company"  ng-class="{true:'col-99',false:'col-70'}[myCustomer]">
             <span ng-hide="customer.approveTypeName =='已审核'||customer.approveTypeName ==''"
                   ng-class="{'已提交':'status-blue','未提交':'status-green','已拒绝': 'status-red'}[customer.approveTypeName]" >
             {{customer.approveTypeName}}</span>
              {{customer.fullName}}
             <!--<span class="customer-company">{{customer.fullName}}</span>-->
           </div>
-          <div class="col col-30 no-padding" >
-            <span class="customer-name">{{customer.saleEmployee}}</span>
+          <div class="col col-30 no-padding" ng-hide="myCustomer">
+            <span class="customer-name" >{{customer.saleEmployee}}</span>
           </div>
         </div>
       </div>
@@ -63,14 +63,14 @@
             <!--<span class="">{{customer.saleTeam}}</span>-->
           <!--</div>-->
         <!--</div> -->
-        <div class="row no-padding">
+        <div class="row no-padding" >
           <div class="col no-padding city-col" style="padding-left: 3px"
-               ng-class="{true:'col-40',false:'col-24'}[!customer.saleTeam || customer.saleTeam == '']">
+               ng-class="{true:'col-40',false:'col-24'}[!customer.saleTeam || customer.saleTeam == ''||myCustomer]">
                 <!--<img class="team1" src="build/img/application/customer/icon_house_blue@3x.png">-->
                 <img class="team1" src="build/img/application/customer/icon_flat_blue@3x.png">
                 <span>{{customer.countryName=='中国'?customer.provinceName : customer.countryName}}</span>
           </div>
-          <div class="col no-padding area-col"  ng-class="{true:'col-60',false:'col-76'}[!customer.saleTeam || customer.saleTeam == '']">
+          <div class="col no-padding area-col" ng-hide="myCustomer" ng-class="{true:'col-60',false:'col-76'}[!customer.saleTeam || customer.saleTeam == '']">
             <span class="">{{customer.saleArea}}</span>
             <span class="">{{customer.saleTeam==''?'':'-  '}}{{customer.saleTeam}}</span>
           </div>

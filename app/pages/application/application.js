@@ -558,6 +558,30 @@ angular.module('applicationModule')
         var success = function (result) {
           if (result.returnStatus == 'S') {
 
+            // var menuCode = "CONTRACT_MANAGE";
+
+            if($scope.hasCrm){
+              var blankMenu = {
+                destUrl: "",
+                hasWorkflowNum:"",
+                imageUrl: "",
+                menuCode: "BLANK",
+                menuName: "",
+                menuSequence: "",
+                menuType: ""
+              };
+
+              for(var i = 0; i < result.returnData.officeApp.length; i++){
+                if(result.returnData.officeApp[i].menuCode == 'CONTRACT_MANAGE'){
+                  var tempMenu = result.returnData.officeApp[i];
+                  tempMenu.appName = result.returnData.officeApp[i].menuName;
+                  $scope.crmApp[1].list.push(tempMenu);
+                  result.returnData.officeApp[i] = blankMenu;
+                }
+              }
+            }
+
+
             $scope.officeApp = applicationService.analysisMenuList(result.returnData.officeApp);
             $scope.projectApp = applicationService.analysisMenuList(result.returnData.projectApp);
             $scope.employeeApp = applicationService.analysisMenuList(result.returnData.employeeApp);
