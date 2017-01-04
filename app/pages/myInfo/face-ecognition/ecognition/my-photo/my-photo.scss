@@ -1,18 +1,13 @@
 .my-photo{
-  .action-sheet  {
+  .platform-android .action-sheet .button {
     display: block;
-    padding: 5px;
+    padding: 1px;
     width: 100%;
     border-radius: 0;
-    border-radius: 0;
-    border-color: #e5ecef;
+    border-color: #d1d3d6;
     background-color: transparent;
-    color: #007aff;
-    font-size: 21px;
-    span{
-      color: red;
-    }
-  }
+    color: red;
+    font-size: 17px; }
 
 
   .my-photo-content{
