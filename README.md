@@ -120,7 +120,7 @@ Android测试环境
   
   cordova plugin rm cordova-plugin-baidu-geolocation
   cordova plugin rm cordova-plugin-geolocation-baidu
-  cordova plugin add https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu --variable BAIDUMAPKEY=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2
+  cordova plugin add https://github.com/ETENG-OSP/cordova-plugin-baidu-geolocation.git --variable API_KEY=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2
   
   一 iOS 打包
   
@@ -170,6 +170,11 @@ Android测试环境
   
   cordova plugin rm cn.jpush.phonegap.JPushPlugin
   cordova plugin add jpush-phonegap-plugin@2.2.0 --variable API_KEY=22b25063349b6beef7bde524
+  
+  cordova plugin rm cordova-plugin-baidu-geolocation
+  cordova plugin rm cordova-plugin-geolocation-baidu
+  cordova plugin add https://github.com/ETENG-OSP/cordova-plugin-baidu-geolocation.git --variable API_KEY=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2
+    
   
   一 iOS 打包
   (1) CDVPlugin-Bridging-Header.h 修改融云app key   e5t4ouvptpsaa 
