@@ -437,26 +437,34 @@
       }
       if (num == 0) {
         vm.styleHeight = vm.cssTop.defaultHeight;
-        vm.headHeight = 'default-height';
-        vm.top = vm.cssTop.top;
-        vm.addressClass = 'default-address';
-        vm.titleTop = vm.cssTop.title;
-        vm.topInfo = [];
-        vm.topOtherInfo = [];
-        vm.isRank = true;
-        vm.isTopScorll = false;
-        getTopInfo(topInfoParams.area);
-        $ionicScrollDelegate.resize();
+        $timeout(function () {
+          vm.isRank = true;
+          $timeout(function () {
+            vm.headHeight = 'default-height';
+            vm.top = vm.cssTop.top;
+            vm.addressClass = 'default-address';
+            vm.titleTop = vm.cssTop.title;
+            //vm.topInfo = [];
+            vm.topOtherInfo = [];
+            vm.isTopScorll = false;
+            getTopInfo(topInfoParams.area);
+            $ionicScrollDelegate.resize();
+          }, 0);
+        }, 0);
       } else {
-        fansTab(0);//默认互粉
-        vm.titleTop = vm.cssTop.title;
         vm.styleHeight = vm.cssTop.fansHeight;
-        vm.headHeight = 'fans-height';
-        vm.titleClass = 'default-title';
-        vm.top = vm.cssTop.fansTop;
-        vm.isRank = false;
-        vm.isTopScorll = false;
-        $ionicScrollDelegate.resize();
+        $timeout(function () {
+          vm.isRank = false;
+          $timeout(function () {
+            fansTab(0);//默认互粉
+            vm.titleTop = vm.cssTop.title;
+            vm.headHeight = 'fans-height';
+            vm.titleClass = 'default-title';
+            vm.top = vm.cssTop.fansTop;
+            vm.isTopScorll = false;
+            $ionicScrollDelegate.resize();
+          }, 0);
+        }, 0);
       }
     }
 
@@ -564,7 +572,7 @@
       };
       if (meetThousandServe.getLocalStorage('first') == null) {
 
-        meetThousandServe.alertPopup('快开始扫周围的同事吧~',function () {
+        meetThousandServe.alertPopup('快开始扫周围的同事吧~', function () {
           if (faceEcognitionService.getNoPluginMode()) {
             //临时解决方案
             catchImage();
