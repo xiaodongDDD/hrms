@@ -1,5 +1,6 @@
 package com.hand.face.myinterface;
 
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
@@ -53,10 +54,13 @@ public class CameraInterface {
      */
     public void doOpenCamera(CamOpenOverCallback callback, int cameraId){
         Log.i(TAG, "Camera open....");
-        mCamera = Camera.open(cameraId);
-        mCameraId = cameraId;
-        if(callback != null){
-            callback.cameraHasOpened();
+        try {
+            mCamera = Camera.open(cameraId);
+            mCameraId = cameraId;
+            if(callback != null){
+                callback.cameraHasOpened();
+            }
+        }catch (Exception e){
         }
     }
     /**开启预览

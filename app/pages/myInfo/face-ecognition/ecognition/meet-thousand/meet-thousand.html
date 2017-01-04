@@ -151,7 +151,7 @@
 
       <div class="other-ranking">
         <div ng-repeat="info in vm.topOtherInfo" class="{{($index+4)%2==0?'rank-back-color2':'rank-back-color1'}}">
-          <div class="ranking">{{$index+4<10?0:''}}{{$index+4}}</div>
+          <div class="ranking">{{info.rank<10?0:''}}{{info.rank}}</div>
           <div class="head-portrait">
             <img src="{{info.photo}}">
             <div class="sex">
@@ -186,7 +186,7 @@
             <div>{{fans.empName}}</div>
             <div>{{fans.point}}</div>
           </div>
-          <div class="fans-status" ng-click="vm.faceScanner()">
+          <div class="fans-status" ng-click="vm.faceScanner(false)">
             <img ng-if=" vm.fansStatus==0" src="build/img/myInfo/meetThousand/follow-each@3x.png">
             <img ng-if=" vm.fansStatus==1" src="build/img/myInfo/meetThousand/follow@3x.png">
             <div ng-if=" vm.fansStatus==0" class="fans-desc">互粉</div>
@@ -202,7 +202,7 @@
     <div class="right-line"></div>
     <div class="left-line"></div>
     <div class="scanner">
-      <img ng-click="vm.faceScanner()" src="build/img/myInfo/meetThousand/scan@3x.png">
+      <img ng-click="vm.faceScanner(true)" src="build/img/myInfo/meetThousand/scan@3x.png">
     </div>
     <div class="left-icon">
       <div ng-click="vm.rankingMutualFans(0)">
