@@ -214,6 +214,7 @@ angular.module('myInfoModule')
         $timeout(function () {
           var faceUrl = baseConfig.queryPath + "/isUpload";//获取用户信息
           hmsHttp.post(faceUrl).success(function (result) {
+            window.localStorage.setItem('activityHelpUrl',result.rows[0]);
             if (result.success == true) {
               if (baseConfig.debug) {
                 console.log('faceEcognitionService.setFaceEcognitionFlag');

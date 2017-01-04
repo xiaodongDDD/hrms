@@ -101,7 +101,7 @@
             'height':'136px'
           },
           rankUpHeight:{
-            'height':'70px'
+            'height':'72px'
           }
         };
       }else{
@@ -131,10 +131,16 @@
             'height':'116px'
           },
           rankUpHeight:{
-            'height':'50px'
+            'height':'52px'
           }
         };
       }
+
+      vm.rankImg=[
+        'build/img/myInfo/meetThousand/1@3x.png',
+        'build/img/myInfo/meetThousand/2@3x.png',
+        'build/img/myInfo/meetThousand/3@3x.png'
+      ];
 
       //
       var isHeaderBar = true;
@@ -244,10 +250,11 @@
           }else{
             vm.noData=false;
           }
-
+          if(result.rows[0].list.length>0){
+            vm.fansList= result.rows[0].list;
+          }
          /* vm.fansInfo[type]=result.rows[0].num;*/
           console.log(result.rows[0].num);
-          vm.fansList= result.rows[0].list;
           vm.isSpinner=false;
           $ionicScrollDelegate.resize();
         }).error(function (err,status) {
@@ -438,6 +445,33 @@
       //人脸识别
 
       function faceScanner() {
+        if(relationType=='intersection'||relationType=='following'){
+          return;
+        }
+        if(meetThousandServe.getLocalStorage('first')==null){
+
+          hmsPopup.confirmOnly('快开始扫周围的同事吧~','提示',function (index) {
+            if(index==1){
+
+              if(faceEcognitionService.getNoPluginMode()){
+                //临时解决方案
+                catchImage();
+              }else{
+                pluginface.faceDetect({"direction":"back"}, success, error);
+              }
+              meetThousandServe.setLocalStorage('first',1)
+            }
+          });
+
+
+        }else{
+          if(faceEcognitionService.getNoPluginMode()){
+            //临时解决方案
+            catchImage();
+          }else{
+            pluginface.faceDetect({"direction":"back"}, success, error);
+          }
+        }
 
         var error = function (result) {
           if (baseConfig.debug) {
@@ -474,12 +508,14 @@
         }else{
 
         }*/
-        if(faceEcognitionService.getNoPluginMode()){
+
+
+        /*if(faceEcognitionService.getNoPluginMode()){
           //临时解决方案
           catchImage();
         }else{
           pluginface.faceDetect({"direction":"back"}, success, error);
-        }
+        }*/
       }
 
       //

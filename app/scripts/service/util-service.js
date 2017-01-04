@@ -410,6 +410,8 @@ angular.module('HmsModule')
         }
       };
 
+
+
     this.confirmDIY = function (message, title,okText,cancelText, onConfirm,onBack) {
   /*    if (!baseConfig.nativeScreenFlag) {*/
         var confirmPopup = $ionicPopup.confirm({

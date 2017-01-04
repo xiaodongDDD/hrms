@@ -15,7 +15,7 @@
       <div class="margin-top"></div>
       <ion-slide-box does-continue="false" show-pager="false" active-slide="vm.count">
         <ion-slide ng-repeat="bigPhoto in  vm.photoList">
-            <img class="bigPhoto" src="{{bigPhoto.url}}">
+            <img class="bigPhoto" src="{{bigPhoto.url}}"  ng-click="vm .closeModal()">
         </ion-slide>
       </ion-slide-box>
     </ion-content>

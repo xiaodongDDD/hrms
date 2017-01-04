@@ -155,8 +155,7 @@
       var hideSheet = $ionicActionSheet.show({
         buttons: [
           {
-            text: "<span>删除</span>",
-
+            text: "<span >删除</span>",
           }
 
         ],
