@@ -262,6 +262,11 @@
       if (vm.fansStatus == 0) {
         return;
       }
+
+      faceScanner();
+
+      return;
+      
       var params = {
         idolNo: empNo
       };
@@ -438,7 +443,6 @@
     }
 
     //人脸识别
-
     function faceScanner() {
 
       var error = function (result) {
@@ -509,13 +513,13 @@
     function identifyByImageUrl(aliyunPath) {
       if (aliyunPath && aliyunPath != '') {
         hmsPopup.showLoading('匹配中');
-        faceEcognitionService.faceIdentifyByImageUrl('/faceidentifyByUrl', aliyunPath).then(function (result) {
+        faceEcognitionService.faceIdentifyByImageUrl('/faceidentifyByUrl', aliyunPath,function (result) {
 
           //alert('faceEcognitionService.faceIdentifyByImageUrl res '+ angular.toJson(result));
 
           hmsPopup.hideLoading();
           if (baseConfig.debug) {
-            alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
+            alert('uploadImage.success ' + angular.toJson(result));
           }
           //var result = JSON.parse(res.response);
           if (result.rows[0] && result.rows[0].confidence) {
@@ -523,7 +527,7 @@
           } else {
             hmsPopup.showPopup('匹配失败，请重新扫描匹配！');
           }
-        })
+        });
       } else {
         hmsPopup.showPopup('匹配失败，请重新匹配！');
       }
@@ -562,7 +566,5 @@
 
       faceEcognitionService.uploadImage('/faceidentify', imgUrl, onProgress, success, error);
     }
-
-
   }
 })();

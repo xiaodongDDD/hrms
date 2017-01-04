@@ -322,20 +322,19 @@
       return deferred.promise;
     }
 
-    function faceIdentifyByImageUrl(url,imageUrl) {
-      var deferred = $q.defer();
+    function faceIdentifyByImageUrl(url,imageUrl,success) {
       var url = baseConfig.queryPath + url;
       var params = {
         "url": imageUrl
       }
       hmsHttp.post(url, params).success(function (response) {
-        deferred.resolve(response);
+        //alert('uploadImage.success ' + angular.toJson(response));
+        success(response);
       }).error(function (response) {
+        //alert('uploadImage.success ' + angular.toJson(response));
         hmsPopup.hideLoading();
         hmsPopup.showPopup('匹配失败，请重新匹配！');
-        deferred.reject(response);
       });
-      return deferred.promise;
     }
 
   }

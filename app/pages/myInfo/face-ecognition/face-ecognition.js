@@ -262,6 +262,9 @@
 
     //人脸识别
     function faceEcognition() {
+      
+      vm.faceEcognitionResult = true;
+
       if (baseConfig.debug) {
         console.log('faceEcognition.work...');
       }
