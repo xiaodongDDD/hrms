@@ -9,15 +9,59 @@
     color: #1F8CEB;
     letter-spacing: -0.41px;
   }
- /* .has-footer{
-    bottom: 139px;
-  }*/
- /* .foot{
-    height: 139px;
+  .has-footer{
+    bottom: 120px;
+  }
+  .foot{
+    height: 120px;
     background-image: none;
     width: 100%;
     padding: 0px;
-  }*/
+    .note-info{
+      position: absolute;
+      height: 16px;
+      top:10px;
+      width: 100%;
+      text-align: center;
+      font-family:PingFangSC-Regular;
+      font-size: 16px;
+      color: #D2D2D2;
+      letter-spacing: 0px;
+      line-height: 16px;
+    }
+    .fans-button{
+      position: absolute;
+      height: 46px;
+      width: 100%;
+      bottom: 25px;
+      text-align: center;
+      .not{
+        background-color: #F96F68;;
+        border-radius: 70px;
+        margin-right: 30px;
+        height: 46px;
+        width: 130px;
+        border:0px;
+        font-family: PingFangSC-Regular;
+        font-size: 18px;
+        color: #FFFFFF;
+        letter-spacing: 0px;
+        line-height: 18px;
+      }
+      .yes{
+        height: 46px;
+        width: 130px;
+        background: #48D2A0;
+        border-radius: 70px;
+        border:0px;
+        font-family: PingFangSC-Regular;
+        font-size: 18px;
+        color: #FFFFFF;
+        letter-spacing: 0px;
+        line-height: 18px;
+      }
+    }
+  }
   .face-affirm-content{
     background-color: #fafafa;
     .iphone{
@@ -103,49 +147,6 @@
       }
 
     }
-    .note-info{
-      position: relative;
-      height: 16px;
-      margin-top:25px;
-      width: 100%;
-      text-align: center;
-      font-family:PingFangSC-Regular;
-      font-size: 16px;
-      color: #D2D2D2;
-      letter-spacing: 0px;
-      line-height: 16px;
-    }
-    .fans-button{
-      position: relative;
-      height: 46px;
-      width: 100%;
-      margin-top: 20px;
-      text-align: center;
-      .not{
-        background-color: #F96F68;;
-        border-radius: 70px;
-        margin-right: 30px;
-        height: 46px;
-        width: 130px;
-        border:0px;
-        font-family: PingFangSC-Regular;
-        font-size: 18px;
-        color: #FFFFFF;
-        letter-spacing: 0px;
-        line-height: 18px;
-      }
-      .yes{
-        height: 46px;
-        width: 130px;
-        background: #48D2A0;
-        border-radius: 70px;
-        border:0px;
-        font-family: PingFangSC-Regular;
-        font-size: 18px;
-        color: #FFFFFF;
-        letter-spacing: 0px;
-        line-height: 18px;
-      }
-    }
+
   }
 }

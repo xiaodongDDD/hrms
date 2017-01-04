@@ -24,6 +24,7 @@
   angular
     .module('myInfoModule')
     .controller('faceEcognitionMeetThousandCtrl', faceEcognitionMeetThousandCtrl);
+
   function faceEcognitionMeetThousandCtrl($scope,
                                           $state,
                                           $ionicHistory,
@@ -102,7 +103,7 @@
           'height': '136px'
         },
         rankUpHeight: {
-          'height': '70px'
+          'height': '72px'
         }
       };
     } else {
@@ -132,10 +133,16 @@
           'height': '116px'
         },
         rankUpHeight: {
-          'height': '50px'
+          'height': '52px'
         }
       };
     }
+
+    vm.rankImg = [
+      'build/img/myInfo/meetThousand/1@3x.png',
+      'build/img/myInfo/meetThousand/2@3x.png',
+      'build/img/myInfo/meetThousand/3@3x.png'
+    ];
 
     //
     var isHeaderBar = true;
@@ -442,8 +449,11 @@
       }
     }
 
-    //人脸识别
+
     function faceScanner() {
+      if (relationType == 'intersection' || relationType == 'following') {
+        return;
+      }
 
       var error = function (result) {
         if (baseConfig.debug) {
@@ -453,118 +463,113 @@
       };
 
       var success = function (result) {
-
         //alert('ecognition.success ' + angular.toJson(result));
         //uploadServe(result.imageUrl);
         hmsPopup.showLoading('匹配中');
         $timeout(function () {
           identifyByImageUrl(result.aliyunPath);
         }, 0);
-
-
-        /*  alert('ecognition.success ' + angular.toJson(result));*/
-        //uploadServe(result.imageUrl);
-        // identifyByImageUrl(result.aliyunPath)
-
       };
 
-      /*if(meetThousandServe.getLocalStorage('first')==null){
-       /!* hmsPopup.showPopup('快开始扫周围的同事吧~');*!/
-       /!*  meetThousandServe.setLocalStorage('first',1);*!/
-       if(faceEcognitionService.getNoPluginMode()){
-       //临时解决方案
-       catchImage();
-       }else{
-       pluginface.faceDetect({"direction":"back"}, success, error);
-       }
-       }else{
+      if (meetThousandServe.getLocalStorage('first') == null) {
 
-       }*/
-      if (faceEcognitionService.getNoPluginMode()) {
-        //临时解决方案
-        catchImage();
-      } else {
-        pluginface.faceDetect({"direction": "back"}, success, error);
-      }
-    }
-
-    //
-    function catchImage() {
-      navigator.camera.getPicture(onSuccess, onFail, {
-        quality: 90,
-        targetWidth: 450,
-        targetHeight: 450,
-        destinationType: Camera.DestinationType.FILE_URI,
-        cameraDirection: Camera.Direction.BACK
-      });
-
-      function onFail(result) {
-        if (baseConfig.debug) {
-          alert('ecognition.error ' + angular.toJson(result));
-        }
-        //hmsPopup.showPopup('验证失败，请重新验证或补充照片！');
-      }
-
-      function onSuccess(imageURI) {
-        uploadServe(imageURI);
-      }
-    }
-
-    function identifyByImageUrl(aliyunPath) {
-      if (aliyunPath && aliyunPath != '') {
-        hmsPopup.showLoading('匹配中');
-        faceEcognitionService.faceIdentifyByImageUrl('/faceidentifyByUrl', aliyunPath,function (result) {
-
-          //alert('faceEcognitionService.faceIdentifyByImageUrl res '+ angular.toJson(result));
-
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            alert('uploadImage.success ' + angular.toJson(result));
-          }
-          //var result = JSON.parse(res.response);
-          if (result.success == true && result.rows[0] && result.rows[0].confidence) {
-            $state.go('tab.face-ecognition-face-affirm', result.rows[0]);
-          } else {
-            hmsPopup.showPopup('匹配失败，请重新扫描匹配！');
+        hmsPopup.confirmOnly('快开始扫周围的同事吧~', '提示', function (index) {
+          if (index == 1) {
+            if (faceEcognitionService.getNoPluginMode()) {
+              //临时解决方案
+              catchImage();
+            } else {
+              pluginface.faceDetect({"direction": "back"}, success, error);
+            }
+            meetThousandServe.setLocalStorage('first', 1)
           }
         });
       } else {
-        hmsPopup.showPopup('匹配失败，请重新匹配！');
+        if (faceEcognitionService.getNoPluginMode()) {
+          //临时解决方案
+          catchImage();
+        } else {
+          pluginface.faceDetect({"direction": "back"}, success, error);
+        }
       }
     }
+  }
 
-    //上传到服务器进行验证
-    function uploadServe(imgUrl) {
-      var success = function (res) {
-        /*hmsPopup.showPopup(angular.toJson(JSON.parse(res.response)));*/
+  //
+  function catchImage() {
+    navigator.camera.getPicture(onSuccess, onFail, {
+      quality: 90,
+      targetWidth: 450,
+      targetHeight: 450,
+      destinationType: Camera.DestinationType.FILE_URI,
+      cameraDirection: Camera.Direction.BACK
+    });
+
+    function onFail(result) {
+      if (baseConfig.debug) {
+        alert('ecognition.error ' + angular.toJson(result));
+      }
+      //hmsPopup.showPopup('验证失败，请重新验证或补充照片！');
+    }
+
+    function onSuccess(imageURI) {
+      uploadServe(imageURI);
+    }
+  }
+
+  function identifyByImageUrl(aliyunPath) {
+    if (aliyunPath && aliyunPath != '') {
+      hmsPopup.showLoading('匹配中');
+      faceEcognitionService.faceIdentifyByImageUrl('/faceidentifyByUrl', aliyunPath, function (result) {
+
+        //alert('faceEcognitionService.faceIdentifyByImageUrl res '+ angular.toJson(result));
+
         hmsPopup.hideLoading();
         if (baseConfig.debug) {
-          alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
+          alert('uploadImage.success ' + angular.toJson(result));
         }
-        var result = JSON.parse(res.response);
-
-        // && result.rows[0].confidence > 80
-        if (result.rows[0] && result.rows[0].confidence) {
+        //var result = JSON.parse(res.response);
+        if (result.success == true && result.rows[0] && result.rows[0].confidence) {
           $state.go('tab.face-ecognition-face-affirm', result.rows[0]);
         } else {
           hmsPopup.showPopup('匹配失败，请重新扫描匹配！');
         }
-        //hmsPopup.showPopup('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
-      };
-
-      var error = function (response) {
-        hmsPopup.hideLoading();
-        if (baseConfig.debug) {
-          alert('uploadImage.error ' + angular.toJson(response));
-        }
-        hmsPopup.showPopup('匹配出现异常，请重新匹配！');
-      };
-
-      var onProgress = function (progressEvent) {
-        faceEcognitionService.scanProcessProgress(progressEvent, $scope, '匹配中');
-      };
-
-      faceEcognitionService.uploadImage('/faceidentify', imgUrl, onProgress, success, error);
+      });
+    } else {
+      hmsPopup.showPopup('匹配失败，请重新匹配！');
     }
+  }
+  //上传到服务器进行验证
+  function uploadServe(imgUrl) {
+    var success = function (res) {
+      /*hmsPopup.showPopup(angular.toJson(JSON.parse(res.response)));*/
+      hmsPopup.hideLoading();
+      if (baseConfig.debug) {
+        alert('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
+      }
+      var result = JSON.parse(res.response);
+
+      // && result.rows[0].confidence > 80
+      if (result.rows[0] && result.rows[0].confidence) {
+        $state.go('tab.face-ecognition-face-affirm', result.rows[0]);
+      } else {
+        hmsPopup.showPopup('匹配失败，请重新扫描匹配！');
+      }
+      //hmsPopup.showPopup('uploadImage.success ' + angular.toJson(JSON.parse(res.response)));
+    };
+
+    var error = function (response) {
+      hmsPopup.hideLoading();
+      if (baseConfig.debug) {
+        alert('uploadImage.error ' + angular.toJson(response));
+      }
+      hmsPopup.showPopup('匹配出现异常，请重新匹配！');
+    };
+
+    var onProgress = function (progressEvent) {
+      faceEcognitionService.scanProcessProgress(progressEvent, $scope, '匹配中');
+    };
+
+    faceEcognitionService.uploadImage('/faceidentify', imgUrl, onProgress, success, error);
   }
 })();

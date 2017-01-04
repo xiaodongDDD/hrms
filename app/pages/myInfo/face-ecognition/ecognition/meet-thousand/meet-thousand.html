@@ -1,7 +1,7 @@
 <ion-view class="meetThousand">
   <div class="head active-head-info">
     <div class="ios-head"></div>
-    <div class="head-info {{vm.headHeight}} {{vm.addressClass}}" ng-style="vm.styleHeight">
+    <div class="head-info {{vm.headHeight}} {{vm.addressClass}}" ng-style="vm.styleHeight" style="border: 0">
 
       <div class="back-button" ng-click="vm.goBack()" ng-style="vm.cssTop.button">
         <img ng-if="!vm.isTopScorll" src="build/img/myInfo/meetThousand/Back-Chevron@3x.png">
@@ -121,12 +121,11 @@
         </div>
         <div class="first-prize-name">{{vm.topInfo.topList[0].empName}}</div>
         <div class="first-prize-score">{{vm.topInfo.topList[0].point}}</div>
-
         <div class="second-prize-portrait" ng-if="vm.topInfo.topList.length>=2">
           <img src="{{vm.topInfo.topList[1].photo}}">
         </div>
         <div class="second-prize-mark" ng-if="vm.topInfo.topList.length>=2">
-          <img src="build/img/myInfo/meetThousand/2@3x.png">
+          <img src="{{vm.rankImg[vm.topInfo.topList[1].rank-1]}}">
         </div>
         <div class="second-prize-name" ng-if="vm.topInfo.topList.length>=2">
           {{vm.topInfo.topList[1].empName}}
@@ -139,7 +138,7 @@
           <img src="{{vm.topInfo.topList[2].photo}}">
         </div>
         <div class="third-prize-mark" ng-if="vm.topInfo.topList.length>=3">
-          <img src="build/img/myInfo/meetThousand/3@3x.png">
+          <img src="{{vm.rankImg[vm.topInfo.topList[2].rank-1]}}">
         </div>
         <div class="third-prize-name" ng-if="vm.topInfo.topList.length>=3">
           {{vm.topInfo.topList[2].empName}}
@@ -187,7 +186,7 @@
             <div>{{fans.empName}}</div>
             <div>{{fans.point}}</div>
           </div>
-          <div class="fans-status" ng-click="vm.createNewFocus(fans.empNo)">
+          <div class="fans-status" ng-click="vm.faceScanner()">
             <img ng-if=" vm.fansStatus==0" src="build/img/myInfo/meetThousand/follow-each@3x.png">
             <img ng-if=" vm.fansStatus==1" src="build/img/myInfo/meetThousand/follow@3x.png">
             <div ng-if=" vm.fansStatus==0" class="fans-desc">互粉</div>
