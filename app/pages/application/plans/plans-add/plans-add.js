@@ -813,7 +813,10 @@ angular.module('planModule')
       }
 
       function getLastDeg(deg) {
-        return Math.round(deg / $scope.baseDeg) * $scope.baseDeg;
+        if(deg > 0)
+          return Math.round(deg / $scope.baseDeg) * $scope.baseDeg;
+        else
+          return (Math.round(deg / $scope.baseDeg) + 1) * $scope.baseDeg;
       }
 
       function getNextIndex(nowIndex) {
@@ -871,7 +874,7 @@ angular.module('planModule')
         if ($event.gesture.deltaY > 0)
           $scope.sourceDeg = getLastDeg($scope.lastDeg) - $scope.baseDeg;
         else
-          $scope.sourceDeg = getLastDeg($scope.lastDeg);
+          $scope.sourceDeg = getLastDeg($scope.lastDeg - $scope.baseDeg);
         $scope.stageRotate = {
           "transform": "rotateX(" + $scope.sourceDeg + "deg)",
           "-webkit-transform": "rotateX(" + $scope.sourceDeg + "deg)"
@@ -899,7 +902,7 @@ angular.module('planModule')
         weekEnd.setDate(weekEnd.getDate() + (7 - day));
         return formatDate(weekStart.getMonth() + 1) + '月' + formatDate(weekStart.getDate()) + '日 ~ ' +
           formatDate(weekEnd.getMonth() + 1) + '月' + formatDate(weekEnd.getDate()) + '日';
-      }
+      };
 
       function initWeeks(year) {
         $scope.weeks = [];
