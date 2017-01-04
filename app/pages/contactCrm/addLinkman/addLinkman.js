@@ -388,7 +388,7 @@ angular.module('contactModule')
         else {
           $scope.data.phone = tirmWhitespace($scope.data.phone);
           console.log($scope.data.tel!=undefined);
-          if( $scope.data.tel!=''){
+          if( $scope.data.tel!=''&&$scope.data.tel!=undefined){
             console.log("======");
             $scope.data.tel=tirmWhitespace($scope.data.tel);
           }
