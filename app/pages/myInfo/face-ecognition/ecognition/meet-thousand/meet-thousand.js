@@ -536,9 +536,10 @@
     }
 
 
-    function faceScanner() {
-      if (relationType == 'intersection' || relationType == 'following') {
-        return;
+    function faceScanner(value) {
+      if(value||relationType=='follower'){
+      }else{
+        return
       }
 
       var error = function (result) {
@@ -556,7 +557,6 @@
           identifyByImageUrl(result.aliyunPath);
         }, 0);
       };
-
       if (meetThousandServe.getLocalStorage('first') == null) {
 
         hmsPopup.confirmOnly('快开始扫周围的同事吧~', '提示', function (index) {
@@ -578,6 +578,7 @@
           pluginface.faceDetect({"direction": "back"}, success, error);
         }
       }
+
     }
 
     //
@@ -666,3 +667,4 @@
     }
   }
 })();
+
