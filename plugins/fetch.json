@@ -24,15 +24,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-hrms-faceidentify": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "com.handmobile.cordovaplugin.hotpatch": {
         "source": {
             "type": "git",
@@ -42,11 +33,38 @@
         "is_top_level": true,
         "variables": {}
     },
-    "hand-im-plugin-device": {
+    "cordova-plugin-youtuishare": {
         "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
+            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
             "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-baidu-geolocation": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ETENG-OSP/cordova-plugin-baidu-geolocation.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
+        }
+    },
+    "cordova-plugin-hrms-faceidentify": {
+        "source": {
+            "type": "local",
+            "path": "E:\\hrms6\\cordova-plugin-hrms-faceidentify"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "hand-im-plugin-device": {
+        "source": {
+            "type": "local",
+            "path": "E:\\hrms4\\hand-im-plugin-device"
         },
         "is_top_level": true,
         "variables": {
@@ -61,26 +79,6 @@
         "is_top_level": true,
         "variables": {
             "API_KEY": "6e0b08078306f45ac8331d54"
-        }
-    },
-    "cordova-plugin-youtuishare": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-geolocation-baidu": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {
-            "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
         }
     }
 }

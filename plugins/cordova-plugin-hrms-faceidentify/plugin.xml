@@ -62,7 +62,7 @@
 	<source-file src="src/android/drawable/loading12.png" target-dir="res/drawable-hdpi"/>
 	
 	<source-file src="src/android/drawable/loading_drawable.xml" target-dir="res/drawable"/>
-	
+	<source-file src="src/android/aliyun-oss-sdk-android-2.3.0.jar" target-dir="libs/" />
 	
     <config-file target="res/values/styles.xml" parent="/resources">
         <style name="loading_dialog" parent="android:style/Theme.Dialog">
