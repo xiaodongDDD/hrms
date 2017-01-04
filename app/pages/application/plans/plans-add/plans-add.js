@@ -833,7 +833,7 @@ angular.module('planModule')
       function refreshData() {
         $scope.nowIndex = Math.round($scope.nowIndex);
         if ($scope.nowIndex > (weekNum - 1))
-          $scope.nowIndex = (weekNum - 1);
+          $scope.nowIndex -= weekNum;
         $scope.year = $scope.weeks[$scope.nowIndex].getFullYear();
         var needChangeUpIndex = $scope.nowIndex - weekNum / 4;
         if (needChangeUpIndex < 0)
@@ -856,20 +856,22 @@ angular.module('planModule')
         refreshData();
       }
 
+      $scope.lastDeg = 0;
       $scope.onDragScroll = function ($event) {
-        $scope.sourceDeg -= $event.gesture.deltaY / 15;
+        // $scope.sourceDeg -= $event.gesture.deltaY / 15;
+        $scope.lastDeg = $scope.sourceDeg - $event.gesture.deltaY / 2;
         $scope.stageRotate = {
-          "transform": "rotateX(" + $scope.sourceDeg + "deg)",
-          "-webkit-transform": "rotateX(" + $scope.sourceDeg + "deg)"
+          "transform": "rotateX(" + $scope.lastDeg + "deg)",
+          "-webkit-transform": "rotateX(" + $scope.lastDeg + "deg)"
         };
-        getNowIndex($scope.sourceDeg);
+        getNowIndex($scope.lastDeg);
       };
 
       $scope.onReleaseScroll = function ($event) {
         if ($event.gesture.deltaY > 0)
-          $scope.sourceDeg = getLastDeg($scope.sourceDeg) - $scope.baseDeg;
+          $scope.sourceDeg = getLastDeg($scope.lastDeg) - $scope.baseDeg;
         else
-          $scope.sourceDeg = getLastDeg($scope.sourceDeg);
+          $scope.sourceDeg = getLastDeg($scope.lastDeg);
         $scope.stageRotate = {
           "transform": "rotateX(" + $scope.sourceDeg + "deg)",
           "-webkit-transform": "rotateX(" + $scope.sourceDeg + "deg)"
