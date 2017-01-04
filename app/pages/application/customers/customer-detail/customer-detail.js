@@ -607,12 +607,12 @@ angular.module('customerModule')
         var onSaveContactSuccess = function () {
           hmsPopup.hideLoading();
           hmsPopup.showPopup("添加成功");
-          $scope.scanCardModal.hide();
+          $scope.crmScanCardModal.hide();
         };
         var onSaveContactError = function () {
           hmsPopup.hideLoading();
           hmsPopup.showPopup("添加失败");
-          $scope.scanCardModal.hide();
+          $scope.crmScanCardModal.hide();
         };
         //保存到本地
         contactLocal.contactLocal(info, onSaveContactSuccess, onSaveContactError);
