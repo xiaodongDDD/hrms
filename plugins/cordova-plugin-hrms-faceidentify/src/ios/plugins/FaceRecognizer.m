@@ -25,6 +25,9 @@
     cmd = commamd;
     
     FaceVideoDectorViewController *faceVideoDectorVC = [[FaceVideoDectorViewController alloc] init];
+    if (commamd.arguments) {
+        faceVideoDectorVC.dict = commamd.arguments[0];
+    }
     //成功回调
     faceVideoDectorVC.successBlock = ^(UIImage *image,NSDictionary *dict){
         

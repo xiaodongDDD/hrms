@@ -51,7 +51,8 @@
 }
 
 - (void)initSDK{
-    NSString *endpoint = @"https://img-cn-shanghai.aliyuncs.com";
+    
+    NSString *endpoint = @"https://oss-cn-shanghai.aliyuncs.com";
     
     // 明文设置secret的方式建议只在测试时使用，更多鉴权模式参考后面链接给出的官网完整文档的`访问控制`章节
     id<OSSCredentialProvider> credential = [[OSSPlainTextAKSKPairCredentialProvider alloc] initWithPlainTextAccessKey:@"LTAIf20TU2Tdb8jz" secretKey:@"7f2vPdAYXeImOg80I6y43huIvu171i"];
@@ -63,7 +64,12 @@
     [super viewDidLoad];
     [self initSDK];
     
-    isDefaultDirection = YES;
+    if (self.dict && [self.dict isEqualToDictionary:@{@"direction":@"back"}]) {
+        isDefaultDirection = NO;
+    }else{
+        isDefaultDirection = YES;
+    }
+    
     [self.captureService startRunning];
     isRunning = YES;
     
@@ -131,7 +137,13 @@
     self.titleLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:self.titleLabel];
     
-    
+}
+
+- (void)changeActivity
+{
+    [self.activityView stopAnimating];
+    self.titleLabel.text = @"识别成功！";
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
 #pragma mark - 隐藏状态栏
@@ -335,11 +347,10 @@
                         //  [ToastUtils showLong:@"识别成功！"];
                         isPassed = YES;
                         NSDictionary *faceDetail = face[0];
-                        NSMutableDictionary *mutiDict = [NSMutableDictionary dictionaryWithDictionary:faceDetail];
-                        NSString *aliyunPath = [self uploadFile:UIImagePNGRepresentation(compassImage)];
-                        [mutiDict setObject:aliyunPath forKey:@"aliyunPath"];
-                        self.successBlock([compassImage imageAtRect:CGRectMake([faceDetail[@"x"] integerValue]-35, [faceDetail[@"y"] integerValue]-60, [faceDetail[@"width"] integerValue]+70, [faceDetail[@"height"] integerValue]+70)],mutiDict);
-                        [self dismissViewControllerAnimated:YES completion:nil];
+                        
+                        [self performSelectorOnMainThread:@selector(changeActivity) withObject:nil waitUntilDone:NO];
+                        [self uploadFile:UIImagePNGRepresentation(compassImage) Image:[compassImage imageAtRect:CGRectMake([faceDetail[@"x"] integerValue]-35, [faceDetail[@"y"] integerValue]-60, [faceDetail[@"width"] integerValue]+70, [faceDetail[@"height"] integerValue]+70)] Dict:faceDetail];
+                        
                     }
                 }
                 
@@ -367,10 +378,10 @@
 }
 
 #pragma mark - 上传图片
-- (NSString *)uploadFile:(NSData *)imageData
+- (void)uploadFile:(NSData *)imageData Image:(UIImage *)formatImg Dict:(NSDictionary *)dict
 {
     
-    //上传任务 http://handbk.oss-cn-shanghai.aliyuncs.com/abcde.png
+    //上传任务 https://oss-cn-shanghai.aliyuncs.com
     OSSPutObjectRequest * put = [OSSPutObjectRequest new];
     
     put.bucketName = @"handbk";
@@ -382,19 +393,28 @@
         NSLog(@"上传阿里%lld, %lld, %lld", bytesSent, totalByteSent, totalBytesExpectedToSend);
     };
     
-    OSSTask * putTask = [client putObject:put];
+    OSSTask * putTask = [client putObject:put];//aliyunPath
+    
+    NSMutableDictionary *mutiDict = [NSMutableDictionary dictionaryWithDictionary:dict];
+    [mutiDict setObject:[NSString stringWithFormat:@"https://handbk.oss-cn-shanghai.aliyuncs.com/%@",put.objectKey] forKey:@"aliyunPath"];
     
     [putTask continueWithBlock:^id(OSSTask *task) {
-        NSLog(@"操作码:%@",task);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        });
         if (!task.error) {
             NSLog(@"upload object success!");
         } else {
             NSLog(@"upload object failed, error: %@" , task.error);
+            [mutiDict setObject:@"" forKey:@"aliyunPath"];
+        }
+        if (self.successBlock) {
+            self.successBlock(formatImg,mutiDict);
         }
         return nil;
     }];
-    //[putTask waitUntilFinished];
-    return [NSString stringWithFormat:@"http://handbk.oss-cn-shanghai.aliyuncs.com/%@",put.objectKey];
+    
 }
 
 - (void)showMessage:(NSString *)message

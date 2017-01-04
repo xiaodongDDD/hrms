@@ -266,7 +266,7 @@
       faceScanner();
 
       return;
-      
+
       var params = {
         idolNo: empNo
       };
@@ -459,7 +459,7 @@
         hmsPopup.showLoading('匹配中');
         $timeout(function () {
           identifyByImageUrl(result.aliyunPath);
-        }, 500);
+        }, 0);
 
 
         /*  alert('ecognition.success ' + angular.toJson(result));*/
@@ -522,7 +522,7 @@
             alert('uploadImage.success ' + angular.toJson(result));
           }
           //var result = JSON.parse(res.response);
-          if (result.rows[0] && result.rows[0].confidence) {
+          if (result.success == true && result.rows[0] && result.rows[0].confidence) {
             $state.go('tab.face-ecognition-face-affirm', result.rows[0]);
           } else {
             hmsPopup.showPopup('匹配失败，请重新扫描匹配！');

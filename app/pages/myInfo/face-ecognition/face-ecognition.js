@@ -36,7 +36,8 @@
                               faceEcognitionService,
                               $state,
                               $http,
-                              $ionicHistory) {
+                              $ionicHistory,
+                              $timeout) {
     var vm = this;
     window.localStorage.faceEcognition = 'true';
     vm.faceEcognitionResult = false;
@@ -262,8 +263,6 @@
 
     //人脸识别
     function faceEcognition() {
-      
-      vm.faceEcognitionResult = true;
 
       if (baseConfig.debug) {
         console.log('faceEcognition.work...');
@@ -273,9 +272,13 @@
         //临时解决方案
         uploadToAliServe();
       } else {
-        pluginface.faceDetect('', faceEcognitionSuccess, faceEcognitionError);
+        pluginface.faceDetect({"direction": "front"}, faceEcognitionSuccess, faceEcognitionError);
       }
 
+      $timeout(function(){
+        vm.faceEcognitionResult = true;
+        $scope.$apply();
+      },300);
     }
 
     //上传图片到阿里云
