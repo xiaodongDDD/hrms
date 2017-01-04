@@ -469,16 +469,16 @@ angular.module('opportunityModule')
         $scope.nameBeforeEdit = tempOpportunity.opportunityName;
 
         $scope.data = {
-          businessFrom: tempOpportunity.businessFrom,//商机来源,判断原厂划分
-          customerId: tempOpportunity.customerId,    //客户Id，判断客户联系人
-          description: tempOpportunity.description,  //商机描述
-          fullName: tempOpportunity.opportunityName, //商机名称
+          businessFrom: tempOpportunity.businessFrom, //商机来源,判断原厂划分
+          customerId: tempOpportunity.customerId,     //客户Id，判断客户联系人
+          description: tempOpportunity.description,   //商机描述
+          fullName: tempOpportunity.opportunityName,  //商机名称
           opportunityCode: tempOpportunity.opportunityCode, //必传
           opportunityId: tempOpportunity.opportunityId,     //必传
-          preMoney: tempOpportunity.preMoney,        //预计收入
-          preSignDate: tempOpportunity.preSignDate,  //项目签署日期
-          prjBeginDate: tempOpportunity.prjBeginDate,//项目开始日期
-          opportunityStatus: tempOpportunity.opportunityStatus, //商机状态，判断rate
+          preMoney: tempOpportunity.preMoney,         //预计收入
+          preSignDate: tempOpportunity.preSignDate,   //项目签署日期
+          prjBeginDate: tempOpportunity.prjBeginDate, //项目开始日期
+          opportunityStatus: "",                      //商机状态，判断rate
           prjRisk: tempOpportunity.prjRisk,           //项目风险
           theYear: (new Date()).getFullYear()         //商机所属年份
         };
