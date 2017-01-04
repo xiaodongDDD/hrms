@@ -65,6 +65,7 @@ angular.module('customerModule')
       $scope.showHead = true;
       $scope.showLoading = true;
       $scope.loadMoreDataFlag = false;
+      $scope.myCustomer = false;
       //值列表上啦加载
       $scope.moreDataCanBeLoaded=false;
       $scope.customers = [];
@@ -149,6 +150,11 @@ angular.module('customerModule')
           $scope.loadMoreDataFlag =false;
           $scope.subHeadersSelect = [false,false];
           $scope.subHeadersSelect[$index] = true;
+          if($scope.subHeadersSelect[1]){
+            $scope.myCustomer = true;
+          }else {
+            $scope.myCustomer = false;
+          }
           $ionicScrollDelegate.scrollTop(false);
         }
         //hmsPopup.showLoading();

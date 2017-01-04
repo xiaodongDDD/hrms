@@ -12,7 +12,7 @@
   <ion-content overflow-scroll="true" class="employee-search-content"  delegate-handle="slideimgs">
 
     <div class="customer-info">
-      <img ng-src="{{customer.logoUrl=='' ?  'build/img/application/information/icon_partner@3x.png' : customer.logoUrl}}"/>
+      <img ng-click="showBigPic()" ng-src="{{customer.logoUrl=='' ?  'build/img/application/information/icon_partner@3x.png' : customer.logoUrl}}"/>
       <div class="info-area">
         <span>{{customer.approveShow}}{{customer.fullName}}</span>
         <span>{{customer.saleArea}}  {{customer.saleTeam}}  {{customer.saleEmployee}}</span>
@@ -60,4 +60,7 @@
   </div>
   <img class="fix-button" ng-show="imgButton" ng-src="{{buttonImg}}" ng-class="{true:'edit-button'}[isEdit]" ng-click="chooseThis()"/>
 
+  <div class="show-big-pic" ng-click="closeBigPic()" ng-if="showBig">
+    <img ng-src="{{customer.logoUrl=='' ?  'build/img/application/information/icon_partner@3x.png' : customer.logoUrl}}"/>
+  </div>
 </ion-view>
