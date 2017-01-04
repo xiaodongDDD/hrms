@@ -71,6 +71,7 @@ angular.module('contactModule')
         var LINK_MAN = 'common_linkman2';
         var item = document.getElementById("employeeInputSearch");
         $scope.historys = unique_better(storedb(DB_NAME).find(), 'historyItem');
+        console.log( $scope.historys);
         if ($scope.historys.length > 10) {
           $scope.historys = $scope.historys.slice(0, 10);
         }

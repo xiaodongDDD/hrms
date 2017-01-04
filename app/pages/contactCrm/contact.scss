@@ -1,3 +1,535 @@
+.history-img {
+  width: 100%;
+  background: #ffffff;
+  padding-top: 60px;
+  font-size: 18px;
+  color: #333333;
+}
+.history-img .with-margin {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #666666;
+}
+.history-img img {
+  width: 51% !important;
+}
+$contactLineColor: #D2D2D2 !default;
+$bgColor: #fafafa !default;
+
+.contact {
+  .buttons {
+    .img-scan {
+      height: 26px;
+      width: 30px;
+      background-color: transparent;
+      background-image: url('./../img/contact/scan@3x.png');
+      @include image-background(no-repeat, 18px 18px, 9px 7px);
+    }
+    .scan-text {
+      padding-top: 1px;
+      padding-left: 8px;
+    }
+  }
+  .head-animation {
+  }
+  .head-animation.ng-enter {
+    -webkit-animation: fadeInDown 0.4s;
+    animation: fadeInDown .4s;
+  }
+  .head-animation.ng-enter-stagger {
+    -webkit-animation-delay: 220ms;
+    animation-delay: 220ms;
+    -webkit-animation-duration: 0ms;
+    animation-duration: 0ms;
+  }
+  .contact-content {
+    //top: 44px;
+    bottom: 49px;
+    background-color: $global-background;
+    .input-height {
+      height: 25px;
+      margin-top: 4px;
+    }
+    .org-structure {
+      margin-top: 15px;
+      box-shadow: 1px 1px 3px rgba(210,210,210,0.8);
+    }
+    .no-padding {
+      padding: 0px;
+      margin: 0px;
+    }
+    .custom-link-man {
+      color: $color-text-key;
+      font-size: 16/17*$font-size-big;
+      padding-left: 15px;
+      padding-top: 10px;
+      height: 40px;
+    }
+  }
+}
+
+.contact-item {
+  //height: 47px;
+  background-color: $color-base;
+  padding-bottom: 5px;
+  .item-logo {
+    padding-left: 10px;
+    .contact-item-logo {
+      width: 38px;
+      height: 38px;
+      line-height: 38px;
+      text-align: center;
+      float: left;
+      border-radius: 22.5px;
+      font-size: 16px;
+    }
+  }
+  .item-name {
+    align-self: center;
+    font-size: $font-size-big;
+    color: $color-text-assistant;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .item-line {
+    // position: absolute;
+    height: 1px;
+    width: 100%;
+    background-color: rgba(221, 221, 221, 0.5);
+    margin-top: 47px;
+    margin-left: -84.5%;
+  }
+  .item-arrow {
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    background-image: url("./../img/application/timesheet-approve/list/BackArrow-1@3x.png");
+    @include position-adjust(14px, 5%);
+    @include image-background(no-repeat, contain, 0px 0px);
+  }
+  .tel-img {
+    height: 38px;
+    width: 60px;
+    background-color: transparent;
+    background-image: url("./../img/contact/dial@3x.png");
+    @include position-adjust(11px, 0%);
+    @include image-background(no-repeat, 23px 23px, 18px 0px);
+  }
+  .tel-img.activated {
+    opacity: 0.7;
+    transform: scale(0.9, 0.9);
+    -webkit-transform: scale(0.9, 0.9);
+  }
+
+  .admin-content{
+    position: absolute;
+    font-size: 1.3rem;
+    right: 55%;
+    margin-top: 13px;
+  }
+}
+
+.contact-item.activated {
+  opacity: 0.7;
+}
+
+.employee-search-content {
+  background-color: $bgColor;
+  .history {
+    font-size: $font-size;
+    color: $contactLineColor;
+    img {
+      height: 16px;
+      width: 22px;
+      align-self: center;
+      padding-left: 5px;
+    }
+    .history-logo {
+      padding-left: 10px;
+    }
+    .history-line {
+      border-bottom: 1px solid $contactLineColor;
+      align-self: center;
+      margin-left: -2%;
+    }
+  }
+  .employee-item {
+    background-color: $bgColor;
+    padding: 10px 10px 10px 16px !important;
+    &.no-top-border-color {
+      border-top: none;
+      margin-top: -5px;
+    }
+  }
+  .clear-button {
+    border:none;
+    background-image:linear-gradient(0deg,#ddd,#ddd 50%,transparent 50%);
+    background-position:bottom;
+    background-size:100% 1px;
+    background-repeat:no-repeat;
+    background: #fff;
+  }
+  .clear-button img {
+    width: 17px;
+    height: 17px;
+    margin-top: 13px;
+  }
+  .clear-button div {
+    color: #58B3ED;
+    font-size: 14px;
+  }
+  .first-item {
+    margin-top: 5px;
+  }
+  .search-result-item {
+    border-radius: 5px;
+    background-color: $color-base;
+    box-shadow: 0px 2px 4px rgba(155, 155, 155, 0.13);
+    width: 97.4%;
+    margin-left: 1.3%;
+    margin-bottom: 12px;
+    position: relative;
+    &.activated {
+      background-color: #f8f8f8;
+      opacity: 0.8;
+    }
+    .human-img {
+      height: 32px;
+      width: 32px;
+      border-radius: 100%;
+      align-self: center;
+      margin-left: 7px;
+    }
+    .col-padding {
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+    .tel-img {
+      width: 60px;
+      height: 60px;
+      background-color: transparent;
+      background-image: url("./../img/contact/dial@3x.png");
+      @include position-adjust(0px, 2%);
+      @include image-background(no-repeat, 23px 23px, 21px 53%);
+      &.activated {
+        opacity: 0.7;
+        transform: scale(0.9, 0.9);
+        -webkit-transform: scale(0.9, 0.9);
+      }
+    }
+    .name {
+      line-height: 23px;
+      color: $color-text-assistant;
+      font-size: 16/15*$font-size;
+    }
+    .employee-status {
+      color: #24559C;
+      padding-left: 10px;
+    }
+    .mail-tel {
+      line-height: 23px;
+      color: $color-text-main;
+      font-size: $font-size;
+    }
+  }
+}
+
+.contact-employee-detail {
+  background-color: $bgColor;
+  font-size: $font-size;
+  .contact-bg {
+    height: 115px;
+    width: 100%;
+    z-index: 99;
+    background-image: url("./../img/contact/BG-profile@3x.png");
+    @include image-background(no-repeat, cover, center);
+  }
+  .human-head-image {
+    height: 150px;
+    width: 100%;
+    z-index: 99;
+    -webkit-filter: blur(5px) brightness(0.7) opacity(0.9);
+    filter: blur(5px) brightness(0.7) opacity(0.9);
+  }
+  .img-section {
+    height: 75px;
+    width: 76px;
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    margin-top: -83px;
+    z-index: 100;
+    margin-left: 4%;
+    .img-employee {
+      height: 69px;
+      width: 70px;
+      border-radius: 100%;
+      margin-left: 3px;
+      margin-top: 3px;
+    }
+  }
+
+  .employee-name {
+    color: $color-base;
+    font-size: $font-size-big;
+    position: absolute;
+    z-index: 100;
+    margin-left: 30%;
+    margin-top: -68px;
+  }
+  .employee-content {
+    padding-top: 115px;
+    .np-padding-margin {
+      padding: 0px;
+      margin: 0px;
+      //text-align: center;
+    }
+    .item-info {
+      margin: 0px;
+      padding: 0px;
+      border: none;
+      height: 91px;
+      width: 100%;
+      background-color: $color-base;
+      box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.1);
+      .section-bg {
+        height: 30px;
+        color: $color-text-assistant;
+        font-size: 12/14*$font-size-small;
+        white-space: normal;
+        width: 70%;
+        margin-left: 30%;
+        padding-top: 3%;
+      }
+      .icon-row {
+        padding: 0px;
+        margin: 0px;
+        height: 40px;
+        margin-top: 10px;
+      }
+      .col-image {
+        width: 34px;
+        height: 34px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .col-5 {
+        width: 5%;
+      }
+      .info-text-label {
+        font-size: 0.75rem;
+        color: #9b9b9b;
+        align-self: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .item-employee {
+      margin: 0px;
+      padding: 0px;
+      width: 97%;
+      // height: 78px;
+      margin-left: 1.5%;
+      margin-top: 10px;
+      box-shadow: 0px 2px 4px 0px rgba(155, 155, 155, 0.2);
+      border: none;
+      color: $color-text-assistant;
+      font-size: $font-size;
+      .item-row {
+        margin-left: 4%;
+      }
+      .item-row1 {
+        margin-left: 2%;
+      }
+      .item-line {
+        position: absolute;
+        height: 1px;
+        width: 100%;
+        margin-left: 4%;
+        background-color: rgba(210, 210, 210, 0.5);
+      }
+      .mail-img {
+        width: 14px;
+        height: 11px;
+        align-self: center;
+      }
+      .tel-img {
+        width: 14px;
+        height: 14px;
+        align-self: center;
+      }
+      .col-item {
+        text-align: right;
+        color: $color-text-main;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .employee-button {
+    margin-top: 35px;
+    color: $color-base;
+    font-size: 1rem;
+    text-align: center;
+    align-self: center;
+    border-radius: 20px;
+    margin-left: 5.4%;
+    width: 89%;
+    min-height: 40px;
+    background-color: #6BB9F0;
+  }
+}
+
+/*
+ * --用于--自定义的head的返回样式
+ */
+.common-head {
+  position: fixed;
+  z-index: 100;
+  height: 44px;
+  width: 100%;
+  background-color: transparent;
+  .back-button {
+    font-size: 2*$font-size;
+    color: $color-base;
+    min-height: 35px;
+    margin-left: -35px;
+    width: 100px;
+  }
+  .back-text {
+    font-size: $font-size-big;
+    position: fixed;
+    padding-left: 5px;
+    margin-top: 0px;
+  }
+  .img-button {
+    right: 5px;
+    position: absolute;
+    color: $color-base;
+    min-height: 35px;
+    font-size: 16/17*$font-size-big;
+  }
+  .img-icon {
+    height: 22px;
+    width: 22px;
+    margin-top: 7px;
+  }
+}
+
+.employee-clear-img {
+  width: 18px;
+  height: 18px;
+  background-color: rgba(250, 250, 250, 0.6);
+  margin-right: 10px;
+  border-radius: 50%;
+  float: right;
+  margin-top: -23px;
+}
+
+.contact-scan-card-modal {
+  background: -webkit-linear-gradient(top, rgba(241, 244, 247, 0.17), #fef9f7, #f0f2f5);
+  background: linear-gradient(top, rgba(241, 244, 247, 0.17), #fef9f7, #f0f2f5);
+  .scan-card-list {
+    margin-left: 3%;
+    margin-right: 3%;
+    .scan-card-item {
+      .scan-card-item-name {
+        padding-left: 10px;
+      }
+      .scan-card-item-content {
+        color: #9b9b9b !important;
+      }
+      float: right;
+      white-space: normal;
+      padding: 10px 0px 12px 2px !important;
+      border: none;
+      border-radius: 10px 2px 10px 4px;
+      margin-top: 5px;
+      box-shadow: 1px 1px 2px rgba(192, 192, 192, 0.7);
+    }
+  }
+  .contact-local-button {
+    margin-top: 35px;
+    color: $color-base;
+    font-size: 1rem;
+    text-align: center;
+    align-self: center;
+    border-radius: 20px;
+    margin-left: 5.4%;
+    width: 89%;
+    min-height: 40px;
+    background-color: #6BB9F0;
+  }
+}
+
+/* Empty. Add your own CSS if you like */
+/* 覆盖action-sheet ——start*/
+.platform-android .action-sheet-backdrop.active {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.platform-android .action-sheet {
+  margin-left: 8px;
+  margin-right: 8px;
+  width: auto;
+  z-index: 11;
+  overflow: hidden;
+}
+
+.platform-android .action-sheet .action-sheet-title,
+.platform-android .action-sheet .button {
+  display: block;
+  padding: 1px;
+  width: 100%;
+  border-radius: 0;
+  border-color: #d1d3d6;
+  background-color: transparent;
+  color: #007aff;
+  font-size: 21px;
+  text-align: center;
+}
+
+.platform-android .action-sheet .action-sheet-title {
+  padding: 16px;
+  color: #8f8f8f;
+  text-align: center;
+  font-size: 13px;
+}
+
+.platform-android .action-sheet .button.active,
+.platform-android .action-sheet .button.activated {
+  background: #e8e8e8;
+}
+
+.platform-android .action-sheet-group {
+  margin-bottom: 8px;
+  border-radius: 4px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.platform-android .action-sheet-group .button {
+  border-width: 1px 0 0;
+}
+
+.platform-android .action-sheet .button {
+  display: block;
+  padding: 1px;
+  width: 100%;
+  border-radius: 0;
+  border-color: #d1d3d6;
+  background-color: transparent;
+  color: #A08236;
+  font-size: 17px;
+}
+
+.platform-android .action-sheet-cancel {
+  font-weight: 500;
+  display: block;
+}
 
 .custom-link-man {
   color: $color-text-key;

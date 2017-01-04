@@ -53,6 +53,7 @@ angular.module('contactModule')
 
       function getCommonLinkMan() { //获取常用联系人
         $scope.customContactsInfo = unique_better(storedb(LINK_MAN).find(), 'employeeNumber');
+        console.log($scope.customContactsInfo);
         if ($scope.customContactsInfo.length > 15) {
           $scope.customContactsInfo = $scope.customContactsInfo.slice(0, 15);
         }
