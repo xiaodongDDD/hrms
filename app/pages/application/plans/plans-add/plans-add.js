@@ -813,10 +813,7 @@ angular.module('planModule')
       }
 
       function getLastDeg(deg) {
-        if(deg > 0)
-          return Math.round(deg / $scope.baseDeg) * $scope.baseDeg;
-        else
-          return (Math.round(deg / $scope.baseDeg) + 1) * $scope.baseDeg;
+        return (Math.round(deg / $scope.baseDeg) + 1) * $scope.baseDeg;
       }
 
       function getNextIndex(nowIndex) {
@@ -879,7 +876,6 @@ angular.module('planModule')
           "transform": "rotateX(" + $scope.sourceDeg + "deg)",
           "-webkit-transform": "rotateX(" + $scope.sourceDeg + "deg)"
         };
-        getNowIndex($scope.sourceDeg);
       };
 
 
