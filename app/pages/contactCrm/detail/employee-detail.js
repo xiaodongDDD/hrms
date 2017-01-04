@@ -114,15 +114,15 @@ angular.module('contactModule')
 			initEmployeeData();
 
 			$scope.goBackPage = function() {
-        if (customerDetailService.getIsEdit()) {
+    /*    if (customerDetailService.getIsEdit()) {
           $state.go('tab.customer-detail');
-        }else {
+        }else {*/
           if ($ionicHistory.viewHistory().backView) {
             $ionicHistory.goBack();
           } else {
             $state.go('tab.contactCrm');
           }
-        }
+  /*      }*/
 			};
 
 			function storeCommonLinkman(newObject) { //存储为常用联系人
