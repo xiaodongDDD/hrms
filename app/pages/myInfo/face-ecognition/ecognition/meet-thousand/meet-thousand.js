@@ -324,7 +324,8 @@
         vm.isStart = result.rows[0].flag == 'Y' ? true : false;
         vm.topOtherInfo = result.rows[0].topList.slice(3);
         vm.isSpinner = false;
-        console.log(vm.topInfo)
+        console.log(vm.topInfo);
+        $scope.$broadcast('scroll.refreshComplete');
       }).error(function (err, status) {
         console.log(err);
         console.log(status)
@@ -343,7 +344,7 @@
         } else {
           vm.noData = false;
         }
-
+        $scope.$broadcast('scroll.refreshComplete');
         /* vm.fansInfo[type]=result.rows[0].num;*/
         console.log(result.rows[0].num);
         vm.fansList = result.rows[0].list;
@@ -391,7 +392,6 @@
         queryRelation(relationType);
         console.log('重新获取不同关注关系列表！')
       }
-      $scope.$broadcast('scroll.refreshComplete');
     }
 
     //上拉加载

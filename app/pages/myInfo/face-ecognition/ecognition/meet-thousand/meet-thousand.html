@@ -110,7 +110,7 @@
     <div ng-if="vm.isSpinner" style="margin-top: 50px;text-align: center">
       <ion-spinner icon="lines" class="spinner-calm"></ion-spinner>
     </div>
-    <div ng-if="(vm.isRank&&vm.isStart&&vm.topInfo.topList.length>0)" class="rank-list">
+    <div ng-if="!vm.isSpinner&&vm.isRank&&vm.isStart&&vm.topInfo.topList.length>0" class="rank-list">
       <div class="three-info">
         <img src="build/img/myInfo/meetThousand/BG-leadboard@3x.png">
         <div class="first-prize-portrait">
