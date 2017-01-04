@@ -1182,6 +1182,14 @@ angular.module('customerModule')
 
       }
 
+      $scope.closeBigPic = function(){
+        $scope.showBig = false;
+      }
+
+      $scope.showBigPic = function(){
+        $scope.showBig = true;
+      }
+
     }]);
 
 angular.module('customerModule')
