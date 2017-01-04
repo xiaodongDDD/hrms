@@ -174,7 +174,6 @@ Android测试环境
   cordova plugin rm cordova-plugin-baidu-geolocation
   cordova plugin rm cordova-plugin-geolocation-baidu
   cordova plugin add https://github.com/ETENG-OSP/cordova-plugin-baidu-geolocation.git --variable API_KEY=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2
-    
   
   一 iOS 打包
   (1) CDVPlugin-Bridging-Header.h 修改融云app key   e5t4ouvptpsaa 

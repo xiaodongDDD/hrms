@@ -55,8 +55,18 @@
         "text": "不要斜视手机"
       }
     ];
-    vm.faceResult = {};
+    vm.faceResult = {
+      "age": "无结果"
+    };
     vm.progress = {};
+
+    vm.faceResult.imgUrl = '';
+    vm.faceResult.imgUrlSrc = '';
+    vm.faceResult.age = '';
+    vm.faceResult.beauty = '';
+    vm.faceResult.gender = '';
+    vm.faceResult.expression = '';
+    vm.faceResult.img = '';
 
     /*var im = {
       "face_id": "1848085924808818687",
