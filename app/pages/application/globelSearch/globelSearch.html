@@ -56,7 +56,7 @@
         <div class="button button-clear" ng-if="historys.length !== 0" ng-click="deleteHistory()">{{'GLOBEL_SEARCH.CLEAR_DATA'|T}}</div>
       </div>
     </div>
-    <div id="dataS" ng-repeat="item in searchData|filter:searchParam.keyWord" ng-if="searchParam.keyWord!=''">
+    <div id="dataS" ng-repeat="item in searchData" ng-if="searchParam.keyWord!=''">
         <div class="type-list"  ng-click="showMore(item)" ng-if="item.data.length!=0">
           <div class="type-logo"><img ng-src="build/img/competitor/{{item.type}}@3x.png"></div>
           <div class="type-type">{{item.typeName}}</div>
