@@ -1,84 +1,86 @@
 {
-  "cordova-plugin-device": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-device"
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-geolocation": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-geolocation"
+    "cordova-plugin-geolocation": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-geolocation"
+        },
+        "is_top_level": true,
+        "variables": {}
     },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "com.hand.scancard": {
-    "source": {
-      "type": "git",
-      "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
-      "subdir": "."
+    "cordova-plugin-youtuishare": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "com.handmobile.cordovaplugin.hotpatch": {
-    "source": {
-      "type": "git",
-      "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
-      "subdir": "."
+    "cn.jpush.phonegap.JPushPlugin": {
+        "source": {
+            "type": "registry",
+            "id": "jpush-phonegap-plugin@2.2.0"
+        },
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "22b25063349b6beef7bde524"
+        }
     },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-youtuishare": {
-    "source": {
-      "type": "git",
-      "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
-      "subdir": "."
+    "cordova-plugin-geolocation-baidu": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
+        }
     },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-baidu-geolocation": {
-    "source": {
-      "type": "git",
-      "url": "https://github.com/ETENG-OSP/cordova-plugin-baidu-geolocation.git",
-      "subdir": "."
+    "com.hand.scancard": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     },
-    "is_top_level": true,
-    "variables": {
-      "API_KEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
+    "cordova-plugin-hrms-faceidentify": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.handmobile.cordovaplugin.hotpatch": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "hand-im-plugin-device": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {
+            "RONG_KEY": "e5t4ouvptpsaa"
+        }
     }
-  },
-  "cordova-plugin-hrms-faceidentify": {
-    "source": {
-      "type": "local",
-      "path": "E:\\hrms6\\cordova-plugin-hrms-faceidentify"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "hand-im-plugin-device": {
-    "source": {
-      "type": "local",
-      "path": "E:\\hrms4\\hand-im-plugin-device"
-    },
-    "is_top_level": true,
-    "variables": {
-      "RONG_KEY": "0vnjpoadnd4cz"
-    }
-  },
-  "cn.jpush.phonegap.JPushPlugin": {
-    "source": {
-      "type": "registry",
-      "id": "jpush-phonegap-plugin@2.2.0"
-    },
-    "is_top_level": true,
-    "variables": {
-      "API_KEY": "6e0b08078306f45ac8331d54"
-    }
-  }
 }
