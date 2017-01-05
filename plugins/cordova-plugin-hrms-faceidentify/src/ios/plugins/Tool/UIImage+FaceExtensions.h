@@ -22,4 +22,5 @@
 - (UIImage *)imageRotatedByDegrees:(CGFloat)degrees;
 - (UIImage *)horizontalFlip;
 - (UIImage *)verticalFlip;
++ (UIImage *)scaleAndRotateImage:(UIImage *)image maxPixelResolution:(int)maxPixelResolution;
 @end

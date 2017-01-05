@@ -16,14 +16,14 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cn.jpush.phonegap.JPushPlugin": {
+    "cordova-plugin-geolocation": {
         "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin@2.2.0"
+            "type": "local",
+            "path": "/Users/gusenlin/androidKey/cordova-plugin-geolocation-baidu"
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY": "22b25063349b6beef7bde524"
+            "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
         }
     },
     "com.hand.scancard": {
@@ -61,17 +61,36 @@
         },
         "is_top_level": true,
         "variables": {
-            "RONG_KEY": "e5t4ouvptpsaa"
+            "RONG_KEY": "0vnjpoadnd4cz"
         }
     },
-    "cordova-plugin-geolocation": {
+    "cn.jpush.phonegap.JPushPlugin": {
         "source": {
-            "type": "local",
-            "path": "/Users/gusenlin/androidKey/cordova-plugin-geolocation-baidu"
+            "type": "registry",
+            "id": "jpush-phonegap-plugin@2.2.0"
+        },
+        "is_top_level": true,
+        "variables": {
+            "API_KEY": "6e0b08078306f45ac8331d54"
+        }
+    },
+    "cordova-plugin-geolocation-baidu": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu",
+            "subdir": "."
         },
         "is_top_level": true,
         "variables": {
             "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
         }
+    },
+    "cordova-plugin-compat": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-compat"
+        },
+        "is_top_level": false,
+        "variables": {}
     }
 }
