@@ -9,12 +9,15 @@
   .hms-filter-modal {
     color: $color-text-main;
     font-size: 16/17*$font-size-big;
+    border-top: 1px solid #DBDBDB;
+    border-left: 1px solid #DBDBDB;
+    border-right: 1px solid #DBDBDB;
     .modal-height {
       height: 43px !important;
     }
     .modal-button-margin {
       margin-top: 0px !important;
-      color: white;
+      color: #1F8CEB;
     }
     .modal-button-margin.activated {
       opacity: 0.8;
