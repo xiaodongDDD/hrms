@@ -59,6 +59,7 @@ angular.module('customerModule')
     '$filter',
     '$cordovaGeolocation',
     '$http',
+    '$cordovaCamera',
     function ($scope,
               $ionicHistory,
               $state,
@@ -79,7 +80,8 @@ angular.module('customerModule')
               customerAddService,
               $filter,
               $cordovaGeolocation,
-              $http) {
+              $http,
+              $cordovaCamera) {
         console.log( $stateParams.customerDetail);
         $rootScope.$broadcast("REFRESH_CUSTOMER_HISTORY");
         $rootScope.img = "build/img/tabs/edit_add@3x_5.png";
@@ -1190,6 +1192,167 @@ angular.module('customerModule')
         $scope.showBig = true;
       }
 
+      //图片修改
+      var updateSuccess = function (data) {
+        if(data.returnCode=='S'){
+          hmsPopup.showShortCenterToast(data.returnMsg)
+          customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+        }else{
+          if(data.returnMsg){
+            hmsPopup.showShortCenterToast(data.returnMsg)
+          }else{
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
+          }
+        }
+      }
+    //图片上传
+      var upLoadSuccess = function (res) {
+        hmsPopup.hideLoading();
+        var result = JSON.parse(res.response);
+        if (baseConfig.debug) {
+          alert('complete.success ' + angular.toJson());
+        }
+        if(result.success == true){
+          //hmsPopup.showPopup('上传成功');
+          console.log('上传成功。。。'+angular.toJson(result))
+          $scope.customer.logoUrl = result.rows[0].objectUrl;
+          customerDetailService.updateImage(updateSuccess,$scope.customerId,$scope.customer.logoUrl);
+
+        }else{
+          console.log('上传失败了。。。'+angular.toJson(result))
+          hmsPopup.showShortCenterToast('上传失败');
+          //hmsPopup.showPopup('上传失败！');
+        }
+        $scope.save();
+      };
+
+      var upLoadError = function (response) {
+        hmsPopup.hideLoading();
+        if (baseConfig.debug) {
+          alert('complete.error ' + angular.toJson(response));
+        }
+        console.log('上传错误了。。。'+angular.toJson(response))
+        //hmsPopup.showPopup('上传失败！');
+        hmsPopup.showShortCenterToast('上传错误')
+        $scope.save();
+      };
+      $scope.imagevalue = '';
+      $scope.isShow_image = false;
+      $scope.va_phote_succflag = false;
+
+      $scope.ImageUpload = function () {
+        var hideSheet = $ionicActionSheet.show({
+          buttons: [
+            {text: '拍照上传'},
+            {text: '从相册中选择'},
+            {text: '查看大图'}
+          ],
+          cancelText: '取消',
+          cancel: function () {
+            // add cancel code..
+          },
+          buttonClicked: function (index) {
+            if (index == 0) {
+              //拍照
+              $scope.taskPicture();
+            } else if (index == 1) {
+              // 相册文件选择上传
+              $scope.readalbum();
+            } else if (index == 2) {
+              $scope.showBigPic();
+            }
+            return true;
+          }
+        });
+      }
+
+      //相册功能
+      $scope.readalbum  = function() {
+        var sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+        var options = {
+          quality: 20,
+          sourceType: sourceType,
+          destinationType: Camera.DestinationType.FILE_URI, //1, //'FILE_URL',
+          encodingType: Camera.EncodingType.JPEG, //0, //'JPEG',
+          mediaType: Camera.MediaType.PICTURE, //0, //'PICTURE',
+          saveToPhotoAlbum: false,
+          cameraDirection: Camera.Direction.BACK, // 0, //'BACK'
+          //targetWidth: 1366, targetHeight: 768,
+          correctOrientation: true
+        };
+        if (navigator.camera) {
+          navigator.camera.getPicture(onSuccess, onFail, options);
+        } else {
+          alert("Camera 插件未安装!");
+        }
+        function onSuccess(imageUrl) {
+          $scope.imagevalue = imageUrl;
+          $scope.va_phote_succflag = true;
+
+          try {
+            if ($scope.va_phote_succflag == true) {
+
+              var imageParam = {
+                imagePath: $scope.imagevalue
+              };
+
+              cordova.plugins.ImageExt.cropimage(
+                function success(newPath) {
+                  $scope.$apply(function () {
+                    $scope.imagevalue = newPath;
+                    customerService.uploadImage($scope.imagevalue, upLoadSuccess, upLoadError);
+                  });
+                },
+                function fail(err) {
+                  $scope.va_phote_succflag = false;
+                }, imageParam.imagePath);
+
+            }
+            ;
+          } catch (e) {
+            alert(e.message)
+          }
+        }
+        function onFail(message) {
+          $scope.va_phote_succflag = false;
+          alert('Failed because: ' + message);
+        }
+
+      };
+      //相机功能
+      $scope.taskPicture  = function(type) {
+        var options = {
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.CAMERA,
+          quality: 20,
+          correctOrientation: true
+        };
+        $cordovaCamera.getPicture(options).then(function(imageURI) {
+
+          $scope.imagevalue = imageURI;
+          $scope.isShow_image = true;
+
+          var imageParam = {
+            imagePath: $scope.imagevalue
+          };
+
+          cordova.plugins.ImageExt.cropimage(
+            function success(newPath) {
+              $scope.$apply(function () {
+                $scope.imagevalue = newPath;
+                customerService.uploadImage($scope.imagevalue, upLoadSuccess, upLoadError);
+              });
+            },
+            function fail(err) {
+              $scope.va_phote_succflag = false;
+            }, imageParam.imagePath);
+
+        }, function(err) {
+          //$scope.person_imgsrcvalue = '';
+          //$scope.Toast.show('取消使用相机功能');
+        });
+      };
+
     }]);
 
 angular.module('customerModule')
@@ -1286,6 +1449,19 @@ angular.module('customerModule')
       };
       this.getPermissions = function (success, key) { //权限获取
         hmsHttp.post(baseUrl + 'all_permissions', key).success(function (result) {
+          success(result);
+          hmsPopup.hideLoading();
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          // hmsPopup.showPopup(response);
+        });
+      };
+      this.updateImage = function (success, customerId,url) { //权限获取
+        var params =  {
+          "customerId":customerId,
+          "logoUrl":url
+        };
+        hmsHttp.post(baseUrl + 'update_logo', params).success(function (result) {
           success(result);
           hmsPopup.hideLoading();
         }).error(function (response, status) {

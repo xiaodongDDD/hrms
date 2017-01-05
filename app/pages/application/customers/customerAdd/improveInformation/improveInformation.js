@@ -1609,33 +1609,6 @@ angular.module('customerModule')
                   $scope.va_phote_succflag = false;
                 }, imageParam.imagePath);
 
-              // var imageParam = {
-              //   imagePath: $scope.imagevalue,
-              //   radius: 200
-              // };
-              //
-              // cordova.plugins.ImageExt.cropCircleDrawable(
-              //   function success(newPath) {
-              //     $scope.$apply(function () {
-              //       $scope.imagevalue = newPath;
-              //     });
-              //   },
-              //   function fail(err) {
-              //     $scope.va_phote_succflag = false;
-              //   }, imageParam.imagePath, imageParam.radius);
-
-              // plugins.crop.promise($scope.imagevalue, options)
-              //   .then(function psuccess(newPath) {
-              //     $scope.$apply(function () {
-              //       //$scope.person_imgsrc = newPath;
-              //       $scope.imagevalue = newPath;
-              //     });
-              //   })
-              //   .catch(function fail(err) {
-              //     //$scope.person_imgsrcvalue = '';
-              //     $scope.va_phote_succflag = false;
-              //     //$scope.Toast.show('取消裁剪功能');
-              //   });
             }
             ;
           } catch (e) {
