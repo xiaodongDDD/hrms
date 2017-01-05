@@ -43,7 +43,7 @@
     vm.count = 0;
     vm.totalNum=0;
 
-    var width = document.body.clientWidth/3;
+    var width = document.body.clientWidth / 3.125;
 
     vm.imgHeight = {
       "height": width + 'px'
