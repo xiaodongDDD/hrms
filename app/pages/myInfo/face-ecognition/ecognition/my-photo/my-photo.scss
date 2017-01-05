@@ -1,4 +1,4 @@
-.my-photo{
+.my-photo {
   .platform-android .action-sheet .button {
     display: block;
     padding: 1px;
@@ -7,63 +7,70 @@
     border-color: #d1d3d6;
     background-color: transparent;
     color: red;
-    font-size: 17px; }
+    font-size: 17px;
+  }
 
-  .margin-top{
+  .margin-top {
     margin-top: 5px;
   }
-  .my-photo-content{
-      .desc{
-        margin-top:20px;
-        font-family: PingFangSC-Regular;
+  .my-photo-content {
+    .hms-hide-content .spinner svg {
+      width: 28px;
+      height: 28px;
+      stroke: #444;
+      fill: #444;
+    }
+    .desc {
+      margin-top: 20px;
+      font-family: PingFangSC-Regular;
+      height: 25px;
+      font-size: 16px;
+      color: #9B9B9B;
+      letter-spacing: 0px;
+      line-height: 25px;
+      text-align: center;
+      > div {
+        display: inline-block;
         height: 25px;
-        font-size: 16px;
-        color: #9B9B9B;
-        letter-spacing: 0px;
-        line-height: 25px;
-        text-align: center;
-        >div{
-          display: inline-block;
+        width: auto;
+        > img {
+          width: 25px;
           height: 25px;
-          width: auto;
-          >img{
-            width: 25px;
-            height: 25px;
-          }
-        }
-        .info{
-          vertical-align:top;
-          line-height: 25px;
         }
       }
-      .photo-show{
-        width: 100%;
+      .info {
+        vertical-align: top;
+        line-height: 25px;
+      }
+    }
+    .photo-show {
+      width: 100%;
+      height: auto;
+      margin-top: 20px;
+      padding-left: 2%;
+      > div {
+        float: left;
+        position: relative;
+        display: inline-block;
+        width: 32%;
         height: auto;
-        margin-top: 20px;
-        padding-left: 2%;
-        >div{
-          float: left;
-          position: relative;
-          display: inline-block;
-          width: 32%;
-          height: auto;
-          margin-right: 1%;
-          img{
-            width: 100%;
-            height: 100%;
+        margin-right: 1%;
+        img {
+          width: 100%;
+          height: 100%;
 
-          }
-          .love-img{
-            position: absolute;
-            z-index:5;
-            height: 15px;
-            width: 15px;
-            top:10px;
-            right: 10px;
-          }
+        }
+        .love-img {
+          position: absolute;
+          z-index: 5;
+          height: 15px;
+          width: 15px;
+          top: 10px;
+          right: 10px;
         }
       }
-    .note-info{
+    }
+    .note-info {
       clear: both;
       margin-top: 15px;
       width: 100%;
@@ -75,26 +82,26 @@
       line-height: 25px;
       text-align: center;
 
-      img{
+      img {
         width: 12px;
         height: 12px;
       }
     }
   }
-  .foot{
+  .foot {
     position: absolute;
     z-index: 10;
     width: 100%;
     height: 100%;
     background-color: royalblue;
-    .head{
+    .head {
       height: 50px;
     }
-    .big-photo{
+    .big-photo {
       height: auto;
       width: 100%;
       text-align: center;
-      img{
+      img {
         width: 100%;
         height: auto;
       }

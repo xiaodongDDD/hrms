@@ -43,6 +43,8 @@
     vm.count = 0;
     vm.totalNum=0;
 
+    vm.loadingFlag = true;
+
     var width = document.body.clientWidth / 3.125;
 
     vm.imgHeight = {
@@ -60,7 +62,8 @@
     vm.showActionSheet = showActionSheet;
 
     $scope.$on('$ionicView.enter', function (e) {
-      hmsPopup.showLoading();
+      vm.loadingFlag = true;
+      //hmsPopup.showLoading();
       vm.getPhotoList();
     });
     //路由
@@ -94,27 +97,24 @@
               console.log(err);
               console.log(status)
             })
-
           }
-
-
         })
 
       }
-
     }
 
     function getPhotoList() {
       var url = baseConfig.queryPath + '/photo/getMyPhotos';
       hmsHttp.post(url, {}).success(function (result) {
+        vm.loadingFlag = false;
         console.log(result);
-
         vm.photoList = result.rows;
         vm.totalNum=result.total
-        hmsPopup.hideLoading();
+        //hmsPopup.hideLoading();
         console.log(vm.totalNum);
         $ionicScrollDelegate.resize();
       }).error(function (err, status) {
+        vm.loadingFlag = false;
         console.log(err);
         console.log(status)
       })

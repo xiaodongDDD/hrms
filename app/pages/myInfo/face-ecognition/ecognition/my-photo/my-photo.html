@@ -9,13 +9,18 @@
   </ion-header-bar>
   <ion-content class="my-photo-content" has-bouncing="true">
 
-      <div class="desc">
-        <div >
-          <img src="build/img/myInfo/meetThousand/face@3x.png">
-        </div>
-        <div class="info">添加多种表情，验证成功率更高哦~</div>
+    <div class="desc">
+      <div>
+        <img src="build/img/myInfo/meetThousand/face@3x.png">
       </div>
+      <div class="info">添加多种表情，验证成功率更高哦~</div>
+    </div>
 
+    <div class="hms-hide-content" ng-if="vm.loadingFlag" >
+      <hms-common-loading></hms-common-loading>
+    </div>
+
+    <div ng-if="!vm.loadingFlag">
       <div class="photo-show">
 
         <div ng-repeat="photo in vm.photoList track by $index" ng-style="vm.imgHeight" class="margin-top">
@@ -33,6 +38,6 @@
         <div>说明:加<img src="build/img/myInfo/meetThousand/love-r@3x.png">图片将用于年会抽奖身份核对</div>
         <div>记得选一张最美的哦~</div>
       </div>
-
+    </div>
   </ion-content>
 </ion-view>
