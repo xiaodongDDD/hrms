@@ -513,6 +513,7 @@
           vm.top = {
             'top': '0px'
           };
+          vm.titleTop = vm.cssTop.rankUpTitle;
           vm.titleClass = 'active-title';
           vm.addressClass = 'active-address';
         }
@@ -527,6 +528,7 @@
         isHeaderBar = false;
         if (vm.isRank) {
           console.log('rankDown...');
+          vm.titleTop = vm.cssTop.title;
           vm.isTopScorll = false;
           vm.top = 'default-top';
           vm.styleHeight = vm.cssTop.defaultHeight;
