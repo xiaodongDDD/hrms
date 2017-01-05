@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
@@ -254,7 +255,11 @@ public class FaceCompareActivity extends Activity {
                     if(times>=10 && pictureLock){
                         textv_face_info.setVisibility(View.GONE);
                         //检测
-                        detect();
+                        try {
+                            detect();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     //停止画框功能
 //                    faceView.setFaces(faces);
@@ -271,7 +276,7 @@ public class FaceCompareActivity extends Activity {
         }
 
     }
-    private void detect(){
+    private void detect() throws Exception{
         pictureLock = false;
         if(loadingDialog!=null) {
             loadingDialog.setText("正在检测人脸,请等待...");
@@ -395,7 +400,11 @@ public class FaceCompareActivity extends Activity {
                     break;
                 case 0x103:
                     if(myAct.pictureLock){
-                        myAct.detect();
+                        try {
+                            myAct.detect();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     break;
                 default:
@@ -435,7 +444,7 @@ public class FaceCompareActivity extends Activity {
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                 Log.d("PutObject", "UploadSuccess");
                 try {
-                    obj.put("aliyunPath", nameSapce+time+".jpg");
+                    obj.put("aliyunPath", nameSapce+"/"+time+".jpg");
                     Log.d("PutObject", obj.toString());
                     notify.sendNotifyMessage(obj.toString());
                     if(loadingDialog!=null && loadingDialog.isShowing()) loadingDialog.dismiss();
@@ -466,5 +475,13 @@ public class FaceCompareActivity extends Activity {
         });
         // task.cancel(); // 可以取消任务
         // task.waitUntilFinished(); // 可以等待任务完成
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(timer!=null){
+            timer.cancel();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
