@@ -28,4 +28,9 @@
 
        </div>
     </ion-footer-bar>
+  <div class="face-bar" ng-if="showMenu">
+    <div class="face-title">要删除这张图片？</div>
+    <div class="face-delete-button" ng-click="vm.deletePhoto()">删除</div>
+    <div class="face-cancel-button" ng-click="vm.showActionSheet()">取消</div>
+  </div>
 </ion-modal-view>
