@@ -57,15 +57,6 @@ angular.module('messageModule')
         console.log('window.localStorage.myInfoImg ' + window.localStorage.myInfoImg);
       }
 
-      alert('daiwen....');
-      $http.get('https://zt.bjgas.com/bjgas-server/c/api/getHomePagePic', '',{
-        headers: {'Authorization':'Bearer eb13123f-58d3-4514-93a6-eff9cafb23d1'}
-      }).success(function (response) {
-        alert('response ' + angular.toJson(response))
-      }).error(function (response, status) {
-        alert('response ' + angular.toJson(response))
-      });
-
       /*hmsCacheService.loadImageCache('img/tabs/message-f@3x.png',function () {});
        hmsCacheService.loadImageCache('img/tabs/application-F@3x.png',function () {});
        hmsCacheService.loadImageCache('img/tabs/contact-B@3x.png',function () {});
