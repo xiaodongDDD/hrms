@@ -991,8 +991,11 @@ angular.module('customerModule')
 
       var getMajorIndustrySuccess= function(response){
         $scope.showCrmLoading = false;
-        if(response.returnCode == "S")
+        if(response.returnCode == "S"){
+
           $scope.majorIndustrys = response.industry_list;
+        }
+
       };
 
       var getSubIndustrySuccess= function(response){
