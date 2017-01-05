@@ -1,0 +1,61 @@
+//
+//  PrefixHeader.pch
+//  youtuiShareDemo
+//
+//  Created by FreeGeek on 15-1-9.
+//  Copyright (c) 2015年 FreeGeek. All rights reserved.
+//
+
+#ifndef youtuiShareDemo_PrefixHeader_pch
+#define youtuiShareDemo_PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import "YouTuiSDK.h"
+#import "Singleton.h"
+#define ScreenWidths [UIScreen mainScreen].bounds.size.width
+#define ScreenHeights [UIScreen mainScreen].bounds.size.height
+#define ThemColors [UIColor colorWithRed:0.110f green:0.584f blue:0.776f alpha:1.00f]
+
+#ifdef DEBUG
+# define DLog(fmt, ...) NSLog((@"[函数名:%s]" "[行号:%d]" fmt),__FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+# define DLog(...);
+#endif
+
+#define ShowAlertView(title) [[[UIAlertView alloc]initWithTitle:nil message:title delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil, nil] show];
+
+#define FontLayout(A) [UIFont fontWithName:@"FZLanTingHei-L-GBK-M" size:A]
+
+//友推AppKey
+#define YOUTUIAPPKEY @"332276"
+#define YOUTUIAPPSECRET @"536432b28938e48"
+#define AppUserID [YouTuiSDK GetImei]  //开发者需要自己定义识别用户的ID
+
+//腾讯微博
+#define TCWBAppKey @""
+#define TCWBAppSecret @""
+#define TCWBURI @""
+
+//新浪
+#define SinaWBAppKey @""
+#define SinaWBURI @""
+
+//微信
+#define WXAppKey @"wxaaeac85f01714b29"
+#define WXAppSecret @"c2fa44f4026681e1f83320606aceae41"
+
+//QQ
+#define QQAppID @"1105645417"
+#define QQURI @"http://youtui.mobi"
+
+//人人
+#define RennAPPID @""
+#define RennAPIKEY @""
+#define RennSecretKey @""
+
+#define REFRESHUI @"refreshUI"  //刷新UI的NSNotificationCenter Name
+#define HEADER @"header"
+#define NAME @"name"
+#define TOKEN @"token"
+#endif

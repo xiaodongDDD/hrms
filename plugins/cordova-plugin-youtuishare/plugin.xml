@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-youtuishare" version="0.2.0">
+  <name>youtui</name>
+  <description>youtui library</description>
+  <author>Will</author>
+  <license>GPLv2</license>
+  <keywords>cordova,youtui</keywords>
+  <js-module name="HEMPyoutui" src="www/youtui.js">
+    <clobbers target="hemp.plugin.youtui"/>
+  </js-module>
+  
+  <!-- android -->
+  <platform name="android">
+    <config-file parent="/*" target="res/xml/config.xml">
+      <feature name="YouTui">
+        <param name="android-package" value="com.hand.cordova.plugin.YouTui"/>
+      </feature>
+    </config-file>
+    <config-file parent="/manifest" target="AndroidManifest.xml">
+        <!-- 获取mac地址作为用户的备用唯一标识 -->
+        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        <!-- 获取用户手机的IMEI，用来唯一的标识用户。 -->
+        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        <!-- 写入SDcard权限 -->
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        <!--打开关闭sd卡权限-->
+        <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+        <!--网络权限-->
+        <uses-permission android:name="android.permission.INTERNET" />
+        <!-- 用于读取sd卡图片 -->
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+        <!-- 用于人人SSO登陆 -->
+        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+        <!-- 用于人人SSO登陆 -->
+        <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+        <!-- 用于人人SSO登陆 -->
+        <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+        <!--获取网络权限-->
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    </config-file>
+    
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+        <!-- 友推渠道号，应用名(英文或拼音)+"_yt"，如：“jd_yt”，用于识别通过友推活动下载的应用，请正确填写，否则无法正确统计 -->
+        <meta-data
+            android:name="YOUTUI_CHANNEL"
+            android:value="hrms_yt" >
+        </meta-data>
+        
+        <!-- 微信分享需要注册该activity -->
+        <activity
+        android:name=".wxapi.WXEntryActivity"
+        android:exported="true"
+        android:launchMode="singleTask"
+        android:theme="@android:style/Theme.Translucent" />
+        
+        <!-- qq回调需要注册该activity -->
+        <activity
+        android:name="com.tencent.connect.common.AssistActivity"
+        android:configChanges="orientation|keyboardHidden"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        
+         <!--qq授权需要注册该activity -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- 把 1101255276改成自己的腾讯开放平台的appid -->
+                <data android:scheme="tencent1101255276" />
+            </intent-filter>
+        </activity>
+    
+        <!-- 应用授权 activity -->
+        <activity
+        android:name="cn.bidaround.ytcore.login.AuthActivity"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:screenOrientation="portrait"
+        />
+        
+        
+        <activity
+        android:name="cn.bidaround.youtui_template.ScreenCapEditActivity"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Black.NoTitleBar" />
+    </config-file>
+    
+    
+    <source-file src="src/android/YouTui.java" target-dir="src/com/hand/cordova/plugin"/>
+    <source-file src="src/android/WXEntryActivity.java" target-dir="src/com/hand_china/hrms/wxapi"/>
+    <framework src="src/android/youtuiShare_lib" custom="true"/>
+    <source-file src="src/android/lib/youtui_sdk.xml" target-dir="assets/" />
+  </platform>
+  
+  <!-- ios -->
+  <platform name="ios">
+      <plugins-plist key="YouTui" string="YouTui" />
+      
+      <config-file target="config.xml" parent="/*">
+          <feature name="YouTui">
+              <param name="ios-package" value="YouTui" />
+          </feature>
+      </config-file>
+      
+      
+      <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+          <array>
+              <string>weixin</string>
+              <string>wechat</string>
+              <string>mqqapi</string>
+              <string>mqq</string>
+              <string>mqqOpensdkSSoLogin</string>
+              <string>mqqconnect</string>
+              <string>mqqopensdkdataline</string>
+              <string>mqqopensdkgrouptribeshare</string>
+              <string>mqqopensdkfriend</string>
+              <string>mqqopensdkapi</string>
+              <string>mqqopensdkapiV2</string>
+              <string>mqqopensdkapiV3</string>
+              <string>mqzoneopensdk</string>
+              <string>wtloginmqq</string>
+              <string>wtloginmqq2</string>
+              <string>mqqwpa</string>
+              <string>mqzone</string>
+              <string>mqzonev2</string>
+              <string>mqzoneshare</string>
+              <string>wtloginqzone</string>
+              <string>mqzonewx</string>
+              <string>mqzoneopensdkapiV2</string>
+              <string>mqzoneopensdkapi19</string>
+              <string>mqzoneopensdkapi</string>
+              <string>mqzoneopensdk</string>
+          </array>
+      </config-file>
+      
+      <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+          <array>
+              <dict>
+                  <key>CFBundleURLSchemes</key>
+                  <array>
+                      <string>wxaaeac85f01714b29</string>
+                      <string>tencent1105645417</string>
+                  </array>
+                  <key>CFBundleURLName</key>
+                  <string></string>
+              </dict>
+          </array>
+      </config-file>
+      
+      <header-file src="src/ios/YouTui.h" />
+      <source-file src="src/ios/YouTui.m" />
+      <header-file src="src/ios/FreeGeekNavigationController.h" />
+      <source-file src="src/ios/FreeGeekNavigationController.m" />
+      <source-file src="src/ios/Singleton.h" />
+      <source-file src="src/ios/Singleton.m" />
+      <source-file src="src/ios/PrefixHeader.pch" />
+      
+      <!--lib/OtherFile/-->
+      <header-file src="src/ios/youtuiShareLib/lib/OtherFile/FreeGeekCode.h" />
+      <source-file src="src/ios/youtuiShareLib/lib/OtherFile/FreeGeekCode.m" />
+      <header-file src="src/ios/youtuiShareLib/lib/OtherFile/FreeGeekSheet.h" />
+      <source-file src="src/ios/youtuiShareLib/lib/OtherFile/FreeGeekSheet.m" />
+      <header-file src="src/ios/youtuiShareLib/lib/OtherFile/GiftTalkSheetView.h" />
+      <source-file src="src/ios/youtuiShareLib/lib/OtherFile/GiftTalkSheetView.m" />
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/email.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/logo.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/mark.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/musicImage.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/qq.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/qqzone.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/refresh.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/renn.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/shot@2x.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/sina.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/sms.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/tcwb.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/wechat.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/wechatc.png" target-dir="image"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/OtherFile/image/wechatf.png" target-dir="image"/>
+      <!--lib/QQ/-->
+      <resource-file src="src/ios/youtuiShareLib/lib/QQ/TencentOpenApi_IOS_Bundle.bundle" />
+      <framework src="src/ios/youtuiShareLib/lib/QQ/TencentOpenAPI.framework" custom="true"/>
+      <!--lib/人人/-->
+      <source-file src="src/ios/youtuiShareLib/lib/人人/libShareComponent.a" framework="true"/>
+      <resource-file src="src/ios/youtuiShareLib/lib/人人/RennSDK.bundle"/>
+      <framework src="src/ios/youtuiShareLib/lib/人人/RennSDK.framework" custom="true"/>
+      <header-file src="src/ios/youtuiShareLib/lib/人人/RennShareComponent.h" />
+      <!--lib/微信/-->
+      <source-file src="src/ios/youtuiShareLib/lib/微信/libWeChatSDK.a" framework="true"/>
+      <header-file src="src/ios/youtuiShareLib/lib/微信/WXApi.h" />
+      <header-file src="src/ios/youtuiShareLib/lib/微信/WXApiObject.h" />
+      <!--lib/截屏/-->
+      <resource-file src="src/ios/youtuiShareLib/lib/截屏/ScreenShot.bundle" />
+      <framework src="src/ios/youtuiShareLib/lib/截屏/ScreenShot.framework" custom="true" />
+      <!--lib/新浪微博/-->
+      <source-file src="src/ios/youtuiShareLib/lib/新浪微博/libWeiboSDK.a" framework="true" />
+      <header-file src="src/ios/youtuiShareLib/lib/新浪微博/WBHttpRequest.h" />
+      <header-file src="src/ios/youtuiShareLib/lib/新浪微博/WBHttpRequest+WeiboShare.h" />
+      <header-file src="src/ios/youtuiShareLib/lib/新浪微博/WBHttpRequest+WeiboToken.h" />
+      <header-file src="src/ios/youtuiShareLib/lib/新浪微博/WBHttpRequest+WeiboUser.h" />
+      <header-file src="src/ios/youtuiShareLib/lib/新浪微博/WBSDKBasicButton.h" />
+      <header-file src="src/ios/youtuiShareLib/lib/新浪微博/WBSDKCommentButton.h" />
+      <header-file src="src/ios/youtuiShareLib/lib/新浪微博/WBSDKRelationshipButton.h" />
+      <resource-file src="src/ios/youtuiShareLib/lib/新浪微博/WeiboSDK.bundle" />
+      <header-file src="src/ios/youtuiShareLib/lib/新浪微博/WeiboSDK.h" />
+      <header-file src="src/ios/youtuiShareLib/lib/新浪微博/WeiboUser.h" />
+      <!--lib/腾讯微博/-->
+      <source-file src="src/ios/youtuiShareLib/lib/腾讯微博/libTCWeiboSDK.a" framework="true" />
+      <header-file src="src/ios/youtuiShareLib/lib/腾讯微博/WeiboApi.h" />
+      <header-file src="src/ios/youtuiShareLib/lib/腾讯微博/WeiboApiObject.h" />
+      <!--youtuiShare/-->
+      <source-file src="src/ios/youtuiShareLib/youtuiShare/YouTuiSDK.a" framework="true" />
+      <header-file src="src/ios/youtuiShareLib/youtuiShare/YouTuiSDK.h" />
+      
+      <!--Sys framework-->
+      <framework src="Social.framework" />
+      <framework src="Accounts.framework" />
+      <framework src="CoreTelephony.framework" />
+      <framework src="SystemConfiguration.framework" />
+      <framework src="ImageIO.framework" />
+      <framework src="libstdc++.dylib" />
+      <framework src="libsqlite3.dylib" />
+      <framework src="libz.dylib" />
+      
+  </platform>
+
+</plugin>
