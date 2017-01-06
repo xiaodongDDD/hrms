@@ -25,8 +25,6 @@ module.exports = function(context) {
             'platforms', 'android'),
         projectConfigurationFile = path.join(context.opts.projectRoot,
             'config.xml'),
-        platformConfigurationFile = path.join(androidPlatformDir,
-            'res', 'xml', 'config.xml'),
         projectManifestFile = path.join(androidPlatformDir,
             'AndroidManifest.xml'),
         xwalk64bit = "xwalk64bit",
@@ -34,7 +32,7 @@ module.exports = function(context) {
         specificVersion = false;
 
     /** Init */
-    var CordovaConfig = new ConfigParser(platformConfigurationFile);
+    var CordovaConfig = new ConfigParser(projectConfigurationFile);
 
     var addPermission = function() {
         var projectManifestXmlRoot = XmlHelpers.parseElementtreeSync(projectManifestFile);
@@ -113,27 +111,29 @@ module.exports = function(context) {
     /** Add preference */
     this.addPreferences = function() {
         // Pick the xwalk variables with the cli preferences
-        // parseCliPreference();
+        parseCliPreference();
 
         // Add the permission of writing external storage when using shared mode
-        if (CordovaConfig.getGlobalPreference('xwalkMode') == 'shared') {
+        if (xwalkVariables['xwalkMode'] == 'shared') {
             addPermission();
+        } else if (xwalkVariables['xwalkMode'] == 'lite' && specificVersion == false) {
+            xwalkVariables['xwalkVersion'] = xwalkLiteVersion;
         }
 
         // Configure the final value in the config.xml
-        // var configXmlRoot = XmlHelpers.parseElementtreeSync(projectConfigurationFile);
-        // var preferenceUpdated = false;
-        // for (var name in xwalkVariables) {
-        //     var child = configXmlRoot.find('./preference[@name="' + name + '"]');
-        //     if(!child) {
-        //         preferenceUpdated = true;
-        //         child = et.XML('<preference name="' + name + '" value="' + xwalkVariables[name] + '" />');
-        //         XmlHelpers.graftXML(configXmlRoot, [child], '/*');
-        //     }
-        // }
-        // if(preferenceUpdated) {
-        //     fs.writeFileSync(projectConfigurationFile, configXmlRoot.write({indent: 4}), 'utf-8');
-        // }
+        var configXmlRoot = XmlHelpers.parseElementtreeSync(projectConfigurationFile);
+        var preferenceUpdated = false;
+        for (var name in xwalkVariables) {
+            var child = configXmlRoot.find('./preference[@name="' + name + '"]');
+            if(!child) {
+                preferenceUpdated = true;
+                child = et.XML('<preference name="' + name + '" value="' + xwalkVariables[name] + '" />');
+                XmlHelpers.graftXML(configXmlRoot, [child], '/*');
+            }
+        }
+        if(preferenceUpdated) {
+            fs.writeFileSync(projectConfigurationFile, configXmlRoot.write({indent: 4}), 'utf-8');
+        }
     }
 
     /** Remove preference*/
@@ -143,14 +143,14 @@ module.exports = function(context) {
             removePermission();
         }
 
-        // var configXmlRoot = XmlHelpers.parseElementtreeSync(projectConfigurationFile);
-        // for (var name in xwalkVariables) {
-        //     var child = configXmlRoot.find('./preference[@name="' + name + '"]');
-        //     if (child) {
-        //         XmlHelpers.pruneXML(configXmlRoot, [child], '/*');
-        //     }
-        // }
-        // fs.writeFileSync(projectConfigurationFile, configXmlRoot.write({indent: 4}), 'utf-8');
+        var configXmlRoot = XmlHelpers.parseElementtreeSync(projectConfigurationFile);
+        for (var name in xwalkVariables) {
+            var child = configXmlRoot.find('./preference[@name="' + name + '"]');
+            if (child) {
+                XmlHelpers.pruneXML(configXmlRoot, [child], '/*');
+            }
+        }
+        fs.writeFileSync(projectConfigurationFile, configXmlRoot.write({indent: 4}), 'utf-8');
     }
 
     var build64bit = function() {
@@ -189,11 +189,6 @@ module.exports = function(context) {
                 fs.writeFileSync(projectConfigurationFile, configXmlRoot.write({indent: 4}), 'utf-8');
             }
         }
-
-        console.log("Crosswalk info:");
-        console.log("        After much discussion and analysis of the market,");
-        console.log("        we have decided to discontinue support for Android 4.0 (ICS) in Crosswalk starting with version 20,");
-        console.log("        so the minSdkVersion of Cordova project is configured to 16 by default. \n");
     }
 
     xwalkVariables = defaultPreferences();

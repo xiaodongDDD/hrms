@@ -52,7 +52,7 @@ public class XWalkCordovaClientCertRequest implements ICordovaClientCertRequest 
      * Returns the acceptable types of asymmetric keys (can be null).
      */
     public String[] getKeyTypes() {
-        return request.getKeyTypes();
+        return null;
     }
 
     /*
@@ -67,7 +67,7 @@ public class XWalkCordovaClientCertRequest implements ICordovaClientCertRequest 
      * key (can be null).
      */
     public Principal[] getPrincipals() {
-        return request.getPrincipals();
+        return null;
     }
 
     /*
