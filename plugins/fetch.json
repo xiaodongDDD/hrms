@@ -24,14 +24,16 @@
         "is_top_level": true,
         "variables": {}
     },
-    "com.handmobile.cordovaplugin.hotpatch": {
+    "cordova-plugin-geolocation-baidu": {
         "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
+            "url": "https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu",
             "subdir": "."
         },
         "is_top_level": true,
-        "variables": {}
+        "variables": {
+            "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
+        }
     },
     "cordova-plugin-youtuishare": {
         "source": {
@@ -42,43 +44,43 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-baidu-geolocation": {
+    "jpush-phonegap-plugin": {
         "source": {
-            "type": "git",
-            "url": "https://github.com/ETENG-OSP/cordova-plugin-baidu-geolocation.git",
-            "subdir": "."
+            "type": "registry",
+            "id": "jpush-phonegap-plugin"
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
+            "API_KEY": "22b25063349b6beef7bde524"
         }
     },
     "cordova-plugin-hrms-faceidentify": {
         "source": {
-            "type": "local",
-            "path": "E:\\hrms6\\cordova-plugin-hrms-faceidentify"
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/FACEIDENTIFY/cordova-plugin-hrms-faceidentify.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.handmobile.cordovaplugin.hotpatch": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH/",
+            "subdir": "."
         },
         "is_top_level": true,
         "variables": {}
     },
     "hand-im-plugin-device": {
         "source": {
-            "type": "local",
-            "path": "E:\\hrms4\\hand-im-plugin-device"
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
+            "subdir": "."
         },
         "is_top_level": true,
         "variables": {
-            "RONG_KEY": "0vnjpoadnd4cz"
-        }
-    },
-    "cn.jpush.phonegap.JPushPlugin": {
-        "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin@2.2.0"
-        },
-        "is_top_level": true,
-        "variables": {
-            "API_KEY": "6e0b08078306f45ac8331d54"
+            "RONG_KEY": "e5t4ouvptpsaa"
         }
     }
 }

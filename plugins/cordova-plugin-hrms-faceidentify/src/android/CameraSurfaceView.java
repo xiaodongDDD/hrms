@@ -95,7 +95,7 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         if(buffer!=null){
             YuvImage image = new YuvImage(buffer, ImageFormat.NV21, CameraInterface.getInstance().getCameraParams().getPreviewSize().width, CameraInterface.getInstance().getCameraParams().getPreviewSize().height, null);            //ImageFormat.NV21  640 480
             ByteArrayOutputStream outputSteam = new ByteArrayOutputStream();
-            image.compressToJpeg(new Rect(0, 0, image.getWidth(), image.getHeight()), 70, outputSteam); // 将NV21格式图片，以质量70压缩成Jpeg，并得到JPEG数据流
+            image.compressToJpeg(new Rect(0, 0, image.getWidth(), image.getHeight()), 85, outputSteam); // 将NV21格式图片，以质量70压缩成Jpeg，并得到JPEG数据流
             byte[] jpegData = outputSteam.toByteArray();                                                //从outputSteam得到byte数据
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 1;
