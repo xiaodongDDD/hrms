@@ -1,0 +1,36 @@
+<ion-modal-view class="full-box-model">
+  <ion-slide-box class="fullBoxStyle" ng-style="fullBox" on-slide-changed="slideHasChanged($index)">
+    <ion-slide ng-repeat="item in imgList">
+      <div ng-style="myStyle">
+        <img ng-src="{{item.url}}">
+      </div>
+    </ion-slide>
+  </ion-slide-box>
+  <div align="center">
+    <img src="build/img/hideAd.png" ng-click="hideAd()">
+  </div>
+</ion-modal-view>
+<style>
+  .full-box-model{
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .full-box-model  .fullBoxStyle  img{
+    width:100%;height: 100%;border-radius: 15px;
+  }
+  .full-box-model .slider-pager .slider-pager-page{
+    display: inline-block;
+    margin: 0 3px;
+    width: 15px;
+    color: #fff;
+    text-decoration: none;
+  }
+  .full-box-model .ion-record{
+    font-size: 10px;
+  }
+  .full-box-model .hide-buttom{
+    position: absolute;width:100%;
+  }
+  .full-box-model .hide-buttom img{
+    width: 45px;
+  }
+</style>

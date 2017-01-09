@@ -51,22 +51,22 @@ angular.module('contactModule')
               $ionicPlatform,
               contactService) {
       $scope.showContactGuide1;
-      $scope.showContactGuide2=false;
-      $scope.showContactGuide3=false;
+      $scope.showContactGuide2 = false;
+      $scope.showContactGuide3 = false;
       $scope.buttonTapped = function (index) {
-        if(index==1){
+        if (index == 1) {
           $scope.showContactGuide1 = false;
           $scope.showContactGuide2 = true;
           $scope.showContactGuide3 = false;
-        }else if(index==2){
+        } else if (index == 2) {
           $scope.showContactGuide1 = false;
           $scope.showContactGuide2 = false;
           $scope.showContactGuide3 = true;
-        }else if(index==3){
-        $scope.showContactGuide1 = false;
-        $scope.showContactGuide2 = false;
-        $scope.showContactGuide3 = false;
-          window.localStorage.showContactGuide=false;
+        } else if (index == 3) {
+          $scope.showContactGuide1 = false;
+          $scope.showContactGuide2 = false;
+          $scope.showContactGuide3 = false;
+          window.localStorage.showContactGuide = false;
         }
       };
       $scope.hasCrm = window.localStorage.crm == 'true';
@@ -75,8 +75,8 @@ angular.module('contactModule')
         console.log('window.localStorage.guideHelpAuto ' + window.localStorage.guideHelpAuto);
       }
 
-      if ($scope.hasCrm==true&&(!window.localStorage.showContactGuide || window.localStorage.guideHelpAuto == "true")) {
-        window.localStorage.showContactGuide="false";
+      if ($scope.hasCrm == true && (!window.localStorage.showContactGuide || window.localStorage.guideHelpAuto == "true")) {
+        window.localStorage.showContactGuide = "false";
         $scope.showContactGuide1 = true;
       } else {
       }
@@ -175,9 +175,9 @@ angular.module('contactModule')
       };
       //初始化历史记录
       $scope.init = function () {
-      /*  $timeout(function(){
-          $scope.showLoading = false;
-        },3000);*/
+        /*  $timeout(function(){
+         $scope.showLoading = false;
+         },3000);*/
         historyContact.getAllHistory(function (data) {
           console.log("初始化历史纪录");
           $scope.showLoading = false;
@@ -207,11 +207,11 @@ angular.module('contactModule')
         $scope.filterContactsModel.show();
         console.log(screen.height);
         /*  $(".hmsModal").css("top", 112 + 'px')*/
-       if(ionic.Platform.isAndroid()){
+        if (ionic.Platform.isAndroid()) {
           $(".hmsModal").css("top", 92 + 'px');
-        }else{
-         $(".hmsModal").css("top", 112 + 'px');
-       }
+        } else {
+          $(".hmsModal").css("top", 112 + 'px');
+        }
 
       };
       $scope.clearParam = function () {//重置
@@ -251,14 +251,14 @@ angular.module('contactModule')
       $scope.closeFilterContactsModel = function () {
         $scope.moreDataCanBeLoaded = true;
         $scope.linkmanData = [];
-       /* $scope.data = {
-          pageSize: "10",
-          page: "1",
-          contactId: "",
-          contactType: "",
-          status: ""
-        };*/
-        $scope.data.page=1;
+        /* $scope.data = {
+         pageSize: "10",
+         page: "1",
+         contactId: "",
+         contactType: "",
+         status: ""
+         };*/
+        $scope.data.page = 1;
         $scope.showLoading = true;
         $scope.doRefreshFlag = true;
         $scope.filterContactsModel.hide();
@@ -292,10 +292,10 @@ angular.module('contactModule')
            $ionicScrollDelegate.$getByHandle("slideimgs").resize();
            });*/
 
-        }else{
-          if(result.returnMsg){
+        } else {
+          if (result.returnMsg) {
             hmsPopup.showPopup(result.returnMsg)
-          }else{
+          } else {
             hmsPopup.showPopup('服务器系统出现异常，请联系管理员！')
           }
         }
@@ -519,7 +519,7 @@ angular.module('contactModule')
         $ionicHistory.goBack();
       };
       $scope.bilingual = CloneData.getContactbilingual();
-      console.log( $scope.bilingual);
+      console.log($scope.bilingual);
       /*    $scope.$on('$ionicView.enter', function (e) {
        $ionicScrollDelegate.$getByHandle("slideimgs").resize();
        });*/
@@ -527,10 +527,10 @@ angular.module('contactModule')
       $scope.$on('$destroy', function (e) {
         console.log('contactCtrl.$destroy');
       });
-      $scope.showCustomer=0;
+      $scope.showCustomer = 0;
       $scope.selectSubHeader = function ($index) {
         console.log($index);
-        $scope.showCustomer=$index;
+        $scope.showCustomer = $index;
         if ($scope.subHeadersSelect[$index])
           return 0;
         else {
@@ -538,13 +538,13 @@ angular.module('contactModule')
           $scope.subHeadersSelect[$index] = true;
         }
       };
-      if(!$scope.hasCrm){
+      if (!$scope.hasCrm) {
         $scope.selectSubHeader(1);
       }
 
-      var pickContact = function(){
+      var pickContact = function () {
 
-        ContactsPlugin.pickContact(function(response){
+        ContactsPlugin.pickContact(function (response) {
           var email = response.emailList.length == 0 ? "" : response.emailList[0].value;
           var phone = response.phoneList.length == 0 ? "" : response.phoneList[0].value;
           $scope.manInfo = {
@@ -554,7 +554,7 @@ angular.module('contactModule')
             email: email
           };
           $scope.saveToContacts();
-        }, function(){
+        }, function () {
           hmsPopup.showPopup('选取错误，请重新选择');
         });
       };
@@ -568,7 +568,7 @@ angular.module('contactModule')
         var onSaveContactSuccess = function () {
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast("添加成功");
-          if($scope.hasCrm)
+          if ($scope.hasCrm)
             $scope.crmScanCardModal.hide();
           else
             $scope.scanCardModal.hide();
@@ -576,7 +576,7 @@ angular.module('contactModule')
         var onSaveContactError = function () {
           hmsPopup.hideLoading();
           hmsPopup.showShortCenterToast("添加失败");
-          if($scope.hasCrm)
+          if ($scope.hasCrm)
             $scope.crmScanCardModal.hide();
           else
             $scope.scanCardModal.hide();
@@ -586,7 +586,7 @@ angular.module('contactModule')
       };
 
       $scope.set2localContact = function () {
-        contactService.contactLocal($scope.manInfo,$scope.scanCardModal);
+        contactService.contactLocal($scope.manInfo, $scope.scanCardModal);
       };
 
       function dealScanData(msg) { //处理名片扫描插件的返回数据
@@ -662,10 +662,10 @@ angular.module('contactModule')
               email: '',
               organization: '',
               fullName: "",
-              department:"",
-              position:"",
-              street:"",
-              postal_code:""
+              department: "",
+              position: "",
+              street: "",
+              postal_code: ""
             };
             msg = JSON.parse(msg);
             $scope.testI = msg;
@@ -701,10 +701,10 @@ angular.module('contactModule')
               if (organization.length > 0) {
                 /*  $scope.manInfo.organization = organization[1].item.name;
                  $scope.manInfo.department = organization[0].item.name;*/
-                if(organization[0].item.hasOwnProperty('name')){
+                if (organization[0].item.hasOwnProperty('name')) {
                   $scope.manInfo.organization = organization[0].item.name;
-                  $scope.manInfo.department="";
-                }else{
+                  $scope.manInfo.department = "";
+                } else {
                   $scope.manInfo.department = organization[0].item.unit;
                   $scope.manInfo.organization = organization[1].item.name;
                 }
@@ -721,7 +721,7 @@ angular.module('contactModule')
               }
             } catch (e) {
               $scope.manInfo.street = '';
-              $scope.manInfo.postal_code='';
+              $scope.manInfo.postal_code = '';
             }
             try {
               var title = msg.title;
@@ -746,6 +746,7 @@ angular.module('contactModule')
           hmsPopup.hideLoading();
         }
       }
+
       // 创建名片扫描结果的modal现实页面
       (function scanCardModal() {
         $ionicModal.fromTemplateUrl('build/pages/application/model/scan-card-result.html', {
@@ -762,10 +763,10 @@ angular.module('contactModule')
           $scope.scanCardModal = modal;
         });
       })();
-     $scope.closescanCardModal=function(){
-       $scope.crmScanCardModal.hide();
-       $scope.scanCardModal.hide();
-     };
+      $scope.closescanCardModal = function () {
+        $scope.crmScanCardModal.hide();
+        $scope.scanCardModal.hide();
+      };
       $scope.saveToContacts = function () {
         hmsPopup.showLoading("加载中");
         //需要客户模糊查询接口
@@ -790,7 +791,7 @@ angular.module('contactModule')
           "addressCity": "",
           "addressZone": "",
           "addressDetails": $scope.manInfo.street,
-          "addressZipCode":  $scope.manInfo.postal_code
+          "addressZipCode": $scope.manInfo.postal_code
         };
         if ($scope.manInfo.organization != "") {
           $scope.searchParam = {
@@ -811,10 +812,10 @@ angular.module('contactModule')
                 contact.fullName = "";
               }
               $state.go('tab.addLinkman2', {param: contact});
-              if($scope.hasCrm){
+              if ($scope.hasCrm) {
                 $scope.crmScanCardModal.hide();
               }
-              else{
+              else {
                 $scope.scanCardModal.hide();
               }
 
@@ -822,7 +823,7 @@ angular.module('contactModule')
               hmsPopup.hideLoading();
               hmsPopup.showPopup("没有找到匹配的客户");
               $state.go('tab.addLinkman2', {param: contact});
-              if($scope.hasCrm)
+              if ($scope.hasCrm)
                 $scope.crmScanCardModal.hide();
               else
                 $scope.scanCardModal.hide();
@@ -832,9 +833,9 @@ angular.module('contactModule')
         } else {
           hmsPopup.hideLoading();
           $state.go('tab.addLinkman2', {param: contact});
-          if($scope.hasCrm){
+          if ($scope.hasCrm) {
             $scope.crmScanCardModal.hide();
-          } else{
+          } else {
             $scope.scanCardModal.hide();
           }
           console.log($scope.searchData);
@@ -869,9 +870,9 @@ angular.module('contactModule')
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.takePicturefun(function (msg) {
                     console.log($scope.hasCrm);
-                    if($scope.hasCrm){
+                    if ($scope.hasCrm) {
                       dealCrmScanData(msg);
-                    }else{
+                    } else {
                       dealScanData(msg);
                     }
                   }, function (error) {
@@ -882,9 +883,9 @@ angular.module('contactModule')
                 } else if (btnIndex == 2) {
                   hmsPopup.showLoading('名片扫描中,请稍后...');
                   scanCard.choosePicturefun(function (msg) {
-                    if($scope.hasCrm){
+                    if ($scope.hasCrm) {
                       dealCrmScanData(msg);
-                    }else{
+                    } else {
                       dealScanData(msg);
                     }
                   }, function (error) {
@@ -1034,39 +1035,66 @@ angular.module('contactModule')
       $scope.goDetailInfo = function (newEmployeeNumber) {
         $state.go('tab.employeeDetailCrm', {employeeNumber: newEmployeeNumber});
       };
-    }])
+      $ionicModal.fromTemplateUrl('build/pages/contactCrm/model/fullSlider.html', {
+        scope: $scope
+      }).then(function (modal) {
+        $scope.fullSlider = modal;
+      });
+      /*  $ionicSlideBoxDelegate.update();*/
+      $scope.showAdvertising = function () {
+        $scope.fullSlider.show();
+      };
+      $scope.fullBox = {
+        "width": "80%",
+        "margin-left": "10%",
+        "margin-top": screen.height / 5 * 1 + "px",
+        "border-radius": "15px",
+        "height": screen.height / 30 * 20
+      };
+      var imgHeight = screen.height / 5 * 3;
+      $scope.myStyle = {
+        height: imgHeight + "px",
+        width: "100%",
+        "border-radius": "15px"
+      };
+      $scope.imgList = [
+        {url: "build/img/1@3x.png"},
+        {url: "build/img/1@3x.png"},
+        {url: "build/img/1@3x.png"}
+      ];
+    }]);
 /*
-  .service('getInitStructureInfo', ['hmsHttp', 'baseConfig', function (hmsHttp, baseConfig) {
-    var _currentStructureUrl = baseConfig.queryPath + '/dept/getStaffDeptInfo';
-    var _structureUrl = baseConfig.queryPath + '/dept/getDetail';
-    this._returnData = {};
-    return {
-      getCurrentStructure: function (callback) {
-        hmsHttp.post(_currentStructureUrl).success(function (response) {
-          if (response.returnData) {
-          } else {
-            response.returnData = {};
-          }
-          callback(response.returnData);
-        }).error(function (error) {
-        });
-      },
-      getStructure: function (callback, newId) {
-        var params = {
-          "id": newId
-        };
+ .service('getInitStructureInfo', ['hmsHttp', 'baseConfig', function (hmsHttp, baseConfig) {
+ var _currentStructureUrl = baseConfig.queryPath + '/dept/getStaffDeptInfo';
+ var _structureUrl = baseConfig.queryPath + '/dept/getDetail';
+ this._returnData = {};
+ return {
+ getCurrentStructure: function (callback) {
+ hmsHttp.post(_currentStructureUrl).success(function (response) {
+ if (response.returnData) {
+ } else {
+ response.returnData = {};
+ }
+ callback(response.returnData);
+ }).error(function (error) {
+ });
+ },
+ getStructure: function (callback, newId) {
+ var params = {
+ "id": newId
+ };
 
-        hmsHttp.post(_structureUrl, params).success(function (response) {
-          try {
-            this._returnData = response.returnData;
-          } catch (e) {
-            this._returnData = {};
-          }
-          callback(this._returnData);
-        }.bind(this)).error(function (error) {
-        });
-      }
-    }
+ hmsHttp.post(_structureUrl, params).success(function (response) {
+ try {
+ this._returnData = response.returnData;
+ } catch (e) {
+ this._returnData = {};
+ }
+ callback(this._returnData);
+ }.bind(this)).error(function (error) {
+ });
+ }
+ }
 
-  }]);
-*/
+ }]);
+ */

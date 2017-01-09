@@ -284,7 +284,7 @@ angular.module('planModule')
         console.log(result);
         if (result.returnCode == "S") {
           plansService.setRefreshDataFlag(true);
-          hmsPopup.showPopup(result.returnMsg);
+          hmsPopup.showShortCenterToast(result.returnMsg);
           if ($ionicHistory.viewHistory().backView) {
             $ionicHistory.goBack();
           } else {
@@ -292,10 +292,10 @@ angular.module('planModule')
           }
         } else {
           if (result.returnMsg) {
-            hmsPopup.showPopup(result.returnMsg);
+            hmsPopup.showShortCenterToast(result.returnMsg);
           }
           else {
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！');
           }
         }
       };
@@ -304,7 +304,7 @@ angular.module('planModule')
         console.log(result);
         if (result.returnCode == "S") {
           plansService.setRefreshDataFlag(true);
-          hmsPopup.showPopup(result.returnMsg);
+          hmsPopup.showShortCenterToast(result.returnMsg);
           if (isNotNullObj($stateParams.planData)) {
             console.log("hhh");
             $scope.backNeedFresh = true;
@@ -353,10 +353,10 @@ angular.module('planModule')
           }
         } else {
           if (result.returnMsg) {
-            hmsPopup.showPopup(result.returnMsg);
+            hmsPopup.showShortCenterToast(result.returnMsg);
           }
           else {
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！');
           }
         }
       };
@@ -383,7 +383,7 @@ angular.module('planModule')
             $scope.showCrmLoading = false;
           }
           else {
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！');
           }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -411,7 +411,7 @@ angular.module('planModule')
             $scope.moreDataCanBeLoaded = false;
           }
           else {
-            hmsPopup.showPopup('服务器系统出现异常，请联系管理员！');
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！');
           }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -504,7 +504,7 @@ angular.module('planModule')
             console.log("测试错误");
             $scope.showSmallCrmLoading = false;
             $('#voice-img').removeClass('big-img');
-            hmsPopup.showPopup(msg);
+            hmsPopup.showShortCenterToast(msg);
      /*       $timeout(function () {
               insertText(document.getElementById('text'), msg);
               $scope.$apply();
@@ -555,7 +555,7 @@ angular.module('planModule')
               $scope.showSmallCrmLoading = false;
             }, 0);*/
             $scope.showSmallCrmLoading = false;
-            hmsPopup.showPopup(msg);
+            hmsPopup.showShortCenterToast(msg);
             /*  $scope.$apply();*/
           }, function (msg) {
             console.log("测试正确")
@@ -959,17 +959,17 @@ angular.module('planModule')
           }
           else {
             if (result.returnMsg) {
-              hmsPopup.showPopup('提交周报中报错， ' + result.returnMsg);
+              hmsPopup.showShortCenterToast('提交周报中报错， ' + result.returnMsg);
             }
             else {
-              hmsPopup.showPopup('提交周报中报错，请联系管理员！');
+              hmsPopup.showShortCenterToast('提交周报中报错，请联系管理员！');
             }
           }
         };
         if ($scope.chooseWeek == "") {
-          hmsPopup.showPopup("请选择日期");
+          hmsPopup.showShortCenterToast("请选择日期");
         } else if ($scope.weekData.summaryContent == "") {
-          hmsPopup.showPopup("周报内容不能为空");
+          hmsPopup.showShortCenterToast("周报内容不能为空");
         } else {
           hmsPopup.showLoading('提交周报中');
           plansAddService.saleWeeklyAdd(saveWeeklySuccessInit, $scope.weekData);

@@ -467,7 +467,7 @@ angular.module('contactModule')
             }else{
               if(data.returnMsg){
                 $scope.showContent=true;
-                hmsPopup.showPopup(data.returnMsg);
+                hmsPopup.showShortCenterToast(data.returnMsg);
                 console.log(data.returnMsg);
               }else{
                 hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
