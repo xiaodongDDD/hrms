@@ -271,28 +271,4 @@ HmsModule
       }
     }
   };
-}).directive('showadfullbox',function($ionicModal){
-    return {
-      restrict: 'AE',
-      controller: function(scope, element, attributes) {
-        console.log("testetsteett");
-        $ionicModal.fromTemplateUrl('build/pages/contactCrm/model/fullSlider.html', {
-          scope: scope
-        }).then(function (modal) {
-          scope.fullSlider = modal;
-        });
-        console.log(!window.localStorage.haveFullBox);
-        console.log(window.localStorage.haveFullBox);
-        if(!window.localStorage.haveFullBox){
-          scope.fullSlider.show();
-        }
-        scope.showTest=function(){
-          console.log("===========");
-        };
-        scope.hideAd=function(){
-          scope.fullSlider.hide();
-          window.localStorage.haveFullBox="false";
-        };
-      }
-    }
-  });
+});
