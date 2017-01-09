@@ -309,7 +309,8 @@ angular.module('planModule')
             console.log("hhh");
             $scope.backNeedFresh = true;
             $scope.data = {
-              "planDate": $filter('date')(new Date(), 'yyyy-MM-dd'),
+            /*  "planDate": $filter('date')(new Date(), 'yyyy-MM-dd'),*/
+              "planDate": $stateParams.planData.planDate,
               "customerId": $stateParams.planData.customerId,
               "opportunityId": $stateParams.planData.opportunityId,
               "timeBucket": "HCRM_MORNING",
@@ -321,11 +322,16 @@ angular.module('planModule')
               "dataStatus": "HCRM_VALID"
             };
             /*     new Date().getFullYear();*/
+            if($stateParams.planData.planDate){
+              $scope.data.planDate=$stateParams.planData.planDate;
+            }else{
+              $scope.data.planDate= $filter('date')(new Date(), 'yyyy-MM-dd');
+            }
             $scope.showData = {
               fullName: $stateParams.planData.fullName,
               opportunityName: $stateParams.planData.opportunityName,
               planTime: "",
-              week: showTime(new Date()),
+              week: showTime(new Date($scope.data.planDate)),
               saleContent: ""
             };
           } else {
