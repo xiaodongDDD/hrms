@@ -1059,38 +1059,4 @@ angular.module('planModule')
         });
       }
     }
-  ])
-
-  .directive('infinity-scroll', function () {
-    return {
-      restrict: 'ACE',
-      scope: {
-        inputLabelName: '=labelName',
-        inputBox: '=inputBox',
-        isImportant: '=important',
-        showLine: '=showLine',
-        isLastLine: '=lastLine',
-        imgUrl: '=imgUrl',
-        notEditable: '=notEditable',
-        $hmsSelect: '&hmsSelect'
-      },
-      template: '',
-      link: function (scope, element, attrs) {
-        if(!attrs.imgUrl || attrs.imgUrl == ''){
-          scope.imgUrlValue = 'build/img/contact/right_arrow@3x.png';
-        }
-        else{
-          scope.imgUrlValue = attrs.imgUrl;
-        }
-        if(scope.notEditable)
-          scope.selectValue = function(){};
-        else
-          scope.selectValue = function () {
-            //console.log('selectValue...');
-            if (scope.$hmsSelect) {
-              scope.$hmsSelect();
-            }
-          };
-      }
-    }
-  })
+  ]);
