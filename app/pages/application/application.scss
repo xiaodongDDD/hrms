@@ -23,7 +23,7 @@ $applicationColor: white !default;
 
   .mainApplication {
 
-    background: #EFEFEF;
+    //background: #EFEFEF;
 
     ::-webkit-scrollbar {
       display: none;
@@ -199,6 +199,7 @@ $applicationColor: white !default;
       position: relative;
       width: 100%;
       height: 500px;
+      background: #efefef;
       perspective: 300px;
       -webkit-perspective: 300px; /* Safari and Chrome */
       .application-left {
@@ -329,25 +330,9 @@ $applicationColor: white !default;
     .calendar-container{
       width: 100%;
       position: relative;
-      .crm-search{
-        position: absolute;
-        top: 10px;
-        left: 5vw;
-        width: 90vw;
-        height: 30px;
-        line-height: 30px;
-        border-radius: 15px;
-        color: white;
-        font-size: 0.8em;
-        background: rgba(255, 255, 255, 0.3);
-        img{
-          vertical-align: middle;
-          height: 15px;
-          margin: 0 10px;
-        }
-      }
       .calendar-head{
         width: 100vw;
+        visibility: hidden;
       }
       .calendar-content{
         position: absolute;
@@ -510,18 +495,41 @@ $applicationColor: white !default;
   }
 }
 
+.top-bg{
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform-origin: 50% 0;
+  -webkit-transform-origin: 50% 0;
+}
+
+.crm-search{
+  position: absolute;
+  top: 10px;
+  left: 5vw;
+  width: 90vw;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 15px;
+  color: white;
+  font-size: 0.8em;
+  background: rgba(255, 255, 255, 0.3);
+  img{
+    vertical-align: middle;
+    height: 15px;
+    margin: 0 10px;
+  }
+}
+
 .platform-ios {
   .new-application {
+    .crm-search {
+      top: 30px;
+    }
     .application-header{
       height: 64px;
       padding-top: 20px;
-    }
-    .mainApplication {
-      .calendar-container {
-        .crm-search {
-          top: 30px;
-        }
-      }
     }
   }
 }

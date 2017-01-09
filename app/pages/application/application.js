@@ -278,8 +278,33 @@ angular.module('applicationModule')
 
       $scope.showHeader = false;
 
+      $scope.bgStyle = {};
+
+      $scope.searchStyle = {};
+
       $scope.onDragContent = function(){
         var top = $ionicScrollDelegate.getScrollPosition().top;
+        if(top <= 0){
+          var scrollHeight = 0 - top;
+          var scale = ((scrollHeight + $scope.imgHeight) / $scope.imgHeight).toFixed(2);
+          $scope.bgStyle = {
+            "transform": "scale(" + scale + ")",
+            "-webkit-transform": "scale(" + scale + ")"
+          };
+          $scope.searchStyle = {};
+        }
+
+        else{
+          if(ionic.Platform.isIOS())
+            $scope.searchStyle = {
+              top: 30-top + "px"
+            };
+          else
+            $scope.searchStyle = {
+              top: 10-top + "px"
+            };
+        }
+
         if(top >= $scope.imgHeight) {
           $scope.headerStyle.opacity = 1;
           return;
@@ -308,6 +333,15 @@ angular.module('applicationModule')
           $scope.showHeader = true;
           $scope.headerStyle.opacity = (top / $scope.imgHeight).toFixed(1);
         },500);
+      };
+
+      $scope.onReleaseContent = function(){
+        $scope.bgStyle = {
+          "transition": "all 0.5s",
+          "-webkit-transition": "all 0.5s",
+          "transform": "scale(1)",
+          "-webkit-transform": "scale(1)"
+        };
       };
 
       $scope.weekdays = ['一','二','三','四','五','六','日'];
