@@ -19,7 +19,10 @@
     应用
   </div>
 
-  <ion-content class="mainApplication" style="bottom:48px;" scrollbar-y="false" on-drag="onDragContent()" on-swipe="onSwipeContent()">
+  <img ng-src="{{titleBg}}" class="top-bg" ng-style="bgStyle"/>
+  <div class="crm-search" ng-click="goSearch()" ng-if="hasCrm" ng-style="searchStyle"><img src="build/img/application/search@3x.png"/>搜索客户、商机、线索</div>
+
+  <ion-content class="mainApplication" style="bottom:48px;" scrollbar-y="false" on-drag="onDragContent()" on-swipe="onSwipeContent()" on-release="onReleaseContent()">
     <div on-release="onRelease()" class="application-setting-outer"
          ng-show="animationsEnabled">
     </div>
@@ -43,7 +46,6 @@
     </div>
 
     <div class="calendar-container">
-      <div class="crm-search" ng-click="goSearch()" ng-if="hasCrm"><img src="build/img/application/search@3x.png"/>搜索客户、商机、线索</div>
       <img ng-src="{{titleBg}}" class="calendar-head"/>
       <div class="calendar-content">
         <div class="application-calendar">
