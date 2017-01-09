@@ -35,15 +35,6 @@
             "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
         }
     },
-    "cordova-plugin-youtuishare": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "jpush-phonegap-plugin": {
         "source": {
             "type": "registry",
