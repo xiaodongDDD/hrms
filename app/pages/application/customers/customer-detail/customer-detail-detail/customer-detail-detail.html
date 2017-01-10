@@ -1,6 +1,5 @@
 <div ng-controller="CustomerDetailDetailCtrl" class="crm improve-information">
   <crm-loading ng-if="showLoading"></crm-loading>
-  <ion-scroll class="state-scroll" delegate-handle="detailScroll" direction="y" scrollbar-y="false" has-bouncing="true">
   <div class="common-input-area-title" ng-click="show(0)">
     <img  src="build/img/application/information/base.png">
     {{ bilingual.basic_info}}<div class="title-but">{{showFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
@@ -234,7 +233,6 @@
       <input type="text"  ng-model="customer.itStatusDes" readonly />
     </div>
   </div>
-    </ion-scroll>
   <!--<ion-scroll class="state-scroll" delegate-handle="stateScroll" direction="y" scrollbar-y="false" has-bouncing="true">-->
  <!-- <div class="common-input-area-title" ng-click="show(0)">
     {{ bilingual.basic_info}}<div class="title-but">{{showFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
