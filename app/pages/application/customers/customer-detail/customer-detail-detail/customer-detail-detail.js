@@ -204,7 +204,7 @@ angular.module('customerModule')
       $rootScope.$on('$ionicView.beforeEnter', function (e) {
         $scope.customerId =  customerDetailService.getCustomerId();
         console.log('详情页面的详情'+$scope.customerId);
-    /*    $ionicScrollDelegate.$getByHandle("detailScroll").scrollTop(false);*/
+      /*  $ionicScrollDelegate.$getByHandle("detailScroll").scrollTop(false);*/
         if(customerDetailService.getIsCustomerAdd()){
           customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
           $scope.$apply();

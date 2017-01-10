@@ -31,12 +31,18 @@
         </span>
       </ion-scroll>
     </div>
-
-    <div class="stage">
+    <div class="stage" on-drag="onDragContent($event)" ng-class="{true:'show-more'}[hideTitleFlag]">
+      <ion-scroll class="content-scroll" direction="y" scrollbar-y="true" has-bouncing="true" delegate-handle="detailScroll">
+        <div class="inner"
+             ng-include="contentInner">
+        </div>
+      </ion-scroll>
+    </div>
+<!--    <div class="stage">
       <ion-scroll class="content-scroll" direction="y" scrollbar-y="true" delegate-handle="detailScroll">
         <div class="inner" ng-include="contentInner"></div>
       </ion-scroll>
-    </div>
+    </div>-->
 
   </ion-content>
   <crm-loading ng-if="showCrmLoading"></crm-loading>
