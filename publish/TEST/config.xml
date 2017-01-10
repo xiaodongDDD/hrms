@@ -31,6 +31,12 @@
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
+  <feature name="Calendar">
+    <param name="ios-package" value="Calendar" />
+  </feature>
+  <feature name="Calendar">
+    <param name="android-package" value="nl.xservices.plugins.Calendar" />
+  </feature>
   <platform name="android">
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>

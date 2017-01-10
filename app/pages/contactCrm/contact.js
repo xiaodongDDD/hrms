@@ -27,6 +27,7 @@ angular.module('contactModule')
     'getInitStructureInfo',
     '$ionicPlatform',
     'contactService',
+    '$cordovaCalendar',
     function ($scope,
               $state,
               historyContact,
@@ -49,7 +50,8 @@ angular.module('contactModule')
               customerSearchService,
               getInitStructureInfo,
               $ionicPlatform,
-              contactService) {
+              contactService,
+              $cordovaCalendar) {
       $scope.showContactGuide1;
       $scope.showContactGuide2 = false;
       $scope.showContactGuide3 = false;
@@ -529,6 +531,7 @@ angular.module('contactModule')
       });
       $scope.showCustomer = 0;
       $scope.selectSubHeader = function ($index) {
+        $ionicScrollDelegate.scrollTop();
         console.log($index);
         $scope.showCustomer = $index;
         if ($scope.subHeadersSelect[$index])
@@ -1062,6 +1065,21 @@ angular.module('contactModule')
         {url: "build/img/1@3x.png"},
         {url: "build/img/1@3x.png"}
       ];
+      $scope.saveToCalendar=function(){
+        $cordovaCalendar.createEvent({
+          title: 'Space Race',
+          location: 'The Moon',
+          notes: 'Bring sandwiches',
+          startDate: new Date(),
+          endDate: new Date()
+        }).then(function (result) {
+          alert("成功")
+          // success
+        }, function (err) {
+          alert("失败");
+          // error
+        });
+      }
     }]);
 /*
  .service('getInitStructureInfo', ['hmsHttp', 'baseConfig', function (hmsHttp, baseConfig) {

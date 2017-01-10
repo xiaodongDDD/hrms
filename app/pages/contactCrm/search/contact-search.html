@@ -29,11 +29,14 @@
           </div>
         </div>
       </div>
-      <div class="row history">
+      <div class="row history-logo-wrap">
+        <span class="col-25 history-logo col-center"> {{'GLOBEL_SEARCH.HISTORY_RECORD'|T}}</span>
+      </div>
+     <!-- <div class="row history">
         <img ng-src="build/img/contact/history@3x.png"/>
         <span class="col-25 history-logo">历史记录</span>
-       <!-- <label class="col-80 history-line"></label>-->
-      </div>
+       &lt;!&ndash; <label class="col-80 history-line"></label>&ndash;&gt;
+      </div>-->
       <ion-list>
         <ion-item  style="background: #fff" class="employee-item" ng-repeat="values in historys track by $index"
                   ng-class="{'no-top-border-color':$index===0}"
