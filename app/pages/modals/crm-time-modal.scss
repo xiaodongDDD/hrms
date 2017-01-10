@@ -1,11 +1,48 @@
 .crm-time-modal {
   top: calc(100vh - 280px);
 
+
   .crm-time-button{
     padding-left: 10px;
     font-size: 16px;
     position: absolute;
     color:#666666;
+  }
+
+  .scroll-header{
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    div{
+      position: absolute;
+      top: 0;
+      height: 44px;
+      line-height: 44px;
+    }
+    h2{
+      display: block;
+      height: 44px;
+      line-height: 44px;
+      font-size: 1.4em;
+    }
+    .left{
+      color: #0467d8;
+      left: 5vw;
+      font-size: 1.1em;
+    }
+    .right{
+      color: #0467d8;
+      right: 5vw;
+      span{
+        font-size: 1.1em;
+        margin-left: 10px;
+        display: inline-block;
+        height: 44px;
+        line-height: 44px;
+      }
+    }
   }
 
   .scroll-container {
