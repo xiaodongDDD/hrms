@@ -864,7 +864,6 @@ angular.module('planModule')
 
       $scope.lastDeg = 0;
       $scope.onDragScroll = function ($event) {
-        // $scope.sourceDeg -= $event.gesture.deltaY / 15;
         $scope.lastDeg = $scope.sourceDeg - $event.gesture.deltaY / 2;
         $scope.stageRotate = {
           "transform": "rotateX(" + $scope.lastDeg + "deg)",
@@ -919,6 +918,27 @@ angular.module('planModule')
       }
 
       initWeeks($scope.today.getFullYear());
+
+      $scope.thisWeek = function(){
+        $scope.sourceDeg = 180 - 2 * $scope.baseDeg;
+        $scope.nowIndex = weekNum / 2;
+        $scope.stageRotate = {
+          "transform": "rotateX(" + $scope.sourceDeg + "deg)",
+          "-webkit-transform": "rotateX(" + $scope.sourceDeg + "deg)"
+        };
+        initWeeks($scope.today.getFullYear());
+        $scope.year = $scope.today.getFullYear();
+        getNowIndex($scope.sourceDeg);
+      };
+
+      $scope.lastWeek = function(){
+        $scope.sourceDeg = $scope.sourceDeg - $scope.baseDeg;
+        $scope.stageRotate = {
+          "transform": "rotateX(" + $scope.sourceDeg + "deg)",
+          "-webkit-transform": "rotateX(" + $scope.sourceDeg + "deg)"
+        };
+        getNowIndex($scope.sourceDeg);
+      };
 
       $scope.onReleaseYear = function ($event) {
         var slideLeft = $event.gesture.deltaX < 0;
