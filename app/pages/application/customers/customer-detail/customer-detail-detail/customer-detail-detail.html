@@ -1,7 +1,242 @@
 <div ng-controller="CustomerDetailDetailCtrl" class="crm improve-information">
   <crm-loading ng-if="showLoading"></crm-loading>
-  <!--<ion-scroll class="state-scroll" delegate-handle="stateScroll" direction="y" scrollbar-y="false" has-bouncing="true">-->
+  <ion-scroll class="state-scroll" delegate-handle="detailScroll" direction="y" scrollbar-y="false" has-bouncing="true">
   <div class="common-input-area-title" ng-click="show(0)">
+    <img  src="build/img/application/information/base.png">
+    {{ bilingual.basic_info}}<div class="title-but">{{showFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+  <div class="  " ng-if="!showFlag[0]">
+    <hms-input-item
+      label-name="bilingual.customer_code"
+      input-box="customer.customerCode"
+      last-line="false" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.full_name"
+      input-box="customer.fullName"
+      last-line="false" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.simple_name1"
+      input-box="customer.simpleName"
+      last-line="false" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.english_name"
+      input-box="customer.englishName"
+      last-line="false" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.simple_name"
+      input-box="customer.simpleCode"
+      last-line="false" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.register_id"
+      input-box="customer.registerId"
+      last-line="false" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.credit_code"
+      input-box="customer.creditCode"
+      last-line="false" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.duty_paragraph"
+      input-box="customer.dutyParagraph"
+      last-line="false" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.parent_customers"
+      input-box="customer.parentFullName"
+      last-line="false" is-change="true">
+    </hms-input-item>
+  </div>
+  <!--联系信息-->
+  <div class="common-input-area-title" ng-click="show(1)">
+    <img class="title-image" src="build/img/application/information/contact.png" >
+    {{ bilingual.contact_info}}<div class="title-but">{{showFlag[1] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+  <div class="  top-margin" ng-if="!showFlag[1]">
+    <hms-input-item
+      label-name="address.text"
+      input-box="location"
+      last-line="false"
+      placeholder=" "
+      is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.address_detail"
+      input-box="customer.addressDetails"
+      last-line="false"
+      placeholder=" "
+      is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.zip_code"
+      input-box="customer.addressZipCode"
+      last-line="false"
+      placeholder=" "
+     is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.phone"
+      input-box="customer.phone"
+      last-line="false"
+      placeholder=" "
+      is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.fax"
+      input-box="customer.fax"
+      last-line="false"
+      placeholder=" "
+    is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.website"
+      input-box="customer.fwebsiteax"
+      last-line="false"
+      placeholder=" "
+     is-change="true">
+    </hms-input-item>
+  </div>
+  <!--所属大区、团队、负责人、业务负责人 -->
+  <div class="common-input-area-title"  ng-click="show(2)">
+    <img class="title-image" src="build/img/application/information/team.png">
+    {{ bilingual.team }}<div class="title-but">{{showFlag[2] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+
+  <div class="  top-margin" ng-if="!showFlag[2]">
+    <hms-input-item
+      label-name="bilingual.belongs_to_the_region"
+      input-box="customer.saleArea"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.team"
+      input-box="customer.saleTeam"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.principal"
+      input-box="customer.principal"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.professional"
+      input-box="customer.normalEmployeeName"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+  </div>
+
+  <div class="common-input-area-title" ng-click="show(3)">
+    <img class="title-image" src="build/img/application/information/icon_company.png" >
+    {{  bilingual.business_detail }}<div class="title-but">{{showFlag[3] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+  <div class=" " ng-if="!showFlag[3]">
+    <hms-input-item
+      label-name="bilingual.enterprise_nature"
+      input-box="customer.enterpriseName"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.major_industry"
+      input-box="customer.majorIndustryName"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.sub_industry"
+      input-box="customer.subIndustryName"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.is_listed"
+      input-box="customer.listedName"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.worker_scale"
+      input-box="customer.workerScaleName"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.income_scale"
+      input-box="customer.incomeScaleName"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+    <hms-input-item
+      label-name="bilingual.other_description"
+      input-box="customer.otherDescription"
+      important="x.important"
+      last-line="false"
+      placeholder=" "
+      show-bottom-line ="x.showLine" is-change="true">
+    </hms-input-item>
+  </div>
+
+  <div class="common-input-area-title" ng-click="show(4)">
+    <img class="title-image" src="build/img/application/information/icon_system.png" >
+   信息化建设状况<div class="title-but">{{showFlag[4] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
+  </div>
+  <div ng-if="!showFlag[4]">
+    <div ng-repeat="application in informationStatus track by $index " >
+      <div class="row application-text ">
+        <div class="col col-87 left-margin1">
+          <div class="text">{{application.productTypeName}}&nbsp;|&nbsp;{{application.productName}}</div>
+        </div>
+
+      </div>
+      <div class="application-line"></div>
+      <div class="text-div left-padding" >
+        <div class="application-text-margin">
+          <span>实施公司:&nbsp;&nbsp;</span>
+          <span>{{application.implementationCompany}}</span>
+        </div>
+        <div class="application-text-margin2">
+          <span>其他说明:&nbsp;&nbsp;</span>
+          <span>{{application.description}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="common-item-input">
+      <div class="  padding3">其他信息化建设状况</div>
+      <input type="text"  ng-model="customer.itStatusDes" readonly />
+    </div>
+  </div>
+    </ion-scroll>
+  <!--<ion-scroll class="state-scroll" delegate-handle="stateScroll" direction="y" scrollbar-y="false" has-bouncing="true">-->
+ <!-- <div class="common-input-area-title" ng-click="show(0)">
     {{ bilingual.basic_info}}<div class="title-but">{{showFlag[0] ? ("SHOW" | T) : ("HIDE" | T) }}</div>
   </div>
     <div  ng-if="!showFlag[0]">
@@ -186,7 +421,7 @@
       <div class="  padding3">其他信息化建设状况</div>
       <input type="text"  ng-model="customer.itStatusDes" readonly />
     </div>
-  </div>
+  </div>-->
   <!--<div class="last-div"></div>-->
   <!--</ion-scroll>-->
 

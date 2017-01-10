@@ -109,12 +109,17 @@ HmsModule
       'type="text" placeholder="{{placeHolderValue}}" ng-model="inputBox" ng-blur="inputBlur()" ng-readonly="isChange"></div>' +
       '</div>',
       link: function (scope, element, attrs) {
-        if(!scope.placeHolder || scope.placeHolder == ''){
-          scope.placeHolderValue = '请输入';
+        if(scope.isChange==true){
+          scope.placeHolderValue = '';
+        }else{
+          if(!scope.placeHolder || scope.placeHolder == ''){
+            scope.placeHolderValue = '请输入';
+          }
+          else{
+            scope.placeHolderValue = scope.placeHolder;
+          }
         }
-        else{
-          scope.placeHolderValue = scope.placeHolder;
-        }
+
         scope.inputBlur = function () {
           console.log('blur...');
           if (scope.$hmsInput) {
