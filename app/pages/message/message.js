@@ -18,6 +18,7 @@ angular.module('messageModule')
     'checkVersionService',
     'baseConfig',
     'hmsHttp',
+    '$http',
     'hmsPopup',
     'messageService',
     function ($scope,
@@ -34,6 +35,7 @@ angular.module('messageModule')
               checkVersionService,
               baseConfig,
               hmsHttp,
+              $http,
               hmsPopup,
               messageService) {
 

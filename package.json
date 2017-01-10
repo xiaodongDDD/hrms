@@ -16,7 +16,9 @@
   "author": "Derek Chia",
   "license": "MIT",
   "contributors": [],
-  "dependencies": {},
+  "dependencies": {
+    "gulp-notify": "^2.2.0"
+  },
   "devDependencies": {
     "angular-translate": "^2.13.1",
     "bower": "^1.7.7",
@@ -63,7 +65,7 @@
     "cordova-plugin-file"
   ],
   "cordovaPlatforms": [
-    "android",
-    "ios"
+    "ios",
+    "android"
   ]
 }

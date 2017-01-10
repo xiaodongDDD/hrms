@@ -35,8 +35,8 @@
           <div class="desc-info">我的互粉</div>
         </div>
         <div class="ranking-info">
-          <div class="ranking-num" ng-if="!vm.isStart">_ _</div>
-          <div class="ranking-num" ng-if="vm.isStart">{{vm.topInfo.rank}}</div>
+          <div class="ranking-num" ng-if="!vm.isStart||vm.topInfo.rank==0">_ _</div>
+          <div class="ranking-num" ng-if="vm.isStart&&vm.topInfo.rank!=0">{{vm.topInfo.rank}}</div>
           <div class="ranking-desc">我的排名</div>
         </div>
       </div>

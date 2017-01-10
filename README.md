@@ -118,6 +118,7 @@ Android测试环境
   cordova plugin rm cordova-plugin-youtuishare
   cordova plugin add http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git
   
+  cordova plugin rm cordova-plugin-baidu-geolocation
   cordova plugin rm cordova-plugin-geolocation-baidu
   cordova plugin add https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu --variable BAIDUMAPKEY=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2
   
