@@ -657,6 +657,9 @@
       .rank-back-color2{
         background-color: #FFF;
       }
+      >div.activated{
+        background-color: #F6F7F7;
+      }
     }
   }
   .not-start-info{
@@ -688,7 +691,6 @@
     }
   }
   .fans-list {
-
     background-color: #FFF;
     position: relative;
     width: 100%;
@@ -704,13 +706,11 @@
         height: 100%;
         width: 100%;
         padding: 15px 4.5% 10px 0px;
-
         .avatar {
           float: left;
           display: inline-block;
           position: relative;
           border-radius: 50%;
-
           height: 40px;
           width: 40px;
           .avatar-img {
@@ -728,11 +728,10 @@
         }
         .info {
           position: relative;
-          float: left;
           margin-left: 3.2%;
           display: inline-block;
           height: 40px;
-          width: 150px;
+          width: auto;
           font-family: PingFangSC-Regular;
           font-size: 16px;
           color: #6D7A80;
@@ -766,6 +765,9 @@
         }
       }
     }
+  }
+  .fans-list.activated{
+    background-color: #F6F7F7;
   }
   .meetThousand-foot{
     position: absolute;

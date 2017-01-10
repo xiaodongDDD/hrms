@@ -144,12 +144,10 @@
       'build/img/myInfo/meetThousand/3@3x.png'
     ];
 
-    //
     var isHeaderBar = true;
 
     vm.titleClass = 'default-title';
     vm.addressClass = 'default-address';
-
 
     var intersectionArr = [];//互粉
     var followerArr = [];//粉我的
@@ -165,11 +163,6 @@
     vm.topInfo = null;
     vm.topOtherInfo = [];//非前三
     vm.noData = 'true';
-    /*  vm.fansInfo={
-     intersection:0,
-     follower:0,
-     following:0
-     };*/
 
     /*--请求初始参数信息--*/
     //follower我的粉丝    following我的关注    intersection我的互粉
@@ -200,105 +193,16 @@
     vm.addressTab = addressTab;
     vm.faceScanner = faceScanner;
     vm.openHelpURl = openHelpURl;
-    getSummaryInfo();//拉取概要信息
-    rankingMutualFans(0);//
-
-
-    /*$timeout(function () {
-     addressTab(0);
-
-     },1000);*/
-    //获取概要信息
-    function getSummaryInfo() {
-      var param = '';
-      var url = baseConfig.queryPath + '/annualMeeting/summary';
-      console.log(url);
-      hmsHttp.post(url, param).success(function (result) {
-        console.log(result);
-        vm.summaryInfo = result.rows[0];
-        console.log(vm.summaryInfo.empGender == 2)
-      }).error(function (err, status) {
-        console.log(err);
-        console.log(status)
-      })
-    }
-
-
-    vm.rankImg = [
-      'build/img/myInfo/meetThousand/1@3x.png',
-      'build/img/myInfo/meetThousand/2@3x.png',
-      'build/img/myInfo/meetThousand/3@3x.png'
-    ];
-
-    //
-    var isHeaderBar = true;
-
-    vm.titleClass = 'default-title';
-    vm.addressClass = 'default-address';
-
-
-    var intersectionArr = [];//互粉
-    var followerArr = [];//粉我的
-    var followingArr = [];//我的关注
-    var relationType = '';
-    /*---界面展示信息--*/
-
-    vm.summaryInfo = null;
-
-    vm.headPortrait = window.localStorage.myInfoImg;//头像
-
-    vm.fansList = [];
-    vm.topInfo = null;
-    vm.topOtherInfo = [];//非前三
-    vm.noData = 'true';
-    /*  vm.fansInfo={
-     intersection:0,
-     follower:0,
-     following:0
-     };*/
-
-    /*--请求初始参数信息--*/
-    //follower我的粉丝    following我的关注    intersection我的互粉
-    var queryRelationParams = {
-      page: 1,
-      pageSize: 10,
-      type: ''
-    };
-
-    var topInfoParams = {
-      pageSize: 20,
-      area: 'all'
-    };
-
-    /*--请求--*/
-    vm.getSummaryInfo = getSummaryInfo;//获取概要信息
-    vm.getTopInfo = getTopInfo;//获取总排行榜
-    vm.queryRelation = queryRelation;//根据关注关系获取信息
-    vm.doRefresh = doRefresh;
-    vm.loadMore = loadMore;
-    vm.createNewFocus = createNewFocus;
-
-    vm.goBack = goBack;
-    vm.rankUp = rankUp;
-    vm.rankDown = rankDown;
-    vm.rankingMutualFans = rankingMutualFans;
-    vm.fansTab = fansTab;
-    vm.addressTab = addressTab;
-    vm.faceScanner = faceScanner;
+    vm.goPersonInfo=goPersonInfo;
 
     getSummaryInfo();//拉取概要信息
     rankingMutualFans(0);//
-
 
     $scope.$on('$ionicView.enter', function (e) {
       getSummaryInfo();
       queryRelation(relationType)
     });
 
-    /*$timeout(function () {
-     addressTab(0);
-
-     },1000);*/
     //获取概要信息
     function getSummaryInfo() {
       var param = '';
@@ -550,7 +454,8 @@
     }
 
 
-    function faceScanner(value) {
+    function faceScanner(value,$event) {
+      $event.stopPropagation();
       if (value || relationType == 'follower') {
       } else {
         return
@@ -678,6 +583,9 @@
       cordova.InAppBrowser.open(url, '_system', 'location=no,toolbar=yes,enableViewportScale=yes,toolbarposition=top,closebuttoncaption=关闭');
     }
 
+    function goPersonInfo(num) {
+      $state.go('tab.employeeDetailCrm3',{'employeeNumber':num})
+    }
 
   }
 })();
