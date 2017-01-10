@@ -276,4 +276,28 @@ HmsModule
       }
     }
   };
-});
+})
+
+  .directive('onFinishRepeat', function ($timeout) {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attr) {
+        if (scope.$last === true) {
+          $timeout(function () {
+            scope.$emit('ngRepeatFinished');
+          });
+        }
+      }
+    }
+  })
+
+  .directive('ngLoad', function () {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+        element.bind('load', function () {
+          scope.$apply(attrs.ngLoad);
+        });
+      }
+    };
+  });
