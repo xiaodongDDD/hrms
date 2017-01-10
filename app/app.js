@@ -351,7 +351,7 @@ angular.module('myApp')
 
         $urlRouterProvider.otherwise('/guide');
         window.localStorage.appCacheVersion = baseConfig.version.currentVersion;
-        
+
       } else {
         if (window.localStorage.token && window.localStorage.token != "" && window.localStorage.isHrms2108) {
 

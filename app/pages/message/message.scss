@@ -232,7 +232,7 @@ $message-tab-item-small-size: 21px;
           line-height: 20px;
           font-size: 14px;
           color: white;
-          background: #EB5F02;
+          background: #F96F68;
           border-radius: 10px;
           box-shadow: 0px 0px 4px #DBDBDB;
           float: right;
@@ -245,7 +245,7 @@ $message-tab-item-small-size: 21px;
     left: 15px;
     right: 50px;
     position: absolute;
-    background: white;
+    background: #FAFAFA;
     height: 30px;
     color: gray;
     margin-top: 5px;
@@ -253,7 +253,7 @@ $message-tab-item-small-size: 21px;
     border-radius: 15px;
     border: 1px solid #e8e8e8;
     &.has-employee-list {
-      background: white;
+      background: #FAFAFA;
       position: absolute;
       .message-button {
         float: left;

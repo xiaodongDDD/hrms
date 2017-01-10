@@ -44,11 +44,9 @@ angular.module('applicationModule')
       $scope.showClearBranch = false; //默认隐藏搜索框的清除按钮
       $scope.showClearSubject = false; //默认隐藏搜索框的清除按钮
 
-
       //初始化搜索数据
       {
         var weekDaysList = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
-
 
         $scope.dateFrom = new Date();
         $scope.dateFrom.setDate(1);
@@ -171,10 +169,18 @@ angular.module('applicationModule')
           day = "0" + day;
         }
 
-        $scope.datetimeFrom.month = month;
-        $scope.datetimeFrom.day = '01';
+        if(month == '00'){
+          $scope.datetimeFrom.year = $scope.datetimeFrom.year - 1;
+          $scope.datetimeFrom.month = '12';
+          $scope.datetimeFrom.day = '01';
+        }
+        else{
+          $scope.datetimeFrom.month = month;
+          $scope.datetimeFrom.day = '01';
+        }
 
         var myDate = $scope.datetimeFrom;
+
         $scope.datetimeFrom.realDate = new Date(myDate.year, myDate.month - 2, myDate.day, '08', '30', '00');
 
         dateFrom = $scope.datetimeFrom.year + '-' + $scope.datetimeFrom.month + '-' + $scope.datetimeFrom.day;

@@ -77,6 +77,11 @@ angular.module('messageModule')
         scriptEle.async = true;
         scriptEle.src = "http://webapi.amap.com/maps?v=1.3&key=afa17826e025989b36d837f9f4b4ba1f";
 
+        var scriptEle2 = document.createElement("script");
+        //scriptEle.type = "text/javasctipt";
+        scriptEle2.async = true;
+        scriptEle2.src = "https://api.map.baidu.com/api?v=2.0&ak=5WXxKpATT2RsEaYyVs6jxVOAbP6047m2&s=1";
+
         var styleEle = document.createElement("link");
         styleEle.rel = "stylesheet";
         styleEle.async = true;
@@ -84,6 +89,7 @@ angular.module('messageModule')
         var x1 = document.getElementsByTagName("head")[0];
         x1.insertBefore(styleEle, x1.firstChild);
         x1.insertBefore(scriptEle, x1.firstChild);
+        x1.insertBefore(scriptEle2, x1.firstChild);
       }, 0);
 
       //分页
