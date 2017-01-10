@@ -30,6 +30,18 @@ angular.module('myApp')
         params: {
           'employeeNumber': ""
         }
+      })
+      .state('tab.employeeDetailCrm3', {
+        url: '/opportunity-detail/employeeDetailCrm',
+        views: {
+          'tab-myInfo': {
+            templateUrl: 'build/pages/contactCrm/detail/employee-detail.html',
+            controller: 'contactEmployeeCrmDetailCtl'
+          }
+        },
+        params: {
+          'employeeNumber': ""
+        }
       });
 		}
 	]);
