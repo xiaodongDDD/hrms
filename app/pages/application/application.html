@@ -19,7 +19,7 @@
     应用
   </div>
 
-  <img ng-src="{{titleBg}}" class="top-bg" ng-style="bgStyle"/>
+  <img ng-src="{{titleBg}}" class="top-bg" ng-style="bgStyle" ng-load="onLoadBg()"/>
   <div class="crm-search" ng-click="goSearch()" ng-if="hasCrm" ng-style="searchStyle"><img src="build/img/application/search@3x.png"/>搜索客户、商机、线索</div>
 
   <ion-content class="mainApplication" style="bottom:48px;" scrollbar-y="false" on-drag="onDragContent()" on-swipe="onSwipeContent()" on-release="onReleaseContent()">
@@ -69,13 +69,13 @@
       <div class="message-area-item" ng-if="hasCrm" ng-click="goPlan()" ng-class="{true:'plan-has-message'}[days[nowSelectedDate].planCount != 0]">销售计划： {{days[nowSelectedDate].planCount}}条 </div>
     </div>
 
-    <div class="application-outer">
+    <div class="application-outer" ng-show="showAppList">
       <div class="hms-animated application-left" ng-class="{true: 'start', false: ''}[animationsEnabled]">
         <div class="appRegion firstLine" ng-if="hasCrm">
           <div class="appAreaBorder">
             <div class="appTitle office"><img src="build/img/application/line@3x.png"/>CRM</div>
           </div>
-          <div class="appArea" ng-repeat="appList in crmApp">
+          <div class="appArea" ng-repeat="appList in crmApp" on-finish-repeat>
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1"
                  ng-click="goPage(appItem)">
               <div class="appItem">
@@ -95,7 +95,7 @@
         </div>
         <div class="appRegion">
           <div class="appTitle office"><img src="build/img/application/line@3x.png"/>个人办公</div>
-          <div class="appArea" ng-repeat="appList in officeApp">
+          <div class="appArea" ng-repeat="appList in officeApp" on-finish-repeat>
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
               <div class="appItem">
                 <div class="app-item-content">
@@ -115,7 +115,7 @@
 
         <div class="appRegion">
           <div class="appTitle project"><img src="build/img/application/line@3x.png"/>项目门户</div>
-          <div class="appArea" ng-repeat="appList in projectApp">
+          <div class="appArea" ng-repeat="appList in projectApp" on-finish-repeat>
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
               <div class="appItem">
                 <div class="app-item-content">
@@ -129,7 +129,7 @@
 
         <div class="appRegion">
           <div class="appTitle employee"><img src="build/img/application/line@3x.png"/>员工社区</div>
-          <div class="appArea" ng-repeat="appList in employeeApp">
+          <div class="appArea" ng-repeat="appList in employeeApp" on-finish-repeat>
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==0||$index==1" ng-click="goPage(appItem)">
               <div class="appItem">
                 <div class="app-item-content">
@@ -144,7 +144,7 @@
       <div class="hms-animated application-right" ng-class="{true: 'start', false: ''}[animationsEnabled]">
         <div class="appRegion firstLine" ng-if="hasCrm">
           <div class="appTitle"></div>
-          <div class="appArea" ng-repeat="appList in crmApp">
+          <div class="appArea" ng-repeat="appList in crmApp" on-finish-repeat>
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
               <div class="appItem" >
                 <div class="app-item-content">
@@ -157,7 +157,7 @@
         </div>
         <div class="appRegion">
           <div class="appTitle"></div>
-          <div class="appArea" ng-repeat="appList in officeApp">
+          <div class="appArea" ng-repeat="appList in officeApp" on-finish-repeat>
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
               <div class="appItem">
                 <div class="app-item-content">
@@ -177,7 +177,7 @@
 
         <div class="appRegion">
           <div class="appTitle"></div>
-          <div class="appArea" ng-repeat="appList in projectApp">
+          <div class="appArea" ng-repeat="appList in projectApp" on-finish-repeat>
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
               <div class="appItem" >
                 <div class="app-item-content">
@@ -191,7 +191,7 @@
 
         <div class="appRegion">
           <div class="appTitle"></div>
-          <div class="appArea" ng-repeat="appList in employeeApp">
+          <div class="appArea" ng-repeat="appList in employeeApp" on-finish-repeat>
             <div class="appList" ng-repeat="appItem in appList.list" ng-if="$index==2||$index==3" ng-click="goPage(appItem)">
               <div class="appItem">
                 <div class="app-item-content">
