@@ -138,6 +138,7 @@ angular.module('customerModule')
         if ($scope.subHeadersSelect[$index])
           return 0;
         else {
+          $scope.customers =[];
           $scope.showLoading = true;
           $scope.valueType[0].sortname = $scope.data.sortname;
           $scope.valueType[1].sortname = $scope.data.sortname;
