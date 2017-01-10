@@ -9,6 +9,7 @@
     <img src="build/img/contact/icon_code@3x.png" ng-click="scanBusinessCard()"/>
   </ion-header-bar>
   <ion-content  delegate-handle="slideimgs" style="background: #f5f5f5;bottom: 50px;" class="customerLinkman contact-content">
+
   <!--  <div ng-if="subHeadersSelect[0]" ng-include="'build/pages/contact/customerLinkman/customerLinkman.html'"></div>
     <div ng-if="subHeadersSelect[1]" ng-include="'build/pages/contact/colleague/colleagueLinkman.html'"></div>-->
     <div ng-if="showCustomer==0">
@@ -156,6 +157,7 @@
         <div class="tel-img" ng-click="telNumber($event,i.tel)"></div>
       </div>
     </div>
+    <button ng-click="saveToCalendar()">保存到日历</button>
   </ion-content>
 </ion-view>
 <div class="contact-guide1" ng-if="showContactGuide1">

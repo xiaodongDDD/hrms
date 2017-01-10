@@ -80,15 +80,10 @@ angular.module('contactModule')
       $scope.$on('$ionicView.afterEnter', function () { //初始化input框-自动聚焦
         if (ionic.Platform.isWebView()) {
           cordova.plugins.Keyboard.show();
-        }
-        if (ionic.Platform.isAndroid()) {
           $timeout(function () {
             item.focus();
             $scope.$apply();
-          }, 400);
-        } else {
-          item.focus();
-          $scope.$apply();
+          }, 0);
         }
       });
 

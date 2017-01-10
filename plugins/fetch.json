@@ -73,5 +73,13 @@
         "variables": {
             "RONG_KEY": "e5t4ouvptpsaa"
         }
+    },
+    "cordova-plugin-calendar": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-calendar"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
