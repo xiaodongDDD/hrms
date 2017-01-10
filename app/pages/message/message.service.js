@@ -88,7 +88,7 @@ angular.module('applicationModule')
           },
           "other": {
             "name": "日常提醒",
-            "imgUrl": "build/img/message/announcement@3x.png",
+            "imgUrl": "build/img/message/todo@3x.png",
           }
         };
 

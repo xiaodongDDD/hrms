@@ -25,6 +25,20 @@
     .module('myInfoModule')
     .controller('faceEcognitionMeetThousandCtrl', faceEcognitionMeetThousandCtrl);
 
+  faceEcognitionMeetThousandCtrl.$inject = [
+    '$scope',
+    '$state',
+    '$ionicHistory',
+    'baseConfig',
+    '$stateParams',
+    'hmsPopup',
+    'hmsReturnView',
+    'hmsHttp',
+    '$ionicScrollDelegate',
+    'faceEcognitionService',
+    '$timeout',
+    'meetThousandServe'];
+
   function faceEcognitionMeetThousandCtrl($scope,
                                           $state,
                                           $ionicHistory,

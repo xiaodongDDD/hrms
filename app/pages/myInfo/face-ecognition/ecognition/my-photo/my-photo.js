@@ -24,6 +24,22 @@
   angular
     .module('myInfoModule')
     .controller('myPhotoCtrl', myPhotoCtrl);
+
+
+  myPhotoCtrl.$inject = [
+    '$scope',
+    '$state',
+    '$ionicHistory',
+    'baseConfig',
+    '$stateParams',
+    'hmsPopup',
+    'hmsReturnView',
+    'hmsHttp',
+    '$ionicScrollDelegate',
+    '$ionicModal',
+    '$ionicSlideBoxDelegate',
+    '$ionicActionSheet'];
+
   function myPhotoCtrl($scope,
                        $state,
                        $ionicHistory,
@@ -41,7 +57,7 @@
     var vm = this;
     vm.photoList = [];
     vm.count = 0;
-    vm.totalNum=0;
+    vm.totalNum = 0;
 
     vm.loadingFlag = true;
 
@@ -65,7 +81,7 @@
       //hmsPopup.showLoading();
       vm.getPhotoList();
     });
-    $scope.showMenu=false;//显示自定义ActionSheet组件
+    $scope.showMenu = false;//显示自定义ActionSheet组件
     //路由
     function goBack() {
       $ionicHistory.goBack();
@@ -109,7 +125,7 @@
         vm.loadingFlag = false;
         console.log(result);
         vm.photoList = result.rows;
-        vm.totalNum=result.total
+        vm.totalNum = result.total
         //hmsPopup.hideLoading();
         console.log(vm.totalNum);
         $ionicScrollDelegate.resize();
@@ -126,7 +142,7 @@
       hmsHttp.post(url, {id: photo.id}).success(function (result) {
         console.log(result);
         closeModal();
-        $scope.showMenu=!$scope.showMenu;
+        $scope.showMenu = !$scope.showMenu;
         if (result.success) {
           getPhotoList();
         }
@@ -151,17 +167,17 @@
       }).then(function (modal) {
         $scope.modal = modal;
         $scope.modal.show();
-        $scope.showMenu=false;
+        $scope.showMenu = false;
       });
     };
     function closeModal() {
       getPhotoList();
-      $scope.showMenu=!$scope.showMenu;
+      $scope.showMenu = !$scope.showMenu;
       $scope.modal.hide();
       $scope.modal.remove()
     };
     function showActionSheet() {
-      $scope.showMenu=!$scope.showMenu;
+      $scope.showMenu = !$scope.showMenu;
       // var hideSheet = $ionicActionSheet.show({
       //   buttons: [
       //     {

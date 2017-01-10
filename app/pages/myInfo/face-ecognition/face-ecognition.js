@@ -27,7 +27,16 @@
     .module('myInfoModule')
     .controller('faceEcognitionCtrl', faceEcognitionCtrl);
 
-  //plansDetailCtrl.$inject = [];
+  faceEcognitionCtrl.$inject = [
+    '$scope',
+    '$stateParams',
+    'baseConfig',
+    'hmsPopup',
+    'faceEcognitionService',
+    '$state',
+    '$http',
+    '$ionicHistory',
+    '$timeout'];
 
   function faceEcognitionCtrl($scope,
                               $stateParams,
@@ -66,12 +75,12 @@
     vm.progress = {};
 
     /*var im = {
-      "face_id": "1848085924808818687",
-      "x": 90, "y": 267, "height": 176, "width": 176,
-      "pitch": 16, "roll": -4, "yaw": -5, "age": 23, "gender": 11,
-      "glass": false, "expression": 32, "beauty": 100
-    };
-    console.log('test im analysisFaceInfo ' + angular.toJson(faceEcognitionService.analysisFaceInfo(im)));*/
+     "face_id": "1848085924808818687",
+     "x": 90, "y": 267, "height": 176, "width": 176,
+     "pitch": 16, "roll": -4, "yaw": -5, "age": 23, "gender": 11,
+     "glass": false, "expression": 32, "beauty": 100
+     };
+     console.log('test im analysisFaceInfo ' + angular.toJson(faceEcognitionService.analysisFaceInfo(im)));*/
 
     var width = document.body.clientWidth;
 
@@ -130,7 +139,7 @@
           alert('complete.success ' + angular.toJson());
         }
         if (result.success == true) {
-        /*  alert('complete.success ' + angular.toJson(result));*/
+          /*  alert('complete.success ' + angular.toJson(result));*/
           hmsPopup.showPopup('采集成功');
 
           faceEcognitionService.setFaceEcognitionFlag(true);
@@ -230,39 +239,41 @@
 
 
       function onSuccess(fileEntry) {//3.有这个文件就跳过来进入这个文件目录了
-        fileEntry.file(function(file) {//这里file才变为对象，有name什么的属性了。
+        fileEntry.file(function (file) {//这里file才变为对象，有name什么的属性了。
 
           alert("fs.root.getFile file.name " + file.name);
           alert("fs.root.getFile fileEntry.fullPath " + fileEntry.fullPath);
 
-          dispay("DateCreated:"+file.dateCreated);
-          dispay("DateLastAccessed:"+file.dateLastAccessed);
-          dispay("DateLastModified:"+file.dateLastModified);
-          dispay("Drive:"+file.drive);
-          dispay("Name:"+file.name);
-          dispay("ParentFolder:"+file.parentFolder);
-          dispay("Path:"+file.path);
-          dispay("ShortName:"+file.shortName);
-          dispay("ShortPath:"+file.shortPath);
-          dispay("Size:"+file.size);
-          dispay("Type:"+file.type);
-          dispay("file:"+angular.toJson(file));
+          dispay("DateCreated:" + file.dateCreated);
+          dispay("DateLastAccessed:" + file.dateLastAccessed);
+          dispay("DateLastModified:" + file.dateLastModified);
+          dispay("Drive:" + file.drive);
+          dispay("Name:" + file.name);
+          dispay("ParentFolder:" + file.parentFolder);
+          dispay("Path:" + file.path);
+          dispay("ShortName:" + file.shortName);
+          dispay("ShortPath:" + file.shortPath);
+          dispay("Size:" + file.size);
+          dispay("Type:" + file.type);
+          dispay("file:" + angular.toJson(file));
 
-          function dispay(value){
+          function dispay(value) {
             alert(value);
           }
 
           var reader = new FileReader();
           reader.readAsText(file);
-          reader.onloadend = function() { //<span style="font-family: Arial, Helvetica, sans-serif;">这里才开始读哦～</span>
+          reader.onloadend = function () { //<span style="font-family: Arial, Helvetica, sans-serif;">这里才开始读哦～</span>
             var read_result = this.result; //存结果
             alert("fs.root.getFile read_result " + read_result);
           }
         });
       }
+
       function onError(evt) {//4.如果错误就跳过来，比如没有此文件……
-        alert('error'+evt.target.error.code);
+        alert('error' + evt.target.error.code);
       }
+
       //var path = result.imgPath; //1.定义文件位置
       //window.resolveLocalFileSystemURL(path, onSuccess,onError); //2.进入这个位置
 
@@ -282,10 +293,10 @@
         pluginface.faceDetect({"direction": "front"}, faceEcognitionSuccess, faceEcognitionError);
       }
 
-      $timeout(function(){
+      $timeout(function () {
         vm.faceEcognitionResult = true;
         $scope.$apply();
-      },300);
+      }, 300);
     }
 
     //上传图片到阿里云
