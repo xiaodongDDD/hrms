@@ -60,26 +60,5 @@
         },
         "is_top_level": true,
         "variables": {}
-    },
-    "cn.jpush.phonegap.JPushPlugin": {
-        "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin@2.2.0"
-        },
-        "is_top_level": true,
-        "variables": {
-            "API_KEY": "22b25063349b6beef7bde524"
-        }
-    },
-    "hand-im-plugin-device": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/HANDIM/hand-im-plugin-device.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {
-            "RONG_KEY": "e5t4ouvptpsaa"
-        }
     }
 }
