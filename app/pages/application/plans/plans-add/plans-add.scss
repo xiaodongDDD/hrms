@@ -1,4 +1,24 @@
 .plans-add{
+
+  .back-drop{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    z-index: 10;
+    display: none;
+  }
+
+  .back-drop.show-drop{
+    display: inherit;
+  }
+
+  .back-drop.hide-drop{
+    display: none;
+  }
+
   .required:after{
     content: '  *';
     color: #fe9073;
