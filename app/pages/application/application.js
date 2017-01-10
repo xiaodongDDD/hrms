@@ -266,6 +266,24 @@ angular.module('applicationModule')
         $state.go('tab.globelSearch');
       };
 
+      $scope.bgLoaded = false;
+
+      $scope.onLoadBg = function(){
+        console.log("finish ....");
+        $scope.bgLoaded = true;
+      };
+
+      $scope.showAppList = false;
+
+      $scope.appNumber = 0;
+      $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+        $scope.appNumber++;
+        console.log('Bg loaded : ' + $scope.bgLoaded + ", now Number : " + $scope.appNumber);
+        if($scope.appNumber == 14 && $scope.bgLoaded){
+          $scope.showAppList = true;
+        }
+      });
+
       $scope.imgHeight = 0;
 
       $timeout(function(){
