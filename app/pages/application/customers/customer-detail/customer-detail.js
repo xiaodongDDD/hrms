@@ -59,6 +59,8 @@ angular.module('customerModule')
     '$filter',
     '$cordovaGeolocation',
     '$http',
+    '$cordovaCamera',
+    '$ionicPopover',
     function ($scope,
               $ionicHistory,
               $state,
@@ -79,7 +81,9 @@ angular.module('customerModule')
               customerAddService,
               $filter,
               $cordovaGeolocation,
-              $http) {
+              $http,
+              $cordovaCamera,
+              $ionicPopover) {
         console.log( $stateParams.customerDetail);
         $rootScope.$broadcast("REFRESH_CUSTOMER_HISTORY");
         $rootScope.img = "build/img/tabs/edit_add@3x_5.png";
@@ -125,6 +129,17 @@ angular.module('customerModule')
         if (response.returnCode == "S") {
           $scope.customer = response.customer_detail;
           $scope.customer.approveShow = $scope.customer.approveTypeName=='已审核'||$scope.customer.approveTypeName==''?'':'('+$scope.customer.approveTypeName+')';
+          $scope.operating = [{
+            text:'共享'
+          },{
+            text:'转移'
+          },{
+            text:'修改'
+          },{
+            text:$scope.customer.dataStatusName=='启用'?'禁用客户':'启用客户'
+          },{
+            text:'提交审批'
+          }];
           if(response.situtions){
             $scope.application = response.situtions;
           }else{
@@ -145,9 +160,124 @@ angular.module('customerModule')
             });
         };
 
-
         console.log($scope.customerId);
         //customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+
+
+      $scope.popover = $ionicPopover.fromTemplateUrl('build/pages/modals/popover.html', {
+        scope: $scope
+      });
+
+      // .fromTemplateUrl() 方法
+      $ionicPopover.fromTemplateUrl('build/pages/modals/popover.html', {
+        scope: $scope
+      }).then(function(popover) {
+        $scope.popover = popover;
+      });
+
+
+      $scope.openPopover = function($event) {
+        $scope.popover.show($event);
+      };
+      $scope.closePopover = function(index) {
+        console.log(index);
+        $scope.popover.hide();
+        if (index == 0) {//共享
+          for(var i=0;i<$scope.permission.length;i++){
+            if($scope.permission[i]=='HCRM_OPERATION_SHARE'){
+              $scope.showShareSelect();
+              $scope.permissionFlag =true;
+            }
+          }
+          if(!$scope.permissionFlag){
+            hmsPopup.showPopup('权限不足！');
+          }else{
+            $scope.permissionFlag =  false;
+          }
+
+        } else if (index == 1) {//客户转移
+          for(var i=0;i<$scope.permission.length;i++){
+            if($scope.permission[i]=='HCRM_OPERATION_TRANSFER'){
+              $scope.showSelectDiv('transfer');
+
+              $scope.selectItem = function ($index) {
+                $scope.showSelectDiv();
+                var date = $filter('date')(new Date(), 'yyyy-MM-dd');
+                var transferParam = {
+                  "customerId": $scope.customer.customerId,
+                  "transferBeforEmp": window.localStorage.empno,
+                  "transferAfterEmp": $scope.items[$index].userId,
+                  "effectiveDate": "",
+                  "description": "转移原因"
+                };
+                customerDetailService.customerTransfer(transferCustomerSuccess, transferParam);
+              };
+              $scope.permissionFlag =true;
+            }
+          }
+          if(!$scope.permissionFlag){
+            hmsPopup.showPopup('权限不足！');
+          }else{
+            $scope.permissionFlag =  false;
+          }
+
+        } else if (index == 2) {//修改
+          for(var i=0;i<$scope.permission.length;i++){
+            if($scope.permission[i]=='HCRM_OPERATION_EDIT'){
+              customerDetailService.setIsEdit(true);
+              customerAddService.setIsAdd(true);
+              customerDetailService.setEditCustomer($scope.customer);
+              customerDetailService.setApplication($scope.application);
+              $scope.permissionFlag =true;
+              if($scope.customer.approveTypeName=='未提交'||$scope.customer.approveTypeName=='已拒绝'){
+                $state.go('tab.customerAdd');
+              }else {
+                $state.go('tab.improveInformation');
+              }
+            }
+          }
+          if(!$scope.permissionFlag){
+            hmsPopup.showPopup('权限不足！');
+          }else{
+            $scope.permissionFlag =  false;
+          }
+
+        } else if (index == 3) {//客户禁用启用
+          for(var i=0;i<$scope.permission.length;i++){
+            if($scope.permission[i]=='HCRM_OPERATION_ENABLE'||$scope.permission[i]=='HCRM_OPERATION_DISABLE'){
+              customerDetailService.disableCustomer(disableCustomerSuccess,$scope.customer.customerId,$scope.customer.dataStatus);
+              $scope.permissionFlag =true;
+            }
+          }
+          if(!$scope.permissionFlag){
+            hmsPopup.showPopup('权限不足！');
+          }else{
+            $scope.permissionFlag =  false;
+          }
+
+
+        }else if (index == 4) {//客户审批
+          if($scope.customer.approveType=='HCRM_SUBMITTED'||$scope.customer.approveType=='HCRM_APPROVED'){
+            hmsPopup.showPopup('该客户已提交审批！');
+          }else {
+            for(var i=0;i<$scope.permission.length;i++){
+              if($scope.permission[i]=='HCRM_OPERATION_APPROVAL_COMMIT'){
+                customerService.submitReview(customerCheckSuccess,$scope.customer.customerId);
+                $scope.permissionFlag =true;
+                customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+              }
+            }
+            if(!$scope.permissionFlag){
+              hmsPopup.showPopup('权限不足！');
+            }else{
+              $scope.permissionFlag =  false;
+            }
+
+          }
+
+
+        }
+      };
 
         $scope.showMenu = function () {
           var hideSheet = $ionicActionSheet.show({
@@ -163,101 +293,7 @@ angular.module('customerModule')
               // add cancel code..
             },
             buttonClicked: function (index) {
-              if (index == 0) {//共享
-                for(var i=0;i<$scope.permission.length;i++){
-                  if($scope.permission[i]=='HCRM_OPERATION_SHARE'){
-                    $scope.showShareSelect();
-                    $scope.permissionFlag =true;
-                  }
-                }
-                if(!$scope.permissionFlag){
-                  hmsPopup.showPopup('权限不足！');
-                }else{
-                  $scope.permissionFlag =  false;
-                }
 
-              } else if (index == 1) {//客户转移
-                for(var i=0;i<$scope.permission.length;i++){
-                  if($scope.permission[i]=='HCRM_OPERATION_TRANSFER'){
-                    $scope.showSelectDiv('transfer');
-
-                    $scope.selectItem = function ($index) {
-                      $scope.showSelectDiv();
-                      var date = $filter('date')(new Date(), 'yyyy-MM-dd');
-                      var transferParam = {
-                        "customerId": $scope.customer.customerId,
-                        "transferBeforEmp": window.localStorage.empno,
-                        "transferAfterEmp": $scope.items[$index].userId,
-                        "effectiveDate": "",
-                        "description": "转移原因"
-                      };
-                      customerDetailService.customerTransfer(transferCustomerSuccess, transferParam);
-                    };
-                    $scope.permissionFlag =true;
-                  }
-                }
-                if(!$scope.permissionFlag){
-                  hmsPopup.showPopup('权限不足！');
-                }else{
-                  $scope.permissionFlag =  false;
-                }
-
-              } else if (index == 2) {//修改
-                for(var i=0;i<$scope.permission.length;i++){
-                  if($scope.permission[i]=='HCRM_OPERATION_EDIT'){
-                    customerDetailService.setIsEdit(true);
-                    customerAddService.setIsAdd(true);
-                    customerDetailService.setEditCustomer($scope.customer);
-                    customerDetailService.setApplication($scope.application);
-                    $scope.permissionFlag =true;
-                    if($scope.customer.approveTypeName=='未提交'||$scope.customer.approveTypeName=='已拒绝'){
-                      $state.go('tab.customerAdd');
-                    }else {
-                      $state.go('tab.improveInformation');
-                    }
-                  }
-                }
-                if(!$scope.permissionFlag){
-                  hmsPopup.showPopup('权限不足！');
-                }else{
-                  $scope.permissionFlag =  false;
-                }
-
-              } else if (index == 3) {//客户禁用启用
-                for(var i=0;i<$scope.permission.length;i++){
-                  if($scope.permission[i]=='HCRM_OPERATION_ENABLE'||$scope.permission[i]=='HCRM_OPERATION_DISABLE'){
-                    customerDetailService.disableCustomer(disableCustomerSuccess,$scope.customer.customerId,$scope.customer.dataStatus);
-                    $scope.permissionFlag =true;
-                  }
-                }
-                if(!$scope.permissionFlag){
-                  hmsPopup.showPopup('权限不足！');
-                }else{
-                  $scope.permissionFlag =  false;
-                }
-
-
-              }else if (index == 4) {//客户审批
-                if($scope.customer.approveType=='HCRM_SUBMITTED'||$scope.customer.approveType=='HCRM_APPROVED'){
-                  hmsPopup.showPopup('该客户已提交审批！');
-                }else {
-                  for(var i=0;i<$scope.permission.length;i++){
-                    if($scope.permission[i]=='HCRM_OPERATION_APPROVAL_COMMIT'){
-                      customerService.submitReview(customerCheckSuccess,$scope.customer.customerId);
-                      $scope.permissionFlag =true;
-                      customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
-                    }
-                  }
-                  if(!$scope.permissionFlag){
-                    hmsPopup.showPopup('权限不足！');
-                  }else{
-                    $scope.permissionFlag =  false;
-                  }
-
-                }
-
-
-              }
               return true;
             }
           });
@@ -1190,6 +1226,167 @@ angular.module('customerModule')
         $scope.showBig = true;
       }
 
+      //图片修改
+      var updateSuccess = function (data) {
+        if(data.returnCode=='S'){
+          hmsPopup.showShortCenterToast(data.returnMsg)
+          customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
+        }else{
+          if(data.returnMsg){
+            hmsPopup.showShortCenterToast(data.returnMsg)
+          }else{
+            hmsPopup.showShortCenterToast('服务器系统出现异常，请联系管理员！')
+          }
+        }
+      }
+    //图片上传
+      var upLoadSuccess = function (res) {
+        hmsPopup.hideLoading();
+        var result = JSON.parse(res.response);
+        if (baseConfig.debug) {
+          alert('complete.success ' + angular.toJson());
+        }
+        if(result.success == true){
+          //hmsPopup.showPopup('上传成功');
+          console.log('上传成功。。。'+angular.toJson(result))
+          $scope.customer.logoUrl = result.rows[0].objectUrl;
+          customerDetailService.updateImage(updateSuccess,$scope.customerId,$scope.customer.logoUrl);
+
+        }else{
+          console.log('上传失败了。。。'+angular.toJson(result))
+          hmsPopup.showShortCenterToast('上传失败');
+          //hmsPopup.showPopup('上传失败！');
+        }
+        $scope.save();
+      };
+
+      var upLoadError = function (response) {
+        hmsPopup.hideLoading();
+        if (baseConfig.debug) {
+          alert('complete.error ' + angular.toJson(response));
+        }
+        console.log('上传错误了。。。'+angular.toJson(response))
+        //hmsPopup.showPopup('上传失败！');
+        hmsPopup.showShortCenterToast('上传错误')
+        $scope.save();
+      };
+      $scope.imagevalue = '';
+      $scope.isShow_image = false;
+      $scope.va_phote_succflag = false;
+
+      $scope.ImageUpload = function () {
+        var hideSheet = $ionicActionSheet.show({
+          buttons: [
+            {text: '拍照上传'},
+            {text: '从相册中选择'},
+            {text: '查看大图'}
+          ],
+          cancelText: '取消',
+          cancel: function () {
+            // add cancel code..
+          },
+          buttonClicked: function (index) {
+            if (index == 0) {
+              //拍照
+              $scope.taskPicture();
+            } else if (index == 1) {
+              // 相册文件选择上传
+              $scope.readalbum();
+            } else if (index == 2) {
+              $scope.showBigPic();
+            }
+            return true;
+          }
+        });
+      }
+
+      //相册功能
+      $scope.readalbum  = function() {
+        var sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+        var options = {
+          quality: 20,
+          sourceType: sourceType,
+          destinationType: Camera.DestinationType.FILE_URI, //1, //'FILE_URL',
+          encodingType: Camera.EncodingType.JPEG, //0, //'JPEG',
+          mediaType: Camera.MediaType.PICTURE, //0, //'PICTURE',
+          saveToPhotoAlbum: false,
+          cameraDirection: Camera.Direction.BACK, // 0, //'BACK'
+          //targetWidth: 1366, targetHeight: 768,
+          correctOrientation: true
+        };
+        if (navigator.camera) {
+          navigator.camera.getPicture(onSuccess, onFail, options);
+        } else {
+          alert("Camera 插件未安装!");
+        }
+        function onSuccess(imageUrl) {
+          $scope.imagevalue = imageUrl;
+          $scope.va_phote_succflag = true;
+
+          try {
+            if ($scope.va_phote_succflag == true) {
+
+              var imageParam = {
+                imagePath: $scope.imagevalue
+              };
+
+              cordova.plugins.ImageExt.cropimage(
+                function success(newPath) {
+                  $scope.$apply(function () {
+                    $scope.imagevalue = newPath;
+                    customerService.uploadImage($scope.imagevalue, upLoadSuccess, upLoadError);
+                  });
+                },
+                function fail(err) {
+                  $scope.va_phote_succflag = false;
+                }, imageParam.imagePath);
+
+            }
+            ;
+          } catch (e) {
+            alert(e.message)
+          }
+        }
+        function onFail(message) {
+          $scope.va_phote_succflag = false;
+          alert('Failed because: ' + message);
+        }
+
+      };
+      //相机功能
+      $scope.taskPicture  = function(type) {
+        var options = {
+          destinationType: Camera.DestinationType.FILE_URI,
+          sourceType: Camera.PictureSourceType.CAMERA,
+          quality: 20,
+          correctOrientation: true
+        };
+        $cordovaCamera.getPicture(options).then(function(imageURI) {
+
+          $scope.imagevalue = imageURI;
+          $scope.isShow_image = true;
+
+          var imageParam = {
+            imagePath: $scope.imagevalue
+          };
+
+          cordova.plugins.ImageExt.cropimage(
+            function success(newPath) {
+              $scope.$apply(function () {
+                $scope.imagevalue = newPath;
+                customerService.uploadImage($scope.imagevalue, upLoadSuccess, upLoadError);
+              });
+            },
+            function fail(err) {
+              $scope.va_phote_succflag = false;
+            }, imageParam.imagePath);
+
+        }, function(err) {
+          //$scope.person_imgsrcvalue = '';
+          //$scope.Toast.show('取消使用相机功能');
+        });
+      };
+
     }]);
 
 angular.module('customerModule')
@@ -1286,6 +1483,19 @@ angular.module('customerModule')
       };
       this.getPermissions = function (success, key) { //权限获取
         hmsHttp.post(baseUrl + 'all_permissions', key).success(function (result) {
+          success(result);
+          hmsPopup.hideLoading();
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          // hmsPopup.showPopup(response);
+        });
+      };
+      this.updateImage = function (success, customerId,url) { //权限获取
+        var params =  {
+          "customerId":customerId,
+          "logoUrl":url
+        };
+        hmsHttp.post(baseUrl + 'update_logo', params).success(function (result) {
           success(result);
           hmsPopup.hideLoading();
         }).error(function (response, status) {

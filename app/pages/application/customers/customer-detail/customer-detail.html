@@ -2,7 +2,8 @@
   <ion-header-bar align-title="center" class="bar-stable">
     <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goBack(customer)"/>
     <h1 class="title">{{ 'CUSTOMER_DETAIL.CUSTOMER_DETAIL' | T }}{{customer.dataStatusName=='禁用'?'--'+customer.dataStatusName : ''}}</h1>
-    <img src="build/img/application/customer/detail/icon_dot@3x.png" ng-click="showMenu()"/>
+    <img src="build/img/application/customer/detail/icon_dot@3x.png" ng-click="openPopover($event)"/>
+    <!--<img src="build/img/application/customer/detail/icon_dot@3x.png" ng-click="showMenu()"/>-->
   </ion-header-bar>
 
   <div class="header-menu" ng-show="showMenuFlag" ng-class="{0:'hideUp',1:'showDown'}[showMenuFlag]">
@@ -12,7 +13,7 @@
   <ion-content overflow-scroll="true" class="employee-search-content"  delegate-handle="slideimgs">
 
     <div class="customer-info">
-      <img ng-click="showBigPic()" ng-src="{{customer.logoUrl=='' ?  'build/img/application/information/icon_partner@3x.png' : customer.logoUrl}}"/>
+      <img ng-click="ImageUpload()" ng-src="{{customer.logoUrl=='' ?  'build/img/application/information/icon_partner@3x.png' : customer.logoUrl}}"/>
       <div class="info-area">
         <span>{{customer.approveShow}}{{customer.fullName}}</span>
         <span>{{customer.saleArea}}  {{customer.saleTeam}}  {{customer.saleEmployee}}</span>
