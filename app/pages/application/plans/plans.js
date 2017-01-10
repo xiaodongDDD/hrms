@@ -376,7 +376,7 @@
           initSelect();
           getPlanByLastSelectDay();
         } else {
-          hmsPopup.showPopup = result.returnMsg;
+          hmsPopup.showPopup(result.returnMsg);
           console.log(result);
         }
       };
@@ -389,36 +389,6 @@
     /*    $watch ('planDetail.annotate',function(){
 
      });*/
-    window.document.onkeydown = disableRefresh;
-    function disableRefresh(evt) {
-      evt = (evt) ? evt : window.event;
-      if (evt.keyCode) {
-        if (evt.keyCode == 13) {
-          //do something
-          console.log("planDetail");
-          console.log(vm.planDetail);
-          var params = {
-            planId: vm.planDetail.planId,
-            annotate: vm.planDetail.annotate
-          };
-          var annotateSuccess = function (result) {
-            vm.showCommentFlag = false;
-            if (result.returnCode == "S") {
-
-            } else {
-              hmsPopup.showPopup = result.returnMsg;
-              console.log(result);
-            }
-          };
-          var annotatError = function (result) {
-            vm.showCommentFlag = false;
-            console.log(result);
-          };
-          plansService.saleAnnotate(annotateSuccess, annotatError, params);
-        }
-      }
-    }
-
     //进入计划明细界面
     function goDetail(detail) {
       console.log(detail);

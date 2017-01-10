@@ -35,11 +35,11 @@
             //把图片写入临时文件中存储
             NSURL *tempPathUrl = [NSURL fileURLWithPath:NSTemporaryDirectory()];
             
-            NSString *dateStr = [NSString stringWithFormat:@"%lf.png",[[NSDate date] timeIntervalSince1970]];
+            NSString *dateStr = [NSString stringWithFormat:@"%lf.jpg",[[NSDate date] timeIntervalSince1970]];
             
             tempPathUrl = [tempPathUrl URLByAppendingPathComponent:dateStr];
             
-            NSData *imageData = UIImagePNGRepresentation([image fixOrientation]);
+            NSData *imageData = UIImageJPEGRepresentation([image fixOrientation],0.92f);
             
             //NSString *imageBase64Str = [imageData base64EncodedStringWithOptions:0];
             
@@ -58,7 +58,7 @@
         }
     };
     
-    [self.viewController presentViewController:faceVideoDectorVC animated:YES completion:nil];
+    [self.viewController presentViewController:faceVideoDectorVC animated:NO completion:nil];
     
 }
 

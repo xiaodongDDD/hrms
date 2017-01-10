@@ -385,7 +385,8 @@
       console.log('下拉刷新');
       vm.isSpinner = false;
       if (vm.isRank) {
-        getTopInfo(topInfoParams.area)
+        getTopInfo(topInfoParams.area);
+        getSummaryInfo();
       } else {
         getSummaryInfo();
         queryRelationParams.page = 1;
@@ -447,6 +448,7 @@
           vm.topOtherInfo = [];
           vm.isTopScorll = false;
           getTopInfo(topInfoParams.area);
+          getSummaryInfo();
           $ionicScrollDelegate.resize();
         }, 100);
       } else {
@@ -454,6 +456,7 @@
         vm.isRank = false;
         $timeout(function () {
           fansTab(0);//默认互粉
+          getSummaryInfo();
           vm.titleTop = vm.cssTop.title;
           vm.headHeight = 'fans-height';
           vm.titleClass = 'default-title';
@@ -517,6 +520,7 @@
           vm.top = {
             'top': '0px'
           };
+          vm.titleTop = vm.cssTop.rankUpTitle;
           vm.titleClass = 'active-title';
           vm.addressClass = 'active-address';
         }
@@ -531,6 +535,7 @@
         isHeaderBar = false;
         if (vm.isRank) {
           console.log('rankDown...');
+          vm.titleTop = vm.cssTop.title;
           vm.isTopScorll = false;
           vm.top = 'default-top';
           vm.styleHeight = vm.cssTop.defaultHeight;

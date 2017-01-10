@@ -43,7 +43,9 @@
     vm.count = 0;
     vm.totalNum=0;
 
-    var width = document.body.clientWidth/3;
+    vm.loadingFlag = true;
+
+    var width = document.body.clientWidth / 3.125;
 
     vm.imgHeight = {
       "height": width + 'px'
@@ -56,13 +58,14 @@
     vm.closeModal = closeModal;
     vm.showPhotoList = showPhotoList;
     vm.deletePhoto = deletePhoto;
-    vm.deletePhoto = deletePhoto;
     vm.showActionSheet = showActionSheet;
 
     $scope.$on('$ionicView.enter', function (e) {
-      hmsPopup.showLoading();
+      vm.loadingFlag = true;
+      //hmsPopup.showLoading();
       vm.getPhotoList();
     });
+    $scope.showMenu=false;//显示自定义ActionSheet组件
     //路由
     function goBack() {
       $ionicHistory.goBack();
@@ -94,27 +97,24 @@
               console.log(err);
               console.log(status)
             })
-
           }
-
-
         })
 
       }
-
     }
 
     function getPhotoList() {
       var url = baseConfig.queryPath + '/photo/getMyPhotos';
       hmsHttp.post(url, {}).success(function (result) {
+        vm.loadingFlag = false;
         console.log(result);
-
         vm.photoList = result.rows;
         vm.totalNum=result.total
-        hmsPopup.hideLoading();
+        //hmsPopup.hideLoading();
         console.log(vm.totalNum);
         $ionicScrollDelegate.resize();
       }).error(function (err, status) {
+        vm.loadingFlag = false;
         console.log(err);
         console.log(status)
       })
@@ -125,6 +125,8 @@
       var photo = vm.photoList[vm.count];
       hmsHttp.post(url, {id: photo.id}).success(function (result) {
         console.log(result);
+        closeModal();
+        $scope.showMenu=!$scope.showMenu;
         if (result.success) {
           getPhotoList();
         }
@@ -149,37 +151,39 @@
       }).then(function (modal) {
         $scope.modal = modal;
         $scope.modal.show();
+        $scope.showMenu=false;
       });
     };
     function closeModal() {
       getPhotoList();
+      $scope.showMenu=!$scope.showMenu;
       $scope.modal.hide();
       $scope.modal.remove()
     };
     function showActionSheet() {
-
-      var hideSheet = $ionicActionSheet.show({
-        buttons: [
-          {
-            text: "<span >删除</span>",
-          }
-
-        ],
-        // destructiveText: 'Delete',
-        titleText: '要删除这张照片么',
-        cancelText: '取消',
-        cancel: function () {
-          // add cancel code..
-        },
-        buttonClicked: function (index) {
-          if (index == 0) {
-            deletePhoto();
-            closeModal();
-            hideSheet();
-          }
-
-        }
-      });
+      $scope.showMenu=!$scope.showMenu;
+      // var hideSheet = $ionicActionSheet.show({
+      //   buttons: [
+      //     {
+      //       text: "<span>删除</span>",
+      //     }
+      //
+      //   ],
+      //   // destructiveText: 'Delete',
+      //   titleText: '要删除这张照片么?',
+      //   cancelText: '取消',
+      //   cancel: function () {
+      //     // add cancel code..
+      //   },
+      //   buttonClicked: function (index) {
+      //     if (index == 0) {
+      //       deletePhoto();
+      //       closeModal();
+      //       hideSheet();
+      //     }
+      //
+      //   }
+      // });
     }
 
   }
