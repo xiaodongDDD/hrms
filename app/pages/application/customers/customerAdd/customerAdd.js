@@ -12,6 +12,16 @@ angular.module('customerModule')
             }
           }
         })
+        .state('tab.customerAdd2', {
+          url: '/customers/customerAdd',
+          views: {
+            'tab-contactCrm': {
+              //prefetchTemplate: false,
+              templateUrl: 'build/pages/application/customers/customerAdd/customerAdd.html',
+              controller: 'customerAddCtrl'
+            }
+          }
+        })
     }]);
 
 angular.module('customerModule')
