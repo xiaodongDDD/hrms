@@ -15,15 +15,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "com.hand.scancard": {
-        "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "jpush-phonegap-plugin": {
         "source": {
             "type": "registry",
@@ -33,6 +24,23 @@
         "variables": {
             "API_KEY": "22b25063349b6beef7bde524"
         }
+    },
+    "cordova-plugin-calendar": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-calendar"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.hand.scancard": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     },
     "cordova-plugin-hrms-faceidentify": {
         "source": {
@@ -46,7 +54,7 @@
     "com.handmobile.cordovaplugin.hotpatch": {
         "source": {
             "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH/",
+            "url": "http://hpm.hand-china.com/diffusion/CORDOVAPLUGINHOTPATCH",
             "subdir": "."
         },
         "is_top_level": true,
@@ -60,26 +68,26 @@
         },
         "is_top_level": true,
         "variables": {
-            "RONG_KEY": "e5t4ouvptpsaa"
+            "RONG_KEY": "0vnjpoadnd4cz"
         }
     },
-    "cordova-plugin-calendar": {
+    "cn.jpush.phonegap.JPushPlugin": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-calendar"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-baidu-geolocation": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ETENG-OSP/cordova-plugin-baidu-geolocation.git",
-            "subdir": "."
+            "id": "jpush-phonegap-plugin@2.2.0"
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
+            "API_KEY": "6e0b08078306f45ac8331d54"
         }
+    },
+    "cordova-plugin-youtuishare": {
+        "source": {
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
