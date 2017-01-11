@@ -56,6 +56,13 @@ angular.module('messageModule')
       if (baseConfig.debug) {
         console.log('window.localStorage.myInfoImg ' + window.localStorage.myInfoImg);
       }
+      
+      $ionicPlatform.ready(function () {
+        try {
+          navigator.splashscreen.hide();
+        } catch (e) {
+        }
+      });
 
       /*hmsCacheService.loadImageCache('img/tabs/message-f@3x.png',function () {});
        hmsCacheService.loadImageCache('img/tabs/application-F@3x.png',function () {});
@@ -193,10 +200,10 @@ angular.module('messageModule')
 
       //将页面的导航bar设置成白色
       /*$ionicPlatform.ready(function () {
-        if (window.StatusBar) {
-          StatusBar.styleDefault();
-        }
-      });*/
+       if (window.StatusBar) {
+       StatusBar.styleDefault();
+       }
+       });*/
 
       $scope.firstRefresh = false;
 
@@ -436,13 +443,13 @@ angular.module('messageModule')
             console.log('search.currentPage ' + currentPage);
           }
 
-          if(loadMoreFlag){
+          if (loadMoreFlag) {
             messageService.searchEmployee($scope, currentPage, loadMoreFlag);
-          }else{
+          } else {
             $timeout.cancel(searchTimeout);
             searchTimeout = $timeout(function () {
               messageService.searchEmployee($scope, currentPage, loadMoreFlag);
-            },200);
+            }, 200);
           }
 
         },
@@ -538,13 +545,13 @@ angular.module('messageModule')
 
       $timeout(function () {
         messageService.registerDeviceInfo();
-      },1000);
+      }, 1000);
 
       $scope.$on('$ionicView.enter', function (e) {
 
-        try{
+        try {
           navigator.splashscreen.hide();
-        }catch(e){
+        } catch (e) {
         }
 
         checkVersionService.checkAppVersion();
