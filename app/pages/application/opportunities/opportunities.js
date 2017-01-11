@@ -123,6 +123,7 @@ angular.module('opportunityModule')
       $scope.showSort = false;
       $scope.showHead = true;
 
+      //控制顶部看板数据和下方筛选按钮的显示与隐藏
       $scope.onDrag = function($event){
         var deltaY = $event.gesture.deltaY;
         if(Math.abs(deltaY) > 100)
@@ -219,6 +220,7 @@ angular.module('opportunityModule')
         return [].concat(this);
       };
 
+      //更换我的商机和所有商机
       $scope.changeModel = function(flag){
         if(flag == $scope.myOpportunityFlag)
           return 0;
@@ -391,19 +393,22 @@ angular.module('opportunityModule')
         status: 1
       };
 
+      //定义当前页面需要的值列表名称、localStorage里存的lastUpdateDate和数据变量名称
       var opportunity_value_list=[
         {
-          code: "HCRM.OPPORTUNITY_SALE_STAGE",
-          lastUpdateDate: "OPPORTUNITY_SALE_STAGE_DATE",
-          localList : 'OPPORTUNITY_SALE_STAGE'
+          code: "HCRM.OPPORTUNITY_SALE_STAGE",            //唯一标识
+          lastUpdateDate: "OPPORTUNITY_SALE_STAGE_DATE",  //localStorage内时间戳变量名
+          localList : 'OPPORTUNITY_SALE_STAGE'            //localStorage内值列表数据变量名
         }
       ];
 
+      //
       $scope.selectStatus = function(flag){
         $scope.siftingShowData.status = flag;
         $scope.siftingKey.status = flag == 0 ? "" : (flag == 1 ? "HCRM_ENABLE" : "HCRM_DISABLE");
       };
 
+      //得到值列表对象
       var getValueObjByCode = function(code){
         for(var i = 0; i < opportunity_value_list.length; i++){
           if(code == opportunity_value_list[i].code)
@@ -417,6 +422,7 @@ angular.module('opportunityModule')
           $scope.items = $scope.items.concat(response.business_from_list);
       };
 
+      //得到值列表数据成功后更新localStorage内的值列表
       var getValueListSuccess = function(response){
         if(response.returnCode == 'S'){
           for(var i = 0; i < response.lookup_detail.length; i++){
@@ -514,13 +520,13 @@ angular.module('opportunityModule')
 
       //通用选择弹窗
       $scope.selectTargets = [{
-        'key' : 'business_from',
-        'interface' :  opportunityService.getBusinessFrom,
-        'params' : [getBusinessFromSuccess, 'HCRM_BUSIFROM_CATE_1', 'HCRM.BUSINESS_FROM_CATEGORY'],
-        'showKey' : 'businessFromName',
-        'dataKey' : 'businessFrom',
-        'dataModel' : '$scope.siftingKey.businessFrom',
-        'showDataModel' : '$scope.siftingShowData.businessFrom'
+        'key' : 'business_from', //选择唯一标识
+        'interface' :  opportunityService.getBusinessFrom,  //列表数据来源接口
+        'params' : [getBusinessFromSuccess, 'HCRM_BUSIFROM_CATE_1', 'HCRM.BUSINESS_FROM_CATEGORY'], //接口所需参数
+        'showKey' : 'businessFromName', //接口调用成功后的结果对象内需要显示的变量名  例如列表数据为:[{name:"罗辑",id:"1"}] 则此为"name"
+        'dataKey' : 'businessFrom',     //接口调用成功后的结果对象内操作需要的变量名  例如列表数据为:[{name:"罗辑",id:"1"}] 则此为"id"
+        'dataModel' : '$scope.siftingKey.businessFrom',  //最终提交所需的变量名称，即以上id需要赋值的变量名
+        'showDataModel' : '$scope.siftingShowData.businessFrom' //显示在界面上的变量名称，即以上name需要复制的变量名
       },{
         'key' : 'opportunity_status',
         'interface' :  opportunityService.getOpportunityStatus,
@@ -553,9 +559,9 @@ angular.module('opportunityModule')
         'dataKey' : 'userId',
         'dataModel' : '$scope.siftingKey.saleEmployeeId',
         'showDataModel' : '$scope.siftingShowData.employee',
-        'searchInterface' : opportunityService.searchCustomerEmployee,
-        'searchParams' : getCustomerEmployeeResultSuccess,
-        'needShowMore' : true
+        'searchInterface' : opportunityService.searchCustomerEmployee,   //搜索所用的接口
+        'searchParams' : getCustomerEmployeeResultSuccess,  //搜索需要的参数
+        'needShowMore' : true //是否需要分页
       },{
         'key' : 'sale_area',
         'interface' :  opportunityService.getSaleArea,
@@ -581,6 +587,7 @@ angular.module('opportunityModule')
         $scope.crmSelectModal = modal;
       });
 
+      //显示通用选择框
       $scope.showSelectDiv = function(key){
         $scope.searchModel.searchValueKey = '';
         $scope.nowPage = 1;
@@ -593,6 +600,8 @@ angular.module('opportunityModule')
         $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
         if(!$scope.showSelect)
           return ;
+
+        //根据key拿到需要的选择对象target
         for(var i = 0; i < $scope.selectTargets.length; i++){
           if(key == $scope.selectTargets[i].key){
             $scope.nowSelectTarget = cloneObj($scope.selectTargets[i]);
@@ -601,23 +610,33 @@ angular.module('opportunityModule')
         }
         var showKey = $scope.nowSelectTarget['showKey'];
         var dataKey = $scope.nowSelectTarget['dataKey'];
+        //增加空选项
         eval('$scope.items = [{' + showKey + ': "空",' + dataKey + ': ""}]');
+
+        //sourceTargetData用于存储原本的target，以便作为后续对nowSelectTarget进行更改的副本
         $scope.sourceTargetData = cloneObj($scope.nowSelectTarget);
+
+        //其余特殊情况
         if(key == 'sale_team')
           $scope.selectTargets[6].params = [getTeamSuccess, $scope.siftingKey.saleAreaId];
         if($scope.nowSelectTarget.interface != showValueInList && $scope.nowSelectTarget.key != 'year')
           $scope.showLoading = true;
+
+        //执行接口
         $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
       };
 
+      //通用选择框内的选择方法
       $scope.selectItem = function($index){
         var data = $scope.items[$index][$scope.nowSelectTarget['dataKey']];  //接口所需数据
-        var showKey = $scope.items[$index][$scope.nowSelectTarget['showKey']];
+        var showKey = $scope.items[$index][$scope.nowSelectTarget['showKey']];//接口显示数据
         showKey = (showKey == '空') ? "" : showKey;
         var dataModel = $scope.nowSelectTarget['dataModel'];                 //最终操作提交所需的数据变量
         var showDataModel = $scope.nowSelectTarget['showDataModel'];         //显示用的数据变量ng-model
         eval(dataModel + " = data");
         eval(showDataModel + " = showKey");
+
+        //其余特殊情况
         if($scope.nowSelectTarget['key'] == 'opportunity_status'){
           $scope.opportunityRate = $scope.items[$index].opportunityRate;
           if($scope.opportunityRate == undefined)
@@ -631,6 +650,7 @@ angular.module('opportunityModule')
         $scope.showSelectDiv();
       };
 
+      //通用选择框内的加载更多
       $scope.loadMore = function() {
         $scope.nowPage++;
         for(var i = 0; i < $scope.nowSelectTarget.params.length; i++){
@@ -645,6 +665,7 @@ angular.module('opportunityModule')
           $scope.nowSelectTarget.interface.apply(null,$scope.nowSelectTarget.params);
       };
 
+      //通用选择框的搜索
       $scope.searchSelectValue = function(){
         $ionicScrollDelegate.$getByHandle('listScroll').scrollTop(false);
         if($scope.nowSelectTarget['searchInterface']){
@@ -901,6 +922,7 @@ angular.module('opportunityModule')
         templateType: 'popup'
       };
 
+      //刷新
       $scope.doRefresh = function(){
         $scope.moreOpportunityCanBeLoaded = false;
         $scope.siftingKey.page = 1;
