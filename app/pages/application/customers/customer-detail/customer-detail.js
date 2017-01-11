@@ -126,7 +126,6 @@ angular.module('customerModule')
 
         $scope.showMenuFlag = -1;
         $scope.subHeadersSelect = [true];
-
         function getCustomerDetailSuccess(response) {
         if (response.returnCode == "S") {
           $scope.customer = response.customer_detail;
@@ -342,12 +341,14 @@ angular.module('customerModule')
 
       $scope.$on('$ionicView.beforeEnter', function (e) {
           $scope.selectSubHeader(customerDetailService.getTabNumber());
+
       } )
       console.log("enter外面");
       console.log($ionicHistory.viewHistory().backView);
       console.log(angular.toJson($stateParams.customerDetail));
 
       $scope.$on('$ionicView.enter', function (e) {
+        console.log("====customerDetailService.getIsCustomerAdd()"+customerDetailService.getIsCustomerAdd());
         console.log($ionicHistory.viewHistory().backView);
         console.log(angular.toJson($stateParams.customerDetail));
         /*$scope.customerId = $stateParams.customerDetail.customerId;*/
@@ -440,7 +441,7 @@ angular.module('customerModule')
             };
             $scope.contentInner = "build/pages/application/customers/customer-detail/customer-detail-state/customer-detail-state.html";
             $scope.chooseThis = function () {
-              if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+              if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"||$ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2"){
                 $state.go('tab.plans-add2',{planData:addData});
               }else{
                 $state.go('tab.plans-add',{planData:addData});
@@ -460,14 +461,14 @@ angular.module('customerModule')
                   $scope.permissionFlag =true;
                   if($scope.customer.approveTypeName=='未提交'||$scope.customer.approveTypeName=='已拒绝'){
                   /*  $state.go('tab.customerAdd');*/
-                    if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+                    if(($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"||$ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2")){
                       $state.go('tab.customerAdd2');
                     }else{
                       $state.go('tab.customerAdd');
                     }
                   }else {
 
-                    if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+                    if(($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"||$ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2")){
                       $state.go('tab.improveInformation2');
                     }else{
                       $state.go('tab.improveInformation');
@@ -507,7 +508,7 @@ angular.module('customerModule')
                        warn(btnIndex);
                        }*/
                       if (btnIndex == 1) {
-                        if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+                        if(($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"||$ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2")){
                           $state.go('tab.addLinkman2', {param: addData});
                         }else{
                           $state.go('tab.addLinkman', {param: addData});
@@ -539,7 +540,7 @@ angular.module('customerModule')
                     console.log(index);
                     if (index == 0) {
                       console.log($ionicHistory.viewHistory().backView);
-                      if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+                      if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"||$ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2"){
                         $state.go('tab.addLinkman2', {param: addData});
                       }else{
                         $state.go('tab.addLinkman', {param: addData});
@@ -626,15 +627,19 @@ angular.module('customerModule')
           customerDetailService.setIsEdit(false);
           customerDetailService.setTabNumber(0);
           console.log($ionicHistory.viewHistory().backView.stateName);
+          console.log(customerDetailService.getIsCustomerAdd());
           if ($ionicHistory.viewHistory().backView && customerDetailService.getIsCustomerAdd()===false) {
             $ionicHistory.goBack();
             console.log("===1");
           }else if (customerDetailService.getIsCustomerAdd()===true){
             customerDetailService.setIsCustomerAdd(false);
             customerService.setIsCustomer(true);
+            console.log($ionicHistory.viewHistory().backView.stateName);
             console.log("===2");
-            if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
-              $ionicHistory.goBack();
+          /*  $state.go('tab.customers');*/
+            if($ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2"||$ionicHistory.viewHistory().backView.stateName=="tab.customerAdd2"||$ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+             console.log("====="+$ionicHistory.viewHistory().backView.stateName);
+             $state.go('tab.contactDetail');
             }else{
               $state.go('tab.customers');
             }

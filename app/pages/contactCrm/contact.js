@@ -146,6 +146,7 @@ angular.module('contactModule')
       };
       $scope.history = {};//临时存放历史记录
       $scope.goDetail = function (item) {
+        $rootScope.goBackTocontactCrm=true;
         console.log(item);
         $state.go('tab.contactDetail', {contactData: item});
         $scope.history.name = item.name;

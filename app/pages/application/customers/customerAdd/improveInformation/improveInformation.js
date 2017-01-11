@@ -1463,8 +1463,11 @@ angular.module('customerModule')
         console.log("=====")
         console.log($ionicHistory.viewHistory().backView.stateName);
         if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"||$ionicHistory.viewHistory().backView.stateName=="tab.customerAdd2"){
-          $ionicHistory.goBack();
-          customerService.setIsCustomer(false);
+        /*  $state.go('tab.customer-detail2',{
+            customerDetail:$scope.customer
+          });*/
+          $ionicHistory.goBack(-1);
+       /*   $state.go('tab.customer-detail2');*/
         }else{
           $state.go('tab.customer-detail',{
             customerDetail:$scope.customer
@@ -1481,7 +1484,11 @@ angular.module('customerModule')
           console.log($ionicHistory.viewHistory().backView.stateName);
           if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"||$ionicHistory.viewHistory().backView.stateName=="tab.customerAdd2"){
             customerService.setIsCustomer(false);
-            $ionicHistory.goBack();
+            $ionicHistory.goBack(-1);
+       /*   /!*  $state.go('tab.customer-detail2');*!/
+            $state.go('tab.customer-detail2',{
+              customerDetail:$scope.customer
+            });*/
           }else{
             $state.go('tab.customer-detail',{
               customerDetail:$scope.customer
@@ -1511,8 +1518,9 @@ angular.module('customerModule')
                    hmsPopup.showPopup('修改成功！');
                    console.log($ionicHistory.viewHistory().backView.stateName);
                    if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"||$ionicHistory.viewHistory().backView.stateName=="tab.customerAdd2"){
-                     customerService.setIsCustomer(false);
-                     $ionicHistory.goBack();
+                     //customerService.setIsCustomer(false);
+                  /*   $state.go('tab.customer-detail2');*/
+                     $ionicHistory.goBack(-1);
                    }else{
                      $state.go('tab.customer-detail');
                    }

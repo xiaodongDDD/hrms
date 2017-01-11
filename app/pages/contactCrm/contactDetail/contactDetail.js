@@ -117,10 +117,15 @@ angular.module('contactModule')
         /*     console.log(JSON.parse(window.localStorage.linkRoleData));*/
         $rootScope.$broadcast("REFRESH_CONTACT_HISTORY");
         $scope.goBack = function () {
+          console.log($ionicHistory.viewHistory().backView=="tab.customer-detail2");
           if ($ionicHistory.viewHistory().backView) {
-            $ionicHistory.goBack();
+            if($rootScope.goBackTocontactCrm==true){
+              $state.go('tab.contactCrm');
+            }else{
+              $state.go('tab.contact-search');
+            }
           } else {
-            $state.go('tab.application');
+            $state.go('tab.contactCrm');
           }
         };
         function initContactDetail() {
