@@ -207,14 +207,24 @@
     vm.addressTab = addressTab;
     vm.faceScanner = faceScanner;
     vm.openHelpURl = openHelpURl;
-    vm.goPersonInfo=goPersonInfo;
+    vm.goPersonInfo = goPersonInfo;
 
     getSummaryInfo();//拉取概要信息
     rankingMutualFans(0);//
 
     $scope.$on('$ionicView.enter', function (e) {
-      getSummaryInfo();
-      queryRelation(relationType)
+      if (!vm.isRank) {
+        $ionicScrollDelegate.$getByHandle('rankHandle').scrollTop();
+        queryRelationParams = {
+          page: 1,
+          pageSize: 10,
+          type: ''
+        };
+        getSummaryInfo();
+        queryRelation(relationType)
+      }else{
+        getSummaryInfo();
+      }
     });
 
     //获取概要信息
@@ -315,8 +325,7 @@
 
     //上拉加载
     function loadMore() {
-      vm.isSpinner = false;
-      console.log('触发上拉');
+      //console.log('触发上拉');
       if (!vm.isRank) {
         queryRelationParams.type = relationType;
         queryRelationParams.page = queryRelationParams.page + 1;
@@ -336,7 +345,6 @@
           console.log(status)
         })
       }
-
     }
 
     //返回上级菜单
@@ -386,6 +394,7 @@
     }
 
     function fansTab(num) {
+      $ionicScrollDelegate.$getByHandle('rankHandle').scrollTop();
       vm.fansList = [];
       vm.isSpinner = true;
       var index = vm.colorFansTabArr[3];
@@ -426,6 +435,9 @@
     }
 
     function rankUp() {
+      if (!vm.isRank) {
+        return;
+      }
 
       if (isHeaderBar == false) {
         isHeaderBar = true;
@@ -449,6 +461,10 @@
 
     function rankDown() {
 
+      if (!vm.isRank) {
+        return;
+      }
+
       if (isHeaderBar == true) {
         isHeaderBar = false;
         if (vm.isRank) {
@@ -468,7 +484,7 @@
     }
 
 
-    function faceScanner(value,$event) {
+    function faceScanner(value, $event) {
       $event.stopPropagation();
       if (value || relationType == 'follower') {
       } else {
@@ -598,7 +614,7 @@
     }
 
     function goPersonInfo(num) {
-      $state.go('tab.employeeDetailCrm3',{'employeeNumber':num})
+      $state.go('tab.employeeDetailCrm3', {'employeeNumber': num})
     }
 
   }
