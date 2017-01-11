@@ -139,9 +139,9 @@
     function deletePhoto() {
       var url = baseConfig.queryPath + '/photo/deletePhoto';
       var photo = vm.photoList[vm.count];
-      hmsHttp.showLoading('删除照片中');
+      hmsPopup.showLoading('删除照片中');
       hmsHttp.post(url, {id: photo.id}).success(function (result) {
-        hmsHttp.hideLoading();
+        hmsPopup.hideLoading();
         console.log(result);
         closeModal();
         $scope.showMenu = !$scope.showMenu;
@@ -150,7 +150,7 @@
         }
         $ionicScrollDelegate.resize();
       }).error(function (err, status) {
-        hmsHttp.hideLoading();
+        hmsPopup.hideLoading();
         console.log(err);
         console.log(status)
       })
