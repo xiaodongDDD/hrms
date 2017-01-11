@@ -10,7 +10,7 @@
     "cordova-plugin-geolocation": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-geolocation"
+            "id": "cordova-plugin-geolocation-baidu"
         },
         "is_top_level": true,
         "variables": {}
@@ -23,17 +23,6 @@
         },
         "is_top_level": true,
         "variables": {}
-    },
-    "cordova-plugin-geolocation-baidu": {
-        "source": {
-            "type": "git",
-            "url": "https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu",
-            "subdir": "."
-        },
-        "is_top_level": true,
-        "variables": {
-            "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
-        }
     },
     "jpush-phonegap-plugin": {
         "source": {
