@@ -207,7 +207,7 @@ angular.module('customerModule')
       /*  $ionicScrollDelegate.$getByHandle("detailScroll").scrollTop(false);*/
         if(customerDetailService.getIsCustomerAdd()){
           customerDetailService.getCustomerDetail(getCustomerDetailSuccess, $scope.customerId);
-          $scope.$apply();
+        /*  $scope.$apply();*/
         }
 
       })

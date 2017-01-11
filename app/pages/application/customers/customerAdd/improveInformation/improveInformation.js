@@ -1460,6 +1460,8 @@ angular.module('customerModule')
             hmsPopup.showPopup('提交失败，请检查网络或者联系管理员！');
           }
         }
+        console.log("=====")
+        console.log($ionicHistory.viewHistory().backView.stateName);
         $state.go('tab.customer-detail',{
           customerDetail:$scope.customer
         });
@@ -1470,6 +1472,8 @@ angular.module('customerModule')
         if(res){
           customerService.submitReview(customerCheckSuccess,data);
         }else {
+          console.log("=====")
+          console.log($ionicHistory.viewHistory().backView.stateName);
           $state.go('tab.customer-detail',{
             customerDetail:$scope.customer
           });
@@ -1495,7 +1499,13 @@ angular.module('customerModule')
                    hmsPopup.confirmCrmCheck('修改成功，是否现在提交审核？',$scope,successConfirm,customerDetailService.getEditCustomer().customerId);
                  }else{
                    hmsPopup.showPopup('修改成功！');
-                   $state.go('tab.customer-detail');
+                   console.log($ionicHistory.viewHistory().backView.stateName);
+                   if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"){
+                     $ionicHistory.goBack();
+                   }else{
+                     $state.go('tab.customer-detail');
+                   }
+
                  }
 
                }else if(data.returnCode==='E'){
