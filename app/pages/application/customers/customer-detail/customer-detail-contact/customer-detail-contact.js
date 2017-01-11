@@ -112,6 +112,9 @@ angular.module('customerModule')
         customerLinkman.getGetContactsList(doRefreshSuccess, $scope.data );
         $scope.$broadcast('scroll.refreshComplete');
       };
+      $scope.$on('$ionicView.enter', function (e) {
+        $scope.doRefresh();
+      });
       $rootScope.$on("REFRESH_ADD_LINKMAN", function () {
         $scope.doRefresh();
       });
