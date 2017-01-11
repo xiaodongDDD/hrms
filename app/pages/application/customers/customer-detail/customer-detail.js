@@ -458,8 +458,18 @@ angular.module('customerModule')
                   $scope.permissionFlag =true;
                   if($scope.customer.approveTypeName=='未提交'||$scope.customer.approveTypeName=='已拒绝'){
                     $state.go('tab.customerAdd');
+                    if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+                      $state.go('tab.customerAdd2');
+                    }else{
+                      $state.go('tab.customerAdd');
+                    }
                   }else {
-                    $state.go('tab.improveInformation');
+
+                    if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+                      $state.go('tab.improveInformation2');
+                    }else{
+                      $state.go('tab.improveInformation');
+                    }
                   }
                 }
               }

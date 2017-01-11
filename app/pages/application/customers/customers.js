@@ -164,7 +164,7 @@ angular.module('customerModule')
       $scope.customers = [];
 
       $scope.goBack = function () {
-        $ionicHistory.goBack();
+       $state.go("tab.application");
       };
 
       $scope.goState = function (url) {
