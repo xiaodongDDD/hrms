@@ -785,15 +785,23 @@ angular.module('planModule')
         scope: $scope,
         animation: 'slide-in-up'
       }).then(function (modal) {
-        $scope.opportunityAddModel = modal;
+        $scope.crmItemCommonModal = modal;
       });
 
+      $scope.showDrop = false;
+
       $scope.showWeekChoose = function () {
-        $scope.opportunityAddModel.show();
+        $scope.crmItemCommonModal.show();
+        $scope.showDrop = true;
       };
       $scope.goBack = function () {
-        $scope.opportunityAddModel.hide();
+        $scope.crmItemCommonModal.hide();
+        $scope.showDrop = false;
       };
+
+      $scope.$on('modal.hidden', function() {
+        $scope.showDrop = false;
+      });
 
       //////////////////////////转盘//////////////////////////////
       $scope.rotates = [];
@@ -962,7 +970,8 @@ angular.module('planModule')
         $scope.weekData.beginDate = period.dateFrom;
         $scope.weekData.endDate = period.dateTo;
         $scope.showWeek = false;
-        $scope.opportunityAddModel.hide();
+        $scope.crmItemCommonModal.hide();
+        $scope.showDrop = false;
         //截断字符串拼接起来
         /* $scope.weekData.beginDate=;
          $scope.weekData.endDate=

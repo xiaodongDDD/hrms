@@ -1,14 +1,13 @@
 <ion-modal-view class="crm crm-time-modal">
-  <ion-header-bar align-title="center" class="bar-stable">
-    <button class= "crm-time-button" ng-click="goBack()">关闭</button>
-    <h2 class="title" on-release="onReleaseYear($event)">{{year}}</h2>
-    <button class="crm-time-button">
-      <span ng-click="lastWeek()">上一周</span>&nbsp;&nbsp;
-      <span ng-click="thisWeek()">本周</span>&nbsp;&nbsp;
-      <span ng-click="selectWeek(nowIndex)">确定</span>
-    </button>
-  </ion-header-bar>
   <ion-content has-bouncing="false">
+    <div class="scroll-header">
+      <div class="left" ng-click="goBack()">关闭</div>
+      <h2>{{year}}</h2>
+      <div class="right">
+        <span ng-click="thisWeek()" class="blue">本周</span>
+        <span ng-click="selectWeek(nowIndex)">确定</span>
+      </div>
+    </div>
     <div class="scroll-container" on-drag="onDragScroll($event)" on-release="onReleaseScroll($event)">
       <div class="scroll-line"></div>
       <div class="stage" ng-style="stageRotate">

@@ -21,6 +21,11 @@ var sourcemaps = require('gulp-sourcemaps');
 var clean = require('gulp-clean');
 var notify = require('gulp-notify');//提示信息
 var gulpNgConfig = require('gulp-ng-config');//提示信息
+var tinylr = require('tiny-lr');
+var fs = require('fs');
+var path = require('path');
+var server = tinylr();
+var port = 8000;
 
 var jsFilePath = [
   'app/scripts/*.js',
@@ -29,6 +34,12 @@ var jsFilePath = [
   'app/pages/**/*.js',
   'app/pages/**/**/*.js',
   'app/pages/**/**/**/*.js'];
+
+var cssFilePath = [
+  'app/theme/app.core.scss',
+  'app/pages/**/*.scss',
+  'app/pages/**/**/*.scss',
+  'app/pages/**/**/**/*.scss'];
 
 var htmlFilePath = [
   'app/pages/**/*.html',
@@ -279,31 +290,131 @@ gulp.task('css', function () {
 gulp.task('scripts', function () {
   return gulp.src(jsFilePath)
     .pipe(concat('app.bundle.js'))
-    .pipe(gulp.dest('www/build'));// write source file for debug
-  //.pipe(rename({suffix: '.min'}))   //rename压缩后的文件名
-  //.pipe(uglify())    //压缩
-  //.pipe(gulp.dest('www/build'));  //输出
+    .pipe(gulp.dest('www/build')) // write source file for debug
+    .pipe(rename({suffix: '.min'}))   //rename压缩后的文件名
+    .pipe(uglify())    //压缩
+    .pipe(gulp.dest('www/build'));  //输出
 });
 
 //
 gulp.task('copy-prod', function () {
   return gulp.src([
-    'src/**/*',
-    '!src/index.html',
-    '!src/**/*.ts',
-    '!src/**/*.less',
-    '!src/**/*.sass',
-    '!src/**/*.styl',
-    '!src/css/*',
-    '!src/**/*.md',
-    '!src/scripts/*'])
+      'src/**/*',
+      '!src/index.html',
+      '!src/**/*.ts',
+      '!src/**/*.less',
+      '!src/**/*.sass',
+      '!src/**/*.styl',
+      '!src/css/*',
+      '!src/**/*.md',
+      '!src/scripts/*'])
     .pipe(gulp.dest('www'));
 });
 
-//自动观察代码变化
+// 创建多层目录
+function mkdirs(dirname, mode, callback) {
+  fs.exists(dirname, function (exists) {
+    if (exists) {
+      callback();
+    } else {
+      //console.log(path.dirname(dirname));
+      mkdirs(path.dirname(dirname), mode, function () {
+        fs.mkdir(dirname, mode, callback);
+      });
+    }
+  });
+}
+
+//拷贝文件
+function copyfile(oldPath, newPath) {
+  //console.log('复制' + oldPath + ' -> ' + newPath);
+
+  var stat = fs.lstatSync(oldPath);
+  if (stat.isDirectory()) {
+    console.log(oldPath + '是目录');
+    return false;
+  }
+
+  var readStream = fs.createReadStream(oldPath);
+  var writeStream = fs.createWriteStream(newPath);
+  readStream.pipe(writeStream);
+  readStream.on('end', function () {
+    console.log('copy end');
+  });
+  readStream.on('error', function () {
+    console.log('copy error');
+  });
+}
+
+
+function copyPages(e) {
+  var oldPath = e.path;
+  var newPath = oldPath.replace('/app/', '/www/build/');
+  var newDirPathTemp = newPath.split("/");
+  var currentPath = fs.realpathSync('.');
+  var newDirPath = [];
+  for (var i = 0; i < newDirPathTemp.length - 1; i++) {
+    newDirPath[i] = newDirPathTemp[i];
+  }
+  newDirPath = newDirPath.join("/");
+  newDirPath = newDirPath.replace(currentPath, '');
+  newDirPath = newDirPath.replace(/\\/g, "/");
+  newDirPath = newDirPath.replace("/", "./");
+
+  // 修改或增加时
+  if ('added' == e.type || 'changed' == e.type || 'renamed' == e.type) {
+    // 判断目录是否存在，不存在则创建
+    fs.exists(newDirPath, function (exists) {
+      if (exists) {
+        console.log("文件夹存在");
+        copyfile(oldPath, newPath);
+      } else {
+        console.log("文件夹不存在，则创建目录");
+        mkdirs(newDirPath);
+        //延时，等待目录创建完成
+        setTimeout(function () {
+          copyfile(oldPath, newPath);
+        }, 200);
+      }
+    });
+  } else if ('deleted' == e.type) { //删除
+    fs.unlink(newPath, function (err) {
+      console.log('删除 newPath ' + newPath + err);
+    });
+  }
+}
+
+// 监听任务 运行语句 gulp watch
 gulp.task('watch', function () {
-  gulp.watch(['app/**/*'], ["run-dev"]);
-  console.log("----watch file change -----");
+  server.listen(port, function (err) {
+    if (err) {
+      return console.log(err);
+    }
+
+    //拷贝修改过的文件
+    gulp.watch(htmlFilePath, function (e) {
+      console.log('有变动的文件为 oldPath ' + e.path);
+      copyPages(e);
+    });
+
+    gulp.watch('app/img/**/**/**/**', function (e) {
+      console.log('有变动的文件为 oldPath ' + e.path);
+      copyPages(e);
+    });
+
+    // 监听sass
+    gulp.watch(cssFilePath, function (e) {
+      console.log('有变动的文件为 oldPath ' + e.path);
+      gulp.run('sass');
+    });
+
+    // 监听js
+    gulp.watch(jsFilePath, function (e) {
+      console.log('有变动的文件为 oldPath ' + e.path);
+      gulp.run('scripts');
+    });
+  });
+
 });
 
 //手动更新www/build代码

@@ -513,8 +513,9 @@ $applicationColor: white !default;
   line-height: 30px;
   border-radius: 15px;
   color: white;
-  font-size: 0.8em;
+  font-size: 0.9em;
   background: rgba(255, 255, 255, 0.3);
+  z-index: 11;
   img{
     vertical-align: middle;
     height: 15px;

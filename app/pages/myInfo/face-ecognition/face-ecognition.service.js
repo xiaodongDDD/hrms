@@ -8,7 +8,7 @@
     .module('myInfoModule')
     .factory('faceEcognitionService', faceEcognitionService);
 
-  //plansDetailCtrl.$inject = [];
+  faceEcognitionService.$inject = ['baseConfig', 'hmsPopup', '$q', 'hmsHttp', '$timeout'];
 
   function faceEcognitionService(baseConfig, hmsPopup, $q, hmsHttp, $timeout) {
     var service;

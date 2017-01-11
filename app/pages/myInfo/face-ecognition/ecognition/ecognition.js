@@ -27,7 +27,16 @@
     .module('myInfoModule')
     .controller('faceEcognitionSettingCtrl', faceEcognitionSettingCtrl);
 
-  //plansDetailCtrl.$inject = [];
+  faceEcognitionSettingCtrl.$inject = [
+    '$scope',
+    '$state',
+    '$ionicHistory',
+    'baseConfig',
+    '$stateParams',
+    'hmsPopup',
+    'faceEcognitionService',
+    'hmsReturnView',
+    'TabsService'];
 
   function faceEcognitionSettingCtrl($scope,
                                      $state,

@@ -15,6 +15,19 @@ angular.module('customerModule')
             }
           }
       })
+        .state('tab.improveInformation2', {
+          url: '/customers/customerAdd/improveInformation',
+          params: {
+            param: {}
+          },
+          views: {
+            'tab-contactCrm': {
+              prefetchTemplate: false,
+              templateUrl: 'build/pages/application/customers/customerAdd/improveInformation/improveInformation.html',
+              controller: 'improveInformationCtrl'
+            }
+          }
+        })
     }]);
 
 angular.module('customerModule')

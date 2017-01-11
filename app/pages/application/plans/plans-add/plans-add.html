@@ -5,6 +5,8 @@
     </div>
     <h2 class="title">{{'PLAN_ADD.CREATE_ADD_PLAN'|T}}</h2>
   </ion-header-bar>
+
+  <div class="back-drop" ng-class="{true:'show-drop',false:'hide-drop'}[showDrop]" ng-click="goBack()"></div>
   <ion-content>
     <crm-small-loading ng-if="showSmallCrmLoading"></crm-small-loading>
     <div class="row row-center">
