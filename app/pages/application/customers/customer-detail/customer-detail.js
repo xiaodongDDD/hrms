@@ -60,6 +60,7 @@ angular.module('customerModule')
     '$cordovaGeolocation',
     '$http',
     '$cordovaCamera',
+    '$cordovaFile',
     '$ionicPopover',
     function ($scope,
               $ionicHistory,
@@ -83,6 +84,7 @@ angular.module('customerModule')
               $cordovaGeolocation,
               $http,
               $cordovaCamera,
+              $cordovaFile,
               $ionicPopover) {
         console.log( $stateParams.customerDetail);
         $rootScope.$broadcast("REFRESH_CUSTOMER_HISTORY");

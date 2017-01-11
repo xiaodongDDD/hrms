@@ -22,8 +22,7 @@ angular.module('applicationModule')
     function ($scope, $state, $ionicHistory, history, hmsPopup, $timeout, $rootScope, customerSearchService,customerDetailService) {
       var item = $('#employeeInputSearch');
       $scope.showContent = true;
-      function blurInput() { //初始化input框-自动聚焦
-        console.log("$ionicView.afterEnter");
+      $scope.$on('$ionicView.afterEnter', function () { //初始化input框-自动聚焦
         if (ionic.Platform.isWebView()) {
           cordova.plugins.Keyboard.show();
           $timeout(function () {
@@ -31,10 +30,8 @@ angular.module('applicationModule')
             $scope.$apply();
           }, 0);
         }
-      }
-      $timeout(function () {
-        blurInput();
-      },400);
+      });
+
 /*      $scope.$on('$ionicView.afterEnter', function () { //初始化input框-自动聚焦
         console.log("$ionicView.afterEnter");
         if (ionic.Platform.isWebView()) {
