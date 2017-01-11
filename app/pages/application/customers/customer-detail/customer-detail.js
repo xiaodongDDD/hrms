@@ -459,7 +459,7 @@ angular.module('customerModule')
                   customerDetailService.setApplication($scope.application);
                   $scope.permissionFlag =true;
                   if($scope.customer.approveTypeName=='未提交'||$scope.customer.approveTypeName=='已拒绝'){
-                    $state.go('tab.customerAdd');
+                  /*  $state.go('tab.customerAdd');*/
                     if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
                       $state.go('tab.customerAdd2');
                     }else{

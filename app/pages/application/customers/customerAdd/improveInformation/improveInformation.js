@@ -1462,9 +1462,14 @@ angular.module('customerModule')
         }
         console.log("=====")
         console.log($ionicHistory.viewHistory().backView.stateName);
-        $state.go('tab.customer-detail',{
-          customerDetail:$scope.customer
-        });
+        if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"||$ionicHistory.viewHistory().backView.stateName=="tab.customerAdd2"){
+          $ionicHistory.goBack();
+          customerService.setIsCustomer(false);
+        }else{
+          $state.go('tab.customer-detail',{
+            customerDetail:$scope.customer
+          });
+        }
         };
 
       var successConfirm = function (res,data) {
@@ -1474,9 +1479,14 @@ angular.module('customerModule')
         }else {
           console.log("=====")
           console.log($ionicHistory.viewHistory().backView.stateName);
-          $state.go('tab.customer-detail',{
-            customerDetail:$scope.customer
-          });
+          if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"||$ionicHistory.viewHistory().backView.stateName=="tab.customerAdd2"){
+            customerService.setIsCustomer(false);
+            $ionicHistory.goBack();
+          }else{
+            $state.go('tab.customer-detail',{
+              customerDetail:$scope.customer
+            });
+          }
         }
       }
 
@@ -1500,7 +1510,8 @@ angular.module('customerModule')
                  }else{
                    hmsPopup.showPopup('修改成功！');
                    console.log($ionicHistory.viewHistory().backView.stateName);
-                   if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"){
+                   if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"||$ionicHistory.viewHistory().backView.stateName=="tab.customerAdd2"){
+                     customerService.setIsCustomer(false);
                      $ionicHistory.goBack();
                    }else{
                      $state.go('tab.customer-detail');

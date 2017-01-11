@@ -216,7 +216,13 @@ angular.module('customerModule')
             /*  console.log(data);*/
             $scope.showLoadings = false;
             if(data.returnCode==='S'){
-              $state.go('tab.improveInformation');
+            /*  $state.go('tab.improveInformation');*/
+              console.log($ionicHistory.viewHistory().backView.stateName);
+              if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"){
+                $state.go('tab.improveInformation2');
+              }else{
+                $state.go('tab.improveInformation');
+              }
             } else {
               if(data.returnMsg){
                 hmsPopup.showPopupCustomer(data.returnMsg,data.customerName,data.approveStatusName,
