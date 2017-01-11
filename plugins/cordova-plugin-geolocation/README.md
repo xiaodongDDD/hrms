@@ -16,10 +16,13 @@
 #         specific language governing permissions and limitations
 #         under the License.
 -->
+## iOS定位使用百度定位,在中国更加准确.
+使用方法不变.
+
+
+[![Build Status](https://travis-ci.org/apache/cordova-plugin-geolocation.svg?branch=master)](https://travis-ci.org/apache/cordova-plugin-geolocation)
 
 # cordova-plugin-geolocation
-
-[![Build Status](https://travis-ci.org/apache/cordova-plugin-geolocation.svg)](https://travis-ci.org/apache/cordova-plugin-geolocation)
 
 This plugin provides information about the device's location, such as
 latitude and longitude. Common sources of location information include
@@ -45,7 +48,7 @@ accesses geolocation data (if the device operating system doesn't do
 so already).  That notice should provide the same information noted
 above, as well as obtaining the user's permission (e.g., by presenting
 choices for __OK__ and __No Thanks__).  For more information, please
-see the Privacy Guide.
+see the [Privacy Guide](http://cordova.apache.org/docs/en/latest/guide/appdev/privacy/index.html).
 
 This plugin defines a global `navigator.geolocation` object (for platforms
 where it is otherwise missing).
@@ -81,7 +84,6 @@ It is also possible to install via repo url directly ( unstable )
 - iOS
 - Tizen
 - Windows Phone 7 and 8
-- Windows 8
 - Windows
 
 ## Methods
@@ -141,6 +143,11 @@ error, the `geolocationError` callback is passed a
     }
 
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
+
+### Android Quirks
+
+If Geolocation service is turned off the `onError` callback is invoked after `timeout` interval (if specified).
+If `timeout` parameter is not specified then no callback is called.
 
 ## navigator.geolocation.watchPosition
 
@@ -208,7 +215,8 @@ Optional parameters to customize the retrieval of the geolocation
 
 ### Android Quirks
 
-Android 2.x emulators do not return a geolocation result unless the `enableHighAccuracy` option is set to `true`.
+If Geolocation service is turned off the `onError` callback is invoked after `timeout` interval (if specified).
+If `timeout` parameter is not specified then no callback is called.
 
 ## navigator.geolocation.clearWatch
 
@@ -240,7 +248,7 @@ Contains `Position` coordinates and timestamp, created by the geolocation API.
 
 - __coords__: A set of geographic coordinates. _(Coordinates)_
 
-- __timestamp__: Creation timestamp for `coords`. _(Date)_
+- __timestamp__: Creation timestamp for `coords`. _(DOMTimeStamp)_
 
 ## Coordinates
 
