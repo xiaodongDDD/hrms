@@ -1466,7 +1466,8 @@ angular.module('customerModule')
         /*  $state.go('tab.customer-detail2',{
             customerDetail:$scope.customer
           });*/
-          $ionicHistory.goBack(-1);
+        /*  $ionicHistory.goBack(-1);*/
+          improveInformationService.returnToState('tab.customer-detail2');
        /*   $state.go('tab.customer-detail2');*/
         }else{
           $state.go('tab.customer-detail',{
@@ -1484,7 +1485,8 @@ angular.module('customerModule')
           console.log($ionicHistory.viewHistory().backView.stateName);
           if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"||$ionicHistory.viewHistory().backView.stateName=="tab.customerAdd2"){
             customerService.setIsCustomer(false);
-            $ionicHistory.goBack(-1);
+            //$ionicHistory.goBack(-1);
+            improveInformationService.returnToState('tab.customer-detail2');
        /*   /!*  $state.go('tab.customer-detail2');*!/
             $state.go('tab.customer-detail2',{
               customerDetail:$scope.customer
@@ -1520,7 +1522,8 @@ angular.module('customerModule')
                    if($ionicHistory.viewHistory().backView.stateName=="tab.customer-detail2"||$ionicHistory.viewHistory().backView.stateName=="tab.customerAdd2"){
                      //customerService.setIsCustomer(false);
                   /*   $state.go('tab.customer-detail2');*/
-                     $ionicHistory.goBack(-1);
+                /*     $ionicHistory.goBack(-1);*/
+                     improveInformationService.returnToState('tab.customer-detail2');
                    }else{
                      $state.go('tab.customer-detail');
                    }
@@ -1727,9 +1730,11 @@ angular.module('customerModule')
   .service('improveInformationService', ['hmsHttp',
     'hmsPopup',
     'baseConfig',
+    '$ionicHistory',
     function (hmsHttp,
               hmsPopup,
-              baseConfig) {
+              baseConfig,
+              $ionicHistory) {
 
       var isEdit = false;
       return {
@@ -1738,7 +1743,19 @@ angular.module('customerModule')
         },
         getIsEdit:function(){
           return isEdit;
-        }
+        },
+        returnToState: function (stateName) {
+          var historyId = $ionicHistory.currentHistoryId();
+          var history = $ionicHistory.viewHistory().histories[historyId];
+          console.log('history.stack.length : ' + history.stack.length);
+          for (var i = history.stack.length - 1; i >= 0; i--) {
+            console.log('history.stack[i].stateName : ' + history.stack[i].stateName);
+            if (history.stack[i].stateName == stateName) {
+              $ionicHistory.backView(history.stack[i]);
+              $ionicHistory.goBack();
+            }
+          }
+        },
       }
 
 

@@ -85,10 +85,6 @@ angular.module('myApp')
         historyCompetitor.initDB();//初始化竞争对手查询数据库
         historyOpportunity.initDB();//初始化商机查询数据库
         historyBidbond.initDB();//初始化保证金查询数据库
-        try{
-          navigator.splashscreen.hide();
-        }catch(e){
-        }
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -103,6 +99,11 @@ angular.module('myApp')
         //将页面的导航bar设置成黑色
         if (window.StatusBar) {
           StatusBar.styleDefault();
+        }
+
+        try {
+          navigator.splashscreen.hide();
+        } catch (e) {
         }
 
         //全局的返回上一个页面的函数

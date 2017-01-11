@@ -119,11 +119,9 @@ angular.module('contactModule')
         $scope.goBack = function () {
           console.log($ionicHistory.viewHistory().backView=="tab.customer-detail2");
           if ($ionicHistory.viewHistory().backView) {
-            if($rootScope.goBackTocontactCrm==true){
-              $state.go('tab.contactCrm');
-            }else{
-              $state.go('tab.contact-search');
-            }
+         /*   if($ionicHistory.viewHistory().backView=="tab.customers"){*/
+              $ionicHistory.goBack();
+           /* }*/
           } else {
             $state.go('tab.contactCrm');
           }
