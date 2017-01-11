@@ -459,7 +459,7 @@ angular.module('customerModule')
                   customerDetailService.setApplication($scope.application);
                   $scope.permissionFlag =true;
                   if($scope.customer.approveTypeName=='未提交'||$scope.customer.approveTypeName=='已拒绝'){
-                    $state.go('tab.customerAdd');
+                  /*  $state.go('tab.customerAdd');*/
                     if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
                       $state.go('tab.customerAdd2');
                     }else{
@@ -625,14 +625,21 @@ angular.module('customerModule')
           console.log($ionicHistory.viewHistory());
           customerDetailService.setIsEdit(false);
           customerDetailService.setTabNumber(0);
+          console.log($ionicHistory.viewHistory().backView.stateName);
           if ($ionicHistory.viewHistory().backView && customerDetailService.getIsCustomerAdd()===false) {
             $ionicHistory.goBack();
-
+            console.log("===1");
           }else if (customerDetailService.getIsCustomerAdd()===true){
             customerDetailService.setIsCustomerAdd(false);
             customerService.setIsCustomer(true);
-            $state.go('tab.customers');
+            console.log("===2");
+            if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"){
+              $ionicHistory.goBack();
+            }else{
+              $state.go('tab.customers');
+            }
           } else {
+            console.log("===3");
             $state.go('tab.contactDetail',{customerDetail:customer});
           }
         };
