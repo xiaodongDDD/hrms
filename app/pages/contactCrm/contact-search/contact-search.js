@@ -154,6 +154,7 @@ angular.module('contactModule')
         customerLinkman.getSearchResult(resultMoreSuccessInit, $scope.searched);
       };
       $scope.goDetail = function (item) {
+        $rootScope.goBackTocontactCrm=false;
         console.log(item);
         $state.go('tab.contactDetail', {contactData: item});
         $scope.history.name = item.name;
