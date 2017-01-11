@@ -68,6 +68,12 @@ angular.module('applicationModule')
         $ionicHistory.goBack();
       };
 
+      $scope.iosPlatformFlag = false;
+
+      if(ionic.Platform.isIOS()){
+        $scope.iosPlatformFlag = true;
+      }
+
       //$scope.housesPhoto = [
       //  {
       //    "imgUrl": 'build/img/application/houses-sublease/IMG_2201 Copy@3x.png'
