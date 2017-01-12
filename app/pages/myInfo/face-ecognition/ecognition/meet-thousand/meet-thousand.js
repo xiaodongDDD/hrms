@@ -434,7 +434,7 @@
         {area:'WH',name:'武汉'},
         {area:'XA',name:'西安'}
       ];
-      // var address = ['ALL', 'SH', 'BJ', 'GZ', 'CD', 'WH', 'XA'];
+      
       var index = vm.colorAddressArr[7];
       if (num != vm.colorAddressArr[7]) {
         vm.colorAddressArr[num] = 'active-color';
