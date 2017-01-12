@@ -177,6 +177,8 @@
     vm.topInfo = null;
     vm.topOtherInfo = [];//非前三
     vm.noData = 'true';
+    vm.currentArea='';
+
 
     /*--请求初始参数信息--*/
     //follower我的粉丝    following我的关注    intersection我的互粉
@@ -423,14 +425,24 @@
       vm.topOtherInfo = [];
       vm.isSpinner = true;
       console.log(num);
-      var address = ['ALL', 'SH', 'BJ', 'GZ', 'CD', 'WH', 'XA'];
+      var address=[
+        {area:'ALL',name:'全汉得'},
+        {area:'SH',name:'上海'},
+        {area:'BJ',name:'北京'},
+        {area:'GZ',name:'广州'},
+        {area:'CD',name:'成都'},
+        {area:'WH',name:'武汉'},
+        {area:'XA',name:'西安'}
+      ];
+      // var address = ['ALL', 'SH', 'BJ', 'GZ', 'CD', 'WH', 'XA'];
       var index = vm.colorAddressArr[7];
       if (num != vm.colorAddressArr[7]) {
         vm.colorAddressArr[num] = 'active-color';
         vm.colorAddressArr[index] = 'un-active-color';
         vm.colorAddressArr[7] = num;
       }
-      getTopInfo(address[num]);
+      vm.currentArea=address[num].name;
+      getTopInfo(address[num].area);
 
     }
 
