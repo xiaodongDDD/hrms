@@ -206,7 +206,7 @@ angular.module('customerModule')
                 var date = $filter('date')(new Date(), 'yyyy-MM-dd');
                 var transferParam = {
                   "customerId": $scope.customer.customerId,
-                  "transferBeforEmp": window.localStorage.empno,
+                  "transferBeforEmp": $scope.customer.saleEmployeeId,
                   "transferAfterEmp": $scope.items[$index].userId,
                   "effectiveDate": "",
                   "description": "转移原因"
