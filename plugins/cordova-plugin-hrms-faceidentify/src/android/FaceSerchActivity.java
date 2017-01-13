@@ -113,7 +113,7 @@ public class FaceSerchActivity extends Activity {
         setContentView(Utils.getResourceId(FaceSerchActivity.this, "activity_video", "layout"));
         ClientConfiguration conf = new ClientConfiguration();
         conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
-        conf.setSocketTimeout(30 * 1000); // socket超时，默认15秒
+        conf.setSocketTimeout(20 * 1000); // socket超时，默认15秒
         conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
         oss = new OSSClient(FaceSerchActivity.this, endpoint, credentialProvider,conf);
@@ -297,6 +297,8 @@ public class FaceSerchActivity extends Activity {
                             msg.setData(bundle);
                             handler.sendMessage(msg);
                         } catch (Exception e) {
+							Message msg = new Message();
+							handler.sendEmptyMessage(0x101);
                             e.printStackTrace();
                         }
                     }else{

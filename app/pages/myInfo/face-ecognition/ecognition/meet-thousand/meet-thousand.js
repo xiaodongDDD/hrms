@@ -177,6 +177,8 @@
     vm.topInfo = null;
     vm.topOtherInfo = [];//非前三
     vm.noData = 'true';
+    vm.currentArea='';
+
 
     /*--请求初始参数信息--*/
     //follower我的粉丝    following我的关注    intersection我的互粉
@@ -207,14 +209,24 @@
     vm.addressTab = addressTab;
     vm.faceScanner = faceScanner;
     vm.openHelpURl = openHelpURl;
-    vm.goPersonInfo=goPersonInfo;
+    vm.goPersonInfo = goPersonInfo;
 
     getSummaryInfo();//拉取概要信息
     rankingMutualFans(0);//
 
     $scope.$on('$ionicView.enter', function (e) {
-      getSummaryInfo();
-      queryRelation(relationType)
+      if (!vm.isRank) {
+        $ionicScrollDelegate.$getByHandle('rankHandle').scrollTop();
+        queryRelationParams = {
+          page: 1,
+          pageSize: 10,
+          type: ''
+        };
+        getSummaryInfo();
+        queryRelation(relationType)
+      }else{
+        getSummaryInfo();
+      }
     });
 
     //获取概要信息
@@ -315,8 +327,7 @@
 
     //上拉加载
     function loadMore() {
-      vm.isSpinner = false;
-      console.log('触发上拉');
+      //console.log('触发上拉');
       if (!vm.isRank) {
         queryRelationParams.type = relationType;
         queryRelationParams.page = queryRelationParams.page + 1;
@@ -336,7 +347,6 @@
           console.log(status)
         })
       }
-
     }
 
     //返回上级菜单
@@ -386,6 +396,7 @@
     }
 
     function fansTab(num) {
+      $ionicScrollDelegate.$getByHandle('rankHandle').scrollTop();
       vm.fansList = [];
       vm.isSpinner = true;
       var index = vm.colorFansTabArr[3];
@@ -414,18 +425,31 @@
       vm.topOtherInfo = [];
       vm.isSpinner = true;
       console.log(num);
-      var address = ['ALL', 'SH', 'BJ', 'GZ', 'CD', 'WH', 'XA'];
+      var address=[
+        {area:'ALL',name:'全汉得'},
+        {area:'SH',name:'上海'},
+        {area:'BJ',name:'北京'},
+        {area:'GZ',name:'广州'},
+        {area:'CD',name:'成都'},
+        {area:'WH',name:'武汉'},
+        {area:'XA',name:'西安'}
+      ];
+      
       var index = vm.colorAddressArr[7];
       if (num != vm.colorAddressArr[7]) {
         vm.colorAddressArr[num] = 'active-color';
         vm.colorAddressArr[index] = 'un-active-color';
         vm.colorAddressArr[7] = num;
       }
-      getTopInfo(address[num]);
+      vm.currentArea=address[num].name;
+      getTopInfo(address[num].area);
 
     }
 
     function rankUp() {
+      if (!vm.isRank) {
+        return;
+      }
 
       if (isHeaderBar == false) {
         isHeaderBar = true;
@@ -449,6 +473,10 @@
 
     function rankDown() {
 
+      if (!vm.isRank) {
+        return;
+      }
+
       if (isHeaderBar == true) {
         isHeaderBar = false;
         if (vm.isRank) {
@@ -468,7 +496,7 @@
     }
 
 
-    function faceScanner(value,$event) {
+    function faceScanner(value, $event) {
       $event.stopPropagation();
       if (value || relationType == 'follower') {
       } else {
@@ -598,7 +626,7 @@
     }
 
     function goPersonInfo(num) {
-      $state.go('tab.employeeDetailCrm3',{'employeeNumber':num})
+      $state.go('tab.employeeDetailCrm3', {'employeeNumber': num})
     }
 
   }

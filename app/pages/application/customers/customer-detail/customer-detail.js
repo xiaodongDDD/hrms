@@ -420,7 +420,12 @@ angular.module('customerModule')
             "addressDetails": "",
             "addressZipCode": ""
           };
-          $state.go('tab.addLinkman', {param: contact});
+          if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"||$ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2"){
+            $state.go('tab.addLinkman2', {param: contact});
+          }else{
+            $state.go('tab.addLinkman', {param: contact});
+          }
+        /*  $state.go('tab.addLinkman', {param: contact});*/
         }, function(){
           hmsPopup.showPopup('选取错误，请重新选择');
         });
@@ -828,19 +833,31 @@ angular.module('customerModule')
                 contact.customerId = "";
                 contact.fullName = "";
               }
-              $state.go('tab.addLinkman', {param: contact});
+              if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"||$ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2"){
+                $state.go('tab.addLinkman2', {param: contact});
+              }else{
+                $state.go('tab.addLinkman', {param: contact});
+              }
               $scope.crmScanCardModal.hide();
             } else {
               hmsPopup.hideLoading();
               hmsPopup.showPopup("没有找到匹配的客户");
-              $state.go('tab.addLinkman', {param: contact});
+              if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"||$ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2"){
+                $state.go('tab.addLinkman2', {param: contact});
+              }else{
+                $state.go('tab.addLinkman', {param: contact});
+              }
               $scope.crmScanCardModal.hide();
             }
           };
           customerSearchService.getSearchData(searchSuccessInit, $scope.searchParam)
         } else {
           hmsPopup.hideLoading();
-          $state.go('tab.addLinkman', {param: contact});
+          if($ionicHistory.viewHistory().backView.stateName=="tab.contactDetail"||$ionicHistory.viewHistory().backView.stateName=="tab.improveInformation2"){
+            $state.go('tab.addLinkman2', {param: contact});
+          }else{
+            $state.go('tab.addLinkman', {param: contact});
+          }
           $scope.crmScanCardModal.hide();
           console.log($scope.searchData);
         }

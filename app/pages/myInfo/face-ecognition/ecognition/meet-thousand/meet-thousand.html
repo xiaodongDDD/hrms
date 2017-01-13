@@ -101,14 +101,13 @@
       </div>
     </div>
   </div>
-  <ion-content class=" active-content" has-bouncing="false" style="margin-bottom:51px;" ng-style="vm.top"
-               on-swipe-down="vm.rankDown()" on-swipe-up="vm.rankUp()">
+  <ion-content class="active-content" has-bouncing="false" style="margin-bottom:51px;" ng-style="vm.top"
+               on-swipe-down="vm.rankDown()" on-swipe-up="vm.rankUp()" delegate-handle="rankHandle">
     <!-- <ion-refresher
        pulling-text="下拉刷新..."
        on-refresh="vm.doRefresh()">
      </ion-refresher>-->
     <ion-refresher on-refresh="vm.doRefresh()"
-
                    pulling-text="正在刷新数据..."
                    pulling-icon="ion-ios-loop">
     </ion-refresher>
@@ -120,7 +119,7 @@
       <div class="three-info">
         <img src="build/img/myInfo/meetThousand/BG-leadboard@3x.png">
         <div class="first-prize-portrait">
-          <img src="{{vm.topInfo.topList[0].photo}}" ng-click="vm.goPersonInfo(vm.topInfo.topList[0].empNo)">
+          <img ng-src="{{vm.topInfo.topList[0].photo}}" ng-click="vm.goPersonInfo(vm.topInfo.topList[0].empNo)">
         </div>
         <div class="first-prize-mark" >
           <img src="build/img/myInfo/meetThousand/1@3x.png" >
@@ -128,10 +127,10 @@
         <div class="first-prize-name">{{vm.topInfo.topList[0].empName}}</div>
         <div class="first-prize-score">{{vm.topInfo.topList[0].point}}</div>
         <div class="second-prize-portrait" ng-if="vm.topInfo.topList.length>=2">
-          <img src="{{vm.topInfo.topList[1].photo}}" ng-click="vm.goPersonInfo(vm.topInfo.topList[1].empNo)">
+          <img ng-src="{{vm.topInfo.topList[1].photo}}" ng-click="vm.goPersonInfo(vm.topInfo.topList[1].empNo)">
         </div>
         <div class="second-prize-mark" ng-if="vm.topInfo.topList.length>=2">
-          <img src="{{vm.rankImg[vm.topInfo.topList[1].rank-1]}}" >
+          <img ng-src="{{vm.rankImg[vm.topInfo.topList[1].rank-1]}}" >
         </div>
         <div class="second-prize-name" ng-if="vm.topInfo.topList.length>=2">
           {{vm.topInfo.topList[1].empName}}
@@ -141,10 +140,10 @@
         </div>
 
         <div class="third-prize-portrait" ng-if="vm.topInfo.topList.length>=3">
-          <img src="{{vm.topInfo.topList[2].photo}}" ng-click="vm.goPersonInfo(vm.topInfo.topList[2].empNo)">
+          <img ng-src="{{vm.topInfo.topList[2].photo}}" ng-click="vm.goPersonInfo(vm.topInfo.topList[2].empNo)">
         </div>
         <div class="third-prize-mark" ng-if="vm.topInfo.topList.length>=3">
-          <img src="{{vm.rankImg[vm.topInfo.topList[2].rank-1]}}">
+          <img ng-src="{{vm.rankImg[vm.topInfo.topList[2].rank-1]}}">
         </div>
         <div class="third-prize-name" ng-if="vm.topInfo.topList.length>=3">
           {{vm.topInfo.topList[2].empName}}
@@ -177,7 +176,7 @@
         <img src="build/img/myInfo/meetThousand/annual-meeting@3x.png">
       </div>
       <div class="not-start-text">
-        参加上海年会并签到，方可加入榜单哦~
+        参加{{vm.currentArea}}年会并签到，方可加入榜单哦~
       </div>
     </div>
     <div ng-if="!vm.isSpinner&&!vm.isRank" class="fans-list" ng-repeat="fans in vm.fansList track by $index"  ng-click="vm.goPersonInfo(fans.empNo)">
@@ -204,7 +203,7 @@
       </div>
     </div>
 
-    <ion-infinite-scroll ng-if="!vm.isRank&&vm.noData" on-infinite="vm.loadMore()" distance="1%"></ion-infinite-scroll>
+    <ion-infinite-scroll ng-if="!vm.isSpinner&&!vm.isRank&&vm.noData" on-infinite="vm.loadMore()" distance="1%"></ion-infinite-scroll>
   </ion-content>
   <div class="meetThousand-foot">
     <div class="right-line"></div>

@@ -1048,7 +1048,7 @@
       $scope.$broadcast('scroll.infiniteScrollComplete');
 
       if ($scope.page == 1)
-        $ionicScrollDelegate.$getByHandle('plan-scroll').scrollTop(true);
+      /*  $ionicScrollDelegate.$getByHandle('plan-scroll').scrollTop(true);*/
       $ionicScrollDelegate.$getByHandle('plan-scroll').resize();
 
       if (response.returnCode == "S") {

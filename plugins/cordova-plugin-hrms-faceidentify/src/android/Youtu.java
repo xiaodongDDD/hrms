@@ -235,8 +235,8 @@ public class Youtu {
 		connection.setRequestProperty("user-agent", "youtu-android-sdk");
 		connection.setRequestProperty("Authorization", mySign.toString());
 
-//		connection.setConnectTimeout(30000);
-//		connection.setReadTimeout(30000);
+		connection.setConnectTimeout(10000);
+		connection.setReadTimeout(15000);
 		connection.setDoOutput(true);
 		connection.setDoInput(true);
 		connection.setUseCaches(false);

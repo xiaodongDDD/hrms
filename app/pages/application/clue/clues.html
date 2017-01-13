@@ -32,8 +32,7 @@
           </div>
           <div class="clue-belong">
             <img src="build/img/application/opportunity/icon_leader_orange@3x.png"/>{{clue.saleEmployeeName}}
-            <img src="build/img/application/customer/icon_flat_blue@3x.png"/>{{clue.saleAreaName}}&nbsp;
-            <img src="build/img/application/opportunity/icon_team@3x.png"/>{{clue.saleTeamName}}
+            <img src="build/img/application/customer/icon_flat_blue@3x.png"/>{{clue.saleAreaName}}{{clue.saleTeamName == "" ? "" : (" - " + clue.saleTeamName)}}
           </div>
         </div>
       </div>
