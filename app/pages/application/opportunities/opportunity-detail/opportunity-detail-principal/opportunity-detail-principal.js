@@ -18,6 +18,7 @@ angular.module('customerModule')
     '$filter',
     'customerDetailService',
     '$timeout',
+    'opportunityDetailDataService',
     function ($scope,
               $state,
               hmsPopup,
@@ -31,7 +32,8 @@ angular.module('customerModule')
               $ionicScrollDelegate,
               $filter,
               customerDetailService,
-              $timeout) {
+              $timeout,
+              opportunityDetailDataService) {
       console.log("CustomerDetailContactCtrl");
       var url = baseConfig.basePath + "customer_collaborator";
       var data = {
@@ -39,7 +41,7 @@ angular.module('customerModule')
         "pageSize": 10,
         "customerId": window.localStorage.customerId
       };
-      $scope.showLeading=true;
+      //$scope.showLeading=true;
       $scope.searchModel = {
         searchValueKey: ""
       };
@@ -54,15 +56,17 @@ angular.module('customerModule')
       $scope.empno = window.localStorage.empno;//登陆人
       $scope.collaborators = [];
       $scope.leading_official = {};
-      $scope.showCrmLoading = true;
-      hmsHttp.post(url, data).success(function (data) {
+      //$scope.showCrmLoading = true;
+      $scope.leading_official=opportunityDetailDataService.getOpportunityEmployee();
+      console.log($scope.leading_official);
+/*      hmsHttp.post(url, data).success(function (data) {
         $scope.showCrmLoading = false;
-/*        $scope.collaborators = data.collaborators;
+/!*        $scope.collaborators = data.collaborators;
         for (var i = 0; i < $scope.collaborators.length; i++) {
           if ($scope.collaborators[i].shareType == "HCRM_SHARE_TEAM") {
             $scope.collaborators[i].name = $scope.collaborators[i].saleTeam;
           }
-        }*/
+        }*!/
         if(data.returnCode == 'E'){
           hmsPopup.showPopup(data.returnMsg);
           return ;
@@ -71,7 +75,7 @@ angular.module('customerModule')
       }).error(function (data) {
         hmsPopup.hideLoading();
         hmsPopup.showPopup(data.returnMsg);
-      });
+      });*/
       var invalidSuccess = function (result, index) {
         hmsPopup.hideLoading();
         if (result.returnCode == "S") {

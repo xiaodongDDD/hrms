@@ -1,21 +1,14 @@
 <div ng-controller="OpportunityDetailPrincipalCtrl" class="CustomerDetailCollaborators">
-  <div class="hideContent" ng-show="showCrmLoading">
-    <div class="hide-icon">
-      <ion-spinner icon="ios-small" class="spinner spinner-ios"></ion-spinner>
-    </div>
-  </div>
-  <div ng-hide="showCrmLoading">
     <ion-list>
-      <ion-item style="padding:0!important;background: #ffffff" ng-if="showLeading">
+      <ion-item style="padding:0!important;background: #ffffff" >
         <div class="row row-center" style="padding:0;height: 80px">
           <div class="col col-60" ng-click="goEmployeeDetail(leading_official.employeeCode)">
             <div class="row row-center">
               <div class="col">
-                <span style="font-size: 17px;color:#333333;margin-left:5px;">{{leading_official.saleEmployee}}</span>
+                <span style="font-size: 17px;color:#333333;margin-left:5px;">{{leading_official.saleEmployeeName}}</span>
               <span class="linkRole" style=" margin-left:10px; font-size: 14px;
-    color: #aaaaaa;">({{leading_official.employeeCode}})</span>
+    color: #aaaaaa;">({{leading_official.saleEmployeeCode}})</span>
               </div>
-
             </div>
             <div class="row row-center" style="    height: 30px;
     line-height: 30px;
@@ -26,7 +19,7 @@
     margin-bottom: 8px;">
               <div class="col">
                <span style="margin-right: 5px;color:#666666">
-              {{leading_official.saleArea}}
+              {{leading_official.saleAreaName}}
             </span>
               </div>
             </div>
@@ -39,7 +32,7 @@
             </div>
             <div class="row row-center">
               <div class="col item-phone">
-                <a href="tel:{{leading_official.phoneNumber}}" ng-if="empno!=leading_official.employeeCode">
+                <a href="tel:{{leading_official.phone}}" ng-if="empno!=leading_official.saleEmployeeCode">
                   <img src="build/img/contact/icon_phone_green@3x.png" style="width: 26px;">
                 </a>
               </div>
@@ -108,7 +101,6 @@
        </ion-item>
      </ion-list>
      <div class="last-div"></div>-->
-  </div>
 </div>
 
 <style>
