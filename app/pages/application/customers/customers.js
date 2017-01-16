@@ -572,7 +572,7 @@ angular.module('customerModule')
         'showDataModel': '$scope.showData.saleAreaName'
       }, {
         'key': 'team',
-        'interface': customerService.getSaleTeam,
+        'interface': customerService.getFilterSaleTeam,
         'params': [getSaleTeamSuccess,'',$scope.data.saleAreaId],
         'showKey': 'saleTeamName',
         'dataKey': 'saleTeamId',
@@ -1185,7 +1185,7 @@ angular.module('customerModule')
         });
       };
 
-      //所属团队
+      //所属团队新增
       this.getSaleTeam = function (success,keyWord,organizationId) {
         var params = {
           keyWord:keyWord,
@@ -1193,6 +1193,20 @@ angular.module('customerModule')
           orgType: "HCRM_SALE_TEAM"
         };
         hmsHttp.post(baseUrl + 'query_sale_team', params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          //hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
+
+      //所属团队筛选
+      this.getFilterSaleTeam = function (success,keyWord,organizationId) {
+        var params = {
+          organizationName:keyWord,
+          organizationId: organizationId
+        };
+        hmsHttp.post(baseUrl + 'query_team', params).success(function (result) {
           success(result);
         }).error(function (response, status) {
           //hmsPopup.showPopup(response);
