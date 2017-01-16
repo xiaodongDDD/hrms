@@ -140,6 +140,7 @@ angular.module('opportunityModule')
           $scope.estimates = result.opportunity_products;
           opportunityDetailDataService.setOpportunity($scope.opportunity);
           opportunityDetailDataService.setOpportunityItem('presells', $scope.estimates);
+          opportunityDetailDataService.setOpportunityEmployee(result.sale_employee);
           var paramCompetitors = {
             "opportunityId": window.localStorage.opportunityId
           };
@@ -261,6 +262,7 @@ angular.module('opportunityModule')
       //   /* hmsPopup.showPopup(result.returnMsg);*/
       // };
       $scope.showMenu = function () {
+        console.log(opportunityDetailDataService.getOpportunity().saleEmployeeId);
         $scope.statusTitle = $scope.opportunity.status == "HCRM_ENABLE" ? "停用商机" : "启用商机";
         if (ionic.Platform.isWebView()) {
           console.log("webView");
@@ -324,7 +326,7 @@ angular.module('opportunityModule')
                     var date = $filter('date')(new Date(), 'yyyy-MM-dd');
                     var transferParam = {
                       "opportunityId": param.opportunityId,
-                      "transferBeforEmp": $scope.userId,
+                      "transferBeforEmp": opportunityDetailDataService.getOpportunity().saleEmployeeId,
                       "transferAfterEmp": $scope.items[$index].userId,
                       "effectiveDate": "",
                       "description": "转移原因"
@@ -391,7 +393,7 @@ angular.module('opportunityModule')
                   var date = $filter('date')(new Date(), 'yyyy-MM-dd');
                   var transferParam = {
                     "opportunityId": param.opportunityId,
-                    "transferBeforEmp":$scope.userId,
+                    "transferBeforEmp": opportunityDetailDataService.getOpportunity().saleEmployeeId,
                     "transferAfterEmp": $scope.items[$index].userId,
                     "effectiveDate":  "",
                     "description": "转移原因"
@@ -1109,7 +1111,7 @@ angular.module('opportunityModule')
     function (hmsPopup) {
 
       this.opportunity = {};
-
+      this.opportunityEmployee={};
       function cloneObj(obj) {
         var o;
         if (obj.constructor == Object) {
@@ -1140,7 +1142,12 @@ angular.module('opportunityModule')
       this.setOpportunity = function (opportunity) {
         this.opportunity = cloneObj(opportunity);
       };
-
+      this.getOpportunityEmployee = function () {
+        return this.opportunityEmployee;
+      };
+      this.setOpportunityEmployee=function(employee){
+        this.opportunityEmployee = cloneObj(employee);
+      };
       this.setOpportunityItem = function (itemName, value) {
         if (value.slice)
           this.opportunity[itemName] = value.clone();
