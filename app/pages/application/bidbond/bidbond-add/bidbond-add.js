@@ -237,27 +237,36 @@ angular.module('bidbondModule')
 			}, {
 				'key': 'company',
 				'interface': addbidbondService.getCompany,
-				'params': [getCompanySuccess, $scope.nowPage, $scope.pageSize],
+				'params': [getCompanySuccess, '',$scope.nowPage, $scope.pageSize],
 				'showKey': 'companyName',
 				'dataKey': 'theCompany',
 				'dataModel': '$scope.data.companyId',
-				'showDataModel': '$scope.showData.companyName'
+				'showDataModel': '$scope.showData.companyName',
+        'searchInterface': addbidbondService.getCompany,
+        'searchParams': getCompanySearchSuccess,
+        'needShowMore': true
 			}, {
 				'key': 'project',
 				'interface': addbidbondService.getProject,
-				'params': [getProjectSuccess, $scope.nowPage, $scope.pageSize],
+				'params': [getProjectSuccess, '',$scope.nowPage, $scope.pageSize],
 				'dataKey': 'projectId',
 				'showKey': 'projectName',
 				'dataModel': '$scope.data.projectId',
-				'showDataModel': '$scope.showData.projectName'
+				'showDataModel': '$scope.showData.projectName',
+        'searchInterface': addbidbondService.getProject,
+        'searchParams': getProjectSearchSuccess,
+        'needShowMore': true
 			}, {
 				'key': 'unitId',
 				'interface': addbidbondService.getUnitId,
-				'params': [getUnitIdSuccess, $scope.nowPage, $scope.pageSize],
+				'params': [getUnitIdSuccess,'', $scope.nowPage, $scope.pageSize],
 				'dataKey': 'hrUnitId',
 				'showKey': 'hrFullUnitName',
 				'dataModel': '$scope.data.unitId',
-				'showDataModel': '$scope.showData.hrFullUnitName'
+				'showDataModel': '$scope.showData.hrFullUnitName',
+        'searchInterface': addbidbondService.getUnitId,
+        'searchParams': getUnitSearchSuccess,
+        'needShowMore': true
 			}, {
 				'key': 'currency',
 				'interface': showValueInList,
@@ -758,22 +767,20 @@ angular.module('bidbondModule')
 				if(response.returnCode == 'S') {
 					$scope.items = $scope.items.concat(response.customer_list);
 					$scope.moreDataCanBeLoaded = response.customer_list.length == $scope.pageSize;
-				}
+				} else {
+          $scope.moreDataCanBeLoaded = false;
+        }
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 			};
 
 			//	商机
 			var getOpportunitySuccess = function(response) {
-				$scope.showCrmLoading = true;
+				$scope.showCrmLoading = false;
 				console.log(response);
 				if(response.returnCode == 'S') {
-					$scope.showCrmLoading = false;
 					$scope.moreDataCanBeLoaded = response.opportunity_list.length == $scope.pageSize;
 					$scope.items = $scope.items.concat(response.opportunity_list);
 					$scope.sourceItems = $scope.items.clone();
-				} else {
-					$scope.showCrmLoading = false;
-					$scope.moreDataCanBeLoaded = false;
 				}
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 			};
@@ -803,6 +810,17 @@ angular.module('bidbondModule')
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 			};
 
+      var getCompanySearchSuccess = function(response) {
+        $scope.showCrmLoading = false;
+        if(response.returnCode == 'S') {
+          $scope.moreDataCanBeLoaded = response.company_list.length == $scope.pageSize;
+          $scope.items = $scope.items.concat(response.company_list);
+        } else {
+          $scope.moreDataCanBeLoaded = false;
+        }
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      };
+
 			// 所属项目
 			var getProjectSuccess = function(response) {
 				$scope.showCrmLoading = false;
@@ -816,6 +834,17 @@ angular.module('bidbondModule')
 				}
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 			};
+
+      var getProjectSearchSuccess = function(response) {
+        $scope.showCrmLoading = false;
+        if(response.returnCode == 'S') {
+          $scope.moreDataCanBeLoaded = response.project_list.length == $scope.pageSize;
+          $scope.items = $scope.items.concat(response.project_list);
+        } else {
+          $scope.moreDataCanBeLoaded = false;
+        }
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      };
 
 			// 所属部门
 			var getUnitIdSuccess = function(response) {
@@ -831,12 +860,23 @@ angular.module('bidbondModule')
 				$scope.$broadcast('scroll.infiniteScrollComplete');
 			};
 
+      var getUnitSearchSuccess = function(response) {
+        $scope.showCrmLoading = false;
+        if(response.returnCode == 'S') {
+          $scope.moreDataCanBeLoaded = response.unit_list.length == $scope.pageSize;
+          $scope.items = $scope.items.concat(response.unit_list);
+        } else {
+          $scope.moreDataCanBeLoaded = false;
+        }
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      };
+
 			//=====================================================================================
 
 			//根据时间戳刷新页面值列表
 			addbidbondService.getValueList(getValueListSuccess, bidbond_value_list);
 
-		
+
 			//			$scope.$watch('data.customerId', function(newValue, oldValue) {
 			//				$scope.nowPage = 1;
 			//				$scope.selectTargets[6].params = [getOpportunitySuccess, $scope.nowPage, $scope.pageSize, newValue];
@@ -952,11 +992,11 @@ angular.module('bidbondModule')
 					$scope.searchModel.searchValueKey = "";
 					$scope.selectTargets[1].params = [getOpportunitySuccess, $scope.searchModel.searchValueKey, $scope.nowPage, $scope.pageSize, $scope.data.customerId];
 				}
-				
+
 				console.log(showKey);
 				console.log(data);
 				console.log($scope.items[$index].customerName);
-				
+
 				if($scope.nowSelectTarget['key'] == 'business') {
 					$scope.nowPage = 1;
 					$scope.searchModel.searchValueKey = "";
@@ -1144,11 +1184,11 @@ angular.module('bidbondModule')
 			}
 
 			//获取费用所属公司（公司属性）
-			this.getCompany = function(success, page, pageSize) {
+			this.getCompany = function(success,keyWord, page, pageSize) {
 				var params = {
-					"page": 1,
-					"pageSize": 10,
-					"keyWord": ""
+					"page": page,
+					"pageSize": pageSize,
+					"keyWord": keyWord
 				};
 				hmsHttp.post(baseUrl + 'inside_company', params).success(function(result) {
 					success(result);
@@ -1158,11 +1198,11 @@ angular.module('bidbondModule')
 			};
 
 			//获取费用所属项目
-			this.getProject = function(success, page, pageSize, queryType) {
+			this.getProject = function(success,keyWord, page, pageSize) {
 				var params = {
-					"page": 1,
-					"pageSize": 10,
-					"keyWord": ""
+					"page": page,
+					"pageSize": pageSize,
+					"keyWord": keyWord
 				};
 				hmsHttp.post(baseUrl + 'query_projects', params).success(function(result) {
 					success(result);
@@ -1174,9 +1214,9 @@ angular.module('bidbondModule')
 			//获取费用所属部门
 			this.getUnitId = function(success, keyWord, page, pageSize) {
 				var params = {
-					"page": 1,
-					"pageSize": 10,
-					"keyWord": ""
+					"page": page,
+					"pageSize": pageSize,
+					"keyWord": keyWord
 				};
 				hmsHttp.post(baseUrl + 'query_units', params).success(function(result) {
 					success(result);
