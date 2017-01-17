@@ -514,8 +514,8 @@ angular.module('clueModule')
         'showDataModel' : '$scope.siftingShowData.saleArea'
       },{
         'key' : 'sale_team',
-        'interface' :  opportunityService.getSaleTeam,
-        'params' : [getTeamSuccess, $scope.siftingKey.saleAreaId],
+        'interface' :  opportunityService.getFilterSaleTeam,
+        'params' : [getTeamSuccess,'', $scope.siftingKey.saleAreaId],
         'showKey' : 'saleTeamName',
         'dataKey' : 'saleTeamId',
         'dataModel' : '$scope.siftingKey.saleTeamId',
@@ -559,8 +559,16 @@ angular.module('clueModule')
         var dataKey = $scope.nowSelectTarget['dataKey'];
         eval('$scope.items = [{' + showKey + ': "空",' + dataKey + ': ""}]');
         $scope.sourceTargetData = cloneObj($scope.nowSelectTarget);
-        if(key == 'sale_team')
-          $scope.selectTargets[3].params = [getTeamSuccess, $scope.siftingKey.saleAreaId];
+        if(key == 'sale_team'){
+          $scope.organizationName="";
+          console.log( $scope.siftingKey.saleAreaId);
+          if($scope.siftingKey.saleAreaId==undefined){
+            $scope.siftingKey.saleAreaId="";
+            $scope.selectTargets[3].params = [getTeamSuccess,'',$scope.siftingKey.saleAreaId];
+          }else{
+            $scope.selectTargets[3].params = [getTeamSuccess,$scope.organizationName, $scope.siftingKey.saleAreaId];
+          }
+        }
         if($scope.nowSelectTarget.key != 'year')
           $scope.showLoading = true;
         console.log($scope.nowSelectTarget);
@@ -583,7 +591,7 @@ angular.module('clueModule')
         if($scope.nowSelectTarget['key'] == 'sale_area'){
           $scope.siftingKey.saleTeamId = '';
           $scope.siftingShowData.saleTeam = '';
-          $scope.selectTargets[3].params = [getTeamSuccess, $scope.siftingKey.saleAreaId];
+          $scope.selectTargets[3].params = [getTeamSuccess,'', $scope.siftingKey.saleAreaId];
         }
         $scope.showSelectDiv();
       };
@@ -690,7 +698,6 @@ angular.module('clueModule')
              $http) {
 
       var baseUrl = baseConfig.basePath;
-
       this.getClues = function(success, params, failure){
         hmsHttp.post(baseUrl + 'query_clue_list', params).success(function(result) {
           success(result);

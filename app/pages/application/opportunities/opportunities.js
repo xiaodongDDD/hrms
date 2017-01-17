@@ -572,8 +572,8 @@ angular.module('opportunityModule')
         'showDataModel' : '$scope.siftingShowData.saleArea'
       },{
         'key' : 'sale_team',
-        'interface' :  opportunityService.getSaleTeam,
-        'params' : [getTeamSuccess, $scope.siftingKey.saleAreaId],
+        'interface' :  opportunityService.getFilterSaleTeam,
+        'params' : [getTeamSuccess,'', $scope.siftingKey.saleAreaId],
         'showKey' : 'saleTeamName',
         'dataKey' : 'saleTeamId',
         'dataModel' : '$scope.siftingKey.saleTeamId',
@@ -617,8 +617,19 @@ angular.module('opportunityModule')
         $scope.sourceTargetData = cloneObj($scope.nowSelectTarget);
 
         //其余特殊情况
-        if(key == 'sale_team')
-          $scope.selectTargets[6].params = [getTeamSuccess, $scope.siftingKey.saleAreaId];
+        if(key == 'sale_team'){
+          console.log("团队");
+          $scope.organizationName="";
+          console.log( $scope.siftingKey.saleAreaId);
+          if($scope.siftingKey.saleAreaId==undefined){
+            $scope.siftingKey.saleAreaId="";
+            $scope.selectTargets[6].params = [getTeamSuccess,'',$scope.siftingKey.saleAreaId];
+          }else{
+            $scope.selectTargets[6].params = [getTeamSuccess,$scope.organizationName, $scope.siftingKey.saleAreaId];
+          }
+
+        }
+
         if($scope.nowSelectTarget.interface != showValueInList && $scope.nowSelectTarget.key != 'year')
           $scope.showLoading = true;
 
@@ -645,7 +656,7 @@ angular.module('opportunityModule')
         if($scope.nowSelectTarget['key'] == 'sale_area'){
           $scope.siftingKey.saleTeamId = '';
           $scope.siftingShowData.saleTeam = '';
-          $scope.selectTargets[6].params = [getTeamSuccess, $scope.siftingKey.saleAreaId];
+          $scope.selectTargets[6].params = [getTeamSuccess,'',$scope.siftingKey.saleAreaId];
         }
         $scope.showSelectDiv();
       };
@@ -971,7 +982,19 @@ angular.module('opportunityModule')
         });
 
       };
-
+      //筛选团队
+      this.getFilterSaleTeam = function (success,keyWord,organizationId) {
+        var params = {
+          organizationName:keyWord,
+          organizationId: organizationId
+        };
+        hmsHttp.post(baseUrl + 'query_team', params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          //hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
       //得到值列表
       this.getValueList = function(success, list) {
         var params = {lookupList : []};
