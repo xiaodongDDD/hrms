@@ -86,6 +86,13 @@
     </ion-infinite-scroll>
   </ion-content>
   <ion-footer-bar class="foot-bar" style="bottom: 0px;" ng-if="!batchProcessFlag">
+    <!--<div ng-if="listStatus.todo.selected" class="buttons " style="left: 6%" ng-click="allApprove()">
+      <button >全审批</button>
+    </div>-->
+    <div class="row buttons " ng-if="listStatus.todo.selected" >
+      <button class="button button-clear ts-button-left" ng-click="allApprove(0)">同意审批</button>
+      <button class="button button-clear ts-button-center" ng-click="allApprove(-1)">拒绝审批</button>
+    </div>
     <div class="buttons">
       <button class="button button-clear filter-icon" ng-click="filterWorkFlowInfo()">
       </button>

@@ -601,6 +601,44 @@ angular.module('tsApproveModule')
         tsListParams.params.p_project_id = "";
         tsListParams.params.p_project_person_number = "";
       };
+
+      $scope.allApprove=function (approveFlag) {
+        var params={
+            params: {
+            p_employee_number: window.localStorage.empno,
+            p_approve_flag:approveFlag    /* "AGREE"       --拒绝传 REFUSE*/
+          }
+        };
+        var url=baseConfig.businessPath+'/api_timesheet/all_timesheet_approve';
+        var handleAllApprove=function () {
+          hmsHttp.post(url,params).success(function (response) {
+              hmsPopup.hideLoading();
+              if(response.status=='S'){
+                hmsPopup.showShortCenterToast('审批成功！');
+              }else{
+                hmsPopup.showShortCenterToast('审批失败！');
+              }
+            $timeout(function () {
+              $scope.tsListRefresh();
+            }, 400);
+          }).error(function (e) {
+            hmsPopup.hideLoading();
+          })
+        };
+        var submit = function (buttonIndex) {
+          if (baseConfig.debug) {
+            console.log('You selected button ' + buttonIndex);
+          }
+          if (buttonIndex == 1) {
+            hmsPopup.showLoading('批量处理工作流中');
+            handleAllApprove();
+          } else {
+          }
+        };
+        hmsPopup.confirm("是否进行全审批?", "", submit);
+
+      }
+
     }])
   /**
    * @params:

@@ -672,4 +672,16 @@ angular.module('applicationModule')
             hmsPopup.hideLoading();
           });
         };
+
+        this.handleAllApprove=function (success, error, params) {
+          var url = baseConfig.businessPath + "/workflow_common/wfl_all_approve";
+          var params = params;
+          hmsHttp.post(url, params).success(function (result) {
+            hmsPopup.hideLoading();
+            success(result);
+          }).error(function (response) {
+            hmsPopup.hideLoading();
+            error(response);
+          });
+        }
       }]);

@@ -691,4 +691,42 @@ angular.module('applicationModule')
           console.log('WorkFLowListCtrl.$destroy');
         }
       });
+
+
+      $scope.allApprove=function (num) {
+       var params={
+         "params":{
+         "p_employee_number":window.localStorage.empno,
+         "p_approve_flag":num,
+         "p_comment":''
+         }
+       };
+       console.log(params);
+        var success = function (result) {
+          if(result.status == 'S'){
+            if(result.error_count && result.error_count != 0){
+              hmsPopup.showPopup(result.message);
+            }else{
+              refreshTodoList();
+              hmsPopup.showPopup('全审批完成!');
+            }
+          }else{
+            hmsPopup.showPopup('全审批失败!');
+          }
+        };
+        var error = function(){
+        };
+        var submit = function (buttonIndex) {
+          if (baseConfig.debug) {
+            console.log('You selected button ' + buttonIndex);
+          }
+          if (buttonIndex == 1) {
+            hmsPopup.showLoading('批量处理工作流中');
+            workFLowListService.handleAllApprove(success,error,params);
+          } else {
+          }
+        };
+        hmsPopup.confirm("是否工作流全审批?", "", submit);
+      };
+
     }]);
