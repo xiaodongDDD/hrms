@@ -1,0 +1,69 @@
+<ion-view view-title="报销单列表" class="expenseQueryTabList-view">
+  
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">报销单列表</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="showHelp()">
+        <i class=" icon ion-ios-information-outline" style="color: #aaaaaa;font-size: 20px;margin-right: 3px;" ></i>
+      </button> 
+      <button class="button button-clear icon-left" ng-click="openCreateExpense()">
+        <i class="icon ion-plus " style="color: #20CBD3;font-size: 5px;"></i>
+      </button>
+    </div>
+  </ion-header-bar>
+
+  <ion-header-bar class="bar-subheader" style="background-color: #20CBD3;">
+    <div class="button-bar bar-light" style="width: 60%;margin: 1px auto;">
+      <div id="noApprove" class="button approve-button"
+           style="color: #20CBD3;background-color: #D1F4F6;border-bottom-left-radius: 5px;border-top-left-radius: 5px;"
+           ng-click="changeButton('toSubmit')">未提交
+      </div>
+      <div id="alreadyApprove" class="button approve-button"
+           style="color: white;background-color: #20CBD3;border-bottom-right-radius: 5px;border-top-right-radius: 5px;"
+           ng-click="changeButton('submitted')">已提交
+      </div>
+    </div>
+  </ion-header-bar>
+
+  <ion-content>
+
+    <ion-list style="padding: 0;margin: 0;">
+      <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+      <ion-item ng-repeat="item in expList" ng-click="openExpenseDetail(item.status,$index)"
+                style="padding: 0;margin: 0;font-size:14px;border:none;border-bottom:   1px silver solid ">
+
+        <div style="width: 100%;margin: 0;padding: 0">
+          <div style="width: 100%;margin: 0;padding: 3px;">
+            <i class="ion-ios-paper-outline" style="margin-right: 5px;color: #007069;font-size:16px;"></i>{{item.proj}}
+          </div>
+          <div style="width: 100%;margin: 0;padding: 3px;">
+            <div style="float: left"><i class="ion-ios-calendar-outline"
+                                        style="margin-right: 5px;color: #ba9d37;font-size:16px;"></i>{{item.ra_date}}
+            </div>
+            <div style="float: left;position: absolute;left: 40%;"><i class="icon ion-social-yen-outline"
+                                                                      style="margin-right: 5px;"></i>{{item.amount}}
+            </div>
+            <div style="float: left;position: absolute;left: 60%;">{{item.status}}</div>
+            <div style="float: left;position: absolute;left: 90%;"><i class="icon ion-chevron-right icon-accessory"></i>
+            </div>
+          </div>
+          <br/>
+
+          <div style="width: 100%;margin: 0;padding: 3px;">
+            <i class="ion-ios-barcode-outline" style="margin-right: 5px;color: chocolate;font-size:16px;"></i>{{item.descrpt}}
+          </div>
+        </div>
+
+        <ion-option-button class="button-assertive" ng-click="removeData(item.status,$index)">
+          删除
+        </ion-option-button>
+
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

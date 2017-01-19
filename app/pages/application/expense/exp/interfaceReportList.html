@@ -1,0 +1,68 @@
+<ion-view view-title="" class="interfaceReportList-view">
+
+   <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons"> 
+      <button class="button button-icon icon ion-ios-arrow-back" ng-click="$ionicGoBack()">
+        <span class="back-text">返回</span>
+      </button>
+    </div> 
+    <h1 class="title">记一笔选择</h1>
+    <div class="buttons" side="secondary">
+      <button class="button button-clear" ng-click="confirmAccounts()">
+        确定
+      </button>
+    </div>
+  </ion-header-bar>
+
+  <ion-content>
+    <ion-list>
+      <ion-item class="xbr-f-ion-item" modifier="tappable" ng-repeat="account in interfaceReportList">
+        <label class="checkbox checkbox--list-item">
+          <div class="xbr-f-div">
+
+            <div class="xbr-f-div-1">
+              <div class="xbr-flag-div-11">
+                {{account.dateFrom}}
+              </div>
+              <div class="xbr-flag-div-12">
+                至
+              </div>
+              <div class="xbr-flag-div-13">
+                {{account.dateTo}}
+              </div>
+            </div>
+
+            <br/>
+
+            <div class="xbr-f-div-2">
+              <div>
+                <input type="checkbox" ng-model="account.Selected" ng-true-value="'YES'" ng-false-value="'NO'">
+              </div>
+            </div>
+            <br/>
+
+            <div class="xbr-f-div-3">
+              <div>
+                {{account.expObject_desc}}
+              </div>
+
+              <div>
+                <i class="icon ion-ios-location"></i>{{account.place}}
+              </div>
+
+              <div>
+                {{account.amount}}元
+              </div>
+            </div>
+          </div>
+          <div class="xbr-f-div-a">
+            {{account.memo}}
+          </div>
+
+        </label>
+
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+</ion-view>
