@@ -656,7 +656,9 @@ angular.module('applicationModule')
         var error = function (result) {
         };
 
-        applicationService.fetchMenuList(success);
+        //applicationService.fetchMenuList(success);
+
+        success(applicationService.getAppData());
 
       };
 

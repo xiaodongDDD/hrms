@@ -1,16 +1,7 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <translate xmlns:android="http://schemas.android.com/apk/res/android"
     android:interpolator="@android:anim/linear_interpolator"
     android:duration="800"
     android:fromYDelta="100%p"
     android:toYDelta="0%p">
-=======
-<?xml version="1.0" encoding="utf-8"?>
-<translate xmlns:android="http://schemas.android.com/apk/res/android"
-    android:interpolator="@android:anim/linear_interpolator"
-    android:duration="800"
-    android:fromYDelta="100%p"
-    android:toYDelta="0%p">
->>>>>>> develop
 </translate>

@@ -1031,6 +1031,7 @@ angular.module('applicationModule')
           }
         },
 
+        //确认信息
         needSave: function () {
           var needs = [];
           var lov, datepicker;
@@ -1063,6 +1064,7 @@ angular.module('applicationModule')
               lov.value = $scope.needList[i].lov.value;
               needs.push(lov);
             } else if ($scope.needList[i].type == 'datepicker') {
+              //console.log('datepicker.$scope.needList[i].dateValue' + $scope.needList[i].dateValue)
               datepicker = {
                 default: '',
                 name: '',
@@ -1076,7 +1078,7 @@ angular.module('applicationModule')
               datepicker.required = $scope.needList[i].required;
               datepicker.title = $scope.needList[i].title;
               datepicker.type = $scope.needList[i].type;
-              datepicker.value = $scope.needList[i].value;
+              datepicker.value = HmsDateFormat.getDateString($scope.needList[i].value);
               needs.push(datepicker);
             } else {
               needs.push($scope.needList[i]);
@@ -1510,35 +1512,10 @@ angular.module('applicationModule')
 
                     }
                     if ($scope.needList[i].type == 'datepicker') {
-                      dpIndex = i;
-                      defaultValue = $scope.needList[i].value;
-                      $scope.needList[i].datepickerObject = {
-                        titleLabel: '日期选择',  //Optional
-                        todayLabel: '今天',  //Optional
-                        closeLabel: '关闭',  //Optional
-                        setLabel: '确定',  //Optional
-                        setButtonType: 'button-assertive',  //Optional
-                        todayButtonType: 'button',  //Optional
-                        closeButtonType: 'button',  //Optional
-                        inputDate: new Date(), //Optional
-                        mondayFirst: true,  //Optional
-                        disabledDates: [], //Optional
-                        weekDaysList: ["日", "一", "二", "三", "四", "五", "六"], //Optional
-                        monthList: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"], //Optional
-                        templateType: 'popup', //Optional
-                        showTodayButton: 'true', //Optional
-                        modalHeaderColor: 'bar-positive', //Optional
-                        modalFooterColor: 'bar-positive', //Optional
-                        from: new Date(1900, 0, 1), //Optional
-                        to: new Date(2101, 0, 1),  //Optional
-                        dateFormat: ' yyyy - MM - dd ', //Optional
-                        closeOnSelect: false, //Optional
-                        dateModel: defaultValue,
-                        callback: function (val) { //Mandatory
-                          this.dateModel = $filter('date')(val, 'yyyy-MM-dd');
-                          $scope.needList[dpIndex].value = this.dateModel;
-                        }
-                      };
+                      if($scope.needList[i].value && $scope.needList[i].value != ''){
+                        $scope.needList[i].valueString = $scope.needList[i].value;
+                        $scope.needList[i].value = new Date($scope.needList[i].valueString.replace(/-/,"/"))
+                      }
                     }
                   }
                 }
