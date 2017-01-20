@@ -694,6 +694,10 @@ angular.module('applicationModule')
 
 
       $scope.allApprove=function (num) {
+        if($scope.list.length==0){
+          hmsPopup.showShortCenterToast('暂待待办事项！');
+          return;
+        }
        var params={
          "params":{
          "p_employee_number":window.localStorage.empno,

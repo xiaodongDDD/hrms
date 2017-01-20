@@ -603,6 +603,11 @@ angular.module('tsApproveModule')
       };
 
       $scope.allApprove=function (approveFlag) {
+        if($scope.listInfoArray.listArray.length==0){
+          hmsPopup.showShortCenterToast('暂待无审批数据！');
+          return;
+        }
+
         var params={
             params: {
             p_employee_number: window.localStorage.empno,
