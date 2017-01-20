@@ -1,7 +1,8 @@
 <ion-view view-title="待办事项明细" class="workflow-detail">
   <ion-header-bar align-title="center" style="background:none">
     <div class="buttons">
-      <button ng-if="showBackbtn" class="button button-icon icon ion-ios-arrow-left" ng-click="$ionicGoBack()" style="color: white;">
+      <button ng-if="showBackbtn" class="button button-icon icon ion-ios-arrow-left" ng-click="$ionicGoBack()"
+              style="color: white;">
       </button>
     </div>
     <h1 class="title" style="color: white">待办事项明细</h1>
@@ -40,7 +41,7 @@
     </div>
 
 
-    <div class="hms-hide-content" ng-if="LoadingPushData || LoadingModalData" >
+    <div class="hms-hide-content" ng-if="LoadingPushData || LoadingModalData">
       <hms-common-loading></hms-common-loading>
     </div>
 
@@ -109,11 +110,16 @@
               <div class="hms-singal-array-key">
                 转正日期
               </div>
-              <div ng-if="!isWeixinWebview" class="hms-singal-array-value" ng-bind="applicationEmployeeDetail.trial_date">
+              <div ng-if="!isWeixinWebview" class="hms-singal-array-value"
+                   ng-style="inputIosStyle()" style="height:19px;padding:0px;appearance:none;-webkit-appearance:none;float: right"
+                   ng-bind="applicationEmployeeDetail.trial_date">
               </div>
               <input ng-if="isWeixinWebview" type="date" class="hms-singal-array-value"
-              ng-style="inputIosStyle()" style="height:19px;padding:0px;appearance:none;-webkit-appearance:none;" ng-model="applicationEmployeeDetail.inputDate"
-              ng-focus="applicationFullMemberUtil.inputDateStart()" ng-change="applicationFullMemberUtil.inputDateIng()" ng-blur="applicationFullMemberUtil.inputDateEnd()"/>
+                     ng-style="inputIosStyle()" style="height:19px;padding:0px;appearance:none;-webkit-appearance:none;"
+                     ng-model="applicationEmployeeDetail.inputDate"
+                     ng-focus="applicationFullMemberUtil.inputDateStart()"
+                     ng-change="applicationFullMemberUtil.inputDateIng()"
+                     ng-blur="applicationFullMemberUtil.inputDateEnd()"/>
             </div>
             <div class="hms-singal-array-line">
               <div class="hms-singal-array-key">
@@ -398,14 +404,17 @@
             </div>
 
             <div ng-if="need.type=='datepicker'">
-              <ionic-datepicker bg-if="!isWeixinWebview" input-obj="need.datepickerObject">
+              <!--<ionic-datepicker>
                 <input ng-class="{true:'required',false:''}[need.required=='Y' && need.value=='']"
                        style="width: 100%;color:#333333;height: 24px;text-align: right;background-color: #fff"
                        readonly ng-model="need.datepickerObject.dateModel">
-              </ionic-datepicker>
-              <input bg-if="isWeixinWebview" type="date" class="hms-singal-array-value"
-              ng-style="inputIosStyle()" style="height:19px;padding:0px;" ng-model="applicationEmployeeDetail.inputDate"
-              ng-focus="applicationFullMemberUtil.inputDateStart()" ng-change="applicationFullMemberUtil.inputDateIng()" ng-blur="applicationFullMemberUtil.inputDateEnd()"/>
+              </ionic-datepicker>-->
+
+              <input type="date" class="hms-singal-array-value"
+                     ng-style="inputIosStyle()"
+                     style="height:19px;padding:0px;appearance:none;-webkit-appearance:none;float:right"
+                     ng-model="need.value"/>
+
             </div>
 
             <div ng-if="need.type=='checkbox'">

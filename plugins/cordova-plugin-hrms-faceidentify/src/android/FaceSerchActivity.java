@@ -325,6 +325,32 @@ public class FaceSerchActivity extends Activity {
             if(timer!=null){
                 timer.schedule(task, 3000, 3000);
             }
+        }else if(phoneName!=null && !phoneName.isEmpty() && phoneName.contains("X800")){
+            //开启定时器进行获取视频流图片检测
+            textv_face_info.setText("请将人脸放入圆圈内");
+            TimerTask task = new TimerTask(){
+                public void run() {
+                    Message message = new Message();
+                    message.what = 0x103;
+                    handler.sendMessage(message);
+                }
+            };
+            if(timer!=null){
+                timer.schedule(task, 3000, 3000);
+            }
+        }else if(phoneName!=null && !phoneName.isEmpty() && phoneName.contains("vivo X7Plus")){
+            //开启定时器进行获取视频流图片检测
+            textv_face_info.setText("请将人脸放入圆圈内");
+            TimerTask task = new TimerTask(){
+                public void run() {
+                    Message message = new Message();
+                    message.what = 0x103;
+                    handler.sendMessage(message);
+                }
+            };
+            if(timer!=null){
+                timer.schedule(task, 3000, 3000);
+            }
         }else if(params.getMaxNumDetectedFaces() > 0){
             if(faceView != null){
                 faceView.clearFaces();

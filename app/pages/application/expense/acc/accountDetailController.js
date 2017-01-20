@@ -535,14 +535,14 @@ angular.module("applicationModule")
       var Photos = keepAccount.data.photos;
       //var promise= keepAccount.uploadData(form,Photos);
       //var promise= keepAccount.uploadDataByJosn(keepAccount.data);
-      var promise = keepAccount.uploadDataV2(form, Photos);
+      //var promise = keepAccount.uploadDataV2(form, Photos);
 
-      promise.then(
+      /*promise.then(
         function (response) {
           //var code=getResponseCode(response);
           console.log(angular.toJson(response));
           var code = response.head.code;
-          if (code == "success") {
+          if (code == "success") {*/
             //接受返回参数
             //keepAccount.data.expenseDetailId=response.body.expenseDetailId;
 
@@ -658,7 +658,7 @@ angular.module("applicationModule")
             );
 
 
-          } else if (code == "E") {
+          /*} else if (code == "E") {
             $ionicLoading.hide();
             dialog.showAlert("E", "上传失败" + angular.toJson(response));
 
@@ -681,7 +681,7 @@ angular.module("applicationModule")
           showMessage("网络连接错误...." + angular.toJson(err));
           //uploadProgressModal.hide();
 
-        });  // end of 上传
+        });  // end of 上传*/
 
     }
 

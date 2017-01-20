@@ -173,7 +173,7 @@ angular.module("applicationModule")
           // 相册文件选择上传
           if (index == 0) {
             console.log("相册");
-            $scope.selectPhotoSource("PhotoLibary");
+            $scope.selectPhotoSource2("PhotoLibary");
           } else if (index == 1) {
             console.log("相机");
             // 拍照上传

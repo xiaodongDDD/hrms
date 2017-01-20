@@ -18,9 +18,9 @@ angular.module("applicationModule")
   .controller('expenseDetailController', [
       '$scope', 'expenseApply', 'keepAccount', 'dialog',
       'expenseObject', '$state', '$http', '$ionicLoading',
-      '$q', 'baseConfig','hmsHttp',
+      '$q', 'baseConfig','hmsHttp','$ionicHistory',
     function ($scope, expenseApply, keepAccount, dialog, expenseObject,
-      $state, $http, $ionicLoading, $q, baseConfig,hmsHttp) {
+      $state, $http, $ionicLoading, $q, baseConfig,hmsHttp, $ionicHistory) {
 
     $scope.isshow=true;
     if(window.localStorage.AlertPage=="" || window.localStorage.AlertPage==undefined )
@@ -200,7 +200,8 @@ angular.module("applicationModule")
           $ionicLoading.hide();
           // showMessage("提交成功");
           dialog.showAlert("I", "提交成功");
-          $state.go('tab.exp_main');
+          //$state.go('tab.exp_main');
+          $ionicHistory.goBack();
           var promise = expenseApply.queryTabList('toSubmit')
           promise.then(function (response) {
             if (response["status"] == "S") {
