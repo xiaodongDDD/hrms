@@ -561,8 +561,16 @@ angular.module('applicationModule')
         if (baseConfig.debug) {
           console.log("appItem " + angular.toJson(appItem));
         }
+
         if (appItem.destUrl != "") {
-          $state.go(appItem.destUrl);
+
+          if(appItem.localMenuFlag == 'Y'){
+            $state.go(appItem.destUrl);
+          }
+          else{
+            window.open(appItem.destUrl, '_system', 'location=yes');
+          }  
+
         }
       };
 
@@ -656,7 +664,7 @@ angular.module('applicationModule')
         var error = function (result) {
         };
 
-        //applicationService.fetchMenuList(success);
+        applicationService.fetchMenuList(success);
 
         success(applicationService.getAppData());
 
