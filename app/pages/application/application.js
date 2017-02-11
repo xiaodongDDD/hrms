@@ -568,8 +568,13 @@ angular.module('applicationModule')
             $state.go(appItem.destUrl);
           }
           else{
-            window.open(appItem.destUrl, '_system', 'location=yes');
-          }  
+            var platform = 'Android';
+            if(ionic.Platform.isIOS()){
+              platform = 'iOS';
+            }
+            var link = '?platform=' + platform + '&employee=' + window.localStorage.empno;
+            cordova.InAppBrowser.open(appItem.destUrl,'_self');
+          }
 
         }
       };

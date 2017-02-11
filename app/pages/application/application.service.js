@@ -179,6 +179,7 @@ angular.module('applicationModule')
             imageUrl: data.imageUrl,
             destUrl: data.destUrl,
             hasWorkflowNum: hasWorkflowNum,
+            localMenuFlag: data.localMenuFlag,
             count: 0
           }
 
