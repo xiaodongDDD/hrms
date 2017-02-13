@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "A template with angular1.x, ionic, typescript, webpack",
   "keywords": [
-    "util",
+    "browser",
+    "client",
     "functional",
     "server",
-    "client",
-    "browser"
+    "util"
   ],
   "repository": {
     "type": "git",
@@ -54,18 +54,18 @@
     "webpack": "^1.12.14"
   },
   "cordovaPlugins": [
-    "cordova-plugin-device",
+    "cordova-plugin-camera",
     "cordova-plugin-console",
-    "cordova-plugin-whitelist",
+    "cordova-plugin-device",
+    "cordova-plugin-file",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard",
-    "cordova-plugin-camera",
+    "cordova-plugin-whitelist",
     "cordova-sqlite-storage",
-    "cordova-plugin-file"
+    "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }

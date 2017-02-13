@@ -293,7 +293,7 @@ angular.module('applicationModule')
         var realParam = {
           params:usedParam
         };
-        console.debug(angular.toJson(realParam,true));
+        //console.debug(angular.toJson(realParam,true));
         var url = baseConfig.businessPath+"/ticket_apply_info/flyback_submit";
         hmsHttp.post(url,realParam).success(function(result){
           $scope.showLoading = false;
@@ -628,7 +628,7 @@ angular.module('applicationModule')
              hmsPopup.showVeryShortCenterToast("请填写去程航班号");
            }else if($scope.applyInfo.passengerName == "请选择乘机人"){
              hmsPopup.showVeryShortCenterToast("请选择乘机人");
-           }else if( (startYear<presentYear) || ( (startYear==presentYear)&&(startMonth<presentMonth) ) || ( (startYear==presentYear)&&(startMonth==presentMonth)&&(startDay<presentDay) ) ){
+           }else if( ($scope.applyInfo.ticketSupplement == false) && ((startYear<presentYear) || ( (startYear==presentYear)&&(startMonth<presentMonth) ) || ( (startYear==presentYear)&&(startMonth==presentMonth)&&(startDay<presentDay) )) ){
              hmsPopup.showVeryShortCenterToast("出发日期不能早于今天");
            }else{
              /////校验完毕,开始提交
@@ -657,7 +657,7 @@ angular.module('applicationModule')
              hmsPopup.showVeryShortCenterToast("请填写去程航班号");
            }else if($scope.applyInfo.passengerName == "请选择乘机人"){
              hmsPopup.showVeryShortCenterToast("请选择乘机人");
-           }else if( (startYear<presentYear) || ( (startYear==presentYear)&&(startMonth<presentMonth) ) || ( (startYear==presentYear)&&(startMonth==presentMonth)&&(startDay<presentDay) ) ){
+           }else if( ($scope.applyInfo.ticketSupplement == false) && ((startYear<presentYear) || ( (startYear==presentYear)&&(startMonth<presentMonth) ) || ( (startYear==presentYear)&&(startMonth==presentMonth)&&(startDay<presentDay) )) ){
              hmsPopup.showVeryShortCenterToast("出发日期不能早于今天");
            }else{
              postParam.p_project_id = $scope.applyInfo.projectId;
@@ -709,7 +709,7 @@ angular.module('applicationModule')
              hmsPopup.showVeryShortCenterToast("请填写回程航班号");
            }else if($scope.applyInfo.passengerName == "请选择乘机人"){
              hmsPopup.showVeryShortCenterToast("请选择乘机人");
-           }else if( (startYear<presentYear) || ( (startYear==presentYear)&&(startMonth<presentMonth) ) || ( (startYear==presentYear)&&(startMonth==presentMonth)&&(startDay<presentDay) ) ){
+           }else if( ($scope.applyInfo.ticketSupplement == false) && ((startYear<presentYear) || ( (startYear==presentYear)&&(startMonth<presentMonth) ) || ( (startYear==presentYear)&&(startMonth==presentMonth)&&(startDay<presentDay) )) ){
              hmsPopup.showVeryShortCenterToast("出发日期不能早于今天");
            }else if( (startYear>endYear) ||((startYear==endYear)&&(startMonth>endMonth)) || ((startYear==endYear)&&(startMonth==endMonth)&&(startDay>endDay))){
              hmsPopup.showShortCenterToast('去程日期不能晚于回程日期');
@@ -752,7 +752,7 @@ angular.module('applicationModule')
              hmsPopup.showVeryShortCenterToast("请填写回程航班号");
            }else if($scope.applyInfo.passengerName == "请选择乘机人"){
              hmsPopup.showVeryShortCenterToast("请选择乘机人");
-           }else if( (startYear<presentYear) || ( (startYear==presentYear)&&(startMonth<presentMonth) ) || ( (startYear==presentYear)&&(startMonth==presentMonth)&&(startDay<presentDay) ) ){
+           }else if( ($scope.applyInfo.ticketSupplement == false) && ((startYear<presentYear) || ( (startYear==presentYear)&&(startMonth<presentMonth) ) || ( (startYear==presentYear)&&(startMonth==presentMonth)&&(startDay<presentDay) )) ){
              hmsPopup.showVeryShortCenterToast("出发日期不能早于今天");
            }else if( (startYear>endYear) ||((startYear==endYear)&&(startMonth>endMonth)) || ((startYear==endYear)&&(startMonth==endMonth)&&(startDay>endDay))){
              hmsPopup.showShortCenterToast('去程日期不能晚于回程日期');
