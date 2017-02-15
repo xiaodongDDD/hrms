@@ -43,7 +43,6 @@ angular.module('applicationModule')
       $scope.showClearEmployee = false; //默认隐藏搜索框的清除按钮
       $scope.showClearBranch = false; //默认隐藏搜索框的清除按钮
       $scope.showClearSubject = false; //默认隐藏搜索框的清除按钮
-      $scope.showTime = false; //默认隐藏时间范围
 
       //初始化搜索数据
       {
@@ -252,7 +251,6 @@ angular.module('applicationModule')
             converterDate(endDate, $scope.datetimeTo);
             dateFrom = $scope.datetimeFrom.year + '-' + $scope.datetimeFrom.month + '-' + $scope.datetimeFrom.day;
             dateTo = $scope.datetimeTo.year + '-' + $scope.datetimeTo.month + '-' + $scope.datetimeTo.day;
-            $scope.showTime = true;
             $scope.$apply();
           } catch (e) {
             hmsPopup.showVeryShortCenterToast('选择日历出现错误!');
@@ -451,150 +449,64 @@ angular.module('applicationModule')
       $scope.doQuery = function () {
         // $scope.toggleQuery(); // mod by ciwei
         // console.log(window.localStorage.empno);
-        if(!$scope.showTime){
-          $scope.showPopup('请选择时间范围!');
-        }else{
-          if (!$scope.employeeName && !$scope.branchName && !$scope.subjectName) {
-            $scope.showPopup('请至少选择一个查询条件!');
-          }
-          if (!$scope.employeeName && $scope.branchName && $scope.subjectName) {
-            $scope.showPopup('请单独查询部门或项目!');
-          }
-          if ($scope.employeeName && $scope.branchName && $scope.subjectName) {
-            $scope.showPopup('部门和项目不能同时查询!');
-          }
-          if (($scope.employeeName && !$scope.branchName && !$scope.subjectName) || ($scope.employeeName && $scope.branchName && !$scope.subjectName) || ($scope.employeeName && !$scope.branchName && $scope.subjectName)) {
-            $state.go('tab.rsDetailPerson',
-              {
-                dateFrom: dateFrom,
-                dateTo: dateTo,
-                employeeName: $scope.employeeName,
-                employeeCode: $scope.employeeCode,
-                branchName: $scope.branchName,
-                branchId: $scope.branchId,
-                unitId: $scope.unitId,
-                subjectName: $scope.subjectName,
-                subjectId: $scope.subjectId,
-                dimission: $scope.dimission
-              }
-            );
-          }
-          if (!$scope.employeeName && $scope.branchName && !$scope.subjectName) {
-            $state.go('tab.rsDetailBranch',
-              {
-                dateFrom: dateFrom,
-                dateTo: dateTo,
-                employeeName: $scope.employeeName,
-                employeeCode: $scope.employeeCode,
-                branchName: $scope.branchName,
-                branchId: $scope.branchId,
-                unitId: $scope.unitId,
-                subjectName: $scope.subjectName,
-                subjectId: $scope.subjectId,
-                dimission: $scope.dimission
-              }
-            );
-          }
-          if (!$scope.employeeName && !$scope.branchName && $scope.subjectName) {
-            $state.go('tab.rsDetailSubject',
-              {
-                dateFrom: dateFrom,
-                dateTo: dateTo,
-                employeeName: $scope.employeeName,
-                employeeCode: $scope.employeeCode,
-                branchName: $scope.branchName,
-                branchId: $scope.branchId,
-                unitId: $scope.unitId,
-                subjectName: $scope.subjectName,
-                subjectId: $scope.subjectId,
-                dimission: $scope.dimission
-              }
-            );
-          }
+        if (!$scope.employeeName && !$scope.branchName && !$scope.subjectName) {
+          $scope.showPopup('请至少选择一个查询条件!');
         }
-
+        if (!$scope.employeeName && $scope.branchName && $scope.subjectName) {
+          $scope.showPopup('请单独查询部门或项目!');
+        }
+        if ($scope.employeeName && $scope.branchName && $scope.subjectName) {
+          $scope.showPopup('部门和项目不能同时查询!');
+        }
+        if (($scope.employeeName && !$scope.branchName && !$scope.subjectName) || ($scope.employeeName && $scope.branchName && !$scope.subjectName) || ($scope.employeeName && !$scope.branchName && $scope.subjectName)) {
+          $state.go('tab.rsDetailPerson',
+            {
+              dateFrom: dateFrom,
+              dateTo: dateTo,
+              employeeName: $scope.employeeName,
+              employeeCode: $scope.employeeCode,
+              branchName: $scope.branchName,
+              branchId: $scope.branchId,
+              unitId: $scope.unitId,
+              subjectName: $scope.subjectName,
+              subjectId: $scope.subjectId,
+              dimission: $scope.dimission
+            }
+          );
+        }
+        if (!$scope.employeeName && $scope.branchName && !$scope.subjectName) {
+          $state.go('tab.rsDetailBranch',
+            {
+              dateFrom: dateFrom,
+              dateTo: dateTo,
+              employeeName: $scope.employeeName,
+              employeeCode: $scope.employeeCode,
+              branchName: $scope.branchName,
+              branchId: $scope.branchId,
+              unitId: $scope.unitId,
+              subjectName: $scope.subjectName,
+              subjectId: $scope.subjectId,
+              dimission: $scope.dimission
+            }
+          );
+        }
+        if (!$scope.employeeName && !$scope.branchName && $scope.subjectName) {
+          $state.go('tab.rsDetailSubject',
+            {
+              dateFrom: dateFrom,
+              dateTo: dateTo,
+              employeeName: $scope.employeeName,
+              employeeCode: $scope.employeeCode,
+              branchName: $scope.branchName,
+              branchId: $scope.branchId,
+              unitId: $scope.unitId,
+              subjectName: $scope.subjectName,
+              subjectId: $scope.subjectId,
+              dimission: $scope.dimission
+            }
+          );
+        }
       }
-      //滑动定位
-      // $scope.scroll = function () {
-      //   var scrollLeft = $ionicScrollDelegate.$getByHandle('tableBody').getScrollPosition().left;
-      //   $ionicScrollDelegate.$getByHandle('tableHeader').scrollTo(scrollLeft, 0);
-      // }
-      //
-      // //自适应列宽
-      // $scope.resetWidth = function (index, str) {
-      //   var newWidth = str.length * 0.875 + 0.5;
-      //   if (newWidth > 3.5) {
-      //     var className = "column-" + index;
-      //     var elements = document.getElementsByClassName(className);
-      //     for (var i = 0; i < elements.length; i++) {
-      //       elements[i].style.width = newWidth + 'rem';
-      //     }
-      //   }
-      // }
-      //
-      // //员工、部门、分组、项目选择与清选
-      // $scope.employeeChoose = function (item) {
-      //   $scope.queryParams.employeeId = item.value;
-      //   $scope.queryParams.employeeName = item.name;
-      //   $scope.queryParams.employee = item.name;
-      //   $scope.employeeModal.hide();
-      // }
-      // $scope.clearEmployeeChoose = function () {
-      //   $scope.queryParams.employeeId = '';
-      //   $scope.queryParams.employeeName = '';
-      //   $scope.queryParams.employee = '';
-      //   $scope.employeeModal.hide();
-      // }
-      //
-      // $scope.departmentChoose = function (item) {
-      //   $scope.queryParams.departmentId = item.value;
-      //   $scope.queryParams.department = item.name;
-      //   $scope.departmentModal.hide();
-      //
-      //   var urlValueList = window.localStorage.wsurl + "/resource_query/get_sub_dept_lists";
-      //   var paramValueList = '{"params":{"p_employee":"' + window.localStorage.empno + '","p_department_id":"' + item.value + '"}}';
-      //   console.log(paramValueList);
-      //   hmsHttp.post(urlValueList, paramValueList, $scope).success(function (response) {
-      //     if (response.status == "S") {
-      //       $scope.groupItems = response.subDeptLists;
-      //       console.log("拉取列表成功" + angular.toJson($scope.groupItems));
-      //       if ($scope.groupItems == "") {
-      //         console.log("该部门没有分组");
-      //         //$ionicLoading.show({template: 'aaaaaaaaaaaaaaaaaaaaa！', duration: 2000});
-      //       }
-      //     } else {
-      //       console.log("拉取列表失败：" + response.returnMsg);
-      //     }
-      //   }).error(function (response, status) {
-      //     console.log("hmsHttp error ");
-      //   });
-      //
-      // }
-      // //部门清选
-      // $scope.clearDepartmentChoose = function () {
-      //   $scope.queryParams.department = '';
-      //   $scope.queryParams.departmentId = '';
-      //   $scope.queryParams.departmentName = '';
-      //   $scope.queryParams.group = '';
-      //   $scope.queryParams.groupId = '';
-      //   $scope.queryParams.groupName = '';
-      //   $scope.departmentModal.hide();
-      // }
-      //
-      // $scope.groupChoose = function (item) {
-      //   $scope.queryParams.groupId = item.value;
-      //   $scope.queryParams.group = item.name;
-      //   $scope.groupModal.hide();
-      // }
-      // //分组清选
-      // $scope.clearGroupChoose = function () {
-      //   $scope.queryParams.group = '';
-      //   $scope.queryParams.groupId = '';
-      //   $scope.queryParams.groupName = '';
-      //   $scope.groupModal.hide();
-      // }
-
-
     }
   ]);
 
