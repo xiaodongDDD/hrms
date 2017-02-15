@@ -56,7 +56,7 @@ angular.module('messageModule')
       if (baseConfig.debug) {
         console.log('window.localStorage.myInfoImg ' + window.localStorage.myInfoImg);
       }
-      
+
       $ionicPlatform.ready(function () {
         try {
           navigator.splashscreen.hide();
@@ -521,7 +521,7 @@ angular.module('messageModule')
 
           }
         } else if ($location.path() == '/tab/application' || $location.path() == '/tab/contact' ||
-          $location.path() == '/tab/myInfo' || $location.path() == '/login' || $location.path() == '/gesture-lock') {
+          $location.path() == '/tab/myInfo' || $location.path() == '/login' || $location.path() == '/gesture-lock'|| $location.path() == '/tab/contactCrm'|| $location.path() == '/tab/new-application') {
           if ($rootScope.backButtonPressedOnceToExit) {
             ionic.Platform.exitApp();
           } else {
