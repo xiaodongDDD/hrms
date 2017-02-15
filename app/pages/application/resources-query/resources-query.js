@@ -43,6 +43,7 @@ angular.module('applicationModule')
       $scope.showClearEmployee = false; //默认隐藏搜索框的清除按钮
       $scope.showClearBranch = false; //默认隐藏搜索框的清除按钮
       $scope.showClearSubject = false; //默认隐藏搜索框的清除按钮
+      $scope.showTime = false; //默认隐藏时间范围
 
       //初始化搜索数据
       {
@@ -251,6 +252,7 @@ angular.module('applicationModule')
             converterDate(endDate, $scope.datetimeTo);
             dateFrom = $scope.datetimeFrom.year + '-' + $scope.datetimeFrom.month + '-' + $scope.datetimeFrom.day;
             dateTo = $scope.datetimeTo.year + '-' + $scope.datetimeTo.month + '-' + $scope.datetimeTo.day;
+            $scope.showTime = true;
             $scope.$apply();
           } catch (e) {
             hmsPopup.showVeryShortCenterToast('选择日历出现错误!');
@@ -449,62 +451,66 @@ angular.module('applicationModule')
       $scope.doQuery = function () {
         // $scope.toggleQuery(); // mod by ciwei
         // console.log(window.localStorage.empno);
-        if (!$scope.employeeName && !$scope.branchName && !$scope.subjectName) {
-          $scope.showPopup('请至少选择一个查询条件!');
-        }
-        if (!$scope.employeeName && $scope.branchName && $scope.subjectName) {
-          $scope.showPopup('请单独查询部门或项目!');
-        }
-        if ($scope.employeeName && $scope.branchName && $scope.subjectName) {
-          $scope.showPopup('部门和项目不能同时查询!');
-        }
-        if (($scope.employeeName && !$scope.branchName && !$scope.subjectName) || ($scope.employeeName && $scope.branchName && !$scope.subjectName) || ($scope.employeeName && !$scope.branchName && $scope.subjectName)) {
-          $state.go('tab.rsDetailPerson',
-            {
-              dateFrom: dateFrom,
-              dateTo: dateTo,
-              employeeName: $scope.employeeName,
-              employeeCode: $scope.employeeCode,
-              branchName: $scope.branchName,
-              branchId: $scope.branchId,
-              unitId: $scope.unitId,
-              subjectName: $scope.subjectName,
-              subjectId: $scope.subjectId,
-              dimission: $scope.dimission
-            }
-          );
-        }
-        if (!$scope.employeeName && $scope.branchName && !$scope.subjectName) {
-          $state.go('tab.rsDetailBranch',
-            {
-              dateFrom: dateFrom,
-              dateTo: dateTo,
-              employeeName: $scope.employeeName,
-              employeeCode: $scope.employeeCode,
-              branchName: $scope.branchName,
-              branchId: $scope.branchId,
-              unitId: $scope.unitId,
-              subjectName: $scope.subjectName,
-              subjectId: $scope.subjectId,
-              dimission: $scope.dimission
-            }
-          );
-        }
-        if (!$scope.employeeName && !$scope.branchName && $scope.subjectName) {
-          $state.go('tab.rsDetailSubject',
-            {
-              dateFrom: dateFrom,
-              dateTo: dateTo,
-              employeeName: $scope.employeeName,
-              employeeCode: $scope.employeeCode,
-              branchName: $scope.branchName,
-              branchId: $scope.branchId,
-              unitId: $scope.unitId,
-              subjectName: $scope.subjectName,
-              subjectId: $scope.subjectId,
-              dimission: $scope.dimission
-            }
-          );
+        if(!$scope.showTime){
+          $scope.showPopup('请选择时间范围!');
+        }else{
+          if (!$scope.employeeName && !$scope.branchName && !$scope.subjectName) {
+            $scope.showPopup('请至少选择一个查询条件!');
+          }
+          if (!$scope.employeeName && $scope.branchName && $scope.subjectName) {
+            $scope.showPopup('请单独查询部门或项目!');
+          }
+          if ($scope.employeeName && $scope.branchName && $scope.subjectName) {
+            $scope.showPopup('部门和项目不能同时查询!');
+          }
+          if (($scope.employeeName && !$scope.branchName && !$scope.subjectName) || ($scope.employeeName && $scope.branchName && !$scope.subjectName) || ($scope.employeeName && !$scope.branchName && $scope.subjectName)) {
+            $state.go('tab.rsDetailPerson',
+              {
+                dateFrom: dateFrom,
+                dateTo: dateTo,
+                employeeName: $scope.employeeName,
+                employeeCode: $scope.employeeCode,
+                branchName: $scope.branchName,
+                branchId: $scope.branchId,
+                unitId: $scope.unitId,
+                subjectName: $scope.subjectName,
+                subjectId: $scope.subjectId,
+                dimission: $scope.dimission
+              }
+            );
+          }
+          if (!$scope.employeeName && $scope.branchName && !$scope.subjectName) {
+            $state.go('tab.rsDetailBranch',
+              {
+                dateFrom: dateFrom,
+                dateTo: dateTo,
+                employeeName: $scope.employeeName,
+                employeeCode: $scope.employeeCode,
+                branchName: $scope.branchName,
+                branchId: $scope.branchId,
+                unitId: $scope.unitId,
+                subjectName: $scope.subjectName,
+                subjectId: $scope.subjectId,
+                dimission: $scope.dimission
+              }
+            );
+          }
+          if (!$scope.employeeName && !$scope.branchName && $scope.subjectName) {
+            $state.go('tab.rsDetailSubject',
+              {
+                dateFrom: dateFrom,
+                dateTo: dateTo,
+                employeeName: $scope.employeeName,
+                employeeCode: $scope.employeeCode,
+                branchName: $scope.branchName,
+                branchId: $scope.branchId,
+                unitId: $scope.unitId,
+                subjectName: $scope.subjectName,
+                subjectId: $scope.subjectId,
+                dimission: $scope.dimission
+              }
+            );
+          }
         }
 
       }

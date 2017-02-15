@@ -13,30 +13,48 @@
 
     <div class=" div-query animated {{toggleUpDownAnimate}}"
          ng-class="{true: '',false: 'hidden-query'}[toggleUpDownFlag]">
-      <div class="row div-block" style="padding: 1.2rem .5rem">
-        <div class="col col-50" ng-click="selectDateFrom()">
-          <label for="formDate" class="label-date">起始日期</label>
-          <div class="row select-date" id="formDate">
-            <div class="col col-50">
-              <div class="month">{{datetimeFrom.year}}</div>
-              <div class="week">{{datetimeFrom.month}}月</div>
+      <div class=" div-block">
+          <div class="div-block-middle" ng-click="selectDateFrom()">
+            <div class="row label-row">
+              <span class="col col-20">时间 :</span>
+              <div class="col col-75">
+                <div class="text-time" ng-if="showTime">从：{{datetimeFrom.year}}年{{datetimeFrom.month}}月{{datetimeFrom.day}}日</div>
+                <div class="text-time" ng-if="showTime">至：{{datetimeTo.year}}年{{datetimeTo.month}}月{{datetimeTo.day}}日</div>
+                <div class="font-select" ng-if="!showTime">请选择</div>
+              </div>
             </div>
-            <div class=" col col-50 day">{{datetimeFrom.day}}</div>
           </div>
+          <!--<div class="div-block-middle">-->
+            <!--<div class="row label-row">-->
+              <!--<span class="col col-20">至 :</span>-->
+              <!--<div class="text-time col col-75">{{datetimeTo.year}}年{{datetimeTo.month}}月{{datetimeTo.day}}日</div>-->
+              <!--&lt;!&ndash;<span class="font-select col col-20">请选择</span>&ndash;&gt;-->
+            <!--</div>-->
+          <!--</div>-->
 
-          <!--<input type="date" id="formDate" class="input-date" ng-model="queryParams.dateFrom">-->
-        </div>
-        <div class="col col-50" style="border-left: 1px solid #e8e8e8;" ng-click="selectDateTo()">
-          <label for="toDate" class="label-date">结束日期</label>
-          <div class="row select-date" id="toDate">
-            <div class="col col-50">
-              <div class="month">{{datetimeTo.year}}</div>
-              <div class="week">{{datetimeTo.month}}月</div>
-            </div>
-            <div class=" col col-50 day">{{datetimeTo.day}}</div>
-          </div>
-          <!--<input type="date" id="toDate" class="input-date" ng-model="queryParams.dateTo">-->
-        </div>
+        <!--<div class="col col-50" ng-click="selectDateFrom()">-->
+          <!--<label for="formDate" class="label-date">起始日期</label>-->
+          <!--<div class="row select-date" id="formDate">-->
+            <!--<div class="col col-50">-->
+              <!--<div class="month">{{datetimeFrom.year}}</div>-->
+              <!--<div class="week">{{datetimeFrom.month}}月</div>-->
+            <!--</div>-->
+            <!--<div class=" col col-50 day">{{datetimeFrom.day}}</div>-->
+          <!--</div>-->
+
+          <!--&lt;!&ndash;<input type="date" id="formDate" class="input-date" ng-model="queryParams.dateFrom">&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="col col-50" style="border-left: 1px solid #e8e8e8;" ng-click="selectDateTo()">-->
+          <!--<label for="toDate" class="label-date">结束日期</label>-->
+          <!--<div class="row select-date" id="toDate">-->
+            <!--<div class="col col-50">-->
+              <!--<div class="month">{{datetimeTo.year}}</div>-->
+              <!--<div class="week">{{datetimeTo.month}}月</div>-->
+            <!--</div>-->
+            <!--<div class=" col col-50 day">{{datetimeTo.day}}</div>-->
+          <!--</div>-->
+          <!--&lt;!&ndash;<input type="date" id="toDate" class="input-date" ng-model="queryParams.dateTo">&ndash;&gt;-->
+        <!--</div>-->
       </div>
       <div class="div-block" style="padding: .01rem .5rem 0;margin-top: .5rem">
         <div class="div-block-middle" style="border-bottom: 1px solid #e8e8e8">

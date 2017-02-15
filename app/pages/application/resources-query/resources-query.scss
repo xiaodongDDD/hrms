@@ -120,6 +120,10 @@
     border-radius: 4px;
     background-color: #fff;
     box-shadow: 0 2px 2px #ccc;
+    .text-time{
+      text-align: right;
+      line-height: 1rem;
+    }
   }
 
   .label-date {
@@ -226,7 +230,7 @@
     max-width: 75%;
   }
   .font-select{
-    color: #ccc;
+    color: #aaa;
     text-align: right;
   }
 
