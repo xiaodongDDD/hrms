@@ -100,6 +100,9 @@ Android测试环境
 3.测试环境打包 
   iOS版本 Android 打包 通用插件下载
   
+  cordova plugin rm phonegap-plugin-barcodescanner
+  cordova plugin add http://hpm.hand-china.com/diffusion/PHONEGAPPLUGINBARCODESCANNER/phonegap-plugin-barcodescanner.git
+  
   cordova plugin rm com.hand.scancard
   cordova plugin add http://hpm.hand-china.com/diffusion/SCANCARD/cordova-plugin-scancard.git
   

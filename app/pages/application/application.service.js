@@ -31,14 +31,13 @@ angular.module('applicationModule')
             "menuSequence": 2,
             "userPrivileges": "N"
           }, {
-            "menuCode": "CONTRACT_MANAGE",
-            "menuType": "OFFICE",
-            "menuName": "合同管理",
-            "imageUrl": "build/img/application/schedule@3x.png",
-            "destUrl": "tab.contractlist",
-            "hasWorkflowNum": "Y",
-            "menuSequence": 3,
-            "userPrivileges": "Y"
+            "menuCode": "BLANK",
+            "menuType": "",
+            "menuName": "",
+            "imageUrl": "",
+            "destUrl": "",
+            "hasWorkflowNum": "",
+            "menuSequence": ""
           }, {
             "menuCode": "BLANK",
             "menuType": "",
@@ -131,30 +130,29 @@ angular.module('applicationModule')
             "menuSequence": 5,
             "userPrivileges": "N"
           }, {
-            "menuCode": "CONTACTQUICK",
-            "menuType": "EMPLOYEE",
-            "menuName": "意见收集",
-            "imageUrl": "build/img/application/feedback@3x.png",
-            "destUrl": "tab.test",
-            "hasWorkflowNum": "N",
-            "menuSequence": 6,
-            "userPrivileges": "N"
+            "menuCode": "BLANK",
+            "menuType": "",
+            "menuName": "",
+            "imageUrl": "",
+            "destUrl": "",
+            "hasWorkflowNum": "",
+            "menuSequence": ""
           }, {
-            "menuCode": "JIYIBI",
-            "menuType": "EMPLOYEE",
-            "menuName": "记一笔",
-            "imageUrl": "build/img/application/feedback@3x.png",
-            "destUrl": "tab.acc_main",
-            "hasWorkflowNum": "N",
-            "menuSequence": "7"
+            "menuCode": "BLANK",
+            "menuType": "",
+            "menuName": "",
+            "imageUrl": "",
+            "destUrl": "",
+            "hasWorkflowNum": "",
+            "menuSequence": ""
           }, {
-            "menuCode": "EXPENSELIST",
-            "menuType": "EMPLOYEE",
-            "menuName": "报销单",
-            "imageUrl": "build/img/application/feedback@3x.png",
-            "destUrl": "tab.expense",
-            "hasWorkflowNum": "N",
-            "menuSequence": "7"
+            "menuCode": "BLANK",
+            "menuType": "",
+            "menuName": "",
+            "imageUrl": "",
+            "destUrl": "",
+            "hasWorkflowNum": "",
+            "menuSequence": ""
           }]
         },
         "con_status": "S"
@@ -170,8 +168,13 @@ angular.module('applicationModule')
         angular.forEach(menuType, function (data, index) {
 
           var hasWorkflowNum = false;
+          var localMenuFlag = 'Y';
           if (data.hasWorkflowNum == 'Y') {
             hasWorkflowNum = true;
+          }
+
+          if (data.localMenuFlag) {
+            localMenuFlag = data.localMenuFlag;
           }
 
           var menuItem = {

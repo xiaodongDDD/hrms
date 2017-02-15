@@ -89,5 +89,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "phonegap-plugin-barcodescanner": {
+        "source": {
+            "type": "local",
+            "path": "/Users/gusenlin/Desktop/phonegap-plugin-barcodescanner"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
