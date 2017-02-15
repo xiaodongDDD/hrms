@@ -1084,24 +1084,48 @@ angular.module('opportunityModule')
         $scope.showData.cusMajorIndustry = response.majorIndustryName;
         $scope.showData.cusSubIndustry = response.subIndustryName;
         $scope.showData.incomeScale = response.incomeScaleName;
+        $scope.showData.industry= response.majorIndustryName;
         $scope.showData.isListed = response.isListed;
         if($scope.showData.cusMajorIndustry != '')
           $scope.showData.cusIndustry = $scope.showData.cusMajorIndustry;
+        $scope.showData.industry= $scope.showData.cusMajorIndustry;
         if($scope.showData.cusSubIndustry != '')
           $scope.showData.cusIndustry += " | " + $scope.showData.cusSubIndustry;
         $scope.data.incomeScale = response.incomeScale;
+        $scope.showData.industry +=  " | " + $scope.showData.cusSubIndustry;
+        $scope.data.majorIndustry=response.majorIndustry;
+        //if($scope.isCustomerIndustry){
+        //$scope.showData.cusMajorIndustry = response.majorIndustry;
+        //  $scope.data.cusMajorIndustry = response.majorIndustry;
+        ////} else {
+        //  //$scope.showData.majorIndustry = industry.industryName;
+        //  $scope.data.majorIndustry = response.subIndustry;
+        //}
+        //if($scope.isCustomerIndustry){
+        //  $scope.showData.cusSubIndustry = industry.industryName;
+        //  $scope.showData.cusIndustry = $scope.showData.cusMajorIndustry + " | " + $scope.showData.cusSubIndustry;
+        //  $scope.data.cusSubIndustry = industry.industryId;
+        //} else {
+        $scope.showData.subIndustry =  response.subIndustryName;
+        //$scope.showData.industry = $scope.showData.majorIndustry + " | " +  response.subIndustryName;
+        $scope.data.subIndustry = response.subIndustry;
+        //}
         console.log(response);
         if(!$scope.promoteFlag && !$scope.customerDataFlag)
           $scope.showSelectDiv();
       };
 
       var initYear = function(){
+        var ms = 60 * (1000 * 60 * 60 * 24);
+        var date = new Date();
+        var newDate = new Date(date.getTime() + ms);
+        var yearMax=newDate.getFullYear();
         $scope.showCrmLoading = false;
         $scope.items = [];
-        for(var i = 1989; i <= 2120; i++){
+        for(var i = 1989; i <= yearMax; i++){
           $scope.items.push({year: i});
         }
-        var date = new Date();
+        //var date = new Date();
         var thisYear = date.getFullYear();
         //滚动条定位到当前年份-5的位置上
         var deltaY = (thisYear - 1989 - 5) * 50;
