@@ -1515,6 +1515,7 @@ angular.module('applicationModule')
                       if($scope.needList[i].value && $scope.needList[i].value != ''){
                         $scope.needList[i].valueString = $scope.needList[i].value;
                         $scope.needList[i].value = new Date($scope.needList[i].valueString.replace(/-/,"/"))
+                        alert($scope.needList[i].value);
                       }
                     }
                   }
