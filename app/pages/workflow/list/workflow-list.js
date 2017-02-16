@@ -313,10 +313,10 @@ angular.module('applicationModule')
       };
 
       //全部处理
-      $scope.processBatchWorkflow = function (action) {
+      $scope.processBatchWorkflow = function (action,needSelected) {
         var approveList = [];
         angular.forEach($scope.list,function (data) {
-          if(data.selectedFlag){
+          if(!needSelected || data.selectedFlag){
             var approveItem = {
               "p_record_id": data.recordId + ""
             }
@@ -711,8 +711,10 @@ angular.module('applicationModule')
             if(result.error_count && result.error_count != 0){
               hmsPopup.showPopup(result.message);
             }else{
-              refreshTodoList();
+              //refreshTodoList();
               hmsPopup.showPopup('全审批完成!');
+              $scope.batchProcessFlag = false;
+              $scope.fetchTodoList(true);
             }
           }else{
             hmsPopup.showPopup('全审批失败!');

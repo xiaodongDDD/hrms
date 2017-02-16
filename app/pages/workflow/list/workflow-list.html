@@ -90,8 +90,8 @@
       <button >全审批</button>
     </div>-->
     <div class="row buttons " ng-if="listStatus.todo.selected" >
-      <button class="button button-clear ts-button-left" ng-click="allApprove(0)">同意审批</button>
-      <button class="button button-clear ts-button-center" ng-click="allApprove(-1)">拒绝审批</button>
+      <button class="button button-clear ts-button-left" ng-click="processBatchWorkflow(0,false)">同意审批</button>
+      <button class="button button-clear ts-button-center" ng-click="processBatchWorkflow(-1,false)">拒绝审批</button>
     </div>
     <div class="buttons">
       <button class="button button-clear filter-icon" ng-click="filterWorkFlowInfo()">
@@ -103,7 +103,7 @@
     style="bottom: 0px;"
     ng-if="batchProcessFlag"
     select-all-item="selectAll()"
-    pass-through="processBatchWorkflow(0)"
-    refuse="processBatchWorkflow(-1)">
+    pass-through="processBatchWorkflow(0,true)"
+    refuse="processBatchWorkflow(-1,true)">
   </footer-select>
 </ion-view>

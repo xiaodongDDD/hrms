@@ -1514,8 +1514,12 @@ angular.module('applicationModule')
                     if ($scope.needList[i].type == 'datepicker') {
                       if($scope.needList[i].value && $scope.needList[i].value != ''){
                         $scope.needList[i].valueString = $scope.needList[i].value;
-                        $scope.needList[i].value = new Date($scope.needList[i].valueString.replace(/-/,"/"))
-                        alert($scope.needList[i].value);
+                        $scope.needList[i].value = new Date($scope.needList[i].valueString.replace(/-/,"/"));
+                        if (ionic.Platform.isIOS() && ionic.Platform.isWebView()){
+                          $scope.needList[i].value = new Date($scope.needList[i].valueString);
+                        }
+                        //alert($scope.needList[i].valueString);
+                        //alert($scope.needList[i].value);
                       }
                     }
                   }

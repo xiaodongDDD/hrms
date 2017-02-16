@@ -203,7 +203,7 @@ angular.module('HmsModule')
 
                   if (serveVersionParams.subForceUpdate == 'Y') {
                     function selectAction_min_v2(buttonIndex) { // update from pgy
-                      alert('selectAction_min_v2.buttonIndex ' + buttonIndex);
+                      //alert('selectAction_min_v2.buttonIndex ' + buttonIndex);
                       if (buttonIndex == 0) { //确认按钮
                         hotpatch.updateNewVersion(serveVersionParams.minUpdateUrl);
                       }
