@@ -343,6 +343,8 @@ angular.module('myApp')
       //$templateRequest('build/pages/application/application.html',true);
       //$urlRouterProvider.otherwise('/guide'); return;
 
+
+
       if (!window.localStorage.needGuid || window.localStorage.needGuid == "true"
         || !window.localStorage.appCacheVersion || window.localStorage.appCacheVersion != baseConfig.version.currentVersion
         ) {

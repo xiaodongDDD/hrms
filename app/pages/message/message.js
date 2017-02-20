@@ -392,7 +392,7 @@ angular.module('messageModule')
         },
 
         createGroupChat: function () {
-          cordova.plugins.barcodeScanner.scan(
+          /*cordova.plugins.barcodeScanner.scan(
             function (result) {
               alert("We got a barcode\n" +
                 "Result: " + result.text + "\n" +
@@ -409,10 +409,10 @@ angular.module('messageModule')
               "formats" : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
               "orientation" : "landscape" // Android only (portrait|landscape), default unset so it rotates with the device
             }
-          );
-          /*HandIMPlugin.createDiscussion(function success() {
+          );*/
+          HandIMPlugin.createDiscussion(function success() {
           }, function error() {
-          });*/
+          });
         },
 
         telSaveNumber: function (event, baseInfo) { //拨打电话按钮的响应事件
