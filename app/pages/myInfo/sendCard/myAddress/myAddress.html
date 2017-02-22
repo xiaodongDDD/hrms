@@ -1,0 +1,35 @@
+<ion-view view-title="我的地址" class="myAddress">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="$hmsGoBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">我的地址</h1>
+  </ion-header-bar>
+  <ion-content class="content-style" style="background: #f8f8f8;">
+    <div class="address-list" ng-repeat="item in myAddress">
+      <div class="address-info">
+      <div class="row row-center">
+        <div class="col col-30">{{item.name}}</div>
+        <div class="col col-70">{{item.phone}}</div>
+      </div>
+      <div class="row padding-5">
+        {{item.address}}
+      </div>
+      </div>
+      <div class="row edit-item row-center">
+        <div class="col col-10">
+
+        </div>
+        <div class="col col-50">设为默认</div>
+        <div class="col col-20">编辑</div>
+        <div class="col col-20">删除</div>
+      </div>
+    </div>
+
+  </ion-content>
+  <ion-footer-bar>
+    <div ng-click="goAddAddress()" class="submit-button">新建地址</div>
+  </ion-footer-bar>
+</ion-view>

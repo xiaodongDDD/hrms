@@ -1,0 +1,43 @@
+<ion-modal-view view-title="新建地址" class="addAddress"  ng-controller="addAddressCtrl">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="goBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">新建地址</h1>
+  </ion-header-bar>
+  <ion-content class="content-style">
+    <div class="card-list">
+      <div class="row card-item" style="padding:0px;">
+        <div class="col col-70" style="padding: 0;">
+          <div class="row card-item">
+            <div class="col col-38">收件人</div>
+            <div class="col col-62"><input type="text" ng-model="addressDetail.name" placeholder="收件人姓名" class="address-input"></div>
+          </div>
+          <div class="row">
+            <div class="col col-38">联系电话</div>
+            <div class="col col-62"><input type="text" ng-model="addressDetail.name" placeholder="联系电话" class="address-input"></div>
+          </div>
+        </div>
+        <div class="col col-30" ng-click="pickContactTo()" style="border-left: 1px solid #d1d1d1">
+          <div class="row" align="center">
+            <img src="build/img/myInfo/card/phone.png" style="width: 25px;margin-left: 30%;">
+          </div>
+          <div class="row" ng-click="">通讯录中导入</div>
+        </div>
+      </div>
+      <div class="row card-item">
+        <div class="col col-25">所在地区</div>
+        <div class="col col-65"><input type="text" ng-model="addressDetail.name" placeholder="国家、省、市（区）" class="address-input"></div>
+      </div>
+      <div class="row card-item">
+        <div class="col col-25">所在地区</div>
+        <div class="col col-65"><input type="text" ng-model="addressDetail.name" class="address-input" placeholder="街道、楼牌号等"></div>
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar>
+    <div ng-click="addAddress()" class="submit-button">保存</div>
+  </ion-footer-bar>
+</ion-modal-view>

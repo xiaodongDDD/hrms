@@ -1,0 +1,46 @@
+.popovers-card{
+  .item{
+    height: 40px;
+    width: 100%;
+    background: white;
+    padding: 0px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 20px;
+    border-style:none ;
+    border-bottom: 2px solid #ddd;
+
+  }
+
+}
+.platform-android .popover .item{
+  border-color: #ddd;
+  color: #4d4d4d;
+}
+.platform-android .popover{
+  margin-top: 0px;
+  background-color: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.popover{
+  height:80px!important;
+  top: 187px;
+  left: 179px!important;
+  margin-left: 0px;
+  opacity: 1;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 10;
+  display: block;
+  width: 180px;
+}
+.platform-ios .popover .scroll-content{
+  margin: 0!important;
+  border-radius: 10px;
+}
+.platform-ios .popover{
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  left: 189px !important;
+}
