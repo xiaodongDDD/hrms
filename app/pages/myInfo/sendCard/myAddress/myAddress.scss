@@ -1,0 +1,36 @@
+.myAddress{
+  background:#f8f8f8;
+  .address-list{
+    background: #ffffff;
+    border-top: 1px solid #d1d1d1;
+    border-bottom: 1px solid #d1d1d1;
+    margin-top:15px;
+  }
+  .address-list:first-child{
+    background: #ffffff;
+    border-top: none;
+    border-bottom: 1px solid #d1d1d1;
+    margin-top:0;
+  }
+  .address-info{
+    padding: 0 10px 5px 10px;
+  }
+  .edit-item{
+    border-top: 1px solid #d1d1d1;
+  }
+  .padding-5{
+    padding: 10px;
+  }
+  .bar-footer {
+    bottom: 0;
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    background-position: top;
+    height:60px;
+    background:none;
+  }
+  .submit-button{
+    border-radius:10px;height:40px;line-height:40px;width:90%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;
+  }
+
+}

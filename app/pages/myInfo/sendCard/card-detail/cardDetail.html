@@ -1,0 +1,76 @@
+<ion-view view-title="名片详情" class="myCard">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="$hmsGoBack()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="content-style">
+    <div align="center">
+      <div style="background: #fff;">
+      <div >
+      <div style="height: 70px;padding-top:10px;">
+        <div style="    position: fixed;
+    top: 10px;
+    left: 10px;" ng-click="changeLauguage(fasle)">中文</div>
+        <img src="http://shp.qpic.cn/bizmp/A3gUw79X8ZuImeE77PlFVaTub2dJK5lCw7Hneq9ufMgRTxm6Qx0LAw/" class="header-image">
+        <div style="    position: fixed;
+    top: 10px;
+    right: 10px;" ng-click="changeLauguage(true)">EN</div>
+      </div>
+      <div style="margin-top:15px;font-size:15px;color: #333333;">{{EN?cardDetail.name_en:cardDetail.name}}</div>
+      <div style="font-size:15px;color: #6f6f6f">{{EN?cardDetail.job_en:cardDetail.job}}</div>
+      <div style="margin-top:10px;font-size:15px;color: #6f6f6f">{{EN?cardDetail.job_en:cardDetail.job}}</div>
+      </div>
+      <div style="margin-top:15px;">
+      <div class="row font-left" style="">
+        <div class="col col-20">{{EN?ENdata.phone:"手机"}}</div>
+        <div class="col col-60">{{cardDetail.phone}}</div>
+        <a class="col col-20" href="tel:18335103739"><img src="build/img/myInfo/card/phone.png" style=" width: 20px;
+    position: absolute;
+    right: 20px;"></a>
+      </div>
+      <div class="row font-left" style="text-align:left;">
+        <div class="col col-20">{{EN?ENdata.email:"邮箱"}}</div>
+        <div class="col col-80">{{cardDetail.email}}</div>
+      </div>
+      <div class="row font-left" style="text-align:left;">
+        <div class="col col-20">{{EN?ENdata.address:"地址"}}</div>
+        <div class="col col-80">{{cardDetail.address}}</div>
+      </div>
+      <div class="row font-left" style="text-align:left;">
+        <div class="col col-20">{{EN?ENdata.telephone:"座机"}}</div>
+        <div class="col col-80">{{cardDetail.telephone}}</div>
+      </div>
+      </div>
+    </div>
+    </div>
+
+  </ion-content>
+  <ion-footer-bar>
+    <div class="submit-left">{{EN?ENdata.CDcard:"二维码"}}</div>
+    <div class="submit-right">{{EN?ENdata.share:"分享"}}</div>
+  </ion-footer-bar>
+</ion-view>
+<style>
+  .font-left{
+    text-align:left;
+    background: #fff;
+    border-top: 1px solid #d1d1d1;
+  }
+  .submit-left{
+    border-radius:10px;height:40px;line-height:40px;width:40%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;
+  }
+  .submit-right{
+    border-radius:10px;height:40px;line-height:40px;width:40%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;
+  }
+  .bar-footer {
+    bottom: 0;
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    background-position: top;
+    height: 60px;
+    background:none;
+  }
+</style>

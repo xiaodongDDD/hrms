@@ -1,0 +1,55 @@
+.printCard{
+  background:#f8f8f8;
+  border-bottom: 1px solid #d1d1d1;
+  .card-address{
+    padding:30px 3% 30px 3%;background: #fff;
+    border-bottom: 1px solid #d1d1d1;
+    img{
+      width: 20px;position: absolute;right:3%
+    }
+  }
+  .print-text{
+    height: 50px;
+    background: #fff;
+    border-bottom: 1px solid #d1d1d1;
+    border-top: 1px solid #d1d1d1;
+    margin-top:20px;
+  }
+  .add-img{
+    width: 25px;
+  }
+  .print-num{
+    text-align: center;
+  }
+  .card-detail-box{
+    margin-top:15px;
+    width: 95%;margin-left: 2.5%;border-radius: 10px;border:1px solid #d1d1d1;height: 270px;background:#ffffff;
+  }
+  .border-bottom{
+    border-bottom:1px solid #d1d1d1;
+  }
+  .card-detail-item{
+    width: 98%;
+    margin-left: 1%;
+    border-bottom: 1px solid #d1d1d1;
+    height: 100px;
+    padding-top: 10px;
+  }
+  .top-padding-12{
+    padding-top: 12px;
+  }
+  .prompt{
+    text-align: center;margin-top:20px;margin-bottom: 30px;
+  }
+  .bar-footer {
+    bottom: 0;
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    background-position: top;
+    height:60px;
+    background:none;
+  }
+  .submit-button{
+    border-radius:10px;height:40px;line-height:40px;width:90%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;
+  }
+}

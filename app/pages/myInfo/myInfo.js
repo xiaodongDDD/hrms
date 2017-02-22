@@ -154,7 +154,9 @@ angular.module('myInfoModule')
       $scope.setup = function () {//进入设置界面
         $state.go('tab.setup');
       };
-
+      $scope.goSendCard=function(){//进入我的名片
+        $state.go("tab.send-card")
+      };
       $scope.feedback = function () {//进入反馈界面
         $state.go('tab.feedback');
       };

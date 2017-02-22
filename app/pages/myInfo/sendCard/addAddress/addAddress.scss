@@ -1,0 +1,31 @@
+.addAddress{
+  .address-input{
+    height:100%;
+  }
+  .content-style{
+    background:#f8f8f8;
+  }
+  .row+.row {
+    margin-top:0!important;
+    /* margin-top: -5px; */
+    padding-top: 5px!important;
+  }
+  .bar-footer {
+    bottom: 0;
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    background-position: top;
+    height:60px;
+    background:none;
+  }
+  .submit-button{
+    border-radius:10px;height:40px;line-height:40px;width:90%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;
+  }
+  .card-list{
+    background: #ffffff;
+  }
+  .card-item{
+    border-bottom: 1px solid #d1d1d1;
+  }
+
+}
