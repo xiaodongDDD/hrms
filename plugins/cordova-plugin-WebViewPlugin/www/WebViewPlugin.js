@@ -3,7 +3,7 @@ var exec = require('cordova/exec');
 var WebViewPlugin = {
 
 	loadWebView: function (successCallback, errorCallback, options) {
-		alert("load");
+		//alert("load");
 	  if (errorCallback == null) {
 		errorCallback = function () {
 		}
