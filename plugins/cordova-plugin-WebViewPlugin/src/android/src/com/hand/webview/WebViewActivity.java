@@ -22,7 +22,7 @@ import org.apache.cordova.engine.SystemWebViewEngine;
 public class WebViewActivity extends CordovaActivity {
   public static final String URL = "url";
   private SystemWebView webView;
-  private ProgressBar pbWebView;
+  
   private String url;
 
   @Override
@@ -42,7 +42,7 @@ public class WebViewActivity extends CordovaActivity {
 
   private void initView() {
     webView = (SystemWebView)findViewById(Util.getRS("webview","id",this));
-    pbWebView = (ProgressBar)findViewById(Util.getRS("pb_webview","id",this));
+    
   }
 
  @Override
@@ -52,21 +52,7 @@ public class WebViewActivity extends CordovaActivity {
     webView.clearCache(true);
     webView.clearHistory();
     SystemWebViewEngine webViewEngine = new SystemWebViewEngine(webView);
-    webView.setWebChromeClient(new SystemWebChromeClient(webViewEngine){
-      @Override
-      public void onProgressChanged(WebView view, int newProgress) {
-        Log.e("WebViewActivity",newProgress+"");
-        if (newProgress == 100) {
-          // 网页加载完成
-          pbWebView.setVisibility(View.GONE);
-        } else {
-          // 加载中
-		  pbWebView.setVisibility(View.VISIBLE);
-          pbWebView.setProgress(newProgress);
-        }
-        super.onProgressChanged(view, newProgress);
-      }
-    });
+   
     return new CordovaWebViewImpl(webViewEngine);
   }
 
