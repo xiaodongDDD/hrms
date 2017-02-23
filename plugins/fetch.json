@@ -97,5 +97,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "cordova-plugin-WebViewPlugin": {
+        "source": {
+            "type": "local",
+            "path": "/Users/gusenlin/Desktop/cordova-plugin-WebView"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
