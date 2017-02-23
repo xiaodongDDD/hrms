@@ -571,7 +571,8 @@ angular.module('applicationModule')
               platform = 'iOS';
             }
             var link = appItem.destUrl + '?platform=' + platform + '&employee=' + window.localStorage.empno;
-            cordova.InAppBrowser.open(link, '_self');
+            //cordova.InAppBrowser.open(link, '_self');
+            WebViewPlugin.loadWebView(function(){},function(){},link);
           }
           else {
             $state.go(appItem.destUrl);
