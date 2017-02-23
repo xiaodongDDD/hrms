@@ -22,7 +22,7 @@
     self.webPluginCtrl = [[WebPluginController alloc] init];
     self.webPluginCtrl.fileUrl = result;
     __weak CDVWebViewPlugin *weakSelf = self;
-    
+
     [self.commandDelegate runInBackground:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -30,17 +30,17 @@
                 [weakSelf.viewController presentViewController:weakSelf.webPluginCtrl animated:YES completion:nil];
             });
         });
-        
+
     }];
 }
 
 - (void)dismissWebView:(CDVInvokedUrlCommand *)command{
-    
+
     __weak CDVWebViewPlugin *weakSelf = self;
-    
+
     [self.commandDelegate runInBackground:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.webPluginCtrl dismissViewControllerAnimated:YES completion:nil];
+            [weakSelf.viewController dismissViewControllerAnimated:YES completion:nil];
         });
     }];
 }
