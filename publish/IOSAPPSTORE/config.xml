@@ -15,6 +15,7 @@
   <allow-intent href="tel:*"/>
   <allow-navigation href="mailto:*"/>
   <allow-navigation href="tel:*"/>
+  <allow-navigation href="http://mobile-app.hand-china.com/*" />
   <access launch-external="yes" origin="tel:*"/>
   <access launch-external="yes" origin="sms:*"/>
   <preference name="webviewbounce" value="false"/>

@@ -33,14 +33,40 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cn.jpush.phonegap.JPushPlugin": {
+    "cordova-plugin-youtuishare": {
         "source": {
-            "type": "registry",
-            "id": "jpush-phonegap-plugin@2.2.0"
+            "type": "git",
+            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "phonegap-plugin-barcodescanner": {
+        "source": {
+            "type": "local",
+            "path": "/Users/gusenlin/Desktop/phonegap-plugin-barcodescanner"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-WebViewPlugin": {
+        "source": {
+            "type": "local",
+            "path": "/Users/gusenlin/Desktop/cordova-plugin-WebView"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-geolocation-baidu": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zhouzhongyuan/cordova-plugin-geolocation-baidu",
+            "subdir": "."
         },
         "is_top_level": true,
         "variables": {
-            "API_KEY": "6e0b08078306f45ac8331d54"
+            "BAIDUMAPKEY": "5WXxKpATT2RsEaYyVs6jxVOAbP6047m2"
         }
     },
     "com.hand.scancard": {
@@ -78,32 +104,17 @@
         },
         "is_top_level": true,
         "variables": {
-            "RONG_KEY": "0vnjpoadnd4cz"
+            "RONG_KEY": "e5t4ouvptpsaa"
         }
     },
-    "cordova-plugin-youtuishare": {
+    "cn.jpush.phonegap.JPushPlugin": {
         "source": {
-            "type": "git",
-            "url": "http://hpm.hand-china.com/diffusion/YOUTUISHARE/cordova-plugin-youtuishare.git",
-            "subdir": "."
+            "type": "registry",
+            "id": "jpush-phonegap-plugin@2.2.0"
         },
         "is_top_level": true,
-        "variables": {}
-    },
-    "phonegap-plugin-barcodescanner": {
-        "source": {
-            "type": "local",
-            "path": "/Users/gusenlin/Desktop/phonegap-plugin-barcodescanner"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-WebViewPlugin": {
-        "source": {
-            "type": "local",
-            "path": "/Users/gusenlin/Desktop/cordova-plugin-WebView"
-        },
-        "is_top_level": true,
-        "variables": {}
+        "variables": {
+            "API_KEY": "22b25063349b6beef7bde524"
+        }
     }
 }
