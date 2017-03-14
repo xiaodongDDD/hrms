@@ -287,7 +287,8 @@ angular.module('applicationModule')
         for (var i = 0; i < $scope.data.approvalAction.length; i++) {
           buttonText[i] = { text: $scope.data.approvalAction[i].action_value };
         }
-        $ionicActionSheet.show({
+        // console.log($scope.data);
+        $scope.hideIonicAS = $ionicActionSheet.show({
           buttons: buttonText,
           titleText: '请选择操作',
           cancelText: '取消',
@@ -301,7 +302,7 @@ angular.module('applicationModule')
                 contractDetailService.transpond(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, $scope.transpondId, $scope.submitMessage.text);
               }
             } else {
-              contractDetailService.submit(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, key, $scope.submitMessage.text);
+              contractDetailService.submit(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, key, $scope.submitMessage.text, $scope);
             }
           }
         });
@@ -519,10 +520,7 @@ angular.module('applicationModule')
     };
     //end add
 
-    this.submit = function(success, procInstId, actInstId, submitKey, comment) {
-      if (baseConfig.isWeixinWebview) {
-        this.disableOprate();
-      }
+    this.submit = function(success, procInstId, actInstId, submitKey, comment, scope) {
       var params = {
         userId: window.localStorage.empno,
         method: "submit",
@@ -531,12 +529,40 @@ angular.module('applicationModule')
         submitKey: submitKey,
         comment: comment
       };
-      hmsHttp.post(baseUrlTest, params).success(function(result) {
-        success(result);
-      }).error(function(response, status) {
-        // hmsPopup.showPopup(response);
-      });
 
+      var cb_ = function () {
+        if (baseConfig.isWeixinWebview) {
+          this.disableOprate();
+        }
+        hmsHttp.post(baseUrlTest, params).success(function(result) {
+          success(result);
+        }).error(function(response, status) {
+          // hmsPopup.showPopup(response);
+        });
+      };
+
+      for(var i = 0; i < scope.data.approvalAction.length; i++){
+        // 找到key
+        if(scope.data.approvalAction[i].action_key === submitKey){
+          // value 是驳回
+          if(scope.data.approvalAction[i].action_value === '驳回销售'){
+            try {
+              scope.hideIonicAS();
+            } catch (error) {
+              
+            }
+            hmsPopup.confirm('确认要驳回销售吗', '提示', function (index) {
+              if (index === 1){
+                // 确认
+                cb_();
+              }
+            })
+          // value 不是驳回
+          } else {
+            cb_();
+          }
+        }
+      }
     };
 
     this.transpond = function(success, procInstId, actInstId, transpondUser, message) {
