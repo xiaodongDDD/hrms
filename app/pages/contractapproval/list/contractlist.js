@@ -615,25 +615,6 @@ angular.module('applicationModule')
           document.getElementById('contractlist-div-subheader').style.top = '63px';
           document.getElementById('contractlist-div-slidebox').style.top = '63px';
         }
-        //应该显示哪个分页
-        $scope.type = contractListService.getListType();
-        //从上级页面进入的
-        if (contractListService.IsFromParent()) {
-          $scope.subheadereAnimaFlag = true;
-        }
-        //从子页面返回时进入的
-        else {
-          $scope.subheadereAnimaFlag = false;
-          if (baseConfig.debug) {
-            console.log('从子页面返回时进入的');
-          }
-          if (contractListService.getItemRemoveFlag()) {//如果在详情页操作了待处理项，则应该把它从待处理页移除掉
-            $scope.list.splice($scope.enteringIndex, 1);
-          }
-          if ($scope.type != contractListService.getListType()) { //如果详情页要求返回时跳到别的分页里
-            $scope.clickSubheader(contractListService.getListType());
-          }
-        }
       });
 
       $scope.$on('$ionicView.afterEnter', function () {
@@ -648,6 +629,29 @@ angular.module('applicationModule')
           subheadereWidth += subheaderTitles[i].clientWidth;
         }
         document.getElementById('contractSubheaderScroll').style.width = subheadereWidth + 'px';
+
+        //应该显示哪个分页
+        $scope.type = contractListService.getListType();
+        //从上级页面进入的
+        if (contractListService.IsFromParent()) {
+          $scope.subheadereAnimaFlag = true;
+        }
+        //从子页面返回时进入的
+        else {
+          $scope.subheadereAnimaFlag = false;
+          if (baseConfig.debug) {
+            console.log('从子页面返回时进入的');
+          }
+
+          if(window.sessionStorage.refreshContractList === 'true'){
+            $scope.clickSubheader(contractListService.getListType());
+            $ionicScrollDelegate.$getByHandle('contractListHandle').scrollBottom(true);
+          } else if (contractListService.getItemRemoveFlag()) {//如果在详情页操作了待处理项，则应该把它从待处理页移除掉
+            $scope.list.splice($scope.enteringIndex, 1);
+          } else if ($scope.type != contractListService.getListType()) { //如果详情页要求返回时跳到别的分页里
+            $scope.clickSubheader(contractListService.getListType());
+          }
+        }
       });
 
       $scope.$on('$ionicView.beforeLeave', function () {
@@ -685,6 +689,7 @@ angular.module('applicationModule')
         contractListService.setIsFromParent(false);
         $scope.enteringIndex = index;
         contractListService.initRemoveItemFlag();
+        window.sessionStorage.refreshContractList = '';
         $state.go('tab.contractDetail', {data: detail.originData})
       };
 
