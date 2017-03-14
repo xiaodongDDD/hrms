@@ -570,8 +570,10 @@ angular.module('applicationModule')
             if (ionic.Platform.isIOS()) {
               platform = 'iOS';
             }
-            var link = appItem.destUrl + '?platform=' + platform + '&employee=' + window.localStorage.empno;
-            cordova.InAppBrowser.open(link, '_self');
+            var link = appItem.destUrl + '?platform=' + platform + '&employee=' + window.localStorage.empno +
+              '&user_token=' + window.localStorage.token;
+            //cordova.InAppBrowser.open(link, '_self');
+            WebViewPlugin.loadWebView(function(){},function(){},link);
           }
           else {
             $state.go(appItem.destUrl);

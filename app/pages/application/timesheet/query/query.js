@@ -574,6 +574,10 @@ angular.module('applicationModule')
         //var batchList = [];
         var dateArray = '';
         var hasCopyedFlag = false;
+        var hasNoFrozenDay = false;
+
+        //console.log('$scope.calendar ' + angular.toJson($scope.calendar))
+
         angular.forEach($scope.calendar, function (data) {
           angular.forEach(data.list, function (list) {
 
@@ -582,6 +586,13 @@ angular.module('applicationModule')
             }
 
             if (list.choosed) {
+
+              if(list.project && list.project != ''&& list.lockFlag == false){
+
+              }else{
+                hasNoFrozenDay = true;
+              }
+
               //batchList.push({"day": list.each_day});
               if (list.project && list.project != '') {
                 hasCopyedFlag = true;
@@ -594,6 +605,12 @@ angular.module('applicationModule')
             }
           });
         });
+
+        if(hasNoFrozenDay){
+          hmsPopup.showPopup('TimeSheet已经被冻结，请切换TimeSheet解冻模式进行解冻！');
+          clearCalendarCache();
+          return;
+        }
 
         if (!hasCopyedFlag) {
           if (dateArray != '') {
