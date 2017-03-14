@@ -39,7 +39,9 @@ angular.module('applicationModule')
       $scope.titleBg = 'build/img/application/banner@3x.png';
 
       var menuFetchFlag = false;
-
+      $scope.goOffer=function(){
+        $state.go("tab.offer");
+      };
       /*//个人办公
        $scope.officeApp = [
        {
@@ -175,6 +177,14 @@ angular.module('applicationModule')
             appName: "竞争对手",
             imageUrl: "build/img/application/PK@3x.png",
             destUrl: "tab.competitor"
+          }
+        ]
+      }, {
+        list: [
+          {
+            appName: "报价",
+            imageUrl: "build/img/application/Group.png",
+            destUrl: "tab.offer"
           }
         ]
       }];

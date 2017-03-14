@@ -27,7 +27,8 @@ angular.module('myApp', [
   'opportunityModule',
   'clueModule',
   'planModule',
-  'bidbondModule'
+  'bidbondModule',
+  'offerModule'
 ]);
 
 angular.module('myApp')
@@ -53,7 +54,6 @@ angular.module('myApp')
     'historyCompetitor',
     'historyOpportunity',
     'historyBidbond',
-
     function ($ionicPlatform,
               $timeout,
               baseConfig,
@@ -254,7 +254,6 @@ angular.module('myApp')
             }
           }
         })
-
         .state('tab.contact', {
           url: '/contact',
           views: {

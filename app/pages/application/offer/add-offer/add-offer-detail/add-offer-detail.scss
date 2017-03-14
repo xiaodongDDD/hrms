@@ -1,0 +1,57 @@
+.add-offer-detail{
+  * {
+    font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+  }
+  .text-right{
+    text-align:right;
+  }
+  .row{
+    margin:0;
+    padding:0;
+  }
+  .col{
+    margin:0;
+    padding:0;
+  }
+ .ave-money{
+   color: #858c96;
+  margin: 10px 15px 0 15px;
+   span{
+      color: #1F8CEB;
+     font-size: 17px;
+   }
+  }
+  .card-item{
+    padding:5px 15px 5px 0 !important;
+    background:#ffffff;
+    margin-left: 15px;
+    color: #858c96;
+    border-bottom: 1px solid rgba(209, 209, 209, 0.59);
+    font-size: 16px;
+  }
+  .card-item input{
+    background:none;
+    width:100%;
+    text-align:right;
+  }
+  .add-offer-detail-header{
+    padding:15px;
+    background: #1F8CEB;
+    color: #fff;
+    font-size:14px;
+    height: 125px;
+    .product-name{
+      font-size:16px;margin-bottom:20px;
+    }
+    .product-sum{
+      font-size: 30px;
+      margin-top: 15px;
+    }
+    .product-other{
+      margin-top:20px;text-align: left;
+    }
+  }
+  .remark{
+    padding:15px; color: #858c96;
+  }
+}

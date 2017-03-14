@@ -1,9 +1,17 @@
 .myCard{
-  background: #f8f8f8;
+  background: #f4f5f7;
   .header-image {
     width: 70px;
     height: 70px;
     border-radius: 50%;
     border: 3px solid #ffffff;
+  }
+  .card-box{
+    margin-top: 20px;
+    width: 90%;
+    margin-left: 5%;
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;    box-shadow: 5px 5px 10px rgba(221, 221, 221, 0.6);
   }
 }

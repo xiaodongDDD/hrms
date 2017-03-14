@@ -1,0 +1,122 @@
+<ion-view view-title="报价" class="crm hrms-pancel-corlor offer">
+  <crm-loading ng-if="showLoadingFlag"></crm-loading>
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="historyGoBack()"/>
+    <div class="header-select-button">
+      <div ng-click="selectSubHeader('ALL')" ng-class="{true:'selected'}[!subHeadersSelect]">全部报价
+      </div>
+      <div ng-click="selectSubHeader('MY')" ng-class="{true:'selected'}[subHeadersSelect]">我的报价
+      </div>
+    </div>
+    <img src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="openPopover()"/>
+  </ion-header-bar>
+  <div class="row bar bar-subheader titles" style="background-color: #F5F5F5;"
+       ng-class="{false:'hide-search'}[showHead]">
+
+    <div >
+      <div style="position: absolute;left: 20px;top: 14px;color: #fff;">
+        <img src="build/img/contact/icon_search@3x.png" style="width: 16px;">
+      </div>
+      <input ng-click="openSearch()" placeholder="输入商机名称、客户名称进行模糊搜索" ng-readonly="true"
+             style="padding-left:32px;margin-top:7px;margin-left:10px;height: 30px;line-height: 30px;color:#959595;border-radius: 30px;width: 95vw;background: #FFFFFF;border: none;" ng-model="offerListParam.opportunityName">
+      <img src="build/img/application/icon_circle@3x.png"
+           ng-if="offerListParam.opportunityName!=''" style="width: 20px;
+    position: absolute;
+    right: 20px;
+    top: 13px;
+    z-index: 10000;"
+           ng-click="clearInputOfferContent()"/>
+    </div>
+  </div>
+
+  <ion-content class="marginTop" ng-class="{false:'show-more'}[showHead]">
+    <ion-refresher
+      pulling-text="正在刷新数据"
+      pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+    </ion-refresher>
+    <div ng-repeat="offer in offers" ng-click="goOfferDetail(offer)">
+      <div class="offer-list">
+        <div class="offer-item">
+        <div class="row offer-status">
+          <div class="col col-12 col-center"><div ng-class="{true:'calibration',false:'bid'}[offer.offerStage=='OFFER_STAGE_BIDED']">{{offer.offerStage=="OFFER_STAGE_BIDED"?"定标":"投标"}}</div></div>
+          <div class="col col-68 col-center" style="color: #272e38;font-size: 16px;display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{offer.opportunityName}}</div>
+          <div class="col col-20 col-center {{offer.dataStatus}}">{{offer.dataStatusName}}</div>
+        </div>
+        <div class="row">
+          <div class="col col-90 offer-header-item">
+            <div class="row customer-name" >客户：{{offer.customerName}}</div>
+            <div class="row offer-code">编号：{{offer.offerHeaderCode}}</div>
+            <div class="row pre-leader">预销售：{{offer.preSaleName}}</div>
+            <div class="row pre-leader" ng-if="selectSubHeaderIndex!='MY'">销售：{{offer.saleName}}</div>
+          </div>
+          <div class="col col-10 col-center" style="text-align: right;">
+            <i class="icon ion-ios-arrow-right" style="font-size: 25px;color: #d1d1d1;"></i>
+          </div>
+        </div>
+        <div ng-if="offer.offerMark!=''" style="padding:5px 0 10px 0;">
+          <div class="row offer-mark">
+            备注：{{offer.offerMark}}
+          </div>
+        </div>
+        </div>
+        <div class="offer-amount" style="">总报价（{{offer.currencyName}}）：<span style="">{{offer.amount}}</span></div>
+      </div>
+    </div>
+    <div style="height: 50px;">
+
+    </div>
+    <ion-infinite-scroll
+      on-infinite="loadMoreData()"
+      ng-if="loadMoreDataFlag"
+      immediate-check="false"
+      distance="1%">
+    </ion-infinite-scroll>
+
+  </ion-content>
+
+  <div class="bottom-button" ng-class="{true:'showUp'}[showHead]">
+    <div ng-click="showShiftDiv()"><img src="build/img/application/opportunity/icon_select_blue@3x.png"/>{{ 'FILTER' | T
+      }}
+    </div>
+    <div ng-click="showSortDiv()"><img src="build/img/application/opportunity/icon_select_list@3x.png"/>{{ 'SORT' | T }}</div>
+  </div>
+  <div class="common-fix-div sifting-fix-div sort-div" style="bottom:0!important;" ng-class="{true:'showUp'}[showShift]" on-drag="stopBubble($event)">
+    <div class="sifting-header">
+      筛选
+    </div>
+    <div style="padding:10px; border-bottom: 1px solid #ddd;">
+      <div class="filter-title">报价阶段</div>
+      <div>
+        <div ng-repeat="item in offerStage" ng-class="{true:'choose-this',false:'no-choose'}[item.checked]" ng-click="chooseOfferStage(item)">{{item.description}}</div>
+        <!--<div class="choose-this">投标报价</div>-->
+      <div class="clear"></div>
+      </div>
+    </div>
+    <div style="padding: 10px;">
+      <div class="filter-title">报价状态</div>
+      <div>
+        <div ng-click="chooseOfferStatus(item)" ng-repeat="item in offerStatusData" ng-class="{true:'choose-this',false:'no-choose'}[item.checked]">{{item.statusName}}</div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="bottom-button2" style="width: 100%;height: 50%">
+      <div ng-click="resetData()" class="reset-bottom" style="">重置</div>
+      <div ng-click="saveFilter()" class="reset-bottom">确定</div>
+    </div>
+  </div>
+  <div class="common-fix-div sifting-fix-div sort-div" ng-class="{true:'showUp'}[showSort]" ng-click="showSortDiv()" on-drag="stopBubble($event)">
+    <div class="sifting-header">
+      排序
+    </div>
+    <div class="sifting-item" ng-repeat="item in sortList track by $index" ng-click="selectSort(item)">
+      <img ng-src="{{'build/img/application/customer/' + item.icon + '@3x.png'}}"/>
+      <span>{{item.text}}</span>
+      <img src="build/img/application/icon_right@3x.png" class="right-img" ng-show="lastSelectSortIndex == $index">
+    </div>
+  </div>
+</ion-view>
+<style>
+
+</style>
+
+

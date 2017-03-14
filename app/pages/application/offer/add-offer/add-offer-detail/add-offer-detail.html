@@ -1,0 +1,431 @@
+<ion-modal-view class="add-offer-detail">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="addOfferDetailHide()">
+        <span class="back-button-text">返回</span>
+      </button>
+    </div>
+    <h1 class="title">报价明细</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="goCheckPassenger()">
+        <span class="bar-right-button">确定</span>
+      </button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <div ng-if="offerTypeCode=='AGENT'">
+    <div class="add-offer-detail-header">
+      <div class="product-name">
+        产品报价-代理
+      </div>
+      <div>
+        软件总价（含税{{taxRate*100}}%）
+      </div>
+      <div class="product-sum">
+        {{offerDetailSaveDataObj.discountedAmount==''?0:offerDetailSaveDataObj.discountedAmount.toFixed(2)}}
+      </div>
+    </div>
+    <div>
+      <div class="card-item">
+        <div class="row row-center">
+          <div class="col col-25">产品类别</div>
+          <div class="col col-75"  ng-click="showProductSelect('AGENT')"><input type="text" style="background: none;" placeholder="请选择" ng-readonly="true" ng-model="offerDetailSaveDataObj.productType"></div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center">
+          <div class="col col-55">软件总价（含税{{taxRate*100}}%）</div>
+          <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.discountedAmount"></div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center">
+          <div class="col col-55">软件下单成本</div>
+          <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.cost"></div>
+        </div>
+      </div>
+    </div>
+      <div class="ave-money">利润率 <span>{{offerDetailSaveDataObj.cost!=''&&offerDetailSaveDataObj.discountedAmount!=''?((offerDetailSaveDataObj.discountedAmount-offerDetailSaveDataObj.cost)/offerDetailSaveDataObj.cost).toFixed(2):0}}%</span></div>
+    <div class="remark">
+      利润率 = (软件总价(含税) - 软件下单成本)/软件下单成本
+    </div>
+    </div>
+    <div ng-if="offerTypeCode=='OWN'">
+    <div class="add-offer-detail-header">
+      <div class="product-name">
+        产品销售报价-自有
+      </div>
+      <div>
+        软件总价（含税{{taxRate*100}}%）
+      </div>
+      <div class="product-sum">
+        {{offerDetailSaveDataObj.discountedAmount==''?0:offerDetailSaveDataObj.discountedAmount.toFixed(2)}}
+      </div>
+    </div>
+    <div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-25">产品类别</div>
+        <div class="col col-75" ng-click="showProductSelect('OWN')"><input type="text" style="background: none;" placeholder="请选择" ng-readonly="true"  ng-model="offerDetailSaveDataObj.productType"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center">
+        <div class="col col-55">软件总价（含税{{taxRate*100}}%）</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.discountedAmount"></div>
+      </div>
+        </div>
+    </div>
+    </div>
+    <div ng-if="offerTypeCode=='FIXED'">
+    <div class="add-offer-detail-header">
+      <div class="product-name">
+        固定金额报价
+      </div>
+      <div>
+        优惠后总金额（含税{{taxRate*100}}%）
+      </div>
+      <div class="product-sum">
+        {{offerDetailSaveDataObj.discountedAmount!=''?offerDetailSaveDataObj.discountedAmount.toFixed(2):0}}
+      </div>
+    </div>
+    <div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-25">子报价类型</div>
+        <div class="col col-75"  ng-click="showProductSelect('FIXED')"><input type="text" style="background: none;" placeholder="请选择" ng-readonly="true"  ng-model="offerDetailSaveDataObj.productType"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">人天总数</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.peopleDays"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">列表价总金额（含税{{taxRate*100}}%）  </div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.amount"></div>
+      </div>
+        </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">优惠后总金额（含税{{taxRate*100}}%）</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.discountedAmount"></div>
+      </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">折扣率</div>
+          <div class="col col-45 text-right" >{{offerDetailSaveDataObj.discountedAmount&&offerDetailSaveDataObj.amount!=''?((offerDetailSaveDataObj.amount-offerDetailSaveDataObj.discountedAmount)/offerDetailSaveDataObj.amount*100).toFixed(2):0}}%</div>
+        </div>
+      </div>
+    </div>
+    <div class="ave-money">平均单价（含税{{taxRate*100}}%） <span>{{offerDetailSaveDataObj.discountedAmount&&offerDetailSaveDataObj.peopleDays!=''?(offerDetailSaveDataObj.discountedAmount/offerDetailSaveDataObj.peopleDays).toFixed(2):0}}</span></div>
+    <div class="remark">
+      平均单价 = 优惠后总金额(含税) /人天总数
+    </div>
+    </div>
+    <div ng-if="offerTypeCode=='TM'">
+    <div class="add-offer-detail-header">
+      <div class="product-name">
+        人天合同报价
+      </div>
+      <div>
+        预计总价（含税{{taxRate*100}}%）
+      </div>
+      <div class="product-sum">
+        {{offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.peopleDays!=''?(offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.peopleDays).toFixed(2):0}}
+      </div>
+    </div>
+    <div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-25">顾问类型</div>
+        <div class="col col-75" ng-click="showCounselorType('HOM.COUNSELOR_TYPE')"><input type="text" style="background: none;" placeholder="请选择" ng-readonly="true" ng-model="offerDetailSaveDataObj.constructorName"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">列表人天单价（含税{{taxRate*100}}%）</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入"  ng-model="offerDetailSaveDataObj.unitPrice"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">优惠后人天单价（含税{{taxRate*100}}%） </div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.disUnitPrice"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center">
+        <div class="col col-55">预计人天数</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.peopleDays"></div>
+      </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">折扣率</div>
+          <div class="col col-45 text-right" >{{offerDetailSaveDataObj.unitPrice&&offerDetailSaveDataObj.disUnitPrice!=''?((offerDetailSaveDataObj.unitPrice-offerDetailSaveDataObj.disUnitPrice)/offerDetailSaveDataObj.unitPrice*100).toFixed(2):0}}%</div>
+        </div>
+      </div>
+    </div>
+      <div class="ave-money">预计总价（含税{{taxRate*100}}%） <span>{{offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.peopleDays!=''?(offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.peopleDays).toFixed(2):0}}</span></div>
+    <div class="remark">
+      预计总价 = 优惠后人天单价 x  预计人天数
+    </div>
+   </div>
+    <div ng-if="offerTypeCode=='REMOTE_FIXED'">
+    <div class="add-offer-detail-header">
+      <div class="product-name">
+        运维-固定金额报价
+      </div>
+      <div>
+        预计总价（含税{{taxRate*100}}%）
+      </div>
+      <div class="product-sum">
+        {{offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.peopleDays&&offerDetailSaveDataObj.coefficient!=''?(offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.peopleDays*offerDetailSaveDataObj.coefficient*(1+taxRate)).toFixed(2):0}}
+      </div>
+    </div>
+    <div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-25">顾问类型</div>
+          <div class="col col-75"  ng-click="showCounselorType('HOM.COUNSELOR_TYPE')"><input type="text" style="background: none;" placeholder="请选择" ng-readonly="true" ng-model="offerDetailSaveDataObj.constructorName"></div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">列表人天单价</div>
+          <div class="col col-45" ><input ng-readonly="true" type="number" placeholder="请输入"  ng-model="offerDetailSaveDataObj.unitPrice"></div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">优惠后人天单价 </div>
+          <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.disUnitPrice"></div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">预计人天数</div>
+          <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.peopleDays"></div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">远程系数</div>
+          <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.coefficient"></div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">折扣率</div>
+          <div class="col col-45 text-right" >{{offerDetailSaveDataObj.unitPrice&&offerDetailSaveDataObj.disUnitPrice!=''?((offerDetailSaveDataObj.unitPrice-offerDetailSaveDataObj.disUnitPrice)/offerDetailSaveDataObj.unitPrice*100).toFixed(2):0}}%</div>
+        </div>
+      </div>
+    </div>
+      <div class="ave-money">预计总价(不含税) <span>{{offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.peopleDays&&offerDetailSaveDataObj.coefficient!=''?(offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.peopleDays*offerDetailSaveDataObj.coefficient).toFixed(2):0}}</span></div>
+      <div class="remark">
+        预计总价 = 优惠后人天单价 x  预计人天数 x 远程系数
+      </div>
+    </div>
+    <div ng-if="offerTypeCode=='REMOTE_TM'">
+    <div class="add-offer-detail-header">
+      <div class="product-name">
+        运维-人天合同报价
+      </div>
+      <div>
+        预计总价（含税{{taxRate*100}}%）
+      </div>
+      <div class="product-sum">
+        {{offerDetailSaveDataObj.peopleDays&&offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.coefficient!=''?(offerDetailSaveDataObj.peopleDays*offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.coefficient*(1+taxRate)).toFixed(2):0}}
+        <!--{{offerDetailDataObj.discountedAmount==''?0:offerDetailDataObj.discountedAmount}}-->
+      </div>
+    </div>
+    <div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-25">顾问类型</div>
+        <div class="col col-75" ng-click="showCounselorType('HOM.COUNSELOR_TYPE')"><input type="text" style="background: none;" placeholder="请选择" ng-readonly="true" ng-model="offerDetailSaveDataObj.constructorName"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center">
+        <div class="col col-55">列表人天单价</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.unitPrice"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">优惠后人天单价 </div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.disUnitPrice"></div>
+      </div>
+        </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">预计人天数</div>
+          <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.peopleDays"></div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">远程系数</div>
+          <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.coefficient"></div>
+        </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">折扣率</div>
+          <div class="col col-45 text-right" >{{offerDetailSaveDataObj.unitPrice&&offerDetailSaveDataObj.disUnitPrice!=''?((offerDetailSaveDataObj.unitPrice-offerDetailSaveDataObj.disUnitPrice)/offerDetailSaveDataObj.unitPrice*100).toFixed(2):0}}%</div>
+        </div>
+      </div>
+    </div>
+      <div class="ave-money">预计总价(不含税) <span> {{offerDetailSaveDataObj.peopleDays&&offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.coefficient!=''?(offerDetailSaveDataObj.peopleDays*offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.coefficient).toFixed(2):0}}</span></div>
+    <div class="remark">
+      预计总价 = 优惠后人天单价 x  预计人天数 x 远程系数
+    </div>
+    </div>
+    <div ng-if="offerTypeCode=='REMOTE_HOURS'">
+    <div class="add-offer-detail-header">
+      <div class="product-name">
+        运维-工时报价
+      </div>
+      <div>
+        预计总价（含税{{taxRate*100}}%）
+      </div>
+      <div class="product-sum">
+        {{offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.peopleDays&&offerDetailSaveDataObj.coefficient!=''?(offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.peopleDays*offerDetailSaveDataObj.coefficient*(1+taxRate)).toFixed(2):0}}
+      </div>
+    </div>
+    <div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-25">顾问类型</div>
+        <div class="col col-75"  ng-click="showCounselorType('HOM.COUNSELOR_TYPE')"><input type="text" style="background: none;" placeholder="请选择" ng-readonly="true" ng-model="offerDetailSaveDataObj.constructorName"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">列表人天单价</div>
+        <div class="col col-45" ><input ng-readonly="true" type="number" placeholder="请输入"  ng-model="offerDetailSaveDataObj.unitPrice"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">优惠后人天单价 </div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.disUnitPrice"></div>
+      </div>
+        </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">预计人天数</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.peopleDays"></div>
+      </div>
+        </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">远程系数>=1</div>
+        <div class="col col-45" ><input ng-blur="validCoefficient()" type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.coefficient"></div>
+      </div>
+      </div>
+      <div class="card-item">
+        <div class="row row-center ">
+          <div class="col col-55">折扣率</div>
+          <div class="col col-45 text-right" >{{offerDetailSaveDataObj.unitPrice&&offerDetailSaveDataObj.disUnitPrice!=''?((offerDetailSaveDataObj.unitPrice-offerDetailSaveDataObj.disUnitPrice)/offerDetailSaveDataObj.unitPrice*100).toFixed(2):0}}%</div>
+        </div>
+      </div>
+    </div>
+      <div class="ave-money">预计总价(不含税) <span>{{offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.peopleDays&&offerDetailSaveDataObj.coefficient!=''?(offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.peopleDays*offerDetailSaveDataObj.coefficient).toFixed(2):0}}</span></div>
+    <div class="remark">
+      预计总价 = 优惠后人天单价 x  预计人天数 x 远程系数
+    </div>
+    </div>
+    <div ng-if="offerTypeCode=='REMOTE_INCIDENT_TIMES'">
+    <div class="add-offer-detail-header">
+      <div class="product-name">
+        运维- 按件计算
+      </div>
+      <div>
+        预计总价（含税{{taxRate*100}}%）
+      </div>
+      <div class="product-sum">
+        {{offerDetailSaveDataObj.months&&offerDetailSaveDataObj.monthEvent&&offerDetailSaveDataObj.disUnitPrice!=''?(offerDetailSaveDataObj.months*offerDetailSaveDataObj.monthEvent*offerDetailSaveDataObj.disUnitPrice*(1+taxRate)).toFixed(2):0}}
+      </div>
+    </div>
+    <div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-25">系统服务类型</div>
+        <div class="col col-75" ng-click="showSelectDiv('systemServiceType')"><input type="text" style="background: none;" placeholder="请选择" ng-readonly="true" ng-model="offerDetailSaveDataObj.category1Name"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-25">事件单类型</div>
+        <div class="col col-75" ng-click="showSelectDiv('incidentSheetType')"><input type="text" style="background: none;" placeholder="请选择" ng-readonly="true" ng-model="offerDetailSaveDataObj.category2Name"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">事件单单价</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.disUnitPrice"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">事件单数量(每月) </div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.monthEvent"></div>
+    </div>
+      </div>
+      <div class="card-item">
+    <div class="row row-center ">
+      <div class="col col-55">月数</div>
+      <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.months"></div>
+    </div>
+      </div>
+    </div>
+      <div class="ave-money">预计总价(不含税) <span>{{offerDetailSaveDataObj.months&&offerDetailSaveDataObj.monthEvent&&offerDetailSaveDataObj.disUnitPrice!=''?(offerDetailSaveDataObj.months*offerDetailSaveDataObj.monthEvent*offerDetailSaveDataObj.disUnitPrice).toFixed(2):0}}</span></div>
+    <div class="remark">
+      预计总价 = 事件单单价 x  数量(每月)x 月数
+    </div>
+    </div>
+    <div ng-if="offerTypeCode=='OPERATION_IMPLEMENT_FEE'">
+    <div class="add-offer-detail-header">
+      <div class="product-name">
+        运维-实施费折价
+      </div>
+      <div>
+        预计总价（含税{{taxRate*100}}%）
+      </div>
+      <div class="product-sum">
+        {{offerDetailSaveDataObj.implementationRatio&&offerDetailSaveDataObj.implementationCost&&offerDetailSaveDataObj.maintainCost!=''?(offerDetailSaveDataObj.implementationCost*offerDetailSaveDataObj.implementationRatio+offerDetailSaveDataObj.maintainCost).toFixed(2):0}}
+      </div>
+    </div>
+    <div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">项目实施费</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.implementationCost"></div>
+      </div>
+      </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">实施费折价比例 </div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.implementationRatio"></div>
+      </div>
+        </div>
+      <div class="card-item">
+      <div class="row row-center ">
+        <div class="col col-55">维护费</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.maintainCost"></div>
+      </div>
+        </div>
+    </div>
+      <div class="ave-money">预计总价(不含税) <span>{{offerDetailSaveDataObj.implementationRatio&&offerDetailSaveDataObj.implementationCost&&offerDetailSaveDataObj.maintainCost!=''?(offerDetailSaveDataObj.implementationCost*offerDetailSaveDataObj.implementationRatio+offerDetailSaveDataObj.maintainCost).toFixed(2):0}}</span></div>
+    <div class="remark">
+      预计总价 = 项目实施费 x  实施费折价比例 + 维护费
+    </div>
+      </div>
+  </ion-content>
+</ion-modal-view>

@@ -50,10 +50,12 @@ angular.module('myInfoModule')
           {text:"创建名片"},
           {text:"我的地址"}
         ];
+        $scope.addCardData={};
     $scope.ORCode=function(item){
      console.log(item);
-      if($scope.cardList.status=="已认证"){
-        $state.go("tab.my-card");
+      console.log($scope.cardList.status);
+      if(item.status=="已认证"){
+        $state.go("tab.my-card",{params:item.card_id});
       }else{
         hmsPopup.showPopup("名片需审批通过后，方可分享");
       }
@@ -82,27 +84,21 @@ angular.module('myInfoModule')
             for(var i=0;i< $scope.cardList.length;i++ ){
               if($scope.cardList[i].status=="PENDING"){
                 $scope.cardList[i].status="审核中";
+                $scope.cardList[i].statusColor="PENDING";
               }else if($scope.cardList[i].status=="NEW"){
                 $scope.cardList[i].status="未提交";
+                $scope.cardList[i].statusColor="NEW";
               }else if($scope.cardList[i].status=="APPROVED"){
                 $scope.cardList[i].status="已认证";
+                $scope.cardList[i].statusColor="APPROVED";
               }else if($scope.cardList[i].status=="REFUSED"){
                 $scope.cardList.status="已拒绝";
+                $scope.cardList[i].statusColor="REFUSED";
               }else if($scope.cardList[i].status=="CANCELED"){
                 $scope.cardList[i].status="取消";
+                $scope.cardList[i].statusColor="CANCELED";
               }
             }
-            //if(result.res_list.status=="PENDING"){
-            //  $scope.cardList.status="审核中";
-            //}else if(result.res_list.status=="NEW"){
-            //  $scope.cardList.status="未提交";
-            //}else if(result.res_list.status=="APPROVED"){
-            //  $scope.cardList.status="已认证";
-            //}else if(result.res_list.status=="REFUSED"){
-            //  $scope.cardList.status="已拒绝";
-            //}else if(result.res_list.status=="CANCELED"){
-            //  $scope.cardList.status="取消";
-            //}
             if($scope.cardList.length!=0){
               $scope.cardIndex=0;
               console.log($scope.cardList[$scope.cardIndex]);
@@ -129,12 +125,6 @@ angular.module('myInfoModule')
           }
         };
         sendCardService.getHeadPicture(getHeadPictureSuccess);
-        //var getEmployeeInfoSuccess=function(result){
-        //  if(result.con_status=="S"){
-        //    $scope.cardList=result.res_list;
-        //  }
-        //}
-        //sendCardService.getEmployeeInfo(getEmployeeInfoSuccess);
         $scope.openPopover = function($event) {
           $scope.popoverCard.show($event);
         };
@@ -144,7 +134,7 @@ angular.module('myInfoModule')
             $scope.$broadcast('ADD_CARD');
             $scope.cardAddModel.show();
           }else{
-            $state.go("tab.myAddress");
+            $state.go("tab.myAddress",{params:"sendCard"});
           }
         };
         $scope.addCard=function(){
@@ -152,14 +142,14 @@ angular.module('myInfoModule')
           $scope.$broadcast('ADD_CARD');
           $scope.cardAddModel.show();
         };
-        $rootScope.$on('UPDATE_CARD_INFO',function(){
+        var UPDATE_CARD_INFO = $rootScope.$on('UPDATE_CARD_INFO',function(){
           sendCardService.getCardList(getCardListSuccess);
         });
-        $rootScope.$on('CLOSE_CARD_ADD',function(){
+       var CLOSE_CARD_ADD= $rootScope.$on('CLOSE_CARD_ADD',function(){
           $scope.cardAddModel.hide();
         });
         $scope.shareMyCard = function (item){
-          if($scope.cardList.status=="已认证"){
+          if(item.status=="已认证"){
             console.log(item);
             //分享显示的图片，默认
             var imgurl = 'http://mobile-app.hand-china.com/hrmsstatic/hrms-img/icon.png';
@@ -206,9 +196,96 @@ angular.module('myInfoModule')
           $state.go("tab.printCard",{params:$scope.cardDetail});
         }
         function deleteCard(){
-          $ionicSlideBoxDelegate.slide(0);
-          sendCardService.deleteCardInfo(deleteCardInfoSuccess,$scope.cardDetail.card_id);
+          console.log($scope.cardDetail);
+          console.log($ionicSlideBoxDelegate.slidesCount());
+          var confirmFun=function(flag){
+            if(flag){
+              $ionicSlideBoxDelegate.slide(0);
+              sendCardService.deleteCardInfo(deleteCardInfoSuccess,$scope.cardDetail.card_id);
+            }
+          };
+          hmsPopup.confirmNoTitle("确定要删除该名片吗？",confirmFun);
+
+
         }
+        var getEmployeeInfoSuccees=function(result){
+          if(result.status=="S"){
+            $scope.addCardData.name=result.name;
+            //$scope.$apply();
+            console.log( $scope.addCardData)
+          }
+        };
+        //获取个人信息
+        sendCardService.getEmployeeInfo(getEmployeeInfoSuccees);
+        $scope.imagevalue = '';
+        $scope.isShow_image = false;
+        $scope.va_phote_succflag = false;
+
+        $scope.closeBigPic = function(){
+          $scope.showBig = false;
+        }
+
+        $scope.showBigPic = function(){
+          $scope.showBig = true;
+        };
+        $scope.ImageUpload = function () {
+          var hideSheet = $ionicActionSheet.show({
+            buttons: [
+              {text: '拍照上传'},
+              {text: '从相册中选择'},
+              {text: '查看大图'}
+            ],
+            cancelText: '取消',
+            cancel: function () {
+              // add cancel code..
+            },
+            buttonClicked: function (index) {
+              if (index == 0) {
+                //拍照
+                $scope.taskPicture();
+              } else if (index == 1) {
+                // 相册文件选择上传
+                $scope.readalbum();
+              } else if (index == 2) {
+                $scope.showBigPic();
+              }
+              return true;
+            }
+          });
+        };
+        var saveHeadPictureSuccess=function(result){
+          console.log(result);
+        };
+        //图片上传
+        var upLoadSuccess = function (res) {
+          hmsPopup.hideLoading();
+          var result = JSON.parse(res.response);
+          //if (baseConfig.debug) {
+          //  alert('complete.success ' + angular.toJson(res.response));
+          //}
+          if(result.success == true){
+            //hmsPopup.showPopup('上传成功');
+            //console.log('上传成功。。。'+angular.toJson(result));
+            $scope.headerurl = result.rows[0].objectUrl;
+            saveHeadPicture.saveHeadPicture(saveHeadPictureSuccess,$scope.headerurl);
+
+          }else{
+            console.log('上传失败了。。。'+angular.toJson(result));
+            hmsPopup.showShortCenterToast('上传失败');
+            //hmsPopup.showPopup('上传失败！');
+          }
+        };
+
+        var upLoadError = function (response) {
+          hmsPopup.hideLoading();
+          if (baseConfig.debug) {
+            alert('complete.error ' + angular.toJson(response));
+          }
+          console.log('上传错误了。。。'+angular.toJson(response));
+          //hmsPopup.showPopup('上传失败！');
+          hmsPopup.showShortCenterToast('上传错误');
+          $scope.save();
+        };
         //相册功能
         $scope.readalbum  = function() {
           var sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
@@ -262,39 +339,8 @@ angular.module('myInfoModule')
           }
 
         };
-        //图片上传
-        var upLoadSuccess = function (res) {
-          hmsPopup.hideLoading();
-          var result = JSON.parse(res.response);
-          if (baseConfig.debug) {
-            alert('complete.success ' + angular.toJson());
-          }
-          if(result.success == true){
-            //hmsPopup.showPopup('上传成功');
-            console.log('上传成功。。。'+angular.toJson(result))
-            //$scope.customer.logoUrl = result.rows[0].objectUrl;
-            //customerDetailService.updateImage(updateSuccess,$scope.customerId,$scope.customer.logoUrl);
-
-          }else{
-            console.log('上传失败了。。。'+angular.toJson(result))
-            hmsPopup.showShortCenterToast('上传失败');
-            //hmsPopup.showPopup('上传失败！');
-          }
-          $scope.save();
-        };
-
-        var upLoadError = function (response) {
-          hmsPopup.hideLoading();
-          if (baseConfig.debug) {
-            alert('complete.error ' + angular.toJson(response));
-          }
-          console.log('上传错误了。。。'+angular.toJson(response))
-          //hmsPopup.showPopup('上传失败！');
-          hmsPopup.showShortCenterToast('上传错误')
-          $scope.save();
-        };
         //相机功能
-        $scope.taskPicture  = function(type) {
+        $scope.taskPicture  = function() {
           var options = {
             destinationType: Camera.DestinationType.FILE_URI,
             sourceType: Camera.PictureSourceType.CAMERA,
@@ -324,38 +370,6 @@ angular.module('myInfoModule')
           }, function(err) {
             //$scope.person_imgsrcvalue = '';
             //$scope.Toast.show('取消使用相机功能');
-          });
-        };
-        $scope.closeBigPic = function(){
-          $scope.showBig = false;
-        };
-
-        $scope.showBigPic = function(){
-          $scope.showBig = true;
-        };
-        $scope.ImageUpload = function () {
-          var hideSheet = $ionicActionSheet.show({
-            buttons: [
-              {text: '拍照上传'},
-              {text: '从相册中选择'},
-              {text: '查看大图'}
-            ],
-            cancelText: '取消',
-            cancel: function () {
-              // add cancel code..
-            },
-            buttonClicked: function (index) {
-              if (index == 0) {
-                //拍照
-                $scope.taskPicture();
-              } else if (index == 1) {
-                // 相册文件选择上传
-                $scope.readalbum();
-              } else if (index == 2) {
-                $scope.showBigPic();
-              }
-              return true;
-            }
           });
         };
         $scope.moreOp=function(item){
@@ -418,6 +432,11 @@ angular.module('myInfoModule')
         $scope.goCardDetail=function(item){
           console.log(item);
           $state.go("tab.cardDetail",{params:item});
-        }
+        };
+        //销毁广播
+        $scope.$on('$destroy',function(){//controller回收资源时执行
+          CLOSE_CARD_ADD();//回收广播
+          UPDATE_CARD_INFO();
+        });
 }]);
 

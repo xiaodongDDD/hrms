@@ -1,0 +1,20 @@
+<ion-modal-view style="width: 100vw;" class="estimateModel">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="">
+        <span class="back-button-text">取消</span>
+      </button>
+    </div>
+    <h1 class="title">选择关联售前预估</h1>
+  </ion-header-bar>
+  <ion-content>
+    <div style="color:#adb4be;padding:15px;">
+      说明：同一个售前预估只能关联一种报价类型。
+    </div>
+    <div>
+      <div ng-click="chooseEstimate(item)" class="row" style="background:#ffffff;color:#272e38;padding: 15px;border-bottom: 1px solid rgba(221, 221, 221, 0.6);" ng-repeat="item in addEstimateData">
+        {{item.estimate}} <span style="color:#adb4be;">{{item.status}}</span>
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="cordova-plugin-WebViewPlugin" version="0.0.1">
+    <name>WebViewPlugin</name>
+    <author>wei xiao</author>
+    <description>hand plugin.</description>
+    <keywords>cordova,avtive</keywords>
+    <license>Apache 2.0</license>
+    
+    <js-module charset="utf-8" name="WebViewPlugin" src="www/WebViewPlugin.js">
+        <clobbers target="WebViewPlugin"/>
+    </js-module>
+    
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="WebViewPlugin">
+                <param name="android-package" value="com.hand.webview.WebViewPlugin"/>
+            </feature>
+        </config-file>
+		<source-file src="src/android/src/com/hand/webview/Util.java" target-dir="src/com/hand/webview"/>
+		<source-file src="src/android/src/com/hand/webview/WebViewActivity.java" target-dir="src/com/hand/webview"/>
+		<source-file src="src/android/src/com/hand/webview/WebViewActivityManager.java" target-dir="src/com/hand/webview"/>
+		<source-file src="src/android/src/com/hand/webview/WebViewPlugin.java" target-dir="src/com/hand/webview"/>
+		<source-file src="src/android/layout/activity_webview.xml" target-dir="res/layout"/>
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<activity android:screenOrientation="portrait" android:name="com.hand.webview.WebViewActivity"></activity>
+		</config-file>
+		<config-file parent="/manifest" target="AndroidManifest.xml">
+			<uses-permission android:name="android.permission.INTERNET" />
+		</config-file>
+        
+    </platform>
+    
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="WebViewPlugin">
+                <param name="ios-package" value="CDVWebViewPlugin"/>
+            </feature>
+        </config-file>
+        
+        <header-file src="src/ios/plugins/CDVWebViewPlugin.h" />
+        <source-file src="src/ios/plugins/CDVWebViewPlugin.m" />
+        <header-file src="src/ios/plugins/WebPluginController.h" />
+        <source-file src="src/ios/plugins/WebPluginController.m" />
+    </platform>
+</plugin>

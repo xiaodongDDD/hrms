@@ -8,9 +8,24 @@
     <h1 class="title">名片打印申请</h1>
   </ion-header-bar>
   <ion-content class="content-style">
-    <div class="card-address" ng-click="chooseAddress()">
+    <div ng-if="!needMail" class="card-address" ng-click="chooseAddress()">
       无需邮寄，青浦自取
       <img src="build/img/contact/right_arrow@3x.png">
+    </div>
+    <div ng-if="needMail" ng-click="chooseAddress()">
+      <div class="row" style="background: #fff;">
+        <div class="col col-80">
+          <div class="row">
+            {{cardDetail.address.name}}   {{cardDetail.address.phone}}
+          </div>
+          <div class="row">
+            {{cardDetail.address.province_name}} {{cardDetail.address.city_name}}{{cardDetail.address.zone_name}}{{cardDetail.address.details}}
+          </div>
+        </div>
+        <div class="col col-20">
+          <img src="build/img/contact/right_arrow@3x.png" style="width: 20px;position: absolute;right: 10px;top: 25px;">
+        </div>
+      </div>
     </div>
     <div class="row row-center print-text">
       <div class="col col-60 ">
@@ -18,53 +33,40 @@
       </div>
       <div class="col col-40">
         <div class="row row-center">
-          <div class="col col-center">
+          <div class="col col-center" ng-click="subPrint(cardDetail.printNum)">
             <img src="build/img/myInfo/card/delete.png" class="add-img">
           </div>
           <div class="col col-center print-num">
-            <input type="number" ng-modal="" style="width:30px;">
+            <input type="number" ng-model="cardDetail.printNum" style="width:30px;text-align: center;">
           </div>
-          <div class="col col-center">
+          <div class="col col-center" ng-click="addPrint(cardDetail.printNum)">
             <img src="build/img/myInfo/card/add.png" class="add-img">
           </div>
         </div>
       </div>
     </div>
       <div class="card-detail-box">
-        <div class="row border-bottom" style="">
-          <div class="col col-30">
-            名片信息
-          </div>
-        </div>
-        <div ng-click="goCardDetail()">
-          <div class="card-detail-item">
-            <div  align="center">
-              {{cardDetail.name}}
+        <div ng-click="goCardDetail()" align="center">
+            <div style="padding-top: 50px;font-size:16px;font-weight:bold;color:#272e38;">
+              {{cardDetail.card.name}}
             </div >
-            <div  align="center">
-              {{cardDetail.job}}
-            </div>
-            <div  align="center">
-              {{cardDetail.name_en}}
-            </div>
-            <div  align="center">
-              {{cardDetail.job_en}}
-            </div>
+          <div  style="font-size:15px;color:#272e38;">
+            {{cardDetail.card.name_en}}
           </div>
-          <div class="top-padding-12">
-            <div class="row">
-              <div class="col col-15"></div>
-              <div class="col col-85">{{cardDetail.phone}}</div>
+
+            <div  style="font-size:15px;color:#272e38;margin-top:20px;">
+              {{cardDetail.card.job}}
             </div>
-            <div class="row">
-              <div class="col col-15"></div>
-              <div class="col col-85">{{cardDetail.telephone}}</div>
+
+            <div  style="font-size:15px;color:#272e38;">
+              {{cardDetail.card.job_en}}
             </div>
-            <div class="row">
-              <div class="col col-15"></div>
-              <div class="col col-85">{{cardDetail.email}}</div>
+            <div style="font-size:15px;color:#272e38;margin-top:20px;">
+            {{cardDetail.card.phone}}&nbsp;&nbsp;{{cardDetail.card.telephone}}
             </div>
-          </div>
+            <div style="font-size:15px;color:#272e38;">
+             {{cardDetail.card.email}}
+            </div>
         </div>
       </div>
     <div class="prompt" style="">
@@ -72,7 +74,7 @@
     </div>
   </ion-content>
   <ion-footer-bar>
-      <div  class="submit-button">提交</div>
+      <div  class="submit-button" ng-click="cardApply()">提交</div>
   </ion-footer-bar>
 </ion-view>
 <style>

@@ -8,18 +8,23 @@
     <h1 class="title">我的二维码</h1>
   </ion-header-bar>
   <ion-content class="content-style">
-    <div align="center">
-      <div style="height: 70px;margin-top:10px;">
-        <img src="http://shp.qpic.cn/bizmp/A3gUw79X8ZuImeE77PlFVaTub2dJK5lCw7Hneq9ufMgRTxm6Qx0LAw/" class="header-image">
+    <div class="card-box">
+      <div class="row">
+      <div class="col col-20">
+        <img src="http://shp.qpic.cn/bizmp/A3gUw79X8ZuImeE77PlFVaTub2dJK5lCw7Hneq9ufMgRTxm6Qx0LAw/" style="width:50px;">
       </div>
-      <div style="margin-top:15px;font-size:15px;color: #333333;">李易峰</div>
-      <div style="margin-top:10px;font-size:15px;color: #6f6f6f">上海汉得信息技术股份有限公司</div>
-      <div style="font-size:15px;color: #6f6f6f">移动技术中心&nbsp;&nbsp;&nbsp;&nbsp;产品经理</div>
-      <div style="width: 100%;margin-top: 20px;" align="center">
-      <img src="build/img/myInfo/test.jpg"  style="width:230px;height:230px;">
+      <div class="col col-70">
+        <div style="font-size: 16px;
+    font-weight: bold;">{{cardDetail.name}}</div>
+        <div  style="margin-top:10px;font-size:14px;color: #5c636e">{{cardDetail.job}}</div>
+        <div style="font-size:14px;color: #5c636e">{{companyInfo.name}}</div>
       </div>
-      <div style="margin-top:15px;font-size:15px;color: #6f6f6f">
-        请用微信扫一扫，保存我的名片
+      </div>
+      <div align="center">
+       <img src="build/img/myInfo/test.jpg"  style="width:100%;">
+      </div>
+      <div style="margin-top:15px;font-size:14px;color: #5c636e;text-align: center;">
+      请用微信扫一扫，保存我的名片
       </div>
     </div>
   </ion-content>

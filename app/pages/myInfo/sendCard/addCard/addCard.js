@@ -21,9 +21,13 @@
     var updateCardInfoSuccess=function(result){
       console.log(result);
       hmsPopup.hideLoading();
-      hmsPopup.showShortCenterToast(result.message);
-      $scope.$emit('CLOSE_CARD_ADD');
-      $scope.$emit('UPDATE_CARD_INFO');
+      if(result.status=="S"){
+        $scope.$emit('CLOSE_CARD_ADD');
+        $scope.$emit('UPDATE_CARD_INFO');
+        hmsPopup.showShortCenterToast(result.message);
+      }else{
+        hmsPopup.showShortCenterToast(result.message);
+      }
     };
     function Trim(str)
     {
@@ -40,6 +44,7 @@
       "submit":""
     };
     var getEmployeeInfoSuccees=function(result){
+      hmsPopup.hideLoading();
       if(result.status=="S"){
         $scope.addCardData.name=result.name;
         $scope.addCardData.name_en=result.name_en;
@@ -84,10 +89,27 @@
 
 
       var updateData= {"params":data};
-      sendCardService.updateCardInfo(updateCardInfoSuccess,updateData)
+      if($scope.addCardData.name==""){
+        hmsPopup.showPopup("请输入姓名");
+      }else if($scope.addCardData.name_en==""){
+        hmsPopup.showPopup("请输入英文名");
+      }else if($scope.addCardData.job==""){
+        hmsPopup.showPopup("请输入部门职位");
+      }else if($scope.addCardData.job_en==""){
+        hmsPopup.showPopup("请输入部门职位（EN）");
+      }else if($scope.addCardData.phone==""){
+        hmsPopup.showPopup("请输入手机");
+      }else if($scope.addCardData.email==""){
+        hmsPopup.showPopup("请输入邮箱");
+      }else if($scope.addCardData.telephone==""){
+        hmsPopup.showPopup("请输入座机");
+      }else{
+        sendCardService.updateCardInfo(updateCardInfoSuccess,updateData)
+      }
     };
-    $scope.$on('ADD_CARD',function(){
+   var ADD_CARD= $scope.$on('ADD_CARD',function(){
       $scope.title="新建名片";
+      hmsPopup.showLoading("正在加载数据");
       sendCardService.getEmployeeInfo(getEmployeeInfoSuccees);
     });
     //var updateData= {"params":{
@@ -107,10 +129,15 @@
       console.log("返回");
       $scope.$emit('CLOSE_CARD_ADD');
     };
-    $scope.$on('EDIT_CARD',function(){
+   var EDIT_CARD= $scope.$on('EDIT_CARD',function(){
      $scope.title="编辑名片";
       $scope.addCardData=sendCardService.getCardDetail();
       console.log(sendCardService.getCardDetail());
+    });
+    //销毁广播
+    $scope.$on('$destroy',function(){//controller回收资源时执行
+      EDIT_CARD();//回收广播
+      ADD_CARD();
     });
   }
 })();

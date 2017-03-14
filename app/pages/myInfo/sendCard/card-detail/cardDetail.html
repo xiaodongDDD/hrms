@@ -1,76 +1,85 @@
-<ion-view view-title="名片详情" class="myCard">
-  <ion-header-bar align-title="center" class="bar-stable">
-    <div class="buttons">
-      <button class="button button-icon ion-ios-arrow-back" ng-click="$hmsGoBack()">
-        <span class="back-button-text">返回</span>
-      </button>
+<ion-view view-title="名片详情" class="cardDetail">
+  <div class="time-off-header-bg">
+    <div class="platform-status-bar"></div>
+    <div class="time-off-header-bar">
+      <div class="buttons">
+        <button class="button button-icon icon ion-ios-arrow-back left-button" ng-click="$hmsGoBack()">
+          <span class="back-text">返回</span>
+        </button>
+      </div>
+      <h1 class="title"></h1>
+        <div id="language" style="z-index: 10000;
+    position: fixed;
+    top: 6px;
+    right: 10px;
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 3px;
+    line-height: 24px;" ng-click="changeLauguage()">{{EN?'中':'En'}}</div>
+      <div class="time-off-sub-header" align="center">
+          <div style="height: 70px;">
+            <img ng-src="{{cardDetail.pic_url}}" class="header-image">
+          </div>
+          <div style="margin-top:15px;font-size:15px;color: #fff;">{{EN?cardDetail.name_en:cardDetail.name}}</div>
+          <div style="margin-top:10px;font-size:15px;color: #fff">{{EN?cardDetail.job_en:cardDetail.job}}</div>
+          <div style="font-size:15px;color: #fff">{{EN?companyInfo.name_en:companyInfo.name}}</div>
+      </div>
     </div>
-  </ion-header-bar>
-  <ion-content class="content-style">
+  </div>
+  <ion-content class="time-off-content content-style">
     <div align="center">
       <div style="background: #fff;">
-      <div >
-      <div style="height: 70px;padding-top:10px;">
-        <div style="    position: fixed;
-    top: 10px;
-    left: 10px;" ng-click="changeLauguage(fasle)">中文</div>
-        <img src="http://shp.qpic.cn/bizmp/A3gUw79X8ZuImeE77PlFVaTub2dJK5lCw7Hneq9ufMgRTxm6Qx0LAw/" class="header-image">
-        <div style="    position: fixed;
-    top: 10px;
-    right: 10px;" ng-click="changeLauguage(true)">EN</div>
-      </div>
-      <div style="margin-top:15px;font-size:15px;color: #333333;">{{EN?cardDetail.name_en:cardDetail.name}}</div>
-      <div style="font-size:15px;color: #6f6f6f">{{EN?cardDetail.job_en:cardDetail.job}}</div>
-      <div style="margin-top:10px;font-size:15px;color: #6f6f6f">{{EN?cardDetail.job_en:cardDetail.job}}</div>
-      </div>
-      <div style="margin-top:15px;">
-      <div class="row font-left" style="">
-        <div class="col col-20">{{EN?ENdata.phone:"手机"}}</div>
-        <div class="col col-60">{{cardDetail.phone}}</div>
-        <a class="col col-20" href="tel:18335103739"><img src="build/img/myInfo/card/phone.png" style=" width: 20px;
-    position: absolute;
-    right: 20px;"></a>
+
+      <div>
+      <div class="row font-left">
+        <div class="col col-10">
+          <img src="build/img/myInfo/card/myphone.png" style="width: 20px;">
+        </div>
+        <div class="col col-20 col-center">{{EN?ENdata.phone:"手机"}}</div>
+        <div class="col col-70  col-center" href="tel:{{cardDetail.phone}}">{{cardDetail.phone}}</div>
       </div>
       <div class="row font-left" style="text-align:left;">
-        <div class="col col-20">{{EN?ENdata.email:"邮箱"}}</div>
-        <div class="col col-80">{{cardDetail.email}}</div>
+        <div class="col col-10">
+          <img src="build/img/myInfo/card/email.png" style="width: 20px;">
+        </div>
+        <div class="col col-20 col-center">{{EN?ENdata.email:"邮箱"}}</div>
+        <div class="col col-70 col-center">{{cardDetail.email}}</div>
       </div>
       <div class="row font-left" style="text-align:left;">
-        <div class="col col-20">{{EN?ENdata.address:"地址"}}</div>
-        <div class="col col-80">{{cardDetail.address}}</div>
+        <div class="col col-10">
+          <img src="build/img/myInfo/card/address.png" style="width: 20px;">
+        </div>
+        <div class="col col-20 col-center">{{EN?ENdata.address:"地址"}}</div>
+        <div class="col col-70 col-center">{{EN?companyInfo.address_en:companyInfo.address}}</div>
       </div>
       <div class="row font-left" style="text-align:left;">
-        <div class="col col-20">{{EN?ENdata.telephone:"座机"}}</div>
-        <div class="col col-80">{{cardDetail.telephone}}</div>
+        <div class="col col-10 col-center">
+          <img src="build/img/myInfo/card/telephone.png" style="width: 20px;">
+        </div>
+        <div class="col col-20 col-center">{{EN?ENdata.telephone:"座机"}}</div>
+        <div class="col col-70 col-center" >{{cardDetail.telephone}}</div>
       </div>
       </div>
     </div>
+      <div class="card-item" id="company">
+        <div class="float-80">{{EN?companyInfo.name_en:companyInfo.name}}</div>
+        <div class="float-10">
+          <img  id="arrow" src="build/img/myInfo/card/arrow.png" style="width:20px;">
+        </div>
+        <div class="clear"></div>
+      </div>
     </div>
 
   </ion-content>
   <ion-footer-bar>
-    <div class="submit-left">{{EN?ENdata.CDcard:"二维码"}}</div>
-    <div class="submit-right">{{EN?ENdata.share:"分享"}}</div>
+    <div class="submit-left" ng-click="ORCode(cardDetail)">{{EN?ENdata.CDcard:"二维码"}}</div>
+    <div class="submit-right" ng-click="shareMyCard(cardDetail)">{{EN?ENdata.share:"分享"}}</div>
   </ion-footer-bar>
 </ion-view>
 <style>
-  .font-left{
-    text-align:left;
-    background: #fff;
-    border-top: 1px solid #d1d1d1;
-  }
-  .submit-left{
-    border-radius:10px;height:40px;line-height:40px;width:40%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;
-  }
-  .submit-right{
-    border-radius:10px;height:40px;line-height:40px;width:40%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;
-  }
-  .bar-footer {
-    bottom: 0;
-    border-top-width: 1px;
-    border-bottom-width: 0;
-    background-position: top;
-    height: 60px;
-    background:none;
-  }
+
 </style>

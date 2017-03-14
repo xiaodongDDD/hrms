@@ -9,24 +9,50 @@
   </ion-header-bar>
   <ion-content class="content-style" style="background: #f8f8f8;">
     <div class="address-list" ng-repeat="item in myAddress">
-      <div class="address-info">
-      <div class="row row-center">
-        <div class="col col-30">{{item.name}}</div>
-        <div class="col col-70">{{item.phone}}</div>
+      <!--<div ng-if="item.name!=''">-->
+      <div class="address-item" ng-click="chooseAddress(item)">
+      <div class="address-info"  ng-if="item.name!=''">
+        <!--<div class="col col-30">{{item.name}}</div>-->
+        <!--<div class="col col-70">{{item.phone}}</div>-->
+        {{item.name}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.phone}}
       </div>
-      <div class="row padding-5">
-        {{item.address}}
+        <div ng-if="item.name==''">
+        <div class="address-info" style="height: 70px;line-height: 65px;">
+        无需邮寄，青浦自取
+        </div>
       </div>
+        <div  ng-if="item.name!=''" class="row padding-5">
+          {{item.country_name}}{{item.province_name}}{{item.city_name}}{{item.zone_name}}{{item.details}}
+        </div>
       </div>
       <div class="row edit-item row-center">
-        <div class="col col-10">
-
+        <div class="col col-10" ng-click="chooseDefault(item)">
+          <img ng-src="{{item.defaultImg}}" style="width: 20px; position: relative;top: 3px;left: 5px;">
         </div>
-        <div class="col col-50">设为默认</div>
-        <div class="col col-20">编辑</div>
-        <div class="col col-20">删除</div>
+        <div class="col col-48" ng-click="setDefaultAddress(item.address_id)">设为默认</div>
+        <div ng-if="item.name!=''" class="col col-20" style="border-radius: 20px;
+    border: 1px solid #1e8beb;
+    text-align: center;margin-right:5px;color:#1e8beb;    height: 27px;
+    line-height: 16px;" ng-click="editAddress(item)">编辑</div>
+        <div ng-if="item.name!=''" class="col col-20" style="border-radius: 20px;
+    border: 1px solid #1e8beb;
+    text-align: center;margin-right:5px;color:#1e8beb;    height: 27px;
+    line-height: 16px;" ng-click="deleteAddress(item)">删除</div>
       </div>
-    </div>
+
+      </div>
+      <!--</div>-->
+      <!--<div ng-if="item.name==''">-->
+        <!--<div class="address-info" style="height: 70px;line-height: 65px;">-->
+          <!--无需邮寄，青浦自取-->
+        <!--</div>-->
+        <!--<div class="row edit-item row-center">-->
+          <!--<div class="col col-10" ng-click="chooseDefault(item)">-->
+            <!--<img ng-src="{{item.defaultImg}}" style="width: 20px; position: relative;top: 3px;left: 5px;">-->
+          <!--</div>-->
+          <!--<div class="col col-50">设为默认</div>-->
+        <!--</div>-->
+      <!--</div>-->
 
   </ion-content>
   <ion-footer-bar>

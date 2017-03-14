@@ -8,64 +8,53 @@
     <h1 class="title">{{title}}</h1>
   </ion-header-bar>
   <ion-content class="content-style">
-    <div align="center">
-      <div class="hms-input-item-style1">
-      <div class="hms-input-header">
-      姓名<span ng-if="isImportant">&nbsp;*</span></div>
-     <div class="hms-input-content last-line" ><input type="text" placeholder="请输入" ng-model="addCardData.name" ng-blur="inputBlur()" ng-readonly="isChange"></div>
-      </div>
+    <div class="row row-center card-item">
+      <div class="col col-25">姓名</div>
+      <div class="col col-65" ><input type="text" placeholder="请输入" ng-model="addCardData.name" ></div>
     </div>
-    <div align="center">
-      <div class="hms-input-item-style1">
-        <div class="hms-input-header">
-          姓名（EN）<span ng-if="isImportant">&nbsp;*</span></div>
-        <div class="hms-input-content last-line" ><input type="text" placeholder="请输入" ng-model="addCardData.name_en" ng-blur="inputBlur()" ng-readonly="isChange"></div>
-      </div>
+    <!--<div align="center">-->
+      <!--<div class="hms-input-item-style1">-->
+      <!--<div class="hms-input-header">-->
+      <!--姓名<span ng-if="isImportant">&nbsp;*</span></div>-->
+     <!--<div class="hms-input-content last-line" ><input type="text" placeholder="请输入" ng-model="addCardData.name" ng-blur="inputBlur()" ng-readonly="isChange"></div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <div class="row row-center card-item">
+      <div class="col col-25">英文名</div>
+      <div class="col col-65" ><input type="text" placeholder="请输入" ng-model="addCardData.name_en"></div>
     </div>
-    <div align="center">
-      <div class="hms-input-item-style1">
-        <div class="hms-input-header">
-          部门职位<span ng-if="isImportant">&nbsp;*</span></div>
-        <div class="hms-input-content last-line" ><input type="text" placeholder="请输入" ng-model="addCardData.job" ng-blur="inputBlur()" ng-readonly="isChange"></div>
-      </div>
+    <div class="row row-center card-item">
+      <div class="col col-25">部门职位</div>
+      <div class="col col-65" ><input type="text" placeholder="请输入" ng-model="addCardData.job"></div>
     </div>
-    <div align="center">
-      <div class="hms-input-item-style1">
-        <div class="hms-input-header">
-          部门职位（EN）<span ng-if="isImportant">&nbsp;*</span></div>
-        <div class="hms-input-content last-line" ><input type="text" placeholder="请输入" ng-model="addCardData.job_en" ng-blur="inputBlur()" ng-readonly="isChange"></div>
-      </div>
+    <div class="row row-center card-item">
+      <div class="col col-25">部门职位（EN）</div>
+      <div class="col col-65" ><input type="text" placeholder="请输入" ng-model="addCardData.job_en"></div>
     </div>
-    <div class="common-input-area-title">
-     联系方式
+    <div style="margin-top:20px;">
+    <div class="row row-center card-item">
+      <div class="col col-25">手机</div>
+      <div class="col col-65" ><input type="text" placeholder="请输入" ng-model="addCardData.phone"></div>
     </div>
-    <div align="center">
-      <div class="hms-input-item-style1">
-        <div class="hms-input-header">
-          手机<span ng-if="isImportant">&nbsp;*</span></div>
-        <div class="hms-input-content last-line" ><input type="text" placeholder="请输入" ng-model="addCardData.phone" ng-blur="inputBlur()" ng-readonly="isChange"></div>
-      </div>
+    <div class="row row-center card-item">
+      <div class="col col-25">邮箱</div>
+      <div class="col col-65" ><input type="text" placeholder="请输入" ng-model="addCardData.email"></div>
     </div>
-    <div align="center">
-      <div class="hms-input-item-style1">
-        <div class="hms-input-header">
-          邮箱<span ng-if="isImportant">&nbsp;*</span></div>
-        <div class="hms-input-content last-line" ><input type="text" placeholder="请输入" ng-model="addCardData.email" ng-blur="inputBlur()" ng-readonly="isChange"></div>
-      </div>
+    <div class="row row-center card-item">
+      <div class="col col-25">座机</div>
+      <div class="col col-65" ><input type="text" placeholder="请输入" ng-model="addCardData.telephone"></div>
     </div>
-    <div align="center">
-      <div class="hms-input-item-style1">
-        <div class="hms-input-header">
-          座机<span ng-if="isImportant">&nbsp;*</span></div>
-        <div class="hms-input-content last-line" ><input type="text" placeholder="请输入" ng-model="addCardData.telephone" ng-blur="inputBlur()" ng-readonly="isChange"></div>
-      </div>
     </div>
-    <div style="color: #3366FF;padding: 25px;">
+    <div style="color: #858c96;padding: 25px 10px 0 10px;">
       须知： 若职位与HRMS中记录的不符，则需要领导审批后，该名片方可分享
     </div>
     <div>
-    <div style="border-radius:10px;height:40px;line-height:40px;width:40%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;" ng-click="saveCard('N')">保存</div>
-    <div style="border-radius:10px;height:40px;line-height:40px;width:45%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;" ng-click="saveCard('Y')">保存并提交审批</div>
+    <!--<div style="border-radius:10px;height:40px;line-height:40px;width:40%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;" ng-click="saveCard('N')">保存</div>-->
+    <!--<div style="border-radius:10px;height:40px;line-height:40px;width:45%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;" ng-click="saveCard('Y')">保存并提交审批</div>-->
   </div>
   </ion-content>
+  <ion-footer-bar>
+    <div class="submit-left" ng-click="saveCard('N')">保存</div>
+    <div class="submit-right" ng-click="saveCard('Y')">保存并提交审批</div>
+  </ion-footer-bar>
 </ion-modal-view>
