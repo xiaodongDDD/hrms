@@ -276,6 +276,9 @@ angular.module('applicationModule')
           $ionicHistory.goBack();
           hmsPopup.showPopup('操作成功');
         } else {
+          $scope.showOperateButton = true;
+          $ionicHistory.goBack();
+          window.sessionStorage.refreshContractList = 'true';
           hmsPopup.showPopup('操作失败：' + angular.toJson(response.message));
         }
       };
@@ -299,10 +302,10 @@ angular.module('applicationModule')
                 hmsPopup.showPopup('请选择转交人');
                 return 0;
               } else {
-                contractDetailService.transpond(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, $scope.transpondId, $scope.submitMessage.text);
+                contractDetailService.transpond(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, $scope.transpondId, $scope.submitMessage.text, $scope, $ionicScrollDelegate);
               }
             } else {
-              contractDetailService.submit(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, key, $scope.submitMessage.text, $scope);
+              contractDetailService.submit(submitSuccess, $stateParams.data.procId, $stateParams.data.activityId, key, $scope.submitMessage.text, $scope, $ionicScrollDelegate);
             }
           }
         });
@@ -520,7 +523,7 @@ angular.module('applicationModule')
     };
     //end add
 
-    this.submit = function(success, procInstId, actInstId, submitKey, comment, scope) {
+    this.submit = function(success, procInstId, actInstId, submitKey, comment, scope, ionicScrollDelegate) {
       var params = {
         userId: window.localStorage.empno,
         method: "submit",
@@ -534,6 +537,12 @@ angular.module('applicationModule')
         if (baseConfig.isWeixinWebview) {
           this.disableOprate();
         }
+
+        scope.showOperateButton = false;
+        hmsPopup.showShortCenterToast('提交中,请耐心等待');
+        ionicScrollDelegate.$getByHandle('workflowDetailHandle').resize();
+        ionicScrollDelegate.$getByHandle('workflowDetailHandle').scrollBottom(true);
+
         hmsHttp.post(baseUrlTest, params).success(function(result) {
           success(result);
         }).error(function(response, status) {
@@ -546,11 +555,6 @@ angular.module('applicationModule')
         if(scope.data.approvalAction[i].action_key === submitKey){
           // value 是驳回
           if(scope.data.approvalAction[i].action_value === '驳回销售'){
-            try {
-              scope.hideIonicAS();
-            } catch (error) {
-              
-            }
             hmsPopup.confirm('确认要驳回销售吗', '提示', function (index) {
               if (index === 1){
                 // 确认
@@ -562,13 +566,19 @@ angular.module('applicationModule')
             cb_();
           }
         }
+        try {
+          scope.hideIonicAS();
+        } catch (error) {
+          
+        }
       }
     };
 
-    this.transpond = function(success, procInstId, actInstId, transpondUser, message) {
+    this.transpond = function(success, procInstId, actInstId, transpondUser, message, scope, ionicScrollDelegate) {
       if (baseConfig.isWeixinWebview) {
         this.disableOprate();
       }
+      
       var params = {
         userId: window.localStorage.empno,
         method: "transpond",
@@ -577,6 +587,18 @@ angular.module('applicationModule')
         transpondUser: transpondUser,
         message: message
       };
+
+      scope.showOperateButton = false;
+      hmsPopup.showShortCenterToast('提交中,请耐心等待');
+      ionicScrollDelegate.$getByHandle('workflowDetailHandle').resize();
+      ionicScrollDelegate.$getByHandle('workflowDetailHandle').scrollBottom(true);
+      
+      try {
+        scope.hideIonicAS();
+      } catch (error) {
+        
+      }
+
       hmsHttp.post(baseUrlTest, params).success(function(result) {
         success(result);
       }).error(function(response, status) {
