@@ -1,0 +1,32 @@
+<div class="crm crmSelectModal">
+  <ion-modal-view style="width: 100vw;background: none;">
+    <crm-loading ng-if="showCrmLoading"></crm-loading>
+    <div class="common-fix-div" ng-class="{true:'showUp'}[showSelect]">
+      <div class="common-fix-div-header">
+        <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="goCounselorBack()"/>
+        请选择
+      </div>
+      <div class="sifting-area">
+        <img src="build/img/application/opportunity/icon_top_search@3x.png">
+        <input type="search" placeholder="搜索" ng-change="searchCounselorValue()" ng-model="getCounselorTypeListParam.keyWord"/>
+        <img src="build/img/application/icon_circle@3x.png" ng-show="searchModel.searchValueKey != ''" ng-click="clearSelectFilter()">
+      </div>
+      <div class="list">
+        <ion-content class="srcoll-content"  has-bouncing="true"   delegate-handle="listScroll">
+          <div class="list-item" ng-if="!showCounselorTpye" ng-repeat="item in counselors track by $index" ng-click="selectCounselorsItem(item)"
+               ng-show="item != ''">{{item.counselorTypeName}}
+          </div>
+          <div class="list-item" ng-click="selectCounselorTpye(item)" ng-if="showCounselorTpye" ng-repeat="item in counselorsType track by $index">
+              {{item.counselorLevelName}}
+          </div>
+          <ion-infinite-scroll
+            on-infinite="loadMoreCounselor()"
+            distance="1%"
+            immediate-check="false"
+            ng-if="loadMoreCounselorFlag">
+          </ion-infinite-scroll>
+        </ion-content>
+      </div>
+    </div>
+  </ion-modal-view>
+</div>

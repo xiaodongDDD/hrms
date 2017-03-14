@@ -1265,7 +1265,7 @@ angular.module('customerModule')
 
       $scope.showBigPic = function(){
         $scope.showBig = true;
-      }
+      };
 
       //图片修改
       var updateSuccess = function (data) {

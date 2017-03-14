@@ -15,22 +15,22 @@
   <ion-content class="content-style">
     <div class="header-img-div" ng-click="ImageUpload()">
       <img ng-src="{{headerurl}}" class="header-image">
+      <div style="margin-top: 11px;font-size: 16px;">
+        {{addCardData.name}}
+      </div>
     </div>
       <div class="row row-center send-item">
-       <div class="col col-30 col-center send-item-text">
-         发名片
-       </div>
-        <div  ng-click="ORCode(cardList[cardIndex])"  class="col col-35 " style="text-align:center">
+        <div  ng-click="ORCode(cardList[cardIndex])"  class="col col-50 " style="color:#5c636e;text-align:center">
           <div class="card-img" align="center">
             <img src="build/img/myInfo/card/erweima.png">
           </div>
-          <div>二维码</div>
+          <div class="text">二维码</div>
         </div>
-        <div class="col col-35 " ng-click="shareMyCard(cardList[cardIndex])"  style="text-align:center">
+        <div class="col col-50" ng-click="shareMyCard(cardList[cardIndex])"  style="color:#5c636e;text-align:center">
           <div  class="card-img" align="center">
             <img class="img-share" src="build/img/myInfo/card/share.png">
           </div>
-          <div>
+          <div class="text">
             分享
           </div>
         </div>
@@ -43,45 +43,36 @@
     <ion-slide-box ng-if="cardList!=0" on-slide-changed="slideHasChanged($index)" class="main-slide">
       <ion-slide style="width: 100%;" ng-repeat="item in cardList">
         <div style="height: 270px;">
-          <div class="row" style="border-bottom:1px solid #d1d1d1;">
-            <div class="col col-20">
+          <div class="row">
+            <div class="col col-20 {{item.statusColor}}">
               {{item.status}}
             </div>
             <div class="col col-65"></div>
-            <div class="col col-15" ng-click="moreOp(item)">更多</div>
+            <div class="col col-15" ng-click="moreOp(item)">
+              <img src="build/img/myInfo/card/more.png" style="width:20px;position: absolute;right: 10px;">
+            </div>
           </div>
           <div ng-click="goCardDetail(item)">
           <div style="    width: 98%;
     margin-left: 1%;
-    border-bottom: 1px solid #d1d1d1;
     height: 100px;
     padding-top: 10px;">
-          <div  align="center">
+          <div class="card_name"  align="center">
             {{item.name}}
           </div >
-          <div  align="center">
+            <div  class="card-item" align="center">
+              {{item.name_en}}
+            </div>
+          <div class="card-item" align="center" style="margin-top: 10px;">
            {{item.job}}
           </div>
-          <div  align="center">
-            {{item.name_en}}
-          </div>
-          <div  align="center">
+          <div class="card-item" align="center">
             {{item.job_en}}
           </div>
           </div>
-          <div style="padding-top: 12px;">
-            <div class="row">
-               <div class="col col-15"></div>
-              <div class="col col-85">{{item.phone}}</div>
-            </div>
-            <div class="row">
-              <div class="col col-15"></div>
-              <div class="col col-85">{{item.telephone}}</div>
-            </div>
-            <div class="row">
-              <div class="col col-15"></div>
-              <div class="col col-85">{{item.email}}</div>
-            </div>
+          <div style="padding-top: 12px;" align="center">
+              <div class="card-item">{{item.phone}}&nbsp;&nbsp;{{item.telephone}}</div>
+              <div class="card-item" style="margin-top:10px;">{{item.email}}</div>
           </div>
           </div>
         </div>
@@ -89,6 +80,6 @@
     </ion-slide-box>
   </ion-content>
   <div class="show-big-pic" ng-click="closeBigPic()" ng-if="showBig">
-    <img ng-src="{{customer.logoUrl=='' ?  'build/img/application/information/icon_partner@3x.png' : customer.logoUrl}}"/>
+    <img ng-src="{{headerurl=='' ?  'build/img/application/information/icon_partner@3x.png' : headerurl}}"/>
   </div>
 </ion-view>

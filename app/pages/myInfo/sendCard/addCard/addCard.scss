@@ -1,78 +1,36 @@
 .addCard{
-.hms-input-item-style1 {
-  padding-left: 5vw; }
- .hms-input-item-style1.last-line {
-  background-image: linear-gradient(0deg, #ddd, #ddd 50%, transparent 50%);
-  background-position: bottom;
-  background-size: 100% 1px;
-  background-repeat: no-repeat; }
-.hms-input-item-style1 .hms-input-header {
-  color: #32a4ec;
-  font-size: 14px;
-  padding-top: 10px;
-  padding-bottom: 2px;
-text-align:left;}
- .hms-input-item-style1 .hms-input-header span {
-  color: #fe9073; }
- .hms-input-item-style1 .hms-input-content {
-  font-size: 16px;
-  height: 35px;
-  line-height: 24px;
-  color: #333333;
-  width: 100%;
-  padding: 4px 0px 7px 0px; }
- .hms-input-item-style1 .hms-input-content.last-line {
-  background-image: linear-gradient(0deg, #ddd, #ddd 50%, transparent 50%);
-  background-position: bottom;
-  background-size: 100% 1px;
-  background-repeat: no-repeat; }
- .hms-input-item-style1 .hms-input-content input {
-  width: 100%;
-  font-size: 16px;
-  height: 24px;
-  line-height: 24px;
-  border: none;
-  -webkit-appearance: none;
-  background-color: transparent; }
-  //输入区域的上方标题
-  .common-input-area-title {
-    height: 30px;
-    line-height: 27px;
-    background: #fafafa;
-    border-top: 1px solid #e9e9e9;
-    border-bottom: 1px solid #e9e9e9;
+  background:#f4f5f7;
+  .row+.row {
+    margin-top:0!important;
+    /* margin-top: -5px; */
+    padding-top: 5px!important;
+  }
+  .card-item{
+    background:#ffffff;
+    color: #858c96;
+    border-bottom: 1px solid rgba(209, 209, 209, 0.59);
+    font-size: 16px;
+  }
+  .submit-left{
+    /* height: 30px; */
+    /* line-height: 40px; */
+    width: 50%;
+    /* float: left; */
+    background: #fff;
+    color: #1e8beb;
     text-align: center;
-    width: 100vw;
-    position: relative;
-    color: #666666;
-    div {
-      position: absolute;
-      top: 0;
-      height: 40px;
-      line-height: 40px;
-      color: #32acec;
-    }
-    div.left {
-      left: 5vw;
-    }
-    div:last-child {
-      right: 5vw;
-    }
-    .title-image {
-      height: 20px;
-      position: relative;
-      top: 5px;
-      left: -10px;
-    }
-    .title-but {
-      color: #32a4ec;
-    }
-    img {
-      width: 20px;
-      position: relative;
-      top: 5px;
-      margin-right: 5px;
-    }
-
+    margin: 10px 0 10px 0;
+    border-right:1px solid rgba(209, 209, 209, 0.59);
+  }
+  .submit-right{
+ width:50%;float:left;background: #fff;color: #1e8beb;text-align: center;   margin: 10px 0 10px 0;
+    border-right: 1px solid rgba(209, 209, 209, 0.59);
+  }
+  .bar-footer {
+    bottom: 0;
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    background-position: top;
+    background:#fff;
   }
 }

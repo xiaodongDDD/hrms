@@ -8,7 +8,9 @@
     $stateProvider
       .state('tab.my-card', {
         url: '/myInfo/sendCard/my-card',
-        params: {},
+        params: {
+          params:""
+        },
         views: {
           'tab-myInfo': {
             prefetchTemplate: false,
@@ -27,31 +29,26 @@
   myCardCtrl.$inject = [
     '$scope',
     '$stateParams',
-    'baseConfig',
-    'hmsPopup',
-    'faceEcognitionService',
-    '$state',
-    '$http',
-    '$ionicHistory',
-    '$timeout'];
+    'sendCardService',
+  'hmsPopup'];
 
   function myCardCtrl($scope,
                         $stateParams,
-                        baseConfig,
-                        hmsPopup,
-                        $state,
-                        $http,
-                        $ionicHistory,
-                        $timeout) {
+                      sendCardService,
+                      hmsPopup) {
     var vm = this;
-    $scope.data={
-      name:"测试",
-      title:"测试"
+    var cardId=$stateParams.params;
+    console.log($stateParams.params);
+    var getSingleCardSuccess=function(result){
+      $scope.cardDetail=result;
     };
-    //vm.ORCode=ORCode;
-    //function ORCode(){
-    //  console.log("===");
-    //}
+    sendCardService.getSingleCard(getSingleCardSuccess,cardId);
+    var getCompanyInfoSuccess=function(result){
+      console.log(result);
+      $scope.companyInfo=result;
+    };
+    sendCardService.getCompanyInfo(getCompanyInfoSuccess);
+
   }
 })();
 

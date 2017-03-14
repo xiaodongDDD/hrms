@@ -105,6 +105,7 @@ angular.module('competitorModule')
           console.log(item);
           $scope.history.fullname = item.opportunityName;
           $scope.history.typeName = item.opportunityTypeName;
+          $scope.history.customerName=item.customerName;
           $scope.history.type = item.opportunityType;
           $scope.history.value = item.opportunityId;
           console.log(!inArrayVaule($scope.historys, $scope.history.value));

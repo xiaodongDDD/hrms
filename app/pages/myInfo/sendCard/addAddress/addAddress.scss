@@ -3,7 +3,7 @@
     height:100%;
   }
   .content-style{
-    background:#f8f8f8;
+    background:#f4f5f7;
   }
   .row+.row {
     margin-top:0!important;
@@ -15,17 +15,28 @@
     border-top-width: 1px;
     border-bottom-width: 0;
     background-position: top;
-    height:60px;
-    background:none;
+    height:40px;
+    background:#fff;
+    color:#1e8beb;
+    text-align:center;
   }
   .submit-button{
-    border-radius:10px;height:40px;line-height:40px;width:90%;float:left;margin-left:5%;background: #989898;color: #ffffff;text-align: center;
+   //height:40px;line-height:40px;float:left;background: #fff;color: #1e8beb;text-align: center;
+    height: 40px;
+    line-height: 30px;
+    width: 100%;
+    background: #fff;
+    color: #1e8beb;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
   }
   .card-list{
     background: #ffffff;
   }
   .card-item{
-    border-bottom: 1px solid #d1d1d1;
+    color: #858c96;
+    border-bottom:1px solid rgba(209, 209, 209, 0.59);
   }
 
 }

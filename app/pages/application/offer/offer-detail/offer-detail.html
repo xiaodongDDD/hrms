@@ -1,0 +1,314 @@
+<ion-view class="crm offerDetail">
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="historyGoBack()"/>
+    <h1 class="title">投标报价</h1>
+    <img ng-if="offer.isMyOffer!='N'" src="build/img/application/customer/detail/icon_dot@3x.png" ng-click="showMenu()"/>
+  </ion-header-bar>
+  <ion-content style="background: #f8f8f8;">
+    <div class="head-offer">
+      <div class="row header-item">
+        <div class="col col-12 col-center"><div ng-class="{true:'calibration',false:'bid'}[offer.offerStage=='OFFER_STAGE_BIDED']">{{offer.offerStage=='OFFER_STAGE_BIDED'?'定标':'投标'}}</div></div>
+        <div class="col col-68 col-center header-name">{{offer.opportunityName}}</div>
+        <div class="col col-20 col-center {{offer.dataStatus}}">{{offer.dataStatusName}}</div>
+      </div>
+      <div class="header-name-item">
+        <div class="row">
+          客户：{{offer.customerName}}
+        </div>
+        <div class="row">
+          预销售：{{offer.preSaleName}}
+        </div>
+      </div>
+      <div class="row remark" ng-if="offer.offerMark">
+        <div>
+          {{offer.offerMark}}
+        </div>
+      </div>
+      <div class="header-money">
+        <div>总报价({{offer.currencyName}}):<span class="blue-money">{{offer.amount}}</span></div>
+        <div class="exchangeRate" ng-if="offer.currencyName!='CNY'">1{{offer.currencyName}}={{offer.exchangeRate}}CNY</div>
+      </div>
+    </div>
+    <div class="offer-body" ng-repeat="homOffer in offer.offerLines">
+      <div class="offer-body-header">
+        <div class="row">
+          <div class="col col-90" style="font-size:15px;">{{homOffer.offerTypeName}}</div>
+        </div>
+        <div class="row offer-body-header-name">
+          {{homOffer.productTypeName}}-{{homOffer.unitName}}{{homOffer.productName}}-{{homOffer.level2ProductName}}
+        </div>
+      </div>
+      <div class="offer-body-item" ng-repeat="item in homOffer.offerDetails">
+        <div ng-if="item.offerType=='AGENT'">
+        <div class="row offer-body-item-name" >
+          <div class="col col-90">{{item.category1Name}}-{{item.category2Name}}</div>
+        </div>
+        <div  class="offer-body-item-content">
+          <div class="row">
+            <div class="col col-70">软件下单成本</div>
+            <div class="col col-30" style="text-align:right;">
+              {{item.cost}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">利润率</div>
+            <div class="col col-30" style="text-align:right;">
+              +{{item.profitRate}}%
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col col-70">软件总价(含税)</div>
+          <div class="col col-30" style="text-align:right;">
+            {{item.totalCost}}
+          </div>
+        </div>
+      </div>
+        <div ng-if="item.offerType=='OWN'">
+          <div class="row offer-body-item-name" >
+            <div class="col col-90">{{item.category1Name}}-{{item.category2Name}}</div>
+          </div>
+          <div class="row">
+            <div class="col col-70">软件总价</div>
+            <div class="col col-30" style="text-align:right;">
+              {{item.totalCost}}
+            </div>
+          </div>
+        </div>
+        <div ng-if="item.offerType=='FIXED'">
+          <div class="row offer-body-item-name" >
+            <div class="col col-90">{{item.category1Name}}-{{item.category2Name}}</div>
+          </div>
+          <div  class="offer-body-item-content">
+            <div class="row">
+              <div class="col col-70">列表总金额</div>
+              <div class="col col-30 line-through" style="text-align:right;">
+                {{item.amount}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">平均单价</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.unitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">人天总数</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.peopleDays}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">优惠后总金额(含税)</div>
+            <div class="col col-30" style="text-align:right;">
+              {{item.totalCost}}
+            </div>
+          </div>
+        </div>
+        <div ng-if="item.offerType=='TM'">
+          <div class="row offer-body-item-name" >
+            <div class="col col-90">{{item.category1Name}}-{{item.category2Name}}</div>
+          </div>
+          <div  class="offer-body-item-content">
+            <div class="row">
+              <div class="col col-70">列表人天单价</div>
+              <div class="col col-30 line-through" style="text-align:right;">
+                {{item.unitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">优惠后人天单价</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.disUnitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">预计人天总数</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.peopleDays}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">预计总价(含税{{item.taxRate*100}}%)</div>
+            <div class="col col-30" style="text-align:right;">
+              {{item.totalCost}}
+            </div>
+          </div>
+        </div>
+        <div ng-if="item.offerType=='REMOTE_FIXED'">
+          <div class="row offer-body-item-name" >
+            <div class="col col-90">{{item.category1Name}}-{{item.category2Name}}</div>
+          </div>
+          <div  class="offer-body-item-content">
+            <div class="row">
+              <div class="col col-70">列表人天单价</div>
+              <div class="col col-30 line-through" style="text-align:right;">
+                {{item.unitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">优惠后人天单价</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.disUnitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">预计人天总数</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.peopleDays}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">预计总价(含税{{item.taxRate*100}}%)</div>
+            <div class="col col-30" style="text-align:right;">
+              {{item.totalCost}}
+            </div>
+          </div>
+        </div>
+        <div ng-if="item.offerType=='REMOTE_TM'">
+          <div class="row offer-body-item-name" >
+            <div class="col col-90">{{item.category1Name}}-{{item.category2Name}}</div>
+          </div>
+          <div  class="offer-body-item-content">
+            <div class="row">
+              <div class="col col-70">列表人天单价</div>
+              <div class="col col-30 line-through" style="text-align:right;">
+                {{item.unitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">优惠后人天单价</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.disUnitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">预计人天总数</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.peopleDays}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">折扣率</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.discountRate}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">预计总价(含税{{item.taxRate*100}}%)</div>
+            <div class="col col-30" style="text-align:right;">
+              {{item.totalCost}}
+            </div>
+          </div>
+        </div>
+        <div ng-if="item.offerType=='REMOTE_HOURS'">
+          <div class="row offer-body-item-name" >
+            <div class="col col-90">{{item.category1Name}}-{{item.category2Name}}</div>
+          </div>
+          <div  class="offer-body-item-content">
+            <div class="row">
+              <div class="col col-70">列表人天单价</div>
+              <div class="col col-30 line-through" style="text-align:right;">
+                {{item.unitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">优惠后人天单价</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.disUnitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">预计人天总数</div>
+              <div class="col col-30" style="text-align:right;">
+               {{item.peopleDays}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">折扣率</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.discountRate}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">预计总价(含税{{item.taxRate*100}}% 远程系数{{item.coefficient}})</div>
+            <div class="col col-30" style="text-align:right;">
+              {{item.totalCost}}
+            </div>
+          </div>
+        </div>
+        <div ng-if="item.offerType=='REMOTE_INCIDENT_TIMES'">
+          <div class="row offer-body-item-name" >
+            <div class="col col-90">{{item.category1Name}}-{{item.category2Name}}</div>
+          </div>
+          <div  class="offer-body-item-content">
+            <div class="row">
+              <div class="col col-70">事件单单价</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.disUnitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">事件单数量（每月）</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.monthEvent}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">月数</div>
+              <div class="col col-30" style="text-align:right;">
+                ×{{item.months}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">预计总价(含税{{item.taxRate*100}}% 远程系数{{item.coefficient}}%)</div>
+            <div class="col col-30" style="text-align:right;">
+              {{item.totalCost}}
+            </div>
+          </div>
+        </div>
+        <div ng-if="item.offerType=='OPERATION_IMPLEMENT_FEE'">
+          <div  class="offer-body-item-content">
+            <div class="row">
+              <div class="col col-70">项目实施费</div>
+              <div class="col col-30" style="text-align:right;">
+                {{item.implementationCost}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">实施费折价比例</div>
+              <div class="col col-30" style="text-align:right;">
+                -{{item.implementationRatio}}%
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">维护费</div>
+              <div class="col col-30" style="text-align:right;">
+                +{{item.maintainCost}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">预计总价(含税{{item.taxRate*100}}%)</div>
+            <div class="col col-30" style="text-align:right;">
+              {{item.totalCost}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="item-sum">
+        <div>总报价({{offer.currencyName}}):<span class="blue-money">{{homOffer.amount}}（含税{{homOffer.taxRate*100}}%）</span></div>
+        <!--<div class="exchangeRate">1JPY=6.2CNY</div>-->
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+<style>
+
+</style>

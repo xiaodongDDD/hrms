@@ -411,7 +411,6 @@ angular.module('HmsModule')
       };
 
 
-
     this.confirmDIY = function (message, title,okText,cancelText, onConfirm,onBack) {
   /*    if (!baseConfig.nativeScreenFlag) {*/
         var confirmPopup = $ionicPopup.confirm({
@@ -729,6 +728,33 @@ angular.module('HmsModule')
     return {
       initDB: function () {
         _db = new PouchDB('historyCompetitor', {adapter: 'websql'});
+      },
+      getAllHistory: function (callback) {
+        _db.allDocs({include_docs: true}).then(function (result) {
+          callback(dateFix(result.rows));
+        })
+      },
+      addHistory: function (history) {
+        _db.post(history);
+      },
+      removeHistory: function (history) {
+        _db.remove(history);
+      }
+    }
+  })
+  .service('historyOfferList', function () {
+    var _db;
+    //dateFix 函数是用来处理SQLite读出的数据的，因为SQLite的存储的数据结构层次优点不同，
+    function dateFix (result) {
+      var data = [];
+      result.forEach(function (each) {data.push(each.doc);　});
+      console.log(data);
+      return data
+    }
+
+    return {
+      initDB: function () {
+        _db = new PouchDB('historyOfferList', {adapter: 'websql'});
       },
       getAllHistory: function (callback) {
         _db.allDocs({include_docs: true}).then(function (result) {

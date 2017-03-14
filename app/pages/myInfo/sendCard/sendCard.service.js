@@ -6,10 +6,11 @@ angular.module('myInfoModule')
     'baseConfig',
     'hmsHttp',
     'hmsPopup',
+    '$http',
     function (baseConfig,
-              hmsHttp,hmsPopup) {
+              hmsHttp,hmsPopup,$http) {
       var baseUrl = baseConfig.businessPath+"/api_card/";
-     this.getCardList=function(success){;
+     this.getCardList=function(success){
         var params = {
           "params":{
             "p_employee_number": window.localStorage.empno
@@ -19,7 +20,6 @@ angular.module('myInfoModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('取消销售计划出现异常，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -34,7 +34,6 @@ angular.module('myInfoModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('取消销售计划出现异常，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -49,7 +48,6 @@ angular.module('myInfoModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('取消销售计划出现异常，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -65,7 +63,6 @@ angular.module('myInfoModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('取消销售计划出现异常，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -76,7 +73,6 @@ angular.module('myInfoModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('取消销售计划出现异常，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -87,22 +83,25 @@ angular.module('myInfoModule')
             "p_card_id": cardId
           }
         };
+        console.log(params);
         hmsHttp.post(baseUrl + 'get_single_card', params).success(function (result) {
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('取消销售计划出现异常，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
       //删除名片
-      this.deleteCardInfo=function(success,param){
-        var params = param;
+      this.deleteCardInfo=function(success,cardId){
+        var params = {
+          "params":{
+            "p_card_id": cardId
+          }
+        };
         hmsHttp.post(baseUrl + 'delete_card_info', params).success(function (result) {
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('取消销售计划出现异常，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
@@ -113,13 +112,79 @@ angular.module('myInfoModule')
           hmsPopup.hideLoading();
           success(result);
         }).error(function (response, status) {
-          hmsPopup.showPopup('取消销售计划出现异常，请联系管理员');
           hmsPopup.hideLoading();
         });
       };
-
+      this.getCompanyInfo=function(success){
+        var params = {
+          "params":{
+            "p_company_id": "10000"
+          }
+        };
+        hmsHttp.post(baseUrl + 'get_company_info', params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+        });
+      };
+      //获取收货地址列表
+      this.getAddressInfo=function(success){
+        var params = {
+          "params":{
+            "p_employee_number": window.localStorage.empno
+          }
+        };
+        hmsHttp.post(baseUrl + 'get_address_info', params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+        });
+      };
+      //删除地址
+      this.deleteAddressInfo=function(success,addressId){
+        var params = {
+          "params":{
+            "p_address_id":addressId
+          }
+        };
+        hmsHttp.post(baseUrl + 'delete_address_info', params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+        });
+      };
+      //提交名片申请
+      this.printCardApply=function(success,param){
+        var params = param;
+        hmsHttp.post(baseUrl + 'print_card_apply', params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+        });
+      };
+      //设置默认地址
+      this.setDefaultAddress=function(success,addressId){
+        var params = {
+          "params":{
+            "p_address_id":addressId,
+            "p_employee_number": window.localStorage.empno
+          }
+        };
+        hmsHttp.post(baseUrl + 'set_default_address', params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+        });
+      };
       //存储名片详情
       this.cardDetail = {};
+      this.mailAddress={};
+      this.editAddress={};
       function cloneObj(obj) {
         var o;
         if (obj.constructor == Object) {
@@ -149,5 +214,21 @@ angular.module('myInfoModule')
 
       this.setCardDetail = function (cardDetail) {
         this.cardDetail = cloneObj(cardDetail);
+      };
+     //储存地址
+      this.getMailAddress= function () {
+        return this.mailAddress;
+      };
+
+      this.setMailAddres = function (mailAddress) {
+        this.mailAddress = cloneObj(mailAddress);
+      };
+      //储存地址信息
+      this.getEditAddress= function () {
+        return this.editAddress;
+      };
+
+      this.setEditAddress= function (editAddress) {
+        this.editAddress = cloneObj(editAddress);
       };
 }]);
