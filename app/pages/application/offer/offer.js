@@ -834,6 +834,17 @@ angular.module('offerModule')
         }).error(function (error) {
         });
       };
+      //提交审核的模拟接口
+      this.approveOffer = function (success, offerHeaderId) {
+        var params = {
+          offerHeaderId:offerHeaderId
+        };
+        hmsHttp.post(baseUrl + 'approve_offer', params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (error) {
+        });
+      };
       //存储报价详情
       this.offerDetail = {};
       function cloneObj(obj) {

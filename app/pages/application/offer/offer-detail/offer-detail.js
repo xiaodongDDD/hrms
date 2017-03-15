@@ -197,10 +197,17 @@ angular.module('offerModule')
           hmsPopup.showPopup("该状态不允许进行此操作");
         }
       };
+      var approveOfferSuccess=function(result){
+        if(result.returnCode=="S"){
+          hmsPopup.showShortCenterToast(result.returnMsg);
+        }else{
+          hmsPopup.showShortCenterToast(result.returnMsg);
+        }
+      };
       var offerSubmitAuthSuccess=function(result){
         if(result.returnCode=="S"){
          //提交
-
+         offerListService.approveOffer(approveOfferSuccess,$scope.offer.offerHeaderId)
         }else{
           hmsPopup.showPopup("该状态不允许进行此操作");
         }
