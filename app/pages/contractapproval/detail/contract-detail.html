@@ -165,7 +165,7 @@
       </div>
     </div>-->
 
-    <div class="operate-div" ng-show="showOperateButton">
+    <div class="operate-div" ng-if="showOperateButton">
       <input class="message" type="text" placeholder="请输入意见" ng-model="submitMessage.text" />
       <div class="transpond" ng-click="showTransDiv()">
         <span class="transpond-title">转交人</span>
@@ -174,7 +174,7 @@
       </div>
     </div>
 
-    <button class="operate-button" ng-click="showOperate()" ng-show="showOperateButton">操作</button>
+    <button class="operate-button" ng-click="showOperate()" ng-if="showOperateButton">操作</button>
 
   </ion-content>
 
