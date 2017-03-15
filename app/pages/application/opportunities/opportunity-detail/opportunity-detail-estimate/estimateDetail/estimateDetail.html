@@ -1,0 +1,87 @@
+<ion-modal-view class="add-presales-forecast estimateDetail crm"><!--售前预测-->
+  <ion-header-bar align-title="center" class="bar-stable">
+    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="hideAddEstimate()">
+    <h2 class="title"> {{ 'NEW_OPPORTUNITY.ADD_ESTIMATE' | T }}</h2>
+  </ion-header-bar>
+  <ion-content>
+    <div ng-if="detailFlag">
+      <div class="common-item-input">
+        <div>{{titleList.productTypeName}}</div>
+        <div ng-bind="newEstimate.productTypeName"></div>
+        <div class="common-light-line-long"></div>
+      </div>
+      <div class="common-item-input">
+        <div>{{titleList.newEstimateProductModel}}</div>
+        <div ng-bind="newEstimate.productName"></div>
+        <div class="common-light-line-long"></div>
+      </div>
+      <div class="common-item-input">
+        <div>{{titleList.unitName}}</div>
+        <div ng-bind="newEstimate.unitName"></div>
+      <div class="common-light-line-long"></div>
+    </div>
+      <div class="common-item-input">
+        <div>{{titleList.manday}}</div>
+        <div ng-bind="newEstimate.manday"></div>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <div class="common-item-input">
+        <div>{{titleList.unitPrice}}</div>
+        <div ng-bind="newEstimate.unitPrice"></div>
+        <div class="common-light-line-long"></div>
+      </div>
+    </div>
+    <div ng-if="!detailFlag">
+      <hms-select-item
+        label-name="titleList.productTypeName"
+        input-box="newEstimate.productTypeName"
+        important="true"
+        hms-select="showSelectDiv('product_type')">
+      </hms-select-item>
+
+      <hms-select-item
+        label-name="titleList.newEstimateProductModel"
+        input-box="newEstimateProductModel"
+        important="true"
+        hms-select="showEstimateProductSelectDiv()">
+      </hms-select-item>
+
+      <hms-select-item
+        label-name="titleList.unitName"
+        input-box="newEstimate.unitName"
+        hms-select="showSelectDiv('business_unit')">
+      </hms-select-item>
+
+      <div class="common-item-input">
+        <div>{{titleList.manday}}</div>
+        <input type="number" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="newEstimate.manday"/>
+        <div class="common-light-line-long"></div>
+      </div>
+
+      <div class="common-item-input">
+        <div>{{titleList.unitPrice}}</div>
+        <input type="number" placeholder="{{ 'PLEASE_INPUT' | T }}" ng-model="newEstimate.unitPrice"/>
+        <div class="common-light-line-long"></div>
+      </div>
+    </div>
+    <div style="width: 100%;margin-top:30px;" ng-if="detailFlag">
+      <div style="width: 40%;margin-left: 5%;float: left;text-align: center;height: 40px;line-height: 40px;  background: #979797;
+      border-radius: 30px;color: #fff;">
+        删除
+      </div>
+      <div style="width: 40%;margin-left: 5%;float: left;text-align: center;height: 40px;line-height: 40px;  background: #32A4EC;
+      border-radius: 30px;color: #fff;" ng-click="editEstimate()">
+       编辑
+      </div>
+      <div style="clear:both;"></div>
+    </div>
+
+    <div style="width: 100%;margin-top:30px;" ng-if="!detailFlag">
+      <div style="width: 90%;margin-left: 5%;text-align: center;height: 40px;line-height: 40px;  background: #979797;
+      border-radius: 30px;color: #fff;">
+        保存
+      </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

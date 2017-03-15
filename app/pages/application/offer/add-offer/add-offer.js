@@ -9,7 +9,8 @@ angular.module('offerModule')
     'hmsPopup',
     '$timeout',
     'competitorListService',
-    function($scope,$rootScope,$ionicModal,offerListService,$ionicScrollDelegate,hmsPopup,$timeout,competitorListService) {
+    'opportunityAddService',
+    function($scope,$rootScope,$ionicModal,offerListService,$ionicScrollDelegate,hmsPopup,$timeout,competitorListService,opportunityAddService) {
     var vm = this;
     console.log("addOfferCtrl");
       $scope.searchModel={
@@ -393,6 +394,12 @@ angular.module('offerModule')
           $scope.offerDetailSaveDataObj.coefficient="";
         }
       };
+      $scope.validFixCoefficient=function(){
+        if($scope.offerDetailSaveDataObj.coefficient<0.8){
+          hmsPopup.showPopup("远程系数必须>=0.8");
+          $scope.offerDetailSaveDataObj.coefficient=0.8;
+        }
+      };
       var offerTypeSuccess=function(result){
         console.log(result);
         $scope.productType=result.offer_type;
@@ -421,7 +428,13 @@ angular.module('offerModule')
       }).then(function(modal){
         $scope.counselorTypeModel = modal;
       });
-
+      //通用选择框
+      $ionicModal.fromTemplateUrl('build/pages/modals/crmSelectModal.html', {
+        scope: $scope,
+        animation: 'slide-in-right'
+      }).then(function (modal) {
+        $scope.addPresalesSelectModal = modal;
+      });
       $scope.items=[];
       var getCustomerSuccess=function(result){
         $scope.showCrmLoading = false;
@@ -645,6 +658,15 @@ angular.module('offerModule')
         $scope.items = $scope.items.concat(JSON.parse(window.localStorage[valueObj.localList]));
         $scope.sourceItems = $scope.items.clone();
       };
+      var getBusinessUnitSuccess = function(response){
+        $scope.showCrmLoading = false;
+        $scope.moreDataCanBeLoaded = response.business_unit.length == $scope.pageSize;
+        if(response.returnCode == 'S'){
+          $scope.items = $scope.items.concat(response.business_unit);
+          $scope.sourceItems = $scope.items.clone();
+        }
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+      };
       //通用选择弹窗
       $scope.selectTargets = [{
         'key': 'OpportunitiesList',
@@ -675,6 +697,17 @@ angular.module('offerModule')
           'dataKey': 'value',
           'dataModel': '$scope.offerDetailSaveDataObj.category2',
           'showDataModel': '$scope.offerDetailSaveDataObj.category2Name'
+        },{
+          'key' : 'business_unit',
+          'interface' :  opportunityAddService.getBusinessUnit,
+          'params' : [getBusinessUnitSuccess, $scope.nowPage, $scope.pageSize],
+          'showKey' : 'fullUnitName',
+          'dataKey' : 'unitId',
+          'dataModel' : '$scope.data.unitId',
+          'showDataModel' : '$scope.showData.unitName',
+          'searchInterface' : opportunityAddService.searchBusinessUnit,
+          'searchParams' : getBusinessUnitSuccess,
+          'needShowMore' : true
         }
       ];
 
@@ -710,13 +743,27 @@ angular.module('offerModule')
         $scope.searchModel.searchValueKey = '';
         $scope.nowPage = 1;
         //打开模态框
-        if ($scope.showSelect) {
-          $scope.showCrmLoading = false;
-          $scope.crmSelectModal.hide();
-        } else {
-          $scope.crmSelectModal.show();
-          $scope.showCrmLoading = true;
+        if( key == 'business_unit'){
+          if ($scope.showSelect) {
+
+          }else{
+            console.log("$scope.addPresalesSelectModal.show();");
+            $scope.addPresalesSelectModal.show();
+          }
+
+        }else{
+          if ($scope.showSelect) {
+            $scope.showCrmLoading = false;
+            $scope.crmSelectModal.hide();
+            if($scope.addPresalesSelectModal){
+              $scope.addPresalesSelectModal.hide();
+            }
+          } else {
+            $scope.crmSelectModal.show();
+            $scope.showCrmLoading = true;
+          }
         }
+
         $scope.showSelect = !$scope.showSelect;
 
         $scope.moreDataCanBeLoaded = false;
@@ -798,7 +845,7 @@ angular.module('offerModule')
             hmsPopup.showPopup(result.returnMsg);
           }
         };
-          $scope.showCrmLoading=true;
+        $scope.showCrmLoading=true;
         offerListService.getVailedLine(getVailedLineSuccess,$scope.data.opportunityId);
         }
         if ($scope.nowSelectTarget['key'] == 'AGENT') {
@@ -817,6 +864,9 @@ angular.module('offerModule')
           console.log(angular.toJson($scope.items[$index])+"=====incidentSheetType");
           $scope.addOfferDetailModel.show();
           $scope.showSelectDiv();
+        }
+        if ($scope.nowSelectTarget['key'] == 'business_unit') {
+          $scope.addPresalesSelectModal.hide();
         }
       };
       $scope.clearSelectFilter = function(){
@@ -879,7 +929,10 @@ angular.module('offerModule')
       var getEstimateListSuccess=function(result){
         console.log(result);
         if(result.returnCode=="S"){
+          $scope.showCrmEstimateLoading=false;
           $scope.addEstimateData=result.opp_product
+        }else{
+          $scope.showCrmEstimateLoading=false;
         }
       };
       function inArrayProduct(array, value) {
@@ -893,6 +946,7 @@ angular.module('offerModule')
         $scope.showEstimate=true;
         $scope.title='';
         $scope.estimateModel.show();
+        $scope.showCrmEstimateLoading=true;
         console.log(getEstimateListParam);
         offerListService.getEstimateList(getEstimateListSuccess,getEstimateListParam);
        };
@@ -912,6 +966,7 @@ angular.module('offerModule')
               $scope.estimate.opportunityProductId=item.productId;
               $scope.title=item.estimate;
               $scope.showEstimate=false;
+              //$scope.showCrmEstimateLoading=true;
             }
           }else{
             hmsPopup.showPopup("该售前预估行已生成报价，请先取消历史报价单；也可通过历史报价单创建新版本");
@@ -995,6 +1050,9 @@ angular.module('offerModule')
           discountedAmount:"",//优惠后总金额
           offertype: $scope.offerTypeCode
         };
+        if( $scope.offerTypeCode=="REMOTE_FIXED"||$scope.offerTypeCode=="REMOTE_TM"){
+          $scope.offerDetailSaveDataObj.coefficient=0.8;
+        }
         $scope.getCounselorTypeListParam.offerType=item.offerType;
         $scope.getResourcePriceParam.offerType=item.offerType;
         $scope.counselorLevelParam.offerType=item.offerType;

@@ -186,7 +186,10 @@ angular.module('opportunityModule')
       }, {
         title: "商机详情",
         icon: "icon_business"
-      }, {
+      },  {
+        title: "售前预估",
+        icon: "icon_business"
+      },{
         title: "竞争对手",
         icon: "icon_pk_gray"
       }, {
@@ -552,8 +555,27 @@ angular.module('opportunityModule')
             $scope.opportunityAddModel.show();
             $scope.$broadcast('EDIT_OPPORTUNITY');
           };
-        } else if ($index == 2) {
-          console.log("竞争对手");
+        } else if ($index ==2) {
+          console.log("售前预估");
+          $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-estimate/opportunity-detail-estimate.html";
+          $scope.chooseThis = function () {
+            console.log("售前预估");
+            //if($scope.opportunity.status == 'HCRM_DISABLE'){
+            //  hmsPopup.showPopup('商机已被停用，无法进行操作。');
+            //  return ;
+            //}
+            //if($scope.opportunity.opportunityStatus == 'HCRM_CLOSED'){
+            //  hmsPopup.showPopup('商机已关闭，无法进行操作。');
+            //  return ;
+            //}
+            //if(!opportunityPermissionService.checkPermission('HCRM_OPERATION_EDIT')){
+            //  hmsPopup.showPopup('抱歉，你没有权限这么做。');
+            //  return ;
+            //}
+            //$scope.opportunityAddCompetitorModel.show();
+          };
+        } else if ($index == 3) {
+          //console.log("售前预估");
           $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-competitor/opportunity-detail-competitor.html";
           $scope.chooseThis = function () {
             if($scope.opportunity.status == 'HCRM_DISABLE'){
@@ -570,7 +592,7 @@ angular.module('opportunityModule')
             }
             $scope.opportunityAddCompetitorModel.show();
           };
-        } else if ($index == 3) {
+        } else if ($index ==4) {
           $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-contact/opportunity-detail-contact.html";
 
           $scope.chooseThis = function () {
@@ -638,10 +660,10 @@ angular.module('opportunityModule')
             }
           }
 
-        } else if ($index == 4) {
+        } else if ($index ==5) {
           $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-principal/opportunity-detail-principal.html";
         }
-		else if($index == 5) {
+		else if($index == 6) {
 		  $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-bidbond/opportunity-detail-bidbond.html";
 	 	  $scope.chooseThis = function() {
   			var addData = {
