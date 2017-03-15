@@ -31,9 +31,9 @@ angular.module('offerModule')
     'hmsHttp',
     '$ionicModal',
     '$ionicPopover',
-    'competitorListService',
     'offerListService',
     'historyOpportunity',
+    'competitorListService',
     function ($scope,
               $rootScope,
               $state,
@@ -45,9 +45,8 @@ angular.module('offerModule')
               hmsHttp,
               $ionicModal,
               $ionicPopover,
-              competitorListService,
               offerListService,
-              historyOpportunity) {
+              historyOpportunity, competitorListService) {
       var item = $('#offerInputSearch');
       $scope.operating=[
         {text:"新建投保报价"},

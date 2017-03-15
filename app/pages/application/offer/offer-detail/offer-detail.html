@@ -1,7 +1,7 @@
 <ion-view class="crm offerDetail">
   <ion-header-bar align-title="center" class="bar-stable">
     <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="historyGoBack()"/>
-    <h1 class="title">投标报价</h1>
+    <h1 class="title">{{offer.offerStageName}}</h1>
     <img ng-if="offer.isMyOffer!='N'" src="build/img/application/customer/detail/icon_dot@3x.png" ng-click="showMenu()"/>
   </ion-header-bar>
   <ion-content style="background: #f8f8f8;">
