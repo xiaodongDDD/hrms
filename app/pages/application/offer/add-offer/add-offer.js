@@ -703,8 +703,8 @@ angular.module('offerModule')
           'params' : [getBusinessUnitSuccess, $scope.nowPage, $scope.pageSize],
           'showKey' : 'fullUnitName',
           'dataKey' : 'unitId',
-          'dataModel' : '$scope.data.unitId',
-          'showDataModel' : '$scope.showData.unitName',
+          'dataModel' : '$scope.data.hrUnitId',
+          'showDataModel' : '$scope.showData.hrFullUnitName',
           'searchInterface' : opportunityAddService.searchBusinessUnit,
           'searchParams' : getBusinessUnitSuccess,
           'needShowMore' : true
@@ -867,6 +867,8 @@ angular.module('offerModule')
         }
         if ($scope.nowSelectTarget['key'] == 'business_unit') {
           $scope.addPresalesSelectModal.hide();
+          $scope.data.hrUnitId=$scope.items[$index].unitId;
+          $scope.showData.hrFullUnitName=$scope.items[$index].fullUnitName;
         }
       };
       $scope.clearSelectFilter = function(){
