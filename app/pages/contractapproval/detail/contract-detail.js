@@ -565,11 +565,11 @@ angular.module('applicationModule')
           } else {
             cb_();
           }
-        }
-        try {
-          scope.hideIonicAS();
-        } catch (error) {
-          
+          try {
+            scope.hideIonicAS();
+          } catch (error) {
+            
+          }
         }
       }
     };
