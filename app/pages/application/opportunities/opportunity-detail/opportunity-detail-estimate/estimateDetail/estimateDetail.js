@@ -214,21 +214,21 @@ angular.module('opportunityModule')
       }
       $scope.newEstimate.total = $scope.newEstimate.manday * $scope.newEstimate.unitPrice;
       $scope.estimates.splice($scope.nowEditEstimateIndex, 1, $scope.newEstimate);
-      $scope.newEstimate = {
-        level2Product	:	"",
-        manday :	"",
-        opportunityId :	-9999,
-        product :	"",
-        productId :	"",
-        productType :	"",
-        total :	"",
-        unitId :	"",
-        unitPrice : "",
-        unitName : "",
-        productTypeName: "",
-        level2ProductName: "",
-        productName: ""
-      };
+      //$scope.newEstimate = {
+      //  level2Product	:	"",
+      //  manday :	"",
+      //  opportunityId :	-9999,
+      //  product :	"",
+      //  productId :	"",
+      //  productType :	"",
+      //  total :	"",
+      //  unitId :	"",
+      //  unitPrice : "",
+      //  unitName : "",
+      //  productTypeName: "",
+      //  level2ProductName: "",
+      //  productName: ""
+      //};
       $scope.newEstimateProductModel = '';
       $scope.addPresalesForecast.hide();
       $scope.editEstimateFlag = false;
@@ -559,3 +559,90 @@ angular.module('opportunityModule')
       };
 
     }]);
+
+angular.module('opportunityModule')
+  .service('opportunityEstimateDetailService', ['hmsHttp',
+    'hmsPopup',
+    'baseConfig',
+    function (hmsHttp,
+              hmsPopup,
+              baseConfig) {
+
+      var baseUrlTest = baseConfig.basePath;
+
+      this.estimateSave = function (success, value) {
+        console.log(JSON.stringify(value));
+
+        hmsHttp.post(baseUrlTest + 'query_opportunity_detail', value).success(function (result) {
+          success(result);
+          hmsPopup.hideLoading();
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          // hmsPopup.showPopup(response);
+        });
+
+      };
+      this.opportunityTransfer = function (success, key) { //转移商机
+        hmsHttp.post(baseUrlTest + 'opportunity_transfer', key).success(function (result) {
+          success(result);
+          hmsPopup.hideLoading();
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          // hmsPopup.showPopup(response);
+        });
+      };
+      this.demoteOpportunity = function (success, key) { //降级商机为线索
+        hmsHttp.post(baseUrlTest + 'demote_opportunity', key).success(function (result) {
+          success(result);
+          hmsPopup.hideLoading();
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          // hmsPopup.showPopup(response);
+        });
+      };
+      this.transformStatus = function (success, key) { //更改状态
+        hmsHttp.post(baseUrlTest + 'transform_status', key).success(function (result) {
+          success(result);
+          hmsPopup.hideLoading();
+        }).error(function (response, status) {
+          hmsPopup.hideLoading();
+          // hmsPopup.showPopup(response);
+        });
+      };
+      this.getCustomerEmployee = function (success) { //查询客户负责人
+        var params = {
+          page: 1,
+          pageSize: '100000'
+        };
+        hmsHttp.post(baseUrlTest + 'customer_employee', params).success(function (result) {
+          success(result);
+          hmsPopup.hideLoading();
+        }).error(function (response, status) {
+          // hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
+      //负责人
+      this.getEmployee = function (success, keyWord , page, pageSize) {
+        var params = {
+          keyWord:keyWord,
+          page: page,
+          pageSize: pageSize
+        };
+        hmsHttp.post(baseUrlTest + 'customer_employee', params).success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          //hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
+      this.getEmployeeDetail = function (success) {
+        hmsHttp.post(baseUrlTest + 'employee_detail').success(function (result) {
+          success(result);
+        }).error(function (response, status) {
+          //hmsPopup.showPopup(response);
+          hmsPopup.hideLoading();
+        });
+      };
+    }
+  ]);
