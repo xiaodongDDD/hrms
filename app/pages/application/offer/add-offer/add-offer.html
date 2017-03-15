@@ -34,6 +34,13 @@
           销售：{{showData.saleName}}
         </div>
       </div>
+      <div class="row remark" ng-click="showSelectDiv('business_unit')">
+        事业部(可以修改)：{{showData.unitName}}
+      </div>
+      <div class="row remark">
+        <textarea placeholder="备注："  oninput="this.style.height = '20px';
+              this.style.height = this.scrollHeight + 'px';" ng-model="data.offerMark"></textarea>
+      </div>
       <div class="row remark">
         <textarea placeholder="备注："  oninput="this.style.height = '20px';
               this.style.height = this.scrollHeight + 'px';" ng-model="data.offerMark"></textarea>
