@@ -54,6 +54,7 @@ angular.module('offerModule')
         {text:"新建定标报价"}
       ];
       $scope.showLoadingFlag=true;
+      $scope.showCrmEstimateLoading=false;
       $scope.valueType = [{
         page: 1,
         pageSize: 20,

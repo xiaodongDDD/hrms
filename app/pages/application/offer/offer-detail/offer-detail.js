@@ -55,8 +55,13 @@ angular.module('offerModule')
       hmsPopup.showLoading("正在加载");
       var getOfferDetailSuccess=function(result){
         console.log(result);
-        hmsPopup.hideLoading();
-        $scope.offer=result.offer_detail;
+        if(result.returnCode=="S"){
+          $scope.offer=result.offer_detail;
+          hmsPopup.hideLoading();
+        }else{
+          hmsPopup.hideLoading();
+        }
+
 
       };
       var getOfferDetailId=$stateParams.param;
@@ -82,12 +87,6 @@ angular.module('offerModule')
         offerListService.setOfferDetailService($scope.offer);
         $rootScope.$broadcast('EDIT_OFFER_BID_DETAIL');
       };
-      //var loseOnConfirm=function(index){
-      //  console.log("loseOnConfirm"+index);
-      //  if(index){
-      //    offerListService.offerInvalid(offer_invalidSuccess,$scope.offer.offerHeaderId)
-      //  }
-      //};
       var offer_deleteSuccess=function(index){
         hmsPopup.showShortCenterToast(index.returnMsg);
       };
@@ -97,7 +96,6 @@ angular.module('offerModule')
           offerListService.offerDelete(offer_deleteSuccess,$scope.offer.offerHeaderId)
         }
       };
-
       $ionicModal.fromTemplateUrl('build/pages/application/offer/add-offer/add-offer.html',{
         scope: $scope,
         animation: 'slide-in-up'

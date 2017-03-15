@@ -1,24 +1,5 @@
-<!--<ion-modal-view style="width: 100vw;" class="estimateModel">-->
-  <!--<ion-header-bar align-title="center" class="bar-stable">-->
-    <!--<div class="buttons">-->
-      <!--<button class="button button-icon ion-ios-arrow-back" ng-click="">-->
-        <!--<span class="back-button-text">取消</span>-->
-      <!--</button>-->
-    <!--</div>-->
-    <!--<h1 class="title">选择关联售前预估</h1>-->
-  <!--</ion-header-bar>-->
-  <!--<ion-content>-->
-    <!--<div style="color:#adb4be;padding:15px;">-->
-      <!--说明：同一个售前预估只能关联一种报价类型。-->
-    <!--</div>-->
-    <!--<div>-->
-      <!--<div ng-click="chooseEstimate(item)" class="row" style="background:#ffffff;color:#272e38;padding: 15px;border-bottom: 1px solid rgba(221, 221, 221, 0.6);" ng-repeat="item in addEstimateData">-->
-          <!--{{item.estimate}} <span style="color:#adb4be;">{{item.status}}</span>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</ion-content>-->
-<!--</ion-modal-view>-->
 <ion-modal-view class="product-select crm">
+  <crm-loading ng-if="showCrmEstimateLoading"></crm-loading>
   <ion-header-bar align-title="center" class="bar-stable">
     <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="estimateModelHide()"/>
     <h2 class="title">请选择售前预估</h2>
@@ -37,7 +18,7 @@
           {{item.productTypeName}}-{{item.productName}}-{{item.level2ProductName}}
           <div style="position: absolute;
     right: 21px;
-    top: 14px;">{{item.flag=='Y'?'已创建报销单':''}}</div>
+    top: 14px;">{{item.flag=='Y'?'已创建报价单':''}}</div>
           <img src="build/img/application/opportunity/right_arrow@3x.png" ng-hide="newEstimate.productName"/>
         </div>
         <div ng-click="chooseProductType(item)" ng-if="!showEstimate"  class="list-item" ng-repeat="item in productType">
