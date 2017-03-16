@@ -1,14 +1,14 @@
 <ion-view view-title="报价" class="crm hrms-pancel-corlor offer">
   <crm-loading ng-if="showLoadingFlag"></crm-loading>
   <ion-header-bar align-title="center" class="bar-stable">
-    <img src="build/img/application/customer/detail/top_left_arrow@3x.png" ng-click="historyGoBack()"/>
+    <img style="width: 15px!important;" src="build/img/application/opportunity/icon_back@3x.png" ng-click="historyGoBack()"/>
     <div class="header-select-button">
       <div ng-click="selectSubHeader('ALL')" ng-class="{true:'selected'}[!subHeadersSelect]">全部报价
       </div>
       <div ng-click="selectSubHeader('MY')" ng-class="{true:'selected'}[subHeadersSelect]">我的报价
       </div>
     </div>
-    <img src="build/img/application/opportunity/icon_add_black@3x.png" ng-click="openPopover()"/>
+    <img src="build/img/application/opportunity/plus@3x.png" ng-click="openPopover()"/>
   </ion-header-bar>
   <div class="row bar bar-subheader titles" style="background-color: #F5F5F5;"
        ng-class="{false:'hide-search'}[showHead]">

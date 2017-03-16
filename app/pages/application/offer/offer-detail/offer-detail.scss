@@ -22,22 +22,26 @@
     padding:0;
   }
   .calibration{
-    width: 95%;
-    border: 1px solid #FFC701;
-    font-size: 13px;
+    width: 100%;
+    font-size: 12px;
     text-align: center;
-    color: #FFC701;
-    height: 18px;
+    background: #4287E1;
     line-height: 18px;
+    color: #ffffff;
+    border-bottom-right-radius: 10px;
+    position: relative;
+    left: -15px;
   }
   .bid{
-    width: 95%;
-    border: 1px solid #3FD0AD;
-    font-size: 13px;
+    width: 100%;
+    font-size: 12px;
     text-align: center;
-    color: #3FD0AD;
-    height: 18px;
+    background: #71CEA3;
     line-height: 18px;
+    color: #ffffff;
+    border-bottom-right-radius: 10px;
+    position: relative;
+    left: -15px;
   }
   .OFFER_STATUS_APPROVAL{
     color:#f5c313 ;
@@ -110,24 +114,19 @@
       color: #606771;
       padding:15px;
       font-size: 15px;
-      border-bottom:1px solid rgba(221, 221, 221, 0.6);
+      //border-bottom:1px solid rgba(221, 221, 221, 0.6);
     }
     .remark{
       color: #272e38;
       padding:15px;
       font-size: 15px;
-      border-bottom:1px solid rgba(221, 221, 221, 0.6);
+      //border-bottom:1px solid rgba(221, 221, 221, 0.6);
       div{
         color:#272e38;
         text-align:justify;
         text-justify: distribute-all-lines;
         text-align-last:justify;
       }
-    }
-    .header-money{
-      padding: 15px;
-      color: #858c96;
-      font-size: 15px;
     }
 
     .add-row{
@@ -143,8 +142,15 @@
       }
     }
   }
+  .header-money{
+    padding: 15px;
+    color: #858c96;
+    font-size: 15px;
+    margin-top: 15px;
+    background: white;
+  }
   .offer-body{
-    background:#fff;margin-top:20px;
+    background:#fff;margin-top:15px;
     .offer-body-header{
       padding: 15px;border-bottom:1px solid rgba(221, 221, 221, 0.6);
       img{
@@ -159,7 +165,7 @@
     }
     .offer-body-item{
       margin: 10px 15px 0 15px;
-      border-bottom:1px solid rgba(221, 221, 221, 0.6);
+      //border-bottom:1px solid rgba(221, 221, 221, 0.6);
       font-size:14px;
       padding-bottom: 5px;
       color:#272e38;
@@ -189,7 +195,8 @@
       }
     }
     .item-sum{
-      padding:5px 15px 5px 15px;text-align: right;color: #adb4be;border-top:1px solid rgba(221, 221, 221, 0.6);
+      padding:5px 15px 5px 15px;text-align: right;color: #adb4be;
+      //border-top:1px solid rgba(221, 221, 221, 0.6);
     }
   }
 }
