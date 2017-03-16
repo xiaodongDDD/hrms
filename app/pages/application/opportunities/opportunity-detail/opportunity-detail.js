@@ -60,6 +60,7 @@ angular.module('opportunityModule')
     '$cordovaGeolocation',
     '$http',
     'customerService',
+    'opportunityEstimateDetailService',
     function ($scope,
               $ionicHistory,
               $state,
@@ -84,7 +85,8 @@ angular.module('opportunityModule')
     		      opportunityBidbondService,
               $cordovaGeolocation,
               $http,
-              customerService) {
+              customerService,
+              opportunityEstimateDetailService) {
 
       $rootScope.$broadcast("REFRESH_CUSTOMER_HISTORY");
 
@@ -512,6 +514,15 @@ angular.module('opportunityModule')
         opportunityPermissionService.updatePermission();
         initOpportunityData();
       });
+      $scope.$on('$ionicView.enter', function (e) {
+        console.log('进来了！');
+
+        if(opportunityEstimateDetailService.getIsDetail()==true){
+          $scope.selectSubHeader(2)
+          opportunityEstimateDetailService.setIsDetail(false);
+
+        }
+      })
 
       $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-state/opportunity-detail-state.html";
       $scope.selectSubHeader = function ($index) {

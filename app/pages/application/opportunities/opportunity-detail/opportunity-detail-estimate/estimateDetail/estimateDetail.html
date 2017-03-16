@@ -67,7 +67,7 @@
     </div>
     <div style="width: 100%;margin-top:30px;" ng-if="detailFlag">
       <div style="width: 40%;margin-left: 5%;float: left;text-align: center;height: 40px;line-height: 40px;  background: #979797;
-      border-radius: 30px;color: #fff;">
+      border-radius: 30px;color: #fff;" ng-click="deleteEstimate()">
         删除
       </div>
       <div style="width: 40%;margin-left: 5%;float: left;text-align: center;height: 40px;line-height: 40px;  background: #32A4EC;
@@ -79,7 +79,7 @@
 
     <div style="width: 100%;margin-top:30px;" ng-if="!detailFlag">
       <div style="width: 90%;margin-left: 5%;text-align: center;height: 40px;line-height: 40px;  background: #979797;
-      border-radius: 30px;color: #fff;">
+      border-radius: 30px;color: #fff;" ng-click="saveEstimate()">
         保存
       </div>
     </div>
