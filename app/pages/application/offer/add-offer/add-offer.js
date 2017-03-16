@@ -265,7 +265,7 @@ angular.module('offerModule')
         console.log($scope.offerTypeCode+"$scope.offerTypeCode======???");
         if($scope.offerTypeCode=='AGENT'){
           $scope.offerDetailSaveDataObj.totalCost=$scope.offerDetailSaveDataObj.discountedAmount.toFixed(2);
-          $scope.offerDetailSaveDataObj.profitRate=(($scope.offerDetailSaveDataObj.discountedAmount-$scope.offerDetailSaveDataObj.cost)/$scope.offerDetailSaveDataObj.cost).toFixed(24);
+          $scope.offerDetailSaveDataObj.profitRate=(($scope.offerDetailSaveDataObj.discountedAmount-$scope.offerDetailSaveDataObj.cost)/$scope.offerDetailSaveDataObj.cost).toFixed(4);
           console.log($scope.offerDetailSaveDataObj.profitRate+"利润率");
           if( $scope.offerDetailSaveDataObj.productType==""){
             hmsPopup.showPopup("请选择产品");
@@ -1012,6 +1012,7 @@ angular.module('offerModule')
             if($scope.showData.offerLines.length!=0&&inArrayProduct($scope.showData.offerLines,item.productId)){
               hmsPopup.showPopup("同一个售前预估只能关联一种报价类型。");
             }else{
+              $scope.estimateData=item;
               $scope.estimateData.opportunityProductId=item.productId;
               $scope.estimate=item;
               $scope.estimate.opportunityProductId=item.productId;

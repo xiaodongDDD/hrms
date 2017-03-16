@@ -24,10 +24,10 @@
         <div class="col col-20 col-center {{showData.dataStatus}}">{{showData.dataStatusName}}</div>
       </div>
       <div class="header-name-item">
-        <div class="row">
+        <div class="row" style="padding-bottom: 2px;">
           客户：{{showData.customerName}}
         </div>
-        <div class="row" ng-if="showData.preSaleName!=''">
+        <div class="row" style="padding-bottom: 2px;" ng-if="showData.preSaleName!=''">
           预销售：{{showData.preSaleName}}
         </div>
         <div class="row" ng-if="showData.saleName!=''">
@@ -41,27 +41,35 @@
         <textarea placeholder="备注："  oninput="this.style.height = '20px';
               this.style.height = this.scrollHeight + 'px';" ng-model="data.offerMark"></textarea>
       </div>
-      <div class="header-money">
-      <div>总报价(含税)({{showData.currencyName}}):<span class="blue-money">{{data.amount}}</span></div>
-      <div class="exchangeRate"  ng-if="showData.currencyName!='CNY'">1{{showData.currencyName}}={{data.exchangeRate}}CNY</div>
-      </div>
-      <div class="row add-row" ng-if="showData.offerLines.length==0" ng-click="addEstimate()">
-        <div class="col col-90 col-center">添加报价行</div>
-        <div class="col col-10 col-center">
-          <img src="build/img/myInfo/card/add.png">
+      <div class="header-money row">
+        <div class="col col-65">
+          <div>总报价(含税)({{showData.currencyName}}):<span class="blue-money">{{data.amount}}</span></div>
+          <div class="exchangeRate"  ng-if="showData.currencyName!='CNY'">1{{showData.currencyName}}={{data.exchangeRate}}CNY</div>
+        </div>
+        <div class="col col-40 col-center">
+          <div class="row add-row" ng-if="showData.offerLines.length==0" ng-click="addEstimate()">
+            <div class="col col-10 col-center">
+              <img src="build/img/application/offer/add@3x.png">
+            </div>
+            <div class="col col-90 col-center" style="text-align: center;">添加报价行</div>
+          </div>
         </div>
       </div>
     </div>
     <div class="offer-body" ng-if="showData.offerLines.length!=0" ng-repeat="item in showData.offerLines track by $index">
       <div class="offer-body-header">
         <div class="row">
-          <div class="col col-90" style="font-size:15px;"> {{item.offerTypeName}}</div>
-          <div class="col col-10" ng-click="deleteLine(showData.offerLines,item,$index)">
-            <img src="build/img/application/offer/delete.png">
+          <div class="col col-92 col-center" style="font-size:15px;">
+            <div class="row">
+              {{item.offerTypeName}}
+            </div>
+            <div class="row offer-body-header-name">
+              {{item.productTypeName}}-{{item.productName}}-{{item.level2ProductName}}
+            </div>
           </div>
-        </div>
-        <div class="row offer-body-header-name">
-          {{item.estimate}}
+          <div class="col col-8 col-center" ng-click="deleteLine(showData.offerLines,item,$index)">
+            <img src="build/img/application/offer/delete@3x.png">
+          </div>
         </div>
       </div>
       <div class="offer-body-item" ng-if="item.offerDetails.length!=0" ng-repeat="detail in item.offerDetails track by $index">
@@ -82,7 +90,7 @@
             <div class="row">
               <div class="col col-70">利润率</div>
               <div class="col col-30" style="text-align:right;color:#57bf96;">
-                {{detail.cost!=''&&detail.discountedAmount!=''?(detail.discountedAmount-detail.cost)/detail.cost*100:0}}%
+                {{detail.profitRate*100}}%
               </div>
             </div>
           </div>
@@ -410,15 +418,13 @@
         </div>
 
       </div>
-      <div class="row addDetail" ng-click="addDetail(item,$index)">
-        <div class="col col-90 col-center">添加行明细</div>
-        <div class="col col-10">
-          <img src="build/img/myInfo/card/add.png">
-        </div>
+      <div class="addDetail" ng-click="addDetail(item,$index)">
+          <img src="build/img/application/offer/add-g@3x.png">
+           添加行明细
       </div>
       <div class="item-sum">
-        <div>总报价(含税)(JPY):<span class="blue-money">{{item.amount}}</span></div>
-        <div class="exchangeRate">1{{showData.currencyName}}={{data.exchangeRate}}CNY</div>
+        <div>总报价(({{showData.currencyName}}):<span class="blue-money">{{item.amount}}</span></div>
+        <div class="exchangeRate">(含税{{taxRate*100}}%)</div>
       </div>
     </div>
   </ion-content>

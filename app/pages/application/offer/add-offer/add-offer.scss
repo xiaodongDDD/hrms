@@ -83,14 +83,15 @@
   .head-offer{
     background:#fff;
     .header-item{
-      padding:15px 15px 0 15px;
+      padding:15px 15px 0 0;
     }
     .header-name{
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 10px;
       font-size: 16px;
-      display:block;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
     }
     .header-name-item{
       color: #606771;
@@ -119,15 +120,12 @@
 
     .add-row{
       color:#1F8CEB;
-      padding:15px;
       font-size:16px;
       background:#fff;
-      border-top:1px solid rgba(221, 221, 221, 0.6);
       img{
         width: 20px;
         position: relative;
         top: 0px;
-        right: -10px;
       }
     }
   }
@@ -137,8 +135,6 @@
       padding: 15px;border-bottom:1px solid rgba(221, 221, 221, 0.6);
       img{
         width: 20px;
-        position: absolute;
-        right: 15px;
       }
       .offer-body-header-name{
         font-size:14px;
@@ -146,10 +142,10 @@
       }
     }
     .offer-body-item{
-      margin: 10px 15px 0 15px;
-      font-size:14px;
+      margin: 10px 15px 0 20px;
+      font-size: 14px;
       padding-bottom: 5px;
-      color:#272e38;
+      color: #272e38;
     }
     .offer-body-item-name{
       margin-bottom: 10px;
@@ -163,16 +159,18 @@
       color: #858c96;
     }
     .addDetail{
-      color:#1F8CEB;
-      padding:15px;
-      font-size:16px;
-      background:#fff;
-      border-top:1px solid rgba(221, 221, 221, 0.6);
+      color: #C9C8CA;
+      padding: 10px;
+      font-size: 15px;
+      background: #fff;
+      text-align: center;
+      border-top: 1px solid rgba(221, 221, 221, 0.6);
+      line-height: 29px;
       img{
         width: 20px;
+        height: 20px;
         position: relative;
-        top: 0px;
-        right: -10px;
+        top: 4px;
       }
     }
     .item-sum{

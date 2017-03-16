@@ -31,7 +31,7 @@
         <div class="row row-center">
           <div class="col col-25">利润率*</div>
           <div class="col col-75 product-rate-sum">
-            {{offerDetailSaveDataObj.cost!=''&&offerDetailSaveDataObj.discountedAmount!=''?((offerDetailSaveDataObj.discountedAmount-offerDetailSaveDataObj.cost)/offerDetailSaveDataObj.cost).toFixed(4)*100:0}}%
+            {{offerDetailSaveDataObj.cost!=''&&offerDetailSaveDataObj.discountedAmount!=''?(((offerDetailSaveDataObj.discountedAmount-offerDetailSaveDataObj.cost)/offerDetailSaveDataObj.cost)*100).toFixed(2):0}}%
           </div>
         </div>
       </div>

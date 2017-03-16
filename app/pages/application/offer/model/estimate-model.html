@@ -15,8 +15,8 @@
     <div class="list list-has-header">
       <ion-scroll direction="y" has-bouncing="true" scrollbar-y="false" delegate-handle="productScroll">
         <div ng-if="showEstimate" class="list-item row" ng-repeat="item in addEstimateData" ng-click="chooseEstimate(item)" >
-          <div class="col col-60" ng-if="item.flag=='Y'">{{item.productTypeName}}-{{item.productName}}-{{item.level2ProductName}}</div>
-          <div class="col col-40" ng-if="item.flag=='Y'" style="text-align: right">{{item.flag=='Y'?'已创建报价单':''}}</div>
+          <div class="col col-65" ng-if="item.flag=='Y'">{{item.productTypeName}}-{{item.productName}}-{{item.level2ProductName}}</div>
+          <div class="col col-35" ng-if="item.flag=='Y'" style="text-align: right">{{item.flag=='Y'?'已创建报价单':''}}</div>
           <div class="col" ng-if="item.flag=='N'">{{item.productTypeName}}-{{item.productName}}-{{item.level2ProductName}}</div>
           <!--<img src="build/img/application/opportunity/right_arrow@3x.png" ng-hide="newEstimate.productName"/>-->
         </div>
