@@ -42,10 +42,10 @@
               this.style.height = this.scrollHeight + 'px';" ng-model="data.offerMark"></textarea>
       </div>
       <div class="header-money">
-      <div>总报价({{showData.currencyName}}):<span class="blue-money">{{data.amount}}</span></div>
+      <div>总报价(含税)({{showData.currencyName}}):<span class="blue-money">{{data.amount}}</span></div>
       <div class="exchangeRate"  ng-if="showData.currencyName!='CNY'">1{{showData.currencyName}}={{data.exchangeRate}}CNY</div>
       </div>
-      <div class="row add-row" ng-click="addEstimate()">
+      <div class="row add-row" ng-if="showData.offerLines.length==0" ng-click="addEstimate()">
         <div class="col col-90 col-center">添加报价行</div>
         <div class="col col-10 col-center">
           <img src="build/img/myInfo/card/add.png">
@@ -56,7 +56,7 @@
       <div class="offer-body-header">
         <div class="row">
           <div class="col col-90" style="font-size:15px;"> {{item.offerTypeName}}</div>
-          <div class="col col-10" ng-click="deleteLine(showData.offerLines,item)">
+          <div class="col col-10" ng-click="deleteLine(showData.offerLines,item,$index)">
             <img src="build/img/application/offer/delete.png">
           </div>
         </div>
@@ -68,13 +68,13 @@
         <div ng-if="detail.offerType=='AGENT'">
           <div class="row offer-body-item-name">
             <div class="col col-90">{{detail.category1Name}}-{{detail.category2Name}}</div>
-            <div class="col col-10" ng-click="showDeleteButton(item.offerDetails,detail)">
+            <div class="col col-10" ng-click="showDeleteButton(item,item.offerDetails,detail,$index)">
               <img src="build/img/application/offer/delete2.png">
             </div>
           </div>
           <div class="offer-body-item-content">
             <div class="row">
-              <div class="col col-70">软件下单成本</div>
+              <div class="col col-70">软件下单成本(含税)</div>
               <div class="col col-30" style="text-align:right;">
                 {{detail.cost}}
               </div>
@@ -82,7 +82,7 @@
             <div class="row">
               <div class="col col-70">利润率</div>
               <div class="col col-30" style="text-align:right;color:#57bf96;">
-                {{detail.cost!=''&&detail.discountedAmount!=''?(detail.discountedAmount-detail.cost)/detail.cost:0}}%
+                {{detail.cost!=''&&detail.discountedAmount!=''?(detail.discountedAmount-detail.cost)/detail.cost*100:0}}%
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@
         <div ng-if="detail.offerType=='OWN'">
           <div class="row offer-body-item-name">
             <div class="col col-90">{{detail.category1Name}}-{{detail.category2Name}}</div>
-            <div class="col col-10" ng-click="showDeleteButton(item.offerDetails,detail)">
+            <div class="col col-10" ng-click="showDeleteButton(item,item.offerDetails,detail,$index)">
               <img src="build/img/application/offer/delete2.png">
             </div>
           </div>
@@ -118,13 +118,13 @@
         </div>
         <div class="offer-body-item-content">
           <div class="row">
-            <div class="col col-70">列表价总金额</div>
+            <div class="col col-70">列表价总金额(含税)</div>
             <div class="col col-30 line-through" style="text-align:right;">
               {{detail.amount}}
             </div>
           </div>
           <div class="row">
-            <div class="col col-70">平均单价</div>
+            <div class="col col-70">平均单价(含税)</div>
             <div class="col col-30" style="text-align:right;color:#57bf96;">
               {{detail.unitPrice}}
             </div>
@@ -135,6 +135,7 @@
               ×{{detail.peopleDays}}
             </div>
           </div>
+
         </div>
         <div class="row">
           <div class="col col-70">优惠后总金额(含税{{detail.taxRate*100}}%)</div>
@@ -142,24 +143,30 @@
             {{detail.totalCost}}
           </div>
         </div>
+          <div class="row">
+            <div class="col col-70">折扣率</div>
+            <div class="col col-30" style="text-align:right;">
+              {{detail.discountRate*100}}%
+            </div>
+          </div>
       </div>
 
         <div ng-if="detail.offerType=='TM'">
           <div class="row offer-body-item-name">
             <div class="col col-90">{{detail.category1Name}}-{{detail.category2Name}}</div>
-            <div class="col col-10" ng-click="showDeleteButton(item.offerDetails,detail)">
+            <div class="col col-10" ng-click="showDeleteButton(item,item.offerDetails,detail,$index)">
               <img src="build/img/application/offer/delete2.png">
             </div>
           </div>
           <div class="offer-body-item-content">
             <div class="row">
-              <div class="col col-70">列表人天单价</div>
+              <div class="col col-70">列表人天单价(含税)</div>
               <div class="col col-30 line-through" style="text-align:right;">
                 {{detail.unitPrice}}
               </div>
             </div>
             <div class="row">
-              <div class="col col-70">优惠后人天单价</div>
+              <div class="col col-70">优惠后人天单价(含税)</div>
               <div class="col col-30" style="text-align:right;color:#57bf96;">
                 {{detail.disUnitPrice}}
               </div>
@@ -175,6 +182,12 @@
             <div class="col col-70">软件总价(含税{{detail.taxRate*100}}%)</div>
             <div class="col col-30" style="text-align:right;">
               {{detail.totalCost}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">折扣率</div>
+            <div class="col col-30" style="text-align:right;">
+              {{detail.discountRate*100}}%
             </div>
           </div>
         </div>
@@ -182,27 +195,33 @@
         <div ng-if="detail.offerType=='REMOTE_FIXED'">
           <div class="row offer-body-item-name">
             <div class="col col-90">{{detail.category1Name}}-{{detail.category2Name}}</div>
-            <div class="col col-10" ng-click="showDeleteButton(item.offerDetails,detail)">
+            <div class="col col-10" ng-click="showDeleteButton(item,item.offerDetails,detail,$index)">
               <img src="build/img/application/offer/delete2.png">
             </div>
           </div>
           <div class="offer-body-item-content">
             <div class="row">
-              <div class="col col-70">列表总金额</div>
+              <div class="col col-70">列表人天单价(不含税)</div>
               <div class="col col-30 line-through" style="text-align:right;">
-                {{detail.amount}}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col col-70">平均单价</div>
-              <div class="col col-30" style="text-align:right;color:#57bf96;">
                 {{detail.unitPrice}}
               </div>
             </div>
             <div class="row">
-              <div class="col col-70">人天总数</div>
+              <div class="col col-70">优惠后人天单价(不含税)</div>
+              <div class="col col-30" style="text-align:right;color:#57bf96;">
+                {{detail.disUnitPrice}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">预计人天总数</div>
               <div class="col col-30" style="text-align:right;color:#57bf96;">
                 ×{{detail.peopleDays}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">远程系数</div>
+              <div class="col col-30" style="text-align:right;color:#57bf96;">
+                {{detail.coefficient}}
               </div>
             </div>
           </div>
@@ -212,24 +231,30 @@
               {{detail.totalCost}}
             </div>
           </div>
+          <div class="row">
+            <div class="col col-70">折扣率</div>
+            <div class="col col-30" style="text-align:right;">
+              {{detail.discountRate*100}}%
+            </div>
+          </div>
         </div>
 
         <div ng-if="detail.offerType=='REMOTE_TM'">
           <div class="row offer-body-item-name">
             <div class="col col-90">{{detail.category1Name}}-{{detail.category2Name}}</div>
-            <div class="col col-10" ng-click="showDeleteButton(item.offerDetails,detail)">
+            <div class="col col-10" ng-click="showDeleteButton(item,item.offerDetails,detail,$index)">
               <img src="build/img/application/offer/delete2.png">
             </div>
           </div>
           <div class="offer-body-item-content">
             <div class="row">
-              <div class="col col-70">列表人天单价</div>
+              <div class="col col-70">列表人天单价(不含税)</div>
               <div class="col col-30 line-through" style="text-align:right;">
                 {{detail.unitPrice}}
               </div>
             </div>
             <div class="row">
-              <div class="col col-70">优惠后人天单价</div>
+              <div class="col col-70">优惠后人天单价(不含税)</div>
               <div class="col col-30" style="text-align:right;color:#57bf96;">
                 {{detail.disUnitPrice}}
               </div>
@@ -238,6 +263,18 @@
               <div class="col col-70">预计人天总数</div>
               <div class="col col-30" style="text-align:right;color:#57bf96;">
                 ×{{detail.peopleDays}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">折扣率</div>
+              <div class="col col-30" style="text-align:right;color:#57bf96;">
+                {{detail.discountRate*100}}%
+              </div>
+            </div>
+            <div class="row">
+              <div class="col col-70">远程系数</div>
+              <div class="col col-30" style="text-align:right;color:#57bf96;">
+                {{detail.coefficient}}
               </div>
             </div>
           </div>
@@ -252,19 +289,19 @@
         <div ng-if="detail.offerType=='REMOTE_HOURS'">
           <div class="row offer-body-item-name">
             <div class="col col-90">{{detail.category1Name}}-{{detail.category2Name}}</div>
-            <div class="col col-10" ng-click="showDeleteButton(item.offerDetails,detail)">
+            <div class="col col-10" ng-click="showDeleteButton(item,item.offerDetails,detail,$index)">
               <img src="build/img/application/offer/delete2.png">
             </div>
           </div>
           <div class="offer-body-item-content">
             <div class="row">
-              <div class="col col-70">列表人天单价</div>
+              <div class="col col-70">列表人天单价(不含税)</div>
               <div class="col col-30 line-through" style="text-align:right;">
                 {{detail.unitPrice}}
               </div>
             </div>
             <div class="row">
-              <div class="col col-70">优惠后人天单价</div>
+              <div class="col col-70">优惠后人天单价(不含税)</div>
               <div class="col col-30" style="text-align:right;color:#57bf96;">
                 {{detail.disUnitPrice}}
               </div>
@@ -275,11 +312,23 @@
                 ×{{detail.peopleDays}}
               </div>
             </div>
+            <div class="row">
+              <div class="col col-70">远程系数</div>
+              <div class="col col-30" style="text-align:right;color:#57bf96;">
+                {{detail.coefficient}}
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col col-70">软件总价(含税{{detail.taxRate*100}}%)</div>
             <div class="col col-30" style="text-align:right;">
               {{detail.totalCost}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-70">折扣率</div>
+            <div class="col col-30" style="text-align:right;">
+              {{detail.discountRate*100}}%
             </div>
           </div>
         </div>
@@ -293,7 +342,7 @@
           </div>
           <div class="offer-body-item-content">
             <div class="row">
-              <div class="col col-70">事件单单价</div>
+              <div class="col col-70">事件单单价(不含税)</div>
               <div class="col col-30" style="text-align:right;">
                 {{detail.disUnitPrice}}
               </div>
@@ -310,6 +359,12 @@
                 × {{detail.months}}
               </div>
             </div>
+            <div class="row">
+              <div class="col col-70">远程系数</div>
+              <div class="col col-30" style="text-align:right;color:#57bf96;">
+                {{detail.coefficient}}
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col col-70">预计总价(含税{{detail.taxRate*100}}%)（远程系数{{detail.coefficient}}）</div>
@@ -322,7 +377,7 @@
         <div ng-if="detail.offerType=='OPERATION_IMPLEMENT_FEE'">
           <div class="row offer-body-item-name">
             <div class="col col-90"></div>
-            <div class="col col-10" ng-click="showDeleteButton(item.offerDetails,detail)">
+            <div class="col col-10" ng-click="showDeleteButton(item,item.offerDetails,detail,$index)">
               <img src="build/img/application/offer/delete2.png">
             </div>
           </div>
@@ -336,7 +391,7 @@
             <div class="row">
               <div class="col col-70">实施费折价比例</div>
               <div class="col col-30" style="text-align:right;color:#57bf96;">
-                -{{detail.implementationRatio}}
+                -{{detail.implementationRatio*100}}%
               </div>
             </div>
             <div class="row">
@@ -358,11 +413,11 @@
       <div class="row addDetail" ng-click="addDetail(item,$index)">
         <div class="col col-90 col-center">添加行明细</div>
         <div class="col col-10">
-          <img src="build/img/myInfo/card/add.png" style="">
+          <img src="build/img/myInfo/card/add.png">
         </div>
       </div>
       <div class="item-sum">
-        <div>总报价(JPY):<span class="blue-money">{{item.amount}}</span></div>
+        <div>总报价(含税)(JPY):<span class="blue-money">{{item.amount}}</span></div>
         <div class="exchangeRate">1{{showData.currencyName}}={{data.exchangeRate}}CNY</div>
       </div>
     </div>

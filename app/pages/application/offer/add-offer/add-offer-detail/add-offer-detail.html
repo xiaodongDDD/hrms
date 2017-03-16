@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-      <div class="ave-money">利润率 <span>{{offerDetailSaveDataObj.cost!=''&&offerDetailSaveDataObj.discountedAmount!=''?((offerDetailSaveDataObj.discountedAmount-offerDetailSaveDataObj.cost)/offerDetailSaveDataObj.cost).toFixed(2):0}}%</span></div>
+      <div class="ave-money">利润率 <span>{{offerDetailSaveDataObj.cost!=''&&offerDetailSaveDataObj.discountedAmount!=''?((offerDetailSaveDataObj.discountedAmount-offerDetailSaveDataObj.cost)/offerDetailSaveDataObj.cost).toFixed(4)*100:0}}%</span></div>
     <div class="remark">
       利润率 = (软件总价(含税) - 软件下单成本)/软件下单成本
     </div>
@@ -117,7 +117,7 @@
       <div class="card-item">
         <div class="row row-center ">
           <div class="col col-55">折扣率</div>
-          <div class="col col-45 text-right" >{{offerDetailSaveDataObj.discountedAmount&&offerDetailSaveDataObj.amount!=''?((offerDetailSaveDataObj.amount-offerDetailSaveDataObj.discountedAmount)/offerDetailSaveDataObj.amount*100).toFixed(2):0}}%</div>
+          <div class="col col-45 text-right" >{{offerDetailSaveDataObj.discountedAmount&&offerDetailSaveDataObj.amount!=''?(((offerDetailSaveDataObj.amount-offerDetailSaveDataObj.discountedAmount)/offerDetailSaveDataObj.amount)*100).toFixed(2):0}}%</div>
         </div>
       </div>
     </div>
@@ -196,13 +196,13 @@
       </div>
       <div class="card-item">
         <div class="row row-center ">
-          <div class="col col-55">列表人天单价</div>
+          <div class="col col-55">列表人天单价(不含税)</div>
           <div class="col col-45" ><input ng-readonly="true" type="number" placeholder="请输入"  ng-model="offerDetailSaveDataObj.unitPrice"></div>
         </div>
       </div>
       <div class="card-item">
         <div class="row row-center ">
-          <div class="col col-55">优惠后人天单价 </div>
+          <div class="col col-55">优惠后人天单价(不含税) </div>
           <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.disUnitPrice"></div>
         </div>
       </div>
@@ -215,13 +215,13 @@
       <div class="card-item">
         <div class="row row-center ">
           <div class="col col-55">远程系数</div>
-          <div class="col col-45" ><input ng-blur="validFixCoefficient()" type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.coefficient"></div>
+          <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.coefficient"></div>
         </div>
       </div>
       <div class="card-item">
         <div class="row row-center ">
           <div class="col col-55">折扣率</div>
-          <div class="col col-45 text-right" >{{offerDetailSaveDataObj.unitPrice&&offerDetailSaveDataObj.disUnitPrice!=''?((offerDetailSaveDataObj.unitPrice-offerDetailSaveDataObj.disUnitPrice)/offerDetailSaveDataObj.unitPrice*100).toFixed(2):0}}%</div>
+          <div class="col col-45 text-right" >{{offerDetailSaveDataObj.unitPrice&&offerDetailSaveDataObj.disUnitPrice!=''?(((offerDetailSaveDataObj.unitPrice-offerDetailSaveDataObj.disUnitPrice)/offerDetailSaveDataObj.unitPrice)*100).toFixed(2):0}}%</div>
         </div>
       </div>
     </div>
@@ -252,13 +252,13 @@
       </div>
       <div class="card-item">
       <div class="row row-center">
-        <div class="col col-55">列表人天单价</div>
+        <div class="col col-55">列表人天单价(不含税)</div>
         <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.unitPrice"></div>
       </div>
       </div>
       <div class="card-item">
       <div class="row row-center ">
-        <div class="col col-55">优惠后人天单价 </div>
+        <div class="col col-55">优惠后人天单价(不含税) </div>
         <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.disUnitPrice"></div>
       </div>
         </div>
@@ -271,7 +271,7 @@
       <div class="card-item">
         <div class="row row-center ">
           <div class="col col-55">远程系数</div>
-          <div class="col col-45" ><input ng-blur="validFixCoefficient()" type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.coefficient"></div>
+          <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.coefficient"></div>
         </div>
       </div>
       <div class="card-item">
@@ -307,13 +307,13 @@
       </div>
       <div class="card-item">
       <div class="row row-center ">
-        <div class="col col-55">列表人天单价</div>
+        <div class="col col-55">列表人天单价(不含税)</div>
         <div class="col col-45" ><input ng-readonly="true" type="number" placeholder="请输入"  ng-model="offerDetailSaveDataObj.unitPrice"></div>
       </div>
       </div>
       <div class="card-item">
       <div class="row row-center ">
-        <div class="col col-55">优惠后人天单价 </div>
+        <div class="col col-55">优惠后人天单价(不含税) </div>
         <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.disUnitPrice"></div>
       </div>
         </div>
@@ -325,8 +325,8 @@
         </div>
       <div class="card-item">
       <div class="row row-center ">
-        <div class="col col-55">远程系数>=1</div>
-        <div class="col col-45" ><input ng-blur="validCoefficient()" type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.coefficient"></div>
+        <div class="col col-55">远程系数</div>
+        <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.coefficient"></div>
       </div>
       </div>
       <div class="card-item">
@@ -368,7 +368,7 @@
       </div>
       <div class="card-item">
       <div class="row row-center ">
-        <div class="col col-55">事件单单价</div>
+        <div class="col col-55">事件单单价(不含税)</div>
         <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.disUnitPrice"></div>
       </div>
       </div>
@@ -405,7 +405,7 @@
     <div>
       <div class="card-item">
       <div class="row row-center ">
-        <div class="col col-55">项目实施费</div>
+        <div class="col col-55">项目实施费(不含税)</div>
         <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.implementationCost"></div>
       </div>
       </div>
@@ -417,7 +417,7 @@
         </div>
       <div class="card-item">
       <div class="row row-center ">
-        <div class="col col-55">维护费</div>
+        <div class="col col-55">维护费(不含税)</div>
         <div class="col col-45" ><input type="number" placeholder="请输入" ng-model="offerDetailSaveDataObj.maintainCost"></div>
       </div>
         </div>

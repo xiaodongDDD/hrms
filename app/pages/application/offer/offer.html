@@ -108,7 +108,7 @@
     <div class="sifting-header">
       排序
     </div>
-    <div class="sifting-item" ng-repeat="item in sortList track by $index" ng-click="selectSort(item)">
+    <div class="sifting-item" ng-repeat="item in sortList track by $index" ng-click="selectSort(item,$index)">
       <img ng-src="{{'build/img/application/customer/' + item.icon + '@3x.png'}}"/>
       <span>{{item.text}}</span>
       <img src="build/img/application/icon_right@3x.png" class="right-img" ng-show="lastSelectSortIndex == $index">

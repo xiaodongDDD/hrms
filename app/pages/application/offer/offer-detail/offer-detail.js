@@ -93,6 +93,7 @@ angular.module('offerModule')
       var deleteOnConfirm=function(index){
         console.log("deleteOnConfirm"+index);
         if(index){
+          $rootScope.$broadcast('DO_REFRESH');
           offerListService.offerDelete(offer_deleteSuccess,$scope.offer.offerHeaderId)
         }
       };
@@ -115,8 +116,10 @@ angular.module('offerModule')
           //不做更改的   保存调用的是创建定标报价的接口
           $scope.offer.showDisable=true;
           $scope.addOfferModal.show();
-          $scope.offer.offerStage="OFFER_STAGE_BIDED";
-          $scope.offer.offerStageName="定标报价";
+          // $scope.offer.offerStage="OFFER_STAGE_BIDED";
+          // $scope.offer.offerStageName="投标报价";
+          $scope.offer.dataStatusName="";
+          $scope.offer.dataStatus="OFFER_STATUS_UNCOMMITTED";
           offerListService.setOfferDetailService($scope.offer);
           $rootScope.$broadcast('CREATE_OFFER_BIDEDED_NO_CHANGE_DETAIL');
         }
@@ -127,8 +130,9 @@ angular.module('offerModule')
         //offerListService.offerInvalid(offer_invalidSuccess,$scope.offer.offerHeaderId);
         //做了更改的   保存调用的是创建新版本的接口
         $scope.offer.showDisable=false;
-        $scope.offer.offerStage="OFFER_STAGE_BIDED";
-        $scope.offer.offerStageName="定标报价";
+        // $scope.offer.offerStage="OFFER_STAGE_BIDED";
+        // $scope.offer.offerStageName="定标报价";
+        $scope.offer.dataStatusName="";
         $scope.addOfferModal.show();
         offerListService.setOfferDetailService($scope.offer);
         $rootScope.$broadcast('CREATE_OFFER_BIDEDED_CHANGE_DETAIL');
@@ -143,13 +147,19 @@ angular.module('offerModule')
           $scope.offer.showDisable=false;
           //$scope.offer.offerStage="OFFER_STAGE_BIDED";
           //$scope.offer.offerStageName="定标报价";
+          $scope.offer.dataStatusName="";
           $scope.addOfferModal.show();
           offerListService.setOfferDetailService($scope.offer);
-          $rootScope.$broadcast('CREATE_NEW_BIDED_DETAIL');
+          $rootScope.$broadcast('CREATE_NEW_OFFER_BIDED_DETAIL');
         }
         console.log("createNewOnConfirm"+flag);
 
       };
+      var DO_REFRESH=$rootScope.$on("DO_REFRESH",function(){
+        hmsPopup.showLoading("正在刷新");
+        $ionicHistory.goBack();
+        offerListService.getOfferDetail(getOfferDetailSuccess,getOfferDetailId);
+      });
       //创建新版定标报价
       var createNewBidedOnConfirm=function(flag){
         if(flag){
@@ -157,6 +167,7 @@ angular.module('offerModule')
           //true 立即失效
           //offerListService.offerInvalid(offer_invalidSuccess,$scope.offer.offerHeaderId);
           $scope.addOfferModal.show();
+          $scope.offer.dataStatusName="";
           offerListService.setOfferDetailService($scope.offer);
           $rootScope.$broadcast('CREATE_OFFER_BIDEDED_NO_CHANGE_DETAIL');
         }
@@ -164,7 +175,7 @@ angular.module('offerModule')
       };
       var createNewBidBidedAuthSuccess=function(result){
         if(result.returnCode=="S"){
-          hmsPopup.confirmDIY("是否使用定标价作为投标价",'提示','确定','取消', createBidedOnConfirm,cancelBidedCancle);
+          hmsPopup.confirmDIY("是否使用定标价作为投标价",'提示','是','否', createBidedOnConfirm,cancelBidedCancle);
         }else{
           hmsPopup.showPopup("该状态不允许进行此操作");
         }
@@ -199,6 +210,8 @@ angular.module('offerModule')
       };
       var approveOfferSuccess=function(result){
         if(result.returnCode=="S"){
+          $rootScope.$broadcast('DO_REFRESH');
+          $ionicHistory.goBack();
           hmsPopup.showShortCenterToast(result.returnMsg);
         }else{
           hmsPopup.showShortCenterToast(result.returnMsg);
@@ -279,6 +292,12 @@ angular.module('offerModule')
           });
         }
       };
+      //销毁广播
+      $scope.$on('$destroy',function(){//controller回收资源时执行
+        DO_REFRESH();
+      });
+
+
     }]);
 
 

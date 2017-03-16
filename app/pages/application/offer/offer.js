@@ -46,7 +46,8 @@ angular.module('offerModule')
               $ionicModal,
               $ionicPopover,
               offerListService,
-              historyOpportunity, competitorListService) {
+              historyOpportunity,
+              competitorListService) {
       var item = $('#offerInputSearch');
       $scope.operating=[
         {text:"新建投保报价"},
@@ -125,10 +126,11 @@ angular.module('offerModule')
         $scope.offerListParam.queryType=index;
         offerListService.getOfferList(getOfferListSuccess,$scope.offerListParam);
       };
-      $scope.selectSort = function(index){
+      $scope.selectSort = function(item,index){
         $scope.offerListParam.page=1;
-        $scope.offerListParam.sortorder=index.flag;
-        $scope.offerListParam.sortname=index.name;
+        $scope.offerListParam.sortorder=item.flag;
+        $scope.offerListParam.sortname=item.name;
+        $scope.lastSelectSortIndex = index;
         $scope.showLoadingFlag=true;
         $scope.offers=[];
         console.log( $scope.offerListParam);
@@ -492,12 +494,14 @@ angular.module('offerModule')
           /* $scope.birthdays = data;*/
         })
       };
+      $scope.lastSelectSortIndex = 0;
       $scope.init();
       var REFRESH_OFFER_HISTORY = $rootScope.$on("REFRESH_OFFER_HISTORY", function () {
         $scope.init();
       });
       var DO_REFRESH=$rootScope.$on("DO_REFRESH",function(){
         $scope.doRefresh();
+        // $scope.addOfferModal.hide();
       });
       $scope.chooseCustomer=function(item){
         console.log(item);
@@ -839,6 +843,28 @@ angular.module('offerModule')
           offerHeaderId:offerHeaderId
         };
         hmsHttp.post(baseUrl + 'approve_offer', params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (error) {
+        });
+      };
+      //删除报价单行 http://172.20.0.194:8080/crm/api/offer/delete_offer_line
+      this.deleteOfferLine = function (success, offerLineId) {
+        var params = {
+          offerLineId:offerLineId
+        };
+        hmsHttp.post(baseUrl + 'delete_offer_line', params).success(function (result) {
+          hmsPopup.hideLoading();
+          success(result);
+        }).error(function (error) {
+        });
+      };
+      //删除报价单明细 http://172.20.0.194:8080/crm/api/offer/delete_offer_detail
+      this.deleteOfferDetail = function (success, offerDetailId) {
+        var params = {
+          offerDetailId:offerDetailId
+        };
+        hmsHttp.post(baseUrl + 'delete_offer_detail', params).success(function (result) {
           hmsPopup.hideLoading();
           success(result);
         }).error(function (error) {

@@ -150,6 +150,7 @@ angular.module('offerModule')
         $scope.title="创建定标报价";
         $scope.eidtFlag="bidedChange";
         $scope.data=offerListService.getOfferDetailService();
+
         $scope.showData=offerListService.getOfferDetailService();
         $scope.showData.preSaleEmployeeName=offerListService.getOfferDetailService().preSaleName;
         getEstimateListParam.opportunityId=$scope.showData.opportunityId;
@@ -162,6 +163,8 @@ angular.module('offerModule')
         $scope.eidtFlag="bidedNoChange";
         $scope.data=offerListService.getOfferDetailService();
         $scope.showData=offerListService.getOfferDetailService();
+        console.log(angular.toJson($scope.data));
+
         $scope.showData.preSaleEmployeeName=offerListService.getOfferDetailService().preSaleName;
         getEstimateListParam.opportunityId=$scope.showData.opportunityId;
         console.log(offerListService.getOfferDetailService());
@@ -259,8 +262,11 @@ angular.module('offerModule')
         console.log(angular.toJson($scope.showData)+"showData====保存明细时");
         $scope.offerDetailSaveDataObj.soleId=new Date().getTime();
         console.log( $scope.estimate.offerDetails);
+        console.log($scope.offerTypeCode+"$scope.offerTypeCode======???");
         if($scope.offerTypeCode=='AGENT'){
           $scope.offerDetailSaveDataObj.totalCost=$scope.offerDetailSaveDataObj.discountedAmount.toFixed(2);
+          $scope.offerDetailSaveDataObj.profitRate=(($scope.offerDetailSaveDataObj.discountedAmount-$scope.offerDetailSaveDataObj.cost)/$scope.offerDetailSaveDataObj.cost).toFixed(24);
+          console.log($scope.offerDetailSaveDataObj.profitRate+"利润率");
           if( $scope.offerDetailSaveDataObj.productType==""){
             hmsPopup.showPopup("请选择产品");
           }else if($scope.offerDetailSaveDataObj.discountedAmount==""){
@@ -281,10 +287,10 @@ angular.module('offerModule')
           }
         }else if($scope.offerTypeCode=='FIXED'){
           //平均单价
-          $scope.offerDetailSaveDataObj.unitPrice=$scope.offerDetailSaveDataObj.discountedAmount/$scope.offerDetailSaveDataObj.peopleDays.toFixed(2);
-          $scope.offerDetailSaveDataObj.totalCost=$scope.offerDetailSaveDataObj.discountedAmount.toFixed(2);
+          $scope.offerDetailSaveDataObj.unitPrice=($scope.offerDetailSaveDataObj.discountedAmount/$scope.offerDetailSaveDataObj.peopleDays).toFixed(2);
+          $scope.offerDetailSaveDataObj.totalCost=($scope.offerDetailSaveDataObj.discountedAmount).toFixed(2);
           //折扣率
-          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.amount- $scope.offerDetailSaveDataObj.discountedAmount)/ $scope.offerDetailSaveDataObj.amount).toFixed(2);
+          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.amount- $scope.offerDetailSaveDataObj.discountedAmount)/$scope.offerDetailSaveDataObj.amount).toFixed(4);
           if( $scope.offerDetailSaveDataObj.productType==""){
             hmsPopup.showPopup("请选择子报价类型");
           }else if($scope.offerDetailSaveDataObj.peopleDays==""){
@@ -298,10 +304,10 @@ angular.module('offerModule')
           }
         }else if($scope.offerTypeCode=='TM'){
           //优惠后金额
-          $scope.offerDetailSaveDataObj.discountedAmount= $scope.offerDetailSaveDataObj.disUnitPrice* $scope.offerDetailSaveDataObj.peopleDays.toFixed(2);
-          $scope.offerDetailSaveDataObj.totalCost=$scope.offerDetailSaveDataObj.discountedAmount.toFixed(2);
+          $scope.offerDetailSaveDataObj.discountedAmount= ($scope.offerDetailSaveDataObj.disUnitPrice* $scope.offerDetailSaveDataObj.peopleDays).toFixed(2);
+          $scope.offerDetailSaveDataObj.totalCost=($scope.offerDetailSaveDataObj.discountedAmount).toFixed(2);
           //折扣率
-          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.unitPrice- $scope.offerDetailSaveDataObj.disUnitPrice)/ $scope.offerDetailSaveDataObj.unitPrice).toFixed(2);
+          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.unitPrice- $scope.offerDetailSaveDataObj.disUnitPrice)/$scope.offerDetailSaveDataObj.unitPrice).toFixed(4);
           if( $scope.offerDetailSaveDataObj.constructorName==""){
             hmsPopup.showPopup("请选择顾问类型");
           }else if($scope.offerDetailSaveDataObj.disUnitPrice==""){
@@ -312,11 +318,11 @@ angular.module('offerModule')
             $scope.checkSaveAfter();
           }
         }else if($scope.offerTypeCode=='REMOTE_FIXED'){
-          $scope.offerDetailSaveDataObj.discountedAmount=$scope.offerDetailSaveDataObj.disUnitPrice*$scope.offerDetailSaveDataObj.peopleDays*$scope.offerDetailSaveDataObj.coefficient.toFixed(2);
+          $scope.offerDetailSaveDataObj.discountedAmount=($scope.offerDetailSaveDataObj.disUnitPrice*$scope.offerDetailSaveDataObj.peopleDays*$scope.offerDetailSaveDataObj.coefficient).toFixed(2);
           //合计
           //折扣率
-          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.unitPrice- $scope.offerDetailSaveDataObj.disUnitPrice)/ $scope.offerDetailSaveDataObj.unitPrice).toFixed(2);
-          $scope.offerDetailSaveDataObj.totalCost= $scope.offerDetailSaveDataObj.discountedAmount*(1+$scope.taxRate).toFixed(2);
+          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.unitPrice- $scope.offerDetailSaveDataObj.disUnitPrice)/$scope.offerDetailSaveDataObj.unitPrice).toFixed(4);
+          $scope.offerDetailSaveDataObj.totalCost= ($scope.offerDetailSaveDataObj.discountedAmount*(1+$scope.taxRate)).toFixed(2);
           if( $scope.offerDetailSaveDataObj.constructorName==""){
             hmsPopup.showPopup("请选择顾问类型");
           }else if($scope.offerDetailSaveDataObj.disUnitPrice==""){
@@ -327,10 +333,10 @@ angular.module('offerModule')
             $scope.checkSaveAfter();
           }
         }else if($scope.offerTypeCode=='REMOTE_TM'){
-          $scope.offerDetailSaveDataObj.discountedAmount=$scope.offerDetailSaveDataObj.peopleDays*$scope.offerDetailSaveDataObj.disUnitPrice*$scope.offerDetailSaveDataObj.coefficient.toFixed(2);
+          $scope.offerDetailSaveDataObj.discountedAmount=($scope.offerDetailSaveDataObj.peopleDays*$scope.offerDetailSaveDataObj.disUnitPrice*$scope.offerDetailSaveDataObj.coefficient).toFixed(2);
           //折扣率
-          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.unitPrice- $scope.offerDetailSaveDataObj.disUnitPrice)/ $scope.offerDetailSaveDataObj.unitPrice).toFixed(2);
-          $scope.offerDetailSaveDataObj.totalCost=$scope.offerDetailSaveDataObj.discountedAmount*(1+$scope.taxRate).toFixed(2);
+          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.unitPrice- $scope.offerDetailSaveDataObj.disUnitPrice)/$scope.offerDetailSaveDataObj.unitPrice).toFixed(4);
+          $scope.offerDetailSaveDataObj.totalCost=($scope.offerDetailSaveDataObj.discountedAmount*(1+$scope.taxRate)).toFixed(2);
           if( $scope.offerDetailSaveDataObj.constructorName==""){
             hmsPopup.showPopup("请选择顾问类型");
           }else if($scope.offerDetailSaveDataObj.disUnitPrice==""){
@@ -343,7 +349,7 @@ angular.module('offerModule')
         }else if($scope.offerTypeCode=='REMOTE_HOURS'){
           $scope.offerDetailSaveDataObj.discountedAmount=($scope.offerDetailSaveDataObj.peopleDays*$scope.offerDetailSaveDataObj.disUnitPrice*$scope.offerDetailSaveDataObj.coefficient).toFixed(2);
           //折扣率
-          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.unitPrice- $scope.offerDetailSaveDataObj.disUnitPrice)/ $scope.offerDetailSaveDataObj.unitPrice).toFixed(2);
+          $scope.offerDetailSaveDataObj.discountRate= (($scope.offerDetailSaveDataObj.unitPrice- $scope.offerDetailSaveDataObj.disUnitPrice)/$scope.offerDetailSaveDataObj.unitPrice).toFixed(4);
           $scope.offerDetailSaveDataObj.totalCost=($scope.offerDetailSaveDataObj.discountedAmount*(1+$scope.taxRate)).toFixed(2);
           if( $scope.offerDetailSaveDataObj.constructorName==""){
             hmsPopup.showPopup("请选择顾问类型");
@@ -729,7 +735,8 @@ angular.module('offerModule')
       var getEstimateListParam={
         page:1,
         pagesize:20,
-        opportunityId: ""
+        opportunityId: "",
+        offerStage:"OFFER_STAGE_BID"
       };
       $ionicModal.fromTemplateUrl('build/pages/modals/crmSelectModal.html', {
         scope: $scope,
@@ -828,6 +835,8 @@ angular.module('offerModule')
           $scope.showData.preSaleName=$scope.items[$index].preSaleEmployeeName;
           $scope.data.saleId=$scope.items[$index].saleId;
           $scope.showData.saleName=$scope.items[$index].saleName;
+          $scope.data.hrUnitId=$scope.items[$index].preSaleHrUnitId;
+          $scope.showData.hrFullUnitName=$scope.items[$index].preSaleHrUnitName;
         //$scope.data.preSaleId=$scope.items[$index].preSaleEmployeeId;//少销售的id
         $scope.data.exchangeRate=$scope.items[$index].exchangeRate;
         $scope.data.currency=$scope.items[$index].currency;
@@ -877,13 +886,51 @@ angular.module('offerModule')
         $ionicScrollDelegate.scrollTop();
       };
       //删除行信息
-      $scope.deleteLine=function(arr,item){
+      $scope.deleteLine=function(arr,item,index){
         console.log(item);
+        console.log(arr);
+        console.log($scope.data);
+        console.log($scope.showData.offerLines);
+        console.log(index);
+        var deleteOfferLineSuccess=function (result) {
+          // hmsPopup.show
+          console.log("删除售前预估");
+          console.log(result);
+        };
         var deleteDetail=function(result){
           console.log(result);
           if(result){
-            arr.splice(arr.indexOf(item),1);
+            // arr.splice(arr.indexOf(item),1);
+            if($scope.eidtFlag=='new'){
+              $scope.showData.offerLines=[];
+              $scope.data.offerLines=[];
+            }else{
+              $scope.showData.offerLines=[];
+              $scope.data.offerLines=[];
+              offerListService.deleteOfferLine(deleteOfferLineSuccess,item.offerLineId);
+            }
+
+            var resultSum=0;
+            function getAllSum(arr){
+              for (var i=0; i<arr.length;i++){
+                resultSum +=Number(arr[i].amount);
+                console.log(arr[i].amount);
+              }
+              return resultSum;
+            }
+            if($scope.showData.offerLines.length==0){
+              $scope.data.amount=0;
+            }else{
+              // for(var i=0;i<$scope.showData.offerLines.length;i++){
+              //   if()
+              // }
+              $scope.testAll=getAllSum($scope.showData.offerLines);
+              $scope.data.amount=$scope.testAll;
+
+            }
             console.log(arr);
+            console.log($scope.showData.offerLines);
+            //连接口
           }
         };
         hmsPopup.confirm('确定删除该行信息吗?', '', deleteDetail);
@@ -946,10 +993,12 @@ angular.module('offerModule')
       }
       $scope.addEstimate=function(){
         $scope.showEstimate=true;
-        $scope.title='';
         $scope.estimateModel.show();
         $scope.showCrmEstimateLoading=true;
         console.log(getEstimateListParam);
+        if($scope.eidtFlag!="new"){
+          getEstimateListParam.offerStage=$scope.showData.offerStage;
+        }
         offerListService.getEstimateList(getEstimateListSuccess,getEstimateListParam);
        };
       $scope.estimateData={};//售前预估行数据
@@ -966,12 +1015,12 @@ angular.module('offerModule')
               $scope.estimateData.opportunityProductId=item.productId;
               $scope.estimate=item;
               $scope.estimate.opportunityProductId=item.productId;
-              $scope.title=item.estimate;
+              // $scope.title=item.estimate;
               $scope.showEstimate=false;
               //$scope.showCrmEstimateLoading=true;
             }
           }else{
-            hmsPopup.showPopup("该售前预估行已生成报价，请先取消历史报价单；也可通过历史报价单创建新版本");
+            hmsPopup.showPopup("该售前预估行已生成报价，如要修改，请回到历史报价单创建新版本");
           }
         };
         var checkSameOfferParam={
@@ -983,7 +1032,7 @@ angular.module('offerModule')
         console.log(angular.toJson(item)+'=======售前预估行');
       };
       $scope.chooseSecond=function(item){
-        $scope.title="";
+        // $scope.title="";
         $scope.showEstimate=true;
         console.log(angular.toJson(item)+'=======chooseSecond===第二个');
 
@@ -993,7 +1042,7 @@ angular.module('offerModule')
      $scope.estimateSaveData={};
       $scope.chooseProductType=function(item){
         console.log(angular.toJson(item)+"======选择产品estimateSaveData========");
-        $scope.title="";
+        // $scope.title="";
         $scope.showEstimate=true;
         $scope.estimate.offerDetails=[];
         $scope.estimate.offerTypeCode=item.offerTypeCode;
@@ -1055,6 +1104,9 @@ angular.module('offerModule')
         if( $scope.offerTypeCode=="REMOTE_FIXED"||$scope.offerTypeCode=="REMOTE_TM"){
           $scope.offerDetailSaveDataObj.coefficient=0.8;
         }
+        if($scope.offerTypeCode=='REMOTE_HOURS'){
+          $scope.offerDetailSaveDataObj.coefficient=1;
+        }
         $scope.getCounselorTypeListParam.offerType=item.offerType;
         $scope.getResourcePriceParam.offerType=item.offerType;
         $scope.counselorLevelParam.offerType=item.offerType;
@@ -1066,14 +1118,76 @@ angular.module('offerModule')
         console.log(angular.toJson(  $scope.offerDetailSaveDataObj)+"====添加的报价明细");
       };
       //删除行明细Button
-      $scope.showDeleteButton=function(arr,item){
-        console.log('删除行明细');
-        //确认删除
+      $scope.showDeleteButton=function(arrBig,arr,item,index){
+        console.log(($scope.showData.offerLines[0].offerDetails));
+        // console.log("在数组的哪个位置"+$scope.showData.offerLines.indexOf(arrBig));
+        // $scope.bigArrIndex=$scope.showData.offerLines.indexOf(arrBig);
+        // console.log('删除行明细');
+        // console.log(index);
+        // console.log(arr);
+        // console.log($scope.showData);
+        console.log(item);
+        console.log($scope.showData.offerLines[0].offerDetails.indexOf(item));
+        var deleteOfferDetailSuccess=function (result) {
+          console.log(result);
+        };
+        // //确认删除
         var deleteDetail=function(result){
           console.log(result);
           if(result){
-            arr.splice(arr.indexOf(item),1);
-            console.log(arr);
+            // arr.splice(arr.indexOf(item),1);
+            if($scope.eidtFlag=='new'){
+              console.log($scope.showData.offerLines[0].offerDetails.indexOf(item));
+              $scope.showData.offerLines[0].offerDetails.splice($scope.showData.offerLines[0].offerDetails.indexOf(item),1);
+              // $scope.data.offerLines[$scope.bigArrIndex].offerDetails.splice($scope.showData.offerLines[$scope.bigArrIndex].offerDetails.indexOf(item),1);
+              // $scope.$apply();
+              console.log($scope.showData.offerLines[0].offerDetails);
+            }else{
+              console.log($scope.showData.offerLines[0].offerDetails.indexOf(item));
+              $scope.showData.offerLines[0].offerDetails.splice($scope.showData.offerLines[0].offerDetails.indexOf(item),1);
+              // $scope.data.offerLines[$scope.bigArrIndex].offerDetails.splice($scope.showData.offerLines[$scope.bigArrIndex].offerDetails.indexOf(item),1);
+              // $scope.$apply();
+              console.log($scope.showData.offerLines[0].offerDetails);
+              offerListService.deleteOfferDetail(deleteOfferDetailSuccess,item.offerDetailId);
+            }
+
+
+            if(!$scope.$$phase) {
+              //$digest or $apply
+              $scope.$apply();
+            }
+            // console.log(arr);
+            var result=0;
+            function getSum(arr){
+              for (var i=0; i<arr.length;i++){
+                result +=Number(arr[i].totalCost);
+                console.log(arr[i].totalCost);
+              }
+              return result;
+            }
+            var resultSum=0;
+            function getAllSum(arr){
+              for (var i=0; i<arr.length;i++){
+                resultSum +=Number(arr[i].amount);
+                console.log(arr[i].amount);
+              }
+              return resultSum;
+            }
+            $timeout(function(){
+
+              $scope.test=getSum($scope.showData.offerLines[0].offerDetails);
+              //alert($scope.test);
+              $scope.data.offerLines[0].amount=$scope.test;
+              $scope.showData.offerLines[0].amount=$scope.test;
+              $scope.data=$scope.showData;
+              console.log( $scope.showData.offerLines[0].amount+"===总金额");
+              console.log( angular.toJson($scope.showData)+"=======加了总金额之后的 $scope.showData");
+              console.log( angular.toJson($scope.data)+"=======加了总金额之后的 $scope.data");
+              $scope.testAll=getAllSum($scope.data.offerLines);
+              console.log($scope.testAll);
+              $scope.data.amount=$scope.testAll;
+            });
+
           }
         };
         hmsPopup.confirm('确定删除该明细吗?', '', deleteDetail);
@@ -1109,6 +1223,7 @@ angular.module('offerModule')
       };
       var createBidSuccess=function(result){
         console.log(result);
+        $rootScope.$broadcast('DO_REFRESH');
       };
 
       var offerEditSuccess=function(result){
@@ -1143,45 +1258,52 @@ angular.module('offerModule')
       var createBidedCopySuccess=function(result){
         console.log(result);
         $rootScope.$broadcast('DO_REFRESH');
+
       };
       var createAwardSuccess=function(result){
         console.log(result);
         $rootScope.$broadcast('DO_REFRESH');
+
       };
       $scope.save=function(){
         console.log("保存");
         //$scope.data.exchangeRate=
         console.log(angular.toJson($scope.data)+"======保存的数据");
-        if($scope.data.offerLines.length==0){
+        if($scope.data.offerLines.length==0&&$scope.data.offerLines.length==0){
           hmsPopup.showPopup("至少要添加一条报价行");
         }else{
-          if($scope.eidtFlag=='edit'){
-            $scope.addOfferModal.hide();
-            hmsPopup.showLoading("正在保存");
-            offerListService.offerEdit(offerEditSuccess,$scope.data);
-          }else if($scope.eidtFlag=='new'){//完全新建
-            $scope.addOfferModal.hide();
-            hmsPopup.showLoading("正在保存");
-            offerListService.offerSubmit(offerSubmitSuccess,$scope.data);
-          }else if($scope.eidtFlag=='bidedNoChange'){//定标报价选择是的时候
-            $scope.addOfferModal.hide();
-            hmsPopup.showLoading("正在保存");
-            //offerListService.offerSubmit(offerSubmitSuccess,$scope.data);
-            offerListService.createBidedCopy(createBidedCopySuccess,$scope.data);
-          }else if($scope.eidtFlag=='bidedChange'){//定标报价选择否的时候
-            $scope.addOfferModal.hide();
-            hmsPopup.showLoading("正在保存");
-            offerListService.createAward(createAwardSuccess,$scope.data);
-          }else if($scope.eidtFlag=='newVersionBid'){//创建新版投标报价(新接口)
-            $scope.addOfferModal.hide();
-            hmsPopup.showLoading("正在保存");
-            offerListService.createBid(createBidSuccess,$scope.data);
-          }else if($scope.eidtFlag=='newVersionBided'){//创建新版定标报价(新接口)
-            $scope.addOfferModal.hide();
-            hmsPopup.showLoading("正在保存");
-            offerListService.createAward(createAwardSuccess,$scope.data);
+          if($scope.data.offerLines[0].offerDetails.length==0){
+            hmsPopup.showPopup("至少要添加一条报价明细");
+          }else{
+            if($scope.eidtFlag=='edit'){
+              $scope.addOfferModal.hide();
+              hmsPopup.showLoading("正在保存");
+              offerListService.offerEdit(offerEditSuccess,$scope.data);
+            }else if($scope.eidtFlag=='new'){//完全新建
+              $scope.addOfferModal.hide();
+              hmsPopup.showLoading("正在保存");
+              offerListService.offerSubmit(offerSubmitSuccess,$scope.data);
+            }else if($scope.eidtFlag=='bidedNoChange'){//定标报价选择是的时候
+              $scope.addOfferModal.hide();
+              $scope.data.offerStage="OFFER_STAGE_BIDED";
+              hmsPopup.showLoading("正在保存");
+              //offerListService.offerSubmit(offerSubmitSuccess,$scope.data);
+              offerListService.createBidedCopy(createBidedCopySuccess,$scope.data);
+            }else if($scope.eidtFlag=='bidedChange'){//定标报价选择否的时候
+              $scope.addOfferModal.hide();
+              $scope.data.offerStage="OFFER_STAGE_BIDED";
+              hmsPopup.showLoading("正在保存");
+              offerListService.createAward(createAwardSuccess,$scope.data);
+            }else if($scope.eidtFlag=='newVersionBid'){//创建新版投标报价(新接口)
+              $scope.addOfferModal.hide();
+              hmsPopup.showLoading("正在保存");
+              offerListService.createBid(createBidSuccess,$scope.data);
+            }else if($scope.eidtFlag=='newVersionBided'){//创建新版定标报价(新接口)
+              $scope.addOfferModal.hide();
+              hmsPopup.showLoading("正在保存");
+              offerListService.createAward(createAwardSuccess,$scope.data);
+            }
           }
-
         }
       };
       //销毁广播
