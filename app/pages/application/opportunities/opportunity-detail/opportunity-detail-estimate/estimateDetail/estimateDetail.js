@@ -47,7 +47,7 @@ angular.module('opportunityModule')
       var id = $stateParams.data.productId;
 
       var getEstimateDetailSuccess = function (response) {
-        if(response.returnCode=='E'){
+        if(response.returnCode=='S'){
           $scope.newEstimate = response.oppProductBaseView;
           $scope.newEstimateProductModel = $scope.newEstimate.productName + ' | ' + $scope.newEstimate.level2ProductName;
           console.log('成功获取详情：==='+angular.toJson($scope.newEstimate));
@@ -203,7 +203,12 @@ angular.module('opportunityModule')
       }
       var successConfirm = function (res, data) {
         if(res){
-          opportunityEstimateDetailService.deleteEstimate(deleteEstimateSuccess,data);
+          if($scope.newEstimate.relationOfferCode==''){
+            opportunityEstimateDetailService.deleteEstimate(deleteEstimateSuccess,data);
+          }else{
+            hmsPopup.showPopup('该售前预估已生成报价，无法删除！');
+          }
+
         }
       }
 
