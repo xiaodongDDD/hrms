@@ -18,13 +18,23 @@
       <div class="product-name">
         产品报价-代理
       </div>
-      <div>
-        软件总价（含税{{taxRate*100}}%）
-      </div>
+
       <div class="product-sum">
         {{offerDetailSaveDataObj.discountedAmount==''?0:offerDetailSaveDataObj.discountedAmount.toFixed(2)}}
       </div>
+      <div class="product-taxRate">
+        (含税{{taxRate*100}}%)
+      </div>
+
     </div>
+      <div class="product-rate">
+        <div class="row row-center">
+          <div class="col col-25">利润率*</div>
+          <div class="col col-75 product-rate-sum">
+            {{offerDetailSaveDataObj.cost!=''&&offerDetailSaveDataObj.discountedAmount!=''?((offerDetailSaveDataObj.discountedAmount-offerDetailSaveDataObj.cost)/offerDetailSaveDataObj.cost).toFixed(4)*100:0}}%
+          </div>
+        </div>
+      </div>
     <div>
       <div class="card-item">
         <div class="row row-center">
@@ -45,9 +55,8 @@
         </div>
       </div>
     </div>
-      <div class="ave-money">利润率 <span>{{offerDetailSaveDataObj.cost!=''&&offerDetailSaveDataObj.discountedAmount!=''?((offerDetailSaveDataObj.discountedAmount-offerDetailSaveDataObj.cost)/offerDetailSaveDataObj.cost).toFixed(4)*100:0}}%</span></div>
     <div class="remark">
-      利润率 = (软件总价(含税) - 软件下单成本)/软件下单成本
+      利润率* = (软件总价(含税) - 软件下单成本)/软件下单成本
     </div>
     </div>
     <div ng-if="offerTypeCode=='OWN'">
@@ -55,11 +64,11 @@
       <div class="product-name">
         产品销售报价-自有
       </div>
-      <div>
-        软件总价（含税{{taxRate*100}}%）
-      </div>
       <div class="product-sum">
         {{offerDetailSaveDataObj.discountedAmount==''?0:offerDetailSaveDataObj.discountedAmount.toFixed(2)}}
+      </div>
+      <div class="product-taxRate">
+        (含税{{taxRate*100}}%)
       </div>
     </div>
     <div>
@@ -82,13 +91,21 @@
       <div class="product-name">
         固定金额报价
       </div>
-      <div>
-        优惠后总金额（含税{{taxRate*100}}%）
-      </div>
       <div class="product-sum">
         {{offerDetailSaveDataObj.discountedAmount!=''?offerDetailSaveDataObj.discountedAmount.toFixed(2):0}}
       </div>
+      <div class="product-taxRate">
+        (含税{{taxRate*100}}%)
+      </div>
     </div>
+      <div class="product-rate">
+        <div class="row row-center">
+          <div class="col col-50">平均单价*(含税{{taxRate*100}}%)</div>
+          <div class="col col-50 product-rate-sum">
+            {{offerDetailSaveDataObj.discountedAmount&&offerDetailSaveDataObj.peopleDays!=''?(offerDetailSaveDataObj.discountedAmount/offerDetailSaveDataObj.peopleDays).toFixed(2):0}}
+          </div>
+        </div>
+      </div>
     <div>
       <div class="card-item">
       <div class="row row-center ">
@@ -121,9 +138,8 @@
         </div>
       </div>
     </div>
-    <div class="ave-money">平均单价（含税{{taxRate*100}}%） <span>{{offerDetailSaveDataObj.discountedAmount&&offerDetailSaveDataObj.peopleDays!=''?(offerDetailSaveDataObj.discountedAmount/offerDetailSaveDataObj.peopleDays).toFixed(2):0}}</span></div>
     <div class="remark">
-      平均单价 = 优惠后总金额(含税) /人天总数
+      平均单价* = 优惠后总金额(含税) /人天总数
     </div>
     </div>
     <div ng-if="offerTypeCode=='TM'">
@@ -131,11 +147,11 @@
       <div class="product-name">
         人天合同报价
       </div>
-      <div>
-        预计总价（含税{{taxRate*100}}%）
-      </div>
       <div class="product-sum">
         {{offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.peopleDays!=''?(offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.peopleDays).toFixed(2):0}}
+      </div>
+      <div class="product-taxRate">
+        (含税{{taxRate*100}}%)
       </div>
     </div>
     <div>
@@ -180,11 +196,11 @@
       <div class="product-name">
         运维-固定金额报价
       </div>
-      <div>
-        预计总价（含税{{taxRate*100}}%）
-      </div>
       <div class="product-sum">
         {{offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.peopleDays&&offerDetailSaveDataObj.coefficient!=''?(offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.peopleDays*offerDetailSaveDataObj.coefficient*(1+taxRate)).toFixed(2):0}}
+      </div>
+      <div class="product-taxRate">
+        (含税{{taxRate*100}}%)
       </div>
     </div>
     <div>
@@ -235,12 +251,12 @@
       <div class="product-name">
         运维-人天合同报价
       </div>
-      <div>
-        预计总价（含税{{taxRate*100}}%）
-      </div>
       <div class="product-sum">
         {{offerDetailSaveDataObj.peopleDays&&offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.coefficient!=''?(offerDetailSaveDataObj.peopleDays*offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.coefficient*(1+taxRate)).toFixed(2):0}}
         <!--{{offerDetailDataObj.discountedAmount==''?0:offerDetailDataObj.discountedAmount}}-->
+      </div>
+      <div class="product-taxRate">
+        (含税{{taxRate*100}}%)
       </div>
     </div>
     <div>
@@ -291,11 +307,11 @@
       <div class="product-name">
         运维-工时报价
       </div>
-      <div>
-        预计总价（含税{{taxRate*100}}%）
-      </div>
       <div class="product-sum">
         {{offerDetailSaveDataObj.disUnitPrice&&offerDetailSaveDataObj.peopleDays&&offerDetailSaveDataObj.coefficient!=''?(offerDetailSaveDataObj.disUnitPrice*offerDetailSaveDataObj.peopleDays*offerDetailSaveDataObj.coefficient*(1+taxRate)).toFixed(2):0}}
+      </div>
+      <div class="product-taxRate">
+        (含税{{taxRate*100}}%)
       </div>
     </div>
     <div>
@@ -346,11 +362,11 @@
       <div class="product-name">
         运维- 按件计算
       </div>
-      <div>
-        预计总价（含税{{taxRate*100}}%）
-      </div>
       <div class="product-sum">
         {{offerDetailSaveDataObj.months&&offerDetailSaveDataObj.monthEvent&&offerDetailSaveDataObj.disUnitPrice!=''?(offerDetailSaveDataObj.months*offerDetailSaveDataObj.monthEvent*offerDetailSaveDataObj.disUnitPrice*(1+taxRate)).toFixed(2):0}}
+      </div>
+      <div class="product-taxRate">
+        (含税{{taxRate*100}}%)
       </div>
     </div>
     <div>
@@ -395,11 +411,11 @@
       <div class="product-name">
         运维-实施费折价
       </div>
-      <div>
-        预计总价（含税{{taxRate*100}}%）
-      </div>
       <div class="product-sum">
         {{offerDetailSaveDataObj.implementationRatio&&offerDetailSaveDataObj.implementationCost&&offerDetailSaveDataObj.maintainCost!=''?(offerDetailSaveDataObj.implementationCost*offerDetailSaveDataObj.implementationRatio+offerDetailSaveDataObj.maintainCost).toFixed(2):0}}
+      </div>
+      <div class="product-taxRate">
+        (含税{{taxRate*100}}%)
       </div>
     </div>
     <div>
