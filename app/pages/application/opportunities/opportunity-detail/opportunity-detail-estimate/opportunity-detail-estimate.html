@@ -1,19 +1,23 @@
 <div ng-controller="opportunityDetailEstimateCtrl" class="crm opportunity-detail-estimate">
+  <ion-refresher
+    pulling-text="正在刷新数据"
+    pulling-icon="ion-ios-loop" on-refresh="doRefresh()">
+  </ion-refresher>
   <div style="border-bottom: 1px solid rgba(221, 221, 221, 0.6);
-    padding:0 10px 0 10px;margin-bottom:20px;" ng-click="goEstimateDetail()">
+    padding:0 10px 0 10px;margin-bottom:20px;"  ng-repeat="item in estimates" ng-click="goEstimateDetail(item)">
     <div class="row" style="border-bottom: 1px solid rgba(221, 221, 221, 0.6);padding:10px;">
-      产品 - 汉得产品 - HLS融资租赁系统
+      {{item.showName}}
     </div>
     <div style="color:#959595;" >
       <div class="row" style="border-bottom:1px dashed rgba(221, 221, 221, 0.6);padding: 10px;">
-        事业部：Orcle-XXXXXXXX-XXXX-XXXX
+        事业部：{{item.unitName}}
       </div>
       <div class="row"  style="padding: 10px;">
         <div class="col">
-          单价：3000 人天：20
+          单价：{{item.unitPrice}} 人天：{{item.manday}}
         </div>
         <div class="col ">
-          39000,00JPY
+          {{item.total}}JPY
         </div>
       </div>
     </div>

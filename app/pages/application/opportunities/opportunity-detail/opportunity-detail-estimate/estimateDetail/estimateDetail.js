@@ -30,29 +30,52 @@ angular.module('opportunityModule')
     '$ionicModal',
     '$ionicScrollDelegate',
     '$ionicHistory',
+    'opportunityEstimateDetailService',
+    '$state',
+    '$stateParams',
     function($scope,
              hmsPopup,
              T,
              opportunityAddService,
              $ionicModal,
              $ionicScrollDelegate,
-             $ionicHistory){
+             $ionicHistory,
+             opportunityEstimateDetailService,
+             $state,
+             $stateParams){
       $scope.detailFlag=true;
-      $scope.newEstimate = {
-        level2Product	:	"",
-        manday :	"测试",
-        opportunityId :	-9999,
-        product :	"",
-        productId :	"",
-        productType :	"",
-        total :	"",
-        unitId :	"",
-        unitPrice : "1000",
-        unitName : "测试",
-        productTypeName: "测试",
-        level2ProductName: "测试",
-        productName: "测试"
-      };
+      var id = $stateParams.data.productId;
+
+      var getEstimateDetailSuccess = function (response) {
+        if(response.returnCode=='E'){
+          $scope.newEstimate = response.oppProductBaseView;
+          $scope.newEstimateProductModel = $scope.newEstimate.productName + ' | ' + $scope.newEstimate.level2ProductName;
+          console.log('成功获取详情：==='+angular.toJson($scope.newEstimate));
+        }else {
+          hmsPopup.showShortCenterToast('获取详情失败！');
+        }
+      }
+
+      if(id!==null){
+        opportunityEstimateDetailService.getEstimateDetail(getEstimateDetailSuccess,id);
+      }else{
+        $scope.newEstimate = {
+          level2Product	:	"",
+          manday :	"",
+          opportunityId :	-9999,
+          product :	"",
+          productId :	"",
+          productType :	"",
+          total :	"",
+          unitId :	"",
+          unitPrice : "",
+          unitName : "",
+          productTypeName: "",
+          level2ProductName: "",
+          productName: ""
+        };
+      }
+
       console.log($scope.detailFlag);
       $scope.newEstimateProductModel = '';
       $scope.editEstimateFlag = false;
@@ -106,53 +129,53 @@ angular.module('opportunityModule')
       winningCompetitor: T.T('NEW_OPPORTUNITY.WINNING_COMPETITOR'),
       theYear: T.T('NEW_OPPORTUNITY.COMPANY_YEAR')
     };
-    $scope.addEstimate = function(){
-
-      if($scope.newEstimate.productType == ''){
-        hmsPopup.showShortCenterToast('产品类别不能为空');
-        return ;
-      }
-
-      if($scope.newEstimate.level2Product == ''){
-        hmsPopup.showShortCenterToast('二级产品不能为空');
-        return ;
-      }
-
-      if($scope.newEstimate.productType == ''){
-        hmsPopup.showShortCenterToast('产品类型不能为空');
-        return ;
-      }
-
-      if($scope.newEstimate.manday < 0 || isNaN(Number($scope.newEstimate.manday))){
-        hmsPopup.showShortCenterToast('人天必须为数字正数或0');
-        return ;
-      }
-
-      if($scope.newEstimate.unitPrice < 0 || isNaN(Number($scope.newEstimate.unitPrice))){
-        hmsPopup.showShortCenterToast('单价必须为数字正数或0');
-        return ;
-      }
-
-      $scope.newEstimate.total = $scope.newEstimate.manday * $scope.newEstimate.unitPrice;
-      $scope.estimates.push($scope.newEstimate);
-      $scope.newEstimate = {
-        level2Product	:	"",
-        manday :	"",
-        opportunityId :	-9999,
-        product :	"",
-        productId :	"",
-        productType :	"",
-        total :	"",
-        unitId :	"",
-        unitPrice : "",
-        unitName : "",
-        productTypeName: "",
-        level2ProductName: "",
-        productName: ""
-      };
-      $scope.newEstimateProductModel = '';
-      $scope.showAddEstimate();
-    };
+    //$scope.addEstimate = function(){
+    //
+    //  if($scope.newEstimate.productType == ''){
+    //    hmsPopup.showShortCenterToast('产品类别不能为空');
+    //    return ;
+    //  }
+    //
+    //  if($scope.newEstimate.level2Product == ''){
+    //    hmsPopup.showShortCenterToast('二级产品不能为空');
+    //    return ;
+    //  }
+    //
+    //  if($scope.newEstimate.productType == ''){
+    //    hmsPopup.showShortCenterToast('产品类型不能为空');
+    //    return ;
+    //  }
+    //
+    //  if($scope.newEstimate.manday < 0 || isNaN(Number($scope.newEstimate.manday))){
+    //    hmsPopup.showShortCenterToast('人天必须为数字正数或0');
+    //    return ;
+    //  }
+    //
+    //  if($scope.newEstimate.unitPrice < 0 || isNaN(Number($scope.newEstimate.unitPrice))){
+    //    hmsPopup.showShortCenterToast('单价必须为数字正数或0');
+    //    return ;
+    //  }
+    //
+    //  $scope.newEstimate.total = $scope.newEstimate.manday * $scope.newEstimate.unitPrice;
+    //  $scope.estimates.push($scope.newEstimate);
+    //  $scope.newEstimate = {
+    //    level2Product	:	"",
+    //    manday :	"",
+    //    opportunityId :	-9999,
+    //    product :	"",
+    //    productId :	"",
+    //    productType :	"",
+    //    total :	"",
+    //    unitId :	"",
+    //    unitPrice : "",
+    //    unitName : "",
+    //    productTypeName: "",
+    //    level2ProductName: "",
+    //    productName: ""
+    //  };
+    //  $scope.newEstimateProductModel = '';
+    //  $scope.showAddEstimate();
+    //};
     $scope.items = [];
     $scope.nowSelectTarget = {};
     $scope.searchModel={};
@@ -178,18 +201,22 @@ angular.module('opportunityModule')
         o.valueOf = obj.valueOf;
         return o;
       }
+      var successConfirm = function (res, data) {
+        if(res){
+          opportunityEstimateDetailService.deleteEstimate(deleteEstimateSuccess,data);
+        }
+      }
+
     $scope.editEstimate=function(){
      $scope.detailFlag=false;
     };
-    //$scope.editEstimate = function($index){
-    //
-    //  $scope.newEstimate = cloneObj($scope.estimates[$index]);
-    //  $scope.newEstimateProductModel = $scope.newEstimate.productName + '|' + $scope.newEstimate.level2ProductName;
-    //  $scope.addPresalesForecast.show();
-    //  $scope.editEstimateFlag = true;
-    //  $scope.showAddEstimateDiv = true;
-    //  $scope.nowEditEstimateIndex = $index;
-    //};
+    $scope.deleteEstimate = function () {
+       var data  = {
+         productId:$scope.newEstimate.productId,
+         opportunityId:window.localStorage.opportunityId
+       }
+        hmsPopup.confirmCrmCheck('确认删除该售前预估行？',$scope,successConfirm,data);
+    }
 
     $scope.saveEstimate = function(){
       if($scope.newEstimate.productType == ''){
@@ -212,28 +239,53 @@ angular.module('opportunityModule')
         hmsPopup.showShortCenterToast('单价必须为数字正数或0');
         return ;
       }
+      $scope.newEstimate.opportunityId = window.localStorage.opportunityId;
       $scope.newEstimate.total = $scope.newEstimate.manday * $scope.newEstimate.unitPrice;
-      $scope.estimates.splice($scope.nowEditEstimateIndex, 1, $scope.newEstimate);
-      //$scope.newEstimate = {
-      //  level2Product	:	"",
-      //  manday :	"",
-      //  opportunityId :	-9999,
-      //  product :	"",
-      //  productId :	"",
-      //  productType :	"",
-      //  total :	"",
-      //  unitId :	"",
-      //  unitPrice : "",
-      //  unitName : "",
-      //  productTypeName: "",
-      //  level2ProductName: "",
-      //  productName: ""
-      //};
-      $scope.newEstimateProductModel = '';
-      $scope.addPresalesForecast.hide();
-      $scope.editEstimateFlag = false;
-      $scope.showAddEstimateDiv = false;
+      //$scope.estimates.splice($scope.nowEditEstimateIndex, 1, $scope.newEstimate);
+      if($scope.newEstimate.productId!==''){
+        //编辑
+        opportunityEstimateDetailService.editEstimate(editEstimateSuccess,$scope.newEstimate);
+      }else {
+        //新建
+        opportunityEstimateDetailService.estimateCreate(createEstimateSuccess,$scope.newEstimate);
+      }
+
     };
+      var createEstimateSuccess = function (response) {
+        if(response.returnCode =='S'){
+          $scope.editEstimateFlag = false;
+          $scope.showAddEstimateDiv = false;
+          hmsPopup.showShortCenterToast(response.returnMsg);
+          opportunityEstimateDetailService.setIsDetail(true);
+          $state.go("tab.opportunity-detail");
+        }else {
+          hmsPopup.showShortCenterToast('新建失败！');
+        }
+
+      }
+      var editEstimateSuccess = function (response) {
+        if(response.returnCode =='S'){
+          $scope.editEstimateFlag = false;
+          $scope.showAddEstimateDiv = false;
+          hmsPopup.showShortCenterToast(response.returnMsg);
+          opportunityEstimateDetailService.setIsDetail(true);
+          $state.go("tab.opportunity-detail");
+        }else {
+          hmsPopup.showShortCenterToast('保存失败！');
+        }
+      }
+      var deleteEstimateSuccess = function (response) {
+        if(response.returnCode =='S'){
+          hmsPopup.showShortCenterToast(response.returnMsg);
+          opportunityEstimateDetailService.setIsDetail(true);
+          $state.go("tab.opportunity-detail");
+        }else {
+          hmsPopup.showShortCenterToast('删除失败！');
+        }
+      }
+
+
+
     var getBusinessFromSuccess = function(response){
       $scope.showCrmLoading = false;
       $scope.moreDataCanBeLoaded = response.business_from_list.length == $scope.pageSize;
@@ -384,9 +436,19 @@ angular.module('opportunityModule')
     };
       $scope.selectItem = function($index){
         var data = $scope.items[$index][$scope.nowSelectTarget['dataKey']];  //接口所需数据
+        var showKey = $scope.items[$index][$scope.nowSelectTarget['showKey']];
+        var dataModel = $scope.nowSelectTarget['dataModel'];                 //最终操作提交所需的数据变量
+        var showDataModel = $scope.nowSelectTarget['showDataModel'];         //显示用的数据变量ng-model
         console.log($scope.nowSelectTarget['key']);
         if($scope.nowSelectTarget['key'] == 'product_type'){
           console.log($scope.items[$index]);
+          $scope.newEstimate.productType = data;
+          $scope.newEstimate.productTypeName = showKey;
+        }
+        if($scope.nowSelectTarget['key'] == 'business_unit'){
+          console.log($scope.items[$index]);
+          $scope.newEstimate.unitId = data;
+          $scope.newEstimate.unitName = showKey;
         }
         //if($scope.nowSelectTarget['key'] == 'competitor'){
         //  for(var i = 0; i < $scope.competitors.length; i++) {
@@ -494,10 +556,10 @@ angular.module('opportunityModule')
         $scope.searchSelectValue();
       };
 
-      //选择商品
-      $scope.newEstimate.product = '';
-      $scope.newEstimate.productId = '';
-      $scope.newEstimate.productName = '';
+      ////选择商品
+      //$scope.newEstimate.product = '';
+      //$scope.newEstimate.level2Product = '';
+      //$scope.newEstimate.productName = '';
       $scope.parentCategoryId = -1;
       $scope.categoryType = 'HCRM_CATEGORY_1';
 
@@ -531,7 +593,7 @@ angular.module('opportunityModule')
         else{
           $scope.showCrmLoading = true;
           $scope.newEstimate.product = '';
-          $scope.newEstimate.productId = '';
+          $scope.newEstimate.level2Product = '';
           $scope.newEstimate.productName = '';
           $scope.parentCategoryId = -1;
           $scope.categoryType = 'HCRM_CATEGORY_1';
@@ -569,11 +631,18 @@ angular.module('opportunityModule')
               baseConfig) {
 
       var baseUrlTest = baseConfig.basePath;
+      var isDetail = false;
 
-      this.estimateSave = function (success, value) {
+      this.setIsDetail = function (value) {
+        isDetail = value;
+      }
+      this.getIsDetail = function () {
+        return isDetail;
+      }
+      this.estimateCreate = function (success, value) {
         console.log(JSON.stringify(value));
 
-        hmsHttp.post(baseUrlTest + 'query_opportunity_detail', value).success(function (result) {
+        hmsHttp.post(baseUrlTest + 'add_products', value).success(function (result) {
           success(result);
           hmsPopup.hideLoading();
         }).error(function (response, status) {
@@ -582,8 +651,13 @@ angular.module('opportunityModule')
         });
 
       };
-      this.opportunityTransfer = function (success, key) { //转移商机
-        hmsHttp.post(baseUrlTest + 'opportunity_transfer', key).success(function (result) {
+      this.getEstimates = function (success, id,page,pageSize) { //售前预估列表
+        var param = {
+          opportunityId:id,
+          page:page,
+          pageSize:pageSize
+        }
+        hmsHttp.post(baseUrlTest + 'product_detail', param).success(function (result) {
           success(result);
           hmsPopup.hideLoading();
         }).error(function (response, status) {
@@ -591,8 +665,11 @@ angular.module('opportunityModule')
           // hmsPopup.showPopup(response);
         });
       };
-      this.demoteOpportunity = function (success, key) { //降级商机为线索
-        hmsHttp.post(baseUrlTest + 'demote_opportunity', key).success(function (result) {
+      this.getEstimateDetail = function (success, key) { //获取售前预估详情
+        var param = {
+          productId:key
+        }
+        hmsHttp.post(baseUrlTest + 'opp_product_detail', param).success(function (result) {
           success(result);
           hmsPopup.hideLoading();
         }).error(function (response, status) {
@@ -600,8 +677,8 @@ angular.module('opportunityModule')
           // hmsPopup.showPopup(response);
         });
       };
-      this.transformStatus = function (success, key) { //更改状态
-        hmsHttp.post(baseUrlTest + 'transform_status', key).success(function (result) {
+      this.editEstimate = function (success, value) { //编辑售前预估
+        hmsHttp.post(baseUrlTest + 'edit_products', value).success(function (result) {
           success(result);
           hmsPopup.hideLoading();
         }).error(function (response, status) {
@@ -609,12 +686,9 @@ angular.module('opportunityModule')
           // hmsPopup.showPopup(response);
         });
       };
-      this.getCustomerEmployee = function (success) { //查询客户负责人
-        var params = {
-          page: 1,
-          pageSize: '100000'
-        };
-        hmsHttp.post(baseUrlTest + 'customer_employee', params).success(function (result) {
+      this.deleteEstimate = function (success,data) { //删除售前预估
+
+        hmsHttp.post(baseUrlTest + 'delete_products', data).success(function (result) {
           success(result);
           hmsPopup.hideLoading();
         }).error(function (response, status) {
