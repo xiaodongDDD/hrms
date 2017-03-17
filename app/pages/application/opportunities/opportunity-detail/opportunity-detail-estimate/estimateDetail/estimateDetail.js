@@ -45,10 +45,11 @@ angular.module('opportunityModule')
              $stateParams){
       $scope.detailFlag=true;
       var id = $stateParams.data.productId;
-
+      hmsPopup.showLoading('正在加载');
       var getEstimateDetailSuccess = function (response) {
         if(response.returnCode=='S'){
-          $scope.newEstimate = response.oppProductBaseView;
+          hmsPopup.hideLoading();
+          $scope.newEstimate = response.oppProd_list;
           $scope.newEstimateProductModel = $scope.newEstimate.productName + ' | ' + $scope.newEstimate.level2ProductName;
           console.log('成功获取详情：==='+angular.toJson($scope.newEstimate));
         }else {
@@ -74,6 +75,7 @@ angular.module('opportunityModule')
           level2ProductName: "",
           productName: ""
         };
+        hmsPopup.hideLoading();
       }
 
       console.log($scope.detailFlag);
@@ -674,7 +676,7 @@ angular.module('opportunityModule')
         var param = {
           productId:key
         }
-        hmsHttp.post(baseUrlTest + 'opp_product_detail', param).success(function (result) {
+        hmsHttp.post(baseUrlTest + 'product_offer_detail', param).success(function (result) {
           success(result);
           hmsPopup.hideLoading();
         }).error(function (response, status) {
