@@ -571,6 +571,7 @@ angular.module('opportunityModule')
           $scope.contentInner = "build/pages/application/opportunities/opportunity-detail/opportunity-detail-estimate/opportunity-detail-estimate.html";
           $scope.chooseThis = function () {
             console.log("售前预估");
+            $state.go('tab.estimateDetail');
             //if($scope.opportunity.status == 'HCRM_DISABLE'){
             //  hmsPopup.showPopup('商机已被停用，无法进行操作。');
             //  return ;
